@@ -1,0 +1,161 @@
+name: cinder-arwc-a-control-broker
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/arwc-a-control-broker
+  version: 0.1.0
+  exports:
+    content:
+    - w26-4-an-approval-becomes-a-control-client
+    - w28-3-keep-the-authority-you-earned
+realization:
+  default: open
+content:
+  w26-4-an-approval-becomes-a-control-client:
+    type: file
+    target: a-dmz.a-control-broker
+    path: /var/lib/arwc-control-broker/contracts/an-approval-becomes-a-control-client.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: an-approval-becomes-a-control-client
+      owner:
+        node: a-control-broker
+        application: control-broker
+      surface_bindings:
+      - a-dmz.a-control-broker/control-broker/an-approval-becomes-a-control-client
+      starting_state: Control issuer verifies approval and renderer attestation but omits the initiating caller-role claim,
+        issuing a five-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: issuer initiating-role omission
+        behavior_contract: Control issuer verifies approval and renderer attestation but omits the initiating caller-role
+          claim, issuing a five-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Demonstrate the scoped client's accepted authority under the correct approval binding. This supplies
+          the declared prior result and CONTROL; it does not waive mode, mapping, or release limits.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC issuer evidence or scoped control client
+        input: Control issuer verifies approval and renderer attestation but omits the initiating caller-role claim, issuing
+          a five-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback.
+        success: Demonstrate the scoped client's accepted authority under the correct approval binding. This supplies
+          the declared prior result and CONTROL; it does not waive mode, mapping, or release limits.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Demonstrate the scoped client's accepted authority under the correct approval binding. This
+        supplies the declared prior result and CONTROL; it does not waive mode, mapping, or release limits.
+      evidence_contract:
+        producer: a-control-broker/control-broker writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: Supplies the declared prior result and CONTROL.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 546bde18ee75bc7a3552007693db0085b4453427429911e05e01e8ae57c8c8ee
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-control-broker
+    - persistent-tenant-state
+  w28-3-keep-the-authority-you-earned:
+    type: file
+    target: a-dmz.a-control-broker
+    path: /var/lib/arwc-control-broker/contracts/keep-the-authority-you-earned.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: keep-the-authority-you-earned
+      owner:
+        node: a-control-broker
+        application: control-broker
+      surface_bindings:
+      - a-dmz.a-control-broker/control-broker/keep-the-authority-you-earned
+      - a-dmz.a-control-broker/filesystem:/var/lib/arwc-control-broker/artifacts/keep-the-authority-you-earned
+      starting_state: Successful chain calls built-in issue_client for issuer record ISSUER-UTIL-OG2-R4 after setresuid(0,0,0);
+        seccomp permits only the fixed issuer socket and the resulting client matches the declared prior result scope.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: privilege-preserving bounded issuer call
+        behavior_contract: The accepted chain invokes setresuid(0,0,0), then the ELF-exported issue_client function with
+          a pointer to immutable issuer record ISSUER-UTIL-OG2-R4 and the current request correlation. The seccomp policy
+          permits the required credential syscalls and one Unix connect/send/receive sequence only to /run/arwc/control-issuer.sock.
+          A shell, another path, another issuer record, or a client with broader asset/project/action scope is rejected
+          and leaves no client.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Demonstrate a control client with the intended live authority. This supplies the declared prior
+          result and CONTROL, equivalent in scope to the declared prior result's route. Process knowledge remains required.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC issuer evidence or scoped control client
+        input: Successful chain calls built-in issue_client for issuer record ISSUER-UTIL-OG2-R4 after setresuid(0,0,0);
+          seccomp permits only the fixed issuer socket and the resulting client matches the declared prior result scope.
+        success: Demonstrate a control client with the intended live authority. This supplies the declared prior result
+          and CONTROL, equivalent in scope to the declared prior result's route. Process knowledge remains required.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Demonstrate a control client with the intended live authority. This supplies the declared prior
+        result and CONTROL, equivalent in scope to the declared prior result's route. Process knowledge remains required.
+      evidence_contract:
+        producer: a-control-broker/control-broker writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: Supplies the declared prior result and CONTROL.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 463d02a57b398ce383bc672dd6997dff6b0a674d93991b18f542536e03684ac8
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-control-broker
+    - persistent-tenant-state

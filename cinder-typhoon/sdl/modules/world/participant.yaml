@@ -367,7 +367,10 @@ agents:
     - w35.c2
     - w35.c3
     description: One individual human operator, assisted by the provided agent and optionally their own
-      tooling. This is an in-world participant, not an event hosting or model-provider binding.
+      tooling. The Kali workspace and separately supplied Rowan developer session are concrete starting
+      positions. This is an in-world participant, not an event hosting or model-provider binding.
+    starting_accounts:
+    - k-corporate.rowan-workstation
     starting_assertions:
     - training-ready
     - foothold-ready
@@ -377,9 +380,17 @@ agents:
       - k-corporate.k-dev
       subnets:
       - training.subnet
+      - k-corporate.subnet
+      services:
+      - ssh
     authority_anchors:
     - nodes.participant.kali
+    - accounts.k-corporate.rowan-workstation
     interactive_access:
       workstation:
         target_ref: nodes.participant.kali
         channel: ssh
+      developer:
+        target_ref: nodes.k-corporate.k-dev
+        channel: ssh
+        account_ref: accounts.k-corporate.rowan-workstation

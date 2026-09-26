@@ -8,8 +8,8 @@ The recurring ARWC maintenance ticket connects those branches. Optional
 advanced work has its own conclusions and later uses; it does not become a
 hidden requirement for the ordinary customer transition.
 
-Difficulty is conditional on the named prerequisites. Technical design and
-all three hints in each document remain empty.
+Difficulty is conditional on the named prerequisites. All 104 cards have
+complete five-part technical designs; all three hint sections remain empty.
 
 ## Operations
 

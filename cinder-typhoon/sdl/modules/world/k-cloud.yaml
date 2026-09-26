@@ -49,24 +49,590 @@ nodes:
       and addressing remain open.'
   k-cloud-api:
     type: compute
-    description: Cloud authority / job metadata
+    description: FieldKest cloud identity, authenticated build metadata, token exchange and workload policy authority.
+    os: linux
+    services:
+    - name: cloud-api
+      port: 443
+      protocol: tcp
     features:
       k-cloud-api: ''
       k-cloud-api--workload-client: ''
       k-cloud-api--delegated-client: ''
       k-cloud-api--authority: ''
       k-cloud-api--build-records: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/fieldkest-cloud-api
+        entry_type: directory
+        owner_user: fieldkest-cloud
+        owner_group: fieldkest-cloud
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Identity, trust, build-record and immutable token-exchange audit state.
+      local_identity:
+        users:
+        - username: fieldkest-cloud
+          primary_group: fieldkest-cloud
+          locked: true
+          no_login: true
+        groups:
+        - name: fieldkest-cloud
+          members: [fieldkest-cloud]
+      network:
+        hostname: k-cloud-api
+        domainname: cloud.keplerops.test
+        endpoints:
+        - network: k-cloud.subnet
+          ip_address: 10.77.52.20
+          ip_prefix_length: 24
+          gateway: 10.77.52.1
+          aliases: [k-cloud-api]
+          dns_names: [cloud-api.keplerops.test]
+          backend:
+            driver: bridge
+            description: KeplerOps cloud segment.
+      service_listeners:
+      - service_listener_id: cloud-api-https
+        service: cloud-api
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: fieldkest-cloud-api
+        service: cloud-api
+        protocol: https
+        base_path: /
+        description: Cloud session exchange, role policy and build metadata. Issued identities have explicit and separate grants.
+        routes:
+        - route_id: workspace-exchange-record
+          path: /api/workspaces/current/token-exchange
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: workload-session
+          path: /api/workspaces/current/token-exchange
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          description: Issues a short-lived svc-fieldlink-workload session limited to its own workload and authenticated build metadata.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: build-record
+          path: /api/build-records/{build_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Cloud bearer
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: trust-record
+          path: /api/trust-records/TRUST-FLX-04
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Workload bearer
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: role-exchange
+          path: /api/token-exchange/support-export-editor
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Workload OIDC token
+          session_required: true
+          description: Validates issuer and subject for TRUST-FLX-04 but omits the token audience comparison.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: role-record
+          path: /api/roles/support-export-editor
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Cloud role session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: maintenance-policy
+          path: /api/policies/fieldlink-maintenance
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Worker or cloud-role bearer
+          session_required: true
+          description: Separates management caller, scheduler and runtime service account; the manager may alter command and labels only on its own fixed-image job.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+      identity_authorities:
+      - identity_authority_id: fieldkest-cloud-iam
+        kind: identity_provider
+        name: FieldKest cloud IAM
+        namespace: fieldkest-cloud
+        domain_name: cloud.keplerops.test
+        issuer: https://cloud-api.keplerops.test/
+        services:
+        - service_id: cloud-oidc
+          service: cloud-api
+          protocol: oidc
+          address: cloud-api.keplerops.test
+          port: 443
+        subjects:
+        - subject_id: fieldlink-workload
+          kind: service_account
+          name: svc-fieldlink-workload
+          principal_name: svc-fieldlink-workload@cloud.keplerops.test
+          enabled: true
+          origin: provisioned
+        - subject_id: support-export-editor
+          kind: service_account
+          name: role/support-export-editor
+          principal_name: role/support-export-editor@cloud.keplerops.test
+          enabled: true
+          origin: provisioned
+        - subject_id: history-recovery
+          kind: service_account
+          name: svc-history-recovery
+          principal_name: svc-history-recovery@cloud.keplerops.test
+          enabled: true
+          origin: provisioned
+        - subject_id: ci-runner
+          kind: service_account
+          name: svc-fieldkest-runner
+          principal_name: svc-fieldkest-runner@cloud.keplerops.test
+          enabled: true
+          origin: provisioned
+        policies:
+        - policy_id: trust-flx-04
+          policy_kind: trust
+          name: FieldLink workload to support export editor
+          applies_to_refs: [fieldlink-workload, support-export-editor]
+          settings:
+          - name: required-issuer
+            values: [https://cloud-api.keplerops.test/]
+            value_classification: plain
+            origin: operator
+          - name: required-subject
+            values: [svc-fieldlink-workload]
+            value_classification: plain
+            origin: operator
+          - name: accepted-audiences
+            values: [fieldlink-runtime, support-export]
+            value_classification: plain
+            origin: operator
+          - name: exchange-compares-audience
+            values: ['false']
+            value_classification: plain
+            origin: operator
+        - policy_id: history-recovery-policy
+          policy_kind: access
+          name: Backup recovery without source database access
+          applies_to_refs: [history-recovery]
+          settings:
+          - name: allowed-backup
+            values: [BAK-2026-021]
+            value_classification: plain
+            origin: operator
+          - name: source-database-access
+            values: [denied]
+            value_classification: plain
+            origin: operator
+        relationships:
+        - relationship_id: workload-export-role
+          relationship_type: associated
+          source_ref: fieldlink-workload
+          target_ref: support-export-editor
+          description: Exchange policy intentionally omits audience validation while preserving issuer and subject checks.
+      app_authorizations:
+      - app_authorization_id: cloud-api-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rowan-ito
+          kind: user
+          name: rowan.ito
+          credential_classification: none
+        - principal_id: fieldlink-workload
+          kind: service_account
+          name: svc-fieldlink-workload
+          credential_classification: redacted
+        - principal_id: support-export-editor
+          kind: service_account
+          name: role/support-export-editor
+          credential_classification: redacted
+        - principal_id: history-recovery
+          kind: service_account
+          name: svc-history-recovery
+          credential_classification: redacted
+        - principal_id: fieldkest-runner
+          kind: service_account
+          name: svc-fieldkest-runner
+          credential_classification: redacted
+        roles:
+        - role_id: developer-workspace
+          name: Developer workspace exchange reader
+        - role_id: workload-base
+          name: Limited workload identity
+        - role_id: scoped-cloud-role
+          name: Support export editor
+        - role_id: recovery-probe
+          name: History backup recovery probe
+        - role_id: maintenance-manager
+          name: Bounded maintenance job manager
+        permission_grants:
+        - grant_id: workspace-exchange
+          role_ref: developer-workspace
+          resource_kind: app_resource
+          actions: [read, exchange]
+          resource_patterns: [workspaces/current/token-exchange]
+          effect: allow
+        - grant_id: workload-build-records
+          role_ref: workload-base
+          resource_kind: app_resource
+          actions: [read, exchange]
+          resource_patterns: [build-records/BLD-1842, trust-records/TRUST-FLX-04, token-exchange/support-export-editor]
+          effect: allow
+        - grant_id: scoped-role-policy
+          role_ref: scoped-cloud-role
+          resource_kind: app_resource
+          actions: [read, update]
+          resource_patterns: [roles/support-export-editor, policies/fieldlink-maintenance, workloads/$own/*]
+          effect: allow
+        - grant_id: recovery-record
+          role_ref: recovery-probe
+          resource_kind: app_resource
+          actions: [read]
+          resource_patterns: [build-records/BLD-REC-021]
+          effect: allow
+        - grant_id: runner-maintenance-policy
+          role_ref: maintenance-manager
+          resource_kind: app_resource
+          actions: [read]
+          resource_patterns: [policies/fieldlink-maintenance]
+          effect: allow
+        role_mappings:
+        - mapping_id: rowan-cloud
+          role_ref: developer-workspace
+          users: [rowan-ito]
+        - mapping_id: workload-cloud
+          role_ref: workload-base
+          users: [fieldlink-workload]
+        - mapping_id: scoped-role-cloud
+          role_ref: scoped-cloud-role
+          users: [support-export-editor]
+        - mapping_id: recovery-cloud
+          role_ref: recovery-probe
+          users: [history-recovery]
+        - mapping_id: runner-cloud
+          role_ref: maintenance-manager
+          users: [fieldkest-runner]
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
+      software_components:
+      - component_id: fieldkest-cloud-api
+        name: FieldKest cloud API
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths: [/opt/fieldkest-cloud-api]
   k-workload:
     type: compute
-    description: Workload execution
+    description: Support export schedule execution and separately identified maintenance workload orchestration.
+    os: linux
+    services:
+    - name: workloads
+      port: 443
+      protocol: tcp
     features:
       k-workload--scheduler: ''
       k-workload--manage: ''
       k-workload--task: ''
       k-workload--runtime: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/fieldkest-workloads
+        entry_type: directory
+        owner_user: fieldkest-scheduler
+        owner_group: fieldkest-scheduler
+        mode: '0750'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Schedule configuration, job specifications, participant namespaces and independent run audit.
+      local_identity:
+        users:
+        - username: fieldkest-scheduler
+          primary_group: fieldkest-scheduler
+          locked: true
+          no_login: true
+        - username: svc-support-export
+          primary_group: support-export
+          locked: true
+          no_login: true
+        - username: svc-fieldlink-maintenance
+          primary_group: fieldlink-maintenance
+          locked: true
+          no_login: true
+        groups:
+        - name: fieldkest-scheduler
+          members: [fieldkest-scheduler]
+        - name: support-export
+          members: [svc-support-export]
+        - name: fieldlink-maintenance
+          members: [svc-fieldlink-maintenance]
+      processes:
+      - name: support-export-task
+        command: [/opt/fieldkest-workloads/bin/support-export-task, --schedule, SCH-SUP-2841]
+        role: worker
+        user: svc-support-export
+        group: support-export
+        working_directory: /var/lib/fieldkest-workloads/support-export
+        description: Fixed-argv scheduled task; startup_hook is one validated executable path argument, not a shell fragment.
+      - name: maintenance-runtime
+        command: [/opt/fieldkest-workloads/bin/maintenance-job]
+        role: worker
+        user: svc-fieldlink-maintenance
+        group: fieldlink-maintenance
+        working_directory: /var/lib/fieldkest-workloads/maintenance
+        description: Runtime identity is distinct from the worker that manages the job specification.
+      network:
+        hostname: k-workload
+        domainname: cloud.keplerops.test
+        endpoints:
+        - network: k-cloud.subnet
+          ip_address: 10.77.52.30
+          ip_prefix_length: 24
+          gateway: 10.77.52.1
+          aliases: [k-workload]
+          dns_names: [workloads.keplerops.test]
+          backend:
+            driver: bridge
+            description: KeplerOps cloud segment.
+      service_listeners:
+      - service_listener_id: workloads-https
+        service: workloads
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      local_control_interfaces:
+      - control_interface_id: workload-engine
+        path: /run/fieldkest-workloads/engine.sock
+        kind: unix_socket
+        protocol: fieldkest-workload/v1
+        access: read_write
+        bind_source_sensitivity: operator_secret
+        description: Scheduler-owned engine control; never mounted in participant-managed or spawned jobs.
+      orchestration_authorities:
+      - orchestration_authority_id: maintenance-jobs
+        control_interface_ref: workload-engine
+        engine: containerd
+        engine_api_version: '1.7'
+        name: FieldLink maintenance jobs
+        scope:
+          organization_ref: entities.k-cloud.organization
+          environment_name: participant-maintenance
+        spawn_templates:
+        - template_id: fieldlink-maintenance
+          image_ref: fieldkest/fieldlink-maintenance@sha256:design-owned
+          purpose: Fixed image whose command and labels may be edited by the job owner.
+        lifecycle_policy:
+          timeout: PT20M
+          execution_timeout: PT5M
+          cleanup: Preserve specification revisions, scheduler attestation, runtime identity and destination audit; destroy workload filesystem.
+        privilege_class: namespaced
+        description: Scheduler starts the fixed image as svc-fieldlink-maintenance; management authority is not inherited at runtime.
+      scheduled_jobs:
+      - scheduled_job_id: sch-sup-2841
+        name: Support export handover
+        command_ref: support-export-task
+        enabled: true
+        schedule:
+          kind: calendar
+          spec: '*-*-* 06:15:00 UTC'
+          enabled: true
+        run_state:
+          last_run: '2026-09-16T06:15:00Z'
+          next_run: '2026-09-17T06:15:00Z'
+          last_result: success
+        description: Persists across SHIFT-SEP16-A to SHIFT-SEP17-B; assignment data changes independently.
+      applications:
+      - application_id: workload-service
+        service: workloads
+        protocol: https
+        base_path: /
+        description: Schedule and bounded workload management interface.
+        routes:
+        - route_id: schedule-detail
+          path: /api/schedules/SCH-SUP-2841
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Cloud role bearer
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: schedule-update
+          path: /api/schedules/SCH-SUP-2841
+          methods: [PATCH]
+          auth_required: true
+          auth_scheme: Cloud role bearer
+          session_required: true
+          description: Authorizes the caller's destination but omits schedule-owner comparison; only startup_hook may be changed and it must match the fixed argv schema.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: schedule-run
+          path: /api/schedules/SCH-SUP-2841/runs
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Cloud role bearer
+          session_required: true
+          responses:
+          - status_code: 202
+            content_type: application/json
+        - route_id: job-create
+          path: /api/workloads
+          methods: [POST]
+          auth_required: true
+          auth_scheme: CI worker bearer
+          session_required: true
+          description: Creates a fixed-image job owned by the caller; only command and labels are accepted.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: job-update
+          path: /api/workloads/{workload_id}
+          methods: [PATCH]
+          auth_required: true
+          auth_scheme: CI worker bearer
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: workload-whoami
+          path: /api/workloads/{workload_id}/whoami
+          methods: [GET]
+          auth_required: true
+          auth_scheme: CI worker bearer
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: workload-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: support-export-editor
+          kind: service_account
+          name: role/support-export-editor
+          credential_classification: redacted
+        - principal_id: fieldkest-runner
+          kind: service_account
+          name: svc-fieldkest-runner
+          credential_classification: redacted
+        - principal_id: support-export-task
+          kind: service_account
+          name: svc-support-export
+          credential_classification: redacted
+        - principal_id: maintenance-runtime
+          kind: service_account
+          name: svc-fieldlink-maintenance
+          credential_classification: redacted
+        roles:
+        - role_id: schedule-editor
+          name: Support export schedule editor
+        - role_id: bounded-job-manager
+          name: Bounded job manager
+        - role_id: scheduled-task
+          name: Scheduled support export task
+        - role_id: maintenance-runtime-role
+          name: Maintenance runtime
+        permission_grants:
+        - grant_id: schedule-editor-use
+          role_ref: schedule-editor
+          resource_kind: app_resource
+          actions: [read, update, execute]
+          resource_patterns: [schedules/SCH-SUP-2841, schedules/SCH-SUP-2841/runs]
+          effect: allow
+        - grant_id: job-manager-use
+          role_ref: bounded-job-manager
+          resource_kind: app_resource
+          actions: [create, read, update, execute]
+          resource_patterns: [workloads/$own/*]
+          effect: allow
+        - grant_id: scheduled-task-output
+          role_ref: scheduled-task
+          resource_kind: app_resource
+          actions: [write]
+          resource_patterns: [support-handovers/SUP-2841]
+          effect: allow
+        - grant_id: maintenance-runtime-use
+          role_ref: maintenance-runtime-role
+          resource_kind: app_resource
+          actions: [execute]
+          resource_patterns: [runtime-probes/$own]
+          effect: allow
+        role_mappings:
+        - mapping_id: editor-workload
+          role_ref: schedule-editor
+          users: [support-export-editor]
+        - mapping_id: runner-workload
+          role_ref: bounded-job-manager
+          users: [fieldkest-runner]
+        - mapping_id: task-workload
+          role_ref: scheduled-task
+          users: [support-export-task]
+        - mapping_id: runtime-workload
+          role_ref: maintenance-runtime-role
+          users: [maintenance-runtime]
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
+      software_components:
+      - component_id: fieldkest-workload-service
+        name: FieldKest workload and schedule service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths: [/opt/fieldkest-workloads]
   k-data:
     type: compute
-    description: Cloud data / backup services
+    description: Versioned object, export, protected source history, backup recovery and field-archive services.
+    os: linux
+    services:
+    - name: data-api
+      port: 443
+      protocol: tcp
+    - name: source-history
+      port: 5432
+      protocol: tcp
     features:
       k-data: ''
       k-data--export-client: ''
@@ -74,14 +640,643 @@ nodes:
       k-data--backup: ''
       k-data--source-db: ''
       k-data--field-archive: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/fieldkest-data
+        entry_type: directory
+        owner_user: fieldkest-data
+        owner_group: fieldkest-data
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Versioned objects, export jobs, backup sets, recovery namespaces and archive audit.
+      - path: /var/lib/postgresql/16/fieldkest-history
+        entry_type: directory
+        owner_user: postgres
+        owner_group: postgres
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Protected source migration history; backup recovery does not confer query access.
+      local_identity:
+        users:
+        - username: fieldkest-data
+          primary_group: fieldkest-data
+          locked: true
+          no_login: true
+        - username: postgres
+          primary_group: postgres
+          locked: true
+          no_login: true
+        groups:
+        - name: fieldkest-data
+          members: [fieldkest-data]
+        - name: postgres
+          members: [postgres]
+      network:
+        hostname: k-data
+        domainname: cloud.keplerops.test
+        endpoints:
+        - network: k-cloud.subnet
+          ip_address: 10.77.52.40
+          ip_prefix_length: 24
+          gateway: 10.77.52.1
+          aliases: [k-data]
+          dns_names: [data.keplerops.test]
+          backend:
+            driver: bridge
+            description: KeplerOps cloud segment.
+      service_listeners:
+      - service_listener_id: data-api-https
+        service: data-api
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: source-history-postgresql
+        service: source-history
+        address: 10.77.52.40
+        port: 5432
+        protocol: tcp
+        address_family: ipv4
+        scope: network_facing
+      applications:
+      - application_id: fieldkest-data-api
+        service: data-api
+        protocol: https
+        base_path: /
+        description: S3-compatible object view plus export, backup and field-archive APIs.
+        routes:
+        - route_id: workspace-list
+          path: /s3/fieldkest-workspaces
+          methods: [GET]
+          auth_required: false
+          session_required: false
+          description: Anonymous prefix listing exposes only notebooks/deploy-2026-09.json and its public metadata.
+          responses:
+          - status_code: 200
+            content_type: application/xml
+        - route_id: workspace-object
+          path: /s3/fieldkest-workspaces/{object_key}
+          methods: [GET]
+          auth_required: false
+          session_required: false
+          description: Supports exact versionId v-20260908 for the named notebook; other noncurrent versions are denied.
+          responses:
+          - status_code: 200
+            content_type: application/octet-stream
+          - status_code: 404
+            content_type: application/xml
+        - route_id: protected-export-object
+          path: /s3/fieldkest-exports/{object_key}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Cloud role bearer
+          session_required: true
+          description: Compares the raw exports/support/ prefix before percent-decoding %2f, allowing only the authored EXP-2841 handover object to cross the role boundary.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: export-summary
+          path: /api/exports/EXP-2841
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Workload or cloud-role bearer
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: export-definition
+          path: /api/exports/EXP-2841/definition
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Cloud role bearer
+          session_required: true
+          description: Checks tenant visibility but omits export-job ownership.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: export-destination-update
+          path: /api/exports/EXP-2841/destination
+          methods: [PATCH]
+          auth_required: true
+          auth_scheme: Cloud role bearer
+          session_required: true
+          description: Accepts only a registered participant-owned sink; server preserves dataset, partitions and tenant binding while writing revision 7.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: export-run
+          path: /api/exports/EXP-2841/runs
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Cloud role bearer
+          session_required: true
+          description: Rejects mixed current/stale tenant partitions; a coherent TEN-ARWC-047 selection writes the registered sink and receipt.
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: backup-catalog
+          path: /api/backups/BAK-2026-021
+          methods: [GET]
+          auth_required: true
+          auth_scheme: History recovery bearer
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: backup-restore
+          path: /api/backups/BAK-2026-021/restores
+          methods: [POST]
+          auth_required: true
+          auth_scheme: History recovery bearer
+          session_required: true
+          description: Restores only customer_migration_history into a new caller-owned namespace; it cannot target or query the source database.
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: restored-query
+          path: /api/recovery/{namespace_id}/customer-migration-history
+          methods: [GET]
+          auth_required: true
+          auth_scheme: History recovery bearer
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: field-archive
+          path: /api/field-archive/FIELD-CRR-2026-09
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Maintenance runtime bearer with scheduler attestation
+          session_required: true
+          description: Requires runtime identity plus scheduler-attested workload.class=maintenance; the scheduler incorrectly copies that claim from the participant-editable job label.
+          responses:
+          - status_code: 200
+            content_type: application/octet-stream
+          - status_code: 403
+            content_type: application/json
+      database_services:
+      - database_service_id: source-history
+        service: source-history
+        engine: postgresql
+        protocol: postgresql
+        version: '16.4'
+        name: FieldKest source history
+        listeners:
+        - address: 10.77.52.40
+          port: 5432
+          description: Cloud-segment listener; network presence does not confer a database grant.
+        databases:
+        - database_id: fieldkest-history
+          name: fieldkest_history
+          origin: scenario
+          schemas:
+          - schema_id: support
+            name: support
+            origin: scenario
+            tables:
+            - table_id: customer-migration-history
+              name: customer_migration_history
+        roles:
+        - role_id: backup-service
+          name: svc-fieldkest-backup
+          role_type: service
+          origin: scenario
+          can_login: true
+        - role_id: history-recovery
+          name: svc-history-recovery
+          role_type: service
+          origin: scenario
+          can_login: false
+          description: Deliberately has no source database grant; it can use only the backup API.
+        grants:
+        - grantee_role_ref: backup-service
+          object_type: table
+          object_ref: customer-migration-history
+          privileges: [select]
+          description: Backup service reads the source to create immutable BAK-2026-021.
+      app_authorizations:
+      - app_authorization_id: data-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: anonymous-workspace-reader
+          kind: other
+          name: anonymous
+          credential_classification: none
+        - principal_id: fieldlink-workload
+          kind: service_account
+          name: svc-fieldlink-workload
+          credential_classification: redacted
+        - principal_id: support-export-editor
+          kind: service_account
+          name: role/support-export-editor
+          credential_classification: redacted
+        - principal_id: support-export-task
+          kind: service_account
+          name: svc-support-export
+          credential_classification: redacted
+        - principal_id: history-recovery
+          kind: service_account
+          name: svc-history-recovery
+          credential_classification: redacted
+        - principal_id: maintenance-runtime
+          kind: service_account
+          name: svc-fieldlink-maintenance
+          credential_classification: redacted
+        roles:
+        - role_id: public-workspace-reader
+          name: Anonymous workspace object reader
+        - role_id: workload-data-reader
+          name: Limited workload data reader
+        - role_id: export-editor
+          name: Support export editor
+        - role_id: support-export-writer
+          name: Scheduled support export writer
+        - role_id: backup-recovery
+          name: Backup recovery caller
+        - role_id: field-archive-reader
+          name: Attested maintenance runtime reader
+        permission_grants:
+        - grant_id: public-workspace-read
+          role_ref: public-workspace-reader
+          resource_kind: app_resource
+          actions: [read]
+          resource_patterns: [s3/fieldkest-workspaces/notebooks/deploy-2026-09.json]
+          effect: allow
+        - grant_id: workload-export-summary
+          role_ref: workload-data-reader
+          resource_kind: app_resource
+          actions: [read]
+          resource_patterns: [exports/EXP-2841]
+          effect: allow
+        - grant_id: export-editor-use
+          role_ref: export-editor
+          resource_kind: app_resource
+          actions: [read, update, execute]
+          resource_patterns: [s3/fieldkest-exports/exports/support/*, exports/EXP-2841/*]
+          effect: allow
+        - grant_id: scheduled-output-write
+          role_ref: support-export-writer
+          resource_kind: app_resource
+          actions: [write]
+          resource_patterns: [support-handovers/SUP-2841]
+          effect: allow
+        - grant_id: backup-recovery-use
+          role_ref: backup-recovery
+          resource_kind: app_resource
+          actions: [read, restore]
+          resource_patterns: [backups/BAK-2026-021, recovery/$own/*]
+          effect: allow
+        - grant_id: archive-read
+          role_ref: field-archive-reader
+          resource_kind: app_resource
+          actions: [read]
+          resource_patterns: [field-archive/FIELD-CRR-2026-09]
+          effect: allow
+        role_mappings:
+        - mapping_id: anonymous-workspaces
+          role_ref: public-workspace-reader
+          users: [anonymous-workspace-reader]
+        - mapping_id: workload-data
+          role_ref: workload-data-reader
+          users: [fieldlink-workload]
+        - mapping_id: editor-data
+          role_ref: export-editor
+          users: [support-export-editor]
+        - mapping_id: task-data
+          role_ref: support-export-writer
+          users: [support-export-task]
+        - mapping_id: recovery-data
+          role_ref: backup-recovery
+          users: [history-recovery]
+        - mapping_id: runtime-data
+          role_ref: field-archive-reader
+          users: [maintenance-runtime]
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
+        - tenant_id: ten-arwc-047
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: fieldkest-data-api
+        name: FieldKest data and recovery API
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths: [/opt/fieldkest-data]
+      - component_id: postgresql
+        name: PostgreSQL
+        version: '16.4'
+        component_type: application
+        provenance: package_manager
+        installed_paths: [/usr/lib/postgresql/16]
   k-assistant:
     type: compute
-    description: Assistant services
+    description: Deterministic support assistant, retrieval store, bounded completion jobs and review tool broker.
+    os: linux
+    services:
+    - name: assistant
+      port: 443
+      protocol: tcp
     features:
       k-assistant: ''
       k-assistant--completion: ''
       k-assistant--handover: ''
       k-assistant--review-tool: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/fieldkest-assistant
+        entry_type: directory
+        owner_user: fieldkest-assistant
+        owner_group: fieldkest-assistant
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Retained conversations, retrieval collections, completion examples, handovers and audit.
+      - path: /opt/fieldkest-assistant/web/app.js
+        entry_type: file
+        owner_user: root
+        owner_group: root
+        mode: '0644'
+        stability: stable
+        sensitivity: plain
+        description: Public assistant browser bundle that discovers the documented configuration route.
+      - path: /opt/fieldkest-assistant/models/Qwen2.5-3B-Instruct
+        entry_type: directory
+        owner_user: root
+        owner_group: root
+        mode: '0755'
+        stability: stable
+        sensitivity: plain
+        description: Immutable Qwen model tree at revision 14d7620ba47cf51be0b176e14e27e38a34d4ff88.
+      local_identity:
+        users:
+        - username: fieldkest-assistant
+          primary_group: fieldkest-assistant
+          locked: true
+          no_login: true
+        - username: svc-assistant-completion
+          primary_group: assistant-completion
+          locked: true
+          no_login: true
+        groups:
+        - name: fieldkest-assistant
+          members: [fieldkest-assistant]
+        - name: assistant-completion
+          members: [svc-assistant-completion]
+      network:
+        hostname: k-assistant
+        domainname: cloud.keplerops.test
+        endpoints:
+        - network: k-cloud.subnet
+          ip_address: 10.77.52.50
+          ip_prefix_length: 24
+          gateway: 10.77.52.1
+          aliases: [k-assistant]
+          dns_names: [assistant.keplerops.test]
+          backend:
+            driver: bridge
+            description: KeplerOps cloud segment.
+      service_listeners:
+      - service_listener_id: assistant-https
+        service: assistant
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      local_control_interfaces:
+      - control_interface_id: completion-job-engine
+        path: /run/fieldkest-assistant/completion.sock
+        kind: unix_socket
+        protocol: fieldkest-completion/v1
+        access: read_write
+        description: Assistant-owned engine control; completion jobs cannot mount it.
+      orchestration_authorities:
+      - orchestration_authority_id: assistant-completion-jobs
+        control_interface_ref: completion-job-engine
+        engine: containerd
+        engine_api_version: '1.7'
+        name: Bounded assistant completion jobs
+        scope:
+          organization_ref: entities.k-cloud.organization
+          environment_name: participant-completion
+        spawn_templates:
+        - template_id: completion-runner
+          image_ref: fieldkest/completion-runner@sha256:design-owned
+          purpose: Run one generated script as svc-assistant-completion with no arbitrary network access.
+        lifecycle_policy:
+          timeout: PT10M
+          execution_timeout: PT2M
+          cleanup: Preserve input, output, credential lease and destination-read audits; destroy the job filesystem.
+        privilege_class: namespaced
+      applications:
+      - application_id: fieldkest-assistant
+        service: assistant
+        protocol: https
+        base_path: /
+        description: Support assistant with deterministic retrieval and completion; tool side effects use distinct principals and destination audit.
+        routes:
+        - route_id: web-bundle
+          path: /static/app.js
+          methods: [GET]
+          auth_required: false
+          session_required: false
+          static_assets: [/opt/fieldkest-assistant/web/app.js]
+          responses:
+          - status_code: 200
+            content_type: application/javascript
+        - route_id: public-config
+          path: /api/config
+          methods: [GET]
+          auth_required: false
+          session_required: false
+          description: Exposes context ID ctx-support-private-v4, retrieval collection and policy version but no credential.
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: retained-conversation
+          path: /api/conversations/{conversation_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: assistant-answer
+          path: /api/answers
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          description: Uses fixed prompt template and seed, temperature 0, exact Qwen2.5-3B-Instruct, and records selected sources and citations.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: source-selection
+          path: /api/selections/{selection_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: public-context-inventory
+          path: /api/contexts
+          methods: [GET]
+          auth_required: false
+          session_required: false
+          description: Accidental public inventory includes the unpublished support source collection but no document bodies.
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: retrieval-fetch
+          path: /api/contexts/{context_id}/conversations/{conversation_id}/documents/{document_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          description: Checks support role and context/conversation binding but omits comparison of requested tenant with session tenant.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: completion-example
+          path: /api/completions/examples/COMP-JOB-17
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: completion-context
+          path: /api/completions/context
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          description: Resolves the credential object before checking job ownership; the authored allowed context alias resolves cred-completion-handover.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: completion-job
+          path: /api/completions/jobs
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Completion credential lease
+          session_required: true
+          description: Accepts a bounded generated script and runs it as svc-assistant-completion; the identity may read only HANDOVER-COMP-2841.
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: completion-result
+          path: /api/completions/jobs/{job_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Completion credential lease
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: assistant-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: maya-support
+          kind: user
+          name: maya.ranscombe
+          credential_classification: redacted
+        - principal_id: assistant-completion
+          kind: service_account
+          name: svc-assistant-completion
+          credential_classification: redacted
+        - principal_id: assistant-review-tool
+          kind: service_account
+          name: svc-assistant-review
+          credential_classification: redacted
+        roles:
+        - role_id: support-assistant-user
+          name: Support assistant user
+        - role_id: completion-handover-reader
+          name: Completion handover reader
+        - role_id: duplicate-review-tool
+          name: Duplicate review tool caller
+        permission_grants:
+        - grant_id: support-assistant-use
+          role_ref: support-assistant-user
+          resource_kind: app_resource
+          actions: [read, submit]
+          resource_patterns: [conversations/$tenant/*, selections/*, answers/*, contexts/*, completions/examples/*, completions/context, completions/jobs/*]
+          effect: allow
+        - grant_id: completion-handover-read
+          role_ref: completion-handover-reader
+          resource_kind: app_resource
+          actions: [read]
+          resource_patterns: [handovers/HANDOVER-COMP-2841]
+          effect: allow
+        - grant_id: duplicate-review-call
+          role_ref: duplicate-review-tool
+          resource_kind: app_resource
+          actions: [execute]
+          resource_patterns: [tools/accept_duplicate_review]
+          effect: allow
+        role_mappings:
+        - mapping_id: maya-assistant
+          role_ref: support-assistant-user
+          users: [maya-support]
+        - mapping_id: completion-assistant
+          role_ref: completion-handover-reader
+          users: [assistant-completion]
+        - mapping_id: review-tool-assistant
+          role_ref: duplicate-review-tool
+          users: [assistant-review-tool]
+        tenants:
+        - tenant_id: ten-arwc-047
+          name: Alterra Regional Water Company
+        - tenant_id: ten-rill-022
+          name: Rillhaven District Heating
+      software_components:
+      - component_id: qwen2-5-3b-instruct
+        name: Qwen2.5-3B-Instruct
+        version: 14d7620ba47cf51be0b176e14e27e38a34d4ff88
+        component_type: data
+        provenance: operator
+        installed_paths: [/opt/fieldkest-assistant/models/Qwen2.5-3B-Instruct]
+        description: Immutable Qwen/Qwen2.5-3B-Instruct revision; deterministic decoding is fixed by the assistant service contract.
+      - component_id: fieldkest-assistant
+        name: FieldKest support assistant
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths: [/opt/fieldkest-assistant]
 infrastructure:
   subnet: {}
   k-cloud-api:

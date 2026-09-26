@@ -1,0 +1,170 @@
+name: cinder-training
+
+services:
+  participant:
+    build:
+      context: ../..
+      dockerfile: build/training/images/participant.Dockerfile
+    image: cinder-training/participant:hand-build
+    container_name: cinder-training-kali
+    hostname: kali
+    domainname: training
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=256m,mode=1777
+      - /home/cinder/.cache:rw,nosuid,nodev,size=64m,mode=0700,uid=2000,gid=2000
+    networks:
+      training:
+        ipv4_address: 10.77.40.10
+        aliases:
+          - kali.training
+  workbench:
+    build:
+      context: ../..
+      dockerfile: build/training/images/workbench.Dockerfile
+    image: cinder-training/workbench:hand-build
+    container_name: cinder-training-workbench
+    hostname: workbench
+    domainname: training
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+    volumes:
+      - workbench-audit:/var/lib/cinder-workbench/audit
+      - workbench-repository:/var/lib/cinder-workbench/handover.git
+    networks:
+      training:
+        ipv4_address: 10.77.40.20
+        aliases:
+          - workbench.training
+  accounts:
+    build:
+      context: ../..
+      dockerfile: build/training/images/accounts.Dockerfile
+    image: cinder-training/accounts:hand-build
+    container_name: cinder-training-accounts
+    hostname: accounts
+    domainname: training
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
+    volumes:
+      - accounts-audit:/var/lib/cinder-accounts/audit
+      - accounts-sessions:/var/lib/cinder-accounts/sessions
+    networks:
+      training:
+        ipv4_address: 10.77.40.30
+        aliases:
+          - accounts.training
+  state:
+    build:
+      context: ../..
+      dockerfile: build/training/images/state.Dockerfile
+    image: cinder-training/state:hand-build
+    container_name: cinder-training-state
+    hostname: state
+    domainname: training
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
+    volumes:
+      - state-live:/var/lib/cinder-state/live
+    networks:
+      training:
+        ipv4_address: 10.77.40.50
+        aliases:
+          - state.training
+  developer:
+    build:
+      context: ../..
+      dockerfile: build/training/images/developer.Dockerfile
+    image: cinder-training/developer:hand-build
+    container_name: cinder-training-developer
+    hostname: developer
+    domainname: training
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - runner
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+    volumes:
+      - developer-audit:/var/lib/cinder-developer/audit
+      - developer-repository:/var/lib/cinder-developer/delivery-formatter.git
+      - developer-published:/var/lib/cinder-developer/registry/published
+      - developer-receipts:/var/lib/cinder-developer/consumer/receipts
+      - runner-socket:/run/cinder-runner
+    networks:
+      training:
+        ipv4_address: 10.77.40.40
+        aliases:
+          - developer.training
+  runner:
+    build:
+      context: ../..
+      dockerfile: build/training/images/runner.Dockerfile
+    image: cinder-training/runner:hand-build
+    container_name: cinder-training-runner
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      CINDER_WORKER_IMAGE: node:22.12.0-bookworm-slim@sha256:35531c52ce27b6575d69755c73e65d4468dba93a25644eed56dc12879cae9213
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner-socket:/run/cinder-runner
+    network_mode: none
+
+networks:
+  training:
+    name: cinder-training
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.77.40.0/24
+          gateway: 10.77.40.1
+
+volumes:
+  workbench-audit:
+    name: cinder-training-workbench-audit
+  workbench-repository:
+    name: cinder-training-workbench-repository
+  accounts-audit:
+    name: cinder-training-accounts-audit
+  accounts-sessions:
+    name: cinder-training-accounts-sessions
+  state-live:
+    name: cinder-training-state-live
+  developer-audit:
+    name: cinder-training-developer-audit
+  developer-repository:
+    name: cinder-training-developer-repository
+  developer-published:
+    name: cinder-training-developer-published
+  developer-receipts:
+    name: cinder-training-developer-receipts
+  runner-socket:
+    name: cinder-training-runner-socket

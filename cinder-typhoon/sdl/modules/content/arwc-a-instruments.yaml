@@ -1,0 +1,236 @@
+name: cinder-arwc-a-instruments
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/arwc-a-instruments
+  version: 0.1.0
+  exports:
+    content:
+    - w20-1-what-the-image-kept
+    - w20-2-a-valid-maintenance-record
+    - w20-3-change-one-record-keep-the-rest
+realization:
+  default: open
+content:
+  w20-1-what-the-image-kept:
+    type: file
+    target: a-control.a-instruments
+    path: /var/lib/arwc-instruments/contracts/what-the-image-kept.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: what-the-image-kept
+      owner:
+        node: a-instruments
+        application: independent-instruments
+      surface_bindings:
+      - a-control.a-instruments/independent-instruments/what-the-image-kept
+      - a-control.a-instruments/filesystem:/var/lib/arwc-instruments/artifacts/what-the-image-kept
+      starting_state: Instrument flash image IMG-FIT-204-R6 uses 4096-byte erase pages and 64-byte append records with
+        magic, sequence, payload length, CRC32C, status, and commit byte.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Instrument flash image IMG-FIT-204-R6 uses 4096-byte erase pages and 64-byte append records
+          with magic, sequence, payload length, CRC32C, status, and commit byte.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the actual record-bearing data and image binding. No physical kit is required.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC read-only instrument session
+        input: Instrument flash image IMG-FIT-204-R6 uses 4096-byte erase pages and 64-byte append records with magic,
+          sequence, payload length, CRC32C, status, and commit byte.
+        success: Recover the actual record-bearing data and image binding. No physical kit is required.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the actual record-bearing data and image binding. No physical kit is required.
+      evidence_contract:
+        producer: a-instruments/independent-instruments writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 09e5732e7fa80fc92763b68898e3bcd843c4d11e312e140ba86a022e47ef1628
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-instruments
+    - persistent-tenant-state
+  w20-2-a-valid-maintenance-record:
+    type: file
+    target: a-control.a-instruments
+    path: /var/lib/arwc-instruments/contracts/a-valid-maintenance-record.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: a-valid-maintenance-record
+      owner:
+        node: a-instruments
+        application: independent-instruments
+      surface_bindings:
+      - a-control.a-instruments/independent-instruments/a-valid-maintenance-record
+      - a-control.a-instruments/filesystem:/var/lib/arwc-instruments/artifacts/a-valid-maintenance-record
+      starting_state: Parser accepts the highest committed valid sequence; edit must respect NOR 1-to-0 programming, erase-page
+        collateral records, and wear map WEAR-FIT-204-R6.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: NOR flash append and erase semantics
+        behavior_contract: Each 64-byte little-endian record is magic F204 at 0x00, sequence u32 at 0x04, payload length
+          u16 at 0x08, status at 0x0a, status markers at 0x0b, up to 44 payload bytes at 0x0c, CRC32C over bytes 0x00..0x37
+          at 0x38, three erased reserved bytes at 0x3c, and commit byte at 0x3f. A committed record has commit=0x00; 0xff
+          is incomplete. Pages are 4096 bytes, programming only changes 1 to 0, and an erase resets a whole page to 0xff
+          while incrementing that page's declared wear count.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the actual last-inspection entry, including its asset, inspection date, and completion
+          state, with a valid interpretation of its record integrity. Finding isolated readable strings is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC read-only instrument session
+        input: Parser accepts the highest committed valid sequence; edit must respect NOR 1-to-0 programming, erase-page
+          collateral records, and wear map WEAR-FIT-204-R6.
+        success: Recover the actual last-inspection entry, including its asset, inspection date, and completion state,
+          with a valid interpretation of its record integrity. Finding isolated readable strings is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the actual last-inspection entry, including its asset, inspection date, and completion
+        state, with a valid interpretation of its record integrity. Finding isolated readable strings is insufficient.
+      evidence_contract:
+        producer: a-instruments/independent-instruments writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 08a7210aef5c692490d1782c8608fa1efb521d3174d04169a2053d9d4156a05d
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-instruments
+    - persistent-tenant-state
+  w20-3-change-one-record-keep-the-rest:
+    type: file
+    target: a-control.a-instruments
+    path: /var/lib/arwc-instruments/contracts/change-one-record-keep-the-rest.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: change-one-record-keep-the-rest
+      owner:
+        node: a-instruments
+        application: independent-instruments
+      surface_bindings:
+      - a-control.a-instruments/independent-instruments/change-one-record-keep-the-rest
+      - a-control.a-instruments/filesystem:/var/lib/arwc-instruments/artifacts/change-one-record-keep-the-rest
+      starting_state: Last inspection record INSP-FIT-204-118 must be changed from status REVIEW to ACCEPTED while every
+        other valid record, sequence relation, and page wear limit remains unchanged.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: consistent constrained flash-record rewrite
+        behavior_contract: Write one new committed sequence for INSP-FIT-204-118 with status ACCEPTED and the next unsigned
+          sequence, using write-body, write-CRC, then commit-byte order. Preserve every other highest valid logical record,
+          do not modify an earlier committed slot in place, and keep each page at or below the WEAR-FIT-204-R6 limit.
+          Acceptance reparses the full image, validates CRC32C and commit state, and compares the canonical logical record
+          set except for the single named status.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Produce an accepted altered image with only the intended inspection completion changed. This
+          is a historical maintenance-record manipulation, not control of live telemetry or a controller.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC read-only instrument session
+        input: Last inspection record INSP-FIT-204-118 must be changed from status REVIEW to ACCEPTED while every other
+          valid record, sequence relation, and page wear limit remains unchanged.
+        success: Produce an accepted altered image with only the intended inspection completion changed. This is a historical
+          maintenance-record manipulation, not control of live telemetry or a controller.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Produce an accepted altered image with only the intended inspection completion changed. This
+        is a historical maintenance-record manipulation, not control of live telemetry or a controller.
+      evidence_contract:
+        producer: a-instruments/independent-instruments writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 2c9d2005b149b7e137b2e550428c20d4714463d8c9d421f353f1acbd0d1649e2
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-instruments
+    - persistent-tenant-state

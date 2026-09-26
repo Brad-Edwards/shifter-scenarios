@@ -40,23 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual structure and the outlet example's component binding. A list of binary
-      strings does not count.
-    source_refs: &id001
+    description: |-
+      Recover the actual structure and the outlet example's component binding. A list of binary strings does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Produce the correct state transitions for the supplied distinguishing examples. Identifying
-      component names alone is insufficient.
-    source_refs: &id002
+    description: |-
+      Produce the correct state transitions for the supplied distinguishing examples. Identifying component names alone is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,10 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Recover the actual approval condition with its relevant state binding. A coincidentally
-      accepted input is insufficient.
-    source_refs: &id003
+    description: |-
+      Recover the actual approval condition with its relevant state binding. A coincidentally accepted input is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -149,10 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Produce a coherent witness of the old acceptance and current disagreement. It supplies
-      optional model evidence, not live authority or a replacement for current observations.
-    source_refs: &id004
+    description: |-
+      Produce a coherent witness of the old acceptance and current disagreement. It supplies optional model evidence, not live authority or a replacement for current observations.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -181,11 +205,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the actual structure and the outlet example's component binding. A list of binary
-      strings does not count.
-    subjects: *id001
+    description: Recover the actual structure and the outlet example's component binding. A list of binary strings
+      does not establish the result.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -197,9 +228,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce the correct state transitions for the supplied distinguishing examples. Identifying
-      component names alone is insufficient.
-    subjects: *id002
+    description: Produce the correct state transitions for the supplied distinguishing examples. Identifying component
+      names alone is insufficient.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -211,9 +243,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the actual approval condition with its relevant state binding. A coincidentally
-      accepted input is insufficient.
-    subjects: *id003
+    description: Recover the actual approval condition with its relevant state binding. A coincidentally accepted
+      input is insufficient.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -225,9 +258,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Produce a coherent witness of the old acceptance and current disagreement. It supplies
-      optional model evidence, not live authority or a replacement for current observations.
-    subjects: *id004
+    description: Produce a coherent witness of the old acceptance and current disagreement. It supplies optional
+      model evidence, not live authority or a replacement for current observations.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -273,7 +307,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W32.1: The replay''s pieces'
+    name: 'This action: The replay''s pieces'
     description: |-
       Recover the replay program's relevant entity and component structure for the outlet example.
 
@@ -281,7 +315,7 @@ objectives:
     agent: participant.operator
     actions:
     - w32.c1
-    targets: &id005
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -291,7 +325,7 @@ objectives:
       workflows:
       - w32.c1
   c2:
-    name: 'W32.2: The systems that update it'
+    name: 'This action: The systems that update it'
     description: |-
       Reconstruct the update behavior needed to reproduce the outlet example's state changes.
 
@@ -299,7 +333,7 @@ objectives:
     agent: participant.operator
     actions:
     - w32.c2
-    targets: &id006
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -309,7 +343,7 @@ objectives:
       workflows:
       - w32.c2
   c3:
-    name: 'W32.3: The condition the old model used'
+    name: 'This action: The condition the old model used'
     description: |-
       Recover the hidden state condition that makes the old replay approve the disputed schedule.
 
@@ -317,7 +351,7 @@ objectives:
     agent: participant.operator
     actions:
     - w32.c3
-    targets: &id007
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -327,7 +361,7 @@ objectives:
       workflows:
       - w32.c3
   c4:
-    name: 'W32.4: Replay is not reality'
+    name: 'This action: Replay is not reality'
     description: |-
       Construct a replay trace that exposes why the old project's accepted schedule disagrees with the current process observations.
 
@@ -335,7 +369,7 @@ objectives:
     agent: participant.operator
     actions:
     - w32.c4
-    targets: &id008
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -346,8 +380,8 @@ objectives:
       - w32.c4
 workflows:
   c1:
-    description: 'W32.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -369,8 +403,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W32.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -392,8 +426,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W32.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -415,8 +449,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W32.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -442,25 +476,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the replay program's relevant entity and component structure for the outlet
-      example.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Replay REPLAY-CRR-R19 is C++20 ECS with entities Reservoir, OutletGroup, GateA, GateB, Buffer and components Setpoint, Position, Flow, Reserve, Mode, Revision. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual structure and the outlet example's component binding. A list of binary strings does not establish the result. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `TRACE-R19-DISPUTED`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w32.c1
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **The replay's pieces**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Replay REPLAY-CRR-R19 is C++20 ECS with entities Reservoir, OutletGroup, GateA, GateB, Buffer and components Setpoint, Position, Flow, Reserve, Mode, Revision.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/the-replay-s-pieces`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/the-replay-s-pieces`
+
+        The private service-loader contract is `content.arwc-a-engineering.w32-1-the-replay-s-pieces`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w32-1-the-replay-s-pieces
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual structure and the outlet example's component binding. A list of
-        binary strings does not count.
-      target_refs: *id005
+      description: Recover the actual structure and the outlet example's component binding. A list of binary strings
+        does not establish the result.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w32.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w32.c1
     failure_classes:
@@ -474,24 +544,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Reconstruct the update behavior needed to reproduce the outlet example's state changes.
+    procedure_basis: |-
+      The authored condition is **entity-component update-order reconstruction**. Systems execute in fixed order CommandApply, RampLimit, FlowIntegrate, ReserveUpdate, ApprovalCheck; four distinguishing snapshots define entity creation and component mutation. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Produce the correct state transitions for the supplied distinguishing examples. Identifying component names alone is insufficient. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `TRACE-R19-DISPUTED`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w32.c2
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **The systems that update it**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Systems execute in fixed order CommandApply, RampLimit, FlowIntegrate, ReserveUpdate, ApprovalCheck; four distinguishing snapshots define entity creation and component mutation.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/the-systems-that-update-it`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/the-systems-that-update-it`
+
+        The private service-loader contract is `content.arwc-a-engineering.w32-2-the-systems-that-update-it`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w32-2-the-systems-that-update-it
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correct state transitions for the supplied distinguishing examples. Identifying
-        component names alone is insufficient.
-      target_refs: *id006
+      description: Produce the correct state transitions for the supplied distinguishing examples. Identifying component
+        names alone is insufficient.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w32.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w32.c2
     failure_classes:
@@ -505,25 +612,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the hidden state condition that makes the old replay approve the disputed
-      schedule.
+    procedure_basis: |-
+      The authored condition is **stale cached-state approval condition**. Old ApprovalCheck reads pre-ReserveUpdate cached reserve and approves when cached reserve minus requested volume is at least committed allocation; current model uses post-update reserve. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the actual approval condition with its relevant state binding. A coincidentally accepted input is insufficient. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `TRACE-R19-DISPUTED`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w32.c3
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **The condition the old model used**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Old ApprovalCheck reads pre-ReserveUpdate cached reserve and approves when cached reserve minus requested volume is at least committed allocation; current model uses post-update reserve.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/the-condition-the-old-model-used`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/the-condition-the-old-model-used`
+
+        The private service-loader contract is `content.arwc-a-engineering.w32-3-the-condition-the-old-model-used`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w32-3-the-condition-the-old-model-used
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual approval condition with its relevant state binding. A coincidentally
-        accepted input is insufficient.
-      target_refs: *id007
+      description: Recover the actual approval condition with its relevant state binding. A coincidentally accepted
+        input is insufficient.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w32.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w32.c3
     failure_classes:
@@ -537,25 +680,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Construct a replay trace that exposes why the old project's accepted schedule disagrees
-      with the current process observations.
+    procedure_basis: |-
+      The authored condition is **historical replay versus independent current truth**. Witness trace TRACE-R19-DISPUTED shows old acceptance at 12.40 ML for a 1.00 ML request while current independent observations yield 11.40 ML and reject the old sufficiency claim. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Produce a coherent witness of the old acceptance and current disagreement. It supplies optional model evidence, not live authority or a replacement for current observations. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `TRACE-R19-DISPUTED`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w32.c4
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **Replay is not reality**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Witness trace TRACE-R19-DISPUTED shows old acceptance at 12.40 ML for a 1.00 ML request while current independent observations yield 11.40 ML and reject the old sufficiency claim.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/replay-is-not-reality`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/replay-is-not-reality`
+
+        The private service-loader contract is `content.arwc-a-engineering.w32-4-replay-is-not-reality`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w32-4-replay-is-not-reality
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce a coherent witness of the old acceptance and current disagreement. It supplies
-        optional model evidence, not live authority or a replacement for current observations.
-      target_refs: *id008
+      description: Produce a coherent witness of the old acceptance and current disagreement. It supplies optional
+        model evidence, not live authority or a replacement for current observations.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w32.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w32.c4
     failure_classes:
@@ -565,101 +744,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W32.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w32.c1
-      mode: artifact
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W32.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w32.c2
-      mode: artifact
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W32.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w32.c3
-      mode: artifact
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W32.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w32.c4
-      mode: artifact
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W32.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained process-replay artifact, its project examples, and current observation material from the earned read context.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w32
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained process-replay artifact, its project examples, and current observation
-        material from the earned read context.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W32.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained process-replay artifact, its project examples, and current observation material from the earned read context.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w32
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained process-replay artifact, its project examples, and current observation
-        material from the earned read context.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W32.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained process-replay artifact, its project examples, and current observation material from the earned read context.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w32
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained process-replay artifact, its project examples, and current observation
-        material from the earned read context.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W32.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained process-replay artifact, its project examples, and current observation material from the earned read context.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w32
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained process-replay artifact, its project examples, and current observation
-        material from the earned read context.

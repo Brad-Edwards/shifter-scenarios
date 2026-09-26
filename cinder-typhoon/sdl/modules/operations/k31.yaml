@@ -33,21 +33,15 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the protected policy and demonstrate the relevant identity distinction through
-      a scoped operation. A policy read alone is insufficient.
-    source_refs: &id001
+    description: |-
+      Recover the protected policy and demonstrate the relevant identity distinction through a scoped operation. A policy read alone is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-cloud-api--authority
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -76,10 +70,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c2:
-    description: Demonstrate access to a protected resource unavailable to the starting identity, with
-      the original job interface still functioning.
-    source_refs: &id002
+    description: |-
+      Demonstrate access to a protected resource unavailable to the starting identity, with the original job interface still functioning.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-workload--manage
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -108,10 +109,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c3:
-    description: Recover the actual field archive through the resource's independent access boundary.
-      Merely changing a label earns nothing; ordinary medium routes still provide required ARWC knowledge.
-    source_refs: &id003
+    description: |-
+      Recover the actual field archive through the resource's independent access boundary. Merely changing a label earns nothing; ordinary medium routes still provide required ARWC knowledge.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
+    - features.k-cloud.k-workload--runtime
     - features.k-cloud.k-data--field-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -133,6 +142,7 @@ evidence_requirements:
         names:
         - cinder.k31-3.satisfied
         component_refs:
+        - features.k-cloud.k-workload--runtime
         - features.k-cloud.k-data--field-archive
       collection: require
       retention: require
@@ -140,11 +150,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
 propositions:
   c1:
-    description: Recover the protected policy and demonstrate the relevant identity distinction through
-      a scoped operation. A policy read alone is insufficient.
-    subjects: *id001
+    description: Recover the protected policy and demonstrate the relevant identity distinction through a scoped
+      operation. A policy read alone is insufficient.
+    subjects:
+    - features.k-cloud.k-cloud-api--authority
     basis: observed_state
     predicate:
       kind: boolean
@@ -156,9 +172,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate access to a protected resource unavailable to the starting identity, with
-      the original job interface still functioning.
-    subjects: *id002
+    description: Demonstrate access to a protected resource unavailable to the starting identity, with the original
+      job interface still functioning.
+    subjects:
+    - features.k-cloud.k-workload--manage
     basis: observed_state
     predicate:
       kind: boolean
@@ -170,9 +187,11 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the actual field archive through the resource's independent access boundary.
-      Merely changing a label earns nothing; ordinary medium routes still provide required ARWC knowledge.
-    subjects: *id003
+    description: Recover the actual field archive through the resource's independent access boundary. Merely changing
+      a label earns nothing; ordinary medium routes still provide required ARWC knowledge.
+    subjects:
+    - features.k-cloud.k-workload--runtime
+    - features.k-cloud.k-data--field-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -218,7 +237,7 @@ objectives:
     agent: participant.operator
     actions:
     - k31.c1
-    targets: &id004
+    targets:
     - features.k-cloud.k-cloud-api--authority
     success:
       mode: all_of
@@ -236,7 +255,7 @@ objectives:
     agent: participant.operator
     actions:
     - k31.c2
-    targets: &id005
+    targets:
     - features.k-cloud.k-workload--manage
     success:
       mode: all_of
@@ -254,7 +273,8 @@ objectives:
     agent: participant.operator
     actions:
     - k31.c3
-    targets: &id006
+    targets:
+    - features.k-cloud.k-workload--runtime
     - features.k-cloud.k-data--field-archive
     success:
       mode: all_of
@@ -265,8 +285,8 @@ objectives:
       - k31.c3
 workflows:
   c1:
-    description: 'K31.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K31.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -292,8 +312,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K31.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K31.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -315,8 +335,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K31.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K31.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -342,25 +362,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the scheduler's maintenance policy and establish which identity its different
-      operations actually evaluate.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Protected policy read plus whoami result for management operation. Merely describing
+      the condition, editing a local copy, or presenting a value obtained from another surface does not satisfy
+      the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k31.c1
       - features.k-cloud.k-cloud-api--authority
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-cloud-api` owns this part of the operation. Its starting state is exact: Policy distinguishes
+        management caller, scheduler, runtime service account and resource label; worker may manage own bounded
+        job. The owning service uses the listener, route, identity, authorization, storage, and audit contract declared
+        in the corresponding world module. Records that are not explicitly mutable remain immutable. The private
+        service-loader contract `content.keplerops-k-cloud-api.k31-1-whose-maintenance-job` freezes the request,
+        denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-cloud-api
+      - content.keplerops-k-cloud-api.k31-1-whose-maintenance-job
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K31.2. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
+      - features.k-cloud.k-cloud-api
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the protected policy and demonstrate the relevant identity distinction through
-        a scoped operation. A policy read alone is insufficient.
-      target_refs: *id004
+      description: Recover the protected policy and demonstrate the relevant identity distinction through a scoped
+        operation. A policy read alone is insufficient.
+      target_refs:
+      - features.k-cloud.k-cloud-api--authority
       evidence_refs:
       - evidence_requirements.k31.c1
     failure_classes:
@@ -374,25 +418,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Obtain the workload's separate runtime capability through a change you are permitted
-      to make, while preserving its ordinary job interface.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Runtime whoami and protected runtime-only probe succeed while normal job output stays
+      valid. Merely describing the condition, editing a local copy, or presenting a value obtained from another
+      surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k31.c2
       - features.k-cloud.k-workload--manage
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-workload` owns this part of the operation. Its starting state is exact: Allowed patch fields
+        include command and labels for fixed image; spawned job runs as svc-fieldlink-maintenance, not submitting
+        worker. The owning service uses the listener, route, identity, authorization, storage, and audit contract
+        declared in the corresponding world module. Records that are not explicitly mutable remain immutable. The
+        private service-loader contract `content.keplerops-k-workload.k31-2-a-different-identity-at-runtime` freezes
+        the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-workload
+      - content.keplerops-k-workload.k31-2-a-different-identity-at-runtime
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Runtime capability. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
+      - features.k-cloud.k-workload
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate access to a protected resource unavailable to the starting identity, with
-        the original job interface still functioning.
-      target_refs: *id005
+      description: Demonstrate access to a protected resource unavailable to the starting identity, with the original
+        job interface still functioning.
+      target_refs:
+      - features.k-cloud.k-workload--manage
       evidence_refs:
       - evidence_requirements.k31.c2
     failure_classes:
@@ -406,25 +474,53 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Use the earned runtime capability and maintenance classification relationship to
-      recover the protected field archive.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Actual archive FIELD-CRR-2026-09 read under runtime identity with maintenance label.
+      Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
-      - workflows.k31.c3
+      - workflows.c3
+      - features.k-cloud.k-workload--runtime
+      - features.k-cloud.k-data--field-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-data` owns this part of the operation. Its starting state is exact: Archive policy grants
+        runtime principal only when request carries scheduler-attested workload.class=maintenance; attestation incorrectly
+        copies participant-editable job label. The owning service uses the listener, route, identity, authorization,
+        storage, and audit contract declared in the corresponding world module. Records that are not explicitly
+        mutable remain immutable. The private service-loader contract `content.keplerops-k-data.k31-3-the-maintenance-label`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-workload--runtime
+      - features.k-cloud.k-data--field-archive
+      - content.keplerops-k-data.k31-3-the-maintenance-label
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Optional cloud conclusion. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
+      - features.k-cloud.k-workload--runtime
       - features.k-cloud.k-data--field-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual field archive through the resource's independent access boundary.
-        Merely changing a label earns nothing; ordinary medium routes still provide required ARWC knowledge.
-      target_refs: *id006
+      description: Recover the actual field archive through the resource's independent access boundary. Merely changing
+        a label earns nothing; ordinary medium routes still provide required ARWC knowledge.
+      target_refs:
+      - features.k-cloud.k-workload--runtime
+      - features.k-cloud.k-data--field-archive
       evidence_refs:
       - evidence_requirements.k31.c3
     failure_classes:
@@ -434,77 +530,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-cloud-api--authority
-    description: K31.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k31.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-workload--manage
-    description: K31.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k31.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-data--field-archive
-    description: K31.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k31.c3
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K31.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The maintenance scheduling contract, workload records, classification policy, and a protected field archive.
-    target: k-cloud.k-cloud-api
-    tags:
-    - synthetic
-    - k31
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The maintenance scheduling contract, workload records, classification policy, and a
-        protected field archive.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K31.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The maintenance scheduling contract, workload records, classification policy, and a protected field archive.
-    target: k-cloud.k-workload
-    tags:
-    - synthetic
-    - k31
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The maintenance scheduling contract, workload records, classification policy, and a
-        protected field archive.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K31.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The maintenance scheduling contract, workload records, classification policy, and a protected field archive.
-    target: k-cloud.k-data
-    tags:
-    - synthetic
-    - k31
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The maintenance scheduling contract, workload records, classification policy, and a
-        protected field archive.

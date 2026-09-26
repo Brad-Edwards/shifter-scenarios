@@ -729,7 +729,7 @@ action_contracts:
 
       rechecking the public prefix. The intended value is
 
-      `public%2F..%2Finternal%2FDL-204.json`, which normalizes to the existing internal
+      `public/%2E%2E/internal/DL-204.json`, which normalizes to the existing internal
 
       record while remaining inside the fixed diagnostic root. Paths outside that
 

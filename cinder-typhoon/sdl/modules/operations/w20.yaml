@@ -33,20 +33,17 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual record-bearing data and image binding. No physical kit is required.
-    source_refs: &id001
+    description: |-
+      Recover the actual record-bearing data and image binding. No physical kit is required.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -75,11 +72,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Recover the actual last-inspection entry, including its asset, inspection date, and completion
-      state, with a valid interpretation of its record integrity. Finding isolated readable strings is
-      insufficient.
-    source_refs: &id002
+    description: |-
+      Recover the actual last-inspection entry, including its asset, inspection date, and completion state, with a valid interpretation of its record integrity. Finding isolated readable strings is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -108,10 +114,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Produce an accepted altered image with only the intended inspection completion changed.
-      This is a historical maintenance-record manipulation, not control of live telemetry or a controller.
-    source_refs: &id003
+    description: |-
+      Produce an accepted altered image with only the intended inspection completion changed. This is a historical maintenance-record manipulation, not control of live telemetry or a controller.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -140,10 +156,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
     description: Recover the actual record-bearing data and image binding. No physical kit is required.
-    subjects: *id001
+    subjects:
+    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -156,9 +179,9 @@ propositions:
     quantifier: all
   c2:
     description: Recover the actual last-inspection entry, including its asset, inspection date, and completion
-      state, with a valid interpretation of its record integrity. Finding isolated readable strings is
-      insufficient.
-    subjects: *id002
+      state, with a valid interpretation of its record integrity. Finding isolated readable strings is insufficient.
+    subjects:
+    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -170,9 +193,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Produce an accepted altered image with only the intended inspection completion changed.
-      This is a historical maintenance-record manipulation, not control of live telemetry or a controller.
-    subjects: *id003
+    description: Produce an accepted altered image with only the intended inspection completion changed. This is
+      a historical maintenance-record manipulation, not control of live telemetry or a controller.
+    subjects:
+    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -210,7 +234,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W20.1: What the image kept'
+    name: 'This action: What the image kept'
     description: |-
       Recover the retained maintenance record set through the supplied device interface and bind it to the inspection image.
 
@@ -218,7 +242,7 @@ objectives:
     agent: participant.operator
     actions:
     - w20.c1
-    targets: &id004
+    targets:
     - features.a-control.a-instruments
     success:
       mode: all_of
@@ -228,7 +252,7 @@ objectives:
       workflows:
       - w20.c1
   c2:
-    name: 'W20.2: A valid maintenance record'
+    name: 'This action: A valid maintenance record'
     description: |-
       Recover the last recorded outlet inspection from the retained maintenance image and establish whether its entry is valid under the image's record rules.
 
@@ -236,7 +260,7 @@ objectives:
     agent: participant.operator
     actions:
     - w20.c2
-    targets: &id005
+    targets:
     - features.a-control.a-instruments
     success:
       mode: all_of
@@ -246,7 +270,7 @@ objectives:
       workflows:
       - w20.c2
   c3:
-    name: 'W20.3: Change one record, keep the rest'
+    name: 'This action: Change one record, keep the rest'
     description: |-
       Change the retained image so the outlet's last inspection is recorded as completed, preserving its asset identity, every unrelated record, and the image's required consistency.
 
@@ -254,7 +278,7 @@ objectives:
     agent: participant.operator
     actions:
     - w20.c3
-    targets: &id006
+    targets:
     - features.a-control.a-instruments
     success:
       mode: all_of
@@ -265,8 +289,8 @@ objectives:
       - w20.c3
 workflows:
   c1:
-    description: 'W20.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -288,8 +312,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W20.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -311,8 +335,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W20.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -338,24 +362,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the retained maintenance record set through the supplied device interface
-      and bind it to the inspection image.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Instrument flash image IMG-FIT-204-R6 uses 4096-byte erase pages and 64-byte append records with magic, sequence, payload length, CRC32C, status, and commit byte. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual record-bearing data and image binding. No physical kit is required.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w20.c1
+      - features.a-control.a-instruments
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-instruments` and its `independent-instruments` application own this part of **What the image kept**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Instrument flash image IMG-FIT-204-R6 uses 4096-byte erase pages and 64-byte append records with magic, sequence, payload length, CRC32C, status, and commit byte.
+
+        Native bindings:
+
+        - `a-control.a-instruments/independent-instruments/what-the-image-kept`
+        - `a-control.a-instruments/filesystem:/var/lib/arwc-instruments/artifacts/what-the-image-kept`
+
+        The private service-loader contract is `content.arwc-a-instruments.w20-1-what-the-image-kept`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-control.a-instruments
+      - content.arwc-a-instruments.w20-1-what-the-image-kept
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
       description: Recover the actual record-bearing data and image binding. No physical kit is required.
-      target_refs: *id004
+      target_refs:
+      - features.a-control.a-instruments
+      evidence_refs:
+      - evidence_requirements.w20.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w20.c1
     failure_classes:
@@ -369,26 +429,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the last recorded outlet inspection from the retained maintenance image and
-      establish whether its entry is valid under the image's record rules.
+    procedure_basis: |-
+      The authored condition is **NOR flash append and erase semantics**. Each 64-byte little-endian record is magic F204 at 0x00, sequence u32 at 0x04, payload length u16 at 0x08, status at 0x0a, status markers at 0x0b, up to 44 payload bytes at 0x0c, CRC32C over bytes 0x00..0x37 at 0x38, three erased reserved bytes at 0x3c, and commit byte at 0x3f. A committed record has commit=0x00; 0xff is incomplete. Pages are 4096 bytes, programming only changes 1 to 0, and an erase resets a whole page to 0xff while incrementing that page's declared wear count. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the actual last-inspection entry, including its asset, inspection date, and completion state, with a valid interpretation of its record integrity. Finding isolated readable strings is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w20.c2
+      - features.a-control.a-instruments
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-instruments` and its `independent-instruments` application own this part of **A valid maintenance record**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Parser accepts the highest committed valid sequence; edit must respect NOR 1-to-0 programming, erase-page collateral records, and wear map WEAR-FIT-204-R6.
+
+        Native bindings:
+
+        - `a-control.a-instruments/independent-instruments/a-valid-maintenance-record`
+        - `a-control.a-instruments/filesystem:/var/lib/arwc-instruments/artifacts/a-valid-maintenance-record`
+
+        The private service-loader contract is `content.arwc-a-instruments.w20-2-a-valid-maintenance-record`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-control.a-instruments
+      - content.arwc-a-instruments.w20-2-a-valid-maintenance-record
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual last-inspection entry, including its asset, inspection date, and
-        completion state, with a valid interpretation of its record integrity. Finding isolated readable
-        strings is insufficient.
-      target_refs: *id005
+      description: Recover the actual last-inspection entry, including its asset, inspection date, and completion
+        state, with a valid interpretation of its record integrity. Finding isolated readable strings is insufficient.
+      target_refs:
+      - features.a-control.a-instruments
+      evidence_refs:
+      - evidence_requirements.w20.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w20.c2
     failure_classes:
@@ -402,25 +497,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Change the retained image so the outlet's last inspection is recorded as completed,
-      preserving its asset identity, every unrelated record, and the image's required consistency.
+    procedure_basis: |-
+      The authored condition is **consistent constrained flash-record rewrite**. Write one new committed sequence for INSP-FIT-204-118 with status ACCEPTED and the next unsigned sequence, using write-body, write-CRC, then commit-byte order. Preserve every other highest valid logical record, do not modify an earlier committed slot in place, and keep each page at or below the WEAR-FIT-204-R6 limit. Acceptance reparses the full image, validates CRC32C and commit state, and compares the canonical logical record set except for the single named status. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Produce an accepted altered image with only the intended inspection completion changed. This is a historical maintenance-record manipulation, not control of live telemetry or a controller.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w20.c3
+      - features.a-control.a-instruments
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-instruments` and its `independent-instruments` application own this part of **Change one record, keep the rest**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Last inspection record INSP-FIT-204-118 must be changed from status REVIEW to ACCEPTED while every other valid record, sequence relation, and page wear limit remains unchanged.
+
+        Native bindings:
+
+        - `a-control.a-instruments/independent-instruments/change-one-record-keep-the-rest`
+        - `a-control.a-instruments/filesystem:/var/lib/arwc-instruments/artifacts/change-one-record-keep-the-rest`
+
+        The private service-loader contract is `content.arwc-a-instruments.w20-3-change-one-record-keep-the-rest`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-control.a-instruments
+      - content.arwc-a-instruments.w20-3-change-one-record-keep-the-rest
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce an accepted altered image with only the intended inspection completion changed.
-        This is a historical maintenance-record manipulation, not control of live telemetry or a controller.
-      target_refs: *id006
+      description: Produce an accepted altered image with only the intended inspection completion changed. This
+        is a historical maintenance-record manipulation, not control of live telemetry or a controller.
+      target_refs:
+      - features.a-control.a-instruments
+      evidence_refs:
+      - evidence_requirements.w20.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w20.c3
     failure_classes:
@@ -430,77 +561,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-instruments
-    description: W20.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w20.c1
-      mode: artifact
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-instruments
-    description: W20.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w20.c2
-      mode: artifact
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-instruments
-    description: W20.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w20.c3
-      mode: artifact
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W20.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained maintenance image, simulated device-access material, and ordinary maintenance record examples.
-    target: a-control.a-instruments
-    tags:
-    - synthetic
-    - w20
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained maintenance image, simulated device-access material, and ordinary maintenance
-        record examples.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W20.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained maintenance image, simulated device-access material, and ordinary maintenance record examples.
-    target: a-control.a-instruments
-    tags:
-    - synthetic
-    - w20
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained maintenance image, simulated device-access material, and ordinary maintenance
-        record examples.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W20.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained maintenance image, simulated device-access material, and ordinary maintenance record examples.
-    target: a-control.a-instruments
-    tags:
-    - synthetic
-    - w20
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained maintenance image, simulated device-access material, and ordinary maintenance
-        record examples.

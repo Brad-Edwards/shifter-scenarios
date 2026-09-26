@@ -20,6 +20,8 @@ module:
     - k-cert
     entities:
     - organization
+    accounts:
+    - rowan-workstation
     features:
     - k-dev
     - k-staff
@@ -38,33 +40,808 @@ nodes:
       remain open.'
   k-dev:
     type: compute
-    description: Developer foothold
+    description: Supplied Rowan Ito developer workstation.
+    os: linux
+    services:
+    - name: ssh
+      port: 22
+      protocol: tcp
+      description: Supplied interactive developer session.
+    - name: workbench
+      port: 8701
+      protocol: tcp
+      description: Local FieldKest inspection and callback helpers.
     features:
       k-dev: ''
+    runtime:
+      filesystem_inventory:
+      - path: /home/rowan
+        entry_type: directory
+        owner_user: rowan
+        owner_group: rowan
+        mode: '0700'
+        stability: stable
+        sensitivity: secret_fixture
+        description: Supplied developer home; exact owned files are declared in KeplerOps content modules.
+      - path: /home/rowan/.config/git/credentials
+        entry_type: file
+        owner_user: rowan
+        owner_group: rowan
+        mode: '0600'
+        stability: stable
+        sensitivity: secret_fixture
+        description: Operator-visible recovery material for the limited Gitea developer session; immutable bytes are fixed by the workstation fixture.
+      - path: /home/rowan/.config/chromium/Default
+        entry_type: directory
+        owner_user: rowan
+        owner_group: rowan
+        mode: '0700'
+        stability: stable
+        sensitivity: secret_fixture
+        description: Supplied browser profile containing ordinary retained session and restoration state.
+      - path: /home/rowan/work
+        entry_type: directory
+        owner_user: rowan
+        owner_group: rowan
+        mode: '0750'
+        stability: stable
+        sensitivity: plain
+        description: FieldKest checkout, retained analysis artifacts and local tools.
+      - path: /home/rowan/results
+        entry_type: directory
+        owner_user: rowan
+        owner_group: rowan
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: plain
+        description: Operator-owned persistent local output; ordinary service verification does not clear it.
+      local_identity:
+        users:
+        - username: rowan
+          primary_group: rowan
+          locked: false
+          no_login: false
+        groups:
+        - name: rowan
+          members:
+          - rowan
+      network:
+        hostname: k-dev
+        domainname: keplerops.test
+        endpoints:
+        - network: k-corporate.subnet
+          ip_address: 10.77.50.20
+          ip_prefix_length: 24
+          gateway: 10.77.50.1
+          aliases:
+          - k-dev
+          dns_names:
+          - k-dev.keplerops.test
+          backend:
+            driver: bridge
+            description: KeplerOps corporate segment.
+      service_listeners:
+      - service_listener_id: developer-ssh
+        service: ssh
+        address: 0.0.0.0
+        port: 22
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: local-workbench
+        service: workbench
+        address: 127.0.0.1
+        port: 8701
+        protocol: tcp
+        address_family: ipv4
+        scope: loopback_only
+      ssh_servers:
+      - ssh_server_id: developer-ssh
+        service: ssh
+        allow_users:
+        - rowan
+        password_authentication: false
+        pubkey_authentication: true
+        permit_tty: true
+        description: The supplied session opens Rowan's ordinary workstation account; it is not root or a target-wide credential.
+      applications:
+      - application_id: local-workbench
+        service: workbench
+        protocol: http
+        base_path: /
+        description: Loopback-only helpers for K01 and K03. They consume exact local fixtures and cannot provide general network forwarding.
+        routes:
+        - route_id: inspection-summary
+          path: /api/inspection-summary
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          parameters:
+          - name: sample
+            location: uploaded_file
+            required: true
+            data_type: application/json
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: callback-collection
+          path: /api/callback/collection
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          parameters:
+          - name: endpoint_id
+            location: json_body
+            required: true
+            data_type: string
+          - name: collection_id
+            location: json_body
+            required: true
+            data_type: string
+          - name: integrity
+            location: json_body
+            required: true
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+      software_components:
+      - component_id: keplerops-developer-workbench
+        name: KeplerOps developer workbench
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/keplerops-workbench
+        description: Implements the exact local helper contract without external egress or privileged host access.
   k-staff:
     type: compute
-    description: Staff workflow
+    description: Staff workplace, note preview, archive and managed-identity workflows.
+    os: linux
     services:
     - name: workplace
       port: 443
       protocol: tcp
-      description: Authenticated staff workplace for mailboxes and company records; software and hosting remain open.
+      description: Authenticated staff workplace for mailboxes, company records, note preview, archive delegation and managed identities.
     features:
       k-staff: ''
       k-staff--delegated-client: ''
       k-staff--managed-record: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/keplerops-staff
+        entry_type: directory
+        owner_user: keplerops-staff
+        owner_group: keplerops-staff
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Persistent service-owned staff records, preview state, handovers and audits.
+      local_identity:
+        users:
+        - username: keplerops-staff
+          primary_group: keplerops-staff
+          locked: true
+          no_login: true
+        groups:
+        - name: keplerops-staff
+          members:
+          - keplerops-staff
+      network:
+        hostname: k-staff
+        domainname: keplerops.test
+        endpoints:
+        - network: k-corporate.subnet
+          ip_address: 10.77.50.30
+          ip_prefix_length: 24
+          gateway: 10.77.50.1
+          aliases:
+          - k-staff
+          dns_names:
+          - staff.keplerops.test
+          backend:
+            driver: bridge
+            description: KeplerOps corporate segment.
+      service_listeners:
+      - service_listener_id: workplace-https
+        service: workplace
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: staff-workplace
+        service: workplace
+        protocol: https
+        base_path: /
+        description: Workplace document APIs and the bounded note/archive/managed-identity workflows used by K18-K20.
+        routes:
+        - route_id: service-directory
+          path: /api/service-directory
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Bearer or SPNEGO
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 401
+            content_type: application/json
+        - route_id: note-record
+          path: /api/notes/{note_id}
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Bearer
+          session_required: true
+          parameters:
+          - name: note_id
+            location: path
+            required: true
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: note-preview
+          path: /api/note-preview
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Bearer
+          session_required: true
+          parameters:
+          - name: source_path
+            location: json_body
+            required: true
+            data_type: string
+          - name: method
+            location: json_body
+            required: false
+            data_type: string
+          description: Validates the encoded /notes/ prefix before one decode; the internal proxy receives the normalized path and permitted GET/PATCH method.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 400
+            content_type: application/json
+        - route_id: archive-handover
+          path: /api/archive/handovers/{subject}
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: mTLS
+          session_required: true
+          parameters:
+          - name: subject
+            location: path
+            required: true
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: archive-delegation
+          path: /api/archive/delegation/probe
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: mTLS
+          session_required: true
+          parameters:
+          - name: target_spn
+            location: json_body
+            required: true
+            data_type: string
+          description: Delegation allowlist compares the service class HTTP but omits the requested host.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: managed-identity-issue
+          path: /api/managed-identities/{identity_id}/session
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: SPNEGO
+          session_required: true
+          parameters:
+          - name: identity_id
+            location: path
+            required: true
+            data_type: string
+          description: The object ACL checks the delegated actor's service relation but omits comparison with the requested managed identity.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: staff-workplace-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: maya-ranscombe
+          kind: user
+          name: maya.ranscombe
+          credential_classification: none
+        - principal_id: talia-mornac
+          kind: user
+          name: talia.mornac
+          credential_classification: none
+        - principal_id: evan-calderoux
+          kind: user
+          name: evan.calderoux
+          credential_classification: none
+        - principal_id: staff-preview
+          kind: service_account
+          name: svc-staff-preview
+          credential_classification: redacted
+        - principal_id: release-admin
+          kind: service_account
+          name: svc-release-admin
+          credential_classification: redacted
+        roles:
+        - role_id: support-reviewer
+          name: Support reviewer
+        - role_id: release-engineer
+          name: Release engineer
+        - role_id: preview-proxy
+          name: Staff preview proxy
+        - role_id: managed-release-admin
+          name: Managed release administrator
+        permission_grants:
+        - grant_id: support-note-read
+          role_ref: support-reviewer
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - notes/NOTE-SUP-2841-7
+          effect: allow
+        - grant_id: evan-archive-read
+          role_ref: release-engineer
+          resource_kind: app_resource
+          actions:
+          - read
+          - delegate
+          resource_patterns:
+          - archive/evan.calderoux
+          - delegation/HTTP/*
+          effect: allow
+          description: Host-wildcard delegation is the deliberate K19 boundary error.
+        - grant_id: preview-identity-admin
+          role_ref: preview-proxy
+          resource_kind: app_resource
+          actions:
+          - read
+          - update
+          resource_patterns:
+          - identity/registrations/OIDC-FIELDKEST-SUPPORT
+          effect: allow
+        - grant_id: managed-release-session
+          role_ref: managed-release-admin
+          resource_kind: app_resource
+          actions:
+          - issue-session
+          resource_patterns:
+          - managed-identities/svc-release-admin
+          effect: allow
+        role_mappings:
+        - mapping_id: maya-support
+          role_ref: support-reviewer
+          users:
+          - maya-ranscombe
+        - mapping_id: talia-support
+          role_ref: support-reviewer
+          users:
+          - talia-mornac
+        - mapping_id: evan-release
+          role_ref: release-engineer
+          users:
+          - evan-calderoux
+        - mapping_id: preview-service
+          role_ref: preview-proxy
+          users:
+          - staff-preview
+        - mapping_id: release-service
+          role_ref: managed-release-admin
+          users:
+          - release-admin
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
+      software_components:
+      - component_id: keplerops-staff-workplace
+        name: KeplerOps staff workplace
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/keplerops-staff
   k-identity:
     type: compute
-    description: Identity services
+    description: KeplerOps OIDC and Kerberos identity authority.
+    os: linux
+    services:
+    - name: identity
+      port: 443
+      protocol: tcp
+    - name: kerberos
+      port: 88
+      protocol: tcp
     features:
       k-identity: ''
       k-identity--support-federation: ''
       k-identity--delegation: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/keplerops-identity
+        entry_type: directory
+        owner_user: keplerops-identity
+        owner_group: keplerops-identity
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+      local_identity:
+        users:
+        - username: keplerops-identity
+          primary_group: keplerops-identity
+          locked: true
+          no_login: true
+        groups:
+        - name: keplerops-identity
+          members:
+          - keplerops-identity
+      network:
+        hostname: k-identity
+        domainname: keplerops.test
+        endpoints:
+        - network: k-corporate.subnet
+          ip_address: 10.77.50.40
+          ip_prefix_length: 24
+          gateway: 10.77.50.1
+          aliases:
+          - k-identity
+          dns_names:
+          - identity.keplerops.test
+          backend:
+            driver: bridge
+            description: KeplerOps corporate segment.
+      service_listeners:
+      - service_listener_id: identity-https
+        service: identity
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: identity-kerberos
+        service: kerberos
+        address: 0.0.0.0
+        port: 88
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: identity-admin
+        service: identity
+        protocol: https
+        base_path: /
+        description: Identity registration, federation and delegated service-relation interface.
+        routes:
+        - route_id: support-registration
+          path: /api/registrations/OIDC-FIELDKEST-SUPPORT
+          methods:
+          - GET
+          - PATCH
+          auth_required: true
+          auth_scheme: Bearer or delegated SPNEGO
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: delegated-admin-probe
+          path: /api/delegation/admin-probe
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: SPNEGO
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: service-relation
+          path: /api/service-relations/{service_id}
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: SPNEGO
+          session_required: true
+          parameters:
+          - name: service_id
+            location: path
+            required: true
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+      identity_authorities:
+      - identity_authority_id: keplerops-identity
+        kind: identity_provider
+        name: KeplerOps identity authority
+        namespace: keplerops
+        domain_name: keplerops.test
+        realm: KEPLEROPS.TEST
+        issuer: https://identity.keplerops.test/
+        services:
+        - service_id: oidc
+          service: identity
+          protocol: oidc
+          address: identity.keplerops.test
+          port: 443
+        - service_id: kerberos-kdc
+          service: kerberos
+          protocol: kerberos
+          address: identity.keplerops.test
+          port: 88
+        subjects:
+        - subject_id: maya-ranscombe
+          kind: user
+          name: maya.ranscombe
+          display_name: Maya Ranscombe
+          principal_name: maya.ranscombe@KEPLEROPS.TEST
+          enabled: true
+          origin: directory
+        - subject_id: talia-mornac
+          kind: user
+          name: talia.mornac
+          display_name: Talia Mornac
+          principal_name: talia.mornac@KEPLEROPS.TEST
+          enabled: true
+          origin: directory
+        - subject_id: evan-calderoux
+          kind: user
+          name: evan.calderoux
+          display_name: Evan Calderoux
+          principal_name: evan.calderoux@KEPLEROPS.TEST
+          enabled: true
+          origin: directory
+        - subject_id: staff-preview
+          kind: service_account
+          name: svc-staff-preview
+          principal_name: HTTP/staff.keplerops.test@KEPLEROPS.TEST
+          enabled: true
+          origin: provisioned
+          service_principal_names:
+          - HTTP/staff.keplerops.test
+        - subject_id: release-admin
+          kind: service_account
+          name: svc-release-admin
+          principal_name: svc-release-admin@KEPLEROPS.TEST
+          enabled: true
+          origin: provisioned
+        - subject_id: support-application
+          kind: application
+          name: OIDC-FIELDKEST-SUPPORT
+          enabled: true
+          origin: provisioned
+        - subject_id: fixture-provider
+          kind: application
+          name: OIDC-CINDER-FIXTURE
+          enabled: false
+          origin: runtime_created
+        policies:
+        - policy_id: support-federation-policy
+          policy_kind: trust
+          name: Support application federation policy
+          applies_to_refs:
+          - support-application
+          settings:
+          - name: existing-provider-required
+            values:
+            - keplerops-identity
+            value_classification: plain
+            origin: operator
+          - name: fixture-provider-initially-enabled
+            values:
+            - 'false'
+            value_classification: plain
+            origin: operator
+        - policy_id: archive-delegation-policy
+          policy_kind: kerberos
+          name: Staff archive constrained delegation
+          applies_to_refs:
+          - staff-preview
+          settings:
+          - name: allowed-service-class
+            values:
+            - HTTP
+            value_classification: plain
+            origin: operator
+          - name: target-host-compared
+            values:
+            - 'false'
+            value_classification: plain
+            origin: operator
+        relationships:
+        - relationship_id: support-federation
+          relationship_type: federates_with
+          source_ref: support-application
+          target_ref: fixture-provider
+          description: Initially disabled optional provider; K18.3 can enable it without removing the existing provider.
+        - relationship_id: staff-preview-delegation
+          relationship_type: delegated_admin
+          source_ref: staff-preview
+          target_ref: support-application
+        - relationship_id: release-admin-owner
+          relationship_type: associated
+          source_ref: release-admin
+          target_ref: evan-calderoux
+          description: Service-to-person approval mapping; K20.3 exploits omission of the human-presence claim.
+      software_components:
+      - component_id: keplerops-identity-service
+        name: KeplerOps identity service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/keplerops-identity
   k-cert:
     type: compute
-    description: Certificate service
+    description: KeplerOps staff certificate enrollment service.
+    os: linux
+    services:
+    - name: enrollment
+      port: 443
+      protocol: tcp
     features:
       k-cert: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/keplerops-cert
+        entry_type: directory
+        owner_user: keplerops-cert
+        owner_group: keplerops-cert
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+      local_identity:
+        users:
+        - username: keplerops-cert
+          primary_group: keplerops-cert
+          locked: true
+          no_login: true
+        groups:
+        - name: keplerops-cert
+          members:
+          - keplerops-cert
+      network:
+        hostname: k-cert
+        domainname: keplerops.test
+        endpoints:
+        - network: k-corporate.subnet
+          ip_address: 10.77.50.50
+          ip_prefix_length: 24
+          gateway: 10.77.50.1
+          aliases:
+          - k-cert
+          dns_names:
+          - cert.keplerops.test
+          backend:
+            driver: bridge
+            description: KeplerOps corporate segment.
+      service_listeners:
+      - service_listener_id: enrollment-https
+        service: enrollment
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: staff-enrollment
+        service: enrollment
+        protocol: https
+        base_path: /
+        description: Certificate template discovery and bounded client-certificate enrollment for K19.
+        routes:
+        - route_id: enrollment-record
+          path: /api/enrollment/StaffArchiveUser
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Bearer or worker mTLS
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: enroll-staff-archive
+          path: /api/enrollment/StaffArchiveUser/requests
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Bearer or worker mTLS
+          session_required: true
+          parameters:
+          - name: requested_upn
+            location: json_body
+            required: true
+            data_type: string
+          description: Requires an active directory UPN but deliberately omits comparison between that UPN and the authenticated requester.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+      identity_authorities:
+      - identity_authority_id: keplerops-certificates
+        kind: authorization_system
+        name: KeplerOps staff certificate authority
+        namespace: keplerops-cert
+        domain_name: keplerops.test
+        services:
+        - service_id: certificate-enrollment
+          service: enrollment
+          protocol: other
+          address: cert.keplerops.test
+          port: 443
+        subjects:
+        - subject_id: staff-archive-template
+          kind: other
+          name: StaffArchiveUser
+          enabled: true
+          origin: provisioned
+          attributes:
+          - name: extended-key-usage
+            values:
+            - client-authentication
+            value_classification: plain
+            origin: operator
+          - name: enrollee-supplies-subject
+            values:
+            - 'true'
+            value_classification: plain
+            origin: operator
+        policies:
+        - policy_id: staff-archive-enrollment
+          policy_kind: access
+          name: Staff archive enrollment policy
+          applies_to_refs:
+          - staff-archive-template
+          settings:
+          - name: compare-requested-upn-to-requester
+            values:
+            - 'false'
+            value_classification: plain
+            origin: operator
+      software_components:
+      - component_id: keplerops-certificate-service
+        name: KeplerOps certificate service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/keplerops-cert
 infrastructure:
   subnet: {}
   k-dev:
@@ -84,6 +861,17 @@ entities:
     name: KeplerOps
     description: Corporate / identity
     role: green
+accounts:
+  rowan-workstation:
+    username: rowan
+    node: k-dev
+    groups:
+    - rowan
+    password_strength: none
+    auth_method: key
+    description: Supplied interactive developer workstation account. The exercise portal provides the session; no reusable private key is stored in SDL.
+    shell: /bin/bash
+    home: /home/rowan
 features:
   k-dev:
     name: Published interfaces

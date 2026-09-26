@@ -33,21 +33,17 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual annex and handover reference. The importer address alone does not
-      earn the score.
-    source_refs: &id001
+    description: |-
+      Recover the actual annex and handover reference. The importer address alone does not satisfy the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -76,10 +72,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Recover the restricted handover content with its correct work-order binding. This is
-      evidence for the read integration, not live process access.
-    source_refs: &id002
+    description: |-
+      Recover the restricted handover content with its correct work-order binding. This is evidence for the read integration, not live process access.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -108,11 +114,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Recover the current read configuration and its scope. This supplies W03.READ; W09's data
-      binding is still needed for OT visibility. The associated handover also identifies the retained
-      contractor bundle used in W08, without granting access to unrelated corporate records.
-    source_refs: &id003
+    description: |-
+      Recover the current read configuration and its scope. This supplies W03.READ; W09's data binding is still needed for OT visibility. The associated handover also identifies the retained contractor bundle used in W08, without granting access to unrelated corporate records.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -141,11 +156,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the actual annex and handover reference. The importer address alone does not
-      earn the score.
-    subjects: *id001
+    description: Recover the actual annex and handover reference. The importer address alone does not satisfy the
+      result.
+    subjects:
+    - features.a-corporate.a-business
     basis: observed_state
     predicate:
       kind: boolean
@@ -157,9 +179,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the restricted handover content with its correct work-order binding. This is
-      evidence for the read integration, not live process access.
-    subjects: *id002
+    description: Recover the restricted handover content with its correct work-order binding. This is evidence for
+      the read integration, not live process access.
+    subjects:
+    - features.a-corporate.a-business
     basis: observed_state
     predicate:
       kind: boolean
@@ -171,10 +194,11 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the current read configuration and its scope. This supplies W03.READ; W09's data
-      binding is still needed for OT visibility. The associated handover also identifies the retained
-      contractor bundle used in W08, without granting access to unrelated corporate records.
-    subjects: *id003
+    description: Recover the current read configuration and its scope. This supplies W03.READ; W09's data binding
+      is still needed for OT visibility. The associated handover also identifies the retained contractor bundle
+      used in W08, without granting access to unrelated corporate records.
+    subjects:
+    - features.a-corporate.a-business
     basis: observed_state
     predicate:
       kind: boolean
@@ -212,7 +236,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W03.1: An annex left with the order'
+    name: 'This action: An annex left with the order'
     description: |-
       Recover the unpublished work-order annex and identify the process-data handover mentioned in it.
 
@@ -220,7 +244,7 @@ objectives:
     agent: participant.operator
     actions:
     - w03.c1
-    targets: &id004
+    targets:
     - features.a-corporate.a-business
     success:
       mode: all_of
@@ -230,7 +254,7 @@ objectives:
       workflows:
       - w03.c1
   c2:
-    name: 'W03.2: A reference outside the order'
+    name: 'This action: A reference outside the order'
     description: |-
       Make the annex workflow recover the restricted handover file that the ordinary work-order view cannot read.
 
@@ -238,7 +262,7 @@ objectives:
     agent: participant.operator
     actions:
     - w03.c2
-    targets: &id005
+    targets:
     - features.a-corporate.a-business
     success:
       mode: all_of
@@ -248,7 +272,7 @@ objectives:
       workflows:
       - w03.c2
   c3:
-    name: 'W03.3: The integration''s read contract'
+    name: 'This action: The integration''s read contract'
     description: |-
       Recover the protected read-integration configuration behind the annex service's separate export boundary.
 
@@ -256,7 +280,7 @@ objectives:
     agent: participant.operator
     actions:
     - w03.c3
-    targets: &id006
+    targets:
     - features.a-corporate.a-business
     success:
       mode: all_of
@@ -267,8 +291,8 @@ objectives:
       - w03.c3
 workflows:
   c1:
-    description: 'W03.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -290,8 +314,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W03.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -313,8 +337,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W03.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -340,25 +364,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the unpublished work-order annex and identify the process-data handover mentioned
-      in it.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Work order WO-CRR-4417 exposes annex ANN-4417-R2 naming process-data handover PDH-CRR-READ-08 and importer revision annex-import/2. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual annex and handover reference. The importer address alone does not satisfy the result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w03.c1
+      - features.a-corporate.a-business
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-business` and its `business-workplace` application own this part of **An annex left with the order**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Work order WO-CRR-4417 exposes annex ANN-4417-R2 naming process-data handover PDH-CRR-READ-08 and importer revision annex-import/2.
+
+        Native bindings:
+
+        - `a-corporate.a-business/business-workplace/an-annex-left-with-the-order`
+
+        The private service-loader contract is `content.arwc-a-business.w03-1-an-annex-left-with-the-order`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-business
+      - content.arwc-a-business.w03-1-an-annex-left-with-the-order
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual annex and handover reference. The importer address alone does not
-        earn the score.
-      target_refs: *id004
+      description: Recover the actual annex and handover reference. The importer address alone does not satisfy
+        the result.
+      target_refs:
+      - features.a-corporate.a-business
+      evidence_refs:
+      - evidence_requirements.w03.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-business
       evidence_refs:
       - evidence_requirements.w03.c1
     failure_classes:
@@ -372,25 +431,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Make the annex workflow recover the restricted handover file that the ordinary work-order
-      view cannot read.
+    procedure_basis: |-
+      The authored condition is **validate-before-decode path canonicalization**. Annex importer validates an attachments/ prefix before percent decoding; attachments/%2e%2e%2frestricted%2fPDH-CRR-READ-08 resolves the restricted handover under service identity svc-annex. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the restricted handover content with its correct work-order binding. This is evidence for the read integration, not live process access.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w03.c2
+      - features.a-corporate.a-business
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-business` and its `business-workplace` application own this part of **A reference outside the order**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Annex importer validates an attachments/ prefix before percent decoding; attachments/%2e%2e%2frestricted%2fPDH-CRR-READ-08 resolves the restricted handover under service identity svc-annex.
+
+        Native bindings:
+
+        - `a-corporate.a-business/business-workplace/a-reference-outside-the-order`
+
+        The private service-loader contract is `content.arwc-a-business.w03-2-a-reference-outside-the-order`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-business
+      - content.arwc-a-business.w03-2-a-reference-outside-the-order
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the restricted handover content with its correct work-order binding. This is
-        evidence for the read integration, not live process access.
-      target_refs: *id005
+      description: Recover the restricted handover content with its correct work-order binding. This is evidence
+        for the read integration, not live process access.
+      target_refs:
+      - features.a-corporate.a-business
+      evidence_refs:
+      - evidence_requirements.w03.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-business
       evidence_refs:
       - evidence_requirements.w03.c2
     failure_classes:
@@ -404,26 +498,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the protected read-integration configuration behind the annex service's separate
-      export boundary.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Export boundary for PDH-CRR-READ-08 returns integration client INT-CRR-08, endpoint process-read.arwc.test, protocol process-read/v2, scope OG-CRR-02/read, and retained bundle BND-COLLECT-CRR-12. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the current read configuration and its scope. This supplies W03.READ; W09's data binding is still needed for OT visibility. The associated handover also identifies the retained contractor bundle used in W08, without granting access to unrelated corporate records.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w03.c3
+      - features.a-corporate.a-business
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-business` and its `business-workplace` application own this part of **The integration's read contract**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Export boundary for PDH-CRR-READ-08 returns integration client INT-CRR-08, endpoint process-read.arwc.test, protocol process-read/v2, scope OG-CRR-02/read, and retained bundle BND-COLLECT-CRR-12.
+
+        Native bindings:
+
+        - `a-corporate.a-business/business-workplace/the-integration-s-read-contract`
+
+        The private service-loader contract is `content.arwc-a-business.w03-3-the-integration-s-read-contract`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-business
+      - content.arwc-a-business.w03-3-the-integration-s-read-contract
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies W03.READ and the read-integration half of W09.4. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the current read configuration and its scope. This supplies W03.READ; W09's
-        data binding is still needed for OT visibility. The associated handover also identifies the retained
-        contractor bundle used in W08, without granting access to unrelated corporate records.
-      target_refs: *id006
+      description: Recover the current read configuration and its scope. This supplies W03.READ; W09's data binding
+        is still needed for OT visibility. The associated handover also identifies the retained contractor bundle
+        used in W08, without granting access to unrelated corporate records.
+      target_refs:
+      - features.a-corporate.a-business
+      evidence_refs:
+      - evidence_requirements.w03.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-business
       evidence_refs:
       - evidence_requirements.w03.c3
     failure_classes:
@@ -433,77 +562,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-business
-    description: W03.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w03.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-business
-    description: W03.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w03.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-business
-    description: W03.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w03.c3
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W03.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The work-order annex interface, sample import material, and read-integration references maintained by corporate support.
-    target: a-corporate.a-business
-    tags:
-    - synthetic
-    - w03
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The work-order annex interface, sample import material, and read-integration references
-        maintained by corporate support.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W03.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The work-order annex interface, sample import material, and read-integration references maintained by corporate support.
-    target: a-corporate.a-business
-    tags:
-    - synthetic
-    - w03
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The work-order annex interface, sample import material, and read-integration references
-        maintained by corporate support.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W03.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The work-order annex interface, sample import material, and read-integration references maintained by corporate support.
-    target: a-corporate.a-business
-    tags:
-    - synthetic
-    - w03
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The work-order annex interface, sample import material, and read-integration references
-        maintained by corporate support.

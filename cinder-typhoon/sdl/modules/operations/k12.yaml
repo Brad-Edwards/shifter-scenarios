@@ -40,23 +40,15 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Demonstrate the controlled preview being processed in the intended privileged review
-      context. A visit by an ordinary account is insufficient.
-    source_refs: &id001
+    description: |-
+      Demonstrate the controlled preview being processed in the intended privileged review context. A visit by an ordinary account is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-preview
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +77,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c2:
-    description: Complete the protected action with the current value and correct review binding. Disclosure
-      and scoped use form one achievement.
-    source_refs: &id002
+    description: |-
+      Complete the protected action with the current value and correct review binding. Disclosure and scoped use form one achievement.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-preview
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,10 +116,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c3:
-    description: Demonstrate the worker producing Cinder's chosen compatible preview behavior. Replaying
-      the preceding privileged action does not suffice.
-    source_refs: &id003
+    description: |-
+      Demonstrate the worker producing Cinder's chosen compatible preview behavior. Replaying the preceding privileged action does not suffice.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-preview
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -149,12 +155,19 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c4:
     description: |-
       Demonstrate execution in the renderer's actual context and the changed consumed preview. Its scope remains the supplier's preview workflow.
 
-      The conclusion lets the player inspect the release document as the support engineer actually received it, alongside the ordinary version. The chosen change survives the privileged rendering path and appears inside the otherwise recognizable document. The comparison uses the proven renderer result; a local mock-up or decorative completion banner cannot substitute for it. This is a complete specialist payoff even if the player never reaches ARWC.
-    source_refs: &id004
+      The conclusion lets the operator inspect the release document as the support engineer actually received it, alongside the ordinary version. The chosen change survives the privileged rendering path and appears inside the otherwise recognizable document. The comparison uses the proven renderer result; a local mock-up or decorative completion banner cannot substitute for it. This is a complete specialist payoff even if the operator never reaches ARWC.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-preview
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -183,11 +196,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
 propositions:
   c1:
-    description: Demonstrate the controlled preview being processed in the intended privileged review
-      context. A visit by an ordinary account is insufficient.
-    subjects: *id001
+    description: Demonstrate the controlled preview being processed in the intended privileged review context. A
+      visit by an ordinary account is insufficient.
+    subjects:
+    - features.k-delivery.k-preview
     basis: observed_state
     predicate:
       kind: boolean
@@ -199,9 +218,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Complete the protected action with the current value and correct review binding. Disclosure
-      and scoped use form one achievement.
-    subjects: *id002
+    description: Complete the protected action with the current value and correct review binding. Disclosure and
+      scoped use form one achievement.
+    subjects:
+    - features.k-delivery.k-preview
     basis: observed_state
     predicate:
       kind: boolean
@@ -213,9 +233,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate the worker producing Cinder's chosen compatible preview behavior. Replaying
-      the preceding privileged action does not suffice.
-    subjects: *id003
+    description: Demonstrate the worker producing Cinder's chosen compatible preview behavior. Replaying the preceding
+      privileged action does not suffice.
+    subjects:
+    - features.k-delivery.k-preview
     basis: observed_state
     predicate:
       kind: boolean
@@ -230,8 +251,9 @@ propositions:
     description: |-
       Demonstrate execution in the renderer's actual context and the changed consumed preview. Its scope remains the supplier's preview workflow.
 
-      The conclusion lets the player inspect the release document as the support engineer actually received it, alongside the ordinary version. The chosen change survives the privileged rendering path and appears inside the otherwise recognizable document. The comparison uses the proven renderer result; a local mock-up or decorative completion banner cannot substitute for it. This is a complete specialist payoff even if the player never reaches ARWC.
-    subjects: *id004
+      The conclusion lets the operator inspect the release document as the support engineer actually received it, alongside the ordinary version. The chosen change survives the privileged rendering path and appears inside the otherwise recognizable document. The comparison uses the proven renderer result; a local mock-up or decorative completion banner cannot substitute for it. This is a complete specialist payoff even if the operator never reaches ARWC.
+    subjects:
+    - features.k-delivery.k-preview
     basis: observed_state
     predicate:
       kind: boolean
@@ -285,7 +307,7 @@ objectives:
     agent: participant.operator
     actions:
     - k12.c1
-    targets: &id005
+    targets:
     - features.k-delivery.k-preview
     success:
       mode: all_of
@@ -303,7 +325,7 @@ objectives:
     agent: participant.operator
     actions:
     - k12.c2
-    targets: &id006
+    targets:
     - features.k-delivery.k-preview
     success:
       mode: all_of
@@ -321,7 +343,7 @@ objectives:
     agent: participant.operator
     actions:
     - k12.c3
-    targets: &id007
+    targets:
     - features.k-delivery.k-preview
     success:
       mode: all_of
@@ -339,7 +361,7 @@ objectives:
     agent: participant.operator
     actions:
     - k12.c4
-    targets: &id008
+    targets:
     - features.k-delivery.k-preview
     success:
       mode: all_of
@@ -350,8 +372,8 @@ objectives:
       - k12.c4
 workflows:
   c1:
-    description: 'K12.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K12.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -373,8 +395,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K12.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K12.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -396,8 +418,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K12.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K12.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -419,8 +441,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'K12.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K12.4: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -446,25 +468,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Place your controlled preview content in the privileged reviewer's effective workflow
-      despite the account and review-state boundaries.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Privileged reviewer worker loads participant content; navigation/load audit. Merely
+      describing the condition, editing a local copy, or presenting a value obtained from another surface does not
+      satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k12.c1
+      - features.k-delivery.k-preview
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-preview` owns this part of the operation. Its starting state is exact: Ordinary release-preview
+        account; review item PRV-771; authored same-origin preview whose queue ownership check omits submitter on
+        reassignment. The owning service uses the listener, route, identity, authorization, storage, and audit contract
+        declared in the corresponding world module. Records that are not explicitly mutable remain immutable. The
+        private service-loader contract `content.keplerops-k-preview.k12-1-the-reviewer-arrives-second` freezes
+        the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-preview
+      - content.keplerops-k-preview.k12-1-the-reviewer-arrives-second
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K12.2. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
       - features.k-delivery.k-preview
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the controlled preview being processed in the intended privileged review
-        context. A visit by an ordinary account is insufficient.
-      target_refs: *id005
+      description: Demonstrate the controlled preview being processed in the intended privileged review context.
+        A visit by an ordinary account is insufficient.
+      target_refs:
+      - features.k-delivery.k-preview
       evidence_refs:
       - evidence_requirements.k12.c1
     failure_classes:
@@ -478,25 +524,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the protected browser value required for a privileged preview action and
-      make that separate action accept it.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Current nonce used on the bound review; action audit names reviewer session and item.
+      Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k12.c2
+      - features.k-delivery.k-preview
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-preview` owns this part of the operation. Its starting state is exact: Per-review action
+        nonce exposed to same-origin preview through a postMessage handler that does not validate sender origin;
+        protected prepare action. The owning service uses the listener, route, identity, authorization, storage,
+        and audit contract declared in the corresponding world module. Records that are not explicitly mutable remain
+        immutable. The private service-loader contract `content.keplerops-k-preview.k12-2-a-value-across-the-action-boundary`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-preview
+      - content.keplerops-k-preview.k12-2-a-value-across-the-action-boundary
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K12.3. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
       - features.k-delivery.k-preview
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Complete the protected action with the current value and correct review binding. Disclosure
-        and scoped use form one achievement.
-      target_refs: *id006
+      description: Complete the protected action with the current value and correct review binding. Disclosure and
+        scoped use form one achievement.
+      target_refs:
+      - features.k-delivery.k-preview
       evidence_refs:
       - evidence_requirements.k12.c2
     failure_classes:
@@ -510,25 +580,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Take control of the preview worker's contribution to the support review while preserving
-      the expected review interface.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Worker registration controls renderer contribution for PRV-771 while preserving response
+      schema. Merely describing the condition, editing a local copy, or presenting a value obtained from another
+      surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k12.c3
+      - features.k-delivery.k-preview
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-preview` owns this part of the operation. Its starting state is exact: Attachment JavaScript
+        served with worker MIME type; Service-Worker-Allowed: /review/ is broader than attachment path. The owning
+        service uses the listener, route, identity, authorization, storage, and audit contract declared in the corresponding
+        world module. Records that are not explicitly mutable remain immutable. The private service-loader contract
+        `content.keplerops-k-preview.k12-3-the-worker-changes-sides` freezes the request, denial, state-transition,
+        evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-preview
+      - content.keplerops-k-preview.k12-3-the-worker-changes-sides
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K12.4. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
       - features.k-delivery.k-preview
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the worker producing Cinder's chosen compatible preview behavior. Replaying
-        the preceding privileged action does not suffice.
-      target_refs: *id007
+      description: Demonstrate the worker producing Cinder's chosen compatible preview behavior. Replaying the preceding
+        privileged action does not suffice.
+      target_refs:
+      - features.k-delivery.k-preview
       evidence_refs:
       - evidence_requirements.k12.c3
     failure_classes:
@@ -542,18 +636,40 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Complete the chain into the constrained renderer and make the support engineer's
-      release preview reflect Cinder's chosen result.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Intercepted render contains chosen compatible field, renderer process identity and
+      support-review receipt. Merely describing the condition, editing a local copy, or presenting a value obtained
+      from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k12.c4
+      - features.k-delivery.k-preview
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-preview` owns this part of the operation. Its starting state is exact: Baseline release document
+        and privileged renderer request. The owning service uses the listener, route, identity, authorization, storage,
+        and audit contract declared in the corresponding world module. Records that are not explicitly mutable remain
+        immutable. The private service-loader contract `content.keplerops-k-preview.k12-4-the-preview-is-ours` freezes
+        the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-preview
+      - content.keplerops-k-preview.k12-4-the-preview-is-ours
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Complete supplier-side specialist conclusion. Participant-created service state persists for
+        the life of the participant world and ordinary retries do not erase it. The selected route cannot act on
+        unrelated tenants, records, packages, identities, jobs, or services. Infrastructure recovery and submission
+        adjudication are outside this in-world contract.
+      support_refs:
       - features.k-delivery.k-preview
     effects:
     - effect_id: outcome
@@ -561,8 +677,9 @@ action_contracts:
       description: |-
         Demonstrate execution in the renderer's actual context and the changed consumed preview. Its scope remains the supplier's preview workflow.
 
-        The conclusion lets the player inspect the release document as the support engineer actually received it, alongside the ordinary version. The chosen change survives the privileged rendering path and appears inside the otherwise recognizable document. The comparison uses the proven renderer result; a local mock-up or decorative completion banner cannot substitute for it. This is a complete specialist payoff even if the player never reaches ARWC.
-      target_refs: *id008
+        The conclusion lets the operator inspect the release document as the support engineer actually received it, alongside the ordinary version. The chosen change survives the privileged rendering path and appears inside the otherwise recognizable document. The comparison uses the proven renderer result; a local mock-up or decorative completion banner cannot substitute for it. This is a complete specialist payoff even if the operator never reaches ARWC.
+      target_refs:
+      - features.k-delivery.k-preview
       evidence_refs:
       - evidence_requirements.k12.c4
     failure_classes:
@@ -572,101 +689,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-preview
-    description: K12.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k12.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-preview
-    description: K12.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k12.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-preview
-    description: K12.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k12.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-preview
-    description: K12.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k12.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K12.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      An ordinary release-preview account, preview application material, and a private support-review rehearsal.
-    target: k-delivery.k-preview
-    tags:
-    - synthetic
-    - k12
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: An ordinary release-preview account, preview application material, and a private support-review
-        rehearsal.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K12.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      An ordinary release-preview account, preview application material, and a private support-review rehearsal.
-    target: k-delivery.k-preview
-    tags:
-    - synthetic
-    - k12
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: An ordinary release-preview account, preview application material, and a private support-review
-        rehearsal.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K12.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      An ordinary release-preview account, preview application material, and a private support-review rehearsal.
-    target: k-delivery.k-preview
-    tags:
-    - synthetic
-    - k12
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: An ordinary release-preview account, preview application material, and a private support-review
-        rehearsal.
-  c4-records-1:
-    type: dataset
-    description: |-
-      K12.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      An ordinary release-preview account, preview application material, and a private support-review rehearsal.
-    target: k-delivery.k-preview
-    tags:
-    - synthetic
-    - k12
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: An ordinary release-preview account, preview application material, and a private support-review
-        rehearsal.

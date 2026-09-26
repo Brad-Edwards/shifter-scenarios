@@ -40,25 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    - c4-surface-2
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
-    - c4-records-2
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual channel, rate, and volume constraints with their applicable context.
-      This supplies W25.ENVELOPE and ENVELOPE, not a release plan.
-    source_refs: &id001
+    description: |-
+      Recover the actual channel, rate, and volume constraints with their applicable context. This supplies W25.ENVELOPE and ENVELOPE, not a release plan.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-hmi
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -87,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Recover the separate permissive/interlock evidence and its practice-state binding. Repeating
-      the current-mode label from W17 does not count.
-    source_refs: &id002
+    description: |-
+      Recover the separate permissive/interlock evidence and its practice-state binding. Repeating the current-mode label from W17 does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-hmi
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -119,10 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Correctly relate the practice requests, permissives, and observed outcomes. An acknowledgement
-      alone does not establish an actuation.
-    source_refs: &id003
+    description: |-
+      Correctly relate the practice requests, permissives, and observed outcomes. An acknowledgement alone does not establish an actuation.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-hmi
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -151,12 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
     description: |-
-      Demonstrate the intended practice effect under the correct conditions. This supplies W25.MODE and MODE; it does not grant live write authority.
+      Demonstrate the intended practice effect under the correct conditions. This supplies W25.MODE and MODE; it does not grant live write authority. In the clearly identified practice model, the valid sequence produces visible outlet movement and a matching measured response, contrasting with the acknowledged but ineffective requests investigated earlier. The operator has turned process understanding into controlled movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current outlet mapping or live client and does not change the real operating context's reserve.
 
-      In the clearly identified practice model, the valid sequence produces visible outlet movement and a matching measured response, contrasting with the acknowledged but ineffective requests investigated earlier. The player has turned process understanding into controlled movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current outlet mapping or live client and does not change the real campaign's reserve.
-    source_refs: &id004
+      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-hmi`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-hmi
     - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
@@ -187,11 +207,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the actual channel, rate, and volume constraints with their applicable context.
-      This supplies W25.ENVELOPE and ENVELOPE, not a release plan.
-    subjects: *id001
+    description: Recover the actual channel, rate, and volume constraints with their applicable context. This supplies
+      W25.ENVELOPE and ENVELOPE, not a release plan.
+    subjects:
+    - features.a-engineering.a-hmi
     basis: observed_state
     predicate:
       kind: boolean
@@ -203,9 +230,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the separate permissive/interlock evidence and its practice-state binding. Repeating
-      the current-mode label from W17 does not count.
-    subjects: *id002
+    description: Recover the separate permissive/interlock evidence and its practice-state binding. Repeating the
+      current-mode label from W17 does not establish the result.
+    subjects:
+    - features.a-engineering.a-hmi
     basis: observed_state
     predicate:
       kind: boolean
@@ -219,7 +247,8 @@ propositions:
   c3:
     description: Correctly relate the practice requests, permissives, and observed outcomes. An acknowledgement
       alone does not establish an actuation.
-    subjects: *id003
+    subjects:
+    - features.a-engineering.a-hmi
     basis: observed_state
     predicate:
       kind: boolean
@@ -234,8 +263,10 @@ propositions:
     description: |-
       Demonstrate the intended practice effect under the correct conditions. This supplies W25.MODE and MODE; it does not grant live write authority.
 
-      In the clearly identified practice model, the valid sequence produces visible outlet movement and a matching measured response, contrasting with the acknowledged but ineffective requests investigated earlier. The player has turned process understanding into controlled movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current outlet mapping or live client and does not change the real campaign's reserve.
-    subjects: *id004
+      In the clearly identified practice model, the valid sequence produces visible outlet movement and a matching measured response, contrasting with the acknowledged but ineffective requests investigated earlier. The operator has turned process understanding into controlled movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current outlet mapping or live client and does not change the real operating context's reserve.
+    subjects:
+    - features.a-engineering.a-hmi
+    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -281,7 +312,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W25.1: The operating envelope'
+    name: 'This action: The operating envelope'
     description: |-
       Recover the outlet's current operating envelope: the limits within which a release can occur.
 
@@ -289,7 +320,7 @@ objectives:
     agent: participant.operator
     actions:
     - w25.c1
-    targets: &id005
+    targets:
     - features.a-engineering.a-hmi
     success:
       mode: all_of
@@ -299,7 +330,7 @@ objectives:
       workflows:
       - w25.c1
   c2:
-    name: 'W25.2: Conditions before movement'
+    name: 'This action: Conditions before movement'
     description: |-
       Recover the control-permissive record and identify the condition withholding movement in the supplied practice state.
 
@@ -307,7 +338,7 @@ objectives:
     agent: participant.operator
     actions:
     - w25.c2
-    targets: &id006
+    targets:
     - features.a-engineering.a-hmi
     success:
       mode: all_of
@@ -317,7 +348,7 @@ objectives:
       workflows:
       - w25.c2
   c3:
-    name: 'W25.3: Accepted is not actuated'
+    name: 'This action: Accepted is not actuated'
     description: |-
       Resolve why the supplied practice requests receive acknowledgements without producing the expected outlet movement.
 
@@ -325,7 +356,7 @@ objectives:
     agent: participant.operator
     actions:
     - w25.c3
-    targets: &id007
+    targets:
     - features.a-engineering.a-hmi
     success:
       mode: all_of
@@ -335,7 +366,7 @@ objectives:
       workflows:
       - w25.c3
   c4:
-    name: 'W25.4: A sequence the process can follow'
+    name: 'This action: A sequence the process can follow'
     description: |-
       Construct a valid practice sequence that respects the operating envelope and produces the specified bounded movement.
 
@@ -343,7 +374,7 @@ objectives:
     agent: participant.operator
     actions:
     - w25.c4
-    targets: &id008
+    targets:
     - features.a-engineering.a-hmi
     - features.a-control.a-instruments
     success:
@@ -355,8 +386,8 @@ objectives:
       - w25.c4
 workflows:
   c1:
-    description: 'W25.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -378,8 +409,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W25.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -401,8 +432,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W25.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -425,8 +456,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W25.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -453,25 +484,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: 'Recover the outlet''s current operating envelope: the limits within which a release
-      can occur.'
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Envelope ENV-OG2-R6 limits each gate to 0.50 m3/s, aggregate to 1.00 m3/s, ramp to 0.10 m3/s per 20 seconds, hold to 1200 seconds, and volume to 1.20 ML. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual channel, rate, and volume constraints with their applicable context. This supplies W25.ENVELOPE and ENVELOPE, not a release plan. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ENV-OG2-R6`, `PRACTICE-OG2-07`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w25.c1
+      - features.a-engineering.a-hmi
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-hmi` and its `supervisory-operations` application own this part of **The operating envelope**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Envelope ENV-OG2-R6 limits each gate to 0.50 m3/s, aggregate to 1.00 m3/s, ramp to 0.10 m3/s per 20 seconds, hold to 1200 seconds, and volume to 1.20 ML.
+
+        Native bindings:
+
+        - `a-engineering.a-hmi/supervisory-operations/the-operating-envelope`
+
+        The private service-loader contract is `content.arwc-a-hmi.w25-1-the-operating-envelope`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-hmi
+      - content.arwc-a-hmi.w25-1-the-operating-envelope
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies W25.ENVELOPE and ENVELOPE. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-hmi
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual channel, rate, and volume constraints with their applicable context.
-        This supplies W25.ENVELOPE and ENVELOPE, not a release plan.
-      target_refs: *id005
+      description: Recover the actual channel, rate, and volume constraints with their applicable context. This
+        supplies W25.ENVELOPE and ENVELOPE, not a release plan.
+      target_refs:
+      - features.a-engineering.a-hmi
+      evidence_refs:
+      - evidence_requirements.w25.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-hmi
       evidence_refs:
       - evidence_requirements.w25.c1
     failure_classes:
@@ -485,25 +551,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the control-permissive record and identify the condition withholding movement
-      in the supplied practice state.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Practice permissive PRACTICE-PERM-02 is false in supplied state because simulation reset_complete is not asserted; live permissive PERM-OG2-LIVE-R4 is separate. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the separate permissive/interlock evidence and its practice-state binding. Repeating the current-mode label from W17 does not establish the result. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ENV-OG2-R6`, `PRACTICE-OG2-07`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w25.c2
+      - features.a-engineering.a-hmi
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-hmi` and its `supervisory-operations` application own this part of **Conditions before movement**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Practice permissive PRACTICE-PERM-02 is false in supplied state because simulation reset_complete is not asserted; live permissive PERM-OG2-LIVE-R4 is separate.
+
+        Native bindings:
+
+        - `a-engineering.a-hmi/supervisory-operations/conditions-before-movement`
+
+        The private service-loader contract is `content.arwc-a-hmi.w25-2-conditions-before-movement`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-hmi
+      - content.arwc-a-hmi.w25-2-conditions-before-movement
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-hmi
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the separate permissive/interlock evidence and its practice-state binding.
-        Repeating the current-mode label from W17 does not count.
-      target_refs: *id006
+      description: Recover the separate permissive/interlock evidence and its practice-state binding. Repeating
+        the current-mode label from W17 does not establish the result.
+      target_refs:
+      - features.a-engineering.a-hmi
+      evidence_refs:
+      - evidence_requirements.w25.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-hmi
       evidence_refs:
       - evidence_requirements.w25.c2
     failure_classes:
@@ -517,25 +618,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Resolve why the supplied practice requests receive acknowledgements without producing
-      the expected outlet movement.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Practice requests PRACTICE-REQ-11 and PRACTICE-REQ-12 are acknowledged but not actuated while PRACTICE-PERM-02 is false; simulator measurements remain at zero. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Correctly relate the practice requests, permissives, and observed outcomes. An acknowledgement alone does not establish an actuation. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ENV-OG2-R6`, `PRACTICE-OG2-07`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w25.c3
+      - features.a-engineering.a-hmi
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-hmi` and its `supervisory-operations` application own this part of **Accepted is not actuated**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Practice requests PRACTICE-REQ-11 and PRACTICE-REQ-12 are acknowledged but not actuated while PRACTICE-PERM-02 is false; simulator measurements remain at zero.
+
+        Native bindings:
+
+        - `a-engineering.a-hmi/supervisory-operations/accepted-is-not-actuated`
+
+        The private service-loader contract is `content.arwc-a-hmi.w25-3-accepted-is-not-actuated`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-hmi
+      - content.arwc-a-hmi.w25-3-accepted-is-not-actuated
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-hmi
     effects:
     - effect_id: outcome
       effect_class: intended_effect
       description: Correctly relate the practice requests, permissives, and observed outcomes. An acknowledgement
         alone does not establish an actuation.
-      target_refs: *id007
+      target_refs:
+      - features.a-engineering.a-hmi
+      evidence_refs:
+      - evidence_requirements.w25.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-hmi
       evidence_refs:
       - evidence_requirements.w25.c3
     failure_classes:
@@ -549,28 +685,70 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Construct a valid practice sequence that respects the operating envelope and produces
-      the specified bounded movement.
+    procedure_basis: |-
+      The authored condition is **interlock-aware practice sequencing**. Practice checkpoint PRACTICE-OG2-07 accepts a permissive transition then ramps each simulated gate linearly to 0.15 m3/s for 30 seconds, holds 70 seconds, and ramps closed for 30 seconds; 100 full-flow-equivalent seconds independently report 0.03 ML without changing live reserve. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the intended practice effect under the correct conditions. This supplies W25.MODE and MODE; it does not grant live write authority. In the clearly identified practice model, the valid sequence produces visible outlet movement and a matching measured response, contrasting with the acknowledged but ineffective requests investigated earlier. The operator has turned process understanding into controlled movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current outlet mapping or live client and does not change the real operating context's reserve. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ENV-OG2-R6`, `PRACTICE-OG2-07`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w25.c4
+      - features.a-engineering.a-hmi
+      - features.a-control.a-instruments
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-hmi` and its `supervisory-operations` application own this part of **A sequence the process can follow**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Practice checkpoint PRACTICE-OG2-07 accepts a permissive transition then ramps each simulated gate linearly to 0.15 m3/s for 30 seconds, holds 70 seconds, and ramps closed for 30 seconds; 100 full-flow-equivalent seconds independently report 0.03 ML without changing live reserve.
+
+        Native bindings:
+
+        - `a-engineering.a-hmi/supervisory-operations/a-sequence-the-process-can-follow`
+        - `a-control.a-instruments/independent-instruments/a-sequence-the-process-can-follow`
+
+        The private service-loader contract is `content.arwc-a-hmi.w25-4-a-sequence-the-process-can-follow`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-hmi
+      - features.a-control.a-instruments
+      - content.arwc-a-hmi.w25-4-a-sequence-the-process-can-follow
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies W25.MODE and MODE without live authority. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-hmi
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
+      description: Demonstrate the intended practice effect under the correct conditions. This supplies W25.MODE
+        and MODE; it does not grant live write authority. In the clearly identified practice model, the valid sequence
+        produces visible outlet movement and a matching measured response, contrasting with the acknowledged but
+        ineffective requests investigated earlier. The operator has turned process understanding into controlled
+        movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current
+        outlet mapping or live client and does not change the real operating context's reserve.
+      target_refs:
+      - features.a-engineering.a-hmi
+      - features.a-control.a-instruments
+      evidence_refs:
+      - evidence_requirements.w25.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
       description: |-
-        Demonstrate the intended practice effect under the correct conditions. This supplies W25.MODE and MODE; it does not grant live write authority.
+        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
 
-        In the clearly identified practice model, the valid sequence produces visible outlet movement and a matching measured response, contrasting with the acknowledged but ineffective requests investigated earlier. The player has turned process understanding into controlled movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current outlet mapping or live client and does not change the real campaign's reserve.
-      target_refs: *id008
+        Evidence sources are `features.a-engineering.a-hmi`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-hmi
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w25.c4
     failure_classes:
@@ -580,125 +758,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-hmi
-    description: W25.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w25.c1
-      mode: read
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-hmi
-    description: W25.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w25.c2
-      mode: read
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-hmi
-    description: W25.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w25.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-hmi
-    description: W25.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w25.c4
-      mode: service
-  c4-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-instruments
-    description: W25.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w25.c4
-      mode: read
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W25.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The documented outlet operating envelope, separate permissive records, and a private practice model with visible observations.
-    target: a-engineering.a-hmi
-    tags:
-    - synthetic
-    - w25
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The documented outlet operating envelope, separate permissive records, and a private
-        practice model with visible observations.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W25.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The documented outlet operating envelope, separate permissive records, and a private practice model with visible observations.
-    target: a-engineering.a-hmi
-    tags:
-    - synthetic
-    - w25
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The documented outlet operating envelope, separate permissive records, and a private
-        practice model with visible observations.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W25.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The documented outlet operating envelope, separate permissive records, and a private practice model with visible observations.
-    target: a-engineering.a-hmi
-    tags:
-    - synthetic
-    - w25
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The documented outlet operating envelope, separate permissive records, and a private
-        practice model with visible observations.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W25.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The documented outlet operating envelope, separate permissive records, and a private practice model with visible observations.
-    target: a-engineering.a-hmi
-    tags:
-    - synthetic
-    - w25
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The documented outlet operating envelope, separate permissive records, and a private
-        practice model with visible observations.
-  c4-records-2:
-    type: dataset
-    description: |-
-      W25.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The documented outlet operating envelope, separate permissive records, and a private practice model with visible observations.
-    target: a-control.a-instruments
-    tags:
-    - synthetic
-    - w25
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The documented outlet operating envelope, separate permissive records, and a private
-        practice model with visible observations.

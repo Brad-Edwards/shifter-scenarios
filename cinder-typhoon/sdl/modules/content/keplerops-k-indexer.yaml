@@ -1,0 +1,323 @@
+name: cinder-keplerops-k-indexer
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-k-indexer
+  version: 0.1.0
+  exports:
+    content:
+    - k04-1-a-bundle-with-consequences
+    - k04-2-read-past-the-index
+    - k04-3-control-the-allocation
+    - k04-4-the-exception-queue
+realization:
+  default: open
+content:
+  k04-1-a-bundle-with-consequences:
+    type: file
+    target: k-delivery.k-indexer
+    path: /var/lib/fieldkest-indexer/contracts/a-bundle-with-consequences.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: a-bundle-with-consequences
+      owner:
+        node: k-indexer
+        authority: Native bundle indexer on k-indexer
+      surface_bindings:
+      - k-delivery.k-indexer/bundle-indexer/bundle-submit
+      - k-delivery.k-indexer/bundle-indexer/index-result
+      starting_state: Source and reproducible build input for fieldkest-bundle-indexer 1.8.0;
+        signed valid bundles; C++17 object decoder whose 16-bit entry length is widened
+        after allocation; sentinel object.
+      mechanic_profile:
+        implementation: C++17, Linux x86_64, fieldkest-bundle-indexer 1.8.0
+        build:
+        - -std=c++17
+        - -O2
+        - -fno-omit-frame-pointer
+        - retain symbols and linker map
+        envelope: FKB1 || u16le allocated_length || u32le verified_body_length || body ||
+          blake2s-256 tag
+        defect: allocate allocated_length bytes, authenticate verified_body_length bytes,
+          then copy verified_body_length bytes into that allocation
+        bounds: accepted body is 1..4096 bytes; allocated_length is 1..4096; the intended
+          fixture uses 32 allocated bytes and 48 copied bytes
+        adjacency: the 16 overflow bytes reach only the operator-scoped sentinel object;
+          guard pages surround the exercise arena
+        normal_case: equal lengths index successfully and leave the sentinel unchanged
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Source and reproducible build input for fieldkest-bundle-indexer 1.8.0; signed
+          valid bundles; C++17 object decoder whose 16-bit entry length is widened after
+          allocation; sentinel object.
+        success: Controlled sentinel mutation plus a later normal index transaction.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Controlled sentinel mutation plus a later normal index transaction.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Foundation of isolated elite branch.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 66c168a5d1f46bbec1e8712b777edc0fa805a86a34f343377c2d20d39f533b6e
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-indexer
+    - persistent-tenant-state
+  k04-2-read-past-the-index:
+    type: file
+    target: k-delivery.k-indexer
+    path: /var/lib/fieldkest-indexer/contracts/read-past-the-index.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: read-past-the-index
+      owner:
+        node: k-indexer
+        authority: Indexer process on k-indexer
+      surface_bindings:
+      - k-delivery.k-indexer/bundle-indexer/index-result
+      starting_state: Protected runtime descriptor containing process generation, arena/object
+        marker and keyed integrity relation outside ordinary index.
+      mechanic_profile:
+        descriptor_fields:
+        - process_generation
+        - arena_base_offset
+        - sentinel_offset
+        - sentinel_value
+        - integrity_tag
+        integrity: BLAKE2s-256 keyed with the per-world descriptor key over the preceding
+          fields in canonical CBOR order
+        disclosure: the descriptor route returns only the current operator arena and never
+          an address outside the exercise process
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Protected runtime descriptor containing process generation, arena/object
+          marker and keyed integrity relation outside ordinary index.
+        success: Bounded disclosure response whose fields mutually validate.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Bounded disclosure response whose fields mutually validate.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Supplies layout/state evidence only.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 163e1c8ca64c346a25d5c04ade42cda92255b9b15ab250f97d27d0106214b7c8
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-indexer
+    - persistent-tenant-state
+  k04-3-control-the-allocation:
+    type: file
+    target: k-delivery.k-indexer
+    path: /var/lib/fieldkest-indexer/contracts/control-the-allocation.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: control-the-allocation
+      owner:
+        node: k-indexer
+        authority: Indexer process on k-indexer
+      surface_bindings:
+      - k-delivery.k-indexer/bundle-indexer/exception-state
+      - k-delivery.k-indexer/bundle-indexer/bundle-submit
+      starting_state: Designated release-exception state object with value and integrity
+        fields.
+      mechanic_profile:
+        state_object: release_exception/REX-2026-091
+        requested_value: approved-for-diagnostic-review
+        write_rule: the bounded overwrite changes value and recomputes the keyed BLAKE2s
+          integrity field; all other object bytes are immutable
+        liveness: one subsequent valid FKB1 bundle must index successfully in the same process
+          generation
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Designated release-exception state object with value and integrity fields.
+        success: State becomes requested value with valid integrity; service completes normal
+          index afterward.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: State becomes requested value with valid integrity; service completes
+        normal index afterward.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Supplies scoped write primitive.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 1964b5eb944ad98bb026588598bac2f7067e64d311f4d3085fe20deb078026a3
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-indexer
+    - persistent-tenant-state
+  k04-4-the-exception-queue:
+    type: file
+    target: k-delivery.k-indexer
+    path: /var/lib/fieldkest-indexer/contracts/the-exception-queue.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-exception-queue
+      owner:
+        node: k-indexer
+        authority: Indexer worker and queue on k-indexer
+      surface_bindings:
+      - k-delivery.k-indexer/bundle-indexer/complete-exception
+      starting_state: Restricted worker identity; encrypted queue dossier REX-2026-091;
+        one internal complete_exception(record_id) routine.
+      mechanic_profile:
+        routine: complete_exception(record_id)
+        allowed_record: REX-2026-091
+        authority: the routine executes only as the restricted indexer worker and returns
+          the one decrypted queue dossier
+        exclusions: no shell, arbitrary file read, dynamic symbol selection, record enumeration,
+          or caller-selected command
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Restricted worker identity; encrypted queue dossier REX-2026-091; one internal
+          complete_exception(record_id) routine.
+        success: Audited invocation under worker identity returns one decrypted dossier;
+          no general command execution.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Audited invocation under worker identity returns one decrypted
+        dossier; no general command execution.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Alternative K29 lead.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: fd03466ab513891e83eec1547dd5748c6a968dca6c42e75f93798688b4b6d76b
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-indexer
+    - persistent-tenant-state

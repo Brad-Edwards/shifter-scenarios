@@ -33,21 +33,15 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual trust record and its identity binding. It is separate evidence from
-      the preceding workload-access result.
-    source_refs: &id001
+    description: |-
+      Recover the actual trust record and its identity binding. It is separate evidence from the preceding workload-access result.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-cloud-api--authority
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -76,10 +70,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c2:
-    description: Demonstrate the resulting role against its protected record. Obtaining and using that
-      role earn one score; this is the K14 scoped-role output.
-    source_refs: &id002
+    description: |-
+      Demonstrate the resulting role against its protected record. Obtaining and using that role earn one accepted result; this is the K14 scoped-role output.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-cloud-api--authority
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -108,10 +109,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c3:
-    description: Recover the support export through its distinct policy boundary. A successful role exchange
-      alone is insufficient.
-    source_refs: &id003
+    description: |-
+      Recover the support export through its distinct policy boundary. A successful role exchange alone is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -140,11 +148,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
 propositions:
   c1:
-    description: Recover the actual trust record and its identity binding. It is separate evidence from
-      the preceding workload-access result.
-    subjects: *id001
+    description: Recover the actual trust record and its identity binding. It is separate evidence from the preceding
+      workload-access result.
+    subjects:
+    - features.k-cloud.k-cloud-api--authority
     basis: observed_state
     predicate:
       kind: boolean
@@ -156,9 +170,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate the resulting role against its protected record. Obtaining and using that
-      role earn one score; this is the K14 scoped-role output.
-    subjects: *id002
+    description: Demonstrate the resulting role against its protected record. Obtaining and using that role earn
+      one accepted result; this is the K14 scoped-role output.
+    subjects:
+    - features.k-cloud.k-cloud-api--authority
     basis: observed_state
     predicate:
       kind: boolean
@@ -170,9 +185,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the support export through its distinct policy boundary. A successful role exchange
-      alone is insufficient.
-    subjects: *id003
+    description: Recover the support export through its distinct policy boundary. A successful role exchange alone
+      is insufficient.
+    subjects:
+    - features.k-cloud.k-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -218,7 +234,7 @@ objectives:
     agent: participant.operator
     actions:
     - k14.c1
-    targets: &id004
+    targets:
     - features.k-cloud.k-cloud-api--authority
     success:
       mode: all_of
@@ -236,7 +252,7 @@ objectives:
     agent: participant.operator
     actions:
     - k14.c2
-    targets: &id005
+    targets:
     - features.k-cloud.k-cloud-api--authority
     success:
       mode: all_of
@@ -254,7 +270,7 @@ objectives:
     agent: participant.operator
     actions:
     - k14.c3
-    targets: &id006
+    targets:
     - features.k-cloud.k-data
     success:
       mode: all_of
@@ -265,8 +281,8 @@ objectives:
       - k14.c3
 workflows:
   c1:
-    description: 'K14.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K14.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -292,8 +308,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K14.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K14.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -315,8 +331,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K14.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K14.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -342,24 +358,47 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the workload's current trust document and the service relationship it describes.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Authenticated trust-record read. Merely describing the condition, editing a local
+      copy, or presenting a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k14.c1
       - features.k-cloud.k-cloud-api--authority
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-cloud-api` owns this part of the operation. Its starting state is exact: Trust record TRUST-FLX-04
+        with issuer, subject, accepted audiences and export-role relationship. The owning service uses the listener,
+        route, identity, authorization, storage, and audit contract declared in the corresponding world module.
+        Records that are not explicitly mutable remain immutable. The private service-loader contract `content.keplerops-k-cloud-api.k14-1-the-trust-document`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-cloud-api
+      - content.keplerops-k-cloud-api.k14-1-the-trust-document
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Separate evidence from K13.4/K09.4. Participant-created service state persists for the life of
+        the participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
+        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
+        outside this in-world contract.
+      support_refs:
+      - features.k-cloud.k-cloud-api
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual trust record and its identity binding. It is separate evidence from
-        the preceding workload-access result.
-      target_refs: *id004
+      description: Recover the actual trust record and its identity binding. It is separate evidence from the preceding
+        workload-access result.
+      target_refs:
+      - features.k-cloud.k-cloud-api--authority
       evidence_refs:
       - evidence_requirements.k14.c1
     failure_classes:
@@ -373,25 +412,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Use the workload trust relationship to establish the scoped role intended for another
-      audience and retrieve its protected role record.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Role session role/support-export-editor and protected role-record read. Merely describing
+      the condition, editing a local copy, or presenting a value obtained from another surface does not satisfy
+      the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k14.c2
       - features.k-cloud.k-cloud-api--authority
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-cloud-api` owns this part of the operation. Its starting state is exact: Policy validates
+        issuer/subject but omits audience; supplied workload token has wrong intended audience but matching subject.
+        The owning service uses the listener, route, identity, authorization, storage, and audit contract declared
+        in the corresponding world module. Records that are not explicitly mutable remain immutable. The private
+        service-loader contract `content.keplerops-k-cloud-api.k14-2-intended-for-someone-else` freezes the request,
+        denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-cloud-api
+      - content.keplerops-k-cloud-api.k14-2-intended-for-someone-else
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Scoped-role output for K16/K31. Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
+        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
+        outside this in-world contract.
+      support_refs:
+      - features.k-cloud.k-cloud-api
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the resulting role against its protected record. Obtaining and using that
-        role earn one score; this is the K14 scoped-role output.
-      target_refs: *id005
+      description: Demonstrate the resulting role against its protected record. Obtaining and using that role earn
+        one accepted result; this is the K14 scoped-role output.
+      target_refs:
+      - features.k-cloud.k-cloud-api--authority
       evidence_refs:
       - evidence_requirements.k14.c2
     failure_classes:
@@ -405,25 +468,48 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The new role is still denied the support export. Cross the export's own resource
-      boundary and recover the specified support data.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Protected export read under scoped role. Merely describing the condition, editing
+      a local copy, or presenting a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k14.c3
+      - features.k-cloud.k-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-data` owns this part of the operation. Its starting state is exact: Role is ordinarily denied
+        support export; resource rule decodes %2f after prefix comparison, allowing one fixed exports/support/EXP-2841
+        object. The owning service uses the listener, route, identity, authorization, storage, and audit contract
+        declared in the corresponding world module. Records that are not explicitly mutable remain immutable. The
+        private service-loader contract `content.keplerops-k-data.k14-3-the-export-s-separate-rule` freezes the
+        request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-data
+      - content.keplerops-k-data.k14-3-the-export-s-separate-rule
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Distinct data-policy result. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
       - features.k-cloud.k-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the support export through its distinct policy boundary. A successful role
-        exchange alone is insufficient.
-      target_refs: *id006
+      description: Recover the support export through its distinct policy boundary. A successful role exchange alone
+        is insufficient.
+      target_refs:
+      - features.k-cloud.k-data
       evidence_refs:
       - evidence_requirements.k14.c3
     failure_classes:
@@ -433,77 +519,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-cloud-api--authority
-    description: K14.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k14.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-cloud-api--authority
-    description: K14.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k14.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-data
-    description: K14.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k14.c3
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K14.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned workload context, its trust documentation, and the support-export service's ordinary policy view.
-    target: k-cloud.k-cloud-api
-    tags:
-    - synthetic
-    - k14
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned workload context, its trust documentation, and the support-export service's
-        ordinary policy view.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K14.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned workload context, its trust documentation, and the support-export service's ordinary policy view.
-    target: k-cloud.k-cloud-api
-    tags:
-    - synthetic
-    - k14
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned workload context, its trust documentation, and the support-export service's
-        ordinary policy view.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K14.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned workload context, its trust documentation, and the support-export service's ordinary policy view.
-    target: k-cloud.k-data
-    tags:
-    - synthetic
-    - k14
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned workload context, its trust documentation, and the support-export service's
-        ordinary policy view.

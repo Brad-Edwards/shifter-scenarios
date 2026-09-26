@@ -1,0 +1,1154 @@
+name: cinder-arwc-a-archive
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/arwc-a-archive
+  version: 0.1.0
+  exports:
+    content:
+    - w04-1-the-archive-s-missing-contract
+    - w04-2-the-query-behind-the-identity
+    - w04-3-the-archive-helper-acts
+    - w08-1-something-in-the-work-bundle
+    - w08-2-reassemble-the-exchange
+    - w08-3-the-collector-inside-the-handover
+    - w08-4-where-the-contractor-put-it
+    - w12-1-a-collector-in-quarantine
+    - w12-2-how-the-collection-was-protected
+    - w12-3-the-cold-archive-opens
+    - w12-4-a-collection-path-still-alive
+    - w16-1-the-sequencer-s-vocabulary
+    - w16-2-an-observation-outside-the-window
+    - w16-3-an-experiment-with-a-signal
+    - w16-4-what-the-instrument-remembers
+realization:
+  default: open
+content:
+  w04-1-the-archive-s-missing-contract:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/the-archive-s-missing-contract.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-archive-s-missing-contract
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/the-archive-s-missing-contract
+      starting_state: Archive workflow AWF-CRR-229-R4 binds attachment ARC-229-A, protected record AR-CRR-229, and one-use
+        enrollment profile ArchiveSubmitter, which fixes CN to the corporate subject and clientAuth EKU but permits a
+        caller-supplied organizationalUnit.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Archive workflow AWF-CRR-229-R4 binds attachment ARC-229-A, protected record AR-CRR-229, and
+          one-use enrollment profile ArchiveSubmitter, which fixes CN to the corporate subject and clientAuth EKU but
+          permits a caller-supplied organizationalUnit.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the actual workflow record with its attachment and identity binding. General service
+          discovery is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Archive workflow AWF-CRR-229-R4 binds attachment ARC-229-A, protected record AR-CRR-229, and one-use enrollment
+          profile ArchiveSubmitter, which fixes CN to the corporate subject and clientAuth EKU but permits a caller-supplied
+          organizationalUnit.
+        success: Recover the actual workflow record with its attachment and identity binding. General service discovery
+          is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the actual workflow record with its attachment and identity binding. General service
+        discovery is insufficient.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 69058c38caeb51114ad3bce6d142c7f51ed7b7c9b39e9f9bd15ebeebce489678
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w04-2-the-query-behind-the-identity:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/the-query-behind-the-identity.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-query-behind-the-identity
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/the-query-behind-the-identity
+      starting_state: Archive broker constructs MATCH (i:Identity {ou:'<OU>'})-[:CAN_READ]->(r:ArchiveRecord) RETURN r
+        from the client-certificate organizationalUnit without parameters; ordinary OU MaintenanceArchive returns only
+        the caller record, while the read-only backend permits an injected predicate only for AR-CRR-229 and rejects writes.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: certificate-subject query construction
+        behavior_contract: Archive broker constructs MATCH (i:Identity {ou:'<OU>'})-[:CAN_READ]->(r:ArchiveRecord) RETURN
+          r from the client-certificate organizationalUnit without parameters; ordinary OU MaintenanceArchive returns
+          only the caller record, while the read-only backend permits an injected predicate only for AR-CRR-229 and rejects
+          writes.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the protected backend record through the archive's separate trust boundary. Possessing
+          an identity artifact alone is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Archive broker constructs MATCH (i:Identity {ou:'<OU>'})-[:CAN_READ]->(r:ArchiveRecord) RETURN r from the
+          client-certificate organizationalUnit without parameters; ordinary OU MaintenanceArchive returns only the caller
+          record, while the read-only backend permits an injected predicate only for AR-CRR-229 and rejects writes.
+        success: Recover the protected backend record through the archive's separate trust boundary. Possessing an identity
+          artifact alone is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the protected backend record through the archive's separate trust boundary. Possessing
+        an identity artifact alone is insufficient.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 270a6f84ea985067b71f340d820ae59649a7fadb3921fe6ef656b7d35a4b0bd1
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w04-3-the-archive-helper-acts:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/the-archive-helper-acts.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-archive-helper-acts
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/the-archive-helper-acts
+      starting_state: Archive extraction helper 7-Zip 23.01 runs as svc-archive-helper; member-name validation rejects
+        ASCII dot-dot and slash before NFKC normalization, so U+FF0E U+FF0E U+FF0F becomes ../ and selects the one allowlisted
+        helper action copy_handover(HND-PLANNER-06) into the caller result directory.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: Unicode-normalization archive helper argument confusion
+        behavior_contract: Archive extraction helper 7-Zip 23.01 runs as svc-archive-helper; member-name validation rejects
+          ASCII dot-dot and slash before NFKC normalization, so U+FF0E U+FF0E U+FF0F becomes ../ and selects the one allowlisted
+          helper action copy_handover(HND-PLANNER-06) into the caller result directory.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Demonstrate helper-context execution and recover the handover. It can supply the application
+          material for the declared prior result, not automatic OT control.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Archive extraction helper 7-Zip 23.01 runs as svc-archive-helper; member-name validation rejects ASCII
+          dot-dot and slash before NFKC normalization, so U+FF0E U+FF0E U+FF0F becomes ../ and selects the one allowlisted
+          helper action copy_handover(HND-PLANNER-06) into the caller result directory.
+        success: Demonstrate helper-context execution and recover the handover. It can supply the application material
+          for the declared prior result, not automatic OT control.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Demonstrate helper-context execution and recover the handover. It can supply the application
+        material for the declared prior result, not automatic OT control.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 74a1525fd276545e23282a0acde025bd89299344e13ae2b03b7dc1b7d95f34ec
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w08-1-something-in-the-work-bundle:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/something-in-the-work-bundle.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: something-in-the-work-bundle
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/something-in-the-work-bundle
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/something-in-the-work-bundle
+      starting_state: Retained bundle BND-COLLECT-CRR-12 contains hidden PowerShell script collect-handover.ps1 and collection
+        ID COL-CRR-2019-12.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Retained bundle BND-COLLECT-CRR-12 contains hidden PowerShell script collect-handover.ps1 and
+          collection ID COL-CRR-2019-12.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the actual script and its collection binding. Finding a suspicious filename alone is
+          insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Retained bundle BND-COLLECT-CRR-12 contains hidden PowerShell script collect-handover.ps1 and collection
+          ID COL-CRR-2019-12.
+        success: Recover the actual script and its collection binding. Finding a suspicious filename alone is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the actual script and its collection binding. Finding a suspicious filename alone is
+        insufficient.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 856b243a6647e195a2ea4adbd8eeeb9ae18116d0f38cc68bae7563982787d56a
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w08-2-reassemble-the-exchange:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/reassemble-the-exchange.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: reassemble-the-exchange
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/reassemble-the-exchange
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/reassemble-the-exchange
+      starting_state: Bundle holds Reed-Solomon RS(14,12) shards numbered 0-13, each 96 bytes, over GF(256) with primitive
+        polynomial 0x11d; data positions 7 and 11 are missing while parity positions 12 and 13 remain, and manifest order
+        plus per-shard SHA-256 makes reconstruction yield the collector retrieval instruction.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: ordered erasure-code reconstruction
+        behavior_contract: Interpret shard bytes as coefficients in GF(256) with primitive polynomial 0x11d, generator
+          alpha=2, and systematic Vandermonde rows V[r,c]=alpha^(r*c) for parity rows r=12 and 13 and data columns c=0..11.
+          Shards are numbered 0..13, each is exactly 96 bytes, data shards 7 and 11 are absent, and Gaussian elimination
+          is performed independently at each byte position. The manifest fixes numeric shard order, 96-byte length, and
+          each retained shard's SHA-256; any other polynomial, row convention, order, or digest is rejected.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the complete, correctly ordered exchange and its actual collection instruction. All messaging
+          evidence is supplied inside the scenario.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Bundle holds Reed-Solomon RS(14,12) shards numbered 0-13, each 96 bytes, over GF(256) with primitive polynomial
+          0x11d; data positions 7 and 11 are missing while parity positions 12 and 13 remain, and manifest order plus
+          per-shard SHA-256 makes reconstruction yield the collector retrieval instruction.
+        success: Recover the complete, correctly ordered exchange and its actual collection instruction. All messaging
+          evidence is supplied inside the scenario.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the complete, correctly ordered exchange and its actual collection instruction. All
+        messaging evidence is supplied inside the scenario.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 07bea32db37e198a52aa934005b47439618798f7aa34d3b3d0f67c46ba319592
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w08-3-the-collector-inside-the-handover:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/the-collector-inside-the-handover.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-collector-inside-the-handover
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/the-collector-inside-the-handover
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/the-collector-inside-the-handover
+      starting_state: Reconstructed exchange carries Go 1.22 linux/amd64 collector collector-crr with build ID COLLECT-CRR-12
+        and complete SHA-256 manifest.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: multi-fragment executable reconstruction
+        behavior_contract: Reconstructed exchange carries Go 1.22 linux/amd64 collector collector-crr with build ID COLLECT-CRR-12
+          and complete SHA-256 manifest.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the complete collector with the correct handover binding. A partial payload or an unrelated
+          binary is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Reconstructed exchange carries Go 1.22 linux/amd64 collector collector-crr with build ID COLLECT-CRR-12
+          and complete SHA-256 manifest.
+        success: Recover the complete collector with the correct handover binding. A partial payload or an unrelated binary
+          is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the complete collector with the correct handover binding. A partial payload or an unrelated
+        binary is insufficient.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: c9fb23ed24181c3b357f131de56fc2d5fc537a73c0a8e5719523d5d8450dbc3b
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w08-4-where-the-contractor-put-it:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/where-the-contractor-put-it.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: where-the-contractor-put-it
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/where-the-contractor-put-it
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/where-the-contractor-put-it
+      starting_state: Collector configuration is AES-256-GCM wrapped with HKDF-SHA256 using collector build ID bytes as
+        IKM, ASCII salt COL-CRR-2019, info collector-config/v3, a stored 12-byte nonce, and path config/collector.yaml
+        as AAD; plaintext names archive ARC-COLD-CRR-2019, service collect-archive/v3, and historical identity svc-field-collection.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: build-bound authenticated configuration recovery
+        behavior_contract: Derive exactly 32 bytes with HKDF-SHA256 using the raw collector build-ID bytes as IKM, ASCII
+          COL-CRR-2019 as salt, and ASCII collector-config/v3 as info. Decrypt AES-256-GCM with the stored 12-byte nonce
+          and UTF-8 path config/collector.yaml as AAD; ciphertext is followed by the 16-byte tag. Wrong build ID, salt,
+          info, nonce, path, or tag returns one authentication failure and no plaintext.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the actual configuration and archive binding. It supplies one lead into the declared
+          prior result; it does not grant current plant authority.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Collector configuration is AES-256-GCM wrapped with HKDF-SHA256 using collector build ID bytes as IKM,
+          ASCII salt COL-CRR-2019, info collector-config/v3, a stored 12-byte nonce, and path config/collector.yaml as
+          AAD; plaintext names archive ARC-COLD-CRR-2019, service collect-archive/v3, and historical identity svc-field-collection.
+        success: Recover the actual configuration and archive binding. It supplies one lead into the declared prior result;
+          it does not grant current plant authority.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the actual configuration and archive binding. It supplies one lead into the declared
+        prior result; it does not grant current plant authority.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 8df8339e1e7250225a21d5fa297b2cc9292d36a8dd9df9dc1032acc74a167704
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w12-1-a-collector-in-quarantine:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/a-collector-in-quarantine.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: a-collector-in-quarantine
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/a-collector-in-quarantine
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/a-collector-in-quarantine
+      starting_state: Quarantine object QTN-COL-2019-12 uses custom AQTN1 framing with metadata length, encrypted payload
+        length, SHA-256, and collector build ID COLLECT-CRR-12.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Quarantine object QTN-COL-2019-12 uses custom AQTN1 framing with metadata length, encrypted
+          payload length, SHA-256, and collector build ID COLLECT-CRR-12.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the actual collector and its archive binding. There is no objective to deploy it or damage
+          data.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Quarantine object QTN-COL-2019-12 uses custom AQTN1 framing with metadata length, encrypted payload length,
+          SHA-256, and collector build ID COLLECT-CRR-12.
+        success: Recover the actual collector and its archive binding. There is no objective to deploy it or damage data.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the actual collector and its archive binding. There is no objective to deploy it or
+        damage data.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: f6c510f221ded77e187dd3b93ad0625cf193357921a2333628f8acb314fc5694
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w12-2-how-the-collection-was-protected:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/how-the-collection-was-protected.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: how-the-collection-was-protected
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/how-the-collection-was-protected
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/how-the-collection-was-protected
+      starting_state: Collector uses HKDF-SHA256 with build ID bytes as IKM, archive ID ARC-COLD-CRR-2019 as ASCII salt,
+        and info aqtn1/keys to derive 64 bytes; the first 32 key AES-256-GCM with stored 12-byte nonce and exact AQTN1
+        metadata header as AAD, while the second 32 key AES-256-KW for the archived PKCS#8 object; three known samples
+        freeze byte order, tag placement, unwrap, and authentication-failure behavior.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: authenticated-encryption reconstruction
+        behavior_contract: Collector uses HKDF-SHA256 with build ID bytes as IKM, archive ID ARC-COLD-CRR-2019 as ASCII
+          salt, and info aqtn1/keys to derive 64 bytes; the first 32 key AES-256-GCM with stored 12-byte nonce and exact
+          AQTN1 metadata header as AAD, while the second 32 key AES-256-KW for the archived PKCS#8 object; three known
+          samples freeze byte order, tag placement, unwrap, and authentication-failure behavior.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Produce the correct sample transformations and collection context. Naming a cryptographic algorithm
+          is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Collector uses HKDF-SHA256 with build ID bytes as IKM, archive ID ARC-COLD-CRR-2019 as ASCII salt, and
+          info aqtn1/keys to derive 64 bytes; the first 32 key AES-256-GCM with stored 12-byte nonce and exact AQTN1 metadata
+          header as AAD, while the second 32 key AES-256-KW for the archived PKCS#8 object; three known samples freeze
+          byte order, tag placement, unwrap, and authentication-failure behavior.
+        success: Produce the correct sample transformations and collection context. Naming a cryptographic algorithm is
+          insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Produce the correct sample transformations and collection context. Naming a cryptographic algorithm
+        is insufficient.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: cfe230070f397cf878016b27e3e01ad8067fe03b0ca2fbdd3b48b3d354acaf22
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w12-3-the-cold-archive-opens:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/the-cold-archive-opens.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-cold-archive-opens
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/the-cold-archive-opens
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/the-cold-archive-opens
+      starting_state: Cold archive ARC-COLD-CRR-2019 contains 37 immutable maintenance records, index revision R6, retired
+        client certificate COLLECT-2019-12, its AES-KW-wrapped PKCS#8 key, and rollover record IDREL-COL-R4; only a complete
+        authenticated decryption is accepted.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: authenticated archive recovery
+        behavior_contract: Cold archive ARC-COLD-CRR-2019 contains 37 immutable maintenance records, index revision R6,
+          retired client certificate COLLECT-2019-12, its AES-KW-wrapped PKCS#8 key, and rollover record IDREL-COL-R4;
+          only a complete authenticated decryption is accepted.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the complete, correctly bound historical collection. A sample transformation or an unrelated
+          decrypted record does not establish the result.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Cold archive ARC-COLD-CRR-2019 contains 37 immutable maintenance records, index revision R6, retired client
+          certificate COLLECT-2019-12, its AES-KW-wrapped PKCS#8 key, and rollover record IDREL-COL-R4; only a complete
+          authenticated decryption is accepted.
+        success: Recover the complete, correctly bound historical collection. A sample transformation or an unrelated
+          decrypted record does not establish the result.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the complete, correctly bound historical collection. A sample transformation or an
+        unrelated decrypted record does not establish the result.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: a962c8e05e3c4d5d2e8b410f61a3df499a8e886d5dfb71effc371d74d3c5a6d0
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w12-4-a-collection-path-still-alive:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/a-collection-path-still-alive.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: a-collection-path-still-alive
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/a-collection-path-still-alive
+      starting_state: Current collect-archive/v3 token exchange verifies the old certificate chain and rollover signature
+        but omits the retired-subject status marker before mapping historical svc-field-collection through IDREL-COL-R4;
+        the unwrapped historical key can therefore obtain one ten-minute read-only session for dataset CUR-COL-CRR-R11
+        revision R11.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: historical-to-current identity rollover
+        behavior_contract: Current collect-archive/v3 token exchange verifies the old certificate chain and rollover signature
+          but omits the retired-subject status marker before mapping historical svc-field-collection through IDREL-COL-R4;
+          the unwrapped historical key can therefore obtain one ten-minute read-only session for dataset CUR-COL-CRR-R11
+          revision R11.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover fresh data through the still-restricted collection service with the correct current identity
+          and revision. Replaying the historical archive is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Current collect-archive/v3 token exchange verifies the old certificate chain and rollover signature but
+          omits the retired-subject status marker before mapping historical svc-field-collection through IDREL-COL-R4;
+          the unwrapped historical key can therefore obtain one ten-minute read-only session for dataset CUR-COL-CRR-R11
+          revision R11.
+        success: Recover fresh data through the still-restricted collection service with the correct current identity
+          and revision. Replaying the historical archive is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover fresh data through the still-restricted collection service with the correct current
+        identity and revision. Replaying the historical archive is insufficient.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 39af70b1ebd6f409b22187f6df073d408e792c46d4ff2b0854ef1eba2e67c0e8
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w16-1-the-sequencer-s-vocabulary:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/the-sequencer-s-vocabulary.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-sequencer-s-vocabulary
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/the-sequencer-s-vocabulary
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/the-sequencer-s-vocabulary
+      starting_state: Instrument sequencer SEQ-CRR-4 descriptor defines 256 sample slots, 32 authorized indices, eight
+        opcodes, maximum 64 instructions, and ordinary trace SEQ-BASE-17.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Instrument sequencer SEQ-CRR-4 descriptor defines 256 sample slots, 32 authorized indices,
+          eight opcodes, maximum 64 instructions, and ordinary trace SEQ-BASE-17.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the descriptor and a correctly bound baseline observation. Finding the binary or its
+          version string is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Instrument sequencer SEQ-CRR-4 descriptor defines 256 sample slots, 32 authorized indices, eight opcodes,
+          maximum 64 instructions, and ordinary trace SEQ-BASE-17.
+        success: Recover the descriptor and a correctly bound baseline observation. Finding the binary or its version
+          string is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the descriptor and a correctly bound baseline observation. Finding the binary or its
+        version string is insufficient.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 8566712a9e36cc92ca3b732f229b0aa0d82d33972e202140276835f0008fe451
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w16-2-an-observation-outside-the-window:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/an-observation-outside-the-window.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: an-observation-outside-the-window
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/an-observation-outside-the-window
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/an-observation-outside-the-window
+      starting_state: Interpreter masks an 8-bit sample index before a late authorization check; a rejected out-of-window
+        LOAD still changes the deterministic cycle accumulator without returning the sample.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: late bounds authorization with observable cycle state
+        behavior_contract: 'SEQ-CRR-4 programs contain at most 64 four-byte instructions: opcode, unsigned sample index,
+          operand, and destination. Opcodes are NOP=0, LOAD=1, XOR=2, ADD=3, ROTL=4, TEST=5, STORE=6, HALT=7. LOAD masks
+          the index to eight bits, reads the sample, and adds its data-dependent cost before checking the 32-index authorization
+          bitmap; a rejected read returns no byte but retains the final cycle count. The service accepts at most 4096
+          experiments for the supplied sequencer instance and never writes an instrument.'
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary in-window
+          reading does not establish the result.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Interpreter masks an 8-bit sample index before a late authorization check; a rejected out-of-window LOAD
+          still changes the deterministic cycle accumulator without returning the sample.
+        success: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary in-window reading
+          does not establish the result.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary in-window
+        reading does not establish the result.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 375465c760763a03cbe4fc6393acbce877bb1f356fb779ff2797800ee8cbe780
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w16-3-an-experiment-with-a-signal:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/an-experiment-with-a-signal.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: an-experiment-with-a-signal
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/an-experiment-with-a-signal
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/an-experiment-with-a-signal
+      starting_state: Cycle count is base 1200 plus 64 times popcount(secret_byte XOR probe) with seeded jitter in [-2,2];
+        eight repetitions and supplied reference cases distinguish each bit.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: bounded deterministic side-channel experiment
+        behavior_contract: For a TEST of protected slot j with probe p, reported cycles are 1200 + 64*popcount(sample[j]
+          XOR p) + jitter, where jitter is the next value from the supplied deterministic sequence in [-2,2]. Eight repeats
+          of p=0 and of each single-bit probe identify every bit by the sign of the mean-cycle difference. Supplied zero,
+          one-hot, and 0xff samples freeze bit order, averaging, and the error response.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Demonstrate correct discrimination of the designated independent conditions. Raw timing differences
+          or repeated ordinary sequences are insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Cycle count is base 1200 plus 64 times popcount(secret_byte XOR probe) with seeded jitter in [-2,2]; eight
+          repetitions and supplied reference cases distinguish each bit.
+        success: Demonstrate correct discrimination of the designated independent conditions. Raw timing differences or
+          repeated ordinary sequences are insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Demonstrate correct discrimination of the designated independent conditions. Raw timing differences
+        or repeated ordinary sequences are insufficient.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 677347c15edeced01151684e9ac1bb4e88cf605607e8ce0907cf166c148d4fb0
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state
+  w16-4-what-the-instrument-remembers:
+    type: file
+    target: a-corporate.a-archive
+    path: /var/lib/arwc-archive/contracts/what-the-instrument-remembers.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: what-the-instrument-remembers
+      owner:
+        node: a-archive
+        application: retained-archive
+      surface_bindings:
+      - a-corporate.a-archive/retained-archive/what-the-instrument-remembers
+      - a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/what-the-instrument-remembers
+      starting_state: Protected 32-byte calibration record CAL-CRR-OG2-R8 occupies sequencer slots 160-191 and includes
+        revision R8 plus an internal CRC32C; only descriptor-valid experiments of at most 64 instructions are accepted.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: constrained calibration recovery
+        behavior_contract: Protected 32-byte calibration record CAL-CRR-OG2-R8 occupies sequencer slots 160-191 and includes
+          revision R8 plus an internal CRC32C; only descriptor-valid experiments of at most 64 instructions are accepted.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the complete correctly bound calibration record under the stated diagnostic constraints.
+          It is an optional the declared prior result input; ordinary commissioning records supply an easier alternative.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC archive or helper session
+        input: Protected 32-byte calibration record CAL-CRR-OG2-R8 occupies sequencer slots 160-191 and includes revision
+          R8 plus an internal CRC32C; only descriptor-valid experiments of at most 64 instructions are accepted.
+        success: Recover the complete correctly bound calibration record under the stated diagnostic constraints. It is
+          an optional the declared prior result input; ordinary commissioning records supply an easier alternative.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the complete correctly bound calibration record under the stated diagnostic constraints.
+        It is an optional the declared prior result input; ordinary commissioning records supply an easier alternative.
+      evidence_contract:
+        producer: a-archive/retained-archive writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: af7bf981f41122a786558fcada002c13362652766002d2f8375d8e561d688384
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-archive
+    - persistent-tenant-state

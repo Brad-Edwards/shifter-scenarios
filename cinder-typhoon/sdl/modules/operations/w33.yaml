@@ -40,35 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c1-surface-2
-    - c2-surface-1
-    - c2-surface-2
-    - c3-surface-1
-    - c3-surface-2
-    - c3-surface-3
-    - c4-surface-1
-    - c4-surface-2
-    - c4-surface-3
-    content:
-    - c1-records-1
-    - c1-records-2
-    - c2-records-1
-    - c2-records-2
-    - c3-records-1
-    - c3-records-2
-    - c3-records-3
-    - c4-records-1
-    - c4-records-2
-    - c4-records-3
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Produce the correctly bound forecast within the stated tolerance. Normal commissioning
-      records are sufficient; W16 is never required.
-    source_refs: &id001
+    description: |-
+      Produce the correctly bound forecast within the stated tolerance. Normal commissioning records are sufficient; W16 is never required.
+
+      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-historian`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-hmi
     - features.a-engineering.a-historian
     scope: Per-participant in-world evidence; no other participant state.
@@ -99,10 +81,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Produce a feasible practice trajectory meeting both the reserve-loss objective and every
-      published state constraint. Simply holding the outlet at its maximum cannot satisfy the task.
-    source_refs: &id002
+    description: |-
+      Produce a feasible practice trajectory meeting both the reserve-loss objective and every published state constraint. Simply holding the outlet at its maximum cannot satisfy the task.
+
+      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-hmi`, `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-hmi
     - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
@@ -133,11 +125,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic
-      effect. Bind the advanced schedule to the current evidence and recompute its consequence using the
-      earned model; a valid plan for another schedule or checkpoint is insufficient.
-    source_refs: &id003
+    description: |-
+      Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic effect. Bind the advanced schedule to the current evidence and recompute its consequence using the earned model; a valid plan for another schedule or checkpoint is insufficient.
+
+      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-control.a-reservoir`, `features.a-control.a-distribution`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-control.a-reservoir
     - features.a-control.a-distribution
     - features.a-control.a-instruments
@@ -170,11 +171,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Demonstrate the policy through the scheduler in independent private rehearsal cases within
-      the published bounds, using available observations. A standalone offline policy or one replayed
-      winning schedule is insufficient; scenario time advances on demand.
-    source_refs: &id004
+    description: |-
+      Demonstrate the policy through the scheduler in independent private rehearsal cases within the published bounds, using available observations. A standalone offline policy or one replayed winning schedule is insufficient; scenario time advances on demand.
+
+      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-control.a-reservoir`, `features.a-control.a-distribution`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-control.a-reservoir
     - features.a-control.a-distribution
     - features.a-control.a-instruments
@@ -207,11 +217,19 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Produce the correctly bound forecast within the stated tolerance. Normal commissioning
-      records are sufficient; W16 is never required.
-    subjects: *id001
+    description: Produce the correctly bound forecast within the stated tolerance. Normal commissioning records
+      are sufficient; W16 is never required.
+    subjects:
+    - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
     basis: observed_state
     predicate:
       kind: boolean
@@ -223,9 +241,11 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce a feasible practice trajectory meeting both the reserve-loss objective and every
-      published state constraint. Simply holding the outlet at its maximum cannot satisfy the task.
-    subjects: *id002
+    description: Produce a feasible practice trajectory meeting both the reserve-loss objective and every published
+      state constraint. Simply holding the outlet at its maximum cannot satisfy the task.
+    subjects:
+    - features.a-engineering.a-hmi
+    - features.a-corporate.a-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -237,10 +257,13 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic
-      effect. Bind the advanced schedule to the current evidence and recompute its consequence using the
-      earned model; a valid plan for another schedule or checkpoint is insufficient.
-    subjects: *id003
+    description: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic effect.
+      Bind the advanced schedule to the current evidence and recompute its consequence using the earned model; a
+      valid plan for another schedule or checkpoint is insufficient.
+    subjects:
+    - features.a-control.a-reservoir
+    - features.a-control.a-distribution
+    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -252,10 +275,13 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Demonstrate the policy through the scheduler in independent private rehearsal cases within
-      the published bounds, using available observations. A standalone offline policy or one replayed
-      winning schedule is insufficient; scenario time advances on demand.
-    subjects: *id004
+    description: Demonstrate the policy through the scheduler in independent private rehearsal cases within the
+      published bounds, using available observations. A standalone offline policy or one replayed winning schedule
+      is insufficient; scenario time advances on demand.
+    subjects:
+    - features.a-control.a-reservoir
+    - features.a-control.a-distribution
+    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -301,7 +327,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W33.1: A forecast that matches the instrument'
+    name: 'This action: A forecast that matches the instrument'
     description: |-
       Reconcile calibration and observation delay with the supplied trace so the planning model reproduces the relevant forecast.
 
@@ -309,7 +335,7 @@ objectives:
     agent: participant.operator
     actions:
     - w33.c1
-    targets: &id005
+    targets:
     - features.a-engineering.a-hmi
     - features.a-engineering.a-historian
     success:
@@ -320,15 +346,15 @@ objectives:
       workflows:
       - w33.c1
   c2:
-    name: 'W33.2: The expensive hour'
+    name: 'This action: The expensive hour'
     description: |-
       Construct a time-varying release schedule that meets the practice objective while respecting the declared operating constraints.
 
-      Makes timing and economic context substantive parts of the challenge.
+      Makes timing and economic context substantive parts of the task.
     agent: participant.operator
     actions:
     - w33.c2
-    targets: &id006
+    targets:
     - features.a-engineering.a-hmi
     - features.a-corporate.a-data
     success:
@@ -339,7 +365,7 @@ objectives:
       workflows:
       - w33.c2
   c3:
-    name: 'W33.3: The schedule the service accepts'
+    name: 'This action: The schedule the service accepts'
     description: |-
       Carry the planned release across the scheduler's authorization boundary and demonstrate its bounded economic effect in the live rehearsal.
 
@@ -347,7 +373,7 @@ objectives:
     agent: participant.operator
     actions:
     - w33.c3
-    targets: &id007
+    targets:
     - features.a-control.a-reservoir
     - features.a-control.a-distribution
     - features.a-control.a-instruments
@@ -359,7 +385,7 @@ objectives:
       workflows:
       - w33.c3
   c4:
-    name: 'W33.4: When the forecast moves'
+    name: 'This action: When the forecast moves'
     description: |-
       Run a feedback policy through your earned scheduler capability so the bounded objective is met across the disclosed demand and calibration conditions.
 
@@ -367,7 +393,7 @@ objectives:
     agent: participant.operator
     actions:
     - w33.c4
-    targets: &id008
+    targets:
     - features.a-control.a-reservoir
     - features.a-control.a-distribution
     - features.a-control.a-instruments
@@ -380,8 +406,8 @@ objectives:
       - w33.c4
 workflows:
   c1:
-    description: 'W33.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -403,8 +429,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W33.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -427,8 +453,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W33.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -454,8 +480,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W33.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -481,26 +507,66 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Reconcile calibration and observation delay with the supplied trace so the planning
-      model reproduces the relevant forecast.
+    procedure_basis: |-
+      The authored condition is **delay and calibration forecast reconciliation**. Forecast case FCST-CRR-33 joins 20-second instrument samples, fixed 40-second publication delay, scale gain 1.00, and current map MAP-OG2-R8; tolerance is 0.01 ML. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Produce the correctly bound forecast within the stated tolerance. Normal commissioning records are sufficient; W16 is never required. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-SCHED-33`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w33.c1
+      - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-hmi` and its `supervisory-operations` application own this part of **A forecast that matches the instrument**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Forecast case FCST-CRR-33 joins 20-second instrument samples, fixed 40-second publication delay, scale gain 1.00, and current map MAP-OG2-R8; tolerance is 0.01 ML. Ordinary workplace context reuses `arwc-documents:service-meter-guide`; the work item-specific service state is separate.
+
+        Native bindings:
+
+        - `a-engineering.a-hmi/supervisory-operations/a-forecast-that-matches-the-instrument`
+        - `a-engineering.a-historian/process-historian/a-forecast-that-matches-the-instrument`
+
+        The private service-loader contract is `content.arwc-a-hmi.w33-1-a-forecast-that-matches-the-instrument`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
+      - content.arwc-a-hmi.w33-1-a-forecast-that-matches-the-instrument
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-hmi
       - features.a-engineering.a-historian
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correctly bound forecast within the stated tolerance. Normal commissioning
-        records are sufficient; W16 is never required.
-      target_refs: *id005
+      description: Produce the correctly bound forecast within the stated tolerance. Normal commissioning records
+        are sufficient; W16 is never required.
+      target_refs:
+      - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
+      evidence_refs:
+      - evidence_requirements.w33.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-historian`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w33.c1
     failure_classes:
@@ -514,27 +580,66 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Construct a time-varying release schedule that meets the practice objective while
-      respecting the declared operating constraints.
+    procedure_basis: |-
+      The authored condition is **bounded discrete-time schedule synthesis**. Checkpoint REH-SCHED-33 has twelve 300-second intervals, disclosed demand vector, 180 m3 initial buffer, 120-240 m3 bounds, 160-200 m3 final bound, 0.10 m3/s ramps, and 0.78-0.84 ML reservoir-volume objective. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Produce a feasible practice trajectory meeting both the reserve-loss objective and every published state constraint. Simply holding the outlet at its maximum cannot satisfy the task. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-SCHED-33`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w33.c2
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-hmi` and its `supervisory-operations` application own this part of **The expensive hour**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Checkpoint REH-SCHED-33 has twelve 300-second intervals, disclosed demand vector, 180 m3 initial buffer, 120-240 m3 bounds, 160-200 m3 final bound, 0.10 m3/s ramps, and 0.78-0.84 ML reservoir-volume objective.
+
+        Native bindings:
+
+        - `a-engineering.a-hmi/supervisory-operations/the-expensive-hour`
+        - `a-corporate.a-data/planning-data/the-expensive-hour`
+
+        The private service-loader contract is `content.arwc-a-hmi.w33-2-the-expensive-hour`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
+      - content.arwc-a-hmi.w33-2-the-expensive-hour
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-hmi
       - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce a feasible practice trajectory meeting both the reserve-loss objective and
-        every published state constraint. Simply holding the outlet at its maximum cannot satisfy the
-        task.
-      target_refs: *id006
+      description: Produce a feasible practice trajectory meeting both the reserve-loss objective and every published
+        state constraint. Simply holding the outlet at its maximum cannot satisfy the task.
+      target_refs:
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
+      evidence_refs:
+      - evidence_requirements.w33.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-hmi`, `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w33.c2
     failure_classes:
@@ -548,28 +653,73 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Carry the planned release across the scheduler's authorization boundary and demonstrate
-      its bounded economic effect in the live rehearsal.
+    procedure_basis: |-
+      The authored condition is **authorization-bound private rehearsal**. Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client; reference trajectory releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall, and computes USD 984 liability within the isolated checkpoint. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic effect. Bind the advanced schedule to the current evidence and recompute its consequence using the earned model; a valid plan for another schedule or checkpoint is insufficient. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-SCHED-33`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w33.c3
+      - features.a-control.a-reservoir
+      - features.a-control.a-distribution
+      - features.a-control.a-instruments
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-reservoir` and its `reservoir-controller` application own this part of **The schedule the service accepts**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client; reference trajectory releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall, and computes USD 984 liability within the isolated checkpoint.
+
+        Native bindings:
+
+        - `a-control.a-reservoir/reservoir-controller/the-schedule-the-service-accepts`
+        - `a-control.a-distribution/distribution-rehearsal/the-schedule-the-service-accepts`
+        - `a-control.a-instruments/independent-instruments/the-schedule-the-service-accepts`
+
+        The private service-loader contract is `content.arwc-a-reservoir.w33-3-the-schedule-the-service-accepts`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-control.a-reservoir
+      - features.a-control.a-distribution
+      - features.a-control.a-instruments
+      - content.arwc-a-reservoir.w33-3-the-schedule-the-service-accepts
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-control.a-reservoir
       - features.a-control.a-distribution
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting
-        economic effect. Bind the advanced schedule to the current evidence and recompute its consequence
-        using the earned model; a valid plan for another schedule or checkpoint is insufficient.
-      target_refs: *id007
+      description: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic
+        effect. Bind the advanced schedule to the current evidence and recompute its consequence using the earned
+        model; a valid plan for another schedule or checkpoint is insufficient.
+      target_refs:
+      - features.a-control.a-reservoir
+      - features.a-control.a-distribution
+      - features.a-control.a-instruments
+      evidence_refs:
+      - evidence_requirements.w33.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-control.a-reservoir`, `features.a-control.a-distribution`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-control.a-reservoir
+      - features.a-control.a-distribution
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w33.c3
     failure_classes:
@@ -583,28 +733,73 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Run a feedback policy through your earned scheduler capability so the bounded objective
-      is met across the disclosed demand and calibration conditions.
+    procedure_basis: |-
+      The authored condition is **observation-driven feedback policy evaluation**. Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and bounded buffer and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00, +0.05 m3/s, outlet gain 0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must derive from the buffer and demand observations available at that step, and per-case schedules are rejected. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the policy through the scheduler in independent private rehearsal cases within the published bounds, using available observations. A standalone offline policy or one replayed winning schedule is insufficient; scenario time advances on demand. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-SCHED-33`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w33.c4
+      - features.a-control.a-reservoir
+      - features.a-control.a-distribution
+      - features.a-control.a-instruments
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-reservoir` and its `reservoir-controller` application own this part of **When the forecast moves**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and bounded buffer and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00, +0.05 m3/s, outlet gain 0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must derive from the buffer and demand observations available at that step, and per-case schedules are rejected.
+
+        Native bindings:
+
+        - `a-control.a-reservoir/reservoir-controller/when-the-forecast-moves`
+        - `a-control.a-distribution/distribution-rehearsal/when-the-forecast-moves`
+        - `a-control.a-instruments/independent-instruments/when-the-forecast-moves`
+
+        The private service-loader contract is `content.arwc-a-reservoir.w33-4-when-the-forecast-moves`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-control.a-reservoir
+      - features.a-control.a-distribution
+      - features.a-control.a-instruments
+      - content.arwc-a-reservoir.w33-4-when-the-forecast-moves
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-control.a-reservoir
       - features.a-control.a-distribution
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the policy through the scheduler in independent private rehearsal cases
-        within the published bounds, using available observations. A standalone offline policy or one
-        replayed winning schedule is insufficient; scenario time advances on demand.
-      target_refs: *id008
+      description: Demonstrate the policy through the scheduler in independent private rehearsal cases within the
+        published bounds, using available observations. A standalone offline policy or one replayed winning schedule
+        is insufficient; scenario time advances on demand.
+      target_refs:
+      - features.a-control.a-reservoir
+      - features.a-control.a-distribution
+      - features.a-control.a-instruments
+      evidence_refs:
+      - evidence_requirements.w33.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-control.a-reservoir`, `features.a-control.a-distribution`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-control.a-reservoir
+      - features.a-control.a-distribution
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w33.c4
     failure_classes:
@@ -614,245 +809,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-hmi
-    description: W33.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w33.c1
-      mode: service
-  c1-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-historian
-    description: W33.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w33.c1
-      mode: read
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-hmi
-    description: W33.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w33.c2
-      mode: service
-  c2-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data
-    description: W33.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w33.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-reservoir
-    description: W33.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w33.c3
-      mode: control
-  c3-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-distribution
-    description: W33.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w33.c3
-      mode: control
-  c3-surface-3:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-instruments
-    description: W33.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w33.c3
-      mode: read
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-reservoir
-    description: W33.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w33.c4
-      mode: control
-  c4-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-distribution
-    description: W33.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w33.c4
-      mode: control
-  c4-surface-3:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-instruments
-    description: W33.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w33.c4
-      mode: read
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W33.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
-    target: a-engineering.a-hmi
-    tags:
-    - synthetic
-    - w33
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
-        process/control context for live stages. W16's calibration record is an optional alternative input.
-  c1-records-2:
-    type: dataset
-    description: |-
-      W33.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
-    target: a-engineering.a-historian
-    tags:
-    - synthetic
-    - w33
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
-        process/control context for live stages. W16's calibration record is an optional alternative input.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W33.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
-    target: a-engineering.a-hmi
-    tags:
-    - synthetic
-    - w33
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
-        process/control context for live stages. W16's calibration record is an optional alternative input.
-  c2-records-2:
-    type: dataset
-    description: |-
-      W33.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
-    target: a-corporate.a-data
-    tags:
-    - synthetic
-    - w33
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
-        process/control context for live stages. W16's calibration record is an optional alternative input.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W33.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
-    target: a-control.a-reservoir
-    tags:
-    - synthetic
-    - w33
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
-        process/control context for live stages. W16's calibration record is an optional alternative input.
-  c3-records-2:
-    type: dataset
-    description: |-
-      W33.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
-    target: a-control.a-distribution
-    tags:
-    - synthetic
-    - w33
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
-        process/control context for live stages. W16's calibration record is an optional alternative input.
-  c3-records-3:
-    type: dataset
-    description: |-
-      W33.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
-    target: a-control.a-instruments
-    tags:
-    - synthetic
-    - w33
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
-        process/control context for live stages. W16's calibration record is an optional alternative input.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W33.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
-    target: a-control.a-reservoir
-    tags:
-    - synthetic
-    - w33
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
-        process/control context for live stages. W16's calibration record is an optional alternative input.
-  c4-records-2:
-    type: dataset
-    description: |-
-      W33.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
-    target: a-control.a-distribution
-    tags:
-    - synthetic
-    - w33
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
-        process/control context for live stages. W16's calibration record is an optional alternative input.
-  c4-records-3:
-    type: dataset
-    description: |-
-      W33.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
-    target: a-control.a-instruments
-    tags:
-    - synthetic
-    - w33
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
-        process/control context for live stages. W16's calibration record is an optional alternative input.

@@ -30,26 +30,441 @@ realization:
 nodes:
   subnet:
     type: switch
-    description: 'ARWC: Industrial DMZ. Logical network segment; physical realization and addressing remain
-      open.'
+    description: 'ARWC: Industrial DMZ. Logical network segment; physical realization and addressing remain open.'
   a-data-bridge:
     type: compute
-    description: Integration read gateway
+    description: Scoped integration-read gateway and outbound estimate publication service.
     features:
       a-data-bridge: ''
       a-data-bridge--estimates: ''
+    os: linux
+    services:
+    - name: integration-gateway
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-data-bridge
+        entry_type: directory
+        owner_user: arwc-data-bridge
+        owner_group: arwc-data-bridge
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-data-bridge
+          primary_group: arwc-data-bridge
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-data-bridge
+          members:
+          - arwc-data-bridge
+      network:
+        hostname: a-data-bridge
+        domainname: a-dmz.arwc.test
+        endpoints:
+        - network: a-dmz.subnet
+          ip_address: 10.77.62.20
+          ip_prefix_length: 24
+          gateway: 10.77.62.1
+          aliases:
+          - a-data-bridge
+          dns_names:
+          - integration-gateway.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-dmz segment.
+      service_listeners:
+      - service_listener_id: integration-gateway-https
+        service: integration-gateway
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: integration-gateway
+        service: integration-gateway
+        protocol: https
+        base_path: /
+        description: Scoped integration-read gateway and outbound estimate publication service.
+        routes:
+        - route_id: from-the-report-to-the-live-feed
+          path: /api/from-the-report-to-the-live-feed
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC integration read client
+          session_required: true
+          description: Integration gateway maps INT-CRR-08 and report binding REC-CRR-DP3-17 to live read feed FEED-OG2-R21;
+            stale FEED-OG2-R19 remains reachable but is rejected as current evidence.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: integration-gateway-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: integration-reader-principal
+          kind: service_account
+          name: ARWC integration-reader principal
+          credential_classification: redacted
+        roles:
+        - role_id: integration-reader
+          name: ARWC integration reader
+        permission_grants:
+        - grant_id: integration-reader-declared-routes
+          role_ref: integration-reader
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - from-the-report-to-the-live-feed
+          effect: allow
+        role_mappings:
+        - mapping_id: integration-reader-mapping
+          role_ref: integration-reader
+          users:
+          - integration-reader-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: integration-gateway
+        name: Scoped integration-read gateway and outbound estimate publication service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/integration-gateway
   a-contractor-bridge:
     type: compute
-    description: Contractor read gateway
+    description: Inspection-scoped current process-read gateway.
     features:
       a-contractor-bridge: ''
+    os: linux
+    services:
+    - name: field-gateway
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-contractor-bridge
+        entry_type: directory
+        owner_user: arwc-contractor-bridge
+        owner_group: arwc-contractor-bridge
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-contractor-bridge
+          primary_group: arwc-contractor-bridge
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-contractor-bridge
+          members:
+          - arwc-contractor-bridge
+      network:
+        hostname: a-contractor-bridge
+        domainname: a-dmz.arwc.test
+        endpoints:
+        - network: a-dmz.subnet
+          ip_address: 10.77.62.30
+          ip_prefix_length: 24
+          gateway: 10.77.62.1
+          aliases:
+          - a-contractor-bridge
+          dns_names:
+          - field-gateway.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-dmz segment.
+      service_listeners:
+      - service_listener_id: field-gateway-https
+        service: field-gateway
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: field-gateway
+        service: field-gateway
+        protocol: https
+        base_path: /
+        description: Inspection-scoped current process-read gateway.
+        routes:
+        - route_id: the-service-that-replaced-it
+          path: /api/the-service-that-replaced-it
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC scoped field client
+          session_required: true
+          description: Service manifest marks field-read-legacy.arwc.test retired and process-read.arwc.test process-read/v2
+            active at revision R21 with inspection-scoped authentication.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-fresh-reading-from-the-field
+          path: /api/a-fresh-reading-from-the-field
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped field client
+          session_required: true
+          description: Retained client encodes fieldbag/v1 JSON while process-read/v2 requires CBOR map keys asset,
+            group, observed_at, and nonce; adapted requests can read only OG-CRR-02 for the checked-in inspection.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: field-gateway-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: field-reader-principal
+          kind: service_account
+          name: ARWC field-reader principal
+          credential_classification: redacted
+        roles:
+        - role_id: field-reader
+          name: ARWC field reader
+        permission_grants:
+        - grant_id: field-reader-declared-routes
+          role_ref: field-reader
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - the-service-that-replaced-it
+          - a-fresh-reading-from-the-field
+          effect: allow
+        role_mappings:
+        - mapping_id: field-reader-mapping
+          role_ref: field-reader
+          users:
+          - field-reader-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: field-gateway
+        name: Inspection-scoped current process-read gateway
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/field-gateway
   a-control-broker:
     type: compute
-    description: Scoped maintenance broker
+    description: Approval- and engineering-bound scoped control-client issuer.
     features:
       a-control-broker: ''
       a-control-broker--maintenance-issuer: ''
       a-control-broker--utility-issuer: ''
+    os: linux
+    services:
+    - name: control-broker
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-control-broker
+        entry_type: directory
+        owner_user: arwc-control-broker
+        owner_group: arwc-control-broker
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-control-broker
+          primary_group: arwc-control-broker
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-control-broker
+          members:
+          - arwc-control-broker
+      network:
+        hostname: a-control-broker
+        domainname: a-dmz.arwc.test
+        endpoints:
+        - network: a-dmz.subnet
+          ip_address: 10.77.62.40
+          ip_prefix_length: 24
+          gateway: 10.77.62.1
+          aliases:
+          - a-control-broker
+          dns_names:
+          - control-broker.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-dmz segment.
+      service_listeners:
+      - service_listener_id: control-broker-https
+        service: control-broker
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: control-broker
+        service: control-broker
+        protocol: https
+        base_path: /
+        description: Approval- and engineering-bound scoped control-client issuer.
+        routes:
+        - route_id: an-approval-becomes-a-control-client
+          path: /api/an-approval-becomes-a-control-client
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC issuer evidence or scoped control client
+          session_required: true
+          description: Control issuer verifies approval and renderer attestation but omits the initiating caller-role
+            claim, issuing a five-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: keep-the-authority-you-earned
+          path: /api/keep-the-authority-you-earned
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC issuer evidence or scoped control client
+          session_required: true
+          description: Successful chain calls built-in issue_client for issuer record ISSUER-UTIL-OG2-R4 after setresuid(0,0,0);
+            seccomp permits only the fixed issuer socket and the resulting client matches the declared prior result
+            scope.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: control-broker-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: control-issuer-principal
+          kind: service_account
+          name: ARWC control-issuer principal
+          credential_classification: redacted
+        roles:
+        - role_id: control-issuer
+          name: ARWC control issuer
+        permission_grants:
+        - grant_id: control-issuer-declared-routes
+          role_ref: control-issuer
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - an-approval-becomes-a-control-client
+          - keep-the-authority-you-earned
+          effect: allow
+        role_mappings:
+        - mapping_id: control-issuer-mapping
+          role_ref: control-issuer
+          users:
+          - control-issuer-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: control-broker
+        name: Approval- and engineering-bound scoped control-client issuer
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/control-broker
+      identity_authorities:
+      - identity_authority_id: arwc-control-client-issuer
+        kind: identity_provider
+        name: ARWC scoped control client issuer
+        namespace: arwc-control
+        domain_name: control-broker.arwc.test
+        issuer: https://control-broker.arwc.test/
+        services:
+        - service_id: control-client-issuance
+          service: control-broker
+          protocol: oidc
+          address: control-broker.arwc.test
+          port: 443
+        subjects:
+        - subject_id: maintenance-issuer
+          kind: service_account
+          name: Maintenance issuer
+          principal_name: svc-maint-issuer@control.arwc.test
+          enabled: true
+          origin: provisioned
+        - subject_id: utility-issuer
+          kind: service_account
+          name: Engineering utility issuer
+          principal_name: svc-utility-issuer@control.arwc.test
+          enabled: true
+          origin: provisioned
+        policies:
+        - policy_id: og2-bounded-client
+          policy_kind: access
+          name: Bounded outlet-group control client
+          applies_to_refs:
+          - maintenance-issuer
+          - utility-issuer
+          settings:
+          - name: asset
+            values:
+            - AST-CRR-017
+            - OG-CRR-02
+            value_classification: plain
+            origin: operator
+          - name: maximum-lifetime-seconds
+            values:
+            - '300'
+            value_classification: plain
+            origin: operator
 infrastructure:
   subnet: {}
   a-data-bridge:
@@ -70,13 +485,13 @@ features:
   a-data-bridge:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-data-bridge. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-data-bridge. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-contractor-bridge:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-contractor-bridge. A separately scoped in-world interface or
-      principal; access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-contractor-bridge. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
   a-control-broker:
     name: Published interfaces
     type: service
@@ -85,15 +500,15 @@ features:
   a-control-broker--maintenance-issuer:
     name: Approval-bound client issuance
     type: service
-    description: Approval-bound client issuance on a-control-broker. A separately scoped in-world interface
-      or principal; access does not imply ownership of the other authorities on this system.
+    description: Approval-bound client issuance on a-control-broker. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
   a-control-broker--utility-issuer:
     name: Engineering client issuance
     type: service
-    description: Engineering client issuance on a-control-broker. A separately scoped in-world interface
-      or principal; access does not imply ownership of the other authorities on this system.
+    description: Engineering client issuance on a-control-broker. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
   a-data-bridge--estimates:
     name: Outbound estimate publication
     type: service
-    description: Outbound estimate publication on a-data-bridge. A separately scoped in-world interface
-      or principal; access does not imply ownership of the other authorities on this system.
+    description: Outbound estimate publication on a-data-bridge. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.

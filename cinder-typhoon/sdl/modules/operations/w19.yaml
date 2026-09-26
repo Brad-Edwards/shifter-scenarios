@@ -40,23 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the correct diagnostic and project-family binding. K28 can help locate it but
-      is not a prerequisite.
-    source_refs: &id001
+    description: |-
+      Recover the correct diagnostic and project-family binding. K28 can help locate it but is not a prerequisite.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Produce the correct alternate-path result for the supplied input. Naming an execution
-      mode without recovering behavior is insufficient.
-    source_refs: &id002
+    description: |-
+      Produce the correct alternate-path result for the supplied input. Naming an execution mode without recovering behavior is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,10 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Demonstrate the correct decisions and record bindings. Replaying one known accepted input
-      does not count.
-    source_refs: &id003
+    description: |-
+      Demonstrate the correct decisions and record bindings. Replaying one known accepted input does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -149,12 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
     description: |-
-      Recover the actual outlet mapping. This supplies W19.MAP and MAPPING only; W09's allocation evidence and W21's deployed revision remain separate requirements.
+      Recover the actual outlet mapping. This supplies W19.MAP and MAPPING only; W09's allocation evidence and W21's deployed revision remain separate requirements. The conclusion connects the reconstructed diagnostic's result to the physical outlet group and the supplied observations. It earns the same recognition as This action: the operator can identify the part of the reservoir their values describe. This route uses its own recovered evidence and requires neither the ordinary mapping work item nor a new live actuation.
 
-      The conclusion connects the reconstructed diagnostic's result to the physical outlet group and the supplied observations. It earns the same recognition as W18.4: the player can identify the part of the reservoir their values describe. This route uses its own recovered evidence and requires neither the ordinary mapping challenges nor a new live actuation.
-    source_refs: &id004
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -183,11 +205,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the correct diagnostic and project-family binding. K28 can help locate it but
-      is not a prerequisite.
-    subjects: *id001
+    description: Recover the correct diagnostic and project-family binding. K28 can help locate it but is not a
+      prerequisite.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -199,9 +228,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce the correct alternate-path result for the supplied input. Naming an execution
-      mode without recovering behavior is insufficient.
-    subjects: *id002
+    description: Produce the correct alternate-path result for the supplied input. Naming an execution mode without
+      recovering behavior is insufficient.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -213,9 +243,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate the correct decisions and record bindings. Replaying one known accepted input
-      does not count.
-    subjects: *id003
+    description: Demonstrate the correct decisions and record bindings. Replaying one known accepted input does
+      not establish the result.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -230,8 +261,9 @@ propositions:
     description: |-
       Recover the actual outlet mapping. This supplies W19.MAP and MAPPING only; W09's allocation evidence and W21's deployed revision remain separate requirements.
 
-      The conclusion connects the reconstructed diagnostic's result to the physical outlet group and the supplied observations. It earns the same recognition as W18.4: the player can identify the part of the reservoir their values describe. This route uses its own recovered evidence and requires neither the ordinary mapping challenges nor a new live actuation.
-    subjects: *id004
+      The conclusion connects the reconstructed diagnostic's result to the physical outlet group and the supplied observations. It earns the same recognition as This action: the operator can identify the part of the reservoir their values describe. This route uses its own recovered evidence and requires neither the ordinary mapping work item nor a new live actuation.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -277,7 +309,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W19.1: The diagnostic nobody retired'
+    name: 'This action: The diagnostic nobody retired'
     description: |-
       Recover the retained engineering diagnostic associated with the outlet records and identify its actual project family.
 
@@ -285,7 +317,7 @@ objectives:
     agent: participant.operator
     actions:
     - w19.c1
-    targets: &id005
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -295,7 +327,7 @@ objectives:
       workflows:
       - w19.c1
   c2:
-    name: 'W19.2: A second interpretation'
+    name: 'This action: A second interpretation'
     description: |-
       Reconstruct the diagnostic behavior that its initial analysis view does not explain and reproduce the supplied distinguishing result.
 
@@ -303,7 +335,7 @@ objectives:
     agent: participant.operator
     actions:
     - w19.c2
-    targets: &id006
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -313,7 +345,7 @@ objectives:
       workflows:
       - w19.c2
   c3:
-    name: 'W19.3: The hidden check'
+    name: 'This action: The hidden check'
     description: |-
       Recover the diagnostic's hidden validation logic well enough to reproduce its decisions on the specified engineering records.
 
@@ -321,7 +353,7 @@ objectives:
     agent: participant.operator
     actions:
     - w19.c3
-    targets: &id007
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -331,7 +363,7 @@ objectives:
       workflows:
       - w19.c3
   c4:
-    name: 'W19.4: A map from the old diagnostic'
+    name: 'This action: A map from the old diagnostic'
     description: |-
       Use the reconstructed diagnostic to recover a valid mapping of the current outlet group from the supplied observations.
 
@@ -339,7 +371,7 @@ objectives:
     agent: participant.operator
     actions:
     - w19.c4
-    targets: &id008
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -350,8 +382,8 @@ objectives:
       - w19.c4
 workflows:
   c1:
-    description: 'W19.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -373,8 +405,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W19.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -396,8 +428,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W19.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -419,8 +451,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W19.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -446,25 +478,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the retained engineering diagnostic associated with the outlet records and
-      identify its actual project family.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Legacy diagnostic package DIAG-CRR-MIXED-19 contains linux x86_64 ELF, symbols stripped, SHA-256 manifest, project R19 samples, and expected ordinary output. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the correct diagnostic and project-family binding. K28 can help locate it but is not a prerequisite.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w19.c1
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **The diagnostic nobody retired**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Legacy diagnostic package DIAG-CRR-MIXED-19 contains linux x86_64 ELF, symbols stripped, SHA-256 manifest, project R19 samples, and expected ordinary output.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/the-diagnostic-nobody-retired`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/the-diagnostic-nobody-retired`
+
+        The private service-loader contract is `content.arwc-a-engineering.w19-1-the-diagnostic-nobody-retired`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w19-1-the-diagnostic-nobody-retired
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the correct diagnostic and project-family binding. K28 can help locate it but
-        is not a prerequisite.
-      target_refs: *id005
+      description: Recover the correct diagnostic and project-family binding. K28 can help locate it but is not
+        a prerequisite.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w19.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w19.c1
     failure_classes:
@@ -478,25 +546,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Reconstruct the diagnostic behavior that its initial analysis view does not explain
-      and reproduce the supplied distinguishing result.
+    procedure_basis: |-
+      The authored condition is **mixed x86-64 and i386 execution semantics**. The ELF enters an x86-64 stub, loads selector 0x23, and uses RETFQ into a 32-bit compatibility decoder; the return frame and four supplied traces freeze the transition. Decoder registers and address arithmetic wrap at 32 bits, while values returned to the long-mode verifier are zero-extended. Emulating the decoder as 64-bit arithmetic changes two supplied branch decisions and is rejected. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Produce the correct alternate-path result for the supplied input. Naming an execution mode without recovering behavior is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w19.c2
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **A second interpretation**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Binary begins in long mode then uses a far return to a 32-bit compatibility segment for its record decoder; correct analysis must preserve 32-bit wrap and zero-extension behavior.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/a-second-interpretation`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/a-second-interpretation`
+
+        The private service-loader contract is `content.arwc-a-engineering.w19-2-a-second-interpretation`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w19-2-a-second-interpretation
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correct alternate-path result for the supplied input. Naming an execution
-        mode without recovering behavior is insufficient.
-      target_refs: *id006
+      description: Produce the correct alternate-path result for the supplied input. Naming an execution mode without
+        recovering behavior is insufficient.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w19.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w19.c2
     failure_classes:
@@ -510,25 +614,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the diagnostic's hidden validation logic well enough to reproduce its decisions
-      on the specified engineering records.
+    procedure_basis: |-
+      The authored condition is **mixed-width state recovery**. Starting with r=0x6d2b79f5, each input byte b updates r=(ROTL32(r XOR b,5)+0x9e3779b9) mod 2^32. Starting with v=0x243f6a8885a308d3, each completed r updates v=ROTL64(v XOR zero_extend(r)*0x100000001b3,9). The concealed check compares v XOR zero_extend(r) with the embedded little-endian verifier for MIG-OG2-R19-R21; four ordinary inputs and one protected record freeze the recurrence and extension rule. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the correct decisions and record bindings. Replaying one known accepted input does not establish the result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w19.c3
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **The hidden check**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Compatibility decoder uses a 32-bit rolling key and a 64-bit verifier; mixed-width state reveals protected migration record MIG-OG2-R19-R21.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/the-hidden-check`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/the-hidden-check`
+
+        The private service-loader contract is `content.arwc-a-engineering.w19-3-the-hidden-check`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w19-3-the-hidden-check
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the correct decisions and record bindings. Replaying one known accepted
-        input does not count.
-      target_refs: *id007
+      description: Demonstrate the correct decisions and record bindings. Replaying one known accepted input does
+        not establish the result.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w19.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w19.c3
     failure_classes:
@@ -542,27 +682,64 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Use the reconstructed diagnostic to recover a valid mapping of the current outlet
-      group from the supplied observations.
+    procedure_basis: |-
+      The authored condition is **signed legacy-to-current mapping recovery**. Recovered migration record maps legacy project R19 identifiers to CRR-CTRL-R21 and provides a signed comparison digest, but is historical rather than current deployment evidence. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the actual outlet mapping. This supplies W19.MAP and MAPPING only; W09's allocation evidence and W21's deployed revision remain separate requirements. The conclusion connects the reconstructed diagnostic's result to the physical outlet group and the supplied observations. It earns the same recognition as This action: the operator can identify the part of the reservoir their values describe. This route uses its own recovered evidence and requires neither the ordinary mapping work item nor a new live actuation.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w19.c4
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **A map from the old diagnostic**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Recovered migration record maps legacy project R19 identifiers to CRR-CTRL-R21 and provides a signed comparison digest, but is historical rather than current deployment evidence.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/a-map-from-the-old-diagnostic`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/a-map-from-the-old-diagnostic`
+
+        The private service-loader contract is `content.arwc-a-engineering.w19-4-a-map-from-the-old-diagnostic`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w19-4-a-map-from-the-old-diagnostic
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
+      description: 'Recover the actual outlet mapping. This supplies W19.MAP and MAPPING only; W09''s allocation
+        evidence and W21''s deployed revision remain separate requirements. The conclusion connects the reconstructed
+        diagnostic''s result to the physical outlet group and the supplied observations. It earns the same recognition
+        as This action: the operator can identify the part of the reservoir their values describe. This route uses
+        its own recovered evidence and requires neither the ordinary mapping work item nor a new live actuation.'
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w19.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
       description: |-
-        Recover the actual outlet mapping. This supplies W19.MAP and MAPPING only; W09's allocation evidence and W21's deployed revision remain separate requirements.
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
 
-        The conclusion connects the reconstructed diagnostic's result to the physical outlet group and the supplied observations. It earns the same recognition as W18.4: the player can identify the part of the reservoir their values describe. This route uses its own recovered evidence and requires neither the ordinary mapping challenges nor a new live actuation.
-      target_refs: *id008
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w19.c4
     failure_classes:
@@ -572,101 +749,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W19.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w19.c1
-      mode: artifact
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W19.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w19.c2
-      mode: artifact
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W19.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w19.c3
-      mode: artifact
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W19.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w19.c4
-      mode: artifact
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W19.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained engineering diagnostic, ordinary examples, and the current read-only observation context. K28's note is an optional discovery lead.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w19
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained engineering diagnostic, ordinary examples, and the current read-only observation
-        context. K28's note is an optional discovery lead.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W19.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained engineering diagnostic, ordinary examples, and the current read-only observation context. K28's note is an optional discovery lead.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w19
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained engineering diagnostic, ordinary examples, and the current read-only observation
-        context. K28's note is an optional discovery lead.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W19.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained engineering diagnostic, ordinary examples, and the current read-only observation context. K28's note is an optional discovery lead.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w19
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained engineering diagnostic, ordinary examples, and the current read-only observation
-        context. K28's note is an optional discovery lead.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W19.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained engineering diagnostic, ordinary examples, and the current read-only observation context. K28's note is an optional discovery lead.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w19
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained engineering diagnostic, ordinary examples, and the current read-only observation
-        context. K28's note is an optional discovery lead.

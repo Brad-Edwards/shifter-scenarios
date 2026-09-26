@@ -40,25 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    - c4-surface-2
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
-    - c4-records-2
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the correctly bound measurements and interval from the current process view.
-      Reusing the access-demonstration sample from the entry route is insufficient.
-    source_refs: &id001
+    description: |-
+      Recover the correctly bound measurements and interval from the current process view. Reusing the access-demonstration sample from the entry route is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-hmi
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -87,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Recover the actual mode record and its current applicability from its separate source.
-      A default-mode label is insufficient.
-    source_refs: &id002
+    description: |-
+      Recover the actual mode record and its current applicability from its separate source. A default-mode label is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-hmi
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -119,10 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Recover the identifier and the matching instrument description. This identifies the named
-      instrument, not the complete outlet mapping of W18.
-    source_refs: &id003
+    description: |-
+      Recover the identifier and the matching instrument description. This identifies the named instrument, not the complete outlet mapping of W18.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-hmi
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -151,10 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Produce the correctly bound observation trace and reference-event relationship. This
-      supplies W17.OBS through read-only investigation, without granting or requiring outlet-control authority.
-    source_refs: &id004
+    description: |-
+      Produce the correctly bound observation trace and reference-event relationship. This supplies W17.OBS through read-only investigation, without granting or requiring outlet-control authority.
+
+      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-hmi`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-hmi
     - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
@@ -185,11 +207,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the correctly bound measurements and interval from the current process view.
-      Reusing the access-demonstration sample from the entry route is insufficient.
-    subjects: *id001
+    description: Recover the correctly bound measurements and interval from the current process view. Reusing the
+      access-demonstration sample from the entry route is insufficient.
+    subjects:
+    - features.a-engineering.a-hmi
     basis: observed_state
     predicate:
       kind: boolean
@@ -201,9 +230,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the actual mode record and its current applicability from its separate source.
-      A default-mode label is insufficient.
-    subjects: *id002
+    description: Recover the actual mode record and its current applicability from its separate source. A default-mode
+      label is insufficient.
+    subjects:
+    - features.a-engineering.a-hmi
     basis: observed_state
     predicate:
       kind: boolean
@@ -215,9 +245,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the identifier and the matching instrument description. This identifies the named
-      instrument, not the complete outlet mapping of W18.
-    subjects: *id003
+    description: Recover the identifier and the matching instrument description. This identifies the named instrument,
+      not the complete outlet mapping of W18.
+    subjects:
+    - features.a-engineering.a-hmi
     basis: observed_state
     predicate:
       kind: boolean
@@ -229,9 +260,11 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Produce the correctly bound observation trace and reference-event relationship. This
-      supplies W17.OBS through read-only investigation, without granting or requiring outlet-control authority.
-    subjects: *id004
+    description: Produce the correctly bound observation trace and reference-event relationship. This supplies W17.OBS
+      through read-only investigation, without granting or requiring outlet-control authority.
+    subjects:
+    - features.a-engineering.a-hmi
+    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -277,7 +310,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W17.1: The reservoir''s present tense'
+    name: 'This action: The reservoir''s present tense'
     description: |-
       Recover the reservoir's current measured state for the specified observation interval. Distinguish measured values from requested settings.
 
@@ -285,7 +318,7 @@ objectives:
     agent: participant.operator
     actions:
     - w17.c1
-    targets: &id005
+    targets:
     - features.a-engineering.a-hmi
     success:
       mode: all_of
@@ -295,7 +328,7 @@ objectives:
       workflows:
       - w17.c1
   c2:
-    name: 'W17.2: The mode the plant is in'
+    name: 'This action: The mode the plant is in'
     description: |-
       Recover the current operating-mode record and identify what the process presently permits.
 
@@ -303,7 +336,7 @@ objectives:
     agent: participant.operator
     actions:
     - w17.c2
-    targets: &id006
+    targets:
     - features.a-engineering.a-hmi
     success:
       mode: all_of
@@ -313,7 +346,7 @@ objectives:
       workflows:
       - w17.c2
   c3:
-    name: 'W17.3: The instrument in the note'
+    name: 'This action: The instrument in the note'
     description: |-
       Find the instrument described in the controls engineer's note and recover its correct observation identifier.
 
@@ -321,7 +354,7 @@ objectives:
     agent: participant.operator
     actions:
     - w17.c3
-    targets: &id007
+    targets:
     - features.a-engineering.a-hmi
     success:
       mode: all_of
@@ -331,7 +364,7 @@ objectives:
       workflows:
       - w17.c3
   c4:
-    name: 'W17.4: The first live trace'
+    name: 'This action: The first live trace'
     description: |-
       Correlate the routine commissioning reference event with independent process observations and establish which changes belong to that event.
 
@@ -339,7 +372,7 @@ objectives:
     agent: participant.operator
     actions:
     - w17.c4
-    targets: &id008
+    targets:
     - features.a-engineering.a-hmi
     - features.a-control.a-instruments
     success:
@@ -351,8 +384,8 @@ objectives:
       - w17.c4
 workflows:
   c1:
-    description: 'W17.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -374,8 +407,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W17.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -397,8 +430,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W17.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -420,8 +453,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W17.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -449,25 +482,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the reservoir's current measured state for the specified observation interval.
-      Distinguish measured values from requested settings.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Current process view PV-CRR-2026-09-25T1400Z reports measured gate positions, actual flows, integrated volume, and usable reserve for interval 14:00:00-14:05:00Z separately from requested setpoints. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the correctly bound measurements and interval from the current process view. Reusing the access-demonstration sample from the entry route is insufficient. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `EVT-COMM-OG2-114`, `CRR-CTRL-R21`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w17.c1
+      - features.a-engineering.a-hmi
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-hmi` and its `supervisory-operations` application own this part of **The reservoir's present tense**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Current process view PV-CRR-2026-09-25T1400Z reports measured gate positions, actual flows, integrated volume, and usable reserve for interval 14:00:00-14:05:00Z separately from requested setpoints.
+
+        Native bindings:
+
+        - `a-engineering.a-hmi/supervisory-operations/the-reservoir-s-present-tense`
+
+        The private service-loader contract is `content.arwc-a-hmi.w17-1-the-reservoir-s-present-tense`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-hmi
+      - content.arwc-a-hmi.w17-1-the-reservoir-s-present-tense
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-hmi
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the correctly bound measurements and interval from the current process view.
-        Reusing the access-demonstration sample from the entry route is insufficient.
-      target_refs: *id005
+      description: Recover the correctly bound measurements and interval from the current process view. Reusing
+        the access-demonstration sample from the entry route is insufficient.
+      target_refs:
+      - features.a-engineering.a-hmi
+      evidence_refs:
+      - evidence_requirements.w17.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-hmi
       evidence_refs:
       - evidence_requirements.w17.c1
     failure_classes:
@@ -481,25 +549,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the current operating-mode record and identify what the process presently
-      permits.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Mode record MODE-CRR-17 is DRY_PERIOD_MANAGED, effective for project CRR-CTRL-R21 and outlet group OG-CRR-02. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual mode record and its current applicability from its separate source. A default-mode label is insufficient. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `EVT-COMM-OG2-114`, `CRR-CTRL-R21`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w17.c2
+      - features.a-engineering.a-hmi
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-hmi` and its `supervisory-operations` application own this part of **The mode the plant is in**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Mode record MODE-CRR-17 is DRY_PERIOD_MANAGED, effective for project CRR-CTRL-R21 and outlet group OG-CRR-02.
+
+        Native bindings:
+
+        - `a-engineering.a-hmi/supervisory-operations/the-mode-the-plant-is-in`
+
+        The private service-loader contract is `content.arwc-a-hmi.w17-2-the-mode-the-plant-is-in`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-hmi
+      - content.arwc-a-hmi.w17-2-the-mode-the-plant-is-in
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-hmi
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual mode record and its current applicability from its separate source.
-        A default-mode label is insufficient.
-      target_refs: *id006
+      description: Recover the actual mode record and its current applicability from its separate source. A default-mode
+        label is insufficient.
+      target_refs:
+      - features.a-engineering.a-hmi
+      evidence_refs:
+      - evidence_requirements.w17.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-hmi
       evidence_refs:
       - evidence_requirements.w17.c2
     failure_classes:
@@ -513,25 +616,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Find the instrument described in the controls engineer's note and recover its correct
-      observation identifier.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Controls note ENG-CRR-OG2-17 names instrument FIT-CRR-204B and historian tag CRR.OUTLET.02B.FLOW_ACTUAL; ordinary context reuses narrative document me-engineering-note-01-1. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the identifier and the matching instrument description. This identifies the named instrument, not the complete outlet mapping of W18. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `EVT-COMM-OG2-114`, `CRR-CTRL-R21`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w17.c3
+      - features.a-engineering.a-hmi
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-hmi` and its `supervisory-operations` application own this part of **The instrument in the note**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Controls note ENG-CRR-OG2-17 names instrument FIT-CRR-204B and historian tag CRR.OUTLET.02B.FLOW_ACTUAL; ordinary context reuses narrative document me-engineering-note-01-1. Ordinary workplace context reuses `arwc-documents:me-engineering-note-01-1`; the work item-specific service state is separate.
+
+        Native bindings:
+
+        - `a-engineering.a-hmi/supervisory-operations/the-instrument-in-the-note`
+
+        The private service-loader contract is `content.arwc-a-hmi.w17-3-the-instrument-in-the-note`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-hmi
+      - content.arwc-a-hmi.w17-3-the-instrument-in-the-note
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-hmi
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the identifier and the matching instrument description. This identifies the
-        named instrument, not the complete outlet mapping of W18.
-      target_refs: *id007
+      description: Recover the identifier and the matching instrument description. This identifies the named instrument,
+        not the complete outlet mapping of W18.
+      target_refs:
+      - features.a-engineering.a-hmi
+      evidence_refs:
+      - evidence_requirements.w17.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-hmi
       evidence_refs:
       - evidence_requirements.w17.c3
     failure_classes:
@@ -545,27 +683,66 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Correlate the routine commissioning reference event with independent process observations
-      and establish which changes belong to that event.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Commissioning event EVT-COMM-OG2-114 ramped each gate linearly for 20 seconds, held 40 seconds, and ramped closed for 20 seconds; the 60 full-flow-equivalent seconds integrate to 0.012 ML, and HMI plus independent instrument series must correlate to that trace while reusing ordinary narrative document me-commissioning-01. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Produce the correctly bound observation trace and reference-event relationship. This supplies W17.OBS through read-only investigation, without granting or requiring outlet-control authority. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `EVT-COMM-OG2-114`, `CRR-CTRL-R21`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w17.c4
+      - features.a-engineering.a-hmi
+      - features.a-control.a-instruments
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-hmi` and its `supervisory-operations` application own this part of **The first live trace**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Commissioning event EVT-COMM-OG2-114 ramped each gate linearly for 20 seconds, held 40 seconds, and ramped closed for 20 seconds; the 60 full-flow-equivalent seconds integrate to 0.012 ML, and HMI plus independent instrument series must correlate to that trace while reusing ordinary narrative document me-commissioning-01. Ordinary workplace context reuses `arwc-documents:me-commissioning-01`; the work item-specific service state is separate.
+
+        Native bindings:
+
+        - `a-engineering.a-hmi/supervisory-operations/the-first-live-trace`
+        - `a-control.a-instruments/independent-instruments/the-first-live-trace`
+
+        The private service-loader contract is `content.arwc-a-hmi.w17-4-the-first-live-trace`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-hmi
+      - features.a-control.a-instruments
+      - content.arwc-a-hmi.w17-4-the-first-live-trace
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies W17.OBS without control authority. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-hmi
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correctly bound observation trace and reference-event relationship. This
-        supplies W17.OBS through read-only investigation, without granting or requiring outlet-control
-        authority.
-      target_refs: *id008
+      description: Produce the correctly bound observation trace and reference-event relationship. This supplies
+        W17.OBS through read-only investigation, without granting or requiring outlet-control authority.
+      target_refs:
+      - features.a-engineering.a-hmi
+      - features.a-control.a-instruments
+      evidence_refs:
+      - evidence_requirements.w17.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-hmi`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-hmi
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w17.c4
     failure_classes:
@@ -575,127 +752,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-hmi
-    description: W17.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w17.c1
-      mode: read
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-hmi
-    description: W17.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w17.c2
-      mode: read
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-hmi
-    description: W17.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w17.c3
-      mode: read
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-hmi
-    description: W17.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w17.c4
-      mode: read
-  c4-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-instruments
-    description: W17.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w17.c4
-      mode: read
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W17.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Current process observations, a separate mode record, engineering descriptions, and a documented benign reference test.
-    target: a-engineering.a-hmi
-    tags:
-    - synthetic
-    - w17
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Current process observations, a separate mode record, engineering descriptions, and
-        a documented benign reference test.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W17.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Current process observations, a separate mode record, engineering descriptions, and a documented benign reference test.
-    target: a-engineering.a-hmi
-    tags:
-    - synthetic
-    - w17
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Current process observations, a separate mode record, engineering descriptions, and
-        a documented benign reference test.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W17.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Current process observations, a separate mode record, engineering descriptions, and a documented benign reference test.
-    target: a-engineering.a-hmi
-    tags:
-    - synthetic
-    - w17
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Current process observations, a separate mode record, engineering descriptions, and
-        a documented benign reference test.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W17.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The observations and mode evidence from W17.1–W17.3, together with a recorded reference event produced by the process's ordinary commissioning routine. The event is observable through OT_READ; triggering live writes is not required.
-    target: a-engineering.a-hmi
-    tags:
-    - synthetic
-    - w17
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The observations and mode evidence from W17.1–W17.3, together with a recorded reference
-        event produced by the process's ordinary commissioning routine. The event is observable through
-        OT_READ; triggering live writes is not required.
-  c4-records-2:
-    type: dataset
-    description: |-
-      W17.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The observations and mode evidence from W17.1–W17.3, together with a recorded reference event produced by the process's ordinary commissioning routine. The event is observable through OT_READ; triggering live writes is not required.
-    target: a-control.a-instruments
-    tags:
-    - synthetic
-    - w17
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The observations and mode evidence from W17.1–W17.3, together with a recorded reference
-        event produced by the process's ordinary commissioning routine. The event is observable through
-        OT_READ; triggering live writes is not required.

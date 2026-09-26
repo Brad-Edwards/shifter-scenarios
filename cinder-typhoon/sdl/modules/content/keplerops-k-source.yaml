@@ -1,0 +1,634 @@
+name: cinder-keplerops-k-source
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-k-source
+  version: 0.1.0
+  exports:
+    content:
+    - k11-1-where-the-policy-begins
+    - k11-2-learn-its-instructions
+    - k11-3-the-rule-behind-the-rule
+    - k11-4-an-input-the-compiler-believes
+    - k28-1-a-connector-with-two-faces
+    - k28-2-what-the-loader-changes
+    - k28-3-the-path-that-appears-at-runtime
+    - k29-2-the-signer-in-the-history
+realization:
+  default: open
+content:
+  k11-1-where-the-policy-begins:
+    type: file
+    target: k-delivery.k-source
+    path: /var/lib/gitea/exercise-artifacts/contracts/where-the-policy-begins.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: where-the-policy-begins
+      owner:
+        node: k-source
+        authority: Gitea on k-source
+      surface_bindings:
+      - k-delivery.k-source/gitea/repository-content
+      starting_state: Retained fieldkest-policyc 2.6.4 Linux x86-64 ELF, unstripped map,
+        examples and accepted-input endpoint; embedded program offset/table.
+      mechanic_profile:
+        implementation: fieldkest-policyc 2.6.4, Linux x86_64 ELF, symbols and map retained
+        build:
+        - -std=c++17
+        - -O2
+        - -fno-omit-frame-pointer
+        - --build-id=sha1
+        - do not strip
+        program_table: little-endian header FKPC, u32 program_offset, u16 instruction_count,
+          4-byte fixed instructions
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Retained fieldkest-policyc 2.6.4 Linux x86-64 ELF, unstripped map, examples
+          and accepted-input endpoint; embedded program offset/table.
+        success: Extracted program entry, byte digest and input-record binding.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Extracted program entry, byte digest and input-record binding.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Starts native policy branch.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 0061ac88f8e0139c5cd65c1303d6d064628e212d4a6c258cdaf70ee0f408eb69
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-source
+    - persistent-tenant-state
+  k11-2-learn-its-instructions:
+    type: file
+    target: k-delivery.k-source
+    path: /var/lib/gitea/exercise-artifacts/contracts/learn-its-instructions.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: learn-its-instructions
+      owner:
+        node: k-source
+        authority: Policy compiler exercise service
+      surface_bindings:
+      - k-delivery.k-source/gitea/policy-compiler-exercise
+      starting_state: Eight-opcode stack VM specification recoverable from binary and four
+        distinguishing fragments.
+      mechanic_profile:
+        instruction_width: 4
+        opcodes:
+          '0x00': PUSH_FIELD operand=u16 field index; pushes input value
+          '0x01': PUSH_CONST operand=u16 constant index; pushes constant
+          '0x02': EQ; pops two values and pushes boolean equality
+          '0x03': SEMVER_GTE; pops required then actual semantic version and pushes comparison
+          '0x04': IN_SET operand=u16 set index; pops value and pushes membership
+          '0x05': AND; pops two booleans and pushes conjunction
+          '0x06': OR; pops two booleans and pushes disjunction
+          '0x07': RETURN; returns the top boolean and the canonical condition-set digest
+        execution: empty stack at entry; stack underflow, unknown opcode, bad index, trailing
+          instruction after RETURN, or depth above 32 returns 422 without state change
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Eight-opcode stack VM specification recoverable from binary and four distinguishing
+          fragments.
+        success: Submitted instruction model matches output plus state writes for every
+          fragment.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Submitted instruction model matches output plus state writes
+        for every fragment.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K11.3.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 68de8523cc1caa634681d80c3deb87aa32469daed5f7b9d236cbd96948e96b1d
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-source
+    - persistent-tenant-state
+  k11-3-the-rule-behind-the-rule:
+    type: file
+    target: k-delivery.k-source
+    path: /var/lib/gitea/exercise-artifacts/contracts/the-rule-behind-the-rule.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-rule-behind-the-rule
+      owner:
+        node: k-source
+        authority: Policy compiler exercise service
+      surface_bindings:
+      - k-delivery.k-source/gitea/policy-compiler-exercise
+      starting_state: Hidden complete program plus public distinguishing corpus covering
+        channel, API version, tenant class, signer lineage and compatibility bit.
+      mechanic_profile:
+        fields:
+        - tenant_state
+        - connector_api
+        - signer_lineage
+        - compatibility_exception
+        sets:
+          active_tenant:
+          - active
+          accepted_lineage:
+          - fieldkest-release-2026
+        corpus: sixteen fixed cases cover each single-bit/field difference plus the two
+          compatibility-exception branches
+        meaning: tenant_state is active AND connector_api >= 3 AND signer_lineage is accepted
+          AND compatibility_exception is true
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Hidden complete program plus public distinguishing corpus covering channel,
+          API version, tenant class, signer lineage and compatibility bit.
+        success: Candidate model agrees on all fixed cases and returns condition-set digest.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Candidate model agrees on all fixed cases and returns condition-set
+        digest.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K11.4.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 486070200d972a3a9c780e6eee219b83ee3b88cfdd5085e79611381e72b8f35a
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-source
+    - persistent-tenant-state
+  k11-4-an-input-the-compiler-believes:
+    type: file
+    target: k-delivery.k-source
+    path: /var/lib/gitea/exercise-artifacts/contracts/an-input-the-compiler-believes.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: an-input-the-compiler-believes
+      owner:
+        node: k-source
+        authority: Policy acceptance service
+      surface_bindings:
+      - k-delivery.k-source/gitea/policy-compiler-exercise
+      starting_state: Fresh nonce-bound policy input; required meaning is active tenant,
+        connector v3, accepted lineage, compatibility exception.
+      mechanic_profile:
+        request: server-issued 128-bit nonce, one policy input, candidate program model,
+          and SHA-256 of the fixed corpus result
+        success: the retained compiler accepts exactly one fresh request and records every
+          evaluated field plus program and condition-set digests
+        denials:
+        - reused or expired nonce
+        - corpus mismatch
+        - missing evaluated field
+        - false policy result
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Fresh nonce-bound policy input; required meaning is active tenant, connector
+          v3, accepted lineage, compatibility exception.
+        success: Actual compiler accepts one fresh requested case and records the evaluated
+          fields.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Actual compiler accepts one fresh requested case and records
+        the evaluated fields.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Specialist payoff only.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 0a04d0e0df1c4fa5451ec1bcedcc76f4f2db515d1053752c0cff0e1fd049b11a
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-source
+    - persistent-tenant-state
+  k28-1-a-connector-with-two-faces:
+    type: file
+    target: k-delivery.k-source
+    path: /var/lib/gitea/exercise-artifacts/contracts/a-connector-with-two-faces.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: a-connector-with-two-faces
+      owner:
+        node: k-source
+        authority: Connector archive on k-source
+      surface_bindings:
+      - k-delivery.k-source/gitea/repository-content
+      - k-delivery.k-source/gitea/archived-connector-exercise
+      starting_state: Archived fieldlink-connector 6.9.8 ELF, normal examples, diagnostic
+        note; behavior changes when signed config enables diagnostic-loader.
+      mechanic_profile:
+        implementation: fieldlink-connector 6.9.8, Linux x86_64 ELF, GNU build-id retained
+        ordinary_mode: signed configuration without diagnostic-loader yields connector/v2
+          normal response
+        diagnostic_mode: same signed configuration plus diagnostic-loader=true activates
+          only the embedded diagnostic interpreter
+        corpus:
+        - empty input
+        - ASCII FieldKest
+        - bytes 00..0f
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Archived fieldlink-connector 6.9.8 ELF, normal examples, diagnostic note;
+          behavior changes when signed config enables diagnostic-loader.
+        success: Distinguishing run records ordinary vs diagnostic behavior and runtime
+          condition.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Distinguishing run records ordinary vs diagnostic behavior and
+        runtime condition.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K28.2.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 2d4c6aafce9e2e1b83d49f080bf71f37866af776f4c88948bf119c4fac9308d4
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-source
+    - persistent-tenant-state
+  k28-2-what-the-loader-changes:
+    type: file
+    target: k-delivery.k-source
+    path: /var/lib/gitea/exercise-artifacts/contracts/what-the-loader-changes.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: what-the-loader-changes
+      owner:
+        node: k-source
+        authority: Archived connector exercise
+      surface_bindings:
+      - k-delivery.k-source/gitea/archived-connector-exercise
+      starting_state: ELF decrypts embedded .fkdiag module with build-ID-derived key and
+        applies documented bytecode transformation.
+      mechanic_profile:
+        key_derivation: HKDF-SHA256(ikm=raw 20-byte GNU build-id, salt=UTF-8 fieldkest-fkdiag-v1,
+          info=UTF-8 fieldlink-connector/6.9.8)
+        container: FKDG || 12-byte nonce || u32be ciphertext_length || AES-256-GCM ciphertext
+          || 16-byte tag; AAD is the ELF build-id hex
+        bytecode:
+          '0x01': XOR byte operand over buffer
+          '0x02': ROL each byte by operand&7
+          '0x03': REVERSE buffer
+          '0x04': APPEND u8-length literal
+          '0xff': RETURN
+        limits: 64 instructions, 4096-byte input/output, no I/O or syscall opcode
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: ELF decrypts embedded .fkdiag module with build-ID-derived key and applies
+          documented bytecode transformation.
+        success: Correct transformations for fixed distinguishing corpus.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Correct transformations for fixed distinguishing corpus.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K28.3.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 2fef201faebf4f4fe8b650e07961cbfef684155a45fcf3b06b5248eaefba9639
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-source
+    - persistent-tenant-state
+  k28-3-the-path-that-appears-at-runtime:
+    type: file
+    target: k-delivery.k-source
+    path: /var/lib/gitea/exercise-artifacts/contracts/the-path-that-appears-at-runtime.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-path-that-appears-at-runtime
+      owner:
+        node: k-source
+        authority: Archived connector exercise
+      surface_bindings:
+      - k-delivery.k-source/gitea/archived-connector-exercise
+      starting_state: Hidden module constructs route /internal/fieldlink/legacy-diagnostics/CRR-OG2
+        and embeds engineering-note object ID.
+      mechanic_profile:
+        route: /internal/fieldlink/legacy-diagnostics/CRR-OG2
+        engineering_note: ENG-FLK-LEGACY-42
+        construction: bytecode appends fixed path segments and note identifier; returned
+          JSON contains route, note_id, and output_sha256
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Hidden module constructs route /internal/fieldlink/legacy-diagnostics/CRR-OG2
+          and embeds engineering-note object ID.
+        success: Invocation returns actual path and note ENG-FLK-LEGACY-42.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Invocation returns actual path and note ENG-FLK-LEGACY-42.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Lead to W19 only.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 24e4ecc69a0faa755fa98903c02bbc01c3db254701edd68f619684ecf2397c44
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-source
+    - persistent-tenant-state
+  k29-2-the-signer-in-the-history:
+    type: file
+    target: k-delivery.k-source
+    path: /var/lib/gitea/exercise-artifacts/contracts/the-signer-in-the-history.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-signer-in-the-history
+      owner:
+        node: k-source
+        authority: Gitea release history on k-source
+      surface_bindings:
+      - k-delivery.k-source/gitea/repository-content
+      starting_state: Accepted lineage fieldkest-release-2026; deleted encrypted Ed25519
+        signing seed in reachable commit; encryption passphrase split between release rollover
+        record and signer history.
+      mechanic_profile:
+        algorithm: Ed25519
+        lineage: fieldkest-release-2026
+        key_id: fk-release-2026-old
+        seed: 32 deterministic bytes from HKDF-SHA256(ikm=UTF-8 CinderTyphoon-K29.2, salt=UTF-8
+          fieldkest-release-2026, info=UTF-8 deleted-signer-seed)
+        wrapping: scrypt N=16384,r=8,p=1 derives AES-256-GCM key; passphrase is concatenation
+          of the rollover-record and signer-history halves
+        repository: encrypted seed exists in reachable deleted commit only; current tree
+          contains public key and key ID
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Accepted lineage fieldkest-release-2026; deleted encrypted Ed25519 signing
+          seed in reachable commit; encryption passphrase split between release rollover
+          record and signer history.
+        success: Fresh signature verifies against accepted lineage key ID.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Fresh signature verifies against accepted lineage key ID.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K29.3.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 0099d05350cc6d73bdd1607587f8a1ddbea88511aaaf317eb2ffe9776cffcf9f
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-source
+    - persistent-tenant-state

@@ -1,0 +1,165 @@
+name: cinder-keplerops-a-connector
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-a-connector
+  version: 0.1.0
+  exports:
+    content:
+    - k26-2-customer-accepted
+    - k26-3-the-release-they-can-roll-back-to
+realization:
+  default: open
+content:
+  k26-2-customer-accepted:
+    type: file
+    target: a-corporate.a-connector
+    path: /var/lib/fieldlink-connector/contracts/customer-accepted.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: customer-accepted
+      owner:
+        node: a-connector
+        authority: External consumer contract on a-connector
+      surface_bindings:
+      - k-delivery.k-registry/package-registry/connector-metadata
+      - a-corporate.a-connector/fieldlink-customer-consumer/package-poll
+      - a-corporate.a-connector/fieldlink-customer-consumer/package-activate
+      - a-corporate.a-connector/fieldlink-customer-consumer/package-receipt
+      starting_state: Customer poll/activation endpoint accepts only signed approved active-tenant
+        channel; connector implements fieldkest.connector/v3.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Customer poll/activation endpoint accepts only signed approved active-tenant
+          channel; connector implements fieldkest.connector/v3.
+        success: Consumer selects exact version, executes bounded diagnostic_summary, and
+          returns customer-side output plus receipt.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Consumer selects exact version, executes bounded diagnostic_summary,
+        and returns customer-side output plus receipt.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Supplies A04 and CORPORATE; no other ARWC design implied.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 3691c175a1e887257ab1bd4924c314af943e50c399f6465e8bce69325f5b5935
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - a-connector
+    - persistent-tenant-state
+  k26-3-the-release-they-can-roll-back-to:
+    type: file
+    target: a-corporate.a-connector
+    path: /var/lib/fieldlink-connector/contracts/the-release-they-can-roll-back-to.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-release-they-can-roll-back-to
+      owner:
+        node: a-connector
+        authority: Registry + a-connector rollback rehearsal
+      surface_bindings:
+      - k-delivery.k-registry/package-registry/release-record
+      - a-corporate.a-connector/fieldlink-customer-consumer/rollback-rehearsal
+      starting_state: Retained release slot and private future-state rehearsal separate
+        from current activation.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Retained release slot and private future-state rehearsal separate from current
+          activation.
+        success: Fresh rollback selection consumes operator release after current channel
+          advances.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Fresh rollback selection consumes operator release after current
+        channel advances.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Optional delivery durability.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 70694e999f61fc5549d8f679f5b70d88de0bc8757bb7337a68b3a0b7898bf89b
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - a-connector
+    - persistent-tenant-state

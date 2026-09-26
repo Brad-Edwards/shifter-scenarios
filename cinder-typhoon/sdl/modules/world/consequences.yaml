@@ -25,66 +25,66 @@ realization:
 injects:
   reservoir-release:
     name: Cairn Reach reserve incident
-    description: Retain and present this participant’s already verified reservoir incident and continuity
-      notice. The accepted in-world command produces the persisted process transition and independent
-      gate-position and usable-volume records; reserve planning calculates financial loss and water
-      restrictions before W30.2 is satisfied. This post-completion event neither commands the gates nor
-      creates the evidence required to trigger itself. Replaying it cannot release more water or duplicate
-      the financial loss. A command acknowledgement alone does not establish the result. No catastrophic
-      effects. Apply once per validated participant event; repeated evidence is idempotent. No continuous
-      process simulation.
+    description: Cairn Reach outlet group OG-CRR-02 records a balanced 1.00 ML release under plan PLAN-CRR-LOSS-1000.
+      Independent instruments record usable reserve falling from 12.40 ML to 11.40 ML. The 0.60 ML commitment shortfall
+      creates USD 1,440 replacement liability under TAR-CRR-DP3-R4 and invokes Stage A restrictions under CONT-DRY-A-R3.
+      The dam remains intact; there is no flooding, uncontrolled release, or loss of essential service. The notice
+      is idempotent and cannot issue another command or alter the recorded volume.
     environment:
     - nodes.a-control.a-reservoir
     - nodes.a-control.a-instruments
     - nodes.a-corporate.a-data
   costly-release-rehearsal:
     name: Costed release rehearsal
-    description: Advance only the participant’s costed-release rehearsal record. Publish its trace and
-      costed reserve consequence separately from the live reservoir stage. Apply once per validated participant
-      event; repeated evidence is idempotent. No continuous process simulation.
+    description: Private checkpoint REH-SCHED-33 records the accepted twelve-interval schedule, 0.81 ML bounded
+      reservoir volume, 180 m3 final distribution buffer, 0.41 ML commitment shortfall, and USD 984 liability. The
+      checkpoint is isolated from the live reservoir and from every prior record.
     environment:
     - nodes.a-engineering.a-hmi
-    - nodes.a-corporate.a-data
+    - nodes.a-control.a-reservoir
+    - nodes.a-control.a-distribution
+    - nodes.a-control.a-instruments
   feedback-rehearsal:
     name: Feedback rehearsal
-    description: Record the accepted supervisory rehearsal and its independent feedback. Rehearsal state
-      cannot overwrite the live reservoir outcome. Apply once per validated participant event; repeated
-      evidence is idempotent. No continuous process simulation.
+    description: Private checkpoint REH-SCHED-33 retains the accepted observation-driven policy and all 27 demand,
+      gain, and delay trajectories. Each trajectory remains inside the published state, ramp, final-buffer, and
+      volume bounds. No rehearsal value overwrites live process history.
     environment:
     - nodes.a-engineering.a-hmi
+    - nodes.a-control.a-reservoir
+    - nodes.a-control.a-distribution
     - nodes.a-control.a-instruments
   false-planning-decision:
     name: False reserve-planning decision
-    description: Retain the accepted estimate and changed planning decision. Independent process measurements
-      stay truthful. This planning effect does not open gates. Apply once per validated participant event;
-      repeated evidence is idempotent. No continuous process simulation.
+    description: Planning checkpoint REH-REPORT-34 retains Cairn estimate 13.40 ML and changed decision ALLOC-EXPAND-R2
+      with its accepted consistency record. Independent instrument measurements remain truthful and no gate movement
+      follows from the planning decision.
     environment:
     - nodes.a-corporate.a-data
     - nodes.a-engineering.a-diagnostics
+    - nodes.a-dmz.a-data-bridge
   covered-release-rehearsal:
     name: Covered release rehearsal
-    description: Retain the covered-release rehearsal trace and the discrepancy between planning reports
-      and independent process observations. Separate rehearsal state cannot advance the main release stage.
-      Apply once per validated participant event; repeated evidence is idempotent. No continuous process
-      simulation.
+    description: Reporting checkpoint REH-REPORT-34 retains the 13.40 ML planning handover and ALLOC-EXPAND-R2 beside
+      the independently measured 0.81 ML release and 11.59 ML usable reserve for the same interval. The discrepancy
+      is retained without changing the live reservoir result or instrument history.
     environment:
     - nodes.a-corporate.a-data
     - nodes.a-engineering.a-hmi
+    - nodes.a-control.a-reservoir
     - nodes.a-control.a-instruments
   procurement-loss:
     name: Replacement-water procurement loss
-    description: Issue the in-world order acknowledgement and financial record for the proved district-attribution
-      error. Retain the selected quote, supplier, quantity, and delivery period; no gate action follows
-      from procurement. Apply once per validated participant event; repeated evidence is idempotent. No
-      continuous process simulation.
+    description: Procurement retains order PO-MER-884-C for 0.75 ML from the quoted supplier and delivery window.
+      The USD 1,710 liability is charged to Cairn budget BUD-CRR-DP3 although quote QUOTE-MER-884 belongs to Merewick.
+      Its acknowledgement creates no process command or water movement.
     environment:
     - nodes.a-corporate.a-business
-    - nodes.a-corporate.a-data
 events:
   reservoir-release:
     name: Cairn Reach reserve incident
-    description: Triggered by validated in-world outcomes; every assertion is required. Dispatch mechanism
-      remains open.
+    description: The listed independently observed assertions are all required. Presentation retains the existing
+      service result and cannot create, repeat, or enlarge the action that produced it.
     assertions:
     - w30.c2-ready
     - capabilities.process-interpretation-ready
@@ -95,8 +95,8 @@ events:
     - reservoir-release
   costly-release-rehearsal:
     name: Costed release rehearsal
-    description: Triggered by validated in-world outcomes; every assertion is required. Dispatch mechanism
-      remains open.
+    description: The listed independently observed assertions are all required. Presentation retains the existing
+      service result and cannot create, repeat, or enlarge the action that produced it.
     assertions:
     - w33.c3-ready
     - capabilities.process-interpretation-ready
@@ -107,8 +107,8 @@ events:
     - costly-release-rehearsal
   feedback-rehearsal:
     name: Feedback rehearsal
-    description: Triggered by validated in-world outcomes; every assertion is required. Dispatch mechanism
-      remains open.
+    description: The listed independently observed assertions are all required. Presentation retains the existing
+      service result and cannot create, repeat, or enlarge the action that produced it.
     assertions:
     - w33.c4-ready
     - capabilities.process-interpretation-ready
@@ -119,16 +119,16 @@ events:
     - feedback-rehearsal
   false-planning-decision:
     name: False reserve-planning decision
-    description: Triggered by validated in-world outcomes; every assertion is required. Dispatch mechanism
-      remains open.
+    description: The listed independently observed assertions are all required. Presentation retains the existing
+      service result and cannot create, repeat, or enlarge the action that produced it.
     assertions:
     - w34.c2-ready
     injects:
     - false-planning-decision
   covered-release-rehearsal:
     name: Covered release rehearsal
-    description: Triggered by validated in-world outcomes; every assertion is required. Dispatch mechanism
-      remains open.
+    description: The listed independently observed assertions are all required. Presentation retains the existing
+      service result and cannot create, repeat, or enlarge the action that produced it.
     assertions:
     - w34.c3-ready
     - capabilities.process-interpretation-ready
@@ -139,8 +139,8 @@ events:
     - covered-release-rehearsal
   procurement-loss:
     name: Replacement-water procurement loss
-    description: Triggered by validated in-world outcomes; every assertion is required. Dispatch mechanism
-      remains open.
+    description: The listed independently observed assertions are all required. Presentation retains the existing
+      service result and cannot create, repeat, or enlarge the action that produced it.
     assertions:
     - w35.c3-ready
     injects:

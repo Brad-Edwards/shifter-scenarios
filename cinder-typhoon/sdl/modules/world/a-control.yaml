@@ -27,23 +27,646 @@ realization:
 nodes:
   subnet:
     type: switch
-    description: 'ARWC: Process control. Logical network segment; physical realization and addressing
-      remain open.'
+    description: 'ARWC: Process control. Logical network segment; physical realization and addressing remain open.'
   a-reservoir:
     type: compute
-    description: Reservoir / outlet endpoint
+    description: Bounded live reservoir endpoint plus isolated scheduler and reporting checkpoints.
     features:
       a-reservoir: ''
+    os: linux
+    services:
+    - name: reservoir-controller
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-reservoir
+        entry_type: directory
+        owner_user: arwc-reservoir
+        owner_group: arwc-reservoir
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-reservoir
+          primary_group: arwc-reservoir
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-reservoir
+          members:
+          - arwc-reservoir
+      network:
+        hostname: a-reservoir
+        domainname: a-control.arwc.test
+        endpoints:
+        - network: a-control.subnet
+          ip_address: 10.77.64.20
+          ip_prefix_length: 24
+          gateway: 10.77.64.1
+          aliases:
+          - a-reservoir
+          dns_names:
+          - reservoir-controller.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-control segment.
+      service_listeners:
+      - service_listener_id: reservoir-controller-https
+        service: reservoir-controller
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: reservoir-controller
+        service: reservoir-controller
+        protocol: https
+        base_path: /
+        description: Bounded live reservoir endpoint plus isolated scheduler and reporting checkpoints.
+        routes:
+        - route_id: bind-the-plan-to-the-plant
+          path: /api/bind-the-plan-to-the-plant
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped live control or rehearsal session
+          session_required: true
+          description: Command-plan binder requires scoped client, asset AST-CRR-017, outlet OG-CRR-02, project
+            CRR-CTRL-R21, map MAP-OG2-R8, mode MODE-CRR-17, envelope ENV-OG2-R6, and plan PLAN-CRR-LOSS-1000.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: open-the-gates
+          path: /api/open-the-gates
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped live control or rehearsal session
+          session_required: true
+          description: Live reservoir accepts bound plan PLAN-CRR-LOSS-1000; command audit records the ramp and
+            setpoint timeline while independent instruments integrate 1.00 ML and reserve 12.40 to 11.40 ML, producing
+            liability and Stage A continuity records.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-schedule-the-service-accepts
+          path: /api/the-schedule-the-service-accepts
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped live control or rehearsal session
+          session_required: true
+          description: Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client;
+            reference trajectory releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall,
+            and computes USD 984 liability within the isolated checkpoint.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: when-the-forecast-moves
+          path: /api/when-the-forecast-moves
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped live control or rehearsal session
+          session_required: true
+          description: Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and
+            bounded buffer and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00,
+            +0.05 m3/s, outlet gain 0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must
+            derive from the buffer and demand observations available at that step, and per-case schedules are rejected.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: still-reassuring-after-the-handover
+          path: /api/still-reassuring-after-the-handover
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped live control or rehearsal session
+          session_required: true
+          description: Reporting checkpoint couples the 13.40 ML planning handover and ALLOC-EXPAND-R2 decision
+            to a bounded 0.81 ML rehearsal release; independent truth becomes 11.59 ML while report consistency
+            remains accepted for the same interval.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: reservoir-controller-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: reservoir-operator-principal
+          kind: service_account
+          name: ARWC reservoir-operator principal
+          credential_classification: redacted
+        roles:
+        - role_id: reservoir-operator
+          name: ARWC reservoir operator
+        permission_grants:
+        - grant_id: reservoir-operator-declared-routes
+          role_ref: reservoir-operator
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - bind-the-plan-to-the-plant
+          - open-the-gates
+          - the-schedule-the-service-accepts
+          - when-the-forecast-moves
+          - still-reassuring-after-the-handover
+          effect: allow
+        role_mappings:
+        - mapping_id: reservoir-operator-mapping
+          role_ref: reservoir-operator
+          users:
+          - reservoir-operator-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: reservoir-controller
+        name: Bounded live reservoir endpoint plus isolated scheduler and reporting checkpoints
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/reservoir-controller
   a-distribution:
     type: compute
-    description: Distribution endpoint
+    description: Private distribution-buffer rehearsal endpoint.
     features:
       a-distribution: ''
+    os: linux
+    services:
+    - name: distribution-rehearsal
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-distribution
+        entry_type: directory
+        owner_user: arwc-distribution
+        owner_group: arwc-distribution
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-distribution
+          primary_group: arwc-distribution
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-distribution
+          members:
+          - arwc-distribution
+      network:
+        hostname: a-distribution
+        domainname: a-control.arwc.test
+        endpoints:
+        - network: a-control.subnet
+          ip_address: 10.77.64.30
+          ip_prefix_length: 24
+          gateway: 10.77.64.1
+          aliases:
+          - a-distribution
+          dns_names:
+          - distribution-rehearsal.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-control segment.
+      service_listeners:
+      - service_listener_id: distribution-rehearsal-https
+        service: distribution-rehearsal
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: distribution-rehearsal
+        service: distribution-rehearsal
+        protocol: https
+        base_path: /
+        description: Private distribution-buffer rehearsal endpoint.
+        routes:
+        - route_id: the-schedule-the-service-accepts
+          path: /api/the-schedule-the-service-accepts
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC private rehearsal scheduler session
+          session_required: true
+          description: Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client;
+            reference trajectory releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall,
+            and computes USD 984 liability within the isolated checkpoint.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: when-the-forecast-moves
+          path: /api/when-the-forecast-moves
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC private rehearsal scheduler session
+          session_required: true
+          description: Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and
+            bounded buffer and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00,
+            +0.05 m3/s, outlet gain 0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must
+            derive from the buffer and demand observations available at that step, and per-case schedules are rejected.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: distribution-rehearsal-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rehearsal-operator-principal
+          kind: service_account
+          name: ARWC rehearsal-operator principal
+          credential_classification: redacted
+        roles:
+        - role_id: rehearsal-operator
+          name: ARWC rehearsal operator
+        permission_grants:
+        - grant_id: rehearsal-operator-declared-routes
+          role_ref: rehearsal-operator
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - the-schedule-the-service-accepts
+          - when-the-forecast-moves
+          effect: allow
+        role_mappings:
+        - mapping_id: rehearsal-operator-mapping
+          role_ref: rehearsal-operator
+          users:
+          - rehearsal-operator-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: distribution-rehearsal
+        name: Private distribution-buffer rehearsal endpoint
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/distribution-rehearsal
   a-instruments:
     type: compute
-    description: Instrumentation / retained device images
+    description: Independent gate position, flow, integrated-volume, reserve, and retained image authority.
     features:
       a-instruments: ''
+    os: linux
+    services:
+    - name: independent-instruments
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-instruments
+        entry_type: directory
+        owner_user: arwc-instruments
+        owner_group: arwc-instruments
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-instruments
+          primary_group: arwc-instruments
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-instruments
+          members:
+          - arwc-instruments
+      network:
+        hostname: a-instruments
+        domainname: a-control.arwc.test
+        endpoints:
+        - network: a-control.subnet
+          ip_address: 10.77.64.40
+          ip_prefix_length: 24
+          gateway: 10.77.64.1
+          aliases:
+          - a-instruments
+          dns_names:
+          - independent-instruments.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-control segment.
+      service_listeners:
+      - service_listener_id: independent-instruments-https
+        service: independent-instruments
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: independent-instruments
+        service: independent-instruments
+        protocol: https
+        base_path: /
+        description: Independent gate position, flow, integrated-volume, reserve, and retained image authority.
+        routes:
+        - route_id: the-first-live-trace
+          path: /api/the-first-live-trace
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Commissioning event EVT-COMM-OG2-114 ramped each gate linearly for 20 seconds, held 40 seconds,
+            and ramped closed for 20 seconds; the 60 full-flow-equivalent seconds integrate to 0.012 ML, and HMI
+            plus independent instrument series must correlate to that trace while reusing ordinary narrative document
+            me-commissioning-01.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: which-outlet-answers
+          path: /api/which-outlet-answers
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Observed commissioning trace EVT-COMM-OG2-114 and current scale resolve MAP-OG2-R8 from tag
+            identifiers to gates GT-CRR-02A and GT-CRR-02B and outlet group OG-CRR-02.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: what-the-image-kept
+          path: /api/what-the-image-kept
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Instrument flash image IMG-FIT-204-R6 uses 4096-byte erase pages and 64-byte append records
+            with magic, sequence, payload length, CRC32C, status, and commit byte.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-valid-maintenance-record
+          path: /api/a-valid-maintenance-record
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Parser accepts the highest committed valid sequence; edit must respect NOR 1-to-0 programming,
+            erase-page collateral records, and wear map WEAR-FIT-204-R6.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: change-one-record-keep-the-rest
+          path: /api/change-one-record-keep-the-rest
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Last inspection record INSP-FIT-204-118 must be changed from status REVIEW to ACCEPTED while
+            every other valid record, sequence relation, and page wear limit remains unchanged.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: which-project-is-running
+          path: /api/which-project-is-running
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Independent instrument handshake DEPLOY-OBS-CRR-21 reports project digest for CRR-CTRL-R21;
+            comparison must reject the stale workspace claim and bind the observed revision.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-sequence-the-process-can-follow
+          path: /api/a-sequence-the-process-can-follow
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Practice checkpoint PRACTICE-OG2-07 accepts a permissive transition then ramps each simulated
+            gate linearly to 0.15 m3/s for 30 seconds, holds 70 seconds, and ramps closed for 30 seconds; 100 full-flow-equivalent
+            seconds independently report 0.03 ML without changing live reserve.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: what-reserve-remains-uncommitted
+          path: /api/what-reserve-remains-uncommitted
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Current balance joins instrument reserve 12.40 ML and committed allocation 12.00 ML, yielding
+            0.40 ML uncommitted margin before any release.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: open-the-gates
+          path: /api/open-the-gates
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Live reservoir accepts bound plan PLAN-CRR-LOSS-1000; command audit records the ramp and
+            setpoint timeline while independent instruments integrate 1.00 ML and reserve 12.40 to 11.40 ML, producing
+            liability and Stage A continuity records.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-schedule-the-service-accepts
+          path: /api/the-schedule-the-service-accepts
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client;
+            reference trajectory releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall,
+            and computes USD 984 liability within the isolated checkpoint.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: when-the-forecast-moves
+          path: /api/when-the-forecast-moves
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and
+            bounded buffer and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00,
+            +0.05 m3/s, outlet gain 0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must
+            derive from the buffer and demand observations available at that step, and per-case schedules are rejected.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: still-reassuring-after-the-handover
+          path: /api/still-reassuring-after-the-handover
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC read-only instrument session
+          session_required: true
+          description: Reporting checkpoint couples the 13.40 ML planning handover and ALLOC-EXPAND-R2 decision
+            to a bounded 0.81 ML rehearsal release; independent truth becomes 11.59 ML while report consistency
+            remains accepted for the same interval.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: independent-instruments-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: instrument-reader-principal
+          kind: service_account
+          name: ARWC instrument-reader principal
+          credential_classification: redacted
+        roles:
+        - role_id: instrument-reader
+          name: ARWC instrument reader
+        permission_grants:
+        - grant_id: instrument-reader-declared-routes
+          role_ref: instrument-reader
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - the-first-live-trace
+          - which-outlet-answers
+          - what-the-image-kept
+          - a-valid-maintenance-record
+          - change-one-record-keep-the-rest
+          - which-project-is-running
+          - a-sequence-the-process-can-follow
+          - what-reserve-remains-uncommitted
+          - open-the-gates
+          - the-schedule-the-service-accepts
+          - when-the-forecast-moves
+          - still-reassuring-after-the-handover
+          effect: allow
+        role_mappings:
+        - mapping_id: instrument-reader-mapping
+          role_ref: instrument-reader
+          users:
+          - instrument-reader-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: independent-instruments
+        name: Independent gate position, flow, integrated-volume, reserve, and retained image authority
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/independent-instruments
 infrastructure:
   subnet: {}
   a-reservoir:
@@ -64,15 +687,15 @@ features:
   a-reservoir:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-reservoir. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-reservoir. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-distribution:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-distribution. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-distribution. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-instruments:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-instruments. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-instruments. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.

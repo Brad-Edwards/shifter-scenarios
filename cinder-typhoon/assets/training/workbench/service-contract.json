@@ -41,7 +41,7 @@
       "Reject a normalized path outside the diagnostics root.",
       "Read the selected existing JSON record without interpolation or execution."
     ],
-    "intended_view": "public%2F..%2Finternal%2FDL-204.json",
+    "intended_view": "public/%2E%2E/internal/DL-204.json",
     "success_status": 200,
     "invalid_status": 400,
     "missing_status": 404,

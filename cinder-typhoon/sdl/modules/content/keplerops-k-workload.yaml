@@ -1,0 +1,390 @@
+name: cinder-keplerops-k-workload
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-k-workload
+  version: 0.1.0
+  exports:
+    content:
+    - k16-1-tomorrow-s-job
+    - k16-2-the-next-startup
+    - k16-3-beyond-the-current-session
+    - k16-4-still-there-after-the-handover
+    - k31-2-a-different-identity-at-runtime
+realization:
+  default: open
+content:
+  k16-1-tomorrow-s-job:
+    type: file
+    target: k-cloud.k-workload
+    path: /var/lib/fieldkest-workloads/contracts/tomorrow-s-job.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: tomorrow-s-job
+      owner:
+        node: k-workload
+        authority: Scheduler on k-workload
+      surface_bindings:
+      - k-cloud.k-workload/workload-service/schedule-detail
+      starting_state: Schedule SCH-SUP-2841, systemd-timer-equivalent cadence, profile and
+        startup-config reference.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Schedule SCH-SUP-2841, systemd-timer-equivalent cadence, profile and startup-config
+          reference.
+        success: Schedule/config read.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Schedule/config read.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K16.2.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: f0c01fc54a4c0dc0f710d6636d04caed892b094548b56f23b69d839f870ff2e5
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-workload
+    - persistent-tenant-state
+  k16-2-the-next-startup:
+    type: file
+    target: k-cloud.k-workload
+    path: /var/lib/fieldkest-workloads/contracts/the-next-startup.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-next-startup
+      owner:
+        node: k-workload
+        authority: Scheduler
+      surface_bindings:
+      - k-cloud.k-workload/workload-service/schedule-update
+      - k-cloud.k-workload/workload-service/schedule-run
+      starting_state: Editor can update startup_hook for owned destination but service omits
+        schedule-owner check; hook has fixed argv schema and output contract.
+      mechanic_profile:
+        schedule: SCH-SUP-2841
+        mutable_field: startup_hook
+        argv_schema:
+        - /opt/fieldkest/hooks/support-marker
+        - --export
+        - EXP-2841
+        defect: editor grant is checked for the owned destination but schedule owner is
+          not compared
+        output: hook marker is additive; the ordinary support export schema and digest remain
+          valid
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Editor can update startup_hook for owned destination but service omits schedule-owner
+          check; hook has fixed argv schema and output contract.
+        success: Next rehearsal emits marker and valid support output.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Next rehearsal emits marker and valid support output.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K16.3.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: b408814cd02db23b7b9ac06595b58b0e174683bb7bba9ccfe23f634cc96f14f1
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-workload
+    - persistent-tenant-state
+  k16-3-beyond-the-current-session:
+    type: file
+    target: k-cloud.k-workload
+    path: /var/lib/fieldkest-workloads/contracts/beyond-the-current-session.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: beyond-the-current-session
+      owner:
+        node: k-workload
+        authority: Scheduled task identity
+      surface_bindings:
+      - k-cloud.k-workload/workload-service/schedule-run
+      - k-cloud.k-data/fieldkest-data-api/export-run
+      starting_state: Task runs as svc-support-export, distinct from caller, with one protected
+        handover-write grant.
+      mechanic_profile:
+        runtime_identity: svc-support-export
+        grant: write handovers/support/EXP-2841 only
+        proof: destination audit must name task principal, schedule SCH-SUP-2841, run ID
+          and written digest
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Task runs as svc-support-export, distinct from caller, with one protected
+          handover-write grant.
+        success: On-demand run performs protected action; destination audit names task principal.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: On-demand run performs protected action; destination audit names
+        task principal.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Persistent execution position.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: d9e82d6ebe81e1e57d571bfb2072fa7547f541cf9482827c537108220ad8b309
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-workload
+    - persistent-tenant-state
+  k16-4-still-there-after-the-handover:
+    type: file
+    target: k-cloud.k-workload
+    path: /var/lib/fieldkest-workloads/contracts/still-there-after-the-handover.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: still-there-after-the-handover
+      owner:
+        node: k-workload
+        authority: Scheduler + support handover
+      surface_bindings:
+      - k-cloud.k-workload/workload-service/schedule-update
+      - k-cloud.k-workload/workload-service/schedule-run
+      starting_state: Shift transition changes assignment from SHIFT-SEP16-A to SHIFT-SEP17-B
+        without replacing schedule.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Shift transition changes assignment from SHIFT-SEP16-A to SHIFT-SEP17-B without
+          replacing schedule.
+        success: Post-transition scheduled run retains marker, valid output and new assignment
+          binding.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Post-transition scheduled run retains marker, valid output and
+        new assignment binding.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Optional persistence conclusion.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: d4326bad2b1dd5654b9740350a6894813c8b59ae8ad422917f1de434b5e342cf
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-workload
+    - persistent-tenant-state
+  k31-2-a-different-identity-at-runtime:
+    type: file
+    target: k-cloud.k-workload
+    path: /var/lib/fieldkest-workloads/contracts/a-different-identity-at-runtime.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: a-different-identity-at-runtime
+      owner:
+        node: k-workload
+        authority: Workload manager on k-workload
+      surface_bindings:
+      - k-cloud.k-workload/workload-service/job-update
+      - k-cloud.k-workload/workload-service/workload-whoami
+      starting_state: Allowed patch fields include command and labels for fixed image; spawned
+        job runs as svc-fieldlink-maintenance, not submitting worker.
+      mechanic_profile:
+        fixed_image: fieldkest/maintenance-runner:2026.09
+        mutable_fields:
+        - command
+        - labels
+        label:
+          workload.class: maintenance
+        runtime_identity: svc-fieldlink-maintenance
+        exclusions: image, mounts, namespace, service account, host access and network policy
+          are immutable
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Allowed patch fields include command and labels for fixed image; spawned
+          job runs as svc-fieldlink-maintenance, not submitting worker.
+        success: Runtime whoami and protected runtime-only probe succeed while normal job
+          output stays valid.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Runtime whoami and protected runtime-only probe succeed while
+        normal job output stays valid.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Runtime capability.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 113b53577b02dd0d60a9c3d178cbfdfc27026dcf765d27b94739f8a5ab904468
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-workload
+    - persistent-tenant-state

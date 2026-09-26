@@ -222,7 +222,7 @@ def check_workbench_records():
             'Courier authorization contract drift')
     require(contract['diagnostics']['decision_order'][1].startswith('Require the raw')
             and contract['diagnostics']['decision_order'][2] == 'Percent-decode view exactly once.'
-            and contract['diagnostics']['intended_view'] == 'public%2F..%2Finternal%2FDL-204.json'
+            and contract['diagnostics']['intended_view'] == 'public/%2E%2E/internal/DL-204.json'
             and contract['diagnostics']['outbound_network'] is False
             and contract['diagnostics']['execution'] is False,
             'Diagnostic weakness or confinement drift')

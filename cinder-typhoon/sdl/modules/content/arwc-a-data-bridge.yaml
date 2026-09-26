@@ -1,0 +1,86 @@
+name: cinder-arwc-a-data-bridge
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/arwc-a-data-bridge
+  version: 0.1.0
+  exports:
+    content:
+    - w09-4-from-the-report-to-the-live-feed
+realization:
+  default: open
+content:
+  w09-4-from-the-report-to-the-live-feed:
+    type: file
+    target: a-dmz.a-data-bridge
+    path: /var/lib/arwc-data-bridge/contracts/from-the-report-to-the-live-feed.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: from-the-report-to-the-live-feed
+      owner:
+        node: a-data-bridge
+        application: integration-gateway
+      surface_bindings:
+      - a-dmz.a-data-bridge/integration-gateway/from-the-report-to-the-live-feed
+      starting_state: Integration gateway maps INT-CRR-08 and report binding REC-CRR-DP3-17 to live read feed FEED-OG2-R21;
+        stale FEED-OG2-R19 remains reachable but is rejected as current evidence.
+      narrative_reuse: []
+      process_contract_refs:
+      - ALLOC-2026-DP3
+      - REC-CRR-DP3-17
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Integration gateway maps INT-CRR-08 and report binding REC-CRR-DP3-17 to live read feed FEED-OG2-R21;
+          stale FEED-OG2-R19 remains reachable but is rejected as current evidence.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Resolve the active data binding and demonstrate a scoped read from the intended process feed.
+          This supplies the integration variant of OT_READ; stale exports and unrelated feeds do not count.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC integration read client
+        input: Integration gateway maps INT-CRR-08 and report binding REC-CRR-DP3-17 to live read feed FEED-OG2-R21; stale
+          FEED-OG2-R19 remains reachable but is rejected as current evidence.
+        success: Resolve the active data binding and demonstrate a scoped read from the intended process feed. This supplies
+          the integration variant of OT_READ; stale exports and unrelated feeds do not count.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Resolve the active data binding and demonstrate a scoped read from the intended process feed.
+        This supplies the integration variant of OT_READ; stale exports and unrelated feeds do not count.
+      evidence_contract:
+        producer: a-data-bridge/integration-gateway writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: Supplies the integration variant of OT_READ.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: a8edbe988367c331abfb4733e4a89b96de4b76507b288a3206251a94d4ae7a2e
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data-bridge
+    - persistent-tenant-state

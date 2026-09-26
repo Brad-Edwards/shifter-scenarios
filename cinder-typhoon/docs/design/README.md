@@ -5,7 +5,7 @@ players, sixteen hours over two days, a provided agent, and optional BYO agents.
 The campaign moves through Cinder Typhoon training, KeplerOps Software, and
 Alterra Regional Water Company. The challenge briefs now have a first logical
 network architecture with explicit authority boundaries and operational flows;
-this is not yet an executable scenario pack.
+this is a hand-build specification, not a materialized range.
 
 The [23 September SDL readiness review](sdl-readiness-review.md) records the
 current blockers, corrections, validation limits, and required design-first
@@ -13,9 +13,26 @@ sequence. Native parser success does not mean the design is complete.
 
 The [25 September Training hand-build gate](training-readiness.md) records the
 complete native Training environment, exact artifacts and weakness mechanics,
-external adjudication/recovery boundary, and passing design gate. It supersedes
-the Training details of the earlier review, not the unfinished KeplerOps and
-ARWC findings.
+external adjudication/recovery boundary, and passing design gate. The
+[KeplerOps hand-build gate](keplerops-readiness.md) does the same for all 104
+KeplerOps cards. The [ARWC hand-build gate](arwc-readiness.md) now covers all
+120 Alterra cards, their exact service contracts, native placement, and bounded
+process model. All three supersede their portions of the earlier review.
+
+The persistent [KeplerOps SDL hand-build readiness ledger](keplerops-readiness.md)
+records the agreed design-only scope, overall plan, native-semantic migration,
+system tranches, validation evidence, and exact resume point across working
+sessions.
+The companion [native-semantic migration ledger](keplerops-native-semantics.md)
+and [service/artifact ownership ledger](keplerops-artifact-ownership.md) record
+the legal RAE representation and one authoritative home for every KeplerOps
+challenge input and result.
+
+The [ARWC native-semantic ledger](arwc-native-semantics.md),
+[bounded process model](arwc-process-model.md), and
+[service/artifact ownership ledger](arwc-artifact-ownership.md) record the legal
+RAE representation, exact quantities, and one authoritative home for every
+Alterra input and result.
 
 - [Architecture](challenge-architecture.md): product and story, medium
   entry routes, explicit process-evidence joins, progression, and review responses.
@@ -37,8 +54,8 @@ ARWC findings.
   covering [training](challenges/training.md),
   [KeplerOps](challenges/keplerops.md), and [ARWC](challenges/arwc.md).
   Each includes its description, story purpose, prerequisites, outcome, and
-  difficulty/source references. Fifty cards have technical drafts; 190 await
-  technical design. All three hint sections remain blank.
+  difficulty/source references. All 240 cards have technical drafts. All three
+  hint sections remain blank.
 - [Challenge template](challenges/TEMPLATE.md): the common brief structure,
   without solutions or implementation detail.
 - [Challenge quality review](challenge-quality-review.md): the review of
@@ -76,9 +93,10 @@ contracts; distinctness and difficulty also require editorial judgment.
 Run `python3 cinder-typhoon/docs/design/model_topology.py --self-test` to check
 logical access, earned execution contexts, authority boundaries, operational
 routes, and deliberately broken topologies.
-The [SDL contracts](sdl_contracts.py) separately record proof and seed ownership
-where it differs from player access, and the six bounded consequence effects.
-[Native SDL validation](../../tests/README.md) checks those expectations and
-the authored technical sections against the composed and compiled scenario.
+The Training, KeplerOps, and ARWC readiness and artifact-ownership ledgers
+record proof and seed ownership where it differs from participant access; the
+ARWC process model records the six bounded consequence effects. [Native SDL
+validation](../../tests/README.md) checks those expectations and the authored
+technical sections against the composed and compiled scenario.
 The portfolio can be regenerated with
 `python3 cinder-typhoon/docs/design/render_portfolio.py`.

@@ -1,0 +1,138 @@
+name: cinder-arwc-integrations
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/arwc-integrations
+  version: 0.1.0
+  exports:
+    relationships:
+    - connector-workplace
+    - workplace-planning
+    - workplace-identity
+    - workplace-archive
+    - planning-archive
+    - planning-integration
+    - contractor-field-gateway
+    - approval-renderer
+    - renderer-control-issuer
+    - integration-historian
+    - contractor-historian
+    - control-broker-hmi
+    - hmi-reservoir
+    - hmi-distribution
+    - reservoir-instruments
+    - instruments-historian
+    - historian-hmi
+    - engineering-historian
+    - engineering-diagnostics
+    - engineering-control-issuer
+    - diagnostics-estimate-publication
+realization:
+  default: open
+relationships:
+  connector-workplace:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-corporate.a-business
+    description: The customer connector uses the declared corporate handover and workplace interfaces.
+  workplace-planning:
+    type: connects_to
+    source: features.a-corporate.a-business
+    target: features.a-corporate.a-data
+    description: Corporate maintenance, reporting, allocation, and procurement records use the planning-data service.
+  workplace-identity:
+    type: connects_to
+    source: features.a-corporate.a-business
+    target: features.a-corporate.a-identity
+    description: Corporate applications authenticate through the declared ARWC identity service.
+  workplace-archive:
+    type: connects_to
+    source: features.a-corporate.a-business
+    target: features.a-corporate.a-archive
+    description: Business annex and retained-record workflows call only the declared archive routes.
+  planning-archive:
+    type: connects_to
+    source: features.a-corporate.a-data
+    target: features.a-corporate.a-archive
+    description: Planning relations refer to retained archives through their stable identifiers.
+  planning-integration:
+    type: connects_to
+    source: features.a-corporate.a-data
+    target: features.a-dmz.a-data-bridge
+    description: The planning service consumes scoped live reads and published diagnostic estimates.
+  contractor-field-gateway:
+    type: connects_to
+    source: features.a-maintenance.a-contractors
+    target: features.a-dmz.a-contractor-bridge
+    description: Checked-in contractor sessions call the inspection-scoped current process-read gateway.
+  approval-renderer:
+    type: connects_to
+    source: features.a-maintenance.a-approval
+    target: features.a-maintenance.a-renderer
+    description: The maintenance renderer consumes the exact signed approval and inspection binding.
+  renderer-control-issuer:
+    type: connects_to
+    source: features.a-maintenance.a-renderer
+    target: features.a-dmz.a-control-broker
+    description: The maintenance issuer consumes renderer attestations and signed maintenance approval.
+  integration-historian:
+    type: connects_to
+    source: features.a-dmz.a-data-bridge
+    target: features.a-engineering.a-historian
+    description: The integration gateway reads only the declared current historian feed.
+  contractor-historian:
+    type: connects_to
+    source: features.a-dmz.a-contractor-bridge
+    target: features.a-engineering.a-historian
+    description: The field gateway reads the inspection-scoped current historian feed.
+  control-broker-hmi:
+    type: connects_to
+    source: features.a-dmz.a-control-broker
+    target: features.a-engineering.a-hmi
+    description: Scoped clients terminate at the supervisory command-plan and dispatcher interfaces.
+  hmi-reservoir:
+    type: connects_to
+    source: features.a-engineering.a-hmi
+    target: features.a-control.a-reservoir
+    description: The dispatcher sends only fully bound envelope-compliant plans to the reservoir endpoint.
+  hmi-distribution:
+    type: connects_to
+    source: features.a-engineering.a-hmi
+    target: features.a-control.a-distribution
+    description: The private scheduler drives only the isolated distribution rehearsal checkpoint.
+  reservoir-instruments:
+    type: connects_to
+    source: features.a-control.a-reservoir
+    target: features.a-control.a-instruments
+    description: Independent instruments observe gate position, flow, integrated volume, and usable reserve.
+  instruments-historian:
+    type: connects_to
+    source: features.a-control.a-instruments
+    target: features.a-engineering.a-historian
+    description: The historian ingests signed independent instrument observations with fixed sample and delay metadata.
+  historian-hmi:
+    type: connects_to
+    source: features.a-engineering.a-historian
+    target: features.a-engineering.a-hmi
+    description: The process view joins observations with requests and acknowledgements without changing instrument
+      truth.
+  engineering-historian:
+    type: connects_to
+    source: features.a-engineering.a-engineering
+    target: features.a-engineering.a-historian
+    description: Engineering analysis consumes versioned tags, scale records, and traces.
+  engineering-diagnostics:
+    type: connects_to
+    source: features.a-engineering.a-engineering
+    target: features.a-engineering.a-diagnostics
+    description: Engineering artifacts execute only through the bounded diagnostic interfaces.
+  engineering-control-issuer:
+    type: connects_to
+    source: features.a-engineering.a-engineering
+    target: features.a-dmz.a-control-broker
+    description: The constrained engineering utility calls the equivalent scoped client issuer.
+  diagnostics-estimate-publication:
+    type: connects_to
+    source: features.a-engineering.a-diagnostics
+    target: features.a-dmz.a-data-bridge
+    description: Diagnostic estimate or accepted-program output is published through the one declared estimate channel.

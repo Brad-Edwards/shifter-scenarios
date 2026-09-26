@@ -40,23 +40,15 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the current schedule and its startup configuration reference. It does not award
-      execution or future recurrence.
-    source_refs: &id001
+    description: |-
+      Recover the current schedule and its startup configuration reference. It does not award execution or future recurrence.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-workload--scheduler
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +77,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c2:
-    description: Demonstrate the intended startup change and one compatible rehearsal result. The previous
-      schedule disclosure is insufficient.
-    source_refs: &id002
+    description: |-
+      Demonstrate the intended startup change and one compatible rehearsal result. The previous schedule disclosure is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-workload--scheduler
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,11 +116,19 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c3:
-    description: Demonstrate the protected task action under the separate context. Merely running the
-      modified job again under the current session does not count.
-    source_refs: &id003
-    - features.k-cloud.k-workload--scheduler
+    description: |-
+      Demonstrate the protected task action under the separate context. Merely running the modified job again under the current session does not count.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
+    - features.k-cloud.k-workload--task
+    - features.k-cloud.k-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -142,17 +149,25 @@ evidence_requirements:
         names:
         - cinder.k16-3.satisfied
         component_refs:
-        - features.k-cloud.k-workload--scheduler
+        - features.k-cloud.k-workload--task
+        - features.k-cloud.k-data
       collection: require
       retention: require
       redaction: redact-secrets
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c4:
-    description: Demonstrate a post-transition run with the requested behavior and correct new assignment.
-      Replaying an earlier receipt is insufficient.
-    source_refs: &id004
+    description: |-
+      Demonstrate a post-transition run with the requested behavior and correct new assignment. Replaying an earlier receipt is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-workload--scheduler
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -181,11 +196,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
 propositions:
   c1:
-    description: Recover the current schedule and its startup configuration reference. It does not award
-      execution or future recurrence.
-    subjects: *id001
+    description: Recover the current schedule and its startup configuration reference. It does not award execution
+      or future recurrence.
+    subjects:
+    - features.k-cloud.k-workload--scheduler
     basis: observed_state
     predicate:
       kind: boolean
@@ -197,9 +218,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate the intended startup change and one compatible rehearsal result. The previous
-      schedule disclosure is insufficient.
-    subjects: *id002
+    description: Demonstrate the intended startup change and one compatible rehearsal result. The previous schedule
+      disclosure is insufficient.
+    subjects:
+    - features.k-cloud.k-workload--scheduler
     basis: observed_state
     predicate:
       kind: boolean
@@ -211,9 +233,11 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate the protected task action under the separate context. Merely running the
-      modified job again under the current session does not count.
-    subjects: *id003
+    description: Demonstrate the protected task action under the separate context. Merely running the modified job
+      again under the current session does not count.
+    subjects:
+    - features.k-cloud.k-workload--task
+    - features.k-cloud.k-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -225,9 +249,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Demonstrate a post-transition run with the requested behavior and correct new assignment.
-      Replaying an earlier receipt is insufficient.
-    subjects: *id004
+    description: Demonstrate a post-transition run with the requested behavior and correct new assignment. Replaying
+      an earlier receipt is insufficient.
+    subjects:
+    - features.k-cloud.k-workload--scheduler
     basis: observed_state
     predicate:
       kind: boolean
@@ -281,7 +306,7 @@ objectives:
     agent: participant.operator
     actions:
     - k16.c1
-    targets: &id005
+    targets:
     - features.k-cloud.k-workload--scheduler
     success:
       mode: all_of
@@ -299,7 +324,7 @@ objectives:
     agent: participant.operator
     actions:
     - k16.c2
-    targets: &id006
+    targets:
     - features.k-cloud.k-workload--scheduler
     success:
       mode: all_of
@@ -317,8 +342,9 @@ objectives:
     agent: participant.operator
     actions:
     - k16.c3
-    targets: &id007
-    - features.k-cloud.k-workload--scheduler
+    targets:
+    - features.k-cloud.k-workload--task
+    - features.k-cloud.k-data
     success:
       mode: all_of
       assertions:
@@ -335,7 +361,7 @@ objectives:
     agent: participant.operator
     actions:
     - k16.c4
-    targets: &id008
+    targets:
     - features.k-cloud.k-workload--scheduler
     success:
       mode: all_of
@@ -346,8 +372,8 @@ objectives:
       - k16.c4
 workflows:
   c1:
-    description: 'K16.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K16.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -373,8 +399,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K16.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K16.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -396,8 +422,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K16.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K16.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -419,8 +445,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'K16.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K16.4: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -446,25 +472,47 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the scheduled support workflow that will run after the current operator's
-      shift ends.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Schedule/config read. Merely describing the condition, editing a local copy, or presenting
+      a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k16.c1
       - features.k-cloud.k-workload--scheduler
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-workload` owns this part of the operation. Its starting state is exact: Schedule SCH-SUP-2841,
+        systemd-timer-equivalent cadence, profile and startup-config reference. The owning service uses the listener,
+        route, identity, authorization, storage, and audit contract declared in the corresponding world module.
+        Records that are not explicitly mutable remain immutable. The private service-loader contract `content.keplerops-k-workload.k16-1-tomorrow-s-job`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-workload
+      - content.keplerops-k-workload.k16-1-tomorrow-s-job
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K16.2. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
+      - features.k-cloud.k-workload
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the current schedule and its startup configuration reference. It does not award
-        execution or future recurrence.
-      target_refs: *id005
+      description: Recover the current schedule and its startup configuration reference. It does not award execution
+        or future recurrence.
+      target_refs:
+      - features.k-cloud.k-workload--scheduler
       evidence_refs:
       - evidence_requirements.k16.c1
     failure_classes:
@@ -478,25 +526,48 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Change the scheduled workflow's startup behavior so its next rehearsal run carries
-      Cinder's marker without breaking its support output.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Next rehearsal emits marker and valid support output. Merely describing the condition,
+      editing a local copy, or presenting a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k16.c2
       - features.k-cloud.k-workload--scheduler
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-workload` owns this part of the operation. Its starting state is exact: Editor can update
+        startup_hook for owned destination but service omits schedule-owner check; hook has fixed argv schema and
+        output contract. The owning service uses the listener, route, identity, authorization, storage, and audit
+        contract declared in the corresponding world module. Records that are not explicitly mutable remain immutable.
+        The private service-loader contract `content.keplerops-k-workload.k16-2-the-next-startup` freezes the request,
+        denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-workload
+      - content.keplerops-k-workload.k16-2-the-next-startup
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K16.3. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
+      - features.k-cloud.k-workload
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the intended startup change and one compatible rehearsal result. The previous
-        schedule disclosure is insufficient.
-      target_refs: *id006
+      description: Demonstrate the intended startup change and one compatible rehearsal result. The previous schedule
+        disclosure is insufficient.
+      target_refs:
+      - features.k-cloud.k-workload--scheduler
       evidence_refs:
       - evidence_requirements.k16.c2
     failure_classes:
@@ -510,25 +581,52 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Establish the separate execution context needed for the scheduled task to act after
-      your current support session ends.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: On-demand run performs protected action; destination audit names task principal.
+      Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
-      - workflows.k16.c3
-      - features.k-cloud.k-workload--scheduler
+      - workflows.c3
+      - features.k-cloud.k-workload--task
+      - features.k-cloud.k-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-workload` owns this part of the operation. Its starting state is exact: Task runs as svc-support-export,
+        distinct from caller, with one protected handover-write grant. The owning service uses the listener, route,
+        identity, authorization, storage, and audit contract declared in the corresponding world module. Records
+        that are not explicitly mutable remain immutable. The private service-loader contract `content.keplerops-k-workload.k16-3-beyond-the-current-session`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-workload--task
+      - features.k-cloud.k-data
+      - content.keplerops-k-workload.k16-3-beyond-the-current-session
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Persistent execution position. Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
+        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
+        outside this in-world contract.
+      support_refs:
+      - features.k-cloud.k-workload--task
+      - features.k-cloud.k-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the protected task action under the separate context. Merely running the
-        modified job again under the current session does not count.
-      target_refs: *id007
+      description: Demonstrate the protected task action under the separate context. Merely running the modified
+        job again under the current session does not count.
+      target_refs:
+      - features.k-cloud.k-workload--task
+      - features.k-cloud.k-data
       evidence_refs:
       - evidence_requirements.k16.c3
     failure_classes:
@@ -542,25 +640,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Carry the altered workflow through the supplied shift transition and make it run
-      successfully under the new assignment.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Post-transition scheduled run retains marker, valid output and new assignment binding.
+      Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k16.c4
       - features.k-cloud.k-workload--scheduler
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-workload` owns this part of the operation. Its starting state is exact: Shift transition
+        changes assignment from SHIFT-SEP16-A to SHIFT-SEP17-B without replacing schedule. The owning service uses
+        the listener, route, identity, authorization, storage, and audit contract declared in the corresponding
+        world module. Records that are not explicitly mutable remain immutable. The private service-loader contract
+        `content.keplerops-k-workload.k16-4-still-there-after-the-handover` freezes the request, denial, state-transition,
+        evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-workload
+      - content.keplerops-k-workload.k16-4-still-there-after-the-handover
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Optional persistence conclusion. Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
+        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
+        outside this in-world contract.
+      support_refs:
+      - features.k-cloud.k-workload
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate a post-transition run with the requested behavior and correct new assignment.
-        Replaying an earlier receipt is insufficient.
-      target_refs: *id008
+      description: Demonstrate a post-transition run with the requested behavior and correct new assignment. Replaying
+        an earlier receipt is insufficient.
+      target_refs:
+      - features.k-cloud.k-workload--scheduler
       evidence_refs:
       - evidence_requirements.k16.c4
     failure_classes:
@@ -570,101 +692,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-workload--scheduler
-    description: K16.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k16.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-workload--scheduler
-    description: K16.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k16.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-workload--scheduler
-    description: K16.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k16.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-workload--scheduler
-    description: K16.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k16.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K16.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned delegated context, scheduled-workflow records, startup settings, and an on-demand shift rehearsal.
-    target: k-cloud.k-workload
-    tags:
-    - synthetic
-    - k16
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned delegated context, scheduled-workflow records, startup settings, and an
-        on-demand shift rehearsal.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K16.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned delegated context, scheduled-workflow records, startup settings, and an on-demand shift rehearsal.
-    target: k-cloud.k-workload
-    tags:
-    - synthetic
-    - k16
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned delegated context, scheduled-workflow records, startup settings, and an
-        on-demand shift rehearsal.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K16.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned delegated context, scheduled-workflow records, startup settings, and an on-demand shift rehearsal.
-    target: k-cloud.k-workload
-    tags:
-    - synthetic
-    - k16
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned delegated context, scheduled-workflow records, startup settings, and an
-        on-demand shift rehearsal.
-  c4-records-1:
-    type: dataset
-    description: |-
-      K16.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned delegated context, scheduled-workflow records, startup settings, and an on-demand shift rehearsal.
-    target: k-cloud.k-workload
-    tags:
-    - synthetic
-    - k16
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned delegated context, scheduled-workflow records, startup settings, and an
-        on-demand shift rehearsal.

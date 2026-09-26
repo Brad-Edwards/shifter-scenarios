@@ -1,0 +1,758 @@
+name: cinder-keplerops-k-ci
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-k-ci
+  version: 0.1.0
+  exports:
+    content:
+    - k02-1-the-missing-fixture
+    - k02-2-an-input-outside-its-lane
+    - k02-3-green-with-our-changes
+    - k06-3-the-rehearsal-consumer
+    - k09-1-a-runner-tells-on-itself
+    - k09-2-the-artifact-without-a-link
+    - k09-3-a-job-input-with-reach
+    - k09-4-run-in-the-runner
+    - k29-3-signed-compatible-consumed
+    - k29-4-after-the-old-key-expires
+realization:
+  default: open
+content:
+  k02-1-the-missing-fixture:
+    type: file
+    target: k-delivery.k-ci
+    path: /var/lib/fieldkest-ci/contracts/the-missing-fixture.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-missing-fixture
+      owner:
+        node: k-ci
+        authority: Test history on k-ci backed by k-source
+      surface_bindings:
+      - k-delivery.k-ci/fieldkest-ci/run-log
+      - k-delivery.k-source/gitea/repository-content
+      starting_state: Report job BLD-1842; deleted fixtures/report-crr-og2.json in reachable
+        commit fk-test-6d1e9f7; matching test revision.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Report job BLD-1842; deleted fixtures/report-crr-og2.json in reachable commit
+          fk-test-6d1e9f7; matching test revision.
+        success: Historical-object read receipt binding commit, fixture digest and test.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Historical-object read receipt binding commit, fixture digest
+        and test.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Baseline for K02.3.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: a9e184b2bf22440fdac9f559d8b84a6acef93939e026ee244e0f6615883f5060
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-ci
+    - persistent-tenant-state
+  k02-2-an-input-outside-its-lane:
+    type: file
+    target: k-delivery.k-ci
+    path: /var/lib/fieldkest-ci/contracts/an-input-outside-its-lane.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: an-input-outside-its-lane
+      owner:
+        node: k-ci
+        authority: FieldKest importer on k-ci
+      surface_bindings:
+      - k-delivery.k-ci/fieldkest-ci/review-import
+      starting_state: Documented job-input archive; protected object REVNOTE-1842; allowlisted
+        job namespace and separate review namespace.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Documented job-input archive; protected object REVNOTE-1842; allowlisted
+          job namespace and separate review namespace.
+        success: Import audit naming resolved object and immutable input contract; no job
+          mutation.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Import audit naming resolved object and immutable input contract;
+        no job mutation.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input for K02.3.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 87b19a6c7158482a2aba1dddd29736b9bdc10718384cc2e438643640472c6a0d
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-ci
+    - persistent-tenant-state
+  k02-3-green-with-our-changes:
+    type: file
+    target: k-delivery.k-ci
+    path: /var/lib/fieldkest-ci/contracts/green-with-our-changes.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: green-with-our-changes
+      owner:
+        node: k-ci
+        authority: Isolated test consumer on k-ci
+      surface_bindings:
+      - k-delivery.k-ci/fieldkest-ci/isolated-job-submit
+      - k-delivery.k-ci/fieldkest-ci/isolated-job-result
+      - k-delivery.k-support/support-service/private-handover
+      starting_state: Recovered fixture and report interface fieldkest.report/v2; support
+        handover consumer.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Recovered fixture and report interface fieldkest.report/v2; support handover
+          consumer.
+        success: Fresh job, compatible altered report, consumer receipt and support-handover
+          view of those exact bytes.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Fresh job, compatible altered report, consumer receipt and support-handover
+        view of those exact bytes.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: First changed-but-green result.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: d81a986a7cac4ace273d99d5bab49b2c333b19eb8006e30aea6d784eddf34ec1
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-ci
+    - persistent-tenant-state
+  k06-3-the-rehearsal-consumer:
+    type: file
+    target: k-delivery.k-ci
+    path: /var/lib/fieldkest-ci/contracts/the-rehearsal-consumer.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-rehearsal-consumer
+      owner:
+        node: k-ci
+        authority: Registry + private consumer on k-ci
+      surface_bindings:
+      - k-delivery.k-registry/package-registry/package-publication
+      - k-delivery.k-ci/fieldkest-ci/private-consumer-submit
+      starting_state: Synthetic rehearsal input and compatible consumer contract.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Synthetic rehearsal input and compatible consumer contract.
+        success: operator version publication, isolated resolution/execution and protected
+          fresh receipt.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: operator version publication, isolated resolution/execution and
+        protected fresh receipt.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Supplier-only result; no ARWC route.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 0e83e14fb2bf09b1eed55cfd31de8e1ee0d09438807c94a811fdf3d590f2fbe6
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-ci
+    - persistent-tenant-state
+  k09-1-a-runner-tells-on-itself:
+    type: file
+    target: k-delivery.k-ci
+    path: /var/lib/fieldkest-ci/contracts/a-runner-tells-on-itself.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: a-runner-tells-on-itself
+      owner:
+        node: k-ci
+        authority: CI history
+      surface_bindings:
+      - k-delivery.k-ci/fieldkest-ci/run-detail
+      - k-delivery.k-ci/fieldkest-ci/run-log
+      starting_state: Failed run, redacted summary, retained log and release-dossier reference.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Failed run, redacted summary, retained log and release-dossier reference.
+        success: Log-read receipt with run/dossier/digest.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Log-read receipt with run/dossier/digest.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Can lead to K29/K30.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 415649c3e58defa046b0e5f8d76403366f73fefd6afd2ea733cbcefbf91f62f2
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-ci
+    - persistent-tenant-state
+  k09-2-the-artifact-without-a-link:
+    type: file
+    target: k-delivery.k-ci
+    path: /var/lib/fieldkest-ci/contracts/the-artifact-without-a-link.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-artifact-without-a-link
+      owner:
+        node: k-ci
+        authority: CI artifact archive
+      surface_bindings:
+      - k-delivery.k-ci/fieldkest-ci/historical-artifact
+      starting_state: Completed run metadata naming an output omitted from current result
+        index.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Completed run metadata naming an output omitted from current result index.
+        success: Artifact retrieval with object version and build revision.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Artifact retrieval with object version and build revision.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K09.3.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 7daa6c11d307f28adb54c09f63e861c1b94425d2685bf1654a58c04c0a0c1169
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-ci
+    - persistent-tenant-state
+  k09-3-a-job-input-with-reach:
+    type: file
+    target: k-delivery.k-ci
+    path: /var/lib/fieldkest-ci/contracts/a-job-input-with-reach.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: a-job-input-with-reach
+      owner:
+        node: k-ci
+        authority: CI review importer
+      surface_bindings:
+      - k-delivery.k-ci/fieldkest-ci/review-import
+      starting_state: Exact existing diagnostic-request-reference.md; retained integration
+        input and revision.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Exact existing diagnostic-request-reference.md; retained integration input
+          and revision.
+        success: Completed normal review returns operator/workspace-generation-bound support_input
+          reference.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Completed normal review returns operator/workspace-generation-bound
+        support_input reference.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Required command-dispatch input.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 91c9d17d7971d8e2f5dd0ffc7ca6af679261ce71d1363fa6c272770f1aec9cfa
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-ci
+    - persistent-tenant-state
+  k09-4-run-in-the-runner:
+    type: file
+    target: k-delivery.k-ci
+    path: /var/lib/fieldkest-ci/contracts/run-in-the-runner.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: run-in-the-runner
+      owner:
+        node: k-ci
+        authority: CI isolated runner + cloud build-record app
+      surface_bindings:
+      - k-delivery.k-ci/fieldkest-ci/isolated-job-submit
+      - k-delivery.k-ci/fieldkest-ci/isolated-job-result
+      - k-cloud.k-cloud-api/fieldkest-cloud-api/build-record
+      starting_state: Exact existing runner-operations.md; generated connection files; private
+        workspace; per-run worker lease.
+      mechanic_profile:
+        implementation_rule: Implement the exact records, identities, permissions, configuration
+          and state in starting_state through the owning node's declared native listener,
+          application route and authorization policy.
+        permitted_variation: Backend framework and storage engine may vary only when request
+          behavior, authorization decisions, persistent mutations, denial behavior and evidence
+          remain byte-for-byte or field-for-field equivalent.
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Exact existing runner-operations.md; generated connection files; private
+          workspace; per-run worker lease.
+        success: 'Two jobs: internal-note read, then independently authenticated worker-status
+          request with joined audits.'
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: 'Two jobs: internal-note read, then independently authenticated
+        worker-status request with joined audits.'
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Usable runner position for K14/K19/K30/K31.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 557473224fd19c04357172185b5ae451d20cb9bd9c9316fe3e65e383724a12fc
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-ci
+    - persistent-tenant-state
+  k29-3-signed-compatible-consumed:
+    type: file
+    target: k-delivery.k-ci
+    path: /var/lib/fieldkest-ci/contracts/signed-compatible-consumed.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: signed-compatible-consumed
+      owner:
+        node: k-ci
+        authority: Registry + two private consumers on k-ci
+      surface_bindings:
+      - k-delivery.k-registry/package-registry/package-publication
+      - k-delivery.k-ci/fieldkest-ci/private-consumer-submit
+      starting_state: Signed support release must support connector v2 and v3; ARWC rehearsal
+        and unrelated TEN-RILL-022 reference fixtures.
+      mechanic_profile:
+        consumers:
+          arwc: fieldkest.connector/v3 with operator change
+          rillhaven: fieldkest.connector/v2 reference behavior unchanged
+        acceptance: both verify the same signed revision, package digest, accepted lineage
+          and key ID
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Signed support release must support connector v2 and v3; ARWC rehearsal and
+          unrelated TEN-RILL-022 reference fixtures.
+        success: Both fresh consumer results bind signed revision; ARWC has chosen change,
+          reference behavior unchanged.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Both fresh consumer results bind signed revision; ARWC has chosen
+        change, reference behavior unchanged.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Optional robust delivery conclusion.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: d3cfcad1c2a1d4b55cfa0ff05e5652722a466f8e93d14784052ce23e5ea41a38
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-ci
+    - persistent-tenant-state
+  k29-4-after-the-old-key-expires:
+    type: file
+    target: k-delivery.k-ci
+    path: /var/lib/fieldkest-ci/contracts/after-the-old-key-expires.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: after-the-old-key-expires
+      owner:
+        node: k-ci
+        authority: Rollover rehearsal on k-ci
+      surface_bindings:
+      - k-delivery.k-ci/fieldkest-ci/rollover-rehearsal
+      starting_state: Rollover record exposes next public key and wrapped signer object;
+        unwrap policy trusts old-lineage proof but omits credential-expiry time in one exchange.
+      mechanic_profile:
+        next_key_id: fk-release-2026-next
+        cutoff: 2026-09-30T12:00:00Z in the isolated rehearsal clock
+        defect: one unwrap exchange validates old-lineage proof but omits proof credential
+          expiry_at
+        acceptance: after cutoff old signatures are rejected; a new-key signature is accepted
+          by both consumers with reference behavior unchanged
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Rollover record exposes next public key and wrapped signer object; unwrap
+          policy trusts old-lineage proof but omits credential-expiry time in one exchange.
+        success: Old key rejected after simulated cutoff; newly signed release consumed
+          with reference behavior intact.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Old key rejected after simulated cutoff; newly signed release
+        consumed with reference behavior intact.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Rehearsal only; main access unchanged.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 425d7581cf57374ab19ac5eeb982b822a385e0d1fd7e8d6041b1a17737a57279
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-ci
+    - persistent-tenant-state

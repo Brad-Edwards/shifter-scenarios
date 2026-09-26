@@ -1,0 +1,92 @@
+name: cinder-keplerops-integrations
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-integrations
+  version: 0.1.0
+  exports:
+    relationships:
+    - source-build
+    - runner-source
+    - runner-registry
+    - registry-rehearsal
+    - preview-render
+    - package-delivery
+    - diagnostic-delivery
+    - staff-identity-admin
+    - scheduled-output
+    - maintenance-archive
+    - backup-source
+    - completion-handover
+    - assistant-review
+realization:
+  default: open
+relationships:
+  source-build:
+    type: connects_to
+    source: features.k-delivery.k-source
+    target: features.k-delivery.k-ci
+    description: CI reads selected FieldKest repository revisions through its declared source principal.
+  runner-source:
+    type: connects_to
+    source: features.k-delivery.k-ci--runner
+    target: features.k-delivery.k-source
+    description: Isolated runners use the scoped source-reader principal declared by the source service.
+  runner-registry:
+    type: connects_to
+    source: features.k-delivery.k-ci--runner
+    target: features.k-delivery.k-registry
+    description: Isolated runners read dependencies through the registry's build-reader grant.
+  registry-rehearsal:
+    type: connects_to
+    source: features.k-delivery.k-registry
+    target: features.k-delivery.k-ci--rehearsals
+    description: Private v2/v3 consumers resolve immutable candidate packages from the registry.
+  preview-render:
+    type: connects_to
+    source: features.k-delivery.k-preview--renderer
+    target: features.k-delivery.k-preview
+    description: Constrained workers return only the bound document or review render to the preview service.
+  package-delivery:
+    type: connects_to
+    source: features.k-delivery.k-registry
+    target: features.a-corporate.a-connector
+    description: The approved arwc-stable package channel terminates at the exact FieldLink customer-consumer routes.
+  diagnostic-delivery:
+    type: connects_to
+    source: features.k-delivery.k-support
+    target: features.a-corporate.a-connector
+    description: Signed tenant-bound diagnostic jobs terminate at the bounded FieldLink diagnostic intake.
+  staff-identity-admin:
+    type: connects_to
+    source: features.k-corporate.k-staff--delegated-client
+    target: features.k-corporate.k-identity--delegation
+    description: The staff preview and delegation brokers call the declared identity-admin routes as their service
+      principals.
+  scheduled-output:
+    type: connects_to
+    source: features.k-cloud.k-workload--task
+    target: features.k-cloud.k-data
+    description: The scheduled support-export task writes only its declared handover destination.
+  maintenance-archive:
+    type: connects_to
+    source: features.k-cloud.k-workload--runtime
+    target: features.k-cloud.k-data--field-archive
+    description: The runtime principal presents scheduler attestation to the field-archive route.
+  backup-source:
+    type: connects_to
+    source: features.k-cloud.k-data--backup
+    target: features.k-cloud.k-data--source-db
+    description: Only the backup-service database role reads source history; the recovery caller has no database
+      grant.
+  completion-handover:
+    type: connects_to
+    source: features.k-cloud.k-assistant--completion
+    target: features.k-cloud.k-assistant--handover
+    description: The bounded completion identity reads only HANDOVER-COMP-2841.
+  assistant-review:
+    type: connects_to
+    source: features.k-cloud.k-assistant--review-tool
+    target: features.k-delivery.k-support--review-item
+    description: The assistant tool may update only the declared duplicate-disposition field on its bound support
+      review.

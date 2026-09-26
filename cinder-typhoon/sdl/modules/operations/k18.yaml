@@ -40,23 +40,15 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual draft and its consumer binding. This is new note data, not a repetition
-      of the support-session result.
-    source_refs: &id001
+    description: |-
+      Recover the actual draft and its consumer binding. This is new note data, not a repetition of the support-session result.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-corporate.k-staff
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,12 +77,19 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c2:
-    description: Recover the current support-application registration through the privileged review context.
-      This establishes access to the registration, not permission to change its federation policy; that
-      is K18.3.
-    source_refs: &id002
+    description: |-
+      Recover the current support-application registration through the privileged review context. This establishes access to the registration, not permission to change its federation policy; that is K18.3.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-corporate.k-staff
+    - features.k-corporate.k-identity
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -112,16 +111,25 @@ evidence_requirements:
         - cinder.k18-2.satisfied
         component_refs:
         - features.k-corporate.k-staff
+        - features.k-corporate.k-identity
       collection: require
       retention: require
       redaction: redact-secrets
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c3:
-    description: Demonstrate an accepted policy change and a successful existing-staff login. Merely reading
-      the registration in K18.2 or replacing every user's identity configuration does not count.
-    source_refs: &id003
+    description: |-
+      Demonstrate an accepted policy change and a successful existing-staff login. Merely reading the registration in K18.2 or replacing every user's identity configuration does not count.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
+    - features.k-corporate.k-staff
     - features.k-corporate.k-identity
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -143,6 +151,7 @@ evidence_requirements:
         names:
         - cinder.k18-3.satisfied
         component_refs:
+        - features.k-corporate.k-staff
         - features.k-corporate.k-identity
       collection: require
       retention: require
@@ -150,10 +159,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c4:
-    description: Recover the designated backend record through the identity-to-data boundary. An accepted
-      login response alone is insufficient.
-    source_refs: &id004
+    description: |-
+      Recover the designated backend record through the identity-to-data boundary. An accepted login response alone is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-support--customer-records
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -182,11 +198,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
 propositions:
   c1:
-    description: Recover the actual draft and its consumer binding. This is new note data, not a repetition
-      of the support-session result.
-    subjects: *id001
+    description: Recover the actual draft and its consumer binding. This is new note data, not a repetition of the
+      support-session result.
+    subjects:
+    - features.k-corporate.k-staff
     basis: observed_state
     predicate:
       kind: boolean
@@ -198,10 +220,11 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the current support-application registration through the privileged review context.
-      This establishes access to the registration, not permission to change its federation policy; that
-      is K18.3.
-    subjects: *id002
+    description: Recover the current support-application registration through the privileged review context. This
+      establishes access to the registration, not permission to change its federation policy; that is K18.3.
+    subjects:
+    - features.k-corporate.k-staff
+    - features.k-corporate.k-identity
     basis: observed_state
     predicate:
       kind: boolean
@@ -213,9 +236,11 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate an accepted policy change and a successful existing-staff login. Merely reading
-      the registration in K18.2 or replacing every user's identity configuration does not count.
-    subjects: *id003
+    description: Demonstrate an accepted policy change and a successful existing-staff login. Merely reading the
+      registration in K18.2 or replacing every user's identity configuration does not count.
+    subjects:
+    - features.k-corporate.k-staff
+    - features.k-corporate.k-identity
     basis: observed_state
     predicate:
       kind: boolean
@@ -227,9 +252,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Recover the designated backend record through the identity-to-data boundary. An accepted
-      login response alone is insufficient.
-    subjects: *id004
+    description: Recover the designated backend record through the identity-to-data boundary. An accepted login
+      response alone is insufficient.
+    subjects:
+    - features.k-delivery.k-support--customer-records
     basis: observed_state
     predicate:
       kind: boolean
@@ -283,7 +309,7 @@ objectives:
     agent: participant.operator
     actions:
     - k18.c1
-    targets: &id005
+    targets:
     - features.k-corporate.k-staff
     success:
       mode: all_of
@@ -301,8 +327,9 @@ objectives:
     agent: participant.operator
     actions:
     - k18.c2
-    targets: &id006
+    targets:
     - features.k-corporate.k-staff
+    - features.k-corporate.k-identity
     success:
       mode: all_of
       assertions:
@@ -319,7 +346,8 @@ objectives:
     agent: participant.operator
     actions:
     - k18.c3
-    targets: &id007
+    targets:
+    - features.k-corporate.k-staff
     - features.k-corporate.k-identity
     success:
       mode: all_of
@@ -337,7 +365,7 @@ objectives:
     agent: participant.operator
     actions:
     - k18.c4
-    targets: &id008
+    targets:
     - features.k-delivery.k-support--customer-records
     success:
       mode: all_of
@@ -348,8 +376,8 @@ objectives:
       - k18.c4
 workflows:
   c1:
-    description: 'K18.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K18.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -371,8 +399,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K18.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K18.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -394,8 +422,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K18.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K18.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -417,8 +445,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'K18.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K18.4: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -444,25 +472,47 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the restricted support-note draft and establish which identity workflow consumes
-      its preview.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Draft/consumer read. Merely describing the condition, editing a local copy, or presenting
+      a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k18.c1
+      - features.k-corporate.k-staff
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-staff` owns this part of the operation. Its starting state is exact: Restricted draft NOTE-SUP-2841-7
+        and preview-consumer binding. The owning service uses the listener, route, identity, authorization, storage,
+        and audit contract declared in the corresponding world module. Records that are not explicitly mutable remain
+        immutable. The private service-loader contract `content.keplerops-k-staff.k18-1-the-note-behind-the-preview`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-corporate.k-staff
+      - content.keplerops-k-staff.k18-1-the-note-behind-the-preview
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Starts federation branch. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
       - features.k-corporate.k-staff
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual draft and its consumer binding. This is new note data, not a repetition
-        of the support-session result.
-      target_refs: *id005
+      description: Recover the actual draft and its consumer binding. This is new note data, not a repetition of
+        the support-session result.
+      target_refs:
+      - features.k-corporate.k-staff
       evidence_refs:
       - evidence_requirements.k18.c1
     failure_classes:
@@ -476,26 +526,52 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Make the privileged note reviewer open the identity-provider administration view
-      and recover its restricted support-application registration record.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Registration response and both proxy/destination audits. Merely describing the condition,
+      editing a local copy, or presenting a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
-      - workflows.k18.c2
+      - workflows.c2
       - features.k-corporate.k-staff
+      - features.k-corporate.k-identity
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-staff` owns this part of the operation. Its starting state is exact: Preview path validates
+        encoded /notes/ prefix before decoding; encoded traversal reaches read-only identity-admin registration
+        OIDC-FIELDKEST-SUPPORT under reviewer service identity. The owning service uses the listener, route, identity,
+        authorization, storage, and audit contract declared in the corresponding world module. Records that are
+        not explicitly mutable remain immutable. The private service-loader contract `content.keplerops-k-staff.k18-2-a-note-with-someone-else-s-authority`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-corporate.k-staff
+      - features.k-corporate.k-identity
+      - content.keplerops-k-staff.k18-2-a-note-with-someone-else-s-authority
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Access, not mutation. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
+      - features.k-corporate.k-staff
+      - features.k-corporate.k-identity
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the current support-application registration through the privileged review
-        context. This establishes access to the registration, not permission to change its federation
-        policy; that is K18.3.
-      target_refs: *id006
+      description: Recover the current support-application registration through the privileged review context. This
+        establishes access to the registration, not permission to change its federation policy; that is K18.3.
+      target_refs:
+      - features.k-corporate.k-staff
+      - features.k-corporate.k-identity
       evidence_refs:
       - evidence_requirements.k18.c2
     failure_classes:
@@ -509,25 +585,53 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Change the federation policy for the support application's identity-provider registration
-      so your controlled provider is accepted, while preserving the existing staff login relationship.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Registration revision with fixture issuer and successful ordinary staff-login audit.
+      Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
-      - workflows.k18.c3
+      - workflows.c3
+      - features.k-corporate.k-staff
+      - features.k-corporate.k-identity
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-staff` owns this part of the operation. Its starting state is exact: Preview metadata forwards
+        an allowed method field; encoded traversal plus PATCH can add one fixture provider while preserving existing
+        provider. The owning service uses the listener, route, identity, authorization, storage, and audit contract
+        declared in the corresponding world module. Records that are not explicitly mutable remain immutable. The
+        private service-loader contract `content.keplerops-k-staff.k18-3-the-provider-trusts-our-change` freezes
+        the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-corporate.k-staff
+      - features.k-corporate.k-identity
+      - content.keplerops-k-staff.k18-3-the-provider-trusts-our-change
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Controlled federation trust. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
+      - features.k-corporate.k-staff
       - features.k-corporate.k-identity
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate an accepted policy change and a successful existing-staff login. Merely
-        reading the registration in K18.2 or replacing every user's identity configuration does not count.
-      target_refs: *id007
+      description: Demonstrate an accepted policy change and a successful existing-staff login. Merely reading the
+        registration in K18.2 or replacing every user's identity configuration does not count.
+      target_refs:
+      - features.k-corporate.k-staff
+      - features.k-corporate.k-identity
       evidence_refs:
       - evidence_requirements.k18.c3
     failure_classes:
@@ -541,25 +645,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Use the changed trust relationship to recover the backend customer record withheld
-      from ordinary support identities.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Federated session and read of protected record CUSTREC-047-R6. Merely describing
+      the condition, editing a local copy, or presenting a value obtained from another surface does not satisfy
+      the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k18.c4
       - features.k-delivery.k-support--customer-records
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-support` owns this part of the operation. Its starting state is exact: Locally hosted fixture
+        issuer on k-support issues a signed assertion for the designated test subject; backend role check omits
+        tenant predicate on one query. The owning service uses the listener, route, identity, authorization, storage,
+        and audit contract declared in the corresponding world module. Records that are not explicitly mutable remain
+        immutable. The private service-loader contract `content.keplerops-k-support.k18-4-the-query-behind-the-identity`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-support
+      - content.keplerops-k-support.k18-4-the-query-behind-the-identity
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Specialist data result. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
+      - features.k-delivery.k-support
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the designated backend record through the identity-to-data boundary. An accepted
-        login response alone is insufficient.
-      target_refs: *id008
+      description: Recover the designated backend record through the identity-to-data boundary. An accepted login
+        response alone is insufficient.
+      target_refs:
+      - features.k-delivery.k-support--customer-records
       evidence_refs:
       - evidence_requirements.k18.c4
     failure_classes:
@@ -569,101 +697,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-corporate.k-staff
-    description: K18.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k18.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-corporate.k-staff
-    description: K18.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k18.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-corporate.k-identity
-    description: K18.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k18.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-support--customer-records
-    description: K18.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k18.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K18.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The support-note feature, ordinary identity-provider material, and a controlled note-review workflow.
-    target: k-corporate.k-staff
-    tags:
-    - synthetic
-    - k18
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The support-note feature, ordinary identity-provider material, and a controlled note-review
-        workflow.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K18.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The support-note feature, ordinary identity-provider material, and a controlled note-review workflow.
-    target: k-corporate.k-staff
-    tags:
-    - synthetic
-    - k18
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The support-note feature, ordinary identity-provider material, and a controlled note-review
-        workflow.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K18.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The support-note feature, ordinary identity-provider material, and a controlled note-review workflow.
-    target: k-corporate.k-identity
-    tags:
-    - synthetic
-    - k18
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The support-note feature, ordinary identity-provider material, and a controlled note-review
-        workflow.
-  c4-records-1:
-    type: dataset
-    description: |-
-      K18.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The support-note feature, ordinary identity-provider material, and a controlled note-review workflow.
-    target: k-delivery.k-support
-    tags:
-    - synthetic
-    - k18
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The support-note feature, ordinary identity-provider material, and a controlled note-review
-        workflow.

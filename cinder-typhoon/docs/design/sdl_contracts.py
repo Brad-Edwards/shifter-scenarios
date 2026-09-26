@@ -151,7 +151,8 @@ def technical_sections(brief):
     if brief['status'] != 'Technical draft':
         return {}
     headings = tuple('Boundaries' if brief['operation'].startswith('T') and h == 'Boundaries and reset'
-                     else h for h in TECHNICAL_HEADINGS)
+                     else 'Boundaries and persistence' if brief['operation'].startswith(('K', 'W'))
+                     and h == 'Boundaries and reset' else h for h in TECHNICAL_HEADINGS)
     return {h: text_section(brief, h, 3) for h in headings}
 
 

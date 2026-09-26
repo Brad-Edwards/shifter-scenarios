@@ -33,21 +33,17 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Produce correct verifier results for the designated programs. Naming a general hash family
-      or copying one checksum is insufficient.
-    source_refs: &id001
+    description: |-
+      Produce correct verifier results for the designated programs. Naming a general hash family or copying one checksum is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -76,10 +72,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Demonstrate the model on the specified distinguishing program cases. An unconstrained
-      collision claim or checksum implementation alone does not count.
-    source_refs: &id002
+    description: |-
+      Demonstrate the model on the specified distinguishing program cases. An unconstrained collision claim or checksum implementation alone does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -108,11 +114,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Demonstrate acceptance of the altered program and its false reserve result at the genuine
-      planning consumer. The useful collision and accepted program earn one score. This supplies the same
-      scoped W34 planning-view capability as W23.3, without altering raw process observations.
-    source_refs: &id003
+    description: |-
+      Demonstrate acceptance of the altered program and its false reserve result at the genuine planning consumer. The useful collision and accepted program satisfy one result. This supplies the same scoped W34 planning-view capability as W23.3, without altering raw process observations.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-diagnostics
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -141,11 +156,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Produce correct verifier results for the designated programs. Naming a general hash family
-      or copying one checksum is insufficient.
-    subjects: *id001
+    description: Produce correct verifier results for the designated programs. Naming a general hash family or copying
+      one checksum is insufficient.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -157,9 +179,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate the model on the specified distinguishing program cases. An unconstrained
-      collision claim or checksum implementation alone does not count.
-    subjects: *id002
+    description: Demonstrate the model on the specified distinguishing program cases. An unconstrained collision
+      claim or checksum implementation alone does not establish the result.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -171,10 +194,11 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate acceptance of the altered program and its false reserve result at the genuine
-      planning consumer. The useful collision and accepted program earn one score. This supplies the same
-      scoped W34 planning-view capability as W23.3, without altering raw process observations.
-    subjects: *id003
+    description: Demonstrate acceptance of the altered program and its false reserve result at the genuine planning
+      consumer. The useful collision and accepted program satisfy one result. This supplies the same scoped W34
+      planning-view capability as W23.3, without altering raw process observations.
+    subjects:
+    - features.a-engineering.a-diagnostics
     basis: observed_state
     predicate:
       kind: boolean
@@ -212,7 +236,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W27.1: What counts as intact'
+    name: 'This action: What counts as intact'
     description: |-
       Recover the integrity behavior used by the legacy engineering verifier and reproduce its decisions on the supplied programs.
 
@@ -220,7 +244,7 @@ objectives:
     agent: participant.operator
     actions:
     - w27.c1
-    targets: &id004
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -230,7 +254,7 @@ objectives:
       workflows:
       - w27.c1
   c2:
-    name: 'W27.2: The constraints of a valid-looking program'
+    name: 'This action: The constraints of a valid-looking program'
     description: |-
       Construct a model of the verifier's collision constraints that also accounts for the engineering program's required form.
 
@@ -238,7 +262,7 @@ objectives:
     agent: participant.operator
     actions:
     - w27.c2
-    targets: &id005
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -248,7 +272,7 @@ objectives:
       workflows:
       - w27.c2
   c3:
-    name: 'W27.3: A program the engineer would accept'
+    name: 'This action: A program the engineer would accept'
     description: |-
       Create a valid-looking diagnostic program that makes the planning consumer report sufficient reserve for Cinder's allocation case while preserving its required diagnostics and unaffected district outputs.
 
@@ -256,7 +280,7 @@ objectives:
     agent: participant.operator
     actions:
     - w27.c3
-    targets: &id006
+    targets:
     - features.a-engineering.a-diagnostics
     success:
       mode: all_of
@@ -267,8 +291,8 @@ objectives:
       - w27.c3
 workflows:
   c1:
-    description: 'W27.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -290,8 +314,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W27.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -313,8 +337,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W27.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -340,25 +364,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the integrity behavior used by the legacy engineering verifier and reproduce
-      its decisions on the supplied programs.
+    procedure_basis: |-
+      The authored condition is **linear ROT128 integrity reconstruction**. Serialize the complete DPG1 candidate, append byte 0x80, then zero bytes to a 16-byte boundary. Treat each block as little-endian u128 and update s=ROTL128(s,17) XOR block XOR ROTL128(block,41) from IV 0x6a09e667f3bcc908bb67ae8584caa73b. Return s XOR ROTL128(s,29) XOR the unpadded byte length. Six supplied programs freeze header inclusion, padding, rotation direction, endian order, and length handling. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Produce correct verifier results for the designated programs. Naming a general hash family or copying one checksum is insufficient. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `PLAN-CONSUMER-R8`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w27.c1
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **What counts as intact**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Legacy verifier VER-ROT128-R3 treats each 16-byte block as little-endian u128 and updates state s=ROTL128(s,17) XOR block XOR ROTL128(block,41) from IV 6a09e667f3bcc908bb67ae8584caa73b, then returns s XOR ROTL128(s,29) XOR byte_length; six programs freeze padding, length, and decisions.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/what-counts-as-intact`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/what-counts-as-intact`
+
+        The private service-loader contract is `content.arwc-a-engineering.w27-1-what-counts-as-intact`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w27-1-what-counts-as-intact
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce correct verifier results for the designated programs. Naming a general hash
-        family or copying one checksum is insufficient.
-      target_refs: *id004
+      description: Produce correct verifier results for the designated programs. Naming a general hash family or
+        copying one checksum is insufficient.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w27.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w27.c1
     failure_classes:
@@ -372,25 +432,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Construct a model of the verifier's collision constraints that also accounts for
-      the engineering program's required form.
+    procedure_basis: |-
+      The authored condition is **structurally constrained GF(2) collision model**. Build the checksum difference as a 128-row GF(2) system over only the declared padding-reservoir bits in the DPG1 block table. Header, table offsets, mandatory sensor-test opcodes, output schema, bounded numeric constants, and all non-Cairn outputs are fixed constraints. Solve for a nonzero delta whose ROT128 digest matches the ordinary program; a structurally invalid or byte-identical file is rejected. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the model on the specified distinguishing program cases. An unconstrained collision claim or checksum implementation alone does not establish the result. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `PLAN-CONSUMER-R8`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w27.c2
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **The constraints of a valid-looking program**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Accepted diagnostic program format DPG1 requires header, block table, mandatory sensor tests, bounded constants, checksum, and output schema; a GF(2) model must preserve all structural constraints.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/the-constraints-of-a-valid-looking-program`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/the-constraints-of-a-valid-looking-program`
+
+        The private service-loader contract is `content.arwc-a-engineering.w27-2-the-constraints-of-a-valid-looking-program`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w27-2-the-constraints-of-a-valid-looking-program
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the model on the specified distinguishing program cases. An unconstrained
-        collision claim or checksum implementation alone does not count.
-      target_refs: *id005
+      description: Demonstrate the model on the specified distinguishing program cases. An unconstrained collision
+        claim or checksum implementation alone does not establish the result.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w27.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w27.c2
     failure_classes:
@@ -404,27 +500,62 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Create a valid-looking diagnostic program that makes the planning consumer report
-      sufficient reserve for Cinder's allocation case while preserving its required diagnostics and unaffected
-      district outputs.
+    procedure_basis: |-
+      The authored condition is **accepted colliding diagnostic program**. Collision program DPG-CRR-CINDER preserves required diagnostics but changes only Cairn reserve estimate to 13.40 ML at planning consumer PLAN-CONSUMER-R8; unaffected district outputs and raw observations remain identical. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate acceptance of the altered program and its false reserve result at the genuine planning consumer. The useful collision and accepted program satisfy one result. This supplies the same scoped W34 planning-view capability as W23.3, without altering raw process observations. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `PLAN-CONSUMER-R8`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w27.c3
+      - features.a-engineering.a-diagnostics
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-diagnostics` and its `diagnostic-services` application own this part of **A program the engineer would accept**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Collision program DPG-CRR-CINDER preserves required diagnostics but changes only Cairn reserve estimate to 13.40 ML at planning consumer PLAN-CONSUMER-R8; unaffected district outputs and raw observations remain identical.
+
+        Native bindings:
+
+        - `a-engineering.a-diagnostics/diagnostic-services/a-program-the-engineer-would-accept`
+        - `a-engineering.a-diagnostics/filesystem:/var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept`
+
+        The private service-loader contract is `content.arwc-a-diagnostics.w27-3-a-program-the-engineer-would-accept`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-diagnostics
+      - content.arwc-a-diagnostics.w27-3-a-program-the-engineer-would-accept
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies the verifier form of the W34 planning-view capability. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-diagnostics
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate acceptance of the altered program and its false reserve result at the genuine
-        planning consumer. The useful collision and accepted program earn one score. This supplies the
-        same scoped W34 planning-view capability as W23.3, without altering raw process observations.
-      target_refs: *id006
+      description: Demonstrate acceptance of the altered program and its false reserve result at the genuine planning
+        consumer. The useful collision and accepted program satisfy one result. This supplies the same scoped W34
+        planning-view capability as W23.3, without altering raw process observations.
+      target_refs:
+      - features.a-engineering.a-diagnostics
+      evidence_refs:
+      - evidence_requirements.w27.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-diagnostics
       evidence_refs:
       - evidence_requirements.w27.c3
     failure_classes:
@@ -434,77 +565,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W27.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w27.c1
-      mode: artifact
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W27.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w27.c2
-      mode: artifact
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-diagnostics
-    description: W27.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w27.c3
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W27.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The legacy engineering-program verifier, approved diagnostic examples, and the isolated planning consumer it protects.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w27
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The legacy engineering-program verifier, approved diagnostic examples, and the isolated
-        planning consumer it protects.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W27.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The legacy engineering-program verifier, approved diagnostic examples, and the isolated planning consumer it protects.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w27
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The legacy engineering-program verifier, approved diagnostic examples, and the isolated
-        planning consumer it protects.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W27.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The legacy engineering-program verifier, approved diagnostic examples, and the isolated planning consumer it protects.
-    target: a-engineering.a-diagnostics
-    tags:
-    - synthetic
-    - w27
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The legacy engineering-program verifier, approved diagnostic examples, and the isolated
-        planning consumer it protects.

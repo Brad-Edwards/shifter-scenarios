@@ -1,0 +1,80 @@
+name: cinder-keplerops-k-identity
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-k-identity
+  version: 0.1.0
+  exports:
+    content:
+    - k20-1-a-delegation-that-reaches-further
+realization:
+  default: open
+content:
+  k20-1-a-delegation-that-reaches-further:
+    type: file
+    target: k-corporate.k-identity
+    path: /var/lib/keplerops-identity/contracts/a-delegation-that-reaches-further.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: a-delegation-that-reaches-further
+      owner:
+        node: k-identity
+        authority: Identity delegation service
+      surface_bindings:
+      - k-corporate.k-identity/identity-admin/service-relation
+      starting_state: Delegated context can invoke service-relations/read for svc-release-admin;
+        host-omission from K19 permits this adjacent SPN.
+      mechanic_profile:
+        relation: service-relations/svc-release-admin
+        accepted_context: delegated HTTP identity service ticket from K19.3
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Delegated context can invoke service-relations/read for svc-release-admin;
+          host-omission from K19 permits this adjacent SPN.
+        success: Authenticated action and protected relation record.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Authenticated action and protected relation record.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K20.2.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 4ab9b87551cac433889831582468cb7cbe98c0ffb43f06fff64876be18b689c5
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-identity
+    - persistent-tenant-state

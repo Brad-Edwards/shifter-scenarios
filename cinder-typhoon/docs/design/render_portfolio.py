@@ -76,8 +76,9 @@ every flag. Capability names refer to the [main campaign ledger](capability-rout
 The [entry ledger](entry-routes.json) records ordinary ARWC entry at challenge
 level. All 240 allocations now have [individual challenge briefs](challenges/README.md):
 [16 training](challenges/training.md), [104 KeplerOps](challenges/keplerops.md),
-and [120 ARWC](challenges/arwc.md). Fifty have technical drafts and 190 remain
-briefs. The inherited hint headings stay empty; useful discovery belongs in
+and [120 ARWC](challenges/arwc.md). All 120 Training and KeplerOps cards have
+technical drafts, and all 120 ARWC cards now have complete technical drafts. The inherited hint headings
+stay empty; useful discovery belongs in
 ordinary scenario records and interfaces, not published solution hints.
 
 The work column groups distinct insights and effects. A receipt, login,

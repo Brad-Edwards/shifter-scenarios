@@ -33,14 +33,6 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
@@ -48,8 +40,8 @@ evidence_requirements:
     description: |-
       Recover the protected association and bind it to the supplied attachment. Public viewer documentation is only starting material.
 
-      Required technical proof: The queue returns the viewer's document identity, source attachment version, and restricted case binding as player evidence for K10.2.
-    source_refs: &id001
+      Required technical proof: The queue returns the viewer's document identity, source attachment version, and restricted case binding as operator evidence for K10.2.
+    source_refs:
     - features.k-delivery.k-preview
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -79,14 +71,14 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test normal own-case association, one supplied restricted association, denied unrelated
-      attachment metadata, correct source/derived binding, and reset.'
+    - 'Author checks: Test normal own-case association, one supplied restricted association, denied unrelated attachment
+      metadata, correct source/derived binding.'
   c2:
     description: |-
       Produce a reproducible ambiguous association between the two documents. Merely giving them the same visible title does not count.
 
       Required technical proof: The service records both source versions, the shared derived identity, and distinct owner cases, providing the collision proof needed by K10.3.
-    source_refs: &id002
+    source_refs:
     - features.k-delivery.k-preview
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -116,14 +108,14 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Verify distinct normal identities, the intended collision pair, malformed document
-      rejection, no content disclosure at this stage, audit consistency, and reset.'
+    - 'Author checks: Verify distinct normal identities, the intended collision pair, malformed document rejection,
+      no content disclosure at this stage, audit consistency.'
   c3:
     description: |-
       Recover the protected content through a fresh preview interaction. A binding collision without access to the other document is insufficient.
 
-      Required technical proof: The preview queue emits a source-to-derived collision event and a protected-content read with the target document version; both are required for scoring.
-    source_refs: &id003
+      Required technical proof: The preview queue emits a source-to-derived collision event and a protected-content read with the target document version; both are required for objective evaluation.
+    source_refs:
     - features.k-delivery.k-preview
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -153,13 +145,14 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test normal own preview, collision prerequisite, intended protected output, no access
-      to a third document, no external navigation, and upload/worker reset.'
+    - 'Author checks: Test normal own preview, collision prerequisite, intended protected output, no access to a
+      third document, no external navigation, and upload/worker state persistence.'
 propositions:
   c1:
-    description: Recover the protected association and bind it to the supplied attachment. Public viewer
-      documentation is only starting material.
-    subjects: *id001
+    description: Recover the protected association and bind it to the supplied attachment. Public viewer documentation
+      is only starting material.
+    subjects:
+    - features.k-delivery.k-preview
     basis: observed_state
     predicate:
       kind: boolean
@@ -171,9 +164,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce a reproducible ambiguous association between the two documents. Merely giving
-      them the same visible title does not count.
-    subjects: *id002
+    description: Produce a reproducible ambiguous association between the two documents. Merely giving them the
+      same visible title does not count.
+    subjects:
+    - features.k-delivery.k-preview
     basis: observed_state
     predicate:
       kind: boolean
@@ -185,9 +179,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the protected content through a fresh preview interaction. A binding collision
-      without access to the other document is insufficient.
-    subjects: *id003
+    description: Recover the protected content through a fresh preview interaction. A binding collision without
+      access to the other document is insufficient.
+    subjects:
+    - features.k-delivery.k-preview
     basis: observed_state
     predicate:
       kind: boolean
@@ -233,7 +228,7 @@ objectives:
     agent: participant.operator
     actions:
     - k10.c1
-    targets: &id004
+    targets:
     - features.k-delivery.k-preview
     success:
       mode: all_of
@@ -251,7 +246,7 @@ objectives:
     agent: participant.operator
     actions:
     - k10.c2
-    targets: &id005
+    targets:
     - features.k-delivery.k-preview
     success:
       mode: all_of
@@ -269,7 +264,7 @@ objectives:
     agent: participant.operator
     actions:
     - k10.c3
-    targets: &id006
+    targets:
     - features.k-delivery.k-preview
     success:
       mode: all_of
@@ -280,8 +275,8 @@ objectives:
       - k10.c3
 workflows:
   c1:
-    description: 'K10.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K10.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -303,8 +298,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K10.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K10.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -326,8 +321,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K10.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K10.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -354,45 +349,50 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: The association lookup exposes the restricted derived identity for the supplied attachment
-      without confirming that the requester owns its case. The intended solution recovers and validates
-      that association.
+      without confirming that the requester owns its case. The intended solution recovers and validates that association.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k10.c1
       - features.k-delivery.k-preview
     - precondition_id: normal-surface
       precondition_class: target
-      description: The FieldKest preview queue renders support attachments in an isolated Playwright worker
-        and records source attachment, derived document identity, viewer request, and owner case.
-      support_refs: *id004
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        This card is metadata-only: no preview content, worker action, or cross-case document read results. Reset clears player events.
+      description: The FieldKest preview queue renders support attachments in an isolated Playwright worker and
+        records source attachment, derived document identity, viewer request, and owner case.
       support_refs:
       - features.k-delivery.k-preview
+      - content.keplerops-k-preview.k10-1-whose-preview-is-this
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K10.2 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-delivery.k-preview
+      - content.keplerops-k-preview.k10-1-whose-preview-is-this
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the protected association and bind it to the supplied attachment. Public viewer
-        documentation is only starting material.
-      target_refs: *id004
+      description: Recover the protected association and bind it to the supplied attachment. Public viewer documentation
+        is only starting material.
+      target_refs:
+      - features.k-delivery.k-preview
       evidence_refs:
       - evidence_requirements.k10.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The queue returns the viewer's document identity, source attachment version, and restricted
-        case binding as player evidence for K10.2.
-      target_refs: *id001
+      description: The queue returns the viewer's document identity, source attachment version, and restricted case
+        binding as operator evidence for K10.2.
+      target_refs:
+      - features.k-delivery.k-preview
       evidence_refs:
       - evidence_requirements.k10.c1
     failure_classes:
@@ -406,46 +406,51 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Canonicalization collapses one deliberate pair of distinct inputs into the same derived
-      identity. The intended solution identifies the pair and demonstrates the collision using ordinary
-      preview requests.
+    procedure_basis: Canonicalization collapses one deliberate pair of distinct inputs into the same derived identity.
+      The intended solution identifies the pair and demonstrates the collision using ordinary preview requests.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k10.c2
       - features.k-delivery.k-preview
     - precondition_id: normal-surface
       precondition_class: target
-      description: The preview worker derives a protected identity from document fields before it loads
-        rendered content; two supplied rehearsal attachments carry different source IDs and owners.
-      support_refs: *id005
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        Only the authored two-document pair can collide; previews remain content-redacted and no worker execution is available. Reset removes requests.
+      description: The preview worker derives a protected identity from document fields before it loads rendered
+        content; two supplied rehearsal attachments carry different source IDs and owners.
       support_refs:
       - features.k-delivery.k-preview
+      - content.keplerops-k-preview.k10-2-two-inputs-one-identity
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K10.3 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-delivery.k-preview
+      - content.keplerops-k-preview.k10-2-two-inputs-one-identity
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce a reproducible ambiguous association between the two documents. Merely giving
-        them the same visible title does not count.
-      target_refs: *id005
+      description: Produce a reproducible ambiguous association between the two documents. Merely giving them the
+        same visible title does not count.
+      target_refs:
+      - features.k-delivery.k-preview
       evidence_refs:
       - evidence_requirements.k10.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The service records both source versions, the shared derived identity, and distinct
-        owner cases, providing the collision proof needed by K10.3.
-      target_refs: *id002
+      description: The service records both source versions, the shared derived identity, and distinct owner cases,
+        providing the collision proof needed by K10.3.
+      target_refs:
+      - features.k-delivery.k-preview
       evidence_refs:
       - evidence_requirements.k10.c2
     failure_classes:
@@ -459,47 +464,52 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: K10.2's identity collision lets a crafted attachment select the protected document's
-      derived identity. The intended solution crosses that precise isolation boundary and recovers the
-      other document's content.
+    procedure_basis: K10.2's identity collision lets a crafted attachment select the protected document's derived
+      identity. The intended solution crosses that precise isolation boundary and recovers the other document's
+      content.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k10.c3
       - features.k-delivery.k-preview
     - precondition_id: normal-surface
       precondition_class: target
-      description: The support gateway accepts a player-uploaded preview document and returns the rendered
-        content belonging to the derived document identity under the preview worker's constrained service
-        context.
-      support_refs: *id006
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        The worker can render only fixed document fixtures, has no network/browser persistence, and cannot reach tickets, packages, identities, or ARWC. Reset purges player uploads and outputs.
+      description: The support gateway accepts a player-uploaded preview document and returns the rendered content
+        belonging to the derived document identity under the preview worker's constrained service context.
       support_refs:
       - features.k-delivery.k-preview
+      - content.keplerops-k-preview.k10-3-the-other-document-s-contents
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Preview-only disclosure Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-delivery.k-preview
+      - content.keplerops-k-preview.k10-3-the-other-document-s-contents
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the protected content through a fresh preview interaction. A binding collision
-        without access to the other document is insufficient.
-      target_refs: *id006
+      description: Recover the protected content through a fresh preview interaction. A binding collision without
+        access to the other document is insufficient.
+      target_refs:
+      - features.k-delivery.k-preview
       evidence_refs:
       - evidence_requirements.k10.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The preview queue emits a source-to-derived collision event and a protected-content
-        read with the target document version; both are required for scoring.
-      target_refs: *id003
+      description: The preview queue emits a source-to-derived collision event and a protected-content read with
+        the target document version; both are required for objective evaluation.
+      target_refs:
+      - features.k-delivery.k-preview
       evidence_refs:
       - evidence_requirements.k10.c3
     failure_classes:
@@ -509,83 +519,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-preview
-    description: K10.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k10.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-preview
-    description: K10.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k10.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-preview
-    description: K10.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k10.c3
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K10.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The document-preview source, an ordinary preview account, representative attachments, and the preview boundary's observable behavior.
-
-      The FieldKest preview queue renders support attachments in an isolated Playwright worker and records source attachment, derived document identity, viewer request, and owner case.
-    target: k-delivery.k-preview
-    tags:
-    - synthetic
-    - k10
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The document-preview source, an ordinary preview account, representative attachments,
-        and the preview boundary's observable behavior.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K10.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The document-preview source, an ordinary preview account, representative attachments, and the preview boundary's observable behavior.
-
-      The preview worker derives a protected identity from document fields before it loads rendered content; two supplied rehearsal attachments carry different source IDs and owners.
-    target: k-delivery.k-preview
-    tags:
-    - synthetic
-    - k10
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The document-preview source, an ordinary preview account, representative attachments,
-        and the preview boundary's observable behavior.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K10.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The document-preview source, an ordinary preview account, representative attachments, and the preview boundary's observable behavior.
-
-      The support gateway accepts a player-uploaded preview document and returns the rendered content belonging to the derived document identity under the preview worker's constrained service context.
-    target: k-delivery.k-preview
-    tags:
-    - synthetic
-    - k10
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The document-preview source, an ordinary preview account, representative attachments,
-        and the preview boundary's observable behavior.

@@ -32,20 +32,515 @@ nodes:
       remain open.'
   a-contractors:
     type: compute
-    description: Contractor portal / field exports
+    description: Contractor appointment, check-in, workspace, and field-export service.
     features:
       a-contractors: ''
+    os: linux
+    services:
+    - name: contractor-portal
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-contractors
+        entry_type: directory
+        owner_user: arwc-contractors
+        owner_group: arwc-contractors
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-contractors
+          primary_group: arwc-contractors
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-contractors
+          members:
+          - arwc-contractors
+      network:
+        hostname: a-contractors
+        domainname: a-maintenance.arwc.test
+        endpoints:
+        - network: a-maintenance.subnet
+          ip_address: 10.77.61.20
+          ip_prefix_length: 24
+          gateway: 10.77.61.1
+          aliases:
+          - a-contractors
+          dns_names:
+          - contractor-portal.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-maintenance segment.
+      service_listeners:
+      - service_listener_id: contractor-portal-https
+        service: contractor-portal
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: contractor-portal
+        service: contractor-portal
+        protocol: https
+        base_path: /
+        description: Contractor appointment, check-in, workspace, and field-export service.
+        routes:
+        - route_id: window-on-thursday
+          path: /api/window-on-thursday
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC contractor portal session
+          session_required: true
+          description: Appointment APT-CRR-2026-09-18 covers outlet inspection INSP-CRR-2026-09-18, asset AST-CRR-017,
+            and scenario-relative window Thursday 09:00-11:00.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: who-is-expected-at-the-gate
+          path: /api/who-is-expected-at-the-gate
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC contractor portal session
+          session_required: true
+          description: Gate roster ROSTER-CRR-SEP18-R2 lists contractor identity veybridge.tech.204 for assignment
+            CTR-VEY-204 separately from the appointment.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: an-appointment-we-do-not-own
+          path: /api/an-appointment-we-do-not-own
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC contractor portal session
+          session_required: true
+          description: Attendee-update route checks that the requested attendee belongs to the caller's contractor
+            organization but omits appointment-owner authorization; inspection, asset, and window are immutable.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: checked-in-as-the-contractor
+          path: /api/checked-in-as-the-contractor
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC contractor portal session
+          session_required: true
+          description: Check-in service trusts the current appointment attendee and roster entry, issuing session
+            SCOPE-INSP-CRR-4417 with field-work read scope only.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-field-bag
+          path: /api/the-field-bag
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC contractor portal session
+          session_required: true
+          description: Contractor workspace export FIELD-BAG-CRR-4417-R3 contains inspection binding, obsolete fieldbag/v1
+            client, service manifest, and expected outlet identifiers.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: contractor-portal-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: contractor-principal
+          kind: service_account
+          name: ARWC contractor principal
+          credential_classification: redacted
+        roles:
+        - role_id: contractor
+          name: ARWC contractor
+        permission_grants:
+        - grant_id: contractor-declared-routes
+          role_ref: contractor
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - window-on-thursday
+          - who-is-expected-at-the-gate
+          - an-appointment-we-do-not-own
+          - checked-in-as-the-contractor
+          - the-field-bag
+          effect: allow
+        role_mappings:
+        - mapping_id: contractor-mapping
+          role_ref: contractor
+          users:
+          - contractor-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: contractor-portal
+        name: Contractor appointment, check-in, workspace, and field-export service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/contractor-portal
   a-approval:
     type: compute
-    description: Drawing / approval workflow
+    description: Maintenance drawing cache, review, and approval service.
     features:
       a-approval: ''
+    os: linux
+    services:
+    - name: maintenance-review
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-approval
+        entry_type: directory
+        owner_user: arwc-approval
+        owner_group: arwc-approval
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-approval
+          primary_group: arwc-approval
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-approval
+          members:
+          - arwc-approval
+      network:
+        hostname: a-approval
+        domainname: a-maintenance.arwc.test
+        endpoints:
+        - network: a-maintenance.subnet
+          ip_address: 10.77.61.30
+          ip_prefix_length: 24
+          gateway: 10.77.61.1
+          aliases:
+          - a-approval
+          dns_names:
+          - maintenance-review.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-maintenance segment.
+      service_listeners:
+      - service_listener_id: maintenance-review-https
+        service: maintenance-review
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: maintenance-review
+        service: maintenance-review
+        protocol: https
+        base_path: /
+        description: Maintenance drawing cache, review, and approval service.
+        routes:
+        - route_id: which-drawing-did-the-cache-keep
+          path: /api/which-drawing-did-the-cache-keep
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC maintenance review session
+          session_required: true
+          description: Cache association CACHE-DRW-OG2-R8 binds drawing DRW-OG2-R8, revision R8, reviewer queue
+            REV-CRR-4417, host drawings.arwc.test, and cache key path.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-drawing-of-our-choosing
+          path: /api/a-drawing-of-our-choosing
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC maintenance review session
+          session_required: true
+          description: Viewer cache key is method plus normalized path and omits X-Drawing-Revision and normalized
+            upstream host; preview route accepts allowlisted host preview-cinder.arwc.test from X-Preview-Origin,
+            so a CRLF-free controlled response with drawing ID DRW-OG2-R8 and revision R8 can populate the reviewer's
+            expected key.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-reviewer-trusts-the-drawing
+          path: /api/the-reviewer-trusts-the-drawing
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC maintenance review session
+          session_required: true
+          description: Reviewer bot opens the cached drawing in isolated Chromium 128 and accepts a signed postMessage
+            review submission from the displayed drawing without checking event.source; the resulting capability
+            is review-submit only.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: approval-beyond-the-token
+          path: /api/approval-beyond-the-token
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC maintenance review session
+          session_required: true
+          description: Approval API maps the review capability to approval APR-CRR-4417-R6 but validates capability
+            audience and omits subject-to-inspection comparison, disclosing the current signed approval without
+            mutation.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: maintenance-review-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: maintenance-reviewer-principal
+          kind: service_account
+          name: ARWC maintenance-reviewer principal
+          credential_classification: redacted
+        roles:
+        - role_id: maintenance-reviewer
+          name: ARWC maintenance reviewer
+        permission_grants:
+        - grant_id: maintenance-reviewer-declared-routes
+          role_ref: maintenance-reviewer
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - which-drawing-did-the-cache-keep
+          - a-drawing-of-our-choosing
+          - the-reviewer-trusts-the-drawing
+          - approval-beyond-the-token
+          effect: allow
+        role_mappings:
+        - mapping_id: maintenance-reviewer-mapping
+          role_ref: maintenance-reviewer
+          users:
+          - maintenance-reviewer-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: maintenance-review
+        name: Maintenance drawing cache, review, and approval service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/maintenance-review
   a-renderer:
     type: compute
-    description: Maintenance renderer
+    description: Approval-bound maintenance renderer and constrained worker.
     features:
       a-renderer: ''
       a-renderer--worker: ''
+    os: linux
+    services:
+    - name: maintenance-renderer
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-renderer
+        entry_type: directory
+        owner_user: arwc-renderer
+        owner_group: arwc-renderer
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-renderer
+          primary_group: arwc-renderer
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-renderer
+          members:
+          - arwc-renderer
+      network:
+        hostname: a-renderer
+        domainname: a-maintenance.arwc.test
+        endpoints:
+        - network: a-maintenance.subnet
+          ip_address: 10.77.61.40
+          ip_prefix_length: 24
+          gateway: 10.77.61.1
+          aliases:
+          - a-renderer
+          dns_names:
+          - maintenance-renderer.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-maintenance segment.
+      service_listeners:
+      - service_listener_id: maintenance-renderer-https
+        service: maintenance-renderer
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: maintenance-renderer
+        service: maintenance-renderer
+        protocol: https
+        base_path: /
+        description: Approval-bound maintenance renderer and constrained worker.
+        routes:
+        - route_id: which-renderer-holds-the-approval
+          path: /api/which-renderer-holds-the-approval
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC maintenance renderer session
+          session_required: true
+          description: Renderer profile RENDER-MAINT-CRR-R9 binds approval APR-CRR-4417-R6, inspection INSP-CRR-2026-09-18,
+            reviewer role maintenance-reviewer, and worker svc-maint-render.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: authority-behind-the-preview
+          path: /api/authority-behind-the-preview
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC maintenance renderer session
+          session_required: true
+          description: Preview route resolves contractor work-package tenant after mapping its supplied approval;
+            it verifies approval signature but omits caller-role comparison, accepting controlled package WP-CRR-CINDER-R1
+            for the privileged inspection preview.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-preview-executes
+          path: /api/the-preview-executes
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC maintenance renderer session
+          session_required: true
+          description: Renderer action template permits only fetch_handover(HND-MAINT-CTRL-09) under svc-maint-render
+            and then renders the required inspection fields; crafted package can select that action but no command
+            or arbitrary URL.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: maintenance-renderer-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: renderer-user-principal
+          kind: service_account
+          name: ARWC renderer-user principal
+          credential_classification: redacted
+        roles:
+        - role_id: renderer-user
+          name: ARWC renderer user
+        permission_grants:
+        - grant_id: renderer-user-declared-routes
+          role_ref: renderer-user
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - which-renderer-holds-the-approval
+          - authority-behind-the-preview
+          - the-preview-executes
+          effect: allow
+        role_mappings:
+        - mapping_id: renderer-user-mapping
+          role_ref: renderer-user
+          users:
+          - renderer-user-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: maintenance-renderer
+        name: Approval-bound maintenance renderer and constrained worker
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/maintenance-renderer
 infrastructure:
   subnet: {}
   a-contractors:
@@ -66,20 +561,20 @@ features:
   a-contractors:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-contractors. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-contractors. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-approval:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-approval. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-approval. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-renderer:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-renderer. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-renderer. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-renderer--worker:
     name: Approved maintenance renderer execution
     type: service
-    description: Approved maintenance renderer execution on a-renderer. A separately scoped in-world interface
-      or principal; access does not imply ownership of the other authorities on this system.
+    description: Approved maintenance renderer execution on a-renderer. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.

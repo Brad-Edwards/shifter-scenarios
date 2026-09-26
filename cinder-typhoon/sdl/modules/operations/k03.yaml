@@ -33,14 +33,6 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
@@ -48,8 +40,8 @@ evidence_requirements:
     description: |-
       Recover the actual staging artifact and its collection binding. It supplies the material for K03.2, not the final archive contents.
 
-      Required technical proof: The artifact digest and collection binding are recorded as player evidence and become the sole input to K03.2.
-    source_refs: &id001
+      Required technical proof: The artifact digest and collection binding are recorded as operator evidence and become the sole input to K03.2.
+    source_refs:
     - features.k-corporate.k-dev
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -79,14 +71,14 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Confirm the visible document provides a lead, the source attachment yields one artifact,
-      its collection is explicit, random artifact IDs fail, and reset is repeatable.'
+    - 'Author checks: Confirm the visible document provides a lead, the source attachment yields one artifact, its
+      collection is explicit, random artifact IDs fail.'
   c2:
     description: |-
       Recover the complete next-stage script and its actual collection instructions. Merely locating embedded text does not establish the reconstructed behavior.
 
-      Required technical proof: The reconstruction service accepts the recovered script digest and instruction set only when they reproduce the fixture's deterministic behavior, then unlocks K03.3's callback configuration.
-    source_refs: &id002
+      Required technical proof: The reconstruction service accepts the recovered script digest and instruction set only when they reproduce the fixture's deterministic behavior, then makes available K03.3's callback configuration.
+    source_refs:
     - features.k-corporate.k-dev
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -116,14 +108,14 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test partial decode failure, correct reconstruction, integrity mismatch rejection,
-      instruction/collection consistency, no host execution, and reset.'
+    - 'Author checks: Test partial decode failure, correct reconstruction, integrity mismatch rejection, instruction/collection
+      consistency, no host execution.'
   c3:
     description: |-
       Recover the correctly bound collection and its ticket evidence. The result explains the handler's interest; it supplies no required access credential.
 
       Required technical proof: The emulator emits a collection-retrieved event only when all bound fields match and returns the `SUP-2841` ticket evidence with provenance.
-    source_refs: &id003
+    source_refs:
     - features.k-corporate.k-dev
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -153,14 +145,14 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Verify each incorrect configuration fails distinctly, correct reconstruction returns
-      one collection, ticket provenance matches the staging record, direct archive reads fail, and reset
-      works.'
+    - 'Author checks: Verify each incorrect configuration fails distinctly, correct reconstruction returns one collection,
+      ticket provenance matches the staging record, direct archive reads fail.'
 propositions:
   c1:
-    description: Recover the actual staging artifact and its collection binding. It supplies the material
-      for K03.2, not the final archive contents.
-    subjects: *id001
+    description: Recover the actual staging artifact and its collection binding. It supplies the material for K03.2,
+      not the final archive contents.
+    subjects:
+    - features.k-corporate.k-dev
     basis: observed_state
     predicate:
       kind: boolean
@@ -172,9 +164,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the complete next-stage script and its actual collection instructions. Merely
-      locating embedded text does not establish the reconstructed behavior.
-    subjects: *id002
+    description: Recover the complete next-stage script and its actual collection instructions. Merely locating
+      embedded text does not establish the reconstructed behavior.
+    subjects:
+    - features.k-corporate.k-dev
     basis: observed_state
     predicate:
       kind: boolean
@@ -186,9 +179,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the correctly bound collection and its ticket evidence. The result explains the
-      handler's interest; it supplies no required access credential.
-    subjects: *id003
+    description: Recover the correctly bound collection and its ticket evidence. The result explains the handler's
+      interest; it supplies no required access credential.
+    subjects:
+    - features.k-corporate.k-dev
     basis: observed_state
     predicate:
       kind: boolean
@@ -234,7 +228,7 @@ objectives:
     agent: participant.operator
     actions:
     - k03.c1
-    targets: &id004
+    targets:
     - features.k-corporate.k-dev
     success:
       mode: all_of
@@ -252,7 +246,7 @@ objectives:
     agent: participant.operator
     actions:
     - k03.c2
-    targets: &id005
+    targets:
     - features.k-corporate.k-dev
     success:
       mode: all_of
@@ -270,7 +264,7 @@ objectives:
     agent: participant.operator
     actions:
     - k03.c3
-    targets: &id006
+    targets:
     - features.k-corporate.k-dev
     success:
       mode: all_of
@@ -281,8 +275,8 @@ objectives:
       - k03.c3
 workflows:
   c1:
-    description: 'K03.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K03.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -304,8 +298,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K03.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K03.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -327,8 +321,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K03.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K03.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -354,46 +348,52 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The document has been partially redacted in its current rendering while its ordinary
-      source attachment preserves the staging artifact. The intended solution is recover-and-validate,
-      not a blind archive search.
+    procedure_basis: The document has been partially redacted in its current rendering while its ordinary source
+      attachment preserves the staging artifact. The intended solution is recover-and-validate, not a blind archive
+      search.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k03.c1
       - features.k-corporate.k-dev
     - precondition_id: normal-surface
       precondition_class: target
-      description: A predecessor's retained document is a versioned local artifact that names a staging
-        object and its collection identifier in the FieldKest archive.
-      support_refs: *id004
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        The document and staging object are read-only, player-scoped fixtures; no archive listing or credential is granted. Reset clears retrieval events.
+      description: A predecessor's retained document is a versioned local artifact that names a staging object and
+        its collection identifier in the FieldKest archive.
       support_refs:
       - features.k-corporate.k-dev
+      - content.keplerops-k-dev.k03-1-our-predecessor-s-desk
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Starts optional predecessor thread Participant-created service state persists for the life of
+        the participant world and ordinary retries do not erase it. The action is limited to the exact records,
+        identities, routes, and destination effects declared here; unrelated tenants and services remain denied.
+        Infrastructure recovery and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-corporate.k-dev
+      - content.keplerops-k-dev.k03-1-our-predecessor-s-desk
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual staging artifact and its collection binding. It supplies the material
-        for K03.2, not the final archive contents.
-      target_refs: *id004
+      description: Recover the actual staging artifact and its collection binding. It supplies the material for
+        K03.2, not the final archive contents.
+      target_refs:
+      - features.k-corporate.k-dev
       evidence_refs:
       - evidence_requirements.k03.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The artifact digest and collection binding are recorded as player evidence and become
-        the sole input to K03.2.
-      target_refs: *id001
+      description: The artifact digest and collection binding are recorded as operator evidence and become the sole
+        input to K03.2.
+      target_refs:
+      - features.k-corporate.k-dev
       evidence_refs:
       - evidence_requirements.k03.c1
     failure_classes:
@@ -407,46 +407,52 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: This is a staged reverse-engineering exercise. The intended solution reconstructs
-      the complete executable representation and interprets its declared collection instructions; locating
-      a string fragment is insufficient.
+    procedure_basis: This is a staged reverse-engineering exercise. The intended solution reconstructs the complete
+      executable representation and interprets its declared collection instructions; locating a string fragment
+      is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k03.c2
       - features.k-corporate.k-dev
     - precondition_id: normal-surface
       precondition_class: target
-      description: The staging artifact is a layered encoded script bundle with a documented runtime wrapper,
-        integrity marker, and a separate collection-instruction payload.
-      support_refs: *id005
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        The script is analyzed in a card-local interpreter with synthetic inputs and no network or process execution. Reset clears reconstructed artifacts.
+      description: The staging artifact is a layered encoded script bundle with a documented runtime wrapper, integrity
+        marker, and a separate collection-instruction payload.
       support_refs:
       - features.k-corporate.k-dev
+      - content.keplerops-k-dev.k03-2-the-script-inside-the-script
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Required by K03.3 Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-corporate.k-dev
+      - content.keplerops-k-dev.k03-2-the-script-inside-the-script
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the complete next-stage script and its actual collection instructions. Merely
-        locating embedded text does not establish the reconstructed behavior.
-      target_refs: *id005
+      description: Recover the complete next-stage script and its actual collection instructions. Merely locating
+        embedded text does not establish the reconstructed behavior.
+      target_refs:
+      - features.k-corporate.k-dev
       evidence_refs:
       - evidence_requirements.k03.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The reconstruction service accepts the recovered script digest and instruction set
-        only when they reproduce the fixture's deterministic behavior, then unlocks K03.3's callback configuration.
-      target_refs: *id002
+      description: The reconstruction service accepts the recovered script digest and instruction set only when
+        they reproduce the fixture's deterministic behavior, then makes available K03.3's callback configuration.
+      target_refs:
+      - features.k-corporate.k-dev
       evidence_refs:
       - evidence_requirements.k03.c2
     failure_classes:
@@ -460,46 +466,51 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The emulator intentionally requires a correctly reconstructed configuration rather
-      than exposing a listable archive. The intended solution applies K03.2's recovered instructions to
-      the supplied staging binding.
+    procedure_basis: The emulator intentionally requires a correctly reconstructed configuration rather than exposing
+      a listable archive. The intended solution applies K03.2's recovered instructions to the supplied staging binding.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k03.c3
       - features.k-corporate.k-dev
     - precondition_id: normal-surface
       precondition_class: target
-      description: A local callback emulator holds the predecessor operation's lost collection behind
-        configuration fields for endpoint, collection ID, and integrity value.
-      support_refs: *id006
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        It serves one synthetic collection, has no external endpoint, grants no continuing access, and resets its player callback state after completion.
+      description: A local callback emulator holds the predecessor operation's lost collection behind configuration
+        fields for endpoint, collection ID, and integrity value.
       support_refs:
       - features.k-corporate.k-dev
+      - content.keplerops-k-dev.k03-3-finish-the-callback
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Context only; no credential or customer entry Participant-created service state persists for
+        the life of the participant world and ordinary retries do not erase it. The action is limited to the exact
+        records, identities, routes, and destination effects declared here; unrelated tenants and services remain
+        denied. Infrastructure recovery and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-corporate.k-dev
+      - content.keplerops-k-dev.k03-3-finish-the-callback
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the correctly bound collection and its ticket evidence. The result explains
-        the handler's interest; it supplies no required access credential.
-      target_refs: *id006
+      description: Recover the correctly bound collection and its ticket evidence. The result explains the handler's
+        interest; it supplies no required access credential.
+      target_refs:
+      - features.k-corporate.k-dev
       evidence_refs:
       - evidence_requirements.k03.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The emulator emits a collection-retrieved event only when all bound fields match and
-        returns the `SUP-2841` ticket evidence with provenance.
-      target_refs: *id003
+      description: The emulator emits a collection-retrieved event only when all bound fields match and returns
+        the `SUP-2841` ticket evidence with provenance.
+      target_refs:
+      - features.k-corporate.k-dev
       evidence_refs:
       - evidence_requirements.k03.c3
     failure_classes:
@@ -509,83 +520,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-corporate.k-dev
-    description: K03.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k03.c1
-      mode: artifact
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-corporate.k-dev
-    description: K03.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k03.c2
-      mode: artifact
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-corporate.k-dev
-    description: K03.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k03.c3
-      mode: artifact
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K03.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained staging bundle from an earlier Cinder attempt, its carrier document, and a short collection note.
-
-      A predecessor's retained document is a versioned local artifact that names a staging object and its collection identifier in the FieldKest archive.
-    target: k-corporate.k-dev
-    tags:
-    - synthetic
-    - k03
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained staging bundle from an earlier Cinder attempt, its carrier document, and
-        a short collection note.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K03.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained staging bundle from an earlier Cinder attempt, its carrier document, and a short collection note.
-
-      The staging artifact is a layered encoded script bundle with a documented runtime wrapper, integrity marker, and a separate collection-instruction payload.
-    target: k-corporate.k-dev
-    tags:
-    - synthetic
-    - k03
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained staging bundle from an earlier Cinder attempt, its carrier document, and
-        a short collection note.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K03.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained staging bundle from an earlier Cinder attempt, its carrier document, and a short collection note.
-
-      A local callback emulator holds the predecessor operation's lost collection behind configuration fields for endpoint, collection ID, and integrity value.
-    target: k-corporate.k-dev
-    tags:
-    - synthetic
-    - k03
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained staging bundle from an earlier Cinder attempt, its carrier document, and
-        a short collection note.

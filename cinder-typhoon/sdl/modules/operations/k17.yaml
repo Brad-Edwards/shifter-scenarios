@@ -40,23 +40,15 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover and demonstrate the limited support session. This supplies B01; no account-recovery
-      or advanced identity challenge is required for that capability.
-    source_refs: &id001
+    description: |-
+      Recover and demonstrate the limited support session. This supplies B01; no account-recovery or advanced identity task is required for that capability.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-support
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +77,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c2:
-    description: Demonstrate the alternate recovered identity and its private note. Reusing B01 or changing
-      its local session label does not count.
-    source_refs: &id002
+    description: |-
+      Demonstrate the alternate recovered identity and its private note. Reusing B01 or changing its local session label does not count.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-support
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,10 +116,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c3:
-    description: Recover the assignment record and case binding under B01. This is additional case intelligence,
-      not another score for authentication; G02 remains the current ARWC binding.
-    source_refs: &id003
+    description: |-
+      Recover the assignment record and case binding under B01. This is additional case intelligence, not another accepted result for authentication; G02 remains the current ARWC binding.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-support
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -149,11 +155,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c4:
-    description: Cause the server to create the handover for that alternate reviewer while your ordinary
-      account still lacks the right to assign it directly. An edited local document or a change to the
-      case's display label does not count. This grants no customer execution.
-    source_refs: &id004
+    description: |-
+      Cause the server to create the handover for that alternate reviewer while your ordinary account still lacks the right to assign it directly. An edited local document or a change to the case's display label does not count. This grants no customer execution.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-support
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -182,11 +194,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
 propositions:
   c1:
-    description: Recover and demonstrate the limited support session. This supplies B01; no account-recovery
-      or advanced identity challenge is required for that capability.
-    subjects: *id001
+    description: Recover and demonstrate the limited support session. This supplies B01; no account-recovery or
+      advanced identity task is required for that capability.
+    subjects:
+    - features.k-delivery.k-support
     basis: observed_state
     predicate:
       kind: boolean
@@ -198,9 +216,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate the alternate recovered identity and its private note. Reusing B01 or changing
-      its local session label does not count.
-    subjects: *id002
+    description: Demonstrate the alternate recovered identity and its private note. Reusing B01 or changing its
+      local session label does not count.
+    subjects:
+    - features.k-delivery.k-support
     basis: observed_state
     predicate:
       kind: boolean
@@ -213,8 +232,9 @@ propositions:
     quantifier: all
   c3:
     description: Recover the assignment record and case binding under B01. This is additional case intelligence,
-      not another score for authentication; G02 remains the current ARWC binding.
-    subjects: *id003
+      not another accepted result for authentication; G02 remains the current ARWC binding.
+    subjects:
+    - features.k-delivery.k-support
     basis: observed_state
     predicate:
       kind: boolean
@@ -226,10 +246,11 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Cause the server to create the handover for that alternate reviewer while your ordinary
-      account still lacks the right to assign it directly. An edited local document or a change to the
-      case's display label does not count. This grants no customer execution.
-    subjects: *id004
+    description: Cause the server to create the handover for that alternate reviewer while your ordinary account
+      still lacks the right to assign it directly. An edited local document or a change to the case's display label
+      does not count. This grants no customer execution.
+    subjects:
+    - features.k-delivery.k-support
     basis: observed_state
     predicate:
       kind: boolean
@@ -279,11 +300,11 @@ objectives:
     description: |-
       Recover usable access to the support application and retrieve the session's protected handover.
 
-      Gives the player a second approachable supplier identity.
+      Gives the operator a second approachable supplier identity.
     agent: participant.operator
     actions:
     - k17.c1
-    targets: &id005
+    targets:
     - features.k-delivery.k-support
     success:
       mode: all_of
@@ -301,7 +322,7 @@ objectives:
     agent: participant.operator
     actions:
     - k17.c2
-    targets: &id006
+    targets:
     - features.k-delivery.k-support
     success:
       mode: all_of
@@ -319,7 +340,7 @@ objectives:
     agent: participant.operator
     actions:
     - k17.c3
-    targets: &id007
+    targets:
     - features.k-delivery.k-support
     success:
       mode: all_of
@@ -337,7 +358,7 @@ objectives:
     agent: participant.operator
     actions:
     - k17.c4
-    targets: &id008
+    targets:
     - features.k-delivery.k-support
     success:
       mode: all_of
@@ -348,8 +369,8 @@ objectives:
       - k17.c4
 workflows:
   c1:
-    description: 'K17.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K17.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -371,8 +392,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K17.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K17.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -394,8 +415,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K17.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K17.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -417,8 +438,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'K17.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K17.4: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -444,25 +465,47 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover usable access to the support application and retrieve the session's protected
-      handover.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Authenticated handover read and session audit. Merely describing the condition, editing
+      a local copy, or presenting a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k17.c1
+      - features.k-delivery.k-support
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-support` owns this part of the operation. Its starting state is exact: Retained fieldkest-support
+        session cookie and server session for maya.ranscombe; private handover. The owning service uses the listener,
+        route, identity, authorization, storage, and audit contract declared in the corresponding world module.
+        Records that are not explicitly mutable remain immutable. The private service-loader contract `content.keplerops-k-support.k17-1-a-support-session-left-behind`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-support
+      - content.keplerops-k-support.k17-1-a-support-session-left-behind
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Supplies B01. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
       - features.k-delivery.k-support
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover and demonstrate the limited support session. This supplies B01; no account-recovery
-        or advanced identity challenge is required for that capability.
-      target_refs: *id005
+      description: Recover and demonstrate the limited support session. This supplies B01; no account-recovery or
+        advanced identity task is required for that capability.
+      target_refs:
+      - features.k-delivery.k-support
       evidence_refs:
       - evidence_requirements.k17.c1
     failure_classes:
@@ -476,25 +519,48 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The support account's recovery process exposes a separate opportunity. Establish
-      the alternate support identity and recover its private recovery note.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: New distinct session plus private recovery note. Merely describing the condition,
+      editing a local copy, or presenting a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k17.c2
+      - features.k-delivery.k-support
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-support` owns this part of the operation. Its starting state is exact: Alternate talia.mornac-review
+        recovery record; recovery lookup reveals case fragment and retained browser artifact supplies second factor.
+        The owning service uses the listener, route, identity, authorization, storage, and audit contract declared
+        in the corresponding world module. Records that are not explicitly mutable remain immutable. The private
+        service-loader contract `content.keplerops-k-support.k17-2-a-different-way-to-recover` freezes the request,
+        denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-support
+      - content.keplerops-k-support.k17-2-a-different-way-to-recover
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Optional identity. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
       - features.k-delivery.k-support
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the alternate recovered identity and its private note. Reusing B01 or changing
-        its local session label does not count.
-      target_refs: *id006
+      description: Demonstrate the alternate recovered identity and its private note. Reusing B01 or changing its
+        local session label does not count.
+      target_refs:
+      - features.k-delivery.k-support
       evidence_refs:
       - evidence_requirements.k17.c2
     failure_classes:
@@ -508,25 +574,47 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the support identity's private customer-assignment record and the unresolved
-      case actually assigned to it.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Assignment/case read audit. Merely describing the condition, editing a local copy,
+      or presenting a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k17.c3
+      - features.k-delivery.k-support
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-support` owns this part of the operation. Its starting state is exact: B01 principal''s private
+        customer assignment and case SUP-2841. The owning service uses the listener, route, identity, authorization,
+        storage, and audit contract declared in the corresponding world module. Records that are not explicitly
+        mutable remain immutable. The private service-loader contract `content.keplerops-k-support.k17-3-which-customers-belong-here`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-support
+      - content.keplerops-k-support.k17-3-which-customers-belong-here
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Case intelligence only. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
       - features.k-delivery.k-support
     effects:
     - effect_id: outcome
       effect_class: intended_effect
       description: Recover the assignment record and case binding under B01. This is additional case intelligence,
-        not another score for authentication; G02 remains the current ARWC binding.
-      target_refs: *id007
+        not another accepted result for authentication; G02 remains the current ARWC binding.
+      target_refs:
+      - features.k-delivery.k-support
       evidence_refs:
       - evidence_requirements.k17.c3
     failure_classes:
@@ -540,26 +628,50 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The ARWC case is assigned to the support engineer. Make the delegation workflow route
-      a copy of its restricted diagnostic handover to the alternate reviewer named in Cinder's case note.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Server creates restricted diagnostic handover owned by alternate reviewer; direct
+      assignment remains denied. Merely describing the condition, editing a local copy, or presenting a value obtained
+      from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k17.c4
+      - features.k-delivery.k-support
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-support` owns this part of the operation. Its starting state is exact: Case note names Talia;
+        copy-handover route authorizes source-case reader but omits target-reviewer assignment permission. The owning
+        service uses the listener, route, identity, authorization, storage, and audit contract declared in the corresponding
+        world module. Records that are not explicitly mutable remain immutable. The private service-loader contract
+        `content.keplerops-k-support.k17-4-a-delegated-support-action` freezes the request, denial, state-transition,
+        evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-support
+      - content.keplerops-k-support.k17-4-a-delegated-support-action
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: No customer execution. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
       - features.k-delivery.k-support
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Cause the server to create the handover for that alternate reviewer while your ordinary
-        account still lacks the right to assign it directly. An edited local document or a change to the
-        case's display label does not count. This grants no customer execution.
-      target_refs: *id008
+      description: Cause the server to create the handover for that alternate reviewer while your ordinary account
+        still lacks the right to assign it directly. An edited local document or a change to the case's display
+        label does not count. This grants no customer execution.
+      target_refs:
+      - features.k-delivery.k-support
       evidence_refs:
       - evidence_requirements.k17.c4
     failure_classes:
@@ -569,101 +681,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-support
-    description: K17.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k17.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-support
-    description: K17.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k17.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-support
-    description: K17.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k17.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-support
-    description: K17.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k17.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K17.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The repository's support-client material, retained session artifacts, and ordinary support-account workflows.
-    target: k-delivery.k-support
-    tags:
-    - synthetic
-    - k17
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The repository's support-client material, retained session artifacts, and ordinary
-        support-account workflows.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K17.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The repository's support-client material, retained session artifacts, and ordinary support-account workflows.
-    target: k-delivery.k-support
-    tags:
-    - synthetic
-    - k17
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The repository's support-client material, retained session artifacts, and ordinary
-        support-account workflows.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K17.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The repository's support-client material, retained session artifacts, and ordinary support-account workflows.
-    target: k-delivery.k-support
-    tags:
-    - synthetic
-    - k17
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The repository's support-client material, retained session artifacts, and ordinary
-        support-account workflows.
-  c4-records-1:
-    type: dataset
-    description: |-
-      K17.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The repository's support-client material, retained session artifacts, and ordinary support-account workflows.
-    target: k-delivery.k-support
-    tags:
-    - synthetic
-    - k17
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The repository's support-client material, retained session artifacts, and ordinary
-        support-account workflows.

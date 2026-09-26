@@ -71,9 +71,8 @@ Commands can run scripts and save results in `/workspace`; use the job's Files
 view to move your own files in or out. Job exit stops child processes and revokes
 the worker credentials, but leaves workspace files and separately issued client
 material intact. Renew that material through its issuing service when required.
-Retry and Cancel preserve files. Reset workspace removes them and must not be
-used for an ordinary failed command. Saved commands and results remain available
-for a shift handover until that explicit reset.
+Retry and Cancel preserve files. Saved commands and results remain available
+across job exit and for a shift handover.
 
 Network policy is enforced outside the job. The listed supplier services are
 reachable on their approved protocols; the job has no general network transit,

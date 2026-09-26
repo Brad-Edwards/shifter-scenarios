@@ -3,34 +3,40 @@
 [cinder-typhoon.sdl.yaml](cinder-typhoon.sdl.yaml) is the sole scenario entry
 point. It uses native local module imports, explicit exports, and namespaces
 from **OpenRAE/rae 5.0.0**. All documents select
-`raes-progressive-semantics/v1`. The 103 modules describe one individual
+`raes-progressive-semantics/v1`. The 127 imported modules describe one individual
 participant's world; participant replication belongs to the eventual backend.
 
-**Design correction remains open.** Passing upstream validation does not make
-this a complete or materialization-ready design. The route modules and challenge
-surface relationships still contain scenario-specific `properties` interpreted
-by `tests/validate_sdl.py` (`cinder_kind`, interaction modes, and workflow guards).
-RAE validates their carrier and endpoints, not that private interpretation.
-Those contracts still need replacement with the appropriate native declarations;
-renaming the properties or hiding their meaning in another local decoder is not
-a fix. No missing upstream semantic has been established by this review.
+Training, KeplerOps, and ARWC have completed their design-only hand-build gates.
+All three use native RAE runtime, route, identity, authorization, content,
+workflow, action, and evidence declarations. The composed scenario contains no
+meaning-bearing project-private relationship properties. No missing upstream
+semantic has been established.
 
 Training now uses native objective targets and plain supplied `connects_to`
 relationships, with workstation access from `interactive_access`. Its 16 private
 surface bindings, four property-based guards, and duplicate player context have
-been removed. The remaining 377 private relationships belong to the unfinished
-campaign design. Test projection into the old topology model does not give
-native connections additional ACL, identity, or forwarding semantics.
+been removed.
 See the [Training hand-build gate](../docs/design/training-readiness.md);
 Training is ready for a hand build, but no build or materialization has started.
 
-The K09 request reference and operations note now specify discovery of usable
+KeplerOps now has exact native endpoints, identities, grants, routes, storage,
+104 deterministic card contracts, exact surface bindings, denial and evidence
+contracts, and exploit-critical build/configuration profiles. The K09 request
+reference and operations note specify discovery of usable
 worker access and an independently audited status read. The approved handoff
 uses ordinary commands and native clients in a restricted job, allowing explicit
 use of independently earned identities. Host/CI administration and general
-network transit remain excluded. Full downstream certificate/delegation designs
-and live acceptance tests are still required. No realization work is authorized
-by this draft or by its validation results.
+network transit remain excluded. The downstream certificate/delegation, cloud,
+assistant, signing, supplier and customer-boundary designs are present as static
+contracts. Live acceptance, integration and playtesting remain for the later
+hand build. No realization work is authorized by this draft or its validation.
+
+ARWC now has exact native endpoints, identities, grants, application routes,
+storage, 120 deterministic service contracts, exploit-critical formats and
+mechanisms, and a dimensionally checked bounded process model. Practice, live,
+scheduler-rehearsal, and reporting-rehearsal state are distinct. The SDL is
+ready for a hand build; no service, binary, image, simulator, or range has been
+built.
 
 Every document declares the native author realization posture:
 
@@ -57,10 +63,12 @@ hosting remain open.
 | `operations/t01.yaml` through `t04.yaml` | Training objectives and evidence. |
 | `content/training-*.yaml` | Seven modular content documents carrying 47 exact Training files, with separate namespaces and explicit exports; no private include mechanism. |
 | `operations/k01.yaml` through `k31.yaml` | KeplerOps objectives and evidence. |
+| `content/keplerops-*.yaml` | Fifteen service-owned modules carrying 104 deterministic KeplerOps contracts and exact native surface bindings. |
 | `operations/w01.yaml` through `w35.yaml` | ARWC objectives and evidence. |
+| `content/arwc-*.yaml` | Seventeen service-owned modules carrying 120 deterministic ARWC contracts and exact native surface bindings. |
 | [world/capabilities.yaml](modules/world/capabilities.yaml) | 33 named access/evidence outputs, acquired through assertion-gated events. These are automatic derivations, not additional player tasks. |
-| `routes/flows-*.yaml` | Business and access conduits, grouped by source network. |
-| [routes/contexts.yaml](modules/routes/contexts.yaml), [routes/relays.yaml](modules/routes/relays.yaml) | Earned execution/delegation contexts and explicitly scoped forwarding. |
+| `routes/keplerops-integrations.yaml` | Thirteen ordinary native KeplerOps business integrations with no project-private relationship vocabulary. |
+| `routes/arwc-integrations.yaml` | Twenty-one ordinary native ARWC business and process integrations with no project-private relationship vocabulary. |
 | [world/consequences.yaml](modules/world/consequences.yaml) | Six discrete, per-participant consequence events. |
 | [world/records.yaml](modules/world/records.yaml) | Synthetic people and service identities, current/historical customer records, and Cairn Reach record identities. |
 | `world/narrative-keplerops.yaml`, `world/narrative-arwc.yaml` | Eight service-owned workplace collections backed by shipped mail, document/calendar, directory, and employment assets. |
@@ -74,10 +82,11 @@ semantic URI, for example `urn:cinder-typhoon:fact:K01.1`.
 
 Workflow switch cases preserve dependency logic: every assertion in one case
 is required; separate cases are alternatives. Each challenge has an independent
-workflow. Objective execution mode delegates execution to the eventual backend;
-the 50 existing technical drafts still require their selected mechanisms. An unavailable
-attempt may be revisited after new evidence or authority is acquired. These
-workflows do not require a single campaign-wide execution order.
+workflow. Objective execution mode delegates execution to the eventual backend.
+All 104 KeplerOps cards, all 16 Training cards, and all 120 ARWC cards have full
+five-part technical designs. An unavailable attempt may be
+revisited after new evidence or authority is acquired. These workflows do not
+require a single campaign-wide execution order.
 
 Completion propositions mean the described in-world outcome has been verified;
 they are not true merely because a task was attempted. Their observation demands
@@ -101,40 +110,26 @@ Its request reference and protected operations note are native file content on
 the CI node, with exact text retained from the authored Build Operations assets.
 The note describes existing service access, not a score-triggered permission
 grant. Proof collection does not grant player access
-to its producer. The design-side ownership exceptions and consequence contracts
-are recorded in [sdl_contracts.py](../docs/design/sdl_contracts.py).
+to its producer. Exact ownership and consequence contracts are recorded in the
+phase readiness, artifact-ownership, and ARWC process-model ledgers under
+[docs/design/](../docs/design/README.md).
 
 For each technical draft, the action contract carries mechanism intent in
 `procedure_basis` and normal behavior in a target precondition. Training's
 realization precondition describes in-world boundaries only; flag scoring and
 organizer-initiated recovery are external and cause no world transition.
 Native assertions describe observed world outcomes, not flag acceptance.
-The 34 campaign technical drafts retain older scope/reset prose pending their
-separate correction. The other 190 cards remain at brief level. None of these
-declarations is evidence that the selected mechanism has been built or tested.
+KeplerOps contracts describe persistence across ordinary retries and contain no
+in-world reset service. Organizer recovery and submission adjudication remain
+external. None of these declarations is evidence that the selected mechanism
+has been built or tested.
 
-The current route model places the following private vocabulary in the generic
-`relationships.properties` carrier. This is a record of remaining design debt,
-not an approved extension or evidence that RAE lacks the required native forms:
-
-| `cinder_kind` | Relationship | Additional properties and meaning |
-| --- | --- | --- |
-| `flow` | `connects_to` | `flow_kind` is `access` or `operation`; `modes` lists permitted logical interactions; `guard` references a native eligibility workflow. |
-| `context` | `authenticates_with` | `context_kind` identifies execution, delegation, or scoped output authority; `modes` bounds it; `guard` states acquisition. |
-| `relay` | `manages` | `modes` bounds forwarding by the source feature along its declared outgoing conduits. The target is its owning system. |
-| `challenge_surface` | `depends_on` | `objective` references the requiring objective; `mode` identifies the required interaction with the target feature. |
-
-Modes are `service`, `artifact`, `read`, `delivery`, `control`, `report`, and
-`telemetry`. They are logical interactions, not ports or ACL syntax. A reachable
-feature does not confer its identity or forwarding. Only declared relays forward
-their listed modes. Membership in a logical subnet does not grant every
-application authority on that subnet.
-
-RAE validates relationship endpoints and the properties carrier. Only the local
-campaign checker supplies this vocabulary's references and routing meaning.
-An adapter must not implement that private interpretation as a substitute for
-native SDL. Replace it with native declarations before materialization; retain
-the independent design-side route tests as expectations, not language semantics.
+ARWC connectivity is represented by ordinary `connects_to` relationships only
+where the business integration itself is useful to describe. Network endpoints,
+listeners, routes, identities, grants, databases, files, action applicability,
+and evidence stay on their native owning structures. No relationship property
+needs a project decoder. The exact mapping is recorded in
+[arwc-native-semantics.md](../docs/design/arwc-native-semantics.md).
 
 Capability and consequence events use native assertion preconditions and injects.
 Capability propositions and injects concern the individual operator's derived
@@ -153,11 +148,17 @@ apply the release again. Rehearsals have separate state from the live reservoir
 ending. There are no timed scripts or continuous hydraulic simulation. Trigger
 transport and flag/scoring integration remain open.
 
-Most campaign challenge content entries still specify required records without
-asset bytes, separate from the implemented workplace assets. Training is the
-exception: T01–T04 use 47 exact native file entries and no anonymous seed
-datasets. Their operation contracts reference the exact modular content that
-supports each normal surface.
+ARWC uses 120 deterministic service contracts, one per card, with exact owners,
+paths, native surface bindings, initial records, denial behavior, state
+transitions, persistent evidence, generation digests, and exploit-critical
+mechanics. Its quantities and isolated state domains follow
+[arwc-process-model.md](../docs/design/arwc-process-model.md). Training uses 47
+exact native file entries and no anonymous seed datasets. KeplerOps uses 104 deterministic service contracts, one per card,
+with exact owners, paths, native surface bindings, request/denial/state/evidence
+rules, canonical generation digests, and detailed profiles where a mechanic
+depends on binary layout, cryptography, parsing, identity, browser, model,
+signing or workload behavior. Its operation contracts reference those modular
+files from each normal-surface precondition.
 For joined challenges, each system contributes its own records; the starting-material
 description is not an instruction to copy the complete evidence set or secrets
 onto every system. Detailed fixture ownership and visibility still follow the

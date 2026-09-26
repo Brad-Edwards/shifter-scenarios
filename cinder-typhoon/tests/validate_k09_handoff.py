@@ -43,7 +43,7 @@ COMMAND_CONTRACT = {
         'operations note and per-run configuration are mounted read-only',
         'Client tools required by the selected downstream mechanisms must already be installed',
     ),
-    'boundaries-and-reset': (
+    'scope-and-persistence': (
         'Network enforcement is outside the job',
         'no host paths, device access, runtime socket, CI controller credentials',
         'symlink-safe access',
@@ -62,12 +62,8 @@ OUT_OF_WORLD = re.compile(
 )
 
 
-def check_k09_handoff(scenario, briefs, graph, model, *, prefix='k09.'):
-    """Accept composed SDL, or a structurally parsed module in focused tests.
-
-    The complete SDL checker separately runs upstream reference validation,
-    instantiation and compilation. This function checks authored expectedness.
-    """
+def check_k09_assets(scenario, *, prefix='k09.'):
+    """Check exact in-world K09 documents without the legacy topology model."""
     texts = {}
     for key, (filename, target_path) in RECORDS.items():
         content = scenario.content[prefix + key]
@@ -80,9 +76,6 @@ def check_k09_handoff(scenario, briefs, graph, model, *, prefix='k09.'):
         require(content.source is None and content.text_from is None,
                 f'K09 document has a second content source: {key}')
         texts[key] = text
-    description = text_section(briefs['K09.4'], 'Challenge description')
-    require(not OUT_OF_WORLD.search(description), 'K09 player-facing description breaks the fourth wall')
-
     reference = texts['diagnostic-request-reference']
     note = texts['runner-operations-note']
     require(all(term in reference for term in (
@@ -119,13 +112,25 @@ def check_k09_handoff(scenario, briefs, graph, model, *, prefix='k09.'):
         'leaves workspace files and separately issued client material intact',
         'Network policy is enforced outside the job',
     )), 'K09 operations note loses independent identity use or job boundaries')
+    return texts
+
+
+def check_k09_handoff(scenario, briefs, graph, model, *, prefix='k09.'):
+    """Accept composed SDL, or a structurally parsed module in focused tests.
+
+    The complete SDL checker separately runs upstream reference validation,
+    instantiation and compilation. This function checks authored expectedness.
+    """
+    check_k09_assets(scenario, prefix=prefix)
+    description = text_section(briefs['K09.4'], 'Challenge description')
+    require(not OUT_OF_WORLD.search(description), 'K09 player-facing description breaks the fourth wall')
 
     key = prefix + 'c4'
     procedure = ' '.join(scenario.action_contracts[key].procedure_basis.split())
     require(all(term in procedure for term in (
         'retained input reference from a completed integration review',
-        'submitting account, and reset generation',
-        'returned by normal review processing in K09.3, not by scoring',
+        'submitting account, and workspace generation',
+        'returned by normal review processing in K09.3, not by objective evaluation',
         'server-owned diagnostic eligibility metadata',
     )), 'K09 command dispatch loses its real input prerequisite')
     preconditions = {p.precondition_id: ' '.join(p.description.split())

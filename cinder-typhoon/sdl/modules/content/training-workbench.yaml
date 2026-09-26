@@ -251,7 +251,7 @@ content:
       ,\n      \"Require the raw, not-yet-percent-decoded view value to begin with public/.\",\n      \"Percent-decode\
       \ view exactly once.\",\n      \"Normalize the decoded relative path beneath the diagnostics root.\",\n  \
       \    \"Reject a normalized path outside the diagnostics root.\",\n      \"Read the selected existing JSON\
-      \ record without interpolation or execution.\"\n    ],\n    \"intended_view\": \"public%2F..%2Finternal%2FDL-204.json\"\
+      \ record without interpolation or execution.\"\n    ],\n    \"intended_view\": \"public/%2E%2E/internal/DL-204.json\"\
       ,\n    \"success_status\": 200,\n    \"invalid_status\": 400,\n    \"missing_status\": 404,\n    \"audit_fields\"\
       : [\"observed_at\", \"delivery_id\", \"raw_view\", \"normalized_relative_path\", \"summary_id\", \"status\"\
       ],\n    \"execution\": false,\n    \"outbound_network\": false,\n    \"writable_data\": false\n  }\n}\n"

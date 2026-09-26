@@ -40,23 +40,15 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the unpublished job record and dataset binding. The job is a lead, not the collection
-      itself.
-    source_refs: &id001
+    description: |-
+      Recover the unpublished job record and dataset binding. The job is a lead, not the collection itself.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +77,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c2:
-    description: Recover the protected job definition and its source boundaries. This does not yet change
-      the destination or retrieve the collection.
-    source_refs: &id002
+    description: |-
+      Recover the protected job definition and its source boundaries. This does not yet change the destination or retrieve the collection.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,10 +116,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c3:
-    description: Demonstrate an accepted destination change on the correct job, with its source selection
-      preserved. General job read access is insufficient.
-    source_refs: &id003
+    description: |-
+      Demonstrate an accepted destination change on the correct job, with its source selection preserved. General job read access is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -149,10 +155,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c4:
-    description: Recover a coherent collection for G02's customer and revision. Mixed tenants, stale partitions,
-      and the job's empty receipt do not satisfy the objective.
-    source_refs: &id004
+    description: |-
+      Recover a coherent collection for G02's customer and revision. Mixed tenants, stale partitions, and the job's empty receipt do not satisfy the objective.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-cloud.k-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -181,11 +194,16 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
 propositions:
   c1:
-    description: Recover the unpublished job record and dataset binding. The job is a lead, not the collection
-      itself.
-    subjects: *id001
+    description: Recover the unpublished job record and dataset binding. The job is a lead, not the collection itself.
+    subjects:
+    - features.k-cloud.k-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -197,9 +215,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the protected job definition and its source boundaries. This does not yet change
-      the destination or retrieve the collection.
-    subjects: *id002
+    description: Recover the protected job definition and its source boundaries. This does not yet change the destination
+      or retrieve the collection.
+    subjects:
+    - features.k-cloud.k-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -211,9 +230,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate an accepted destination change on the correct job, with its source selection
-      preserved. General job read access is insufficient.
-    subjects: *id003
+    description: Demonstrate an accepted destination change on the correct job, with its source selection preserved.
+      General job read access is insufficient.
+    subjects:
+    - features.k-cloud.k-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -227,7 +247,8 @@ propositions:
   c4:
     description: Recover a coherent collection for G02's customer and revision. Mixed tenants, stale partitions,
       and the job's empty receipt do not satisfy the objective.
-    subjects: *id004
+    subjects:
+    - features.k-cloud.k-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -281,7 +302,7 @@ objectives:
     agent: participant.operator
     actions:
     - k15.c1
-    targets: &id005
+    targets:
     - features.k-cloud.k-data
     success:
       mode: all_of
@@ -299,7 +320,7 @@ objectives:
     agent: participant.operator
     actions:
     - k15.c2
-    targets: &id006
+    targets:
     - features.k-cloud.k-data
     success:
       mode: all_of
@@ -317,7 +338,7 @@ objectives:
     agent: participant.operator
     actions:
     - k15.c3
-    targets: &id007
+    targets:
     - features.k-cloud.k-data
     success:
       mode: all_of
@@ -335,7 +356,7 @@ objectives:
     agent: participant.operator
     actions:
     - k15.c4
-    targets: &id008
+    targets:
     - features.k-cloud.k-data
     success:
       mode: all_of
@@ -346,8 +367,8 @@ objectives:
       - k15.c4
 workflows:
   c1:
-    description: 'K15.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K15.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -373,8 +394,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K15.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K15.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -396,8 +417,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K15.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K15.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -419,8 +440,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'K15.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K15.4: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -447,25 +468,47 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the export job that support started for its unresolved customer case. Identify
-      the actual dataset and job revision.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Job-summary read. Merely describing the condition, editing a local copy, or presenting
+      a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k15.c1
+      - features.k-cloud.k-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-data` owns this part of the operation. Its starting state is exact: SUP-2841 references unpublished
+        job EXP-2841, dataset support-case-history, revision 6. The owning service uses the listener, route, identity,
+        authorization, storage, and audit contract declared in the corresponding world module. Records that are
+        not explicitly mutable remain immutable. The private service-loader contract `content.keplerops-k-data.k15-1-an-export-in-progress`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-data
+      - content.keplerops-k-data.k15-1-an-export-in-progress
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Lead only. Participant-created service state persists for the life of the participant world and
+        ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
       - features.k-cloud.k-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the unpublished job record and dataset binding. The job is a lead, not the
-        collection itself.
-      target_refs: *id005
+      description: Recover the unpublished job record and dataset binding. The job is a lead, not the collection
+        itself.
+      target_refs:
+      - features.k-cloud.k-data
       evidence_refs:
       - evidence_requirements.k15.c1
     failure_classes:
@@ -479,25 +522,48 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Obtain the restricted export definition for the customer's job even though your identity
-      does not own it.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Definition read audit. Merely describing the condition, editing a local copy, or
+      presenting a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k15.c2
+      - features.k-cloud.k-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-data` owns this part of the operation. Its starting state is exact: Protected definition
+        with source partitions, owner maya.ranscombe, tenant and destination; detail route checks tenant visibility
+        but omits job ownership. The owning service uses the listener, route, identity, authorization, storage,
+        and audit contract declared in the corresponding world module. Records that are not explicitly mutable remain
+        immutable. The private service-loader contract `content.keplerops-k-data.k15-2-a-job-outside-your-account`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-data
+      - content.keplerops-k-data.k15-2-a-job-outside-your-account
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Required for destination change. Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
+        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
+        outside this in-world contract.
+      support_refs:
       - features.k-cloud.k-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the protected job definition and its source boundaries. This does not yet change
-        the destination or retrieve the collection.
-      target_refs: *id006
+      description: Recover the protected job definition and its source boundaries. This does not yet change the
+        destination or retrieve the collection.
+      target_refs:
+      - features.k-cloud.k-data
       evidence_refs:
       - evidence_requirements.k15.c2
     failure_classes:
@@ -511,25 +577,48 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Use the available delegated job rights to redirect the export handover while keeping
-      the customer's job valid.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Accepted destination revision 7 and audit. Merely describing the condition, editing
+      a local copy, or presenting a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k15.c3
+      - features.k-cloud.k-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-data` owns this part of the operation. Its starting state is exact: Destination registry
+        includes participant-owned sink; PATCH preserves server-owned dataset/partitions but checks generic editor
+        grant rather than job ownership. The owning service uses the listener, route, identity, authorization, storage,
+        and audit contract declared in the corresponding world module. Records that are not explicitly mutable remain
+        immutable. The private service-loader contract `content.keplerops-k-data.k15-3-change-the-handover-point`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-data
+      - content.keplerops-k-data.k15-3-change-the-handover-point
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Produces handed-over export. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
       - features.k-cloud.k-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate an accepted destination change on the correct job, with its source selection
-        preserved. General job read access is insufficient.
-      target_refs: *id007
+      description: Demonstrate an accepted destination change on the correct job, with its source selection preserved.
+        General job read access is insufficient.
+      target_refs:
+      - features.k-cloud.k-data
       evidence_refs:
       - evidence_requirements.k15.c3
     failure_classes:
@@ -543,25 +632,48 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the ARWC collection from the handed-over export material. Resolve its partition
-      and revision records so the result belongs to the current customer binding.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Coherent current-customer collection and delivery receipt; mixed/stale selections
+      fail. Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k15.c4
+      - features.k-cloud.k-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-data` owns this part of the operation. Its starting state is exact: Export manifest with
+        current and stale tenant partitions; G02 identifies TEN-ARWC-047/FLK-7.4.2. The owning service uses the
+        listener, route, identity, authorization, storage, and audit contract declared in the corresponding world
+        module. Records that are not explicitly mutable remain immutable. The private service-loader contract `content.keplerops-k-data.k15-4-the-right-customer-s-collection`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-cloud.k-data
+      - content.keplerops-k-data.k15-4-the-right-customer-s-collection
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: ARWC intelligence, not entry. Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
+        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
+        outside this in-world contract.
+      support_refs:
       - features.k-cloud.k-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover a coherent collection for G02's customer and revision. Mixed tenants, stale
-        partitions, and the job's empty receipt do not satisfy the objective.
-      target_refs: *id008
+      description: Recover a coherent collection for G02's customer and revision. Mixed tenants, stale partitions,
+        and the job's empty receipt do not satisfy the objective.
+      target_refs:
+      - features.k-cloud.k-data
       evidence_refs:
       - evidence_requirements.k15.c4
     failure_classes:
@@ -571,101 +683,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-data
-    description: K15.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k15.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-data
-    description: K15.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k15.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-data
-    description: K15.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k15.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-cloud.k-data
-    description: K15.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k15.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K15.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Support job references, an ordinary customer-export interface, and the earned cloud or support identity.
-    target: k-cloud.k-data
-    tags:
-    - synthetic
-    - k15
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Support job references, an ordinary customer-export interface, and the earned cloud
-        or support identity.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K15.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Support job references, an ordinary customer-export interface, and the earned cloud or support identity.
-    target: k-cloud.k-data
-    tags:
-    - synthetic
-    - k15
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Support job references, an ordinary customer-export interface, and the earned cloud
-        or support identity.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K15.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Support job references, an ordinary customer-export interface, and the earned cloud or support identity.
-    target: k-cloud.k-data
-    tags:
-    - synthetic
-    - k15
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Support job references, an ordinary customer-export interface, and the earned cloud
-        or support identity.
-  c4-records-1:
-    type: dataset
-    description: |-
-      K15.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Support job references, an ordinary customer-export interface, and the earned cloud or support identity.
-    target: k-cloud.k-data
-    tags:
-    - synthetic
-    - k15
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Support job references, an ordinary customer-export interface, and the earned cloud
-        or support identity.

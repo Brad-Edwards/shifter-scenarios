@@ -251,7 +251,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   g02:
     description: 'G02: in-world access or evidence derived from the declared acquisition events. It grants
       only its named scope and never an unrelated session.'
@@ -287,7 +287,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   g03:
     description: 'G03: in-world access or evidence derived from the declared acquisition events. It grants
       only its named scope and never an unrelated session.'
@@ -323,7 +323,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   a01:
     description: 'A01: in-world access or evidence derived from the declared acquisition events. It grants
       only its named scope and never an unrelated session.'
@@ -359,7 +359,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   a03:
     description: 'A03: in-world access or evidence derived from the declared acquisition events. It grants
       only its named scope and never an unrelated session.'
@@ -395,7 +395,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   a04:
     description: 'A04: in-world access or evidence derived from the declared acquisition events. It grants
       only its named scope and never an unrelated session.'
@@ -431,7 +431,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   b01:
     description: 'B01: in-world access or evidence derived from the declared acquisition events. It grants
       only its named scope and never an unrelated session.'
@@ -467,7 +467,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   b02:
     description: 'B02: in-world access or evidence derived from the declared acquisition events. It grants
       only its named scope and never an unrelated session.'
@@ -503,7 +503,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   b03:
     description: 'B03: in-world access or evidence derived from the declared acquisition events. It grants
       only its named scope and never an unrelated session.'
@@ -541,7 +541,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   b04:
     description: 'B04: in-world access or evidence derived from the declared acquisition events. It grants
       only its named scope and never an unrelated session.'
@@ -577,7 +577,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   corporate:
     description: 'CORPORATE: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -613,7 +613,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w03-read:
     description: 'W03.READ: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -649,7 +649,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w09-data:
     description: 'W09.DATA: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -685,7 +685,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w13-session:
     description: 'W13.SESSION: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -721,7 +721,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w14-read:
     description: 'W14.READ: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -757,7 +757,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   ot-read:
     description: 'OT_READ: in-world access or evidence derived from the declared acquisition events. It
       grants only its named scope and never an unrelated session.'
@@ -795,7 +795,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w17-obs:
     description: 'W17.OBS: in-world access or evidence derived from the declared acquisition events. It
       grants only its named scope and never an unrelated session.'
@@ -833,7 +833,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w18-map:
     description: 'W18.MAP: in-world access or evidence derived from the declared acquisition events. It
       grants only its named scope and never an unrelated session.'
@@ -871,7 +871,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w19-map:
     description: 'W19.MAP: in-world access or evidence derived from the declared acquisition events. It
       grants only its named scope and never an unrelated session.'
@@ -907,7 +907,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   mapping:
     description: 'MAPPING: in-world access or evidence derived from the declared acquisition events. It
       grants only its named scope and never an unrelated session.'
@@ -947,7 +947,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w21-revision:
     description: 'W21.REVISION: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -985,7 +985,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w25-envelope:
     description: 'W25.ENVELOPE: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -1021,7 +1021,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   envelope:
     description: 'ENVELOPE: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -1057,7 +1057,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w25-mode:
     description: 'W25.MODE: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -1095,7 +1095,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   mode:
     description: 'MODE: in-world access or evidence derived from the declared acquisition events. It grants
       only its named scope and never an unrelated session.'
@@ -1133,7 +1133,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   process-interpretation:
     description: 'PROCESS_INTERPRETATION: in-world access or evidence derived from the declared acquisition
       events. It grants only its named scope and never an unrelated session.'
@@ -1177,7 +1177,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w15-approval:
     description: 'W15.APPROVAL: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -1213,7 +1213,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w26-control:
     description: 'W26.CONTROL: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -1249,7 +1249,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w28-control:
     description: 'W28.CONTROL: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -1285,7 +1285,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   control:
     description: 'CONTROL: in-world access or evidence derived from the declared acquisition events. It
       grants only its named scope and never an unrelated session.'
@@ -1323,7 +1323,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w29-plan:
     description: 'W29.PLAN: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -1361,7 +1361,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   consequence-plan:
     description: 'CONSEQUENCE_PLAN: in-world access or evidence derived from the declared acquisition
       events. It grants only its named scope and never an unrelated session.'
@@ -1399,7 +1399,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
   w30-result:
     description: 'W30.RESULT: in-world access or evidence derived from the declared acquisition events.
       It grants only its named scope and never an unrelated session.'
@@ -1439,7 +1439,7 @@ evidence_requirements:
     notes:
     - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
       truth: an alternative does not require evidence from every listed producer, access to every producer,
-      or an additional player task.'
+      or an additional service action.'
 propositions:
   g01:
     description: 'G01: in-world access or evidence derived from the declared acquisition events. It grants
@@ -2206,233 +2206,231 @@ injects:
     name: G01 acquired
     description: Retain the G01 capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   g02:
     name: G02 acquired
     description: Retain the G02 capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   g03:
     name: G03 acquired
     description: Retain the G03 capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   a01:
     name: A01 acquired
     description: Retain the A01 capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   a03:
     name: A03 acquired
     description: Retain the A03 capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   a04:
     name: A04 acquired
     description: Retain the A04 capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   b01:
     name: B01 acquired
     description: Retain the B01 capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   b02:
     name: B02 acquired
     description: Retain the B02 capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   b03:
     name: B03 acquired
     description: Retain the B03 capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   b04:
     name: B04 acquired
     description: Retain the B04 capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   corporate:
     name: CORPORATE acquired
     description: Retain the CORPORATE capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w03-read:
     name: W03.READ acquired
     description: Retain the W03.READ capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w09-data:
     name: W09.DATA acquired
     description: Retain the W09.DATA capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w13-session:
     name: W13.SESSION acquired
     description: Retain the W13.SESSION capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w14-read:
     name: W14.READ acquired
     description: Retain the W14.READ capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   ot-read:
     name: OT_READ acquired
     description: Retain the OT_READ capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w17-obs:
     name: W17.OBS acquired
     description: Retain the W17.OBS capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w18-map:
     name: W18.MAP acquired
     description: Retain the W18.MAP capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w19-map:
     name: W19.MAP acquired
     description: Retain the W19.MAP capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   mapping:
     name: MAPPING acquired
     description: Retain the MAPPING capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w21-revision:
     name: W21.REVISION acquired
     description: Retain the W21.REVISION capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w25-envelope:
     name: W25.ENVELOPE acquired
     description: Retain the W25.ENVELOPE capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   envelope:
     name: ENVELOPE acquired
     description: Retain the ENVELOPE capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w25-mode:
     name: W25.MODE acquired
     description: Retain the W25.MODE capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   mode:
     name: MODE acquired
     description: Retain the MODE capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   process-interpretation:
     name: PROCESS_INTERPRETATION acquired
     description: Retain the PROCESS_INTERPRETATION capability/evidence for this participant after one
       complete acquisition alternative is verified. This updates participant state only; it does not write
-      to every possible evidence producer. It is a derived state update, not an extra player action or
-      a progress message.
+      to every possible evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w15-approval:
     name: W15.APPROVAL acquired
     description: Retain the W15.APPROVAL capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w26-control:
     name: W26.CONTROL acquired
     description: Retain the W26.CONTROL capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w28-control:
     name: W28.CONTROL acquired
     description: Retain the W28.CONTROL capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   control:
     name: CONTROL acquired
     description: Retain the CONTROL capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w29-plan:
     name: W29.PLAN acquired
     description: Retain the W29.PLAN capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   consequence-plan:
     name: CONSEQUENCE_PLAN acquired
     description: Retain the CONSEQUENCE_PLAN capability/evidence for this participant after one complete
       acquisition alternative is verified. This updates participant state only; it does not write to every
-      possible evidence producer. It is a derived state update, not an extra player action or a progress
-      message.
+      possible evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
   w30-result:
     name: W30.RESULT acquired
     description: Retain the W30.RESULT capability/evidence for this participant after one complete acquisition
       alternative is verified. This updates participant state only; it does not write to every possible
-      evidence producer. It is a derived state update, not an extra player action or a progress message.
+      evidence producer. It is an idempotent evidence-state update and causes no additional service action or user notification.
     environment:
     - agents.participant.operator
 events:

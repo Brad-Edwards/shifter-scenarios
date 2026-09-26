@@ -40,17 +40,7 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
     content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
-    - c4-records-2
     - diagnostic-request-reference
     - runner-operations-note
 realization:
@@ -60,8 +50,8 @@ evidence_requirements:
     description: |-
       Recover the actual log and its job binding. Its dossier reference can introduce K29 or K30; it grants no cloud principal.
 
-      Required technical proof: The log digest, run ID, and dossier ID are recorded as player evidence; no runner or release authority results.
-    source_refs: &id001
+      Required technical proof: The log digest, run ID, and dossier ID are recorded as operator evidence; no runner or release authority results.
+    source_refs:
     - features.k-delivery.k-ci
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -82,7 +72,8 @@ evidence_requirements:
         data_kind: artifact
         names:
         - cinder.k09-1.satisfied
-        component_refs: *id001
+        component_refs:
+        - features.k-delivery.k-ci
       collection: require
       retention: require
       redaction: redact-secrets
@@ -90,14 +81,14 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Verify summary omission, a fair run lead, retained log access, matching dossier
-      reference, no job execution, and reset.'
+    - 'Author checks: Verify summary omission, a fair run lead, retained log access, matching dossier reference,
+      no job execution.'
   c2:
     description: |-
       Recover the missing artifact from its separate publication surface. It contains the test-job evidence used later in this operation.
 
       Required technical proof: Artifact retrieval records the run, object version, and build revision, enabling K09.3's input path.
-    source_refs: &id002
+    source_refs:
     - features.k-delivery.k-ci
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -118,7 +109,8 @@ evidence_requirements:
         data_kind: artifact
         names:
         - cinder.k09-2.satisfied
-        component_refs: *id002
+        component_refs:
+        - features.k-delivery.k-ci
       collection: require
       retention: require
       redaction: redact-secrets
@@ -126,14 +118,14 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test index omission, metadata lead, one matching artifact, wrong-run artifact rejection,
-      provenance consistency, and reset.'
+    - 'Author checks: Test index omission, metadata lead, one matching artifact, wrong-run artifact rejection, provenance
+      consistency.'
   c3:
     description: |-
       Produce the protected review output under the intended job identity. This establishes a distinct input capability, not general runner execution.
 
       Required technical proof: CI records the selected support object and returns the restricted review output with job provenance; no persistent runner access is granted.
-    source_refs: &id003
+    source_refs:
     - features.k-delivery.k-ci
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -154,7 +146,8 @@ evidence_requirements:
         data_kind: artifact
         names:
         - cinder.k09-3.satisfied
-        component_refs: *id003
+        component_refs:
+        - features.k-delivery.k-ci
       collection: require
       retention: require
       redaction: redact-secrets
@@ -162,8 +155,8 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test normal input, intended linked-object read, arbitrary reference denial, correct
-      job provenance, no execution authority yet, and reset.'
+    - 'Author checks: Test normal input, intended linked-object read, arbitrary reference denial, correct job provenance,
+      no execution authority yet.'
   c4:
     description: |-
       Demonstrate execution as the build worker, retrieve its protected note, and make a second authenticated request to the build-record status service through the same job submission path. The repeatable job path supplies the existing workload, identity, and maintenance starting access, not their later results. It grants no customer execution.
@@ -182,9 +175,9 @@ evidence_requirements:
       The status response contains the current worker identity and build-service
       availability, not the trust document, backup principal, or maintenance policy.
       Those remain separately protected records for K14, K30, and K31. Returning the
-      note and response is ordinary job behavior, independent of scoring; neither
-      output announces an unlock or directs the player to a numbered challenge.
-    source_refs: &id004
+      note and response is ordinary job behavior, independent of objective evaluation; neither
+      output announces an access transition or directs the operator to a numbered task.
+    source_refs:
     - features.k-delivery.k-ci--runner
     - features.k-cloud.k-cloud-api--build-records
     scope: Per-participant in-world evidence; no other participant state.
@@ -206,7 +199,9 @@ evidence_requirements:
         data_kind: artifact
         names:
         - cinder.k09-4.satisfied
-        component_refs: *id004
+        component_refs:
+        - features.k-delivery.k-ci--runner
+        - features.k-cloud.k-cloud-api--build-records
       collection: require
       retention: require
       redaction: redact-secrets
@@ -220,8 +215,8 @@ evidence_requirements:
       returns the private note. A fresh reader of that reference must be able to
       identify the argument format and note path without guessing names or consulting
       author notes. Reject guessed profiles with ordinary support inputs, unresolved
-      links, foreign workspace references, and stale reset generations. Confirm a
-      normal completed integration review returns its retained reference with scoring
+      links, foreign workspace references, and stale workspace generations. Confirm a
+      normal completed integration review returns its retained reference with objective evaluation
       disabled, and retrying it does not consume the reference. Run a harmless command
       not present in the documents, a shell
       pipeline, and an uploaded script to establish genuine command execution. Verify
@@ -231,7 +226,7 @@ evidence_requirements:
       worker and destination audit records, and deny the same protected read from
       the developer identity alone. Reject copied or stale proof, missing destination
       audit, wrong principal/target, forged request IDs, participant-written audit
-      files, and a successful-looking response without a request. With scoring
+      files, and a successful-looking response without a request. With objective evaluation
       disabled, both jobs and their returned records must work.
 
       Using only this route, start K14.1, K19.1, K30.1, and K31.1. Verify source/package
@@ -247,15 +242,15 @@ evidence_requirements:
       Repeat after a break, day-two resume, failed job, and worker credential rotation.
       Verify copied worker credentials expire, separate earned material survives job
       exit, no background process survives cancellation, and workspace files cannot
-      change the enforced network or identity policy. Verify operation reset invalidates
-      old jobs and worker credentials, then a clean solve works again. Observe fresh
+      change the enforced network or identity policy. Verify per-run worker credentials expire while workspace files and independent service state persist across ordinary retries. Observe fresh
       assisted solves to confirm Medium difficulty and
       that players notice the usable service connections without out-of-world copy.
 propositions:
   c1:
-    description: Recover the actual log and its job binding. Its dossier reference can introduce K29 or
-      K30; it grants no cloud principal.
-    subjects: *id001
+    description: Recover the actual log and its job binding. Its dossier reference can introduce K29 or K30; it
+      grants no cloud principal.
+    subjects:
+    - features.k-delivery.k-ci
     basis: observed_state
     predicate:
       kind: boolean
@@ -267,9 +262,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the missing artifact from its separate publication surface. It contains the test-job
-      evidence used later in this operation.
-    subjects: *id002
+    description: Recover the missing artifact from its separate publication surface. It contains the test-job evidence
+      used later in this operation.
+    subjects:
+    - features.k-delivery.k-ci
     basis: observed_state
     predicate:
       kind: boolean
@@ -281,9 +277,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Produce the protected review output under the intended job identity. This establishes
-      a distinct input capability, not general runner execution.
-    subjects: *id003
+    description: Produce the protected review output under the intended job identity. This establishes a distinct
+      input capability, not general runner execution.
+    subjects:
+    - features.k-delivery.k-ci
     basis: observed_state
     predicate:
       kind: boolean
@@ -295,11 +292,13 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Demonstrate execution as the build worker, retrieve its protected note, and make a second
-      authenticated request to the build-record status service through the same job submission path. The
-      repeatable job path supplies the existing workload, identity, and maintenance starting access, not
-      their later results. It grants no customer execution.
-    subjects: *id004
+    description: Demonstrate execution as the build worker, retrieve its protected note, and make a second authenticated
+      request to the build-record status service through the same job submission path. The repeatable job path supplies
+      the existing workload, identity, and maintenance starting access, not their later results. It grants no customer
+      execution.
+    subjects:
+    - features.k-delivery.k-ci--runner
+    - features.k-cloud.k-cloud-api--build-records
     basis: observed_state
     predicate:
       kind: boolean
@@ -353,7 +352,7 @@ objectives:
     agent: participant.operator
     actions:
     - k09.c1
-    targets: &id005
+    targets:
     - features.k-delivery.k-ci
     success:
       mode: all_of
@@ -371,7 +370,7 @@ objectives:
     agent: participant.operator
     actions:
     - k09.c2
-    targets: &id006
+    targets:
     - features.k-delivery.k-ci
     success:
       mode: all_of
@@ -389,7 +388,7 @@ objectives:
     agent: participant.operator
     actions:
     - k09.c3
-    targets: &id007
+    targets:
     - features.k-delivery.k-ci
     success:
       mode: all_of
@@ -407,8 +406,9 @@ objectives:
     agent: participant.operator
     actions:
     - k09.c4
-    targets: &id008
-    - features.k-delivery.k-ci
+    targets:
+    - features.k-delivery.k-ci--runner
+    - features.k-cloud.k-cloud-api--build-records
     success:
       mode: all_of
       assertions:
@@ -418,8 +418,8 @@ objectives:
       - k09.c4
 workflows:
   c1:
-    description: 'K09.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K09.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -441,8 +441,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K09.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K09.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -464,8 +464,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K09.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K09.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -487,8 +487,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'K09.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K09.4: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -514,45 +514,51 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Summary redaction does not extend to the run's normally archived log. The intended
-      solution recovers that log through its run provenance and validates the dossier reference.
+    procedure_basis: Summary redaction does not extend to the run's normally archived log. The intended solution
+      recovers that log through its run provenance and validates the dossier reference.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k09.c1
       - features.k-delivery.k-ci
     - precondition_id: normal-surface
       precondition_class: target
-      description: The CI public summary links a failed run while a retained runner log contains ordinary
-        execution details and a release-dossier reference.
-      support_refs: *id005
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        Run history is read-only synthetic data; reset removes player reads without changing CI records.
+      description: The CI public summary links a failed run while a retained runner log contains ordinary execution
+        details and a release-dossier reference.
       support_refs:
       - features.k-delivery.k-ci
+      - content.keplerops-k-ci.k09-1-a-runner-tells-on-itself
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Can lead to K29/K30 Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-delivery.k-ci
+      - content.keplerops-k-ci.k09-1-a-runner-tells-on-itself
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual log and its job binding. Its dossier reference can introduce K29
-        or K30; it grants no cloud principal.
-      target_refs: *id005
+      description: Recover the actual log and its job binding. Its dossier reference can introduce K29 or K30; it
+        grants no cloud principal.
+      target_refs:
+      - features.k-delivery.k-ci
       evidence_refs:
       - evidence_requirements.k09.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The log digest, run ID, and dossier ID are recorded as player evidence; no runner or
-        release authority results.
-      target_refs: *id001
+      description: The log digest, run ID, and dossier ID are recorded as operator evidence; no runner or release
+        authority results.
+      target_refs:
+      - features.k-delivery.k-ci
       evidence_refs:
       - evidence_requirements.k09.c1
     failure_classes:
@@ -566,45 +572,51 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The artifact index filters one completed output incorrectly. The intended solution
-      follows normal build metadata to recover the omitted artifact and confirm its exact revision.
+    procedure_basis: The artifact index filters one completed output incorrectly. The intended solution follows
+      normal build metadata to recover the omitted artifact and confirm its exact revision.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k09.c2
       - features.k-delivery.k-ci
     - precondition_id: normal-surface
       precondition_class: target
-      description: The CI run's immutable metadata names an artifact whose current results-page index
-        is incomplete; the artifact archive retains build revision and provenance.
-      support_refs: *id006
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        The artifact is read-only, player evidence only, and does not expose runner credentials or job modification; reset clears its event.
+      description: The CI run's immutable metadata names an artifact whose current results-page index is incomplete;
+        the artifact archive retains build revision and provenance.
       support_refs:
       - features.k-delivery.k-ci
+      - content.keplerops-k-ci.k09-2-the-artifact-without-a-link
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K09.3 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-delivery.k-ci
+      - content.keplerops-k-ci.k09-2-the-artifact-without-a-link
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the missing artifact from its separate publication surface. It contains the
-        test-job evidence used later in this operation.
-      target_refs: *id006
+      description: Recover the missing artifact from its separate publication surface. It contains the test-job
+        evidence used later in this operation.
+      target_refs:
+      - features.k-delivery.k-ci
       evidence_refs:
       - evidence_requirements.k09.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Artifact retrieval records the run, object version, and build revision, enabling K09.3's
-        input path.
-      target_refs: *id002
+      description: Artifact retrieval records the run, object version, and build revision, enabling K09.3's input
+        path.
+      target_refs:
+      - features.k-delivery.k-ci
       evidence_refs:
       - evidence_requirements.k09.c2
     failure_classes:
@@ -618,17 +630,18 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The job input resolver validates the submitted collection but follows a linked support
-      reference outside it. The intended solution creates a bounded valid input using K09.2's artifact
-      and observes the review result.
+    procedure_basis: The job input resolver validates the submitted collection but follows a linked support reference
+      outside it. The intended solution creates a bounded valid input using K09.2's artifact and observes the review
+      result.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k09.c3
       - features.k-delivery.k-ci
@@ -642,31 +655,36 @@ action_contracts:
         nor worker credentials. The reference is an ordinary Build Operations document,
         not an instruction to exploit the job. A completed review returns a retained
         input reference bound to the resolved object/revision, submitting account, and
-        reset generation. Later diagnostic jobs use that reference; receiving it is
-        ordinary review behavior, not a scoring-triggered grant. The input's integration
+        workspace generation. Later diagnostic jobs use that reference; receiving it is
+        ordinary review behavior, not an objective evaluation-triggered grant. The input's integration
         classification is service-owned metadata, not a caller-editable field.
-      support_refs: *id007
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        Resolution is restricted to two fixtures and a player-local job; no arbitrary archive path or workflow edit is available. Reset clears queued/job data.
       support_refs:
       - features.k-delivery.k-ci
+      - content.keplerops-k-ci.k09-3-a-job-input-with-reach
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Required command-dispatch input Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The action is limited to the exact records, identities,
+        routes, and destination effects declared here; unrelated tenants and services remain denied. Infrastructure
+        recovery and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-delivery.k-ci
+      - content.keplerops-k-ci.k09-3-a-job-input-with-reach
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the protected review output under the intended job identity. This establishes
-        a distinct input capability, not general runner execution.
-      target_refs: *id007
+      description: Produce the protected review output under the intended job identity. This establishes a distinct
+        input capability, not general runner execution.
+      target_refs:
+      - features.k-delivery.k-ci
       evidence_refs:
       - evidence_requirements.k09.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: CI records the selected support object and returns the restricted review output with
-        job provenance; no persistent runner access is granted.
-      target_refs: *id003
+      description: CI records the selected support object and returns the restricted review output with job provenance;
+        no persistent runner access is granted.
+      target_refs:
+      - features.k-delivery.k-ci
       evidence_refs:
       - evidence_requirements.k09.c3
     failure_classes:
@@ -688,15 +706,15 @@ action_contracts:
       The request cannot select a runtime image, operating-system identity, mounts,
       network policy, another account's workspace, or the CI controller. The protected
       reference and note are authored in
-      the Build Operations assets
+      [the Build Operations assets](../../../../assets/keplerops/build-operations/README.md)
       and placed only on their owning CI node by native SDL content declarations.
 
       The job checks the caller's right to submit a support review but fails to check
       the separate Build Operations entitlement when dispatching the diagnostic
       profile supplied alongside the resolved support input. Command dispatch requires
       the retained input reference from a completed integration review: the service
-      binds it to the resolved object/revision, submitting account, and reset generation.
-      That reference is returned by normal review processing in K09.3, not by scoring.
+      binds it to the resolved object/revision, submitting account, and workspace generation.
+      That reference is returned by normal review processing in K09.3, not by objective evaluation.
       Only the protected integration input has the server-owned diagnostic eligibility
       metadata. An ordinary support input, raw unresolved link, invented reference,
       or reference copied from another workspace cannot dispatch commands. The flaw
@@ -707,22 +725,24 @@ action_contracts:
       does not execute participant-selected commands.
 
       The intended first command reads the internal runner note at its documented
-      path. The player then runs its documented `curl` status check in a second job
+      path. The operator then runs its documented `curl` status check in a second job
       and receives the remote service's authenticated response. Both jobs use the configured worker
       identity. No completion event creates an account, grants a role, changes a
       firewall, or opens a connection. Subsequent commands use the same submission
-      path, without an extra challenge or a session secretly supplied by scoring.
+      path, without an extra service step or a session secretly supplied by objective evaluation.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
-      - workflows.k09.c4
-      - features.k-delivery.k-ci
+      - workflows.c4
+      - features.k-delivery.k-ci--runner
+      - features.k-cloud.k-cloud-api--build-records
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
@@ -757,12 +777,13 @@ action_contracts:
         standard error, and owned artifacts. The input can be submitted again from the
         existing developer position, with credentials retained in private files rather
         than embedded in the saved command line.
-      support_refs: *id008
-    - precondition_id: boundaries-and-reset
+      support_refs:
+      - features.k-delivery.k-ci--runner
+      - features.k-cloud.k-cloud-api--build-records
+      - content.keplerops-k-ci.k09-4-run-in-the-runner
+    - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
         The authorized unit is a repeatable isolated job, not an administrator shell on
         the build server. Commands and child processes run without host privilege; no
         host paths, device access, runtime socket, CI controller credentials, other job
@@ -819,24 +840,20 @@ action_contracts:
         deleting the workspace. Resource limits must accommodate the required native
         clients, return ordinary diagnostics, and introduce no timing puzzle.
 
-        An explicit K09 operation reset cancels its jobs, invalidates worker leases,
-        clears its workspace and mutable job results, and restores initial inputs. It
-        does not reissue earned identities or erase independent completed evidence;
-        downstream issuer state follows its own reset scope. Preserved proof from an
-        older reset generation cannot satisfy a new attempt. A simple job retry is not
-        an operation reset.
+        Participant-created workspace files and job history persist across ordinary retries and day-two resume. Job exit expires only its per-run worker lease and processes; it does not erase the workspace, independently earned identities, or destination-side audit.
       support_refs:
-      - features.k-delivery.k-ci
       - features.k-delivery.k-ci--runner
       - features.k-cloud.k-cloud-api--build-records
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate execution as the build worker, retrieve its protected note, and make a
-        second authenticated request to the build-record status service through the same job submission
-        path. The repeatable job path supplies the existing workload, identity, and maintenance starting
-        access, not their later results. It grants no customer execution.
-      target_refs: *id008
+      description: Demonstrate execution as the build worker, retrieve its protected note, and make a second authenticated
+        request to the build-record status service through the same job submission path. The repeatable job path
+        supplies the existing workload, identity, and maintenance starting access, not their later results. It grants
+        no customer execution.
+      target_refs:
+      - features.k-delivery.k-ci--runner
+      - features.k-cloud.k-cloud-api--build-records
       evidence_refs:
       - evidence_requirements.k09.c4
     - effect_id: verified-evidence
@@ -856,9 +873,11 @@ action_contracts:
         The status response contains the current worker identity and build-service
         availability, not the trust document, backup principal, or maintenance policy.
         Those remain separately protected records for K14, K30, and K31. Returning the
-        note and response is ordinary job behavior, independent of scoring; neither
-        output announces an unlock or directs the player to a numbered challenge.
-      target_refs: *id004
+        note and response is ordinary job behavior, independent of objective evaluation; neither
+        output announces an access transition or directs the operator to a numbered task.
+      target_refs:
+      - features.k-delivery.k-ci--runner
+      - features.k-cloud.k-cloud-api--build-records
       evidence_refs:
       - evidence_requirements.k09.c4
     failure_classes:
@@ -868,216 +887,13 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-ci
-    description: K09.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k09.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-ci
-    description: K09.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k09.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-ci
-    description: K09.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k09.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-ci
-    description: K09.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k09.c4
-      mode: service
 content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K09.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The developer's build history, ordinary job interface, artifact references, and a sample FieldKest build.
-
-      The CI public summary links a failed run while a retained runner log contains ordinary execution details and a release-dossier reference.
-    target: k-delivery.k-ci
-    tags:
-    - synthetic
-    - k09
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The developer's build history, ordinary job interface, artifact references, and a sample
-        FieldKest build.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K09.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The developer's build history, ordinary job interface, artifact references, and a sample FieldKest build.
-
-      The CI run's immutable metadata names an artifact whose current results-page index is incomplete; the artifact archive retains build revision and provenance.
-    target: k-delivery.k-ci
-    tags:
-    - synthetic
-    - k09
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The developer's build history, ordinary job interface, artifact references, and a sample
-        FieldKest build.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K09.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The developer's build history, ordinary job interface, artifact references, and a sample FieldKest build.
-
-      The CI test job consumes an archived support input and generates a restricted
-      review output under the runner's job identity. The protected review includes
-      the maintained diagnostic request reference: profile names, command argument
-      format, and the internal runner note's path. It contains neither the private note
-      nor worker credentials. The reference is an ordinary Build Operations document,
-      not an instruction to exploit the job. A completed review returns a retained
-      input reference bound to the resolved object/revision, submitting account, and
-      reset generation. Later diagnostic jobs use that reference; receiving it is
-      ordinary review behavior, not a scoring-triggered grant. The input's integration
-      classification is service-owned metadata, not a caller-editable field.
-    target: k-delivery.k-ci
-    tags:
-    - synthetic
-    - k09
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The developer's build history, ordinary job interface, artifact references, and a sample
-        FieldKest build.
-  c4-records-1:
-    type: dataset
-    description: |-
-      K09.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The developer's build history, ordinary job interface, artifact references, and a sample FieldKest build.
-
-      The review job accepts a support-input reference and a diagnostic request. Its
-      ordinary `render-review` profile produces a review document. Build Operations
-      also uses `runner-command` to investigate failed integrations. It launches a
-      non-privileged process with an argument vector inside an isolated job environment,
-      initially authenticated to services as `svc-fieldlink-ci`. A command may invoke
-      a POSIX shell, run a script, use ordinary HTTP/certificate/directory clients,
-      read its own files, and save output. This is actual command execution, not a
-      fixed list of service requests or simulated command responses.
-
-      The job has a private persistent `/workspace`, authenticated file upload/download
-      through the submitting account's job interface, and fresh per-run credential
-      files under `/run/fieldlink-ci`. The operations note and per-run configuration
-      are mounted read-only. `connections.env` supplies only non-secret base URLs;
-      each per-service curl configuration supplies that service's worker authentication
-      and certificate trust, with no forced URL, HTTP method, request body, or automatic
-      redirect following. The installed `curl` accepts the documented options.
-      Runtime processes and temporary files disappear
-      at job exit; the account's workspace and saved results remain. Client tools
-      required by the selected downstream mechanisms must already be installed;
-      internet access or installing a missing tool is not an additional task.
-
-      K09.3's protected review includes the maintained diagnostic request reference,
-      with the two profile names, argument format, and the internal note's path. It
-      does not execute that profile or return the protected note.
-      The note identifies the worker, lists its existing service connections, and
-      gives a harmless build-record status command. It also explains how to use an
-      independently obtained identity without the worker's authentication overriding
-      it. Job history retains argument vectors, run IDs, exit status, standard output,
-      standard error, and owned artifacts. The input can be submitted again from the
-      existing developer position, with credentials retained in private files rather
-      than embedded in the saved command line.
-
-      Records owned by this system: The review-job input and argv command schema, ordinary render-review and privileged runner-command profiles, read-only runner operations note, non-secret connections.env, per-service client configurations, required native client tools, and private retained workspace with authenticated file transfer. Worker credential leases and trusted execution/file-read audits are generated per run, not seeded successes. Commands may read their own scoped worker credentials or explicitly use separately earned identities; no host or CI administration secrets and no pre-earned colleague credentials are mounted. Persistent workspace files survive retry and job exit; worker leases and processes do not.
-    target: k-delivery.k-ci
-    tags:
-    - synthetic
-    - k09
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The review-job input and argv command schema, ordinary render-review and privileged
-        runner-command profiles, read-only runner operations note, non-secret connections.env, per-service
-        client configurations, required native client tools, and private retained workspace with authenticated
-        file transfer. Worker credential leases and trusted execution/file-read audits are generated per
-        run, not seeded successes. Commands may read their own scoped worker credentials or explicitly
-        use separately earned identities; no host or CI administration secrets and no pre-earned colleague
-        credentials are mounted. Persistent workspace files survive retry and job exit; worker leases
-        and processes do not.
-  c4-records-2:
-    type: dataset
-    description: |-
-      K09.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The developer's build history, ordinary job interface, artifact references, and a sample FieldKest build.
-
-      The review job accepts a support-input reference and a diagnostic request. Its
-      ordinary `render-review` profile produces a review document. Build Operations
-      also uses `runner-command` to investigate failed integrations. It launches a
-      non-privileged process with an argument vector inside an isolated job environment,
-      initially authenticated to services as `svc-fieldlink-ci`. A command may invoke
-      a POSIX shell, run a script, use ordinary HTTP/certificate/directory clients,
-      read its own files, and save output. This is actual command execution, not a
-      fixed list of service requests or simulated command responses.
-
-      The job has a private persistent `/workspace`, authenticated file upload/download
-      through the submitting account's job interface, and fresh per-run credential
-      files under `/run/fieldlink-ci`. The operations note and per-run configuration
-      are mounted read-only. `connections.env` supplies only non-secret base URLs;
-      each per-service curl configuration supplies that service's worker authentication
-      and certificate trust, with no forced URL, HTTP method, request body, or automatic
-      redirect following. The installed `curl` accepts the documented options.
-      Runtime processes and temporary files disappear
-      at job exit; the account's workspace and saved results remain. Client tools
-      required by the selected downstream mechanisms must already be installed;
-      internet access or installing a missing tool is not an additional task.
-
-      K09.3's protected review includes the maintained diagnostic request reference,
-      with the two profile names, argument format, and the internal note's path. It
-      does not execute that profile or return the protected note.
-      The note identifies the worker, lists its existing service connections, and
-      gives a harmless build-record status command. It also explains how to use an
-      independently obtained identity without the worker's authentication overriding
-      it. Job history retains argument vectors, run IDs, exit status, standard output,
-      standard error, and owned artifacts. The input can be submitted again from the
-      existing developer position, with credentials retained in private files rather
-      than embedded in the saved command line.
-
-      Records owned by this system: The existing svc-fieldlink-ci principal and its bounded build-record scope, worker-status interface, per-run credential and job-origin validation, independent request audit, and separately protected trust/build records. The authenticated response and audit are generated from a real request, not seeded. A status read neither returns the backup principal nor changes service permissions.
-    target: k-cloud.k-cloud-api
-    tags:
-    - synthetic
-    - k09
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The existing svc-fieldlink-ci principal and its bounded build-record scope, worker-status
-        interface, per-run credential and job-origin validation, independent request audit, and separately
-        protected trust/build records. The authenticated response and audit are generated from a real
-        request, not seeded. A status read neither returns the backup principal nor changes service permissions.
   diagnostic-request-reference:
     type: file
     target: k-delivery.k-ci
     path: /srv/fieldlink-ci/reviews/diagnostic-request-reference.md
-    description: Maintained Build Operations request reference included in the protected review; not the
-      worker-only handover.
+    description: Maintained Build Operations request reference included in the protected review; not the worker-only
+      handover.
     text: |
       # FieldKest review jobs: diagnostic requests
 
@@ -1130,15 +946,15 @@ content:
       Retry from the retained request in job history. Change only the diagnostic
       object when comparing commands against the same support input. A failed run
       does not remove the workspace or an earlier result. Job exit revokes that run's
-      worker credentials; the next run receives fresh ones. Reset workspace is a
-      separate destructive action, not part of Retry or Cancel.
+      worker credentials; the next run receives fresh ones. Workspace files and job
+      history persist across Retry, Cancel, job exit, and shift handover.
     sensitive: true
   runner-operations-note:
     type: file
     target: k-delivery.k-ci
     path: /srv/fieldlink-ci/runner/runner-operations.md
-    description: Worker-owned Build Operations handover; direct developer reads denied. Returned by the
-      actual diagnostic action, not by scoring.
+    description: Worker-owned Build Operations handover; direct developer reads denied. Returned by the actual diagnostic
+      action, not by objective evaluation.
     text: |
       # FieldKest runner service connections
 
@@ -1213,9 +1029,8 @@ content:
       view to move your own files in or out. Job exit stops child processes and revokes
       the worker credentials, but leaves workspace files and separately issued client
       material intact. Renew that material through its issuing service when required.
-      Retry and Cancel preserve files. Reset workspace removes them and must not be
-      used for an ordinary failed command. Saved commands and results remain available
-      for a shift handover until that explicit reset.
+      Retry and Cancel preserve files. Saved commands and results remain available
+      across job exit and for a shift handover.
 
       Network policy is enforced outside the job. The listed supplier services are
       reachable on their approved protocols; the job has no general network transit,

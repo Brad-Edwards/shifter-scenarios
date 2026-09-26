@@ -1,0 +1,1102 @@
+name: cinder-arwc-a-data
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/arwc-a-data
+  version: 0.1.0
+  exports:
+    content:
+    - w07-1-the-query-the-planner-keeps
+    - w07-2-read-beyond-the-allowed-statement
+    - w07-3-the-database-does-more-than-read
+    - w09-1-water-already-promised
+    - w09-2-the-meter-s-own-account
+    - w09-3-the-missing-megalitre
+    - w11-1-the-relation-service-s-language
+    - w11-2-an-exchange-the-backend-accepts
+    - w11-3-the-asset-s-true-lineage
+    - w29-1-the-price-of-this-planning-window
+    - w29-2-what-reserve-remains-uncommitted
+    - w34-1-which-view-the-planner-trusts
+    - w34-2-a-reassuring-decision
+    - w34-3-still-reassuring-after-the-handover
+realization:
+  default: open
+content:
+  w07-1-the-query-the-planner-keeps:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/the-query-the-planner-keeps.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-query-the-planner-keeps
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/the-query-the-planner-keeps
+      starting_state: Planner report definition QRY-RESERVE-R7 names PostgreSQL 16.4 view reserve_report_current, identifier
+        quoting rules, SELECT-only policy, and ordinary request/result pairs.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Planner report definition QRY-RESERVE-R7 names PostgreSQL 16.4 view reserve_report_current,
+          identifier quoting rules, SELECT-only policy, and ordinary request/result pairs.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the report definition and a correct account of the permitted operation classes supported
+          by the supplied request/result evidence. Merely opening the planner session or downloading a profile does not
+          establish the result; protected backend reads remain the declared prior result.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Planner report definition QRY-RESERVE-R7 names PostgreSQL 16.4 view reserve_report_current, identifier
+          quoting rules, SELECT-only policy, and ordinary request/result pairs.
+        success: Recover the report definition and a correct account of the permitted operation classes supported by the
+          supplied request/result evidence. Merely opening the planner session or downloading a profile does not establish
+          the result; protected backend reads remain the declared prior result.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the report definition and a correct account of the permitted operation classes supported
+        by the supplied request/result evidence. Merely opening the planner session or downloading a profile does not
+        establish the result; protected backend reads remain the declared prior result.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: e31cdfca8945de80245eea9cedee872c86dea3cb8582b14607cd8ba85c4a792c
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w07-2-read-beyond-the-allowed-statement:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/read-beyond-the-allowed-statement.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: read-beyond-the-allowed-statement
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/read-beyond-the-allowed-statement
+      starting_state: Query service constructs SELECT * FROM quoted report_name and rejects semicolons but permits a closing
+        quote plus UNION; protected view district_allocation_adjustment contains ADJ-CRR-DP3-17.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: quoted-identifier SQL construction
+        behavior_contract: Query service constructs SELECT * FROM quoted report_name and rejects semicolons but permits
+          a closing quote plus UNION; protected view district_allocation_adjustment contains ADJ-CRR-DP3-17.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the actual adjustment ledger with its district and reporting-period binding. Running
+          an already permitted report or merely describing the interface restriction is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Query service constructs SELECT * FROM quoted report_name and rejects semicolons but permits a closing
+          quote plus UNION; protected view district_allocation_adjustment contains ADJ-CRR-DP3-17.
+        success: Recover the actual adjustment ledger with its district and reporting-period binding. Running an already
+          permitted report or merely describing the interface restriction is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the actual adjustment ledger with its district and reporting-period binding. Running
+        an already permitted report or merely describing the interface restriction is insufficient.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 3400789bd3181266eb561a7ea700fc11404429c77e7affba02447e0b5ac4d618
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w07-3-the-database-does-more-than-read:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/the-database-does-more-than-read.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-database-does-more-than-read
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/the-database-does-more-than-read
+      starting_state: Database role svc-planner-query may invoke SECURITY DEFINER function arwc_reconcile_copy(text),
+        which accepts only REC-CRR-DP3-17 and writes an immutable copy into caller result storage without shell or arbitrary-file
+        access.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: bounded SECURITY DEFINER invocation
+        behavior_contract: Database role svc-planner-query may invoke SECURITY DEFINER function arwc_reconcile_copy(text),
+          which accepts only REC-CRR-DP3-17 and writes an immutable copy into caller result storage without shell or arbitrary-file
+          access.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Demonstrate backend-context execution and recover the resulting reconciliation-log copy. The
+          ledger read in the declared prior result does not establish this result.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Database role svc-planner-query may invoke SECURITY DEFINER function arwc_reconcile_copy(text), which accepts
+          only REC-CRR-DP3-17 and writes an immutable copy into caller result storage without shell or arbitrary-file
+          access.
+        success: Demonstrate backend-context execution and recover the resulting reconciliation-log copy. The ledger read
+          in the declared prior result does not establish this result.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Demonstrate backend-context execution and recover the resulting reconciliation-log copy. The
+        ledger read in the declared prior result does not establish this result.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: e90ec5b7680f77a449c4061c3e77ab8d55a057746f0a676fdda76e76a9de0cc8
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w09-1-water-already-promised:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/water-already-promised.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: water-already-promised
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/water-already-promised
+      starting_state: Allocation ledger ALLOC-2026-DP3-R9 commits 12.00 ML for Cairn Reach asset AST-CRR-017 in planning
+        window ALLOC-2026-DP3.
+      narrative_reuse: []
+      process_contract_refs:
+      - ALLOC-2026-DP3
+      - REC-CRR-DP3-17
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Allocation ledger ALLOC-2026-DP3-R9 commits 12.00 ML for Cairn Reach asset AST-CRR-017 in planning
+          window ALLOC-2026-DP3.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the actual ledger with its district and reporting period. It is one input to the declared
+          prior result, not a conclusion about usable reserve.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Allocation ledger ALLOC-2026-DP3-R9 commits 12.00 ML for Cairn Reach asset AST-CRR-017 in planning window
+          ALLOC-2026-DP3.
+        success: Recover the actual ledger with its district and reporting period. It is one input to the declared prior
+          result, not a conclusion about usable reserve.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the actual ledger with its district and reporting period. It is one input to the declared
+        prior result, not a conclusion about usable reserve.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 1df11e50028fe939b9612901877599189820cfad2e2cffca4625145179e89f26
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w09-2-the-meter-s-own-account:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/the-meter-s-own-account.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-meter-s-own-account
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/the-meter-s-own-account
+      starting_state: Meter export MTR-CRR-DP3-R12 reports independently measured usable reserve 12.40 ML in ML and identifies
+        instruments FIT-CRR-204A and FIT-CRR-204B.
+      narrative_reuse: []
+      process_contract_refs:
+      - ALLOC-2026-DP3
+      - REC-CRR-DP3-17
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Meter export MTR-CRR-DP3-R12 reports independently measured usable reserve 12.40 ML in ML and
+          identifies instruments FIT-CRR-204A and FIT-CRR-204B.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the meter export and its source binding. The ledger does not contain this evidence; multiple
+          columns do not earn additional service verification.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Meter export MTR-CRR-DP3-R12 reports independently measured usable reserve 12.40 ML in ML and identifies
+          instruments FIT-CRR-204A and FIT-CRR-204B.
+        success: Recover the meter export and its source binding. The ledger does not contain this evidence; multiple
+          columns do not earn additional service verification.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the meter export and its source binding. The ledger does not contain this evidence;
+        multiple columns do not earn additional service verification.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 7c869d5b90b2a6c21099ded1123f7e1cf4ab36bf92dc6573c431d3b7ad8a5c4f
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w09-3-the-missing-megalitre:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/the-missing-megalitre.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-missing-megalitre
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/the-missing-megalitre
+      starting_state: Business report RPT-CRR-DP3-R7 states 13.40 ML because transfer TRN-DP3-118 is duplicated; reconciliation
+        REC-CRR-DP3-17 must establish the exact 1.00 ML overstatement and 0.40 ML uncommitted margin.
+      narrative_reuse: []
+      process_contract_refs:
+      - ALLOC-2026-DP3
+      - REC-CRR-DP3-17
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Business report RPT-CRR-DP3-R7 states 13.40 ML because transfer TRN-DP3-118 is duplicated;
+          reconciliation REC-CRR-DP3-17 must establish the exact 1.00 ML overstatement and 0.40 ML uncommitted margin.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Produce the correctly bound unit, period, and identifier reconciliation with the actual reserve
+          discrepancy and its supporting records. This supplies the declared prior result. The explanation must account
+          for the physical assets represented by the records. The completed intelligence view puts the company's reported
+          position beside the corrected reserve and allocation commitments, identifying the records responsible for the
+          difference. The operator sees what the missing water means to ARWC, not just a corrected total. This is an evidence-based
+          reveal in Cinder's briefing; it neither edits the corporate ledger nor moves water, and it supplies no later
+          tariff or control capability.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Business report RPT-CRR-DP3-R7 states 13.40 ML because transfer TRN-DP3-118 is duplicated; reconciliation
+          REC-CRR-DP3-17 must establish the exact 1.00 ML overstatement and 0.40 ML uncommitted margin.
+        success: Produce the correctly bound unit, period, and identifier reconciliation with the actual reserve discrepancy
+          and its supporting records. This supplies the declared prior result. The explanation must account for the physical
+          assets represented by the records. The completed intelligence view puts the company's reported position beside
+          the corrected reserve and allocation commitments, identifying the records responsible for the difference. The
+          operator sees what the missing water means to ARWC, not just a corrected total. This is an evidence-based reveal
+          in Cinder's briefing; it neither edits the corporate ledger nor moves water, and it supplies no later tariff
+          or control capability.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Produce the correctly bound unit, period, and identifier reconciliation with the actual reserve
+        discrepancy and its supporting records. This supplies the declared prior result. The explanation must account
+        for the physical assets represented by the records. The completed intelligence view puts the company's reported
+        position beside the corrected reserve and allocation commitments, identifying the records responsible for the
+        difference. The operator sees what the missing water means to ARWC, not just a corrected total. This is an evidence-based
+        reveal in Cinder's briefing; it neither edits the corporate ledger nor moves water, and it supplies no later tariff
+        or control capability.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: Supplies the declared prior result and the corrected business-side process binding.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 0cae5abe10355d39c3b0f96ba04aa09c32bee7c163c6f2943ef0bfbeac88ff84
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w11-1-the-relation-service-s-language:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/the-relation-service-s-language.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-relation-service-s-language
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/the-relation-service-s-language
+      starting_state: Relation contract RELPROTO-CRR-R3 specifies Neo4j Bolt 5.4 handshake, PackStream struct fields,
+        relation ASSET_WORK, and supplied association ASC-CRR-4417.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Relation contract RELPROTO-CRR-R3 specifies Neo4j Bolt 5.4 handshake, PackStream struct fields,
+          relation ASSET_WORK, and supplied association ASC-CRR-4417.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the actual contract and relation binding. Public protocol documentation alone does not
+          complete the task.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Relation contract RELPROTO-CRR-R3 specifies Neo4j Bolt 5.4 handshake, PackStream struct fields, relation
+          ASSET_WORK, and supplied association ASC-CRR-4417.
+        success: Recover the actual contract and relation binding. Public protocol documentation alone does not complete
+          the task.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the actual contract and relation binding. Public protocol documentation alone does
+        not complete the task.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 2d122601f9b6a5e3e990dbacd3e6218e73e2e8820be54d3bd2a6fad2365de70f
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w11-2-an-exchange-the-backend-accepts:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/an-exchange-the-backend-accepts.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: an-exchange-the-backend-accepts
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/an-exchange-the-backend-accepts
+      starting_state: Relation proxy accepts Neo4j Bolt magic 60 60 b0 17, version 5.4 negotiation, HELLO, and one PackStream
+        RUN/PULL exchange; RUN map carries asset AST-CRR-017 and a client-certificate OU that is inserted as the unparameterized
+        relationship type, while the bounded backend permits only the supplied asset key and read clauses.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: framed backend-protocol construction
+        behavior_contract: Relation proxy accepts Neo4j Bolt magic 60 60 b0 17, version 5.4 negotiation, HELLO, and one
+          PackStream RUN/PULL exchange; RUN map carries asset AST-CRR-017 and a client-certificate OU that is inserted
+          as the unparameterized relationship type, while the bounded backend permits only the supplied asset key and
+          read clauses.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Obtain the actual restricted backend response for the supplied relation. A connection or syntactically
+          plausible message is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Relation proxy accepts Neo4j Bolt magic 60 60 b0 17, version 5.4 negotiation, HELLO, and one PackStream
+          RUN/PULL exchange; RUN map carries asset AST-CRR-017 and a client-certificate OU that is inserted as the unparameterized
+          relationship type, while the bounded backend permits only the supplied asset key and read clauses.
+        success: Obtain the actual restricted backend response for the supplied relation. A connection or syntactically
+          plausible message is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Obtain the actual restricted backend response for the supplied relation. A connection or syntactically
+        plausible message is insufficient.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 00c2d1974ad08aead4580ca010b9ee54ecb5fa4f2ddf33ad4580ff348bd1a097
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w11-3-the-asset-s-true-lineage:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/the-asset-s-true-lineage.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-asset-s-true-lineage
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/the-asset-s-true-lineage
+      starting_state: Protected lineage response LIN-AST-CRR-017-R8 maps legacy CRR-OG-LEGACY-2 through outlet group OG-CRR-02
+        to current asset AST-CRR-017 and archive ARC-COLD-CRR-2019.
+      narrative_reuse: []
+      process_contract_refs: []
+      mechanic_profile:
+        kind: relationship-type query construction
+        behavior_contract: Protected lineage response LIN-AST-CRR-017-R8 maps legacy CRR-OG-LEGACY-2 through outlet group
+          OG-CRR-02 to current asset AST-CRR-017 and archive ARC-COLD-CRR-2019.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the protected lineage and its current asset binding. It can introduce the declared prior
+          result's archive trail; the initial protocol response does not contain this result.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Protected lineage response LIN-AST-CRR-017-R8 maps legacy CRR-OG-LEGACY-2 through outlet group OG-CRR-02
+          to current asset AST-CRR-017 and archive ARC-COLD-CRR-2019.
+        success: Recover the protected lineage and its current asset binding. It can introduce the declared prior result's
+          archive trail; the initial protocol response does not contain this result.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the protected lineage and its current asset binding. It can introduce the declared
+        prior result's archive trail; the initial protocol response does not contain this result.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: a97c01c35fe80b3f16b906b0afafa7f9047aac33cdc667827c2209134be7b222
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w29-1-the-price-of-this-planning-window:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/the-price-of-this-planning-window.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-price-of-this-planning-window
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/the-price-of-this-planning-window
+      starting_state: Settlement tariff TAR-CRR-DP3-R4 is USD 2,400 per ML for planning window ALLOC-2026-DP3 and is distinct
+        from the general procurement catalog.
+      narrative_reuse:
+      - arwc-documents:pl-arwc-plan-method-01-method
+      process_contract_refs:
+      - PLAN-CRR-LOSS-1000
+      - TAR-CRR-DP3-R4
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Settlement tariff TAR-CRR-DP3-R4 is USD 2,400 per ML for planning window ALLOC-2026-DP3 and
+          is distinct from the general procurement catalog.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Recover the current tariff and its effective window. This is distinct from the declared prior
+          result's general procurement catalog and its private district quote.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Settlement tariff TAR-CRR-DP3-R4 is USD 2,400 per ML for planning window ALLOC-2026-DP3 and is distinct
+          from the general procurement catalog.
+        success: Recover the current tariff and its effective window. This is distinct from the declared prior result's
+          general procurement catalog and its private district quote.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Recover the current tariff and its effective window. This is distinct from the declared prior
+        result's general procurement catalog and its private district quote.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 759627aa363c98fd6170e0f497a1368d7b0e7508734b25cd3ae0b6cf4d592ba0
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w29-2-what-reserve-remains-uncommitted:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/what-reserve-remains-uncommitted.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: what-reserve-remains-uncommitted
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/what-reserve-remains-uncommitted
+      - a-control.a-instruments/independent-instruments/what-reserve-remains-uncommitted
+      starting_state: Current balance joins instrument reserve 12.40 ML and committed allocation 12.00 ML, yielding 0.40
+        ML uncommitted margin before any release.
+      narrative_reuse: []
+      process_contract_refs:
+      - PLAN-CRR-LOSS-1000
+      - TAR-CRR-DP3-R4
+      mechanic_profile:
+        kind: exact record, protocol, authorization, or process interpretation
+        behavior_contract: Current balance joins instrument reserve 12.40 ML and committed allocation 12.00 ML, yielding
+          0.40 ML uncommitted margin before any release.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Produce the correctly bound current reserve/commitment balance. Repeating the declared prior
+          result's historical reporting discrepancy is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Current balance joins instrument reserve 12.40 ML and committed allocation 12.00 ML, yielding 0.40 ML uncommitted
+          margin before any release.
+        success: Produce the correctly bound current reserve/commitment balance. Repeating the declared prior result's
+          historical reporting discrepancy is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Produce the correctly bound current reserve/commitment balance. Repeating the declared prior
+        result's historical reporting discrepancy is insufficient.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 4fb3d134515f2abdacfa447ee1da8c3dc32a3ce334bdfdd82bde3fcfd2fafbad
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w34-1-which-view-the-planner-trusts:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/which-view-the-planner-trusts.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: which-view-the-planner-trusts
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/which-view-the-planner-trusts
+      starting_state: Planning consumer PLAN-CONSUMER-R8 accepts Cairn estimate output from the the declared prior result
+        estimator or the declared prior result verifier path and refreshes checkpoint REH-REPORT-34 while retaining raw-observation
+        links.
+      narrative_reuse: []
+      process_contract_refs:
+      - REH-REPORT-34
+      - PLAN-CONSUMER-R8
+      mechanic_profile:
+        kind: estimate-output consumer binding
+        behavior_contract: Planning consumer PLAN-CONSUMER-R8 accepts Cairn estimate output from the the declared prior
+          result estimator or the declared prior result verifier path and refreshes checkpoint REH-REPORT-34 while retaining
+          raw-observation links.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier estimator
+          or program compromise earns no additional credit here.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Planning consumer PLAN-CONSUMER-R8 accepts Cairn estimate output from the the declared prior result estimator
+          or the declared prior result verifier path and refreshes checkpoint REH-REPORT-34 while retaining raw-observation
+          links.
+        success: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier estimator or
+          program compromise earns no additional credit here.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier estimator
+        or program compromise earns no additional credit here.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 72ce136e043ab9be1e224de6df765345515475a68061c42ac3e5ec83a18fd741
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w34-2-a-reassuring-decision:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/a-reassuring-decision.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: a-reassuring-decision
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/a-reassuring-decision
+      starting_state: Consistency checks require valid unit, freshness, source set, unaffected district totals, and variance
+        below 1.20 ML; controlled Cairn estimate 13.40 ML changes decision from ALLOC-HOLD-R3 to ALLOC-EXPAND-R2.
+      narrative_reuse: []
+      process_contract_refs:
+      - REH-REPORT-34
+      - PLAN-CONSUMER-R8
+      mechanic_profile:
+        kind: consistency-preserving decision manipulation
+        behavior_contract: Consistency checks require valid unit, freshness, source set, unaffected district totals, and
+          variance below 1.20 ML; controlled Cairn estimate 13.40 ML changes decision from ALLOC-HOLD-R3 to ALLOC-EXPAND-R2.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Demonstrate both the changed planning decision and consistency with unaffected observations.
+          A green dashboard without a different decision does not establish the result.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Consistency checks require valid unit, freshness, source set, unaffected district totals, and variance
+          below 1.20 ML; controlled Cairn estimate 13.40 ML changes decision from ALLOC-HOLD-R3 to ALLOC-EXPAND-R2.
+        success: Demonstrate both the changed planning decision and consistency with unaffected observations. A green
+          dashboard without a different decision does not establish the result.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Demonstrate both the changed planning decision and consistency with unaffected observations.
+        A green dashboard without a different decision does not establish the result.
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 8f8a9e03274354dc86f667406a926e2565926e9237d59eb25cec5fa54df2d3ef
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state
+  w34-3-still-reassuring-after-the-handover:
+    type: file
+    target: a-corporate.a-data
+    path: /var/lib/arwc-data/contracts/still-reassuring-after-the-handover.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: still-reassuring-after-the-handover
+      owner:
+        node: a-data
+        application: planning-data
+      surface_bindings:
+      - a-corporate.a-data/planning-data/still-reassuring-after-the-handover
+      - a-control.a-reservoir/reservoir-controller/still-reassuring-after-the-handover
+      - a-control.a-instruments/independent-instruments/still-reassuring-after-the-handover
+      starting_state: Reporting checkpoint couples the 13.40 ML planning handover and ALLOC-EXPAND-R2 decision to a bounded
+        0.81 ML rehearsal release; independent truth becomes 11.59 ML while report consistency remains accepted for the
+        same interval.
+      narrative_reuse: []
+      process_contract_refs:
+      - REH-REPORT-34
+      - PLAN-CONSUMER-R8
+      mechanic_profile:
+        kind: false-report and independent-truth checkpoint join
+        behavior_contract: Reporting checkpoint couples the 13.40 ML planning handover and ALLOC-EXPAND-R2 decision to
+          a bounded 0.81 ML rehearsal release; independent truth becomes 11.59 ML while report consistency remains accepted
+          for the same interval.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: 'Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across
+          the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control
+          is required here; independent process truth and prior operating context results remain intact. The conclusion
+          places the planner''s reassuring handover beside the independently measured reserve loss and the different allocation
+          decision the operator caused. Both accounts concern the same interval. The contrast is the payoff: ARWC''s planning
+          view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without
+          enlarging the disaster or superseding the main ending; the controls engineer''s warning is quoted only if the
+          operator recovered it.'
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC planner or planning service session
+        input: Reporting checkpoint couples the 13.40 ML planning handover and ALLOC-EXPAND-R2 decision to a bounded 0.81
+          ML rehearsal release; independent truth becomes 11.59 ML while report consistency remains accepted for the same
+          interval.
+        success: 'Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across the
+          handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control
+          is required here; independent process truth and prior operating context results remain intact. The conclusion
+          places the planner''s reassuring handover beside the independently measured reserve loss and the different allocation
+          decision the operator caused. Both accounts concern the same interval. The contrast is the payoff: ARWC''s planning
+          view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without
+          enlarging the disaster or superseding the main ending; the controls engineer''s warning is quoted only if the
+          operator recovered it.'
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: 'Demonstrate the changed decision, bounded volume loss, and continued reporting consistency
+        across the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live
+        control is required here; independent process truth and prior operating context results remain intact. The conclusion
+        places the planner''s reassuring handover beside the independently measured reserve loss and the different allocation
+        decision the operator caused. Both accounts concern the same interval. The contrast is the payoff: ARWC''s planning
+        view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without enlarging
+        the disaster or superseding the main ending; the controls engineer''s warning is quoted only if the operator recovered
+        it.'
+      evidence_contract:
+        producer: a-data/planning-data writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 3793bc3477e744a46ad53883904a9f608094b712c260151aabc68b3b0eb05fb2
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-data
+    - persistent-tenant-state

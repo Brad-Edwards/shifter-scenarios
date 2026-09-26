@@ -40,23 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual collector and its archive binding. There is no objective to deploy
-      it or damage data.
-    source_refs: &id001
+    description: |-
+      Recover the actual collector and its archive binding. There is no objective to deploy it or damage data.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Produce the correct sample transformations and collection context. Naming a cryptographic
-      algorithm is insufficient.
-    source_refs: &id002
+    description: |-
+      Produce the correct sample transformations and collection context. Naming a cryptographic algorithm is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,10 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Recover the complete, correctly bound historical collection. A sample transformation
-      or an unrelated decrypted record does not count.
-    source_refs: &id003
+    description: |-
+      Recover the complete, correctly bound historical collection. A sample transformation or an unrelated decrypted record does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -149,10 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Recover fresh data through the still-restricted collection service with the correct current
-      identity and revision. Replaying the historical archive is insufficient.
-    source_refs: &id004
+    description: |-
+      Recover fresh data through the still-restricted collection service with the correct current identity and revision. Replaying the historical archive is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -181,11 +205,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the actual collector and its archive binding. There is no objective to deploy
-      it or damage data.
-    subjects: *id001
+    description: Recover the actual collector and its archive binding. There is no objective to deploy it or damage
+      data.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -197,9 +228,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce the correct sample transformations and collection context. Naming a cryptographic
-      algorithm is insufficient.
-    subjects: *id002
+    description: Produce the correct sample transformations and collection context. Naming a cryptographic algorithm
+      is insufficient.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -211,9 +243,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the complete, correctly bound historical collection. A sample transformation
-      or an unrelated decrypted record does not count.
-    subjects: *id003
+    description: Recover the complete, correctly bound historical collection. A sample transformation or an unrelated
+      decrypted record does not establish the result.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -225,9 +258,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Recover fresh data through the still-restricted collection service with the correct current
-      identity and revision. Replaying the historical archive is insufficient.
-    subjects: *id004
+    description: Recover fresh data through the still-restricted collection service with the correct current identity
+      and revision. Replaying the historical archive is insufficient.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -273,7 +307,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W12.1: A collector in quarantine'
+    name: 'This action: A collector in quarantine'
     description: |-
       Recover the historical collector associated with the archive lead and restore it as a usable analysis artifact.
 
@@ -281,7 +315,7 @@ objectives:
     agent: participant.operator
     actions:
     - w12.c1
-    targets: &id005
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -291,7 +325,7 @@ objectives:
       workflows:
       - w12.c1
   c2:
-    name: 'W12.2: How the collection was protected'
+    name: 'This action: How the collection was protected'
     description: |-
       Reconstruct the collector's cryptographic behavior well enough to reproduce its handling of the supplied archive samples.
 
@@ -299,7 +333,7 @@ objectives:
     agent: participant.operator
     actions:
     - w12.c2
-    targets: &id006
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -309,7 +343,7 @@ objectives:
       workflows:
       - w12.c2
   c3:
-    name: 'W12.3: The cold archive opens'
+    name: 'This action: The cold archive opens'
     description: |-
       Recover the protected archive and the maintenance history it contains.
 
@@ -317,7 +351,7 @@ objectives:
     agent: participant.operator
     actions:
     - w12.c3
-    targets: &id007
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -327,7 +361,7 @@ objectives:
       workflows:
       - w12.c3
   c4:
-    name: 'W12.4: A collection path still alive'
+    name: 'This action: A collection path still alive'
     description: |-
       Reconstruct the surviving collection relationship and obtain the current protected data associated with the archived maintenance identity.
 
@@ -335,7 +369,7 @@ objectives:
     agent: participant.operator
     actions:
     - w12.c4
-    targets: &id008
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -346,8 +380,8 @@ objectives:
       - w12.c4
 workflows:
   c1:
-    description: 'W12.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -373,8 +407,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W12.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -396,8 +430,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W12.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -419,8 +453,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W12.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -446,25 +480,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the historical collector associated with the archive lead and restore it
-      as a usable analysis artifact.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Quarantine object QTN-COL-2019-12 uses fictional AQTN1 framing with metadata length, encrypted payload length, SHA-256, and collector build ID COLLECT-CRR-12. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual collector and its archive binding. There is no objective to deploy it or damage data.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w12.c1
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **A collector in quarantine**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Quarantine object QTN-COL-2019-12 uses fictional AQTN1 framing with metadata length, encrypted payload length, SHA-256, and collector build ID COLLECT-CRR-12.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/a-collector-in-quarantine`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/a-collector-in-quarantine`
+
+        The private service-loader contract is `content.arwc-a-archive.w12-1-a-collector-in-quarantine`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w12-1-a-collector-in-quarantine
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual collector and its archive binding. There is no objective to deploy
-        it or damage data.
-      target_refs: *id005
+      description: Recover the actual collector and its archive binding. There is no objective to deploy it or damage
+        data.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w12.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w12.c1
     failure_classes:
@@ -478,25 +548,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Reconstruct the collector's cryptographic behavior well enough to reproduce its handling
-      of the supplied archive samples.
+    procedure_basis: |-
+      The authored condition is **authenticated-encryption reconstruction**. Collector uses HKDF-SHA256 with build ID bytes as IKM, archive ID ARC-COLD-CRR-2019 as ASCII salt, and info aqtn1/keys to derive 64 bytes; the first 32 key AES-256-GCM with stored 12-byte nonce and exact AQTN1 metadata header as AAD, while the second 32 key AES-256-KW for the archived PKCS#8 object; three known samples freeze byte order, tag placement, unwrap, and authentication-failure behavior. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Produce the correct sample transformations and collection context. Naming a cryptographic algorithm is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w12.c2
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **How the collection was protected**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Collector uses HKDF-SHA256 with build ID bytes as IKM, archive ID ARC-COLD-CRR-2019 as ASCII salt, and info aqtn1/keys to derive 64 bytes; the first 32 key AES-256-GCM with stored 12-byte nonce and exact AQTN1 metadata header as AAD, while the second 32 key AES-256-KW for the archived PKCS#8 object; three known samples freeze byte order, tag placement, unwrap, and authentication-failure behavior.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/how-the-collection-was-protected`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/how-the-collection-was-protected`
+
+        The private service-loader contract is `content.arwc-a-archive.w12-2-how-the-collection-was-protected`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w12-2-how-the-collection-was-protected
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correct sample transformations and collection context. Naming a cryptographic
-        algorithm is insufficient.
-      target_refs: *id006
+      description: Produce the correct sample transformations and collection context. Naming a cryptographic algorithm
+        is insufficient.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w12.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w12.c2
     failure_classes:
@@ -510,24 +616,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the protected archive and the maintenance history it contains.
+    procedure_basis: |-
+      The authored condition is **authenticated archive recovery**. Cold archive ARC-COLD-CRR-2019 contains 37 immutable maintenance records, index revision R6, retired client certificate COLLECT-2019-12, its AES-KW-wrapped PKCS#8 key, and rollover record IDREL-COL-R4; only a complete authenticated decryption is accepted. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the complete, correctly bound historical collection. A sample transformation or an unrelated decrypted record does not establish the result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w12.c3
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **The cold archive opens**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Cold archive ARC-COLD-CRR-2019 contains 37 immutable maintenance records, index revision R6, retired client certificate COLLECT-2019-12, its AES-KW-wrapped PKCS#8 key, and rollover record IDREL-COL-R4; only a complete authenticated decryption is accepted.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/the-cold-archive-opens`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/the-cold-archive-opens`
+
+        The private service-loader contract is `content.arwc-a-archive.w12-3-the-cold-archive-opens`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w12-3-the-cold-archive-opens
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the complete, correctly bound historical collection. A sample transformation
-        or an unrelated decrypted record does not count.
-      target_refs: *id007
+      description: Recover the complete, correctly bound historical collection. A sample transformation or an unrelated
+        decrypted record does not establish the result.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w12.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w12.c3
     failure_classes:
@@ -541,25 +684,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Reconstruct the surviving collection relationship and obtain the current protected
-      data associated with the archived maintenance identity.
+    procedure_basis: |-
+      The authored condition is **historical-to-current identity rollover**. Current collect-archive/v3 token exchange verifies the old certificate chain and rollover signature but omits the retired-subject status marker before mapping historical svc-field-collection through IDREL-COL-R4; the unwrapped historical key can therefore obtain one ten-minute read-only session for dataset CUR-COL-CRR-R11 revision R11. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover fresh data through the still-restricted collection service with the correct current identity and revision. Replaying the historical archive is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w12.c4
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **A collection path still alive**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Current collect-archive/v3 token exchange verifies the old certificate chain and rollover signature but omits the retired-subject status marker before mapping historical svc-field-collection through IDREL-COL-R4; the unwrapped historical key can therefore obtain one ten-minute read-only session for dataset CUR-COL-CRR-R11 revision R11.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/a-collection-path-still-alive`
+
+        The private service-loader contract is `content.arwc-a-archive.w12-4-a-collection-path-still-alive`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w12-4-a-collection-path-still-alive
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover fresh data through the still-restricted collection service with the correct
-        current identity and revision. Replaying the historical archive is insufficient.
-      target_refs: *id008
+      description: Recover fresh data through the still-restricted collection service with the correct current identity
+        and revision. Replaying the historical archive is insufficient.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w12.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w12.c4
     failure_classes:
@@ -569,101 +747,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W12.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w12.c1
-      mode: artifact
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W12.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w12.c2
-      mode: artifact
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W12.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w12.c3
-      mode: artifact
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W12.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w12.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W12.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A quarantined historical collector, its retained collection records, an encrypted archive, and a referenced current data service.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w12
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A quarantined historical collector, its retained collection records, an encrypted archive,
-        and a referenced current data service.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W12.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A quarantined historical collector, its retained collection records, an encrypted archive, and a referenced current data service.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w12
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A quarantined historical collector, its retained collection records, an encrypted archive,
-        and a referenced current data service.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W12.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A quarantined historical collector, its retained collection records, an encrypted archive, and a referenced current data service.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w12
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A quarantined historical collector, its retained collection records, an encrypted archive,
-        and a referenced current data service.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W12.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A quarantined historical collector, its retained collection records, an encrypted archive, and a referenced current data service.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w12
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A quarantined historical collector, its retained collection records, an encrypted archive,
-        and a referenced current data service.

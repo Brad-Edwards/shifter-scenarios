@@ -40,23 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual script and its collection binding. Finding a suspicious filename alone
-      is insufficient.
-    source_refs: &id001
+    description: |-
+      Recover the actual script and its collection binding. Finding a suspicious filename alone is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Recover the complete, correctly ordered exchange and its actual collection instruction.
-      All messaging evidence is supplied inside the scenario.
-    source_refs: &id002
+    description: |-
+      Recover the complete, correctly ordered exchange and its actual collection instruction. All messaging evidence is supplied inside the scenario.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,10 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Recover the complete collector with the correct handover binding. A partial payload or
-      an unrelated binary is insufficient.
-    source_refs: &id003
+    description: |-
+      Recover the complete collector with the correct handover binding. A partial payload or an unrelated binary is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -149,10 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Recover the actual configuration and archive binding. It supplies one lead into W12;
-      it does not grant current plant authority.
-    source_refs: &id004
+    description: |-
+      Recover the actual configuration and archive binding. It supplies one lead into W12; it does not grant current plant authority.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -181,11 +205,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the actual script and its collection binding. Finding a suspicious filename alone
-      is insufficient.
-    subjects: *id001
+    description: Recover the actual script and its collection binding. Finding a suspicious filename alone is insufficient.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -197,9 +227,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the complete, correctly ordered exchange and its actual collection instruction.
-      All messaging evidence is supplied inside the scenario.
-    subjects: *id002
+    description: Recover the complete, correctly ordered exchange and its actual collection instruction. All messaging
+      evidence is supplied inside the scenario.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -211,9 +242,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the complete collector with the correct handover binding. A partial payload or
-      an unrelated binary is insufficient.
-    subjects: *id003
+    description: Recover the complete collector with the correct handover binding. A partial payload or an unrelated
+      binary is insufficient.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -225,9 +257,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Recover the actual configuration and archive binding. It supplies one lead into W12;
-      it does not grant current plant authority.
-    subjects: *id004
+    description: Recover the actual configuration and archive binding. It supplies one lead into W12; it does not
+      grant current plant authority.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -273,7 +306,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W08.1: Something in the work bundle'
+    name: 'This action: Something in the work bundle'
     description: |-
       Recover the contractor's hidden script from the retained work material and identify the collection it was intended to retrieve.
 
@@ -281,7 +314,7 @@ objectives:
     agent: participant.operator
     actions:
     - w08.c1
-    targets: &id005
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -291,7 +324,7 @@ objectives:
       workflows:
       - w08.c1
   c2:
-    name: 'W08.2: Reassemble the exchange'
+    name: 'This action: Reassemble the exchange'
     description: |-
       Reconstruct the script's retained message exchange and recover the missing instructions that belong to this collection.
 
@@ -299,7 +332,7 @@ objectives:
     agent: participant.operator
     actions:
     - w08.c2
-    targets: &id006
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -309,7 +342,7 @@ objectives:
       workflows:
       - w08.c2
   c3:
-    name: 'W08.3: The collector inside the handover'
+    name: 'This action: The collector inside the handover'
     description: |-
       Recover the compiled collector carried by the reconstructed exchange and establish its usable analysis artifact.
 
@@ -317,7 +350,7 @@ objectives:
     agent: participant.operator
     actions:
     - w08.c3
-    targets: &id007
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -327,7 +360,7 @@ objectives:
       workflows:
       - w08.c3
   c4:
-    name: 'W08.4: Where the contractor put it'
+    name: 'This action: Where the contractor put it'
     description: |-
       Recover the collector's protected configuration and the historical archive reference it was using.
 
@@ -335,7 +368,7 @@ objectives:
     agent: participant.operator
     actions:
     - w08.c4
-    targets: &id008
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -346,8 +379,8 @@ objectives:
       - w08.c4
 workflows:
   c1:
-    description: 'W08.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -373,8 +406,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W08.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -396,8 +429,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W08.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -419,8 +452,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W08.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -446,25 +479,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the contractor's hidden script from the retained work material and identify
-      the collection it was intended to retrieve.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Retained bundle BND-COLLECT-CRR-12 contains hidden PowerShell script collect-handover.ps1 and collection ID COL-CRR-2019-12. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual script and its collection binding. Finding a suspicious filename alone is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w08.c1
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **Something in the work bundle**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Retained bundle BND-COLLECT-CRR-12 contains hidden PowerShell script collect-handover.ps1 and collection ID COL-CRR-2019-12.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/something-in-the-work-bundle`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/something-in-the-work-bundle`
+
+        The private service-loader contract is `content.arwc-a-archive.w08-1-something-in-the-work-bundle`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w08-1-something-in-the-work-bundle
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual script and its collection binding. Finding a suspicious filename
-        alone is insufficient.
-      target_refs: *id005
+      description: Recover the actual script and its collection binding. Finding a suspicious filename alone is
+        insufficient.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w08.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w08.c1
     failure_classes:
@@ -478,25 +547,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Reconstruct the script's retained message exchange and recover the missing instructions
-      that belong to this collection.
+    procedure_basis: |-
+      The authored condition is **ordered erasure-code reconstruction**. Interpret shard bytes as coefficients in GF(256) with primitive polynomial 0x11d, generator alpha=2, and systematic Vandermonde rows V[r,c]=alpha^(r*c) for parity rows r=12 and 13 and data columns c=0..11. Shards are numbered 0..13, each is exactly 96 bytes, data shards 7 and 11 are absent, and Gaussian elimination is performed independently at each byte position. The manifest fixes numeric shard order, 96-byte length, and each retained shard's SHA-256; any other polynomial, row convention, order, or digest is rejected. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the complete, correctly ordered exchange and its actual collection instruction. All messaging evidence is supplied inside the scenario.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w08.c2
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **Reassemble the exchange**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Bundle holds Reed-Solomon RS(14,12) shards numbered 0-13, each 96 bytes, over GF(256) with primitive polynomial 0x11d; data positions 7 and 11 are missing while parity positions 12 and 13 remain, and manifest order plus per-shard SHA-256 makes reconstruction yield the collector retrieval instruction.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/reassemble-the-exchange`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/reassemble-the-exchange`
+
+        The private service-loader contract is `content.arwc-a-archive.w08-2-reassemble-the-exchange`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w08-2-reassemble-the-exchange
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the complete, correctly ordered exchange and its actual collection instruction.
-        All messaging evidence is supplied inside the scenario.
-      target_refs: *id006
+      description: Recover the complete, correctly ordered exchange and its actual collection instruction. All messaging
+        evidence is supplied inside the scenario.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w08.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w08.c2
     failure_classes:
@@ -510,25 +615,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the compiled collector carried by the reconstructed exchange and establish
-      its usable analysis artifact.
+    procedure_basis: |-
+      The authored condition is **multi-fragment executable reconstruction**. Reconstructed exchange carries Go 1.22 linux/amd64 collector collector-crr with build ID COLLECT-CRR-12 and complete SHA-256 manifest. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the complete collector with the correct handover binding. A partial payload or an unrelated binary is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w08.c3
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **The collector inside the handover**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Reconstructed exchange carries Go 1.22 linux/amd64 collector collector-crr with build ID COLLECT-CRR-12 and complete SHA-256 manifest.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/the-collector-inside-the-handover`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/the-collector-inside-the-handover`
+
+        The private service-loader contract is `content.arwc-a-archive.w08-3-the-collector-inside-the-handover`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w08-3-the-collector-inside-the-handover
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the complete collector with the correct handover binding. A partial payload
-        or an unrelated binary is insufficient.
-      target_refs: *id007
+      description: Recover the complete collector with the correct handover binding. A partial payload or an unrelated
+        binary is insufficient.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w08.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w08.c3
     failure_classes:
@@ -542,25 +683,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the collector's protected configuration and the historical archive reference
-      it was using.
+    procedure_basis: |-
+      The authored condition is **build-bound authenticated configuration recovery**. Derive exactly 32 bytes with HKDF-SHA256 using the raw collector build-ID bytes as IKM, ASCII COL-CRR-2019 as salt, and ASCII collector-config/v3 as info. Decrypt AES-256-GCM with the stored 12-byte nonce and UTF-8 path config/collector.yaml as AAD; ciphertext is followed by the 16-byte tag. Wrong build ID, salt, info, nonce, path, or tag returns one authentication failure and no plaintext. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the actual configuration and archive binding. It supplies one lead into W12; it does not grant current plant authority.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w08.c4
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **Where the contractor put it**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Collector configuration is AES-256-GCM wrapped with HKDF-SHA256 using collector build ID bytes as IKM, ASCII salt COL-CRR-2019, info collector-config/v3, a stored 12-byte nonce, and path config/collector.yaml as AAD; plaintext names archive ARC-COLD-CRR-2019, service collect-archive/v3, and historical identity svc-field-collection.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/where-the-contractor-put-it`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/where-the-contractor-put-it`
+
+        The private service-loader contract is `content.arwc-a-archive.w08-4-where-the-contractor-put-it`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w08-4-where-the-contractor-put-it
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual configuration and archive binding. It supplies one lead into W12;
-        it does not grant current plant authority.
-      target_refs: *id008
+      description: Recover the actual configuration and archive binding. It supplies one lead into W12; it does
+        not grant current plant authority.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w08.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w08.c4
     failure_classes:
@@ -570,102 +747,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W08.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w08.c1
-      mode: artifact
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W08.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w08.c2
-      mode: artifact
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W08.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w08.c3
-      mode: artifact
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W08.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w08.c4
-      mode: artifact
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W08.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained contractor work bundle identified either by the staff assignment in W05.3 or the handover accompanying W03.READ. Both routes expose the same bundle for analysis; the read-integration credential is not being reused as a corporate account.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w08
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained contractor work bundle identified either by the staff assignment in W05.3
-        or the handover accompanying W03.READ. Both routes expose the same bundle for analysis; the read-integration
-        credential is not being reused as a corporate account.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W08.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A contractor's retained work artifacts, local messaging records, and references to an older collection tool.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w08
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A contractor's retained work artifacts, local messaging records, and references to
-        an older collection tool.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W08.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A contractor's retained work artifacts, local messaging records, and references to an older collection tool.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w08
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A contractor's retained work artifacts, local messaging records, and references to
-        an older collection tool.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W08.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A contractor's retained work artifacts, local messaging records, and references to an older collection tool.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w08
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A contractor's retained work artifacts, local messaging records, and references to
-        an older collection tool.

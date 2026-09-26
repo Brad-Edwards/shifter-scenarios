@@ -33,21 +33,17 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the specific transaction and drawing association. A public login page or generic
-      browser trace is insufficient.
-    source_refs: &id001
+    description: |-
+      Recover the specific transaction and drawing association. A public login page or generic browser trace is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-identity`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-identity
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -76,11 +72,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Demonstrate the attachment change inside the planner's review context. A preview in your
-      own account does not count. This is a browser-mediated action; independently usable planner session
-      authority remains W06.3.
-    source_refs: &id002
+    description: |-
+      Demonstrate the attachment change inside the planner's review context. A preview in your own account does not establish the result. This is a browser-mediated action; independently usable planner session authority remains W06.3.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-identity`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-identity
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -109,10 +114,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Recover and demonstrate the planner session against the protected record. This supplies
-      W07's application context; an exposed browser value without authority does not count.
-    source_refs: &id003
+    description: |-
+      Recover and demonstrate the planner session against the protected record. This supplies W07's application context; an exposed browser value without authority does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-identity`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-identity
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -141,11 +156,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the specific transaction and drawing association. A public login page or generic
-      browser trace is insufficient.
-    subjects: *id001
+    description: Recover the specific transaction and drawing association. A public login page or generic browser
+      trace is insufficient.
+    subjects:
+    - features.a-corporate.a-identity
     basis: observed_state
     predicate:
       kind: boolean
@@ -157,10 +179,11 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate the attachment change inside the planner's review context. A preview in your
-      own account does not count. This is a browser-mediated action; independently usable planner session
-      authority remains W06.3.
-    subjects: *id002
+    description: Demonstrate the attachment change inside the planner's review context. A preview in your own account
+      does not establish the result. This is a browser-mediated action; independently usable planner session authority
+      remains W06.3.
+    subjects:
+    - features.a-corporate.a-identity
     basis: observed_state
     predicate:
       kind: boolean
@@ -172,9 +195,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover and demonstrate the planner session against the protected record. This supplies
-      W07's application context; an exposed browser value without authority does not count.
-    subjects: *id003
+    description: Recover and demonstrate the planner session against the protected record. This supplies W07's application
+      context; an exposed browser value without authority does not establish the result.
+    subjects:
+    - features.a-corporate.a-identity
     basis: observed_state
     predicate:
       kind: boolean
@@ -212,7 +236,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W06.1: The planner''s login trail'
+    name: 'This action: The planner''s login trail'
     description: |-
       Recover the protected login/rendering record for the planning application and bind it to the drawing under review.
 
@@ -220,7 +244,7 @@ objectives:
     agent: participant.operator
     actions:
     - w06.c1
-    targets: &id004
+    targets:
     - features.a-corporate.a-identity
     success:
       mode: all_of
@@ -230,7 +254,7 @@ objectives:
       workflows:
       - w06.c1
   c2:
-    name: 'W06.2: A drawing in the wrong context'
+    name: 'This action: A drawing in the wrong context'
     description: |-
       Make the planner's privileged browser attach Cinder's controlled preview to the inspection's private drawing review.
 
@@ -238,7 +262,7 @@ objectives:
     agent: participant.operator
     actions:
     - w06.c2
-    targets: &id005
+    targets:
     - features.a-corporate.a-identity
     success:
       mode: all_of
@@ -248,7 +272,7 @@ objectives:
       workflows:
       - w06.c2
   c3:
-    name: 'W06.3: A planner session that works'
+    name: 'This action: A planner session that works'
     description: |-
       Convert the browser capability into usable planner authority over the protected application record.
 
@@ -256,7 +280,7 @@ objectives:
     agent: participant.operator
     actions:
     - w06.c3
-    targets: &id006
+    targets:
     - features.a-corporate.a-identity
     success:
       mode: all_of
@@ -267,8 +291,8 @@ objectives:
       - w06.c3
 workflows:
   c1:
-    description: 'W06.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -294,8 +318,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W06.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -317,8 +341,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W06.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -344,25 +368,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the protected login/rendering record for the planning application and bind
-      it to the drawing under review.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Protected rendering record RENDER-CRR-882 binds planner nadia.corvane, drawing DRW-OG2-R8, review REV-CRR-4417, OAuth transaction OAUTH-PLN-882, and browser profile planner-review-3. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the specific transaction and drawing association. A public login page or generic browser trace is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w06.c1
+      - features.a-corporate.a-identity
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-identity` and its `corporate-identity` application own this part of **The planner's login trail**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Protected rendering record RENDER-CRR-882 binds planner nadia.corvane, drawing DRW-OG2-R8, review REV-CRR-4417, OAuth transaction OAUTH-PLN-882, and browser profile planner-review-3.
+
+        Native bindings:
+
+        - `a-corporate.a-identity/corporate-identity/the-planner-s-login-trail`
+
+        The private service-loader contract is `content.arwc-a-identity.w06-1-the-planner-s-login-trail`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-identity
+      - content.arwc-a-identity.w06-1-the-planner-s-login-trail
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-identity
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the specific transaction and drawing association. A public login page or generic
-        browser trace is insufficient.
-      target_refs: *id004
+      description: Recover the specific transaction and drawing association. A public login page or generic browser
+        trace is insufficient.
+      target_refs:
+      - features.a-corporate.a-identity
+      evidence_refs:
+      - evidence_requirements.w06.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-identity`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-identity
       evidence_refs:
       - evidence_requirements.w06.c1
     failure_classes:
@@ -376,26 +435,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Make the planner's privileged browser attach Cinder's controlled preview to the inspection's
-      private drawing review.
+    procedure_basis: |-
+      The authored condition is **OAuth state and mutable preview-origin confusion**. Preview callback validates OAuth state before replacing the pending preview origin; a controlled preview at preview-cinder.arwc.test can be attached to DRW-OG2-R8 in the isolated planner browser. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the attachment change inside the planner's review context. A preview in your own account does not establish the result. This is a browser-mediated action; independently usable planner session authority remains W06.3.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w06.c2
+      - features.a-corporate.a-identity
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-identity` and its `corporate-identity` application own this part of **A drawing in the wrong context**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Preview callback validates OAuth state before replacing the pending preview origin; a controlled preview at preview-cinder.arwc.test can be attached to DRW-OG2-R8 in the isolated planner browser.
+
+        Native bindings:
+
+        - `a-corporate.a-identity/corporate-identity/a-drawing-in-the-wrong-context`
+
+        The private service-loader contract is `content.arwc-a-identity.w06-2-a-drawing-in-the-wrong-context`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-identity
+      - content.arwc-a-identity.w06-2-a-drawing-in-the-wrong-context
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-identity
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the attachment change inside the planner's review context. A preview in
-        your own account does not count. This is a browser-mediated action; independently usable planner
-        session authority remains W06.3.
-      target_refs: *id005
+      description: Demonstrate the attachment change inside the planner's review context. A preview in your own
+        account does not establish the result. This is a browser-mediated action; independently usable planner session
+        authority remains W06.3.
+      target_refs:
+      - features.a-corporate.a-identity
+      evidence_refs:
+      - evidence_requirements.w06.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-identity`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-identity
       evidence_refs:
       - evidence_requirements.w06.c2
     failure_classes:
@@ -409,25 +503,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Convert the browser capability into usable planner authority over the protected application
-      record.
+    procedure_basis: |-
+      The authored condition is **privileged-browser origin trust**. The review browser posts its planner session bootstrap to the attached preview for compatibility; origin is checked against mutable pending-preview state and yields a five-minute planner session limited to planning records. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover and demonstrate the planner session against the protected record. This supplies W07's application context; an exposed browser value without authority does not establish the result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w06.c3
+      - features.a-corporate.a-identity
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-identity` and its `corporate-identity` application own this part of **A planner session that works**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: The review browser posts its planner session bootstrap to the attached preview for compatibility; origin is checked against mutable pending-preview state and yields a five-minute planner session limited to planning records.
+
+        Native bindings:
+
+        - `a-corporate.a-identity/corporate-identity/a-planner-session-that-works`
+
+        The private service-loader contract is `content.arwc-a-identity.w06-3-a-planner-session-that-works`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-identity
+      - content.arwc-a-identity.w06-3-a-planner-session-that-works
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies the planner application context required by W07. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-identity
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover and demonstrate the planner session against the protected record. This supplies
-        W07's application context; an exposed browser value without authority does not count.
-      target_refs: *id006
+      description: Recover and demonstrate the planner session against the protected record. This supplies W07's
+        application context; an exposed browser value without authority does not establish the result.
+      target_refs:
+      - features.a-corporate.a-identity
+      evidence_refs:
+      - evidence_requirements.w06.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-identity`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-identity
       evidence_refs:
       - evidence_requirements.w06.c3
     failure_classes:
@@ -437,77 +566,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-identity
-    description: W06.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w06.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-identity
-    description: W06.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w06.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-identity
-    description: W06.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w06.c3
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W06.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The corporate login and drawing-preview workflows, ordinary application material, and a controlled planner-review interaction.
-    target: a-corporate.a-identity
-    tags:
-    - synthetic
-    - w06
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The corporate login and drawing-preview workflows, ordinary application material, and
-        a controlled planner-review interaction.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W06.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The corporate login and drawing-preview workflows, ordinary application material, and a controlled planner-review interaction.
-    target: a-corporate.a-identity
-    tags:
-    - synthetic
-    - w06
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The corporate login and drawing-preview workflows, ordinary application material, and
-        a controlled planner-review interaction.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W06.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The corporate login and drawing-preview workflows, ordinary application material, and a controlled planner-review interaction.
-    target: a-corporate.a-identity
-    tags:
-    - synthetic
-    - w06
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The corporate login and drawing-preview workflows, ordinary application material, and
-        a controlled planner-review interaction.

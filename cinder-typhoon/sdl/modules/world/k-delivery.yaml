@@ -50,44 +50,1686 @@ nodes:
       addressing remain open.'
   k-source:
     type: compute
-    description: Source and retained releases
+    description: Gitea source, handover, retained release and binary archive service.
+    os: linux
+    architecture: x86_64
+    services:
+    - name: source
+      port: 443
+      protocol: tcp
     features:
       k-source: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/gitea
+        entry_type: directory
+        owner_user: git
+        owner_group: git
+        mode: '0750'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Persistent repositories, releases and source-service audit.
+      local_identity:
+        users:
+        - username: git
+          primary_group: git
+          locked: true
+          no_login: true
+        groups:
+        - name: git
+          members:
+          - git
+      network:
+        hostname: k-source
+        domainname: delivery.keplerops.test
+        endpoints:
+        - network: k-delivery.subnet
+          ip_address: 10.77.51.20
+          ip_prefix_length: 24
+          gateway: 10.77.51.1
+          aliases:
+          - k-source
+          dns_names:
+          - source.keplerops.test
+          backend:
+            driver: bridge
+            description: KeplerOps delivery segment.
+      service_listeners:
+      - service_listener_id: source-https
+        service: source
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: gitea
+        service: source
+        protocol: https
+        base_path: /
+        description: Gitea-compatible repositories plus exact authored release-history and exercise endpoints.
+        routes:
+        - route_id: current-user-repositories
+          path: /api/v1/user/repos
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Bearer or Gitea session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 401
+            content_type: application/json
+        - route_id: repository-content
+          path: /api/v1/repos/{owner}/{repo}/contents/{path}
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Bearer or Gitea session
+          session_required: true
+          parameters:
+          - name: owner
+            location: path
+            required: true
+            data_type: string
+          - name: repo
+            location: path
+            required: true
+            data_type: string
+          - name: path
+            location: path
+            required: true
+            data_type: string
+          - name: ref
+            location: query
+            required: false
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: protected-handover
+          path: /api/fieldkest/handovers/current
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Gitea session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: policy-compiler-exercise
+          path: /api/exercises/policy-compiler/evaluate
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Gitea session
+          session_required: true
+          parameters:
+          - name: program_model
+            location: json_body
+            required: true
+            data_type: object
+          - name: policy_input
+            location: json_body
+            required: true
+            data_type: object
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: archived-connector-exercise
+          path: /api/exercises/connector-archive/run
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Gitea session
+          session_required: true
+          parameters:
+          - name: input
+            location: uploaded_file
+            required: true
+            data_type: application/octet-stream
+          - name: diagnostic_config
+            location: json_body
+            required: false
+            data_type: object
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: source-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rowan-ito
+          kind: user
+          name: rowan.ito
+          credential_classification: redacted
+        - principal_id: fieldlink-ci
+          kind: service_account
+          name: svc-fieldlink-ci
+          credential_classification: redacted
+        - principal_id: release-reader
+          kind: service_account
+          name: release-reader
+          credential_classification: redacted
+        roles:
+        - role_id: fieldkest-developer
+          name: FieldKest developer reader
+        - role_id: build-source-reader
+          name: Build source reader
+        - role_id: protected-release-reader
+          name: Protected release reader
+        permission_grants:
+        - grant_id: developer-source-read
+          role_ref: fieldkest-developer
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - repositories/fieldkest/fieldlink-connector/*
+          - repositories/fieldkest/policy-compiler/*
+          - repositories/fieldkest/connector-archive/*
+          - handovers/current
+          effect: allow
+        - grant_id: ci-source-read
+          role_ref: build-source-reader
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - repositories/fieldkest/*
+          effect: allow
+        - grant_id: release-history-read
+          role_ref: protected-release-reader
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - repositories/fieldkest/release-history/*
+          effect: allow
+        role_mappings:
+        - mapping_id: rowan-developer
+          role_ref: fieldkest-developer
+          users:
+          - rowan-ito
+        - mapping_id: ci-reader
+          role_ref: build-source-reader
+          users:
+          - fieldlink-ci
+        - mapping_id: release-reader-binding
+          role_ref: protected-release-reader
+          users:
+          - release-reader
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
+      repository_state:
+        repositories:
+        - repository_id: fieldlink-connector
+          presence: required
+        - repository_id: fieldkest-policy-compiler
+          presence: required
+        - repository_id: fieldkest-connector-archive
+          presence: required
+        - repository_id: fieldkest-release-history
+          presence: required
+      software_components:
+      - component_id: gitea
+        name: Gitea
+        version: 1.25.2
+        component_type: application
+        provenance: package_manager
+        installed_paths:
+        - /usr/local/bin/gitea
+      - component_id: fieldkest-policyc
+        name: FieldKest retained policy compiler
+        version: 2.6.4
+        component_type: application
+        provenance: operator
+        repository_refs:
+        - fieldkest-policy-compiler
+        installed_paths:
+        - /var/lib/gitea/exercise-artifacts/fieldkest-policyc
+        description: Exact Linux x86-64 binary and deterministic build inputs fixed by the policy-compiler contract.
+      - component_id: fieldlink-connector-archive
+        name: FieldKest archived connector
+        version: 6.9.8
+        component_type: application
+        provenance: operator
+        repository_refs:
+        - fieldkest-connector-archive
+        installed_paths:
+        - /var/lib/gitea/exercise-artifacts/fieldlink-connector-6.9.8
   k-registry:
     type: compute
-    description: Packages / inspection
+    description: Package registry, resolver, inspector, entitlement and publication services.
+    os: linux
+    services:
+    - name: packages
+      port: 443
+      protocol: tcp
     features:
       k-registry: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/verdaccio
+        entry_type: directory
+        owner_user: verdaccio
+        owner_group: verdaccio
+        mode: '0750'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Persistent package metadata, immutable versions and package-service audit.
+      - path: /var/lib/fieldkest-registry
+        entry_type: directory
+        owner_user: fieldkest-registry
+        owner_group: fieldkest-registry
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Reconciliation, inspector, entitlement and delivery state.
+      local_identity:
+        users:
+        - username: verdaccio
+          primary_group: verdaccio
+          locked: true
+          no_login: true
+        - username: fieldkest-registry
+          primary_group: fieldkest-registry
+          locked: true
+          no_login: true
+        groups:
+        - name: verdaccio
+          members:
+          - verdaccio
+        - name: fieldkest-registry
+          members:
+          - fieldkest-registry
+      network:
+        hostname: k-registry
+        domainname: delivery.keplerops.test
+        endpoints:
+        - network: k-delivery.subnet
+          ip_address: 10.77.51.30
+          ip_prefix_length: 24
+          gateway: 10.77.51.1
+          aliases:
+          - k-registry
+          dns_names:
+          - packages.keplerops.test
+          backend:
+            driver: bridge
+            description: KeplerOps delivery segment.
+      service_listeners:
+      - service_listener_id: packages-https
+        service: packages
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: package-registry
+        service: packages
+        protocol: https
+        base_path: /
+        description: Verdaccio-compatible metadata/publication with authored consumer, inspector, entitlement and delivery APIs.
+        routes:
+        - route_id: connector-metadata
+          path: /@keplerops%2ffieldlink-connector
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Bearer or registry session
+          session_required: false
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 401
+            content_type: application/json
+        - route_id: package-publication
+          path: /@keplerops%2ffieldlink-connector
+          methods:
+          - PUT
+          auth_required: true
+          auth_scheme: Bearer
+          session_required: true
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: consumer-check
+          path: /api/consumer-checks
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          parameters:
+          - name: request
+            location: json_body
+            required: true
+            data_type: fieldkest.connector/v3
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: release-record
+          path: /api/releases/{release_id}
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          parameters:
+          - name: release_id
+            location: path
+            required: true
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: reconciliation
+          path: /api/reconcile/tenant-package
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: resolver-run
+          path: /api/resolver/runs
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: importer
+          path: /api/imports
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          parameters:
+          - name: package_request
+            location: json_body
+            required: true
+            data_type: object
+          disclosures:
+          - trigger: A valid package request selects an unavailable resolver view and the error serializer includes the resolved registry client configuration.
+            status_code: 422
+            disclosure: Scoped customer-channel publisher credential fixture.
+            sensitivity: secret_fixture
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: package-view
+          path: /api/package-views/{view}/{package_name}
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Bearer
+          session_required: true
+          parameters:
+          - name: view
+            location: path
+            required: true
+            data_type: string
+          - name: package_name
+            location: path
+            required: true
+            data_type: string
+          description: Resolves the named package before applying the requested restricted view; only the authored support package crosses the view boundary.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: inspector-submit
+          path: /api/inspections
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: inspector-trace
+          path: /api/inspections/{inspection_id}/trace
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          parameters:
+          - name: inspection_id
+            location: path
+            required: true
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: inspector-envelope
+          path: /api/inspections/envelope
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          parameters:
+          - name: envelope
+            location: uploaded_file
+            required: true
+            data_type: application/octet-stream
+          description: Front end measures the request-name field in bytes; the downstream assessor normalizes NFKC then interprets the same length as Unicode scalar values.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: legacy-entitlement-record
+          path: /api/compatibility/entitlements/{entitlement_id}
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: legacy-entitlement-check
+          path: /api/compatibility/entitlements/check
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          parameters:
+          - name: entitlement
+            location: json_body
+            required: true
+            data_type: object
+          - name: context
+            location: json_body
+            required: true
+            data_type: object
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: release-approval
+          path: /api/releases/{release_id}/approval
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Bearer
+          session_required: true
+          parameters:
+          - name: release_id
+            location: path
+            required: true
+            data_type: string
+          description: The release-admin service identity maps to Evan's approval role without requiring the human-presence claim.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: registry-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rowan-ito
+          kind: user
+          name: rowan.ito
+          credential_classification: none
+        - principal_id: fieldlink-ci
+          kind: service_account
+          name: svc-fieldlink-ci
+          credential_classification: redacted
+        - principal_id: importer-publisher
+          kind: api_key
+          name: fieldlink-importer-publisher
+          credential_classification: redacted
+        - principal_id: release-admin
+          kind: service_account
+          name: svc-release-admin
+          credential_classification: redacted
+        roles:
+        - role_id: developer-reader
+          name: Developer package reader
+        - role_id: build-reader
+          name: Build dependency reader
+        - role_id: customer-channel-publisher
+          name: Customer channel publisher
+        - role_id: privileged-release-approver
+          name: Privileged release approver
+        permission_grants:
+        - grant_id: developer-package-read
+          role_ref: developer-reader
+          resource_kind: app_resource
+          actions:
+          - read
+          - inspect
+          resource_patterns:
+          - packages/@keplerops/fieldlink-connector
+          - releases/*
+          - inspections/*
+          - compatibility/entitlements/*
+          effect: allow
+        - grant_id: build-package-read
+          role_ref: build-reader
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - packages/@keplerops/*
+          effect: allow
+        - grant_id: publish-customer-channel
+          role_ref: customer-channel-publisher
+          resource_kind: app_resource
+          actions:
+          - publish
+          resource_patterns:
+          - packages/@keplerops/fieldlink-connector/channels/arwc-stable
+          effect: allow
+        - grant_id: approve-release
+          role_ref: privileged-release-approver
+          resource_kind: app_resource
+          actions:
+          - approve
+          - publish
+          resource_patterns:
+          - packages/@keplerops/fieldlink-connector/channels/arwc-stable
+          effect: allow
+        role_mappings:
+        - mapping_id: rowan-registry
+          role_ref: developer-reader
+          users:
+          - rowan-ito
+        - mapping_id: worker-registry
+          role_ref: build-reader
+          users:
+          - fieldlink-ci
+        - mapping_id: importer-publisher-binding
+          role_ref: customer-channel-publisher
+          users:
+          - importer-publisher
+        - mapping_id: release-admin-binding
+          role_ref: privileged-release-approver
+          users:
+          - release-admin
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
+        - tenant_id: ten-arwc-047
+          name: Alterra Regional Water Company
+        - tenant_id: ten-rill-022
+          name: Rillhaven District Heating
+      repository_state:
+        repositories:
+        - repository_id: fieldlink-package-registry
+          presence: required
+        trust_bindings:
+        - trust_id: fieldkest-release-lineage-2026
+          presence: required
+      software_components:
+      - component_id: verdaccio
+        name: Verdaccio
+        version: 6.1.6
+        component_type: application
+        provenance: package_manager
+        installed_paths:
+        - /opt/verdaccio
+      - component_id: fieldkest-registry-services
+        name: FieldKest registry companion services
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/fieldkest-registry
   k-ci:
     type: compute
-    description: CI and private test consumers
+    description: CI history, review import, isolated job execution, private consumers and release rollover rehearsals.
+    os: linux
+    services:
+    - name: ci
+      port: 443
+      protocol: tcp
     features:
       k-ci: ''
       k-ci--runner: ''
       k-ci--rehearsals: ''
       k-ci--consumer-state: ''
       k-ci--release-client: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/fieldkest-ci
+        entry_type: directory
+        owner_user: fieldkest-ci
+        owner_group: fieldkest-ci
+        mode: '0750'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Persistent run history, review records, artifacts and immutable audit.
+      - path: /var/lib/fieldkest-ci/workspaces
+        entry_type: directory
+        owner_user: fieldkest-runner
+        owner_group: fieldkest-runner
+        mode: '0710'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Per-run workspaces; each orchestration child receives only its own directory.
+      - path: /var/lib/fieldkest-ci/consumer-state
+        entry_type: directory
+        owner_user: fieldkest-consumer
+        owner_group: fieldkest-consumer
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Private evaluator state never mounted into participant-submitted jobs.
+      local_identity:
+        users:
+        - username: fieldkest-ci
+          primary_group: fieldkest-ci
+          locked: true
+          no_login: true
+        - username: fieldkest-runner
+          primary_group: fieldkest-runner
+          locked: true
+          no_login: true
+        - username: fieldkest-consumer
+          primary_group: fieldkest-consumer
+          locked: true
+          no_login: true
+        groups:
+        - name: fieldkest-ci
+          members:
+          - fieldkest-ci
+        - name: fieldkest-runner
+          members:
+          - fieldkest-runner
+        - name: fieldkest-consumer
+          members:
+          - fieldkest-consumer
+      network:
+        hostname: k-ci
+        domainname: delivery.keplerops.test
+        endpoints:
+        - network: k-delivery.subnet
+          ip_address: 10.77.51.40
+          ip_prefix_length: 24
+          gateway: 10.77.51.1
+          aliases:
+          - k-ci
+          dns_names:
+          - ci.keplerops.test
+          backend:
+            driver: bridge
+            description: KeplerOps delivery segment.
+      service_listeners:
+      - service_listener_id: ci-https
+        service: ci
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      local_control_interfaces:
+      - control_interface_id: isolated-job-engine
+        path: /run/fieldkest-ci/job-engine.sock
+        kind: unix_socket
+        protocol: fieldkest-job/v1
+        access: read_write
+        description: CI-owned job control; participant jobs cannot mount this socket.
+      orchestration_authorities:
+      - orchestration_authority_id: fieldkest-ci-jobs
+        control_interface_ref: isolated-job-engine
+        engine: containerd
+        engine_api_version: '1.7'
+        name: FieldKest isolated CI jobs
+        scope:
+          organization_ref: entities.k-delivery.organization
+          environment_name: participant-ci
+          description: One participant-owned namespace with separate immutable evaluator state.
+        spawn_templates:
+        - template_id: report-consumer-v2
+          image_ref: fieldkest/report-consumer@sha256:design-owned
+          purpose: Evaluate fieldkest.report/v2 inputs without source or control-plane mounts.
+        - template_id: build-operations-runner
+          image_ref: fieldkest/build-operations-runner@sha256:design-owned
+          purpose: Run a supplied command with an expiring worker lease and generated connection files.
+        - template_id: connector-consumer-v2
+          image_ref: fieldkest/connector-consumer-v2@sha256:design-owned
+          purpose: Exercise the retained v2 connector interface in an isolated consumer.
+        - template_id: connector-consumer-v3
+          image_ref: fieldkest/connector-consumer-v3@sha256:design-owned
+          purpose: Exercise the current v3 connector interface in an isolated consumer.
+        - template_id: rollover-rehearsal
+          image_ref: fieldkest/rollover-rehearsal@sha256:design-owned
+          purpose: Evaluate signing-lineage rollover at the authored simulated cutoff.
+        lifecycle_policy:
+          timeout: PT20M
+          execution_timeout: PT5M
+          cleanup: Preserve result, stdout, input digest and evaluator receipt; destroy the job filesystem after lease expiry.
+        privilege_class: namespaced
+        description: Jobs have outbound HTTPS only to the named source, registry, staff, certificate and cloud APIs and receive no engine control interface.
+      applications:
+      - application_id: fieldkest-ci
+        service: ci
+        protocol: https
+        base_path: /
+        description: Developer-visible CI history and bounded isolated-job submission; evaluator records are service-owned.
+        routes:
+        - route_id: run-detail
+          path: /api/runs/{run_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: run-log
+          path: /api/runs/{run_id}/log
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: text/plain
+          - status_code: 403
+            content_type: application/json
+        - route_id: historical-artifact
+          path: /api/runs/{run_id}/artifacts/{artifact_name}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/octet-stream
+          - status_code: 404
+            content_type: application/json
+        - route_id: review-import
+          path: /api/reviews/import
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          parameters:
+          - name: request
+            location: json_body
+            required: true
+            data_type: fieldkest.review-import/v1
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: isolated-job-submit
+          path: /api/jobs
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          parameters:
+          - name: template
+            location: json_body
+            required: true
+            data_type: string
+          - name: input
+            location: json_body
+            required: true
+            data_type: object
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: isolated-job-result
+          path: /api/jobs/{job_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: private-consumer-submit
+          path: /api/rehearsals/connector
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          description: Runs the chosen immutable package in the requested v2 or v3 consumer; the submitted job cannot read evaluator fixtures.
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: rollover-rehearsal
+          path: /api/rehearsals/lineage-rollover
+          methods: [POST]
+          auth_required: true
+          auth_scheme: release-reader exchange session
+          session_required: true
+          description: Uses an isolated clock and trust store; its simulated cutoff cannot change production trust.
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: ci-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rowan-ito
+          kind: user
+          name: rowan.ito
+          credential_classification: none
+        - principal_id: fieldkest-runner
+          kind: service_account
+          name: svc-fieldkest-runner
+          credential_classification: redacted
+        - principal_id: release-reader
+          kind: service_account
+          name: release-reader
+          credential_classification: redacted
+        roles:
+        - role_id: developer-ci
+          name: Developer CI reader and bounded job submitter
+        - role_id: worker-lease
+          name: Expiring CI worker lease
+        - role_id: release-rehearsal
+          name: Signing rollover rehearsal operator
+        permission_grants:
+        - grant_id: developer-ci-use
+          role_ref: developer-ci
+          resource_kind: app_resource
+          actions: [read, submit]
+          resource_patterns: [runs/*, reviews/import, jobs/*, rehearsals/connector]
+          effect: allow
+        - grant_id: worker-bound-services
+          role_ref: worker-lease
+          resource_kind: app_resource
+          actions: [execute, read]
+          resource_patterns: [workspaces/$own/*, generated-connections/$own, job-status/$own]
+          effect: allow
+        - grant_id: release-rehearsal-use
+          role_ref: release-rehearsal
+          resource_kind: app_resource
+          actions: [read, submit]
+          resource_patterns: [rehearsals/lineage-rollover, release-consumers/*]
+          effect: allow
+        role_mappings:
+        - mapping_id: rowan-ci
+          role_ref: developer-ci
+          users: [rowan-ito]
+        - mapping_id: worker-ci
+          role_ref: worker-lease
+          users: [fieldkest-runner]
+        - mapping_id: release-reader-ci
+          role_ref: release-rehearsal
+          users: [release-reader]
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
+      software_components:
+      - component_id: fieldkest-ci
+        name: FieldKest CI and rehearsal service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths: [/opt/fieldkest-ci]
   k-preview:
     type: compute
-    description: Preview / browser workers
+    description: Document preview, release-review queue and constrained browser/render workers.
+    os: linux
+    services:
+    - name: preview
+      port: 443
+      protocol: tcp
     features:
       k-preview: ''
       k-preview--renderer: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/fieldkest-preview
+        entry_type: directory
+        owner_user: fieldkest-preview
+        owner_group: fieldkest-preview
+        mode: '0750'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Source documents, canonical IDs, review queue and service-owned audit.
+      - path: /var/lib/fieldkest-preview/browser-profiles
+        entry_type: directory
+        owner_user: fieldkest-renderer
+        owner_group: fieldkest-renderer
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Per-review ephemeral browser profiles; registrations persist only for the bound review.
+      local_identity:
+        users:
+        - username: fieldkest-preview
+          primary_group: fieldkest-preview
+          locked: true
+          no_login: true
+        - username: fieldkest-renderer
+          primary_group: fieldkest-renderer
+          locked: true
+          no_login: true
+        groups:
+        - name: fieldkest-preview
+          members: [fieldkest-preview]
+        - name: fieldkest-renderer
+          members: [fieldkest-renderer]
+      network:
+        hostname: k-preview
+        domainname: delivery.keplerops.test
+        endpoints:
+        - network: k-delivery.subnet
+          ip_address: 10.77.51.50
+          ip_prefix_length: 24
+          gateway: 10.77.51.1
+          aliases: [k-preview]
+          dns_names: [preview.keplerops.test]
+          backend:
+            driver: bridge
+            description: KeplerOps delivery segment.
+      service_listeners:
+      - service_listener_id: preview-https
+        service: preview
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      local_control_interfaces:
+      - control_interface_id: browser-worker-engine
+        path: /run/fieldkest-preview/browser-workers.sock
+        kind: unix_socket
+        protocol: fieldkest-browser/v1
+        access: read_write
+      orchestration_authorities:
+      - orchestration_authority_id: preview-workers
+        control_interface_ref: browser-worker-engine
+        engine: containerd
+        engine_api_version: '1.7'
+        name: Constrained preview browser workers
+        scope:
+          organization_ref: entities.k-delivery.organization
+          environment_name: participant-preview
+        spawn_templates:
+        - template_id: document-renderer
+          image_ref: fieldkest/document-renderer@sha256:design-owned
+          purpose: Render one canonical document ID without arbitrary network access.
+        - template_id: privileged-review-browser
+          image_ref: fieldkest/review-browser@sha256:design-owned
+          purpose: Load one assigned release-review item with its action nonce.
+        lifecycle_policy:
+          timeout: PT10M
+          execution_timeout: PT2M
+          cleanup: Preserve render, navigation, action and worker-registration audit; destroy profile and filesystem.
+        privilege_class: namespaced
+      applications:
+      - application_id: preview-service
+        service: preview
+        protocol: https
+        base_path: /
+        description: Developer preview and review queue with the exact canonicalization and reviewer-bound browser behavior described by K10 and K12.
+        routes:
+        - route_id: source-upload
+          path: /api/documents
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          description: Derives document_id as NFKC(casefold(source_id)); ownership is checked on the derived key rather than the source record.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: render-document
+          path: /api/documents/{document_id}/render
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: render-result
+          path: /api/renders/{render_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: review-reassign
+          path: /api/reviews/{review_id}/assignment
+          methods: [PATCH]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          description: Confirms queue ownership but, for PRV-771 only, omits the submitter check after reassignment.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: review-attachment
+          path: /review/{review_id}/attachments/{name}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Review browser session
+          session_required: true
+          description: Authored JavaScript attachment is served as text/javascript with Service-Worker-Allowed /review/.
+          responses:
+          - status_code: 200
+            content_type: text/javascript
+          - status_code: 404
+            content_type: application/json
+        - route_id: review-action
+          path: /api/reviews/{review_id}/actions/prepare
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Review action nonce
+          session_required: true
+          description: The same-origin postMessage broker checks the nonce and review ID but omits sender-origin validation.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: review-render
+          path: /review/{review_id}/render
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Reviewer worker session
+          session_required: true
+          responses:
+          - status_code: 202
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: preview-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rowan-ito
+          kind: user
+          name: rowan.ito
+          credential_classification: none
+        - principal_id: preview-reviewer
+          kind: service_account
+          name: svc-preview-reviewer
+          credential_classification: redacted
+        roles:
+        - role_id: developer-preview
+          name: Developer preview submitter
+        - role_id: privileged-reviewer
+          name: Privileged release reviewer
+        permission_grants:
+        - grant_id: developer-preview-use
+          role_ref: developer-preview
+          resource_kind: app_resource
+          actions: [read, submit, update]
+          resource_patterns: [documents/$own/*, renders/$own/*, reviews/PRV-771/assignment]
+          effect: allow
+        - grant_id: reviewer-preview-use
+          role_ref: privileged-reviewer
+          resource_kind: app_resource
+          actions: [read, execute]
+          resource_patterns: [reviews/PRV-771/*]
+          effect: allow
+        role_mappings:
+        - mapping_id: rowan-preview
+          role_ref: developer-preview
+          users: [rowan-ito]
+        - mapping_id: preview-reviewer-binding
+          role_ref: privileged-reviewer
+          users: [preview-reviewer]
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
+      software_components:
+      - component_id: chromium
+        name: Chromium
+        version: '140.0.7339.207'
+        component_type: application
+        provenance: package_manager
+        installed_paths: [/usr/bin/chromium]
+      - component_id: fieldkest-preview
+        name: FieldKest preview service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths: [/opt/fieldkest-preview]
   k-support:
     type: compute
-    description: Support and customer delivery
+    description: Support sessions, recovery, assignments, customer records and bounded diagnostic delivery.
+    os: linux
+    services:
+    - name: support
+      port: 443
+      protocol: tcp
     features:
       k-support: ''
       k-support--staff-client: ''
       k-support--customer-records: ''
       k-support--review-item: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/fieldkest-support
+        entry_type: directory
+        owner_user: fieldkest-support
+        owner_group: fieldkest-support
+        mode: '0750'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Conversations, cases, customer bindings, recovery state, diagnostics and independent audit.
+      local_identity:
+        users:
+        - username: fieldkest-support
+          primary_group: fieldkest-support
+          locked: true
+          no_login: true
+        groups:
+        - name: fieldkest-support
+          members: [fieldkest-support]
+      network:
+        hostname: k-support
+        domainname: delivery.keplerops.test
+        endpoints:
+        - network: k-delivery.subnet
+          ip_address: 10.77.51.60
+          ip_prefix_length: 24
+          gateway: 10.77.51.1
+          aliases: [k-support]
+          dns_names: [support.keplerops.test]
+          backend:
+            driver: bridge
+            description: KeplerOps delivery segment.
+      service_listeners:
+      - service_listener_id: support-https
+        service: support
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: support-service
+        service: support
+        protocol: https
+        base_path: /
+        description: FieldKest support and customer delivery service with server-owned sessions and tenant-scoped records.
+        routes:
+        - route_id: conversation
+          path: /api/conversations/{conversation_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: private-handover
+          path: /api/handovers/current
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: recovery-lookup
+          path: /api/recovery/lookup
+          methods: [POST]
+          auth_required: false
+          session_required: false
+          description: Returns only the authored case fragment for talia.mornac-review; redemption also requires the retained browser second factor.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: recovery-redeem
+          path: /api/recovery/redeem
+          methods: [POST]
+          auth_required: false
+          session_required: false
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: assignment
+          path: /api/assignments/{assignment_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: copied-handover
+          path: /api/cases/{case_id}/copy-handover
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          description: Confirms source-case read but omits target-reviewer assignment permission; the created handover remains owned by the target reviewer.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: customer-dossier
+          path: /api/customers/{tenant_id}/dossiers/{dossier_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: tenant-integration
+          path: /api/customers/{tenant_id}/integrations/fieldlink
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: tenant-reconcile
+          path: /api/customers/{tenant_id}/integrations/fieldlink/reconcile
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          responses:
+          - status_code: 201
+            content_type: application/json
+        - route_id: diagnostic-job
+          path: /api/customers/{tenant_id}/diagnostics
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          description: Requires support role and active connector binding but omits assigned-customer membership for this route.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: diagnostic-package
+          path: /api/diagnostics/{job_id}/package
+          methods: [PUT]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          description: Validates schema and digest but does not enforce immutable_source on the authored package template.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: diagnostic-delivery
+          path: /api/diagnostics/{job_id}/deliver
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Support session cookie
+          session_required: true
+          description: Sends only the signed diagnostic package to the registered a-connector intake and stores its invocation receipt.
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: assistant-review-update
+          path: /api/reviews/{review_id}/duplicate-disposition
+          methods: [PATCH]
+          auth_required: true
+          auth_scheme: Assistant tool bearer
+          session_required: true
+          description: Tool principal may update only the duplicate disposition and evidence reference for its bound review item.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: support-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rowan-ito
+          kind: user
+          name: rowan.ito
+          credential_classification: none
+        - principal_id: maya-ranscombe
+          kind: user
+          name: maya.ranscombe
+          credential_classification: redacted
+        - principal_id: talia-mornac-review
+          kind: user
+          name: talia.mornac-review
+          credential_classification: redacted
+        - principal_id: assistant-review-tool
+          kind: service_account
+          name: svc-assistant-review
+          credential_classification: redacted
+        roles:
+        - role_id: developer-support
+          name: Developer support conversation reader
+        - role_id: support-agent
+          name: Support agent
+        - role_id: alternate-reviewer
+          name: Restricted alternate reviewer
+        - role_id: assistant-review-updater
+          name: Bounded duplicate-review updater
+        permission_grants:
+        - grant_id: developer-conversation-read
+          role_ref: developer-support
+          resource_kind: app_resource
+          actions: [read]
+          resource_patterns: [conversations/SUP-2841]
+          effect: allow
+        - grant_id: agent-support-use
+          role_ref: support-agent
+          resource_kind: app_resource
+          actions: [read, create, update, deliver]
+          resource_patterns: [handovers/current, assignments/$own/*, cases/$own/*, customers/*/dossiers/*, customers/*/integrations/*, diagnostics/*]
+          effect: allow
+        - grant_id: alternate-review-use
+          role_ref: alternate-reviewer
+          resource_kind: app_resource
+          actions: [read]
+          resource_patterns: [handovers/$own/*, reviews/$own/*]
+          effect: allow
+        - grant_id: assistant-review-update
+          role_ref: assistant-review-updater
+          resource_kind: app_resource
+          actions: [update]
+          resource_patterns: [reviews/ASST-DUP-018/duplicate-disposition]
+          effect: allow
+        role_mappings:
+        - mapping_id: rowan-support
+          role_ref: developer-support
+          users: [rowan-ito]
+        - mapping_id: maya-support
+          role_ref: support-agent
+          users: [maya-ranscombe]
+        - mapping_id: talia-review
+          role_ref: alternate-reviewer
+          users: [talia-mornac-review]
+        - mapping_id: assistant-review-binding
+          role_ref: assistant-review-updater
+          users: [assistant-review-tool]
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
+        - tenant_id: ten-arwc-047
+          name: Alterra Regional Water Company
+        - tenant_id: ten-rill-022
+          name: Rillhaven District Heating
+      software_components:
+      - component_id: fieldkest-support
+        name: FieldKest support service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths: [/opt/fieldkest-support]
   k-indexer:
     type: compute
-    description: Native support indexer
+    description: Reproducible native support-bundle indexer and release-exception worker queue.
+    os: linux
+    architecture: x86_64
+    services:
+    - name: indexer
+      port: 443
+      protocol: tcp
     features:
       k-indexer: ''
       k-indexer--worker: ''
       k-indexer--queue: ''
+    runtime:
+      filesystem_inventory:
+      - path: /opt/fieldkest-indexer
+        entry_type: directory
+        owner_user: root
+        owner_group: root
+        mode: '0755'
+        stability: stable
+        sensitivity: plain
+        description: Version 1.8.0 source, C++17 build recipe, binary and valid signed bundle corpus.
+      - path: /var/lib/fieldkest-indexer
+        entry_type: directory
+        owner_user: fieldkest-indexer
+        owner_group: fieldkest-indexer
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Participant-scoped process state, runtime descriptors and immutable transaction audit.
+      - path: /var/lib/fieldkest-indexer/queue
+        entry_type: directory
+        owner_user: fieldkest-worker
+        owner_group: fieldkest-worker
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Encrypted release-exception queue including REX-2026-091.
+      local_identity:
+        users:
+        - username: fieldkest-indexer
+          primary_group: fieldkest-indexer
+          locked: true
+          no_login: true
+        - username: fieldkest-worker
+          primary_group: fieldkest-worker
+          locked: true
+          no_login: true
+        groups:
+        - name: fieldkest-indexer
+          members: [fieldkest-indexer]
+        - name: fieldkest-worker
+          members: [fieldkest-worker]
+      network:
+        hostname: k-indexer
+        domainname: delivery.keplerops.test
+        endpoints:
+        - network: k-delivery.subnet
+          ip_address: 10.77.51.70
+          ip_prefix_length: 24
+          gateway: 10.77.51.1
+          aliases: [k-indexer]
+          dns_names: [indexer.keplerops.test]
+          backend:
+            driver: bridge
+            description: KeplerOps delivery segment.
+      service_listeners:
+      - service_listener_id: indexer-https
+        service: indexer
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: bundle-indexer
+        service: indexer
+        protocol: https
+        base_path: /
+        description: Version 1.8.0 support-bundle indexer. The object decoder widens a 16-bit entry length only after allocating the destination object.
+        routes:
+        - route_id: bundle-submit
+          path: /api/indexes
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          parameters:
+          - name: bundle
+            location: uploaded_file
+            required: true
+            data_type: application/vnd.fieldkest.bundle
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: index-result
+          path: /api/indexes/{index_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          disclosures:
+          - trigger: A valid signed bundle mutates the designated sentinel object through the 16-bit allocation/32-bit copy disagreement.
+            status_code: 200
+            disclosure: Process generation, arena marker, object marker and keyed integrity relation for the designated runtime descriptor.
+            sensitivity: secret_fixture
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: exception-state
+          path: /api/internal/release-exceptions/state
+          methods: [PATCH]
+          auth_required: true
+          auth_scheme: Indexer worker lease
+          session_required: true
+          description: Accepts one value and matching integrity field at the designated state-object offset; all other writes are rejected.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: complete-exception
+          path: /api/internal/release-exceptions/{record_id}/complete
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Indexer worker lease
+          session_required: true
+          description: Invokes only complete_exception(record_id) and returns the one decrypted queue dossier; it is not a command or expression interface.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: indexer-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rowan-ito
+          kind: user
+          name: rowan.ito
+          credential_classification: none
+        - principal_id: indexer-worker
+          kind: service_account
+          name: svc-indexer-worker
+          credential_classification: redacted
+        roles:
+        - role_id: indexer-submit
+          name: Bundle index submitter
+        - role_id: exception-worker
+          name: Release exception worker
+        permission_grants:
+        - grant_id: developer-indexer-use
+          role_ref: indexer-submit
+          resource_kind: app_resource
+          actions: [submit, read]
+          resource_patterns: [indexes/*]
+          effect: allow
+        - grant_id: worker-exception-use
+          role_ref: exception-worker
+          resource_kind: app_resource
+          actions: [read, update, execute]
+          resource_patterns: [internal/release-exceptions/state, internal/release-exceptions/REX-2026-091/complete]
+          effect: allow
+        role_mappings:
+        - mapping_id: rowan-indexer
+          role_ref: indexer-submit
+          users: [rowan-ito]
+        - mapping_id: indexer-worker-binding
+          role_ref: exception-worker
+          users: [indexer-worker]
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
+      software_components:
+      - component_id: fieldkest-bundle-indexer
+        name: FieldKest bundle indexer
+        version: 1.8.0
+        component_type: application
+        provenance: operator
+        installed_paths: [/opt/fieldkest-indexer/bin/fieldkest-bundle-indexer]
+        description: Linux x86-64, C++17, with build inputs and compiler/linker options fixed by the indexer contract.
 infrastructure:
   subnet: {}
   k-source:

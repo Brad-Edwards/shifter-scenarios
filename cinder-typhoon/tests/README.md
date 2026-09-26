@@ -7,7 +7,7 @@ the matching upstream releases:
 export PYTHONDONTWRITEBYTECODE=1
 python3.12 -m venv /tmp/cinder-sdl-check
 /tmp/cinder-sdl-check/bin/python -m pip install -r cinder-typhoon/tests/requirements-sdl.txt
-/tmp/cinder-sdl-check/bin/python cinder-typhoon/tests/validate_sdl.py --self-test --pack-check --pack-max-members 2048
+/tmp/cinder-sdl-check/bin/python cinder-typhoon/tests/validate_sdl.py --pack-check --pack-max-members 2048 --training-hand-build-gate --keplerops-hand-build-gate --arwc-hand-build-gate
 ```
 
 Use a clean checkout or move any existing `__pycache__` directories outside the
@@ -21,17 +21,18 @@ even without caches. The command above explicitly selects 2,048 using upstream
 override currently fails `resource.member-limit`. This is an author-check
 budget, not a claim that an unchanged consumer will accept the distributed pack.
 
-The command performs these checks:
+For the three hand-build-ready phases, the documented validation set performs
+these checks (the focused suites are invoked by their commands below):
 
 1. Native `raes.parser.parse_sdl_file` parses and composes the complete campaign
    with structural and semantic validation enabled.
-2. The validator independently decodes native workflow predicates, acquisition
-   events, node memberships, authority features, and relationship contracts.
-   It compares the resulting graph with the preserved design and replays all
-   minimal prerequisite closures and all 16 finale route combinations. Separate
-   checks compare action preconditions/effects, all five technical sections of
-   the 50 drafted cards, proof owners, starting-record requirements, proposition
-   quantifiers, and consequence effects with the design-side contracts.
+2. The Training, KeplerOps, and ARWC gates independently check native workflow
+   predicates, node membership, addresses, listeners, application routes,
+   identities, grants, exact content ownership, action/evidence binding and the
+   preserved prerequisite/difficulty portfolio. The KeplerOps gate rejects any
+   return of meaning-bearing private relationship properties. The ARWC gate
+   additionally recalculates the live, practice, scheduler-rehearsal, reporting,
+   reserve, tariff, liability, and buffer contracts.
 3. `instantiate_scenario` and `compile_runtime_model` run on the whole scenario.
    Assertions check that default-open intent survives both steps, that omitted
    substrate/architecture/version choices remain open, and that Linux/Kali
@@ -39,15 +40,10 @@ The command performs these checks:
    and capability observations retain their producer bindings, and eight workplace
    readback observations retain exact content ownership. Source artifacts and
    named workplace service bindings survive compilation.
-4. `--self-test` deliberately changes native type-valid SDL structures, including
-   OR gates, current revision evidence, read/control scope, and rehearsal/live
-   separation. Its 28 SDL mutations also remove or corrupt observation bindings,
-   technical mechanisms, scope/reset requirements, seed ownership, and evidence
-   joins. Four further SDL mutations alter workplace content ownership, source
-   versions, observed readback, or its selected content. Two additional mutations
-   attack the compiled selectors themselves.
-   It also runs the existing 26 negative topology cases on the graph decoded
-   from SDL.
+4. Focused unit suites deliberately remove or corrupt exact fixture text,
+   generation digests, exploit-critical profiles, content ownership, action
+   bindings, evidence selectors, observed-state completion, native address
+   placement, supplied developer access and the customer boundary.
 5. `--pack-check` runs env-packs' author validation with local module resolution.
 
 `raes-env-packs==6.1.0` intentionally denies imports through its public
@@ -57,8 +53,8 @@ delivery bundle or flattened ingest artifact is claimed. A future packaging
 step must use the appropriate upstream author-to-consumer handoff.
 
 The full native check is CPU intensive at this campaign size and can take
-tens of minutes. Its mutation checks repeat full asset validation for several
-altered models. It does not start targets, contact a cloud, or create assets.
+several minutes. The focused suites use structural composition for speed. None
+of these checks starts targets, contacts a cloud, or creates assets.
 The [validation record](../docs/sdl-validation.md) states what was established.
 
 The earlier standard-library authoring checks remain beside their inputs in
@@ -85,6 +81,40 @@ manual-build, integration-test, and playtest boundary. Passing does not claim a
 running implementation exists. No test starts a service or exercises an
 intended weakness.
 
+## KeplerOps content and hand-build gate
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 /tmp/cinder-sdl-check/bin/python -m unittest discover -s cinder-typhoon/tests -p test_keplerops_design.py -v
+PYTHONDONTWRITEBYTECODE=1 /tmp/cinder-sdl-check/bin/python cinder-typhoon/tests/validate_sdl.py --pack-check --pack-max-members 2048 --keplerops-hand-build-gate
+```
+
+The focused suite checks all 104 card contracts, their exact owner/path and
+canonical generation input, native surface-route bindings, multi-service
+evidence joins, fixed three-subnet address plan, supplied developer identity,
+exploit-critical binary/parser/crypto/browser/identity/model/signing/workload
+profiles, exact customer connector boundary, difficulty/prerequisite portfolio,
+and removal of KeplerOps private semantics and placeholders. The full command
+adds upstream environment-pack validation, semantic composition, instantiation
+and runtime compilation. Neither command creates a repository, binary, package,
+model, service, image or range.
+
+## ARWC content and hand-build gate
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 /tmp/cinder-sdl-check/bin/python -m unittest discover -s cinder-typhoon/tests -p test_arwc_design.py -v
+PYTHONDONTWRITEBYTECODE=1 /tmp/cinder-sdl-check/bin/python cinder-typhoon/tests/validate_sdl.py --pack-check --pack-max-members 2048 --arwc-hand-build-gate
+```
+
+The focused suite checks all 120 card contracts, the complete ownership matrix,
+exact owner/path and generation input, narrative references, native application
+and filesystem bindings, five-network address plan, identities, grants,
+PostgreSQL contract, complex binary/parser/crypto/browser/memory/control
+mechanics, multi-service evidence joins, process arithmetic, rehearsal/live
+isolation, and removal of all remaining private semantics and placeholders. The
+full command adds upstream environment-pack validation, semantic composition,
+instantiation, and runtime compilation. Neither command creates a binary,
+service, process model, image, checkpoint, or range.
+
 ## Build-worker handoff checks
 
 ```sh
@@ -108,15 +138,15 @@ cannot rely on a request ID or participant-writable log alone. These text and
 contract regressions are not an implementation of the job or its restrictions.
 The command profile also requires the retained reference from an actual completed
 integration review, rather than merely a guessed profile name or a score state.
-Complete reference validation and compilation still run in the full
-SDL command above. Live job execution, service authorization, reset, and fresh
-player discovery remain golden-range acceptance checks.
+Complete reference validation and compilation still run in the full SDL command
+above. Live job execution, service authorization, continuity across ordinary
+retries, and fresh operator discovery remain golden-range acceptance checks.
 
-The downstream route checks exercise the existing abstract design graph. They
-do not establish that a client can present a newly obtained identity or speak
-the destination's protocol. The approved command job removes the worker-only
-HTTP restriction, but K19/K20 still require complete certificate/delegation
-designs and tests using real clients and the identities actually obtained.
+The downstream route checks exercise the static design graph. They do not
+establish that a built client can present a newly obtained identity or speak the
+destination's protocol. K19/K20 now have complete certificate/delegation
+contracts; their real clients and obtained identities remain hand-build and
+integration-test work.
 
 ## Workplace asset checks
 

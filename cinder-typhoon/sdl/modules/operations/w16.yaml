@@ -40,23 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the descriptor and a correctly bound baseline observation. Finding the binary
-      or its version string is insufficient.
-    source_refs: &id001
+    description: |-
+      Recover the descriptor and a correctly bound baseline observation. Finding the binary or its version string is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary
-      in-window reading does not count.
-    source_refs: &id002
+    description: |-
+      Produce evidence of the specified boundary crossing. An unexplained crash or ordinary in-window reading does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,10 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Demonstrate correct discrimination of the designated independent conditions. Raw timing
-      differences or repeated ordinary sequences are insufficient.
-    source_refs: &id003
+    description: |-
+      Demonstrate correct discrimination of the designated independent conditions. Raw timing differences or repeated ordinary sequences are insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -149,10 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Recover the complete correctly bound calibration record under the stated diagnostic constraints.
-      It is an optional W33 input; ordinary commissioning records supply an easier alternative.
-    source_refs: &id004
+    description: |-
+      Recover the complete correctly bound calibration record under the stated diagnostic constraints. It is an optional W33 input; ordinary commissioning records supply an easier alternative.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-archive
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -181,11 +205,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the descriptor and a correctly bound baseline observation. Finding the binary
-      or its version string is insufficient.
-    subjects: *id001
+    description: Recover the descriptor and a correctly bound baseline observation. Finding the binary or its version
+      string is insufficient.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -197,9 +228,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary
-      in-window reading does not count.
-    subjects: *id002
+    description: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary in-window
+      reading does not establish the result.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -211,9 +243,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate correct discrimination of the designated independent conditions. Raw timing
-      differences or repeated ordinary sequences are insufficient.
-    subjects: *id003
+    description: Demonstrate correct discrimination of the designated independent conditions. Raw timing differences
+      or repeated ordinary sequences are insufficient.
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -227,7 +260,8 @@ propositions:
   c4:
     description: Recover the complete correctly bound calibration record under the stated diagnostic constraints.
       It is an optional W33 input; ordinary commissioning records supply an easier alternative.
-    subjects: *id004
+    subjects:
+    - features.a-corporate.a-archive
     basis: observed_state
     predicate:
       kind: boolean
@@ -273,7 +307,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W16.1: The sequencer''s vocabulary'
+    name: 'This action: The sequencer''s vocabulary'
     description: |-
       Recover the instrument's restricted sequence descriptor and reproduce the designated ordinary diagnostic observation.
 
@@ -281,7 +315,7 @@ objectives:
     agent: participant.operator
     actions:
     - w16.c1
-    targets: &id005
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -291,7 +325,7 @@ objectives:
       workflows:
       - w16.c1
   c2:
-    name: 'W16.2: An observation outside the window'
+    name: 'This action: An observation outside the window'
     description: |-
       Demonstrate a controlled observation beyond the instrument's intended data window without abandoning its diagnostic interface.
 
@@ -299,7 +333,7 @@ objectives:
     agent: participant.operator
     actions:
     - w16.c2
-    targets: &id006
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -309,7 +343,7 @@ objectives:
       workflows:
       - w16.c2
   c3:
-    name: 'W16.3: An experiment with a signal'
+    name: 'This action: An experiment with a signal'
     description: |-
       Construct a sequencer experiment that distinguishes the specified protected conditions through its measurements. Establish an interpretation that holds across the supplied reference cases.
 
@@ -317,7 +351,7 @@ objectives:
     agent: participant.operator
     actions:
     - w16.c3
-    targets: &id007
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -327,7 +361,7 @@ objectives:
       workflows:
       - w16.c3
   c4:
-    name: 'W16.4: What the instrument remembers'
+    name: 'This action: What the instrument remembers'
     description: |-
       Recover the protected calibration record through the constrained instrument interface and bind it to the retained field revision.
 
@@ -335,7 +369,7 @@ objectives:
     agent: participant.operator
     actions:
     - w16.c4
-    targets: &id008
+    targets:
     - features.a-corporate.a-archive
     success:
       mode: all_of
@@ -346,8 +380,8 @@ objectives:
       - w16.c4
 workflows:
   c1:
-    description: 'W16.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -369,8 +403,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W16.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -392,8 +426,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W16.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -415,8 +449,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W16.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -442,25 +476,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the instrument's restricted sequence descriptor and reproduce the designated
-      ordinary diagnostic observation.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Instrument sequencer SEQ-CRR-4 descriptor defines 256 sample slots, 32 authorized indices, eight opcodes, maximum 64 instructions, and ordinary trace SEQ-BASE-17. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the descriptor and a correctly bound baseline observation. Finding the binary or its version string is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w16.c1
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **The sequencer's vocabulary**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Instrument sequencer SEQ-CRR-4 descriptor defines 256 sample slots, 32 authorized indices, eight opcodes, maximum 64 instructions, and ordinary trace SEQ-BASE-17.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/the-sequencer-s-vocabulary`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/the-sequencer-s-vocabulary`
+
+        The private service-loader contract is `content.arwc-a-archive.w16-1-the-sequencer-s-vocabulary`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w16-1-the-sequencer-s-vocabulary
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the descriptor and a correctly bound baseline observation. Finding the binary
-        or its version string is insufficient.
-      target_refs: *id005
+      description: Recover the descriptor and a correctly bound baseline observation. Finding the binary or its
+        version string is insufficient.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w16.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w16.c1
     failure_classes:
@@ -474,25 +544,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Demonstrate a controlled observation beyond the instrument's intended data window
-      without abandoning its diagnostic interface.
+    procedure_basis: |-
+      The authored condition is **late bounds authorization with observable cycle state**. SEQ-CRR-4 programs contain at most 64 four-byte instructions: opcode, unsigned sample index, operand, and destination. Opcodes are NOP=0, LOAD=1, XOR=2, ADD=3, ROTL=4, TEST=5, STORE=6, HALT=7. LOAD masks the index to eight bits, reads the sample, and adds its data-dependent cost before checking the 32-index authorization bitmap; a rejected read returns no byte but retains the final cycle count. The service accepts at most 4096 experiments for the supplied sequencer instance and never writes an instrument. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary in-window reading does not establish the result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w16.c2
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **An observation outside the window**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Interpreter masks an 8-bit sample index before a late authorization check; a rejected out-of-window LOAD still changes the deterministic cycle accumulator without returning the sample.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/an-observation-outside-the-window`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/an-observation-outside-the-window`
+
+        The private service-loader contract is `content.arwc-a-archive.w16-2-an-observation-outside-the-window`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w16-2-an-observation-outside-the-window
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary
-        in-window reading does not count.
-      target_refs: *id006
+      description: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary in-window
+        reading does not establish the result.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w16.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w16.c2
     failure_classes:
@@ -506,25 +612,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Construct a sequencer experiment that distinguishes the specified protected conditions
-      through its measurements. Establish an interpretation that holds across the supplied reference cases.
+    procedure_basis: |-
+      The authored condition is **bounded deterministic side-channel experiment**. For a TEST of protected slot j with probe p, reported cycles are 1200 + 64*popcount(sample[j] XOR p) + jitter, where jitter is the next value from the supplied deterministic sequence in [-2,2]. Eight repeats of p=0 and of each single-bit probe identify every bit by the sign of the mean-cycle difference. Supplied zero, one-hot, and 0xff samples freeze bit order, averaging, and the error response. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate correct discrimination of the designated independent conditions. Raw timing differences or repeated ordinary sequences are insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w16.c3
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **An experiment with a signal**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Cycle count is base 1200 plus 64 times popcount(secret_byte XOR probe) with seeded jitter in [-2,2]; eight repetitions and supplied reference cases distinguish each bit.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/an-experiment-with-a-signal`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/an-experiment-with-a-signal`
+
+        The private service-loader contract is `content.arwc-a-archive.w16-3-an-experiment-with-a-signal`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w16-3-an-experiment-with-a-signal
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate correct discrimination of the designated independent conditions. Raw timing
-        differences or repeated ordinary sequences are insufficient.
-      target_refs: *id007
+      description: Demonstrate correct discrimination of the designated independent conditions. Raw timing differences
+        or repeated ordinary sequences are insufficient.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w16.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w16.c3
     failure_classes:
@@ -538,25 +680,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the protected calibration record through the constrained instrument interface
-      and bind it to the retained field revision.
+    procedure_basis: |-
+      The authored condition is **constrained calibration recovery**. Protected 32-byte calibration record CAL-CRR-OG2-R8 occupies sequencer slots 160-191 and includes revision R8 plus an internal CRC32C; only descriptor-valid experiments of at most 64 instructions are accepted. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the complete correctly bound calibration record under the stated diagnostic constraints. It is an optional W33 input; ordinary commissioning records supply an easier alternative.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w16.c4
+      - features.a-corporate.a-archive
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-archive` and its `retained-archive` application own this part of **What the instrument remembers**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Protected 32-byte calibration record CAL-CRR-OG2-R8 occupies sequencer slots 160-191 and includes revision R8 plus an internal CRC32C; only descriptor-valid experiments of at most 64 instructions are accepted.
+
+        Native bindings:
+
+        - `a-corporate.a-archive/retained-archive/what-the-instrument-remembers`
+        - `a-corporate.a-archive/filesystem:/var/lib/arwc-archive/artifacts/what-the-instrument-remembers`
+
+        The private service-loader contract is `content.arwc-a-archive.w16-4-what-the-instrument-remembers`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-archive
+      - content.arwc-a-archive.w16-4-what-the-instrument-remembers
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-archive
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the complete correctly bound calibration record under the stated diagnostic
-        constraints. It is an optional W33 input; ordinary commissioning records supply an easier alternative.
-      target_refs: *id008
+      description: Recover the complete correctly bound calibration record under the stated diagnostic constraints.
+        It is an optional W33 input; ordinary commissioning records supply an easier alternative.
+      target_refs:
+      - features.a-corporate.a-archive
+      evidence_refs:
+      - evidence_requirements.w16.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-archive`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-archive
       evidence_refs:
       - evidence_requirements.w16.c4
     failure_classes:
@@ -566,101 +744,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W16.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w16.c1
-      mode: artifact
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W16.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w16.c2
-      mode: artifact
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W16.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w16.c3
-      mode: artifact
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-archive
-    description: W16.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w16.c4
-      mode: artifact
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W16.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained diagnostic instrument artifact, its sequencer interface, ordinary observation examples, and protected calibration references.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w16
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained diagnostic instrument artifact, its sequencer interface, ordinary observation
-        examples, and protected calibration references.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W16.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained diagnostic instrument artifact, its sequencer interface, ordinary observation examples, and protected calibration references.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w16
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained diagnostic instrument artifact, its sequencer interface, ordinary observation
-        examples, and protected calibration references.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W16.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained diagnostic instrument artifact, its sequencer interface, ordinary observation examples, and protected calibration references.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w16
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained diagnostic instrument artifact, its sequencer interface, ordinary observation
-        examples, and protected calibration references.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W16.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      A retained diagnostic instrument artifact, its sequencer interface, ordinary observation examples, and protected calibration references.
-    target: a-corporate.a-archive
-    tags:
-    - synthetic
-    - w16
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: A retained diagnostic instrument artifact, its sequencer interface, ordinary observation
-        examples, and protected calibration references.

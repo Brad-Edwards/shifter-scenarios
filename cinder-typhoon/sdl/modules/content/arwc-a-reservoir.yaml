@@ -1,0 +1,284 @@
+name: cinder-arwc-a-reservoir
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/arwc-a-reservoir
+  version: 0.1.0
+  exports:
+    content:
+    - w30-2-open-the-gates
+    - w33-3-the-schedule-the-service-accepts
+    - w33-4-when-the-forecast-moves
+realization:
+  default: open
+content:
+  w30-2-open-the-gates:
+    type: file
+    target: a-control.a-reservoir
+    path: /var/lib/arwc-reservoir/contracts/open-the-gates.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: open-the-gates
+      owner:
+        node: a-reservoir
+        application: reservoir-controller
+      surface_bindings:
+      - a-control.a-reservoir/reservoir-controller/open-the-gates
+      - a-control.a-instruments/independent-instruments/open-the-gates
+      starting_state: Live reservoir accepts bound plan PLAN-CRR-LOSS-1000; command audit records the ramp and setpoint
+        timeline while independent instruments integrate 1.00 ML and reserve 12.40 to 11.40 ML, producing liability and
+        Stage A continuity records.
+      narrative_reuse: []
+      process_contract_refs:
+      - PLAN-CRR-LOSS-1000
+      - ENV-OG2-R6
+      mechanic_profile:
+        kind: bounded actuation with independent measurement
+        behavior_contract: Live reservoir accepts bound plan PLAN-CRR-LOSS-1000; command audit records the ramp and setpoint
+          timeline while independent instruments integrate 1.00 ML and reserve 12.40 to 11.40 ML, producing liability
+          and Stage A continuity records.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: 'Demonstrate the opening and resulting volume change through independent process observations.
+          This supplies the declared prior result. A command acknowledgement or altered report does not establish the
+          result; the release remains within the normal channel envelope. The conclusion follows the verified effect through
+          three connected facts: the identified reservoir gates moved, usable reserve fell by the observed amount, and
+          that loss produces the calculated replacement cost and water restrictions. ARWC''s resulting continuity notice
+          makes the economic consequence explicit. The gate state, before-and-after reserve, cost, and restrictions all
+          belong to this operator''s same completed release; success does not require waiting for an additional delay.
+          The earlier maintenance ticket and the outlet the operator identified anchor the ending in familiar evidence.
+          Additional contextual records appear only when their source records are present. The custom consequence remains
+          financial loss and restrictions, with the dam intact and no catastrophic flooding. The authored notice expresses
+          the existing consequence calculation; it does not require a new procurement, messaging, or control capability.'
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC scoped live control or rehearsal session
+        input: Live reservoir accepts bound plan PLAN-CRR-LOSS-1000; command audit records the ramp and setpoint timeline
+          while independent instruments integrate 1.00 ML and reserve 12.40 to 11.40 ML, producing liability and Stage
+          A continuity records.
+        success: 'Demonstrate the opening and resulting volume change through independent process observations. This supplies
+          the declared prior result. A command acknowledgement or altered report does not establish the result; the release
+          remains within the normal channel envelope. The conclusion follows the verified effect through three connected
+          facts: the identified reservoir gates moved, usable reserve fell by the observed amount, and that loss produces
+          the calculated replacement cost and water restrictions. ARWC''s resulting continuity notice makes the economic
+          consequence explicit. The gate state, before-and-after reserve, cost, and restrictions all belong to this operator''s
+          same completed release; success does not require waiting for an additional delay. The earlier maintenance ticket
+          and the outlet the operator identified anchor the ending in familiar evidence. Additional contextual records
+          appear only when their source records are present. The custom consequence remains financial loss and restrictions,
+          with the dam intact and no catastrophic flooding. The authored notice expresses the existing consequence calculation;
+          it does not require a new procurement, messaging, or control capability.'
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: 'Demonstrate the opening and resulting volume change through independent process observations.
+        This supplies the declared prior result. A command acknowledgement or altered report does not establish the result;
+        the release remains within the normal channel envelope. The conclusion follows the verified effect through three
+        connected facts: the identified reservoir gates moved, usable reserve fell by the observed amount, and that loss
+        produces the calculated replacement cost and water restrictions. ARWC''s resulting continuity notice makes the
+        economic consequence explicit. The gate state, before-and-after reserve, cost, and restrictions all belong to
+        this operator''s same completed release; success does not require waiting for an additional delay. The earlier
+        maintenance ticket and the outlet the operator identified anchor the ending in familiar evidence. Additional contextual
+        records appear only when their source records are present. The custom consequence remains financial loss and restrictions,
+        with the dam intact and no catastrophic flooding. The authored notice expresses the existing consequence calculation;
+        it does not require a new procurement, messaging, or control capability.'
+      evidence_contract:
+        producer: a-reservoir/reservoir-controller writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: Supplies the declared prior result and the main bounded consequence.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: f880b0094d43d908264c8429d6b0b858bdb9fc744ea94fc156eacf9135ba7d46
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-reservoir
+    - persistent-tenant-state
+  w33-3-the-schedule-the-service-accepts:
+    type: file
+    target: a-control.a-reservoir
+    path: /var/lib/arwc-reservoir/contracts/the-schedule-the-service-accepts.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: the-schedule-the-service-accepts
+      owner:
+        node: a-reservoir
+        application: reservoir-controller
+      surface_bindings:
+      - a-control.a-reservoir/reservoir-controller/the-schedule-the-service-accepts
+      - a-control.a-distribution/distribution-rehearsal/the-schedule-the-service-accepts
+      - a-control.a-instruments/independent-instruments/the-schedule-the-service-accepts
+      starting_state: Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client; reference
+        trajectory releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall, and computes USD
+        984 liability within the isolated checkpoint.
+      narrative_reuse: []
+      process_contract_refs:
+      - REH-SCHED-33
+      mechanic_profile:
+        kind: authorization-bound private rehearsal
+        behavior_contract: Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client;
+          reference trajectory releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall, and computes
+          USD 984 liability within the isolated checkpoint.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic
+          effect. Bind the advanced schedule to the current evidence and recompute its consequence using the earned model;
+          a valid plan for another schedule or checkpoint is insufficient.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC scoped live control or rehearsal session
+        input: Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client; reference trajectory
+          releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall, and computes USD 984 liability
+          within the isolated checkpoint.
+        success: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic effect.
+          Bind the advanced schedule to the current evidence and recompute its consequence using the earned model; a valid
+          plan for another schedule or checkpoint is insufficient.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic
+        effect. Bind the advanced schedule to the current evidence and recompute its consequence using the earned model;
+        a valid plan for another schedule or checkpoint is insufficient.
+      evidence_contract:
+        producer: a-reservoir/reservoir-controller writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 80abb9fdaa76226dbf229487dc3b2f3eedb3d69ba0f533bc238d68b47af982cc
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-reservoir
+    - persistent-tenant-state
+  w33-4-when-the-forecast-moves:
+    type: file
+    target: a-control.a-reservoir
+    path: /var/lib/arwc-reservoir/contracts/when-the-forecast-moves.yaml
+    description: Service configuration contract. It seeds only initial state and declares normal, denied, transition,
+      persistence, and evidence behavior; it does not pre-populate an accepted result.
+    text: |
+      schema: arwc.service-contract/v1
+      record_key: when-the-forecast-moves
+      owner:
+        node: a-reservoir
+        application: reservoir-controller
+      surface_bindings:
+      - a-control.a-reservoir/reservoir-controller/when-the-forecast-moves
+      - a-control.a-distribution/distribution-rehearsal/when-the-forecast-moves
+      - a-control.a-instruments/independent-instruments/when-the-forecast-moves
+      starting_state: Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and bounded
+        buffer and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00, +0.05 m3/s, outlet
+        gain 0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must derive from the buffer and demand
+        observations available at that step, and per-case schedules are rejected.
+      narrative_reuse: []
+      process_contract_refs:
+      - REH-SCHED-33
+      mechanic_profile:
+        kind: observation-driven feedback policy evaluation
+        behavior_contract: Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and bounded
+          buffer and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00, +0.05 m3/s, outlet
+          gain 0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must derive from the buffer and
+          demand observations available at that step, and per-case schedules are rejected.
+        normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
+          identity, tenant, revision, and process bindings are valid.
+        accepted_effect: Demonstrate the policy through the scheduler in independent private rehearsal cases within the
+          published bounds, using available observations. A standalone offline policy or one replayed winning schedule
+          is insufficient; scenario time advances on demand.
+        scope_boundary: The operation is limited to the named records and bounded service action. It provides no general
+          shell, arbitrary network target, cross-tenant state, unrelated process interface, or unlisted authority.
+      request_contract:
+        entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
+        identity: ARWC scoped live control or rehearsal session
+        input: Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and bounded buffer
+          and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00, +0.05 m3/s, outlet gain
+          0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must derive from the buffer and demand
+          observations available at that step, and per-case schedules are rejected.
+        success: Demonstrate the policy through the scheduler in independent private rehearsal cases within the published
+          bounds, using available observations. A standalone offline policy or one replayed winning schedule is insufficient;
+          scenario time advances on demand.
+        correlation: The owning service creates a UUIDv4 correlation and commits its audit before returning success.
+      denial_contract:
+        wrong_authority: Return the declared authorization failure without protected content or mutation.
+        wrong_binding: Reject a wrong object, asset, district, identity, revision, digest, checkpoint, unit, or process
+          binding.
+        stale_or_replayed: Reject stale, expired, consumed, or cross-checkpoint material unless the exact record is an
+          immutable historical read.
+        cross_tenant: Never resolve, join, mutate, or disclose another tenant instance's state.
+      transition_contract: Demonstrate the policy through the scheduler in independent private rehearsal cases within
+        the published bounds, using available observations. A standalone offline policy or one replayed winning schedule
+        is insufficient; scenario time advances on demand.
+      evidence_contract:
+        producer: a-reservoir/reservoir-controller writes the primary immutable audit; caller output alone is insufficient.
+        required_bindings:
+        - tenant instance
+        - accepted caller or service identity
+        - request correlation
+        - exact object and revision
+        - result identifier and digest
+        - destination observation when declared
+        downstream_join: The result remains local evidence unless a downstream workflow explicitly names it.
+        freshness: A mutable result and its audit are created only by an accepted request and are absent from initial
+          state.
+      state_rules:
+        initial_records: immutable unless the exact owning route declares a mutable field or revision
+        tenant_state: persistent for the tenant instance across ordinary retries and later sessions
+        verification: observed from owning-service evidence and never manufactured by the observing service
+        isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
+      generation_input:
+        algorithm: sha256
+        digest: 7dcc9e17b845af3383c8dde6787527012b5ea440b038811e7eb877a2ca8a0573
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
+    sensitive: true
+    tags:
+    - arwc
+    - service-contract
+    - a-reservoir
+    - persistent-tenant-state

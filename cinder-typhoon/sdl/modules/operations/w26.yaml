@@ -40,23 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the current renderer, approval, and inspection association. An obsolete preview
-      profile is insufficient.
-    source_refs: &id001
+    description: |-
+      Recover the current renderer, approval, and inspection association. An obsolete preview profile is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-maintenance.a-renderer`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-maintenance.a-renderer
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Demonstrate the restricted preview action with the correct inspection and approval binding.
-      Reading the approval or displaying an ordinary contractor preview does not count.
-    source_refs: &id002
+    description: |-
+      Demonstrate the restricted preview action with the correct inspection and approval binding. Reading the approval or displaying an ordinary contractor preview does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-maintenance.a-renderer`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-maintenance.a-renderer
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,11 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Demonstrate renderer-context execution, recover the internal handover, and preserve the
-      preview's required ordinary content. Application-level preview control from W26.2 alone does not
-      count; live-action authority remains W26.4.
-    source_refs: &id003
+    description: |-
+      Demonstrate renderer-context execution, recover the internal handover, and preserve the preview's required ordinary content. Application-level preview control from W26.2 alone does not establish the result; live-action authority remains W26.4.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-maintenance.a-renderer`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-maintenance.a-renderer
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -150,10 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Demonstrate the scoped client's accepted authority under the correct approval binding.
-      This supplies W26.CONTROL and CONTROL; it does not waive mode, mapping, or release limits.
-    source_refs: &id004
+    description: |-
+      Demonstrate the scoped client's accepted authority under the correct approval binding. This supplies W26.CONTROL and CONTROL; it does not waive mode, mapping, or release limits.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-dmz.a-control-broker--maintenance-issuer`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-dmz.a-control-broker--maintenance-issuer
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -182,11 +205,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the current renderer, approval, and inspection association. An obsolete preview
-      profile is insufficient.
-    subjects: *id001
+    description: Recover the current renderer, approval, and inspection association. An obsolete preview profile
+      is insufficient.
+    subjects:
+    - features.a-maintenance.a-renderer
     basis: observed_state
     predicate:
       kind: boolean
@@ -198,9 +228,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate the restricted preview action with the correct inspection and approval binding.
-      Reading the approval or displaying an ordinary contractor preview does not count.
-    subjects: *id002
+    description: Demonstrate the restricted preview action with the correct inspection and approval binding. Reading
+      the approval or displaying an ordinary contractor preview does not establish the result.
+    subjects:
+    - features.a-maintenance.a-renderer
     basis: observed_state
     predicate:
       kind: boolean
@@ -212,10 +243,11 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate renderer-context execution, recover the internal handover, and preserve the
-      preview's required ordinary content. Application-level preview control from W26.2 alone does not
-      count; live-action authority remains W26.4.
-    subjects: *id003
+    description: Demonstrate renderer-context execution, recover the internal handover, and preserve the preview's
+      required ordinary content. Application-level preview control from W26.2 alone does not establish the result;
+      live-action authority remains W26.4.
+    subjects:
+    - features.a-maintenance.a-renderer
     basis: observed_state
     predicate:
       kind: boolean
@@ -227,9 +259,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Demonstrate the scoped client's accepted authority under the correct approval binding.
-      This supplies W26.CONTROL and CONTROL; it does not waive mode, mapping, or release limits.
-    subjects: *id004
+    description: Demonstrate the scoped client's accepted authority under the correct approval binding. This supplies
+      W26.CONTROL and CONTROL; it does not waive mode, mapping, or release limits.
+    subjects:
+    - features.a-dmz.a-control-broker--maintenance-issuer
     basis: observed_state
     predicate:
       kind: boolean
@@ -275,7 +308,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W26.1: Which renderer holds the approval'
+    name: 'This action: Which renderer holds the approval'
     description: |-
       Recover the protected maintenance-renderer profile and bind it to the approved inspection.
 
@@ -283,7 +316,7 @@ objectives:
     agent: participant.operator
     actions:
     - w26.c1
-    targets: &id005
+    targets:
     - features.a-maintenance.a-renderer
     success:
       mode: all_of
@@ -293,7 +326,7 @@ objectives:
       workflows:
       - w26.c1
   c2:
-    name: 'W26.2: Authority behind the preview'
+    name: 'This action: Authority behind the preview'
     description: |-
       Make the maintenance renderer accept a contractor-submitted work package for the privileged inspection preview it normally reserves for the maintenance reviewer.
 
@@ -301,7 +334,7 @@ objectives:
     agent: participant.operator
     actions:
     - w26.c2
-    targets: &id006
+    targets:
     - features.a-maintenance.a-renderer
     success:
       mode: all_of
@@ -311,7 +344,7 @@ objectives:
       workflows:
       - w26.c2
   c3:
-    name: 'W26.3: The preview executes'
+    name: 'This action: The preview executes'
     description: |-
       Make the renderer recover its internal maintenance handover through an action executed under its service identity, while still producing the expected inspection preview.
 
@@ -319,7 +352,7 @@ objectives:
     agent: participant.operator
     actions:
     - w26.c3
-    targets: &id007
+    targets:
     - features.a-maintenance.a-renderer
     success:
       mode: all_of
@@ -329,7 +362,7 @@ objectives:
       workflows:
       - w26.c3
   c4:
-    name: 'W26.4: An approval becomes a control client'
+    name: 'This action: An approval becomes a control client'
     description: |-
       Cross the remaining render-to-action boundary and establish a live control client bound to the earned contractor identity and maintenance approval.
 
@@ -337,7 +370,7 @@ objectives:
     agent: participant.operator
     actions:
     - w26.c4
-    targets: &id008
+    targets:
     - features.a-dmz.a-control-broker--maintenance-issuer
     success:
       mode: all_of
@@ -348,8 +381,8 @@ objectives:
       - w26.c4
 workflows:
   c1:
-    description: 'W26.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -372,8 +405,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W26.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -395,8 +428,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W26.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -418,8 +451,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W26.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -445,24 +478,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the protected maintenance-renderer profile and bind it to the approved inspection.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Renderer profile RENDER-MAINT-CRR-R9 binds approval APR-CRR-4417-R6, inspection INSP-CRR-2026-09-18, reviewer role maintenance-reviewer, and worker svc-maint-render. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the current renderer, approval, and inspection association. An obsolete preview profile is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w26.c1
+      - features.a-maintenance.a-renderer
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-renderer` and its `maintenance-renderer` application own this part of **Which renderer holds the approval**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Renderer profile RENDER-MAINT-CRR-R9 binds approval APR-CRR-4417-R6, inspection INSP-CRR-2026-09-18, reviewer role maintenance-reviewer, and worker svc-maint-render.
+
+        Native bindings:
+
+        - `a-maintenance.a-renderer/maintenance-renderer/which-renderer-holds-the-approval`
+
+        The private service-loader contract is `content.arwc-a-renderer.w26-1-which-renderer-holds-the-approval`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-maintenance.a-renderer
+      - content.arwc-a-renderer.w26-1-which-renderer-holds-the-approval
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-maintenance.a-renderer
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the current renderer, approval, and inspection association. An obsolete preview
-        profile is insufficient.
-      target_refs: *id005
+      description: Recover the current renderer, approval, and inspection association. An obsolete preview profile
+        is insufficient.
+      target_refs:
+      - features.a-maintenance.a-renderer
+      evidence_refs:
+      - evidence_requirements.w26.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-maintenance.a-renderer`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-maintenance.a-renderer
       evidence_refs:
       - evidence_requirements.w26.c1
     failure_classes:
@@ -476,25 +545,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Make the maintenance renderer accept a contractor-submitted work package for the
-      privileged inspection preview it normally reserves for the maintenance reviewer.
+    procedure_basis: |-
+      The authored condition is **renderer caller-role omission**. Preview route resolves contractor work-package tenant after mapping its supplied approval; it verifies approval signature but omits caller-role comparison, accepting controlled package WP-CRR-CINDER-R1 for the privileged inspection preview. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the restricted preview action with the correct inspection and approval binding. Reading the approval or displaying an ordinary contractor preview does not establish the result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w26.c2
+      - features.a-maintenance.a-renderer
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-renderer` and its `maintenance-renderer` application own this part of **Authority behind the preview**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Preview route resolves contractor work-package tenant after mapping its supplied approval; it verifies approval signature but omits caller-role comparison, accepting controlled package WP-CRR-CINDER-R1 for the privileged inspection preview.
+
+        Native bindings:
+
+        - `a-maintenance.a-renderer/maintenance-renderer/authority-behind-the-preview`
+
+        The private service-loader contract is `content.arwc-a-renderer.w26-2-authority-behind-the-preview`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-maintenance.a-renderer
+      - content.arwc-a-renderer.w26-2-authority-behind-the-preview
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-maintenance.a-renderer
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the restricted preview action with the correct inspection and approval
-        binding. Reading the approval or displaying an ordinary contractor preview does not count.
-      target_refs: *id006
+      description: Demonstrate the restricted preview action with the correct inspection and approval binding. Reading
+        the approval or displaying an ordinary contractor preview does not establish the result.
+      target_refs:
+      - features.a-maintenance.a-renderer
+      evidence_refs:
+      - evidence_requirements.w26.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-maintenance.a-renderer`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-maintenance.a-renderer
       evidence_refs:
       - evidence_requirements.w26.c2
     failure_classes:
@@ -508,26 +612,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Make the renderer recover its internal maintenance handover through an action executed
-      under its service identity, while still producing the expected inspection preview.
+    procedure_basis: |-
+      The authored condition is **bounded renderer service action**. Renderer action template permits only fetch_handover(HND-MAINT-CTRL-09) under svc-maint-render and then renders the required inspection fields; crafted package can select that action but no command or arbitrary URL. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate renderer-context execution, recover the internal handover, and preserve the preview's required ordinary content. Application-level preview control from W26.2 alone does not establish the result; live-action authority remains W26.4.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w26.c3
+      - features.a-maintenance.a-renderer
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-renderer` and its `maintenance-renderer` application own this part of **The preview executes**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Renderer action template permits only fetch_handover(HND-MAINT-CTRL-09) under svc-maint-render and then renders the required inspection fields; crafted package can select that action but no command or arbitrary URL.
+
+        Native bindings:
+
+        - `a-maintenance.a-renderer/maintenance-renderer/the-preview-executes`
+
+        The private service-loader contract is `content.arwc-a-renderer.w26-3-the-preview-executes`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-maintenance.a-renderer
+      - content.arwc-a-renderer.w26-3-the-preview-executes
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-maintenance.a-renderer
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate renderer-context execution, recover the internal handover, and preserve
-        the preview's required ordinary content. Application-level preview control from W26.2 alone does
-        not count; live-action authority remains W26.4.
-      target_refs: *id007
+      description: Demonstrate renderer-context execution, recover the internal handover, and preserve the preview's
+        required ordinary content. Application-level preview control from W26.2 alone does not establish the result;
+        live-action authority remains W26.4.
+      target_refs:
+      - features.a-maintenance.a-renderer
+      evidence_refs:
+      - evidence_requirements.w26.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-maintenance.a-renderer`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-maintenance.a-renderer
       evidence_refs:
       - evidence_requirements.w26.c3
     failure_classes:
@@ -541,25 +680,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Cross the remaining render-to-action boundary and establish a live control client
-      bound to the earned contractor identity and maintenance approval.
+    procedure_basis: |-
+      The authored condition is **issuer initiating-role omission**. Control issuer verifies approval and renderer attestation but omits the initiating caller-role claim, issuing a five-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the scoped client's accepted authority under the correct approval binding. This supplies W26.CONTROL and CONTROL; it does not waive mode, mapping, or release limits.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w26.c4
+      - features.a-dmz.a-control-broker--maintenance-issuer
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-control-broker` and its `control-broker` application own this part of **An approval becomes a control client**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Control issuer verifies approval and renderer attestation but omits the initiating caller-role claim, issuing a five-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback.
+
+        Native bindings:
+
+        - `a-dmz.a-control-broker/control-broker/an-approval-becomes-a-control-client`
+
+        The private service-loader contract is `content.arwc-a-control-broker.w26-4-an-approval-becomes-a-control-client`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-dmz.a-control-broker--maintenance-issuer
+      - content.arwc-a-control-broker.w26-4-an-approval-becomes-a-control-client
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies W26.CONTROL and CONTROL. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-dmz.a-control-broker--maintenance-issuer
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the scoped client's accepted authority under the correct approval binding.
-        This supplies W26.CONTROL and CONTROL; it does not waive mode, mapping, or release limits.
-      target_refs: *id008
+      description: Demonstrate the scoped client's accepted authority under the correct approval binding. This supplies
+        W26.CONTROL and CONTROL; it does not waive mode, mapping, or release limits.
+      target_refs:
+      - features.a-dmz.a-control-broker--maintenance-issuer
+      evidence_refs:
+      - evidence_requirements.w26.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-dmz.a-control-broker--maintenance-issuer`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-dmz.a-control-broker--maintenance-issuer
       evidence_refs:
       - evidence_requirements.w26.c4
     failure_classes:
@@ -569,101 +743,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-maintenance.a-renderer
-    description: W26.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w26.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-maintenance.a-renderer
-    description: W26.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w26.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-maintenance.a-renderer
-    description: W26.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w26.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-dmz.a-control-broker--maintenance-issuer
-    description: W26.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w26.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W26.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The contractor session, earned maintenance approval, the maintenance rendering workflow, and its scoped action interface.
-    target: a-maintenance.a-renderer
-    tags:
-    - synthetic
-    - w26
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The contractor session, earned maintenance approval, the maintenance rendering workflow,
-        and its scoped action interface.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W26.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The contractor session, earned maintenance approval, the maintenance rendering workflow, and its scoped action interface.
-    target: a-maintenance.a-renderer
-    tags:
-    - synthetic
-    - w26
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The contractor session, earned maintenance approval, the maintenance rendering workflow,
-        and its scoped action interface.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W26.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The contractor session, earned maintenance approval, the maintenance rendering workflow, and its scoped action interface.
-    target: a-maintenance.a-renderer
-    tags:
-    - synthetic
-    - w26
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The contractor session, earned maintenance approval, the maintenance rendering workflow,
-        and its scoped action interface.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W26.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The contractor session, earned maintenance approval, the maintenance rendering workflow, and its scoped action interface.
-    target: a-dmz.a-control-broker
-    tags:
-    - synthetic
-    - w26
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The contractor session, earned maintenance approval, the maintenance rendering workflow,
-        and its scoped action interface.

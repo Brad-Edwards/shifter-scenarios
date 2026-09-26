@@ -33,23 +33,15 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c3-surface-2
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c3-records-2
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Demonstrate the authenticated service action and recover its bound record. Repeating
-      K19's delegated probe does not count.
-    source_refs: &id001
+    description: |-
+      Demonstrate the authenticated service action and recover its bound record. Repeating K19's delegated probe does not count.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-corporate.k-identity--delegation
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -78,10 +70,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c2:
-    description: Demonstrate the managed identity against its protected administrative resource. Possessing
-      unrelated staff credentials is insufficient.
-    source_refs: &id002
+    description: |-
+      Demonstrate the managed identity against its protected administrative resource. Possessing unrelated staff credentials is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-corporate.k-staff--managed-record
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -110,11 +109,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c3:
-    description: Demonstrate the privileged publication approval in the supplied rehearsal scope. This
-      supplies alternative publication authority for K26. It neither identifies the current ARWC tenant
-      nor skips G02, G03, or actual customer consumption.
-    source_refs: &id003
+    description: |-
+      Demonstrate the privileged publication approval in the supplied rehearsal scope. This supplies alternative publication authority for K26. It neither identifies the current ARWC tenant nor skips G02, G03, or actual customer consumption.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-registry
     - features.k-delivery.k-ci--rehearsals
     scope: Per-participant in-world evidence; no other participant state.
@@ -145,11 +150,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
 propositions:
   c1:
-    description: Demonstrate the authenticated service action and recover its bound record. Repeating
-      K19's delegated probe does not count.
-    subjects: *id001
+    description: Demonstrate the authenticated service action and recover its bound record. Repeating K19's delegated
+      probe does not count.
+    subjects:
+    - features.k-corporate.k-identity--delegation
     basis: observed_state
     predicate:
       kind: boolean
@@ -161,9 +172,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate the managed identity against its protected administrative resource. Possessing
-      unrelated staff credentials is insufficient.
-    subjects: *id002
+    description: Demonstrate the managed identity against its protected administrative resource. Possessing unrelated
+      staff credentials is insufficient.
+    subjects:
+    - features.k-corporate.k-staff--managed-record
     basis: observed_state
     predicate:
       kind: boolean
@@ -175,10 +187,12 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate the privileged publication approval in the supplied rehearsal scope. This
-      supplies alternative publication authority for K26. It neither identifies the current ARWC tenant
-      nor skips G02, G03, or actual customer consumption.
-    subjects: *id003
+    description: Demonstrate the privileged publication approval in the supplied rehearsal scope. This supplies
+      alternative publication authority for K26. It neither identifies the current ARWC tenant nor skips G02, G03,
+      or actual customer consumption.
+    subjects:
+    - features.k-delivery.k-registry
+    - features.k-delivery.k-ci--rehearsals
     basis: observed_state
     predicate:
       kind: boolean
@@ -224,7 +238,7 @@ objectives:
     agent: participant.operator
     actions:
     - k20.c1
-    targets: &id004
+    targets:
     - features.k-corporate.k-identity--delegation
     success:
       mode: all_of
@@ -242,7 +256,7 @@ objectives:
     agent: participant.operator
     actions:
     - k20.c2
-    targets: &id005
+    targets:
     - features.k-corporate.k-staff--managed-record
     success:
       mode: all_of
@@ -260,7 +274,7 @@ objectives:
     agent: participant.operator
     actions:
     - k20.c3
-    targets: &id006
+    targets:
     - features.k-delivery.k-registry
     - features.k-delivery.k-ci--rehearsals
     success:
@@ -272,8 +286,8 @@ objectives:
       - k20.c3
 workflows:
   c1:
-    description: 'K20.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K20.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -295,8 +309,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K20.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K20.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -318,8 +332,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K20.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K20.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -345,25 +359,48 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Extend the earned delegated context across the service's next authentication boundary
-      and recover its protected service record.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Authenticated action and protected relation record. Merely describing the condition,
+      editing a local copy, or presenting a value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k20.c1
       - features.k-corporate.k-identity--delegation
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-identity` owns this part of the operation. Its starting state is exact: Delegated context
+        can invoke service-relations/read for svc-release-admin; host-omission from K19 permits this adjacent SPN.
+        The owning service uses the listener, route, identity, authorization, storage, and audit contract declared
+        in the corresponding world module. Records that are not explicitly mutable remain immutable. The private
+        service-loader contract `content.keplerops-k-identity.k20-1-a-delegation-that-reaches-further` freezes the
+        request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-corporate.k-identity
+      - content.keplerops-k-identity.k20-1-a-delegation-that-reaches-further
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K20.2. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
+      - features.k-corporate.k-identity
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the authenticated service action and recover its bound record. Repeating
-        K19's delegated probe does not count.
-      target_refs: *id004
+      description: Demonstrate the authenticated service action and recover its bound record. Repeating K19's delegated
+        probe does not count.
+      target_refs:
+      - features.k-corporate.k-identity--delegation
       evidence_refs:
       - evidence_requirements.k20.c1
     failure_classes:
@@ -377,25 +414,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Obtain the managed service capability needed by release administration despite the
-      service's separate access boundary.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Issued bounded svc-release-admin service session and protected admin-resource read.
+      Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k20.c2
       - features.k-corporate.k-staff--managed-record
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-staff` owns this part of the operation. Its starting state is exact: Relation points to managed
+        service account; object ACL checks delegated actor''s service relation but not requested managed identity.
+        The owning service uses the listener, route, identity, authorization, storage, and audit contract declared
+        in the corresponding world module. Records that are not explicitly mutable remain immutable. The private
+        service-loader contract `content.keplerops-k-staff.k20-2-the-managed-identity` freezes the request, denial,
+        state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-corporate.k-staff
+      - content.keplerops-k-staff.k20-2-the-managed-identity
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K20.3. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
+      - features.k-corporate.k-staff
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the managed identity against its protected administrative resource. Possessing
-        unrelated staff credentials is insufficient.
-      target_refs: *id005
+      description: Demonstrate the managed identity against its protected administrative resource. Possessing unrelated
+        staff credentials is insufficient.
+      target_refs:
+      - features.k-corporate.k-staff--managed-record
       evidence_refs:
       - evidence_requirements.k20.c2
     failure_classes:
@@ -409,27 +470,54 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Make release administration accept a publication-approval action as its privileged
-      release identity. Preserve the rehearsal consumer identified in the administration dossier.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Privileged approval, publication audit and rehearsal consumer acceptance for one
+      package. Merely describing the condition, editing a local copy, or presenting a value obtained from another
+      surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
-      - workflows.k20.c3
+      - workflows.c3
+      - features.k-delivery.k-registry
+      - features.k-delivery.k-ci--rehearsals
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-registry` owns this part of the operation. Its starting state is exact: Approval API maps
+        managed service session through release-owner impersonation relationship to evan.calderoux; mapping lacks
+        required human-presence claim. The owning service uses the listener, route, identity, authorization, storage,
+        and audit contract declared in the corresponding world module. Records that are not explicitly mutable remain
+        immutable. The private service-loader contract `content.keplerops-k-registry.k20-3-the-service-wears-a-person`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-registry
+      - features.k-delivery.k-ci--rehearsals
+      - content.keplerops-k-registry.k20-3-the-service-wears-a-person
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Alternative K26 publication authority only. Participant-created service state persists for the
+        life of the participant world and ordinary retries do not erase it. The selected route cannot act on unrelated
+        tenants, records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication
+        are outside this in-world contract.
+      support_refs:
       - features.k-delivery.k-registry
       - features.k-delivery.k-ci--rehearsals
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the privileged publication approval in the supplied rehearsal scope. This
-        supplies alternative publication authority for K26. It neither identifies the current ARWC tenant
-        nor skips G02, G03, or actual customer consumption.
-      target_refs: *id006
+      description: Demonstrate the privileged publication approval in the supplied rehearsal scope. This supplies
+        alternative publication authority for K26. It neither identifies the current ARWC tenant nor skips G02,
+        G03, or actual customer consumption.
+      target_refs:
+      - features.k-delivery.k-registry
+      - features.k-delivery.k-ci--rehearsals
       evidence_refs:
       - evidence_requirements.k20.c3
     failure_classes:
@@ -439,101 +527,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-corporate.k-identity--delegation
-    description: K20.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k20.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-corporate.k-staff--managed-record
-    description: K20.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k20.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-registry
-    description: K20.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k20.c3
-      mode: service
-  c3-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-ci--rehearsals
-    description: K20.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k20.c3
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K20.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The delegated staff context, service relationship records, and the release-administration workflow.
-    target: k-corporate.k-identity
-    tags:
-    - synthetic
-    - k20
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The delegated staff context, service relationship records, and the release-administration
-        workflow.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K20.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The delegated staff context, service relationship records, and the release-administration workflow.
-    target: k-corporate.k-staff
-    tags:
-    - synthetic
-    - k20
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The delegated staff context, service relationship records, and the release-administration
-        workflow.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K20.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The delegated staff context, service relationship records, and the release-administration workflow.
-    target: k-delivery.k-registry
-    tags:
-    - synthetic
-    - k20
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The delegated staff context, service relationship records, and the release-administration
-        workflow.
-  c3-records-2:
-    type: dataset
-    description: |-
-      K20.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The delegated staff context, service relationship records, and the release-administration workflow.
-    target: k-delivery.k-ci
-    tags:
-    - synthetic
-    - k20
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The delegated staff context, service relationship records, and the release-administration
-        workflow.

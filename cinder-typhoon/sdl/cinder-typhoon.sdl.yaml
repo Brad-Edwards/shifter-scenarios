@@ -1,8 +1,8 @@
 name: cinder-typhoon
 version: 0.1.0
 description: 'Cinder Typhoon: individual operators progress from training through KeplerOps supply-chain
-  compromise into ARWC enterprise and OT workflows. One participant world; hosting, replication, scoring
-  and model providers remain outside this SDL.'
+  compromise into ARWC enterprise and OT workflows. The SDL defines one isolated operator world; hosting,
+  replication, and model providers remain open realization choices.'
 semantic_revision: raes-progressive-semantics/v1
 realization:
   default: open
@@ -43,6 +43,53 @@ imports:
 - source: local:modules/world/participant.yaml
   namespace: participant
   version: 0.1.0
+# BEGIN GENERATED KEPLEROPS CONTENT
+- source: local:modules/content/keplerops-a-connector.yaml
+  namespace: keplerops-a-connector
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-assistant.yaml
+  namespace: keplerops-k-assistant
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-cert.yaml
+  namespace: keplerops-k-cert
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-ci.yaml
+  namespace: keplerops-k-ci
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-cloud-api.yaml
+  namespace: keplerops-k-cloud-api
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-data.yaml
+  namespace: keplerops-k-data
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-dev.yaml
+  namespace: keplerops-k-dev
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-identity.yaml
+  namespace: keplerops-k-identity
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-indexer.yaml
+  namespace: keplerops-k-indexer
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-preview.yaml
+  namespace: keplerops-k-preview
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-registry.yaml
+  namespace: keplerops-k-registry
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-source.yaml
+  namespace: keplerops-k-source
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-staff.yaml
+  namespace: keplerops-k-staff
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-support.yaml
+  namespace: keplerops-k-support
+  version: 0.1.0
+- source: local:modules/content/keplerops-k-workload.yaml
+  namespace: keplerops-k-workload
+  version: 0.1.0
+# END GENERATED KEPLEROPS CONTENT
 - source: local:modules/operations/k01.yaml
   namespace: k01
   version: 0.1.0
@@ -148,6 +195,59 @@ imports:
 - source: local:modules/operations/t04.yaml
   namespace: t04
   version: 0.1.0
+# BEGIN GENERATED ARWC CONTENT
+- source: local:modules/content/arwc-a-approval.yaml
+  namespace: arwc-a-approval
+  version: 0.1.0
+- source: local:modules/content/arwc-a-archive.yaml
+  namespace: arwc-a-archive
+  version: 0.1.0
+- source: local:modules/content/arwc-a-business.yaml
+  namespace: arwc-a-business
+  version: 0.1.0
+- source: local:modules/content/arwc-a-connector.yaml
+  namespace: arwc-a-connector
+  version: 0.1.0
+- source: local:modules/content/arwc-a-contractor-bridge.yaml
+  namespace: arwc-a-contractor-bridge
+  version: 0.1.0
+- source: local:modules/content/arwc-a-contractors.yaml
+  namespace: arwc-a-contractors
+  version: 0.1.0
+- source: local:modules/content/arwc-a-control-broker.yaml
+  namespace: arwc-a-control-broker
+  version: 0.1.0
+- source: local:modules/content/arwc-a-data.yaml
+  namespace: arwc-a-data
+  version: 0.1.0
+- source: local:modules/content/arwc-a-data-bridge.yaml
+  namespace: arwc-a-data-bridge
+  version: 0.1.0
+- source: local:modules/content/arwc-a-diagnostics.yaml
+  namespace: arwc-a-diagnostics
+  version: 0.1.0
+- source: local:modules/content/arwc-a-engineering.yaml
+  namespace: arwc-a-engineering
+  version: 0.1.0
+- source: local:modules/content/arwc-a-historian.yaml
+  namespace: arwc-a-historian
+  version: 0.1.0
+- source: local:modules/content/arwc-a-hmi.yaml
+  namespace: arwc-a-hmi
+  version: 0.1.0
+- source: local:modules/content/arwc-a-identity.yaml
+  namespace: arwc-a-identity
+  version: 0.1.0
+- source: local:modules/content/arwc-a-instruments.yaml
+  namespace: arwc-a-instruments
+  version: 0.1.0
+- source: local:modules/content/arwc-a-renderer.yaml
+  namespace: arwc-a-renderer
+  version: 0.1.0
+- source: local:modules/content/arwc-a-reservoir.yaml
+  namespace: arwc-a-reservoir
+  version: 0.1.0
+# END GENERATED ARWC CONTENT
 - source: local:modules/operations/w01.yaml
   namespace: w01
   version: 0.1.0
@@ -265,35 +365,11 @@ imports:
 - source: local:modules/routes/flows-participant.yaml
   namespace: flows-participant
   version: 0.1.0
-- source: local:modules/routes/flows-k-corporate.yaml
-  namespace: flows-k-corporate
+- source: local:modules/routes/keplerops-integrations.yaml
+  namespace: keplerops-integrations
   version: 0.1.0
-- source: local:modules/routes/flows-a-corporate.yaml
-  namespace: flows-a-corporate
-  version: 0.1.0
-- source: local:modules/routes/flows-k-delivery.yaml
-  namespace: flows-k-delivery
-  version: 0.1.0
-- source: local:modules/routes/flows-k-cloud.yaml
-  namespace: flows-k-cloud
-  version: 0.1.0
-- source: local:modules/routes/flows-a-maintenance.yaml
-  namespace: flows-a-maintenance
-  version: 0.1.0
-- source: local:modules/routes/flows-a-engineering.yaml
-  namespace: flows-a-engineering
-  version: 0.1.0
-- source: local:modules/routes/flows-a-dmz.yaml
-  namespace: flows-a-dmz
-  version: 0.1.0
-- source: local:modules/routes/flows-a-control.yaml
-  namespace: flows-a-control
-  version: 0.1.0
-- source: local:modules/routes/contexts.yaml
-  namespace: contexts
-  version: 0.1.0
-- source: local:modules/routes/relays.yaml
-  namespace: relays
+- source: local:modules/routes/arwc-integrations.yaml
+  namespace: arwc-integrations
   version: 0.1.0
 - source: local:modules/content/training-state.yaml
   namespace: training-state-content

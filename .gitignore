@@ -2,3 +2,5 @@ __pycache__/
 *.py[cod]
 .codex/
 keplerops-ai/docs/campaign-v2/template/state/
+cinder-typhoon/build/training/.operator/
+cinder-typhoon/build/training/gcp/.terraform/

@@ -33,21 +33,17 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the relevant execution and privilege evidence, bound to the current engineering
-      context. A binary name alone is insufficient.
-    source_refs: &id001
+    description: |-
+      Recover the relevant execution and privilege evidence, bound to the current engineering context. A binary name alone is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -76,10 +72,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Demonstrate controlled flow under the utility's stated constraints. Crashing it or using
-      a different unconstrained process does not count.
-    source_refs: &id002
+    description: |-
+      Demonstrate controlled flow under the utility's stated constraints. Crashing it or using a different unconstrained process does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -108,10 +114,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Demonstrate a control client with the intended live authority. This supplies W28.CONTROL
-      and CONTROL, equivalent in scope to W26's route. Process knowledge remains required.
-    source_refs: &id003
+    description: |-
+      Demonstrate a control client with the intended live authority. This supplies W28.CONTROL and CONTROL, equivalent in scope to W26's route. Process knowledge remains required.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-dmz.a-control-broker--utility-issuer`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-dmz.a-control-broker--utility-issuer
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -140,11 +156,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the relevant execution and privilege evidence, bound to the current engineering
-      context. A binary name alone is insufficient.
-    subjects: *id001
+    description: Recover the relevant execution and privilege evidence, bound to the current engineering context.
+      A binary name alone is insufficient.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -156,9 +179,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate controlled flow under the utility's stated constraints. Crashing it or using
-      a different unconstrained process does not count.
-    subjects: *id002
+    description: Demonstrate controlled flow under the utility's stated constraints. Crashing it or using a different
+      unconstrained process does not establish the result.
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -170,9 +194,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate a control client with the intended live authority. This supplies W28.CONTROL
-      and CONTROL, equivalent in scope to W26's route. Process knowledge remains required.
-    subjects: *id003
+    description: Demonstrate a control client with the intended live authority. This supplies W28.CONTROL and CONTROL,
+      equivalent in scope to W26's route. Process knowledge remains required.
+    subjects:
+    - features.a-dmz.a-control-broker--utility-issuer
     basis: observed_state
     predicate:
       kind: boolean
@@ -210,7 +235,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W28.1: The utility''s small world'
+    name: 'This action: The utility''s small world'
     description: |-
       Recover the utility's actual execution contract and the protected engineering relationship it serves.
 
@@ -218,7 +243,7 @@ objectives:
     agent: participant.operator
     actions:
     - w28.c1
-    targets: &id004
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -228,7 +253,7 @@ objectives:
       workflows:
       - w28.c1
   c2:
-    name: 'W28.2: Control with very little room'
+    name: 'This action: Control with very little room'
     description: |-
       Gain controlled execution flow in the engineering utility despite its restricted executable surface.
 
@@ -236,7 +261,7 @@ objectives:
     agent: participant.operator
     actions:
     - w28.c2
-    targets: &id005
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -246,7 +271,7 @@ objectives:
       workflows:
       - w28.c2
   c3:
-    name: 'W28.3: Keep the authority you earned'
+    name: 'This action: Keep the authority you earned'
     description: |-
       Complete the utility compromise while retaining the privilege needed to establish the scoped live control capability.
 
@@ -254,7 +279,7 @@ objectives:
     agent: participant.operator
     actions:
     - w28.c3
-    targets: &id006
+    targets:
     - features.a-dmz.a-control-broker--utility-issuer
     success:
       mode: all_of
@@ -265,8 +290,8 @@ objectives:
       - w28.c3
 workflows:
   c1:
-    description: 'W28.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -288,8 +313,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W28.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -311,8 +336,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W28.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -338,25 +363,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the utility's actual execution contract and the protected engineering relationship
-      it serves.
+    procedure_basis: |-
+      The authored condition is **privileged utility contract recovery**. UTIL-CRR-ISSUER-R4 is an x86-64 SysV PIE built with the declared clang 18.1 command. Its signed status record exposes the current stack canary and one return address whose ELF-relative offset is in REL-UTIL-ISSUER-4; it exposes no issuer result. The supplied ELF, relocation table, seccomp filter, file capability, fixed scenario vDSO base 0x7fff00000000, and five ordinary invocations are the complete analysis surface. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the relevant execution and privilege evidence, bound to the current engineering context. A binary name alone is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w28.c1
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **The utility's small world**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Utility UTIL-CRR-ISSUER-R4 is Linux x86_64 PIE built by clang 18.1 with -O2 -fstack-protector-strong -fPIE -pie -Wl,-z,relro,-z,now, glibc 2.39, CET disabled, 16 KiB executable text, ASLR enabled, seccomp allowlist, and file capability cap_setuid+ep; it serves engineering relation REL-UTIL-ISSUER-4.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/the-utility-s-small-world`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/the-utility-s-small-world`
+
+        The private service-loader contract is `content.arwc-a-engineering.w28-1-the-utility-s-small-world`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w28-1-the-utility-s-small-world
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the relevant execution and privilege evidence, bound to the current engineering
-        context. A binary name alone is insufficient.
-      target_refs: *id004
+      description: Recover the relevant execution and privilege evidence, bound to the current engineering context.
+        A binary name alone is insufficient.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w28.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w28.c1
     failure_classes:
@@ -370,25 +431,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Gain controlled execution flow in the engineering utility despite its restricted
-      executable surface.
+    procedure_basis: |-
+      The authored condition is **stack control under sparse executable surface**. The vulnerable frame contains a 192-byte payload at rbp-0xd0, eight bytes of alignment, the disclosed canary at rbp-0x08, saved rbp, and saved return address. An unsigned length up to 384 is copied into the payload. Preserve the canary and use the status return address to recover the PIE base; only the supplied pop-rdi, pop-rsi, pop-rdx, stack-pivot, and fixed-vDSO syscall gadgets are usable. CET is disabled and NX, full RELRO, PIE, and ASLR remain enabled. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate controlled flow under the utility's stated constraints. Crashing it or using a different unconstrained process does not establish the result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w28.c2
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **Control with very little room**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Length field copies up to 384 bytes into a 192-byte frame with stack canary disclosure in a preceding status record; sparse gadgets plus fixed vDSO mapping permit a bounded call-oriented chain without a shell.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/control-with-very-little-room`
+        - `a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/control-with-very-little-room`
+
+        The private service-loader contract is `content.arwc-a-engineering.w28-2-control-with-very-little-room`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w28-2-control-with-very-little-room
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate controlled flow under the utility's stated constraints. Crashing it or
-        using a different unconstrained process does not count.
-      target_refs: *id005
+      description: Demonstrate controlled flow under the utility's stated constraints. Crashing it or using a different
+        unconstrained process does not establish the result.
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w28.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w28.c2
     failure_classes:
@@ -402,25 +499,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Complete the utility compromise while retaining the privilege needed to establish
-      the scoped live control capability.
+    procedure_basis: |-
+      The authored condition is **privilege-preserving bounded issuer call**. The accepted chain invokes setresuid(0,0,0), then the ELF-exported issue_client function with a pointer to immutable issuer record ISSUER-UTIL-OG2-R4 and the current request correlation. The seccomp policy permits the required credential syscalls and one Unix connect/send/receive sequence only to /run/arwc/control-issuer.sock. A shell, another path, another issuer record, or a client with broader asset/project/action scope is rejected and leaves no client. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate a control client with the intended live authority. This supplies W28.CONTROL and CONTROL, equivalent in scope to W26's route. Process knowledge remains required.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w28.c3
+      - features.a-dmz.a-control-broker--utility-issuer
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-control-broker` and its `control-broker` application own this part of **Keep the authority you earned**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Successful chain calls built-in issue_client for issuer record ISSUER-UTIL-OG2-R4 after setresuid(0,0,0); seccomp permits only the fixed issuer socket and the resulting client matches W26 scope.
+
+        Native bindings:
+
+        - `a-dmz.a-control-broker/control-broker/keep-the-authority-you-earned`
+        - `a-dmz.a-control-broker/filesystem:/var/lib/arwc-control-broker/artifacts/keep-the-authority-you-earned`
+
+        The private service-loader contract is `content.arwc-a-control-broker.w28-3-keep-the-authority-you-earned`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-dmz.a-control-broker--utility-issuer
+      - content.arwc-a-control-broker.w28-3-keep-the-authority-you-earned
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies W28.CONTROL and CONTROL. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-dmz.a-control-broker--utility-issuer
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate a control client with the intended live authority. This supplies W28.CONTROL
-        and CONTROL, equivalent in scope to W26's route. Process knowledge remains required.
-      target_refs: *id006
+      description: Demonstrate a control client with the intended live authority. This supplies W28.CONTROL and
+        CONTROL, equivalent in scope to W26's route. Process knowledge remains required.
+      target_refs:
+      - features.a-dmz.a-control-broker--utility-issuer
+      evidence_refs:
+      - evidence_requirements.w28.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-dmz.a-control-broker--utility-issuer`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-dmz.a-control-broker--utility-issuer
       evidence_refs:
       - evidence_requirements.w28.c3
     failure_classes:
@@ -430,77 +563,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W28.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w28.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W28.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w28.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-dmz.a-control-broker--utility-issuer
-    description: W28.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w28.c3
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W28.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The small engineering utility, its ordinary invocation examples, analysis material, and the live command capability it guards.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w28
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The small engineering utility, its ordinary invocation examples, analysis material,
-        and the live command capability it guards.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W28.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The small engineering utility, its ordinary invocation examples, analysis material, and the live command capability it guards.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w28
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The small engineering utility, its ordinary invocation examples, analysis material,
-        and the live command capability it guards.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W28.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The small engineering utility, its ordinary invocation examples, analysis material, and the live command capability it guards.
-    target: a-dmz.a-control-broker
-    tags:
-    - synthetic
-    - w28
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The small engineering utility, its ordinary invocation examples, analysis material,
-        and the live command capability it guards.

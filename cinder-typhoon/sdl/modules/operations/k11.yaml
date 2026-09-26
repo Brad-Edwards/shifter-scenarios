@@ -40,22 +40,15 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual policy entry and input binding. A filename or compiler banner is insufficient.
-    source_refs: &id001
+    description: |-
+      Recover the actual policy entry and input binding. A filename or compiler banner is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-source
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -84,10 +77,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c2:
-    description: Produce matching results for the designated fragments, including their state effects.
-      Naming instruction families alone is insufficient.
-    source_refs: &id002
+    description: |-
+      Produce matching results for the designated fragments, including their state effects. Naming instruction families alone is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-source
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -116,10 +116,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c3:
-    description: Produce a model that agrees with the retained program on the supplied distinguishing
-      cases. Repeating fragment outputs does not complete this task.
-    source_refs: &id003
+    description: |-
+      Produce a model that agrees with the retained program on the supplied distinguishing cases. Repeating fragment outputs does not complete this task.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-source
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -148,10 +155,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c4:
-    description: Obtain acceptance for a fresh policy input with the required meaning. A model description
-      or an unrelated accepted sample is insufficient.
-    source_refs: &id004
+    description: |-
+      Obtain acceptance for a fresh policy input with the required meaning. A model description or an unrelated accepted sample is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-source
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -180,10 +194,16 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
 propositions:
   c1:
     description: Recover the actual policy entry and input binding. A filename or compiler banner is insufficient.
-    subjects: *id001
+    subjects:
+    - features.k-delivery.k-source
     basis: observed_state
     predicate:
       kind: boolean
@@ -195,9 +215,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce matching results for the designated fragments, including their state effects.
-      Naming instruction families alone is insufficient.
-    subjects: *id002
+    description: Produce matching results for the designated fragments, including their state effects. Naming instruction
+      families alone is insufficient.
+    subjects:
+    - features.k-delivery.k-source
     basis: observed_state
     predicate:
       kind: boolean
@@ -209,9 +230,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Produce a model that agrees with the retained program on the supplied distinguishing
-      cases. Repeating fragment outputs does not complete this task.
-    subjects: *id003
+    description: Produce a model that agrees with the retained program on the supplied distinguishing cases. Repeating
+      fragment outputs does not complete this task.
+    subjects:
+    - features.k-delivery.k-source
     basis: observed_state
     predicate:
       kind: boolean
@@ -223,9 +245,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Obtain acceptance for a fresh policy input with the required meaning. A model description
-      or an unrelated accepted sample is insufficient.
-    subjects: *id004
+    description: Obtain acceptance for a fresh policy input with the required meaning. A model description or an
+      unrelated accepted sample is insufficient.
+    subjects:
+    - features.k-delivery.k-source
     basis: observed_state
     predicate:
       kind: boolean
@@ -279,7 +302,7 @@ objectives:
     agent: participant.operator
     actions:
     - k11.c1
-    targets: &id005
+    targets:
     - features.k-delivery.k-source
     success:
       mode: all_of
@@ -297,7 +320,7 @@ objectives:
     agent: participant.operator
     actions:
     - k11.c2
-    targets: &id006
+    targets:
     - features.k-delivery.k-source
     success:
       mode: all_of
@@ -315,7 +338,7 @@ objectives:
     agent: participant.operator
     actions:
     - k11.c3
-    targets: &id007
+    targets:
     - features.k-delivery.k-source
     success:
       mode: all_of
@@ -333,7 +356,7 @@ objectives:
     agent: participant.operator
     actions:
     - k11.c4
-    targets: &id008
+    targets:
     - features.k-delivery.k-source
     success:
       mode: all_of
@@ -344,8 +367,8 @@ objectives:
       - k11.c4
 workflows:
   c1:
-    description: 'K11.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K11.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -367,8 +390,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K11.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K11.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -390,8 +413,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K11.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K11.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -413,8 +436,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'K11.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K11.4: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -440,25 +463,48 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the policy program embedded in the retained rules compiler and identify the
-      input it actually evaluates.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Extracted program entry, byte digest and input-record binding. Merely describing
+      the condition, editing a local copy, or presenting a value obtained from another surface does not satisfy
+      the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k11.c1
+      - features.k-delivery.k-source
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-source` owns this part of the operation. Its starting state is exact: Retained fieldkest-policyc
+        2.6.4 Linux x86-64 ELF, unstripped map, examples and accepted-input endpoint; embedded program offset/table.
+        The owning service uses the listener, route, identity, authorization, storage, and audit contract declared
+        in the corresponding world module. Records that are not explicitly mutable remain immutable. The private
+        service-loader contract `content.keplerops-k-source.k11-1-where-the-policy-begins` freezes the request,
+        denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-source
+      - content.keplerops-k-source.k11-1-where-the-policy-begins
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Starts native policy branch. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
       - features.k-delivery.k-source
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual policy entry and input binding. A filename or compiler banner is
-        insufficient.
-      target_refs: *id005
+      description: Recover the actual policy entry and input binding. A filename or compiler banner is insufficient.
+      target_refs:
+      - features.k-delivery.k-source
       evidence_refs:
       - evidence_requirements.k11.c1
     failure_classes:
@@ -472,25 +518,48 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Reconstruct enough of the compiler's internal instruction behavior to reproduce the
-      supplied policy fragments.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Submitted instruction model matches output plus state writes for every fragment.
+      Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k11.c2
+      - features.k-delivery.k-source
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-source` owns this part of the operation. Its starting state is exact: Eight-opcode stack
+        VM specification recoverable from binary and four distinguishing fragments. The owning service uses the
+        listener, route, identity, authorization, storage, and audit contract declared in the corresponding world
+        module. Records that are not explicitly mutable remain immutable. The private service-loader contract `content.keplerops-k-source.k11-2-learn-its-instructions`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-source
+      - content.keplerops-k-source.k11-2-learn-its-instructions
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K11.3. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
       - features.k-delivery.k-source
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce matching results for the designated fragments, including their state effects.
-        Naming instruction families alone is insufficient.
-      target_refs: *id006
+      description: Produce matching results for the designated fragments, including their state effects. Naming
+        instruction families alone is insufficient.
+      target_refs:
+      - features.k-delivery.k-source
       evidence_refs:
       - evidence_requirements.k11.c2
     failure_classes:
@@ -504,25 +573,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the complete acceptance conditions enforced by the embedded policy program.
-      Account for the constraints the ordinary documentation omits.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Candidate model agrees on all fixed cases and returns condition-set digest. Merely
+      describing the condition, editing a local copy, or presenting a value obtained from another surface does not
+      satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k11.c3
+      - features.k-delivery.k-source
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-source` owns this part of the operation. Its starting state is exact: Hidden complete program
+        plus public distinguishing corpus covering channel, API version, tenant class, signer lineage and compatibility
+        bit. The owning service uses the listener, route, identity, authorization, storage, and audit contract declared
+        in the corresponding world module. Records that are not explicitly mutable remain immutable. The private
+        service-loader contract `content.keplerops-k-source.k11-3-the-rule-behind-the-rule` freezes the request,
+        denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-source
+      - content.keplerops-k-source.k11-3-the-rule-behind-the-rule
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K11.4. Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
+        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
+        contract.
+      support_refs:
       - features.k-delivery.k-source
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce a model that agrees with the retained program on the supplied distinguishing
-        cases. Repeating fragment outputs does not complete this task.
-      target_refs: *id007
+      description: Produce a model that agrees with the retained program on the supplied distinguishing cases. Repeating
+        fragment outputs does not complete this task.
+      target_refs:
+      - features.k-delivery.k-source
       evidence_refs:
       - evidence_requirements.k11.c3
     failure_classes:
@@ -536,25 +629,49 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Construct a package-policy input that satisfies the recovered program while authorizing
-      Cinder's requested compatibility case.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Actual compiler accepts one fresh requested case and records the evaluated fields.
+      Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k11.c4
+      - features.k-delivery.k-source
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-source` owns this part of the operation. Its starting state is exact: Fresh nonce-bound policy
+        input; required meaning is active tenant, connector v3, accepted lineage, compatibility exception. The owning
+        service uses the listener, route, identity, authorization, storage, and audit contract declared in the corresponding
+        world module. Records that are not explicitly mutable remain immutable. The private service-loader contract
+        `content.keplerops-k-source.k11-4-an-input-the-compiler-believes` freezes the request, denial, state-transition,
+        evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-source
+      - content.keplerops-k-source.k11-4-an-input-the-compiler-believes
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Specialist payoff only. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
       - features.k-delivery.k-source
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Obtain acceptance for a fresh policy input with the required meaning. A model description
-        or an unrelated accepted sample is insufficient.
-      target_refs: *id008
+      description: Obtain acceptance for a fresh policy input with the required meaning. A model description or
+        an unrelated accepted sample is insufficient.
+      target_refs:
+      - features.k-delivery.k-source
       evidence_refs:
       - evidence_requirements.k11.c4
     failure_classes:
@@ -564,101 +681,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-source
-    description: K11.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k11.c1
-      mode: artifact
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-source
-    description: K11.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k11.c2
-      mode: artifact
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-source
-    description: K11.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k11.c3
-      mode: artifact
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-source
-    description: K11.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k11.c4
-      mode: artifact
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K11.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained FieldKest rules-compiler artifact, example policy inputs, and its acceptance interface.
-    target: k-delivery.k-source
-    tags:
-    - synthetic
-    - k11
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained FieldKest rules-compiler artifact, example policy inputs, and its acceptance
-        interface.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K11.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained FieldKest rules-compiler artifact, example policy inputs, and its acceptance interface.
-    target: k-delivery.k-source
-    tags:
-    - synthetic
-    - k11
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained FieldKest rules-compiler artifact, example policy inputs, and its acceptance
-        interface.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K11.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained FieldKest rules-compiler artifact, example policy inputs, and its acceptance interface.
-    target: k-delivery.k-source
-    tags:
-    - synthetic
-    - k11
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained FieldKest rules-compiler artifact, example policy inputs, and its acceptance
-        interface.
-  c4-records-1:
-    type: dataset
-    description: |-
-      K11.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The retained FieldKest rules-compiler artifact, example policy inputs, and its acceptance interface.
-    target: k-delivery.k-source
-    tags:
-    - synthetic
-    - k11
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The retained FieldKest rules-compiler artifact, example policy inputs, and its acceptance
-        interface.

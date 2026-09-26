@@ -33,21 +33,17 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual contract and relation binding. Public protocol documentation alone
-      does not complete the task.
-    source_refs: &id001
+    description: |-
+      Recover the actual contract and relation binding. Public protocol documentation alone does not complete the task.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -76,10 +72,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Obtain the actual restricted backend response for the supplied relation. A connection
-      or syntactically plausible message is insufficient.
-    source_refs: &id002
+    description: |-
+      Obtain the actual restricted backend response for the supplied relation. A connection or syntactically plausible message is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -108,10 +114,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Recover the protected lineage and its current asset binding. It can introduce W12's archive
-      trail; the initial protocol response does not contain this result.
-    source_refs: &id003
+    description: |-
+      Recover the protected lineage and its current asset binding. It can introduce W12's archive trail; the initial protocol response does not contain this result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -140,11 +156,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the actual contract and relation binding. Public protocol documentation alone
-      does not complete the task.
-    subjects: *id001
+    description: Recover the actual contract and relation binding. Public protocol documentation alone does not
+      complete the task.
+    subjects:
+    - features.a-corporate.a-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -156,9 +179,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Obtain the actual restricted backend response for the supplied relation. A connection
-      or syntactically plausible message is insufficient.
-    subjects: *id002
+    description: Obtain the actual restricted backend response for the supplied relation. A connection or syntactically
+      plausible message is insufficient.
+    subjects:
+    - features.a-corporate.a-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -170,9 +194,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the protected lineage and its current asset binding. It can introduce W12's archive
-      trail; the initial protocol response does not contain this result.
-    subjects: *id003
+    description: Recover the protected lineage and its current asset binding. It can introduce W12's archive trail;
+      the initial protocol response does not contain this result.
+    subjects:
+    - features.a-corporate.a-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -210,7 +235,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W11.1: The relation service''s language'
+    name: 'This action: The relation service''s language'
     description: |-
       Recover the protected relation-service contract and identify how the supplied maintenance association is represented.
 
@@ -218,7 +243,7 @@ objectives:
     agent: participant.operator
     actions:
     - w11.c1
-    targets: &id004
+    targets:
     - features.a-corporate.a-data
     success:
       mode: all_of
@@ -228,7 +253,7 @@ objectives:
       workflows:
       - w11.c1
   c2:
-    name: 'W11.2: An exchange the backend accepts'
+    name: 'This action: An exchange the backend accepts'
     description: |-
       Construct an accepted exchange with the protected backend and recover the designated restricted response through the relation service.
 
@@ -236,7 +261,7 @@ objectives:
     agent: participant.operator
     actions:
     - w11.c2
-    targets: &id005
+    targets:
     - features.a-corporate.a-data
     success:
       mode: all_of
@@ -246,7 +271,7 @@ objectives:
       workflows:
       - w11.c2
   c3:
-    name: 'W11.3: The asset''s true lineage'
+    name: 'This action: The asset''s true lineage'
     description: |-
       Use the earned exchange capability to recover the current asset lineage behind the backend's separate relation boundary.
 
@@ -254,7 +279,7 @@ objectives:
     agent: participant.operator
     actions:
     - w11.c3
-    targets: &id006
+    targets:
     - features.a-corporate.a-data
     success:
       mode: all_of
@@ -265,8 +290,8 @@ objectives:
       - w11.c3
 workflows:
   c1:
-    description: 'W11.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -292,8 +317,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W11.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -315,8 +340,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W11.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -342,25 +367,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the protected relation-service contract and identify how the supplied maintenance
-      association is represented.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Relation contract RELPROTO-CRR-R3 specifies Neo4j Bolt 5.4 handshake, PackStream struct fields, relation ASSET_WORK, and supplied association ASC-CRR-4417. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual contract and relation binding. Public protocol documentation alone does not complete the task.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w11.c1
+      - features.a-corporate.a-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-data` and its `planning-data` application own this part of **The relation service's language**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Relation contract RELPROTO-CRR-R3 specifies Neo4j Bolt 5.4 handshake, PackStream struct fields, relation ASSET_WORK, and supplied association ASC-CRR-4417.
+
+        Native bindings:
+
+        - `a-corporate.a-data/planning-data/the-relation-service-s-language`
+
+        The private service-loader contract is `content.arwc-a-data.w11-1-the-relation-service-s-language`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-data
+      - content.arwc-a-data.w11-1-the-relation-service-s-language
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual contract and relation binding. Public protocol documentation alone
-        does not complete the task.
-      target_refs: *id004
+      description: Recover the actual contract and relation binding. Public protocol documentation alone does not
+        complete the task.
+      target_refs:
+      - features.a-corporate.a-data
+      evidence_refs:
+      - evidence_requirements.w11.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w11.c1
     failure_classes:
@@ -374,25 +434,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Construct an accepted exchange with the protected backend and recover the designated
-      restricted response through the relation service.
+    procedure_basis: |-
+      The authored condition is **framed backend-protocol construction**. Relation proxy accepts Neo4j Bolt magic 60 60 b0 17, version 5.4 negotiation, HELLO, and one PackStream RUN/PULL exchange; RUN map carries asset AST-CRR-017 and a client-certificate OU that is inserted as the unparameterized relationship type, while the bounded backend permits only the supplied asset key and read clauses. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Obtain the actual restricted backend response for the supplied relation. A connection or syntactically plausible message is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w11.c2
+      - features.a-corporate.a-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-data` and its `planning-data` application own this part of **An exchange the backend accepts**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Relation proxy accepts Neo4j Bolt magic 60 60 b0 17, version 5.4 negotiation, HELLO, and one PackStream RUN/PULL exchange; RUN map carries asset AST-CRR-017 and a client-certificate OU that is inserted as the unparameterized relationship type, while the bounded backend permits only the supplied asset key and read clauses.
+
+        Native bindings:
+
+        - `a-corporate.a-data/planning-data/an-exchange-the-backend-accepts`
+
+        The private service-loader contract is `content.arwc-a-data.w11-2-an-exchange-the-backend-accepts`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-data
+      - content.arwc-a-data.w11-2-an-exchange-the-backend-accepts
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Obtain the actual restricted backend response for the supplied relation. A connection
-        or syntactically plausible message is insufficient.
-      target_refs: *id005
+      description: Obtain the actual restricted backend response for the supplied relation. A connection or syntactically
+        plausible message is insufficient.
+      target_refs:
+      - features.a-corporate.a-data
+      evidence_refs:
+      - evidence_requirements.w11.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w11.c2
     failure_classes:
@@ -406,25 +501,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Use the earned exchange capability to recover the current asset lineage behind the
-      backend's separate relation boundary.
+    procedure_basis: |-
+      The authored condition is **relationship-type query construction**. Protected lineage response LIN-AST-CRR-017-R8 maps legacy CRR-OG-LEGACY-2 through outlet group OG-CRR-02 to current asset AST-CRR-017 and archive ARC-COLD-CRR-2019. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the protected lineage and its current asset binding. It can introduce W12's archive trail; the initial protocol response does not contain this result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w11.c3
+      - features.a-corporate.a-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-data` and its `planning-data` application own this part of **The asset's true lineage**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Protected lineage response LIN-AST-CRR-017-R8 maps legacy CRR-OG-LEGACY-2 through outlet group OG-CRR-02 to current asset AST-CRR-017 and archive ARC-COLD-CRR-2019.
+
+        Native bindings:
+
+        - `a-corporate.a-data/planning-data/the-asset-s-true-lineage`
+
+        The private service-loader contract is `content.arwc-a-data.w11-3-the-asset-s-true-lineage`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-data
+      - content.arwc-a-data.w11-3-the-asset-s-true-lineage
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the protected lineage and its current asset binding. It can introduce W12's
-        archive trail; the initial protocol response does not contain this result.
-      target_refs: *id006
+      description: Recover the protected lineage and its current asset binding. It can introduce W12's archive trail;
+        the initial protocol response does not contain this result.
+      target_refs:
+      - features.a-corporate.a-data
+      evidence_refs:
+      - evidence_requirements.w11.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w11.c3
     failure_classes:
@@ -434,77 +564,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data
-    description: W11.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w11.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data
-    description: W11.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w11.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data
-    description: W11.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w11.c3
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W11.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The relation-service references exposed by asset or allocation evidence, normal transaction examples, and a restricted lineage backend.
-    target: a-corporate.a-data
-    tags:
-    - synthetic
-    - w11
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The relation-service references exposed by asset or allocation evidence, normal transaction
-        examples, and a restricted lineage backend.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W11.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The relation-service references exposed by asset or allocation evidence, normal transaction examples, and a restricted lineage backend.
-    target: a-corporate.a-data
-    tags:
-    - synthetic
-    - w11
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The relation-service references exposed by asset or allocation evidence, normal transaction
-        examples, and a restricted lineage backend.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W11.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The relation-service references exposed by asset or allocation evidence, normal transaction examples, and a restricted lineage backend.
-    target: a-corporate.a-data
-    tags:
-    - synthetic
-    - w11
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The relation-service references exposed by asset or allocation evidence, normal transaction
-        examples, and a restricted lineage backend.

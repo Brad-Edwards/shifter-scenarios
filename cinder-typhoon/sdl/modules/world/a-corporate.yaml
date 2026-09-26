@@ -40,45 +40,1726 @@ realization:
 nodes:
   subnet:
     type: switch
-    description: 'ARWC: Corporate IT. Logical network segment; physical realization and addressing remain
-      open.'
+    description: 'ARWC: Corporate IT. Logical network segment; physical realization and addressing remain open.'
   a-connector:
     type: compute
-    description: FieldKest customer connector
+    description: Customer integration connector and retained corporate handover service.
+    os: linux
+    services:
+    - name: fieldlink-consumer
+      port: 443
+      protocol: tcp
+    - name: customer-handover
+      port: 8443
+      protocol: tcp
     features:
       a-connector: ''
       a-connector--planner-client: ''
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/fieldlink-connector
+        entry_type: directory
+        owner_user: fieldlink
+        owner_group: fieldlink
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Active package slot, retained release slot, diagnostic jobs, invocation output and customer-side
+          receipts.
+      - path: /var/lib/arwc-connector
+        entry_type: directory
+        owner_user: arwc-connector
+        owner_group: arwc-connector
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: fieldlink
+          primary_group: fieldlink
+          locked: true
+          no_login: true
+        - username: arwc-connector
+          primary_group: arwc-connector
+          locked: true
+          no_login: true
+        groups:
+        - name: fieldlink
+          members:
+          - fieldlink
+        - name: arwc-connector
+          members:
+          - arwc-connector
+      network:
+        hostname: a-connector
+        domainname: corporate.arwc.test
+        endpoints:
+        - network: a-corporate.subnet
+          ip_address: 10.77.60.20
+          ip_prefix_length: 24
+          gateway: 10.77.60.1
+          aliases:
+          - a-connector
+          dns_names:
+          - fieldlink.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC corporate segment; only this boundary endpoint is fixed before ARWC design.
+      service_listeners:
+      - service_listener_id: fieldlink-consumer-https
+        service: fieldlink-consumer
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: customer-handover-https
+        service: customer-handover
+        address: 0.0.0.0
+        port: 8443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: fieldlink-customer-consumer
+        service: fieldlink-consumer
+        protocol: https
+        base_path: /
+        description: Exact KeplerOps-to-customer contract for approved package activation and bounded diagnostic
+          delivery; it defines no other ARWC service.
+        routes:
+        - route_id: package-poll
+          path: /api/fieldlink/packages/poll
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Supplier delivery mTLS
+          session_required: true
+          description: Polls only TEN-ARWC-047 channel arwc-stable and accepts a signed, approved package implementing
+            fieldkest.connector/v3.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: package-activate
+          path: /api/fieldlink/packages/{version}/activate
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Supplier delivery mTLS
+          session_required: true
+          description: Activates the exact polled digest, executes only diagnostic_summary against the authored
+            customer fixture, and retains output plus receipt.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: package-receipt
+          path: /api/fieldlink/packages/{version}/receipt
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Supplier delivery mTLS
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: rollback-rehearsal
+          path: /api/fieldlink/rehearsals/rollback
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Supplier delivery mTLS
+          session_required: true
+          description: Uses a private future-state channel and retained slot; it cannot change the current active
+            package.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: diagnostic-intake
+          path: /api/fieldlink/diagnostics
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: Supplier diagnostic mTLS
+          session_required: true
+          description: Accepts a signed DIAG-ARWC job bound to TEN-ARWC-047 and the active connector registration;
+            executes only the package's diagnostic_summary entrypoint.
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: diagnostic-receipt
+          path: /api/fieldlink/diagnostics/{job_id}/receipt
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Supplier diagnostic mTLS
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+      - application_id: customer-handover
+        service: customer-handover
+        protocol: https
+        base_path: /
+        description: Customer integration connector and retained corporate handover service.
+        routes:
+        - route_id: the-customer-s-copy
+          path: /api/the-customer-s-copy
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC customer corporate session
+          session_required: true
+          description: Retained handover HND-ARWC-047 binds active FieldLink tenant TEN-ARWC-047, connector FLK-7.4.2,
+            maintenance case MTN-CRR-204, and customer receipt RCP-742-047.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-planner-s-unfinished-handover
+          path: /api/the-planner-s-unfinished-handover
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC customer corporate session
+          session_required: true
+          description: Unpublished planner handover PLN-HO-CRR-17 names inspection INSP-CRR-2026-09-18 and assignee
+            nadia.corvane.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: how-the-company-buys-time
+          path: /api/how-the-company-buys-time
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC customer corporate session
+          session_required: true
+          description: Continuity note CONT-DRY-A-R3 explains replacement purchasing and Stage A restrictions when
+            usable reserve falls below committed allocation; ordinary context reuses narrative document pl-arwc-plan-method-01-method.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: change-the-corporate-record
+          path: /api/change-the-corporate-record
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC customer corporate session
+          session_required: true
+          description: Attachment endpoint for PLN-HO-CRR-17 authorizes corporate attachment update but omits the
+            attachment-owner comparison; inspection and assignee fields are immutable and the new attachment digest
+            is audited.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: fieldlink-boundary-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: registry-delivery
+          kind: service_account
+          name: svc-keplerops-registry-delivery
+          credential_classification: operator_secret
+        - principal_id: support-delivery
+          kind: service_account
+          name: svc-keplerops-support-delivery
+          credential_classification: operator_secret
+        - principal_id: fieldlink-runtime
+          kind: service_account
+          name: svc-arwc-fieldlink
+          credential_classification: redacted
+        roles:
+        - role_id: package-supplier
+          name: Approved supplier package channel
+        - role_id: diagnostic-supplier
+          name: Bounded supplier diagnostic channel
+        - role_id: connector-runtime
+          name: FieldLink connector runtime
+        permission_grants:
+        - grant_id: package-channel-use
+          role_ref: package-supplier
+          resource_kind: app_resource
+          actions:
+          - read
+          - submit
+          - execute
+          resource_patterns:
+          - fieldlink/packages/*
+          - fieldlink/rehearsals/rollback
+          effect: allow
+        - grant_id: diagnostic-channel-use
+          role_ref: diagnostic-supplier
+          resource_kind: app_resource
+          actions:
+          - submit
+          - read
+          resource_patterns:
+          - fieldlink/diagnostics/*
+          effect: allow
+        - grant_id: bounded-runtime-use
+          role_ref: connector-runtime
+          resource_kind: app_resource
+          actions:
+          - execute
+          - write
+          resource_patterns:
+          - runtime/diagnostic_summary
+          - receipts/$own/*
+          effect: allow
+        role_mappings:
+        - mapping_id: registry-package-channel
+          role_ref: package-supplier
+          users:
+          - registry-delivery
+        - mapping_id: support-diagnostic-channel
+          role_ref: diagnostic-supplier
+          users:
+          - support-delivery
+        - mapping_id: fieldlink-runtime-binding
+          role_ref: connector-runtime
+          users:
+          - fieldlink-runtime
+        tenants:
+        - tenant_id: ten-arwc-047
+          name: Alterra Regional Water Company
+      - app_authorization_id: customer-handover-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: corporate-reader-principal
+          kind: service_account
+          name: ARWC corporate-reader principal
+          credential_classification: redacted
+        roles:
+        - role_id: corporate-reader
+          name: ARWC corporate reader
+        permission_grants:
+        - grant_id: corporate-reader-declared-routes
+          role_ref: corporate-reader
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - the-customer-s-copy
+          - the-planner-s-unfinished-handover
+          - how-the-company-buys-time
+          - change-the-corporate-record
+          effect: allow
+        role_mappings:
+        - mapping_id: corporate-reader-mapping
+          role_ref: corporate-reader
+          users:
+          - corporate-reader-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: fieldlink-customer-consumer
+        name: FieldLink customer connector consumer
+        version: 3.2.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/fieldlink-connector
+        description: Implements fieldkest.connector/v3 and only the bounded diagnostic_summary operation required
+          by the supplier contract.
+      - component_id: customer-handover
+        name: Customer integration connector and retained corporate handover service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/customer-handover
   a-business:
     type: compute
-    description: Business applications
+    description: Corporate workplace, maintenance records, report assistant, and procurement service.
     services:
     - name: workplace
       port: 443
       protocol: tcp
-      description: Authenticated staff workplace for mailboxes and company records; software and hosting remain open.
     features:
       a-business: ''
+    os: linux
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-business
+        entry_type: directory
+        owner_user: arwc-business
+        owner_group: arwc-business
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-business
+          primary_group: arwc-business
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-business
+          members:
+          - arwc-business
+      network:
+        hostname: a-business
+        domainname: a-corporate.arwc.test
+        endpoints:
+        - network: a-corporate.subnet
+          ip_address: 10.77.60.30
+          ip_prefix_length: 24
+          gateway: 10.77.60.1
+          aliases:
+          - a-business
+          dns_names:
+          - business-workplace.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-corporate segment.
+      service_listeners:
+      - service_listener_id: business-workplace-https
+        service: workplace
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: business-workplace
+        service: workplace
+        protocol: https
+        base_path: /
+        description: Corporate workplace, maintenance records, report assistant, and procurement service.
+        routes:
+        - route_id: the-asset-and-the-contractor
+          path: /api/the-asset-and-the-contractor
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Bundle BND-CRR-OUTLET-17 contains asset AST-CRR-017, outlet group OG-CRR-02, contractor assignment
+            CTR-VEY-204, and inspection INSP-CRR-2026-09-18.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: three-names-for-one-job
+          path: /api/three-names-for-one-job
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Association table uses work order WO-CRR-4417, contractor job VYB-204-77, asset AST-CRR-017,
+            and inspection INSP-CRR-2026-09-18 with distinct display names.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-record-behind-the-wrong-association
+          path: /api/the-record-behind-the-wrong-association
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Maintenance lookup checks the caller's assignment against the supplied association row rather
+            than the resolved record; association ASC-CRR-4417-ALT resolves protected record MR-CRR-4417-R6.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: an-annex-left-with-the-order
+          path: /api/an-annex-left-with-the-order
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Work order WO-CRR-4417 exposes annex ANN-4417-R2 naming process-data handover PDH-CRR-READ-08
+            and importer revision annex-import/2.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-reference-outside-the-order
+          path: /api/a-reference-outside-the-order
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Annex importer validates an attachments/ prefix before percent decoding; attachments/%2e%2e%2frestricted%2fPDH-CRR-READ-08
+            resolves the restricted handover under service identity svc-annex.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-integration-s-read-contract
+          path: /api/the-integration-s-read-contract
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Export boundary for PDH-CRR-READ-08 returns integration client INT-CRR-08, endpoint process-read.arwc.test,
+            protocol process-read/v2, scope OG-CRR-02/read, and retained bundle BND-COLLECT-CRR-12.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-report-s-source-list
+          path: /api/the-report-s-source-list
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Report assistant source selection SEL-CRR-DP3-7 binds Cairn district, report RPT-CRR-DP3-R7,
+            and three named current source records.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: another-district-in-the-results
+          path: /api/another-district-in-the-results
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Retrieval route applies role filtering but omits the session district predicate when a caller
+            supplies source-set SEL-CRR-DP3-7; restricted Merewick excerpt EXC-MER-DP3-4 is therefore returned.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-document-behind-the-answer
+          path: /api/the-document-behind-the-answer
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Linked-document route authorizes possession of excerpt EXC-MER-DP3-4 but does not compare
+            the document district; it returns full record PLN-MER-DP3-R6 and its revision.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: what-replacement-water-costs
+          path: /api/what-replacement-water-costs
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Public catalog CAT-REPL-WATER-R5 lists replacement suppliers and district procurement reference
+            PRC-REGIONAL-17; it is not the current settlement tariff.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-quote-outside-your-district
+          path: /api/a-quote-outside-your-district
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Quote lookup checks corporate role but omits district membership, disclosing restricted Merewick
+            quote QUOTE-MER-884 for 0.75 ML at USD 2,280 per ML in window ALLOC-2026-DP3.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-wrong-bill
+          path: /api/the-wrong-bill
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC corporate session
+          session_required: true
+          description: Order route verifies quote ownership and supplier but trusts caller-supplied charge district;
+            order PO-MER-884-C can charge Cairn budget BUD-CRR-DP3 while preserving supplier, 0.75 ML, period, and
+            USD 1,710 liability.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: business-workplace-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: corporate-reader-principal
+          kind: service_account
+          name: ARWC corporate-reader principal
+          credential_classification: redacted
+        roles:
+        - role_id: corporate-reader
+          name: ARWC corporate reader
+        permission_grants:
+        - grant_id: corporate-reader-declared-routes
+          role_ref: corporate-reader
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - the-asset-and-the-contractor
+          - three-names-for-one-job
+          - the-record-behind-the-wrong-association
+          - an-annex-left-with-the-order
+          - a-reference-outside-the-order
+          - the-integration-s-read-contract
+          - the-report-s-source-list
+          - another-district-in-the-results
+          - the-document-behind-the-answer
+          - what-replacement-water-costs
+          - a-quote-outside-your-district
+          - the-wrong-bill
+          effect: allow
+        role_mappings:
+        - mapping_id: corporate-reader-mapping
+          role_ref: corporate-reader
+          users:
+          - corporate-reader-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: business-workplace
+        name: Corporate workplace, maintenance records, report assistant, and procurement service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/business-workplace
   a-data:
     type: compute
-    description: Business data / planning
+    description: Planning data, allocation, relation, reconciliation, query, and planning-consumer service.
     features:
       a-data: ''
       a-data--query: ''
       a-data--query-worker: ''
       a-data--reconciliation: ''
       a-data--planning: ''
+    os: linux
+    services:
+    - name: planning-data
+      port: 443
+      protocol: tcp
+    - name: planning-postgresql
+      port: 5432
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-data
+        entry_type: directory
+        owner_user: arwc-data
+        owner_group: arwc-data
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-data
+          primary_group: arwc-data
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-data
+          members:
+          - arwc-data
+      network:
+        hostname: a-data
+        domainname: a-corporate.arwc.test
+        endpoints:
+        - network: a-corporate.subnet
+          ip_address: 10.77.60.40
+          ip_prefix_length: 24
+          gateway: 10.77.60.1
+          aliases:
+          - a-data
+          dns_names:
+          - planning-data.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-corporate segment.
+      service_listeners:
+      - service_listener_id: planning-data-https
+        service: planning-data
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: planning-postgresql
+        service: planning-postgresql
+        address: 10.77.60.40
+        port: 5432
+        protocol: tcp
+        address_family: ipv4
+        scope: network_facing
+      applications:
+      - application_id: planning-data
+        service: planning-data
+        protocol: https
+        base_path: /
+        description: Planning data, allocation, relation, reconciliation, query, and planning-consumer service.
+        routes:
+        - route_id: the-query-the-planner-keeps
+          path: /api/the-query-the-planner-keeps
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Planner report definition QRY-RESERVE-R7 names PostgreSQL 16.4 view reserve_report_current,
+            identifier quoting rules, SELECT-only policy, and ordinary request/result pairs.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: read-beyond-the-allowed-statement
+          path: /api/read-beyond-the-allowed-statement
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Query service constructs SELECT * FROM quoted report_name and rejects semicolons but permits
+            a closing quote plus UNION; protected view district_allocation_adjustment contains ADJ-CRR-DP3-17.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-database-does-more-than-read
+          path: /api/the-database-does-more-than-read
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Database role svc-planner-query may invoke SECURITY DEFINER function arwc_reconcile_copy(text),
+            which accepts only REC-CRR-DP3-17 and writes an immutable copy into caller result storage without shell
+            or arbitrary-file access.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: water-already-promised
+          path: /api/water-already-promised
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Allocation ledger ALLOC-2026-DP3-R9 commits 12.00 ML for Cairn Reach asset AST-CRR-017 in
+            planning window ALLOC-2026-DP3.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-meter-s-own-account
+          path: /api/the-meter-s-own-account
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Meter export MTR-CRR-DP3-R12 reports independently measured usable reserve 12.40 ML in ML
+            and identifies instruments FIT-CRR-204A and FIT-CRR-204B.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-missing-megalitre
+          path: /api/the-missing-megalitre
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Business report RPT-CRR-DP3-R7 states 13.40 ML because transfer TRN-DP3-118 is duplicated;
+            reconciliation REC-CRR-DP3-17 must establish the exact 1.00 ML overstatement and 0.40 ML uncommitted
+            margin.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-relation-service-s-language
+          path: /api/the-relation-service-s-language
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Relation contract RELPROTO-CRR-R3 specifies Neo4j Bolt 5.4 handshake, PackStream struct fields,
+            relation ASSET_WORK, and supplied association ASC-CRR-4417.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: an-exchange-the-backend-accepts
+          path: /api/an-exchange-the-backend-accepts
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Relation proxy accepts Neo4j Bolt magic 60 60 b0 17, version 5.4 negotiation, HELLO, and
+            one PackStream RUN/PULL exchange; RUN map carries asset AST-CRR-017 and a client-certificate OU that
+            is inserted as the unparameterized relationship type, while the bounded backend permits only the supplied
+            asset key and read clauses.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-asset-s-true-lineage
+          path: /api/the-asset-s-true-lineage
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Protected lineage response LIN-AST-CRR-017-R8 maps legacy CRR-OG-LEGACY-2 through outlet
+            group OG-CRR-02 to current asset AST-CRR-017 and archive ARC-COLD-CRR-2019.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-price-of-this-planning-window
+          path: /api/the-price-of-this-planning-window
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Settlement tariff TAR-CRR-DP3-R4 is USD 2,400 per ML for planning window ALLOC-2026-DP3 and
+            is distinct from the general procurement catalog.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: what-reserve-remains-uncommitted
+          path: /api/what-reserve-remains-uncommitted
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Current balance joins instrument reserve 12.40 ML and committed allocation 12.00 ML, yielding
+            0.40 ML uncommitted margin before any release.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: paper-truth
+          path: /api/paper-truth
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Plan PLAN-CRR-LOSS-1000 ramps balanced gates linearly for 100 seconds, holds each at 0.50
+            m3/s for 900 seconds, and ramps closed for 100 seconds; 1000 full-flow-equivalent seconds release 1.00
+            ML, leaving 11.40 ML, a 0.60 ML shortfall, USD 1,440 liability, and Stage A restrictions under CONT-DRY-A-R3.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-expensive-hour
+          path: /api/the-expensive-hour
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Checkpoint REH-SCHED-33 has twelve 300-second intervals, disclosed demand vector, 180 m3
+            initial buffer, 120-240 m3 bounds, 160-200 m3 final bound, 0.10 m3/s ramps, and 0.78-0.84 ML reservoir-volume
+            objective.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: which-view-the-planner-trusts
+          path: /api/which-view-the-planner-trusts
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Planning consumer PLAN-CONSUMER-R8 accepts Cairn estimate output from the the declared prior
+            result estimator or the declared prior result verifier path and refreshes checkpoint REH-REPORT-34 while
+            retaining raw-observation links.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-reassuring-decision
+          path: /api/a-reassuring-decision
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Consistency checks require valid unit, freshness, source set, unaffected district totals,
+            and variance below 1.20 ML; controlled Cairn estimate 13.40 ML changes decision from ALLOC-HOLD-R3 to
+            ALLOC-EXPAND-R2.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: still-reassuring-after-the-handover
+          path: /api/still-reassuring-after-the-handover
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC planner or planning service session
+          session_required: true
+          description: Reporting checkpoint couples the 13.40 ML planning handover and ALLOC-EXPAND-R2 decision
+            to a bounded 0.81 ML rehearsal release; independent truth becomes 11.59 ML while report consistency
+            remains accepted for the same interval.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: planning-data-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: planner-principal
+          kind: service_account
+          name: ARWC planner principal
+          credential_classification: redacted
+        roles:
+        - role_id: planner
+          name: ARWC planner
+        permission_grants:
+        - grant_id: planner-declared-routes
+          role_ref: planner
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - the-query-the-planner-keeps
+          - read-beyond-the-allowed-statement
+          - the-database-does-more-than-read
+          - water-already-promised
+          - the-meter-s-own-account
+          - the-missing-megalitre
+          - the-relation-service-s-language
+          - an-exchange-the-backend-accepts
+          - the-asset-s-true-lineage
+          - the-price-of-this-planning-window
+          - what-reserve-remains-uncommitted
+          - paper-truth
+          - the-expensive-hour
+          - which-view-the-planner-trusts
+          - a-reassuring-decision
+          - still-reassuring-after-the-handover
+          effect: allow
+        role_mappings:
+        - mapping_id: planner-mapping
+          role_ref: planner
+          users:
+          - planner-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: planning-data
+        name: Planning data, allocation, relation, reconciliation, query, and planning-consumer service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/planning-data
+      database_services:
+      - database_service_id: planning-postgresql
+        service: planning-postgresql
+        engine: postgresql
+        protocol: postgresql
+        version: '16.4'
+        name: ARWC planning database
+        listeners:
+        - address: 10.77.60.40
+          port: 5432
+          description: Corporate data listener; network presence does not confer a database grant.
+        databases:
+        - database_id: arwc-planning
+          name: arwc_planning
+          origin: scenario
+          schemas:
+          - schema_id: planning
+            name: planning
+            origin: scenario
+            tables:
+            - table_id: reserve-report-current
+              name: reserve_report_current
+            - table_id: district-allocation-adjustment
+              name: district_allocation_adjustment
+            - table_id: reconciliation-log
+              name: reconciliation_log
+        roles:
+        - role_id: planner-query
+          name: svc-planner-query
+          role_type: service
+          origin: scenario
+          can_login: true
+        grants:
+        - grantee_role_ref: planner-query
+          object_type: table
+          object_ref: reserve-report-current
+          privileges:
+          - select
+        - grantee_role_ref: planner-query
+          object_type: table
+          object_ref: district-allocation-adjustment
+          privileges:
+          - select
   a-archive:
     type: compute
-    description: Corporate archive / retained artifacts
+    description: Retained archive, collection, quarantine, and constrained instrument-analysis service.
     features:
       a-archive: ''
       a-archive--helper: ''
       a-archive--handover: ''
+    os: linux
+    services:
+    - name: retained-archive
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-archive
+        entry_type: directory
+        owner_user: arwc-archive
+        owner_group: arwc-archive
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-archive
+          primary_group: arwc-archive
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-archive
+          members:
+          - arwc-archive
+      network:
+        hostname: a-archive
+        domainname: a-corporate.arwc.test
+        endpoints:
+        - network: a-corporate.subnet
+          ip_address: 10.77.60.50
+          ip_prefix_length: 24
+          gateway: 10.77.60.1
+          aliases:
+          - a-archive
+          dns_names:
+          - retained-archive.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-corporate segment.
+      service_listeners:
+      - service_listener_id: retained-archive-https
+        service: retained-archive
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: retained-archive
+        service: retained-archive
+        protocol: https
+        base_path: /
+        description: Retained archive, collection, quarantine, and constrained instrument-analysis service.
+        routes:
+        - route_id: the-archive-s-missing-contract
+          path: /api/the-archive-s-missing-contract
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Archive workflow AWF-CRR-229-R4 binds attachment ARC-229-A, protected record AR-CRR-229,
+            and one-use enrollment profile ArchiveSubmitter, which fixes CN to the corporate subject and clientAuth
+            EKU but permits a caller-supplied organizationalUnit.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-query-behind-the-identity
+          path: /api/the-query-behind-the-identity
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Archive broker constructs MATCH (i:Identity {ou:'<OU>'})-[:CAN_READ]->(r:ArchiveRecord) RETURN
+            r from the client-certificate organizationalUnit without parameters; ordinary OU MaintenanceArchive
+            returns only the caller record, while the read-only backend permits an injected predicate only for AR-CRR-229
+            and rejects writes.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-archive-helper-acts
+          path: /api/the-archive-helper-acts
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Archive extraction helper 7-Zip 23.01 runs as svc-archive-helper; member-name validation
+            rejects ASCII dot-dot and slash before NFKC normalization, so U+FF0E U+FF0E U+FF0F becomes ../ and selects
+            the one allowlisted helper action copy_handover(HND-PLANNER-06) into the caller result directory.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: something-in-the-work-bundle
+          path: /api/something-in-the-work-bundle
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Retained bundle BND-COLLECT-CRR-12 contains hidden PowerShell script collect-handover.ps1
+            and collection ID COL-CRR-2019-12.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: reassemble-the-exchange
+          path: /api/reassemble-the-exchange
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Bundle holds Reed-Solomon RS(14,12) shards numbered 0-13, each 96 bytes, over GF(256) with
+            primitive polynomial 0x11d; data positions 7 and 11 are missing while parity positions 12 and 13 remain,
+            and manifest order plus per-shard SHA-256 makes reconstruction yield the collector retrieval instruction.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-collector-inside-the-handover
+          path: /api/the-collector-inside-the-handover
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Reconstructed exchange carries Go 1.22 linux/amd64 collector collector-crr with build ID
+            COLLECT-CRR-12 and complete SHA-256 manifest.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: where-the-contractor-put-it
+          path: /api/where-the-contractor-put-it
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Collector configuration is AES-256-GCM wrapped with HKDF-SHA256 using collector build ID
+            bytes as IKM, ASCII salt COL-CRR-2019, info collector-config/v3, a stored 12-byte nonce, and path config/collector.yaml
+            as AAD; plaintext names archive ARC-COLD-CRR-2019, service collect-archive/v3, and historical identity
+            svc-field-collection.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-collector-in-quarantine
+          path: /api/a-collector-in-quarantine
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Quarantine object QTN-COL-2019-12 uses custom AQTN1 framing with metadata length, encrypted
+            payload length, SHA-256, and collector build ID COLLECT-CRR-12.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: how-the-collection-was-protected
+          path: /api/how-the-collection-was-protected
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Collector uses HKDF-SHA256 with build ID bytes as IKM, archive ID ARC-COLD-CRR-2019 as ASCII
+            salt, and info aqtn1/keys to derive 64 bytes; the first 32 key AES-256-GCM with stored 12-byte nonce
+            and exact AQTN1 metadata header as AAD, while the second 32 key AES-256-KW for the archived PKCS#8 object;
+            three known samples freeze byte order, tag placement, unwrap, and authentication-failure behavior.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-cold-archive-opens
+          path: /api/the-cold-archive-opens
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Cold archive ARC-COLD-CRR-2019 contains 37 immutable maintenance records, index revision
+            R6, retired client certificate COLLECT-2019-12, its AES-KW-wrapped PKCS#8 key, and rollover record IDREL-COL-R4;
+            only a complete authenticated decryption is accepted.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-collection-path-still-alive
+          path: /api/a-collection-path-still-alive
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Current collect-archive/v3 token exchange verifies the old certificate chain and rollover
+            signature but omits the retired-subject status marker before mapping historical svc-field-collection
+            through IDREL-COL-R4; the unwrapped historical key can therefore obtain one ten-minute read-only session
+            for dataset CUR-COL-CRR-R11 revision R11.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-sequencer-s-vocabulary
+          path: /api/the-sequencer-s-vocabulary
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Instrument sequencer SEQ-CRR-4 descriptor defines 256 sample slots, 32 authorized indices,
+            eight opcodes, maximum 64 instructions, and ordinary trace SEQ-BASE-17.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: an-observation-outside-the-window
+          path: /api/an-observation-outside-the-window
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Interpreter masks an 8-bit sample index before a late authorization check; a rejected out-of-window
+            LOAD still changes the deterministic cycle accumulator without returning the sample.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: an-experiment-with-a-signal
+          path: /api/an-experiment-with-a-signal
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Cycle count is base 1200 plus 64 times popcount(secret_byte XOR probe) with seeded jitter
+            in [-2,2]; eight repetitions and supplied reference cases distinguish each bit.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: what-the-instrument-remembers
+          path: /api/what-the-instrument-remembers
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC archive or helper session
+          session_required: true
+          description: Protected 32-byte calibration record CAL-CRR-OG2-R8 occupies sequencer slots 160-191 and
+            includes revision R8 plus an internal CRC32C; only descriptor-valid experiments of at most 64 instructions
+            are accepted.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: retained-archive-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: archive-reader-principal
+          kind: service_account
+          name: ARWC archive-reader principal
+          credential_classification: redacted
+        roles:
+        - role_id: archive-reader
+          name: ARWC archive reader
+        permission_grants:
+        - grant_id: archive-reader-declared-routes
+          role_ref: archive-reader
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - the-archive-s-missing-contract
+          - the-query-behind-the-identity
+          - the-archive-helper-acts
+          - something-in-the-work-bundle
+          - reassemble-the-exchange
+          - the-collector-inside-the-handover
+          - where-the-contractor-put-it
+          - a-collector-in-quarantine
+          - how-the-collection-was-protected
+          - the-cold-archive-opens
+          - a-collection-path-still-alive
+          - the-sequencer-s-vocabulary
+          - an-observation-outside-the-window
+          - an-experiment-with-a-signal
+          - what-the-instrument-remembers
+          effect: allow
+        role_mappings:
+        - mapping_id: archive-reader-mapping
+          role_ref: archive-reader
+          users:
+          - archive-reader-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: retained-archive
+        name: Retained archive, collection, quarantine, and constrained instrument-analysis service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/retained-archive
   a-identity:
     type: compute
-    description: Staff identity / browser workflow
+    description: Corporate onboarding and isolated planner-review identity service.
     features:
       a-identity: ''
+    os: linux
+    services:
+    - name: corporate-identity
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-identity
+        entry_type: directory
+        owner_user: arwc-identity
+        owner_group: arwc-identity
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-identity
+          primary_group: arwc-identity
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-identity
+          members:
+          - arwc-identity
+      network:
+        hostname: a-identity
+        domainname: a-corporate.arwc.test
+        endpoints:
+        - network: a-corporate.subnet
+          ip_address: 10.77.60.60
+          ip_prefix_length: 24
+          gateway: 10.77.60.1
+          aliases:
+          - a-identity
+          dns_names:
+          - corporate-identity.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-corporate segment.
+      service_listeners:
+      - service_listener_id: corporate-identity-https
+        service: corporate-identity
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: corporate-identity
+        service: corporate-identity
+        protocol: https
+        base_path: /
+        description: Corporate onboarding and isolated planner-review identity service.
+        routes:
+        - route_id: a-starter-pack-left-open
+          path: /api/a-starter-pack-left-open
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC onboarding or planner session
+          session_required: true
+          description: Starter pack START-MIRA-2026 names temporary employee Mira Vale, employee TMP-4821, assignment
+            PLAN-RELIEF-7, and onboarding portal identity without an activation secret.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-activation-roster
+          path: /api/the-activation-roster
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC onboarding or planner session
+          session_required: true
+          description: Internal roster ACT-SEP26-R3 separately maps employee TMP-4821 to activation code 731944
+            and approved assignment PLAN-RELIEF-3.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: temporary-with-the-wrong-rights
+          path: /api/temporary-with-the-wrong-rights
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC onboarding or planner session
+          session_required: true
+          description: Activation checks employee number and code independently but fails to compare the requested
+            assignment with the roster assignment, issuing a limited session for PLAN-RELIEF-7 with no administrative
+            role.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-planner-s-login-trail
+          path: /api/the-planner-s-login-trail
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC onboarding or planner session
+          session_required: true
+          description: Protected rendering record RENDER-CRR-882 binds planner nadia.corvane, drawing DRW-OG2-R8,
+            review REV-CRR-4417, OAuth transaction OAUTH-PLN-882, and browser profile planner-review-3.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-drawing-in-the-wrong-context
+          path: /api/a-drawing-in-the-wrong-context
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC onboarding or planner session
+          session_required: true
+          description: Preview callback validates OAuth state before replacing the pending preview origin; a controlled
+            preview at preview-cinder.arwc.test can be attached to DRW-OG2-R8 in the isolated planner browser.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-planner-session-that-works
+          path: /api/a-planner-session-that-works
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC onboarding or planner session
+          session_required: true
+          description: The review browser posts its planner session bootstrap to the attached preview for compatibility;
+            origin is checked against mutable pending-preview state and yields a five-minute planner session limited
+            to planning records.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: corporate-identity-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: identity-user-principal
+          kind: service_account
+          name: ARWC identity-user principal
+          credential_classification: redacted
+        roles:
+        - role_id: identity-user
+          name: ARWC identity user
+        permission_grants:
+        - grant_id: identity-user-declared-routes
+          role_ref: identity-user
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - a-starter-pack-left-open
+          - the-activation-roster
+          - temporary-with-the-wrong-rights
+          - the-planner-s-login-trail
+          - a-drawing-in-the-wrong-context
+          - a-planner-session-that-works
+          effect: allow
+        role_mappings:
+        - mapping_id: identity-user-mapping
+          role_ref: identity-user
+          users:
+          - identity-user-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: corporate-identity
+        name: Corporate onboarding and isolated planner-review identity service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/corporate-identity
+      identity_authorities:
+      - identity_authority_id: arwc-corporate-id
+        kind: identity_provider
+        name: ARWC corporate identity
+        namespace: arwc
+        domain_name: identity.arwc.test
+        issuer: https://corporate-identity.arwc.test/
+        services:
+        - service_id: corporate-oidc
+          service: corporate-identity
+          protocol: oidc
+          address: corporate-identity.arwc.test
+          port: 443
+        subjects:
+        - subject_id: temporary-mira-vale
+          kind: user
+          name: Mira Vale
+          principal_name: mira.vale@alterrawaterco.com
+          enabled: true
+          origin: provisioned
+        - subject_id: planner-nadia-corvane
+          kind: user
+          name: Nadia Corvane
+          principal_name: nadia.corvane@alterrawaterco.com
+          enabled: true
+          origin: provisioned
+        policies:
+        - policy_id: limited-assignment-policy
+          policy_kind: access
+          name: Temporary and planner assignment policy
+          applies_to_refs:
+          - temporary-mira-vale
+          - planner-nadia-corvane
+          settings:
+          - name: temporary-session-scope
+            values:
+            - PLAN-RELIEF-7
+            - planning-records
+            value_classification: plain
+            origin: operator
 infrastructure:
   subnet: {}
   a-connector:
@@ -105,60 +1786,60 @@ features:
   a-connector:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-connector. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-connector. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-business:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-business. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-business. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-data:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-data. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-data. A separately scoped in-world interface or principal; access does
+      not imply ownership of the other authorities on this system.
   a-archive:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-archive. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-archive. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-identity:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-identity. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-identity. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-connector--planner-client:
     name: Earned planner session
     type: service
-    description: Earned planner session on a-connector. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Earned planner session on a-connector. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-archive--helper:
     name: Archive helper execution
     type: service
-    description: Archive helper execution on a-archive. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Archive helper execution on a-archive. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-archive--handover:
     name: Archive helper handover
     type: service
-    description: Archive helper handover on a-archive. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Archive helper handover on a-archive. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-data--query:
     name: Planner query interface
     type: service
-    description: Planner query interface on a-data. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Planner query interface on a-data. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-data--query-worker:
     name: Reconciliation job execution
     type: service
-    description: Reconciliation job execution on a-data. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Reconciliation job execution on a-data. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-data--reconciliation:
     name: Protected reconciliation log
     type: service
-    description: Protected reconciliation log on a-data. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Protected reconciliation log on a-data. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-data--planning:
     name: Estimate-consuming planner
     type: service
-    description: Estimate-consuming planner on a-data. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Estimate-consuming planner on a-data. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.

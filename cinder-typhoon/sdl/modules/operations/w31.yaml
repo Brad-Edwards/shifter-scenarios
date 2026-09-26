@@ -40,23 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the correct boundary evidence and case reference. A malformed request without
-      an interpretable result is insufficient.
-    source_refs: &id001
+    description: |-
+      Recover the correct boundary evidence and case reference. A malformed request without an interpretable result is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-diagnostics
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Demonstrate the specified protected access in the actual diagnostic service. Merely repeating
-      a length discrepancy does not count.
-    source_refs: &id002
+    description: |-
+      Demonstrate the specified protected access in the actual diagnostic service. Merely repeating a length discrepancy does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-diagnostics
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,10 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Demonstrate controlled saved-state influence while preserving the conditions needed for
-      continued service execution. A crash is insufficient.
-    source_refs: &id003
+    description: |-
+      Demonstrate controlled saved-state influence while preserving the conditions needed for continued service execution. A crash is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-diagnostics
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -149,10 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Demonstrate service-context execution and recover the approval history. This supplies
-      a local explanation of earlier maintenance decisions, not a current approval or CONTROL capability.
-    source_refs: &id004
+    description: |-
+      Demonstrate service-context execution and recover the approval history. This supplies a local explanation of earlier maintenance decisions, not a current approval or CONTROL capability.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-diagnostics
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -181,11 +205,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the correct boundary evidence and case reference. A malformed request without
-      an interpretable result is insufficient.
-    subjects: *id001
+    description: Recover the correct boundary evidence and case reference. A malformed request without an interpretable
+      result is insufficient.
+    subjects:
+    - features.a-engineering.a-diagnostics
     basis: observed_state
     predicate:
       kind: boolean
@@ -197,9 +228,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate the specified protected access in the actual diagnostic service. Merely repeating
-      a length discrepancy does not count.
-    subjects: *id002
+    description: Demonstrate the specified protected access in the actual diagnostic service. Merely repeating a
+      length discrepancy does not establish the result.
+    subjects:
+    - features.a-engineering.a-diagnostics
     basis: observed_state
     predicate:
       kind: boolean
@@ -211,9 +243,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate controlled saved-state influence while preserving the conditions needed for
-      continued service execution. A crash is insufficient.
-    subjects: *id003
+    description: Demonstrate controlled saved-state influence while preserving the conditions needed for continued
+      service execution. A crash is insufficient.
+    subjects:
+    - features.a-engineering.a-diagnostics
     basis: observed_state
     predicate:
       kind: boolean
@@ -225,9 +258,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Demonstrate service-context execution and recover the approval history. This supplies
-      a local explanation of earlier maintenance decisions, not a current approval or CONTROL capability.
-    subjects: *id004
+    description: Demonstrate service-context execution and recover the approval history. This supplies a local explanation
+      of earlier maintenance decisions, not a current approval or CONTROL capability.
+    subjects:
+    - features.a-engineering.a-diagnostics
     basis: observed_state
     predicate:
       kind: boolean
@@ -273,7 +307,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W31.1: The vault''s misleading length'
+    name: 'This action: The vault''s misleading length'
     description: |-
       Recover the diagnostic vault's actual record-boundary behavior and the protected diagnostic reference associated with the supplied case.
 
@@ -281,7 +315,7 @@ objectives:
     agent: participant.operator
     actions:
     - w31.c1
-    targets: &id005
+    targets:
     - features.a-engineering.a-diagnostics
     success:
       mode: all_of
@@ -291,7 +325,7 @@ objectives:
       workflows:
       - w31.c1
   c2:
-    name: 'W31.2: Past the parser''s boundary'
+    name: 'This action: Past the parser''s boundary'
     description: |-
       Combine the observed record behavior into a controlled access beyond the parser's intended boundary.
 
@@ -299,7 +333,7 @@ objectives:
     agent: participant.operator
     actions:
     - w31.c2
-    targets: &id006
+    targets:
     - features.a-engineering.a-diagnostics
     success:
       mode: all_of
@@ -309,7 +343,7 @@ objectives:
       workflows:
       - w31.c2
   c3:
-    name: 'W31.3: The state execution returns to'
+    name: 'This action: The state execution returns to'
     description: |-
       Establish controlled influence over the saved execution state under the vault's remaining constraints.
 
@@ -317,7 +351,7 @@ objectives:
     agent: participant.operator
     actions:
     - w31.c3
-    targets: &id007
+    targets:
     - features.a-engineering.a-diagnostics
     success:
       mode: all_of
@@ -327,7 +361,7 @@ objectives:
       workflows:
       - w31.c3
   c4:
-    name: 'W31.4: The diagnostic service''s authority'
+    name: 'This action: The diagnostic service''s authority'
     description: |-
       Complete the diagnostic-vault compromise and recover the restricted maintenance approval history under the diagnostic service's execution identity.
 
@@ -335,7 +369,7 @@ objectives:
     agent: participant.operator
     actions:
     - w31.c4
-    targets: &id008
+    targets:
     - features.a-engineering.a-diagnostics
     success:
       mode: all_of
@@ -346,8 +380,8 @@ objectives:
       - w31.c4
 workflows:
   c1:
-    description: 'W31.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -369,8 +403,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W31.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -392,8 +426,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W31.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -415,8 +449,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W31.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -442,25 +476,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the diagnostic vault's actual record-boundary behavior and the protected
-      diagnostic reference associated with the supplied case.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Diagnostic vault VAULT-CRR-R5 uses DVL1 records with u16 declared length, u16 header length, u32 CRC32C, and 512-byte bounded request; case DV-CRR-4417 references protected history HIST-APR-CRR-09. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the correct boundary evidence and case reference. A malformed request without an interpretable result is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w31.c1
+      - features.a-engineering.a-diagnostics
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-diagnostics` and its `diagnostic-services` application own this part of **The vault's misleading length**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Diagnostic vault VAULT-CRR-R5 uses DVL1 records with u16 declared length, u16 header length, u32 CRC32C, and 512-byte bounded request; case DV-CRR-4417 references protected history HIST-APR-CRR-09.
+
+        Native bindings:
+
+        - `a-engineering.a-diagnostics/diagnostic-services/the-vault-s-misleading-length`
+        - `a-engineering.a-diagnostics/filesystem:/var/lib/arwc-diagnostics/artifacts/the-vault-s-misleading-length`
+
+        The private service-loader contract is `content.arwc-a-diagnostics.w31-1-the-vault-s-misleading-length`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-diagnostics
+      - content.arwc-a-diagnostics.w31-1-the-vault-s-misleading-length
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-diagnostics
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the correct boundary evidence and case reference. A malformed request without
-        an interpretable result is insufficient.
-      target_refs: *id005
+      description: Recover the correct boundary evidence and case reference. A malformed request without an interpretable
+        result is insufficient.
+      target_refs:
+      - features.a-engineering.a-diagnostics
+      evidence_refs:
+      - evidence_requirements.w31.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-diagnostics
       evidence_refs:
       - evidence_requirements.w31.c1
     failure_classes:
@@ -474,25 +544,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Combine the observed record behavior into a controlled access beyond the parser's
-      intended boundary.
+    procedure_basis: |-
+      The authored condition is **16-bit parser-length arithmetic mismatch**. Validation accepts when (declared_length + header_length) mod 2^16 is no greater than 504, then copies header_length bytes into a fixed 0x120-byte stack workspace. The bounded witness uses declared_length=0xfe08 and header_length=0x01f8, so the sum wraps to zero and the complete DVL1 request is exactly 512 bytes. CRC32C is verified first. Zero lengths, requests over 512 bytes, and wrong CRCs are rejected before the copy. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the specified protected access in the actual diagnostic service. Merely repeating a length discrepancy does not establish the result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w31.c2
+      - features.a-engineering.a-diagnostics
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-diagnostics` and its `diagnostic-services` application own this part of **Past the parser's boundary**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Parser validates only the 16-bit wrapped sum of declared length and header length, then copies header length bytes into a fixed 0x120-byte stack workspace without comparing the two lengths, permitting a bounded overwrite beyond the intended record.
+
+        Native bindings:
+
+        - `a-engineering.a-diagnostics/diagnostic-services/past-the-parser-s-boundary`
+        - `a-engineering.a-diagnostics/filesystem:/var/lib/arwc-diagnostics/artifacts/past-the-parser-s-boundary`
+
+        The private service-loader contract is `content.arwc-a-diagnostics.w31-2-past-the-parser-s-boundary`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-diagnostics
+      - content.arwc-a-diagnostics.w31-2-past-the-parser-s-boundary
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-diagnostics
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the specified protected access in the actual diagnostic service. Merely
-        repeating a length discrepancy does not count.
-      target_refs: *id006
+      description: Demonstrate the specified protected access in the actual diagnostic service. Merely repeating
+        a length discrepancy does not establish the result.
+      target_refs:
+      - features.a-engineering.a-diagnostics
+      evidence_refs:
+      - evidence_requirements.w31.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-diagnostics
       evidence_refs:
       - evidence_requirements.w31.c2
     failure_classes:
@@ -506,25 +612,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Establish controlled influence over the saved execution state under the vault's remaining
-      constraints.
+    procedure_basis: |-
+      The authored condition is **saved-state control with canary, NX, and PIE**. The worker frame places the 0x120-byte record workspace immediately before the disclosed canary, saved rbp, and return state. Preserve the canary, derive the PIE base from the build-bound status address, and use only the exported one-argument export_history call sequence. Crashing, changing the build ID, or returning through an address outside the supplied worker mapping produces no retained result. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate controlled saved-state influence while preserving the conditions needed for continued service execution. A crash is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w31.c3
+      - features.a-engineering.a-diagnostics
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-diagnostics` and its `diagnostic-services` application own this part of **The state execution returns to**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: x86_64 worker has stack canary disclosed by status record, NX and PIE enabled, fixed libdiagnostic build ID, and enough protected saved-state influence to call one exported worker function.
+
+        Native bindings:
+
+        - `a-engineering.a-diagnostics/diagnostic-services/the-state-execution-returns-to`
+        - `a-engineering.a-diagnostics/filesystem:/var/lib/arwc-diagnostics/artifacts/the-state-execution-returns-to`
+
+        The private service-loader contract is `content.arwc-a-diagnostics.w31-3-the-state-execution-returns-to`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-diagnostics
+      - content.arwc-a-diagnostics.w31-3-the-state-execution-returns-to
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-diagnostics
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate controlled saved-state influence while preserving the conditions needed
-        for continued service execution. A crash is insufficient.
-      target_refs: *id007
+      description: Demonstrate controlled saved-state influence while preserving the conditions needed for continued
+        service execution. A crash is insufficient.
+      target_refs:
+      - features.a-engineering.a-diagnostics
+      evidence_refs:
+      - evidence_requirements.w31.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-diagnostics
       evidence_refs:
       - evidence_requirements.w31.c3
     failure_classes:
@@ -538,25 +680,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Complete the diagnostic-vault compromise and recover the restricted maintenance approval
-      history under the diagnostic service's execution identity.
+    procedure_basis: |-
+      The authored condition is **bounded diagnostic service export call**. Call export_history with the exact immutable identifier HIST-APR-CRR-09 and current request correlation. The service writes that one history to caller result storage and audits its digest before returning. Other identifiers, arbitrary paths, further calls, approval mutation, or live issuer access are outside the exported function and are rejected. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate service-context execution and recover the approval history. This supplies a local explanation of earlier maintenance decisions, not a current approval or CONTROL capability.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w31.c4
+      - features.a-engineering.a-diagnostics
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-diagnostics` and its `diagnostic-services` application own this part of **The diagnostic service's authority**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Exported function export_history(HIST-APR-CRR-09) runs as svc-diagnostic-vault and writes the restricted approval history to caller results; arbitrary paths, commands, and live approval issuance are unavailable.
+
+        Native bindings:
+
+        - `a-engineering.a-diagnostics/diagnostic-services/the-diagnostic-service-s-authority`
+        - `a-engineering.a-diagnostics/filesystem:/var/lib/arwc-diagnostics/artifacts/the-diagnostic-service-s-authority`
+
+        The private service-loader contract is `content.arwc-a-diagnostics.w31-4-the-diagnostic-service-s-authority`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-diagnostics
+      - content.arwc-a-diagnostics.w31-4-the-diagnostic-service-s-authority
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-diagnostics
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate service-context execution and recover the approval history. This supplies
-        a local explanation of earlier maintenance decisions, not a current approval or CONTROL capability.
-      target_refs: *id008
+      description: Demonstrate service-context execution and recover the approval history. This supplies a local
+        explanation of earlier maintenance decisions, not a current approval or CONTROL capability.
+      target_refs:
+      - features.a-engineering.a-diagnostics
+      evidence_refs:
+      - evidence_requirements.w31.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-diagnostics
       evidence_refs:
       - evidence_requirements.w31.c4
     failure_classes:
@@ -566,97 +744,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-diagnostics
-    description: W31.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w31.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-diagnostics
-    description: W31.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w31.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-diagnostics
-    description: W31.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w31.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-diagnostics
-    description: W31.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w31.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W31.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The optional diagnostic vault, ordinary record examples, and its native analysis material.
-    target: a-engineering.a-diagnostics
-    tags:
-    - synthetic
-    - w31
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The optional diagnostic vault, ordinary record examples, and its native analysis material.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W31.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The optional diagnostic vault, ordinary record examples, and its native analysis material.
-    target: a-engineering.a-diagnostics
-    tags:
-    - synthetic
-    - w31
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The optional diagnostic vault, ordinary record examples, and its native analysis material.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W31.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The optional diagnostic vault, ordinary record examples, and its native analysis material.
-    target: a-engineering.a-diagnostics
-    tags:
-    - synthetic
-    - w31
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The optional diagnostic vault, ordinary record examples, and its native analysis material.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W31.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The optional diagnostic vault, ordinary record examples, and its native analysis material.
-    target: a-engineering.a-diagnostics
-    tags:
-    - synthetic
-    - w31
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The optional diagnostic vault, ordinary record examples, and its native analysis material.

@@ -33,23 +33,15 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
     description: |-
-      Recover the entitlement's actual structure and associated compatibility record. The current package-signing system is outside this challenge.
+      Recover the entitlement's actual structure and associated compatibility record. The current package-signing system is outside this task.
 
       Required technical proof: Completion records the protected record revision, customer, feature, and legacy field grammar for K08.2.
-    source_refs: &id001
+    source_refs:
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -79,14 +71,14 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test current/legacy distinction, fair lookup lead, unique record recovery, no direct
-      entitlement activation, and reset.'
+    - 'Author checks: Test current/legacy distinction, fair lookup lead, unique record recovery, no direct entitlement
+      activation.'
   c2:
     description: |-
       Recover context that reproduces the checker result for the designated entitlement. Merely naming an algorithm or extracting an unused constant is insufficient.
 
       Required technical proof: The checker accepts the recovered context only when it decrypts/verifies the supplied record and binds it to the expected legacy revision.
-    source_refs: &id002
+    source_refs:
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,13 +109,13 @@ evidence_requirements:
       basis: observed
     notes:
     - 'Author checks: Verify incomplete context fails, expected context validates one record, wrong revision/key
-      ID fails, no other archive object opens, and reset.'
+      ID fails, no other archive object opens.'
   c3:
     description: |-
       Obtain acceptance for a distinct, correctly scoped entitlement. It does not confer customer execution or modern release-signing authority.
 
-      Required technical proof: The service records legacy acceptance, customer/feature binding, and test entitlement state; a text artifact alone does not score.
-    source_refs: &id003
+      Required technical proof: The service records legacy acceptance, customer/feature binding, and test entitlement state; a text artifact alone does not satisfy the result.
+    source_refs:
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -153,13 +145,14 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test current checker rejection, intended legacy acceptance, wrong customer/feature
-      rejection, expiry handling, no cross-service effect, and reset.'
+    - 'Author checks: Test current checker rejection, intended legacy acceptance, wrong customer/feature rejection,
+      expiry handling, no cross-service effect.'
 propositions:
   c1:
-    description: Recover the entitlement's actual structure and associated compatibility record. The current
-      package-signing system is outside this challenge.
-    subjects: *id001
+    description: Recover the entitlement's actual structure and associated compatibility record. The current package-signing
+      system is outside this task.
+    subjects:
+    - features.k-delivery.k-registry
     basis: observed_state
     predicate:
       kind: boolean
@@ -171,9 +164,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover context that reproduces the checker result for the designated entitlement. Merely
-      naming an algorithm or extracting an unused constant is insufficient.
-    subjects: *id002
+    description: Recover context that reproduces the checker result for the designated entitlement. Merely naming
+      an algorithm or extracting an unused constant is insufficient.
+    subjects:
+    - features.k-delivery.k-registry
     basis: observed_state
     predicate:
       kind: boolean
@@ -185,9 +179,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Obtain acceptance for a distinct, correctly scoped entitlement. It does not confer customer
-      execution or modern release-signing authority.
-    subjects: *id003
+    description: Obtain acceptance for a distinct, correctly scoped entitlement. It does not confer customer execution
+      or modern release-signing authority.
+    subjects:
+    - features.k-delivery.k-registry
     basis: observed_state
     predicate:
       kind: boolean
@@ -233,7 +228,7 @@ objectives:
     agent: participant.operator
     actions:
     - k08.c1
-    targets: &id004
+    targets:
     - features.k-delivery.k-registry
     success:
       mode: all_of
@@ -251,7 +246,7 @@ objectives:
     agent: participant.operator
     actions:
     - k08.c2
-    targets: &id005
+    targets:
     - features.k-delivery.k-registry
     success:
       mode: all_of
@@ -269,7 +264,7 @@ objectives:
     agent: participant.operator
     actions:
     - k08.c3
-    targets: &id006
+    targets:
     - features.k-delivery.k-registry
     success:
       mode: all_of
@@ -280,8 +275,8 @@ objectives:
       - k08.c3
 workflows:
   c1:
-    description: 'K08.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K08.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -303,8 +298,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K08.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K08.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -326,8 +321,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K08.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K08.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -353,46 +348,51 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: A compatibility lookup treats a legacy record as public metadata despite its protected
-      feature binding. The intended solution recovers the record and models the checker's claimed entitlement
-      fields.
+    procedure_basis: A compatibility lookup treats a legacy record as public metadata despite its protected feature
+      binding. The intended solution recovers the record and models the checker's claimed entitlement fields.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k08.c1
       - features.k-delivery.k-registry
     - precondition_id: normal-surface
       precondition_class: target
-      description: The FieldKest compatibility service exposes current package entitlements and retains
-        a versioned legacy-format record for a named customer feature.
-      support_refs: *id004
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        The record is read-only and does not grant customer sessions or package actions; reset clears evidence only.
+      description: The FieldKest compatibility service exposes current package entitlements and retains a versioned
+        legacy-format record for a named customer feature.
       support_refs:
       - features.k-delivery.k-registry
+      - content.keplerops-k-registry.k08-1-the-old-entitlement
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Input to K08.2 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-delivery.k-registry
+      - content.keplerops-k-registry.k08-1-the-old-entitlement
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the entitlement's actual structure and associated compatibility record. The
-        current package-signing system is outside this challenge.
-      target_refs: *id004
+      description: Recover the entitlement's actual structure and associated compatibility record. The current package-signing
+        system is outside this task.
+      target_refs:
+      - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k08.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Completion records the protected record revision, customer, feature, and legacy field
-        grammar for K08.2.
-      target_refs: *id001
+      description: Completion records the protected record revision, customer, feature, and legacy field grammar
+        for K08.2.
+      target_refs:
+      - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k08.c1
     failure_classes:
@@ -406,46 +406,52 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Archive metadata separates encrypted payload from its protected context weakly enough
-      that the named record's context can be reconstructed. The intended solution is cryptographic-context
-      recovery and validation, not key guessing.
+    procedure_basis: Archive metadata separates encrypted payload from its protected context weakly enough that
+      the named record's context can be reconstructed. The intended solution is cryptographic-context recovery and
+      validation, not key guessing.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k08.c2
       - features.k-delivery.k-registry
     - precondition_id: normal-surface
       precondition_class: target
-      description: The compatibility record refers to a key identifier, derivation version, and archived
-        encryption-context metadata stored in the FieldKest release archive.
-      support_refs: *id005
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        Only synthetic, card-specific key material and one record are available; no general secret-store read or current entitlement key is exposed. Reset renews player material.
+      description: The compatibility record refers to a key identifier, derivation version, and archived encryption-context
+        metadata stored in the FieldKest release archive.
       support_refs:
       - features.k-delivery.k-registry
+      - content.keplerops-k-registry.k08-2-the-missing-encryption-context
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Cryptographic context for K08.3 Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The action is limited to the exact records, identities,
+        routes, and destination effects declared here; unrelated tenants and services remain denied. Infrastructure
+        recovery and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-delivery.k-registry
+      - content.keplerops-k-registry.k08-2-the-missing-encryption-context
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover context that reproduces the checker result for the designated entitlement.
-        Merely naming an algorithm or extracting an unused constant is insufficient.
-      target_refs: *id005
+      description: Recover context that reproduces the checker result for the designated entitlement. Merely naming
+        an algorithm or extracting an unused constant is insufficient.
+      target_refs:
+      - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k08.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The checker accepts the recovered context only when it decrypts/verifies the supplied
-        record and binds it to the expected legacy revision.
-      target_refs: *id002
+      description: The checker accepts the recovered context only when it decrypts/verifies the supplied record
+        and binds it to the expected legacy revision.
+      target_refs:
+      - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k08.c2
     failure_classes:
@@ -459,46 +465,52 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The legacy derivation omits a field required by the current policy. The intended
-      solution uses K08.2's legitimate reconstructed context to craft an alternate but correctly customer/feature-bound
-      entitlement accepted by the legacy checker.
+    procedure_basis: The legacy derivation omits a field required by the current policy. The intended solution uses
+      K08.2's legitimate reconstructed context to craft an alternate but correctly customer/feature-bound entitlement
+      accepted by the legacy checker.
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k08.c3
       - features.k-delivery.k-registry
     - precondition_id: normal-surface
       precondition_class: target
-      description: The legacy entitlement checker validates a customer, feature, expiry, and compatibility
-        integrity field before enabling a test entitlement in the isolated service.
-      support_refs: *id006
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
-
-        Acceptance affects only a player-local compatibility feature and creates no session, package, or ARWC authority. Reset clears entitlement state.
+      description: The legacy entitlement checker validates a customer, feature, expiry, and compatibility integrity
+        field before enabling a test entitlement in the isolated service.
       support_refs:
       - features.k-delivery.k-registry
+      - content.keplerops-k-registry.k08-3-an-entitlement-of-our-choosing
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: No package/customer authority Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The action is limited to the exact records, identities,
+        routes, and destination effects declared here; unrelated tenants and services remain denied. Infrastructure
+        recovery and submission adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-delivery.k-registry
+      - content.keplerops-k-registry.k08-3-an-entitlement-of-our-choosing
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Obtain acceptance for a distinct, correctly scoped entitlement. It does not confer
-        customer execution or modern release-signing authority.
-      target_refs: *id006
+      description: Obtain acceptance for a distinct, correctly scoped entitlement. It does not confer customer execution
+        or modern release-signing authority.
+      target_refs:
+      - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k08.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The service records legacy acceptance, customer/feature binding, and test entitlement
-        state; a text artifact alone does not score.
-      target_refs: *id003
+      description: The service records legacy acceptance, customer/feature binding, and test entitlement state;
+        a text artifact alone does not satisfy the result.
+      target_refs:
+      - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k08.c3
     failure_classes:
@@ -508,83 +520,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-registry
-    description: K08.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k08.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-registry
-    description: K08.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k08.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-registry
-    description: K08.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k08.c3
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K08.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The obsolete entitlement checker, representative license records, compatibility notes, and its bounded exercise interface.
-
-      The FieldKest compatibility service exposes current package entitlements and retains a versioned legacy-format record for a named customer feature.
-    target: k-delivery.k-registry
-    tags:
-    - synthetic
-    - k08
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The obsolete entitlement checker, representative license records, compatibility notes,
-        and its bounded exercise interface.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K08.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The obsolete entitlement checker, representative license records, compatibility notes, and its bounded exercise interface.
-
-      The compatibility record refers to a key identifier, derivation version, and archived encryption-context metadata stored in the FieldKest release archive.
-    target: k-delivery.k-registry
-    tags:
-    - synthetic
-    - k08
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The obsolete entitlement checker, representative license records, compatibility notes,
-        and its bounded exercise interface.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K08.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The obsolete entitlement checker, representative license records, compatibility notes, and its bounded exercise interface.
-
-      The legacy entitlement checker validates a customer, feature, expiry, and compatibility integrity field before enabling a test entitlement in the isolated service.
-    target: k-delivery.k-registry
-    tags:
-    - synthetic
-    - k08
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The obsolete entitlement checker, representative license records, compatibility notes,
-        and its bounded exercise interface.

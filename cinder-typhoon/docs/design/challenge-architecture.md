@@ -394,7 +394,7 @@ opens a gate for everyone. Bulk exploitation must not destroy another player's
 route. Independent grading accepts equivalent successful methods and verifies
 scope and effects, rather than matching one exploit transcript.
 
-## 10. What remains before topology
+## 10. Design-stage boundary
 
 This revision includes all [240 individual challenge briefs](challenges/README.md)
 across seventy operations, alongside the main campaign capability graph and
@@ -403,19 +403,20 @@ player-experience contract. The briefs cover sixteen training challenges,
 
 Each document follows the [shared template](challenges/TEMPLATE.md): a
 player-facing description, story purpose, prerequisites and starting position,
-completion and downstream use, and difficulty/source references. Fifty cards
-have technical drafts and 190 remain briefs. The inherited empty hint headings
-are not a plan to deliver hints. Discoverability must be authored through
+completion and downstream use, and difficulty/source references. All 240 cards
+now have complete technical drafts. The inherited empty hint headings are not a
+plan to deliver hints.
+Discoverability must be authored through
 in-world records and ordinary interfaces under the
 [experience contract](player-experience.md#how-choices-become-legible).
 
-Complete the full-scenario design corrections and native SDL first. Then follow
-the [calibration plan's design and golden-range gates](calibration.md#1-design-and-golden-range-gates):
-tutorial design, its hand-built golden range, KeplerOps design and extension,
-then ARWC design and extension. Tests include ordinary entry, the bounded
-process fiction, release rollover, cloud trust composition, constrained control,
-reporting, partial progress, and returning on day two. No prototype precedes
-the design gate for its scope.
+The full-scenario design corrections and native SDL are complete through the
+ARWC hand-build gate. The next authorized work follows the [calibration plan's
+golden-range gates](calibration.md#1-design-and-golden-range-gates): progressive
+hand-building, integration tests, and initial playtest observation. Tests must
+include ordinary entry, the bounded process fiction, release rollover, cloud
+trust composition, constrained control, reporting, partial progress, and
+returning on day two. No prototype preceded the design gate for its scope.
 
 The event layer supplies optional short dispatches, unscored recognition of
 varied milestones, and a closing debrief. Technique discussion and agent help

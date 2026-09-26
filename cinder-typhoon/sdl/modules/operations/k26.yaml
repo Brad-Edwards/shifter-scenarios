@@ -33,23 +33,15 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c3-surface-2
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c3-records-2
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Publish the compatible changed package with the correct tenant/channel binding. This
-      supplies A03. Customer-side activation and execution remain K26.2.
-    source_refs: &id001
+    description: |-
+      Publish the compatible changed package with the correct tenant/channel binding. This supplies A03. Customer-side activation and execution remain K26.2.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -78,12 +70,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c2:
     description: |-
       Resolve actual consumer activation and demonstrate execution in FieldKest's limited ARWC corporate context. This supplies A04 and CORPORATE; an upload or registry receipt alone is insufficient.
 
-      The conclusion pairs the supplied release with the ARWC connector's actual changed output and customer identity. The maintenance ticket the player knew from KeplerOps now appears in its customer context under ARWC's name. The effect is their package running at the victim, with the existing execution evidence making that transition tangible. Customer identity and a familiar ticket alone are not proof of execution.
-    source_refs: &id002
+      The conclusion pairs the supplied release with the ARWC connector's actual changed output and customer identity. The maintenance ticket the operator knew from KeplerOps now appears in its customer context under ARWC's name. The effect is their package running at the victim, with the existing execution evidence making that transition tangible. Customer identity and a familiar ticket alone are not proof of execution.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
+    - features.k-delivery.k-registry
     - features.a-corporate.a-connector
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -105,6 +105,7 @@ evidence_requirements:
         names:
         - cinder.k26-2.satisfied
         component_refs:
+        - features.k-delivery.k-registry
         - features.a-corporate.a-connector
       collection: require
       retention: require
@@ -112,10 +113,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
   c3:
-    description: Demonstrate a fresh consumption through the distinct rollback/version-selection weakness
-      in a private future-state rehearsal. Replaying the first execution is insufficient.
-    source_refs: &id003
+    description: |-
+      Demonstrate a fresh consumption through the distinct rollback/version-selection weakness in a private future-state rehearsal. Replaying the first execution is insufficient.
+
+      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+    source_refs:
     - features.k-delivery.k-registry
     - features.a-corporate.a-connector
     scope: Per-participant in-world evidence; no other participant state.
@@ -146,11 +154,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
+      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
+      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
+      by every declared downstream consumer.'
 propositions:
   c1:
-    description: Publish the compatible changed package with the correct tenant/channel binding. This
-      supplies A03. Customer-side activation and execution remain K26.2.
-    subjects: *id001
+    description: Publish the compatible changed package with the correct tenant/channel binding. This supplies A03.
+      Customer-side activation and execution remain K26.2.
+    subjects:
+    - features.k-delivery.k-registry
     basis: observed_state
     predicate:
       kind: boolean
@@ -165,8 +179,10 @@ propositions:
     description: |-
       Resolve actual consumer activation and demonstrate execution in FieldKest's limited ARWC corporate context. This supplies A04 and CORPORATE; an upload or registry receipt alone is insufficient.
 
-      The conclusion pairs the supplied release with the ARWC connector's actual changed output and customer identity. The maintenance ticket the player knew from KeplerOps now appears in its customer context under ARWC's name. The effect is their package running at the victim, with the existing execution evidence making that transition tangible. Customer identity and a familiar ticket alone are not proof of execution.
-    subjects: *id002
+      The conclusion pairs the supplied release with the ARWC connector's actual changed output and customer identity. The maintenance ticket the operator knew from KeplerOps now appears in its customer context under ARWC's name. The effect is their package running at the victim, with the existing execution evidence making that transition tangible. Customer identity and a familiar ticket alone are not proof of execution.
+    subjects:
+    - features.k-delivery.k-registry
+    - features.a-corporate.a-connector
     basis: observed_state
     predicate:
       kind: boolean
@@ -178,9 +194,11 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate a fresh consumption through the distinct rollback/version-selection weakness
-      in a private future-state rehearsal. Replaying the first execution is insufficient.
-    subjects: *id003
+    description: Demonstrate a fresh consumption through the distinct rollback/version-selection weakness in a private
+      future-state rehearsal. Replaying the first execution is insufficient.
+    subjects:
+    - features.k-delivery.k-registry
+    - features.a-corporate.a-connector
     basis: observed_state
     predicate:
       kind: boolean
@@ -226,7 +244,7 @@ objectives:
     agent: participant.operator
     actions:
     - k26.c1
-    targets: &id004
+    targets:
     - features.k-delivery.k-registry
     success:
       mode: all_of
@@ -244,7 +262,8 @@ objectives:
     agent: participant.operator
     actions:
     - k26.c2
-    targets: &id005
+    targets:
+    - features.k-delivery.k-registry
     - features.a-corporate.a-connector
     success:
       mode: all_of
@@ -262,7 +281,7 @@ objectives:
     agent: participant.operator
     actions:
     - k26.c3
-    targets: &id006
+    targets:
     - features.k-delivery.k-registry
     - features.a-corporate.a-connector
     success:
@@ -274,8 +293,8 @@ objectives:
       - k26.c3
 workflows:
   c1:
-    description: 'K26.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K26.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -304,8 +323,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'K26.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K26.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -327,8 +346,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'K26.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'K26.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -354,25 +373,48 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Build an altered FieldKest package that preserves the customer's expected interface
-      and publish it to the release channel the active ARWC integration consumes.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Compatible changed package 7.4.3-cinder.<participant> and publication/approval audit.
+      Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.k26.c1
+      - features.k-delivery.k-registry
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`k-registry` owns this part of the operation. Its starting state is exact: G03 interface contract;
+        G02 channel arwc-stable; A01 or K20 approval authority. The owning service uses the listener, route, identity,
+        authorization, storage, and audit contract declared in the corresponding world module. Records that are
+        not explicitly mutable remain immutable. The private service-loader contract `content.keplerops-k-registry.k26-1-ready-for-their-channel`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-registry
+      - content.keplerops-k-registry.k26-1-ready-for-their-channel
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Supplies A03; not execution. Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
+        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
+        this in-world contract.
+      support_refs:
       - features.k-delivery.k-registry
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Publish the compatible changed package with the correct tenant/channel binding. This
-        supplies A03. Customer-side activation and execution remain K26.2.
-      target_refs: *id004
+      description: Publish the compatible changed package with the correct tenant/channel binding. This supplies
+        A03. Customer-side activation and execution remain K26.2.
+      target_refs:
+      - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k26.c1
     failure_classes:
@@ -386,18 +428,44 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Make the active ARWC connector select and run your published package. Demonstrate
-      the changed behavior from the customer's side.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Consumer selects exact version, executes bounded diagnostic_summary, and returns
+      customer-side output plus receipt. Merely describing the condition, editing a local copy, or presenting a
+      value obtained from another surface does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
-      - workflows.k26.c2
+      - workflows.c2
+      - features.k-delivery.k-registry
+      - features.a-corporate.a-connector
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`a-connector` owns this part of the operation. Its starting state is exact: Customer poll/activation
+        endpoint accepts only signed approved active-tenant channel; connector implements fieldkest.connector/v3.
+        The owning service uses the listener, route, identity, authorization, storage, and audit contract declared
+        in the corresponding world module. Records that are not explicitly mutable remain immutable. The private
+        service-loader contract `content.keplerops-a-connector.k26-2-customer-accepted` freezes the request, denial,
+        state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-registry
+      - features.a-corporate.a-connector
+      - content.keplerops-a-connector.k26-2-customer-accepted
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Supplies A04 and CORPORATE; no other ARWC design implied. Participant-created service state persists
+        for the life of the participant world and ordinary retries do not erase it. The selected route cannot act
+        on unrelated tenants, records, packages, identities, jobs, or services. Infrastructure recovery and submission
+        adjudication are outside this in-world contract.
+      support_refs:
+      - features.k-delivery.k-registry
       - features.a-corporate.a-connector
     effects:
     - effect_id: outcome
@@ -405,8 +473,10 @@ action_contracts:
       description: |-
         Resolve actual consumer activation and demonstrate execution in FieldKest's limited ARWC corporate context. This supplies A04 and CORPORATE; an upload or registry receipt alone is insufficient.
 
-        The conclusion pairs the supplied release with the ARWC connector's actual changed output and customer identity. The maintenance ticket the player knew from KeplerOps now appears in its customer context under ARWC's name. The effect is their package running at the victim, with the existing execution evidence making that transition tangible. Customer identity and a familiar ticket alone are not proof of execution.
-      target_refs: *id005
+        The conclusion pairs the supplied release with the ARWC connector's actual changed output and customer identity. The maintenance ticket the operator knew from KeplerOps now appears in its customer context under ARWC's name. The effect is their package running at the victim, with the existing execution evidence making that transition tangible. Customer identity and a familiar ticket alone are not proof of execution.
+      target_refs:
+      - features.k-delivery.k-registry
+      - features.a-corporate.a-connector
       evidence_refs:
       - evidence_requirements.k26.c2
     failure_classes:
@@ -420,26 +490,52 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Establish a separate retained delivery option through the customer's rollback workflow,
-      even when the current release selection has moved on.
+    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
+      or state described above. The participant must exercise that real condition through the declared service interface
+      and produce this result: Fresh rollback selection consumes operator release after current channel advances.
+      Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
+      does not satisfy the contract.'
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
+      independently owned evidence are required. Backend choices remain open only where they cannot change those
+      facts.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
-      - workflows.k26.c3
+      - workflows.c3
+      - features.k-delivery.k-registry
+      - features.a-corporate.a-connector
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: '`a-connector` owns this part of the operation. Its starting state is exact: Retained release
+        slot and private future-state rehearsal separate from current activation. The owning service uses the listener,
+        route, identity, authorization, storage, and audit contract declared in the corresponding world module.
+        Records that are not explicitly mutable remain immutable. The private service-loader contract `content.keplerops-a-connector.k26-3-the-release-they-can-roll-back-to`
+        freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
+      support_refs:
+      - features.k-delivery.k-registry
+      - features.a-corporate.a-connector
+      - content.keplerops-a-connector.k26-3-the-release-they-can-roll-back-to
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: Optional delivery durability. Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
+        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
+        outside this in-world contract.
+      support_refs:
       - features.k-delivery.k-registry
       - features.a-corporate.a-connector
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate a fresh consumption through the distinct rollback/version-selection weakness
-        in a private future-state rehearsal. Replaying the first execution is insufficient.
-      target_refs: *id006
+      description: Demonstrate a fresh consumption through the distinct rollback/version-selection weakness in a
+        private future-state rehearsal. Replaying the first execution is insufficient.
+      target_refs:
+      - features.k-delivery.k-registry
+      - features.a-corporate.a-connector
       evidence_refs:
       - evidence_requirements.k26.c3
     failure_classes:
@@ -449,101 +545,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-registry
-    description: K26.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k26.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-connector
-    description: K26.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k26.c2
-      mode: delivery
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.k-delivery.k-registry
-    description: K26.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k26.c3
-      mode: service
-  c3-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-connector
-    description: K26.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.k26.c3
-      mode: delivery
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      K26.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Earned publication authority, G02's customer binding, the consumed-package contract, and the customer's ordinary activation workflow.
-    target: k-delivery.k-registry
-    tags:
-    - synthetic
-    - k26
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Earned publication authority, G02's customer binding, the consumed-package contract,
-        and the customer's ordinary activation workflow.
-  c2-records-1:
-    type: dataset
-    description: |-
-      K26.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Earned publication authority, G02's customer binding, the consumed-package contract, and the customer's ordinary activation workflow.
-    target: a-corporate.a-connector
-    tags:
-    - synthetic
-    - k26
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Earned publication authority, G02's customer binding, the consumed-package contract,
-        and the customer's ordinary activation workflow.
-  c3-records-1:
-    type: dataset
-    description: |-
-      K26.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Earned publication authority, G02's customer binding, the consumed-package contract, and the customer's ordinary activation workflow.
-    target: k-delivery.k-registry
-    tags:
-    - synthetic
-    - k26
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Earned publication authority, G02's customer binding, the consumed-package contract,
-        and the customer's ordinary activation workflow.
-  c3-records-2:
-    type: dataset
-    description: |-
-      K26.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Earned publication authority, G02's customer binding, the consumed-package contract, and the customer's ordinary activation workflow.
-    target: a-corporate.a-connector
-    tags:
-    - synthetic
-    - k26
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Earned publication authority, G02's customer binding, the consumed-package contract,
-        and the customer's ordinary activation workflow.

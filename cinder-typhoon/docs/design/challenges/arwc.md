@@ -1,4 +1,4 @@
-# ARWC challenge briefs
+# ARWC challenge designs
 
 120 briefs across 35 operations. The customer transition opens corporate data,
 maintenance administration, and optional advanced investigations. Two medium
@@ -11,8 +11,8 @@ corporate, history, planning, and reporting endings give the player other
 worthwhile conclusions. Financial loss and water restrictions remain the
 story's consequences.
 
-Difficulty is conditional on the named prerequisites. Technical design and
-all three hints in each document remain empty.
+Difficulty is conditional on the named prerequisites. All 120 cards have
+complete five-part technical designs; all three hint sections remain empty.
 
 ## Operations
 

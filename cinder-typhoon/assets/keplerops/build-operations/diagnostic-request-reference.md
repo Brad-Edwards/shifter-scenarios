@@ -49,5 +49,5 @@ receiving service when asking that team to check its log.
 Retry from the retained request in job history. Change only the diagnostic
 object when comparing commands against the same support input. A failed run
 does not remove the workspace or an earlier result. Job exit revokes that run's
-worker credentials; the next run receives fresh ones. Reset workspace is a
-separate destructive action, not part of Retry or Cancel.
+worker credentials; the next run receives fresh ones. Workspace files and job
+history persist across Retry, Cancel, job exit, and shift handover.

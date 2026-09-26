@@ -1,0 +1,522 @@
+name: cinder-keplerops-k-preview
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-k-preview
+  version: 0.1.0
+  exports:
+    content:
+    - k10-1-whose-preview-is-this
+    - k10-2-two-inputs-one-identity
+    - k10-3-the-other-document-s-contents
+    - k12-1-the-reviewer-arrives-second
+    - k12-2-a-value-across-the-action-boundary
+    - k12-3-the-worker-changes-sides
+    - k12-4-the-preview-is-ours
+realization:
+  default: open
+content:
+  k10-1-whose-preview-is-this:
+    type: file
+    target: k-delivery.k-preview
+    path: /var/lib/fieldkest-preview/contracts/whose-preview-is-this.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: whose-preview-is-this
+      owner:
+        node: k-preview
+        authority: Preview queue on k-preview
+      surface_bindings:
+      - k-delivery.k-preview/preview-service/source-upload
+      starting_state: Supplied attachment, derived document ID and restricted owner-case
+        association.
+      mechanic_profile:
+        protected_source: SUP-K-2841
+        protected_owner: maya.ranscombe
+        participant_source: sup-k-2841
+        participant_owner: rowan.ito
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Supplied attachment, derived document ID and restricted owner-case association.
+        success: Metadata response binds source version, derived ID and case.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Metadata response binds source version, derived ID and case.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K10.2.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 1cd362ee719e7638b1e2996ea672ac164b3c95c3eace96e03c9452aaab06b519
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-preview
+    - persistent-tenant-state
+  k10-2-two-inputs-one-identity:
+    type: file
+    target: k-delivery.k-preview
+    path: /var/lib/fieldkest-preview/contracts/two-inputs-one-identity.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: two-inputs-one-identity
+      owner:
+        node: k-preview
+        authority: Preview identity derivation
+      surface_bindings:
+      - k-delivery.k-preview/preview-service/render-document
+      starting_state: Two authored documents with distinct source IDs/owners that collide
+        after NFKC plus case-fold canonicalization.
+      mechanic_profile:
+        canonicalization: UTF-8 decode, Unicode NFKC, full Unicode casefold, then ASCII
+          hyphen preservation
+        collision: SUP-K-2841 and sup-k-2841 both derive the key sup-k-2841
+        defect: the preview lookup authorizes the submitted source owner before resolving
+          content by the derived key
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Two authored documents with distinct source IDs/owners that collide after
+          NFKC plus case-fold canonicalization.
+        success: Collision audit naming both inputs and shared derived ID.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Collision audit naming both inputs and shared derived ID.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K10.3.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: a4188ee5d9d357ccb858332595358f66095201aa06e6b4a89d1c0c4bcbec6d32
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-preview
+    - persistent-tenant-state
+  k10-3-the-other-document-s-contents:
+    type: file
+    target: k-delivery.k-preview
+    path: /var/lib/fieldkest-preview/contracts/the-other-document-s-contents.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-other-document-s-contents
+      owner:
+        node: k-preview
+        authority: Support upload + renderer on k-preview
+      surface_bindings:
+      - k-delivery.k-preview/preview-service/source-upload
+      - k-delivery.k-preview/preview-service/render-result
+      starting_state: operator upload route; protected document content keyed by collided
+        derived ID.
+      mechanic_profile:
+        render_rule: the operator upload supplies source sup-k-2841; renderer content lookup
+          selects the protected current version stored at derived key sup-k-2841
+        proof: join upload audit, canonicalization audit, protected content-version read,
+          and render digest
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: operator upload route; protected document content keyed by collided derived
+          ID.
+        success: Fresh render reads protected target version; source-to-derived and content-read
+          audits.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Fresh render reads protected target version; source-to-derived
+        and content-read audits.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Preview-only disclosure.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 629f9ad3cb70804bddc1e1d791058199700fd4f31c29dc7d01c11edc0718d6db
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-preview
+    - persistent-tenant-state
+  k12-1-the-reviewer-arrives-second:
+    type: file
+    target: k-delivery.k-preview
+    path: /var/lib/fieldkest-preview/contracts/the-reviewer-arrives-second.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-reviewer-arrives-second
+      owner:
+        node: k-preview
+        authority: Review queue + browser worker on k-preview
+      surface_bindings:
+      - k-delivery.k-preview/preview-service/review-reassign
+      starting_state: Ordinary release-preview account; review item PRV-771; authored same-origin
+        preview whose queue ownership check omits submitter on reassignment.
+      mechanic_profile:
+        review_id: PRV-771
+        defect: reassignment validates queue ownership but omits the submitter constraint
+          before the reviewer browser opens operator content
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Ordinary release-preview account; review item PRV-771; authored same-origin
+          preview whose queue ownership check omits submitter on reassignment.
+        success: Privileged reviewer worker loads operator content; navigation/load audit.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Privileged reviewer worker loads operator content; navigation/load
+        audit.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K12.2.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 5c6f64d2ac143cb1e94449f5432d0272e3bb5c882502cdef284563931a26e961
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-preview
+    - persistent-tenant-state
+  k12-2-a-value-across-the-action-boundary:
+    type: file
+    target: k-delivery.k-preview
+    path: /var/lib/fieldkest-preview/contracts/a-value-across-the-action-boundary.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: a-value-across-the-action-boundary
+      owner:
+        node: k-preview
+        authority: Reviewer action broker
+      surface_bindings:
+      - k-delivery.k-preview/preview-service/review-action
+      starting_state: Per-review action nonce exposed to same-origin preview through a postMessage
+        handler that does not validate sender origin; protected prepare action.
+      mechanic_profile:
+        channel: window.postMessage
+        message:
+          type: fieldkest.review.prepare
+          review_id: PRV-771
+          nonce: server-issued 128-bit base64url
+        defect: the broker verifies review_id, nonce, and reviewer session but omits event.origin
+          and event.source validation
+        nonce: single use, bound to PRV-771, expires after 120 seconds
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Per-review action nonce exposed to same-origin preview through a postMessage
+          handler that does not validate sender origin; protected prepare action.
+        success: Current nonce used on the bound review; action audit names reviewer session
+          and item.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Current nonce used on the bound review; action audit names reviewer
+        session and item.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K12.3.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 8571cf3492860d0a3ec195402b131742ed978e5f6683b0fb512c67ec4c2101fd
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-preview
+    - persistent-tenant-state
+  k12-3-the-worker-changes-sides:
+    type: file
+    target: k-delivery.k-preview
+    path: /var/lib/fieldkest-preview/contracts/the-worker-changes-sides.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-worker-changes-sides
+      owner:
+        node: k-preview
+        authority: Preview service-worker scope
+      surface_bindings:
+      - k-delivery.k-preview/preview-service/review-attachment
+      starting_state: 'Attachment JavaScript served with worker MIME type; Service-Worker-Allowed:
+        /review/ is broader than attachment path.'
+      mechanic_profile:
+        attachment: /review/attachments/PRV-771/contribution.js
+        headers:
+        - 'Content-Type: application/javascript'
+        - 'Service-Worker-Allowed: /review/'
+        scope: /review/
+        intercept: only GET /review/PRV-771/render-data; all other requests pass through
+          unchanged
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: 'Attachment JavaScript served with worker MIME type; Service-Worker-Allowed:
+          /review/ is broader than attachment path.'
+        success: Worker registration controls renderer contribution for PRV-771 while preserving
+          response schema.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Worker registration controls renderer contribution for PRV-771
+        while preserving response schema.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Input to K12.4.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 938f7d7fc2079cd2cb29a9987cdc75eaca1e1f8c345aa1362f82c2bf9853aa72
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-preview
+    - persistent-tenant-state
+  k12-4-the-preview-is-ours:
+    type: file
+    target: k-delivery.k-preview
+    path: /var/lib/fieldkest-preview/contracts/the-preview-is-ours.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: the-preview-is-ours
+      owner:
+        node: k-preview
+        authority: Constrained renderer on k-preview
+      surface_bindings:
+      - k-delivery.k-preview/preview-service/review-render
+      starting_state: Baseline release document and privileged renderer request.
+      mechanic_profile:
+        chosen_field: compatibility_summary
+        value: fieldlink.connector/v3 compatible
+        proof: join service-worker registration, renderer process identity, rendered document
+          digest, and support review receipt
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Baseline release document and privileged renderer request.
+        success: Intercepted render contains chosen compatible field, renderer process identity
+          and support-review receipt.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Intercepted render contains chosen compatible field, renderer
+        process identity and support-review receipt.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Complete supplier-side specialist conclusion.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 5993c20055f9366045fd4802789350f723a8093a322314afce65aefae474c90d
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-preview
+    - persistent-tenant-state

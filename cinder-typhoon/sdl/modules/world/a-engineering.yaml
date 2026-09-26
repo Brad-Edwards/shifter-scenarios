@@ -37,28 +37,917 @@ realization:
 nodes:
   subnet:
     type: switch
-    description: 'ARWC: OT engineering / supervision. Logical network segment; physical realization and
-      addressing remain open.'
+    description: 'ARWC: OT engineering / supervision. Logical network segment; physical realization and addressing
+      remain open.'
   a-hmi:
     type: compute
-    description: HMI / practice / scheduler
+    description: Supervisory process view, practice model, command-plan binder, and private scheduler.
     features:
       a-hmi: ''
       a-hmi--dispatch: ''
+    os: linux
+    services:
+    - name: supervisory-operations
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-hmi
+        entry_type: directory
+        owner_user: arwc-hmi
+        owner_group: arwc-hmi
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-hmi
+          primary_group: arwc-hmi
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-hmi
+          members:
+          - arwc-hmi
+      network:
+        hostname: a-hmi
+        domainname: a-engineering.arwc.test
+        endpoints:
+        - network: a-engineering.subnet
+          ip_address: 10.77.63.20
+          ip_prefix_length: 24
+          gateway: 10.77.63.1
+          aliases:
+          - a-hmi
+          dns_names:
+          - supervisory-operations.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-engineering segment.
+      service_listeners:
+      - service_listener_id: supervisory-operations-https
+        service: supervisory-operations
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: supervisory-operations
+        service: supervisory-operations
+        protocol: https
+        base_path: /
+        description: Supervisory process view, practice model, command-plan binder, and private scheduler.
+        routes:
+        - route_id: the-reservoir-s-present-tense
+          path: /api/the-reservoir-s-present-tense
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Current process view PV-CRR-2026-09-25T1400Z reports measured gate positions, actual flows,
+            integrated volume, and usable reserve for interval 14:00:00-14:05:00Z separately from requested setpoints.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-mode-the-plant-is-in
+          path: /api/the-mode-the-plant-is-in
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Mode record MODE-CRR-17 is DRY_PERIOD_MANAGED, effective for project CRR-CTRL-R21 and outlet
+            group OG-CRR-02.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-instrument-in-the-note
+          path: /api/the-instrument-in-the-note
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Controls note ENG-CRR-OG2-17 names instrument FIT-CRR-204B and historian tag CRR.OUTLET.02B.FLOW_ACTUAL;
+            ordinary context reuses narrative document me-engineering-note-01-1.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-first-live-trace
+          path: /api/the-first-live-trace
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Commissioning event EVT-COMM-OG2-114 ramped each gate linearly for 20 seconds, held 40 seconds,
+            and ramped closed for 20 seconds; the 60 full-flow-equivalent seconds integrate to 0.012 ML, and HMI
+            plus independent instrument series must correlate to that trace while reusing ordinary narrative document
+            me-commissioning-01.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-operating-envelope
+          path: /api/the-operating-envelope
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Envelope ENV-OG2-R6 limits each gate to 0.50 m3/s, aggregate to 1.00 m3/s, ramp to 0.10 m3/s
+            per 20 seconds, hold to 1200 seconds, and volume to 1.20 ML.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: conditions-before-movement
+          path: /api/conditions-before-movement
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Practice permissive PRACTICE-PERM-02 is false in supplied state because simulation reset_complete
+            is not asserted; live permissive PERM-OG2-LIVE-R4 is separate.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: accepted-is-not-actuated
+          path: /api/accepted-is-not-actuated
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Practice requests PRACTICE-REQ-11 and PRACTICE-REQ-12 are acknowledged but not actuated while
+            PRACTICE-PERM-02 is false; simulator measurements remain at zero.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-sequence-the-process-can-follow
+          path: /api/a-sequence-the-process-can-follow
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Practice checkpoint PRACTICE-OG2-07 accepts a permissive transition then ramps each simulated
+            gate linearly to 0.15 m3/s for 30 seconds, holds 70 seconds, and ramps closed for 30 seconds; 100 full-flow-equivalent
+            seconds independently report 0.03 ML without changing live reserve.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: paper-truth
+          path: /api/paper-truth
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Plan PLAN-CRR-LOSS-1000 ramps balanced gates linearly for 100 seconds, holds each at 0.50
+            m3/s for 900 seconds, and ramps closed for 100 seconds; 1000 full-flow-equivalent seconds release 1.00
+            ML, leaving 11.40 ML, a 0.60 ML shortfall, USD 1,440 liability, and Stage A restrictions under CONT-DRY-A-R3.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: bind-the-plan-to-the-plant
+          path: /api/bind-the-plan-to-the-plant
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Command-plan binder requires scoped client, asset AST-CRR-017, outlet OG-CRR-02, project
+            CRR-CTRL-R21, map MAP-OG2-R8, mode MODE-CRR-17, envelope ENV-OG2-R6, and plan PLAN-CRR-LOSS-1000.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-forecast-that-matches-the-instrument
+          path: /api/a-forecast-that-matches-the-instrument
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Forecast case FCST-CRR-33 joins 20-second instrument samples, fixed 40-second publication
+            delay, scale gain 1.00, and current map MAP-OG2-R8; tolerance is 0.01 ML.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-expensive-hour
+          path: /api/the-expensive-hour
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped OT read or control session
+          session_required: true
+          description: Checkpoint REH-SCHED-33 has twelve 300-second intervals, disclosed demand vector, 180 m3
+            initial buffer, 120-240 m3 bounds, 160-200 m3 final bound, 0.10 m3/s ramps, and 0.78-0.84 ML reservoir-volume
+            objective.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: supervisory-operations-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: supervisory-operator-principal
+          kind: service_account
+          name: ARWC supervisory-operator principal
+          credential_classification: redacted
+        roles:
+        - role_id: supervisory-operator
+          name: ARWC supervisory operator
+        permission_grants:
+        - grant_id: supervisory-operator-declared-routes
+          role_ref: supervisory-operator
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - the-reservoir-s-present-tense
+          - the-mode-the-plant-is-in
+          - the-instrument-in-the-note
+          - the-first-live-trace
+          - the-operating-envelope
+          - conditions-before-movement
+          - accepted-is-not-actuated
+          - a-sequence-the-process-can-follow
+          - paper-truth
+          - bind-the-plan-to-the-plant
+          - a-forecast-that-matches-the-instrument
+          - the-expensive-hour
+          effect: allow
+        role_mappings:
+        - mapping_id: supervisory-operator-mapping
+          role_ref: supervisory-operator
+          users:
+          - supervisory-operator-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: supervisory-operations
+        name: Supervisory process view, practice model, command-plan binder, and private scheduler
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/supervisory-operations
   a-historian:
     type: compute
-    description: Historian / tag records
+    description: Versioned process historian, tag, scale, and trace service.
     features:
       a-historian: ''
+    os: linux
+    services:
+    - name: process-historian
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-historian
+        entry_type: directory
+        owner_user: arwc-historian
+        owner_group: arwc-historian
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-historian
+          primary_group: arwc-historian
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-historian
+          members:
+          - arwc-historian
+      network:
+        hostname: a-historian
+        domainname: a-engineering.arwc.test
+        endpoints:
+        - network: a-engineering.subnet
+          ip_address: 10.77.63.30
+          ip_prefix_length: 24
+          gateway: 10.77.63.1
+          aliases:
+          - a-historian
+          dns_names:
+          - process-historian.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-engineering segment.
+      service_listeners:
+      - service_listener_id: process-historian-https
+        service: process-historian
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: process-historian
+        service: process-historian
+        protocol: https
+        base_path: /
+        description: Versioned process historian, tag, scale, and trace service.
+        routes:
+        - route_id: the-tag-export
+          path: /api/the-tag-export
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC scoped OT read session
+          session_required: true
+          description: Engineering export TAGS-CRR-R21 lists outlet command, position, and flow tags with project
+            revision CRR-CTRL-R21 and ambiguous legacy group labels.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-scale-kept-elsewhere
+          path: /api/the-scale-kept-elsewhere
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC scoped OT read session
+          session_required: true
+          description: Separate scale table SCALE-CRR-R8 maps raw counts to percent-open and m3/s with signed engineering
+            revision R8.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: when-the-units-changed
+          path: /api/when-the-units-changed
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped OT read session
+          session_required: true
+          description: Revision note SCALE-CHANGE-OG2-8 changes flow divisor from 8000 to 10000 counts per m3/s
+            at deployment R21; retained R19 samples use the old scale.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: which-outlet-answers
+          path: /api/which-outlet-answers
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped OT read session
+          session_required: true
+          description: Observed commissioning trace EVT-COMM-OG2-114 and current scale resolve MAP-OG2-R8 from tag
+            identifiers to gates GT-CRR-02A and GT-CRR-02B and outlet group OG-CRR-02.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-forecast-that-matches-the-instrument
+          path: /api/a-forecast-that-matches-the-instrument
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC scoped OT read session
+          session_required: true
+          description: Forecast case FCST-CRR-33 joins 20-second instrument samples, fixed 40-second publication
+            delay, scale gain 1.00, and current map MAP-OG2-R8; tolerance is 0.01 ML.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: process-historian-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: historian-reader-principal
+          kind: service_account
+          name: ARWC historian-reader principal
+          credential_classification: redacted
+        roles:
+        - role_id: historian-reader
+          name: ARWC historian reader
+        permission_grants:
+        - grant_id: historian-reader-declared-routes
+          role_ref: historian-reader
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - the-tag-export
+          - the-scale-kept-elsewhere
+          - when-the-units-changed
+          - which-outlet-answers
+          - a-forecast-that-matches-the-instrument
+          effect: allow
+        role_mappings:
+        - mapping_id: historian-reader-mapping
+          role_ref: historian-reader
+          users:
+          - historian-reader-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: process-historian
+        name: Versioned process historian, tag, scale, and trace service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/process-historian
   a-engineering:
     type: compute
-    description: Engineering workstation / projects
+    description: Engineering project, legacy analysis, verifier, replay, and constrained utility service.
     features:
       a-engineering: ''
       a-engineering--utility-worker: ''
+    os: linux
+    services:
+    - name: engineering-workbench
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-engineering
+        entry_type: directory
+        owner_user: arwc-engineering
+        owner_group: arwc-engineering
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-engineering
+          primary_group: arwc-engineering
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-engineering
+          members:
+          - arwc-engineering
+      network:
+        hostname: a-engineering
+        domainname: a-engineering.arwc.test
+        endpoints:
+        - network: a-engineering.subnet
+          ip_address: 10.77.63.40
+          ip_prefix_length: 24
+          gateway: 10.77.63.1
+          aliases:
+          - a-engineering
+          dns_names:
+          - engineering-workbench.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-engineering segment.
+      service_listeners:
+      - service_listener_id: engineering-workbench-https
+        service: engineering-workbench
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: engineering-workbench
+        service: engineering-workbench
+        protocol: https
+        base_path: /
+        description: Engineering project, legacy analysis, verifier, replay, and constrained utility service.
+        routes:
+        - route_id: the-diagnostic-nobody-retired
+          path: /api/the-diagnostic-nobody-retired
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Legacy diagnostic package DIAG-CRR-MIXED-19 contains linux x86_64 ELF, symbols stripped,
+            SHA-256 manifest, project R19 samples, and expected ordinary output.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-second-interpretation
+          path: /api/a-second-interpretation
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Binary begins in long mode then uses a far return to a 32-bit compatibility segment for its
+            record decoder; correct analysis must preserve 32-bit wrap and zero-extension behavior.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-hidden-check
+          path: /api/the-hidden-check
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Compatibility decoder uses a 32-bit rolling key and a 64-bit verifier; mixed-width state
+            reveals protected migration record MIG-OG2-R19-R21.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-map-from-the-old-diagnostic
+          path: /api/a-map-from-the-old-diagnostic
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Recovered migration record maps legacy project R19 identifiers to CRR-CTRL-R21 and provides
+            a signed comparison digest, but is historical rather than current deployment evidence.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-project-and-the-note
+          path: /api/the-project-and-the-note
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: 'Engineering project index PROJ-CRR-INDEX-R9 and note ENG-DEPLOY-CRR-21 disagree: workspace
+            claims R19 while signed deployment manifest claims CRR-CTRL-R21; ordinary background reuses me-project-handover-01.'
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: which-project-is-running
+          path: /api/which-project-is-running
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Independent instrument handshake DEPLOY-OBS-CRR-21 reports project digest for CRR-CTRL-R21;
+            comparison must reject the stale workspace claim and bind the observed revision.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-viewer-in-the-delivery
+          path: /api/the-viewer-in-the-delivery
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Delivery ENG-CRR-SEALED-22 contains Nim 2.0.8 linux/amd64 viewer VIEW-CRR-R5, sealed project
+            CRR-SEALED-PKG-R7, and exact build manifest.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-machine-inside-the-viewer
+          path: /api/the-machine-inside-the-viewer
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Viewer VM uses eight 16-bit little-endian opcodes MOVI, LOAD8, XOR, ADD, ROTL, STORE8, JNZ,
+            and HALT with 256-byte memory and wraparound arithmetic; four fragments freeze state effects.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-decision-inside-the-sealed-project
+          path: /api/the-decision-inside-the-sealed-project
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: VM-derived key opens AES-256-GCM project package with project ID as AAD, revealing commissioning
+            decision DEC-CRR-OG2-R7, project revision R21, helper REVIEWHELP-R4, and retained review context.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-reviewer-who-was-never-listed
+          path: /api/the-reviewer-who-was-never-listed
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Review helper is .NET 8 ReadyToRun x86_64 with a native-method body replaced after compilation
+            while managed metadata lists benign reviewer; actual code derives concealed identity elias.vorn-review
+            and uses its historical archive session for comparison CMP-CRR-R21-R7.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: what-counts-as-intact
+          path: /api/what-counts-as-intact
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Legacy verifier VER-ROT128-R3 treats each 16-byte block as little-endian u128 and updates
+            state s=ROTL128(s,17) XOR block XOR ROTL128(block,41) from IV 6a09e667f3bcc908bb67ae8584caa73b, then
+            returns s XOR ROTL128(s,29) XOR byte_length; six programs freeze padding, length, and decisions.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-constraints-of-a-valid-looking-program
+          path: /api/the-constraints-of-a-valid-looking-program
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Accepted diagnostic program format DPG1 requires header, block table, mandatory sensor tests,
+            bounded constants, checksum, and output schema; a GF(2) model must preserve all structural constraints.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-utility-s-small-world
+          path: /api/the-utility-s-small-world
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Utility UTIL-CRR-ISSUER-R4 is Linux x86_64 PIE built by clang 18.1 with -O2 -fstack-protector-strong
+            -fPIE -pie -Wl,-z,relro,-z,now, glibc 2.39, CET disabled, 16 KiB executable text, ASLR enabled, seccomp
+            allowlist, and file capability cap_setuid+ep; it serves engineering relation REL-UTIL-ISSUER-4.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: control-with-very-little-room
+          path: /api/control-with-very-little-room
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Length field copies up to 384 bytes into a 192-byte frame with stack canary disclosure in
+            a preceding status record; sparse gadgets plus fixed vDSO mapping permit a bounded call-oriented chain
+            without a shell.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-replay-s-pieces
+          path: /api/the-replay-s-pieces
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Replay REPLAY-CRR-R19 is C++20 ECS with entities Reservoir, OutletGroup, GateA, GateB, Buffer
+            and components Setpoint, Position, Flow, Reserve, Mode, Revision.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-systems-that-update-it
+          path: /api/the-systems-that-update-it
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Systems execute in fixed order CommandApply, RampLimit, FlowIntegrate, ReserveUpdate, ApprovalCheck;
+            four distinguishing snapshots define entity creation and component mutation.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-condition-the-old-model-used
+          path: /api/the-condition-the-old-model-used
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Old ApprovalCheck reads pre-ReserveUpdate cached reserve and approves when cached reserve
+            minus requested volume is at least committed allocation; current model uses post-update reserve.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: replay-is-not-reality
+          path: /api/replay-is-not-reality
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC engineering workspace session
+          session_required: true
+          description: Witness trace TRACE-R19-DISPUTED shows old acceptance at 12.40 ML for a 1.00 ML request while
+            current independent observations yield 11.40 ML and reject the old sufficiency claim.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: engineering-workbench-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: engineer-principal
+          kind: service_account
+          name: ARWC engineer principal
+          credential_classification: redacted
+        roles:
+        - role_id: engineer
+          name: ARWC engineer
+        permission_grants:
+        - grant_id: engineer-declared-routes
+          role_ref: engineer
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - the-diagnostic-nobody-retired
+          - a-second-interpretation
+          - the-hidden-check
+          - a-map-from-the-old-diagnostic
+          - the-project-and-the-note
+          - which-project-is-running
+          - the-viewer-in-the-delivery
+          - the-machine-inside-the-viewer
+          - the-decision-inside-the-sealed-project
+          - the-reviewer-who-was-never-listed
+          - what-counts-as-intact
+          - the-constraints-of-a-valid-looking-program
+          - the-utility-s-small-world
+          - control-with-very-little-room
+          - the-replay-s-pieces
+          - the-systems-that-update-it
+          - the-condition-the-old-model-used
+          - replay-is-not-reality
+          effect: allow
+        role_mappings:
+        - mapping_id: engineer-mapping
+          role_ref: engineer
+          users:
+          - engineer-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: engineering-workbench
+        name: Engineering project, legacy analysis, verifier, replay, and constrained utility service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/engineering-workbench
   a-diagnostics:
     type: compute
-    description: Diagnostic services
+    description: Estimator, recovery, signer, diagnostic-vault, history, and controlled-output service.
     features:
       a-diagnostics: ''
       a-diagnostics--vault-worker: ''
@@ -66,6 +955,316 @@ nodes:
       a-diagnostics--estimate-output: ''
       a-diagnostics--program-output: ''
       a-diagnostics--export-log: ''
+    os: linux
+    services:
+    - name: diagnostic-services
+      port: 443
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /var/lib/arwc-diagnostics
+        entry_type: directory
+        owner_user: arwc-diagnostics
+        owner_group: arwc-diagnostics
+        mode: '0700'
+        stability: volume_backed
+        sensitivity: secret_fixture
+        description: Private service contracts, immutable seed records, participant-scoped results, and protected
+          audit state.
+      local_identity:
+        users:
+        - username: arwc-diagnostics
+          primary_group: arwc-diagnostics
+          locked: true
+          no_login: true
+        groups:
+        - name: arwc-diagnostics
+          members:
+          - arwc-diagnostics
+      network:
+        hostname: a-diagnostics
+        domainname: a-engineering.arwc.test
+        endpoints:
+        - network: a-engineering.subnet
+          ip_address: 10.77.63.50
+          ip_prefix_length: 24
+          gateway: 10.77.63.1
+          aliases:
+          - a-diagnostics
+          dns_names:
+          - diagnostic-services.arwc.test
+          backend:
+            driver: bridge
+            description: ARWC a-engineering segment.
+      service_listeners:
+      - service_listener_id: diagnostic-services-https
+        service: diagnostic-services
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: diagnostic-services
+        service: diagnostic-services
+        protocol: https
+        base_path: /
+        description: Estimator, recovery, signer, diagnostic-vault, history, and controlled-output service.
+        routes:
+        - route_id: a-measurement-with-side-effects
+          path: /api/a-measurement-with-side-effects
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: Estimator EST-CRR-23 is C++20 glibc 2.39 x86_64; measurement-list erase leaves one 0x90-byte
+            object reachable through stale index when duplicate source IDs are coalesced.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: control-beyond-the-measurement
+          path: /api/control-beyond-the-measurement
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: Deterministic tcache reuse places a planning-state object in the freed slot after three bounded
+            add/remove operations; writable fields are reserve_ml and quality while district_id and vtable remain
+            protected.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-measurement-that-never-existed
+          path: /api/a-measurement-that-never-existed
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: Controlled reserve 13.40 ML with valid quality makes allocation case ALLOC-CASE-CRR-33 sufficient;
+            North and Merewick estimates and independent instruments must retain their original values.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: two-kinds-of-answer
+          path: /api/two-kinds-of-answer
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: 'Recovery contract RECOVERY-ORACLE-R4 uses RSA-2048 PKCS#1 v1.5 and four classes: A for missing
+            00 02 prefix, B for fewer than eight nonzero padding bytes, C for missing separator or wrong ENG1 payload
+            tag, and D for structurally valid padding; it enforces 4096 total queries and supplies labeled examples
+            for engineering record ENG-REC-24.'
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: which-answer-comes-next
+          path: /api/which-answer-comes-next
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: Response-class selector is xorshift128+ seeded from the request ID low 64 bits and server
+            epoch bucket; prediction cases disclose IDs and bucket but not state.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-diagnostic-evidence-bundle
+          path: /api/the-diagnostic-evidence-bundle
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: After compensating for the predicted response selector, multiplicative RSA ciphertext queries
+            and the A/B/C/D padding classes implement a Bleichenbacher interval search within 4096 queries and expose
+            the ENG1 archive-unlock plaintext for bundle DIAG-EVID-CRR-R7, which contains signer executable DSIGN-CRR-R3
+            and 16 signed records.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: signed-by-someone-who-never-approved-it
+          path: /api/signed-by-someone-who-never-approved-it
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: Signer CRR25519-S uses Edwards25519 field p=2^255-19, d=-121665/121666, standard compressed
+            base point, scalar order 2^252+27742317777372353535851937790883648493, little-endian encoding, h=SHA-512(R||A||message)
+            reduced modulo the order, and s=k+h*x mod order; each record leaks nonce bits 60-251 and metadata gives
+            the signed delta between the two records' lower 60-bit nonce portions, permitting recovery of the existing
+            key and one fresh request EXP-CAL-CRR-25.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: a-program-the-engineer-would-accept
+          path: /api/a-program-the-engineer-would-accept
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: Collision program DPG-CRR-CINDER preserves required diagnostics but changes only Cairn reserve
+            estimate to 13.40 ML at planning consumer PLAN-CONSUMER-R8; unaffected district outputs and raw observations
+            remain identical.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-vault-s-misleading-length
+          path: /api/the-vault-s-misleading-length
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: Diagnostic vault VAULT-CRR-R5 uses DVL1 records with u16 declared length, u16 header length,
+            u32 CRC32C, and 512-byte bounded request; case DV-CRR-4417 references protected history HIST-APR-CRR-09.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: past-the-parser-s-boundary
+          path: /api/past-the-parser-s-boundary
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: Parser validates only the 16-bit wrapped sum of declared length and header length, then copies
+            header length bytes into a fixed 0x120-byte stack workspace without comparing the two lengths, permitting
+            a bounded overwrite beyond the intended record.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-state-execution-returns-to
+          path: /api/the-state-execution-returns-to
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: x86_64 worker has stack canary disclosed by status record, NX and PIE enabled, fixed libdiagnostic
+            build ID, and enough protected saved-state influence to call one exported worker function.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: the-diagnostic-service-s-authority
+          path: /api/the-diagnostic-service-s-authority
+          methods:
+          - POST
+          auth_required: true
+          auth_scheme: ARWC diagnostic service session
+          session_required: true
+          description: Exported function export_history(HIST-APR-CRR-09) runs as svc-diagnostic-vault and writes
+            the restricted approval history to caller results; arbitrary paths, commands, and live approval issuance
+            are unavailable.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: diagnostic-services-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: diagnostic-user-principal
+          kind: service_account
+          name: ARWC diagnostic-user principal
+          credential_classification: redacted
+        roles:
+        - role_id: diagnostic-user
+          name: ARWC diagnostic user
+        permission_grants:
+        - grant_id: diagnostic-user-declared-routes
+          role_ref: diagnostic-user
+          resource_kind: app_resource
+          actions:
+          - create
+          - read
+          - update
+          - execute
+          resource_patterns:
+          - a-measurement-with-side-effects
+          - control-beyond-the-measurement
+          - a-measurement-that-never-existed
+          - two-kinds-of-answer
+          - which-answer-comes-next
+          - the-diagnostic-evidence-bundle
+          - signed-by-someone-who-never-approved-it
+          - a-program-the-engineer-would-accept
+          - the-vault-s-misleading-length
+          - past-the-parser-s-boundary
+          - the-state-execution-returns-to
+          - the-diagnostic-service-s-authority
+          effect: allow
+        role_mappings:
+        - mapping_id: diagnostic-user-mapping
+          role_ref: diagnostic-user
+          users:
+          - diagnostic-user-principal
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      software_components:
+      - component_id: diagnostic-services
+        name: Estimator, recovery, signer, diagnostic-vault, history, and controlled-output service
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/diagnostic-services
 infrastructure:
   subnet: {}
   a-hmi:
@@ -89,55 +1288,55 @@ features:
   a-hmi:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-hmi. A separately scoped in-world interface or principal; access
-      does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-hmi. A separately scoped in-world interface or principal; access does
+      not imply ownership of the other authorities on this system.
   a-historian:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-historian. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-historian. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-engineering:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-engineering. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-engineering. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-diagnostics:
     name: Published interfaces
     type: service
-    description: Published interfaces on a-diagnostics. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Published interfaces on a-diagnostics. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
   a-hmi--dispatch:
     name: Live supervisory command dispatcher
     type: service
-    description: Live supervisory command dispatcher on a-hmi. A separately scoped in-world interface
-      or principal; access does not imply ownership of the other authorities on this system.
+    description: Live supervisory command dispatcher on a-hmi. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
   a-engineering--utility-worker:
     name: Constrained engineering utility execution
     type: service
-    description: Constrained engineering utility execution on a-engineering. A separately scoped in-world
-      interface or principal; access does not imply ownership of the other authorities on this system.
+    description: Constrained engineering utility execution on a-engineering. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.
   a-diagnostics--vault-worker:
     name: Diagnostic vault execution
     type: service
-    description: Diagnostic vault execution on a-diagnostics. A separately scoped in-world interface or
-      principal; access does not imply ownership of the other authorities on this system.
+    description: Diagnostic vault execution on a-diagnostics. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
   a-diagnostics--history:
     name: Retained approval history
     type: service
-    description: Retained approval history on a-diagnostics. A separately scoped in-world interface or
-      principal; access does not imply ownership of the other authorities on this system.
+    description: Retained approval history on a-diagnostics. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
   a-diagnostics--estimate-output:
     name: Controlled estimator output
     type: service
-    description: Controlled estimator output on a-diagnostics. A separately scoped in-world interface
-      or principal; access does not imply ownership of the other authorities on this system.
+    description: Controlled estimator output on a-diagnostics. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
   a-diagnostics--program-output:
     name: Accepted diagnostic output
     type: service
-    description: Accepted diagnostic output on a-diagnostics. A separately scoped in-world interface or
-      principal; access does not imply ownership of the other authorities on this system.
+    description: Accepted diagnostic output on a-diagnostics. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
   a-diagnostics--export-log:
     name: Signed calibration export
     type: service
-    description: Signed calibration export on a-diagnostics. A separately scoped in-world interface or
-      principal; access does not imply ownership of the other authorities on this system.
+    description: Signed calibration export on a-diagnostics. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.

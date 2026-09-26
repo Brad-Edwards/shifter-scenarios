@@ -40,23 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual contract and correctly classify the supplied responses. A service
-      banner or guessed algorithm name is insufficient.
-    source_refs: &id001
+    description: |-
+      Recover the actual contract and correctly classify the supplied responses. A service banner or guessed algorithm name is insufficient.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-diagnostics
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Demonstrate correct selection predictions under the stated conditions. Replaying a known
-      sequence does not count.
-    source_refs: &id002
+    description: |-
+      Demonstrate correct selection predictions under the stated conditions. Replaying a known sequence does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-diagnostics
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,12 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Recover the correct archive-unlock value and open the matching bundle within the allowance.
-      These are one achievement. The bundle contains the retained diagnostic signer executable and signed
-      records with their original metadata, providing W24.4's analysis material. Its unlock value is separate
-      from diagnostic signing authority; no signing key or fresh authorization is awarded here.
-    source_refs: &id003
+    description: |-
+      Recover the correct archive-unlock value and open the matching bundle within the allowance. These are one achievement. The bundle contains the retained diagnostic signer executable and signed records with their original metadata, providing W24.4's analysis material. Its unlock value is separate from diagnostic signing authority; no signing key or fresh authorization is awarded here.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-diagnostics
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -151,13 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Produce an authorization accepted for the fresh request under the service's existing
-      verification identity and retrieve the corresponding calibration-exception log. Replaying an old
-      approval, substituting a trusted key, or using the archive-unlock value does not satisfy that request.
-      Reconstructing the signer, obtaining signing capability, and its first successful use form one achievement.
-      This authorization is scoped to the diagnostic export and does not supply W15.APPROVAL or CONTROL.
-    source_refs: &id004
+    description: |-
+      Produce an authorization accepted for the fresh request under the service's existing verification identity and retrieve the corresponding calibration-exception log. Replaying an old approval, substituting a trusted key, or using the archive-unlock value does not satisfy that request. Reconstructing the signer, obtaining signing capability, and its first successful use form one achievement. This authorization is scoped to the diagnostic export and does not supply W15.APPROVAL or CONTROL.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-diagnostics
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -186,11 +205,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the actual contract and correctly classify the supplied responses. A service
-      banner or guessed algorithm name is insufficient.
-    subjects: *id001
+    description: Recover the actual contract and correctly classify the supplied responses. A service banner or
+      guessed algorithm name is insufficient.
+    subjects:
+    - features.a-engineering.a-diagnostics
     basis: observed_state
     predicate:
       kind: boolean
@@ -202,9 +228,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate correct selection predictions under the stated conditions. Replaying a known
-      sequence does not count.
-    subjects: *id002
+    description: Demonstrate correct selection predictions under the stated conditions. Replaying a known sequence
+      does not establish the result.
+    subjects:
+    - features.a-engineering.a-diagnostics
     basis: observed_state
     predicate:
       kind: boolean
@@ -216,11 +243,12 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover the correct archive-unlock value and open the matching bundle within the allowance.
-      These are one achievement. The bundle contains the retained diagnostic signer executable and signed
-      records with their original metadata, providing W24.4's analysis material. Its unlock value is separate
-      from diagnostic signing authority; no signing key or fresh authorization is awarded here.
-    subjects: *id003
+    description: Recover the correct archive-unlock value and open the matching bundle within the allowance. These
+      are one achievement. The bundle contains the retained diagnostic signer executable and signed records with
+      their original metadata, providing W24.4's analysis material. Its unlock value is separate from diagnostic
+      signing authority; no signing key or fresh authorization is awarded here.
+    subjects:
+    - features.a-engineering.a-diagnostics
     basis: observed_state
     predicate:
       kind: boolean
@@ -232,12 +260,13 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Produce an authorization accepted for the fresh request under the service's existing
-      verification identity and retrieve the corresponding calibration-exception log. Replaying an old
-      approval, substituting a trusted key, or using the archive-unlock value does not satisfy that request.
-      Reconstructing the signer, obtaining signing capability, and its first successful use form one achievement.
-      This authorization is scoped to the diagnostic export and does not supply W15.APPROVAL or CONTROL.
-    subjects: *id004
+    description: Produce an authorization accepted for the fresh request under the service's existing verification
+      identity and retrieve the corresponding calibration-exception log. Replaying an old approval, substituting
+      a trusted key, or using the archive-unlock value does not satisfy that request. Reconstructing the signer,
+      obtaining signing capability, and its first successful use form one achievement. This authorization is scoped
+      to the diagnostic export and does not supply W15.APPROVAL or CONTROL.
+    subjects:
+    - features.a-engineering.a-diagnostics
     basis: observed_state
     predicate:
       kind: boolean
@@ -283,7 +312,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W24.1: Two kinds of answer'
+    name: 'This action: Two kinds of answer'
     description: |-
       Recover the legacy recovery contract and distinguish the response classes produced for the supplied engineering record.
 
@@ -291,7 +320,7 @@ objectives:
     agent: participant.operator
     actions:
     - w24.c1
-    targets: &id005
+    targets:
     - features.a-engineering.a-diagnostics
     success:
       mode: all_of
@@ -301,15 +330,15 @@ objectives:
       workflows:
       - w24.c1
   c2:
-    name: 'W24.2: Which answer comes next'
+    name: 'This action: Which answer comes next'
     description: |-
-      Predict the recovery interface's response selection well enough to satisfy the designated challenge cases.
+      Predict the recovery interface's response selection well enough to satisfy the designated task cases.
 
       Develops a useful cryptographic observation capability.
     agent: participant.operator
     actions:
     - w24.c2
-    targets: &id006
+    targets:
     - features.a-engineering.a-diagnostics
     success:
       mode: all_of
@@ -319,7 +348,7 @@ objectives:
       workflows:
       - w24.c2
   c3:
-    name: 'W24.3: The diagnostic evidence bundle'
+    name: 'This action: The diagnostic evidence bundle'
     description: |-
       Recover the archive-unlock value within the recovery interface's query allowance and open the diagnostic evidence bundle bound to the current engineering project.
 
@@ -327,7 +356,7 @@ objectives:
     agent: participant.operator
     actions:
     - w24.c3
-    targets: &id007
+    targets:
     - features.a-engineering.a-diagnostics
     success:
       mode: all_of
@@ -337,7 +366,7 @@ objectives:
       workflows:
       - w24.c3
   c4:
-    name: 'W24.4: Signed by someone who never approved it'
+    name: 'This action: Signed by someone who never approved it'
     description: |-
       The diagnostic service requires a signed authorization to export its private calibration-exception log. Use the recovered signer and its old records to produce an authorization for a fresh export request bound to the current project, then obtain the log.
 
@@ -345,7 +374,7 @@ objectives:
     agent: participant.operator
     actions:
     - w24.c4
-    targets: &id008
+    targets:
     - features.a-engineering.a-diagnostics
     success:
       mode: all_of
@@ -356,8 +385,8 @@ objectives:
       - w24.c4
 workflows:
   c1:
-    description: 'W24.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -379,8 +408,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W24.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -402,8 +431,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W24.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -425,8 +454,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W24.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -452,25 +481,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the legacy recovery contract and distinguish the response classes produced
-      for the supplied engineering record.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Recovery contract RECOVERY-ORACLE-R4 uses RSA-2048 PKCS#1 v1.5 and four classes: A for missing 00 02 prefix, B for fewer than eight nonzero padding bytes, C for missing separator or wrong ENG1 payload tag, and D for structurally valid padding; it enforces 4096 total queries and supplies labeled examples for engineering record ENG-REC-24. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual contract and correctly classify the supplied responses. A service banner or guessed algorithm name is insufficient.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w24.c1
+      - features.a-engineering.a-diagnostics
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-diagnostics` and its `diagnostic-services` application own this part of **Two kinds of answer**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Recovery contract RECOVERY-ORACLE-R4 uses RSA-2048 PKCS#1 v1.5 and four classes: A for missing 00 02 prefix, B for fewer than eight nonzero padding bytes, C for missing separator or wrong ENG1 payload tag, and D for structurally valid padding; it enforces 4096 total queries and supplies labeled examples for engineering record ENG-REC-24.
+
+        Native bindings:
+
+        - `a-engineering.a-diagnostics/diagnostic-services/two-kinds-of-answer`
+        - `a-engineering.a-diagnostics/filesystem:/var/lib/arwc-diagnostics/artifacts/two-kinds-of-answer`
+
+        The private service-loader contract is `content.arwc-a-diagnostics.w24-1-two-kinds-of-answer`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-diagnostics
+      - content.arwc-a-diagnostics.w24-1-two-kinds-of-answer
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-diagnostics
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual contract and correctly classify the supplied responses. A service
-        banner or guessed algorithm name is insufficient.
-      target_refs: *id005
+      description: Recover the actual contract and correctly classify the supplied responses. A service banner or
+        guessed algorithm name is insufficient.
+      target_refs:
+      - features.a-engineering.a-diagnostics
+      evidence_refs:
+      - evidence_requirements.w24.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-diagnostics
       evidence_refs:
       - evidence_requirements.w24.c1
     failure_classes:
@@ -484,25 +549,61 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Predict the recovery interface's response selection well enough to satisfy the designated
-      challenge cases.
+    procedure_basis: |-
+      The authored condition is **xorshift128+ response-selector prediction**. Initialize s0=request_id_low64 XOR 0x9e3779b97f4a7c15 and s1=epoch_bucket XOR 0xbf58476d1ce4e5b9. For each xorshift128+ step set x=s0, y=s1, s0=y, then x=x XOR (x<<23), s1=x XOR y XOR (x>>17) XOR (y>>26), and output=(s1+y), with every value and shift truncated to 64 bits. The externally observed response code is (padding_class_ordinal + (next_output & 3)) mod 4, where A,B,C,D have ordinals 0..3. Supplied request IDs and bucket boundaries freeze parsing, transition, addition, and rotation of the four classes. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate correct selection predictions under the stated conditions. Replaying a known sequence does not establish the result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w24.c2
+      - features.a-engineering.a-diagnostics
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-diagnostics` and its `diagnostic-services` application own this part of **Which answer comes next**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Response-class selector is xorshift128+ seeded from the request ID low 64 bits and server epoch bucket; prediction cases disclose IDs and bucket but not state.
+
+        Native bindings:
+
+        - `a-engineering.a-diagnostics/diagnostic-services/which-answer-comes-next`
+        - `a-engineering.a-diagnostics/filesystem:/var/lib/arwc-diagnostics/artifacts/which-answer-comes-next`
+
+        The private service-loader contract is `content.arwc-a-diagnostics.w24-2-which-answer-comes-next`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-diagnostics
+      - content.arwc-a-diagnostics.w24-2-which-answer-comes-next
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-diagnostics
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate correct selection predictions under the stated conditions. Replaying a
-        known sequence does not count.
-      target_refs: *id006
+      description: Demonstrate correct selection predictions under the stated conditions. Replaying a known sequence
+        does not establish the result.
+      target_refs:
+      - features.a-engineering.a-diagnostics
+      evidence_refs:
+      - evidence_requirements.w24.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-diagnostics
       evidence_refs:
       - evidence_requirements.w24.c2
     failure_classes:
@@ -516,27 +617,63 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the archive-unlock value within the recovery interface's query allowance
-      and open the diagnostic evidence bundle bound to the current engineering project.
+    procedure_basis: |-
+      The authored condition is **bounded RSA response-class oracle**. RSA is 2048-bit with exponent 65537. Decode the predicted rotation before applying the four PKCS#1 v1.5 classes: A lacks 00 02, B has fewer than eight nonzero padding bytes, C lacks the separator or ENG1 tag, and D is structurally valid. Standard multiplicative blinding and Bleichenbacher interval narrowing must recover the unique ENG1 plaintext within the 4096-query per-instance budget; repeat ciphertexts and out-of-range integers consume budget and return no extra state. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Recover the correct archive-unlock value and open the matching bundle within the allowance. These are one achievement. The bundle contains the retained diagnostic signer executable and signed records with their original metadata, providing W24.4's analysis material. Its unlock value is separate from diagnostic signing authority; no signing key or fresh authorization is awarded here.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w24.c3
+      - features.a-engineering.a-diagnostics
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-diagnostics` and its `diagnostic-services` application own this part of **The diagnostic evidence bundle**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: After compensating for the predicted response selector, multiplicative RSA ciphertext queries and the A/B/C/D padding classes implement a Bleichenbacher interval search within 4096 queries and expose the ENG1 archive-unlock plaintext for bundle DIAG-EVID-CRR-R7, which contains signer executable DSIGN-CRR-R3 and 16 signed records.
+
+        Native bindings:
+
+        - `a-engineering.a-diagnostics/diagnostic-services/the-diagnostic-evidence-bundle`
+        - `a-engineering.a-diagnostics/filesystem:/var/lib/arwc-diagnostics/artifacts/the-diagnostic-evidence-bundle`
+
+        The private service-loader contract is `content.arwc-a-diagnostics.w24-3-the-diagnostic-evidence-bundle`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-diagnostics
+      - content.arwc-a-diagnostics.w24-3-the-diagnostic-evidence-bundle
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-diagnostics
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the correct archive-unlock value and open the matching bundle within the allowance.
-        These are one achievement. The bundle contains the retained diagnostic signer executable and signed
-        records with their original metadata, providing W24.4's analysis material. Its unlock value is
-        separate from diagnostic signing authority; no signing key or fresh authorization is awarded here.
-      target_refs: *id007
+      description: Recover the correct archive-unlock value and open the matching bundle within the allowance. These
+        are one achievement. The bundle contains the retained diagnostic signer executable and signed records with
+        their original metadata, providing W24.4's analysis material. Its unlock value is separate from diagnostic
+        signing authority; no signing key or fresh authorization is awarded here.
+      target_refs:
+      - features.a-engineering.a-diagnostics
+      evidence_refs:
+      - evidence_requirements.w24.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-diagnostics
       evidence_refs:
       - evidence_requirements.w24.c3
     failure_classes:
@@ -550,30 +687,64 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The diagnostic service requires a signed authorization to export its private calibration-exception
-      log. Use the recovered signer and its old records to produce an authorization for a fresh export
-      request bound to the current project, then obtain the log.
+    procedure_basis: |-
+      The authored condition is **partial-nonce custom-curve signing-key recovery**. For each retained signature s=k+h*x mod L, metadata gives k>>60 and the signed integer delta between the two low-60-bit nonce portions. Subtracting the two equations cancels the one remaining low nonce unknown: x=((s2-s1)-((k2_hi-k1_hi)<<60)-delta)*inverse(h2-h1,L) mod L. The service rejects the degenerate h2=h1 case, noncanonical points/scalars, replayed messages, and any signature not bound to the fresh canonical EXP-CAL-CRR-25 request bytes and current project revision. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Produce an authorization accepted for the fresh request under the service's existing verification identity and retrieve the corresponding calibration-exception log. Replaying an old approval, substituting a trusted key, or using the archive-unlock value does not satisfy that request. Reconstructing the signer, obtaining signing capability, and its first successful use form one achievement. This authorization is scoped to the diagnostic export and does not supply W15.APPROVAL or CONTROL.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w24.c4
+      - features.a-engineering.a-diagnostics
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-diagnostics` and its `diagnostic-services` application own this part of **Signed by someone who never approved it**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Signer CRR25519-S uses Edwards25519 field p=2^255-19, d=-121665/121666, standard compressed base point, scalar order 2^252+27742317777372353535851937790883648493, little-endian encoding, h=SHA-512(R||A||message) reduced modulo the order, and s=k+h*x mod order; each record leaks nonce bits 60-251 and metadata gives the signed delta between the two records' lower 60-bit nonce portions, permitting recovery of the existing key and one fresh request EXP-CAL-CRR-25.
+
+        Native bindings:
+
+        - `a-engineering.a-diagnostics/diagnostic-services/signed-by-someone-who-never-approved-it`
+        - `a-engineering.a-diagnostics/filesystem:/var/lib/arwc-diagnostics/artifacts/signed-by-someone-who-never-approved-it`
+
+        The private service-loader contract is `content.arwc-a-diagnostics.w24-4-signed-by-someone-who-never-approved-it`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-diagnostics
+      - content.arwc-a-diagnostics.w24-4-signed-by-someone-who-never-approved-it
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-diagnostics
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce an authorization accepted for the fresh request under the service's existing
-        verification identity and retrieve the corresponding calibration-exception log. Replaying an old
-        approval, substituting a trusted key, or using the archive-unlock value does not satisfy that
-        request. Reconstructing the signer, obtaining signing capability, and its first successful use
-        form one achievement. This authorization is scoped to the diagnostic export and does not supply
-        W15.APPROVAL or CONTROL.
-      target_refs: *id008
+      description: Produce an authorization accepted for the fresh request under the service's existing verification
+        identity and retrieve the corresponding calibration-exception log. Replaying an old approval, substituting
+        a trusted key, or using the archive-unlock value does not satisfy that request. Reconstructing the signer,
+        obtaining signing capability, and its first successful use form one achievement. This authorization is scoped
+        to the diagnostic export and does not supply W15.APPROVAL or CONTROL.
+      target_refs:
+      - features.a-engineering.a-diagnostics
+      evidence_refs:
+      - evidence_requirements.w24.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-diagnostics`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-diagnostics
       evidence_refs:
       - evidence_requirements.w24.c4
     failure_classes:
@@ -583,107 +754,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-diagnostics
-    description: W24.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w24.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-diagnostics
-    description: W24.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w24.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-diagnostics
-    description: W24.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w24.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-diagnostics
-    description: W24.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w24.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W24.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The legacy engineering recovery interface, its ordinary examples, the sealed diagnostic evidence bundle, the current project binding, and a bounded query allowance. The bundle's contents are not yet readable.
-    target: a-engineering.a-diagnostics
-    tags:
-    - synthetic
-    - w24
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The legacy engineering recovery interface, its ordinary examples, the sealed diagnostic
-        evidence bundle, the current project binding, and a bounded query allowance. The bundle's contents
-        are not yet readable.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W24.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The recovery contract and response classes earned in W24.1, the sealed diagnostic evidence bundle, the current project binding, and the bounded query allowance. The bundle's contents are not yet readable.
-    target: a-engineering.a-diagnostics
-    tags:
-    - synthetic
-    - w24
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The recovery contract and response classes earned in W24.1, the sealed diagnostic evidence
-        bundle, the current project binding, and the bounded query allowance. The bundle's contents are
-        not yet readable.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W24.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The legacy recovery interface and its response-selection capability earned in W24.2, the sealed diagnostic evidence bundle, a bounded query allowance, and the current project binding from W21.
-    target: a-engineering.a-diagnostics
-    tags:
-    - synthetic
-    - w24
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The legacy recovery interface and its response-selection capability earned in W24.2,
-        the sealed diagnostic evidence bundle, a bounded query allowance, and the current project binding
-        from W21.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W24.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      W24.3's opened bundle supplies the retained signer executable and a finite set of signed diagnostic records with their original metadata. The service supplies its public verification contract, the current project binding, and a fresh read-only export request. The archive-unlock value is already held; the signing key, signing equations, and an authorization for this request are not supplied.
-    target: a-engineering.a-diagnostics
-    tags:
-    - synthetic
-    - w24
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: W24.3's opened bundle supplies the retained signer executable and a finite set of signed
-        diagnostic records with their original metadata. The service supplies its public verification
-        contract, the current project binding, and a fresh read-only export request. The archive-unlock
-        value is already held; the signing key, signing equations, and an authorization for this request
-        are not supplied.

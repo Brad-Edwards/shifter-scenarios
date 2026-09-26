@@ -194,7 +194,7 @@ nodes:
         owner_user: root
         owner_group: cinder-workbench
         mode: '0440'
-        content_digest: 1cfeb358773ee147611318008a96d13e7680558ce19309229e30425b43ee6529
+        content_digest: f33645ea42724c6ffa0c03974aa80d585d8e3bb3c25d57449c612809013b6387
         digest_algorithm: sha256
         stability: stable
         sensitivity: secret_fixture
@@ -522,7 +522,7 @@ nodes:
           - /var/lib/cinder-workbench/diagnostics/public/DL-204.json
           - /var/lib/cinder-workbench/diagnostics/internal/DL-204.json
           disclosures:
-          - trigger: Raw view public%2F..%2Finternal%2FDL-204.json passes the public/ prefix check before decoding
+          - trigger: Raw view public/%2E%2E/internal/DL-204.json passes the public/ prefix check before decoding
               and normalization.
             status_code: 200
             disclosure: Existing internal delivery summary DS-204-I.

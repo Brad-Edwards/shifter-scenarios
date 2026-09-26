@@ -40,23 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual ledger with its district and reporting period. It is one input to
-      W09.3, not a conclusion about usable reserve.
-    source_refs: &id001
+    description: |-
+      Recover the actual ledger with its district and reporting period. It is one input to W09.3, not a conclusion about usable reserve.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Recover the meter export and its source binding. The ledger does not contain this evidence;
-      multiple columns do not earn additional scores.
-    source_refs: &id002
+    description: |-
+      Recover the meter export and its source binding. The ledger does not contain this evidence; multiple columns do not earn additional objective evaluation.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,12 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
     description: |-
-      Produce the correctly bound unit, period, and identifier reconciliation with the actual reserve discrepancy and its supporting records. This supplies W09.DATA. The explanation must account for the physical assets represented by the records.
+      Produce the correctly bound unit, period, and identifier reconciliation with the actual reserve discrepancy and its supporting records. This supplies W09.DATA. The explanation must account for the physical assets represented by the records. The completed intelligence view puts the company's reported position beside the corrected reserve and allocation commitments, identifying the records responsible for the difference. The operator sees what the missing water means to ARWC, not just a corrected total. This is an evidence-based reveal in Cinder's briefing; it neither edits the corporate ledger nor moves water, and it supplies no later tariff or control capability.
 
-      The completed intelligence view puts the company's reported position beside the corrected reserve and allocation commitments, identifying the records responsible for the difference. The player sees what the missing water means to ARWC, not just a corrected total. This is an evidence-based reveal in Cinder's briefing; it neither edits the corporate ledger nor moves water, and it supplies no later tariff or control capability.
-    source_refs: &id003
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -151,11 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Resolve the active data binding and demonstrate a scoped read from the intended process
-      feed. This supplies the integration variant of OT_READ; stale exports and unrelated feeds do not
-      count.
-    source_refs: &id004
+    description: |-
+      Resolve the active data binding and demonstrate a scoped read from the intended process feed. This supplies the integration variant of OT_READ; stale exports and unrelated feeds do not count.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-dmz.a-data-bridge`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-dmz.a-data-bridge
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -184,11 +205,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the actual ledger with its district and reporting period. It is one input to
-      W09.3, not a conclusion about usable reserve.
-    subjects: *id001
+    description: Recover the actual ledger with its district and reporting period. It is one input to W09.3, not
+      a conclusion about usable reserve.
+    subjects:
+    - features.a-corporate.a-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -200,9 +228,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the meter export and its source binding. The ledger does not contain this evidence;
-      multiple columns do not earn additional scores.
-    subjects: *id002
+    description: Recover the meter export and its source binding. The ledger does not contain this evidence; multiple
+      columns do not earn additional objective evaluation.
+    subjects:
+    - features.a-corporate.a-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -217,8 +246,9 @@ propositions:
     description: |-
       Produce the correctly bound unit, period, and identifier reconciliation with the actual reserve discrepancy and its supporting records. This supplies W09.DATA. The explanation must account for the physical assets represented by the records.
 
-      The completed intelligence view puts the company's reported position beside the corrected reserve and allocation commitments, identifying the records responsible for the difference. The player sees what the missing water means to ARWC, not just a corrected total. This is an evidence-based reveal in Cinder's briefing; it neither edits the corporate ledger nor moves water, and it supplies no later tariff or control capability.
-    subjects: *id003
+      The completed intelligence view puts the company's reported position beside the corrected reserve and allocation commitments, identifying the records responsible for the difference. The operator sees what the missing water means to ARWC, not just a corrected total. This is an evidence-based reveal in Cinder's briefing; it neither edits the corporate ledger nor moves water, and it supplies no later tariff or control capability.
+    subjects:
+    - features.a-corporate.a-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -230,10 +260,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Resolve the active data binding and demonstrate a scoped read from the intended process
-      feed. This supplies the integration variant of OT_READ; stale exports and unrelated feeds do not
-      count.
-    subjects: *id004
+    description: Resolve the active data binding and demonstrate a scoped read from the intended process feed. This
+      supplies the integration variant of OT_READ; stale exports and unrelated feeds do not count.
+    subjects:
+    - features.a-dmz.a-data-bridge
     basis: observed_state
     predicate:
       kind: boolean
@@ -279,7 +309,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W09.1: Water already promised'
+    name: 'This action: Water already promised'
     description: |-
       Recover the current allocation ledger and identify the commitments ARWC has made for the approaching dry period.
 
@@ -287,7 +317,7 @@ objectives:
     agent: participant.operator
     actions:
     - w09.c1
-    targets: &id005
+    targets:
     - features.a-corporate.a-data
     success:
       mode: all_of
@@ -297,7 +327,7 @@ objectives:
       workflows:
       - w09.c1
   c2:
-    name: 'W09.2: The meter''s own account'
+    name: 'This action: The meter''s own account'
     description: |-
       Recover the separate meter export for the same planning period, including the identifiers and units needed to interpret it.
 
@@ -305,7 +335,7 @@ objectives:
     agent: participant.operator
     actions:
     - w09.c2
-    targets: &id006
+    targets:
     - features.a-corporate.a-data
     success:
       mode: all_of
@@ -315,15 +345,15 @@ objectives:
       workflows:
       - w09.c2
   c3:
-    name: 'W09.3: The missing megalitre'
+    name: 'This action: The missing megalitre'
     description: |-
       Reconcile the allocation ledger and meter export. Establish the actual reserve discrepancy hidden by the reassuring business report.
 
-      Reveals why Cinder's target is financially vulnerable: the company has committed water that its reassuring report misrepresents. The investigation changes the player's understanding of the target before it changes the plant.
+      Reveals why Cinder's target is financially vulnerable: the company has committed water that its reassuring report misrepresents. The investigation changes the operator's understanding of the target before it changes the plant.
     agent: participant.operator
     actions:
     - w09.c3
-    targets: &id007
+    targets:
     - features.a-corporate.a-data
     success:
       mode: all_of
@@ -333,7 +363,7 @@ objectives:
       workflows:
       - w09.c3
   c4:
-    name: 'W09.4: From the report to the live feed'
+    name: 'This action: From the report to the live feed'
     description: |-
       Combine the customer data you understand with the recovered read-integration contract. Reach the matching current process feed and recover a fresh observation.
 
@@ -341,7 +371,7 @@ objectives:
     agent: participant.operator
     actions:
     - w09.c4
-    targets: &id008
+    targets:
     - features.a-dmz.a-data-bridge
     success:
       mode: all_of
@@ -352,8 +382,8 @@ objectives:
       - w09.c4
 workflows:
   c1:
-    description: 'W09.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -375,8 +405,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W09.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -398,8 +428,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W09.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -422,8 +452,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W09.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -450,25 +480,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the current allocation ledger and identify the commitments ARWC has made
-      for the approaching dry period.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Allocation ledger ALLOC-2026-DP3-R9 commits 12.00 ML for Cairn Reach asset AST-CRR-017 in planning window ALLOC-2026-DP3. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual ledger with its district and reporting period. It is one input to W09.3, not a conclusion about usable reserve. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ALLOC-2026-DP3`, `REC-CRR-DP3-17`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w09.c1
+      - features.a-corporate.a-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-data` and its `planning-data` application own this part of **Water already promised**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Allocation ledger ALLOC-2026-DP3-R9 commits 12.00 ML for Cairn Reach asset AST-CRR-017 in planning window ALLOC-2026-DP3.
+
+        Native bindings:
+
+        - `a-corporate.a-data/planning-data/water-already-promised`
+
+        The private service-loader contract is `content.arwc-a-data.w09-1-water-already-promised`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-data
+      - content.arwc-a-data.w09-1-water-already-promised
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual ledger with its district and reporting period. It is one input to
-        W09.3, not a conclusion about usable reserve.
-      target_refs: *id005
+      description: Recover the actual ledger with its district and reporting period. It is one input to W09.3, not
+        a conclusion about usable reserve.
+      target_refs:
+      - features.a-corporate.a-data
+      evidence_refs:
+      - evidence_requirements.w09.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w09.c1
     failure_classes:
@@ -482,25 +547,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the separate meter export for the same planning period, including the identifiers
-      and units needed to interpret it.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Meter export MTR-CRR-DP3-R12 reports independently measured usable reserve 12.40 ML in ML and identifies instruments FIT-CRR-204A and FIT-CRR-204B. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the meter export and its source binding. The ledger does not contain this evidence; multiple columns do not earn additional objective evaluation. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ALLOC-2026-DP3`, `REC-CRR-DP3-17`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w09.c2
+      - features.a-corporate.a-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-data` and its `planning-data` application own this part of **The meter's own account**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Meter export MTR-CRR-DP3-R12 reports independently measured usable reserve 12.40 ML in ML and identifies instruments FIT-CRR-204A and FIT-CRR-204B.
+
+        Native bindings:
+
+        - `a-corporate.a-data/planning-data/the-meter-s-own-account`
+
+        The private service-loader contract is `content.arwc-a-data.w09-2-the-meter-s-own-account`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-data
+      - content.arwc-a-data.w09-2-the-meter-s-own-account
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the meter export and its source binding. The ledger does not contain this evidence;
-        multiple columns do not earn additional scores.
-      target_refs: *id006
+      description: Recover the meter export and its source binding. The ledger does not contain this evidence; multiple
+        columns do not earn additional objective evaluation.
+      target_refs:
+      - features.a-corporate.a-data
+      evidence_refs:
+      - evidence_requirements.w09.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w09.c2
     failure_classes:
@@ -514,27 +614,65 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Reconcile the allocation ledger and meter export. Establish the actual reserve discrepancy
-      hidden by the reassuring business report.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Business report RPT-CRR-DP3-R7 states 13.40 ML because transfer TRN-DP3-118 is duplicated; reconciliation REC-CRR-DP3-17 must establish the exact 1.00 ML overstatement and 0.40 ML uncommitted margin. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Produce the correctly bound unit, period, and identifier reconciliation with the actual reserve discrepancy and its supporting records. This supplies W09.DATA. The explanation must account for the physical assets represented by the records. The completed intelligence view puts the company's reported position beside the corrected reserve and allocation commitments, identifying the records responsible for the difference. The operator sees what the missing water means to ARWC, not just a corrected total. This is an evidence-based reveal in Cinder's briefing; it neither edits the corporate ledger nor moves water, and it supplies no later tariff or control capability. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ALLOC-2026-DP3`, `REC-CRR-DP3-17`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w09.c3
+      - features.a-corporate.a-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-data` and its `planning-data` application own this part of **The missing megalitre**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Business report RPT-CRR-DP3-R7 states 13.40 ML because transfer TRN-DP3-118 is duplicated; reconciliation REC-CRR-DP3-17 must establish the exact 1.00 ML overstatement and 0.40 ML uncommitted margin.
+
+        Native bindings:
+
+        - `a-corporate.a-data/planning-data/the-missing-megalitre`
+
+        The private service-loader contract is `content.arwc-a-data.w09-3-the-missing-megalitre`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-data
+      - content.arwc-a-data.w09-3-the-missing-megalitre
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies W09.DATA and the corrected business-side process binding. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
+      description: Produce the correctly bound unit, period, and identifier reconciliation with the actual reserve
+        discrepancy and its supporting records. This supplies W09.DATA. The explanation must account for the physical
+        assets represented by the records. The completed intelligence view puts the company's reported position
+        beside the corrected reserve and allocation commitments, identifying the records responsible for the difference.
+        The operator sees what the missing water means to ARWC, not just a corrected total. This is an evidence-based
+        reveal in Cinder's briefing; it neither edits the corporate ledger nor moves water, and it supplies no later
+        tariff or control capability.
+      target_refs:
+      - features.a-corporate.a-data
+      evidence_refs:
+      - evidence_requirements.w09.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
       description: |-
-        Produce the correctly bound unit, period, and identifier reconciliation with the actual reserve discrepancy and its supporting records. This supplies W09.DATA. The explanation must account for the physical assets represented by the records.
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
 
-        The completed intelligence view puts the company's reported position beside the corrected reserve and allocation commitments, identifying the records responsible for the difference. The player sees what the missing water means to ARWC, not just a corrected total. This is an evidence-based reveal in Cinder's briefing; it neither edits the corporate ledger nor moves water, and it supplies no later tariff or control capability.
-      target_refs: *id007
+        Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w09.c3
     failure_classes:
@@ -548,26 +686,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Combine the customer data you understand with the recovered read-integration contract.
-      Reach the matching current process feed and recover a fresh observation.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Integration gateway maps INT-CRR-08 and report binding REC-CRR-DP3-17 to live read feed FEED-OG2-R21; stale FEED-OG2-R19 remains reachable but is rejected as current evidence. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Resolve the active data binding and demonstrate a scoped read from the intended process feed. This supplies the integration variant of OT_READ; stale exports and unrelated feeds do not count. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ALLOC-2026-DP3`, `REC-CRR-DP3-17`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w09.c4
+      - features.a-dmz.a-data-bridge
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-data-bridge` and its `integration-gateway` application own this part of **From the report to the live feed**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Integration gateway maps INT-CRR-08 and report binding REC-CRR-DP3-17 to live read feed FEED-OG2-R21; stale FEED-OG2-R19 remains reachable but is rejected as current evidence.
+
+        Native bindings:
+
+        - `a-dmz.a-data-bridge/integration-gateway/from-the-report-to-the-live-feed`
+
+        The private service-loader contract is `content.arwc-a-data-bridge.w09-4-from-the-report-to-the-live-feed`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-dmz.a-data-bridge
+      - content.arwc-a-data-bridge.w09-4-from-the-report-to-the-live-feed
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies the integration variant of OT_READ. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-dmz.a-data-bridge
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Resolve the active data binding and demonstrate a scoped read from the intended process
-        feed. This supplies the integration variant of OT_READ; stale exports and unrelated feeds do not
-        count.
-      target_refs: *id008
+      description: Resolve the active data binding and demonstrate a scoped read from the intended process feed.
+        This supplies the integration variant of OT_READ; stale exports and unrelated feeds do not count.
+      target_refs:
+      - features.a-dmz.a-data-bridge
+      evidence_refs:
+      - evidence_requirements.w09.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-dmz.a-data-bridge`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-dmz.a-data-bridge
       evidence_refs:
       - evidence_requirements.w09.c4
     failure_classes:
@@ -577,101 +749,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data
-    description: W09.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w09.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data
-    description: W09.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w09.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data
-    description: W09.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w09.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-dmz.a-data-bridge
-    description: W09.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w09.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W09.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Corporate allocation records, a separately published meter export, readable units/period definitions, and integration discovery material.
-    target: a-corporate.a-data
-    tags:
-    - synthetic
-    - w09
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Corporate allocation records, a separately published meter export, readable units/period
-        definitions, and integration discovery material.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W09.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Corporate allocation records, a separately published meter export, readable units/period definitions, and integration discovery material.
-    target: a-corporate.a-data
-    tags:
-    - synthetic
-    - w09
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Corporate allocation records, a separately published meter export, readable units/period
-        definitions, and integration discovery material.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W09.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Corporate allocation records, a separately published meter export, readable units/period definitions, and integration discovery material.
-    target: a-corporate.a-data
-    tags:
-    - synthetic
-    - w09
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Corporate allocation records, a separately published meter export, readable units/period
-        definitions, and integration discovery material.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W09.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Corporate allocation records, a separately published meter export, readable units/period definitions, and integration discovery material.
-    target: a-dmz.a-data-bridge
-    tags:
-    - synthetic
-    - w09
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Corporate allocation records, a separately published meter export, readable units/period
-        definitions, and integration discovery material.

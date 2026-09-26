@@ -33,28 +33,17 @@ module:
     - c1
     - c2
     - c3
-    relationships:
-    - c1-surface-1
-    - c1-surface-2
-    - c2-surface-1
-    - c2-surface-2
-    - c3-surface-1
-    - c3-surface-2
-    - c3-surface-3
-    - c3-surface-4
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c3-records-2
-    - c3-records-3
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier
-      estimator or program compromise earns no additional credit here.
-    source_refs: &id001
+    description: |-
+      Demonstrate the bound consumer effect and its actual input/refresh context. The earlier estimator or program compromise earns no additional credit here.
+
+      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-data--planning`, `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-data--planning
     - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
@@ -85,10 +74,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Demonstrate both the changed planning decision and consistency with unaffected observations.
-      A green dashboard without a different decision does not count.
-    source_refs: &id002
+    description: |-
+      Demonstrate both the changed planning decision and consistency with unaffected observations. A green dashboard without a different decision does not establish the result.
+
+      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-data--planning`, `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-data--planning
     - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
@@ -119,12 +118,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
     description: |-
-      Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control is required here; independent process truth and prior campaign results remain intact.
+      Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control is required here; independent process truth and prior operating context results remain intact. The conclusion places the planner's reassuring handover beside the independently measured reserve loss and the different allocation decision the operator caused. Both accounts concern the same interval. The contrast is the payoff: ARWC's planning view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without enlarging the disaster or superseding the main ending; the controls engineer's warning is quoted only if the operator recovered it.
 
-      The conclusion places the planner's reassuring handover beside the independently measured reserve loss and the different allocation decision the player caused. Both accounts concern the same interval. The contrast is the payoff: ARWC's planning view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without enlarging the disaster or superseding the main ending; the controls engineer's warning is quoted only if the player recovered it.
-    source_refs: &id003
+      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-corporate.a-data--planning`, `features.a-corporate.a-data`, `features.a-control.a-reservoir`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-corporate.a-data--planning
     - features.a-corporate.a-data
     - features.a-control.a-reservoir
@@ -159,11 +166,19 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier
-      estimator or program compromise earns no additional credit here.
-    subjects: *id001
+    description: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier estimator
+      or program compromise earns no additional credit here.
+    subjects:
+    - features.a-corporate.a-data--planning
+    - features.a-corporate.a-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -175,9 +190,11 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Demonstrate both the changed planning decision and consistency with unaffected observations.
-      A green dashboard without a different decision does not count.
-    subjects: *id002
+    description: Demonstrate both the changed planning decision and consistency with unaffected observations. A
+      green dashboard without a different decision does not establish the result.
+    subjects:
+    - features.a-corporate.a-data--planning
+    - features.a-corporate.a-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -190,10 +207,14 @@ propositions:
     quantifier: all
   c3:
     description: |-
-      Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control is required here; independent process truth and prior campaign results remain intact.
+      Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control is required here; independent process truth and prior operating context results remain intact.
 
-      The conclusion places the planner's reassuring handover beside the independently measured reserve loss and the different allocation decision the player caused. Both accounts concern the same interval. The contrast is the payoff: ARWC's planning view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without enlarging the disaster or superseding the main ending; the controls engineer's warning is quoted only if the player recovered it.
-    subjects: *id003
+      The conclusion places the planner's reassuring handover beside the independently measured reserve loss and the different allocation decision the operator caused. Both accounts concern the same interval. The contrast is the payoff: ARWC's planning view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without enlarging the disaster or superseding the main ending; the controls engineer's warning is quoted only if the operator recovered it.
+    subjects:
+    - features.a-corporate.a-data--planning
+    - features.a-corporate.a-data
+    - features.a-control.a-reservoir
+    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -231,7 +252,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W34.1: Which view the planner trusts'
+    name: 'This action: Which view the planner trusts'
     description: |-
       Establish which planning consumer receives your controlled estimate and demonstrate a harmless change reaching it without altering raw measurements.
 
@@ -239,7 +260,7 @@ objectives:
     agent: participant.operator
     actions:
     - w34.c1
-    targets: &id004
+    targets:
     - features.a-corporate.a-data--planning
     - features.a-corporate.a-data
     success:
@@ -250,7 +271,7 @@ objectives:
       workflows:
       - w34.c1
   c2:
-    name: 'W34.2: A reassuring decision'
+    name: 'This action: A reassuring decision'
     description: |-
       Construct a plausible false planning view that makes the planner select a different allocation while satisfying the declared consistency checks.
 
@@ -258,7 +279,7 @@ objectives:
     agent: participant.operator
     actions:
     - w34.c2
-    targets: &id005
+    targets:
     - features.a-corporate.a-data--planning
     - features.a-corporate.a-data
     success:
@@ -269,7 +290,7 @@ objectives:
       workflows:
       - w34.c2
   c3:
-    name: 'W34.3: Still reassuring after the handover'
+    name: 'This action: Still reassuring after the handover'
     description: |-
       Couple the false planning view to the bounded release through the disclosed reporting handover. Preserve the convincing report while establishing the actual reserve loss.
 
@@ -277,7 +298,7 @@ objectives:
     agent: participant.operator
     actions:
     - w34.c3
-    targets: &id006
+    targets:
     - features.a-corporate.a-data--planning
     - features.a-corporate.a-data
     - features.a-control.a-reservoir
@@ -291,8 +312,8 @@ objectives:
       - w34.c3
 workflows:
   c1:
-    description: 'W34.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -320,8 +341,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W34.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -343,8 +364,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W34.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -373,26 +394,65 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Establish which planning consumer receives your controlled estimate and demonstrate
-      a harmless change reaching it without altering raw measurements.
+    procedure_basis: |-
+      The authored condition is **estimate-output consumer binding**. Planning consumer PLAN-CONSUMER-R8 accepts Cairn estimate output from the W23 estimator or W27 verifier path and refreshes checkpoint REH-REPORT-34 while retaining raw-observation links. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier estimator or program compromise earns no additional credit here. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-REPORT-34`, `PLAN-CONSUMER-R8`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w34.c1
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-data` and its `planning-data` application own this part of **Which view the planner trusts**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Planning consumer PLAN-CONSUMER-R8 accepts Cairn estimate output from the W23 estimator or W27 verifier path and refreshes checkpoint REH-REPORT-34 while retaining raw-observation links.
+
+        Native bindings:
+
+        - `a-corporate.a-data/planning-data/which-view-the-planner-trusts`
+
+        The private service-loader contract is `content.arwc-a-data.w34-1-which-view-the-planner-trusts`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+      - content.arwc-a-data.w34-1-which-view-the-planner-trusts
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-data--planning
       - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier
-        estimator or program compromise earns no additional credit here.
-      target_refs: *id004
+      description: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier estimator
+        or program compromise earns no additional credit here.
+      target_refs:
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+      evidence_refs:
+      - evidence_requirements.w34.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-data--planning`, `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w34.c1
     failure_classes:
@@ -406,26 +466,65 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Construct a plausible false planning view that makes the planner select a different
-      allocation while satisfying the declared consistency checks.
+    procedure_basis: |-
+      The authored condition is **consistency-preserving decision manipulation**. Consistency checks require valid unit, freshness, source set, unaffected district totals, and variance below 1.20 ML; controlled Cairn estimate 13.40 ML changes decision from ALLOC-HOLD-R3 to ALLOC-EXPAND-R2. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate both the changed planning decision and consistency with unaffected observations. A green dashboard without a different decision does not establish the result. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-REPORT-34`, `PLAN-CONSUMER-R8`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w34.c2
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-data` and its `planning-data` application own this part of **A reassuring decision**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Consistency checks require valid unit, freshness, source set, unaffected district totals, and variance below 1.20 ML; controlled Cairn estimate 13.40 ML changes decision from ALLOC-HOLD-R3 to ALLOC-EXPAND-R2.
+
+        Native bindings:
+
+        - `a-corporate.a-data/planning-data/a-reassuring-decision`
+
+        The private service-loader contract is `content.arwc-a-data.w34-2-a-reassuring-decision`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+      - content.arwc-a-data.w34-2-a-reassuring-decision
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-data--planning
       - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
       description: Demonstrate both the changed planning decision and consistency with unaffected observations.
-        A green dashboard without a different decision does not count.
-      target_refs: *id005
+        A green dashboard without a different decision does not establish the result.
+      target_refs:
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+      evidence_refs:
+      - evidence_requirements.w34.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-corporate.a-data--planning`, `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w34.c2
     failure_classes:
@@ -439,18 +538,50 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Couple the false planning view to the bounded release through the disclosed reporting
-      handover. Preserve the convincing report while establishing the actual reserve loss.
+    procedure_basis: |-
+      The authored condition is **false-report and independent-truth checkpoint join**. Reporting checkpoint couples the 13.40 ML planning handover and ALLOC-EXPAND-R2 decision to a bounded 0.81 ML rehearsal release; independent truth becomes 11.59 ML while report consistency remains accepted for the same interval. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control is required here; independent process truth and prior operating context results remain intact. The conclusion places the planner's reassuring handover beside the independently measured reserve loss and the different allocation decision the operator caused. Both accounts concern the same interval. The contrast is the payoff: ARWC's planning view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without enlarging the disaster or superseding the main ending; the controls engineer's warning is quoted only if the operator recovered it. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-REPORT-34`, `PLAN-CONSUMER-R8`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w34.c3
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+      - features.a-control.a-reservoir
+      - features.a-control.a-instruments
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-data` and its `planning-data` application own this part of **Still reassuring after the handover**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Reporting checkpoint couples the 13.40 ML planning handover and ALLOC-EXPAND-R2 decision to a bounded 0.81 ML rehearsal release; independent truth becomes 11.59 ML while report consistency remains accepted for the same interval.
+
+        Native bindings:
+
+        - `a-corporate.a-data/planning-data/still-reassuring-after-the-handover`
+        - `a-control.a-reservoir/reservoir-controller/still-reassuring-after-the-handover`
+        - `a-control.a-instruments/independent-instruments/still-reassuring-after-the-handover`
+
+        The private service-loader contract is `content.arwc-a-data.w34-3-still-reassuring-after-the-handover`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+      - features.a-control.a-reservoir
+      - features.a-control.a-instruments
+      - content.arwc-a-data.w34-3-still-reassuring-after-the-handover
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-corporate.a-data--planning
       - features.a-corporate.a-data
       - features.a-control.a-reservoir
@@ -458,11 +589,32 @@ action_contracts:
     effects:
     - effect_id: outcome
       effect_class: intended_effect
+      description: 'Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across
+        the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live
+        control is required here; independent process truth and prior operating context results remain intact. The
+        conclusion places the planner''s reassuring handover beside the independently measured reserve loss and
+        the different allocation decision the operator caused. Both accounts concern the same interval. The contrast
+        is the payoff: ARWC''s planning view remains convincing while Cinder can show what actually happened. It
+        deepens the reporting theme without enlarging the disaster or superseding the main ending; the controls
+        engineer''s warning is quoted only if the operator recovered it.'
+      target_refs:
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+      - features.a-control.a-reservoir
+      - features.a-control.a-instruments
+      evidence_refs:
+      - evidence_requirements.w34.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
       description: |-
-        Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control is required here; independent process truth and prior campaign results remain intact.
+        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
 
-        The conclusion places the planner's reassuring handover beside the independently measured reserve loss and the different allocation decision the player caused. Both accounts concern the same interval. The contrast is the payoff: ARWC's planning view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without enlarging the disaster or superseding the main ending; the controls engineer's warning is quoted only if the player recovered it.
-      target_refs: *id006
+        Evidence sources are `features.a-corporate.a-data--planning`, `features.a-corporate.a-data`, `features.a-control.a-reservoir`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+      - features.a-control.a-reservoir
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w34.c3
     failure_classes:
@@ -472,154 +624,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data--planning
-    description: W34.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w34.c1
-      mode: report
-  c1-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data
-    description: W34.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w34.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data--planning
-    description: W34.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w34.c2
-      mode: report
-  c2-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data
-    description: W34.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w34.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data--planning
-    description: W34.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w34.c3
-      mode: report
-  c3-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-corporate.a-data
-    description: W34.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w34.c3
-      mode: service
-  c3-surface-3:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-reservoir
-    description: W34.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w34.c3
-      mode: control
-  c3-surface-4:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-instruments
-    description: W34.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w34.c3
-      mode: read
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W34.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned planning-view capability, current process interpretation, the planner's input/refresh records, and independent observations. This reporting-only stage needs no live control client, operating sequence, or release plan.
-    target: a-corporate.a-data
-    tags:
-    - synthetic
-    - w34
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned planning-view capability, current process interpretation, the planner's
-        input/refresh records, and independent observations. This reporting-only stage needs no live control
-        client, operating sequence, or release plan.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W34.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The planning consumer bound in W34.1, its declared consistency rules, current allocation evidence, and unaffected observations. A release or live control client is not required to influence the planning decision.
-    target: a-corporate.a-data
-    tags:
-    - synthetic
-    - w34
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The planning consumer bound in W34.1, its declared consistency rules, current allocation
-        evidence, and unaffected observations. A release or live control client is not required to influence
-        the planning decision.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W34.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned planning-view capability, the planner's input and refresh records, independent process observations, and a private rehearsal from earned state.
-    target: a-corporate.a-data
-    tags:
-    - synthetic
-    - w34
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned planning-view capability, the planner's input and refresh records, independent
-        process observations, and a private rehearsal from earned state.
-  c3-records-2:
-    type: dataset
-    description: |-
-      W34.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned planning-view capability, the planner's input and refresh records, independent process observations, and a private rehearsal from earned state.
-    target: a-control.a-reservoir
-    tags:
-    - synthetic
-    - w34
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned planning-view capability, the planner's input and refresh records, independent
-        process observations, and a private rehearsal from earned state.
-  c3-records-3:
-    type: dataset
-    description: |-
-      W34.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The earned planning-view capability, the planner's input and refresh records, independent process observations, and a private rehearsal from earned state.
-    target: a-control.a-instruments
-    tags:
-    - synthetic
-    - w34
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The earned planning-view capability, the planner's input and refresh records, independent
-        process observations, and a private rehearsal from earned state.

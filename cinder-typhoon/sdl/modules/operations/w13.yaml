@@ -40,23 +40,17 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the actual appointment record. Its timing is scenario state, so reaching this
-      challenge does not require waiting for a real clock.
-    source_refs: &id001
+    description: |-
+      Recover the actual appointment record. Its timing is scenario state, so reaching this work item does not require waiting for a real clock.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-maintenance.a-contractors`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-maintenance.a-contractors
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -85,10 +79,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Recover the current roster entry and assignment binding. The appointment document does
-      not contain the full roster.
-    source_refs: &id002
+    description: |-
+      Recover the current roster entry and assignment binding. The appointment document does not contain the full roster.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-maintenance.a-contractors`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-maintenance.a-contractors
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,10 +121,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c3:
-    description: Demonstrate the attendee change on the correct appointment while preserving the inspection,
-      asset, and scheduled window. This supplies appointment authority, not yet a contractor session.
-    source_refs: &id003
+    description: |-
+      Demonstrate the attendee change on the correct appointment while preserving the inspection, asset, and scheduled window. This supplies appointment authority, not yet a contractor session.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-maintenance.a-contractors`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-maintenance.a-contractors
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -149,10 +163,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c4:
-    description: Demonstrate the scoped contractor session against its protected field-work record. This
-      supplies W13.SESSION; appointment ownership alone does not count.
-    source_refs: &id004
+    description: |-
+      Demonstrate the scoped contractor session against its protected field-work record. This supplies W13.SESSION; appointment ownership alone does not establish the result.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-maintenance.a-contractors`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-maintenance.a-contractors
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -181,11 +205,18 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
-    description: Recover the actual appointment record. Its timing is scenario state, so reaching this
-      challenge does not require waiting for a real clock.
-    subjects: *id001
+    description: Recover the actual appointment record. Its timing is scenario state, so reaching this task does
+      not require waiting for a real clock.
+    subjects:
+    - features.a-maintenance.a-contractors
     basis: observed_state
     predicate:
       kind: boolean
@@ -197,9 +228,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the current roster entry and assignment binding. The appointment document does
-      not contain the full roster.
-    subjects: *id002
+    description: Recover the current roster entry and assignment binding. The appointment document does not contain
+      the full roster.
+    subjects:
+    - features.a-maintenance.a-contractors
     basis: observed_state
     predicate:
       kind: boolean
@@ -211,9 +243,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate the attendee change on the correct appointment while preserving the inspection,
-      asset, and scheduled window. This supplies appointment authority, not yet a contractor session.
-    subjects: *id003
+    description: Demonstrate the attendee change on the correct appointment while preserving the inspection, asset,
+      and scheduled window. This supplies appointment authority, not yet a contractor session.
+    subjects:
+    - features.a-maintenance.a-contractors
     basis: observed_state
     predicate:
       kind: boolean
@@ -225,9 +258,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Demonstrate the scoped contractor session against its protected field-work record. This
-      supplies W13.SESSION; appointment ownership alone does not count.
-    subjects: *id004
+    description: Demonstrate the scoped contractor session against its protected field-work record. This supplies
+      W13.SESSION; appointment ownership alone does not establish the result.
+    subjects:
+    - features.a-maintenance.a-contractors
     basis: observed_state
     predicate:
       kind: boolean
@@ -273,7 +307,7 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W13.1: Window on Thursday'
+    name: 'This action: Window on Thursday'
     description: |-
       Recover the upcoming outlet-inspection appointment and its maintenance reference.
 
@@ -281,7 +315,7 @@ objectives:
     agent: participant.operator
     actions:
     - w13.c1
-    targets: &id005
+    targets:
     - features.a-maintenance.a-contractors
     success:
       mode: all_of
@@ -291,7 +325,7 @@ objectives:
       workflows:
       - w13.c1
   c2:
-    name: 'W13.2: Who is expected at the gate'
+    name: 'This action: Who is expected at the gate'
     description: |-
       Recover the separate access roster for the inspection crew and identify the relevant contractor assignment.
 
@@ -299,7 +333,7 @@ objectives:
     agent: participant.operator
     actions:
     - w13.c2
-    targets: &id006
+    targets:
     - features.a-maintenance.a-contractors
     success:
       mode: all_of
@@ -309,7 +343,7 @@ objectives:
       workflows:
       - w13.c2
   c3:
-    name: 'W13.3: An appointment we do not own'
+    name: 'This action: An appointment we do not own'
     description: |-
       Replace the registered attendee on the outlet-inspection appointment with the contractor identity in Cinder's assignment, despite lacking the appointment owner's rights.
 
@@ -317,7 +351,7 @@ objectives:
     agent: participant.operator
     actions:
     - w13.c3
-    targets: &id007
+    targets:
     - features.a-maintenance.a-contractors
     success:
       mode: all_of
@@ -327,7 +361,7 @@ objectives:
       workflows:
       - w13.c3
   c4:
-    name: 'W13.4: Checked in as the contractor'
+    name: 'This action: Checked in as the contractor'
     description: |-
       Cross the check-in service's separate identity boundary and establish the contractor session for the correct inspection scope.
 
@@ -335,7 +369,7 @@ objectives:
     agent: participant.operator
     actions:
     - w13.c4
-    targets: &id008
+    targets:
     - features.a-maintenance.a-contractors
     success:
       mode: all_of
@@ -346,8 +380,8 @@ objectives:
       - w13.c4
 workflows:
   c1:
-    description: 'W13.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -369,8 +403,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W13.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -392,8 +426,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'W13.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -416,8 +450,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'W13.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -443,24 +477,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the upcoming outlet-inspection appointment and its maintenance reference.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Appointment APT-CRR-2026-09-18 covers outlet inspection INSP-CRR-2026-09-18, asset AST-CRR-017, and scenario-relative window Thursday 09:00-11:00. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the actual appointment record. Its timing is scenario state, so reaching this work item does not require waiting for a real clock.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w13.c1
+      - features.a-maintenance.a-contractors
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-contractors` and its `contractor-portal` application own this part of **Window on Thursday**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Appointment APT-CRR-2026-09-18 covers outlet inspection INSP-CRR-2026-09-18, asset AST-CRR-017, and scenario-relative window Thursday 09:00-11:00.
+
+        Native bindings:
+
+        - `a-maintenance.a-contractors/contractor-portal/window-on-thursday`
+
+        The private service-loader contract is `content.arwc-a-contractors.w13-1-window-on-thursday`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-maintenance.a-contractors
+      - content.arwc-a-contractors.w13-1-window-on-thursday
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-maintenance.a-contractors
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual appointment record. Its timing is scenario state, so reaching this
-        challenge does not require waiting for a real clock.
-      target_refs: *id005
+      description: Recover the actual appointment record. Its timing is scenario state, so reaching this work item
+        does not require waiting for a real clock.
+      target_refs:
+      - features.a-maintenance.a-contractors
+      evidence_refs:
+      - evidence_requirements.w13.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-maintenance.a-contractors`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-maintenance.a-contractors
       evidence_refs:
       - evidence_requirements.w13.c1
     failure_classes:
@@ -474,25 +544,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the separate access roster for the inspection crew and identify the relevant
-      contractor assignment.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Gate roster ROSTER-CRR-SEP18-R2 lists contractor identity veybridge.tech.204 for assignment CTR-VEY-204 separately from the appointment. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the current roster entry and assignment binding. The appointment document does not contain the full roster.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w13.c2
+      - features.a-maintenance.a-contractors
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-contractors` and its `contractor-portal` application own this part of **Who is expected at the gate**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Gate roster ROSTER-CRR-SEP18-R2 lists contractor identity veybridge.tech.204 for assignment CTR-VEY-204 separately from the appointment.
+
+        Native bindings:
+
+        - `a-maintenance.a-contractors/contractor-portal/who-is-expected-at-the-gate`
+
+        The private service-loader contract is `content.arwc-a-contractors.w13-2-who-is-expected-at-the-gate`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-maintenance.a-contractors
+      - content.arwc-a-contractors.w13-2-who-is-expected-at-the-gate
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-maintenance.a-contractors
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the current roster entry and assignment binding. The appointment document does
-        not contain the full roster.
-      target_refs: *id006
+      description: Recover the current roster entry and assignment binding. The appointment document does not contain
+        the full roster.
+      target_refs:
+      - features.a-maintenance.a-contractors
+      evidence_refs:
+      - evidence_requirements.w13.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-maintenance.a-contractors`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-maintenance.a-contractors
       evidence_refs:
       - evidence_requirements.w13.c2
     failure_classes:
@@ -506,25 +611,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Replace the registered attendee on the outlet-inspection appointment with the contractor
-      identity in Cinder's assignment, despite lacking the appointment owner's rights.
+    procedure_basis: |-
+      The authored condition is **appointment-owner authorization omission**. Attendee-update route checks that the requested attendee belongs to the caller's contractor organization but omits appointment-owner authorization; inspection, asset, and window are immutable. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the attendee change on the correct appointment while preserving the inspection, asset, and scheduled window. This supplies appointment authority, not yet a contractor session.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w13.c3
+      - features.a-maintenance.a-contractors
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-contractors` and its `contractor-portal` application own this part of **An appointment we do not own**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Attendee-update route checks that the requested attendee belongs to the caller's contractor organization but omits appointment-owner authorization; inspection, asset, and window are immutable.
+
+        Native bindings:
+
+        - `a-maintenance.a-contractors/contractor-portal/an-appointment-we-do-not-own`
+
+        The private service-loader contract is `content.arwc-a-contractors.w13-3-an-appointment-we-do-not-own`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-maintenance.a-contractors
+      - content.arwc-a-contractors.w13-3-an-appointment-we-do-not-own
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-maintenance.a-contractors
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the attendee change on the correct appointment while preserving the inspection,
-        asset, and scheduled window. This supplies appointment authority, not yet a contractor session.
-      target_refs: *id007
+      description: Demonstrate the attendee change on the correct appointment while preserving the inspection, asset,
+        and scheduled window. This supplies appointment authority, not yet a contractor session.
+      target_refs:
+      - features.a-maintenance.a-contractors
+      evidence_refs:
+      - evidence_requirements.w13.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-maintenance.a-contractors`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-maintenance.a-contractors
       evidence_refs:
       - evidence_requirements.w13.c3
     failure_classes:
@@ -538,25 +678,60 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Cross the check-in service's separate identity boundary and establish the contractor
-      session for the correct inspection scope.
+    procedure_basis: |-
+      The authored condition is **attendee-derived session issuance**. Check-in service trusts the current appointment attendee and roster entry, issuing session SCOPE-INSP-CRR-4417 with field-work read scope only. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+
+      The required result is: Demonstrate the scoped contractor session against its protected field-work record. This supplies W13.SESSION; appointment ownership alone does not establish the result.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w13.c4
+      - features.a-maintenance.a-contractors
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-contractors` and its `contractor-portal` application own this part of **Checked in as the contractor**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Check-in service trusts the current appointment attendee and roster entry, issuing session SCOPE-INSP-CRR-4417 with field-work read scope only.
+
+        Native bindings:
+
+        - `a-maintenance.a-contractors/contractor-portal/checked-in-as-the-contractor`
+
+        The private service-loader contract is `content.arwc-a-contractors.w13-4-checked-in-as-the-contractor`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-maintenance.a-contractors
+      - content.arwc-a-contractors.w13-4-checked-in-as-the-contractor
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies W13.SESSION for the contractor branch. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-maintenance.a-contractors
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the scoped contractor session against its protected field-work record.
-        This supplies W13.SESSION; appointment ownership alone does not count.
-      target_refs: *id008
+      description: Demonstrate the scoped contractor session against its protected field-work record. This supplies
+        W13.SESSION; appointment ownership alone does not establish the result.
+      target_refs:
+      - features.a-maintenance.a-contractors
+      evidence_refs:
+      - evidence_requirements.w13.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-maintenance.a-contractors`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-maintenance.a-contractors
       evidence_refs:
       - evidence_requirements.w13.c4
     failure_classes:
@@ -566,101 +741,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-maintenance.a-contractors
-    description: W13.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w13.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-maintenance.a-contractors
-    description: W13.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w13.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-maintenance.a-contractors
-    description: W13.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w13.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-maintenance.a-contractors
-    description: W13.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w13.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W13.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Maintenance appointment records, a separately held access roster, and the contractor check-in workflow.
-    target: a-maintenance.a-contractors
-    tags:
-    - synthetic
-    - w13
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Maintenance appointment records, a separately held access roster, and the contractor
-        check-in workflow.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W13.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Maintenance appointment records, a separately held access roster, and the contractor check-in workflow.
-    target: a-maintenance.a-contractors
-    tags:
-    - synthetic
-    - w13
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Maintenance appointment records, a separately held access roster, and the contractor
-        check-in workflow.
-  c3-records-1:
-    type: dataset
-    description: |-
-      W13.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Maintenance appointment records, a separately held access roster, and the contractor check-in workflow.
-    target: a-maintenance.a-contractors
-    tags:
-    - synthetic
-    - w13
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Maintenance appointment records, a separately held access roster, and the contractor
-        check-in workflow.
-  c4-records-1:
-    type: dataset
-    description: |-
-      W13.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Maintenance appointment records, a separately held access roster, and the contractor check-in workflow.
-    target: a-maintenance.a-contractors
-    tags:
-    - synthetic
-    - w13
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Maintenance appointment records, a separately held access roster, and the contractor
-        check-in workflow.

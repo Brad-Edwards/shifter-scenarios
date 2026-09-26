@@ -26,20 +26,17 @@ module:
     action_contracts:
     - c1
     - c2
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c2-surface-2
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c2-records-2
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: Recover the project and note as one bundle. Neither alone proves the deployed revision.
-    source_refs: &id001
+    description: |-
+      Recover the project and note as one bundle. Neither alone proves the deployed revision.
+
+      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -68,10 +65,20 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
   c2:
-    description: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old
-      diagnostic or historical migration record cannot replace the deployed observation.
-    source_refs: &id002
+    description: |-
+      Produce the correct project/deployment comparison. This supplies W21.REVISION; an old diagnostic or historical migration record cannot replace the deployed observation.
+
+      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+      Evidence sources are `features.a-engineering.a-engineering`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+    source_refs:
     - features.a-engineering.a-engineering
     - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
@@ -102,10 +109,17 @@ evidence_requirements:
       integrity: checksum
       required: true
       basis: observed
+    notes:
+    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
+      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
+      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
+      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
+      destination observed the same correlation and that removal of any independently owned source prevents completion.'
 propositions:
   c1:
     description: Recover the project and note as one bundle. Neither alone proves the deployed revision.
-    subjects: *id001
+    subjects:
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -117,9 +131,11 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old
-      diagnostic or historical migration record cannot replace the deployed observation.
-    subjects: *id002
+    description: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old diagnostic
+      or historical migration record cannot replace the deployed observation.
+    subjects:
+    - features.a-engineering.a-engineering
+    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -149,15 +165,15 @@ assertions:
     polarity: positive
 objectives:
   c1:
-    name: 'W21.1: The project and the note'
+    name: 'This action: The project and the note'
     description: |-
       Recover the engineering project and its commissioning note for the outlet group.
 
-      Gives the controls engineer's records a concrete place in the campaign.
+      Gives the controls engineer's records a concrete place in the operating context.
     agent: participant.operator
     actions:
     - w21.c1
-    targets: &id003
+    targets:
     - features.a-engineering.a-engineering
     success:
       mode: all_of
@@ -167,7 +183,7 @@ objectives:
       workflows:
       - w21.c1
   c2:
-    name: 'W21.2: Which project is running'
+    name: 'This action: Which project is running'
     description: |-
       Compare the recovered project claims with the independently observed deployed revision. Establish which version is actually in use.
 
@@ -175,7 +191,7 @@ objectives:
     agent: participant.operator
     actions:
     - w21.c2
-    targets: &id004
+    targets:
     - features.a-engineering.a-engineering
     - features.a-control.a-instruments
     success:
@@ -187,8 +203,8 @@ objectives:
       - w21.c2
 workflows:
   c1:
-    description: 'W21.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -210,8 +226,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'W21.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'This action: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no global sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -237,23 +253,59 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Recover the engineering project and its commissioning note for the outlet group.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Engineering project index PROJ-CRR-INDEX-R9 and note ENG-DEPLOY-CRR-21 disagree: workspace claims R19 while signed deployment manifest claims CRR-CTRL-R21; ordinary background reuses me-project-handover-01. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Recover the project and note as one bundle. Neither alone proves the deployed revision. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `CRR-CTRL-R21`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w21.c1
+      - features.a-engineering.a-engineering
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **The project and the note**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Engineering project index PROJ-CRR-INDEX-R9 and note ENG-DEPLOY-CRR-21 disagree: workspace claims R19 while signed deployment manifest claims CRR-CTRL-R21; ordinary background reuses me-project-handover-01. Ordinary workplace context reuses `arwc-documents:me-project-handover-01`; the work item-specific service state is separate.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/the-project-and-the-note`
+
+        The private service-loader contract is `content.arwc-a-engineering.w21-1-the-project-and-the-note`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - content.arwc-a-engineering.w21-1-the-project-and-the-note
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
       description: Recover the project and note as one bundle. Neither alone proves the deployed revision.
-      target_refs: *id003
+      target_refs:
+      - features.a-engineering.a-engineering
+      evidence_refs:
+      - evidence_requirements.w21.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w21.c1
     failure_classes:
@@ -267,26 +319,66 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Compare the recovered project claims with the independently observed deployed revision.
-      Establish which version is actually in use.
+    procedure_basis: |-
+      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Independent instrument handshake DEPLOY-OBS-CRR-21 reports project digest for CRR-CTRL-R21; comparison must reject the stale workspace claim and bind the observed revision. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+
+      The required result is: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old diagnostic or historical migration record cannot replace the deployed observation. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `CRR-CTRL-R21`.
     realization_profile: backend-declared
-    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
-      evaluation are not implemented by this declaration.
+    fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
+      quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
+      choices remain open only when none of those facts change.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.w21.c2
+      - features.a-engineering.a-engineering
+      - features.a-control.a-instruments
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        `a-engineering` and its `engineering-workbench` application own this part of **Which project is running**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Independent instrument handshake DEPLOY-OBS-CRR-21 reports project digest for CRR-CTRL-R21; comparison must reject the stale workspace claim and bind the observed revision.
+
+        Native bindings:
+
+        - `a-engineering.a-engineering/engineering-workbench/which-project-is-running`
+        - `a-control.a-instruments/independent-instruments/which-project-is-running`
+
+        The private service-loader contract is `content.arwc-a-engineering.w21-2-which-project-is-running`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      support_refs:
+      - features.a-engineering.a-engineering
+      - features.a-control.a-instruments
+      - content.arwc-a-engineering.w21-2-which-project-is-running
+    - precondition_id: scope-and-persistence
+      precondition_class: realization
+      description: |-
+        Supplies W21.REVISION. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+
+        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+      support_refs:
       - features.a-engineering.a-engineering
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old
-        diagnostic or historical migration record cannot replace the deployed observation.
-      target_refs: *id004
+      description: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old diagnostic
+        or historical migration record cannot replace the deployed observation.
+      target_refs:
+      - features.a-engineering.a-engineering
+      - features.a-control.a-instruments
+      evidence_refs:
+      - evidence_requirements.w21.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+
+        Evidence sources are `features.a-engineering.a-engineering`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      target_refs:
+      - features.a-engineering.a-engineering
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w21.c2
     failure_classes:
@@ -296,77 +388,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W21.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w21.c1
-      mode: artifact
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-engineering.a-engineering
-    description: W21.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w21.c2
-      mode: artifact
-  c2-surface-2:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.a-control.a-instruments
-    description: W21.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.w21.c2
-      mode: read
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      W21.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The engineering project bundle, its commissioning note, and an independently readable deployed-revision record.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w21
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The engineering project bundle, its commissioning note, and an independently readable
-        deployed-revision record.
-  c2-records-1:
-    type: dataset
-    description: |-
-      W21.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The engineering project bundle, its commissioning note, and an independently readable deployed-revision record.
-    target: a-engineering.a-engineering
-    tags:
-    - synthetic
-    - w21
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The engineering project bundle, its commissioning note, and an independently readable
-        deployed-revision record.
-  c2-records-2:
-    type: dataset
-    description: |-
-      W21.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The engineering project bundle, its commissioning note, and an independently readable deployed-revision record.
-    target: a-control.a-instruments
-    tags:
-    - synthetic
-    - w21
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The engineering project bundle, its commissioning note, and an independently readable
-        deployed-revision record.
