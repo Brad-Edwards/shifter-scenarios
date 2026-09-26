@@ -213,6 +213,18 @@ nodes:
             content_type: application/json
           - status_code: 422
             content_type: application/json
+        - route_id: policy-compiler-nonce
+          path: /api/exercises/policy-compiler/nonce
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Gitea session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
         - route_id: archived-connector-exercise
           path: /api/exercises/connector-archive/run
           methods:
@@ -226,9 +238,9 @@ nodes:
             required: true
             data_type: application/octet-stream
           - name: diagnostic_config
-            location: json_body
+            location: uploaded_file
             required: false
-            data_type: object
+            data_type: application/octet-stream
           responses:
           - status_code: 200
             content_type: application/json

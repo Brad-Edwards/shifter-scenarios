@@ -4,7 +4,7 @@ x-service-security: &service-security
   restart: unless-stopped
   read_only: true
   cap_drop: [ALL]
-  cap_add: [NET_ADMIN, SETUID, SETGID, DAC_READ_SEARCH]
+  cap_add: [NET_ADMIN, SETUID, SETGID]
   security_opt:
     - no-new-privileges:true
   sysctls:
@@ -12,7 +12,9 @@ x-service-security: &service-security
   tmpfs:
     - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
   volumes:
-    - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+    - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+    - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+    - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
   environment: &tls-environment
     FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
     FIELDKEST_TLS_KEY: /tmp/fieldkest.key
@@ -62,10 +64,20 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-auth/ca.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/rowan_authorized_keys:/run/fieldkest-auth/rowan_authorized_keys:ro
     extra_hosts:
+      - staff.keplerops.test:10.77.50.30
+      - identity.keplerops.test:10.77.50.40
+      - cert.keplerops.test:10.77.50.50
       - source.keplerops.test:10.77.51.20
       - packages.keplerops.test:10.77.51.30
       - ci.keplerops.test:10.77.51.40
+      - preview.keplerops.test:10.77.51.50
       - support.keplerops.test:10.77.51.60
+      - indexer.keplerops.test:10.77.51.70
+      - cloud-api.keplerops.test:10.77.52.20
+      - workloads.keplerops.test:10.77.52.30
+      - data.keplerops.test:10.77.52.40
+      - assistant.keplerops.test:10.77.52.50
+      - connector.arwc.test:10.77.60.20
     networks:
       corporate:
         ipv4_address: 10.77.50.20
@@ -82,9 +94,11 @@ services:
     domainname: delivery.keplerops.test
     depends_on: [router]
     volumes:
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
       - source-audit:/var/lib/gitea/audit
+      - source-gitea:/var/lib/gitea/data
       - source-repositories:/var/lib/gitea/repositories
     networks:
       delivery:
@@ -103,7 +117,9 @@ services:
     depends_on: [router, runner]
     cap_add: [NET_ADMIN, SETUID, SETGID, DAC_READ_SEARCH, CHOWN, FOWNER, DAC_OVERRIDE]
     volumes:
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
       - ci-audit:/var/lib/fieldkest-ci/audit
       - ci-results:/var/lib/fieldkest-ci/results
@@ -126,11 +142,13 @@ services:
     domainname: delivery.keplerops.test
     depends_on: [router]
     volumes:
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
       - registry-audit:/var/lib/fieldkest-registry/audit
       - registry-results:/var/lib/fieldkest-registry/results
       - registry-published:/var/lib/fieldkest-registry/published
+      - registry-verdaccio:/var/lib/verdaccio
     networks:
       delivery:
         ipv4_address: 10.77.51.30
@@ -138,6 +156,7 @@ services:
 
   k-support:
     <<: *service-security
+    cap_add: [NET_ADMIN, SETUID, SETGID, CHOWN]
     build:
       context: ../..
       dockerfile: build/keplerops/images/support.Dockerfile
@@ -146,8 +165,14 @@ services:
     hostname: k-support
     domainname: delivery.keplerops.test
     depends_on: [router]
+    extra_hosts:
+      - connector.arwc.test:10.77.60.20
     volumes:
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/fixture-issuer.key:/run/fieldkest-oidc/fixture-issuer.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/fixture-issuer.pub:/run/fieldkest-oidc/fixture-issuer.pub:ro
       - support-audit:/var/lib/fieldkest-support/audit
       - handover:/var/lib/fieldkest-handover:ro
     networks:
@@ -213,13 +238,230 @@ services:
     domainname: cloud.keplerops.test
     depends_on: [router]
     volumes:
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
       - cloud-api-audit:/var/lib/fieldkest-cloud-api/audit
     networks:
       cloud:
         ipv4_address: 10.77.52.20
         aliases: [cloud-api.keplerops.test]
+
+  k-preview:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/preview.Dockerfile
+    image: cinder-keplerops/k-preview:hand-build
+    container_name: cinder-keplerops-preview
+    hostname: k-preview
+    depends_on: [router]
+    environment:
+      <<: *tls-environment
+      FIELDKEST_SERVICE: preview
+      FIELDKEST_GATEWAY: 10.77.51.254
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - preview-state:/var/lib/fieldkest-preview
+    networks:
+      delivery: {ipv4_address: 10.77.51.50, aliases: [preview.keplerops.test]}
+
+  k-indexer:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/indexer.Dockerfile
+    image: cinder-keplerops/k-indexer:hand-build
+    container_name: cinder-keplerops-indexer
+    hostname: k-indexer
+    depends_on: [router]
+    environment:
+      <<: *tls-environment
+      FIELDKEST_SERVICE: indexer
+      FIELDKEST_GATEWAY: 10.77.51.254
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - indexer-state:/var/lib/fieldkest-indexer
+    networks:
+      delivery: {ipv4_address: 10.77.51.70, aliases: [indexer.keplerops.test]}
+
+  k-staff:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/staff.Dockerfile
+    image: cinder-keplerops/k-staff:hand-build
+    container_name: cinder-keplerops-staff
+    hostname: k-staff
+    depends_on: [router, k-identity]
+    environment:
+      <<: *tls-environment
+      FIELDKEST_SERVICE: staff
+      FIELDKEST_GATEWAY: 10.77.50.254
+      FIELDKEST_CLIENT_CA: /tmp/fieldkest-ca.crt
+      FIELDKEST_SERVICE_ROOT: /opt/keplerops-staff
+      FIELDKEST_STATE_ROOT: /var/lib/keplerops-staff
+      KRB5_CONFIG: /etc/krb5.conf
+      KRB5_KTNAME: /opt/keplerops-staff/keytabs/staff.keytab
+      KRB5RCACHEDIR: /tmp
+    extra_hosts: [identity.keplerops.test:10.77.50.40]
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - staff-state:/var/lib/keplerops-staff
+    networks:
+      corporate: {ipv4_address: 10.77.50.30, aliases: [staff.keplerops.test]}
+
+  k-identity:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/identity.Dockerfile
+    image: cinder-keplerops/k-identity:hand-build
+    container_name: cinder-keplerops-identity
+    hostname: k-identity
+    depends_on: [router]
+    environment:
+      <<: *tls-environment
+      FIELDKEST_SERVICE: identity
+      FIELDKEST_GATEWAY: 10.77.50.254
+      FIELDKEST_SERVICE_ROOT: /opt/keplerops-identity
+      FIELDKEST_STATE_ROOT: /var/lib/keplerops-identity
+      FIELDKEST_START_KDC: 1
+      KRB5_CONFIG: /etc/krb5.conf
+      KRB5_KDC_PROFILE: /etc/krb5kdc/kdc.conf
+      KRB5_KTNAME: /opt/keplerops-identity/keytabs/identity.keytab
+      KRB5RCACHEDIR: /tmp
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/fixture-issuer.pub:/run/fieldkest-oidc/fixture-issuer.pub:ro
+      - identity-state:/var/lib/keplerops-identity
+    networks:
+      corporate: {ipv4_address: 10.77.50.40, aliases: [identity.keplerops.test]}
+
+  k-cert:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/platform.Dockerfile
+      args: {SERVICE: cert}
+    image: cinder-keplerops/k-cert:hand-build
+    container_name: cinder-keplerops-cert
+    hostname: k-cert
+    depends_on: [router]
+    environment:
+      <<: *tls-environment
+      FIELDKEST_SERVICE: cert
+      FIELDKEST_GATEWAY: 10.77.50.254
+      FIELDKEST_STATE_ROOT: /var/lib/keplerops-cert
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/evan.crt:/run/fieldkest-enrollment/evan.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/evan.key:/run/fieldkest-enrollment/evan.key:ro
+      - cert-state:/var/lib/keplerops-cert
+    networks:
+      corporate: {ipv4_address: 10.77.50.50, aliases: [cert.keplerops.test]}
+
+  k-workload:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/platform.Dockerfile
+      args: {SERVICE: workload}
+    image: cinder-keplerops/k-workload:hand-build
+    container_name: cinder-keplerops-workload
+    hostname: k-workload
+    depends_on: [router, runner]
+    environment:
+      <<: *tls-environment
+      FIELDKEST_SERVICE: workload
+      FIELDKEST_GATEWAY: 10.77.52.254
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - workload-state:/var/lib/fieldkest-workload
+      - runner-socket:/run/fieldkest-runner
+    networks:
+      cloud: {ipv4_address: 10.77.52.30, aliases: [workloads.keplerops.test]}
+
+  k-data:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/data.Dockerfile
+    image: cinder-keplerops/k-data:hand-build
+    container_name: cinder-keplerops-data
+    hostname: k-data
+    depends_on: [router]
+    environment:
+      <<: *tls-environment
+      FIELDKEST_SERVICE: data
+      FIELDKEST_GATEWAY: 10.77.52.254
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - data-state:/var/lib/fieldkest-data
+      - data-postgres:/var/lib/postgresql/16/fieldkest-history
+    networks:
+      cloud: {ipv4_address: 10.77.52.40, aliases: [data.keplerops.test]}
+
+  k-assistant:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/assistant.Dockerfile
+    image: cinder-keplerops/k-assistant:hand-build
+    container_name: cinder-keplerops-assistant
+    hostname: k-assistant
+    depends_on: [router, runner]
+    environment:
+      <<: *tls-environment
+      FIELDKEST_SERVICE: assistant
+      FIELDKEST_GATEWAY: 10.77.52.254
+      FIELDKEST_SERVICE_ROOT: /opt/fieldkest-assistant
+    extra_hosts: [support.keplerops.test:10.77.51.60]
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - assistant-state:/var/lib/fieldkest-assistant
+      - assistant-handover:/var/lib/fieldkest-assistant/handovers:ro
+      - runner-socket:/run/fieldkest-runner
+    networks:
+      cloud: {ipv4_address: 10.77.52.50, aliases: [assistant.keplerops.test]}
+
+  a-connector:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/platform.Dockerfile
+      args: {SERVICE: connector}
+    image: cinder-keplerops/a-connector:hand-build
+    container_name: cinder-keplerops-connector
+    hostname: a-connector
+    depends_on: [router]
+    environment:
+      <<: *tls-environment
+      FIELDKEST_SERVICE: connector
+      FIELDKEST_GATEWAY: 10.77.60.254
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - connector-state:/var/lib/fieldkest-connector
+    networks:
+      connector: {ipv4_address: 10.77.60.20, aliases: [connector.arwc.test]}
 
 networks:
   corporate:
@@ -247,6 +489,7 @@ volumes:
   k-dev-home: {name: cinder-keplerops-k-dev-home}
   k-dev-audit: {name: cinder-keplerops-k-dev-audit}
   source-audit: {name: cinder-keplerops-source-audit}
+  source-gitea: {name: cinder-keplerops-source-gitea}
   source-repositories: {name: cinder-keplerops-source-repositories}
   ci-audit: {name: cinder-keplerops-ci-audit}
   ci-results: {name: cinder-keplerops-ci-results}
@@ -254,7 +497,19 @@ volumes:
   registry-audit: {name: cinder-keplerops-registry-audit}
   registry-results: {name: cinder-keplerops-registry-results}
   registry-published: {name: cinder-keplerops-registry-published}
+  registry-verdaccio: {name: cinder-keplerops-registry-verdaccio}
   support-audit: {name: cinder-keplerops-support-audit}
   cloud-api-audit: {name: cinder-keplerops-cloud-api-audit}
+  preview-state: {name: cinder-keplerops-preview-state}
+  indexer-state: {name: cinder-keplerops-indexer-state}
+  staff-state: {name: cinder-keplerops-staff-state}
+  identity-state: {name: cinder-keplerops-identity-state}
+  cert-state: {name: cinder-keplerops-cert-state}
+  workload-state: {name: cinder-keplerops-workload-state}
+  data-state: {name: cinder-keplerops-data-state}
+  data-postgres: {name: cinder-keplerops-data-postgres}
+  assistant-state: {name: cinder-keplerops-assistant-state}
+  assistant-handover: {name: cinder-keplerops-assistant-handover}
+  connector-state: {name: cinder-keplerops-connector-state}
   handover: {name: cinder-keplerops-handover}
   runner-socket: {name: cinder-keplerops-runner-socket}

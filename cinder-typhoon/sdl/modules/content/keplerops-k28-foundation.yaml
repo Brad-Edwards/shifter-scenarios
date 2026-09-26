@@ -1,0 +1,65 @@
+name: cinder-keplerops-k28-foundation-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-k28-foundation-content
+  version: 0.1.0
+  exports:
+    content:
+    - k28-source-state
+    - k28-workstation-state
+realization:
+  default: open
+content:
+  k28-source-state:
+    type: directory
+    target: k-delivery.k-source
+    destination: /var/lib/gitea
+    description: Exact archived connector repository, retained Linux x86-64 binary, authenticated embedded diagnostic module, signed configurations, fixed corpus, and bounded-run service configuration.
+    source:
+      name: cinder-typhoon/keplerops/connector-archive/source-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: k28-source-state
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/connector-archive/source-state
+          version: '2026-09-18'
+          digest: sha256:f608a4d3080c5b5479e6911c2468672371d32ec4f1a75ce70908cd72d61afd81
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, source, connector-archive, k28, exact-artifact]
+  k28-workstation-state:
+    type: directory
+    target: k-corporate.k-dev
+    destination: /home/rowan
+    description: Exact in-world release-engineering handoff for the retained connector repository and bounded comparison service.
+    source:
+      name: cinder-typhoon/keplerops/connector-archive/workstation-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: k28-workstation-state
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/connector-archive/workstation-state
+          version: '2026-09-18'
+          digest: sha256:c23b84a3cd05c810701bc48d29b995f4bf6ab23f12470f4fcc0c3faddbf3f865
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, workstation, connector-archive, k28, exact-artifact]

@@ -156,14 +156,21 @@ def build_binary(destination: Path, map_path: Path, condition_digest: str) -> No
         "@CONDITION_DIGEST@", condition_digest
     )
     source = destination.with_suffix(".cpp")
+    object_path = destination.with_suffix(".o")
     source.write_text(rendered)
     environment = {"SOURCE_DATE_EPOCH": str(FIXED_MTIME), "LC_ALL": "C", "TZ": "UTC"}
     run([
-        "g++", "-std=c++17", "-O2", "-fno-omit-frame-pointer", "-static",
-        "-Wl,--build-id=sha1", f"-Wl,-Map={map_path}",
-        "-o", str(destination), str(source),
-    ], cwd=ROOT, environment=environment)
+        "g++", "-std=c++17", "-O2", "-fno-omit-frame-pointer",
+        "-ffile-prefix-map=.=/usr/src/fieldkest-policyc",
+        "-fdebug-prefix-map=.=/usr/src/fieldkest-policyc",
+        "-c", "-o", object_path.name, source.name,
+    ], cwd=destination.parent, environment=environment)
+    run([
+        "g++", "-static", "-Wl,--build-id=sha1", f"-Wl,-Map={map_path.name}",
+        "-o", destination.name, object_path.name,
+    ], cwd=destination.parent, environment=environment)
     source.unlink()
+    object_path.unlink()
 
 
 def write_repository_files(binary: bytes, link_map: bytes, full_program: bytes, cases: list[dict[str, object]]) -> dict[str, tuple[bytes, int]]:

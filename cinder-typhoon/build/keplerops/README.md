@@ -6,9 +6,9 @@ content remain the source of truth. When hand-building exposes missing bytes,
 behavior, placement, or contradictory contracts, reconcile the design and pass
 the RAE gates before encoding the change here.
 
-**Status:** K01-K09 opening, registry, and Build Operations runner slices are
-accepted locally and on the private GCP carrier. K11 design and implementation
-are in progress and are not yet accepted, SDL-bound, or deployed.
+**Status:** K01-K31 are materialized on the isolated private GCP carrier. The
+full participant-path, persistence, authorization, worker-confinement, network,
+security-posture, SDL, and pristine-state gates are the acceptance boundary.
 
 **Target:** A working, isolated KeplerOps range in GCP project `prod-hwmvjy`,
 with all 104 participant paths exercised from the supplied Rowan workstation.
@@ -124,16 +124,16 @@ demands it. A wave is not complete merely because its services start.
 | ID | Work item | Status | Evidence / next action |
 | --- | --- | --- | --- |
 | KHB-00 | Establish hand-build plan and persistent ledger | Complete | This document records scope, architecture, waves and gates. |
-| KHB-01 | Extract the card build manifest and audit exact assets | In progress | K01-K09 exact bytes, placement, routes and state are reconciled and validated; continue the audit immediately ahead of each remaining wave. |
-| KHB-02 | Build core carrier and network/runtime substrate | In progress | Dedicated private `cinder-keplerops-golden` carrier, four internal networks, allowlisted router, TLS, persistent volumes and Rowan SSH entry are accepted; extend node inventory per wave. |
+| KHB-01 | Extract the card build manifest and audit exact assets | Complete | All 104 contracts are assigned to their owning services; exact K11, K28, and K29 assets are SDL-bound and digest-checked. |
+| KHB-02 | Build core carrier and network/runtime substrate | Complete | Dedicated private `cinder-keplerops-golden` carrier, five internal networks, allowlisted router, TLS, persistent volumes and Rowan SSH entry are deployed. |
 | KHB-03 | Build and validate K01-K03 opening slice | Complete | Seven black-box suites plus SSH, persistence, worker cleanup, no-egress and no-published-port gates pass locally and on `prod-hwmvjy`. |
-| KHB-04 | Build and validate source/CI/registry slice | In progress | K05-K08 and K09 pass sixteen black-box suites locally and on GCP alongside the K01-K03 regression: real package/parser/cryptographic mechanics plus actual isolated command execution, scoped 180-second worker identities, authenticated service joins, persistence, cancellation and cleanup. Continue with K11, then K28 and the dependency-ready K29 surfaces. |
-| KHB-05 | Build and validate indexer/preview slice | Not started | Native and browser workers require dedicated confinement tests. |
-| KHB-06 | Build and validate identity slice | Not started | Includes support, staff, identity and certificate integration. |
-| KHB-07 | Build and validate cloud/data/workload slice | Not started | Includes persistence and runtime-identity integration. |
-| KHB-08 | Build and validate assistant slice | Not started | Measure the pinned model before finalizing carrier sizing. |
-| KHB-09 | Build and validate connector boundary | Not started | Materialize only the bounded consumer contract required by K26/K27. |
-| KHB-10 | Full integration and participant play pass | Not started | Final hand-build gate; no bake is produced here. |
+| KHB-04 | Build and validate source/CI/registry slice | Complete | K05-K09, K11, K28, and K29 use real package, parser, cryptographic, Git, native compiler, isolated-command, publication, signing, rehearsal, activation, and rollback mechanics. |
+| KHB-05 | Build and validate indexer/preview slice | Complete | A hardened native ELF implements the bounded K04 object transition; isolated Chromium/Playwright performs the K10/K12 service-worker render. |
+| KHB-06 | Build and validate identity slice | Complete | K17-K20 and K25 persist support state across service boundaries; K19 issues a CA-signed client certificate/private key and staff verifies it by mTLS. |
+| KHB-07 | Build and validate cloud/data/workload slice | Complete | K13-K16 and K30-K31 implement authority exchange, coherent export state, recovery namespaces, and short-lived networkless workload execution. |
+| KHB-08 | Build and validate assistant slice | Complete | K21-K24 use the exact local Qwen2.5-3B-Instruct revision with deterministic decoding, retained retrieval state, a cross-service tool action, and bounded completion state. |
+| KHB-09 | Build and validate connector boundary | Complete | K26/K27 cross only the explicit supplier/customer connector boundary and retain destination receipts. |
+| KHB-10 | Full integration and participant play pass | Complete | The complete black-box suite, persistence/isolation checks, pinned SDL gates, and destructive-test pristine restore pass on the private carrier. |
 
 ## Current decisions and blockers
 
@@ -180,73 +180,16 @@ demands it. A wave is not complete merely because its services start.
   preserves the declared job/result semantics without changing the SDL.
 - No RAE expressivity blocker is currently known.
 
-## Current K11 work in progress
+## Accepted implementation notes
 
-This subsection is the authoritative handoff for the unfinished K11 sub-wave.
-Nothing listed here should be read as an accepted participant path until the
-remaining SDL, runtime, test, local, and GCP gates pass.
-
-Completed so far:
-
-- Resolved the old corpus ambiguity without adding a new semantic: `channel`
-  and `tenant_class` are required compatibility context but are intentionally
-  non-controlling in revision R4. The evaluated policy fields are exactly
-  `tenant_state`, `connector_api`, `signer_lineage`, and
-  `compatibility_exception`.
-- Added an exact K11 asset generator under
-  `assets/keplerops/policy-compiler/generation/`. It currently produces a real
-  statically linked, unstripped Linux x86-64 `fieldkest-policyc` 2.6.4 ELF, a
-  retained link map, four bytecode fragments, a sixteen-case corpus, a Git
-  bundle for `fieldkest/policy-compiler`, a source-service state archive, and a
-  Rowan handoff archive.
-- The compiled program uses the declared twelve-byte `FKPC` header and
-  four-byte instructions. Its current program digest is
-  `0b9a7fd08148ec1b6d3151dcd9c0499fb89f70585fb3705a44662e062242ef9c`;
-  its condition-set digest is
-  `e3a8ced4d68bfa6f4b94386b5ff040596bff56e243adbb5aebc98df1b21896a9`.
-- Extended the source runtime in progress to initialize and serve the second
-  repository, issue persistent one-use policy nonces, validate recovered
-  opcode/program models, execute the fixed corpus, and invoke the retained ELF
-  for final acceptance. Extended the source and Rowan images to seed the new
-  state into both fresh and already-persistent homes.
-- Confirmed the generated ELF itself executes the accepted example with exit
-  status 0 and rejects the old-API example with exit status 2. Python syntax
-  compilation passes for the generator and modified source runtime.
-
-Important unfinished work and gotchas:
-
-- The K11 exact-artifact SDL module, root import, expanded native route
-  contract, ownership rows, generator mechanic profile, and validator checks
-  have not been authored. The current K11 files therefore are implementation
-  WIP, not SDL-complete material.
-- The asset generator is not reproducible yet. The ELF remains stable, but the
-  GNU link map contains a random `/tmp/cc*.o` name and the local absolute output
-  path; rerunning the generator changed the map, Git commit, bundle, and source
-  archive digests. Do not freeze the current K11 archive digests in SDL. Fix
-  this first by compiling to a fixed object name and normalizing the retained
-  map before building the repository.
-- The modified source service has not been container-built or exercised. Its
-  fragment, corpus, nonce consumption, replay, malformed-program, wrong-scope,
-  persistence, and actual-ELF paths still need black-box tests from Rowan's
-  supplied interfaces.
-- K11 has not been run through the KeplerOps-specific gate or the full pinned
-  RAE parse/composition/instantiation/compilation gate. It has not been
-  deployed to `prod-hwmvjy`.
-- K29 remains dependency-gated. Build only latent source/CI surfaces that do
-  not weaken its declared G02 and dossier prerequisites; do not make the full
-  K29 participant path available early.
-
-## Resume point
-
-Resume KHB-04 at the K11 determinism issue above. Then:
-
-1. regenerate twice and prove identical binary, map, repository, archive, and
-   manifest digests;
-2. inspect and test the source runtime locally, author K11 black-box tests, and
-   preserve all K01-K09 regressions;
-3. reconcile the exact artifacts and clarified context/evaluated-field split
-   into a modular native RAE content module and world routes, extend the design
-   validator, and pass both SDL gates;
-4. deploy the accepted K11 slice to the existing private GCP carrier and rerun
-   the full remote suite; and
-5. continue with K28, then only dependency-ready K29 surfaces.
+- K11 is a deterministic retained Git repository, link map, bytecode corpus,
+  and real `fieldkest-policyc` ELF. Fresh nonces are single-use and final
+  acceptance executes the retained binary.
+- K28 is an archived native connector with a fixed build identity, signed
+  configuration, HKDF-SHA256/AES-GCM module, and bounded service corpus.
+- K29 restores an Ed25519 seed from reachable deleted Git history, verifies a
+  fresh signature, and exercises distinct v2/v3 consumers through the private
+  release rehearsal and rollover path.
+- Service state and audit streams are volume-backed. Acceptance deliberately
+  mutates them; finalization removes only KeplerOps volumes and recreates the
+  authored initial state before handoff.

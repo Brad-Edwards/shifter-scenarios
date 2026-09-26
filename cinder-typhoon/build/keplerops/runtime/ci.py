@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import gzip
+import hashlib
 import io
 import json
 import os
@@ -37,6 +38,7 @@ USERNAME = "rowan.ito"
 LOCK = threading.RLock()
 REGISTRY_READER_TOKEN = "fkci_registry_reader_8Hd3Lp6Ws1"
 K09_CONFIG = json.loads((STATE / "config/k09.json").read_text())
+K29_CONFIG = json.loads((STATE / "config/k29.json").read_text())
 WORKSPACE = STATE / "workspaces/rowan"
 REFERENCE = Path("/srv/fieldlink-ci/reviews/diagnostic-request-reference.md")
 WORKER_SECRET = Path("/tmp/worker-hmac.key").read_bytes()
@@ -197,10 +199,16 @@ class CIHandler(KeplerHandler):
         return self.basic_or_bearer(USERNAME, TOKEN)
 
     def do_GET(self) -> None:
+        path = urlsplit(self.path).path
+        if path == "/api/runs/BLD-REL-742/artifacts/release-dossier.json":
+            if self.headers.get("Authorization") != "Bearer release-reader-handle":
+                return self.send_json(403, {"error": "release_reader_required"})
+            value = json.loads((STATE / "records/release-dossier.json").read_text())
+            append_audit(AUDIT, "release-dossier", {"request_id": self.request_id, "principal": "release-reader", "build_id": "BLD-REL-742", "digest": sha256_bytes(canonical_bytes(value)), "status": 200})
+            return self.send_json(200, value)
         if not self._authorized():
             self.send_json(401, {"error": "authentication_required"})
             return
-        path = urlsplit(self.path).path
         if path == "/api/runs/BLD-1842":
             value = json.loads((STATE / "runs/BLD-1842.json").read_text())
             append_audit(AUDIT, "runs", {"request_id": self.request_id, "principal": USERNAME, "run_id": "BLD-1842", "status": 200})
@@ -225,10 +233,21 @@ class CIHandler(KeplerHandler):
             self.send_json(404, {"error": "not_found"})
 
     def do_POST(self) -> None:
+        path = urlsplit(self.path).path
+        if path == "/api/rehearsals/lineage-rollover":
+            if self.headers.get("Authorization") != "Bearer release-reader-handle":
+                return self.send_json(403, {"error": "release_reader_required"})
+            try: request = self.read_json(131_072)
+            except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError): return self.send_json(422, {"error": "invalid_rollover_rehearsal"})
+            if request.get("old_key_id") != K29_CONFIG["old_key_id"] or request.get("next_key_id") != K29_CONFIG["next_key_id"] or request.get("cutoff") != K29_CONFIG["cutoff"]:
+                return self.send_json(422, {"error": "rollover_binding_denied"})
+            if request.get("expired_proof_credential") is not True:
+                return self.send_json(422, {"error": "lineage_proof_required"})
+            value = {"rehearsal_id": "ROL-" + uuid.uuid4().hex[:10].upper(), "cutoff": K29_CONFIG["cutoff"], "old_key": {"key_id": K29_CONFIG["old_key_id"], "accepted": False}, "next_key": {"key_id": K29_CONFIG["next_key_id"], "accepted": True}, "reference_behavior": "unchanged", "unwrapped_next_seed_base64": base64.b64encode(hashlib.sha256(b"FieldKest release next key 2026").digest()).decode()}
+            append_audit(AUDIT, "rollover-rehearsal", {"request_id": self.request_id, "principal": "release-reader", **value, "status": 200}); return self.send_json(200, value)
         if not self._authorized():
             self.send_json(401, {"error": "authentication_required"})
             return
-        path = urlsplit(self.path).path
         if path == "/api/reviews/import":
             self._review_import()
         elif path == "/api/jobs":
@@ -557,7 +576,12 @@ class CIHandler(KeplerHandler):
         except (ValueError, KeyError, TypeError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
             self.send_json(422, {"error": "invalid_rehearsal"})
             return
-        if not isinstance(version, str) or consumer != "support-rehearsal-v3" or not isinstance(input_value, dict) or input_value != {"schema": "fieldkest.connector/v3", "tenant_id": "TEN-SYNTH-REHEARSAL-01", "asset_id": "SYNTH-PUMP-07", "operation": "support_review"}:
+        accepted_inputs = {
+            "support-rehearsal-v3": {"schema": "fieldkest.connector/v3", "tenant_id": "TEN-SYNTH-REHEARSAL-01", "asset_id": "SYNTH-PUMP-07", "operation": "support_review"},
+            "arwc-release-v3": {"schema": "fieldkest.connector/v3", "tenant_id": "TEN-ARWC-047", "asset_id": "CRR-OG2", "operation": "diagnostic_summary"},
+            "rillhaven-reference-v2": {"schema": "fieldkest.connector/v2", "tenant_id": "TEN-RILL-022", "asset_id": "RILL-PUMP-442", "operation": "diagnostic_summary"},
+        }
+        if not isinstance(version, str) or consumer not in accepted_inputs or not isinstance(input_value, dict) or input_value != accepted_inputs[consumer]:
             self.send_json(422, {"error": "rehearsal_contract_failed"})
             return
         try:

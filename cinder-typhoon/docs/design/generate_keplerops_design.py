@@ -151,7 +151,10 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
     "K11.1": [route("k-source", "gitea", "repository-content")],
     "K11.2": [route("k-source", "gitea", "policy-compiler-exercise")],
     "K11.3": [route("k-source", "gitea", "policy-compiler-exercise")],
-    "K11.4": [route("k-source", "gitea", "policy-compiler-exercise")],
+    "K11.4": [
+        route("k-source", "gitea", "policy-compiler-nonce"),
+        route("k-source", "gitea", "policy-compiler-exercise"),
+    ],
     "K12.1": [route("k-preview", "preview-service", "review-reassign")],
     "K12.2": [route("k-preview", "preview-service", "review-action")],
     "K12.3": [route("k-preview", "preview-service", "review-attachment")],
@@ -433,7 +436,9 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
         "execution": "empty stack at entry; stack underflow, unknown opcode, bad index, trailing instruction after RETURN, or depth above 32 returns 422 without state change",
     },
     "K11.3": {
-        "fields": ["tenant_state", "connector_api", "signer_lineage", "compatibility_exception"],
+        "fields": ["tenant_state", "connector_api", "signer_lineage", "compatibility_exception", "channel", "tenant_class"],
+        "evaluated_fields": ["tenant_state", "connector_api", "signer_lineage", "compatibility_exception"],
+        "compatibility_context": "channel and tenant_class are required input context but are intentionally non-controlling in revision R4",
         "sets": {"active_tenant": ["active"], "accepted_lineage": ["fieldkest-release-2026"]},
         "corpus": "sixteen fixed cases cover each single-bit/field difference plus the two compatibility-exception branches",
         "meaning": "tenant_state is active AND connector_api >= 3 AND signer_lineage is accepted AND compatibility_exception is true",

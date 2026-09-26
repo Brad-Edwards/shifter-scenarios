@@ -392,10 +392,10 @@ action_contracts:
       - content.keplerops-k-cloud-api.k31-1-whose-maintenance-job
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K31.2. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K31.2 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-cloud-api
     effects:
@@ -448,10 +448,10 @@ action_contracts:
       - content.keplerops-k-workload.k31-2-a-different-identity-at-runtime
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Runtime capability. Participant-created service state persists for the life of the participant
-        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
-        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
-        this in-world contract.
+      description: Runtime capability Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-workload
     effects:
@@ -506,10 +506,10 @@ action_contracts:
       - content.keplerops-k-data.k31-3-the-maintenance-label
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Optional cloud conclusion. Participant-created service state persists for the life of the participant
-        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
-        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
-        this in-world contract.
+      description: Optional cloud conclusion Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-workload--runtime
       - features.k-cloud.k-data--field-archive

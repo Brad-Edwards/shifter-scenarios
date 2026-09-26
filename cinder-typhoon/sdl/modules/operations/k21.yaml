@@ -384,10 +384,10 @@ action_contracts:
       - content.keplerops-k-assistant.k21-1-the-policy-beside-the-prompt
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Lead to K24. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Lead to K24 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-assistant
     effects:
@@ -438,10 +438,10 @@ action_contracts:
       - content.keplerops-k-assistant.k21-2-a-conversation-kept-too-long
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Separate from config. Participant-created service state persists for the life of the participant
-        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
-        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
-        this in-world contract.
+      description: Separate from config Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-assistant
     effects:
@@ -495,10 +495,10 @@ action_contracts:
       - content.keplerops-k-assistant.k21-3-the-answer-it-should-withhold
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Assistant conclusion only. Participant-created service state persists for the life of the participant
-        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
-        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
-        this in-world contract.
+      description: Assistant conclusion only Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-assistant
     effects:

@@ -1,0 +1,55 @@
+{
+  "archives": [
+    {
+      "archive": "k-source-k28-state.tar",
+      "files": [
+        {
+          "mode": "0600",
+          "path": "config/k28.json",
+          "sha256": "7130cf4ae237f6dc4c12dcaf52be6944e245f85df46e846660ab19565dc3853f",
+          "size": 638
+        },
+        {
+          "mode": "0550",
+          "path": "exercises/k28/fieldlink-connector",
+          "sha256": "f7f0fa564b984ea001debfb2a250c5dd30f2a63cdd92db887e294f580459a513",
+          "size": 1577616
+        },
+        {
+          "mode": "0640",
+          "path": "seeds/connector-archive.bundle",
+          "sha256": "b0d192a6c0a1534f6efb371da4d3dfb8abd461eb6718f02b2fba96b35c7c0c1b",
+          "size": 651119
+        }
+      ],
+      "sha256": "f608a4d3080c5b5479e6911c2468672371d32ec4f1a75ce70908cd72d61afd81",
+      "size": 2242560
+    },
+    {
+      "archive": "k-dev-k28-home.tar",
+      "files": [
+        {
+          "mode": "0640",
+          "path": "work/build-operations/connector-archive-review.md",
+          "sha256": "578558735527c96323c2dcdf2cda73220dc5dac4edecc65a29f0240d752bd3ae",
+          "size": 272
+        }
+      ],
+      "sha256": "c23b84a3cd05c810701bc48d29b995f4bf6ab23f12470f4fcc0c3faddbf3f865",
+      "size": 10240
+    }
+  ],
+  "binary": {
+    "architecture": "linux-x86_64-elf",
+    "build_id": "698d42c6a1776e9fc002b91ef68431ad775e0c28",
+    "link_map_sha256": "0b6798ff777a62afafd63e7e46012b159dd49455425f839abc74f71fe71cef56",
+    "sha256": "f7f0fa564b984ea001debfb2a250c5dd30f2a63cdd92db887e294f580459a513",
+    "version": "6.9.8"
+  },
+  "repository": {
+    "bundle_sha256": "b0d192a6c0a1534f6efb371da4d3dfb8abd461eb6718f02b2fba96b35c7c0c1b",
+    "commit": "9b65bd4cea72ef35259fce2b0911a36c058e0688",
+    "repository": "fieldkest/connector-archive"
+  },
+  "schema": "fieldkest.k28-artifacts/v1"
+}

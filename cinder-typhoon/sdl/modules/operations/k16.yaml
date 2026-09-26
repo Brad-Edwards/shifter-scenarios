@@ -500,10 +500,10 @@ action_contracts:
       - content.keplerops-k-workload.k16-1-tomorrow-s-job
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K16.2. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K16.2 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-workload
     effects:
@@ -555,10 +555,10 @@ action_contracts:
       - content.keplerops-k-workload.k16-2-the-next-startup
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K16.3. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K16.3 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-workload
     effects:
@@ -612,10 +612,10 @@ action_contracts:
       - content.keplerops-k-workload.k16-3-beyond-the-current-session
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Persistent execution position. Participant-created service state persists for the life of the
-        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
-        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
-        outside this in-world contract.
+      description: Persistent execution position Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The action is limited to the exact records, identities,
+        routes, and destination effects declared here; unrelated tenants and services remain denied. Infrastructure
+        recovery and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-workload--task
       - features.k-cloud.k-data
@@ -670,10 +670,10 @@ action_contracts:
       - content.keplerops-k-workload.k16-4-still-there-after-the-handover
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Optional persistence conclusion. Participant-created service state persists for the life of the
-        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
-        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
-        outside this in-world contract.
+      description: Optional persistence conclusion Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The action is limited to the exact records, identities,
+        routes, and destination effects declared here; unrelated tenants and services remain denied. Infrastructure
+        recovery and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-workload
     effects:

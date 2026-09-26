@@ -1,25 +1,25 @@
 Archive member included to satisfy reference by file (symbol)
 
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(del_ops.o)
-                              /tmp/cc15bvze.o (operator delete(void*, unsigned long))
+                              fieldkest-policyc.o (operator delete(void*, unsigned long))
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_alloc.o)
-                              /tmp/cc15bvze.o (__cxa_allocate_exception)
+                              fieldkest-policyc.o (__cxa_allocate_exception)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_catch.o)
-                              /tmp/cc15bvze.o (__cxa_begin_catch)
+                              fieldkest-policyc.o (__cxa_begin_catch)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_exception.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_alloc.o) (std::exception::~exception())
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_globals.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_catch.o) (__cxa_get_globals_fast)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_personality.o)
-                              /tmp/cc15bvze.o (__gxx_personality_v0)
+                              fieldkest-policyc.o (__gxx_personality_v0)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_terminate.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_personality.o) (__cxxabiv1::__terminate(void (*)()))
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_throw.o)
-                              /tmp/cc15bvze.o (__cxa_throw)
+                              fieldkest-policyc.o (__cxa_throw)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_unex_handler.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_terminate.o) (__cxxabiv1::__unexpected_handler)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(new_op.o)
-                              /tmp/cc15bvze.o (operator new(unsigned long))
+                              fieldkest-policyc.o (operator new(unsigned long))
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(si_class_type_info.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_alloc.o) (vtable for __cxxabiv1::__si_class_type_info)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(tinfo.o)
@@ -27,27 +27,27 @@ Archive member included to satisfy reference by file (symbol)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(vterminate.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_terminate.o) (__gnu_cxx::__verbose_terminate_handler())
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(globals_io.o)
-                              /tmp/cc15bvze.o (std::cerr)
+                              fieldkest-policyc.o (std::cerr)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(ios_init.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(globals_io.o) (std::ios_base::Init::Init())
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(istream-string.o)
-                              /tmp/cc15bvze.o (std::basic_istream<char, std::char_traits<char> >& std::getline<char, std::char_traits<char>, std::allocator<char> >(std::basic_istream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char))
+                              fieldkest-policyc.o (std::basic_istream<char, std::char_traits<char> >& std::getline<char, std::char_traits<char>, std::allocator<char> >(std::basic_istream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char))
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(locale.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(istream-string.o) (std::locale::locale(std::locale const&))
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(stdexcept.o)
-                              /tmp/cc15bvze.o (std::runtime_error::~runtime_error())
+                              fieldkest-policyc.o (std::runtime_error::~runtime_error())
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(tree.o)
-                              /tmp/cc15bvze.o (std::_Rb_tree_increment(std::_Rb_tree_node_base*))
+                              fieldkest-policyc.o (std::_Rb_tree_increment(std::_Rb_tree_node_base*))
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cow-shim_facets.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(locale.o) (std::locale::facet::_M_cow_shim(std::locale::id const*) const)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cow-stdexcept.o)
-                              /tmp/cc15bvze.o (std::runtime_error::runtime_error(char const*))
+                              fieldkest-policyc.o (std::runtime_error::runtime_error(char const*))
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cow-string-inst.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(stdexcept.o) (std::string::_Rep::_S_empty_rep_storage)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cow-wstring-inst.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cow-shim_facets.o) (std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::_S_empty_rep_storage)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(ctype.o)
-                              /tmp/cc15bvze.o (std::ctype<char>::_M_widen_init() const)
+                              fieldkest-policyc.o (std::ctype<char>::_M_widen_init() const)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(ctype_configure_char.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(ctype.o) (std::ctype<char>::do_toupper(char) const)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(ctype_members.o)
@@ -63,9 +63,9 @@ Archive member included to satisfy reference by file (symbol)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(functexcept.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cow-wstring-inst.o) (std::__throw_bad_alloc())
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(ios-inst.o)
-                              /tmp/cc15bvze.o (vtable for std::basic_ios<char, std::char_traits<char> >)
+                              fieldkest-policyc.o (vtable for std::basic_ios<char, std::char_traits<char> >)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(ios.o)
-                              /tmp/cc15bvze.o (std::ios_base::ios_base())
+                              fieldkest-policyc.o (std::ios_base::ios_base())
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(iostream-inst.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(fstream-inst.o) (std::basic_iostream<char, std::char_traits<char> >::~basic_iostream())
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(istream-inst.o)
@@ -73,7 +73,7 @@ Archive member included to satisfy reference by file (symbol)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(locale-inst.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cow-shim_facets.o) (std::moneypunct<char, false>::do_decimal_point() const)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(locale_init.o)
-                              /tmp/cc15bvze.o (std::locale::locale())
+                              fieldkest-policyc.o (std::locale::locale())
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(ostream-inst.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(ios_init.o) (vtable for std::ostream)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(random.o)
@@ -83,11 +83,11 @@ Archive member included to satisfy reference by file (symbol)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(sso_string.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cow-stdexcept.o) (std::__sso_string::__sso_string(char const*, unsigned long))
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(sstream-inst.o)
-                              /tmp/cc15bvze.o (std::__cxx11::basic_istringstream<char, std::char_traits<char>, std::allocator<char> >::~basic_istringstream())
+                              fieldkest-policyc.o (std::__cxx11::basic_istringstream<char, std::char_traits<char>, std::allocator<char> >::~basic_istringstream())
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(streambuf-inst.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(ext11-inst.o) (std::basic_streambuf<char, std::char_traits<char> >::imbue(std::locale const&))
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(string-inst.o)
-                              /tmp/cc15bvze.o (std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_create(unsigned long&, unsigned long))
+                              fieldkest-policyc.o (std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_create(unsigned long&, unsigned long))
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(system_error.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(random.o) (vtable for std::system_error)
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(wlocale-inst.o)
@@ -193,7 +193,7 @@ Archive member included to satisfy reference by file (symbol)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(libc-tls.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(libc-start.o) (__libc_setup_tls)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(errno-loc.o)
-                              /tmp/cc15bvze.o (__errno_location)
+                              fieldkest-policyc.o (__errno_location)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(iconv_open.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(numeric_members_cow.o) (iconv_open)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(iconv.o)
@@ -325,7 +325,7 @@ Archive member included to satisfy reference by file (symbol)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strtof_nan.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strtof_l.o) (__strtof_nan)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strtol.o)
-                              /tmp/cc15bvze.o (__isoc23_strtol)
+                              fieldkest-policyc.o (__isoc23_strtol)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strtol_l.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strtol.o) (____strtol_l_internal)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strtold_l.o)
@@ -487,9 +487,9 @@ Archive member included to satisfy reference by file (symbol)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(memchr.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(istream-string.o) (memchr)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(memcmp.o)
-                              /tmp/cc15bvze.o (memcmp)
+                              fieldkest-policyc.o (memcmp)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(memcpy.o)
-                              /tmp/cc15bvze.o (memcpy)
+                              fieldkest-policyc.o (memcpy)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(memmove.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cow-string-inst.o) (memmove)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(mempcpy.o)
@@ -515,7 +515,7 @@ Archive member included to satisfy reference by file (symbol)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strdup.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(gconv_db.o) (__strdup)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strlen.o)
-                              /tmp/cc15bvze.o (strlen)
+                              fieldkest-policyc.o (strlen)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strncase_l.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strtod_l.o) (__strncasecmp_l)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(strncmp.o)
@@ -887,7 +887,7 @@ Archive member included to satisfy reference by file (symbol)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(sprintf_chk.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cp-demangle.o) (__sprintf_chk)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(stack_chk_fail.o)
-                              /tmp/cc15bvze.o (__stack_chk_fail)
+                              fieldkest-policyc.o (__stack_chk_fail)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(wmemcpy_chk.o)
                               /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(wstring-inst.o) (__wmemcpy_chk)
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libc.a(memcpy_chk-nonshared.o)
@@ -1369,17 +1369,17 @@ Discarded input sections
                 0x0000000000000000       0x20 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crti.o
  .note.gnu.property
                 0x0000000000000000       0x20 /usr/lib/gcc/x86_64-linux-gnu/15/crtbeginT.o
- .group         0x0000000000000000        0x8 /tmp/cc15bvze.o
- .group         0x0000000000000000        0xc /tmp/cc15bvze.o
- .group         0x0000000000000000        0xc /tmp/cc15bvze.o
- .group         0x0000000000000000        0xc /tmp/cc15bvze.o
- .group         0x0000000000000000        0xc /tmp/cc15bvze.o
- .group         0x0000000000000000        0xc /tmp/cc15bvze.o
- .group         0x0000000000000000        0xc /tmp/cc15bvze.o
- .group         0x0000000000000000        0xc /tmp/cc15bvze.o
- .group         0x0000000000000000        0xc /tmp/cc15bvze.o
+ .group         0x0000000000000000        0x8 fieldkest-policyc.o
+ .group         0x0000000000000000        0xc fieldkest-policyc.o
+ .group         0x0000000000000000        0xc fieldkest-policyc.o
+ .group         0x0000000000000000        0xc fieldkest-policyc.o
+ .group         0x0000000000000000        0xc fieldkest-policyc.o
+ .group         0x0000000000000000        0xc fieldkest-policyc.o
+ .group         0x0000000000000000        0xc fieldkest-policyc.o
+ .group         0x0000000000000000        0xc fieldkest-policyc.o
+ .group         0x0000000000000000        0xc fieldkest-policyc.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/cc15bvze.o
+                0x0000000000000000       0x20 fieldkest-policyc.o
  .note.gnu.property
                 0x0000000000000000       0x20 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(del_ops.o)
  .group         0x0000000000000000        0xc /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_alloc.o)
@@ -6480,7 +6480,7 @@ Linker script and memory map
 LOAD /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crt1.o
 LOAD /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crti.o
 LOAD /usr/lib/gcc/x86_64-linux-gnu/15/crtbeginT.o
-LOAD /tmp/cc15bvze.o
+LOAD fieldkest-policyc.o
 LOAD /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a
 LOAD /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libm.a
 START GROUP
@@ -7782,7 +7782,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crtn.o
 .text           0x0000000000401240   0x18a903
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  .text.unlikely
-                0x0000000000401240      0xab1 /tmp/cc15bvze.o
+                0x0000000000401240      0xab1 fieldkest-policyc.o
  .text.unlikely._ZN9__gnu_cxx30__throw_concurrence_lock_errorEv
                 0x0000000000401cf1       0x36 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_alloc.o)
                 0x0000000000401cf1                __gnu_cxx::__throw_concurrence_lock_error()
@@ -8361,7 +8361,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crtn.o
  .text.exit     0x0000000000406490       0xf9 /usr/lib/gcc/x86_64-linux-gnu/15/libgcc_eh.a(unwind-dw2-fde-dip.o)
  *(.text.startup .text.startup.*)
  *fill*         0x0000000000406589       0x17 
- .text.startup  0x00000000004065a0     0x11f3 /tmp/cc15bvze.o
+ .text.startup  0x00000000004065a0     0x11f3 fieldkest-policyc.o
                 0x00000000004065a0                main
  *fill*         0x0000000000407793        0xd 
  .text.startup._GLOBAL__sub_I_eh_alloc.cc
@@ -8400,35 +8400,35 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crtn.o
  *fill*         0x0000000000407d15        0xb 
  .text          0x0000000000407d20       0xe5 /usr/lib/gcc/x86_64-linux-gnu/15/crtbeginT.o
  *fill*         0x0000000000407e05       0x3b 
- .text          0x0000000000407e40     0x1055 /tmp/cc15bvze.o
+ .text          0x0000000000407e40     0x1055 fieldkest-policyc.o
  *fill*         0x0000000000408e95        0xb 
  .text._ZNKSt5ctypeIcE8do_widenEc
-                0x0000000000408ea0        0x7 /tmp/cc15bvze.o
+                0x0000000000408ea0        0x7 fieldkest-policyc.o
                 0x0000000000408ea0                std::ctype<char>::do_widen(char) const
  *fill*         0x0000000000408ea7        0x9 
  .text._ZNSt12_Vector_baseIiSaIiEED2Ev
-                0x0000000000408eb0       0x21 /tmp/cc15bvze.o
+                0x0000000000408eb0       0x21 fieldkest-policyc.o
                 0x0000000000408eb0                std::_Vector_base<int, std::allocator<int> >::~_Vector_base()
                 0x0000000000408eb0                std::_Vector_base<int, std::allocator<int> >::~_Vector_base()
  *fill*         0x0000000000408ed1        0xf 
  .text._ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_
-                0x0000000000408ee0       0xeb /tmp/cc15bvze.o
+                0x0000000000408ee0       0xeb fieldkest-policyc.o
                 0x0000000000408ee0                std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&)
                 0x0000000000408ee0                std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&)
  *fill*         0x0000000000408fcb        0x5 
  .text._ZSteqIcSt11char_traitsIcESaIcEEbRKNSt7__cxx1112basic_stringIT_T0_T1_EEPKS5_
-                0x0000000000408fd0       0x69 /tmp/cc15bvze.o
+                0x0000000000408fd0       0x69 fieldkest-policyc.o
                 0x0000000000408fd0                bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
  *fill*         0x0000000000409039        0x7 
  .text._ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructILb1EEEvPKcm
-                0x0000000000409040       0xa0 /tmp/cc15bvze.o
+                0x0000000000409040       0xa0 fieldkest-policyc.o
                 0x0000000000409040                void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<true>(char const*, unsigned long)
  .text._ZNSt8_Rb_treeIttSt9_IdentityItESt4lessItESaItEE16_M_insert_uniqueIRKtEESt4pairISt17_Rb_tree_iteratorItEbEOT_
-                0x00000000004090e0      0x127 /tmp/cc15bvze.o
+                0x00000000004090e0      0x127 fieldkest-policyc.o
                 0x00000000004090e0                std::pair<std::_Rb_tree_iterator<unsigned short>, bool> std::_Rb_tree<unsigned short, unsigned short, std::_Identity<unsigned short>, std::less<unsigned short>, std::allocator<unsigned short> >::_M_insert_unique<unsigned short const&>(unsigned short const&)
  *fill*         0x0000000000409207        0x9 
  .text._ZNSt6vectorIiSaIiEE17_M_realloc_appendIJiEEEvDpOT_
-                0x0000000000409210       0xd2 /tmp/cc15bvze.o
+                0x0000000000409210       0xd2 fieldkest-policyc.o
                 0x0000000000409210                void std::vector<int, std::allocator<int> >::_M_realloc_append<int>(int&&)
  .text          0x00000000004092e2        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(del_ops.o)
  *fill*         0x00000000004092e2        0xe 
@@ -24415,22 +24415,22 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crtn.o
                 0x000000000058c000                _IO_stdin_used
                 0x000000000058c024                __rseq_flags
  .rodata.str1.1
-                0x000000000058c02c     0x2fff /tmp/cc15bvze.o
+                0x000000000058c02c     0x2fff fieldkest-policyc.o
                                         0x20e (size before relaxing)
                 0x000000000058c3ce                _nl_POSIX_name
                 0x000000000058ddc9                _nl_C_name
                 0x000000000058e023                _libc_intl_domainname
  *fill*         0x000000000058f02b        0x5 
  .rodata._ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_.str1.8
-                0x000000000058f030     0x466c /tmp/cc15bvze.o
+                0x000000000058f030     0x466c fieldkest-policyc.o
                                          0x32 (size before relaxing)
                 0x000000000058faf0                _nl_category_name_sizes
                 0x000000000058fb00                _nl_C_codeset
                 0x000000000058fb48                _nl_default_default_domain
  .rodata.str1.8
-                0x000000000059369c        0x0 /tmp/cc15bvze.o
+                0x000000000059369c        0x0 fieldkest-policyc.o
                                         0x148 (size before relaxing)
- .rodata        0x000000000059369c       0x20 /tmp/cc15bvze.o
+ .rodata        0x000000000059369c       0x20 fieldkest-policyc.o
  .rodata._ZNK9__gnu_cxx24__concurrence_lock_error4whatEv.str1.8
                 0x00000000005936bc        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_alloc.o)
                                          0x24 (size before relaxing)
@@ -27159,7 +27159,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crtn.o
  .rodata        0x00000000005aef90       0x34 /usr/lib/gcc/x86_64-linux-gnu/15/libgcc_eh.a(unwind-c.o)
 
 .fkpolicy       0x00000000005aefe0       0x44
- .fkpolicy      0x00000000005aefe0       0x44 /tmp/cc15bvze.o
+ .fkpolicy      0x00000000005aefe0       0x44 fieldkest-policyc.o
 
 .stapsdt.base   0x00000000005af024        0x1
  .stapsdt.base  0x00000000005af024        0x1 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_catch.o)
@@ -27183,7 +27183,7 @@ rodata.cst32    0x00000000005af040       0x60
                                          0x5c (size before relaxing)
  *fill*         0x00000000005af0e0        0x0 
  .eh_frame      0x00000000005af0e0        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/crtbeginT.o
- .eh_frame      0x00000000005af0e0      0x370 /tmp/cc15bvze.o
+ .eh_frame      0x00000000005af0e0      0x370 fieldkest-policyc.o
                                         0x388 (size before relaxing)
  .eh_frame      0x00000000005af450       0x18 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(del_ops.o)
                                          0x30 (size before relaxing)
@@ -28429,7 +28429,7 @@ rodata.cst32    0x00000000005af040       0x60
                 0x00000000005d8010     0x619c
  *(.gcc_except_table .gcc_except_table.*)
  .gcc_except_table
-                0x00000000005d8010      0x250 /tmp/cc15bvze.o
+                0x00000000005d8010      0x250 fieldkest-policyc.o
  .gcc_except_table._ZN12_GLOBAL__N_14pool4freeEPv.constprop.0
                 0x00000000005d8260        0x8 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_alloc.o)
  .gcc_except_table._ZN12_GLOBAL__N_14pool8allocateEm.constprop.0
@@ -30046,7 +30046,7 @@ rodata.cst32    0x00000000005af040       0x60
  .note.GNU-stack
                 0x00000000005de1ac        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/crtbeginT.o
  .note.GNU-stack
-                0x00000000005de1ac        0x0 /tmp/cc15bvze.o
+                0x00000000005de1ac        0x0 fieldkest-policyc.o
  .note.GNU-stack
                 0x00000000005de1ac        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(del_ops.o)
  .note.GNU-stack
@@ -31512,7 +31512,7 @@ rodata.cst32    0x00000000005af040       0x60
 .data.rel.ro    0x00000000005dff40     0xb008
  *(.data.rel.ro.local* .gnu.linkonce.d.rel.ro.local.*)
  .data.rel.ro.local
-                0x00000000005dff40       0x30 /tmp/cc15bvze.o
+                0x00000000005dff40       0x30 fieldkest-policyc.o
  .data.rel.ro.local._ZTVNSt13__facet_shims12_GLOBAL__N_114money_get_shimIcEE
                 0x00000000005dff70       0x30 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(cow-shim_facets.o)
  .data.rel.ro.local._ZTVNSt13__facet_shims12_GLOBAL__N_114money_put_shimIcEE
@@ -32970,12 +32970,12 @@ rodata.cst32    0x00000000005af040       0x60
  *fill*         0x00000000005eb104        0x4 
  .data          0x00000000005eb108        0x8 /usr/lib/gcc/x86_64-linux-gnu/15/crtbeginT.o
                 0x00000000005eb108                __dso_handle
- .data          0x00000000005eb110        0x0 /tmp/cc15bvze.o
+ .data          0x00000000005eb110        0x0 fieldkest-policyc.o
  .data.rel.local.DW.ref._ZTISt9exception
-                0x00000000005eb110        0x8 /tmp/cc15bvze.o
+                0x00000000005eb110        0x8 fieldkest-policyc.o
                 0x00000000005eb110                DW.ref._ZTISt9exception
  .data.rel.local.DW.ref.__gxx_personality_v0
-                0x00000000005eb118        0x8 /tmp/cc15bvze.o
+                0x00000000005eb118        0x8 fieldkest-policyc.o
                 0x00000000005eb118                DW.ref.__gxx_personality_v0
  .data          0x00000000005eb120        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(del_ops.o)
  .data          0x00000000005eb120        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_alloc.o)
@@ -33767,7 +33767,7 @@ rodata.cst32    0x00000000005af040       0x60
  .bss           0x00000000005ecc00        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crt1.o
  .bss           0x00000000005ecc00        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crti.o
  .bss           0x00000000005ecc00       0x50 /usr/lib/gcc/x86_64-linux-gnu/15/crtbeginT.o
- .bss           0x00000000005ecc50        0x0 /tmp/cc15bvze.o
+ .bss           0x00000000005ecc50        0x0 fieldkest-policyc.o
  .bss           0x00000000005ecc50        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(del_ops.o)
  .bss           0x00000000005ecc50        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.a(eh_alloc.o)
  *fill*         0x00000000005ecc50       0x10 
@@ -35148,7 +35148,7 @@ rodata.cst32    0x00000000005af040       0x60
  *(.comment)
  .comment       0x0000000000000000       0x26 /usr/lib/gcc/x86_64-linux-gnu/15/crtbeginT.o
                                          0x27 (size before relaxing)
- .comment       0x0000000000000026        0x0 /tmp/cc15bvze.o
+ .comment       0x0000000000000026        0x0 fieldkest-policyc.o
                                          0x27 (size before relaxing)
  .comment       0x0000000000000026        0x0 /usr/lib/gcc/x86_64-linux-gnu/15/crtend.o
                                          0x27 (size before relaxing)
@@ -35265,4 +35265,4 @@ rodata.cst32    0x00000000005af040       0x60
  *(.gnu_debuglink)
  *(.gnu.lto_*)
  *(.gnu_object_only)
-OUTPUT(/home/atomik/src/shifter-scenarios-panw/cinder-typhoon/assets/keplerops/policy-compiler/source/fieldkest-policyc elf64-x86-64)
+OUTPUT(fieldkest-policyc elf64-x86-64)

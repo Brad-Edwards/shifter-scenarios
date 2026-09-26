@@ -3,9 +3,12 @@ set -euo pipefail
 
 ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
+docker compose -f compose.yaml down -v
 bash ./generate-operator-material.sh
-docker compose -f compose.yaml --profile build-only build report-worker node-worker command-worker router k-dev k-source k-registry k-ci k-support k-cloud-api runner
-docker compose -f compose.yaml up -d --force-recreate router runner k-source k-registry k-ci k-support k-cloud-api k-dev
+docker compose -f compose.yaml --profile build-only build
+docker compose -f compose.yaml up -d --force-recreate \
+  router runner k-source k-registry k-ci k-preview k-support k-indexer \
+  k-cloud-api k-workload k-data k-assistant k-staff k-identity k-cert a-connector k-dev
 
 for attempt in $(seq 1 30); do
   if docker exec --user rowan cinder-keplerops-k-dev curl -sS --fail \
@@ -23,7 +26,13 @@ done
 
 python3 tests/test_opening_live.py
 python3 tests/test_registry_foundation_live.py
+python3 tests/test_k04_live.py
 python3 tests/test_k09_live.py
+python3 tests/test_k11_live.py
+python3 tests/test_k28_live.py
+python3 tests/test_declared_components_live.py
+python3 tests/test_platform_live.py
+python3 tests/test_delivery_live.py
 
 docker run --rm --network cinder-keplerops-corporate \
   -v "$ROOT/.operator/rowan_ed25519:/run/rowan_ed25519:ro" \
@@ -49,7 +58,13 @@ done
 [[ -z $(docker ps --format '{{.Names}}' --filter 'name=fieldkest-report-') ]]
 [[ -z $(docker ps --format '{{.Names}}' --filter 'name=fieldkest-consumer-') ]]
 [[ -z $(docker ps --format '{{.Names}}' --filter 'name=fieldkest-command-') ]]
+[[ -z $(docker ps --format '{{.Names}}' --filter 'name=fieldkest-workload-') ]]
+[[ -z $(docker ps --format '{{.Names}}' --filter 'name=fieldkest-completion-') ]]
 [[ -z $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' \
-  cinder-keplerops-k-dev cinder-keplerops-source cinder-keplerops-registry cinder-keplerops-ci cinder-keplerops-support cinder-keplerops-cloud-api) ]]
+  cinder-keplerops-k-dev cinder-keplerops-source cinder-keplerops-registry cinder-keplerops-ci \
+  cinder-keplerops-preview cinder-keplerops-support cinder-keplerops-indexer \
+  cinder-keplerops-cloud-api cinder-keplerops-workload cinder-keplerops-data \
+  cinder-keplerops-assistant cinder-keplerops-staff cinder-keplerops-identity \
+  cinder-keplerops-cert cinder-keplerops-connector) ]]
 
-echo "PASS: KeplerOps K01-K09 opening, registry, and runner foundation"
+echo "PASS: KeplerOps K01-K31 participant environment"

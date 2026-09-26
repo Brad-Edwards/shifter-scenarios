@@ -395,10 +395,10 @@ action_contracts:
       - content.keplerops-k-data.k30-1-authority-over-the-backup
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K30.2. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K30.2 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-cloud-api--build-records
       - features.k-cloud.k-data--backup
@@ -453,10 +453,10 @@ action_contracts:
       - content.keplerops-k-data.k30-2-the-database-you-cannot-reach
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K30.3. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K30.3 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-data
     effects:
@@ -508,10 +508,10 @@ action_contracts:
       - content.keplerops-k-data.k30-3-before-arwc-changed-its-name
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Historical provenance only. Participant-created service state persists for the life of the participant
-        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
-        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
-        this in-world contract.
+      description: Historical provenance only Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-data
     effects:

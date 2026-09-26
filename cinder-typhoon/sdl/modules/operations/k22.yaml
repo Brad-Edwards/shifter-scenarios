@@ -392,10 +392,10 @@ action_contracts:
       - content.keplerops-k-assistant.k22-1-what-the-assistant-reads
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K22.2. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K22.2 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-assistant
     effects:
@@ -448,10 +448,10 @@ action_contracts:
       - content.keplerops-k-assistant.k22-2-instructions-in-the-attachment
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Answer only. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Answer only Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-assistant
     effects:
@@ -508,10 +508,10 @@ action_contracts:
       - content.keplerops-k-assistant.k22-3-an-answer-becomes-an-action
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Local corporate conclusion; main ticket unchanged. Participant-created service state persists
-        for the life of the participant world and ordinary retries do not erase it. The selected route cannot act
-        on unrelated tenants, records, packages, identities, jobs, or services. Infrastructure recovery and submission
-        adjudication are outside this in-world contract.
+      description: Local corporate conclusion; main ticket unchanged Participant-created service state persists
+        for the life of the participant world and ordinary retries do not erase it. The action is limited to the
+        exact records, identities, routes, and destination effects declared here; unrelated tenants and services
+        remain denied. Infrastructure recovery and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-assistant--review-tool
       - features.k-delivery.k-support--review-item

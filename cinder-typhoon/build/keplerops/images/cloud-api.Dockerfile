@@ -15,6 +15,7 @@ RUN mkdir -p /var/lib/fieldkest-cloud-api \
     && tar -xf /tmp/k-cloud-api-k09-state.tar -C /var/lib/fieldkest-cloud-api \
     && rm /tmp/k-cloud-api-k09-state.tar \
     && mkdir -p /var/lib/fieldkest-cloud-api/audit \
+    && ln -s /opt/fieldkest /opt/fieldkest-cloud-api \
     && chown -R fieldkest-cloud:fieldkest-cloud /var/lib/fieldkest-cloud-api \
     && chmod 0755 /usr/local/bin/fieldkest-cloud-api-entrypoint
 

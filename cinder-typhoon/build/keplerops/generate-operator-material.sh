@@ -18,15 +18,36 @@ if [[ ! -s "$OPERATOR_DIR/tls/ca.key" ]]; then
     -keyout "$OPERATOR_DIR/tls/ca.key" -out "$OPERATOR_DIR/tls/ca.crt"
 fi
 
+if [[ ! -s "$OPERATOR_DIR/tls/evan.key" ]]; then
+  openssl req -newkey rsa:3072 -nodes \
+    -subj '/CN=evan.calderoux/OU=Staff Archive/O=KeplerOps' \
+    -keyout "$OPERATOR_DIR/tls/evan.key" -out "$OPERATOR_DIR/tls/evan.csr" 2>/dev/null
+  cat >"$OPERATOR_DIR/tls/evan.ext" <<'EOF'
+keyUsage=digitalSignature
+extendedKeyUsage=clientAuth
+subjectAltName=email:evan.calderoux@KEPLEROPS.TEST
+EOF
+  openssl x509 -req -days 825 -sha256 \
+    -in "$OPERATOR_DIR/tls/evan.csr" \
+    -CA "$OPERATOR_DIR/tls/ca.crt" -CAkey "$OPERATOR_DIR/tls/ca.key" -CAcreateserial \
+    -extfile "$OPERATOR_DIR/tls/evan.ext" \
+    -out "$OPERATOR_DIR/tls/evan.crt" 2>/dev/null
+fi
+
 if [[ ! -s "$OPERATOR_DIR/worker-hmac.key" ]]; then
   openssl rand 32 >"$OPERATOR_DIR/worker-hmac.key"
 fi
+
+if [[ ! -s "$OPERATOR_DIR/fixture-issuer.key" ]]; then
+  openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 -out "$OPERATOR_DIR/fixture-issuer.key" 2>/dev/null
+fi
+openssl pkey -in "$OPERATOR_DIR/fixture-issuer.key" -pubout -out "$OPERATOR_DIR/fixture-issuer.pub" 2>/dev/null
 
 openssl req -newkey rsa:3072 -nodes \
   -subj '/CN=keplerops.test' \
   -keyout "$OPERATOR_DIR/tls/server.key" -out "$OPERATOR_DIR/tls/server.csr" 2>/dev/null
 cat >"$OPERATOR_DIR/tls/server.ext" <<'EOF'
-subjectAltName=DNS:k-dev.keplerops.test,DNS:source.keplerops.test,DNS:packages.keplerops.test,DNS:ci.keplerops.test,DNS:preview.keplerops.test,DNS:support.keplerops.test,DNS:indexer.keplerops.test,DNS:staff.keplerops.test,DNS:identity.keplerops.test,DNS:cert.keplerops.test,DNS:cloud.keplerops.test,DNS:cloud-api.keplerops.test,DNS:data.keplerops.test,DNS:workload.keplerops.test,DNS:assistant.keplerops.test
+subjectAltName=DNS:k-dev.keplerops.test,DNS:source.keplerops.test,DNS:packages.keplerops.test,DNS:ci.keplerops.test,DNS:preview.keplerops.test,DNS:support.keplerops.test,DNS:indexer.keplerops.test,DNS:staff.keplerops.test,DNS:identity.keplerops.test,DNS:cert.keplerops.test,DNS:cloud.keplerops.test,DNS:cloud-api.keplerops.test,DNS:data.keplerops.test,DNS:workload.keplerops.test,DNS:workloads.keplerops.test,DNS:assistant.keplerops.test,DNS:connector.arwc.test
 keyUsage=digitalSignature,keyEncipherment
 extendedKeyUsage=serverAuth
 EOF
@@ -36,5 +57,5 @@ openssl x509 -req -days 825 -sha256 \
   -extfile "$OPERATOR_DIR/tls/server.ext" \
   -out "$OPERATOR_DIR/tls/server.crt" 2>/dev/null
 
-chmod 0600 "$OPERATOR_DIR/rowan_ed25519" "$OPERATOR_DIR/worker-hmac.key" "$OPERATOR_DIR/tls/ca.key" "$OPERATOR_DIR/tls/server.key"
-chmod 0644 "$OPERATOR_DIR/rowan_ed25519.pub" "$OPERATOR_DIR/rowan_authorized_keys" "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/tls/server.crt"
+chmod 0600 "$OPERATOR_DIR/rowan_ed25519" "$OPERATOR_DIR/worker-hmac.key" "$OPERATOR_DIR/fixture-issuer.key" "$OPERATOR_DIR/tls/ca.key" "$OPERATOR_DIR/tls/server.key" "$OPERATOR_DIR/tls/evan.key"
+chmod 0644 "$OPERATOR_DIR/rowan_ed25519.pub" "$OPERATOR_DIR/rowan_authorized_keys" "$OPERATOR_DIR/fixture-issuer.pub" "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/tls/server.crt" "$OPERATOR_DIR/tls/evan.crt"

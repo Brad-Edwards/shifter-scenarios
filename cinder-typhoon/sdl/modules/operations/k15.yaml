@@ -496,10 +496,10 @@ action_contracts:
       - content.keplerops-k-data.k15-1-an-export-in-progress
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Lead only. Participant-created service state persists for the life of the participant world and
-        ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Lead only Participant-created service state persists for the life of the participant world and
+        ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and destination
+        effects declared here; unrelated tenants and services remain denied. Infrastructure recovery and submission
+        adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-data
     effects:
@@ -551,10 +551,10 @@ action_contracts:
       - content.keplerops-k-data.k15-2-a-job-outside-your-account
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Required for destination change. Participant-created service state persists for the life of the
-        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
-        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
-        outside this in-world contract.
+      description: Required for destination change Participant-created service state persists for the life of the
+        participant world and ordinary retries do not erase it. The action is limited to the exact records, identities,
+        routes, and destination effects declared here; unrelated tenants and services remain denied. Infrastructure
+        recovery and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-data
     effects:
@@ -606,10 +606,10 @@ action_contracts:
       - content.keplerops-k-data.k15-3-change-the-handover-point
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Produces handed-over export. Participant-created service state persists for the life of the participant
-        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
-        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
-        this in-world contract.
+      description: Produces handed-over export Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-data
     effects:
@@ -661,10 +661,10 @@ action_contracts:
       - content.keplerops-k-data.k15-4-the-right-customer-s-collection
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: ARWC intelligence, not entry. Participant-created service state persists for the life of the
-        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
-        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
-        outside this in-world contract.
+      description: ARWC intelligence, not entry Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-data
     effects:

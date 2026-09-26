@@ -40,6 +40,9 @@ ASSETS = PACK / "assets/keplerops"
 OPENING_ASSETS = ASSETS / "opening"
 REGISTRY_ASSETS = ASSETS / "registry"
 K09_ASSETS = ASSETS / "build-operations"
+K11_ASSETS = ASSETS / "policy-compiler"
+K28_ASSETS = ASSETS / "connector-archive"
+K29_ASSETS = ASSETS / "release-lineage"
 EXPECTED_PORTFOLIO_SHA256 = "d5e4456ab827252525459680b0ee0e238252de502f91298eeed503ad08be710f"
 EXPECTED_TIERS = Counter({"Medium": 45, "Easy": 25, "Hard": 21, "Expert": 9, "Elite": 4})
 EXPECTED_IPS = {
@@ -639,6 +642,185 @@ def check_k09_foundation_assets(scenario):
                 f"Fourth-wall wording in K09 foundation asset: {path.relative_to(PACK)}")
 
 
+def check_k11_foundation_assets(scenario):
+    manifest = json.loads((K11_ASSETS / "artifact-manifest.json").read_text())
+    require(manifest["schema"] == "fieldkest.k11-artifacts/v1",
+            "Unknown K11 foundation archive manifest")
+    expected = {
+        "k-source-k11-state.tar": (
+            "keplerops-k11-foundation.k11-source-state", "k-delivery.k-source",
+            "/var/lib/gitea",
+        ),
+        "k-dev-k11-home.tar": (
+            "keplerops-k11-foundation.k11-workstation-state", "k-corporate.k-dev",
+            "/home/rowan",
+        ),
+    }
+    records = {item["archive"]: item for item in manifest["archives"]}
+    require(set(records) == set(expected), "K11 foundation archive inventory drift")
+    for archive_name, (content_ref, target, destination) in expected.items():
+        record = records[archive_name]
+        archive_path = K11_ASSETS / archive_name
+        payload = archive_path.read_bytes()
+        require(hashlib.sha256(payload).hexdigest() == record["sha256"]
+                and len(payload) == record["size"],
+                f"K11 archive digest drift: {archive_name}")
+        content = scenario.content[content_ref]
+        requirement = content.source.artifact_requirement if content.source else None
+        require(enum(content.type) == "directory" and content.target == target
+                and content.destination == destination and requirement is not None
+                and enum(requirement.explicitness) == "exact"
+                and requirement.exact_artifact is not None
+                and requirement.exact_artifact.digest == "sha256:" + record["sha256"],
+                f"K11 archive is not exact native RAE content: {archive_name}")
+        declared = {item["path"]: item for item in record["files"]}
+        with tarfile.open(archive_path, "r") as archive:
+            members = {item.name: item for item in archive.getmembers() if item.isfile()}
+            require(set(members) == set(declared),
+                    f"K11 archive member inventory drift: {archive_name}")
+            for member_name, member in members.items():
+                member_payload = archive.extractfile(member).read()
+                record_item = declared[member_name]
+                require(hashlib.sha256(member_payload).hexdigest() == record_item["sha256"]
+                        and len(member_payload) == record_item["size"]
+                        and f"{member.mode:04o}" == record_item["mode"],
+                        f"K11 archive member drift: {archive_name}/{member_name}")
+
+    compiler = manifest["compiler"]
+    require(compiler["version"] == "2.6.4"
+            and compiler["architecture"] == "linux-x86_64-static-elf"
+            and compiler["program_sha256"] ==
+            "0b9a7fd08148ec1b6d3151dcd9c0499fb89f70585fb3705a44662e062242ef9c"
+            and compiler["condition_set_sha256"] ==
+            "e3a8ced4d68bfa6f4b94386b5ff040596bff56e243adbb5aebc98df1b21896a9",
+            "K11 compiler identity drift")
+    binary = (K11_ASSETS / "source/fieldkest-policyc").read_bytes()
+    link_map = (K11_ASSETS / "source/fieldkest-policyc-2.6.4.map").read_bytes()
+    require(hashlib.sha256(binary).hexdigest() == compiler["binary_sha256"]
+            and hashlib.sha256(link_map).hexdigest() == compiler["link_map_sha256"],
+            "K11 compiler or retained map digest drift")
+    require(b"/tmp/cc" not in link_map and str(PACK).encode() not in link_map,
+            "K11 retained map contains a nondeterministic build path")
+    config = json.loads((K11_ASSETS / "source/policy-compiler-service.json").read_text())
+    require(config["fields"] == [
+        "tenant_state", "connector_api", "signer_lineage", "compatibility_exception",
+        "channel", "tenant_class",
+    ] and config["evaluated_fields"] == [
+        "tenant_state", "connector_api", "signer_lineage", "compatibility_exception",
+    ], "K11 compatibility context/evaluated-field split drift")
+    require(len(config["corpus"]) == 16 and config["nonce_lifetime_seconds"] == 300,
+            "K11 corpus or nonce contract drift")
+    for path in (K11_ASSETS / "source").rglob("*"):
+        if not path.is_file():
+            continue
+        try:
+            text = path.read_text(errors="strict")
+        except UnicodeDecodeError:
+            continue
+        require(not FORBIDDEN_IN_WORLD.search(text),
+                f"Fourth-wall wording in K11 foundation asset: {path.relative_to(PACK)}")
+
+
+def check_k28_foundation_assets(scenario):
+    manifest = json.loads((K28_ASSETS / "artifact-manifest.json").read_text())
+    require(manifest["schema"] == "fieldkest.k28-artifacts/v1",
+            "Unknown K28 foundation archive manifest")
+    expected = {
+        "k-source-k28-state.tar": (
+            "keplerops-k28-foundation.k28-source-state", "k-delivery.k-source",
+            "/var/lib/gitea",
+        ),
+        "k-dev-k28-home.tar": (
+            "keplerops-k28-foundation.k28-workstation-state", "k-corporate.k-dev",
+            "/home/rowan",
+        ),
+    }
+    records = {item["archive"]: item for item in manifest["archives"]}
+    require(set(records) == set(expected), "K28 foundation archive inventory drift")
+    for archive_name, (content_ref, target, destination) in expected.items():
+        record = records[archive_name]
+        archive_path = K28_ASSETS / archive_name
+        payload = archive_path.read_bytes()
+        require(hashlib.sha256(payload).hexdigest() == record["sha256"]
+                and len(payload) == record["size"], f"K28 archive digest drift: {archive_name}")
+        content = scenario.content[content_ref]
+        requirement = content.source.artifact_requirement if content.source else None
+        require(enum(content.type) == "directory" and content.target == target
+                and content.destination == destination and requirement is not None
+                and enum(requirement.explicitness) == "exact"
+                and requirement.exact_artifact is not None
+                and requirement.exact_artifact.digest == "sha256:" + record["sha256"],
+                f"K28 archive is not exact native RAE content: {archive_name}")
+        declared = {item["path"]: item for item in record["files"]}
+        with tarfile.open(archive_path, "r") as archive:
+            members = {item.name: item for item in archive.getmembers() if item.isfile()}
+            require(set(members) == set(declared), f"K28 archive member inventory drift: {archive_name}")
+            for member_name, member in members.items():
+                member_payload = archive.extractfile(member).read()
+                item = declared[member_name]
+                require(hashlib.sha256(member_payload).hexdigest() == item["sha256"]
+                        and len(member_payload) == item["size"] and f"{member.mode:04o}" == item["mode"],
+                        f"K28 archive member drift: {archive_name}/{member_name}")
+    binary = (K28_ASSETS / "source/fieldlink-connector").read_bytes()
+    link_map = (K28_ASSETS / "source/fieldlink-connector-6.9.8.map").read_bytes()
+    require(manifest["binary"] == {
+        "version": "6.9.8", "architecture": "linux-x86_64-elf",
+        "build_id": "698d42c6a1776e9fc002b91ef68431ad775e0c28",
+        "sha256": hashlib.sha256(binary).hexdigest(),
+        "link_map_sha256": hashlib.sha256(link_map).hexdigest(),
+    }, "K28 binary identity drift")
+    require(b"FKDG" in binary and b"/tmp/" not in link_map and str(PACK).encode() not in link_map,
+            "K28 binary container or deterministic map drift")
+    config = json.loads((K28_ASSETS / "source/connector-archive-service.json").read_text())
+    require(config["route"] == "/internal/fieldlink/legacy-diagnostics/CRR-OG2"
+            and config["note_id"] == "ENG-FLK-LEGACY-42" and len(config["corpus"]) == 3,
+            "K28 runtime contract drift")
+    for path in (K28_ASSETS / "source").rglob("*"):
+        if not path.is_file():
+            continue
+        try:
+            text = path.read_text(errors="strict")
+        except UnicodeDecodeError:
+            continue
+        require(not FORBIDDEN_IN_WORLD.search(text),
+                f"Fourth-wall wording in K28 foundation asset: {path.relative_to(PACK)}")
+
+
+def check_k29_foundation_assets(scenario):
+    manifest = json.loads((K29_ASSETS / "artifact-manifest.json").read_text())
+    require(manifest["schema"] == "fieldkest.k29-artifacts/v1", "Unknown K29 foundation archive manifest")
+    expected = {
+        "k-source-k29-state.tar": ("keplerops-k29-foundation.k29-source-state", "k-delivery.k-source", "/var/lib/gitea"),
+        "k-registry-k29-state.tar": ("keplerops-k29-foundation.k29-registry-state", "k-delivery.k-registry", "/var/lib/fieldkest-registry"),
+        "k-ci-k29-state.tar": ("keplerops-k29-foundation.k29-ci-state", "k-delivery.k-ci", "/var/lib/fieldkest-ci"),
+        "k-dev-k29-home.tar": ("keplerops-k29-foundation.k29-workstation-state", "k-corporate.k-dev", "/home/rowan"),
+    }
+    records = {item["archive"]: item for item in manifest["archives"]}
+    require(set(records) == set(expected), "K29 foundation archive inventory drift")
+    for archive_name, (content_ref, target, destination) in expected.items():
+        payload = (K29_ASSETS / archive_name).read_bytes()
+        record = records[archive_name]
+        content = scenario.content[content_ref]
+        requirement = content.source.artifact_requirement if content.source else None
+        require(hashlib.sha256(payload).hexdigest() == record["sha256"] and len(payload) == record["size"], f"K29 archive digest drift: {archive_name}")
+        require(enum(content.type) == "directory" and content.target == target and content.destination == destination
+                and requirement is not None and enum(requirement.explicitness) == "exact"
+                and requirement.exact_artifact is not None and requirement.exact_artifact.digest == "sha256:" + record["sha256"],
+                f"K29 archive is not exact native RAE content: {archive_name}")
+    lineage = manifest["lineage"]
+    require(lineage["lineage"] == "fieldkest-release-2026" and lineage["old_key_id"] == "fk-release-2026-old"
+            and lineage["next_key_id"] == "fk-release-2026-next" and lineage["cutoff"] == "2026-09-30T12:00:00Z",
+            "K29 release lineage drift")
+    require(re.fullmatch(r"[0-9a-f]{40}", manifest["repository"]["current_commit"])
+            and re.fullmatch(r"[0-9a-f]{40}", manifest["repository"]["deleted_commit"]),
+            "K29 repository history identity drift")
+    for path in (K29_ASSETS / "source").rglob("*"):
+        if not path.is_file(): continue
+        try: text = path.read_text(errors="strict")
+        except UnicodeDecodeError: continue
+        require(not FORBIDDEN_IN_WORLD.search(text), f"Fourth-wall wording in K29 foundation asset: {path.relative_to(PACK)}")
+
+
 def hand_build_gaps(scenario) -> list[str]:
     """Return all gate failures so authors can fix a complete tranche at once."""
     checks = (
@@ -650,6 +832,9 @@ def hand_build_gaps(scenario) -> list[str]:
         ("opening assets", lambda current, rows: check_opening_assets(current)),
         ("registry assets", lambda current, rows: check_registry_assets(current)),
         ("K09 foundation assets", lambda current, rows: check_k09_foundation_assets(current)),
+        ("K11 foundation assets", lambda current, rows: check_k11_foundation_assets(current)),
+        ("K28 foundation assets", lambda current, rows: check_k28_foundation_assets(current)),
+        ("K29 foundation assets", lambda current, rows: check_k29_foundation_assets(current)),
         ("prose/assets", lambda current, rows: check_prose_and_assets(current)),
     )
     rows = matrix_rows()

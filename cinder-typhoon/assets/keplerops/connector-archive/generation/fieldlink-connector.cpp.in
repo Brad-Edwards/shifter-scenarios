@@ -1,0 +1,171 @@
+#include <openssl/evp.h>
+#include <openssl/hmac.h>
+#include <openssl/kdf.h>
+#include <openssl/sha.h>
+#include <algorithm>
+#include <cerrno>
+#include <climits>
+#include <cstdint>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+// GCC 15's static libstdc++ uses the C23 entry point even though this program
+// only needs the long-standing integer conversion semantics.  Keep that one
+// compatibility symbol local so the retained binary runs on the Bookworm
+// production baseline (glibc 2.36) as well as newer authoring hosts.
+extern "C" unsigned long __isoc23_strtoul(const char* text, char** end, int base) {
+    const unsigned char* cursor = reinterpret_cast<const unsigned char*>(text);
+    while (*cursor == ' ' || (*cursor >= '\t' && *cursor <= '\r')) ++cursor;
+    bool negative = false;
+    if (*cursor == '+' || *cursor == '-') { negative = *cursor == '-'; ++cursor; }
+    if ((base == 0 || base == 16) && cursor[0] == '0' && (cursor[1] == 'x' || cursor[1] == 'X')) { base = 16; cursor += 2; }
+    else if (base == 0) base = cursor[0] == '0' ? 8 : 10;
+    const unsigned char* first = cursor;
+    unsigned long value = 0;
+    bool overflow = false;
+    while (*cursor) {
+        unsigned digit = *cursor >= '0' && *cursor <= '9' ? *cursor - '0' :
+                         *cursor >= 'a' && *cursor <= 'z' ? *cursor - 'a' + 10 :
+                         *cursor >= 'A' && *cursor <= 'Z' ? *cursor - 'A' + 10 : 255;
+        if (digit >= static_cast<unsigned>(base)) break;
+        if (value > (ULONG_MAX - digit) / static_cast<unsigned>(base)) overflow = true;
+        else value = value * static_cast<unsigned>(base) + digit;
+        ++cursor;
+    }
+    if (end) *end = const_cast<char*>(reinterpret_cast<const char*>(cursor == first ? reinterpret_cast<const unsigned char*>(text) : cursor));
+    if (overflow) { errno = ERANGE; return ULONG_MAX; }
+    return negative ? 0UL - value : value;
+}
+
+static const unsigned char embedded_fkdiag[] = {@FKDIAG_BYTES@};
+static const unsigned char build_id[] = {@BUILD_ID_BYTES@};
+static const unsigned char config_key[] = {@CONFIG_KEY_BYTES@};
+
+static std::vector<unsigned char> read_file(const std::string& path) {
+    std::ifstream stream(path, std::ios::binary);
+    if (!stream) throw std::runtime_error("input unavailable");
+    return {std::istreambuf_iterator<char>(stream), std::istreambuf_iterator<char>()};
+}
+
+static std::string hex(const unsigned char* value, std::size_t size) {
+    std::ostringstream out;
+    for (std::size_t i = 0; i < size; ++i) out << std::hex << std::setw(2) << std::setfill('0') << int(value[i]);
+    return out.str();
+}
+
+static std::string sha256(const std::vector<unsigned char>& value) {
+    unsigned char digest[SHA256_DIGEST_LENGTH];
+    SHA256(value.data(), value.size(), digest);
+    return hex(digest, sizeof(digest));
+}
+
+static bool diagnostic_config(const std::string& path) {
+    auto raw = read_file(path);
+    std::string text(raw.begin(), raw.end());
+    auto split = text.find('\n');
+    if (split == std::string::npos) throw std::runtime_error("invalid configuration");
+    std::string setting = text.substr(0, split);
+    std::string signature = text.substr(split + 1);
+    if (!signature.empty() && signature.back() == '\n') signature.pop_back();
+    unsigned int length = 0;
+    unsigned char result[EVP_MAX_MD_SIZE];
+    HMAC(EVP_sha256(), config_key, sizeof(config_key),
+         reinterpret_cast<const unsigned char*>(setting.data()), setting.size(), result, &length);
+    if (signature != "signature=" + hex(result, length)) throw std::runtime_error("configuration signature rejected");
+    if (setting == "diagnostic-loader=true") return true;
+    if (setting == "diagnostic-loader=false") return false;
+    throw std::runtime_error("unsupported configuration");
+}
+
+static std::vector<unsigned char> hkdf_key() {
+    std::vector<unsigned char> key(32);
+    EVP_PKEY_CTX* context = EVP_PKEY_CTX_new_id(EVP_PKEY_HKDF, nullptr);
+    if (!context || EVP_PKEY_derive_init(context) <= 0 ||
+        EVP_PKEY_CTX_set_hkdf_md(context, EVP_sha256()) <= 0 ||
+        EVP_PKEY_CTX_set1_hkdf_salt(context, reinterpret_cast<const unsigned char*>("fieldkest-fkdiag-v1"), 20) <= 0 ||
+        EVP_PKEY_CTX_set1_hkdf_key(context, build_id, sizeof(build_id)) <= 0 ||
+        EVP_PKEY_CTX_add1_hkdf_info(context, reinterpret_cast<const unsigned char*>("fieldlink-connector/6.9.8"), 25) <= 0)
+        throw std::runtime_error("key derivation failed");
+    std::size_t length = key.size();
+    if (EVP_PKEY_derive(context, key.data(), &length) <= 0 || length != key.size()) throw std::runtime_error("key derivation failed");
+    EVP_PKEY_CTX_free(context);
+    return key;
+}
+
+static std::vector<unsigned char> decrypt_module() {
+    const auto* value = embedded_fkdiag;
+    const std::size_t size = sizeof(embedded_fkdiag);
+    if (size < 36 || std::string(reinterpret_cast<const char*>(value), 4) != "FKDG") throw std::runtime_error("invalid module");
+    std::uint32_t count = (std::uint32_t(value[16]) << 24) | (std::uint32_t(value[17]) << 16) | (std::uint32_t(value[18]) << 8) | value[19];
+    if (size != 20 + count + 16) throw std::runtime_error("invalid module length");
+    auto key = hkdf_key();
+    EVP_CIPHER_CTX* context = EVP_CIPHER_CTX_new();
+    std::vector<unsigned char> plain(count);
+    int written = 0, tail = 0;
+    std::string aad = hex(build_id, sizeof(build_id));
+    if (!context || EVP_DecryptInit_ex(context, EVP_aes_256_gcm(), nullptr, nullptr, nullptr) <= 0 ||
+        EVP_CIPHER_CTX_ctrl(context, EVP_CTRL_GCM_SET_IVLEN, 12, nullptr) <= 0 ||
+        EVP_DecryptInit_ex(context, nullptr, nullptr, key.data(), value + 4) <= 0 ||
+        EVP_DecryptUpdate(context, nullptr, &written, reinterpret_cast<const unsigned char*>(aad.data()), aad.size()) <= 0 ||
+        EVP_DecryptUpdate(context, plain.data(), &written, value + 20, count) <= 0 ||
+        EVP_CIPHER_CTX_ctrl(context, EVP_CTRL_GCM_SET_TAG, 16, const_cast<unsigned char*>(value + 20 + count)) <= 0 ||
+        EVP_DecryptFinal_ex(context, plain.data() + written, &tail) <= 0)
+        throw std::runtime_error("module authentication failed");
+    EVP_CIPHER_CTX_free(context);
+    plain.resize(written + tail);
+    return plain;
+}
+
+struct Result { std::vector<unsigned char> output; std::string route; std::string note; };
+
+static Result execute(const std::vector<unsigned char>& code, std::vector<unsigned char> buffer) {
+    std::size_t cursor = 0, instructions = 0;
+    std::vector<std::string> literals;
+    while (cursor < code.size() && ++instructions <= 64) {
+        unsigned char opcode = code[cursor++];
+        if (opcode == 0x01) {
+            if (cursor >= code.size()) throw std::runtime_error("truncated bytecode");
+            unsigned char operand = code[cursor++]; for (auto& byte : buffer) byte ^= operand;
+        } else if (opcode == 0x02) {
+            if (cursor >= code.size()) throw std::runtime_error("truncated bytecode");
+            unsigned shift = code[cursor++] & 7; for (auto& byte : buffer) byte = (byte << shift) | (byte >> ((8 - shift) & 7));
+        } else if (opcode == 0x03) {
+            std::reverse(buffer.begin(), buffer.end());
+        } else if (opcode == 0x04) {
+            if (cursor >= code.size()) throw std::runtime_error("truncated bytecode");
+            std::size_t length = code[cursor++];
+            if (cursor + length > code.size()) throw std::runtime_error("truncated bytecode");
+            literals.emplace_back(reinterpret_cast<const char*>(code.data() + cursor), length);
+            cursor += length;
+        } else if (opcode == 0xff) {
+            if (cursor != code.size() || literals.size() != 2) throw std::runtime_error("invalid return");
+            return {buffer, literals[0], literals[1]};
+        } else throw std::runtime_error("unknown opcode");
+        if (buffer.size() > 4096) throw std::runtime_error("output limit");
+    }
+    throw std::runtime_error("missing return");
+}
+
+int main(int argc, char** argv) {
+    try {
+        if (argc != 5 || std::string(argv[1]) != "--config" || std::string(argv[3]) != "--input") return 64;
+        auto input = read_file(argv[4]);
+        if (input.size() > 4096) throw std::runtime_error("input limit");
+        if (!diagnostic_config(argv[2])) {
+            std::cout << "{\"interface\":\"fieldkest.connector/v2\",\"mode\":\"ordinary\",\"input_sha256\":\"" << sha256(input) << "\"}\n";
+            return 0;
+        }
+        auto result = execute(decrypt_module(), input);
+        std::cout << "{\"interface\":\"fieldkest.connector/v2\",\"mode\":\"diagnostic\",\"route\":\"" << result.route
+                  << "\",\"note_id\":\"" << result.note << "\",\"output_sha256\":\"" << sha256(result.output) << "\"}\n";
+        return 0;
+    } catch (const std::exception& error) {
+        std::cerr << error.what() << "\n";
+        return 2;
+    }
+}

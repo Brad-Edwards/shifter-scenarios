@@ -273,10 +273,10 @@ action_contracts:
       - content.keplerops-k-support.k25-1-a-customer-with-a-history
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Reuses exact K-C-001 background; optional history. Participant-created service state persists
-        for the life of the participant world and ordinary retries do not erase it. The selected route cannot act
-        on unrelated tenants, records, packages, identities, jobs, or services. Infrastructure recovery and submission
-        adjudication are outside this in-world contract.
+      description: Reuses exact K-C-001 background; optional history Participant-created service state persists
+        for the life of the participant world and ordinary retries do not erase it. The action is limited to the
+        exact records, identities, routes, and destination effects declared here; unrelated tenants and services
+        remain denied. Infrastructure recovery and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-support
     effects:
@@ -327,10 +327,10 @@ action_contracts:
       - content.keplerops-k-support.k25-2-which-arwc-is-current
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Supplies G02. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Supplies G02 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-support
     effects:

@@ -50,6 +50,43 @@ process.stdin.on('end', () => {
   }
 });
 """
+WORKLOAD_WRAPPER = r"""
+import base64, json, os, sys
+request = json.loads(base64.urlsafe_b64decode(sys.argv[1] + '=' * (-len(sys.argv[1]) % 4)))
+profile = request['profile']
+identity = 'svc-support-export' if profile == 'support-export' else 'svc-fieldlink-maintenance'
+output = {
+  'runtime_identity': identity,
+  'assignment': request['assignment'],
+  'marker': request['marker'],
+  'container_process': os.getpid(),
+  'container_network': 'none',
+  'execution_backend': 'isolated-container',
+}
+sys.stdout.write(json.dumps(output, sort_keys=True, separators=(',', ':')) + '\n')
+"""
+COMPLETION_WRAPPER = r"""
+import hashlib, json, os
+from pathlib import Path
+request = json.loads(os.environ['FIELDKEST_COMPLETION_REQUEST'])
+if request != {'handover_id': 'HANDOVER-COMP-2841', 'script': 'read_assigned_handover'}:
+    raise SystemExit(64)
+path = Path('/handover/HANDOVER-COMP-2841.json')
+raw = path.read_bytes()
+handover = json.loads(raw)
+if handover.get('handover_id') != request['handover_id']:
+    raise SystemExit(65)
+result = {
+  'runtime_identity': 'svc-assistant-completion',
+  'handover': handover,
+  'handover_sha256': hashlib.sha256(raw).hexdigest(),
+  'container_process': os.getpid(),
+  'container_network': 'none',
+  'execution_backend': 'isolated-container',
+  'destination_read': True,
+}
+print(json.dumps(result, sort_keys=True, separators=(',', ':')))
+"""
 
 
 def encoded_environment(value: object) -> str:
@@ -150,6 +187,57 @@ class Handler(socketserver.StreamRequestHandler):
                     and all(isinstance(item, str) and item for item in request["argv"])
                     and isinstance(request["tokens"], dict)):
                 self.wfile.write(json.dumps(run_command(request), separators=(",", ":")).encode() + b"\n")
+                return
+            if (set(request) == {"kind", "run_id", "profile", "assignment", "marker"}
+                    and request["kind"] == "workload"
+                    and isinstance(request["run_id"], str)
+                    and request["profile"] in {"support-export", "maintenance"}
+                    and isinstance(request["assignment"], str)
+                    and isinstance(request["marker"], bool)):
+                payload = encoded_environment(request)
+                name = "fieldkest-workload-" + request["run_id"].lower().replace("_", "-")
+                command = [
+                    "docker", "run", "--rm", "--name", name, "--network", "none",
+                    "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,nodev,size=8m",
+                    "--memory", "128m", "--memory-swap", "128m", "--pids-limit", "32", "--cpus", "0.5",
+                    "--user", "65534:65534", "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true",
+                    "--entrypoint", "/usr/bin/python3", COMMAND_WORKER_IMAGE, "-I", "-c", WORKLOAD_WRAPPER, payload,
+                ]
+                result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=15)
+                lines = result.stdout.splitlines()
+                response = {"ok": False, "error": "workload_failed"}
+                if result.returncode == 0 and len(lines) == 1:
+                    response = {"ok": True, "result": json.loads(lines[0])}
+                self.wfile.write(json.dumps(response, separators=(",", ":")).encode() + b"\n")
+                return
+            if (set(request) == {"kind", "run_id", "handover_id", "script"}
+                    and request["kind"] == "completion"
+                    and isinstance(request["run_id"], str)
+                    and request["handover_id"] == "HANDOVER-COMP-2841"
+                    and request["script"] == "read_assigned_handover"):
+                name = "fieldkest-completion-" + request["run_id"].lower().replace("_", "-")
+                command = [
+                    "docker", "run", "--rm", "--name", name, "--network", "none",
+                    "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,nodev,size=8m",
+                    "--mount", "type=volume,src=cinder-keplerops-assistant-handover,dst=/handover,readonly",
+                    "--memory", "128m", "--memory-swap", "128m", "--pids-limit", "32", "--cpus", "0.5",
+                    "--user", "2100:2100", "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true",
+                    "--env", "FIELDKEST_COMPLETION_REQUEST=" + json.dumps({
+                        "handover_id": request["handover_id"], "script": request["script"]
+                    }, separators=(",", ":")),
+                    "--entrypoint", "/usr/bin/python3", COMMAND_WORKER_IMAGE, "-I", "-c", COMPLETION_WRAPPER,
+                ]
+                try:
+                    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=15)
+                except subprocess.TimeoutExpired:
+                    subprocess.run(["docker", "rm", "--force", name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
+                    self.wfile.write(b'{"ok":false,"error":"completion_timeout"}\n')
+                    return
+                lines = result.stdout.splitlines()
+                response = {"ok": False, "error": "completion_failed"}
+                if result.returncode == 0 and len(lines) == 1:
+                    response = {"ok": True, "result": json.loads(lines[0])}
+                self.wfile.write(json.dumps(response, separators=(",", ":")).encode() + b"\n")
                 return
             if set(request) == {"source", "fixture"} and isinstance(request["source"], str) and isinstance(request["fixture"], dict):
                 kind = "report"

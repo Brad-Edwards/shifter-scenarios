@@ -61,6 +61,14 @@ imports:
 - source: local:modules/content/keplerops-k09-foundation.yaml
   namespace: keplerops-k09-foundation
   version: 0.1.0
+- source: local:modules/content/keplerops-k11-foundation.yaml
+  namespace: keplerops-k11-foundation
+  version: 0.1.0
+- source: local:modules/content/keplerops-k28-foundation.yaml
+  namespace: keplerops-k28-foundation
+- source: local:modules/content/keplerops-k29-foundation.yaml
+  namespace: keplerops-k29-foundation
+  version: 0.1.0
 # BEGIN GENERATED KEPLEROPS CONTENT
 - source: local:modules/content/keplerops-a-connector.yaml
   namespace: keplerops-a-connector

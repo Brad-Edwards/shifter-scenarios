@@ -1,0 +1,83 @@
+name: cinder-keplerops-k29-foundation-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-k29-foundation-content
+  version: 0.1.0
+  exports:
+    content: [k29-source-state, k29-registry-state, k29-ci-state, k29-workstation-state]
+realization:
+  default: open
+content:
+  k29-source-state:
+    type: directory
+    target: k-delivery.k-source
+    destination: /var/lib/gitea
+    description: Exact retained signer-history repository and accepted release-lineage record.
+    source:
+      name: cinder-typhoon/keplerops/release-lineage/source-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: k29-source-state
+        explicitness: exact
+        exact_artifact: {artifact_id: cinder-typhoon/keplerops/release-lineage/source-state, version: '2026-09-18', digest: 'sha256:d7eeaad580feba4bb83d334b07632c2fbed2c6c2777d11d896ffe8aed0efc0ea', media_type: application/x-tar}
+        permitted_routes:
+        - mechanism: {mechanism: exact-artifact, profile: raes/exact-artifact-local-lookup, version: '1', digest: 'sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a'}
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, source, release-lineage, k29, exact-artifact]
+  k29-registry-state:
+    type: directory
+    target: k-delivery.k-registry
+    destination: /var/lib/fieldkest-registry
+    description: Exact accepted and next release verification keys and rollover cutoff.
+    source:
+      name: cinder-typhoon/keplerops/release-lineage/registry-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: k29-registry-state
+        explicitness: exact
+        exact_artifact: {artifact_id: cinder-typhoon/keplerops/release-lineage/registry-state, version: '2026-09-18', digest: 'sha256:c21bfae71800c51998e34de7c13311fd9f9cfd292dfd51e14a806ca37aeac62b', media_type: application/x-tar}
+        permitted_routes:
+        - mechanism: {mechanism: exact-artifact, profile: raes/exact-artifact-local-lookup, version: '1', digest: 'sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a'}
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, registry, release-lineage, k29, exact-artifact]
+  k29-ci-state:
+    type: directory
+    target: k-delivery.k-ci
+    destination: /var/lib/fieldkest-ci
+    description: Exact protected release dossier and lineage-rollover rehearsal configuration.
+    source:
+      name: cinder-typhoon/keplerops/release-lineage/ci-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: k29-ci-state
+        explicitness: exact
+        exact_artifact: {artifact_id: cinder-typhoon/keplerops/release-lineage/ci-state, version: '2026-09-18', digest: 'sha256:768a06cfadfa4434927ca30538f67098e6e76b7a75a32589bc0ebe7f4b7d2819', media_type: application/x-tar}
+        permitted_routes:
+        - mechanism: {mechanism: exact-artifact, profile: raes/exact-artifact-local-lookup, version: '1', digest: 'sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a'}
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, ci, release-lineage, k29, exact-artifact]
+  k29-workstation-state:
+    type: directory
+    target: k-corporate.k-dev
+    destination: /home/rowan
+    description: Exact in-world release-lineage handoff.
+    source:
+      name: cinder-typhoon/keplerops/release-lineage/workstation-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: k29-workstation-state
+        explicitness: exact
+        exact_artifact: {artifact_id: cinder-typhoon/keplerops/release-lineage/workstation-state, version: '2026-09-18', digest: 'sha256:3cb4160cf16699e04aaf818a32c7952f662045b3e30ae6313314192425238039', media_type: application/x-tar}
+        permitted_routes:
+        - mechanism: {mechanism: exact-artifact, profile: raes/exact-artifact-local-lookup, version: '1', digest: 'sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a'}
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, workstation, release-lineage, k29, exact-artifact]
