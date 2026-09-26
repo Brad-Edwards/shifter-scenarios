@@ -1,0 +1,7 @@
+2026-09-18T15:17:04Z checkout fieldkest/fieldlink-connector@main
+2026-09-18T15:17:10Z run tests/test_crr_og2_report.py
+2026-09-18T15:17:11Z fixture reference: fixtures/report-crr-og2.json
+2026-09-18T15:17:11Z fixture provenance: fk-test-6d1e9f7
+2026-09-18T15:17:11Z ERROR fixture not present at current revision
+2026-09-18T15:17:19Z result failed
+

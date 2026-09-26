@@ -1,0 +1,227 @@
+#include <algorithm>
+#include <array>
+#include <cstdint>
+#include <fstream>
+#include <iostream>
+#include <set>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+namespace {
+
+enum Opcode : std::uint8_t {
+    PUSH_FIELD = 0x00,
+    PUSH_CONST = 0x01,
+    EQ = 0x02,
+    SEMVER_GTE = 0x03,
+    IN_SET = 0x04,
+    AND = 0x05,
+    OR = 0x06,
+    RETURN = 0x07,
+};
+
+#pragma pack(push, 1)
+struct Instruction {
+    std::uint8_t opcode;
+    std::uint8_t flags;
+    std::uint16_t operand;
+};
+
+struct PolicyTable {
+    char magic[4];
+    std::uint32_t program_offset;
+    std::uint16_t instruction_count;
+    std::uint16_t instruction_width;
+    Instruction program[14];
+};
+#pragma pack(pop)
+
+__attribute__((section(".fkpolicy"), used))
+const PolicyTable kPolicyProgram = {
+    {'F', 'K', 'P', 'C'},
+    12,
+    14,
+    4,
+    {
+        {PUSH_FIELD, 0, 0},
+        {IN_SET, 0, 0},
+        {PUSH_FIELD, 0, 1},
+        {PUSH_CONST, 0, 0},
+        {SEMVER_GTE, 0, 0},
+        {AND, 0, 0},
+        {PUSH_FIELD, 0, 2},
+        {IN_SET, 0, 1},
+        {AND, 0, 0},
+        {PUSH_FIELD, 0, 3},
+        {PUSH_CONST, 0, 1},
+        {EQ, 0, 0},
+        {AND, 0, 0},
+        {RETURN, 0, 0},
+    },
+};
+
+const std::array<const char*, 6> kInputFields = {
+    "tenant_state",
+    "connector_api",
+    "signer_lineage",
+    "compatibility_exception",
+    "channel",
+    "tenant_class",
+};
+
+struct Value {
+    bool is_boolean;
+    bool boolean;
+    std::string text;
+};
+
+std::vector<int> parse_semver(const std::string& raw) {
+    std::vector<int> result;
+    std::istringstream stream(raw);
+    std::string component;
+    while (std::getline(stream, component, '.')) {
+        if (component.empty() || !std::all_of(component.begin(), component.end(), ::isdigit)) {
+            throw std::runtime_error("invalid semantic version");
+        }
+        result.push_back(std::stoi(component));
+    }
+    if (result.empty() || result.size() > 3) {
+        throw std::runtime_error("invalid semantic version");
+    }
+    while (result.size() < 3) result.push_back(0);
+    return result;
+}
+
+bool semver_gte(const std::string& actual, const std::string& required) {
+    return parse_semver(actual) >= parse_semver(required);
+}
+
+std::array<std::string, 6> read_input(const std::string& path) {
+    std::ifstream input(path);
+    if (!input) throw std::runtime_error("unable to read input");
+    std::array<std::string, 6> values;
+    std::set<std::string> seen;
+    std::string line;
+    while (std::getline(input, line)) {
+        if (line.empty() || line[0] == '#') continue;
+        const auto separator = line.find('=');
+        if (separator == std::string::npos) throw std::runtime_error("invalid input line");
+        const std::string key = line.substr(0, separator);
+        const std::string value = line.substr(separator + 1);
+        const auto field = std::find(kInputFields.begin(), kInputFields.end(), key);
+        if (field == kInputFields.end() || value.empty() || !seen.insert(key).second) {
+            throw std::runtime_error("invalid input field");
+        }
+        values[static_cast<std::size_t>(field - kInputFields.begin())] = value;
+    }
+    if (seen.size() != kInputFields.size()) throw std::runtime_error("missing input field");
+    if (values[3] != "true" && values[3] != "false") {
+        throw std::runtime_error("invalid compatibility_exception");
+    }
+    return values;
+}
+
+bool pop_boolean(std::vector<Value>& stack) {
+    if (stack.empty() || !stack.back().is_boolean) throw std::runtime_error("boolean stack value required");
+    const bool result = stack.back().boolean;
+    stack.pop_back();
+    return result;
+}
+
+std::string pop_text(std::vector<Value>& stack) {
+    if (stack.empty() || stack.back().is_boolean) throw std::runtime_error("text stack value required");
+    std::string result = stack.back().text;
+    stack.pop_back();
+    return result;
+}
+
+bool execute(const std::array<std::string, 6>& input, std::set<std::uint16_t>& evaluated) {
+    const std::array<std::string, 2> constants = {"3.0.0", "true"};
+    std::vector<Value> stack;
+    for (std::size_t index = 0; index < kPolicyProgram.instruction_count; ++index) {
+        const Instruction instruction = kPolicyProgram.program[index];
+        if (instruction.flags != 0) throw std::runtime_error("instruction flags must be zero");
+        switch (instruction.opcode) {
+            case PUSH_FIELD:
+                if (instruction.operand >= 4) throw std::runtime_error("field index out of range");
+                evaluated.insert(instruction.operand);
+                stack.push_back({false, false, input[instruction.operand]});
+                break;
+            case PUSH_CONST:
+                if (instruction.operand >= constants.size()) throw std::runtime_error("constant index out of range");
+                stack.push_back({false, false, constants[instruction.operand]});
+                break;
+            case EQ: {
+                const std::string right = pop_text(stack);
+                const std::string left = pop_text(stack);
+                stack.push_back({true, left == right, ""});
+                break;
+            }
+            case SEMVER_GTE: {
+                const std::string required = pop_text(stack);
+                const std::string actual = pop_text(stack);
+                stack.push_back({true, semver_gte(actual, required), ""});
+                break;
+            }
+            case IN_SET: {
+                const std::string value = pop_text(stack);
+                if (instruction.operand == 0) stack.push_back({true, value == "active", ""});
+                else if (instruction.operand == 1) stack.push_back({true, value == "fieldkest-release-2026", ""});
+                else throw std::runtime_error("set index out of range");
+                break;
+            }
+            case AND: {
+                const bool right = pop_boolean(stack);
+                const bool left = pop_boolean(stack);
+                stack.push_back({true, left && right, ""});
+                break;
+            }
+            case OR: {
+                const bool right = pop_boolean(stack);
+                const bool left = pop_boolean(stack);
+                stack.push_back({true, left || right, ""});
+                break;
+            }
+            case RETURN: {
+                if (index + 1 != kPolicyProgram.instruction_count || stack.size() != 1) {
+                    throw std::runtime_error("invalid return state");
+                }
+                return pop_boolean(stack);
+            }
+            default:
+                throw std::runtime_error("unknown opcode");
+        }
+        if (stack.size() > 32) throw std::runtime_error("stack limit exceeded");
+    }
+    throw std::runtime_error("program has no return");
+}
+
+}  // namespace
+
+int main(int argc, char** argv) {
+    if (argc != 2) {
+        std::cerr << "usage: fieldkest-policyc INPUT.env\n";
+        return 64;
+    }
+    try {
+        const auto input = read_input(argv[1]);
+        std::set<std::uint16_t> evaluated;
+        const bool accepted = execute(input, evaluated);
+        std::cout << "{\"schema\":\"fieldkest.policy-result/v1\",\"accepted\":"
+                  << (accepted ? "true" : "false")
+                  << ",\"condition_set_sha256\":\"@CONDITION_DIGEST@\",\"evaluated_fields\":[";
+        bool first = true;
+        for (const auto field : evaluated) {
+            if (!first) std::cout << ',';
+            first = false;
+            std::cout << '\"' << kInputFields[field] << '\"';
+        }
+        std::cout << "]}\n";
+        return accepted ? 0 : 2;
+    } catch (const std::exception& error) {
+        std::cerr << "fieldkest-policyc: " << error.what() << '\n';
+        return 65;
+    }
+}

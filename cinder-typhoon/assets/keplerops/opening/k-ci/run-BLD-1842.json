@@ -1,0 +1,13 @@
+{
+  "schema": "fieldkest.ci-run/v1",
+  "run_id": "BLD-1842",
+  "repository": "fieldkest/fieldlink-connector",
+  "revision": "main",
+  "test": "tests/test_crr_og2_report.py",
+  "expected_fixture": "fixtures/report-crr-og2.json",
+  "fixture_revision": "fk-test-6d1e9f7",
+  "state": "failed",
+  "started_at": "2026-09-18T15:17:04Z",
+  "finished_at": "2026-09-18T15:17:19Z"
+}
+

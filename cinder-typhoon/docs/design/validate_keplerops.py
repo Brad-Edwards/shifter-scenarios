@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import re
 import sys
+import tarfile
 
 import yaml
 
@@ -36,6 +37,9 @@ ENTRY = PACK / "sdl/cinder-typhoon.sdl.yaml"
 OPERATIONS = PACK / "sdl/modules/operations"
 KEPLER_CONTENT = PACK / "sdl/modules/content"
 ASSETS = PACK / "assets/keplerops"
+OPENING_ASSETS = ASSETS / "opening"
+REGISTRY_ASSETS = ASSETS / "registry"
+K09_ASSETS = ASSETS / "build-operations"
 EXPECTED_PORTFOLIO_SHA256 = "d5e4456ab827252525459680b0ee0e238252de502f91298eeed503ad08be710f"
 EXPECTED_TIERS = Counter({"Medium": 45, "Easy": 25, "Hard": 21, "Expert": 9, "Elite": 4})
 EXPECTED_IPS = {
@@ -85,9 +89,20 @@ FORBIDDEN_IN_WORLD = re.compile(
 FORBIDDEN_PRIVATE_KEYS = {"cinder_kind", "flow_kind", "context_kind", "modes", "guard"}
 COMPLEX_PROFILE_TERMS = {
     "K04.1": ("C++17", "u16le", "u32le", "32", "48", "guard pages"),
+    "K05.1": ("@keplerops/fieldlink-connector", "7.4.2", "fieldkest.connector/v3", "arwc-connector-consumer@19f43d2"),
+    "K05.2": ("REL-FLK-6.9.8-ARCHIVE", "REL-FLK-7.4.2-09", "yanked"),
+    "K05.3": ("REL-FLK-7.4.2-09", "TEN-ARWC-047", "7.4.1", "7.4.2"),
+    "K05.4": ("7.4.1", "7.4.2", "short-lived"),
+    "K06.1": ("fieldlink-importer-publisher", "arwc-stable", "unavailable"),
+    "K06.2": ("@keplerops/support-rehearsal", "6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7", "shared namespace"),
+    "K06.3": ("Node", "networkless", "fieldkest.connector/v3"),
     "K07.2": ("FKI1", "e2 84 aa", "NFKC", "k42", "PAS-884"),
     "K08.2": ("AES-256-GCM", "HKDF-SHA256", "ikm_hex", "nonce_hex", "aad"),
     "K08.3": ("expiry_policy", "V1", "V2"),
+    "K09.1": ("BLD-1842", "c37effd7cc86ae4d44f18e95f899b7557d65e0a9", "BLD-REL-742", "BLD-REC-021"),
+    "K09.2": ("ART-BLD-1842-INTEGRATION-REVIEW", "integration-review-input-v3.json", "b631b38ea24ef0e847b9fb9419d32fe83c67d96a8290c62453db9dfe76fd72d4"),
+    "K09.3": ("build-results/BLD-1842", "buildops://reviews/diagnostic-request-reference@3", "WS-ROWAN-2026-09-G1", "SIR-*"),
+    "K09.4": ("runner-command", "svc-fieldlink-ci", "10.77.53.0/24", "180-second", "HMAC-SHA256", "/workspace"),
     "K10.2": ("SUP-K-2841", "sup-k-2841", "NFKC", "casefold"),
     "K11.2": ("0x00", "0x07", "SEMVER_GTE", "RETURN", "depth above 32"),
     "K11.3": ("tenant_state", "connector_api", "signer_lineage", "compatibility_exception"),
@@ -391,10 +406,237 @@ def check_prose_and_assets(scenario):
     for path in scoped:
         if not path.is_file():
             continue
-        text = path.read_text(errors="strict")
+        try:
+            text = path.read_text(errors="strict")
+        except UnicodeDecodeError:
+            continue
         require(not re.search(r"\breset(?:s|ting)?\b", text, re.I),
                 f"In-world reset contract remains in KeplerOps scope: {path.relative_to(PACK)}")
     check_k09_assets(scenario)
+
+
+def check_opening_assets(scenario):
+    manifest = json.loads((OPENING_ASSETS / "archive-manifest.json").read_text())
+    require(manifest["schema"] == "fieldkest.opening-archives/v1",
+            "Unknown KeplerOps opening archive manifest")
+    expected = {
+        "k-dev-home.tar": (
+            "keplerops-opening-k-dev.opening-k-dev-home",
+            "k-corporate.k-dev",
+            "/home/rowan",
+        ),
+        "k-dev-workbench.tar": (
+            "keplerops-opening-k-dev.opening-k-dev-workbench",
+            "k-corporate.k-dev",
+            "/opt/fieldkest-workbench",
+        ),
+        "k-source-state.tar": (
+            "keplerops-opening-k-source.opening-k-source-state",
+            "k-delivery.k-source",
+            "/var/lib/gitea",
+        ),
+        "k-ci-state.tar": (
+            "keplerops-opening-k-ci.opening-k-ci-state",
+            "k-delivery.k-ci",
+            "/var/lib/fieldkest-ci",
+        ),
+        "k-support-state.tar": (
+            "keplerops-opening-k-support.opening-k-support-state",
+            "k-delivery.k-support",
+            "/var/lib/fieldkest-support",
+        ),
+    }
+    records = {item["archive"]: item for item in manifest["archives"]}
+    require(set(records) == set(expected), "KeplerOps opening archive inventory drift")
+    for archive_name, (content_ref, target, destination) in expected.items():
+        archive_path = OPENING_ASSETS / archive_name
+        record = records[archive_name]
+        archive_bytes = archive_path.read_bytes()
+        require(hashlib.sha256(archive_bytes).hexdigest() == record["sha256"]
+                and len(archive_bytes) == record["size"],
+                f"Opening archive digest drift: {archive_name}")
+        content = scenario.content[content_ref]
+        requirement = content.source.artifact_requirement if content.source else None
+        require(enum(content.type) == "directory" and content.target == target
+                and content.destination == destination and requirement is not None
+                and enum(requirement.explicitness) == "exact"
+                and requirement.exact_artifact is not None
+                and requirement.exact_artifact.digest == "sha256:" + record["sha256"],
+                f"Opening archive is not exact native RAE content: {archive_name}")
+        declared_files = {item["path"]: item for item in record["files"]}
+        with tarfile.open(archive_path, "r") as archive:
+            members = {item.name: item for item in archive.getmembers() if item.isfile()}
+            require(set(members) == set(declared_files),
+                    f"Opening archive member inventory drift: {archive_name}")
+            for member_name, member in members.items():
+                payload = archive.extractfile(member).read()
+                declaration = declared_files[member_name]
+                require(hashlib.sha256(payload).hexdigest() == declaration["sha256"]
+                        and len(payload) == declaration["size"]
+                        and f"{member.mode:04o}" == declaration["mode"],
+                        f"Opening archive member drift: {archive_name}/{member_name}")
+
+    generated = json.loads(
+        (OPENING_ASSETS / "k-dev/generated-artifacts.json").read_text()
+    )
+    require(generated["schema"] == "fieldkest.generated-artifacts/v1",
+            "Unknown generated opening-artifact manifest")
+    for artifact in generated["artifacts"]:
+        path = OPENING_ASSETS / "k-dev" / artifact["name"]
+        payload = path.read_bytes()
+        require(hashlib.sha256(payload).hexdigest() == artifact["sha256"]
+                and len(payload) == artifact["size"],
+                f"Generated opening artifact drift: {artifact['name']}")
+
+    participant_sources = []
+    for owner in ("k-dev", "k-source", "k-ci", "k-support"):
+        participant_sources.extend((OPENING_ASSETS / owner).glob("*"))
+    for path in participant_sources:
+        if not path.is_file() or path.name in {
+            "generated-artifacts.json", "repository-artifact.json", "repository-seed.json",
+            "source-service.json", "ci-service.json", "support-service.json",
+            "workbench-service.json",
+        }:
+            continue
+        try:
+            text = path.read_text(errors="strict")
+        except UnicodeDecodeError:
+            continue
+        require(not FORBIDDEN_IN_WORLD.search(text),
+                f"Fourth-wall wording in KeplerOps opening asset: {path.relative_to(PACK)}")
+
+
+def check_registry_assets(scenario):
+    manifest = json.loads((REGISTRY_ASSETS / "artifact-manifest.json").read_text())
+    require(manifest["schema"] == "fieldkest.registry-foundation-artifacts/v1",
+            "Unknown KeplerOps registry archive manifest")
+    expected = {
+        "k-registry-state.tar": (
+            "keplerops-registry-foundation.registry-foundation-state",
+            "k-delivery.k-registry",
+            "/var/lib/fieldkest-registry",
+        ),
+        "k-dev-registry.tar": (
+            "keplerops-registry-foundation.registry-foundation-workstation",
+            "k-corporate.k-dev",
+            "/home/rowan",
+        ),
+    }
+    records = {item["archive"]: item for item in manifest["archives"]}
+    require(set(records) == set(expected), "KeplerOps registry archive inventory drift")
+    for archive_name, (content_ref, target, destination) in expected.items():
+        archive_path = REGISTRY_ASSETS / archive_name
+        record = records[archive_name]
+        archive_bytes = archive_path.read_bytes()
+        require(hashlib.sha256(archive_bytes).hexdigest() == record["sha256"]
+                and len(archive_bytes) == record["size"],
+                f"Registry archive digest drift: {archive_name}")
+        content = scenario.content[content_ref]
+        requirement = content.source.artifact_requirement if content.source else None
+        require(enum(content.type) == "directory" and content.target == target
+                and content.destination == destination and requirement is not None
+                and enum(requirement.explicitness) == "exact"
+                and requirement.exact_artifact is not None
+                and requirement.exact_artifact.digest == "sha256:" + record["sha256"],
+                f"Registry archive is not exact native RAE content: {archive_name}")
+        declared_files = {item["path"]: item for item in record["files"]}
+        with tarfile.open(archive_path, "r") as archive:
+            members = {item.name: item for item in archive.getmembers() if item.isfile()}
+            require(set(members) == set(declared_files),
+                    f"Registry archive member inventory drift: {archive_name}")
+            for member_name, member in members.items():
+                payload = archive.extractfile(member).read()
+                declaration = declared_files[member_name]
+                require(hashlib.sha256(payload).hexdigest() == declaration["sha256"]
+                        and len(payload) == declaration["size"]
+                        and f"{member.mode:04o}" == declaration["mode"],
+                        f"Registry archive member drift: {archive_name}/{member_name}")
+
+    state_files = records["k-registry-state.tar"]["files"]
+    state_by_path = {item["path"]: item for item in state_files}
+    package = state_by_path["packages/support-rehearsal-1.3.1.tgz"]
+    entitlement = state_by_path["records/entitlements/ENT-ARWC-DIAG-0698.json"]
+    inspector = state_by_path["examples/inspection-compat.fki"]
+    require(manifest["support_package"] == {
+        "sha256": package["sha256"], "size": package["size"]
+    } and package["sha256"] ==
+            "6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7",
+            "Protected support package identity drift")
+    require(manifest["entitlement"]["record_sha256"] == entitlement["sha256"],
+            "Entitlement record identity drift")
+    require(inspector["sha256"] ==
+            "47430e0cf68733cda0bcb7515e5fefa4f263801761e8b4c1f899e8306ceec098"
+            and inspector["size"] == 13,
+            "Compatibility inspector fixture drift")
+
+    participant_sources = (REGISTRY_ASSETS / "source/k-dev").rglob("*")
+    for path in participant_sources:
+        if not path.is_file():
+            continue
+        try:
+            text = path.read_text(errors="strict")
+        except UnicodeDecodeError:
+            continue
+        require(not FORBIDDEN_IN_WORLD.search(text),
+                f"Fourth-wall wording in KeplerOps registry asset: {path.relative_to(PACK)}")
+
+
+def check_k09_foundation_assets(scenario):
+    manifest = json.loads((K09_ASSETS / "artifact-manifest.json").read_text())
+    require(manifest["schema"] == "fieldkest.k09-foundation-artifacts/v1",
+            "Unknown K09 foundation archive manifest")
+    expected = {
+        "k-ci-k09-state.tar": (
+            "keplerops-k09-foundation.k09-ci-state", "k-delivery.k-ci", "/var/lib/fieldkest-ci"
+        ),
+        "k-cloud-api-k09-state.tar": (
+            "keplerops-k09-foundation.k09-cloud-api-state", "k-cloud.k-cloud-api",
+            "/var/lib/fieldkest-cloud-api",
+        ),
+    }
+    records = {item["archive"]: item for item in manifest["archives"]}
+    require(set(records) == set(expected), "K09 foundation archive inventory drift")
+    for archive_name, (content_ref, target, destination) in expected.items():
+        record = records[archive_name]
+        archive_path = K09_ASSETS / archive_name
+        archive_bytes = archive_path.read_bytes()
+        require(hashlib.sha256(archive_bytes).hexdigest() == record["sha256"]
+                and len(archive_bytes) == record["size"],
+                f"K09 archive digest drift: {archive_name}")
+        content = scenario.content[content_ref]
+        requirement = content.source.artifact_requirement if content.source else None
+        require(enum(content.type) == "directory" and content.target == target
+                and content.destination == destination and requirement is not None
+                and enum(requirement.explicitness) == "exact"
+                and requirement.exact_artifact is not None
+                and requirement.exact_artifact.digest == "sha256:" + record["sha256"],
+                f"K09 archive is not exact native RAE content: {archive_name}")
+        declared_files = {item["path"]: item for item in record["files"]}
+        with tarfile.open(archive_path, "r") as archive:
+            members = {item.name: item for item in archive.getmembers() if item.isfile()}
+            require(set(members) == set(declared_files),
+                    f"K09 archive member inventory drift: {archive_name}")
+            for member_name, member in members.items():
+                payload = archive.extractfile(member).read()
+                declaration = declared_files[member_name]
+                require(hashlib.sha256(payload).hexdigest() == declaration["sha256"]
+                        and len(payload) == declaration["size"]
+                        and f"{member.mode:04o}" == declaration["mode"],
+                        f"K09 archive member drift: {archive_name}/{member_name}")
+
+    ci_files = {item["path"]: item for item in records["k-ci-k09-state.tar"]["files"]}
+    require(ci_files["artifacts/BLD-1842/integration-review-input-v3.json"]["sha256"] ==
+            "b631b38ea24ef0e847b9fb9419d32fe83c67d96a8290c62453db9dfe76fd72d4",
+            "K09 omitted-artifact digest drift")
+    for path in (K09_ASSETS / "source").rglob("*"):
+        if not path.is_file():
+            continue
+        try:
+            text = path.read_text(errors="strict")
+        except UnicodeDecodeError:
+            continue
+        require(not FORBIDDEN_IN_WORLD.search(text),
+                f"Fourth-wall wording in K09 foundation asset: {path.relative_to(PACK)}")
 
 
 def hand_build_gaps(scenario) -> list[str]:
@@ -405,6 +647,9 @@ def hand_build_gaps(scenario) -> list[str]:
         ("actions/evidence", check_actions_and_evidence),
         ("world substrate", lambda current, rows: check_world(current)),
         ("native semantics", lambda current, rows: check_native_semantics(current)),
+        ("opening assets", lambda current, rows: check_opening_assets(current)),
+        ("registry assets", lambda current, rows: check_registry_assets(current)),
+        ("K09 foundation assets", lambda current, rows: check_k09_foundation_assets(current)),
         ("prose/assets", lambda current, rows: check_prose_and_assets(current)),
     )
     rows = matrix_rows()

@@ -1,0 +1,19 @@
+{
+  "developer": {
+    "principal": "rowan.ito"
+  },
+  "execution_timeout_seconds": 20,
+  "integration_artifact": "ART-BLD-1842-INTEGRATION-REVIEW",
+  "integration_reference": "buildops://reviews/diagnostic-request-reference@3",
+  "lease_seconds": 180,
+  "ordinary_artifact": "ART-BLD-1842-ORDINARY-SUPPORT",
+  "runner_note": "/srv/fieldlink-ci/runner/runner-operations.md",
+  "schema": "fieldkest.review-job-config/v1",
+  "worker_origin": "10.77.53.0/24",
+  "worker_principal": "svc-fieldlink-ci",
+  "workspace": {
+    "generation": "WS-ROWAN-2026-09-G1",
+    "owner": "rowan.ito"
+  },
+  "workspace_volume": "cinder-keplerops-ci-rowan-workspace"
+}

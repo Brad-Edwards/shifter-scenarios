@@ -1,0 +1,14 @@
+{
+  "bundle": "fieldlink-connector.bundle",
+  "bundle_sha256": "15bc3bcd047ab85d559bf586473d98dcf1d34b5ad3d238b9e6abb3ae1b54a0d0",
+  "commits": {
+    "remove-stale-fixture": "c37effd7cc86ae4d44f18e95f899b7557d65e0a9",
+    "report-fixture-baseline": "80560bcf8381c36ef82be771e58fc164a349ea07"
+  },
+  "refs": {
+    "refs/heads/main": "c37effd7cc86ae4d44f18e95f899b7557d65e0a9",
+    "refs/tags/fk-test-6d1e9f7": "80560bcf8381c36ef82be771e58fc164a349ea07"
+  },
+  "repository": "fieldkest/fieldlink-connector",
+  "schema": "fieldkest.repository-artifact/v1"
+}

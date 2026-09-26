@@ -1,0 +1,46 @@
+{
+  "schema": "fieldkest.local-workbench/v1",
+  "audit_directory": "/var/lib/fieldkest-workbench/audit",
+  "inspection_summary": {
+    "route": "/api/inspection-summary",
+    "accepted_schema": "fieldkest.sample/v1",
+    "sample_id": "FK-SAMPLE-017",
+    "asset_id": "CRR-OG2",
+    "connector_revision": "FLK-7.4.2",
+    "sample_sha256": "b3cbf260a332f5a8d9b0cdde64e4d22d698a5ae28c11384149126ba694edd1e6",
+    "immutable_fields": [
+      "sample_id",
+      "asset_id",
+      "connector_revision",
+      "captured_at",
+      "observations"
+    ]
+  },
+  "reconstruction": {
+    "route": "/api/reconstruction",
+    "accepted_schema": "fieldkest.reconstruction/v1",
+    "collection_id": "FKCOL-2841",
+    "script_sha256": "3c00e634751ab73c2d2573486245dc15125ebaaf82572da8a44201e159fcfaee",
+    "instructions_sha256": "73fcb0d5af86b73b78155cac36cd6e80afea42ae6f17693164d681125741e3b3",
+    "endpoint_id": "CB-17",
+    "callback_integrity": "e52f22b6b2b9fa277fa94c2f3207171d7aaa9a4e94120f195625aafb8701aed1",
+    "execute": false
+  },
+  "callback_collection": {
+    "route": "/api/callback/collection",
+    "endpoint_id": "CB-17",
+    "collection_id": "FKCOL-2841",
+    "integrity": "e52f22b6b2b9fa277fa94c2f3207171d7aaa9a4e94120f195625aafb8701aed1",
+    "record": {
+      "schema": "fieldkest.callback-collection/v1",
+      "collection_id": "FKCOL-2841",
+      "captured_at": "2026-08-27T02:18:44Z",
+      "source_endpoint": "ARWC-FIELDLINK-07",
+      "ticket_reference": "SUP-2841",
+      "finding": "The callback client waits for the first DNS retry before posting its maintenance receipt; the delayed request retains the original asset binding.",
+      "asset_id": "CRR-OG2",
+      "connector_revision": "FLK-7.4.2"
+    }
+  }
+}
+

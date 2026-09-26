@@ -1,0 +1,47 @@
+{
+  "schema": "fieldkest.repository-seed/v1",
+  "repository": "fieldkest/fieldlink-connector",
+  "default_branch": "main",
+  "object_format": "sha1",
+  "file_mode": "100644",
+  "commits": [
+    {
+      "logical_id": "report-fixture-baseline",
+      "parent": null,
+      "author_name": "Rowan Ito",
+      "author_email": "rowan.ito@keplerops.com",
+      "author_time": "2026-09-16T10:14:00Z",
+      "committer_name": "Rowan Ito",
+      "committer_email": "rowan.ito@keplerops.com",
+      "committer_time": "2026-09-16T10:14:00Z",
+      "message": "add CRR-OG2 report fixture",
+      "tree": {
+        "README.md": "# FieldLink connector\n\nConnector release work and report-provider integration.\n",
+        "docs/report-provider.md": {"asset": "report-provider.md"},
+        "fixtures/report-crr-og2.json": {"asset": "report-crr-og2.json"},
+        "tests/test_crr_og2_report.py": "import json\nfrom pathlib import Path\n\ndef test_report_fixture():\n    report = json.loads(Path('fixtures/report-crr-og2.json').read_text())\n    assert report['schema'] == 'fieldkest.report/v2'\n    assert report['asset_id'] == 'CRR-OG2'\n    assert report['connector_revision'] == 'FLK-7.4.2'\n"
+      }
+    },
+    {
+      "logical_id": "remove-stale-fixture",
+      "parent": "report-fixture-baseline",
+      "author_name": "Rowan Ito",
+      "author_email": "rowan.ito@keplerops.com",
+      "author_time": "2026-09-18T15:02:00Z",
+      "committer_name": "Rowan Ito",
+      "committer_email": "rowan.ito@keplerops.com",
+      "committer_time": "2026-09-18T15:02:00Z",
+      "message": "remove generated report fixture from tree",
+      "tree": {
+        "README.md": "# FieldLink connector\n\nConnector release work and report-provider integration.\n",
+        "docs/report-provider.md": {"asset": "report-provider.md"},
+        "review/FLK-7.4.2.md": {"asset": "release-review-pointer.md"},
+        "tests/test_crr_og2_report.py": "import json\nfrom pathlib import Path\n\ndef test_report_fixture():\n    report = json.loads(Path('fixtures/report-crr-og2.json').read_text())\n    assert report['schema'] == 'fieldkest.report/v2'\n    assert report['asset_id'] == 'CRR-OG2'\n    assert report['connector_revision'] == 'FLK-7.4.2'\n"
+      }
+    }
+  ],
+  "refs": {
+    "refs/heads/main": "remove-stale-fixture",
+    "refs/tags/fk-test-6d1e9f7": "report-fixture-baseline"
+  }
+}

@@ -1,0 +1,65 @@
+name: cinder-keplerops-k09-foundation-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-k09-foundation-content
+  version: 0.1.0
+  exports:
+    content:
+    - k09-ci-state
+    - k09-cloud-api-state
+realization:
+  default: open
+content:
+  k09-ci-state:
+    type: directory
+    target: k-delivery.k-ci
+    destination: /var/lib/fieldkest-ci
+    description: Exact K09 retained run, log, omitted integration-review artifact, ordinary comparison artifact, and review-job configuration.
+    source:
+      name: cinder-typhoon/keplerops/build-operations/k09-ci-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: k09-ci-state
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/build-operations/k09-ci-state
+          version: '2026-09-18'
+          digest: sha256:300bbbd0b8e86792ed2dd6165a3cf1bfdd05cb59a693b0950c0053d9d4e1de10
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, ci, k09, exact-artifact]
+  k09-cloud-api-state:
+    type: directory
+    target: k-cloud.k-cloud-api
+    destination: /var/lib/fieldkest-cloud-api
+    description: Exact K09 worker-status authorization, origin, availability, and retained build-record identities.
+    source:
+      name: cinder-typhoon/keplerops/build-operations/k09-cloud-api-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: k09-cloud-api-state
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/build-operations/k09-cloud-api-state
+          version: '2026-09-18'
+          digest: sha256:3317f9d28f2d60d95c19559c9128178eff6c808a587006a3db790e5b86d28ff8
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, cloud-api, k09, exact-artifact]

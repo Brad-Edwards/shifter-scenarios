@@ -1,0 +1,25 @@
+{
+  "artifacts": [
+    {
+      "name": "staging-FKCOL-2841.bin",
+      "sha256": "45999c727a211ad15655df64517f54ec26b56a2c757d731731516feff68f50a4",
+      "size": 1247
+    },
+    {
+      "name": "field-notes-2026-08.odt",
+      "sha256": "659f1b9ab844f2e7b379de9a3c91f0b0ccc02858b83e6bf07860e557a0e0c834",
+      "size": 2018
+    },
+    {
+      "name": "chromium-History",
+      "sha256": "4415fd5363aa5f4c043b3b01e27211f706509dbb08740dd5e9baf9f3be9c1297",
+      "size": 20480
+    },
+    {
+      "name": "chromium-Cookies",
+      "sha256": "a79c5747ee3836cf990c928842e212c13b93359e975cdd43284c880b5101516e",
+      "size": 20480
+    }
+  ],
+  "schema": "fieldkest.generated-artifacts/v1"
+}

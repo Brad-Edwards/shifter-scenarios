@@ -37,22 +37,26 @@ content:
         authority: Registry consumer-check app on k-registry
       surface_bindings:
       - k-delivery.k-registry/package-registry/consumer-check
-      starting_state: Package contract examples for @keplerops/fieldlink-connector, range
-        ^7.4.0, request schema fieldkest.connector/v3.
+      starting_state: Exact consumer-request.json uses fieldkest.connector/v3, tenant TEN-ARWC-047,
+        asset CRR-OG2, operation summarize_diagnostics, package @keplerops/fieldlink-connector,
+        range ^7.4.0 and consumer arwc-connector-consumer@19f43d2.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        package: '@keplerops/fieldlink-connector'
+        range: ^7.4.0
+        selected_version: 7.4.2
+        request_schema: fieldkest.connector/v3
+        operation: summarize_diagnostics
+        baseline_asset: CRR-OG2
+        consumer_revision: arwc-connector-consumer@19f43d2
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Package contract examples for @keplerops/fieldlink-connector, range ^7.4.0,
-          request schema fieldkest.connector/v3.
-        success: Valid baseline request/result and resolution receipt.
+        input: Exact consumer-request.json uses fieldkest.connector/v3, tenant TEN-ARWC-047,
+          asset CRR-OG2, operation summarize_diagnostics, package @keplerops/fieldlink-connector,
+          range ^7.4.0 and consumer arwc-connector-consumer@19f43d2.
+        success: Valid baseline request/result resolves 7.4.2 and returns a fresh resolution
+          receipt.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -64,7 +68,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Valid baseline request/result and resolution receipt.
+      transition_contract: Valid baseline request/result resolves 7.4.2 and returns a fresh
+        resolution receipt.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -86,7 +91,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 00584ea192c2f3d3bd05dc8b999cc3f169840a946b7214d0351b69cd6170c1a1
+        digest: b29d4ae21e0e432e61b5b3b19b30496b0aff77ea13a1d8c7a06b62d5cf20a423
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -109,22 +114,21 @@ content:
         authority: Registry/release archive on k-registry
       surface_bindings:
       - k-delivery.k-registry/package-registry/release-record
-      starting_state: Yanked 6.9.8 absent from current listing but present in versioned
-        release manifest with maintenance note.
+      starting_state: REL-FLK-6.9.8-ARCHIVE is yanked and absent from the current 7.4.0/7.4.1/7.4.2
+        listing; REL-FLK-7.4.2-09 remains active.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        archive_record: REL-FLK-6.9.8-ARCHIVE
+        package_revision: FLK-6.9.8
+        status: yanked
+        active_release: REL-FLK-7.4.2-09
+        listing_rule: the current metadata lists 7.4.0, 7.4.1 and 7.4.2 and omits 6.9.8
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Yanked 6.9.8 absent from current listing but present in versioned release
-          manifest with maintenance note.
-        success: Historical-version read receipt.
+        input: REL-FLK-6.9.8-ARCHIVE is yanked and absent from the current 7.4.0/7.4.1/7.4.2
+          listing; REL-FLK-7.4.2-09 remains active.
+        success: Historical-version read receipt binds FLK-6.9.8 and its maintenance note.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -136,7 +140,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Historical-version read receipt.
+      transition_contract: Historical-version read receipt binds FLK-6.9.8 and its maintenance
+        note.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -158,7 +163,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 1da331b11c35dd616e5eed00b13a48ac10d8c782e511557b0fdbc388d56746a3
+        digest: cae53cc16dae6751ae86e0bd6fdb44953c1c1b9ff2472e46d8c32108e41700f3
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -181,22 +186,26 @@ content:
         authority: Registry reconciliation app
       surface_bindings:
       - k-delivery.k-registry/package-registry/reconciliation
-      starting_state: Active tenant record TEN-ARWC-047 and release manifest with package,
-        range, consumer revision, timestamps and provenance; stale records remain marked.
+      starting_state: Active tenant record TEN-ARWC-047 resolves 7.4.1; release REL-FLK-7.4.2-09
+        resolves 7.4.2; package, ^7.4.0 range and consumer revision match.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        tenant_record: TEN-ARWC-047
+        release_record: REL-FLK-7.4.2-09
+        comparison_fields:
+        - package
+        - declared_range
+        - resolved_version
+        - consumer_revision
+        unique_disagreement: tenant resolved_version is 7.4.1 while release resolved_version
+          is 7.4.2
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Active tenant record TEN-ARWC-047 and release manifest with package, range,
-          consumer revision, timestamps and provenance; stale records remain marked.
-        success: Four-field comparison binds both record IDs and exact dependency mismatch.
+        input: Active tenant record TEN-ARWC-047 resolves 7.4.1; release REL-FLK-7.4.2-09
+          resolves 7.4.2; package, ^7.4.0 range and consumer revision match.
+        success: Four-field comparison binds both record IDs and the sole resolved_version
+          mismatch.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -208,7 +217,7 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Four-field comparison binds both record IDs and exact dependency
+      transition_contract: Four-field comparison binds both record IDs and the sole resolved_version
         mismatch.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
@@ -231,7 +240,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 10f4c3b712956734ac6246dfd031caf7f5e9820e901f54e38d2fccbcbad7caf6
+        digest: 9bd3df591adfd0df59c34ed9d7a19b9f78646675f7c0ee7a51c17381dcd0347b
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -254,21 +263,26 @@ content:
         authority: Isolated resolver on k-registry
       surface_bindings:
       - k-delivery.k-registry/package-registry/resolver-run
-      starting_state: Real lock/range policy and fixed candidate set.
+      starting_state: Fixed candidates 7.4.0, 7.4.1, 7.4.2; highest non-yanked ^7.4.0 policy;
+        exact per-candidate digests.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        range: ^7.4.0
+        candidates:
+        - 7.4.0
+        - 7.4.1
+        - 7.4.2
+        selection: highest non-yanked compatible version, yielding 7.4.2
+        consumer_revision: arwc-connector-consumer@19f43d2
+        execution: a short-lived resolver process receives only the fixed candidate metadata
+          and request and returns canonical JSON
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Real lock/range policy and fixed candidate set.
-        success: Fresh resolution report with candidate set, selected version, consumer
-          revision and digest.
+        input: Fixed candidates 7.4.0, 7.4.1, 7.4.2; highest non-yanked ^7.4.0 policy; exact
+          per-candidate digests.
+        success: Fresh networkless resolver result selects 7.4.2 and binds candidate set,
+          consumer revision and digest.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -280,8 +294,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Fresh resolution report with candidate set, selected version,
-        consumer revision and digest.
+      transition_contract: Fresh networkless resolver result selects 7.4.2 and binds candidate
+        set, consumer revision and digest.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -303,7 +317,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 324a8f06b64cd2d6c75782c480366016ef376e8d9443307c308c357055c309eb
+        digest: 0a57db031c3844b4092df9b186b1044eefc6f58a1c8c4bf7bf4cc4393b93b1a3
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -327,23 +341,26 @@ content:
       surface_bindings:
       - k-delivery.k-registry/package-registry/importer
       - k-delivery.k-registry/package-registry/package-publication
-      starting_state: Registry config object; scoped publisher principal fieldlink-importer-publisher
-        for the customer connector channel.
+      starting_state: Valid connector import selecting unavailable view customer-preview-unavailable
+        leaks the resolved fieldlink-importer-publisher credential scoped only to connector
+        channel arwc-stable.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        trigger: a valid @keplerops/fieldlink-connector import for registry view customer-preview-unavailable
+        disclosed_principal: fieldlink-importer-publisher
+        scope: '@keplerops/fieldlink-connector channel arwc-stable'
+        publication: PUT /@keplerops%2ffieldlink-connector with a new immutable semantic
+          version, matching channel and tarball integrity
+        bounds: the credential cannot publish another package or channel and cannot overwrite
+          an existing version
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Registry config object; scoped publisher principal fieldlink-importer-publisher
-          for the customer connector channel.
-        success: Error-path disclosure of resolved scoped credential, followed by authenticated
-          permitted publication and registry audit.
+        input: Valid connector import selecting unavailable view customer-preview-unavailable
+          leaks the resolved fieldlink-importer-publisher credential scoped only to connector
+          channel arwc-stable.
+        success: Authenticated immutable-version publication with matching tarball integrity;
+          other package/channel and overwrite attempts remain denied.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -355,8 +372,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Error-path disclosure of resolved scoped credential, followed
-        by authenticated permitted publication and registry audit.
+      transition_contract: Authenticated immutable-version publication with matching tarball
+        integrity; other package/channel and overwrite attempts remain denied.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -378,7 +395,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: cdc4d49f83846ed87908d913fb00bd5313ae53bad640b0db858c5592d69ceed5
+        digest: 9124a7133017ba178aed8f7e07a76fd995e4f8ba0ede750d96d71205be0fe65a
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -401,23 +418,24 @@ content:
         authority: Registry view service
       surface_bindings:
       - k-delivery.k-registry/package-registry/package-view
-      starting_state: Protected package @keplerops/support-rehearsal sharing a namespace
-        with public packages but governed by separate read view.
+      starting_state: Protected @keplerops/support-rehearsal@1.3.1 tarball has SHA-256 6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7;
+        shared-namespace resolution occurs before view enforcement.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        protected_package: '@keplerops/support-rehearsal@1.3.1'
+        content_sha256: 6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7
+        defect: the view service resolves the requested package in the shared namespace
+          before enforcing the selected view; only support-rehearsal is mistakenly returned
+          through the publisher view
+        bounds: unrelated private package names remain denied and the response grants no
+          publication or customer authority
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Protected package @keplerops/support-rehearsal sharing a namespace with public
-          packages but governed by separate read view.
-        success: Cross-view read returns immutable manifest/content digest; unrelated private
-          reads remain denied.
+        input: Protected @keplerops/support-rehearsal@1.3.1 tarball has SHA-256 6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7;
+          shared-namespace resolution occurs before view enforcement.
+        success: Publisher-view read returns that immutable manifest/content; unrelated
+          private package reads remain denied.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -429,8 +447,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Cross-view read returns immutable manifest/content digest; unrelated
-        private reads remain denied.
+      transition_contract: Publisher-view read returns that immutable manifest/content;
+        unrelated private package reads remain denied.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -452,7 +470,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 3325d6d1c99cbe721f4c0fcf6731400307fca9ac971aaf9c41d8bc89f30b4974
+        digest: 8ae0a2ace7e2fe329afc2bbaabc9f2d3b4bec86e829c327fb11e1ba0f3e884ee
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

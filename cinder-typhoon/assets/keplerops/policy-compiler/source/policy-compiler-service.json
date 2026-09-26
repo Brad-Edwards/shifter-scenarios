@@ -1,0 +1,386 @@
+{
+  "binary_sha256": "a1b311190b294e2f31773065454520db72136447f1d2b75c64aacca7e813de2c",
+  "condition_set": {
+    "all": [
+      {
+        "field": "tenant_state",
+        "operator": "in",
+        "values": [
+          "active"
+        ]
+      },
+      {
+        "field": "connector_api",
+        "operator": "semver_gte",
+        "value": "3.0.0"
+      },
+      {
+        "field": "signer_lineage",
+        "operator": "in",
+        "values": [
+          "fieldkest-release-2026"
+        ]
+      },
+      {
+        "field": "compatibility_exception",
+        "operator": "eq",
+        "value": true
+      }
+    ],
+    "schema": "fieldkest.policy-condition-set/v1"
+  },
+  "condition_set_sha256": "e3a8ced4d68bfa6f4b94386b5ff040596bff56e243adbb5aebc98df1b21896a9",
+  "corpus": [
+    {
+      "accepted": true,
+      "case_id": "PC-R4-01",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": true,
+      "case_id": "PC-R4-02",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "3.4.1",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": true,
+      "case_id": "PC-R4-03",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "10.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": true,
+      "case_id": "PC-R4-04",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "preview",
+        "compatibility_exception": true,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": true,
+      "case_id": "PC-R4-05",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "archive",
+        "compatibility_exception": true,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": true,
+      "case_id": "PC-R4-06",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "enterprise",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": true,
+      "case_id": "PC-R4-07",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "field-service",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": false,
+      "case_id": "PC-R4-08",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "inactive"
+      }
+    },
+    {
+      "accepted": false,
+      "case_id": "PC-R4-09",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "suspended"
+      }
+    },
+    {
+      "accepted": false,
+      "case_id": "PC-R4-10",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "2.9.9",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": false,
+      "case_id": "PC-R4-11",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "2.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": false,
+      "case_id": "PC-R4-12",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2025",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": false,
+      "case_id": "PC-R4-13",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": true,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-lab-2026",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": false,
+      "case_id": "PC-R4-14",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": false,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    },
+    {
+      "accepted": false,
+      "case_id": "PC-R4-15",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": false,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2026",
+        "tenant_class": "standard",
+        "tenant_state": "inactive"
+      }
+    },
+    {
+      "accepted": false,
+      "case_id": "PC-R4-16",
+      "evaluated_fields": [
+        "tenant_state",
+        "connector_api",
+        "signer_lineage",
+        "compatibility_exception"
+      ],
+      "input": {
+        "channel": "stable",
+        "compatibility_exception": false,
+        "connector_api": "3.0.0",
+        "signer_lineage": "fieldkest-release-2025",
+        "tenant_class": "standard",
+        "tenant_state": "active"
+      }
+    }
+  ],
+  "corpus_id": "POLICY-CORPUS-2026-09-R4",
+  "corpus_result_sha256": "cf60e746abf133754466b724318419da127e1c7cb3ee74f48ae432cfd74e601a",
+  "evaluated_fields": [
+    "tenant_state",
+    "connector_api",
+    "signer_lineage",
+    "compatibility_exception"
+  ],
+  "fields": [
+    "tenant_state",
+    "connector_api",
+    "signer_lineage",
+    "compatibility_exception",
+    "channel",
+    "tenant_class"
+  ],
+  "fragments": {
+    "compatibility-exception": {
+      "program_base64": "RktQQwwAAAAEAAQAAAADAAEAAQACAAAABwAAAA==",
+      "program_sha256": "576c0ac79e95322c10d9abb096b47c1668f2fd41a6deff6daee8b937ece2da9f"
+    },
+    "connector-version": {
+      "program_base64": "RktQQwwAAAAEAAQAAAABAAEAAAADAAAABwAAAA==",
+      "program_sha256": "cd31edd4f8ba231722cfe6ab83a0981843fd960a44eda497f0e12b1833e0b1b0"
+    },
+    "signer-lineage": {
+      "program_base64": "RktQQwwAAAADAAQAAAACAAQAAQAHAAAA",
+      "program_sha256": "9726ff99bc49b5d16a9fb496c8ba68d465d31af10f754152816f3d8b18c7cb85"
+    },
+    "tenant-state": {
+      "program_base64": "RktQQwwAAAADAAQAAAAAAAQAAAAHAAAA",
+      "program_sha256": "4c727f88147cc6b5cde2e8355ca74af9a988fca300629619c4822b778edce18c"
+    }
+  },
+  "link_map_sha256": "78013e2fd9407fcd10fbfcacd9fb7b59ee986e72788c033d7a23cbc074c0f934",
+  "nonce_lifetime_seconds": 300,
+  "opcode_model": {
+    "instruction_width": 4,
+    "opcodes": {
+      "0x00": "PUSH_FIELD",
+      "0x01": "PUSH_CONST",
+      "0x02": "EQ",
+      "0x03": "SEMVER_GTE",
+      "0x04": "IN_SET",
+      "0x05": "AND",
+      "0x06": "OR",
+      "0x07": "RETURN"
+    }
+  },
+  "program_base64": "RktQQwwAAAAOAAQAAAAAAAQAAAAAAAEAAQAAAAMAAAAFAAAAAAACAAQAAQAFAAAAAAADAAEAAQACAAAABQAAAAcAAAA=",
+  "program_id": "FKPC-POLICY-2026-09-R4",
+  "program_sha256": "0b9a7fd08148ec1b6d3151dcd9c0499fb89f70585fb3705a44662e062242ef9c",
+  "repository": {
+    "bundle_sha256": "42af2811400c52706e83ff4e76315dbc879d346eee0ba0c8f8b57219687e2268",
+    "commit": "7348674438e4c25cddc58466e856b2669fdf4263",
+    "refs": {
+      "main": "7348674438e4c25cddc58466e856b2669fdf4263",
+      "policyc-2.6.4": "7348674438e4c25cddc58466e856b2669fdf4263",
+      "retained/policyc-2.6": "7348674438e4c25cddc58466e856b2669fdf4263"
+    },
+    "repository": "fieldkest/policy-compiler"
+  },
+  "schema": "fieldkest.policy-compiler-service/v1"
+}

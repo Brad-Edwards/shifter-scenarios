@@ -30,8 +30,9 @@ content:
       surface_bindings:
       - k-corporate.k-dev/filesystem:/home/rowan
       - k-delivery.k-source/gitea/protected-handover
-      starting_state: Rowan's checkout and credential-helper entry under /home/rowan; fieldkest/fieldlink-connector
-        project, read-only rowan.ito role, current handover revision on Gitea.
+      starting_state: Rowan's checkout at /home/rowan/work/fieldlink-connector, credential-helper
+        file /home/rowan/.config/git/credentials, principal rowan.ito, read-only project
+        fieldkest/fieldlink-connector, and handover HND-FLK-2026-09 revision 12.
       mechanic_profile:
         implementation_rule: Implement the exact records, identities, permissions, configuration
           and state in starting_state through the owning node's declared native listener,
@@ -43,10 +44,11 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Rowan's checkout and credential-helper entry under /home/rowan; fieldkest/fieldlink-connector
-          project, read-only rowan.ito role, current handover revision on Gitea.
+        input: Rowan's checkout at /home/rowan/work/fieldlink-connector, credential-helper
+          file /home/rowan/.config/git/credentials, principal rowan.ito, read-only project
+          fieldkest/fieldlink-connector, and handover HND-FLK-2026-09 revision 12.
         success: Authenticated handover read and Gitea audit by the recovered developer
-          session.
+          credential.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -59,7 +61,7 @@ content:
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
       transition_contract: Authenticated handover read and Gitea audit by the recovered
-        developer session.
+        developer credential.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -81,7 +83,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 79aa4397efe3b3354e2f8bfb45af2c56adc30cf080627fd30141c2f1d08e3e45
+        digest: 86349ad891a776beb33d7e18f9d4b7c5871992266dc2a4062e5aa649fbb923f1
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -104,8 +106,8 @@ content:
         authority: k-dev
       surface_bindings:
       - k-corporate.k-dev/filesystem:/home/rowan/work
-      starting_state: Release-review pointer in Rowan's review workspace; separate exported
-        review file outside the checkout, with release ID and unresolved comments.
+      starting_state: Checkout pointer review/FLK-7.4.2.md; external export /home/rowan/work/review-exports/fieldlink-7.4.2-review.md;
+        release REL-FLK-7.4.2-09; unresolved comments REV-219, REV-224, and REV-231.
       mechanic_profile:
         implementation_rule: Implement the exact records, identities, permissions, configuration
           and state in starting_state through the owning node's declared native listener,
@@ -117,9 +119,9 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Release-review pointer in Rowan's review workspace; separate exported review
-          file outside the checkout, with release ID and unresolved comments.
-        success: Read receipt bound to file digest and release ID.
+        input: Checkout pointer review/FLK-7.4.2.md; external export /home/rowan/work/review-exports/fieldlink-7.4.2-review.md;
+          release REL-FLK-7.4.2-09; unresolved comments REV-219, REV-224, and REV-231.
+        success: Local read observation bound to the export digest and release ID.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -131,7 +133,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Read receipt bound to file digest and release ID.
+      transition_contract: Local read observation bound to the export digest and release
+        ID.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -153,7 +156,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 406488d2385d8592338b2b224640d2c34d5d0dfb72b7150c4b74d7235229d46e
+        digest: 87940d7bf435763391980b0e627044cf6d85f293d019d7ec2349bd51194ad5b4
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -176,8 +179,8 @@ content:
         authority: Local FieldKest helper on k-dev
       surface_bindings:
       - k-corporate.k-dev/local-workbench/inspection-summary
-      starting_state: Helper contract, executable/source input, sample FK-SAMPLE-017, asset
-        CRR-OG2, revision FLK-7.4.2.
+      starting_state: Route /api/inspection-summary; sample /home/rowan/work/samples/FK-SAMPLE-017.json
+        using fieldkest.sample/v1, asset CRR-OG2, revision FLK-7.4.2, and SHA-256 b3cbf260a332f5a8d9b0cdde64e4d22d698a5ae28c11384149126ba694edd1e6.
       mechanic_profile:
         implementation_rule: Implement the exact records, identities, permissions, configuration
           and state in starting_state through the owning node's declared native listener,
@@ -189,8 +192,8 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Helper contract, executable/source input, sample FK-SAMPLE-017, asset CRR-OG2,
-          revision FLK-7.4.2.
+        input: Route /api/inspection-summary; sample /home/rowan/work/samples/FK-SAMPLE-017.json
+          using fieldkest.sample/v1, asset CRR-OG2, revision FLK-7.4.2, and SHA-256 b3cbf260a332f5a8d9b0cdde64e4d22d698a5ae28c11384149126ba694edd1e6.
         success: Fresh inspection receipt with input/output digests and preserved bindings.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
@@ -226,7 +229,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: fc31bdc0fcaf759db4414f3c18f42de5f2345ef137cf04e60f94cbd7f41e4101
+        digest: d58636b306875af37be02b41b20857a8611665a140eead7437f1e12f07f66b16
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -249,8 +252,9 @@ content:
         authority: k-dev
       surface_bindings:
       - k-corporate.k-dev/filesystem:/home/rowan/work
-      starting_state: Retained document field-notes-2026-08.odt with ordinary source attachment
-        staging-FKCOL-2841.bin; collection binding FKCOL-2841.
+      starting_state: Retained ODT /home/rowan/work/analysis/field-notes-2026-08.odt with
+        source attachment Attachments/staging-FKCOL-2841.bin; collection FKCOL-2841; ODT
+        SHA-256 659f1b9ab844f2e7b379de9a3c91f0b0ccc02858b83e6bf07860e557a0e0c834.
       mechanic_profile:
         implementation_rule: Implement the exact records, identities, permissions, configuration
           and state in starting_state through the owning node's declared native listener,
@@ -262,9 +266,10 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Retained document field-notes-2026-08.odt with ordinary source attachment
-          staging-FKCOL-2841.bin; collection binding FKCOL-2841.
-        success: Attachment extraction receipt and digest match.
+        input: Retained ODT /home/rowan/work/analysis/field-notes-2026-08.odt with source
+          attachment Attachments/staging-FKCOL-2841.bin; collection FKCOL-2841; ODT SHA-256
+          659f1b9ab844f2e7b379de9a3c91f0b0ccc02858b83e6bf07860e557a0e0c834.
+        success: Attachment extraction observation and digest match.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -276,7 +281,7 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Attachment extraction receipt and digest match.
+      transition_contract: Attachment extraction observation and digest match.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -298,7 +303,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: cc4eb7702f30e5edc3e952212e87b6fa3a7277562f2fb1b282750e26a971a232
+        digest: c396bff2c5d1c3826085aca9a77b192ffca5ac31c998679b51d43f26f294f515
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -320,9 +325,11 @@ content:
         node: k-dev
         authority: Analysis helper on k-dev
       surface_bindings:
-      - k-corporate.k-dev/local-workbench/inspection-summary
-      starting_state: Layered bundle with base64 wrapper, zlib member, PowerShell-compatible
-        decoder, SHA-256 marker and separate collection instructions.
+      - k-corporate.k-dev/local-workbench/reconstruction
+      starting_state: Layered FIELDKEST-STAGE/1 bundle with base64-wrapped zlib script,
+        separate base64 instructions, supplied PowerShell-compatible decoder, script SHA-256
+        3c00e634751ab73c2d2573486245dc15125ebaaf82572da8a44201e159fcfaee, and instruction
+        SHA-256 73fcb0d5af86b73b78155cac36cd6e80afea42ae6f17693164d681125741e3b3.
       mechanic_profile:
         implementation_rule: Implement the exact records, identities, permissions, configuration
           and state in starting_state through the owning node's declared native listener,
@@ -334,10 +341,11 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Layered bundle with base64 wrapper, zlib member, PowerShell-compatible decoder,
-          SHA-256 marker and separate collection instructions.
-        success: Nonexecuting reconstruction service records complete script/instruction
-          digests.
+        input: Layered FIELDKEST-STAGE/1 bundle with base64-wrapped zlib script, separate
+          base64 instructions, supplied PowerShell-compatible decoder, script SHA-256 3c00e634751ab73c2d2573486245dc15125ebaaf82572da8a44201e159fcfaee,
+          and instruction SHA-256 73fcb0d5af86b73b78155cac36cd6e80afea42ae6f17693164d681125741e3b3.
+        success: Nonexecuting /api/reconstruction request records complete script and instruction
+          digests and returns endpoint CB-17 with callback integrity.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -349,8 +357,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Nonexecuting reconstruction service records complete script/instruction
-        digests.
+      transition_contract: Nonexecuting /api/reconstruction request records complete script
+        and instruction digests and returns endpoint CB-17 with callback integrity.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -372,7 +380,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: d93334e906737351117c599fc85ad56634eaf8aa0c2c719fdf1f1c76c1ae5846
+        digest: 093717baa0fde3a385406b1854fb62de05ffb9e51f58b84cf19eac309517ba10
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -395,8 +403,9 @@ content:
         authority: Callback emulator on k-dev
       surface_bindings:
       - k-corporate.k-dev/local-workbench/callback-collection
-      starting_state: 'Emulator config schema: endpoint ID CB-17, collection FKCOL-2841,
-        integrity digest; one retained lost collection.'
+      starting_state: /api/callback/collection requires endpoint CB-17, collection FKCOL-2841,
+        and integrity e52f22b6b2b9fa277fa94c2f3207171d7aaa9a4e94120f195625aafb8701aed1;
+        one retained collection returns ticket SUP-2841, asset CRR-OG2, and revision FLK-7.4.2.
       mechanic_profile:
         implementation_rule: Implement the exact records, identities, permissions, configuration
           and state in starting_state through the owning node's declared native listener,
@@ -408,10 +417,11 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: 'Emulator config schema: endpoint ID CB-17, collection FKCOL-2841, integrity
-          digest; one retained lost collection.'
+        input: /api/callback/collection requires endpoint CB-17, collection FKCOL-2841,
+          and integrity e52f22b6b2b9fa277fa94c2f3207171d7aaa9a4e94120f195625aafb8701aed1;
+          one retained collection returns ticket SUP-2841, asset CRR-OG2, and revision FLK-7.4.2.
         success: Successful bound retrieval returns the SUP-2841 evidence and provenance
-          once inputs agree.
+          once all fields agree.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -424,7 +434,7 @@ content:
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
       transition_contract: Successful bound retrieval returns the SUP-2841 evidence and
-        provenance once inputs agree.
+        provenance once all fields agree.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -446,7 +456,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 1f0618e7072c9f8fb513507d93c2dac2d91d08349435c6caa82a0a33f7505f0f
+        digest: c420a370a257af2e088a9cfdfe6471ad2285605bafece130ef25c28699822ea2
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

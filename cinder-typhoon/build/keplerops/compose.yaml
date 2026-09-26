@@ -1,0 +1,260 @@
+name: cinder-keplerops
+
+x-service-security: &service-security
+  restart: unless-stopped
+  read_only: true
+  cap_drop: [ALL]
+  cap_add: [NET_ADMIN, SETUID, SETGID, DAC_READ_SEARCH]
+  security_opt:
+    - no-new-privileges:true
+  sysctls:
+    net.ipv4.ip_unprivileged_port_start: 0
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+  volumes:
+    - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+  environment: &tls-environment
+    FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
+    FIELDKEST_TLS_KEY: /tmp/fieldkest.key
+
+services:
+  router:
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/router.Dockerfile
+    image: cinder-keplerops/router:hand-build
+    container_name: cinder-keplerops-router
+    restart: unless-stopped
+    cap_drop: [ALL]
+    cap_add: [NET_ADMIN]
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv4.ip_forward: 1
+    networks:
+      corporate: {ipv4_address: 10.77.50.254}
+      delivery: {ipv4_address: 10.77.51.254}
+      cloud: {ipv4_address: 10.77.52.254}
+      jobs: {ipv4_address: 10.77.53.254}
+      connector: {ipv4_address: 10.77.60.254}
+
+  k-dev:
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/k-dev.Dockerfile
+    image: cinder-keplerops/k-dev:hand-build
+    container_name: cinder-keplerops-k-dev
+    hostname: k-dev
+    domainname: keplerops.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [NET_ADMIN, SETUID, SETGID, CHOWN, FOWNER, SYS_CHROOT, AUDIT_WRITE, DAC_OVERRIDE, DAC_READ_SEARCH]
+    security_opt:
+      - no-new-privileges:true
+    depends_on: [router]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - k-dev-home:/home/rowan
+      - k-dev-audit:/var/lib/fieldkest-workbench/audit
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-auth/ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/rowan_authorized_keys:/run/fieldkest-auth/rowan_authorized_keys:ro
+    extra_hosts:
+      - source.keplerops.test:10.77.51.20
+      - packages.keplerops.test:10.77.51.30
+      - ci.keplerops.test:10.77.51.40
+      - support.keplerops.test:10.77.51.60
+    networks:
+      corporate:
+        ipv4_address: 10.77.50.20
+        aliases: [k-dev.keplerops.test]
+
+  k-source:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/source.Dockerfile
+    image: cinder-keplerops/k-source:hand-build
+    container_name: cinder-keplerops-source
+    hostname: k-source
+    domainname: delivery.keplerops.test
+    depends_on: [router]
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
+      - source-audit:/var/lib/gitea/audit
+      - source-repositories:/var/lib/gitea/repositories
+    networks:
+      delivery:
+        ipv4_address: 10.77.51.20
+        aliases: [source.keplerops.test]
+
+  k-ci:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/ci.Dockerfile
+    image: cinder-keplerops/k-ci:hand-build
+    container_name: cinder-keplerops-ci
+    hostname: k-ci
+    domainname: delivery.keplerops.test
+    depends_on: [router, runner]
+    cap_add: [NET_ADMIN, SETUID, SETGID, DAC_READ_SEARCH, CHOWN, FOWNER, DAC_OVERRIDE]
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
+      - ci-audit:/var/lib/fieldkest-ci/audit
+      - ci-results:/var/lib/fieldkest-ci/results
+      - ci-rowan-workspace:/var/lib/fieldkest-ci/workspaces/rowan
+      - handover:/var/lib/fieldkest-handover
+      - runner-socket:/run/fieldkest-runner
+    networks:
+      delivery:
+        ipv4_address: 10.77.51.40
+        aliases: [ci.keplerops.test]
+
+  k-registry:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/registry.Dockerfile
+    image: cinder-keplerops/k-registry:hand-build
+    container_name: cinder-keplerops-registry
+    hostname: k-registry
+    domainname: delivery.keplerops.test
+    depends_on: [router]
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
+      - registry-audit:/var/lib/fieldkest-registry/audit
+      - registry-results:/var/lib/fieldkest-registry/results
+      - registry-published:/var/lib/fieldkest-registry/published
+    networks:
+      delivery:
+        ipv4_address: 10.77.51.30
+        aliases: [packages.keplerops.test]
+
+  k-support:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/support.Dockerfile
+    image: cinder-keplerops/k-support:hand-build
+    container_name: cinder-keplerops-support
+    hostname: k-support
+    domainname: delivery.keplerops.test
+    depends_on: [router]
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+      - support-audit:/var/lib/fieldkest-support/audit
+      - handover:/var/lib/fieldkest-handover:ro
+    networks:
+      delivery:
+        ipv4_address: 10.77.51.60
+        aliases: [support.keplerops.test]
+
+  report-worker:
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/report-worker.Dockerfile
+    image: cinder-keplerops/report-worker:hand-build
+    command: ["-c", "raise SystemExit('worker images are launched by the runner')"]
+    profiles: [build-only]
+
+  node-worker:
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/node-worker.Dockerfile
+    image: cinder-keplerops/node-worker:hand-build
+    command: ["-e", "process.exit(1)"]
+    profiles: [build-only]
+
+  command-worker:
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/command-worker.Dockerfile
+    image: cinder-keplerops/command-worker:hand-build
+    command: []
+    profiles: [build-only]
+
+  runner:
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/runner.Dockerfile
+    image: cinder-keplerops/runner:hand-build
+    container_name: cinder-keplerops-runner
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      FIELDKEST_WORKER_IMAGE: cinder-keplerops/report-worker:hand-build
+      FIELDKEST_NODE_WORKER_IMAGE: cinder-keplerops/node-worker:hand-build
+      FIELDKEST_COMMAND_WORKER_IMAGE: cinder-keplerops/command-worker:hand-build
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner-socket:/run/fieldkest-runner
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-auth/ca.crt:ro
+    network_mode: none
+
+  k-cloud-api:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/cloud-api.Dockerfile
+    image: cinder-keplerops/k-cloud-api:hand-build
+    container_name: cinder-keplerops-cloud-api
+    hostname: k-cloud-api
+    domainname: cloud.keplerops.test
+    depends_on: [router]
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/run/fieldkest-tls:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
+      - cloud-api-audit:/var/lib/fieldkest-cloud-api/audit
+    networks:
+      cloud:
+        ipv4_address: 10.77.52.20
+        aliases: [cloud-api.keplerops.test]
+
+networks:
+  corporate:
+    name: cinder-keplerops-corporate
+    internal: true
+    ipam: {config: [{subnet: 10.77.50.0/24, gateway: 10.77.50.1}]}
+  delivery:
+    name: cinder-keplerops-delivery
+    internal: true
+    ipam: {config: [{subnet: 10.77.51.0/24, gateway: 10.77.51.1}]}
+  cloud:
+    name: cinder-keplerops-cloud
+    internal: true
+    ipam: {config: [{subnet: 10.77.52.0/24, gateway: 10.77.52.1}]}
+  jobs:
+    name: cinder-keplerops-jobs
+    internal: true
+    ipam: {config: [{subnet: 10.77.53.0/24, gateway: 10.77.53.1}]}
+  connector:
+    name: cinder-keplerops-connector
+    internal: true
+    ipam: {config: [{subnet: 10.77.60.0/24, gateway: 10.77.60.1}]}
+
+volumes:
+  k-dev-home: {name: cinder-keplerops-k-dev-home}
+  k-dev-audit: {name: cinder-keplerops-k-dev-audit}
+  source-audit: {name: cinder-keplerops-source-audit}
+  source-repositories: {name: cinder-keplerops-source-repositories}
+  ci-audit: {name: cinder-keplerops-ci-audit}
+  ci-results: {name: cinder-keplerops-ci-results}
+  ci-rowan-workspace: {name: cinder-keplerops-ci-rowan-workspace}
+  registry-audit: {name: cinder-keplerops-registry-audit}
+  registry-results: {name: cinder-keplerops-registry-results}
+  registry-published: {name: cinder-keplerops-registry-published}
+  support-audit: {name: cinder-keplerops-support-audit}
+  cloud-api-audit: {name: cinder-keplerops-cloud-api-audit}
+  handover: {name: cinder-keplerops-handover}
+  runner-socket: {name: cinder-keplerops-runner-socket}

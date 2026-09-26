@@ -1,0 +1,30 @@
+{
+  "expected_fixture": "fixtures/report-crr-og2.json",
+  "finished_at": "2026-09-18T15:17:19Z",
+  "fixture_revision": "fk-test-6d1e9f7",
+  "log_url": "/api/runs/BLD-1842/log",
+  "repository": "fieldkest/fieldlink-connector",
+  "result_page": {
+    "artifacts": [
+      "junit.xml"
+    ]
+  },
+  "retained_artifacts": [
+    {
+      "artifact_id": "ART-BLD-1842-INTEGRATION-REVIEW",
+      "build_revision": "c37effd7cc86ae4d44f18e95f899b7557d65e0a9",
+      "listed_on_results_page": false,
+      "name": "integration-review-input-v3.json",
+      "object_version": 3,
+      "sha256": "b631b38ea24ef0e847b9fb9419d32fe83c67d96a8290c62453db9dfe76fd72d4",
+      "url": "/api/runs/BLD-1842/artifacts/integration-review-input-v3.json"
+    }
+  ],
+  "revision": "c37effd7cc86ae4d44f18e95f899b7557d65e0a9",
+  "run_id": "BLD-1842",
+  "schema": "fieldkest.ci-run/v1",
+  "started_at": "2026-09-18T15:17:04Z",
+  "state": "failed",
+  "summary": "Fixture unavailable at the selected revision.",
+  "test": "tests/test_crr_og2_report.py"
+}

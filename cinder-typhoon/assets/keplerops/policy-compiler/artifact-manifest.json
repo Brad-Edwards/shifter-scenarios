@@ -1,0 +1,62 @@
+{
+  "archives": [
+    {
+      "archive": "k-source-k11-state.tar",
+      "files": [
+        {
+          "mode": "0600",
+          "path": "config/k11.json",
+          "sha256": "a81f84f718ec98bdd2729c968c04f85135a9ad9d017c612f8e6d2a7808df5e29",
+          "size": 10505
+        },
+        {
+          "mode": "0550",
+          "path": "exercises/k11/fieldkest-policyc",
+          "sha256": "a1b311190b294e2f31773065454520db72136447f1d2b75c64aacca7e813de2c",
+          "size": 2520312
+        },
+        {
+          "mode": "0640",
+          "path": "seeds/policy-compiler.bundle",
+          "sha256": "42af2811400c52706e83ff4e76315dbc879d346eee0ba0c8f8b57219687e2268",
+          "size": 1139366
+        }
+      ],
+      "sha256": "d97a92d1080ae117e265233b2d65ee91551fa76ed1726d3f2106806d8f72a52b",
+      "size": 3676160
+    },
+    {
+      "archive": "k-dev-k11-home.tar",
+      "files": [
+        {
+          "mode": "0640",
+          "path": "work/build-operations/policy-compiler-handoff.md",
+          "sha256": "b86d3fffc9d6909a5f64715ccd673701c776cbc48fb677e3a6fa69941328688f",
+          "size": 383
+        }
+      ],
+      "sha256": "e8a8df714d54cae770f77925101540bc660fe1dc75e0d29379d1d2f6c47d33c8",
+      "size": 10240
+    }
+  ],
+  "compiler": {
+    "architecture": "linux-x86_64-static-elf",
+    "binary_sha256": "a1b311190b294e2f31773065454520db72136447f1d2b75c64aacca7e813de2c",
+    "condition_set_sha256": "e3a8ced4d68bfa6f4b94386b5ff040596bff56e243adbb5aebc98df1b21896a9",
+    "corpus_result_sha256": "cf60e746abf133754466b724318419da127e1c7cb3ee74f48ae432cfd74e601a",
+    "link_map_sha256": "78013e2fd9407fcd10fbfcacd9fb7b59ee986e72788c033d7a23cbc074c0f934",
+    "program_sha256": "0b9a7fd08148ec1b6d3151dcd9c0499fb89f70585fb3705a44662e062242ef9c",
+    "version": "2.6.4"
+  },
+  "repository": {
+    "bundle_sha256": "42af2811400c52706e83ff4e76315dbc879d346eee0ba0c8f8b57219687e2268",
+    "commit": "7348674438e4c25cddc58466e856b2669fdf4263",
+    "refs": {
+      "main": "7348674438e4c25cddc58466e856b2669fdf4263",
+      "policyc-2.6.4": "7348674438e4c25cddc58466e856b2669fdf4263",
+      "retained/policyc-2.6": "7348674438e4c25cddc58466e856b2669fdf4263"
+    },
+    "repository": "fieldkest/policy-compiler"
+  },
+  "schema": "fieldkest.k11-artifacts/v1"
+}

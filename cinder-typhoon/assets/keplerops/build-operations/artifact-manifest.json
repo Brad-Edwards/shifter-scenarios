@@ -1,0 +1,56 @@
+{
+  "archives": [
+    {
+      "archive": "k-ci-k09-state.tar",
+      "files": [
+        {
+          "mode": "0640",
+          "path": "artifacts/BLD-1842/integration-review-input-v3.json",
+          "sha256": "b631b38ea24ef0e847b9fb9419d32fe83c67d96a8290c62453db9dfe76fd72d4",
+          "size": 403
+        },
+        {
+          "mode": "0640",
+          "path": "artifacts/BLD-1842/ordinary-support-input-v1.json",
+          "sha256": "12a21d142d87b5cb3d87c17d40a174b7b1666053a686a217d04ed9a0f03c0546",
+          "size": 381
+        },
+        {
+          "mode": "0600",
+          "path": "config/k09.json",
+          "sha256": "ba2be94fd6d4283215550f84177a03209f3078abe718cbf9e373ad88ce624d50",
+          "size": 649
+        },
+        {
+          "mode": "0640",
+          "path": "runs/BLD-1842.json",
+          "sha256": "0330b5c537f146162a8288fbfb55f773790436dcab5c1c3aecfe8b80edaef633",
+          "size": 1020
+        },
+        {
+          "mode": "0640",
+          "path": "runs/BLD-1842.log",
+          "sha256": "37c8ce60d347f73e2502180582b2b0ee951f8e52c49b7dc8e376fc989cbbba1a",
+          "size": 642
+        }
+      ],
+      "sha256": "300bbbd0b8e86792ed2dd6165a3cf1bfdd05cb59a693b0950c0053d9d4e1de10",
+      "size": 10240
+    },
+    {
+      "archive": "k-cloud-api-k09-state.tar",
+      "files": [
+        {
+          "mode": "0600",
+          "path": "config/k09.json",
+          "sha256": "574c89b8152bec370bd9952ea372f61af5efe24ac99c2c3b78900753eb64b518",
+          "size": 437
+        }
+      ],
+      "sha256": "3317f9d28f2d60d95c19559c9128178eff6c808a587006a3db790e5b86d28ff8",
+      "size": 10240
+    }
+  ],
+  "generated_at": "2026-09-18T15:24:00Z",
+  "schema": "fieldkest.k09-foundation-artifacts/v1"
+}

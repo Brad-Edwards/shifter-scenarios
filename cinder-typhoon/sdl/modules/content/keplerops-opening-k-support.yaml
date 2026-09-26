@@ -1,0 +1,38 @@
+name: cinder-keplerops-opening-k-support-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-opening-k-support-content
+  version: 0.1.0
+  exports:
+    content:
+    - opening-k-support-state
+realization:
+  default: open
+content:
+  opening-k-support-state:
+    type: directory
+    target: k-delivery.k-support
+    destination: /var/lib/fieldkest-support
+    description: Exact support opening state with Rowan's retained scoped session, conversation SUP-2841 and private report-handover policy.
+    source:
+      name: cinder-typhoon/keplerops/opening/k-support-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: opening-k-support-state
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/opening/k-support-state
+          version: '2026-09-18'
+          digest: sha256:0a62c22aebf594156869addf18170a028cc244d52ada3c14ef875c9bbd46829d
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, opening, support, exact-artifact]

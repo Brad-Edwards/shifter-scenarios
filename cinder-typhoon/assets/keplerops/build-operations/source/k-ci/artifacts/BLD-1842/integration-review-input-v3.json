@@ -1,0 +1,11 @@
+{
+  "artifact_id": "ART-BLD-1842-INTEGRATION-REVIEW",
+  "build_revision": "c37effd7cc86ae4d44f18e95f899b7557d65e0a9",
+  "classification": "integration-diagnostic",
+  "collection": "build-results/BLD-1842",
+  "diagnostic_eligible": true,
+  "linked_support_ref": "buildops://reviews/diagnostic-request-reference@3",
+  "object_version": 3,
+  "run_id": "BLD-1842",
+  "schema": "fieldkest.review-input/v3"
+}

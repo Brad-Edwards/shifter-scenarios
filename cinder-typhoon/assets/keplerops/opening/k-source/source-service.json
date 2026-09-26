@@ -1,0 +1,21 @@
+{
+  "schema": "fieldkest.source-service/v1",
+  "repository_bundle": "/var/lib/gitea/seeds/fieldlink-connector.bundle",
+  "repository": "fieldkest/fieldlink-connector",
+  "default_branch": "main",
+  "handover": "/var/lib/gitea/handovers/HND-FLK-2026-09.json",
+  "credentials": [
+    {
+      "principal": "rowan.ito",
+      "token": "kpl_rowan_7X4mQ9vN2cL6",
+      "role": "fieldkest-developer",
+      "permissions": [
+        "repositories/fieldkest/fieldlink-connector:read",
+        "handovers/current:read"
+      ]
+    }
+  ],
+  "anonymous_permissions": [],
+  "write_permissions": []
+}
+

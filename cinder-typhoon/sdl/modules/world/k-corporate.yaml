@@ -95,16 +95,39 @@ nodes:
         stability: runtime_created
         sensitivity: plain
         description: Operator-owned persistent local output; ordinary service verification does not clear it.
+      - path: /opt/fieldkest-workbench
+        entry_type: directory
+        owner_user: fieldkest-workbench
+        owner_group: fieldkest-workbench
+        mode: '0750'
+        stability: stable
+        sensitivity: secret_fixture
+        description: Immutable local-helper configuration and exact repository bootstrap source; Rowan cannot read the private configuration.
+      - path: /var/lib/fieldkest-workbench
+        entry_type: directory
+        owner_user: fieldkest-workbench
+        owner_group: fieldkest-workbench
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Persistent local-helper receipts and independently owned audit records.
       local_identity:
         users:
         - username: rowan
           primary_group: rowan
           locked: false
           no_login: false
+        - username: fieldkest-workbench
+          primary_group: fieldkest-workbench
+          locked: true
+          no_login: true
         groups:
         - name: rowan
           members:
           - rowan
+        - name: fieldkest-workbench
+          members:
+          - fieldkest-workbench
       network:
         hostname: k-dev
         domainname: keplerops.test
@@ -190,6 +213,22 @@ nodes:
           - status_code: 200
             content_type: application/json
           - status_code: 403
+            content_type: application/json
+        - route_id: reconstruction
+          path: /api/reconstruction
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          parameters:
+          - name: bundle
+            location: uploaded_file
+            required: true
+            data_type: application/json
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 422
             content_type: application/json
       software_components:
       - component_id: keplerops-developer-workbench

@@ -1,0 +1,55 @@
+{
+  "schema": "fieldkest.ci-service/v1",
+  "audit_directory": "/var/lib/fieldkest-ci/audit",
+  "runs": {
+    "BLD-1842": {
+      "record": "/var/lib/fieldkest-ci/runs/BLD-1842.json",
+      "log": "/var/lib/fieldkest-ci/runs/BLD-1842.log"
+    }
+  },
+  "review_import": {
+    "route": "/api/reviews/import",
+    "accepted_schema": "fieldkest.review-import/v1",
+    "object_root": "/var/lib/fieldkest-ci/import-objects",
+    "decision_order": [
+      "Require run_id to name a readable run.",
+      "Require the raw object value to begin with inputs/.",
+      "Percent-decode object exactly once.",
+      "Normalize dot segments in the decoded path.",
+      "Require the normalized path to remain beneath object_root.",
+      "Return the selected existing JSON object without execution."
+    ],
+    "normal_object": "inputs/report-request.json",
+    "review_object": "inputs/%2e%2e/reviews/REVNOTE-1842.json",
+    "mutation": false
+  },
+  "report_consumer": {
+    "template": "report-consumer-v2",
+    "archive_media_type": "application/zip",
+    "required_files": [
+      "provider.py",
+      "fixture.json"
+    ],
+    "provider_entrypoint": "render_report",
+    "required_schema": "fieldkest.report/v2",
+    "immutable_fields": [
+      "asset_id",
+      "connector_revision",
+      "captured_at",
+      "observations"
+    ],
+    "mutable_fields": [
+      "assessment.rating",
+      "assessment.summary"
+    ],
+    "baseline_sha256": "da511020fa2f2e23ec74ea3e8e2f8e19452ae90bcdd32fea2e0602b8573d6564",
+    "timeout_seconds": 10,
+    "network": "none",
+    "root_filesystem": "read-only",
+    "memory_mebibytes": 128,
+    "cpus": 0.5,
+    "success_requires_changed_report": true,
+    "publish_to_support_handover": true
+  }
+}
+

@@ -1,0 +1,8 @@
+[credential]
+	helper = store --file /home/rowan/.config/git/credentials
+[http "https://source.keplerops.test"]
+	sslCAInfo = /home/rowan/.local/share/keplerops/ca.crt
+[user]
+	name = Rowan Ito
+	email = rowan.ito@keplerops.com
+

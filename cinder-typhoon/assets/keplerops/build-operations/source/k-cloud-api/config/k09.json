@@ -1,0 +1,19 @@
+{
+  "records": {
+    "BLD-REC-021": {
+      "classification": "recovery",
+      "status": "retained"
+    },
+    "BLD-REL-742": {
+      "classification": "release-dossier",
+      "status": "retained"
+    }
+  },
+  "schema": "fieldkest.build-record-service/v1",
+  "worker_status": {
+    "accepted_audience": "build-records",
+    "accepted_origin": "10.77.53.0/24",
+    "availability": "available",
+    "principal": "svc-fieldlink-ci"
+  }
+}

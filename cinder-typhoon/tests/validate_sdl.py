@@ -262,7 +262,7 @@ def main() -> None:
             flush=True,
         )
     print(
-        "Static design proof only: no repository, binary, service, image, process simulator, or range was built.",
+        "Static SDL proof only: passing this gate does not assert any service, image, process, deployment, or range is running.",
         flush=True,
     )
 

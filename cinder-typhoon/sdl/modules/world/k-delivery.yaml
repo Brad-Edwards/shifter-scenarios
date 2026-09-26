@@ -114,7 +114,7 @@ nodes:
           methods:
           - GET
           auth_required: true
-          auth_scheme: Bearer or Gitea session
+          auth_scheme: Gitea basic token, bearer token or session
           session_required: true
           responses:
           - status_code: 200
@@ -126,7 +126,7 @@ nodes:
           methods:
           - GET
           auth_required: true
-          auth_scheme: Bearer or Gitea session
+          auth_scheme: Gitea basic token, bearer token or session
           session_required: true
           parameters:
           - name: owner
@@ -152,12 +152,40 @@ nodes:
             content_type: application/json
           - status_code: 404
             content_type: application/json
+        - route_id: repository-git
+          path: /{owner}/{repo}.git/{service_path}
+          methods:
+          - GET
+          - POST
+          auth_required: true
+          auth_scheme: Gitea basic token, bearer token or session
+          session_required: true
+          parameters:
+          - name: owner
+            location: path
+            required: true
+            data_type: string
+          - name: repo
+            location: path
+            required: true
+            data_type: string
+          - name: service_path
+            location: path
+            required: true
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: application/octet-stream
+          - status_code: 401
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
         - route_id: protected-handover
           path: /api/fieldkest/handovers/current
           methods:
           - GET
           auth_required: true
-          auth_scheme: Gitea session
+          auth_scheme: Gitea basic token, bearer token or session
           session_required: true
           responses:
           - status_code: 200
@@ -411,6 +439,25 @@ nodes:
           - status_code: 403
             content_type: application/json
           - status_code: 409
+            content_type: application/json
+        - route_id: package-tarball
+          path: /@keplerops%2ffieldlink-connector/-/fieldlink-connector-{version}.tgz
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Bearer or registry session
+          session_required: true
+          parameters:
+          - name: version
+            location: path
+            required: true
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: application/octet-stream
+          - status_code: 403
+            content_type: application/json
+          - status_code: 404
             content_type: application/json
         - route_id: consumer-check
           path: /api/consumer-checks
@@ -939,6 +986,57 @@ nodes:
             content_type: application/json
           - status_code: 404
             content_type: application/json
+        - route_id: review-job-submit
+          path: /api/review-jobs
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          parameters:
+          - name: support_input
+            location: json_body
+            required: true
+            data_type: object or retained-reference string
+          - name: diagnostic
+            location: json_body
+            required: true
+            data_type: object
+          description: Completes normal retained-input reviews and dispatches bounded diagnostics with the same account and workspace binding.
+          responses:
+          - status_code: 202
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+        - route_id: review-job-result
+          path: /api/review-jobs/{run_id}
+          methods: [GET, POST]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          description: Returns retained review/command history; POST to the cancel subresource stops an active child without deleting its workspace.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 202
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: review-workspace-file
+          path: /api/review-workspace/files/{path}
+          methods: [GET, PUT]
+          auth_required: true
+          auth_scheme: Gitea developer session
+          session_required: true
+          description: Symlink-safe upload and download within the submitting account's persistent private workspace.
+          responses:
+          - status_code: 200
+            content_type: application/octet-stream
+          - status_code: 201
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
         - route_id: private-consumer-submit
           path: /api/rehearsals/connector
           methods: [POST]
@@ -992,7 +1090,7 @@ nodes:
           role_ref: developer-ci
           resource_kind: app_resource
           actions: [read, submit]
-          resource_patterns: [runs/*, reviews/import, jobs/*, rehearsals/connector]
+          resource_patterns: [runs/*, reviews/import, jobs/*, review-jobs/*, review-workspace/*, rehearsals/connector]
           effect: allow
         - grant_id: worker-bound-services
           role_ref: worker-lease

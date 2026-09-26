@@ -43,6 +43,24 @@ imports:
 - source: local:modules/world/participant.yaml
   namespace: participant
   version: 0.1.0
+- source: local:modules/content/keplerops-opening-k-dev.yaml
+  namespace: keplerops-opening-k-dev
+  version: 0.1.0
+- source: local:modules/content/keplerops-opening-k-source.yaml
+  namespace: keplerops-opening-k-source
+  version: 0.1.0
+- source: local:modules/content/keplerops-opening-k-ci.yaml
+  namespace: keplerops-opening-k-ci
+  version: 0.1.0
+- source: local:modules/content/keplerops-opening-k-support.yaml
+  namespace: keplerops-opening-k-support
+  version: 0.1.0
+- source: local:modules/content/keplerops-registry-foundation.yaml
+  namespace: keplerops-registry-foundation
+  version: 0.1.0
+- source: local:modules/content/keplerops-k09-foundation.yaml
+  namespace: keplerops-k09-foundation
+  version: 0.1.0
 # BEGIN GENERATED KEPLEROPS CONTENT
 - source: local:modules/content/keplerops-a-connector.yaml
   namespace: keplerops-a-connector

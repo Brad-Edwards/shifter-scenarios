@@ -6,7 +6,8 @@ without inventing gameplay. It survives working-session and context-window
 boundaries by recording the agreed scope, plan, decisions, evidence, current
 state, and exact next action.
 
-**Status:** Gate passed. KeplerOps is ready for hand-building.
+**Status:** Gate passed. KeplerOps hand-building is now authorized and tracked
+in the [golden-range implementation ledger](../../build/keplerops/README.md).
 
 **Out of scope:** building services or images, deploying a range, compiling
 golden artifacts, exercising exploit paths against running systems, integration
@@ -262,10 +263,10 @@ No KeplerOps runtime or materialization claim has been made. Training and ARWC
 validation results remain in their separate readiness ledgers and do not prove
 KeplerOps runtime behavior.
 
-## Resume point
+## Hand-build transition
 
-KeplerOps is ready for hand-building. Stop here. The next authorized stage is a
-progressive golden-range hand build using these contracts; it has not started.
-Do not create repositories, binaries, packages, models, services, images,
-deployment state or evidence adapters until that later stage is explicitly
-started.
+The scenario owner authorized the progressive golden-range hand build on 26
+September 2026. Runtime architecture, implementation waves, build discoveries,
+integration evidence and the current resume point now live in the separate
+[hand-build ledger](../../build/keplerops/README.md). This design ledger remains
+the record of the completed static gate.

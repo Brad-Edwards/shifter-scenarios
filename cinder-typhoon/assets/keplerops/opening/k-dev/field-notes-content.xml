@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" office:version="1.3">
+  <office:body>
+    <office:text>
+      <text:h text:outline-level="1">Field collection notes — August 2026</text:h>
+      <text:p>The previous callback investigation used collection FKCOL-2841. The visible copy of the endpoint details was removed after the handler was retired.</text:p>
+      <text:p>The source package still carries the staging attachment used during the investigation: staging-FKCOL-2841.bin.</text:p>
+      <text:p>Do not run recovered staging material on a workstation. Reconstruct it with the local analysis helper.</text:p>
+    </office:text>
+  </office:body>
+</office:document-content>
+

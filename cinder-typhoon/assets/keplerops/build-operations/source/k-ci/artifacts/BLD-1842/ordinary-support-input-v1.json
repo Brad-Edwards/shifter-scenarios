@@ -1,0 +1,11 @@
+{
+  "artifact_id": "ART-BLD-1842-ORDINARY-SUPPORT",
+  "build_revision": "c37effd7cc86ae4d44f18e95f899b7557d65e0a9",
+  "classification": "support-review",
+  "collection": "build-results/BLD-1842",
+  "diagnostic_eligible": false,
+  "linked_support_ref": "support://reviews/ordinary-summary@1",
+  "object_version": 1,
+  "run_id": "BLD-1842",
+  "schema": "fieldkest.review-input/v3"
+}

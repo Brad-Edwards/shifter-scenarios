@@ -1,0 +1,65 @@
+name: cinder-keplerops-registry-foundation-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-registry-foundation-content
+  version: 0.1.0
+  exports:
+    content:
+    - registry-foundation-state
+    - registry-foundation-workstation
+realization:
+  default: open
+content:
+  registry-foundation-state:
+    type: directory
+    target: k-delivery.k-registry
+    destination: /var/lib/fieldkest-registry
+    description: Exact K05-K08 package metadata, release and tenant records, protected package, inspector fixtures, cryptographic entitlement record, and private service configuration.
+    source:
+      name: cinder-typhoon/keplerops/registry/foundation-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: registry-foundation-state
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/registry/foundation-state
+          version: '2026-09-18'
+          digest: sha256:10434f811ed1a8c967d39b9db63117f407ce6e5675211f08a4090d15082360cd
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, registry, exact-artifact]
+  registry-foundation-workstation:
+    type: directory
+    target: k-corporate.k-dev
+    destination: /home/rowan
+    description: Exact in-world registry engineering notes and normal/compatibility fixtures supplied on Rowan's workstation for K05-K08.
+    source:
+      name: cinder-typhoon/keplerops/registry/workstation
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: registry-foundation-workstation
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/registry/workstation
+          version: '2026-09-18'
+          digest: sha256:f9f9fc8dee5830064be685f3c4af75b434a91bdad090a44d9aa1d6829b1e1992
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, registry, workstation, exact-artifact]

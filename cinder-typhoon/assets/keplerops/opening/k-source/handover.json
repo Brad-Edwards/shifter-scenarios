@@ -1,0 +1,15 @@
+{
+  "schema": "fieldkest.handover/v1",
+  "handover_id": "HND-FLK-2026-09",
+  "revision": 12,
+  "project": "fieldkest/fieldlink-connector",
+  "release": "FLK-7.4.2",
+  "owner": "Rowan Ito",
+  "updated_at": "2026-09-18T16:40:00Z",
+  "notes": [
+    "The connector sample for CRR-OG2 is in the workstation samples directory.",
+    "BLD-1842 still references a report fixture removed from the current tree.",
+    "SUP-2841 contains the last callback-latency discussion with support."
+  ]
+}
+

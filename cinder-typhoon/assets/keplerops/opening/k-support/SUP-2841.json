@@ -1,0 +1,26 @@
+{
+  "schema": "fieldkest.support-conversation/v1",
+  "conversation_id": "SUP-2841",
+  "revision": 7,
+  "subject": "ARWC connector callback latency after 7.4.2 maintenance",
+  "customer": "Alterra Regional Water Company",
+  "asset_id": "CRR-OG2",
+  "connector_revision": "FLK-7.4.2",
+  "participants": [
+    "rowan.ito@keplerops.com",
+    "maya.ranscombe@keplerops.com"
+  ],
+  "messages": [
+    {
+      "at": "2026-09-18T13:58:00Z",
+      "from": "maya.ranscombe@keplerops.com",
+      "text": "The customer-side connector responds, but the maintenance callback sometimes arrives late. I attached the affected asset and revision to this conversation."
+    },
+    {
+      "at": "2026-09-18T14:26:00Z",
+      "from": "rowan.ito@keplerops.com",
+      "text": "I captured FK-SAMPLE-017 for CRR-OG2 on FLK-7.4.2. I will compare the local summary with the report job before the next handover."
+    }
+  ]
+}
+

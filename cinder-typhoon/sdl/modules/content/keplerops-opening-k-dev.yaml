@@ -1,0 +1,65 @@
+name: cinder-keplerops-opening-k-dev-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-opening-k-dev-content
+  version: 0.1.0
+  exports:
+    content:
+    - opening-k-dev-home
+    - opening-k-dev-workbench
+realization:
+  default: open
+content:
+  opening-k-dev-home:
+    type: directory
+    target: k-corporate.k-dev
+    destination: /home/rowan
+    description: Exact Rowan workstation home seed for the opening FieldKest work, including retained browser state, local samples, review export and analysis carrier.
+    source:
+      name: cinder-typhoon/keplerops/opening/k-dev-home
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: opening-k-dev-home
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/opening/k-dev-home
+          version: '2026-09-18'
+          digest: sha256:79ed598c6b084db72e923f702f3da9db37042cc55d38091844ba3505086e4b8a
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, opening, workstation, exact-artifact]
+  opening-k-dev-workbench:
+    type: directory
+    target: k-corporate.k-dev
+    destination: /opt/fieldkest-workbench
+    description: Exact private local-workbench configuration and deterministic repository seed used to establish Rowan's current checkout.
+    source:
+      name: cinder-typhoon/keplerops/opening/k-dev-workbench
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: opening-k-dev-workbench
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/opening/k-dev-workbench
+          version: '2026-09-18'
+          digest: sha256:ddbb1fea3137229ea909d2cd4503426e4deb7240f9cf78293f2cbc91a4d78dd4
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, opening, workbench, exact-artifact]

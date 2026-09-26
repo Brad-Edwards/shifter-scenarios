@@ -34,8 +34,9 @@ content:
       surface_bindings:
       - k-delivery.k-ci/fieldkest-ci/run-log
       - k-delivery.k-source/gitea/repository-content
-      starting_state: Report job BLD-1842; deleted fixtures/report-crr-og2.json in reachable
-        commit fk-test-6d1e9f7; matching test revision.
+      starting_state: Report job BLD-1842; deleted fixtures/report-crr-og2.json at ref fk-test-6d1e9f7
+        and commit 80560bcf8381c36ef82be771e58fc164a349ea07; test tests/test_crr_og2_report.py;
+        fixture SHA-256 da511020fa2f2e23ec74ea3e8e2f8e19452ae90bcdd32fea2e0602b8573d6564.
       mechanic_profile:
         implementation_rule: Implement the exact records, identities, permissions, configuration
           and state in starting_state through the owning node's declared native listener,
@@ -47,8 +48,9 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Report job BLD-1842; deleted fixtures/report-crr-og2.json in reachable commit
-          fk-test-6d1e9f7; matching test revision.
+        input: Report job BLD-1842; deleted fixtures/report-crr-og2.json at ref fk-test-6d1e9f7
+          and commit 80560bcf8381c36ef82be771e58fc164a349ea07; test tests/test_crr_og2_report.py;
+          fixture SHA-256 da511020fa2f2e23ec74ea3e8e2f8e19452ae90bcdd32fea2e0602b8573d6564.
         success: Historical-object read receipt binding commit, fixture digest and test.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
@@ -84,7 +86,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: a9e184b2bf22440fdac9f559d8b84a6acef93939e026ee244e0f6615883f5060
+        digest: c31d84b333826941753600b675679d82829fb9ec8562d449c68962c199f2e0b6
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -107,8 +109,9 @@ content:
         authority: FieldKest importer on k-ci
       surface_bindings:
       - k-delivery.k-ci/fieldkest-ci/review-import
-      starting_state: Documented job-input archive; protected object REVNOTE-1842; allowlisted
-        job namespace and separate review namespace.
+      starting_state: fieldkest.review-import/v1 object selector; raw prefix check for inputs/
+        occurs before one percent-decode and dot-segment normalization; normal object inputs/report-request.json;
+        protected object selected by inputs/%2e%2e/reviews/REVNOTE-1842.json.
       mechanic_profile:
         implementation_rule: Implement the exact records, identities, permissions, configuration
           and state in starting_state through the owning node's declared native listener,
@@ -120,8 +123,9 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Documented job-input archive; protected object REVNOTE-1842; allowlisted
-          job namespace and separate review namespace.
+        input: fieldkest.review-import/v1 object selector; raw prefix check for inputs/
+          occurs before one percent-decode and dot-segment normalization; normal object
+          inputs/report-request.json; protected object selected by inputs/%2e%2e/reviews/REVNOTE-1842.json.
         success: Import audit naming resolved object and immutable input contract; no job
           mutation.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
@@ -158,7 +162,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 87b19a6c7158482a2aba1dddd29736b9bdc10718384cc2e438643640472c6a0d
+        digest: 509f8d77ccee4f4b260dd59bd728a20ae69c6967ea2c569f5e478331251bb04e
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -183,7 +187,9 @@ content:
       - k-delivery.k-ci/fieldkest-ci/isolated-job-submit
       - k-delivery.k-ci/fieldkest-ci/isolated-job-result
       - k-delivery.k-support/support-service/private-handover
-      starting_state: Recovered fixture and report interface fieldkest.report/v2; support
+      starting_state: Template report-consumer-v2; ZIP root files provider.py and fixture.json;
+        entrypoint render_report; schema fieldkest.report/v2; immutable asset, revision,
+        capture, and observation fields; mutable assessment rating and summary; support
         handover consumer.
       mechanic_profile:
         implementation_rule: Implement the exact records, identities, permissions, configuration
@@ -196,8 +202,10 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Recovered fixture and report interface fieldkest.report/v2; support handover
-          consumer.
+        input: Template report-consumer-v2; ZIP root files provider.py and fixture.json;
+          entrypoint render_report; schema fieldkest.report/v2; immutable asset, revision,
+          capture, and observation fields; mutable assessment rating and summary; support
+          handover consumer.
         success: Fresh job, compatible altered report, consumer receipt and support-handover
           view of those exact bytes.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
@@ -234,7 +242,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: d81a986a7cac4ace273d99d5bab49b2c333b19eb8006e30aea6d784eddf34ec1
+        digest: b51bd85d0016d045ae46a064b9ec9ba0e8a54834914c63585c43201ef4c74d22
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -260,12 +268,14 @@ content:
       - k-delivery.k-ci/fieldkest-ci/private-consumer-submit
       starting_state: Synthetic rehearsal input and compatible consumer contract.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        package: '@keplerops/fieldlink-connector'
+        channel: arwc-stable
+        consumer: support-rehearsal-v3
+        input_schema: fieldkest.connector/v3
+        output_schema: fieldkest.rehearsal-result/v1
+        execution: the CI service resolves the immutable published tarball and runs it in
+          a short-lived networkless Node.js worker
+        bounds: the rehearsal tenant is synthetic and has no ARWC route or credential
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -307,7 +317,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 0e83e14fb2bf09b1eed55cfd31de8e1ee0d09438807c94a811fdf3d590f2fbe6
+        digest: b2eda26f651ab5cd4b0bb303d2851140563b8661e894a9a7c112e142efc053d5
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -331,20 +341,23 @@ content:
       surface_bindings:
       - k-delivery.k-ci/fieldkest-ci/run-detail
       - k-delivery.k-ci/fieldkest-ci/run-log
-      starting_state: Failed run, redacted summary, retained log and release-dossier reference.
+      starting_state: Failed run BLD-1842, summary omitting the retained log detail, exact
+        revision c37effd7cc86ae4d44f18e95f899b7557d65e0a9, release dossier BLD-REL-742,
+        recovery record BLD-REC-021, and retained artifact name.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        run_id: BLD-1842
+        revision: c37effd7cc86ae4d44f18e95f899b7557d65e0a9
+        release_dossier: BLD-REL-742
+        recovery_record: BLD-REC-021
+        retained_artifact: integration-review-input-v3.json
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Failed run, redacted summary, retained log and release-dossier reference.
-        success: Log-read receipt with run/dossier/digest.
+        input: Failed run BLD-1842, summary omitting the retained log detail, exact revision
+          c37effd7cc86ae4d44f18e95f899b7557d65e0a9, release dossier BLD-REL-742, recovery
+          record BLD-REC-021, and retained artifact name.
+        success: Log-read receipt binds BLD-1842, BLD-REL-742, and the exact log digest.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -356,7 +369,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Log-read receipt with run/dossier/digest.
+      transition_contract: Log-read receipt binds BLD-1842, BLD-REL-742, and the exact log
+        digest.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -378,7 +392,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 415649c3e58defa046b0e5f8d76403366f73fefd6afd2ea733cbcefbf91f62f2
+        digest: c6a0d9f6536457b7f7a9ee1b00dcc42acfc2a3fc3d1c7defa2b8ca0e589e31c4
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -401,21 +415,24 @@ content:
         authority: CI artifact archive
       surface_bindings:
       - k-delivery.k-ci/fieldkest-ci/historical-artifact
-      starting_state: Completed run metadata naming an output omitted from current result
-        index.
+      starting_state: BLD-1842 metadata names omitted integration-review-input-v3.json,
+        artifact ART-BLD-1842-INTEGRATION-REVIEW, object version 3, build revision c37effd7cc86ae4d44f18e95f899b7557d65e0a9,
+        and SHA-256 b631b38ea24ef0e847b9fb9419d32fe83c67d96a8290c62453db9dfe76fd72d4.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        artifact_id: ART-BLD-1842-INTEGRATION-REVIEW
+        artifact_name: integration-review-input-v3.json
+        object_version: 3
+        build_revision: c37effd7cc86ae4d44f18e95f899b7557d65e0a9
+        sha256: b631b38ea24ef0e847b9fb9419d32fe83c67d96a8290c62453db9dfe76fd72d4
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Completed run metadata naming an output omitted from current result index.
-        success: Artifact retrieval with object version and build revision.
+        input: BLD-1842 metadata names omitted integration-review-input-v3.json, artifact
+          ART-BLD-1842-INTEGRATION-REVIEW, object version 3, build revision c37effd7cc86ae4d44f18e95f899b7557d65e0a9,
+          and SHA-256 b631b38ea24ef0e847b9fb9419d32fe83c67d96a8290c62453db9dfe76fd72d4.
+        success: Artifact retrieval binds the run, object version, build revision, digest,
+          collection and linked support reference.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -427,7 +444,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Artifact retrieval with object version and build revision.
+      transition_contract: Artifact retrieval binds the run, object version, build revision,
+        digest, collection and linked support reference.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -449,7 +467,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 7daa6c11d307f28adb54c09f63e861c1b94425d2685bf1654a58c04c0a0c1169
+        digest: 0a046185c102d9f8ea4e747fd9bfa77e6676a379353b745a5e25d0c4c3c984f8
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -469,26 +487,31 @@ content:
       record_key: a-job-input-with-reach
       owner:
         node: k-ci
-        authority: CI review importer
+        authority: CI review job
       surface_bindings:
-      - k-delivery.k-ci/fieldkest-ci/review-import
-      starting_state: Exact existing diagnostic-request-reference.md; retained integration
-        input and revision.
+      - k-delivery.k-ci/fieldkest-ci/review-job-submit
+      - k-delivery.k-ci/fieldkest-ci/review-job-result
+      starting_state: Exact diagnostic-request-reference.md; retained artifact ART-BLD-1842-INTEGRATION-REVIEW
+        links from collection build-results/BLD-1842 to buildops://reviews/diagnostic-request-reference@3;
+        ordinary comparison input lacks diagnostic eligibility.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        collection: build-results/BLD-1842
+        linked_support_ref: buildops://reviews/diagnostic-request-reference@3
+        workspace_generation: WS-ROWAN-2026-09-G1
+        retained_reference: fresh SIR-* bound to rowan.ito, artifact, object version, resolved
+          support reference and workspace generation
+        defect: the review resolver authorizes the artifact collection before following
+          its server-owned linked support reference outside that collection
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Exact existing diagnostic-request-reference.md; retained integration input
-          and revision.
-        success: Completed normal review returns operator/workspace-generation-bound support_input
-          reference.
+        input: Exact diagnostic-request-reference.md; retained artifact ART-BLD-1842-INTEGRATION-REVIEW
+          links from collection build-results/BLD-1842 to buildops://reviews/diagnostic-request-reference@3;
+          ordinary comparison input lacks diagnostic eligibility.
+        success: Completed render-review returns the maintained reference and a fresh SIR-*
+          reference bound to rowan.ito, workspace generation WS-ROWAN-2026-09-G1, artifact,
+          object version and resolved support reference.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -500,8 +523,9 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Completed normal review returns operator/workspace-generation-bound
-        support_input reference.
+      transition_contract: Completed render-review returns the maintained reference and
+        a fresh SIR-* reference bound to rowan.ito, workspace generation WS-ROWAN-2026-09-G1,
+        artifact, object version and resolved support reference.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -523,7 +547,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 91c9d17d7971d8e2f5dd0ffc7ca6af679261ce71d1363fa6c272770f1aec9cfa
+        digest: 5678b7227e17886fd053bc750df4a95f02a299d7d509274dcf8a48be6fd0bf1e
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -545,26 +569,35 @@ content:
         node: k-ci
         authority: CI isolated runner + cloud build-record app
       surface_bindings:
-      - k-delivery.k-ci/fieldkest-ci/isolated-job-submit
-      - k-delivery.k-ci/fieldkest-ci/isolated-job-result
+      - k-delivery.k-ci/fieldkest-ci/review-job-submit
+      - k-delivery.k-ci/fieldkest-ci/review-job-result
+      - k-delivery.k-ci/fieldkest-ci/review-workspace-file
       - k-cloud.k-cloud-api/fieldkest-cloud-api/build-record
-      starting_state: Exact existing runner-operations.md; generated connection files; private
-        workspace; per-run worker lease.
+      starting_state: Exact runner-operations.md; build-operations worker image; private
+        Rowan workspace; svc-fieldlink-ci; 180-second audience-scoped HMAC leases bound
+        to 10.77.53.0/24; exact service connection files.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        profile: runner-command
+        worker_principal: svc-fieldlink-ci
+        worker_origin: 10.77.53.0/24
+        lease: 180-second HMAC-SHA256 tokens with distinct source, packages and build-records
+          audiences
+        workspace: private persistent cinder-keplerops-ci-rowan-workspace mounted at /workspace
+        proof: trusted wrapper records actual argv, exit status, opened paths and process
+          cleanup outside /workspace; build-record service independently audits request
+          ID, run, lease, principal and origin
+        bounds: read-only root, resource limits, no runtime socket, no host paths, only
+          exact allowlisted service addresses through the job router
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Exact existing runner-operations.md; generated connection files; private
-          workspace; per-run worker lease.
-        success: 'Two jobs: internal-note read, then independently authenticated worker-status
-          request with joined audits.'
+        input: Exact runner-operations.md; build-operations worker image; private Rowan
+          workspace; svc-fieldlink-ci; 180-second audience-scoped HMAC leases bound to 10.77.53.0/24;
+          exact service connection files.
+        success: Distinct real command jobs read the protected note and call /api/build-records/worker-status;
+          runner proof and destination audit join on run, lease, request, principal and
+          origin.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -576,8 +609,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: 'Two jobs: internal-note read, then independently authenticated
-        worker-status request with joined audits.'
+      transition_contract: Distinct real command jobs read the protected note and call /api/build-records/worker-status;
+        runner proof and destination audit join on run, lease, request, principal and origin.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -599,7 +632,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 557473224fd19c04357172185b5ae451d20cb9bd9c9316fe3e65e383724a12fc
+        digest: 9f1cfd7cd6b908039ada926e23071710fca6ffa61d6d8deae8c8c3dec36e299d
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

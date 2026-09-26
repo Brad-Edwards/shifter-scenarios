@@ -1,0 +1,27 @@
+{
+  "schema": "fieldkest.review-note/v1",
+  "review_id": "REVNOTE-1842",
+  "run_id": "BLD-1842",
+  "expected_interface": "fieldkest.report/v2",
+  "extension_point": "report_provider",
+  "archive_layout": [
+    "provider.py",
+    "fixture.json"
+  ],
+  "immutable_fields": [
+    "asset_id",
+    "connector_revision",
+    "captured_at",
+    "observations"
+  ],
+  "mutable_fields": [
+    "assessment.rating",
+    "assessment.summary"
+  ],
+  "baseline": {
+    "repository": "fieldkest/fieldlink-connector",
+    "ref": "fk-test-6d1e9f7",
+    "path": "fixtures/report-crr-og2.json"
+  }
+}
+

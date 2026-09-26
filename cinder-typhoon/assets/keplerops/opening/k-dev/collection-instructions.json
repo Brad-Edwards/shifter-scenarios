@@ -1,0 +1,14 @@
+{
+  "schema": "fieldkest.collection-instructions/v1",
+  "instruction_set": "COLLECT-FK-3",
+  "endpoint_id": "CB-17",
+  "collection_id": "FKCOL-2841",
+  "integrity_algorithm": "sha256",
+  "integrity_input": "UTF-8 callback-stage.ps1 bytes followed by UTF-8 collection-instructions.json bytes",
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8701/api/callback/collection",
+    "content_type": "application/json"
+  }
+}
+

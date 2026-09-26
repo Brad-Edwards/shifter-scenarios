@@ -1,0 +1,29 @@
+{
+  "schema": "fieldkest.support-service/v1",
+  "audit_directory": "/var/lib/fieldkest-support/audit",
+  "sessions": [
+    {
+      "session_id": "ksess_rowan_2841_6Hs8Qp3V",
+      "principal": "rowan.ito",
+      "tenant": "keplerops",
+      "scopes": [
+        "conversations:SUP-2841:read"
+      ],
+      "expires_at": "2026-10-18T13:42:00Z"
+    }
+  ],
+  "conversations": {
+    "SUP-2841": "/var/lib/fieldkest-support/conversations/SUP-2841.json"
+  },
+  "private_handover": {
+    "source": "fieldkest-ci",
+    "accepted_schema": "fieldkest.report/v2",
+    "required_bindings": [
+      "job_id",
+      "report_sha256",
+      "asset_id",
+      "connector_revision"
+    ],
+    "reader": "rowan.ito"
+  }
+}

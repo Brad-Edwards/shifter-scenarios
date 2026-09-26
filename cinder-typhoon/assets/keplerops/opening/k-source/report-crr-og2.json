@@ -1,0 +1,24 @@
+{
+  "schema": "fieldkest.report/v2",
+  "report_id": "RPT-CRR-OG2-BASELINE",
+  "asset_id": "CRR-OG2",
+  "connector_revision": "FLK-7.4.2",
+  "captured_at": "2026-09-18T14:22:16Z",
+  "observations": [
+    {
+      "check": "connector-heartbeat",
+      "status": "delayed",
+      "latency_ms": 1840
+    },
+    {
+      "check": "archive-synchronization",
+      "status": "ok",
+      "records": 28
+    }
+  ],
+  "assessment": {
+    "rating": "observe",
+    "summary": "Connector responds, but heartbeat latency should be reviewed."
+  }
+}
+
