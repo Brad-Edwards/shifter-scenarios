@@ -23,6 +23,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
 import psycopg2
+import schedule33
 
 
 ROOT = pathlib.Path("/var/lib/arwc-data")
@@ -63,6 +64,8 @@ PROCESS_PATHS = {
     "/api/the-vault-s-misleading-length", "/api/past-the-parser-s-boundary",
     "/api/the-state-execution-returns-to", "/api/the-diagnostic-service-s-authority",
     "/api/the-replay-s-pieces", "/api/the-systems-that-update-it",
+    "/api/a-forecast-that-matches-the-instrument", "/api/the-expensive-hour",
+    "/api/the-schedule-the-service-accepts", "/api/when-the-forecast-moves",
     "/api/the-condition-the-old-model-used", "/api/replay-is-not-reality",
 }
 
@@ -332,6 +335,10 @@ def initialize() -> None:
             "w29_plan_observed": False,
             "w29_tariff": None,
             "w29_balance": None,
+            "w33_schedule_observed": False, "w33_schedule_response": None,
+            "w34_view_observed": False, "w34_decision_observed": False,
+            "w34_handover_observed": False, "w34_view_response": None,
+            "w34_decision_response": None, "w34_handover_response": None,
         })
     else:
         state = load_state()
@@ -341,11 +348,14 @@ def initialize() -> None:
             "relation_contract_observed", "relation_exchange_observed", "lineage_observed",
             "diagnostic_estimate_observed",
             "w29_tariff_observed", "w29_balance_observed", "w29_plan_observed",
+            "w33_schedule_observed",
+            "w34_view_observed", "w34_decision_observed", "w34_handover_observed",
         ):
             if key not in state:
                 state[key] = False
                 changed = True
-        for key in ("w29_tariff", "w29_balance"):
+        for key in ("w29_tariff", "w29_balance", "w33_schedule_response", "w34_view_response",
+                    "w34_decision_response", "w34_handover_response"):
             if key not in state:
                 state[key] = None
                 changed = True
@@ -576,6 +586,24 @@ class Handler(BaseHTTPRequestHandler):
             return 409, {"error": "current process evidence is invalid"}
         return response.status, result
 
+    def w34_internal(self, path: str, request: dict[str, object]) -> tuple[int, dict[str, object]]:
+        data = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
+        outbound = urllib.request.Request(
+            "https://10.77.62.20" + path, data=data,
+            headers={"Content-Type": "application/json", "X-ARWC-Internal": "planning-data-w34",
+                     "X-ARWC-Tenant": "arwc"}, method="POST",
+        )
+        context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
+        try:
+            response = urllib.request.urlopen(outbound, context=context, timeout=5)
+        except urllib.error.HTTPError as error:
+            response = error
+        except OSError:
+            return 409, {"error": "reporting dependency unavailable"}
+        try: result = json.loads(response.read())
+        except json.JSONDecodeError: return 409, {"error": "reporting dependency returned invalid data"}
+        return response.status, result
+
     def do_GET(self) -> None:
         if (self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test" and
                 urlsplit(self.path).path in PROCESS_PATHS):
@@ -628,6 +656,38 @@ class Handler(BaseHTTPRequestHandler):
         self.accepted("the-query-the-planner-keeps", DEFINITION)
 
     def do_POST(self) -> None:
+        if urlsplit(self.path).path == "/internal/w33-schedule":
+            if (self.headers.get("X-ARWC-Internal") != "data-bridge-w33" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] != "10.77.62.20"):
+                self.send_json(403, {"error": "integration service context required"}); return
+            request = self.body()
+            if request is None: return
+            correlation = request.get("correlation"); binding = request.get("request"); supplied = request.get("evaluation")
+            try: correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
+            except (TypeError, ValueError): correlation_valid = False
+            evaluated = None if not isinstance(binding, dict) else schedule33.evaluate_schedule(
+                binding.get("reservoir_release_m3s"), binding.get("alternate_supply_m3s"),
+                binding.get("demand_m3s"))
+            if (set(request) != {"correlation", "request", "evaluation"} or not correlation_valid or
+                    binding.get("checkpoint") != schedule33.CHECKPOINT or binding.get("interval_seconds") != 300 or
+                    binding.get("demand_m3s") != schedule33.DEMAND or evaluated is None or supplied != evaluated):
+                self.send_json(409, {"error": "planning schedule rejected"}); return
+            state = load_state(); existing = state.get("w33_schedule_response")
+            if isinstance(existing, dict):
+                if existing.get("audit_id") == correlation: self.send_json(201, existing)
+                else: self.send_json(409, {"error": "schedule already recorded under another correlation"})
+                return
+            record = {"record_id": "PLAN-SCHED-CRR-33", "revision": 1,
+                      "request_correlation": correlation, **evaluated,
+                      "demand_m3s": binding["demand_m3s"],
+                      "reservoir_release_m3s": binding["reservoir_release_m3s"],
+                      "alternate_supply_m3s": binding["alternate_supply_m3s"]}
+            response = {"audit_id": append_audit("the-expensive-hour", record, str(correlation)),
+                        "record": record}
+            state["w33_schedule_observed"] = True; state["w33_schedule_response"] = response; save_state(state)
+            atomic_json(ROOT / "results/PLAN-SCHED-CRR-33.json", record)
+            self.send_json(201, response); return
         if urlsplit(self.path).path == "/internal/diagnostic-estimate":
             if (self.headers.get("X-ARWC-Internal") != "data-bridge-r27" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
@@ -687,8 +747,135 @@ class Handler(BaseHTTPRequestHandler):
             self.w29_balance(request)
         elif path == "/api/paper-truth":
             self.w29_plan(request)
+        elif path == "/api/which-view-the-planner-trusts":
+            self.w34_view(request)
+        elif path == "/api/a-reassuring-decision":
+            self.w34_decision(request)
+        elif path == "/api/still-reassuring-after-the-handover":
+            self.w34_handover(request)
         else:
             self.send_json(404, {"error": "record not found"})
+
+    def w34_view(self, request: dict[str, object]) -> None:
+        if not process_interpretation_prerequisite():
+            self.send_json(403, {"error": "current process interpretation evidence required"}); return
+        source = request.get("source")
+        expected = {"checkpoint": "REH-REPORT-34", "consumer": "PLAN-CONSUMER-R8",
+                    "consumer_revision": 8, "source": source,
+                    "estimate": {"Cairn Reach": 13.4, "North": 8.1, "Merewick": 7.65},
+                    "refresh_interval_seconds": 300,
+                    "raw_observations": ["MTR-CRR-DP3-R12", "FIT-CRR-204A", "FIT-CRR-204B"]}
+        if request != expected or source not in {"ALLOC-CASE-CRR-33", "DPG-CRR-CINDER"}:
+            self.send_json(409, {"error": "planning consumer input binding rejected"}); return
+        if source == "DPG-CRR-CINDER":
+            capability = load_evidence(ROOT / "results/PLAN-CONSUMER-R8.json")
+        else:
+            status, response = self.w34_internal("/internal/w34-estimate", {
+                "source": source, "consumer": "PLAN-CONSUMER-R8",
+            })
+            if status != 200:
+                self.send_json(status if status in {403, 409} else 409, response); return
+            capability = response.get("record")
+        if (not isinstance(capability, dict) or capability.get("record_id") not in {
+                "PLAN-CONSUMER-R8", "ALLOC-CASE-CRR-33"} or
+                capability.get("estimate") != expected["estimate"] or capability.get("quality") != "valid" or
+                capability.get("raw_process_observations_changed") is not False or
+                capability.get("independent_instruments_changed") is not False):
+            self.send_json(403, {"error": "accepted controlled estimate required"}); return
+        state = load_state(); existing = state.get("w34_view_response")
+        if isinstance(existing, dict):
+            if existing.get("record", {}).get("source") == source: self.send_json(201, existing)
+            else: self.send_json(409, {"error": "checkpoint already refreshed from another source"})
+            return
+        correlation = str(uuid.uuid4())
+        record = {"record_id": "VIEW-CRR-34", "revision": 1, "request_correlation": correlation,
+                  "checkpoint": "REH-REPORT-34", "consumer": "PLAN-CONSUMER-R8",
+                  "consumer_revision": 8, "source": source, "source_record": capability["record_id"],
+                  "estimate": expected["estimate"], "unit": "ML", "quality": "valid",
+                  "refresh_interval_seconds": 300, "raw_observations": expected["raw_observations"],
+                  "raw_process_observations_changed": False, "independent_instruments_changed": False}
+        response = {"audit_id": append_audit("which-view-the-planner-trusts", record, correlation), "record": record}
+        state["w34_view_observed"] = True; state["w34_view_response"] = response; save_state(state)
+        atomic_json(ROOT / "results/VIEW-CRR-34.json", record); self.send_json(201, response)
+
+    def w34_decision(self, request: dict[str, object]) -> None:
+        expected = {"view": "VIEW-CRR-34", "checkpoint": "REH-REPORT-34", "unit": "ML",
+                    "freshness_seconds": 40, "source_set": ["Cairn Reach", "North", "Merewick"],
+                    "unaffected": {"North": 8.1, "Merewick": 7.65},
+                    "meter_reserve_ml": 12.4, "variance_limit_ml": 1.2}
+        state = load_state(); view_response = state.get("w34_view_response")
+        if not isinstance(view_response, dict):
+            self.send_json(403, {"error": "refreshed planning view required"}); return
+        if request != expected:
+            self.send_json(409, {"error": "planning consistency binding rejected"}); return
+        existing = state.get("w34_decision_response")
+        if isinstance(existing, dict): self.send_json(201, existing); return
+        view = view_response.get("record"); estimate = view.get("estimate") if isinstance(view, dict) else None
+        variance = None if not isinstance(estimate, dict) else round(float(estimate["Cairn Reach"]) - 12.4, 2)
+        if variance is None or variance >= 1.2 or estimate.get("North") != 8.1 or estimate.get("Merewick") != 7.65:
+            self.send_json(409, {"error": "planning view failed consistency checks"}); return
+        correlation = str(uuid.uuid4())
+        checks = {"unit_valid": True, "freshness_valid": True, "source_set_valid": True,
+                  "unaffected_district_totals_valid": True, "variance_valid": True}
+        record = {"record_id": "DECISION-CRR-34", "revision": 1, "request_correlation": correlation,
+                  "checkpoint": "REH-REPORT-34", "view": "VIEW-CRR-34",
+                  "ordinary_estimate_ml": 12.4, "controlled_estimate_ml": 13.4,
+                  "meter_reserve_ml": 12.4, "variance_ml": variance, "variance_limit_ml": 1.2,
+                  "ordinary_decision": "ALLOC-HOLD-R3", "decision": "ALLOC-EXPAND-R2",
+                  "decision_changed": True, "consistency": "accepted", "checks": checks,
+                  "unaffected": expected["unaffected"]}
+        response = {"audit_id": append_audit("a-reassuring-decision", record, correlation), "record": record}
+        state["w34_decision_observed"] = True; state["w34_decision_response"] = response; save_state(state)
+        atomic_json(ROOT / "results/DECISION-CRR-34.json", record); self.send_json(201, response)
+
+    def w34_handover(self, request: dict[str, object]) -> None:
+        state = load_state()
+        if not isinstance(state.get("w34_decision_response"), dict):
+            self.send_json(403, {"error": "accepted changed planning decision required"}); return
+        schedule = request.get("schedule")
+        evaluated = None if not isinstance(schedule, dict) else schedule33.evaluate_schedule(
+            schedule.get("reservoir_release_m3s"), schedule.get("alternate_supply_m3s"),
+            schedule.get("demand_m3s"))
+        expected_keys = {"checkpoint", "view", "decision", "control_client", "schedule", "handover"}
+        if (set(request) != expected_keys or not isinstance(request.get("control_client"), str) or
+                request.get("checkpoint") != "REH-REPORT-34" or request.get("view") != "VIEW-CRR-34" or
+                request.get("decision") != "ALLOC-EXPAND-R2" or
+                request.get("handover") != {"estimate_ml": 13.4, "unit": "ML", "status": "consistent",
+                                                "interval": "ALLOC-2026-DP3"} or
+                evaluated is None or evaluated.get("reservoir_volume_ml") != 0.81 or
+                evaluated.get("final_buffer_m3") != 180.0):
+            self.send_json(409, {"error": "reporting checkpoint request rejected"}); return
+        existing = state.get("w34_handover_response")
+        if isinstance(existing, dict):
+            if existing.get("record", {}).get("schedule_sha256") == evaluated["schedule_sha256"]:
+                self.send_json(201, existing)
+            else: self.send_json(409, {"error": "another schedule already owns this reporting checkpoint"})
+            return
+        correlation = str(uuid.uuid4())
+        status, observed = self.w34_internal("/internal/w34-handover", {
+            "correlation": correlation, "request": request, "evaluation": evaluated,
+        })
+        instrument = observed.get("record")
+        if (status != 201 or observed.get("audit_id") != correlation or not isinstance(instrument, dict) or
+                instrument.get("record_id") != "INST-REPORT-CRR-34" or
+                instrument.get("measured_release_ml") != 0.81 or instrument.get("reserve_after_ml") != 11.59):
+            self.send_json(status if status in {403, 409} else 409, observed); return
+        record = {"record_id": "REPORT-CRR-34", "revision": 1, "request_correlation": correlation,
+                  "checkpoint": "REH-REPORT-34", "interval": "ALLOC-2026-DP3",
+                  "view": "VIEW-CRR-34", "decision_record": "DECISION-CRR-34",
+                  "ordinary_decision": "ALLOC-HOLD-R3", "decision": "ALLOC-EXPAND-R2",
+                  "planning_handover_reserve_ml": 13.4, "report_consistency": "accepted",
+                  "independent_release_ml": 0.81, "independent_reserve_before_ml": 12.4,
+                  "independent_reserve_after_ml": 11.59, "reported_truth_difference_ml": 1.81,
+                  "schedule_sha256": evaluated["schedule_sha256"],
+                  "live_process_state_changed": False, "prior_evidence_changed": False}
+        response = {"audit_id": append_audit("still-reassuring-after-the-handover", record, correlation),
+                    "instrument_audit_id": observed["instrument_audit_id"],
+                    "reservoir_audit_id": observed["reservoir_audit_id"], "record": record,
+                    "instrument_observation": instrument,
+                    "reservoir_observation": observed["reservoir_observation"]}
+        state["w34_handover_observed"] = True; state["w34_handover_response"] = response; save_state(state)
+        atomic_json(ROOT / "results/REPORT-CRR-34.json", record); self.send_json(201, response)
 
     def w29_balance(self, request: dict[str, object]) -> None:
         if not process_interpretation_prerequisite():

@@ -86,6 +86,8 @@ PROCESS_PATHS = {
     "/api/the-state-execution-returns-to", "/api/the-diagnostic-service-s-authority",
     "/api/the-replay-s-pieces", "/api/the-systems-that-update-it",
     "/api/the-condition-the-old-model-used", "/api/replay-is-not-reality",
+    "/api/a-forecast-that-matches-the-instrument", "/api/the-expensive-hour",
+    "/api/the-schedule-the-service-accepts", "/api/when-the-forecast-moves",
 }
 CONTROL_BROKER_PATH = "/api/an-approval-becomes-a-control-client"
 

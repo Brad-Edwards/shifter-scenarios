@@ -51,6 +51,8 @@ PROCESS_PATHS = {
     "/api/the-state-execution-returns-to", "/api/the-diagnostic-service-s-authority",
     "/api/the-replay-s-pieces", "/api/the-systems-that-update-it",
     "/api/the-condition-the-old-model-used", "/api/replay-is-not-reality",
+    "/api/a-forecast-that-matches-the-instrument", "/api/the-expensive-hour",
+    "/api/the-schedule-the-service-accepts", "/api/when-the-forecast-moves",
 }
 
 
@@ -182,6 +184,51 @@ class Handler(BaseHTTPRequestHandler):
         self.proxy_historian()
 
     def do_POST(self) -> None:
+        if urlsplit(self.path).path in {"/internal/w34-estimate", "/internal/w34-handover"}:
+            if (self.headers.get("X-ARWC-Internal") != "planning-data-w34" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] != "10.77.62.10"):
+                self.send_json(403, {"error": "planning service context required"}); return
+            request = self.body()
+            if request is None: return
+            path = urlsplit(self.path).path
+            target = "10.77.63.50" if path.endswith("estimate") else "10.77.63.20"
+            target_path = path
+            payload = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
+            context = ssl.create_default_context(cafile="/tmp/ca.crt")
+            connection = http.client.HTTPSConnection(target, 443, context=context, timeout=5)
+            try:
+                connection.request("POST", target_path, body=payload, headers={
+                    "Content-Type": "application/json", "Content-Length": str(len(payload)),
+                    "X-ARWC-Internal": "data-bridge-w34", "X-ARWC-Tenant": "arwc",
+                })
+                response = connection.getresponse(); result = json.loads(response.read())
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "reporting dependency unavailable"}); return
+            finally:
+                connection.close()
+            self.send_json(response.status, result); return
+        if urlsplit(self.path).path == "/internal/w33-schedule":
+            if (self.headers.get("X-ARWC-Internal") != "hmi-w33" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] != "10.77.63.20"):
+                self.send_json(403, {"error": "supervisory service context required"}); return
+            request = self.body()
+            if request is None: return
+            payload = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
+            context = ssl.create_default_context(cafile="/tmp/ca.crt")
+            connection = http.client.HTTPSConnection("10.77.62.10", 443, context=context, timeout=5)
+            try:
+                connection.request("POST", "/internal/w33-schedule", body=payload, headers={
+                    "Content-Type": "application/json", "Content-Length": str(len(payload)),
+                    "X-ARWC-Internal": "data-bridge-w33", "X-ARWC-Tenant": "arwc",
+                })
+                response = connection.getresponse(); result = json.loads(response.read())
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "planning schedule service unavailable"}); return
+            finally:
+                connection.close()
+            self.send_json(response.status, result); return
         if urlsplit(self.path).path in {
             "/internal/w29-reserve-observation", "/internal/w29-paper-truth",
         }:

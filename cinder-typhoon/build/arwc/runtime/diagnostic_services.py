@@ -411,6 +411,26 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(200, {"audit_id": append_audit("two-kinds-of-answer", record), "record": record})
 
     def do_POST(self) -> None:
+        if urlsplit(self.path).path == "/internal/w34-estimate":
+            if (self.headers.get("X-ARWC-Internal") != "data-bridge-w34" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] != "10.77.63.10"):
+                self.send_json(403, {"error": "integration service context required"}); return
+            request = self.body()
+            if request is None: return
+            state = load_state()
+            if request != {"source": "ALLOC-CASE-CRR-33", "consumer": "PLAN-CONSUMER-R8"}:
+                self.send_json(409, {"error": "estimate capability binding rejected"}); return
+            if not state.get("false_estimate_observed"):
+                self.send_json(403, {"error": "accepted estimator output required"}); return
+            self.send_json(200, {"record": {
+                "record_id": "ALLOC-CASE-CRR-33", "revision": 33,
+                "consumer": "PLAN-CONSUMER-R8",
+                "estimate": {"Cairn Reach": 13.4, "North": 8.1, "Merewick": 7.65},
+                "quality": "valid", "raw_process_observations_changed": False,
+                "independent_instruments_changed": False,
+            }})
+            return
         if not self.authorized(): return
         request = self.body()
         if request is None: return

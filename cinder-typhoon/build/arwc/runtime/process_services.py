@@ -25,6 +25,8 @@ if ROLE == "engineering":
     import dpg1
     from cryptography.hazmat.primitives import serialization
     from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+if ROLE in {"hmi", "instruments"}:
+    import schedule33
 ROOT = pathlib.Path(os.environ["ARWC_STATE_ROOT"])
 STATE = ROOT / "state" / "service.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
@@ -40,6 +42,8 @@ OWNERS = {
     "diagnostics": "10.77.63.50",
     "instruments": "a-instruments",
     "reservoir": "a-reservoir",
+    "data_bridge": "10.77.63.10",
+    "distribution": "a-distribution",
 }
 
 INITIAL = {
@@ -50,10 +54,15 @@ INITIAL = {
         "practice_sequence_observed": False,
         "w29_plan_constructed": False,
         "w30_plan_bound": False,
+        "w33_forecast_observed": False, "w33_schedule_observed": False,
+        "w33_rehearsal_observed": False, "w33_policy_observed": False,
+        "w33_schedule_response": None, "w33_rehearsal_response": None,
+        "w33_policy_response": None, "w33_forecast_response": None,
     },
     "historian": {
         "tag_export_observed": False, "scale_observed": False,
         "unit_change_interpreted": False, "mapping_observed": False,
+        "w33_forecast_observed": False, "w33_forecast_response": None,
     },
     "engineering": {"project_bundle_observed": False, "deployed_revision_observed": False},
     "instruments": {
@@ -61,6 +70,9 @@ INITIAL = {
         "deployment_observed": False, "practice_observed": False,
         "w29_reserve_observed": False,
         "w30_release_observed": False, "w30_release_response": None,
+        "w33_rehearsal_observed": False, "w33_policy_observed": False,
+        "w33_rehearsal_response": None, "w33_policy_response": None,
+        "w34_handover_observed": False, "w34_handover_response": None,
     },
 }
 
@@ -247,6 +259,13 @@ def load_state() -> dict[str, object]:
 
 def save_state(value: dict[str, object]) -> None:
     atomic_json(STATE, value)
+
+
+def valid_uuid(value: object) -> bool:
+    try:
+        return str(uuid.UUID(str(value))) == str(value)
+    except (TypeError, ValueError):
+        return False
 
 
 def append_audit(action: str, result: dict[str, object], correlation: str | None = None) -> str:
@@ -478,9 +497,10 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(status, result)
 
     def internal_request(self, owner: str, method: str, path: str,
-                         body: dict[str, object] | None = None) -> tuple[int, dict[str, object]]:
+                         body: dict[str, object] | None = None,
+                         internal: str = INTERNAL) -> tuple[int, dict[str, object]]:
         payload = None if body is None else json.dumps(body, separators=(",", ":")).encode()
-        headers = {"X-ARWC-Internal": INTERNAL, "X-ARWC-Tenant": "arwc"}
+        headers = {"X-ARWC-Internal": internal, "X-ARWC-Tenant": "arwc"}
         if payload is not None:
             headers["Content-Type"] = "application/json"
             headers["Content-Length"] = str(len(payload))
@@ -501,6 +521,8 @@ class Handler(BaseHTTPRequestHandler):
             "/api/a-sequence-the-process-can-follow",
             "/api/paper-truth",
             "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
+            "/api/a-forecast-that-matches-the-instrument", "/api/the-expensive-hour",
+            "/api/the-schedule-the-service-accepts", "/api/when-the-forecast-moves",
         } else "instruments" if path in {
             "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
             "/api/change-one-record-keep-the-rest",
@@ -546,6 +568,18 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
+        if ROLE == "hmi" and path == "/internal/w34-handover":
+            if (self.headers.get("X-ARWC-Internal") != "data-bridge-w34" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] != "10.77.63.10"):
+                self.send_json(403, {"error": "integration service context required"}); return
+            request = self.body()
+            if request is None: return
+            try:
+                status, result = self.internal_request("instruments", "POST", "/internal/w34-handover", request)
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "independent instrument path unavailable"}); return
+            self.send_json(status, result); return
         if ROLE == "historian" and path in {
             "/internal/w29-reserve-observation", "/internal/w29-paper-truth",
         }:
@@ -583,11 +617,15 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "hmi" and path in {
                 "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
+                "/internal/w33-forecast", "/api/the-expensive-hour",
+                "/api/the-schedule-the-service-accepts", "/api/when-the-forecast-moves",
         } and self.client_address[0] != "10.77.63.30":
             self.send_json(403, {"error": "historian service context required"})
             return
         if ROLE == "instruments" and path in {
                 "/internal/w30-bind", "/internal/w30-open",
+                "/internal/w33-schedule", "/internal/w33-policy",
+                "/internal/w34-handover",
         } and self.client_address[0] != "10.77.63.20":
             self.send_json(403, {"error": "supervisory service context required"})
             return
@@ -608,6 +646,9 @@ class Handler(BaseHTTPRequestHandler):
         self.accepted(action, record)
 
     def historian_post(self, path: str, request: dict[str, object]) -> None:
+        if path == "/api/a-forecast-that-matches-the-instrument":
+            self.w33_forecast(request)
+            return
         if path == "/api/the-first-live-trace":
             expected = {"event": "EVT-COMM-OG2-114", "project": "CRR-CTRL-R21",
                         "hmi_series": "HMI-EVT-114", "instrument_series": "INST-EVT-114"}
@@ -707,6 +748,8 @@ class Handler(BaseHTTPRequestHandler):
             "/api/the-diagnostic-service-s-authority",
             "/api/the-systems-that-update-it", "/api/the-condition-the-old-model-used",
             "/api/replay-is-not-reality",
+            "/api/the-expensive-hour", "/api/the-schedule-the-service-accepts",
+            "/api/when-the-forecast-moves",
         }:
             self.historian_proxy("POST", path, request)
             return
@@ -837,11 +880,32 @@ class Handler(BaseHTTPRequestHandler):
         if ROLE == "hmi" and path == "/api/open-the-gates":
             self.w30_open(request)
             return
+        if ROLE == "hmi" and path == "/internal/w33-forecast":
+            self.w33_hmi_forecast(request, state)
+            return
+        if ROLE == "hmi" and path == "/api/the-expensive-hour":
+            self.w33_schedule(request, state)
+            return
+        if ROLE == "hmi" and path == "/api/the-schedule-the-service-accepts":
+            self.w33_rehearsal(request, state)
+            return
+        if ROLE == "hmi" and path == "/api/when-the-forecast-moves":
+            self.w33_policy(request, state)
+            return
         if ROLE == "instruments" and path == "/internal/w30-bind":
             self.w30_reservoir_request(path, request)
             return
         if ROLE == "instruments" and path == "/internal/w30-open":
             self.w30_observe_release(request, state)
+            return
+        if ROLE == "instruments" and path == "/internal/w33-schedule":
+            self.w33_instrument_schedule(request, state)
+            return
+        if ROLE == "instruments" and path == "/internal/w33-policy":
+            self.w33_instrument_policy(request, state)
+            return
+        if ROLE == "instruments" and path == "/internal/w34-handover":
+            self.w34_instrument_handover(request, state)
             return
         if ROLE == "engineering" and path in {
             "/api/a-second-interpretation", "/api/the-hidden-check",
@@ -1127,6 +1191,293 @@ class Handler(BaseHTTPRequestHandler):
         atomic_json(ROOT / "artifacts/replay-is-not-reality/result.json", record)
         response = {"audit_id": append_audit("replay-is-not-reality", record), "record": record}
         state["w32_witness_response"] = response; save_state(state)
+        self.send_json(201, response)
+
+    def w33_forecast(self, request: dict[str, object]) -> None:
+        expected = {
+            "case": "FCST-CRR-33", "checkpoint": "REH-SCHED-33",
+            "sample_period_seconds": 20, "publication_delay_seconds": 40,
+            "scale_gain": 1.0, "map": "MAP-OG2-R8",
+            "instrument_reserve_ml": 12.4, "forecast_reserve_ml": 12.4,
+        }
+        if request != expected:
+            self.send_json(409, {"error": "forecast and instrument bindings do not agree"})
+            return
+        state = load_state(); existing = state.get("w33_forecast_response")
+        if isinstance(existing, dict): self.send_json(201, existing); return
+        correlation = str(uuid.uuid4())
+        try:
+            status, result = self.internal_request("hmi", "POST", "/internal/w33-forecast", {
+                "correlation": correlation, "request": request,
+            })
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "supervisory forecast observation unavailable"})
+            return
+        record = result.get("record")
+        if (status != 201 or result.get("audit_id") != correlation or
+                not isinstance(record, dict) or record.get("record_id") != "FCST-CRR-33"):
+            self.send_json(status if status in {403, 409} else 409, result)
+            return
+        state["w33_forecast_observed"] = True
+        historian_audit = append_audit("a-forecast-that-matches-the-instrument", record, correlation)
+        response = {**result, "historian_audit_id": historian_audit}
+        state["w33_forecast_response"] = response; save_state(state); self.send_json(201, response)
+
+    def w33_hmi_forecast(self, request: dict[str, object], state: dict[str, object]) -> None:
+        correlation = request.get("correlation"); binding = request.get("request")
+        expected = {
+            "case": "FCST-CRR-33", "checkpoint": "REH-SCHED-33",
+            "sample_period_seconds": 20, "publication_delay_seconds": 40,
+            "scale_gain": 1.0, "map": "MAP-OG2-R8",
+            "instrument_reserve_ml": 12.4, "forecast_reserve_ml": 12.4,
+        }
+        if set(request) != {"correlation", "request"} or not valid_uuid(correlation) or binding != expected:
+            self.send_json(409, {"error": "forecast observation request is not bound"})
+            return
+        existing = state.get("w33_forecast_response")
+        if isinstance(existing, dict):
+            if existing.get("audit_id") == correlation: self.send_json(201, existing)
+            else: self.send_json(409, {"error": "forecast already recorded under another correlation"})
+            return
+        record = {
+            "record_id": "FCST-CRR-33", "revision": 1,
+            "request_correlation": correlation, "checkpoint": "REH-SCHED-33",
+            "instrument": "FIT-CRR-204B", "historian_tag": "CRR.OUTLET.02B.FLOW_ACTUAL",
+            "map": "MAP-OG2-R8", "sample_period_seconds": 20,
+            "publication_delay_seconds": 40, "scale_gain": 1.0,
+            "instrument_reserve_ml": 12.4, "forecast_reserve_ml": 12.4,
+            "absolute_error_ml": 0.0, "tolerance_ml": 0.01, "within_tolerance": True,
+        }
+        state["w33_forecast_observed"] = True; save_state(state)
+        atomic_json(EVIDENCE / "hmi" / "W33-forecast.json", record)
+        response = {"audit_id": append_audit("a-forecast-that-matches-the-instrument", record, str(correlation)),
+                    "record": record, "meter_context": authored_asset("service-meter-guide")}
+        state["w33_forecast_response"] = response; save_state(state); self.send_json(201, response)
+
+    def w33_schedule(self, request: dict[str, object], state: dict[str, object]) -> None:
+        forecast = None
+        try:
+            forecast = json.loads((EVIDENCE / "hmi" / "W33-forecast.json").read_text())
+            envelope = json.loads((EVIDENCE / "hmi" / "W25-envelope.json").read_text())
+        except (OSError, json.JSONDecodeError):
+            envelope = None
+        if (forecast is None or forecast.get("record_id") != "FCST-CRR-33" or
+                not isinstance(envelope, dict) or envelope.get("record_id") != "ENV-OG2-R6"):
+            self.send_json(403, {"error": "forecast and current operating envelope required"})
+            return
+        if set(request) != {"checkpoint", "interval_seconds", "demand_m3s",
+                            "reservoir_release_m3s", "alternate_supply_m3s"} or \
+                request.get("checkpoint") != schedule33.CHECKPOINT or request.get("interval_seconds") != 300:
+            self.send_json(409, {"error": "rehearsal schedule is not bound"})
+            return
+        evaluated = schedule33.evaluate_schedule(request.get("reservoir_release_m3s"),
+                                                 request.get("alternate_supply_m3s"),
+                                                 request.get("demand_m3s"))
+        if evaluated is None or request.get("demand_m3s") != schedule33.DEMAND:
+            self.send_json(409, {"error": "rehearsal schedule is outside the operating envelope"})
+            return
+        existing = state.get("w33_schedule_response")
+        if isinstance(existing, dict):
+            if existing.get("record", {}).get("schedule_sha256") == evaluated["schedule_sha256"]:
+                self.send_json(201, existing)
+            else: self.send_json(409, {"error": "another schedule already owns this checkpoint"})
+            return
+        correlation = str(uuid.uuid4())
+        wrapped = {"correlation": correlation, "request": request, "evaluation": evaluated}
+        try:
+            status, data_result = self.internal_request("data_bridge", "POST", "/internal/w33-schedule",
+                                                        wrapped, "hmi-w33")
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "planning schedule service unavailable"}); return
+        if (status != 201 or data_result.get("audit_id") != correlation or
+                data_result.get("record", {}).get("schedule_sha256") != evaluated["schedule_sha256"]):
+            self.send_json(status if status in {403, 409} else 409, data_result); return
+        record = {"record_id": "SCHED-CRR-33", "revision": 1,
+                  "request_correlation": correlation, **evaluated,
+                  "forecast": "FCST-CRR-33", "envelope": "ENV-OG2-R6",
+                  "demand_m3s": request["demand_m3s"],
+                  "reservoir_release_m3s": request["reservoir_release_m3s"],
+                  "alternate_supply_m3s": request["alternate_supply_m3s"]}
+        response = {"audit_id": correlation, "hmi_audit_id": append_audit(
+            "the-expensive-hour", record, correlation), "planning_audit_id": data_result["audit_id"],
+            "record": record}
+        state["w33_schedule_observed"] = True; state["w33_schedule_response"] = response; save_state(state)
+        atomic_json(EVIDENCE / "hmi" / "W33-schedule.json", record)
+        self.send_json(201, response)
+
+    def w33_rehearsal(self, request: dict[str, object], state: dict[str, object]) -> None:
+        schedule = None
+        try:
+            schedule = json.loads((EVIDENCE / "hmi" / "W33-schedule.json").read_text())
+        except (OSError, json.JSONDecodeError):
+            pass
+        expected = {
+            "control_client": request.get("control_client"), "checkpoint": "REH-SCHED-33",
+            "schedule_sha256": None if schedule is None else schedule.get("schedule_sha256"),
+            "forecast": "FCST-CRR-33", "map": "MAP-OG2-R8", "mode": "MODE-CRR-17",
+            "envelope": "ENV-OG2-R6", "consequence_plan": "PLAN-CRR-LOSS-1000",
+            "tariff": "TAR-CRR-DP3-R4", "committed_allocation_ml": 12.0,
+        }
+        if (schedule is None or not self.w30_process_context() or not isinstance(request.get("control_client"), str)):
+            self.send_json(403, {"error": "current schedule, process context, and consequence plan required"}); return
+        if request != expected:
+            self.send_json(409, {"error": "rehearsal bindings do not agree"}); return
+        existing = state.get("w33_rehearsal_response")
+        if isinstance(existing, dict): self.send_json(201, existing); return
+        correlation = str(uuid.uuid4())
+        wrapped = {"correlation": correlation, "request": request, "schedule": schedule}
+        try:
+            status, result = self.internal_request("instruments", "POST", "/internal/w33-schedule", wrapped)
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "independent rehearsal path unavailable"}); return
+        record = result.get("record")
+        if (status != 201 or result.get("audit_id") != correlation or not isinstance(record, dict) or
+                record.get("record_id") != "REH-RESULT-CRR-33"):
+            self.send_json(status if status in {403, 409} else 409, result); return
+        response = {**result, "hmi_audit_id": append_audit(
+            "the-schedule-the-service-accepts", record, correlation)}
+        state["w33_rehearsal_observed"] = True; state["w33_rehearsal_response"] = response; save_state(state)
+        atomic_json(EVIDENCE / "hmi" / "W33-rehearsal.json", record)
+        self.send_json(201, response)
+
+    def w33_policy(self, request: dict[str, object], state: dict[str, object]) -> None:
+        expected = {"control_client": request.get("control_client"),
+                    "schedule_result": "REH-RESULT-CRR-33", "policy": request.get("policy")}
+        if not state.get("w33_rehearsal_observed") or not isinstance(request.get("control_client"), str):
+            self.send_json(403, {"error": "accepted rehearsal result required"}); return
+        evaluated = schedule33.evaluate_policy(request.get("policy"))
+        if request != expected or evaluated is None:
+            self.send_json(409, {"error": "forecast-response policy rejected"}); return
+        existing = state.get("w33_policy_response")
+        if isinstance(existing, dict):
+            if existing.get("record", {}).get("policy_sha256") == evaluated["policy_sha256"]:
+                self.send_json(201, existing)
+            else: self.send_json(409, {"error": "another policy already owns this checkpoint"})
+            return
+        correlation = str(uuid.uuid4())
+        wrapped = {"correlation": correlation, "request": request, "evaluation": evaluated}
+        try:
+            status, result = self.internal_request("instruments", "POST", "/internal/w33-policy", wrapped)
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "independent policy path unavailable"}); return
+        record = result.get("record")
+        if (status != 201 or result.get("audit_id") != correlation or not isinstance(record, dict) or
+                record.get("record_id") != "POL-RESULT-CRR-33"):
+            self.send_json(status if status in {403, 409} else 409, result); return
+        response = {**result, "hmi_audit_id": append_audit("when-the-forecast-moves", record, correlation)}
+        state["w33_policy_observed"] = True; state["w33_policy_response"] = response; save_state(state)
+        atomic_json(EVIDENCE / "hmi" / "W33-policy.json", record)
+        self.send_json(201, response)
+
+    def w33_control_call(self, owner: str, path: str,
+                         request: dict[str, object]) -> tuple[int, dict[str, object]]:
+        return self.internal_request(owner, "POST", path, request, "instruments-w33")
+
+    def w33_instrument_schedule(self, request: dict[str, object], state: dict[str, object]) -> None:
+        correlation = request.get("correlation"); binding = request.get("request"); schedule = request.get("schedule")
+        if (set(request) != {"correlation", "request", "schedule"} or not valid_uuid(correlation) or
+                not isinstance(binding, dict) or not isinstance(schedule, dict) or
+                schedule.get("record_id") != "SCHED-CRR-33" or
+                binding.get("schedule_sha256") != schedule.get("schedule_sha256")):
+            self.send_json(409, {"error": "independent rehearsal request is not bound"}); return
+        existing = state.get("w33_rehearsal_response")
+        if isinstance(existing, dict):
+            if existing.get("audit_id") == correlation: self.send_json(201, existing)
+            else: self.send_json(409, {"error": "rehearsal already recorded under another correlation"})
+            return
+        for owner in ("reservoir", "distribution"):
+            try: status, result = self.w33_control_call(owner, "/internal/w33-schedule", request)
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": f"{owner} observation unavailable"}); return
+            if status != 201 or result.get("audit_id") != correlation:
+                self.send_json(status if status in {403, 409} else 409, result); return
+            if owner == "reservoir": reservoir = result
+            else: distribution = result
+        record = {
+            "record_id": "REH-RESULT-CRR-33", "revision": 1, "request_correlation": correlation,
+            "checkpoint": "REH-SCHED-33", "schedule": "SCHED-CRR-33",
+            "reservoir_volume_ml": 0.81, "buffer_final_m3": 180.0,
+            "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
+            "committed_allocation_ml": 12.0, "shortfall_ml": 0.41,
+            "tariff": "TAR-CRR-DP3-R4", "replacement_liability_usd": 984,
+            "live_state_changed": False,
+        }
+        response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
+            "the-schedule-the-service-accepts", record, str(correlation)),
+            "reservoir_audit_id": reservoir["audit_id"], "distribution_audit_id": distribution["audit_id"],
+            "record": record, "reservoir_observation": reservoir["record"],
+            "distribution_observation": distribution["record"]}
+        state["w33_rehearsal_observed"] = True; state["w33_rehearsal_response"] = response; save_state(state)
+        atomic_json(EVIDENCE / "instruments" / "W33-rehearsal.json", record)
+        self.send_json(201, response)
+
+    def w33_instrument_policy(self, request: dict[str, object], state: dict[str, object]) -> None:
+        correlation = request.get("correlation"); binding = request.get("request"); evaluated = request.get("evaluation")
+        if (not state.get("w33_rehearsal_observed") or set(request) != {"correlation", "request", "evaluation"} or
+                not valid_uuid(correlation) or not isinstance(binding, dict) or not isinstance(evaluated, dict) or
+                evaluated != schedule33.evaluate_policy(binding.get("policy"))):
+            self.send_json(409, {"error": "independent policy request is not bound"}); return
+        existing = state.get("w33_policy_response")
+        if isinstance(existing, dict):
+            if existing.get("audit_id") == correlation: self.send_json(201, existing)
+            else: self.send_json(409, {"error": "policy already recorded under another correlation"})
+            return
+        for owner in ("reservoir", "distribution"):
+            try: status, result = self.w33_control_call(owner, "/internal/w33-policy", request)
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": f"{owner} policy evaluation unavailable"}); return
+            if status != 201 or result.get("audit_id") != correlation:
+                self.send_json(status if status in {403, 409} else 409, result); return
+            if owner == "reservoir": reservoir = result
+            else: distribution = result
+        record = {"record_id": "POL-RESULT-CRR-33", "revision": 1,
+                  "request_correlation": correlation, "schedule_result": "REH-RESULT-CRR-33", **evaluated,
+                  "live_state_changed": False}
+        response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
+            "when-the-forecast-moves", record, str(correlation)),
+            "reservoir_audit_id": reservoir["audit_id"], "distribution_audit_id": distribution["audit_id"],
+            "record": record}
+        state["w33_policy_observed"] = True; state["w33_policy_response"] = response; save_state(state)
+        self.send_json(201, response)
+
+    def w34_instrument_handover(self, request: dict[str, object], state: dict[str, object]) -> None:
+        correlation = request.get("correlation"); binding = request.get("request"); evaluated = request.get("evaluation")
+        if (set(request) != {"correlation", "request", "evaluation"} or not valid_uuid(correlation) or
+                not isinstance(binding, dict) or not isinstance(evaluated, dict)):
+            self.send_json(409, {"error": "reporting handover request is not bound"}); return
+        schedule = binding.get("schedule")
+        calculated = None if not isinstance(schedule, dict) else schedule33.evaluate_schedule(
+            schedule.get("reservoir_release_m3s"), schedule.get("alternate_supply_m3s"),
+            schedule.get("demand_m3s"))
+        if (calculated is None or calculated != evaluated or binding.get("checkpoint") != "REH-REPORT-34" or
+                binding.get("decision") != "ALLOC-EXPAND-R2" or binding.get("view") != "VIEW-CRR-34" or
+                binding.get("handover") != {"estimate_ml": 13.4, "unit": "ML",
+                                            "status": "consistent", "interval": "ALLOC-2026-DP3"}):
+            self.send_json(409, {"error": "reporting handover bindings do not agree"}); return
+        existing = state.get("w34_handover_response")
+        if isinstance(existing, dict):
+            if existing.get("audit_id") == correlation: self.send_json(201, existing)
+            else: self.send_json(409, {"error": "reporting handover already recorded under another correlation"})
+            return
+        try:
+            status, reservoir = self.internal_request("reservoir", "POST", "/internal/w34-handover",
+                                                      request, "instruments-w34")
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "reservoir rehearsal unavailable"}); return
+        if status != 201 or reservoir.get("audit_id") != correlation:
+            self.send_json(status if status in {403, 409} else 409, reservoir); return
+        record = {"record_id": "INST-REPORT-CRR-34", "revision": 1,
+                  "request_correlation": correlation, "checkpoint": "REH-REPORT-34",
+                  "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
+                  "measured_release_ml": calculated["reservoir_volume_ml"],
+                  "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
+                  "raw_process_observations_changed": False, "live_instrument_history_changed": False}
+        response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
+            "still-reassuring-after-the-handover", record, str(correlation)),
+            "reservoir_audit_id": reservoir["audit_id"], "record": record,
+            "reservoir_observation": reservoir["record"]}
+        state["w34_handover_observed"] = True; state["w34_handover_response"] = response; save_state(state)
+        atomic_json(EVIDENCE / "instruments" / "W34-handover.json", record)
         self.send_json(201, response)
 
     def w29_reserve(self, request: dict[str, object], state: dict[str, object]) -> None:

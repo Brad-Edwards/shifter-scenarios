@@ -5,7 +5,7 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
 
 docker compose -f compose.yaml down -v --remove-orphans
-docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-renderer a-control-broker a-hmi a-historian a-engineering a-instruments a-reservoir a-diagnostics
+docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-renderer a-control-broker a-hmi a-historian a-engineering a-instruments a-reservoir a-distribution a-diagnostics
 
 for _ in $(seq 1 60); do
   if docker exec --user arwc-connector cinder-arwc-connector \
@@ -74,6 +74,10 @@ for _ in $(seq 1 60); do
       cat /var/lib/arwc-reservoir/state/reservoir.json 2>/dev/null || true)
     reservoir_audit=$(docker exec --user arwc-reservoir cinder-arwc-reservoir \
       sh -c 'wc -c </var/lib/arwc-reservoir/audit/events.jsonl' 2>/dev/null || true)
+    distribution=$(docker exec --user arwc-distribution cinder-arwc-distribution \
+      cat /var/lib/arwc-distribution/state/distribution.json 2>/dev/null || true)
+    distribution_audit=$(docker exec --user arwc-distribution cinder-arwc-distribution \
+      sh -c 'wc -c </var/lib/arwc-distribution/audit/events.jsonl' 2>/dev/null || true)
     diagnostics=$(docker exec --user arwc-diagnostics cinder-arwc-diagnostics \
       cat /var/lib/arwc-diagnostics/state/service.json 2>/dev/null || true)
     diagnostics_audit=$(docker exec --user arwc-diagnostics cinder-arwc-diagnostics \
@@ -129,6 +133,14 @@ for _ in $(seq 1 60); do
       && $data == *'"w29_plan_observed":false'* \
       && $data == *'"w29_tariff":null'* \
       && $data == *'"w29_balance":null'* \
+      && $data == *'"w33_schedule_observed":false'* \
+      && $data == *'"w33_schedule_response":null'* \
+      && $data == *'"w34_view_observed":false'* \
+      && $data == *'"w34_decision_observed":false'* \
+      && $data == *'"w34_handover_observed":false'* \
+      && $data == *'"w34_view_response":null'* \
+      && $data == *'"w34_decision_response":null'* \
+      && $data == *'"w34_handover_response":null'* \
       && $data_audit == 0 \
       && $data_copy == 0 \
       && $bridge == '{"current_feed_observed":false,"process_session":null}' \
@@ -148,16 +160,18 @@ for _ in $(seq 1 60); do
       && $renderer_audit == 0 \
       && $control_broker == '{"authority_demonstrated":false,"control_client":null,"utility_authority_demonstrated":false,"utility_control_client":null}' \
       && $control_broker_audit == 0 \
-      && $hmi == '{"envelope_observed":false,"ineffective_requests_observed":false,"mode_observed":false,"note_observed":false,"practice_conditions_observed":false,"practice_sequence_observed":false,"present_observed":false,"trace_correlated":false,"w29_plan_constructed":false,"w30_plan_bound":false}' \
+      && $hmi == '{"envelope_observed":false,"ineffective_requests_observed":false,"mode_observed":false,"note_observed":false,"practice_conditions_observed":false,"practice_sequence_observed":false,"present_observed":false,"trace_correlated":false,"w29_plan_constructed":false,"w30_plan_bound":false,"w33_forecast_observed":false,"w33_forecast_response":null,"w33_policy_observed":false,"w33_policy_response":null,"w33_rehearsal_observed":false,"w33_rehearsal_response":null,"w33_schedule_observed":false,"w33_schedule_response":null}' \
       && $hmi_audit == 0 \
-      && $historian == '{"mapping_observed":false,"scale_observed":false,"tag_export_observed":false,"unit_change_interpreted":false}' \
+      && $historian == '{"mapping_observed":false,"scale_observed":false,"tag_export_observed":false,"unit_change_interpreted":false,"w33_forecast_observed":false,"w33_forecast_response":null}' \
       && $historian_audit == 0 \
       && $engineering == '{"compatibility_reproduced":false,"concealed_reviewer_used":false,"deployed_revision_observed":false,"diagnostic_observed":false,"hidden_check_recovered":false,"legacy_mapping_recovered":false,"project_bundle_observed":false,"sealed_project_opened":false,"viewer_observed":false,"vm_reconstructed":false,"w27_collision_modeled":false,"w27_verifier_reproduced":false,"w28_contract_recovered":false,"w28_controlled_flow":false,"w28_session":null,"w32_condition_recovered":false,"w32_structure_recovered":false,"w32_transitions_reproduced":false,"w32_witness_response":null}' \
       && $engineering_audit == 0 \
-      && $instruments == '{"deployment_observed":false,"flash_observed":false,"image_rewrite_accepted":false,"inspection_recovered":false,"mapping_observed":false,"practice_observed":false,"trace_observed":false,"w29_reserve_observed":false,"w30_release_observed":false,"w30_release_response":null}' \
+      && $instruments == '{"deployment_observed":false,"flash_observed":false,"image_rewrite_accepted":false,"inspection_recovered":false,"mapping_observed":false,"practice_observed":false,"trace_observed":false,"w29_reserve_observed":false,"w30_release_observed":false,"w30_release_response":null,"w33_policy_observed":false,"w33_policy_response":null,"w33_rehearsal_observed":false,"w33_rehearsal_response":null,"w34_handover_observed":false,"w34_handover_response":null}' \
       && $instruments_audit == 0 \
-      && $reservoir == '{"bind_response":null,"bound_plan":null,"release_response":null,"released_ml":0.0,"reserve_ml":12.4}' \
+      && $reservoir == '{"bind_response":null,"bound_plan":null,"release_response":null,"released_ml":0.0,"reserve_ml":12.4,"w33_policy_response":null,"w33_rehearsal_response":null,"w34_handover_response":null}' \
       && $reservoir_audit == 0 \
+      && $distribution == '{"policy_response":null,"rehearsal_response":null}' \
+      && $distribution_audit == 0 \
       && $diagnostics == '{"bundle_opened":false,"calibration_exported":false,"colliding_program_accepted":false,"false_estimate_observed":false,"oracle_contract_observed":false,"oracle_queries":0,"protected_state_controlled":false,"selector_predicted":false,"side_effect_observed":false,"vault_boundary_controlled":false,"vault_contract_observed":false,"vault_execution":null,"vault_history_response":null,"vault_saved_state_controlled":false}' \
       && $diagnostics_audit == 0 \
       && $diagnostics_oracle == 0 ]] \
@@ -194,9 +208,11 @@ for _ in $(seq 1 60); do
       docker exec --user arwc-diagnostics cinder-arwc-diagnostics \
         sh -c 'test ! -e /var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept/result.json && test ! -e /var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept/DPG-CRR-CINDER.dpg && test ! -e /var/lib/arwc-diagnostics/artifacts/the-diagnostic-service-s-authority/result.json'
       docker exec --user arwc-data cinder-arwc-data \
-        sh -c 'test ! -e /var/lib/arwc-data/results/PLAN-CONSUMER-R8.json && test ! -e /var/lib/arwc-data/results/PLAN-CRR-LOSS-1000.json'
+        sh -c 'test ! -e /var/lib/arwc-data/results/PLAN-CONSUMER-R8.json && test ! -e /var/lib/arwc-data/results/PLAN-CRR-LOSS-1000.json && test ! -e /var/lib/arwc-data/results/PLAN-SCHED-CRR-33.json && test ! -e /var/lib/arwc-data/results/VIEW-CRR-34.json && test ! -e /var/lib/arwc-data/results/DECISION-CRR-34.json && test ! -e /var/lib/arwc-data/results/REPORT-CRR-34.json'
       docker exec --user arwc-reservoir cinder-arwc-reservoir \
-        sh -c 'test ! -e /var/lib/arwc-reservoir/results/CMD-PLAN-CRR-30-R1.json && test ! -e /var/lib/arwc-reservoir/results/ACT-CRR-OG2-30.json'
+        sh -c 'test ! -e /var/lib/arwc-reservoir/results/CMD-PLAN-CRR-30-R1.json && test ! -e /var/lib/arwc-reservoir/results/ACT-CRR-OG2-30.json && test ! -e /var/lib/arwc-reservoir/results/RES-REH-CRR-33.json && test ! -e /var/lib/arwc-reservoir/results/RES-POL-CRR-33.json && test ! -e /var/lib/arwc-reservoir/results/RES-REPORT-CRR-34.json'
+      docker exec --user arwc-distribution cinder-arwc-distribution \
+        sh -c 'find /var/lib/arwc-distribution/results -type f -print -quit | grep -q . && exit 1 || exit 0'
       echo "Alterra authored initial state restored"
       exit 0
     fi

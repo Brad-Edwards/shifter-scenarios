@@ -459,6 +459,32 @@ services:
         ipv4_address: 10.77.64.20
         aliases: [a-reservoir, reservoir-controller.arwc.test]
 
+  a-distribution:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/distribution.Dockerfile
+    image: cinder-arwc/a-distribution:hand-build
+    container_name: cinder-arwc-distribution
+    hostname: a-distribution
+    domainname: a-control.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt: [no-new-privileges:true]
+    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - distribution-state:/var/lib/arwc-distribution
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    networks:
+      control:
+        ipv4_address: 10.77.64.30
+        aliases: [a-distribution, distribution-rehearsal.arwc.test]
+
   a-diagnostics:
     build:
       context: ../..
@@ -687,5 +713,7 @@ volumes:
     name: cinder-arwc-instruments-state
   reservoir-state:
     name: cinder-arwc-reservoir-state
+  distribution-state:
+    name: cinder-arwc-distribution-state
   diagnostics-state:
     name: cinder-arwc-diagnostics-state

@@ -12,6 +12,8 @@ from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
+import schedule33
+
 
 ROOT = pathlib.Path("/var/lib/arwc-reservoir")
 STATE = ROOT / "state" / "reservoir.json"
@@ -53,6 +55,8 @@ def initialize() -> None:
         atomic_json(STATE, {
             "bound_plan": None, "reserve_ml": 12.4, "released_ml": 0.0,
             "bind_response": None, "release_response": None,
+            "w33_rehearsal_response": None, "w33_policy_response": None,
+            "w34_handover_response": None,
         })
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
@@ -180,7 +184,7 @@ class Handler(BaseHTTPRequestHandler):
             return None
 
     def authorized(self) -> bool:
-        if (self.headers.get("X-ARWC-Internal") != "instruments-w30" or
+        if (self.headers.get("X-ARWC-Internal") not in {"instruments-w30", "instruments-w33", "instruments-w34"} or
                 self.headers.get("X-ARWC-Tenant") != "arwc" or
                 self.client_address[0] != "10.77.64.40"):
             self.send_json(403, {"error": "independent instrument service context required"})
@@ -198,6 +202,12 @@ class Handler(BaseHTTPRequestHandler):
             self.bind_plan(request)
         elif path == "/internal/w30-open":
             self.open_gates(request)
+        elif path == "/internal/w33-schedule":
+            self.w33_schedule(request)
+        elif path == "/internal/w33-policy":
+            self.w33_policy(request)
+        elif path == "/internal/w34-handover":
+            self.w34_handover(request)
         else:
             self.send_json(404, {"error": "record not found"})
 
@@ -323,6 +333,103 @@ class Handler(BaseHTTPRequestHandler):
         atomic_json(STATE, state)
         atomic_json(ROOT / "results" / "ACT-CRR-OG2-30.json", record)
         self.send_json(201, response)
+
+    def w33_schedule(self, request: dict[str, object]) -> None:
+        correlation = request.get("correlation"); binding = request.get("request"); schedule = request.get("schedule")
+        if (set(request) != {"correlation", "request", "schedule"} or not valid_uuid(correlation) or
+                not isinstance(binding, dict) or not isinstance(schedule, dict)):
+            self.send_json(409, {"error": "reservoir rehearsal request is not bound"}); return
+        authority = control_authority(binding.get("control_client"))
+        context = process_context()
+        evaluated = schedule33.evaluate_schedule(schedule.get("reservoir_release_m3s"),
+                                                 schedule.get("alternate_supply_m3s"),
+                                                 schedule.get("demand_m3s"))
+        if authority is None:
+            self.send_json(403, {"error": "current scoped control authority required"}); return
+        if (context is None or evaluated is None or schedule.get("record_id") != "SCHED-CRR-33" or
+                binding.get("checkpoint") != schedule33.CHECKPOINT or
+                binding.get("schedule_sha256") != evaluated.get("schedule_sha256") or
+                binding.get("mode") != "MODE-CRR-17" or binding.get("consequence_plan") != "PLAN-CRR-LOSS-1000"):
+            self.send_json(409, {"error": "current rehearsal bindings do not agree"}); return
+        state = load_state(); existing = state.get("w33_rehearsal_response")
+        if isinstance(existing, dict):
+            if existing.get("audit_id") == correlation: self.send_json(201, existing)
+            else: self.send_json(409, {"error": "rehearsal already recorded under another correlation"})
+            return
+        record = {"record_id": "RES-REH-CRR-33", "revision": 1,
+                  "request_correlation": correlation, "authority": authority["record_id"],
+                  "checkpoint": schedule33.CHECKPOINT, "schedule": "SCHED-CRR-33",
+                  "release_volume_ml": evaluated["reservoir_volume_ml"],
+                  "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
+                  "live_reserve_ml": state["reserve_ml"], "live_released_ml": state["released_ml"],
+                  "live_state_changed": False}
+        response = {"audit_id": append_audit("the-schedule-the-service-accepts", record, str(correlation)),
+                    "record": record}
+        state["w33_rehearsal_response"] = response; atomic_json(STATE, state)
+        atomic_json(ROOT / "results" / "RES-REH-CRR-33.json", record)
+        self.send_json(201, response)
+
+    def w33_policy(self, request: dict[str, object]) -> None:
+        correlation = request.get("correlation"); binding = request.get("request"); supplied = request.get("evaluation")
+        if (set(request) != {"correlation", "request", "evaluation"} or not valid_uuid(correlation) or
+                not isinstance(binding, dict) or not isinstance(supplied, dict)):
+            self.send_json(409, {"error": "reservoir policy request is not bound"}); return
+        authority = control_authority(binding.get("control_client"))
+        evaluated = schedule33.evaluate_policy(binding.get("policy"))
+        state = load_state()
+        if authority is None:
+            self.send_json(403, {"error": "current scoped control authority required"}); return
+        if (not isinstance(state.get("w33_rehearsal_response"), dict) or evaluated is None or
+                supplied != evaluated or binding.get("schedule_result") != "REH-RESULT-CRR-33"):
+            self.send_json(409, {"error": "accepted rehearsal and valid policy required"}); return
+        existing = state.get("w33_policy_response")
+        if isinstance(existing, dict):
+            if existing.get("audit_id") == correlation: self.send_json(201, existing)
+            else: self.send_json(409, {"error": "policy already recorded under another correlation"})
+            return
+        record = {"record_id": "RES-POL-CRR-33", "revision": 1,
+                  "request_correlation": correlation, "authority": authority["record_id"],
+                  "policy_sha256": evaluated["policy_sha256"], "case_count": 27,
+                  "scenario_steps": 324, "minimum_reservoir_volume_ml": evaluated["minimum_reservoir_volume_ml"],
+                  "maximum_reservoir_volume_ml": evaluated["maximum_reservoir_volume_ml"],
+                  "live_reserve_ml": state["reserve_ml"], "live_released_ml": state["released_ml"],
+                  "live_state_changed": False}
+        response = {"audit_id": append_audit("when-the-forecast-moves", record, str(correlation)),
+                    "record": record}
+        state["w33_policy_response"] = response; atomic_json(STATE, state)
+        atomic_json(ROOT / "results" / "RES-POL-CRR-33.json", record)
+        self.send_json(201, response)
+
+    def w34_handover(self, request: dict[str, object]) -> None:
+        correlation = request.get("correlation"); binding = request.get("request"); supplied = request.get("evaluation")
+        schedule = binding.get("schedule") if isinstance(binding, dict) else None
+        evaluated = None if not isinstance(schedule, dict) else schedule33.evaluate_schedule(
+            schedule.get("reservoir_release_m3s"), schedule.get("alternate_supply_m3s"), schedule.get("demand_m3s"))
+        if (set(request) != {"correlation", "request", "evaluation"} or not valid_uuid(correlation) or
+                not isinstance(binding, dict) or evaluated is None or supplied != evaluated):
+            self.send_json(409, {"error": "reservoir reporting request is not bound"}); return
+        authority = control_authority(binding.get("control_client")); context = process_context()
+        if authority is None:
+            self.send_json(403, {"error": "current scoped control authority required"}); return
+        if (context is None or binding.get("checkpoint") != "REH-REPORT-34" or
+                binding.get("decision") != "ALLOC-EXPAND-R2" or binding.get("view") != "VIEW-CRR-34" or
+                evaluated.get("reservoir_volume_ml") != 0.81 or evaluated.get("final_buffer_m3") != 180.0):
+            self.send_json(409, {"error": "current reporting checkpoint bindings do not agree"}); return
+        state = load_state(); existing = state.get("w34_handover_response")
+        if isinstance(existing, dict):
+            if existing.get("audit_id") == correlation: self.send_json(201, existing)
+            else: self.send_json(409, {"error": "reporting handover already recorded under another correlation"})
+            return
+        record = {"record_id": "RES-REPORT-CRR-34", "revision": 1,
+                  "request_correlation": correlation, "authority": authority["record_id"],
+                  "checkpoint": "REH-REPORT-34", "release_volume_ml": 0.81,
+                  "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
+                  "live_reserve_ml": state["reserve_ml"], "live_released_ml": state["released_ml"],
+                  "live_state_changed": False}
+        response = {"audit_id": append_audit("still-reassuring-after-the-handover", record, str(correlation)),
+                    "record": record}
+        state["w34_handover_response"] = response; atomic_json(STATE, state)
+        atomic_json(ROOT / "results" / "RES-REPORT-CRR-34.json", record); self.send_json(201, response)
 
 
 def main() -> None:

@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W32 and W35 (113 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W35 (120 of 120 cards) are materialized and focused-slice accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -16,7 +16,8 @@ field telemetry, and maintenance approval run across `a-contractors`, the
 DMZ-only `a-contractor-bridge`, and `a-approval`. Read-only process observation
 runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 `a-instruments` observations. Bounded live control terminates at the isolated
-`a-reservoir` controller.
+`a-reservoir` controller. Scheduler and reporting rehearsals additionally join
+the control-only `a-distribution` service without altering live process state.
 
 ## Boundaries
 
@@ -55,8 +56,8 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
   `a-control-broker` are DMZ-only at `10.77.62.30` and `.40`.
 - `a-hmi`, `a-historian`, `a-engineering`, and `a-diagnostics` occupy their
   declared engineering addresses `10.77.63.20`, `.30`, `.40`, and `.50`;
-  `a-reservoir` and `a-instruments` occupy their declared control addresses
-  `10.77.64.20` and `10.77.64.40`. The two read-entry bridges alone
+  `a-reservoir`, `a-distribution`, and `a-instruments` occupy their declared control addresses
+  `10.77.64.20`, `.30`, and `.40`. The two read-entry bridges alone
   provide narrow conduits to the engineering network, while `a-instruments`
   alone spans engineering and control for independent observations.
 - `a-contractors` provides the declared narrow field-gateway conduit to the
@@ -80,8 +81,8 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-04 | Maintenance W13-W15 | Complete |
 | AHB-05 | Read-only process routes and W16-W25 | Complete |
 | AHB-06 | Control paths W26-W28 | Complete |
-| AHB-07 | Consequence, verification, and reporting W29-W34 | In progress (W29-W32 complete) |
-| AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
+| AHB-07 | Consequence, verification, and reporting W29-W34 | Complete |
+| AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | In progress |
 
 ## W01 asset decision
 
@@ -525,3 +526,16 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   instrument or reservoir side effects passed. The suite now contains 166
   black-box checks. No SDL change was needed, and none of W32's four cards
   binds a narrative asset.
+- 2026-09-27: W33 adds five focused black-box checks for the instrument-bound
+  forecast, exact twelve-interval schedule, accepted 0.81 ML rehearsal, and
+  all 27 demand/gain/delay policy cases. Historian, HMI, planning, reservoir,
+  distribution, and instrument evidence is correlation-bound and persistent;
+  the live reserve is unchanged. The HMI image reuses only the card-bound
+  `service-meter-guide` authored document.
+- 2026-09-27: W34 adds five focused checks for each of its two alternative
+  input paths. Both the W23 estimator and W27 verifier output can refresh
+  `PLAN-CONSUMER-R8`, pass the declared consistency rules, change the decision
+  from `ALLOC-HOLD-R3` to `ALLOC-EXPAND-R2`, and join the convincing 13.40 ML
+  handover to independent 0.81 ML / 11.59 ML process truth without modifying
+  W30 or prior evidence. The suite now contains 176 black-box checks. No SDL
+  change was needed, and W34 binds no narrative asset.
