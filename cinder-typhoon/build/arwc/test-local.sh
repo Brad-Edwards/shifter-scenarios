@@ -81,6 +81,7 @@ python3 tests/test_w35_live.py
 python3 tests/test_w13_live.py
 python3 tests/test_w14_live.py
 python3 tests/test_w15_live.py
+python3 tests/test_w16_live.py
 
 [[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-corporate").IPAddress}}' cinder-arwc-connector) == 10.77.60.20 ]]
 [[ $(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cinder-arwc-business) == 10.77.60.30 ]]
@@ -145,4 +146,4 @@ if docker exec --user fieldlink cinder-arwc-connector sh -c \
   exit 1
 fi
 
-echo "Alterra W01-W15 and W35 local acceptance passed"
+echo "Alterra W01-W16 and W35 local acceptance passed"

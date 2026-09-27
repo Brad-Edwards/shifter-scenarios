@@ -68,6 +68,12 @@ for _ in $(seq 1 60); do
       && $archive == *'"cold_archive_recovered":false'* \
       && $archive == *'"current_session":null'* \
       && $archive == *'"current_data_observed":false'* \
+      && $archive == *'"sequencer_descriptor_observed":false'* \
+      && $archive == *'"sequencer_boundary_observed":false'* \
+      && $archive == *'"sequencer_signal_discriminated":false'* \
+      && $archive == *'"sequencer_calibration_recovered":false'* \
+      && $archive == *'"sequencer_experiment_count":0'* \
+      && $archive == *'"sequencer_request_ids":[]'* \
       && $archive_audit == 0 \
       && $identity == *'"starter_observed":false'* \
       && $identity == *'"roster_observed":false'* \

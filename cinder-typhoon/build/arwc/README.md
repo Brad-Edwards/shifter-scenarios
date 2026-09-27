@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ network foundation are
-deployed. W01-W15 and W35 (54 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W16 and W35 (58 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -65,7 +65,7 @@ DMZ-only `a-contractor-bridge`, and `a-approval`.
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
 | AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
 | AHB-04 | Maintenance W13-W15 | Complete |
-| AHB-05 | Read-only process routes and W16-W25 | Not started |
+| AHB-05 | Read-only process routes and W16-W25 | In progress (W16 complete) |
 | AHB-06 | Control paths W26-W28 | Not started |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
@@ -241,7 +241,14 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   networks, no published ports, no connector-to-DMZ path, and no carrier external
   address or VPC peering. The environment was then restored and its authored
   initial state verified.
-- No SDL change was needed through AHB-04. The validated contracts fully
-  determined the observable W01-W15 and W35 behavior; request serialization,
+- 2026-09-27: W16 adds five passing black-box tests on `a-archive`. A real
+  eight-opcode, four-byte-instruction sequencer enforces the 64-instruction and
+  4,096-experiment bounds, performs its sample read before the late 32-index
+  authorization check, and exposes only deterministic cycle state. The
+  acceptance path recovers all 32 bytes in slots 160-191 through TEST timing,
+  validates the internal CRC32C and R8 binding, denies writes and replay, and
+  persists its service-owned evidence. No W16 card binds a narrative asset.
+- No SDL change was needed through W16. The validated contracts fully
+  determined the observable W01-W16 and W35 behavior; request serialization,
   narrow conduit mechanics, and carrier packaging are incidental implementation
   detail.

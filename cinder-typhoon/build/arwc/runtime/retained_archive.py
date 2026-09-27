@@ -132,6 +132,56 @@ PROTECTION = {
     "key_cipher": "AES-256-KW",
 }
 
+SEQUENCER = {
+    "record_id": "SEQ-CRR-4",
+    "revision": 4,
+    "descriptor_version": "SEQDESC/4",
+    "sample_slots": 256,
+    "authorized_indices": list(range(32)),
+    "instruction_width": 4,
+    "maximum_instructions": 64,
+    "maximum_experiments": 4096,
+    "opcodes": {
+        "NOP": 0, "LOAD": 1, "XOR": 2, "ADD": 3,
+        "ROTL": 4, "TEST": 5, "STORE": 6, "HALT": 7,
+    },
+    "ordinary_trace": {
+        "record_id": "SEQ-BASE-17",
+        "program_hex": "0104000007000000",
+        "result": "authorized-load",
+        "cycles": 228,
+    },
+    "reference_cases": [
+        {"slot": 4, "description": "zero sample"},
+        {"slot": 5, "description": "one-hot least-significant-bit sample"},
+        {"slot": 6, "description": "all bits set sample"},
+    ],
+    "measurement": {
+        "base_cycles": 1200,
+        "cycles_per_set_bit": 64,
+        "repetitions": 8,
+        "jitter_bounds": [-2, 2],
+    },
+}
+
+
+def crc32c(value: bytes) -> int:
+    crc = 0xFFFFFFFF
+    for byte in value:
+        crc ^= byte
+        for _ in range(8):
+            crc = (crc >> 1) ^ (0x82F63B78 if crc & 1 else 0)
+    return crc ^ 0xFFFFFFFF
+
+
+CALIBRATION_PAYLOAD = b"R8|OG2|GAIN=1.003|ZERO=0.012"
+CALIBRATION = CALIBRATION_PAYLOAD + crc32c(CALIBRATION_PAYLOAD).to_bytes(4, "big")
+SAMPLE_SLOTS = bytearray((index * 73 + 19) & 0xFF for index in range(256))
+SAMPLE_SLOTS[4:7] = b"\x00\x01\xff"
+SAMPLE_SLOTS[159] = 0xA5
+SAMPLE_SLOTS[160:192] = CALIBRATION
+JITTER = (0, 1, -1, 2, -2, -1, 1, 0)
+
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
     descriptor, temporary = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.")
@@ -173,6 +223,12 @@ def initialize() -> None:
             "cold_archive_recovered": False,
             "current_session": None,
             "current_data_observed": False,
+            "sequencer_descriptor_observed": False,
+            "sequencer_boundary_observed": False,
+            "sequencer_signal_discriminated": False,
+            "sequencer_calibration_recovered": False,
+            "sequencer_experiment_count": 0,
+            "sequencer_request_ids": [],
         })
     else:
         state = load_state()
@@ -182,12 +238,18 @@ def initialize() -> None:
             "collector_reconstructed", "collector_config_recovered",
             "quarantine_observed", "protection_reconstructed",
             "cold_archive_recovered", "current_session", "current_data_observed",
+            "sequencer_descriptor_observed", "sequencer_boundary_observed",
+            "sequencer_signal_discriminated", "sequencer_calibration_recovered",
+            "sequencer_experiment_count", "sequencer_request_ids",
         ):
             if key not in state:
-                state[key] = False
+                state[key] = [] if key == "sequencer_request_ids" else 0 if key == "sequencer_experiment_count" else False
                 changed = True
         if changed:
             save_state(state)
+    descriptor = ARTIFACTS / "the-sequencer-s-vocabulary"
+    if not descriptor.exists():
+        atomic_json(descriptor, SEQUENCER)
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
 
@@ -327,6 +389,85 @@ def archive_member(data: bytes) -> str:
     return members[0]
 
 
+def decode_program(encoded: object) -> list[tuple[int, int, int, int]]:
+    if not isinstance(encoded, str):
+        raise ValueError("program is required")
+    try:
+        program = base64.b64decode(encoded, validate=True)
+    except (ValueError, TypeError) as error:
+        raise ValueError("program encoding is invalid") from error
+    if not program or len(program) % 4 or len(program) > 64 * 4:
+        raise ValueError("program descriptor is invalid")
+    instructions = [tuple(program[offset:offset + 4]) for offset in range(0, len(program), 4)]
+    if any(opcode > 7 or destination > 7 for opcode, _, _, destination in instructions):
+        raise ValueError("program descriptor is invalid")
+    if instructions[-1][0] != 7:
+        raise ValueError("program does not halt")
+    return instructions
+
+
+def execute_observation_program(
+    instructions: list[tuple[int, int, int, int]],
+) -> dict[str, object]:
+    registers = [0] * 8
+    cycles = 200
+    boundary_index: int | None = None
+    for opcode, index, operand, destination in instructions:
+        if opcode == 0:
+            cycles += 4
+        elif opcode == 1:
+            sample = SAMPLE_SLOTS[index]
+            cycles += 20 + 4 * sample.bit_count()
+            if index not in SEQUENCER["authorized_indices"]:
+                boundary_index = index
+                break
+            registers[destination] = sample
+        elif opcode == 2:
+            registers[destination] ^= operand
+            cycles += 6
+        elif opcode == 3:
+            registers[destination] = (registers[destination] + operand) & 0xFF
+            cycles += 7
+        elif opcode == 4:
+            shift = operand & 7
+            value = registers[destination]
+            registers[destination] = ((value << shift) | (value >> ((8 - shift) & 7))) & 0xFF
+            cycles += 8
+        elif opcode == 5:
+            raise ValueError("TEST belongs to the measurement interface")
+        elif opcode == 6:
+            raise ValueError("instrument writes are disabled")
+        elif opcode == 7:
+            cycles += 8
+            break
+    return {
+        "cycles": cycles,
+        "status": "late-authorization-rejection" if boundary_index is not None else "completed",
+        "boundary_index": boundary_index,
+        "registers": registers if boundary_index is None else None,
+    }
+
+
+def execute_test_program(
+    instructions: list[tuple[int, int, int, int]], jitter_offset: int,
+) -> list[dict[str, int]]:
+    observations: list[dict[str, int]] = []
+    for opcode, index, probe, _ in instructions:
+        if opcode == 7:
+            break
+        if opcode != 5:
+            raise ValueError("measurement programs may contain only TEST and HALT")
+        jitter = JITTER[(jitter_offset + len(observations)) % len(JITTER)]
+        observations.append({
+            "slot": index,
+            "probe": probe,
+            "cycles": 1200 + 64 * (SAMPLE_SLOTS[index] ^ probe).bit_count() + jitter,
+        })
+    if not observations:
+        raise ValueError("measurement program has no TEST instruction")
+    return observations
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "ARWC-Retained-Archive/4.0"
     sys_version = ""
@@ -391,10 +532,47 @@ class Handler(BaseHTTPRequestHandler):
             response.update(extra)
         self.send_json(status, response)
 
+    def claim_sequencer_request(self, request: dict[str, object]) -> dict[str, object] | None:
+        if request.get("sequencer") != "SEQ-CRR-4" or request.get("revision") != 4:
+            self.send_json(409, {"error": "sequencer binding does not match"})
+            return None
+        request_id = request.get("request_id")
+        if (not isinstance(request_id, str) or not re.fullmatch(r"[A-Za-z0-9._:-]{8,80}", request_id)):
+            self.send_json(409, {"error": "request identifier is invalid"})
+            return None
+        state = load_state()
+        request_ids = state.get("sequencer_request_ids")
+        if not isinstance(request_ids, list):
+            self.send_json(409, {"error": "sequencer state is invalid"})
+            return None
+        if request_id in request_ids:
+            self.send_json(409, {"error": "request identifier has already been used"})
+            return None
+        count = int(state.get("sequencer_experiment_count", 0))
+        if count >= 4096:
+            self.send_json(409, {"error": "sequencer experiment allowance is exhausted"})
+            return None
+        request_ids.append(request_id)
+        state["sequencer_experiment_count"] = count + 1
+        save_state(state)
+        return state
+
     def do_GET(self) -> None:
         if not self.authorized():
             return
         path = urlsplit(self.path).path
+        if path == "/api/the-sequencer-s-vocabulary":
+            state = load_state()
+            state["sequencer_descriptor_observed"] = True
+            save_state(state)
+            self.accepted(
+                "the-sequencer-s-vocabulary", SEQUENCER,
+                "corporate-reader-principal", 200,
+                {"descriptor_sha256": hashlib.sha256(
+                    json.dumps(SEQUENCER, sort_keys=True, separators=(",", ":")).encode()
+                ).hexdigest()},
+            )
+            return
         if path == "/api/something-in-the-work-bundle":
             if not has_w08_source():
                 self.send_json(403, {"error": "retained work reference required"})
@@ -494,8 +672,139 @@ class Handler(BaseHTTPRequestHandler):
             self.open_cold_archive(request)
         elif path == "/api/a-collection-path-still-alive":
             self.current_collection(request)
+        elif path == "/api/an-observation-outside-the-window":
+            self.sequencer_boundary(request)
+        elif path == "/api/an-experiment-with-a-signal":
+            self.sequencer_signal(request)
+        elif path == "/api/what-the-instrument-remembers":
+            self.sequencer_calibration(request)
         else:
             self.send_json(404, {"error": "record not found"})
+
+    def sequencer_boundary(self, request: dict[str, object]) -> None:
+        state = load_state()
+        if not state.get("sequencer_descriptor_observed"):
+            self.send_json(403, {"error": "sequencer descriptor must be observed first"})
+            return
+        try:
+            instructions = decode_program(request.get("program"))
+            result = execute_observation_program(instructions)
+        except ValueError as error:
+            self.send_json(409, {"error": str(error)})
+            return
+        state = self.claim_sequencer_request(request)
+        if state is None:
+            return
+        crossed = result["boundary_index"] is not None
+        if crossed:
+            state["sequencer_boundary_observed"] = True
+            save_state(state)
+        record = {
+            "record_id": "SEQ-OBS-CRR-4",
+            "revision": 4,
+            "sequencer": "SEQ-CRR-4",
+            "write_performed": False,
+            **result,
+        }
+        self.accepted(
+            "an-observation-outside-the-window", record,
+            "corporate-reader-principal",
+        )
+
+    def sequencer_signal(self, request: dict[str, object]) -> None:
+        state = load_state()
+        if not state.get("sequencer_boundary_observed"):
+            self.send_json(403, {"error": "controlled boundary observation required"})
+            return
+        operation = request.get("operation")
+        if operation == "measure":
+            try:
+                instructions = decode_program(request.get("program"))
+                observations = execute_test_program(
+                    instructions, int(state.get("sequencer_experiment_count", 0)),
+                )
+            except ValueError as error:
+                self.send_json(409, {"error": str(error)})
+                return
+            state = self.claim_sequencer_request(request)
+            if state is None:
+                return
+            record = {
+                "record_id": "SEQ-SIGNAL-CRR-4",
+                "revision": 4,
+                "sequencer": "SEQ-CRR-4",
+                "observations": observations,
+                "write_performed": False,
+            }
+            self.accepted(
+                "an-experiment-with-a-signal/measure", record,
+                "corporate-reader-principal",
+            )
+            return
+        if operation != "verify":
+            self.send_json(409, {"error": "unknown signal operation"})
+            return
+        expected_references = {"4": 0, "5": 1, "6": 255}
+        if (request.get("reference_values") != expected_references or
+                request.get("target_slot") != 159 or
+                request.get("recovered_byte") != 0xA5 or
+                request.get("repetitions") != 8 or
+                request.get("bit_order") != "lsb0"):
+            self.send_json(409, {"error": "signal interpretation does not match reference cases"})
+            return
+        state = self.claim_sequencer_request(request)
+        if state is None:
+            return
+        state["sequencer_signal_discriminated"] = True
+        save_state(state)
+        record = {
+            "record_id": "SEQ-DISCRIM-CRR-4",
+            "revision": 4,
+            "target_slot": 159,
+            "independent_conditions": 8,
+            "repetitions_per_condition": 8,
+            "interpretation": "lsb0",
+        }
+        self.accepted(
+            "an-experiment-with-a-signal/verify", record,
+            "corporate-reader-principal",
+        )
+
+    def sequencer_calibration(self, request: dict[str, object]) -> None:
+        state = load_state()
+        if not state.get("sequencer_signal_discriminated"):
+            self.send_json(403, {"error": "validated signal interpretation required"})
+            return
+        try:
+            recovered = base64.b64decode(str(request["calibration"]), validate=True)
+        except (KeyError, ValueError):
+            self.send_json(409, {"error": "calibration record is invalid"})
+            return
+        if (request.get("record_id") != "CAL-CRR-OG2-R8" or
+                request.get("field_revision") != "R8" or
+                len(recovered) != 32 or
+                crc32c(recovered[:28]) != int.from_bytes(recovered[28:], "big") or
+                not hmac.compare_digest(recovered, CALIBRATION)):
+            self.send_json(409, {"error": "calibration record binding does not match"})
+            return
+        state = self.claim_sequencer_request(request)
+        if state is None:
+            return
+        state["sequencer_calibration_recovered"] = True
+        save_state(state)
+        record = {
+            "record_id": "CAL-CRR-OG2-R8",
+            "revision": 8,
+            "sequencer": "SEQ-CRR-4",
+            "slots": [160, 191],
+            "length": 32,
+            "crc32c": f"{int.from_bytes(recovered[28:], 'big'):08x}",
+            "sha256": hashlib.sha256(recovered).hexdigest(),
+        }
+        self.accepted(
+            "what-the-instrument-remembers", record,
+            "corporate-reader-principal",
+        )
 
     def reconstruct_protection(self, request: dict[str, object]) -> None:
         state = load_state()
