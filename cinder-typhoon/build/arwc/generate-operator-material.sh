@@ -13,11 +13,17 @@ if [[ ! -s "$OPERATOR_DIR/tls/ca.key" ]]; then
     -keyout "$OPERATOR_DIR/tls/ca.key" -out "$OPERATOR_DIR/tls/ca.crt" 2>/dev/null
 fi
 
+if [[ ! -s "$OPERATOR_DIR/tls/archive-ca.key" ]]; then
+  openssl req -x509 -newkey rsa:3072 -nodes -days 3650 \
+    -subj '/CN=Alterra Archive Enrollment CA/O=Alterra Regional Water Company' \
+    -keyout "$OPERATOR_DIR/tls/archive-ca.key" -out "$OPERATOR_DIR/tls/archive-ca.crt" 2>/dev/null
+fi
+
 openssl req -newkey rsa:3072 -nodes \
   -subj '/CN=customer-handover.arwc.test/O=Alterra Regional Water Company' \
   -keyout "$OPERATOR_DIR/tls/server.key" -out "$OPERATOR_DIR/tls/server.csr" 2>/dev/null
 cat >"$OPERATOR_DIR/tls/server.ext" <<'EOF'
-subjectAltName=DNS:a-connector,DNS:fieldlink.arwc.test,DNS:customer-handover.arwc.test,DNS:a-business,DNS:business-workplace.arwc.test,IP:10.77.60.20,IP:10.77.60.30
+subjectAltName=DNS:a-connector,DNS:fieldlink.arwc.test,DNS:customer-handover.arwc.test,DNS:a-business,DNS:business-workplace.arwc.test,DNS:a-archive,DNS:retained-archive.arwc.test,IP:10.77.60.20,IP:10.77.60.30,IP:10.77.60.50
 keyUsage=digitalSignature,keyEncipherment
 extendedKeyUsage=serverAuth
 EOF
@@ -27,5 +33,5 @@ openssl x509 -req -days 825 -sha256 \
   -extfile "$OPERATOR_DIR/tls/server.ext" \
   -out "$OPERATOR_DIR/tls/server.crt" 2>/dev/null
 
-chmod 0600 "$OPERATOR_DIR/tls/ca.key" "$OPERATOR_DIR/tls/server.key"
-chmod 0644 "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/tls/server.crt"
+chmod 0600 "$OPERATOR_DIR/tls/ca.key" "$OPERATOR_DIR/tls/archive-ca.key" "$OPERATOR_DIR/tls/server.key"
+chmod 0644 "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/tls/archive-ca.crt" "$OPERATOR_DIR/tls/server.crt"

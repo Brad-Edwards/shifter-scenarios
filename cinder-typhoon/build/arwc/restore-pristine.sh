@@ -5,7 +5,7 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
 
 docker compose -f compose.yaml down -v --remove-orphans
-docker compose -f compose.yaml up -d --force-recreate a-connector a-business
+docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive
 
 for _ in $(seq 1 60); do
   if docker exec --user arwc-connector cinder-arwc-connector \
@@ -18,12 +18,21 @@ for _ in $(seq 1 60); do
       cat /var/lib/arwc-business/state/discoveries.json 2>/dev/null || true)
     business_audit=$(docker exec --user arwc-business cinder-arwc-business \
       sh -c 'wc -c </var/lib/arwc-business/audit/events.jsonl' 2>/dev/null || true)
+    archive=$(docker exec --user arwc-archive cinder-arwc-archive \
+      cat /var/lib/arwc-archive/state/archive.json 2>/dev/null || true)
+    archive_audit=$(docker exec --user arwc-archive cinder-arwc-archive \
+      sh -c 'wc -c </var/lib/arwc-archive/audit/events.jsonl' 2>/dev/null || true)
     if [[ $state == *'"record_id":"PLN-HO-CRR-17"'* \
       && $state == *'"revision":3'* \
       && $state == *'"filename":"inspection-summary-r2.md"'* \
       && $audit_size == 0 \
       && $business == '{"association_table":false,"restricted_handover":false}' \
-      && $business_audit == 0 ]]; then
+      && $business_audit == 0 \
+      && $archive == *'"enrollment_consumed":false'* \
+      && $archive == *'"issued_certificates":[]'* \
+      && $archive == *'"protected_record_observed":false'* \
+      && $archive == *'"helper_handover_copied":false'* \
+      && $archive_audit == 0 ]]; then
       echo "Alterra authored initial state restored"
       exit 0
     fi

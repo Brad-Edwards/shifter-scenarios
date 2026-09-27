@@ -6,9 +6,10 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate-network foundation are deployed.
-W01-W03 are materialized and accepted: the customer handover runs on
+W01-W04 are materialized and accepted: the customer handover runs on
 `a-connector`, while the asset association and annex-import paths run on the
-separate `a-business` service.
+separate `a-business` service and the certificate/query/archive-helper path
+runs on `a-archive`.
 
 ## Boundaries
 
@@ -32,8 +33,9 @@ separate `a-business` service.
 
 - GCP VPC/carrier: `cinder-arwc-golden`, private `10.77.59.2`, no external IP.
 - Corporate target network: internal `10.77.60.0/24` bridge.
-- First nodes: `a-connector` at `10.77.60.20` and `a-business` at
-  `10.77.60.30`, matching the SDL address plan.
+- First nodes: `a-connector` at `10.77.60.20`, `a-business` at
+  `10.77.60.30`, and `a-archive` at `10.77.60.50`, matching the SDL address
+  plan.
 - `customer-handover` is a real TLS service on declared port 8443 and runs as
   `arwc-connector`; the participant context runs as the distinct locked
   `fieldlink` service identity.
@@ -48,7 +50,7 @@ separate `a-business` service.
 | AHB-00 | Architecture, isolation plan, topology and implementation ledger | Complete |
 | AHB-01 | `a-connector` and W01 opening slice | Complete |
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
-| AHB-03 | Remaining corporate W04-W12 and W35 | Not started |
+| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04 complete) |
 | AHB-04 | Maintenance W13-W15 | Not started |
 | AHB-05 | Read-only process routes and W16-W25 | Not started |
 | AHB-06 | Control paths W26-W28 | Not started |
@@ -110,6 +112,15 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   on freshly observed source records; wrong sessions, tenants, associations,
   revisions, and unencoded paths are denied. No narrative asset is placed for
   these six cards because every `narrative_reuse` list is empty.
+- 2026-09-27: W04 adds nine black-box tests on `a-archive`. The archive issues
+  real one-use, client-auth X.509 identities with caller-controlled OU values,
+  consumes the OU from the mutual-TLS peer certificate in the declared
+  unparameterized query, and constrains the read-only result to
+  `AR-CRR-229`. The helper invokes pinned 7-Zip 23.01 on a submitted archive,
+  applies the declared pre-NFKC member check, and permits only
+  `copy_handover(HND-PLANNER-06)`. State and independently owned audits survive
+  restart; participant access to them is denied. No W04 card binds a narrative
+  asset, so none was added.
 - No SDL change was needed for AHB-00 or AHB-01. The validated contracts fully
   determined the observable W01 behavior; request serialization and carrier
   packaging are incidental implementation detail.
