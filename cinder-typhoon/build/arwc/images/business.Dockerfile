@@ -1,3 +1,12 @@
+FROM python:3.12.11-slim-bookworm AS narrative
+
+COPY assets/narrative/generated/packages/arwc-documents.json /tmp/arwc-documents.json
+COPY build/arwc/runtime/extract_document.py /usr/local/bin/extract-document
+RUN python3 /usr/local/bin/extract-document \
+      /tmp/arwc-documents.json \
+      as003-agreement-summary \
+      /tmp/as003-agreement-summary.md
+
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
@@ -8,10 +17,12 @@ RUN apt-get update \
     && groupadd --system --gid 2294 arwc-relation \
     && groupadd --system arwc-business \
     && useradd --system --gid arwc-business --groups arwc-archive-source,arwc-integration,arwc-relation --home-dir /var/lib/arwc-business --shell /usr/sbin/nologin arwc-business \
-    && install -d -o arwc-business -g arwc-business -m 0750 /opt/business-workplace
+    && install -d -o arwc-business -g arwc-business -m 0750 /opt/business-workplace/assets
 
 COPY --chown=arwc-business:arwc-business --chmod=0640 \
   build/arwc/runtime/business_workplace.py /opt/business-workplace/business_workplace.py
+COPY --from=narrative --chown=arwc-business:arwc-business --chmod=0640 \
+  /tmp/as003-agreement-summary.md /opt/business-workplace/assets/as003-agreement-summary.md
 COPY --chmod=0750 build/arwc/runtime/business-entrypoint.sh /usr/local/sbin/arwc-business-entrypoint
 
 EXPOSE 443

@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/DMZ network foundation are deployed.
-W01-W12 (40 of 120 cards) are materialized and accepted. The customer handover
+W01-W12 and W35 (43 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -54,7 +54,7 @@ integration runs through `a-data-bridge` in the isolated DMZ.
 | AHB-00 | Architecture, isolation plan, topology and implementation ledger | Complete |
 | AHB-01 | `a-connector` and W01 opening slice | Complete |
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
-| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04-W12 complete) |
+| AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
 | AHB-04 | Maintenance W13-W15 | Not started |
 | AHB-05 | Read-only process routes and W16-W25 | Not started |
 | AHB-06 | Control paths W26-W28 | Not started |
@@ -196,6 +196,16 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   rollover signature, and private-key proof, then grants one ten-minute
   read-only session for `CUR-COL-CRR-R11`. No W12 card binds a narrative asset.
 - 2026-09-27: A destructive clean-volume rebuild passed all 70 W01-W12
+  black-box checks, followed by verified authored-state restoration.
+- 2026-09-27: W35 adds six passing black-box tests on `a-business`. The exact
+  authored `arwc-documents:as003-agreement-summary` is extracted at build time
+  and verified byte-for-byte without retaining unrelated package content. The
+  public replacement catalog remains distinct from the settlement tariff; the
+  role-filtered quote lookup omits district membership, and the order path
+  preserves Merewick's supplier, 0.75 ML quantity, and delivery window while
+  charging USD 1,710 to Cairn budget `BUD-CRR-DP3`. The issued order and audits
+  persist, while retries remain idempotent.
+- 2026-09-27: A destructive clean-volume rebuild passed all 76 W01-W12/W35
   black-box checks, followed by verified authored-state restoration.
 - No SDL change was needed for AHB-00 or AHB-01. The validated contracts fully
   determined the observable W01 behavior; request serialization and carrier
