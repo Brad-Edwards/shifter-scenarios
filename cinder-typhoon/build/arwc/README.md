@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/DMZ network foundation are deployed.
-W01-W09 (30 of 120 cards) are materialized and accepted. The customer handover
+W01-W10 (33 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -54,7 +54,7 @@ integration runs through `a-data-bridge` in the isolated DMZ.
 | AHB-00 | Architecture, isolation plan, topology and implementation ledger | Complete |
 | AHB-01 | `a-connector` and W01 opening slice | Complete |
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
-| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04-W09 complete) |
+| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04-W10 complete) |
 | AHB-04 | Maintenance W13-W15 | Not started |
 | AHB-05 | Read-only process routes and W16-W25 | Not started |
 | AHB-06 | Control paths W26-W28 | Not started |
@@ -166,6 +166,17 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   black-box checks. Direct inspection confirmed exact corporate/DMZ addresses,
   internal-only networks, a DMZ-only hardened bridge, PostgreSQL ownership and
   grants, restart persistence, and no published service ports.
+- 2026-09-27: W10 adds six passing black-box tests on `a-business`. The report
+  assistant exposes the bound Cairn source-selection record with three named
+  current sources. Its retrieval path enforces the planning-reader role while
+  omitting the session-district predicate, exposing only the Merewick excerpt;
+  the linked-document path then authorizes possession of that excerpt without
+  comparing document district and returns `PLN-MER-DP3-R6` revision 6. Wrong
+  authorities, tenants, objects, roles, and revisions disclose nothing. No W10
+  card binds a narrative asset.
+- 2026-09-27: A destructive clean-volume rebuild passed all 57 W01-W10
+  black-box checks, after which all mutable results, audits, and evidence were
+  removed and the authored initial state was verified.
 - No SDL change was needed for AHB-00 or AHB-01. The validated contracts fully
   determined the observable W01 behavior; request serialization and carrier
   packaging are incidental implementation detail.

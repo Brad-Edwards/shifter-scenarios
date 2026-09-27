@@ -40,7 +40,7 @@ for _ in $(seq 1 60); do
       && $state == *'"revision":3'* \
       && $state == *'"filename":"inspection-summary-r2.md"'* \
       && $audit_size == 0 \
-      && $business == '{"association_table":false,"restricted_handover":false}' \
+      && $business == '{"association_table":false,"foreign_excerpt_observed":false,"linked_document_observed":false,"restricted_handover":false,"source_selection_observed":false}' \
       && $business_audit == 0 \
       && $archive == *'"enrollment_consumed":false'* \
       && $archive == *'"issued_certificates":[]'* \
