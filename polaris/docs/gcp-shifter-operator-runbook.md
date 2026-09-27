@@ -35,7 +35,7 @@ From the repository root, build the upload archive from the authoritative
 
 ```sh
 python -m pip install -r runtime-pack/requirements.txt
-python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.1.tar
+python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.2.tar
 python -m pytest runtime-pack/tests -q
 ```
 
@@ -63,7 +63,7 @@ not belong in Shifter.
 
 Polaris needs two tenant-owned artifacts:
 
-1. a Linux GCE machine image containing the compose host and participant
+1. a Linux GCE custom boot image containing the compose host and participant
    workstation built from `polaris/build/build-v1.tar.gz`; and
 2. a Windows Server 2022 image containing the pre-promoted `boreas.local`
    directory controller.
@@ -72,30 +72,29 @@ Publish both in the tenant's GCP project. Cold-boot each artifact before
 installing it: the Linux host must accept the management SSH connection on port
 2222 as `hostadmin`, and the directory image must accept the management SSH
 connection on port 22 as `Administrator`. Record their full project-qualified
-references. The Linux binding uses image kind `machine-image`; the directory
-binding uses its normal Compute Engine image reference.
+references. The Linux binding uses image kind `image` with bootstrap capability
+`preconfigured-machine-host`; the directory uses its normal Compute Engine
+image reference.
 
-Before capturing the Linux machine image, stop the bake VM and detach its
+Before capturing the Linux boot image, stop the bake VM and detach its
 build-time service account (`gcloud compute instances set-service-account`
 with `--no-service-account`). Confirm the stopped VM reports no attached
-service account, then create the machine image. Compute Engine machine images
-otherwise preserve the bake identity, and a range launch will either require an
-unsafe `iam.serviceAccounts.actAs` grant on that build identity or fail. Never
-grant that impersonation permission to the range provisioner.
+service account. Publish an exact, project-qualified custom image from the
+stopped host's **boot disk** and verify it is `READY`. The complete host runtime
+must live on that one boot disk; custom images do not capture secondary disks.
+Set the binding's boot disk size to at least the image's disk size (currently
+220 GiB). Do not bind an image family or a bare name. The range VM gets its
+identity from Shifter's administrator-owned range-host selection, not the bake
+VM. Never grant the range provisioner impersonation permission on the build
+identity.
 
-Plan machine-image capacity before a multi-range event. Compute Engine permits
-at most **six VM creations from one machine image in a rolling 60 minutes**;
-after that, launch fails with `RESOURCE_OPERATION_RATE_EXCEEDED`. Retries and
-staggering cannot raise this ceiling. Publish enough separately named machine
-images from the same stopped, service-account-free bake VM (at least
-`ceil(host launches in 60 minutes / 6)`). The current pack binding names one
-host image at a time: rotate that binding through the ready replicas via the
-normal administrator pack-configuration UI after at most six launches per
-source in the rolling hour. For example, 30
-near-simultaneous range launches require at least five host machine images.
-Verify every replica is `READY` and has the same reviewed bake source before
-launching the event. A single bound image is not sufficient merely because
-other images exist in the project.
+This source choice matters for events: [Google limits a single machine image](https://cloud.google.com/compute/docs/machine-images/create-instance-from-machine-image) to
+six VM creations in a rolling 60 minutes, while [custom-image API/CLI creates](https://cloud.google.com/compute/docs/instances/create-vm-from-custom-image)
+support a much higher documented rate. A machine image remains appropriate
+only if the host needs captured secondary disks and the launch volume fits
+that limit. Capacity, CPU, disk, address, and project quotas still need to
+cover participants plus warm spares before bulk launch. A ready image alone
+does not prove fleet capacity.
 
 The Linux build must preserve the participant readiness contract from
 `polaris/build/a14/participant-readiness.json`. Calculate and record the SHA-256
@@ -103,7 +102,8 @@ of the installed readiness document; that value is the adapter binding's
 readiness digest. The participant workstation must contain the pinned Claude
 Code client described in the adapter README.
 
-Bake the Linux machine image from the current `polaris/build/build-v1.tar.gz`.
+Bake the Linux host from the current `polaris/build/build-v1.tar.gz` and publish
+its stopped boot disk as the custom image.
 Do not bind a newly installed adapter to an image baked from an older archive:
 the adapter and host image form one reviewed compatibility set, including the
 participant DNS forwarding configuration used for broker access.
@@ -132,7 +132,7 @@ confirm it resolves to the expected private broker address. BIND must exempt
 private-zone resolution. The adapter's range bootstrap replaces the bake-only
 directory address with that range's actual controller address. Remove bake-time
 SSH keys, access tags, startup scripts, and temporary payloads before capture;
-the machine image must have no attached service account.
+the bake VM must have no attached service account at capture time.
 
 Do not grant model-invocation credentials to the participant-controlled range
 host. The adapter receives a Shifter model grant and configures the participant
@@ -150,16 +150,17 @@ call from the participant's interactive workstation and require nonzero output
 tokens. Participant web research also needs explicit egress; the model path
 alone does not provide general internet access.
 
-For a bulk GCP event, verify the egress topology before provisioning the
-roster. The current range-cell `status-quo` mode creates a Cloud Router/NAT per
-range and can hit the per-network router ceiling after only a few launches;
-the organizer event workspace's policy does not override the personal
-workspace policy used for participant and managed-spare launches. Setting
-those workspaces to `none` avoids that router creation but also disables the
-built-in public-web lane. Until the platform provides scalable shared egress,
-an operator must arrange and verify a separately approved participant internet
-path rather than assuming that Private Google Access or the profile flag alone
-provides it. Do not use a successful model probe as the web-access check.
+For a bulk GCP event using the direct variant, select an event workspace with
+`status-quo` egress before importing participants or provisioning managed
+spares. In a Shifter build with event-policy pinning and shared range-VPC NAT,
+that workspace policy is the source for both participant and spare launches;
+the provisioner enrolls their subnets in an explicitly scoped regional NAT
+instead of creating one router per range. Confirm the tenant build has those
+capabilities before depending on this path for a multi-range event. A workspace
+set to `none` intentionally creates no outbound NAT path, even if the pack's
+host profile opts in to public web access. Private Google Access alone does
+not supply public web research. Qualify both a real Claude Code response and
+public DNS/HTTP(S) from a fresh participant workstation before bulk launch.
 
 ## Install and bind in Shifter
 
@@ -178,9 +179,10 @@ Open **Administer → Adapters**.
 4. Choose **Configure polaris** and select the ready adapter.
 5. Bind `host` to `provision.node.a14-kali` with:
    - image enabled;
-   - kind `machine-image`;
-   - the full Linux machine-image reference;
+   - kind `image` and bootstrap capability `preconfigured-machine-host`;
+   - the full Linux custom-image reference;
    - machine type `e2-standard-8`;
+   - a boot disk at least as large as the published custom image;
    - management user `hostadmin` and port `2222`;
    - participant container `a14-kali` and user `kali`; and
    - the readiness-document SHA-256.
@@ -258,6 +260,20 @@ temporary password through the participant-management page. Activate the event,
 sign in through the participant login surface, and complete the required
 password change. Back in the operator participant page, choose **Provision**.
 
+For a multi-participant event, assign readable login handles through the
+organizer participant-management control after import. The current isolated CTF
+account policy requires a `range-` prefix, so a codename such as
+`GraphiteRaven` uses `range-graphiteraven` to sign in; the scoreboard displays
+the participant name separately. Bulk provisioning is paced across the event's
+spin-up allowance: the scheduler spaces requests by the allowance divided by
+the roster size, clamped to 5–120 seconds. For 20 participants with a 45-minute
+allowance, the inter-request waits alone can take about 38 minutes; guest
+readiness adds time. Start provisioning before participants arrive and watch
+the organizer's READY count rather than treating the allowance as a completion
+deadline. Request the desired warm-spare count through the organizer
+spare-pool control, then verify every participant range and spare reaches
+**ready**; running VMs and accepted provision requests are not readiness.
+
 Wait until the participant range reports **ready** and exposes the declared
 attack-workstation access target. A compatibility result, prepared allocation,
 or running cloud VM is not a readiness verdict.
@@ -280,9 +296,9 @@ operations pivot must fail, bunker access before the splice opens must fail,
 and the intended post-splice path must succeed.
 
 Also run Claude Code from the participant workstation with a small deterministic
-prompt. Require a successful response from the configured broker-backed model
-and verify that the returned usage reports a nonzero output-token count. Client
-startup alone is not model-access proof.
+prompt. Require a successful response from the configured direct-Vertex or
+broker-backed model path and verify that the returned usage reports a nonzero
+output-token count. Client startup alone is not model-access proof.
 
 Record only sanitized verdicts, counts, immutable artifact identifiers, and
 timestamps. Never copy flags, passwords, model capabilities, session tokens, or
