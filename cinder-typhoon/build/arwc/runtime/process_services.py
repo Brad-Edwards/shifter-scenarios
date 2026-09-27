@@ -9,8 +9,10 @@ import grp
 import json
 import os
 import pathlib
+import secrets
 import ssl
 import struct
+import subprocess
 import tempfile
 import uuid
 from datetime import datetime, timezone
@@ -21,6 +23,8 @@ from urllib.parse import urlsplit
 ROLE = os.environ["ARWC_PROCESS_ROLE"]
 if ROLE == "engineering":
     import dpg1
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 ROOT = pathlib.Path(os.environ["ARWC_STATE_ROOT"])
 STATE = ROOT / "state" / "service.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
@@ -61,6 +65,8 @@ INITIAL["engineering"].update({
     "viewer_observed": False, "vm_reconstructed": False,
     "sealed_project_opened": False, "concealed_reviewer_used": False,
     "w27_verifier_reproduced": False, "w27_collision_modeled": False,
+    "w28_contract_recovered": False, "w28_controlled_flow": False,
+    "w28_session": None,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
@@ -70,6 +76,8 @@ INITIAL["instruments"].update({
 ARTIFACTS = pathlib.Path("/opt/process-service/artifacts")
 W27_ARTIFACTS = ARTIFACTS / "w27"
 W27_STATE = ROOT / "artifacts"
+W28_ARTIFACTS = ARTIFACTS / "w28"
+W28_STATE = ROOT / "artifacts"
 MASK32 = (1 << 32) - 1
 MASK64 = (1 << 64) - 1
 W19_RECORDS = [
@@ -627,6 +635,8 @@ class Handler(BaseHTTPRequestHandler):
             "/api/signed-by-someone-who-never-approved-it",
             "/api/what-counts-as-intact", "/api/the-constraints-of-a-valid-looking-program",
             "/api/a-program-the-engineer-would-accept",
+            "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
+            "/api/keep-the-authority-you-earned",
         }:
             self.historian_proxy("POST", path, request)
             return
@@ -739,6 +749,12 @@ class Handler(BaseHTTPRequestHandler):
             "/api/what-counts-as-intact", "/api/the-constraints-of-a-valid-looking-program",
         }:
             self.w27_post(path, request, state)
+            return
+        if ROLE == "engineering" and path in {
+            "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
+            "/api/keep-the-authority-you-earned",
+        }:
+            self.w28_post(path, request, state)
             return
         if ROLE == "instruments" and path in {
             "/api/a-valid-maintenance-record", "/api/change-one-record-keep-the-rest",
@@ -939,6 +955,185 @@ class Handler(BaseHTTPRequestHandler):
                   "structure": "accepted", "outputs": parsed["outputs"]}
         atomic_json(output / "result.json", record)
         self.accepted("the-constraints-of-a-valid-looking-program", record, 201)
+
+    def w28_status(self, state: dict[str, object], relationship: dict[str, object]) -> dict[str, object]:
+        existing = state.get("w28_session")
+        if isinstance(existing, dict) and isinstance(existing.get("status"), dict):
+            return existing["status"]
+        canary = secrets.randbits(56) << 8
+        pie_base = 0x555500000000 + (secrets.randbits(20) << 12)
+        unsigned = {
+            "record_id": "STATUS-UTIL-CRR-R4", "revision": 4,
+            "utility": "UTIL-CRR-ISSUER-R4", "relation": "REL-UTIL-ISSUER-4",
+            "session_id": str(uuid.uuid4()), "stack_canary": f"0x{canary:016x}",
+            "return_address": f"0x{pie_base + int(relationship['status_return_offset']):016x}",
+            "status_return_offset": int(relationship["status_return_offset"]),
+            "issuer_result": None,
+        }
+        key = Ed25519PrivateKey.from_private_bytes(
+            hashlib.sha256(b"ARWC UTIL-CRR-ISSUER-R4 signed status").digest()
+        )
+        signed = json.dumps(unsigned, sort_keys=True, separators=(",", ":")).encode()
+        status = {
+            **unsigned, "signature_algorithm": "Ed25519",
+            "signing_public_key": base64.b64encode(key.public_key().public_bytes(
+                encoding=serialization.Encoding.Raw,
+                format=serialization.PublicFormat.Raw,
+            )).decode(),
+            "signature": base64.b64encode(key.sign(signed)).decode(),
+        }
+        state["w28_session"] = {
+            "session_id": status["session_id"], "canary": f"{canary:016x}",
+            "pie_base": f"{pie_base:016x}", "status": status,
+        }
+        save_state(state)
+        return status
+
+    def run_w28_utility(self, mode: str, session: dict[str, object], payload: bytes,
+                        correlation: str | None = None) -> subprocess.CompletedProcess[bytes]:
+        environment = {
+            **os.environ,
+            "ARWC_W28_CANARY": str(session["canary"]),
+            "ARWC_W28_PIE_BASE": str(session["pie_base"]),
+            "ARWC_W28_LENGTH": str(len(payload)),
+        }
+        if correlation is not None:
+            environment["ARWC_W28_CORRELATION"] = correlation
+        return subprocess.run(
+            [str(W28_ARTIFACTS / "utility"), mode], input=payload,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=5,
+            check=False, env=environment,
+        )
+
+    def w28_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        relationship = json.loads((W28_ARTIFACTS / "relationship.json").read_text())
+        if path == "/api/the-utility-s-small-world":
+            if not state["deployed_revision_observed"]:
+                self.send_json(403, {"error": "current deployed-revision evidence required"})
+                return
+            if request != {"operation": "materials", "revision": "CMP-CRR-R21"}:
+                self.send_json(409, {"error": "utility analysis request does not match the engineering revision"})
+                return
+            status = self.w28_status(state, relationship)
+            binary = (W28_ARTIFACTS / "utility").read_bytes()
+            build = json.loads((W28_ARTIFACTS / "build.json").read_text())
+            seccomp = json.loads((W28_ARTIFACTS / "seccomp-policy.json").read_text())
+            ordinary = json.loads((W28_ARTIFACTS / "ordinary-invocations.json").read_text())
+            state["w28_contract_recovered"] = True
+            save_state(state)
+            record = {
+                "record_id": "UTIL-CRR-ISSUER-R4", "revision": 4,
+                "relation": "REL-UTIL-ISSUER-4", "format": build["elf"],
+                "compiler": build["compiler"], "glibc": build["glibc"],
+                "build_command": build["command"], "executable_text_bytes": build["executable_text_bytes"],
+                "aslr": build["aslr"], "cet": build["cet"],
+                "file_capability": build["file_capability"],
+                "utility_sha256": hashlib.sha256(binary).hexdigest(),
+                "ordinary_invocation_count": len(ordinary),
+                "status": status,
+            }
+            atomic_json(W28_STATE / "the-utility-s-small-world" / "result.json", record)
+            self.accepted("the-utility-s-small-world", record, 201, {
+                "utility_b64": base64.b64encode(binary).decode(),
+                "relationship": relationship, "ordinary_invocations": ordinary,
+                "relocations": (W28_ARTIFACTS / "relocations.txt").read_text(),
+                "seccomp_policy": seccomp,
+            })
+            return
+
+        session = state.get("w28_session")
+        if not state["w28_contract_recovered"] or not isinstance(session, dict):
+            self.send_json(403, {"error": "current utility contract evidence required"})
+            return
+        if path == "/api/control-with-very-little-room":
+            encoded = request.get("frame_b64")
+            if (set(request) != {"session_id", "length", "frame_b64"} or
+                    request.get("session_id") != session.get("session_id") or
+                    not isinstance(encoded, str) or not isinstance(request.get("length"), int)):
+                self.send_json(409, {"error": "control frame binding does not match"})
+                return
+            try:
+                payload = base64.b64decode(encoded, validate=True)
+            except (ValueError, base64.binascii.Error):
+                self.send_json(409, {"error": "control frame encoding is invalid"})
+                return
+            if len(payload) != request["length"] or len(payload) > 384:
+                self.send_json(409, {"error": "control frame length is outside the utility contract"})
+                return
+            try:
+                completed = self.run_w28_utility("validate-flow", session, payload)
+                native = json.loads(completed.stdout) if completed.returncode == 0 else None
+            except (OSError, subprocess.TimeoutExpired, json.JSONDecodeError):
+                native = None
+            if not isinstance(native, dict) or native.get("controlled_flow") is not True:
+                self.send_json(409, {"error": "utility rejected the bounded control frame"})
+                return
+            state["w28_controlled_flow"] = True
+            save_state(state)
+            record = {
+                "record_id": "FLOW-UTIL-CRR-R4", "revision": 4,
+                "utility": "UTIL-CRR-ISSUER-R4", "session_id": session["session_id"],
+                "frame_length": len(payload), "canary_preserved": True,
+                "pie_base_recovered": True, "nx": True, "full_relro": True,
+                "pie": True, "aslr": True, "controlled_flow": True,
+            }
+            atomic_json(W28_STATE / "control-with-very-little-room" / "result.json", record)
+            self.accepted("control-with-very-little-room", record, 201)
+            return
+
+        if not state["w28_controlled_flow"]:
+            self.send_json(403, {"error": "bounded utility control evidence required"})
+            return
+        operation = request.get("operation")
+        if operation == "issue":
+            encoded = request.get("frame_b64")
+            if (set(request) != {"operation", "session_id", "length", "frame_b64"} or
+                    request.get("session_id") != session.get("session_id") or
+                    not isinstance(encoded, str) or not isinstance(request.get("length"), int)):
+                self.send_json(409, {"error": "issuer frame binding does not match"})
+                return
+            try:
+                payload = base64.b64decode(encoded, validate=True)
+            except (ValueError, base64.binascii.Error):
+                self.send_json(409, {"error": "issuer frame encoding is invalid"})
+                return
+            if len(payload) != request["length"] or len(payload) > 384:
+                self.send_json(409, {"error": "issuer frame length is outside the utility contract"})
+                return
+            correlation = str(uuid.uuid4())
+            try:
+                completed = self.run_w28_utility("issue-client", session, payload, correlation)
+                response = json.loads(completed.stdout) if completed.returncode == 0 else None
+            except (OSError, subprocess.TimeoutExpired, json.JSONDecodeError):
+                response = None
+            if not isinstance(response, dict) or not isinstance(response.get("control_client"), str):
+                self.send_json(409, {"error": "bounded control issuer rejected the utility call"})
+                return
+            self.send_json(201, response)
+            return
+        if operation == "readback":
+            if (set(request) != {"operation", "control_client", "outlet_group", "project", "action"} or
+                    request.get("outlet_group") != "OG-CRR-02" or
+                    request.get("project") != "CRR-CTRL-R21" or request.get("action") != "readback" or
+                    not isinstance(request.get("control_client"), str)):
+                self.send_json(409, {"error": "requested operation is outside client scope"})
+                return
+            environment = {**os.environ, "ARWC_W28_CONTROL_CLIENT": str(request["control_client"])}
+            try:
+                completed = subprocess.run(
+                    [str(W28_ARTIFACTS / "utility"), "use-client"],
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=5,
+                    check=False, env=environment,
+                )
+                response = json.loads(completed.stdout) if completed.returncode == 0 else None
+            except (OSError, subprocess.TimeoutExpired, json.JSONDecodeError):
+                response = None
+            if not isinstance(response, dict) or not isinstance(response.get("record"), dict):
+                self.send_json(403, {"error": "scoped utility control client required"})
+                return
+            self.send_json(201, response)
+            return
+        self.send_json(409, {"error": "utility control operation is not valid"})
 
     def w22_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         metadata = json.loads((ARTIFACTS / "sealed-metadata.json").read_text())

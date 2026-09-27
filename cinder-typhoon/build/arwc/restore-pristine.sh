@@ -137,13 +137,13 @@ for _ in $(seq 1 60); do
       && $approval_audit == 0 \
       && $renderer == '{"attestation_token":null,"handover_recovered":false,"profile_observed":false,"restricted_preview_accepted":false}' \
       && $renderer_audit == 0 \
-      && $control_broker == '{"authority_demonstrated":false,"control_client":null}' \
+      && $control_broker == '{"authority_demonstrated":false,"control_client":null,"utility_authority_demonstrated":false,"utility_control_client":null}' \
       && $control_broker_audit == 0 \
       && $hmi == '{"envelope_observed":false,"ineffective_requests_observed":false,"mode_observed":false,"note_observed":false,"practice_conditions_observed":false,"practice_sequence_observed":false,"present_observed":false,"trace_correlated":false}' \
       && $hmi_audit == 0 \
       && $historian == '{"mapping_observed":false,"scale_observed":false,"tag_export_observed":false,"unit_change_interpreted":false}' \
       && $historian_audit == 0 \
-      && $engineering == '{"compatibility_reproduced":false,"concealed_reviewer_used":false,"deployed_revision_observed":false,"diagnostic_observed":false,"hidden_check_recovered":false,"legacy_mapping_recovered":false,"project_bundle_observed":false,"sealed_project_opened":false,"viewer_observed":false,"vm_reconstructed":false,"w27_collision_modeled":false,"w27_verifier_reproduced":false}' \
+      && $engineering == '{"compatibility_reproduced":false,"concealed_reviewer_used":false,"deployed_revision_observed":false,"diagnostic_observed":false,"hidden_check_recovered":false,"legacy_mapping_recovered":false,"project_bundle_observed":false,"sealed_project_opened":false,"viewer_observed":false,"vm_reconstructed":false,"w27_collision_modeled":false,"w27_verifier_reproduced":false,"w28_contract_recovered":false,"w28_controlled_flow":false,"w28_session":null}' \
       && $engineering_audit == 0 \
       && $instruments == '{"deployment_observed":false,"flash_observed":false,"image_rewrite_accepted":false,"inspection_recovered":false,"mapping_observed":false,"practice_observed":false,"trace_observed":false}' \
       && $instruments_audit == 0 \
@@ -177,7 +177,7 @@ for _ in $(seq 1 60); do
       && docker exec --user arwc-historian cinder-arwc-historian \
         sh -c 'find /run/arwc-process-evidence -type f -print -quit | grep -q . && exit 1 || exit 0'; then
       docker exec --user arwc-engineering cinder-arwc-engineering \
-        sh -c 'test ! -e /var/lib/arwc-engineering/artifacts/what-counts-as-intact/result.json && test ! -e /var/lib/arwc-engineering/artifacts/the-constraints-of-a-valid-looking-program/result.json && test ! -e /var/lib/arwc-engineering/artifacts/the-constraints-of-a-valid-looking-program/DPG-CRR-MODEL1.dpg'
+        sh -c 'test ! -e /var/lib/arwc-engineering/artifacts/what-counts-as-intact/result.json && test ! -e /var/lib/arwc-engineering/artifacts/the-constraints-of-a-valid-looking-program/result.json && test ! -e /var/lib/arwc-engineering/artifacts/the-constraints-of-a-valid-looking-program/DPG-CRR-MODEL1.dpg && test ! -e /var/lib/arwc-engineering/artifacts/the-utility-s-small-world/result.json && test ! -e /var/lib/arwc-engineering/artifacts/control-with-very-little-room/result.json'
       docker exec --user arwc-diagnostics cinder-arwc-diagnostics \
         sh -c 'test ! -e /var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept/result.json && test ! -e /var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept/DPG-CRR-CINDER.dpg'
       docker exec --user arwc-data cinder-arwc-data \

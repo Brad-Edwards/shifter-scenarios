@@ -19,6 +19,18 @@ RUN gcc -nostdlib -static -no-pie -Wl,--build-id=none \
     && strip --strip-all /tmp/w27/rot128-verifier \
     && /tmp/w27/rot128-verifier /tmp/w27/base.dpg | grep -F '"decision":"accepted"'
 
+FROM ubuntu:24.04 AS utility28
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y binutils clang-18 libc6-dev python3 \
+    && rm -rf /var/lib/apt/lists/* \
+    && install -d /tmp/w28 /opt/process-service/w28/lib /opt/process-service/w28/lib64
+COPY build/arwc/runtime/utility28.c build/arwc/runtime/build_w28_native.py /tmp/w28-src/
+RUN cp /lib/x86_64-linux-gnu/libc.so.6 /opt/process-service/w28/lib/libc.so.6 \
+    && cp /lib64/ld-linux-x86-64.so.2 /opt/process-service/w28/lib64/ld-linux-x86-64.so.2 \
+    && python3 /tmp/w28-src/build_w28_native.py /tmp/w28-src/utility28.c /tmp/w28/utility \
+    && /tmp/w28/utility ordinary relation | grep -F '"status":"complete"'
+
 FROM nimlang/nim:2.0.8 AS viewer
 COPY build/arwc/runtime/sealed_viewer.nim /tmp/sealed_viewer.nim
 RUN nim c -d:release --opt:size --passL:-Wl,--build-id=none \
@@ -44,7 +56,7 @@ RUN dotnet publish /tmp/review/ReviewHelper.csproj -c Release -r linux-x64 \
 
 FROM python:3.12.11-slim-bookworm
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates util-linux \
+    && apt-get install --no-install-recommends -y ca-certificates libcap2-bin util-linux \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system --gid 2320 arwc-process-evidence \
     && groupadd --system arwc-engineering \
@@ -60,6 +72,11 @@ COPY --from=viewer --chown=arwc-engineering:arwc-engineering --chmod=0750 /tmp/s
 COPY --from=sealed --chown=arwc-engineering:arwc-engineering --chmod=0640 /tmp/sealed/ /opt/process-service/artifacts/
 COPY --from=review --chown=arwc-engineering:arwc-engineering --chmod=0640 /tmp/review-out/ReviewHelper.dll /opt/process-service/artifacts/ReviewHelper.dll
 COPY --from=native --chown=arwc-engineering:arwc-engineering /tmp/w27/ /opt/process-service/artifacts/w27/
+COPY --from=utility28 --chown=arwc-engineering:arwc-engineering /tmp/w28/ /opt/process-service/artifacts/w28/
+COPY --from=utility28 /opt/process-service/w28/ /opt/process-service/w28/
+RUN chmod 0750 /opt/process-service/artifacts/w28/utility \
+    && setcap cap_setuid=ep /opt/process-service/artifacts/w28/utility \
+    && test "$(getcap /opt/process-service/artifacts/w28/utility)" = '/opt/process-service/artifacts/w28/utility cap_setuid=ep'
 COPY --chmod=0750 build/arwc/runtime/process-service-entrypoint.sh /usr/local/sbin/arwc-process-entrypoint
 EXPOSE 443
 ENTRYPOINT ["/usr/local/sbin/arwc-process-entrypoint"]

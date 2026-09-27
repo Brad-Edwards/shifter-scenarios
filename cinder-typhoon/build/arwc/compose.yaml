@@ -374,7 +374,6 @@ services:
     read_only: true
     cap_drop: [ALL]
     cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt: [no-new-privileges:true]
     sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
     environment:
       ARWC_PROCESS_ROLE: engineering
@@ -386,6 +385,7 @@ services:
     volumes:
       - engineering-state:/var/lib/arwc-engineering
       - process-evidence:/run/arwc-process-evidence
+      - control-issuer:/run/arwc
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
@@ -542,6 +542,7 @@ services:
       - contractor-session:/run/arwc-field-session:ro
       - approval-evidence:/run/arwc-approval-evidence:ro
       - renderer-evidence:/run/arwc-renderer-evidence:ro
+      - control-issuer:/run/arwc
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
     networks:
@@ -635,6 +636,8 @@ volumes:
     name: cinder-arwc-renderer-evidence
   control-broker-state:
     name: cinder-arwc-control-broker-state
+  control-issuer:
+    name: cinder-arwc-control-issuer
   ot-read-evidence:
     name: cinder-arwc-ot-read-evidence
   process-evidence:

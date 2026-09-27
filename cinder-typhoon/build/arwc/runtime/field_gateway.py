@@ -42,6 +42,8 @@ PROCESS_PATHS = {
     "/api/change-one-record-keep-the-rest",
     "/api/what-counts-as-intact", "/api/the-constraints-of-a-valid-looking-program",
     "/api/a-program-the-engineer-would-accept",
+    "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
+    "/api/keep-the-authority-you-earned",
 }
 MANIFEST = {
     "record_id": "FIELD-SERVICES-R21",

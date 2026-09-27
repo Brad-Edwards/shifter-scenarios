@@ -13,7 +13,9 @@ if [ "$role" = engineering ]; then
   install -d -o "$user" -g "$user" -m 0700 \
     "$root/artifacts" \
     "$root/artifacts/what-counts-as-intact" \
-    "$root/artifacts/the-constraints-of-a-valid-looking-program"
+    "$root/artifacts/the-constraints-of-a-valid-looking-program" \
+    "$root/artifacts/the-utility-s-small-world" \
+    "$root/artifacts/control-with-very-little-room"
   if [ ! -e "$root/artifacts/what-counts-as-intact/base.dpg" ]; then
     cp /opt/process-service/artifacts/w27/base.dpg \
       /opt/process-service/artifacts/w27/case-*.dpg \

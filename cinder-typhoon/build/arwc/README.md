@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W27 and W35 (97 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W28 and W35 (100 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -77,7 +77,7 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
 | AHB-04 | Maintenance W13-W15 | Complete |
 | AHB-05 | Read-only process routes and W16-W25 | Complete |
-| AHB-06 | Control paths W26-W28 | In progress (W26-W27 complete) |
+| AHB-06 | Control paths W26-W28 | Complete |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
 
@@ -413,3 +413,34 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   narrative asset. The existing contracts fully specify the verifier,
   structural collision model, Cairn-only result, planning consumer, and
   unaffected evidence boundaries.
+- 2026-09-27: W28 adds five passing black-box checks across `a-engineering`
+  and DMZ-only `a-control-broker`. `UTIL-CRR-ISSUER-R4` is a real x86-64 SysV
+  PIE built by clang 18.1 against glibc 2.39 with the declared optimizer,
+  stack protector, PIE, full RELRO, NX, ASLR, CET-disabled surface, exactly
+  16 KiB of executable sections, and `cap_setuid=ep`. The service supplies its
+  ELF, relocation table, seccomp policy, immutable relationship record, signed
+  live status, and all five ordinary invocations.
+- 2026-09-27: Independent frame construction preserves the disclosed canary,
+  recovers the PIE base from the declared return offset, pivots at the exact
+  saved-frame locations, and uses only the supplied sparse gadget offsets and
+  fixed `0x7fff00000000` scenario vDSO surface. Wrong canary, length, session,
+  gadget, issuer pointer, extra command field, authority, tenant, and broader
+  action are rejected without an issuer result.
+- 2026-09-27: The completion path executes the file-capability utility, applies
+  its syscall allowlist, performs `setresuid(0,0,0)`, and calls exported
+  `issue_client` with `ISSUER-UTIL-OG2-R4` and the current correlation. The DMZ
+  broker independently enforces root Unix peer credentials on the fixed
+  `/run/arwc/control-issuer.sock` boundary and issues an exact five-minute
+  `CTRL-CLIENT-CRR-28` limited to `OG-CRR-02`, `CRR-CTRL-R21`, plan execution,
+  and readback. The engineering and DMZ containers retain disjoint internal
+  networks; direct TCP, metadata, and Internet egress remain denied. Main
+  service processes retain zero capabilities, while the engineering
+  container's deliberate `no-new-privileges` exception is limited by its
+  dropped bounding set plus the utility's single `SETUID` file capability.
+  State and audits survived restart. Destructive test state was removed and
+  the authored initial state was verified. The suite now contains 148
+  black-box checks.
+- No SDL change was needed for W28, and none of its three cards binds a
+  narrative asset. The existing contract fully specifies the native ABI and
+  hardening, frame layout, sparse surface, privileged issuer call, fixed socket,
+  and equivalent bounded control scope.

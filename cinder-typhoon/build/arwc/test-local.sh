@@ -102,6 +102,7 @@ python3 tests/test_w23_live.py
 python3 tests/test_w24_live.py
 python3 tests/test_w26_live.py
 python3 tests/test_w27_live.py
+python3 tests/test_w28_live.py
 
 [[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-corporate").IPAddress}}' cinder-arwc-connector) == 10.77.60.20 ]]
 [[ $(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cinder-arwc-business) == 10.77.60.30 ]]
@@ -163,12 +164,16 @@ for container in \
   cinder-arwc-identity cinder-arwc-data cinder-arwc-data-bridge \
   cinder-arwc-contractors cinder-arwc-contractor-bridge cinder-arwc-approval \
   cinder-arwc-renderer cinder-arwc-control-broker \
-  cinder-arwc-hmi cinder-arwc-historian cinder-arwc-engineering cinder-arwc-instruments \
+  cinder-arwc-hmi cinder-arwc-historian cinder-arwc-instruments \
   cinder-arwc-diagnostics; do
   [[ $(docker inspect -f '{{.HostConfig.ReadonlyRootfs}}' "$container") == true ]]
   [[ $(docker inspect -f '{{json .HostConfig.CapDrop}}' "$container") == '["ALL"]' ]]
   [[ $(docker inspect -f '{{json .HostConfig.SecurityOpt}}' "$container") == *'no-new-privileges:true'* ]]
 done
+[[ $(docker inspect -f '{{.HostConfig.ReadonlyRootfs}}' cinder-arwc-engineering) == true ]]
+[[ $(docker inspect -f '{{json .HostConfig.CapDrop}}' cinder-arwc-engineering) == '["ALL"]' ]]
+[[ $(docker inspect -f '{{json .HostConfig.SecurityOpt}}' cinder-arwc-engineering) != *'no-new-privileges:true'* ]]
+[[ $(docker exec cinder-arwc-engineering getcap /opt/process-service/artifacts/w28/utility) == '/opt/process-service/artifacts/w28/utility cap_setuid=ep' ]]
 [[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-corporate) == true ]]
 [[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-maintenance) == true ]]
 [[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-dmz) == true ]]
@@ -192,4 +197,4 @@ if docker exec --user fieldlink cinder-arwc-connector sh -c \
   exit 1
 fi
 
-echo "Alterra W01-W27 and W35 local acceptance passed"
+echo "Alterra W01-W28 and W35 local acceptance passed"

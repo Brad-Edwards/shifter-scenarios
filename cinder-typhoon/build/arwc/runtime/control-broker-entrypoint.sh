@@ -7,6 +7,8 @@ chmod 0700 /var/lib/arwc-control-broker
 install -d -o arwc-control-broker -g arwc-control-broker -m 0700 \
   /var/lib/arwc-control-broker/audit \
   /var/lib/arwc-control-broker/state
+chown arwc-control-broker:arwc-control-broker /run/arwc
+chmod 0755 /run/arwc
 for file in server.crt server.key; do
   install -o arwc-control-broker -g arwc-control-broker -m 0400 "/run/arwc-tls/$file" "/tmp/$file"
 done
