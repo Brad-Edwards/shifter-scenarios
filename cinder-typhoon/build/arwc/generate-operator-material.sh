@@ -17,7 +17,7 @@ openssl req -newkey rsa:3072 -nodes \
   -subj '/CN=customer-handover.arwc.test/O=Alterra Regional Water Company' \
   -keyout "$OPERATOR_DIR/tls/server.key" -out "$OPERATOR_DIR/tls/server.csr" 2>/dev/null
 cat >"$OPERATOR_DIR/tls/server.ext" <<'EOF'
-subjectAltName=DNS:a-connector,DNS:fieldlink.arwc.test,DNS:customer-handover.arwc.test,IP:10.77.60.20
+subjectAltName=DNS:a-connector,DNS:fieldlink.arwc.test,DNS:customer-handover.arwc.test,DNS:a-business,DNS:business-workplace.arwc.test,IP:10.77.60.20,IP:10.77.60.30
 keyUsage=digitalSignature,keyEncipherment
 extendedKeyUsage=serverAuth
 EOF

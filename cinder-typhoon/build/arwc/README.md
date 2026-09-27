@@ -6,8 +6,9 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate-network foundation are deployed.
-W01 is materialized and accepted: three retained customer records and the
-bounded planner-attachment authorization defect run on `a-connector`.
+W01-W03 are materialized and accepted: the customer handover runs on
+`a-connector`, while the asset association and annex-import paths run on the
+separate `a-business` service.
 
 ## Boundaries
 
@@ -31,7 +32,8 @@ bounded planner-attachment authorization defect run on `a-connector`.
 
 - GCP VPC/carrier: `cinder-arwc-golden`, private `10.77.59.2`, no external IP.
 - Corporate target network: internal `10.77.60.0/24` bridge.
-- First node: `a-connector` at the SDL address `10.77.60.20`.
+- First nodes: `a-connector` at `10.77.60.20` and `a-business` at
+  `10.77.60.30`, matching the SDL address plan.
 - `customer-handover` is a real TLS service on declared port 8443 and runs as
   `arwc-connector`; the participant context runs as the distinct locked
   `fieldlink` service identity.
@@ -45,12 +47,13 @@ bounded planner-attachment authorization defect run on `a-connector`.
 | --- | --- | --- |
 | AHB-00 | Architecture, isolation plan, topology and implementation ledger | Complete |
 | AHB-01 | `a-connector` and W01 opening slice | Complete |
-| AHB-02 | Corporate W02-W12 and W35 | Not started |
-| AHB-03 | Maintenance W13-W15 | Not started |
-| AHB-04 | Read-only process routes and W16-W25 | Not started |
-| AHB-05 | Control paths W26-W28 | Not started |
-| AHB-06 | Consequence, verification, and reporting W29-W34 | Not started |
-| AHB-07 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
+| AHB-02 | Corporate W02-W03 association and annex paths | Complete |
+| AHB-03 | Remaining corporate W04-W12 and W35 | Not started |
+| AHB-04 | Maintenance W13-W15 | Not started |
+| AHB-05 | Read-only process routes and W16-W25 | Not started |
+| AHB-06 | Control paths W26-W28 | Not started |
+| AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
+| AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
 
 ## W01 asset decision
 
@@ -100,6 +103,13 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   and RAE 5.0.0 gate pass: 136 modules parse/compose, 3,494 requirements and
   281 observations instantiate/compile, and all 120 ARWC card contracts pass
   the native hand-build gate.
+- 2026-09-27: W02-W03 add eight passing black-box tests. The deployed service
+  performs the association lookup against the supplied row before resolving
+  `MR-CRR-4417-R6`, and the annex importer checks `attachments/` before one
+  percent-decode and canonicalization pass. Protected results remain dependent
+  on freshly observed source records; wrong sessions, tenants, associations,
+  revisions, and unencoded paths are denied. No narrative asset is placed for
+  these six cards because every `narrative_reuse` list is empty.
 - No SDL change was needed for AHB-00 or AHB-01. The validated contracts fully
   determined the observable W01 behavior; request serialization and carrier
   packaging are incidental implementation detail.

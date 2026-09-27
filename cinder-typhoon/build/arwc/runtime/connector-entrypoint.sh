@@ -26,8 +26,7 @@ tr -d '\n' < /var/lib/fieldlink-connector/handover/corporate-session | sha256sum
 chown arwc-connector:arwc-connector /var/lib/arwc-connector/auth/corporate-session.sha256
 chmod 0400 /var/lib/arwc-connector/auth/corporate-session.sha256
 
-if [ ! -s /var/lib/fieldlink-connector/handover/customer-transition.json ]; then
-  cat > /var/lib/fieldlink-connector/handover/customer-transition.json <<'EOF'
+cat > /var/lib/fieldlink-connector/handover/customer-transition.json <<'EOF'
 {
   "account": "Alterra Regional Water Company",
   "tenant": "TEN-ARWC-047",
@@ -35,13 +34,13 @@ if [ ! -s /var/lib/fieldlink-connector/handover/customer-transition.json ]; then
   "maintenance_case": "MTN-CRR-204",
   "customer_receipt": "RCP-742-047",
   "customer_handover": "https://customer-handover.arwc.test:8443",
+  "business_workplace": "https://business-workplace.arwc.test",
   "session_file": "/var/lib/fieldlink-connector/handover/corporate-session",
   "request_header": "Authorization: Bearer <session>"
 }
 EOF
-  chown fieldlink:fieldlink /var/lib/fieldlink-connector/handover/customer-transition.json
-  chmod 0400 /var/lib/fieldlink-connector/handover/customer-transition.json
-fi
+chown fieldlink:fieldlink /var/lib/fieldlink-connector/handover/customer-transition.json
+chmod 0400 /var/lib/fieldlink-connector/handover/customer-transition.json
 
 install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.crt /tmp/arwc-server.crt
