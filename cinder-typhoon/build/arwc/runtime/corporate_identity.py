@@ -294,15 +294,12 @@ class Handler(BaseHTTPRequestHandler):
                 request.get("preview_origin") != state["preview_origin"]):
             self.send_json(409, {"error": "browser transaction binding does not match"})
             return
-        token = state.get("planner_session")
-        expires = state.get("planner_session_expires")
-        if not isinstance(token, str) or not isinstance(expires, int) or expires <= int(time.time()):
-            token = secrets.token_urlsafe(40)
-            expires = int(time.time()) + 300
-            state["planner_session"] = token
-            state["planner_session_sha256"] = hashlib.sha256(token.encode()).hexdigest()
-            state["planner_session_expires"] = expires
-            save_state(state)
+        token = secrets.token_urlsafe(40)
+        expires = int(time.time()) + 300
+        state["planner_session"] = token
+        state["planner_session_sha256"] = hashlib.sha256(token.encode()).hexdigest()
+        state["planner_session_expires"] = expires
+        save_state(state)
         atomic_json(PLANNER_EVIDENCE, {
             "record_id": "PLN-SESS-OAUTH-882",
             "planner": "nadia.corvane",

@@ -363,9 +363,10 @@ print(response.status)
             inspected = subprocess.run(
                 ["docker", "inspect", "-f",
                  "{{.HostConfig.ReadonlyRootfs}}|{{json .HostConfig.CapDrop}}|{{json .HostConfig.SecurityOpt}}|{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}|{{range $p,$b := .NetworkSettings.Ports}}{{if $b}}{{$p}}{{end}}{{end}}",
-                 service], text=True, stdout=subprocess.PIPE, check=True,
+                service], text=True, stdout=subprocess.PIPE, check=True,
             ).stdout.strip()
-            self.assertIn('true|["ALL"]|["no-new-privileges:true"]|', inspected)
+            security = "null" if service == "cinder-arwc-engineering" else '["no-new-privileges:true"]'
+            self.assertIn(f'true|["ALL"]|{security}|', inspected)
             self.assertIn(address, inspected)
             self.assertTrue(inspected.endswith("|"))
             capabilities = subprocess.run(
@@ -382,6 +383,14 @@ print(response.status)
                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                 )
                 self.assertNotEqual(probe.returncode, 0, f"{service} unexpectedly reached {target}")
+        utility_capability = subprocess.check_output([
+            "docker", "exec", "cinder-arwc-engineering", "getcap",
+            "/opt/process-service/artifacts/w28/utility",
+        ], text=True).strip()
+        self.assertEqual(
+            utility_capability,
+            "/opt/process-service/artifacts/w28/utility cap_setuid=ep",
+        )
         for address in ("10.77.63.40", "10.77.63.50", "10.77.62.20"):
             probe = inside("python3", "-c", f"import socket; socket.create_connection(('{address}',443),1)")
             self.assertNotEqual(probe.returncode, 0, f"connector unexpectedly reached {address}")

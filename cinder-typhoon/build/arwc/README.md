@@ -6,7 +6,8 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W35 (120 of 120 cards) are materialized and focused-slice accepted. The customer handover
+deployed. W01-W35 (120 of 120 cards) are fully materialized and whole-phase accepted, and the deployed
+environment is restored to its authored initial state. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -82,7 +83,7 @@ the control-only `a-distribution` service without altering live process state.
 | AHB-05 | Read-only process routes and W16-W25 | Complete |
 | AHB-06 | Control paths W26-W28 | Complete |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Complete |
-| AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | In progress |
+| AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Complete |
 
 ## W01 asset decision
 
@@ -539,3 +540,25 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   handover to independent 0.81 ML / 11.59 ML process truth without modifying
   W30 or prior evidence. The suite now contains 176 black-box checks. No SDL
   change was needed, and W34 binds no narrative asset.
+- 2026-09-27: Final whole-phase acceptance rebuilt all 18 images, destroyed and
+  recreated every mutable volume, and passed all 176 black-box checks across
+  W01-W35. The pass included exact addressing and authorization, persistence,
+  participant-content inspection, container posture, absence of published
+  ports, internal target networks, metadata and Internet denial, and denied
+  routes to Training, KeplerOps, and Shifter addresses. The retained acceptance
+  exit status is zero.
+- The whole-phase run exposed the real five-minute planner-session boundary.
+  Each correctly authorized browser bootstrap now issues a fresh five-minute
+  credential, and the operator-only acceptance harness renews it between long
+  test groups. W27 posture inspection was also aligned with W28's declared
+  single-file `cap_setuid=ep` utility exception while continuing to require
+  zero service-process capabilities and the remaining hardening controls.
+- Final static validation passed env-packs 6.1.0 author validation, RAE 5.0.0
+  parsing and composition of 136 modules, instantiation and compilation of
+  3,494 requirements and 281 source-bound observations, all 16 focused ARWC
+  design checks, and the Training, KeplerOps, and 120-card ARWC hand-build
+  gates. No SDL change was required.
+- After destructive acceptance, `restore-pristine.sh` recreated every volume
+  and directly verified the exact authored service states, empty audits and
+  result stores, absent earned credentials/evidence, initial 12.40 ML reserve,
+  and unchanged immutable inputs before reporting the restore successful.

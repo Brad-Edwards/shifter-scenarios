@@ -84,10 +84,13 @@ python3 tests/test_w01_live.py
 python3 tests/test_w02_w03_live.py
 python3 tests/test_w04_live.py
 python3 tests/test_w05_w06_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w07_live.py
 python3 tests/test_w08_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w09_live.py
 python3 tests/test_w10_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w11_live.py
 python3 tests/test_w12_live.py
 python3 tests/test_w35_live.py
@@ -95,19 +98,29 @@ python3 tests/test_w13_live.py
 python3 tests/test_w14_live.py
 python3 tests/test_w15_live.py
 python3 tests/test_w16_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w29_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w30_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w17_w18_w21_w25_live.py
 python3 tests/test_w31_live.py
 python3 tests/test_w32_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w33_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w19_w20_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w22_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w23_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w24_live.py
 python3 tests/test_w26_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w27_live.py
 python3 tests/test_w28_live.py
+python3 tests/refresh_planner_session.py
 python3 tests/test_w34_live.py
 
 [[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-corporate").IPAddress}}' cinder-arwc-connector) == 10.77.60.20 ]]

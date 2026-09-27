@@ -58,6 +58,7 @@ print(json.load(urllib.request.urlopen(request,context=ctx))["process_session"])
 
 
 class W23Live(unittest.TestCase):
+    initial_state: dict = {}
     exploit = {"estimator": "EST-CRR-23", "operations": [
         {"op": "add", "source_id": "FIT-CRR-204B", "value": 12.4},
         {"op": "add", "source_id": "FIT-CRR-204B", "value": 12.4},
@@ -78,6 +79,14 @@ class W23Live(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
+        cls.initial_state = json.loads(subprocess.check_output([
+            "docker", "exec", "--user", "arwc-diagnostics", "cinder-arwc-diagnostics",
+            "cat", "/var/lib/arwc-diagnostics/state/service.json",
+        ], text=True))
+        for field in ("side_effect_observed", "protected_state_controlled",
+                      "false_estimate_observed"):
+            if cls.initial_state[field]:
+                raise AssertionError(f"W23 state is not pristine: {field}")
         issue_process_session()
 
     def test_01_real_estimator_baseline_is_exact_and_authorized(self) -> None:
@@ -153,16 +162,12 @@ class W23Live(unittest.TestCase):
         else: self.fail("diagnostic service did not return after restart")
         state = json.loads(subprocess.check_output(["docker", "exec", "--user", "arwc-diagnostics",
             "cinder-arwc-diagnostics", "cat", "/var/lib/arwc-diagnostics/state/service.json"], text=True))
-        self.assertEqual(state, {
+        expected = dict(type(self).initial_state)
+        expected.update({
             "side_effect_observed": True, "protected_state_controlled": True,
-            "false_estimate_observed": True, "oracle_contract_observed": False,
-            "selector_predicted": False, "bundle_opened": False,
-            "calibration_exported": False, "oracle_queries": 0,
-            "colliding_program_accepted": False,
-            "vault_contract_observed": False, "vault_boundary_controlled": False,
-            "vault_saved_state_controlled": False, "vault_execution": None,
-            "vault_history_response": None,
+            "false_estimate_observed": True,
         })
+        self.assertEqual(state, expected)
         audit = subprocess.check_output(["docker", "exec", "--user", "arwc-diagnostics",
             "cinder-arwc-diagnostics", "cat", "/var/lib/arwc-diagnostics/audit/events.jsonl"], text=True)
         self.assertIn("a-measurement-that-never-existed", audit)
