@@ -23,6 +23,7 @@ TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 DISCOVERIES = ROOT / "state" / "discoveries.json"
 ARCHIVE_EVIDENCE = ROOT / "archive" / "W08-source.json"
 BRIDGE_EVIDENCE = ROOT / "integration" / "W09-read.json"
+RELATION_EVIDENCE = ROOT / "relation" / "W02-association.json"
 
 BUNDLE = {
     "record_id": "BND-CRR-OUTLET-17",
@@ -254,6 +255,13 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("the-asset-and-the-contractor", BUNDLE)
         elif path == "/api/three-names-for-one-job":
             mark("association_table")
+            atomic_json(RELATION_EVIDENCE, {
+                "record_id": "ASSOC-CRR-4417-R6",
+                "association": "ASC-CRR-4417",
+                "asset": "AST-CRR-017",
+            })
+            os.chown(RELATION_EVIDENCE, -1, grp.getgrnam("arwc-relation").gr_gid)
+            os.chmod(RELATION_EVIDENCE, 0o640)
             self.accepted("three-names-for-one-job", ASSOCIATIONS)
         elif path == "/api/an-annex-left-with-the-order":
             self.accepted("an-annex-left-with-the-order", ANNEX)

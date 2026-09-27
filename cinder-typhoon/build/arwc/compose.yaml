@@ -56,6 +56,7 @@ services:
       - business-state:/var/lib/arwc-business
       - business-archive-evidence:/var/lib/arwc-business/archive
       - business-integration-evidence:/var/lib/arwc-business/integration
+      - business-relation-evidence:/var/lib/arwc-business/relation
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
@@ -94,6 +95,7 @@ services:
       - data-state:/var/lib/arwc-data
       - data-postgresql:/var/lib/postgresql/data
       - data-integration-evidence:/var/lib/arwc-data/integration
+      - business-relation-evidence:/run/arwc-business-relation:ro
       - identity-planning:/run/arwc-planning-evidence:ro
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
@@ -239,6 +241,8 @@ volumes:
     name: cinder-arwc-business-archive-evidence
   business-integration-evidence:
     name: cinder-arwc-business-integration-evidence
+  business-relation-evidence:
+    name: cinder-arwc-business-relation-evidence
   archive-state:
     name: cinder-arwc-archive-state
   archive-handover:

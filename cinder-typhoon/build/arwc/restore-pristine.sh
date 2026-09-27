@@ -63,6 +63,9 @@ for _ in $(seq 1 60); do
       && $data == *'"query_definition_observed":false'* \
       && $data == *'"reconciliation_copy_created":false'* \
       && $data == *'"reserve_reconciled":false'* \
+      && $data == *'"relation_contract_observed":false'* \
+      && $data == *'"relation_exchange_observed":false'* \
+      && $data == *'"lineage_observed":false'* \
       && $data_audit == 0 \
       && $data_copy == 0 \
       && $bridge == '{"current_feed_observed":false}' \
@@ -78,7 +81,9 @@ for _ in $(seq 1 60); do
       && docker exec --user arwc-business cinder-arwc-business \
         test ! -e /var/lib/arwc-business/integration/W09-read.json \
       && docker exec --user arwc-data cinder-arwc-data \
-        test ! -e /var/lib/arwc-data/integration/W09-data.json; then
+        test ! -e /var/lib/arwc-data/integration/W09-data.json \
+      && docker exec --user arwc-business cinder-arwc-business \
+        test ! -e /var/lib/arwc-business/relation/W02-association.json; then
       echo "Alterra authored initial state restored"
       exit 0
     fi

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import base64
+import binascii
 import hashlib
 import hmac
 import grp
@@ -9,6 +11,7 @@ import os
 import pathlib
 import re
 import ssl
+import struct
 import tempfile
 import time
 import urllib.error
@@ -28,6 +31,7 @@ AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.json")
 INTEGRATION_EVIDENCE = ROOT / "integration" / "W09-data.json"
+BUSINESS_RELATION_EVIDENCE = pathlib.Path("/run/arwc-business-relation/W02-association.json")
 
 DEFINITION = {
     "record_id": "QRY-RESERVE-R7",
@@ -43,6 +47,223 @@ DEFINITION = {
 ALLOCATION_ID = "ALLOC-2026-DP3-R9"
 METER_ID = "MTR-CRR-DP3-R12"
 REPORT_ID = "RPT-CRR-DP3-R7"
+
+BOLT_MAGIC = bytes.fromhex("6060b017")
+BOLT_54 = bytes.fromhex("00000405")
+BOLT_QUERY = (
+    "MATCH (a:Asset {record_id: $asset})-[r:RELATION]->(w:Work) "
+    "RETURN r.record_id,w.record_id"
+)
+LINEAGE_OU = (
+    "ASSET_WORK]->(w) WITH a MATCH p=(legacy:Legacy)-[:SUPERSEDES]->"
+    "(group:OutletGroup)-[:CURRENT_ASSET]->(a)<-[:ARCHIVED_ASSET]-"
+    "(archive:Archive) RETURN p //"
+)
+
+RELATION_CONTRACT = {
+    "record_id": "RELPROTO-CRR-R3",
+    "revision": 3,
+    "protocol": "Neo4j Bolt 5.4",
+    "magic": "60 60 b0 17",
+    "version_bytes": "00 00 04 05",
+    "framing": "two-byte big-endian chunks terminated by 00 00",
+    "packstream": {
+        "HELLO": {"signature": "01", "fields": ["metadata"]},
+        "RUN": {"signature": "10", "fields": ["query", "parameters", "extra"]},
+        "PULL": {"signature": "3f", "fields": ["extra"]},
+    },
+    "query": BOLT_QUERY,
+    "relation": "ASSET_WORK",
+    "association": "ASC-CRR-4417",
+}
+
+RELATION_RESPONSE = {
+    "record_id": "REL-ASC-CRR-4417-R3",
+    "revision": 3,
+    "association": "ASC-CRR-4417",
+    "relation": "ASSET_WORK",
+    "asset": "AST-CRR-017",
+    "work_order": "WO-CRR-4417",
+}
+
+LINEAGE = {
+    "record_id": "LIN-AST-CRR-017-R8",
+    "revision": 8,
+    "legacy": "CRR-OG-LEGACY-2",
+    "outlet_group": "OG-CRR-02",
+    "current_asset": "AST-CRR-017",
+    "archive": "ARC-COLD-CRR-2019",
+}
+
+
+class BoltError(ValueError):
+    pass
+
+
+def unpack_value(data: bytes, offset: int = 0) -> tuple[object, int]:
+    if offset >= len(data):
+        raise BoltError("truncated PackStream value")
+    marker = data[offset]
+    offset += 1
+    if marker <= 0x7F:
+        return marker, offset
+    if marker >= 0xF0:
+        return marker - 256, offset
+    if 0x80 <= marker <= 0x8F:
+        length = marker & 0x0F
+        end = offset + length
+        if end > len(data):
+            raise BoltError("truncated PackStream string")
+        try:
+            return data[offset:end].decode(), end
+        except UnicodeDecodeError as error:
+            raise BoltError("invalid PackStream UTF-8") from error
+    if marker == 0xD0:
+        if offset >= len(data):
+            raise BoltError("truncated PackStream string length")
+        length = data[offset]
+        offset += 1
+        end = offset + length
+        if end > len(data):
+            raise BoltError("truncated PackStream string")
+        try:
+            return data[offset:end].decode(), end
+        except UnicodeDecodeError as error:
+            raise BoltError("invalid PackStream UTF-8") from error
+    if marker == 0xD1:
+        if offset + 2 > len(data):
+            raise BoltError("truncated PackStream string length")
+        length = int.from_bytes(data[offset:offset + 2], "big")
+        offset += 2
+        end = offset + length
+        if end > len(data):
+            raise BoltError("truncated PackStream string")
+        try:
+            return data[offset:end].decode(), end
+        except UnicodeDecodeError as error:
+            raise BoltError("invalid PackStream UTF-8") from error
+    if 0x90 <= marker <= 0x9F:
+        values: list[object] = []
+        for _ in range(marker & 0x0F):
+            value, offset = unpack_value(data, offset)
+            values.append(value)
+        return values, offset
+    if 0xA0 <= marker <= 0xAF:
+        values: dict[str, object] = {}
+        for _ in range(marker & 0x0F):
+            key, offset = unpack_value(data, offset)
+            value, offset = unpack_value(data, offset)
+            if not isinstance(key, str):
+                raise BoltError("PackStream map key is not a string")
+            values[key] = value
+        return values, offset
+    if 0xB0 <= marker <= 0xBF:
+        if offset >= len(data):
+            raise BoltError("truncated PackStream structure")
+        signature = data[offset]
+        offset += 1
+        fields: list[object] = []
+        for _ in range(marker & 0x0F):
+            value, offset = unpack_value(data, offset)
+            fields.append(value)
+        return {"signature": signature, "fields": fields}, offset
+    if marker == 0xC0:
+        return None, offset
+    if marker == 0xC2:
+        return False, offset
+    if marker == 0xC3:
+        return True, offset
+    if marker == 0xC8:
+        if offset >= len(data):
+            raise BoltError("truncated PackStream integer")
+        return struct.unpack("b", data[offset:offset + 1])[0], offset + 1
+    raise BoltError("unsupported PackStream marker")
+
+
+def bolt_messages(exchange: bytes) -> list[dict[str, object]]:
+    if len(exchange) < 20 or exchange[:4] != BOLT_MAGIC:
+        raise BoltError("Bolt magic does not match")
+    proposals = [exchange[index:index + 4] for index in range(4, 20, 4)]
+    if BOLT_54 not in proposals:
+        raise BoltError("Bolt 5.4 was not proposed")
+    messages: list[dict[str, object]] = []
+    offset = 20
+    while offset < len(exchange):
+        payload = bytearray()
+        while True:
+            if offset + 2 > len(exchange):
+                raise BoltError("truncated Bolt chunk")
+            length = int.from_bytes(exchange[offset:offset + 2], "big")
+            offset += 2
+            if length == 0:
+                break
+            if offset + length > len(exchange):
+                raise BoltError("truncated Bolt payload")
+            payload.extend(exchange[offset:offset + length])
+            offset += length
+        value, used = unpack_value(bytes(payload))
+        if used != len(payload) or not isinstance(value, dict) or "signature" not in value:
+            raise BoltError("Bolt message is not one PackStream structure")
+        messages.append(value)
+    if [value["signature"] for value in messages] != [0x01, 0x10, 0x3F]:
+        raise BoltError("expected HELLO, RUN, and PULL")
+    hello, run, pull = messages
+    if (len(hello["fields"]) != 1 or not isinstance(hello["fields"][0], dict) or
+            not isinstance(hello["fields"][0].get("user_agent"), str)):
+        raise BoltError("HELLO metadata is incomplete")
+    if (len(run["fields"]) != 3 or run["fields"][0] != BOLT_QUERY or
+            not isinstance(run["fields"][1], dict) or not isinstance(run["fields"][2], dict)):
+        raise BoltError("RUN fields do not match the relation contract")
+    if len(pull["fields"]) != 1 or not isinstance(pull["fields"][0], dict):
+        raise BoltError("PULL fields do not match the relation contract")
+    return messages
+
+
+def pack_value(value: object) -> bytes:
+    if value is None:
+        return b"\xc0"
+    if value is False:
+        return b"\xc2"
+    if value is True:
+        return b"\xc3"
+    if isinstance(value, int) and -16 <= value < 128:
+        return bytes([value & 0xFF])
+    if isinstance(value, str):
+        encoded = value.encode()
+        if len(encoded) < 16:
+            return bytes([0x80 + len(encoded)]) + encoded
+        if len(encoded) < 256:
+            return b"\xd0" + bytes([len(encoded)]) + encoded
+        return b"\xd1" + len(encoded).to_bytes(2, "big") + encoded
+    if isinstance(value, list):
+        if len(value) >= 16:
+            raise BoltError("response list is too long")
+        return bytes([0x90 + len(value)]) + b"".join(pack_value(item) for item in value)
+    if isinstance(value, dict):
+        if len(value) >= 16:
+            raise BoltError("response map is too large")
+        return bytes([0xA0 + len(value)]) + b"".join(
+            pack_value(str(key)) + pack_value(item) for key, item in value.items()
+        )
+    raise BoltError("unsupported response value")
+
+
+def pack_struct(signature: int, *fields: object) -> bytes:
+    return bytes([0xB0 + len(fields), signature]) + b"".join(pack_value(field) for field in fields)
+
+
+def chunk(payload: bytes) -> bytes:
+    return len(payload).to_bytes(2, "big") + payload + b"\x00\x00"
+
+
+def bolt_response(record: dict[str, object]) -> str:
+    values = [value for key, value in record.items() if key != "revision"]
+    exchange = BOLT_54
+    exchange += chunk(pack_struct(0x70, {"server": "ARWC-Relation/5.4"}))
+    exchange += chunk(pack_struct(0x70, {"fields": list(record)}))
+    exchange += chunk(pack_struct(0x71, values))
+    exchange += chunk(pack_struct(0x70, {"has_more": False}))
+    return base64.b64encode(exchange).decode()
 
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
@@ -69,11 +290,17 @@ def initialize() -> None:
             "allocation_observed": False,
             "meter_observed": False,
             "reserve_reconciled": False,
+            "relation_contract_observed": False,
+            "relation_exchange_observed": False,
+            "lineage_observed": False,
         })
     else:
         state = load_state()
         changed = False
-        for key in ("allocation_observed", "meter_observed", "reserve_reconciled"):
+        for key in (
+            "allocation_observed", "meter_observed", "reserve_reconciled",
+            "relation_contract_observed", "relation_exchange_observed", "lineage_observed",
+        ):
             if key not in state:
                 state[key] = False
                 changed = True
@@ -89,6 +316,20 @@ def load_state() -> dict[str, object]:
 
 def save_state(value: dict[str, object]) -> None:
     atomic_json(STATE, value)
+
+
+def relation_prerequisite() -> bool:
+    if load_state().get("reserve_reconciled"):
+        return True
+    try:
+        evidence = json.loads(BUSINESS_RELATION_EVIDENCE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    return evidence == {
+        "association": "ASC-CRR-4417",
+        "asset": "AST-CRR-017",
+        "record_id": "ASSOC-CRR-4417-R6",
+    }
 
 
 def append_audit(action: str, result: dict[str, object]) -> str:
@@ -204,6 +445,15 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/the-missing-megalitre":
             self.reserve_reconciliation()
             return
+        if path == "/api/the-relation-service-s-language":
+            if not relation_prerequisite():
+                self.send_json(403, {"error": "asset association or reconciled allocation is required"})
+                return
+            state = load_state()
+            state["relation_contract_observed"] = True
+            save_state(state)
+            self.accepted("the-relation-service-s-language", RELATION_CONTRACT)
+            return
         if path != "/api/the-query-the-planner-keeps":
             self.send_json(404, {"error": "record not found"})
             return
@@ -225,8 +475,57 @@ class Handler(BaseHTTPRequestHandler):
             self.reconcile(request)
         elif path == "/api/integration/from-the-report-to-the-live-feed":
             self.integration(request)
+        elif path == "/api/an-exchange-the-backend-accepts":
+            self.relation_exchange(request, lineage=False)
+        elif path == "/api/the-asset-s-true-lineage":
+            self.relation_exchange(request, lineage=True)
         else:
             self.send_json(404, {"error": "record not found"})
+
+    def relation_exchange(self, request: dict[str, object], *, lineage: bool) -> None:
+        state = load_state()
+        if not state["relation_contract_observed"]:
+            self.send_json(403, {"error": "relation contract has not been read"})
+            return
+        if lineage and not state["relation_exchange_observed"]:
+            self.send_json(403, {"error": "accepted relation exchange is required"})
+            return
+        encoded = request.get("exchange")
+        if not isinstance(encoded, str) or len(encoded) > 12288:
+            self.send_json(409, {"error": "Bolt exchange is missing"})
+            return
+        try:
+            raw = base64.b64decode(encoded, validate=True)
+            messages = bolt_messages(raw)
+        except (binascii.Error, BoltError):
+            self.send_json(409, {"error": "Bolt exchange was rejected"})
+            return
+        parameters = messages[1]["fields"][1]
+        assert isinstance(parameters, dict)
+        if parameters.get("asset") != "AST-CRR-017":
+            self.send_json(409, {"error": "asset key does not match"})
+            return
+        if parameters.get("association") != "ASC-CRR-4417":
+            self.send_json(409, {"error": "association does not match"})
+            return
+        expected_ou = LINEAGE_OU if lineage else "ASSET_WORK"
+        if parameters.get("certificate_ou") != expected_ou:
+            self.send_json(409, {"error": "relationship type was not accepted"})
+            return
+        if lineage:
+            state["lineage_observed"] = True
+            save_state(state)
+            self.accepted(
+                "the-asset-s-true-lineage", LINEAGE, 201,
+                extra={"bolt_response": bolt_response(LINEAGE)},
+            )
+        else:
+            state["relation_exchange_observed"] = True
+            save_state(state)
+            self.accepted(
+                "an-exchange-the-backend-accepts", RELATION_RESPONSE, 201,
+                extra={"bolt_response": bolt_response(RELATION_RESPONSE)},
+            )
 
     def allocation(self) -> None:
         with database() as connection, connection.cursor() as cursor:

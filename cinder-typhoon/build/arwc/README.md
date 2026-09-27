@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/DMZ network foundation are deployed.
-W01-W10 (33 of 120 cards) are materialized and accepted. The customer handover
+W01-W11 (36 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -54,7 +54,7 @@ integration runs through `a-data-bridge` in the isolated DMZ.
 | AHB-00 | Architecture, isolation plan, topology and implementation ledger | Complete |
 | AHB-01 | `a-connector` and W01 opening slice | Complete |
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
-| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04-W10 complete) |
+| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04-W11 complete) |
 | AHB-04 | Maintenance W13-W15 | Not started |
 | AHB-05 | Read-only process routes and W16-W25 | Not started |
 | AHB-06 | Control paths W26-W28 | Not started |
@@ -177,6 +177,16 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
 - 2026-09-27: A destructive clean-volume rebuild passed all 57 W01-W10
   black-box checks, after which all mutable results, audits, and evidence were
   removed and the authored initial state was verified.
+- 2026-09-27: W11 adds six passing black-box tests on `a-data`. The relation
+  proxy parses a real Bolt 5.4 negotiation and chunked PackStream
+  HELLO/RUN/PULL exchange, enforces the supplied asset, association, query
+  shape, and read-only clauses, and emits framed Bolt SUCCESS/RECORD results.
+  Its unparameterized certificate-OU relationship construction reaches only
+  the declared lineage from `CRR-OG-LEGACY-2` through `OG-CRR-02` to
+  `AST-CRR-017` and `ARC-COLD-CRR-2019`. Both W02.2 and W09.DATA independently
+  unlock the contract. No W11 card binds a narrative asset.
+- 2026-09-27: A destructive clean-volume rebuild passed all 63 W01-W11
+  black-box checks, followed by verified authored-state restoration.
 - No SDL change was needed for AHB-00 or AHB-01. The validated contracts fully
   determined the observable W01 behavior; request serialization and carrier
   packaging are incidental implementation detail.
