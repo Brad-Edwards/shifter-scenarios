@@ -3,8 +3,10 @@ FROM python:3.12.11-slim-bookworm
 RUN apt-get update \
     && apt-get install --no-install-recommends -y ca-certificates curl openssl util-linux xz-utils \
     && rm -rf /var/lib/apt/lists/* \
+    && groupadd --system --gid 2290 arwc-handover \
     && groupadd --system arwc-archive \
     && useradd --system --gid arwc-archive --home-dir /var/lib/arwc-archive --shell /usr/sbin/nologin arwc-archive \
+    && usermod -a -G arwc-handover arwc-archive \
     && install -d -o arwc-archive -g arwc-archive -m 0750 /opt/retained-archive
 
 RUN curl -fsSL https://www.7-zip.org/a/7z2301-linux-x64.tar.xz -o /tmp/7zip.tar.xz \

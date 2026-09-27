@@ -65,6 +65,43 @@ services:
           - a-business
           - business-workplace.arwc.test
 
+  a-data:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/data.Dockerfile
+    image: cinder-arwc/a-data:hand-build
+    container_name: cinder-arwc-data
+    hostname: a-data
+    domainname: corporate.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+    depends_on: [a-connector, a-identity]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+      - /var/run/postgresql:rw,nosuid,nodev,size=16m,mode=2775
+    volumes:
+      - data-state:/var/lib/arwc-data
+      - data-postgresql:/var/lib/postgresql/data
+      - identity-state:/run/arwc-identity-evidence:ro
+      - connector-fieldlink:/run/arwc-corporate:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    networks:
+      corporate:
+        ipv4_address: 10.77.60.40
+        aliases:
+          - a-data
+          - planning-data.arwc.test
+
   a-archive:
     build:
       context: ../..
@@ -99,6 +136,39 @@ services:
           - a-archive
           - retained-archive.arwc.test
 
+  a-identity:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/identity.Dockerfile
+    image: cinder-arwc/a-identity:hand-build
+    container_name: cinder-arwc-identity
+    hostname: a-identity
+    domainname: corporate.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    depends_on: [a-connector, a-archive]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - identity-state:/var/lib/arwc-identity
+      - archive-state:/run/arwc-archive-evidence:ro
+      - connector-fieldlink:/run/arwc-corporate:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    networks:
+      corporate:
+        ipv4_address: 10.77.60.60
+        aliases:
+          - a-identity
+          - corporate-identity.arwc.test
+
 networks:
   corporate:
     name: cinder-arwc-corporate
@@ -117,3 +187,9 @@ volumes:
     name: cinder-arwc-business-state
   archive-state:
     name: cinder-arwc-archive-state
+  identity-state:
+    name: cinder-arwc-identity-state
+  data-state:
+    name: cinder-arwc-data-state
+  data-postgresql:
+    name: cinder-arwc-data-postgresql

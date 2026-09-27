@@ -35,7 +35,9 @@ cat > /var/lib/fieldlink-connector/handover/customer-transition.json <<'EOF'
   "customer_receipt": "RCP-742-047",
   "customer_handover": "https://customer-handover.arwc.test:8443",
   "business_workplace": "https://business-workplace.arwc.test",
+  "planning_data": "https://planning-data.arwc.test",
   "retained_archive": "https://retained-archive.arwc.test",
+  "corporate_identity": "https://corporate-identity.arwc.test",
   "session_file": "/var/lib/fieldlink-connector/handover/corporate-session",
   "request_header": "Authorization: Bearer <session>"
 }

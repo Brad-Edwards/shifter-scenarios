@@ -254,6 +254,13 @@ class W04Live(unittest.TestCase):
             "destination": "caller result directory",
             "archive_helper": "7-Zip 23.01",
         })
+        self.assertGreater(len(response["planner_handover"]), 32)
+        receipt = inside(
+            "sh", "-c",
+            "umask 077; printf '%s\\n' \"$1\" > /var/lib/fieldlink-connector/receipts/planner-handover",
+            "sh", response["planner_handover"],
+        )
+        self.assertEqual(receipt.returncode, 0, receipt.stderr)
 
     def test_08_wrong_session_and_tenant_disclose_nothing(self) -> None:
         status, body = request("/api/the-archive-s-missing-contract", token="wrong")

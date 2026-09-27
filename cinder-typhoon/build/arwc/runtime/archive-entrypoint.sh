@@ -7,7 +7,8 @@ chmod 0700 /var/lib/arwc-archive
 install -d -o arwc-archive -g arwc-archive -m 0700 \
   /var/lib/arwc-archive/audit \
   /var/lib/arwc-archive/auth \
-  /var/lib/arwc-archive/state \
+  /var/lib/arwc-archive/state
+install -d -o arwc-archive -g arwc-handover -m 0750 \
   /var/lib/arwc-archive/results
 
 session=/run/arwc-corporate/handover/corporate-session
