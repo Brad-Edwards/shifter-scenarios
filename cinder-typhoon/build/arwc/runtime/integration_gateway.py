@@ -41,6 +41,8 @@ PROCESS_PATHS = {
     "/api/the-diagnostic-evidence-bundle", "/api/signed-by-someone-who-never-approved-it",
     "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
     "/api/change-one-record-keep-the-rest",
+    "/api/what-counts-as-intact", "/api/the-constraints-of-a-valid-looking-program",
+    "/api/a-program-the-engineer-would-accept",
 }
 
 
@@ -172,6 +174,30 @@ class Handler(BaseHTTPRequestHandler):
         self.proxy_historian()
 
     def do_POST(self) -> None:
+        if urlsplit(self.path).path == "/internal/diagnostic-estimate":
+            if (self.headers.get("X-ARWC-Internal") != "diagnostics-r27" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] != "10.77.63.50"):
+                self.send_json(403, {"error": "diagnostic service context required"})
+                return
+            request = self.body()
+            if request is None:
+                return
+            payload = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
+            context = ssl.create_default_context(cafile="/tmp/ca.crt")
+            connection = http.client.HTTPSConnection("a-data", 443, context=context, timeout=5)
+            try:
+                connection.request("POST", "/internal/diagnostic-estimate", body=payload, headers={
+                    "Content-Type": "application/json", "Content-Length": str(len(payload)),
+                    "X-ARWC-Internal": "data-bridge-r27", "X-ARWC-Tenant": "arwc",
+                })
+                response = connection.getresponse(); result = json.loads(response.read())
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "planning consumer unavailable"}); return
+            finally:
+                connection.close()
+            self.send_json(response.status, result)
+            return
         if urlsplit(self.path).path != "/api/from-the-report-to-the-live-feed":
             self.proxy_historian()
             return

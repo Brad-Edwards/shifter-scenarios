@@ -19,6 +19,8 @@ from urllib.parse import urlsplit
 
 
 ROLE = os.environ["ARWC_PROCESS_ROLE"]
+if ROLE == "engineering":
+    import dpg1
 ROOT = pathlib.Path(os.environ["ARWC_STATE_ROOT"])
 STATE = ROOT / "state" / "service.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
@@ -58,6 +60,7 @@ INITIAL["engineering"].update({
     "hidden_check_recovered": False, "legacy_mapping_recovered": False,
     "viewer_observed": False, "vm_reconstructed": False,
     "sealed_project_opened": False, "concealed_reviewer_used": False,
+    "w27_verifier_reproduced": False, "w27_collision_modeled": False,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
@@ -65,6 +68,8 @@ INITIAL["instruments"].update({
 })
 
 ARTIFACTS = pathlib.Path("/opt/process-service/artifacts")
+W27_ARTIFACTS = ARTIFACTS / "w27"
+W27_STATE = ROOT / "artifacts"
 MASK32 = (1 << 32) - 1
 MASK64 = (1 << 64) - 1
 W19_RECORDS = [
@@ -187,6 +192,19 @@ def atomic_json(path: pathlib.Path, value: object) -> None:
         os.replace(temporary, path)
         if path.is_relative_to(EVIDENCE):
             os.chown(path, -1, grp.getgrnam("arwc-process-evidence").gr_gid)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
+
+def atomic_bytes(path: pathlib.Path, value: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.")
+    try:
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(value); handle.flush(); os.fsync(handle.fileno())
+        os.chmod(temporary, 0o600)
+        os.replace(temporary, path)
     finally:
         if os.path.exists(temporary):
             os.unlink(temporary)
@@ -464,6 +482,7 @@ class Handler(BaseHTTPRequestHandler):
             "/api/a-measurement-that-never-existed",
             "/api/two-kinds-of-answer", "/api/which-answer-comes-next",
             "/api/the-diagnostic-evidence-bundle", "/api/signed-by-someone-who-never-approved-it",
+            "/api/a-program-the-engineer-would-accept",
         } else "engineering"
         try:
             status, result = self.internal_request(owner, method, path, body)
@@ -606,6 +625,8 @@ class Handler(BaseHTTPRequestHandler):
             "/api/a-measurement-that-never-existed",
             "/api/which-answer-comes-next", "/api/the-diagnostic-evidence-bundle",
             "/api/signed-by-someone-who-never-approved-it",
+            "/api/what-counts-as-intact", "/api/the-constraints-of-a-valid-looking-program",
+            "/api/a-program-the-engineer-would-accept",
         }:
             self.historian_proxy("POST", path, request)
             return
@@ -714,6 +735,11 @@ class Handler(BaseHTTPRequestHandler):
         }:
             self.w22_post(path, request, state)
             return
+        if ROLE == "engineering" and path in {
+            "/api/what-counts-as-intact", "/api/the-constraints-of-a-valid-looking-program",
+        }:
+            self.w27_post(path, request, state)
+            return
         if ROLE == "instruments" and path in {
             "/api/a-valid-maintenance-record", "/api/change-one-record-keep-the-rest",
         }:
@@ -812,6 +838,107 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("a-sequence-the-process-can-follow", result, 201)
             return
         self.send_json(404, {"error": "record not found"})
+
+    def w27_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state["deployed_revision_observed"]:
+            self.send_json(403, {"error": "current deployed-revision evidence required"})
+            return
+        manifest = json.loads((W27_ARTIFACTS / "manifest.json").read_text())
+        base = (W27_ARTIFACTS / "base.dpg").read_bytes()
+        if path == "/api/what-counts-as-intact":
+            operation = request.get("operation")
+            if operation == "materials" and request == {
+                "operation": "materials", "record_id": "VER-ROT128-R3",
+            }:
+                verifier = (W27_ARTIFACTS / "rot128-verifier").read_bytes()
+                programs = []
+                for item in manifest["cases"]:
+                    data = (W27_ARTIFACTS / item["filename"]).read_bytes()
+                    programs.append({
+                        "case_id": item["case_id"], "name": item["name"],
+                        "filename": item["filename"], "length": len(data),
+                        "program_b64": base64.b64encode(data).decode(),
+                    })
+                self.send_json(201, {"record": {
+                    "record_id": "VER-ROT128-R3", "revision": 3,
+                    "format": "ELF64-x86-64-stripped", "platform": "linux/amd64",
+                    "program_set": "DPG1-CASES-R3", "program_count": len(programs),
+                    "verifier_sha256": hashlib.sha256(verifier).hexdigest(),
+                }, "verifier_b64": base64.b64encode(verifier).decode(), "programs": programs})
+                return
+            expected_results = [
+                {"case_id": item["case_id"], "digest": item["digest"],
+                 "decision": item["decision"]}
+                for item in manifest["cases"]
+            ]
+            supplied = request.get("results")
+            valid_results = (isinstance(supplied, list) and len(supplied) == len(expected_results) and
+                             all(isinstance(item, dict) for item in supplied) and
+                             sorted(supplied, key=lambda item: str(item.get("case_id"))) == expected_results)
+            if (operation != "results" or request.get("record_id") != "VER-ROT128-R3" or
+                    request.get("program_set") != "DPG1-CASES-R3" or not valid_results or
+                    set(request) != {"operation", "record_id", "program_set", "results"}):
+                self.send_json(409, {"error": "verifier reproduction does not match the retained decisions"})
+                return
+            state["w27_verifier_reproduced"] = True; save_state(state)
+            record = {"record_id": "VER-ROT128-RESULT-R3", "revision": 3,
+                      "program_set": "DPG1-CASES-R3", "cases_verified": 6,
+                      "approved_digest": manifest["approved_digest"]}
+            atomic_json(W27_STATE / "what-counts-as-intact" / "result.json", record)
+            self.accepted("what-counts-as-intact", record, 201)
+            return
+
+        if not state["w27_verifier_reproduced"]:
+            self.send_json(403, {"error": "verified ROT128 decisions required"})
+            return
+        operation = request.get("operation")
+        sample_bits = [dpg1.RESERVOIR_BITS[0], dpg1.RESERVOIR_BITS[73], dpg1.RESERVOIR_BITS[-1]]
+        if operation == "contract" and request == {
+            "operation": "contract", "record_id": "DPG-CONTRACT-R8",
+        }:
+            cases = []
+            baseline = dpg1.rot128(base)
+            for bit in sample_bits:
+                changed = bytearray(base); changed[bit // 8] ^= 1 << (bit % 8)
+                cases.append({"bit": bit, "delta": f"{dpg1.rot128(bytes(changed)) ^ baseline:032x}"})
+            self.send_json(201, {"record": {
+                "record_id": "DPG-CONTRACT-R8", "revision": 8, "format": "DPG1",
+                "program_length": dpg1.PROGRAM_SIZE, "byte_order": "little-endian",
+                "header_size": dpg1.HEADER.size, "block_count": 6,
+                "block_size": dpg1.BLOCK.size, "code_offset": dpg1.CODE_OFFSET,
+                "output_offset": dpg1.OUTPUT_OFFSET,
+                "mandatory_sensor_tests": ["FIT-CRR-204A", "FIT-CRR-204B", "RESERVE-CONSISTENCY"],
+                "constant_bounds": [0.0, 20.0], "integrity": "VER-ROT128-R3",
+                "model_program_id": dpg1.MODEL_ID,
+                "reservoir_bits": list(dpg1.RESERVOIR_BITS), "distinguishing_cases": cases,
+            }, "base_program_b64": base64.b64encode(base).decode()})
+            return
+        try:
+            candidate = base64.b64decode(str(request.get("program_b64", "")), validate=True)
+            parsed = dpg1.parse_program(candidate)
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "DPG1 candidate is invalid"}); return
+        expected_cases = []
+        baseline = dpg1.rot128(base)
+        for bit in sample_bits:
+            changed = bytearray(base); changed[bit // 8] ^= 1 << (bit % 8)
+            expected_cases.append({"bit": bit, "delta": f"{dpg1.rot128(bytes(changed)) ^ baseline:032x}"})
+        if (operation != "model" or set(request) != {"operation", "record_id", "cases", "program_b64"} or
+                request.get("record_id") != "DPG-MODEL-R8" or request.get("cases") != expected_cases or
+                candidate == base or dpg1.digest_hex(candidate) != dpg1.digest_hex(base) or
+                parsed["program_id"] != dpg1.MODEL_ID or
+                parsed["outputs"] != {"Cairn Reach": 12.4, "North": 8.1, "Merewick": 7.65} or
+                not dpg1.changed_only(candidate, purpose="model")):
+            self.send_json(409, {"error": "GF(2) model or valid-looking program rejected"}); return
+        state["w27_collision_modeled"] = True; save_state(state)
+        output = W27_STATE / "the-constraints-of-a-valid-looking-program"
+        atomic_bytes(output / "DPG-CRR-MODEL1.dpg", candidate)
+        record = {"record_id": "DPG-MODEL-R8", "revision": 8,
+                  "program_id": dpg1.MODEL_ID, "format": "DPG1",
+                  "digest": dpg1.digest_hex(candidate), "nonidentical": True,
+                  "structure": "accepted", "outputs": parsed["outputs"]}
+        atomic_json(output / "result.json", record)
+        self.accepted("the-constraints-of-a-valid-looking-program", record, 201)
 
     def w22_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         metadata = json.loads((ARTIFACTS / "sealed-metadata.json").read_text())

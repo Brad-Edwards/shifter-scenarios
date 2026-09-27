@@ -40,6 +40,8 @@ PROCESS_PATHS = {
     "/api/the-diagnostic-evidence-bundle", "/api/signed-by-someone-who-never-approved-it",
     "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
     "/api/change-one-record-keep-the-rest",
+    "/api/what-counts-as-intact", "/api/the-constraints-of-a-valid-looking-program",
+    "/api/a-program-the-engineer-would-accept",
 }
 MANIFEST = {
     "record_id": "FIELD-SERVICES-R21",

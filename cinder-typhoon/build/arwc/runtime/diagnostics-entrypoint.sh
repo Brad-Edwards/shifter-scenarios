@@ -6,6 +6,8 @@ user=arwc-diagnostics
 chown "$user:$user" "$root"
 chmod 0700 "$root"
 install -d -o "$user" -g "$user" -m 0700 "$root/audit" "$root/state"
+install -d -o "$user" -g "$user" -m 0700 \
+  "$root/artifacts" "$root/artifacts/a-program-the-engineer-would-accept"
 for file in server.crt server.key ca.crt; do
   install -o "$user" -g "$user" -m 0400 "/run/arwc-tls/$file" "/tmp/$file"
 done

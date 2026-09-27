@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W26 and W35 (94 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W27 and W35 (97 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -77,7 +77,7 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
 | AHB-04 | Maintenance W13-W15 | Complete |
 | AHB-05 | Read-only process routes and W16-W25 | Complete |
-| AHB-06 | Control paths W26-W28 | In progress (W26 complete) |
+| AHB-06 | Control paths W26-W28 | In progress (W26-W27 complete) |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
 
@@ -387,3 +387,29 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   asset. The existing contracts fully specify the approval and inspection
   binding, both caller-role omissions, bounded renderer action, five-minute
   control scope, and authority boundary.
+- 2026-09-27: W27 adds five passing black-box checks across `a-engineering`,
+  `a-diagnostics`, `a-data-bridge`, and `a-data`. A stripped native x86-64
+  verifier implements the declared little-endian ROT128 recurrence, padding,
+  rotations, and length finalization. Six real DPG1 programs freeze its
+  decisions, and participant-side execution agrees with an independent
+  implementation for every digest.
+- 2026-09-27: The DPG1 contract uses a real header, block table, bounded
+  instructions, sensor tests, output schema, and two explicitly declared
+  padding reservoirs. Independent Gaussian elimination over the 256 reservoir
+  bits produces non-identical model and target collisions while structural,
+  identical, non-colliding, and out-of-reservoir candidates are rejected. The
+  accepted target changes only Cairn Reach to 13.40 ML; North, Merewick, raw
+  observations, and independent instruments remain unchanged.
+- 2026-09-27: The accepted program traverses the diagnostic service and
+  DMZ-only integration gateway into genuine planning consumer
+  `PLAN-CONSUMER-R8`. Independently owned consumer state and audit evidence
+  survived restart. Direct inspection confirmed exact addressing, no published
+  ports, read-only roots, zero inherited, permitted, effective, and ambient
+  capabilities, `no-new-privileges`, denied metadata and Internet egress, and
+  no direct connector reachability to engineering or the DMZ. A destructive
+  clean-volume run passed all five checks and authored initial state was
+  verified. The suite now contains 143 black-box checks.
+- No SDL change was needed for W27, and none of its three cards binds a
+  narrative asset. The existing contracts fully specify the verifier,
+  structural collision model, Cairn-only result, planning consumer, and
+  unaffected evidence boundaries.
