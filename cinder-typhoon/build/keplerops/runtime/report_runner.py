@@ -17,6 +17,7 @@ SOCKET = Path("/run/fieldkest-runner/runner.sock")
 WORKER_IMAGE = os.environ["FIELDKEST_WORKER_IMAGE"]
 NODE_WORKER_IMAGE = os.environ["FIELDKEST_NODE_WORKER_IMAGE"]
 COMMAND_WORKER_IMAGE = os.environ["FIELDKEST_COMMAND_WORKER_IMAGE"]
+PREVIEW_IMAGE = os.environ["FIELDKEST_PREVIEW_IMAGE"]
 MAX_REQUEST = 800_000
 ACTIVE_COMMANDS: dict[str, str] = {}
 ACTIVE_LOCK = threading.RLock()
@@ -51,10 +52,10 @@ process.stdin.on('end', () => {
 });
 """
 WORKLOAD_WRAPPER = r"""
-import base64, json, os, sys
+import base64, json, os, pwd, sys
 request = json.loads(base64.urlsafe_b64decode(sys.argv[1] + '=' * (-len(sys.argv[1]) % 4)))
 profile = request['profile']
-identity = 'svc-support-export' if profile == 'support-export' else 'svc-fieldlink-maintenance'
+identity = pwd.getpwuid(os.geteuid()).pw_name
 output = {
   'runtime_identity': identity,
   'assignment': request['assignment'],
@@ -66,7 +67,7 @@ output = {
 sys.stdout.write(json.dumps(output, sort_keys=True, separators=(',', ':')) + '\n')
 """
 COMPLETION_WRAPPER = r"""
-import hashlib, json, os
+import hashlib, json, os, pwd
 from pathlib import Path
 request = json.loads(os.environ['FIELDKEST_COMPLETION_REQUEST'])
 if request != {'handover_id': 'HANDOVER-COMP-2841', 'script': 'read_assigned_handover'}:
@@ -77,7 +78,7 @@ handover = json.loads(raw)
 if handover.get('handover_id') != request['handover_id']:
     raise SystemExit(65)
 result = {
-  'runtime_identity': 'svc-assistant-completion',
+  'runtime_identity': pwd.getpwuid(os.geteuid()).pw_name,
   'handover': handover,
   'handover_sha256': hashlib.sha256(raw).hexdigest(),
   'container_process': os.getpid(),
@@ -196,16 +197,44 @@ class Handler(socketserver.StreamRequestHandler):
                     and isinstance(request["marker"], bool)):
                 payload = encoded_environment(request)
                 name = "fieldkest-workload-" + request["run_id"].lower().replace("_", "-")
+                worker_user = "2201:2201" if request["profile"] == "support-export" else "2202:2202"
                 command = [
                     "docker", "run", "--rm", "--name", name, "--network", "none",
                     "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,nodev,size=8m",
                     "--memory", "128m", "--memory-swap", "128m", "--pids-limit", "32", "--cpus", "0.5",
-                    "--user", "65534:65534", "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true",
+                    "--user", worker_user, "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true",
                     "--entrypoint", "/usr/bin/python3", COMMAND_WORKER_IMAGE, "-I", "-c", WORKLOAD_WRAPPER, payload,
                 ]
                 result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=15)
                 lines = result.stdout.splitlines()
                 response = {"ok": False, "error": "workload_failed"}
+                if result.returncode == 0 and len(lines) == 1:
+                    response = {"ok": True, "result": json.loads(lines[0])}
+                self.wfile.write(json.dumps(response, separators=(",", ":")).encode() + b"\n")
+                return
+            if (set(request) == {"kind", "run_id", "worker_scope"}
+                    and request["kind"] == "preview"
+                    and isinstance(request["run_id"], str)
+                    and request["worker_scope"] == "/review/"):
+                name = "fieldkest-preview-" + request["run_id"].lower().replace("_", "-")
+                command = [
+                    "docker", "run", "--rm", "--name", name, "--network", "none",
+                    "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777",
+                    "--tmpfs", "/dev/shm:rw,noexec,nosuid,nodev,size=128m,mode=1777",
+                    "--memory", "512m", "--memory-swap", "512m", "--pids-limit", "128", "--cpus", "1.0",
+                    "--user", "fieldkest-renderer:fieldkest-renderer", "--cap-drop", "ALL",
+                    "--security-opt", "no-new-privileges:true",
+                    "--entrypoint", "/usr/local/bin/python3", PREVIEW_IMAGE,
+                    "/opt/fieldkest/preview_worker.py",
+                ]
+                try:
+                    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=30)
+                except subprocess.TimeoutExpired:
+                    subprocess.run(["docker", "rm", "--force", name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
+                    self.wfile.write(b'{"ok":false,"error":"preview_timeout"}\n')
+                    return
+                lines = result.stdout.splitlines()
+                response = {"ok": False, "error": "preview_failed"}
                 if result.returncode == 0 and len(lines) == 1:
                     response = {"ok": True, "result": json.loads(lines[0])}
                 self.wfile.write(json.dumps(response, separators=(",", ":")).encode() + b"\n")
@@ -221,7 +250,7 @@ class Handler(socketserver.StreamRequestHandler):
                     "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,nodev,size=8m",
                     "--mount", "type=volume,src=cinder-keplerops-assistant-handover,dst=/handover,readonly",
                     "--memory", "128m", "--memory-swap", "128m", "--pids-limit", "32", "--cpus", "0.5",
-                    "--user", "2100:2100", "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true",
+                    "--user", "2200:2200", "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true",
                     "--env", "FIELDKEST_COMPLETION_REQUEST=" + json.dumps({
                         "handover_id": request["handover_id"], "script": request["script"]
                     }, separators=(",", ":")),

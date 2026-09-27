@@ -26,6 +26,7 @@ RUN mkdir -p /var/lib/gitea \
     && rm /tmp/k-source-state.tar /tmp/k-source-k11-state.tar /tmp/k-source-k28-state.tar /tmp/k-source-k29-state.tar \
     && mkdir -p /var/lib/gitea/audit /var/lib/gitea/data /var/lib/gitea/repositories \
     && chown -R git:git /var/lib/gitea \
+    && chmod 0750 /var/lib/gitea \
     && chmod 0755 /usr/local/bin/fieldkest-source-entrypoint
 
 EXPOSE 443

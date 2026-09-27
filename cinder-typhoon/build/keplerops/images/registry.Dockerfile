@@ -24,6 +24,8 @@ RUN mkdir -p /var/lib/fieldkest-registry /var/lib/verdaccio/storage \
     && touch /var/lib/verdaccio/htpasswd \
     && chown -R fieldkest-registry:fieldkest-registry /var/lib/fieldkest-registry \
     && chown -R verdaccio:verdaccio /var/lib/verdaccio \
+    && chmod 0700 /var/lib/fieldkest-registry \
+    && chmod 0750 /var/lib/verdaccio \
     && chmod 0755 /usr/local/bin/fieldkest-registry-entrypoint
 
 EXPOSE 443

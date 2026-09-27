@@ -1,9 +1,9 @@
 FROM debian:bookworm-slim AS builder
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y gcc libc6-dev \
+    && apt-get install --no-install-recommends -y g++ libc6-dev \
     && rm -rf /var/lib/apt/lists/*
 COPY build/keplerops/runtime/bundle_indexer.c /src/bundle_indexer.c
-RUN gcc -std=c11 -O2 -fPIE -pie -Wl,-z,relro,-z,now -D_FORTIFY_SOURCE=2 \
+RUN g++ -x c++ -std=c++17 -O2 -fPIE -pie -Wl,-z,relro,-z,now -D_FORTIFY_SOURCE=2 \
     -o /fieldkest-bundle-indexer /src/bundle_indexer.c \
     && strip --strip-all /fieldkest-bundle-indexer
 
@@ -13,8 +13,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system fieldkest-indexer \
     && useradd --system --gid fieldkest-indexer --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-indexer \
-    && mkdir -p /var/lib/fieldkest-indexer/audit \
-    && chown -R fieldkest-indexer:fieldkest-indexer /var/lib/fieldkest-indexer
+    && groupadd --system fieldkest-worker \
+    && useradd --system --gid fieldkest-worker --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-worker \
+    && mkdir -p /var/lib/fieldkest-indexer/audit /var/lib/fieldkest-indexer/queue \
+    && chown -R fieldkest-indexer:fieldkest-indexer /var/lib/fieldkest-indexer \
+    && chown fieldkest-worker:fieldkest-worker /var/lib/fieldkest-indexer/queue \
+    && chmod 0700 /var/lib/fieldkest-indexer /var/lib/fieldkest-indexer/queue
 COPY --from=builder /fieldkest-bundle-indexer /usr/local/bin/fieldkest-bundle-indexer
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
 COPY build/keplerops/runtime/platform_service.py /opt/fieldkest/platform_service.py

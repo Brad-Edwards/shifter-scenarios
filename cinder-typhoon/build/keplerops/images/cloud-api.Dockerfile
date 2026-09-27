@@ -17,6 +17,7 @@ RUN mkdir -p /var/lib/fieldkest-cloud-api \
     && mkdir -p /var/lib/fieldkest-cloud-api/audit \
     && ln -s /opt/fieldkest /opt/fieldkest-cloud-api \
     && chown -R fieldkest-cloud:fieldkest-cloud /var/lib/fieldkest-cloud-api \
+    && chmod 0700 /var/lib/fieldkest-cloud-api \
     && chmod 0755 /usr/local/bin/fieldkest-cloud-api-entrypoint
 
 EXPOSE 443

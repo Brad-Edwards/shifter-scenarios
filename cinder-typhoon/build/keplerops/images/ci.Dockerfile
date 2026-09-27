@@ -7,6 +7,7 @@ RUN apt-get update \
     && useradd --uid 2100 --gid fieldkest-ci --home-dir /var/lib/fieldkest-ci --shell /usr/sbin/nologin fieldkest-ci \
     && groupadd --system fieldkest-runner \
     && useradd --system --gid fieldkest-runner --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-runner \
+    && usermod --append --groups fieldkest-runner fieldkest-ci \
     && groupadd --system fieldkest-consumer \
     && useradd --system --gid fieldkest-consumer --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-consumer
 
@@ -24,8 +25,14 @@ RUN mkdir -p /var/lib/fieldkest-ci \
     && tar -xf /tmp/k-ci-k29-state.tar -C /var/lib/fieldkest-ci \
     && rm /tmp/k-ci-state.tar /tmp/k-ci-k09-state.tar /tmp/k-ci-k29-state.tar \
     && mkdir -p /var/lib/fieldkest-ci/audit /var/lib/fieldkest-ci/results /var/lib/fieldkest-ci/workspaces/rowan /var/lib/fieldkest-handover \
+    && mkdir -p /var/lib/fieldkest-ci/consumer-state \
     && ln -s /opt/fieldkest /opt/fieldkest-ci \
     && chown -R fieldkest-ci:fieldkest-ci /var/lib/fieldkest-ci /var/lib/fieldkest-handover \
+    && chown fieldkest-runner:fieldkest-runner /var/lib/fieldkest-ci/workspaces \
+    && chmod 0710 /var/lib/fieldkest-ci/workspaces \
+    && chown fieldkest-consumer:fieldkest-consumer /var/lib/fieldkest-ci/consumer-state \
+    && chmod 0700 /var/lib/fieldkest-ci/consumer-state \
+    && chmod 0750 /var/lib/fieldkest-ci \
     && chmod 0444 /srv/fieldlink-ci/reviews/diagnostic-request-reference.md \
     && chmod 0755 /usr/local/bin/fieldkest-ci-entrypoint
 

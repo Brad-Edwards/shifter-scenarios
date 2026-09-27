@@ -219,6 +219,7 @@ services:
       FIELDKEST_WORKER_IMAGE: cinder-keplerops/report-worker:hand-build
       FIELDKEST_NODE_WORKER_IMAGE: cinder-keplerops/node-worker:hand-build
       FIELDKEST_COMMAND_WORKER_IMAGE: cinder-keplerops/command-worker:hand-build
+      FIELDKEST_PREVIEW_IMAGE: cinder-keplerops/k-preview:hand-build
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
     volumes:
@@ -255,7 +256,7 @@ services:
     image: cinder-keplerops/k-preview:hand-build
     container_name: cinder-keplerops-preview
     hostname: k-preview
-    depends_on: [router]
+    depends_on: [router, runner]
     environment:
       <<: *tls-environment
       FIELDKEST_SERVICE: preview
@@ -265,6 +266,7 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
       - preview-state:/var/lib/fieldkest-preview
+      - runner-socket:/run/fieldkest-runner
     networks:
       delivery: {ipv4_address: 10.77.51.50, aliases: [preview.keplerops.test]}
 
@@ -385,11 +387,12 @@ services:
       <<: *tls-environment
       FIELDKEST_SERVICE: workload
       FIELDKEST_GATEWAY: 10.77.52.254
+      FIELDKEST_STATE_ROOT: /var/lib/fieldkest-workloads
     volumes:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
-      - workload-state:/var/lib/fieldkest-workload
+      - workload-state:/var/lib/fieldkest-workloads
       - runner-socket:/run/fieldkest-runner
     networks:
       cloud: {ipv4_address: 10.77.52.30, aliases: [workloads.keplerops.test]}

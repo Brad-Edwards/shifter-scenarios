@@ -18,6 +18,7 @@ RUN mkdir -p /var/lib/fieldkest-support \
     && mkdir -p /var/lib/fieldkest-support/audit /var/lib/fieldkest-handover \
     && ln -s /opt/fieldkest /opt/fieldkest-support \
     && chown -R fieldkest-support:fieldkest-support /var/lib/fieldkest-support /var/lib/fieldkest-handover \
+    && chmod 0750 /var/lib/fieldkest-support \
     && chmod 0755 /usr/local/bin/fieldkest-support-entrypoint
 
 EXPOSE 443

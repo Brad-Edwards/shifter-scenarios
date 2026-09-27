@@ -124,6 +124,22 @@ def run_isolated_completion(run_id: str, handover_id: str, script: str) -> dict[
     return value["result"]
 
 
+def run_isolated_preview(run_id: str, worker_scope: str) -> dict[str, object]:
+    request = canonical_bytes({"kind": "preview", "run_id": run_id, "worker_scope": worker_scope}) + b"\n"
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+        client.settimeout(35)
+        client.connect("/run/fieldkest-runner/runner.sock")
+        client.sendall(request)
+        response = b""
+        while not response.endswith(b"\n"):
+            chunk = client.recv(65536)
+            if not chunk: break
+            response += chunk
+    value = json.loads(response)
+    if not value.get("ok"): raise RuntimeError("preview_execution_failed")
+    return value["result"]
+
+
 def assistant_generate(mode: str) -> str:
     """Run the pinned local model with the fixed FieldKest retrieval template."""
     global ASSISTANT_MODEL, ASSISTANT_TOKENIZER
@@ -267,8 +283,7 @@ class PlatformHandler(KeplerHandler):
             data = self.body(); review = preview["review"]
             if not review.get("prepared"): return self.deny(409, "review_not_prepared")
             if data.get("worker_scope") != "/review/": raise ValueError("worker_scope_denied")
-            worker = subprocess.run(["python3", "/opt/fieldkest/preview_worker.py"], capture_output=True, text=True, timeout=25, check=True)
-            contribution = json.loads(worker.stdout)
+            contribution = run_isolated_preview("PRV-771", data["worker_scope"])
             review["worker"] = True; save_state(state)
             value = {"review_id": "PRV-771", **contribution, "support_receipt": "PRV-RCPT-771"}
             self.record("review-render", **value)
@@ -490,7 +505,8 @@ class PlatformHandler(KeplerHandler):
     # Assistant retrieval and bounded completion service.
     def get_assistant(self) -> None:
         parsed = urlparse.urlsplit(self.path); path = parsed.path
-        if path == "/static/app.js": return self.send_bytes(200, b'window.FieldKestConfig="/api/config";\n', "application/javascript")
+        if path == "/static/app.js":
+            return self.send_bytes(200, Path("/opt/fieldkest-assistant/web/app.js").read_bytes(), "application/javascript")
         if path == "/api/config": value = {"context": "ctx-support-private-v4", "collection": "support-private", "policy_version": "retrieval-2026.09"}
         elif path == "/api/contexts": value = {"contexts": [{"context_id": "ctx-support-private-v4", "collection": "support-private", "published": False}]}
         elif path == "/api/conversations/CONV-SUP-2841-19":

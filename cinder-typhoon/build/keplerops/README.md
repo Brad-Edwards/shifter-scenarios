@@ -178,6 +178,34 @@ demands it. A wave is not complete merely because its services start.
   trusted wrapper now emits its bounded proof as its sole container log record,
   while participant command output remains captured inside that proof. This
   preserves the declared job/result semantics without changing the SDL.
+- 2026-09-27: Direct runtime inventory found that the four isolated-job
+  authorities are brokered by Docker Engine 29.8.1/API 1.56 through
+  `/run/fieldkest-runner/runner.sock`, rather than the previously declared
+  per-service containerd sockets. The SDL was reconciled first, then the
+  implementation and direct engine/socket checks; the full pinned env-pack,
+  RAE parse/composition/instantiation/compilation, focused-design, and all
+  three hand-build design gates pass.
+- 2026-09-27: The CI workspace contract now declares `fieldkest-ci` as a
+  member of `fieldkest-runner`. This is the minimum relationship required for
+  the authenticated workspace GET/PUT application routes to traverse the
+  runner-owned `0710` workspace root while preserving per-workspace mounts for
+  short-lived children.
+- 2026-09-27: Fresh-volume acceptance passes 50 black-box tests: 7 opening, 8
+  registry, 2 K04, 8 K09, 5 K11, 3 K28, 8 declared-component, 6 platform, and
+  3 delivery tests. Direct checks additionally prove exact container
+  addressing, internal-only networks, no host-published participant ports,
+  denied Internet/metadata/Training access, networkless short-lived workers,
+  native Gitea 1.25.2, Verdaccio 6.1.6, PostgreSQL 16.4, Kerberos, Chromium
+  140.0.7339.207, Docker API 1.56, and persistence across service restarts.
+- 2026-09-27: Participant-visible authored and deployed state contains no
+  fourth-wall terminology. Operator tests and this implementation ledger are
+  kept only on the carrier control surface and are absent from `k-dev` and the
+  participant service interfaces.
+- 2026-09-27: Finalization removed only KeplerOps containers and named volumes,
+  then redeployed from the authored build. All 27 persistent volumes share the
+  fresh creation time `2026-09-27T00:39:20Z`; CI jobs/rehearsals, registry
+  publications, Rowan workspace files, and residual short-lived workers are
+  all zero. No participant workflow was invoked after this reset.
 - No RAE expressivity blocker is currently known.
 
 ## Accepted implementation notes

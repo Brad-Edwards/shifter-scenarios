@@ -63,6 +63,9 @@ try:
         contribution["browser_engine"] = browser.browser_type.name
         contribution["browser_version"] = browser.version
         contribution["worker_scope"] = "/review/"
+        contribution["process_identity"] = os.geteuid()
+        contribution["container_network"] = "none"
+        contribution["execution_backend"] = "isolated-container"
         print(json.dumps(contribution, sort_keys=True, separators=(",", ":")))
         browser.close()
 finally:

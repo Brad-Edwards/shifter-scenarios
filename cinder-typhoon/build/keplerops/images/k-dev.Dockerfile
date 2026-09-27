@@ -44,8 +44,10 @@ RUN tar -xf /tmp/k-dev-home.tar -C /home/rowan \
     && ln -s /opt/fieldkest-workbench /opt/keplerops-workbench \
     && ssh-keygen -A \
     && chown -R rowan:rowan /home/rowan \
-    && chown -R root:fieldkest-workbench /opt/fieldkest-workbench \
+    && chown -R fieldkest-workbench:fieldkest-workbench /opt/fieldkest-workbench \
     && chown -R fieldkest-workbench:fieldkest-workbench /var/lib/fieldkest-workbench \
+    && chmod 0750 /home/rowan/work /opt/fieldkest-workbench \
+    && chmod 0700 /var/lib/fieldkest-workbench \
     && chmod 0700 /home/rowan /home/rowan/.ssh /home/rowan/.config /home/rowan/.config/chromium /home/rowan/.config/chromium/Default /home/rowan/results \
     && chmod 0600 /home/rowan/.gitconfig /home/rowan/.config/git/credentials /home/rowan/.config/chromium/Default/* \
     && chmod 0755 /usr/local/bin/fieldkest-k-dev-entrypoint

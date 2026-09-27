@@ -61,6 +61,8 @@ class PlatformLiveTest(unittest.TestCase):
         self.assertEqual((final["renderer_identity"], final["compatibility_summary"]), ("svc-preview-reviewer", "fieldlink.connector/v3 compatible"))
         self.assertEqual((final["browser_engine"], final["worker_scope"]), ("chromium", "/review/"))
         self.assertEqual(final["browser_version"], "140.0.7339.207")
+        self.assertEqual((final["execution_backend"], final["container_network"]), ("isolated-container", "none"))
+        self.assertNotEqual(final["process_identity"], 0)
 
     def test_02_workspace_cloud_export_and_persistence(self) -> None:
         listing = call("data.keplerops.test", "/s3/fieldkest-workspaces", auth=None)

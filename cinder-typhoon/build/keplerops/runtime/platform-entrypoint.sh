@@ -7,7 +7,13 @@ for route in 10.77.50.0/24 10.77.51.0/24 10.77.52.0/24 10.77.53.0/24 10.77.60.0/
   fi
 done
 
-service_user="fieldkest-${FIELDKEST_SERVICE}"
+case "$FIELDKEST_SERVICE" in
+  cert) service_user=keplerops-cert ;;
+  identity) service_user=keplerops-identity ;;
+  staff) service_user=keplerops-staff ;;
+  workload) service_user=fieldkest-scheduler ;;
+  *) service_user="fieldkest-${FIELDKEST_SERVICE}" ;;
+esac
 install -m 0444 /run/fieldkest-tls/server.crt /tmp/fieldkest.crt
 install -m 0444 /run/fieldkest-tls/server.key /tmp/fieldkest.key
 install -m 0444 /run/fieldkest-tls/ca.crt /tmp/fieldkest-ca.crt
@@ -20,7 +26,8 @@ if [ "$FIELDKEST_SERVICE" = cert ]; then
 fi
 service_root=${FIELDKEST_SERVICE_ROOT:-/opt/fieldkest}
 if [ "${FIELDKEST_START_KDC:-0}" = 1 ]; then
-  krb5kdc -n -r KEPLEROPS.TEST \
+  setpriv --reuid="$service_user" --regid="$service_user" --init-groups \
+    krb5kdc -n -r KEPLEROPS.TEST \
     -d /var/lib/keplerops-identity/krb5kdc/principal \
     -P /tmp/krb5kdc.pid &
   kdc_pid=$!

@@ -40,14 +40,14 @@ docker run --rm --network cinder-keplerops-corporate \
   -i /run/rowan_ed25519 -o BatchMode=yes -o StrictHostKeyChecking=no \
   -o UserKnownHostsFile=/dev/null rowan@10.77.50.20 true
 
-job_count=$(docker exec cinder-keplerops-ci sh -c 'find /var/lib/fieldkest-ci/results -name "JOB-*.json" -type f | wc -l')
-rehearsal_count=$(docker exec cinder-keplerops-ci sh -c 'find /var/lib/fieldkest-ci/results -name "REH-*.json" -type f | wc -l')
-publication_count=$(docker exec cinder-keplerops-registry sh -c 'find /var/lib/fieldkest-registry/published -name "*.json" -type f | wc -l')
+job_count=$(docker exec --user fieldkest-ci cinder-keplerops-ci sh -c 'find /var/lib/fieldkest-ci/results -name "JOB-*.json" -type f | wc -l')
+rehearsal_count=$(docker exec --user fieldkest-ci cinder-keplerops-ci sh -c 'find /var/lib/fieldkest-ci/results -name "REH-*.json" -type f | wc -l')
+publication_count=$(docker exec --user fieldkest-registry cinder-keplerops-registry sh -c 'find /var/lib/fieldkest-registry/published -name "*.json" -type f | wc -l')
 docker restart cinder-keplerops-ci cinder-keplerops-registry cinder-keplerops-support >/dev/null
 for attempt in $(seq 1 20); do
-  current=$(docker exec cinder-keplerops-ci sh -c 'find /var/lib/fieldkest-ci/results -name "JOB-*.json" -type f | wc -l')
-  current_rehearsals=$(docker exec cinder-keplerops-ci sh -c 'find /var/lib/fieldkest-ci/results -name "REH-*.json" -type f | wc -l')
-  current_publications=$(docker exec cinder-keplerops-registry sh -c 'find /var/lib/fieldkest-registry/published -name "*.json" -type f | wc -l')
+  current=$(docker exec --user fieldkest-ci cinder-keplerops-ci sh -c 'find /var/lib/fieldkest-ci/results -name "JOB-*.json" -type f | wc -l')
+  current_rehearsals=$(docker exec --user fieldkest-ci cinder-keplerops-ci sh -c 'find /var/lib/fieldkest-ci/results -name "REH-*.json" -type f | wc -l')
+  current_publications=$(docker exec --user fieldkest-registry cinder-keplerops-registry sh -c 'find /var/lib/fieldkest-registry/published -name "*.json" -type f | wc -l')
   [[ $current -eq $job_count && $current_rehearsals -eq $rehearsal_count && $current_publications -eq $publication_count ]] && break
   sleep 1
 done
@@ -60,6 +60,7 @@ done
 [[ -z $(docker ps --format '{{.Names}}' --filter 'name=fieldkest-command-') ]]
 [[ -z $(docker ps --format '{{.Names}}' --filter 'name=fieldkest-workload-') ]]
 [[ -z $(docker ps --format '{{.Names}}' --filter 'name=fieldkest-completion-') ]]
+[[ -z $(docker ps --format '{{.Names}}' --filter 'name=fieldkest-preview-') ]]
 [[ -z $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' \
   cinder-keplerops-k-dev cinder-keplerops-source cinder-keplerops-registry cinder-keplerops-ci \
   cinder-keplerops-preview cinder-keplerops-support cinder-keplerops-indexer \

@@ -5,10 +5,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system fieldkest-data \
     && useradd --system --gid fieldkest-data --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-data \
+    && usermod --shell /usr/sbin/nologin postgres \
     && mkdir -p /var/lib/fieldkest-data/audit /var/lib/fieldkest-data/backups /var/lib/postgresql/16/fieldkest-history \
     && chown -R fieldkest-data:fieldkest-data /var/lib/fieldkest-data \
+    && chmod 0700 /var/lib/fieldkest-data \
     && chmod 0700 /var/lib/fieldkest-data/backups \
-    && chown -R postgres:postgres /var/lib/postgresql/16/fieldkest-history
+    && chown -R postgres:postgres /var/lib/postgresql/16/fieldkest-history \
+    && chmod 0700 /var/lib/postgresql/16/fieldkest-history
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest-data/http_support.py
 COPY build/keplerops/runtime/platform_service.py /opt/fieldkest-data/platform_service.py

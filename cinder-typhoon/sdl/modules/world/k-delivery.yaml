@@ -846,6 +846,7 @@ nodes:
         - name: fieldkest-runner
           members:
           - fieldkest-runner
+          - fieldkest-ci
         - name: fieldkest-consumer
           members:
           - fieldkest-consumer
@@ -874,7 +875,7 @@ nodes:
         scope: wildcard
       local_control_interfaces:
       - control_interface_id: isolated-job-engine
-        path: /run/fieldkest-ci/job-engine.sock
+        path: /run/fieldkest-runner/runner.sock
         kind: unix_socket
         protocol: fieldkest-job/v1
         access: read_write
@@ -882,8 +883,8 @@ nodes:
       orchestration_authorities:
       - orchestration_authority_id: fieldkest-ci-jobs
         control_interface_ref: isolated-job-engine
-        engine: containerd
-        engine_api_version: '1.7'
+        engine: docker
+        engine_api_version: '1.56'
         name: FieldKest isolated CI jobs
         scope:
           organization_ref: entities.k-delivery.organization
@@ -1203,15 +1204,15 @@ nodes:
         scope: wildcard
       local_control_interfaces:
       - control_interface_id: browser-worker-engine
-        path: /run/fieldkest-preview/browser-workers.sock
+        path: /run/fieldkest-runner/runner.sock
         kind: unix_socket
         protocol: fieldkest-browser/v1
         access: read_write
       orchestration_authorities:
       - orchestration_authority_id: preview-workers
         control_interface_ref: browser-worker-engine
-        engine: containerd
-        engine_api_version: '1.7'
+        engine: docker
+        engine_api_version: '1.56'
         name: Constrained preview browser workers
         scope:
           organization_ref: entities.k-delivery.organization

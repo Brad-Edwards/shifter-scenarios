@@ -177,7 +177,7 @@ class K09LiveTest(unittest.TestCase):
         self.assertEqual((response["principal"], response["availability"]), ("svc-fieldlink-ci", "available"))
         self.assertEqual(response["run_id"], result["run_id"])
         audit = subprocess.run(
-            ["docker", "exec", "cinder-keplerops-cloud-api", "cat", "/var/lib/fieldkest-cloud-api/audit/build-records.jsonl"],
+            ["docker", "exec", "--user", "fieldkest-cloud", "cinder-keplerops-cloud-api", "cat", "/var/lib/fieldkest-cloud-api/audit/build-records.jsonl"],
             check=True, text=True, stdout=subprocess.PIPE,
         ).stdout.splitlines()
         joined = [json.loads(line) for line in audit if json.loads(line).get("request_id") == response["request_id"]]

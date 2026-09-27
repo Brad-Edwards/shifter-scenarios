@@ -16,8 +16,11 @@ RUN apt-get update \
     && useradd --system --gid fieldkest-preview --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-preview \
     && groupadd --system fieldkest-renderer \
     && useradd --system --gid fieldkest-renderer --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-renderer \
-    && mkdir -p /var/lib/fieldkest-preview/audit \
-    && chown -R fieldkest-preview:fieldkest-preview /var/lib/fieldkest-preview
+    && mkdir -p /var/lib/fieldkest-preview/audit /var/lib/fieldkest-preview/browser-profiles \
+    && chown -R fieldkest-preview:fieldkest-preview /var/lib/fieldkest-preview \
+    && chown fieldkest-renderer:fieldkest-renderer /var/lib/fieldkest-preview/browser-profiles \
+    && chmod 0750 /var/lib/fieldkest-preview \
+    && chmod 0700 /var/lib/fieldkest-preview/browser-profiles
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
 COPY build/keplerops/runtime/platform_service.py /opt/fieldkest/platform_service.py
 COPY build/keplerops/runtime/preview_worker.py /opt/fieldkest/preview_worker.py

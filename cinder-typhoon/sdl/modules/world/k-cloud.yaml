@@ -436,7 +436,7 @@ nodes:
         scope: wildcard
       local_control_interfaces:
       - control_interface_id: workload-engine
-        path: /run/fieldkest-workloads/engine.sock
+        path: /run/fieldkest-runner/runner.sock
         kind: unix_socket
         protocol: fieldkest-workload/v1
         access: read_write
@@ -445,8 +445,8 @@ nodes:
       orchestration_authorities:
       - orchestration_authority_id: maintenance-jobs
         control_interface_ref: workload-engine
-        engine: containerd
-        engine_api_version: '1.7'
+        engine: docker
+        engine_api_version: '1.56'
         name: FieldLink maintenance jobs
         scope:
           organization_ref: entities.k-cloud.organization
@@ -1062,7 +1062,7 @@ nodes:
         scope: wildcard
       local_control_interfaces:
       - control_interface_id: completion-job-engine
-        path: /run/fieldkest-assistant/completion.sock
+        path: /run/fieldkest-runner/runner.sock
         kind: unix_socket
         protocol: fieldkest-completion/v1
         access: read_write
@@ -1070,8 +1070,8 @@ nodes:
       orchestration_authorities:
       - orchestration_authority_id: assistant-completion-jobs
         control_interface_ref: completion-job-engine
-        engine: containerd
-        engine_api_version: '1.7'
+        engine: docker
+        engine_api_version: '1.56'
         name: Bounded assistant completion jobs
         scope:
           organization_ref: entities.k-cloud.organization

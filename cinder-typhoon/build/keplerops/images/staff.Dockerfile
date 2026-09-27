@@ -5,8 +5,8 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y ca-certificates curl gcc iproute2 krb5-admin-server krb5-kdc krb5-user libkrb5-dev util-linux \
     && pip install --no-cache-dir gssapi==1.10.1 \
     && rm -rf /var/lib/apt/lists/* \
-    && groupadd --system fieldkest-staff \
-    && useradd --system --gid fieldkest-staff --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-staff
+    && groupadd --system keplerops-staff \
+    && useradd --system --gid keplerops-staff --home-dir /nonexistent --shell /usr/sbin/nologin keplerops-staff
 
 COPY build/keplerops/config/krb5.conf /etc/krb5.conf
 COPY build/keplerops/config/kdc.conf /etc/krb5kdc/kdc.conf
@@ -22,7 +22,7 @@ RUN chmod 0755 /usr/local/sbin/fieldkest-provision-kerberos /usr/local/bin/field
     && cp /opt/keplerops-identity/keytabs/staff.keytab /opt/keplerops-staff/keytabs/staff.keytab \
     && cp /opt/keplerops-identity/keytabs/evan.keytab /opt/keplerops-staff/keytabs/evan.keytab \
     && rm -rf /var/lib/keplerops-identity /opt/keplerops-identity \
-    && chown -R fieldkest-staff:fieldkest-staff /var/lib/keplerops-staff /opt/keplerops-staff \
+    && chown -R keplerops-staff:keplerops-staff /var/lib/keplerops-staff /opt/keplerops-staff \
     && chmod 0700 /var/lib/keplerops-staff /opt/keplerops-staff/keytabs \
     && chmod 0400 /opt/keplerops-staff/keytabs/*.keytab
 
