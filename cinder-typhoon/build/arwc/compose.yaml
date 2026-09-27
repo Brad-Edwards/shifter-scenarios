@@ -430,6 +430,35 @@ services:
         aliases: [a-instruments, independent-instruments.arwc.test]
       engineering: {}
 
+  a-reservoir:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/reservoir.Dockerfile
+    image: cinder-arwc/a-reservoir:hand-build
+    container_name: cinder-arwc-reservoir
+    hostname: a-reservoir
+    domainname: a-control.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt: [no-new-privileges:true]
+    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - reservoir-state:/var/lib/arwc-reservoir
+      - process-evidence:/run/arwc-process-evidence:ro
+      - control-authority-evidence:/run/arwc-control-authority:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    networks:
+      control:
+        ipv4_address: 10.77.64.20
+        aliases: [a-reservoir, reservoir-controller.arwc.test]
+
   a-diagnostics:
     build:
       context: ../..
@@ -546,6 +575,7 @@ services:
       - approval-evidence:/run/arwc-approval-evidence:ro
       - renderer-evidence:/run/arwc-renderer-evidence:ro
       - control-issuer:/run/arwc
+      - control-authority-evidence:/var/lib/arwc-control-broker/authority
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
     networks:
@@ -641,6 +671,8 @@ volumes:
     name: cinder-arwc-control-broker-state
   control-issuer:
     name: cinder-arwc-control-issuer
+  control-authority-evidence:
+    name: cinder-arwc-control-authority-evidence
   ot-read-evidence:
     name: cinder-arwc-ot-read-evidence
   process-evidence:
@@ -653,5 +685,7 @@ volumes:
     name: cinder-arwc-engineering-state
   instruments-state:
     name: cinder-arwc-instruments-state
+  reservoir-state:
+    name: cinder-arwc-reservoir-state
   diagnostics-state:
     name: cinder-arwc-diagnostics-state

@@ -6,8 +6,9 @@ RUN apt-get update \
     && groupadd --system --gid 2310 arwc-field-session \
     && groupadd --system --gid 2311 arwc-approval-evidence \
     && groupadd --system --gid 2312 arwc-renderer-evidence \
+    && groupadd --system --gid 2330 arwc-control-authority \
     && groupadd --system arwc-control-broker \
-    && useradd --system --gid arwc-control-broker --groups arwc-field-session,arwc-approval-evidence,arwc-renderer-evidence --home-dir /var/lib/arwc-control-broker --shell /usr/sbin/nologin arwc-control-broker \
+    && useradd --system --gid arwc-control-broker --groups arwc-field-session,arwc-approval-evidence,arwc-renderer-evidence,arwc-control-authority --home-dir /var/lib/arwc-control-broker --shell /usr/sbin/nologin arwc-control-broker \
     && install -d -o arwc-control-broker -g arwc-control-broker -m 0750 /opt/control-broker
 
 RUN pip install --no-cache-dir cryptography==42.0.8

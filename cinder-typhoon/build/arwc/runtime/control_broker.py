@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import base64
+import grp
 import hashlib
 import hmac
 import json
@@ -30,6 +31,7 @@ RENDERER_EVIDENCE = pathlib.Path("/run/arwc-renderer-evidence/renderer-attestati
 MAINTENANCE_ROUTE = "/api/an-approval-becomes-a-control-client"
 UTILITY_ROUTE = "/api/keep-the-authority-you-earned"
 UTILITY_SOCKET = "/run/arwc/control-issuer.sock"
+AUTHORITY_EVIDENCE = ROOT / "authority"
 
 APPROVAL_FIELDS = {
     "record_id": "APR-CRR-4417-R6", "revision": 6,
@@ -65,6 +67,14 @@ def load_json(path: pathlib.Path) -> dict[str, object] | None:
     except (OSError, json.JSONDecodeError):
         return None
     return value if isinstance(value, dict) else None
+
+
+def publish_authority(record: dict[str, object]) -> None:
+    evidence = {key: value for key, value in record.items() if key != "bearer_token"}
+    path = AUTHORITY_EVIDENCE / f'{record["record_id"]}.json'
+    atomic_json(path, evidence)
+    os.chown(path, -1, grp.getgrnam("arwc-control-authority").gr_gid)
+    os.chmod(path, 0o640)
 
 
 def initialize() -> None:
@@ -204,6 +214,7 @@ def utility_response(request: dict[str, object], peer_uid: int) -> tuple[int, di
         }
         state["utility_control_client"] = current
         atomic_json(STATE, state)
+    publish_authority(current)
     public = {key: value for key, value in current.items()
               if key not in {"token_sha256", "bearer_token"}}
     return 201, {
@@ -387,6 +398,7 @@ class Handler(BaseHTTPRequestHandler):
             }
             state["control_client"] = current
             atomic_json(STATE, state)
+        publish_authority(current)
         public = {key: value for key, value in current.items()
                   if key not in {"token_sha256", "bearer_token"}}
         self.accepted("an-approval-becomes-a-control-client/issue", "veybridge.tech.204", public,

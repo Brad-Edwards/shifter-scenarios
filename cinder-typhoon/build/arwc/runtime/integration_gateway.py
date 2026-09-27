@@ -46,6 +46,7 @@ PROCESS_PATHS = {
     "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
     "/api/keep-the-authority-you-earned",
     "/api/what-reserve-remains-uncommitted", "/api/paper-truth",
+    "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
 }
 
 

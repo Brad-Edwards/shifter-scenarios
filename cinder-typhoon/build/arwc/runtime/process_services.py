@@ -39,6 +39,7 @@ OWNERS = {
     "engineering": "10.77.63.40",
     "diagnostics": "10.77.63.50",
     "instruments": "a-instruments",
+    "reservoir": "a-reservoir",
 }
 
 INITIAL = {
@@ -48,6 +49,7 @@ INITIAL = {
         "practice_conditions_observed": False, "ineffective_requests_observed": False,
         "practice_sequence_observed": False,
         "w29_plan_constructed": False,
+        "w30_plan_bound": False,
     },
     "historian": {
         "tag_export_observed": False, "scale_observed": False,
@@ -58,6 +60,7 @@ INITIAL = {
         "trace_observed": False, "mapping_observed": False,
         "deployment_observed": False, "practice_observed": False,
         "w29_reserve_observed": False,
+        "w30_release_observed": False, "w30_release_response": None,
     },
 }
 
@@ -488,6 +491,7 @@ class Handler(BaseHTTPRequestHandler):
             "/api/conditions-before-movement", "/api/accepted-is-not-actuated",
             "/api/a-sequence-the-process-can-follow",
             "/api/paper-truth",
+            "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
         } else "instruments" if path in {
             "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
             "/api/change-one-record-keep-the-rest",
@@ -563,6 +567,16 @@ class Handler(BaseHTTPRequestHandler):
                 (ROLE == "hmi" and path == "/api/paper-truth")) and \
                 self.client_address[0] != "10.77.63.30":
             self.send_json(403, {"error": "historian service context required"})
+            return
+        if ROLE == "hmi" and path in {
+                "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
+        } and self.client_address[0] != "10.77.63.30":
+            self.send_json(403, {"error": "historian service context required"})
+            return
+        if ROLE == "instruments" and path in {
+                "/internal/w30-bind", "/internal/w30-open",
+        } and self.client_address[0] != "10.77.63.20":
+            self.send_json(403, {"error": "supervisory service context required"})
             return
         if ROLE == "historian":
             self.historian_post(path, request)
@@ -675,6 +689,7 @@ class Handler(BaseHTTPRequestHandler):
             "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
             "/api/keep-the-authority-you-earned",
             "/api/what-reserve-remains-uncommitted", "/api/paper-truth",
+            "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
         }:
             self.historian_proxy("POST", path, request)
             return
@@ -777,6 +792,18 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "hmi" and path == "/api/paper-truth":
             self.w29_plan(request, state)
+            return
+        if ROLE == "hmi" and path == "/api/bind-the-plan-to-the-plant":
+            self.w30_bind(request, state)
+            return
+        if ROLE == "hmi" and path == "/api/open-the-gates":
+            self.w30_open(request)
+            return
+        if ROLE == "instruments" and path == "/internal/w30-bind":
+            self.w30_reservoir_request(path, request)
+            return
+        if ROLE == "instruments" and path == "/internal/w30-open":
+            self.w30_observe_release(request, state)
             return
         if ROLE == "engineering" and path in {
             "/api/a-second-interpretation", "/api/the-hidden-check",
@@ -1094,6 +1121,190 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         atomic_json(EVIDENCE / "hmi" / "W29-plan.json", record)
         self.accepted("paper-truth", record, 201, correlation=str(correlation))
+
+    def w30_process_context(self) -> bool:
+        expected = {
+            EVIDENCE / "historian" / "W18-map.json": ("MAP-OG2-R8", 8),
+            EVIDENCE / "engineering" / "W21-revision.json": ("CMP-CRR-R21", 21),
+            EVIDENCE / "hmi" / "W25-envelope.json": ("ENV-OG2-R6", 6),
+            EVIDENCE / "hmi" / "W25-practice.json": ("PRACTICE-OG2-07", 7),
+            EVIDENCE / "hmi" / "W29-plan.json": ("PLAN-CRR-LOSS-1000", 1),
+        }
+        for path, (record_id, revision) in expected.items():
+            try:
+                record = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                return False
+            if record.get("record_id") != record_id or record.get("revision") != revision:
+                return False
+        return True
+
+    def w30_bind(self, request: dict[str, object], state: dict[str, object]) -> None:
+        if not self.w30_process_context():
+            self.send_json(403, {"error": "current process interpretation and consequence plan required"})
+            return
+        binding = request.get("request")
+        correlation = request.get("correlation")
+        try:
+            correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
+        except (ValueError, TypeError):
+            correlation_valid = False
+        if (set(request) != {"correlation", "request"} or not correlation_valid or
+                not isinstance(binding, dict)):
+            self.send_json(409, {"error": "command-plan request is not bound"})
+            return
+        expected = {
+            "control_client": binding.get("control_client"),
+            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
+            "project": "CRR-CTRL-R21", "project_revision": 21,
+            "map": "MAP-OG2-R8", "map_revision": 8,
+            "mode": "MODE-CRR-17", "mode_revision": 17,
+            "envelope": "ENV-OG2-R6", "envelope_revision": 6,
+            "plan": "PLAN-CRR-LOSS-1000",
+            "units": {"flow": "m3/s", "volume": "ML", "time": "s"},
+        }
+        if not isinstance(binding.get("control_client"), str) or binding != expected:
+            self.send_json(409, {"error": "current command-plan bindings do not agree"})
+            return
+        try:
+            status, result = self.internal_request("instruments", "POST", "/internal/w30-bind", request)
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "independent command path unavailable"})
+            return
+        record = result.get("record")
+        if (status != 201 or not isinstance(record, dict) or
+                record.get("record_id") != "CMD-PLAN-CRR-30-R1" or
+                record.get("request_correlation") != correlation or
+                result.get("audit_id") != correlation):
+            self.send_json(status if status in {403, 409} else 409, result)
+            return
+        state["w30_plan_bound"] = True
+        save_state(state)
+        atomic_json(EVIDENCE / "hmi" / "W30-command-plan.json", record)
+        self.accepted("bind-the-plan-to-the-plant", record, 201,
+                      {"reservoir_audit_id": result["audit_id"]}, str(correlation))
+
+    def w30_open(self, request: dict[str, object]) -> None:
+        if not load_state()["w30_plan_bound"]:
+            self.send_json(403, {"error": "bound command plan required"})
+            return
+        try:
+            status, result = self.internal_request("instruments", "POST", "/internal/w30-open", request)
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "independent release path unavailable"})
+            return
+        self.send_json(status, result)
+
+    def w30_reservoir_call(self, path: str,
+                           request: dict[str, object]) -> tuple[int, dict[str, object]]:
+        payload = json.dumps(request, separators=(",", ":")).encode()
+        headers = {
+            "X-ARWC-Internal": "instruments-w30", "X-ARWC-Tenant": "arwc",
+            "Content-Type": "application/json", "Content-Length": str(len(payload)),
+        }
+        context = ssl.create_default_context(cafile=CA)
+        connection = http.client.HTTPSConnection(OWNERS["reservoir"], 443,
+                                                   context=context, timeout=5)
+        try:
+            connection.request("POST", path, body=payload, headers=headers)
+            response = connection.getresponse()
+            return response.status, json.loads(response.read())
+        finally:
+            connection.close()
+
+    def w30_reservoir_request(self, path: str, request: dict[str, object]) -> None:
+        try:
+            status, result = self.w30_reservoir_call(path, request)
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "reservoir controller unavailable"})
+            return
+        self.send_json(status, result)
+
+    def w30_observe_release(self, request: dict[str, object],
+                            state: dict[str, object]) -> None:
+        try:
+            status, reservoir = self.w30_reservoir_call("/internal/w30-open", request)
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "reservoir controller unavailable"})
+            return
+        if status != 201:
+            self.send_json(status, reservoir)
+            return
+        action = reservoir.get("record")
+        correlation = request.get("correlation")
+        if (not isinstance(action, dict) or
+                action.get("record_id") != "ACT-CRR-OG2-30" or
+                action.get("request_correlation") != correlation or
+                reservoir.get("audit_id") != correlation or
+                action.get("reserve_before_ml") != 12.4 or
+                action.get("reserve_after_ml") != 11.4 or
+                action.get("integrated_command_volume_ml") != 1.0 or
+                action.get("final_gate_positions_percent") != {
+                    "GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0,
+                } or action.get("safety_systems_bypassed") is not False):
+            self.send_json(409, {"error": "reservoir command evidence did not agree"})
+            return
+        timeline = action.get("timeline")
+        if not isinstance(timeline, list) or len(timeline) != 56:
+            self.send_json(409, {"error": "independent command timeline unavailable"})
+            return
+        try:
+            measured = round(sum(
+                ((float(timeline[index - 1]["GT-CRR-02A_m3s"]) +
+                  float(timeline[index]["GT-CRR-02A_m3s"])) +
+                 (float(timeline[index - 1]["GT-CRR-02B_m3s"]) +
+                  float(timeline[index]["GT-CRR-02B_m3s"]))) * 0.5 *
+                (int(timeline[index]["elapsed_seconds"]) -
+                 int(timeline[index - 1]["elapsed_seconds"])) / 1000
+                for index in range(1, len(timeline))
+            ), 2)
+        except (KeyError, TypeError, ValueError):
+            measured = -1.0
+        if measured != 1.0:
+            self.send_json(409, {"error": "independent release measurement did not agree"})
+            return
+        existing = state.get("w30_release_response")
+        if isinstance(existing, dict):
+            if existing.get("audit_id") != correlation:
+                self.send_json(409, {"error": "release already recorded under another correlation"})
+                return
+            self.send_json(201, existing)
+            return
+        observation = {
+            "record_id": "OBS-RELEASE-CRR-30", "revision": 1,
+            "request_correlation": correlation, "actuation": "ACT-CRR-OG2-30",
+            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
+            "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
+            "measured_release_ml": measured, "reserve_before_ml": 12.4,
+            "reserve_after_ml": 11.4,
+            "final_gate_positions_percent": {"GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0},
+            "source": "independent instruments", "interval_seconds": 1100,
+        }
+        result = {
+            "record_id": "W30-RESULT-CRR-30", "revision": 1,
+            "request_correlation": correlation, "actuation": "ACT-CRR-OG2-30",
+            "observation": "OBS-RELEASE-CRR-30", "plan": "PLAN-CRR-LOSS-1000",
+            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
+            "released_volume_ml": 1.0, "reserve_before_ml": 12.4,
+            "reserve_after_ml": 11.4, "committed_ml": 12.0,
+            "shortfall_ml": 0.6, "tariff": "TAR-CRR-DP3-R4",
+            "replacement_liability_usd": 1440,
+            "continuity_notice": "CONT-DRY-A-R3", "restriction_stage": "A",
+            "maintenance": "WO-CRR-4417", "dam_integrity": "intact",
+            "flooding": False, "uncontrolled_release": False,
+            "essential_service_loss": False,
+        }
+        instrument_audit = append_audit("open-the-gates", result, str(correlation))
+        response = {
+            "audit_id": str(correlation), "reservoir_audit_id": reservoir["audit_id"],
+            "instrument_audit_id": instrument_audit, "record": result,
+            "actuation": action, "instrument_observation": observation,
+        }
+        state["w30_release_observed"] = True
+        state["w30_release_response"] = response
+        save_state(state)
+        atomic_json(EVIDENCE / "instruments" / "W30-release.json", observation)
+        self.send_json(201, response)
 
     def w28_status(self, state: dict[str, object], relationship: dict[str, object]) -> dict[str, object]:
         existing = state.get("w28_session")
