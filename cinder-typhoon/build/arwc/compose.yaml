@@ -31,6 +31,8 @@ services:
           - a-connector
           - fieldlink.arwc.test
           - customer-handover.arwc.test
+      maintenance:
+        ipv4_address: 10.77.61.10
 
   a-business:
     build:
@@ -216,6 +218,110 @@ services:
           - a-data-bridge
           - integration-gateway.arwc.test
 
+  a-contractors:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/contractors.Dockerfile
+    image: cinder-arwc/a-contractors:hand-build
+    container_name: cinder-arwc-contractors
+    hostname: a-contractors
+    domainname: maintenance.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    depends_on: [a-connector]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - contractors-state:/var/lib/arwc-contractors
+      - contractor-session:/var/lib/arwc-contractors/handover
+      - connector-fieldlink:/run/arwc-corporate:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    networks:
+      maintenance:
+        ipv4_address: 10.77.61.20
+        aliases:
+          - a-contractors
+          - contractor-portal.arwc.test
+          - field-gateway.arwc.test
+          - process-read.arwc.test
+      dmz:
+        ipv4_address: 10.77.62.12
+
+  a-contractor-bridge:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/contractor-bridge.Dockerfile
+    image: cinder-arwc/a-contractor-bridge:hand-build
+    container_name: cinder-arwc-contractor-bridge
+    hostname: a-contractor-bridge
+    domainname: dmz.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    depends_on: [a-contractors]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - contractor-bridge-state:/var/lib/arwc-contractor-bridge
+      - contractor-session:/run/arwc-field-session:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    networks:
+      dmz:
+        ipv4_address: 10.77.62.30
+        aliases:
+          - a-contractor-bridge
+          - field-gateway.arwc.test
+          - process-read.arwc.test
+
+  a-approval:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/approval.Dockerfile
+    image: cinder-arwc/a-approval:hand-build
+    container_name: cinder-arwc-approval
+    hostname: a-approval
+    domainname: maintenance.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    depends_on: [a-business, a-contractors]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=256m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - approval-state:/var/lib/arwc-approval
+      - contractor-session:/run/arwc-field-session:ro
+      - business-integration-evidence:/run/arwc-read-evidence:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    networks:
+      maintenance:
+        ipv4_address: 10.77.61.30
+        aliases:
+          - a-approval
+          - maintenance-review.arwc.test
+
 networks:
   corporate:
     name: cinder-arwc-corporate
@@ -231,6 +337,13 @@ networks:
       config:
         - subnet: 10.77.62.0/24
           gateway: 10.77.62.1
+  maintenance:
+    name: cinder-arwc-maintenance
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.77.61.0/24
+          gateway: 10.77.61.1
 
 volumes:
   connector-fieldlink:
@@ -265,3 +378,11 @@ volumes:
     name: cinder-arwc-data-postgresql
   data-bridge-state:
     name: cinder-arwc-data-bridge-state
+  contractors-state:
+    name: cinder-arwc-contractors-state
+  contractor-session:
+    name: cinder-arwc-contractor-session
+  contractor-bridge-state:
+    name: cinder-arwc-contractor-bridge-state
+  approval-state:
+    name: cinder-arwc-approval-state

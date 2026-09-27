@@ -38,6 +38,9 @@ cat > /var/lib/fieldlink-connector/handover/customer-transition.json <<'EOF'
   "planning_data": "https://planning-data.arwc.test",
   "retained_archive": "https://retained-archive.arwc.test",
   "corporate_identity": "https://corporate-identity.arwc.test",
+  "contractor_portal": "https://contractor-portal.arwc.test",
+  "field_gateway": "https://field-gateway.arwc.test",
+  "maintenance_review": "https://maintenance-review.arwc.test",
   "session_file": "/var/lib/fieldlink-connector/handover/corporate-session",
   "request_header": "Authorization: Bearer <session>"
 }

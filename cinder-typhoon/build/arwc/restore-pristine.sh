@@ -5,7 +5,7 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
 
 docker compose -f compose.yaml down -v --remove-orphans
-docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data
+docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval
 
 for _ in $(seq 1 60); do
   if docker exec --user arwc-connector cinder-arwc-connector \
@@ -34,6 +34,18 @@ for _ in $(seq 1 60); do
       cat /var/lib/arwc-data-bridge/state/integration.json 2>/dev/null || true)
     bridge_audit=$(docker exec --user arwc-data-bridge cinder-arwc-data-bridge \
       sh -c 'wc -c </var/lib/arwc-data-bridge/audit/events.jsonl' 2>/dev/null || true)
+    contractors=$(docker exec --user arwc-contractors cinder-arwc-contractors \
+      cat /var/lib/arwc-contractors/state/contractor.json 2>/dev/null || true)
+    contractors_audit=$(docker exec --user arwc-contractors cinder-arwc-contractors \
+      sh -c 'wc -c </var/lib/arwc-contractors/audit/events.jsonl' 2>/dev/null || true)
+    field_gateway=$(docker exec --user arwc-contractor-bridge cinder-arwc-contractor-bridge \
+      cat /var/lib/arwc-contractor-bridge/state/field-gateway.json 2>/dev/null || true)
+    field_gateway_audit=$(docker exec --user arwc-contractor-bridge cinder-arwc-contractor-bridge \
+      sh -c 'wc -c </var/lib/arwc-contractor-bridge/audit/events.jsonl' 2>/dev/null || true)
+    approval=$(docker exec --user arwc-approval cinder-arwc-approval \
+      cat /var/lib/arwc-approval/state/maintenance-review.json 2>/dev/null || true)
+    approval_audit=$(docker exec --user arwc-approval cinder-arwc-approval \
+      sh -c 'wc -c </var/lib/arwc-approval/audit/events.jsonl' 2>/dev/null || true)
     data_copy=$(docker exec --user postgres cinder-arwc-data \
       psql -d arwc -Atc 'SELECT count(*) FROM reconciliation_copy' 2>/dev/null || true)
     if [[ $state == *'"record_id":"PLN-HO-CRR-17"'* \
@@ -74,7 +86,18 @@ for _ in $(seq 1 60); do
       && $data_audit == 0 \
       && $data_copy == 0 \
       && $bridge == '{"current_feed_observed":false}' \
-      && $bridge_audit == 0 ]] \
+      && $bridge_audit == 0 \
+      && $contractors == *'"appointment_observed":false'* \
+      && $contractors == *'"roster_observed":false'* \
+      && $contractors == *'"field_bag_observed":false'* \
+      && $contractors == *'"contractor_session":null'* \
+      && $contractors == *'"attendee":"northbank.inspector.117"'* \
+      && $contractors == *'"revision":1'* \
+      && $contractors_audit == 0 \
+      && $field_gateway == '{"current_read_observed":false,"manifest_observed":false,"nonces":[]}' \
+      && $field_gateway_audit == 0 \
+      && $approval == '{"approval_observed":false,"association_observed":false,"cached_response":null,"review_capability":null}' \
+      && $approval_audit == 0 ]] \
       && docker exec --user arwc-archive cinder-arwc-archive \
         test ! -e /var/lib/arwc-archive/handover/W06-access.json \
       && docker exec --user arwc-identity cinder-arwc-identity \
@@ -90,7 +113,9 @@ for _ in $(seq 1 60); do
       && docker exec --user arwc-business cinder-arwc-business \
         test ! -e /var/lib/arwc-business/relation/W02-association.json \
       && docker exec --user arwc-data cinder-arwc-data \
-        test ! -e /var/lib/arwc-data/archive/W11-lineage.json; then
+        test ! -e /var/lib/arwc-data/archive/W11-lineage.json \
+      && docker exec --user arwc-contractors cinder-arwc-contractors \
+        test ! -e /var/lib/arwc-contractors/handover/contractor-session.json; then
       echo "Alterra authored initial state restored"
       exit 0
     fi

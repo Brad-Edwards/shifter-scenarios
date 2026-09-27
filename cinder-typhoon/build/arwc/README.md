@@ -5,13 +5,15 @@ ARWC SDL as an isolated participant environment. The SDL and its owned content
 remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
-**Status:** The isolated carrier and corporate/DMZ network foundation are deployed.
-W01-W12 and W35 (43 of 120 cards) are materialized and accepted. The customer handover
+**Status:** The isolated carrier and corporate/maintenance/DMZ network foundation are
+deployed. W01-W15 and W35 (54 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
 reconciliation paths run against PostgreSQL on `a-data`. The bounded live-feed
-integration runs through `a-data-bridge` in the isolated DMZ.
+integration runs through `a-data-bridge` in the isolated DMZ. Contractor intake,
+field telemetry, and maintenance approval run across `a-contractors`, the
+DMZ-only `a-contractor-bridge`, and `a-approval`.
 
 ## Boundaries
 
@@ -35,11 +37,18 @@ integration runs through `a-data-bridge` in the isolated DMZ.
 
 - GCP VPC/carrier: `cinder-arwc-golden`, private `10.77.59.2`, no external IP.
 - Corporate target network: internal `10.77.60.0/24` bridge.
+- Maintenance target network: internal `10.77.61.0/24` bridge.
+- DMZ target network: internal `10.77.62.0/24` bridge.
 - Current nodes: `a-connector` at `10.77.60.20`, `a-business` at
   `10.77.60.30`, `a-data` at `10.77.60.40`, `a-archive` at `10.77.60.50`,
   and `a-identity` at `10.77.60.60`, matching the SDL address plan. `a-data`
   alone spans the internal DMZ at `10.77.62.10`; `a-data-bridge` is DMZ-only at
-  `10.77.62.20`.
+  `10.77.62.20`. `a-connector`, `a-contractors`, and `a-approval` occupy the
+  declared maintenance addresses `10.77.61.10`, `.20`, and `.30`;
+  `a-contractor-bridge` is DMZ-only at `10.77.62.30`.
+- `a-contractors` provides the declared narrow field-gateway conduit to the
+  DMZ bridge. The connector has no DMZ membership, and neither corporate nor
+  maintenance callers can directly address the bridge.
 - `customer-handover` is a real TLS service on declared port 8443 and runs as
   `arwc-connector`; the participant context runs as the distinct locked
   `fieldlink` service identity.
@@ -55,7 +64,7 @@ integration runs through `a-data-bridge` in the isolated DMZ.
 | AHB-01 | `a-connector` and W01 opening slice | Complete |
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
 | AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
-| AHB-04 | Maintenance W13-W15 | Not started |
+| AHB-04 | Maintenance W13-W15 | Complete |
 | AHB-05 | Read-only process routes and W16-W25 | Not started |
 | AHB-06 | Control paths W26-W28 | Not started |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
@@ -207,6 +216,32 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   persist, while retries remain idempotent.
 - 2026-09-27: A destructive clean-volume rebuild passed all 76 W01-W12/W35
   black-box checks, followed by verified authored-state restoration.
-- No SDL change was needed for AHB-00 or AHB-01. The validated contracts fully
-  determined the observable W01 behavior; request serialization and carrier
-  packaging are incidental implementation detail.
+- 2026-09-27: W13 adds four passing black-box tests on `a-contractors`. The
+  appointment and roster remain distinct records; attendee maintenance enforces
+  the Veybridge organization but intentionally omits per-attendee authorization,
+  while preserving the inspection, asset, and visit window. Check-in consumes
+  the updated attendee and separate roster, issuing only the declared
+  `SCOPE-INSP-CRR-4417` field session. No W13 card binds a narrative asset.
+- 2026-09-27: W14 adds five passing black-box tests across `a-contractors` and
+  the DMZ-only `a-contractor-bridge`. The field bag contains the exact current
+  and retired endpoints, and the gateway accepts a strict CBOR map only for the
+  scoped current/read request. JSON, stale timestamps, nonce replay, retired
+  paths, and wider scopes are denied. Only the current inspection reading is
+  returned. No W14 card binds a narrative asset.
+- 2026-09-27: W15 adds five passing black-box tests on `a-approval`. Both the
+  field-session and planning-read authority branches reach the exact maintenance
+  association. The cache key intentionally omits revision and upstream identity;
+  pinned Chrome-for-Testing 128.0.6613.137 executes the nested-frame message
+  flow, including the declared source-identity omission. The bounded review
+  action produces a real Ed25519-signed approval whose signature is independently
+  verified. No W15 card binds a narrative asset.
+- 2026-09-27: A destructive clean-volume rebuild passed all 90 W01-W15/W35
+  black-box checks. Direct inspection confirmed all nine hardened containers,
+  exact corporate/maintenance/DMZ addresses, internal-only non-attachable
+  networks, no published ports, no connector-to-DMZ path, and no carrier external
+  address or VPC peering. The environment was then restored and its authored
+  initial state verified.
+- No SDL change was needed through AHB-04. The validated contracts fully
+  determined the observable W01-W15 and W35 behavior; request serialization,
+  narrow conduit mechanics, and carrier packaging are incidental implementation
+  detail.
