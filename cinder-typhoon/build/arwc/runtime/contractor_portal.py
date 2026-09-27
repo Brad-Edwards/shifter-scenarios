@@ -70,6 +70,8 @@ PROCESS_PATHS = {
     "/api/the-hidden-check", "/api/a-map-from-the-old-diagnostic",
     "/api/the-viewer-in-the-delivery", "/api/the-machine-inside-the-viewer",
     "/api/the-decision-inside-the-sealed-project", "/api/the-reviewer-who-was-never-listed",
+    "/api/a-measurement-with-side-effects", "/api/control-beyond-the-measurement",
+    "/api/a-measurement-that-never-existed",
     "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
     "/api/change-one-record-keep-the-rest",
 }

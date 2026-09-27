@@ -426,6 +426,33 @@ services:
         aliases: [a-instruments, independent-instruments.arwc.test]
       engineering: {}
 
+  a-diagnostics:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/diagnostics.Dockerfile
+    image: cinder-arwc/a-diagnostics:hand-build
+    container_name: cinder-arwc-diagnostics
+    hostname: a-diagnostics
+    domainname: a-engineering.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt: [no-new-privileges:true]
+    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - diagnostics-state:/var/lib/arwc-diagnostics
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    networks:
+      engineering:
+        ipv4_address: 10.77.63.50
+        aliases: [a-diagnostics, diagnostic-services.arwc.test]
+
   a-approval:
     build:
       context: ../..
@@ -549,3 +576,5 @@ volumes:
     name: cinder-arwc-engineering-state
   instruments-state:
     name: cinder-arwc-instruments-state
+  diagnostics-state:
+    name: cinder-arwc-diagnostics-state

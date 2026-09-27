@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W22, W25, and W35 (83 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W23, W25, and W35 (86 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -50,8 +50,9 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
   `10.77.62.20`. `a-connector`, `a-contractors`, and `a-approval` occupy the
   declared maintenance addresses `10.77.61.10`, `.20`, and `.30`;
   `a-contractor-bridge` is DMZ-only at `10.77.62.30`.
-- `a-hmi`, `a-historian`, and `a-engineering` occupy their declared engineering
-  addresses `10.77.63.20`, `.30`, and `.40`; `a-instruments` occupies its
+- `a-hmi`, `a-historian`, `a-engineering`, and `a-diagnostics` occupy their
+  declared engineering addresses `10.77.63.20`, `.30`, `.40`, and `.50`;
+  `a-instruments` occupies its
   declared control address `10.77.64.40`. The two read-entry bridges alone
   provide narrow conduits to the engineering network, while `a-instruments`
   alone spans engineering and control for independent observations.
@@ -74,7 +75,7 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
 | AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
 | AHB-04 | Maintenance W13-W15 | Complete |
-| AHB-05 | Read-only process routes and W16-W25 | In progress (W16-W22, W25 complete) |
+| AHB-05 | Read-only process routes and W16-W25 | In progress (W16-W23, W25 complete) |
 | AHB-06 | Control paths W26-W28 | Not started |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
@@ -312,3 +313,23 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
 - No SDL change was needed for W22; the existing contract fully specified the
   VM encoding and bounds, key derivation, authenticated-package behavior, and
   ReadyToRun representation mismatch.
+- 2026-09-27: W23 adds five passing black-box tests on the new engineering-only
+  `a-diagnostics` service. The delivered stripped C++20 x86-64 estimator runs
+  in its declared glibc 2.39 environment and exposes the exact 0x90-byte
+  measurement object. The bounded duplicate/coalescing sequence demonstrates
+  the stale-index state violation; deterministic tcache reuse controls only
+  `reserve_ml` and `quality`, preserving the district and vtable. The resulting
+  13.40 ML Cairn Reach estimate is accepted for `ALLOC-CASE-CRR-33` while North,
+  Merewick, raw process observations, and independent instruments remain
+  unchanged. Wrong authority, tenant, operation sequence, offset, and protected
+  field are denied; owned evidence and audit survive restart. No W23 card binds
+  a narrative asset.
+- 2026-09-27: Focused W23 acceptance passed all five checks after earning the
+  process-read session through W01-W09. Direct inspection confirmed exact
+  `10.77.63.50` addressing, engineering-only attachment, no published port,
+  read-only root filesystem, all capabilities dropped, and
+  `no-new-privileges`. Destructive state was removed and the expanded authored
+  initial state verified. The suite now contains 126 black-box checks.
+- No SDL change was needed for W23; the existing contract fully specified the
+  native runtime, object and allocator behavior, writable fields, preserved
+  estimates, and evidence boundary.

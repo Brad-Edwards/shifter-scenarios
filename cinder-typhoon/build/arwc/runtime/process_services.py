@@ -31,6 +31,7 @@ OWNERS = {
     "hmi": "10.77.63.20",
     "historian": "10.77.63.30",
     "engineering": "10.77.63.40",
+    "diagnostics": "10.77.63.50",
     "instruments": "a-instruments",
 }
 
@@ -458,6 +459,9 @@ class Handler(BaseHTTPRequestHandler):
         } else "instruments" if path in {
             "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
             "/api/change-one-record-keep-the-rest",
+        } else "diagnostics" if path in {
+            "/api/a-measurement-with-side-effects", "/api/control-beyond-the-measurement",
+            "/api/a-measurement-that-never-existed",
         } else "engineering"
         try:
             status, result = self.internal_request(owner, method, path, body)
@@ -595,6 +599,8 @@ class Handler(BaseHTTPRequestHandler):
             "/api/the-machine-inside-the-viewer",
             "/api/the-decision-inside-the-sealed-project",
             "/api/the-reviewer-who-was-never-listed",
+            "/api/a-measurement-with-side-effects", "/api/control-beyond-the-measurement",
+            "/api/a-measurement-that-never-existed",
         }:
             self.historian_proxy("POST", path, request)
             return
