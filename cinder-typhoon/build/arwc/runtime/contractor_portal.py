@@ -77,6 +77,7 @@ PROCESS_PATHS = {
     "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
     "/api/change-one-record-keep-the-rest",
 }
+CONTROL_BROKER_PATH = "/api/an-approval-becomes-a-control-client"
 
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
@@ -234,6 +235,39 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def proxy_control_broker(self) -> None:
+        length = int(self.headers.get("Content-Length", "0"))
+        if length < 2 or length > 65536:
+            self.send_json(409, {"error": "invalid control broker request"})
+            return
+        payload = self.rfile.read(length)
+        headers = {
+            "Authorization": self.headers.get("Authorization", ""),
+            "X-ARWC-Tenant": self.headers.get("X-ARWC-Tenant", "arwc"),
+            "Host": "control-broker.arwc.test",
+            "Content-Type": "application/json",
+            "Content-Length": str(len(payload)),
+        }
+        context = ssl.create_default_context(cafile="/tmp/ca.crt")
+        try:
+            connection = http.client.HTTPSConnection("10.77.62.40", 443, context=context, timeout=5)
+            connection.request("POST", CONTROL_BROKER_PATH, body=payload, headers=headers)
+            response = connection.getresponse()
+            body = response.read()
+        except OSError:
+            self.send_json(409, {"error": "control broker unavailable"})
+            return
+        finally:
+            if "connection" in locals():
+                connection.close()
+        self.send_response(response.status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_GET(self) -> None:
         path = urlsplit(self.path).path
         if (self.headers.get("Host", "").split(":", 1)[0] in
@@ -265,6 +299,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
+        if path == CONTROL_BROKER_PATH:
+            self.proxy_control_broker()
+            return
         if (self.headers.get("Host", "").split(":", 1)[0] in
                 {"field-gateway.arwc.test", "process-read.arwc.test"} and
                 path in PROCESS_PATHS | {"/api/a-fresh-reading-from-the-field"}):

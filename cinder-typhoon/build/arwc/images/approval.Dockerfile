@@ -13,9 +13,10 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y ca-certificates fonts-liberation libasound2 libatk-bridge2.0-0 libatk1.0-0 libcups2 libdrm2 libgbm1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libx11-6 libxcb1 libxcomposite1 libxdamage1 libxext6 libxfixes3 libxkbcommon0 libxrandr2 util-linux \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system --gid 2310 arwc-field-session \
+    && groupadd --system --gid 2311 arwc-approval-evidence \
     && groupadd --system --gid 2293 arwc-integration \
     && groupadd --system arwc-approval \
-    && useradd --system --gid arwc-approval --groups arwc-field-session,arwc-integration --home-dir /var/lib/arwc-approval --shell /usr/sbin/nologin arwc-approval \
+    && useradd --system --gid arwc-approval --groups arwc-field-session,arwc-integration,arwc-approval-evidence --home-dir /var/lib/arwc-approval --shell /usr/sbin/nologin arwc-approval \
     && install -d -o arwc-approval -g arwc-approval -m 0750 /opt/maintenance-review
 
 RUN pip install --no-cache-dir cryptography==42.0.8

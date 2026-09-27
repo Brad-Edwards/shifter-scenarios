@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W25 and W35 (90 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W26 and W35 (94 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -49,7 +49,8 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
   alone spans the internal DMZ at `10.77.62.10`; `a-data-bridge` is DMZ-only at
   `10.77.62.20`. `a-connector`, `a-contractors`, and `a-approval` occupy the
   declared maintenance addresses `10.77.61.10`, `.20`, and `.30`;
-  `a-contractor-bridge` is DMZ-only at `10.77.62.30`.
+  `a-renderer` is maintenance-only at `10.77.61.40`. `a-contractor-bridge` and
+  `a-control-broker` are DMZ-only at `10.77.62.30` and `.40`.
 - `a-hmi`, `a-historian`, `a-engineering`, and `a-diagnostics` occupy their
   declared engineering addresses `10.77.63.20`, `.30`, `.40`, and `.50`;
   `a-instruments` occupies its
@@ -76,7 +77,7 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
 | AHB-04 | Maintenance W13-W15 | Complete |
 | AHB-05 | Read-only process routes and W16-W25 | Complete |
-| AHB-06 | Control paths W26-W28 | Not started |
+| AHB-06 | Control paths W26-W28 | In progress (W26 complete) |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
 
@@ -360,3 +361,29 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   asset. The existing contract fully specified the RSA classes and limit,
   selector recurrence, bundle contents, Edwards25519 equations and encodings,
   nonce disclosure, fresh request, and authority boundary.
+- 2026-09-27: W26 adds six passing black-box checks across maintenance-only
+  `a-renderer` and DMZ-only `a-control-broker`. The renderer requires the earned
+  contractor session and independently owned Ed25519 approval, returns exact
+  profile `RENDER-MAINT-CRR-R9`, and preserves the declared caller-role omission
+  only for controlled package `WP-CRR-CINDER-R1`. Its action surface accepts
+  only `fetch_handover(HND-MAINT-CTRL-09)` under `svc-maint-render`; command and
+  arbitrary-URL inputs are rejected while the required inspection preview is
+  retained.
+- 2026-09-27: The broker independently verifies the signed approval and fresh
+  renderer attestation but intentionally omits the initiating-role comparison.
+  It issues an exact five-minute `CTRL-CLIENT-CRR-26` limited to `OG-CRR-02`,
+  `CRR-CTRL-R21`, plan execution, and readback. Wrong evidence, tenant, outlet,
+  project, wider action, and wrong client are denied; an accepted readback
+  demonstrates the scoped authority without waiving mode, mapping, or release
+  limits. Service-owned state and audits survive restart.
+- 2026-09-27: Direct inspection confirmed exact `.40` addresses, single-segment
+  attachment, no published ports, read-only roots, zero inherited, permitted,
+  effective, and ambient process capabilities, `no-new-privileges`, and denied
+  metadata and Internet egress. The connector cannot address the DMZ broker
+  directly; the participant route is the existing narrow contractor gateway.
+  Destructive state was removed and the complete authored initial state was
+  verified. The suite now contains 138 black-box checks.
+- No SDL change was needed for W26, and none of its four cards binds a narrative
+  asset. The existing contracts fully specify the approval and inspection
+  binding, both caller-role omissions, bounded renderer action, five-minute
+  control scope, and authority boundary.

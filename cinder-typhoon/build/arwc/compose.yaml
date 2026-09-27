@@ -257,6 +257,7 @@ services:
           - contractor-portal.arwc.test
           - field-gateway.arwc.test
           - process-read.arwc.test
+          - control-broker.arwc.test
       dmz:
         ipv4_address: 10.77.62.12
 
@@ -476,6 +477,7 @@ services:
       - /run:rw,nosuid,nodev,size=16m,mode=0755
     volumes:
       - approval-state:/var/lib/arwc-approval
+      - approval-evidence:/var/lib/arwc-approval/evidence
       - contractor-session:/run/arwc-field-session:ro
       - business-integration-evidence:/run/arwc-read-evidence:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
@@ -486,6 +488,66 @@ services:
         aliases:
           - a-approval
           - maintenance-review.arwc.test
+
+  a-renderer:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/renderer.Dockerfile
+    image: cinder-arwc/a-renderer:hand-build
+    container_name: cinder-arwc-renderer
+    hostname: a-renderer
+    domainname: maintenance.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt: [no-new-privileges:true]
+    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
+    depends_on: [a-approval, a-contractors]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - renderer-state:/var/lib/arwc-renderer
+      - renderer-evidence:/var/lib/arwc-renderer/handover
+      - contractor-session:/run/arwc-field-session:ro
+      - approval-evidence:/run/arwc-approval-evidence:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    networks:
+      maintenance:
+        ipv4_address: 10.77.61.40
+        aliases: [a-renderer, maintenance-renderer.arwc.test]
+
+  a-control-broker:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/control-broker.Dockerfile
+    image: cinder-arwc/a-control-broker:hand-build
+    container_name: cinder-arwc-control-broker
+    hostname: a-control-broker
+    domainname: dmz.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt: [no-new-privileges:true]
+    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
+    depends_on: [a-renderer]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - control-broker-state:/var/lib/arwc-control-broker
+      - contractor-session:/run/arwc-field-session:ro
+      - approval-evidence:/run/arwc-approval-evidence:ro
+      - renderer-evidence:/run/arwc-renderer-evidence:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    networks:
+      dmz:
+        ipv4_address: 10.77.62.40
+        aliases: [a-control-broker, control-broker.arwc.test]
 
 networks:
   corporate:
@@ -565,6 +627,14 @@ volumes:
     name: cinder-arwc-contractor-bridge-state
   approval-state:
     name: cinder-arwc-approval-state
+  approval-evidence:
+    name: cinder-arwc-approval-evidence
+  renderer-state:
+    name: cinder-arwc-renderer-state
+  renderer-evidence:
+    name: cinder-arwc-renderer-evidence
+  control-broker-state:
+    name: cinder-arwc-control-broker-state
   ot-read-evidence:
     name: cinder-arwc-ot-read-evidence
   process-evidence:

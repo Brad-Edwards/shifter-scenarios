@@ -5,6 +5,7 @@ import base64
 import hashlib
 import hmac
 import html
+import grp
 import json
 import os
 import pathlib
@@ -26,6 +27,7 @@ ROOT = pathlib.Path("/var/lib/arwc-approval")
 STATE = ROOT / "state" / "maintenance-review.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 SIGNING_KEY = ROOT / "auth" / "approval-signing-key.pem"
+APPROVAL_EVIDENCE = ROOT / "evidence" / "approval.json"
 CONTRACTOR_SESSION = pathlib.Path("/run/arwc-field-session/contractor-session.json")
 READ_EVIDENCE = pathlib.Path("/run/arwc-read-evidence/W09-read.json")
 CHROME = "/opt/chrome-headless-shell/chrome-headless-shell"
@@ -338,6 +340,9 @@ class Handler(BaseHTTPRequestHandler):
             approval = approval_record()
             state["approval_observed"] = True
             atomic_json(STATE, state)
+            atomic_json(APPROVAL_EVIDENCE, approval)
+            os.chown(APPROVAL_EVIDENCE, -1, grp.getgrnam("arwc-approval-evidence").gr_gid)
+            os.chmod(APPROVAL_EVIDENCE, 0o640)
             self.accepted("approval-beyond-the-token", principal, approval, 201)
             return
         self.send_json(404, {"error": "record not found"})

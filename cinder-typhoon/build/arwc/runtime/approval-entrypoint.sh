@@ -8,6 +8,8 @@ install -d -o arwc-approval -g arwc-approval -m 0700 \
   /var/lib/arwc-approval/audit \
   /var/lib/arwc-approval/auth \
   /var/lib/arwc-approval/state
+install -d -o arwc-approval -g arwc-approval-evidence -m 2750 \
+  /var/lib/arwc-approval/evidence
 for file in server.crt server.key; do
   install -o arwc-approval -g arwc-approval -m 0400 "/run/arwc-tls/$file" "/tmp/$file"
 done

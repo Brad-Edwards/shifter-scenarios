@@ -50,7 +50,7 @@ gcloud compute scp "$ARCHIVE" "$INSTANCE:/tmp/cinder-arwc-release.tar.gz" \
 
 gcloud compute ssh "$INSTANCE" --project "$PROJECT_ID" --zone "$ZONE" \
   --tunnel-through-iap --command \
-  'sudo find /opt/cinder-typhoon -mindepth 1 -maxdepth 1 -exec rm -rf -- {} + && sudo tar -xzf /tmp/cinder-arwc-release.tar.gz -C /opt/cinder-typhoon && cd /opt/cinder-typhoon/build/arwc && sudo bash ./generate-operator-material.sh && sudo docker compose -f compose.yaml build && sudo docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-hmi a-historian a-engineering a-instruments a-diagnostics && rm -f /tmp/cinder-arwc-release.tar.gz'
+  'sudo find /opt/cinder-typhoon -mindepth 1 -maxdepth 1 -exec rm -rf -- {} + && sudo tar -xzf /tmp/cinder-arwc-release.tar.gz -C /opt/cinder-typhoon && cd /opt/cinder-typhoon/build/arwc && sudo bash ./generate-operator-material.sh && sudo docker compose -f compose.yaml build && sudo docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-renderer a-control-broker a-hmi a-historian a-engineering a-instruments a-diagnostics && rm -f /tmp/cinder-arwc-release.tar.gz'
 
 terraform -chdir="$GCP_ROOT" output
 echo "Participant shell: sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cinder-arwc-connector bash"

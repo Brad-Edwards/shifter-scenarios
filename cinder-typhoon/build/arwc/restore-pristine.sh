@@ -5,7 +5,7 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
 
 docker compose -f compose.yaml down -v --remove-orphans
-docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-hmi a-historian a-engineering a-instruments a-diagnostics
+docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-renderer a-control-broker a-hmi a-historian a-engineering a-instruments a-diagnostics
 
 for _ in $(seq 1 60); do
   if docker exec --user arwc-connector cinder-arwc-connector \
@@ -46,6 +46,14 @@ for _ in $(seq 1 60); do
       cat /var/lib/arwc-approval/state/maintenance-review.json 2>/dev/null || true)
     approval_audit=$(docker exec --user arwc-approval cinder-arwc-approval \
       sh -c 'wc -c </var/lib/arwc-approval/audit/events.jsonl' 2>/dev/null || true)
+    renderer=$(docker exec --user arwc-renderer cinder-arwc-renderer \
+      cat /var/lib/arwc-renderer/state/renderer.json 2>/dev/null || true)
+    renderer_audit=$(docker exec --user arwc-renderer cinder-arwc-renderer \
+      sh -c 'wc -c </var/lib/arwc-renderer/audit/events.jsonl' 2>/dev/null || true)
+    control_broker=$(docker exec --user arwc-control-broker cinder-arwc-control-broker \
+      cat /var/lib/arwc-control-broker/state/control-broker.json 2>/dev/null || true)
+    control_broker_audit=$(docker exec --user arwc-control-broker cinder-arwc-control-broker \
+      sh -c 'wc -c </var/lib/arwc-control-broker/audit/events.jsonl' 2>/dev/null || true)
     hmi=$(docker exec --user arwc-hmi cinder-arwc-hmi \
       cat /var/lib/arwc-hmi/state/service.json 2>/dev/null || true)
     hmi_audit=$(docker exec --user arwc-hmi cinder-arwc-hmi \
@@ -126,6 +134,10 @@ for _ in $(seq 1 60); do
       && $field_gateway_audit == 0 \
       && $approval == '{"approval_observed":false,"association_observed":false,"cached_response":null,"review_capability":null}' \
       && $approval_audit == 0 \
+      && $renderer == '{"attestation_token":null,"handover_recovered":false,"profile_observed":false,"restricted_preview_accepted":false}' \
+      && $renderer_audit == 0 \
+      && $control_broker == '{"authority_demonstrated":false,"control_client":null}' \
+      && $control_broker_audit == 0 \
       && $hmi == '{"envelope_observed":false,"ineffective_requests_observed":false,"mode_observed":false,"note_observed":false,"practice_conditions_observed":false,"practice_sequence_observed":false,"present_observed":false,"trace_correlated":false}' \
       && $hmi_audit == 0 \
       && $historian == '{"mapping_observed":false,"scale_observed":false,"tag_export_observed":false,"unit_change_interpreted":false}' \
@@ -155,6 +167,10 @@ for _ in $(seq 1 60); do
         test ! -e /var/lib/arwc-data/archive/W11-lineage.json \
       && docker exec --user arwc-contractors cinder-arwc-contractors \
         test ! -e /var/lib/arwc-contractors/handover/contractor-session.json \
+      && docker exec --user arwc-approval cinder-arwc-approval \
+        test ! -e /var/lib/arwc-approval/evidence/approval.json \
+      && docker exec --user arwc-renderer cinder-arwc-renderer \
+        test ! -e /var/lib/arwc-renderer/handover/renderer-attestation.json \
       && docker exec --user arwc-historian cinder-arwc-historian \
         sh -c 'test ! -e /run/arwc-ot-read/corporate.json && test ! -e /run/arwc-ot-read/contractor.json' \
       && docker exec --user arwc-historian cinder-arwc-historian \
