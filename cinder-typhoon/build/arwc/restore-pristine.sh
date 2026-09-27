@@ -5,7 +5,7 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
 
 docker compose -f compose.yaml down -v --remove-orphans
-docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval
+docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-hmi a-historian a-engineering a-instruments
 
 for _ in $(seq 1 60); do
   if docker exec --user arwc-connector cinder-arwc-connector \
@@ -46,6 +46,22 @@ for _ in $(seq 1 60); do
       cat /var/lib/arwc-approval/state/maintenance-review.json 2>/dev/null || true)
     approval_audit=$(docker exec --user arwc-approval cinder-arwc-approval \
       sh -c 'wc -c </var/lib/arwc-approval/audit/events.jsonl' 2>/dev/null || true)
+    hmi=$(docker exec --user arwc-hmi cinder-arwc-hmi \
+      cat /var/lib/arwc-hmi/state/service.json 2>/dev/null || true)
+    hmi_audit=$(docker exec --user arwc-hmi cinder-arwc-hmi \
+      sh -c 'wc -c </var/lib/arwc-hmi/audit/events.jsonl' 2>/dev/null || true)
+    historian=$(docker exec --user arwc-historian cinder-arwc-historian \
+      cat /var/lib/arwc-historian/state/service.json 2>/dev/null || true)
+    historian_audit=$(docker exec --user arwc-historian cinder-arwc-historian \
+      sh -c 'wc -c </var/lib/arwc-historian/audit/events.jsonl' 2>/dev/null || true)
+    engineering=$(docker exec --user arwc-engineering cinder-arwc-engineering \
+      cat /var/lib/arwc-engineering/state/service.json 2>/dev/null || true)
+    engineering_audit=$(docker exec --user arwc-engineering cinder-arwc-engineering \
+      sh -c 'wc -c </var/lib/arwc-engineering/audit/events.jsonl' 2>/dev/null || true)
+    instruments=$(docker exec --user arwc-instruments cinder-arwc-instruments \
+      cat /var/lib/arwc-instruments/state/service.json 2>/dev/null || true)
+    instruments_audit=$(docker exec --user arwc-instruments cinder-arwc-instruments \
+      sh -c 'wc -c </var/lib/arwc-instruments/audit/events.jsonl' 2>/dev/null || true)
     data_copy=$(docker exec --user postgres cinder-arwc-data \
       psql -d arwc -Atc 'SELECT count(*) FROM reconciliation_copy' 2>/dev/null || true)
     if [[ $state == *'"record_id":"PLN-HO-CRR-17"'* \
@@ -91,7 +107,7 @@ for _ in $(seq 1 60); do
       && $data == *'"lineage_observed":false'* \
       && $data_audit == 0 \
       && $data_copy == 0 \
-      && $bridge == '{"current_feed_observed":false}' \
+      && $bridge == '{"current_feed_observed":false,"process_session":null}' \
       && $bridge_audit == 0 \
       && $contractors == *'"appointment_observed":false'* \
       && $contractors == *'"roster_observed":false'* \
@@ -100,10 +116,18 @@ for _ in $(seq 1 60); do
       && $contractors == *'"attendee":"northbank.inspector.117"'* \
       && $contractors == *'"revision":1'* \
       && $contractors_audit == 0 \
-      && $field_gateway == '{"current_read_observed":false,"manifest_observed":false,"nonces":[]}' \
+      && $field_gateway == '{"current_read_observed":false,"manifest_observed":false,"nonces":[],"process_session":null}' \
       && $field_gateway_audit == 0 \
       && $approval == '{"approval_observed":false,"association_observed":false,"cached_response":null,"review_capability":null}' \
-      && $approval_audit == 0 ]] \
+      && $approval_audit == 0 \
+      && $hmi == '{"envelope_observed":false,"ineffective_requests_observed":false,"mode_observed":false,"note_observed":false,"practice_conditions_observed":false,"practice_sequence_observed":false,"present_observed":false,"trace_correlated":false}' \
+      && $hmi_audit == 0 \
+      && $historian == '{"mapping_observed":false,"scale_observed":false,"tag_export_observed":false,"unit_change_interpreted":false}' \
+      && $historian_audit == 0 \
+      && $engineering == '{"deployed_revision_observed":false,"project_bundle_observed":false}' \
+      && $engineering_audit == 0 \
+      && $instruments == '{"deployment_observed":false,"mapping_observed":false,"practice_observed":false,"trace_observed":false}' \
+      && $instruments_audit == 0 ]] \
       && docker exec --user arwc-archive cinder-arwc-archive \
         test ! -e /var/lib/arwc-archive/handover/W06-access.json \
       && docker exec --user arwc-identity cinder-arwc-identity \
@@ -121,7 +145,11 @@ for _ in $(seq 1 60); do
       && docker exec --user arwc-data cinder-arwc-data \
         test ! -e /var/lib/arwc-data/archive/W11-lineage.json \
       && docker exec --user arwc-contractors cinder-arwc-contractors \
-        test ! -e /var/lib/arwc-contractors/handover/contractor-session.json; then
+        test ! -e /var/lib/arwc-contractors/handover/contractor-session.json \
+      && docker exec --user arwc-historian cinder-arwc-historian \
+        sh -c 'test ! -e /run/arwc-ot-read/corporate.json && test ! -e /run/arwc-ot-read/contractor.json' \
+      && docker exec --user arwc-historian cinder-arwc-historian \
+        sh -c 'find /run/arwc-process-evidence -type f -print -quit | grep -q . && exit 1 || exit 0'; then
       echo "Alterra authored initial state restored"
       exit 0
     fi

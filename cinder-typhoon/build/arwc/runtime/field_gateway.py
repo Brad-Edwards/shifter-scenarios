@@ -3,12 +3,15 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import http.client
 import json
 import os
 import pathlib
+import secrets
 import ssl
 import tempfile
 import uuid
+import grp
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
@@ -18,6 +21,16 @@ ROOT = pathlib.Path("/var/lib/arwc-contractor-bridge")
 STATE = ROOT / "state" / "field-gateway.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 SESSION = pathlib.Path("/run/arwc-field-session/contractor-session.json")
+OT_EVIDENCE = ROOT / "handover" / "contractor.json"
+PROCESS_PATHS = {
+    "/api/the-reservoir-s-present-tense", "/api/the-mode-the-plant-is-in",
+    "/api/the-instrument-in-the-note", "/api/the-first-live-trace",
+    "/api/the-tag-export", "/api/the-scale-kept-elsewhere",
+    "/api/when-the-units-changed", "/api/which-outlet-answers",
+    "/api/the-project-and-the-note", "/api/which-project-is-running",
+    "/api/the-operating-envelope", "/api/conditions-before-movement",
+    "/api/accepted-is-not-actuated", "/api/a-sequence-the-process-can-follow",
+}
 MANIFEST = {
     "record_id": "FIELD-SERVICES-R21",
     "revision": 21,
@@ -47,7 +60,13 @@ def atomic_json(path: pathlib.Path, value: object) -> None:
 
 def initialize() -> None:
     if not STATE.exists():
-        atomic_json(STATE, {"manifest_observed": False, "current_read_observed": False, "nonces": []})
+        atomic_json(STATE, {"manifest_observed": False, "current_read_observed": False,
+                           "nonces": [], "process_session": None})
+    else:
+        state = json.loads(STATE.read_text(encoding="utf-8"))
+        if "process_session" not in state:
+            state["process_session"] = None
+            atomic_json(STATE, state)
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
 
@@ -139,7 +158,45 @@ class Handler(BaseHTTPRequestHandler):
             return None
         return session
 
+    def proxy_historian(self) -> None:
+        path = urlsplit(self.path).path
+        length = int(self.headers.get("Content-Length", "0"))
+        if path not in PROCESS_PATHS or length < 0 or length > 65536:
+            self.send_json(404, {"error": "record not found"})
+            return
+        payload = self.rfile.read(length) if length else None
+        headers = {
+            "Authorization": self.headers.get("Authorization", ""),
+            "X-ARWC-Tenant": self.headers.get("X-ARWC-Tenant", "arwc"),
+            "Host": "process-historian.arwc.test",
+        }
+        if payload is not None:
+            headers["Content-Type"] = "application/json"
+            headers["Content-Length"] = str(len(payload))
+        context = ssl.create_default_context(cafile="/tmp/ca.crt")
+        try:
+            connection = http.client.HTTPSConnection("10.77.63.30", 443, context=context, timeout=5)
+            connection.request(self.command, path, body=payload, headers=headers)
+            response = connection.getresponse()
+            result = response.read()
+        except OSError:
+            self.send_json(409, {"error": "process historian unavailable"})
+            return
+        finally:
+            if "connection" in locals():
+                connection.close()
+        self.send_response(response.status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(result)))
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.end_headers()
+        self.wfile.write(result)
+
     def do_GET(self) -> None:
+        if urlsplit(self.path).path in PROCESS_PATHS:
+            self.proxy_historian()
+            return
         if urlsplit(self.path).path != "/api/the-service-that-replaced-it":
             self.send_json(404, {"error": "record not found"})
             return
@@ -151,6 +208,9 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(200, {"audit_id": append_audit("the-service-that-replaced-it", MANIFEST), "record": MANIFEST})
 
     def do_POST(self) -> None:
+        if urlsplit(self.path).path in PROCESS_PATHS:
+            self.proxy_historian()
+            return
         if urlsplit(self.path).path != "/api/a-fresh-reading-from-the-field":
             self.send_json(404, {"error": "record not found"})
             return
@@ -191,6 +251,10 @@ class Handler(BaseHTTPRequestHandler):
             return
         state["nonces"].append(request["nonce"])
         state["current_read_observed"] = True
+        token = state.get("process_session")
+        if not isinstance(token, str):
+            token = secrets.token_urlsafe(40)
+            state["process_session"] = token
         atomic_json(STATE, state)
         result = {
             "record_id": "FEED-OG2-R21",
@@ -205,7 +269,14 @@ class Handler(BaseHTTPRequestHandler):
                 {"instrument": "FIT-CRR-204B", "flow_lps": 0.0},
             ],
         }
-        self.send_json(201, {"audit_id": append_audit("a-fresh-reading-from-the-field", result), "record": result})
+        atomic_json(OT_EVIDENCE, {
+            "record_id": "OT-READ-CONTRACTOR-R21", "branch": "contractor-field",
+            "scope": "OG-CRR-02/read", "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
+        })
+        os.chown(OT_EVIDENCE, -1, grp.getgrnam("arwc-ot-read").gr_gid)
+        os.chmod(OT_EVIDENCE, 0o640)
+        self.send_json(201, {"audit_id": append_audit("a-fresh-reading-from-the-field", result),
+                             "record": result, "process_session": token})
 
 
 def main() -> None:

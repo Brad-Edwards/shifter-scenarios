@@ -7,12 +7,25 @@ cd "$ROOT"
 bash ./generate-operator-material.sh
 docker compose -f compose.yaml down -v --remove-orphans
 docker compose -f compose.yaml build
-docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval
+docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-hmi a-historian a-engineering a-instruments
 
 ready=0
 for _ in $(seq 1 60); do
   if docker exec --user fieldlink cinder-arwc-connector \
     sh -c 'token=$(cat /var/lib/fieldlink-connector/handover/corporate-session) && curl --silent --fail --cacert /tmp/arwc-ca.crt -H "Authorization: Bearer $token" https://customer-handover.arwc.test:8443/api/the-customer-s-copy >/dev/null'; then
+    ready=1
+    break
+  fi
+  sleep 1
+done
+[[ $ready == 1 ]]
+
+ready=0
+for _ in $(seq 1 60); do
+  status=$(docker exec --user fieldlink cinder-arwc-connector \
+    curl --silent --cacert /tmp/arwc-ca.crt -o /dev/null -w '%{http_code}' \
+    -H 'Authorization: Bearer unavailable' https://process-view.arwc.test/api/the-reservoir-s-present-tense || true)
+  if [[ $status == 403 ]]; then
     ready=1
     break
   fi
@@ -82,6 +95,7 @@ python3 tests/test_w13_live.py
 python3 tests/test_w14_live.py
 python3 tests/test_w15_live.py
 python3 tests/test_w16_live.py
+python3 tests/test_w17_w18_w21_w25_live.py
 
 [[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-corporate").IPAddress}}' cinder-arwc-connector) == 10.77.60.20 ]]
 [[ $(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cinder-arwc-business) == 10.77.60.30 ]]
@@ -92,6 +106,10 @@ python3 tests/test_w16_live.py
 [[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-maintenance").IPAddress}}' cinder-arwc-contractors) == 10.77.61.20 ]]
 [[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-dmz").IPAddress}}' cinder-arwc-contractor-bridge) == 10.77.62.30 ]]
 [[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-maintenance").IPAddress}}' cinder-arwc-approval) == 10.77.61.30 ]]
+[[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-engineering").IPAddress}}' cinder-arwc-hmi) == 10.77.63.20 ]]
+[[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-engineering").IPAddress}}' cinder-arwc-historian) == 10.77.63.30 ]]
+[[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-engineering").IPAddress}}' cinder-arwc-engineering) == 10.77.63.40 ]]
+[[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-control").IPAddress}}' cinder-arwc-instruments) == 10.77.64.40 ]]
 [[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-connector) == '' ]]
 [[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-business) == '' ]]
 [[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-archive) == '' ]]
@@ -101,6 +119,10 @@ python3 tests/test_w16_live.py
 [[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-contractors) == '' ]]
 [[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-contractor-bridge) == '' ]]
 [[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-approval) == '' ]]
+[[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-hmi) == '' ]]
+[[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-historian) == '' ]]
+[[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-engineering) == '' ]]
+[[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-instruments) == '' ]]
 [[ $(docker inspect -f '{{.Config.User}}' cinder-arwc-connector) == '' ]]
 docker exec --user fieldlink cinder-arwc-connector sh -c 'test -r /var/lib/fieldlink-connector/handover/customer-transition.json'
 docker exec --user fieldlink cinder-arwc-connector sh -c 'test ! -r /opt/customer-handover/customer_handover.py'
@@ -115,12 +137,17 @@ docker exec --user fieldlink cinder-arwc-connector sh -c 'test ! -r /var/lib/arw
 [[ $(docker exec cinder-arwc-contractors stat -c '%U:%G:%a' /var/lib/arwc-contractors) == arwc-contractors:arwc-contractors:700 ]]
 [[ $(docker exec cinder-arwc-contractor-bridge stat -c '%U:%G:%a' /var/lib/arwc-contractor-bridge) == arwc-contractor-bridge:arwc-contractor-bridge:700 ]]
 [[ $(docker exec cinder-arwc-approval stat -c '%U:%G:%a' /var/lib/arwc-approval) == arwc-approval:arwc-approval:700 ]]
+[[ $(docker exec cinder-arwc-hmi stat -c '%U:%G:%a' /var/lib/arwc-hmi) == arwc-hmi:arwc-hmi:700 ]]
+[[ $(docker exec cinder-arwc-historian stat -c '%U:%G:%a' /var/lib/arwc-historian) == arwc-historian:arwc-historian:700 ]]
+[[ $(docker exec cinder-arwc-engineering stat -c '%U:%G:%a' /var/lib/arwc-engineering) == arwc-engineering:arwc-engineering:700 ]]
+[[ $(docker exec cinder-arwc-instruments stat -c '%U:%G:%a' /var/lib/arwc-instruments) == arwc-instruments:arwc-instruments:700 ]]
 [[ $(docker exec --user arwc-approval cinder-arwc-approval /opt/chrome-headless-shell/chrome-headless-shell --no-sandbox --version) == *'128.0.6613.137'* ]]
 [[ $(docker exec cinder-arwc-archive /usr/local/bin/7zz | sed -n '2p') == *'23.01'* ]]
 for container in \
   cinder-arwc-connector cinder-arwc-business cinder-arwc-archive \
   cinder-arwc-identity cinder-arwc-data cinder-arwc-data-bridge \
-  cinder-arwc-contractors cinder-arwc-contractor-bridge cinder-arwc-approval; do
+  cinder-arwc-contractors cinder-arwc-contractor-bridge cinder-arwc-approval \
+  cinder-arwc-hmi cinder-arwc-historian cinder-arwc-engineering cinder-arwc-instruments; do
   [[ $(docker inspect -f '{{.HostConfig.ReadonlyRootfs}}' "$container") == true ]]
   [[ $(docker inspect -f '{{json .HostConfig.CapDrop}}' "$container") == '["ALL"]' ]]
   [[ $(docker inspect -f '{{json .HostConfig.SecurityOpt}}' "$container") == *'no-new-privileges:true'* ]]
@@ -128,6 +155,8 @@ done
 [[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-corporate) == true ]]
 [[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-maintenance) == true ]]
 [[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-dmz) == true ]]
+[[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-engineering) == true ]]
+[[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-control) == true ]]
 ! docker exec --user fieldlink cinder-arwc-connector curl --silent --max-time 3 http://169.254.169.254/ >/dev/null 2>&1
 ! docker exec --user fieldlink cinder-arwc-connector curl --silent --max-time 3 https://example.com/ >/dev/null 2>&1
 docker exec --user fieldlink cinder-arwc-connector python3 - <<'PY'
@@ -146,4 +175,4 @@ if docker exec --user fieldlink cinder-arwc-connector sh -c \
   exit 1
 fi
 
-echo "Alterra W01-W16 and W35 local acceptance passed"
+echo "Alterra W01-W18, W21, W25, and W35 local acceptance passed"

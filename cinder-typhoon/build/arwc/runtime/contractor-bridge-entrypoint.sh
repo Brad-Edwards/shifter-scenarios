@@ -7,7 +7,9 @@ chmod 0700 /var/lib/arwc-contractor-bridge
 install -d -o arwc-contractor-bridge -g arwc-contractor-bridge -m 0700 \
   /var/lib/arwc-contractor-bridge/audit \
   /var/lib/arwc-contractor-bridge/state
-for file in server.crt server.key; do
+install -d -o root -g arwc-ot-read -m 0770 \
+  /var/lib/arwc-contractor-bridge/handover
+for file in server.crt server.key ca.crt; do
   install -o arwc-contractor-bridge -g arwc-contractor-bridge -m 0400 "/run/arwc-tls/$file" "/tmp/$file"
 done
 

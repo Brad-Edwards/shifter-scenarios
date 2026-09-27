@@ -3,12 +3,15 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import http.client
 import json
 import os
 import pathlib
+import secrets
 import ssl
 import tempfile
 import uuid
+import grp
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
@@ -19,6 +22,16 @@ STATE = ROOT / "state" / "integration.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 READ_EVIDENCE = pathlib.Path("/run/arwc-business-integration/W09-read.json")
 DATA_EVIDENCE = pathlib.Path("/run/arwc-data-integration/W09-data.json")
+OT_EVIDENCE = ROOT / "handover" / "corporate.json"
+PROCESS_PATHS = {
+    "/api/the-reservoir-s-present-tense", "/api/the-mode-the-plant-is-in",
+    "/api/the-instrument-in-the-note", "/api/the-first-live-trace",
+    "/api/the-tag-export", "/api/the-scale-kept-elsewhere",
+    "/api/when-the-units-changed", "/api/which-outlet-answers",
+    "/api/the-project-and-the-note", "/api/which-project-is-running",
+    "/api/the-operating-envelope", "/api/conditions-before-movement",
+    "/api/accepted-is-not-actuated", "/api/a-sequence-the-process-can-follow",
+}
 
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
@@ -38,7 +51,12 @@ def atomic_json(path: pathlib.Path, value: object) -> None:
 
 def initialize() -> None:
     if not STATE.exists():
-        atomic_json(STATE, {"current_feed_observed": False})
+        atomic_json(STATE, {"current_feed_observed": False, "process_session": None})
+    else:
+        state = json.loads(STATE.read_text(encoding="utf-8"))
+        if "process_session" not in state:
+            state["process_session"] = None
+            atomic_json(STATE, state)
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
 
@@ -102,9 +120,50 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "invalid request"})
             return None
 
+    def proxy_historian(self) -> None:
+        path = urlsplit(self.path).path
+        if path not in PROCESS_PATHS:
+            self.send_json(404, {"error": "record not found"})
+            return
+        length = int(self.headers.get("Content-Length", "0"))
+        if length < 0 or length > 65536:
+            self.send_json(409, {"error": "invalid process request"})
+            return
+        payload = self.rfile.read(length) if length else None
+        headers = {
+            "Authorization": self.headers.get("Authorization", ""),
+            "X-ARWC-Tenant": self.headers.get("X-ARWC-Tenant", "arwc"),
+            "Host": "process-historian.arwc.test",
+        }
+        if payload is not None:
+            headers["Content-Type"] = "application/json"
+            headers["Content-Length"] = str(len(payload))
+        context = ssl.create_default_context(cafile="/tmp/ca.crt")
+        try:
+            connection = http.client.HTTPSConnection("10.77.63.30", 443, context=context, timeout=5)
+            connection.request(self.command, path, body=payload, headers=headers)
+            response = connection.getresponse()
+            result = response.read()
+        except OSError:
+            self.send_json(409, {"error": "process historian unavailable"})
+            return
+        finally:
+            if "connection" in locals():
+                connection.close()
+        self.send_response(response.status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(result)))
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.end_headers()
+        self.wfile.write(result)
+
+    def do_GET(self) -> None:
+        self.proxy_historian()
+
     def do_POST(self) -> None:
         if urlsplit(self.path).path != "/api/from-the-report-to-the-live-feed":
-            self.send_json(404, {"error": "record not found"})
+            self.proxy_historian()
             return
         if self.headers.get("X-ARWC-Tenant", "arwc") != "arwc":
             self.send_json(403, {"error": "session is not valid for this tenant"})
@@ -153,8 +212,21 @@ class Handler(BaseHTTPRequestHandler):
             "unit": "ML",
             "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
         }
-        atomic_json(STATE, {"current_feed_observed": True})
-        self.send_json(201, {"audit_id": append_audit(result), "record": result})
+        state = json.loads(STATE.read_text(encoding="utf-8"))
+        token = state.get("process_session")
+        if not isinstance(token, str):
+            token = secrets.token_urlsafe(40)
+            state["process_session"] = token
+        state["current_feed_observed"] = True
+        atomic_json(STATE, state)
+        atomic_json(OT_EVIDENCE, {
+            "record_id": "OT-READ-CORPORATE-R21", "branch": "corporate-integration",
+            "scope": "OG-CRR-02/read", "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
+        })
+        os.chown(OT_EVIDENCE, -1, grp.getgrnam("arwc-ot-read").gr_gid)
+        os.chmod(OT_EVIDENCE, 0o640)
+        self.send_json(201, {"audit_id": append_audit(result), "record": result,
+                             "process_session": token})
 
 
 def main() -> None:

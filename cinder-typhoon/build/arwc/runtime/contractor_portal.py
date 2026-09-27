@@ -58,6 +58,15 @@ FIELD_BAG = {
         "current_endpoint": "process-read.arwc.test",
     },
 }
+PROCESS_PATHS = {
+    "/api/the-reservoir-s-present-tense", "/api/the-mode-the-plant-is-in",
+    "/api/the-instrument-in-the-note", "/api/the-first-live-trace",
+    "/api/the-tag-export", "/api/the-scale-kept-elsewhere",
+    "/api/when-the-units-changed", "/api/which-outlet-answers",
+    "/api/the-project-and-the-note", "/api/which-project-is-running",
+    "/api/the-operating-envelope", "/api/conditions-before-movement",
+    "/api/accepted-is-not-actuated", "/api/a-sequence-the-process-can-follow",
+}
 
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
@@ -183,7 +192,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def proxy_field_gateway(self) -> None:
         length = int(self.headers.get("Content-Length", "0"))
-        if length < 0 or length > 4096:
+        if length < 0 or length > 65536:
             self.send_json(409, {"error": "invalid field gateway request"})
             return
         payload = self.rfile.read(length) if length else None
@@ -219,7 +228,7 @@ class Handler(BaseHTTPRequestHandler):
         path = urlsplit(self.path).path
         if (self.headers.get("Host", "").split(":", 1)[0] in
                 {"field-gateway.arwc.test", "process-read.arwc.test"} and
-                path == "/api/the-service-that-replaced-it"):
+                path in PROCESS_PATHS | {"/api/the-service-that-replaced-it"}):
             self.proxy_field_gateway()
             return
         state = json.loads(STATE.read_text(encoding="utf-8"))
@@ -248,7 +257,7 @@ class Handler(BaseHTTPRequestHandler):
         path = urlsplit(self.path).path
         if (self.headers.get("Host", "").split(":", 1)[0] in
                 {"field-gateway.arwc.test", "process-read.arwc.test"} and
-                path == "/api/a-fresh-reading-from-the-field"):
+                path in PROCESS_PATHS | {"/api/a-fresh-reading-from-the-field"}):
             self.proxy_field_gateway()
             return
         if not self.corporate_authorized():

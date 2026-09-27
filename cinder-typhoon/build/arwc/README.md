@@ -5,15 +5,17 @@ ARWC SDL as an isolated participant environment. The SDL and its owned content
 remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
-**Status:** The isolated carrier and corporate/maintenance/DMZ network foundation are
-deployed. W01-W16 and W35 (58 of 120 cards) are materialized and accepted. The customer handover
+**Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
+deployed. W01-W18, W21, W25, and W35 (72 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
 reconciliation paths run against PostgreSQL on `a-data`. The bounded live-feed
 integration runs through `a-data-bridge` in the isolated DMZ. Contractor intake,
 field telemetry, and maintenance approval run across `a-contractors`, the
-DMZ-only `a-contractor-bridge`, and `a-approval`.
+DMZ-only `a-contractor-bridge`, and `a-approval`. Read-only process observation
+runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
+`a-instruments` observations.
 
 ## Boundaries
 
@@ -39,6 +41,8 @@ DMZ-only `a-contractor-bridge`, and `a-approval`.
 - Corporate target network: internal `10.77.60.0/24` bridge.
 - Maintenance target network: internal `10.77.61.0/24` bridge.
 - DMZ target network: internal `10.77.62.0/24` bridge.
+- Engineering target network: internal `10.77.63.0/24` bridge.
+- Control target network: internal `10.77.64.0/24` bridge.
 - Current nodes: `a-connector` at `10.77.60.20`, `a-business` at
   `10.77.60.30`, `a-data` at `10.77.60.40`, `a-archive` at `10.77.60.50`,
   and `a-identity` at `10.77.60.60`, matching the SDL address plan. `a-data`
@@ -46,6 +50,11 @@ DMZ-only `a-contractor-bridge`, and `a-approval`.
   `10.77.62.20`. `a-connector`, `a-contractors`, and `a-approval` occupy the
   declared maintenance addresses `10.77.61.10`, `.20`, and `.30`;
   `a-contractor-bridge` is DMZ-only at `10.77.62.30`.
+- `a-hmi`, `a-historian`, and `a-engineering` occupy their declared engineering
+  addresses `10.77.63.20`, `.30`, and `.40`; `a-instruments` occupies its
+  declared control address `10.77.64.40`. The two read-entry bridges alone
+  provide narrow conduits to the engineering network, while `a-instruments`
+  alone spans engineering and control for independent observations.
 - `a-contractors` provides the declared narrow field-gateway conduit to the
   DMZ bridge. The connector has no DMZ membership, and neither corporate nor
   maintenance callers can directly address the bridge.
@@ -65,7 +74,7 @@ DMZ-only `a-contractor-bridge`, and `a-approval`.
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
 | AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
 | AHB-04 | Maintenance W13-W15 | Complete |
-| AHB-05 | Read-only process routes and W16-W25 | In progress (W16 complete) |
+| AHB-05 | Read-only process routes and W16-W25 | In progress (W16-W18, W21, W25 complete) |
 | AHB-06 | Control paths W26-W28 | Not started |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
@@ -248,7 +257,22 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   acceptance path recovers all 32 bytes in slots 160-191 through TEST timing,
   validates the internal CRC32C and R8 binding, denies writes and replay, and
   persists its service-owned evidence. No W16 card binds a narrative asset.
-- No SDL change was needed through W16. The validated contracts fully
-  determined the observable W01-W16 and W35 behavior; request serialization,
+- 2026-09-27: W17, W18, W21, and W25 add thirteen passing black-box tests across
+  `a-hmi`, `a-historian`, `a-engineering`, and `a-instruments`. The two earned
+  read branches issue hashed, scope-bound sessions through separate bridges.
+  Current process state, mode, tag and scale records, revision comparison, and
+  the isolated practice model remain separately owned and independently
+  observed. Exact card-bound `me-engineering-note-01-1`, `me-commissioning-01`,
+  and `me-project-handover-01` content is extracted during image builds and
+  verified byte-for-byte; unrelated narrative content is absent.
+- 2026-09-27: A destructive clean-volume rebuild passed all 108
+  W01-W18/W21/W25/W35 black-box checks. Direct inspection confirmed all thirteen
+  hardened containers, exact addresses, internal-only networks, no published
+  ports, no direct participant route to engineering or control, persistence,
+  and independently owned audits. The environment was then restored and its
+  authored initial state verified, including absence of process sessions and
+  derived evidence.
+- No SDL change was needed through W18/W21/W25. The validated contracts fully
+  determined the observable W01-W18, W21, W25, and W35 behavior; request serialization,
   narrow conduit mechanics, and carrier packaging are incidental implementation
   detail.

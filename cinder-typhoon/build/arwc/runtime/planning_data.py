@@ -33,6 +33,15 @@ PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.jso
 INTEGRATION_EVIDENCE = ROOT / "integration" / "W09-data.json"
 ARCHIVE_EVIDENCE = ROOT / "archive" / "W11-lineage.json"
 BUSINESS_RELATION_EVIDENCE = pathlib.Path("/run/arwc-business-relation/W02-association.json")
+PROCESS_PATHS = {
+    "/api/the-reservoir-s-present-tense", "/api/the-mode-the-plant-is-in",
+    "/api/the-instrument-in-the-note", "/api/the-first-live-trace",
+    "/api/the-tag-export", "/api/the-scale-kept-elsewhere",
+    "/api/when-the-units-changed", "/api/which-outlet-answers",
+    "/api/the-project-and-the-note", "/api/which-project-is-running",
+    "/api/the-operating-envelope", "/api/conditions-before-movement",
+    "/api/accepted-is-not-actuated", "/api/a-sequence-the-process-can-follow",
+}
 
 DEFINITION = {
     "record_id": "QRY-RESERVE-R7",
@@ -433,7 +442,42 @@ class Handler(BaseHTTPRequestHandler):
             response.update(extra)
         self.send_json(status, response)
 
+    def process_proxy(self) -> None:
+        path = urlsplit(self.path).path
+        length = int(self.headers.get("Content-Length", "0"))
+        if path not in PROCESS_PATHS or length < 0 or length > 65536:
+            self.send_json(404, {"error": "record not found"})
+            return
+        data = self.rfile.read(length) if length else None
+        headers = {
+            "Authorization": self.headers.get("Authorization", ""),
+            "X-ARWC-Tenant": self.headers.get("X-ARWC-Tenant", "arwc"),
+        }
+        if data is not None:
+            headers["Content-Type"] = "application/json"
+        outbound = urllib.request.Request(
+            "https://10.77.62.20" + path, data=data, headers=headers, method=self.command,
+        )
+        context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
+        try:
+            response = urllib.request.urlopen(outbound, context=context, timeout=5)
+        except urllib.error.HTTPError as error:
+            response = error
+        except OSError:
+            self.send_json(409, {"error": "process gateway is unavailable"})
+            return
+        try:
+            payload = json.loads(response.read())
+        except json.JSONDecodeError:
+            self.send_json(409, {"error": "process gateway returned an invalid response"})
+            return
+        self.send_json(response.status, payload)
+
     def do_GET(self) -> None:
+        if (self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test" and
+                urlsplit(self.path).path in PROCESS_PATHS):
+            self.process_proxy()
+            return
         if not self.authorized():
             return
         path = urlsplit(self.path).path
@@ -464,6 +508,10 @@ class Handler(BaseHTTPRequestHandler):
         self.accepted("the-query-the-planner-keeps", DEFINITION)
 
     def do_POST(self) -> None:
+        if (self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test" and
+                urlsplit(self.path).path in PROCESS_PATHS):
+            self.process_proxy()
+            return
         if not self.authorized():
             return
         request = self.body()

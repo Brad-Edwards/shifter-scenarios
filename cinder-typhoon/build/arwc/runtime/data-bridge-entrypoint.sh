@@ -7,8 +7,10 @@ chmod 0700 /var/lib/arwc-data-bridge
 install -d -o arwc-data-bridge -g arwc-data-bridge -m 0700 \
   /var/lib/arwc-data-bridge/audit \
   /var/lib/arwc-data-bridge/state
+install -d -o root -g arwc-ot-read -m 0770 \
+  /var/lib/arwc-data-bridge/handover
 
-for file in server.crt server.key; do
+for file in server.crt server.key ca.crt; do
   install -o arwc-data-bridge -g arwc-data-bridge -m 0400 "/run/arwc-tls/$file" "/tmp/$file"
 done
 
