@@ -502,6 +502,8 @@ class Handler(BaseHTTPRequestHandler):
             "/api/two-kinds-of-answer", "/api/which-answer-comes-next",
             "/api/the-diagnostic-evidence-bundle", "/api/signed-by-someone-who-never-approved-it",
             "/api/a-program-the-engineer-would-accept",
+            "/api/the-vault-s-misleading-length", "/api/past-the-parser-s-boundary",
+            "/api/the-state-execution-returns-to", "/api/the-diagnostic-service-s-authority",
         } else "engineering"
         try:
             status, result = self.internal_request(owner, method, path, body)
@@ -524,6 +526,7 @@ class Handler(BaseHTTPRequestHandler):
                 "/api/the-diagnostic-nobody-retired", "/api/what-the-image-kept",
                 "/api/the-viewer-in-the-delivery",
                 "/api/two-kinds-of-answer",
+                "/api/the-vault-s-misleading-length",
             }:
                 self.historian_proxy("GET", path, None)
             else:
@@ -690,6 +693,8 @@ class Handler(BaseHTTPRequestHandler):
             "/api/keep-the-authority-you-earned",
             "/api/what-reserve-remains-uncommitted", "/api/paper-truth",
             "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
+            "/api/past-the-parser-s-boundary", "/api/the-state-execution-returns-to",
+            "/api/the-diagnostic-service-s-authority",
         }:
             self.historian_proxy("POST", path, request)
             return

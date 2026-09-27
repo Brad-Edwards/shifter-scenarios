@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W30 and W35 (105 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W31 and W35 (109 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -80,7 +80,7 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-04 | Maintenance W13-W15 | Complete |
 | AHB-05 | Read-only process routes and W16-W25 | Complete |
 | AHB-06 | Control paths W26-W28 | Complete |
-| AHB-07 | Consequence, verification, and reporting W29-W34 | In progress (W29-W30 complete) |
+| AHB-07 | Consequence, verification, and reporting W29-W34 | In progress (W29-W31 complete) |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
 
 ## W01 asset decision
@@ -492,3 +492,21 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
 - No SDL change was needed for W30, and neither card binds a narrative asset.
   The existing contracts fully specify the multi-authority command binding,
   bounded actuation, independently measured volume, and consequence record.
+- 2026-09-27: W31 adds five passing black-box checks on `a-diagnostics` for
+  `VAULT-CRR-R5`. The supplied x86-64 DVL1 worker is a real PIE executable
+  with NX, full RELRO, and stack protection. Its native parser verifies CRC32C
+  before reproducing the exact 16-bit wrapped-length boundary, 0x120-byte
+  workspace, disclosed canary, saved-state layout, and build-bound
+  `export_history` call.
+- The accepted 512-byte record preserves the canary, derives the supplied PIE
+  mapping, and invokes only `export_history(HIST-APR-CRR-09)` as
+  `svc-diagnostic-vault`. The resulting restricted maintenance history is
+  persistent service-owned evidence and explicitly grants neither a current
+  approval nor control authority. Wrong authority, tenant, CRC, lengths,
+  build, canary, return address, history, and correlation are rejected;
+  owner removal prevents completion and ordinary retry is idempotent.
+- Exact addressing, absence of published ports, a read-only root filesystem,
+  dropped capabilities, no-new-privileges, participant-to-engineering network
+  isolation, native posture, immutable audits, and restart persistence passed.
+  The suite now contains 161 black-box checks. No SDL change was needed, and
+  none of W31's four cards binds a narrative asset.

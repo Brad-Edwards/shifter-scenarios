@@ -47,6 +47,8 @@ PROCESS_PATHS = {
     "/api/keep-the-authority-you-earned",
     "/api/what-reserve-remains-uncommitted", "/api/paper-truth",
     "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
+    "/api/the-vault-s-misleading-length", "/api/past-the-parser-s-boundary",
+    "/api/the-state-execution-returns-to", "/api/the-diagnostic-service-s-authority",
 }
 
 

@@ -158,7 +158,7 @@ for _ in $(seq 1 60); do
       && $instruments_audit == 0 \
       && $reservoir == '{"bind_response":null,"bound_plan":null,"release_response":null,"released_ml":0.0,"reserve_ml":12.4}' \
       && $reservoir_audit == 0 \
-      && $diagnostics == '{"bundle_opened":false,"calibration_exported":false,"colliding_program_accepted":false,"false_estimate_observed":false,"oracle_contract_observed":false,"oracle_queries":0,"protected_state_controlled":false,"selector_predicted":false,"side_effect_observed":false}' \
+      && $diagnostics == '{"bundle_opened":false,"calibration_exported":false,"colliding_program_accepted":false,"false_estimate_observed":false,"oracle_contract_observed":false,"oracle_queries":0,"protected_state_controlled":false,"selector_predicted":false,"side_effect_observed":false,"vault_boundary_controlled":false,"vault_contract_observed":false,"vault_execution":null,"vault_history_response":null,"vault_saved_state_controlled":false}' \
       && $diagnostics_audit == 0 \
       && $diagnostics_oracle == 0 ]] \
       && docker exec --user arwc-archive cinder-arwc-archive \
@@ -192,7 +192,7 @@ for _ in $(seq 1 60); do
       docker exec --user arwc-engineering cinder-arwc-engineering \
         sh -c 'test ! -e /var/lib/arwc-engineering/artifacts/what-counts-as-intact/result.json && test ! -e /var/lib/arwc-engineering/artifacts/the-constraints-of-a-valid-looking-program/result.json && test ! -e /var/lib/arwc-engineering/artifacts/the-constraints-of-a-valid-looking-program/DPG-CRR-MODEL1.dpg && test ! -e /var/lib/arwc-engineering/artifacts/the-utility-s-small-world/result.json && test ! -e /var/lib/arwc-engineering/artifacts/control-with-very-little-room/result.json'
       docker exec --user arwc-diagnostics cinder-arwc-diagnostics \
-        sh -c 'test ! -e /var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept/result.json && test ! -e /var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept/DPG-CRR-CINDER.dpg'
+        sh -c 'test ! -e /var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept/result.json && test ! -e /var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept/DPG-CRR-CINDER.dpg && test ! -e /var/lib/arwc-diagnostics/artifacts/the-diagnostic-service-s-authority/result.json'
       docker exec --user arwc-data cinder-arwc-data \
         sh -c 'test ! -e /var/lib/arwc-data/results/PLAN-CONSUMER-R8.json && test ! -e /var/lib/arwc-data/results/PLAN-CRR-LOSS-1000.json'
       docker exec --user arwc-reservoir cinder-arwc-reservoir \

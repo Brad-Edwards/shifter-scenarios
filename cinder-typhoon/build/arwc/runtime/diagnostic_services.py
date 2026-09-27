@@ -8,6 +8,7 @@ import json
 import os
 import pathlib
 import ssl
+import subprocess
 import tempfile
 import threading
 import uuid
@@ -27,11 +28,16 @@ OT_SESSIONS = pathlib.Path("/run/arwc-ot-read")
 ENGINEERING_STATE = pathlib.Path("/run/arwc-engineering/state/service.json")
 ARTIFACT = pathlib.Path("/opt/diagnostic-services/artifacts/estimator23")
 SIGNER = pathlib.Path("/opt/diagnostic-services/artifacts/dsign-crr-r3")
+VAULT_WORKER = pathlib.Path("/opt/diagnostic-services/artifacts/dvl-worker-r5")
+VAULT_BASE = 0x555550000000
 INITIAL = {"side_effect_observed": False, "protected_state_controlled": False,
            "false_estimate_observed": False, "oracle_contract_observed": False,
            "selector_predicted": False, "bundle_opened": False,
            "calibration_exported": False, "oracle_queries": 0,
            "colliding_program_accepted": False,
+           "vault_contract_observed": False, "vault_boundary_controlled": False,
+           "vault_saved_state_controlled": False, "vault_execution": None,
+           "vault_history_response": None,
            }
 ORACLE_LOCK = threading.Lock()
 SEEN_CIPHERTEXTS: set[str] = set()
@@ -210,8 +216,8 @@ def load_state() -> dict[str, object]:
     return json.loads(STATE.read_text())
 
 
-def append_audit(action: str, result: dict[str, object]) -> str:
-    correlation = str(uuid.uuid4())
+def append_audit(action: str, result: dict[str, object], correlation: str | None = None) -> str:
+    correlation = correlation or str(uuid.uuid4())
     event = {"audit_id": correlation, "time": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
              "tenant": "arwc", "principal": "svc-diagnostics", "action": action,
              "object": result.get("record_id"),
@@ -221,6 +227,41 @@ def append_audit(action: str, result: dict[str, object]) -> str:
         handle.write(json.dumps(event, sort_keys=True, separators=(",", ":")) + "\n")
         handle.flush(); os.fsync(handle.fileno())
     return correlation
+
+
+def vault_metadata() -> dict[str, object]:
+    completed = subprocess.run([str(VAULT_WORKER), "--metadata"], check=True,
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                               timeout=2)
+    value = json.loads(completed.stdout)
+    if value.get("build_id") != "DVL-WORKER-R5":
+        raise ValueError("unexpected diagnostic worker build")
+    return value
+
+
+def run_vault(mode: str, record: bytes, correlation: str | None = None) -> dict[str, object] | None:
+    arguments = [str(VAULT_WORKER), mode, hex(VAULT_BASE)]
+    if correlation is not None:
+        arguments.append(correlation)
+    try:
+        completed = subprocess.run(arguments, input=record, stdout=subprocess.PIPE,
+                                   stderr=subprocess.DEVNULL, check=False, timeout=2)
+        if completed.returncode != 0:
+            return None
+        value = json.loads(completed.stdout)
+        return value if isinstance(value, dict) else None
+    except (OSError, subprocess.TimeoutExpired, json.JSONDecodeError):
+        return None
+
+
+def decode_vault_record(request: dict[str, object]) -> bytes | None:
+    encoded = request.get("record_b64")
+    if not isinstance(encoded, str):
+        return None
+    try:
+        return base64.b64decode(encoded, validate=True)
+    except (ValueError, TypeError):
+        return None
 
 
 def deployed_revision_ready() -> bool:
@@ -295,8 +336,9 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, json.JSONDecodeError):
             self.send_json(409, {"error": "invalid request"}); return None
 
-    def accepted(self, action: str, record: dict[str, object], extra: dict[str, object] | None = None) -> None:
-        result: dict[str, object] = {"audit_id": append_audit(action, record), "record": record}
+    def accepted(self, action: str, record: dict[str, object], extra: dict[str, object] | None = None,
+                 correlation: str | None = None) -> None:
+        result: dict[str, object] = {"audit_id": append_audit(action, record, correlation), "record": record}
         if extra: result.update(extra)
         self.send_json(201, result)
 
@@ -317,6 +359,33 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         if not self.authorized(): return
         path = urlsplit(self.path).path
+        if path == "/api/the-vault-s-misleading-length":
+            if not deployed_revision_ready():
+                self.send_json(403, {"error": "current deployed engineering revision required"}); return
+            metadata = vault_metadata(); artifact = VAULT_WORKER.read_bytes()
+            record = {
+                "record_id": "VAULT-CRR-R5", "revision": 5, "case_id": "DV-CRR-4417",
+                "protected_history_reference": "HIST-APR-CRR-09", "format": "DVL1",
+                "request_limit": 512, "declared_length_encoding": "u16-le",
+                "header_length_encoding": "u16-le", "integrity": "CRC32C",
+                "worker": {"format": "ELF64-x86-64", "architecture": "x86_64",
+                           "glibc": "2.39", "build_id": metadata["build_id"],
+                           "pie": True, "nx": True, "full_relro": True, "stack_canary": True,
+                           "sha256": hashlib.sha256(artifact).hexdigest()},
+                "status": {"build_id": metadata["build_id"],
+                           "stack_canary": f"0x{0x91d4c6aa72be3f05:016x}",
+                           "worker_mapping": {"base": f"0x{VAULT_BASE:x}",
+                                              "end": f"0x{VAULT_BASE + 0x20000:x}"},
+                           "status_address": f"0x{VAULT_BASE + int(metadata['status_offset']):x}",
+                           "status_offset": int(metadata["status_offset"])},
+                "frame": {"workspace_bytes": 0x120, "canary_offset": 0x120,
+                          "saved_rbp_offset": 0x128, "return_state_offset": 0x130,
+                          "argument_offset": 0x138},
+            }
+            state = load_state(); state["vault_contract_observed"] = True; atomic_json(STATE, state)
+            self.send_json(200, {"audit_id": append_audit("the-vault-s-misleading-length", record),
+                                 "record": record, "worker_b64": base64.b64encode(artifact).decode()})
+            return
         if path != "/api/two-kinds-of-answer":
             self.send_json(404, {"error": "record not found"}); return
         if not deployed_revision_ready():
@@ -555,6 +624,79 @@ class Handler(BaseHTTPRequestHandler):
             }
             atomic_json(output / "result.json", record)
             self.accepted("a-program-the-engineer-would-accept", record); return
+        if path == "/api/past-the-parser-s-boundary":
+            if not state["vault_contract_observed"]:
+                self.send_json(403, {"error": "diagnostic vault contract observation required"}); return
+            if set(request) != {"case_id", "build_id", "record_b64"} or request.get("case_id") != "DV-CRR-4417" or request.get("build_id") != "DVL-WORKER-R5":
+                self.send_json(409, {"error": "diagnostic record binding rejected"}); return
+            raw = decode_vault_record(request)
+            result = run_vault("--boundary", raw) if raw is not None else None
+            if result is None:
+                self.send_json(409, {"error": "DVL1 record rejected before protected access"}); return
+            state["vault_boundary_controlled"] = True; atomic_json(STATE, state)
+            record = {"record_id": "DVL-BOUNDARY-CRR-R5", "revision": 5,
+                      "case_id": "DV-CRR-4417", "build_id": "DVL-WORKER-R5",
+                      "declared_length": result["declared_length"],
+                      "header_length": result["header_length"],
+                      "wrapped_sum": result["wrapped_sum"],
+                      "workspace_bytes": result["workspace_bytes"],
+                      "copied_bytes": result["copied_bytes"],
+                      "worker_exited_normally": True}
+            self.accepted("past-the-parser-s-boundary", record); return
+        if path == "/api/the-state-execution-returns-to":
+            if not state["vault_boundary_controlled"]:
+                self.send_json(403, {"error": "accepted DVL1 boundary access required"}); return
+            if set(request) != {"case_id", "build_id", "record_b64"} or request.get("case_id") != "DV-CRR-4417" or request.get("build_id") != "DVL-WORKER-R5":
+                self.send_json(409, {"error": "diagnostic execution binding rejected"}); return
+            correlation = str(uuid.uuid4()); raw = decode_vault_record(request)
+            result = run_vault("--execute", raw, correlation) if raw is not None else None
+            if result is None or result.get("correlation") != correlation or result.get("history_id") != "HIST-APR-CRR-09":
+                self.send_json(409, {"error": "saved execution state rejected"}); return
+            history = {
+                "record_id": "HIST-APR-CRR-09", "revision": 9,
+                "classification": "restricted-maintenance-history",
+                "entries": [
+                    {"decision": "APR-CRR-2019-117", "asset": "AST-CRR-017",
+                     "disposition": "superseded", "basis": "legacy outlet commissioning"},
+                    {"decision": "APR-CRR-2024-204", "asset": "FIT-CRR-204B",
+                     "disposition": "expired", "basis": "calibration exception review"},
+                ],
+                "current_approval": False, "control_authority": False,
+            }
+            digest = hashlib.sha256(json.dumps(history, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+            execution = {"execution_id": f"DVL-EXEC-{correlation}", "correlation": correlation,
+                         "history_id": "HIST-APR-CRR-09", "history_digest": digest,
+                         "principal": result["principal"], "return_state": result["return_state"],
+                         "history": history}
+            state["vault_saved_state_controlled"] = True; state["vault_execution"] = execution
+            atomic_json(STATE, state)
+            record = {key: value for key, value in execution.items() if key != "history"}
+            record.update({"record_id": "DVL-STATE-CRR-R5", "revision": 5,
+                           "canary_preserved": True, "worker_exited_normally": True})
+            self.accepted("the-state-execution-returns-to", record, correlation=correlation); return
+        if path == "/api/the-diagnostic-service-s-authority":
+            execution = state.get("vault_execution")
+            if not state["vault_saved_state_controlled"] or not isinstance(execution, dict):
+                self.send_json(403, {"error": "controlled diagnostic execution required"}); return
+            expected = {"execution_id": execution["execution_id"], "correlation": execution["correlation"],
+                        "history_id": "HIST-APR-CRR-09", "history_digest": execution["history_digest"]}
+            if request != expected:
+                self.send_json(409, {"error": "history export binding rejected"}); return
+            cached = state.get("vault_history_response")
+            if isinstance(cached, dict):
+                self.send_json(201, cached); return
+            history = execution["history"]
+            output = ROOT / "artifacts/the-diagnostic-service-s-authority/result.json"
+            atomic_json(output, history)
+            record = {"record_id": "HIST-EXPORT-CRR-09", "revision": 9,
+                      "history_id": "HIST-APR-CRR-09", "history_digest": execution["history_digest"],
+                      "execution_id": execution["execution_id"], "correlation": execution["correlation"],
+                      "principal": "svc-diagnostic-vault", "current_approval": False,
+                      "control_authority": False}
+            response = {"audit_id": append_audit("the-diagnostic-service-s-authority", record),
+                        "record": record, "history": history}
+            state["vault_history_response"] = response; atomic_json(STATE, state)
+            self.send_json(201, response); return
         self.send_json(404, {"error": "record not found"})
 
 

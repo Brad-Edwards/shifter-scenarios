@@ -158,6 +158,10 @@ class W23Live(unittest.TestCase):
             "false_estimate_observed": True, "oracle_contract_observed": False,
             "selector_predicted": False, "bundle_opened": False,
             "calibration_exported": False, "oracle_queries": 0,
+            "colliding_program_accepted": False,
+            "vault_contract_observed": False, "vault_boundary_controlled": False,
+            "vault_saved_state_controlled": False, "vault_execution": None,
+            "vault_history_response": None,
         })
         audit = subprocess.check_output(["docker", "exec", "--user", "arwc-diagnostics",
             "cinder-arwc-diagnostics", "cat", "/var/lib/arwc-diagnostics/audit/events.jsonl"], text=True)
