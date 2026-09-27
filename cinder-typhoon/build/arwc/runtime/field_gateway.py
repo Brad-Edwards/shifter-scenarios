@@ -44,6 +44,7 @@ PROCESS_PATHS = {
     "/api/a-program-the-engineer-would-accept",
     "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
     "/api/keep-the-authority-you-earned",
+    "/api/what-reserve-remains-uncommitted", "/api/paper-truth",
 }
 MANIFEST = {
     "record_id": "FIELD-SERVICES-R21",

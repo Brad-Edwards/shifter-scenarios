@@ -100,6 +100,8 @@ services:
       - data-archive-evidence:/var/lib/arwc-data/archive
       - business-relation-evidence:/run/arwc-business-relation:ro
       - identity-planning:/run/arwc-planning-evidence:ro
+      - ot-read-evidence:/run/arwc-ot-read:ro
+      - process-evidence:/run/arwc-process-evidence:ro
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
@@ -220,7 +222,8 @@ services:
         aliases:
           - a-data-bridge
           - integration-gateway.arwc.test
-      engineering: {}
+      engineering:
+        ipv4_address: 10.77.63.10
 
   a-contractors:
     build:

@@ -120,6 +120,11 @@ for _ in $(seq 1 60); do
       && $data == *'"relation_exchange_observed":false'* \
       && $data == *'"lineage_observed":false'* \
       && $data == *'"diagnostic_estimate_observed":false'* \
+      && $data == *'"w29_tariff_observed":false'* \
+      && $data == *'"w29_balance_observed":false'* \
+      && $data == *'"w29_plan_observed":false'* \
+      && $data == *'"w29_tariff":null'* \
+      && $data == *'"w29_balance":null'* \
       && $data_audit == 0 \
       && $data_copy == 0 \
       && $bridge == '{"current_feed_observed":false,"process_session":null}' \
@@ -139,13 +144,13 @@ for _ in $(seq 1 60); do
       && $renderer_audit == 0 \
       && $control_broker == '{"authority_demonstrated":false,"control_client":null,"utility_authority_demonstrated":false,"utility_control_client":null}' \
       && $control_broker_audit == 0 \
-      && $hmi == '{"envelope_observed":false,"ineffective_requests_observed":false,"mode_observed":false,"note_observed":false,"practice_conditions_observed":false,"practice_sequence_observed":false,"present_observed":false,"trace_correlated":false}' \
+      && $hmi == '{"envelope_observed":false,"ineffective_requests_observed":false,"mode_observed":false,"note_observed":false,"practice_conditions_observed":false,"practice_sequence_observed":false,"present_observed":false,"trace_correlated":false,"w29_plan_constructed":false}' \
       && $hmi_audit == 0 \
       && $historian == '{"mapping_observed":false,"scale_observed":false,"tag_export_observed":false,"unit_change_interpreted":false}' \
       && $historian_audit == 0 \
       && $engineering == '{"compatibility_reproduced":false,"concealed_reviewer_used":false,"deployed_revision_observed":false,"diagnostic_observed":false,"hidden_check_recovered":false,"legacy_mapping_recovered":false,"project_bundle_observed":false,"sealed_project_opened":false,"viewer_observed":false,"vm_reconstructed":false,"w27_collision_modeled":false,"w27_verifier_reproduced":false,"w28_contract_recovered":false,"w28_controlled_flow":false,"w28_session":null}' \
       && $engineering_audit == 0 \
-      && $instruments == '{"deployment_observed":false,"flash_observed":false,"image_rewrite_accepted":false,"inspection_recovered":false,"mapping_observed":false,"practice_observed":false,"trace_observed":false}' \
+      && $instruments == '{"deployment_observed":false,"flash_observed":false,"image_rewrite_accepted":false,"inspection_recovered":false,"mapping_observed":false,"practice_observed":false,"trace_observed":false,"w29_reserve_observed":false}' \
       && $instruments_audit == 0 \
       && $diagnostics == '{"bundle_opened":false,"calibration_exported":false,"colliding_program_accepted":false,"false_estimate_observed":false,"oracle_contract_observed":false,"oracle_queries":0,"protected_state_controlled":false,"selector_predicted":false,"side_effect_observed":false}' \
       && $diagnostics_audit == 0 \
@@ -181,7 +186,7 @@ for _ in $(seq 1 60); do
       docker exec --user arwc-diagnostics cinder-arwc-diagnostics \
         sh -c 'test ! -e /var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept/result.json && test ! -e /var/lib/arwc-diagnostics/artifacts/a-program-the-engineer-would-accept/DPG-CRR-CINDER.dpg'
       docker exec --user arwc-data cinder-arwc-data \
-        test ! -e /var/lib/arwc-data/results/PLAN-CONSUMER-R8.json
+        sh -c 'test ! -e /var/lib/arwc-data/results/PLAN-CONSUMER-R8.json && test ! -e /var/lib/arwc-data/results/PLAN-CRR-LOSS-1000.json'
       echo "Alterra authored initial state restored"
       exit 0
     fi

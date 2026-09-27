@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W28 and W35 (100 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W29 and W35 (103 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -46,8 +46,9 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 - Current nodes: `a-connector` at `10.77.60.20`, `a-business` at
   `10.77.60.30`, `a-data` at `10.77.60.40`, `a-archive` at `10.77.60.50`,
   and `a-identity` at `10.77.60.60`, matching the SDL address plan. `a-data`
-  alone spans the internal DMZ at `10.77.62.10`; `a-data-bridge` is DMZ-only at
-  `10.77.62.20`. `a-connector`, `a-contractors`, and `a-approval` occupy the
+  alone spans the internal DMZ at `10.77.62.10`; `a-data-bridge` occupies
+  `10.77.62.20` in the DMZ and the fixed engineering conduit address
+  `10.77.63.10`. `a-connector`, `a-contractors`, and `a-approval` occupy the
   declared maintenance addresses `10.77.61.10`, `.20`, and `.30`;
   `a-renderer` is maintenance-only at `10.77.61.40`. `a-contractor-bridge` and
   `a-control-broker` are DMZ-only at `10.77.62.30` and `.40`.
@@ -78,7 +79,7 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-04 | Maintenance W13-W15 | Complete |
 | AHB-05 | Read-only process routes and W16-W25 | Complete |
 | AHB-06 | Control paths W26-W28 | Complete |
-| AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
+| AHB-07 | Consequence, verification, and reporting W29-W34 | In progress (W29 complete) |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
 
 ## W01 asset decision
@@ -444,3 +445,28 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   narrative asset. The existing contract fully specifies the native ABI and
   hardening, frame layout, sparse surface, privileged issuer call, fixed socket,
   and equivalent bounded control scope.
+- 2026-09-27: W29 adds four passing black-box checks across `a-data`,
+  `a-data-bridge`, `a-historian`, `a-hmi`, and independently owned
+  `a-instruments`. The tariff route requires earned process-read evidence and
+  returns `TAR-CRR-DP3-R4` with the exact authored
+  `pl-arwc-plan-method-01-method` document. The balance route proves the full
+  process-interpretation chain, joins the PostgreSQL 12.00 ML commitment to a
+  fresh 12.40 ML instrument observation under one correlation, and yields the
+  exact 0.40 ML margin.
+- 2026-09-27: The final planning route requires the completed W25 mode
+  sequence and both prior W29 results. Its independently owned HMI calculation
+  produces `PLAN-CRR-LOSS-1000`: balanced 100-second ramps, a 900-second hold,
+  1,000 full-flow-equivalent seconds, 1.00 ML modeled release, 11.40 ML reserve,
+  0.60 ML shortfall, USD 1,440 liability, and Stage A under `CONT-DRY-A-R3`.
+  It performs no live actuation. Missing evidence, wrong authority, tenant,
+  object, revision, quantity, unavailable instruments, and direct internal
+  access are denied. Same-correlation owner audits and results survive restart.
+- 2026-09-27: Focused W29 acceptance passed after a clean, unseeded W01-W09
+  acquisition chain. Direct inspection confirmed exact dual-homed conduit and
+  owner addresses, read-only roots, dropped capabilities,
+  `no-new-privileges`, no published ports, and no participant route into the
+  engineering network. Destructive state was removed and the authored initial
+  state was verified. The suite now contains 152 black-box checks.
+- No SDL change was needed for W29. Only W29.1 binds a narrative asset, and its
+  exact authored document is extracted during the image build without retaining
+  the source package or unrelated narrative content.

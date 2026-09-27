@@ -47,6 +47,7 @@ INITIAL = {
         "trace_correlated": False, "envelope_observed": False,
         "practice_conditions_observed": False, "ineffective_requests_observed": False,
         "practice_sequence_observed": False,
+        "w29_plan_constructed": False,
     },
     "historian": {
         "tag_export_observed": False, "scale_observed": False,
@@ -56,6 +57,7 @@ INITIAL = {
     "instruments": {
         "trace_observed": False, "mapping_observed": False,
         "deployment_observed": False, "practice_observed": False,
+        "w29_reserve_observed": False,
     },
 }
 
@@ -241,8 +243,8 @@ def save_state(value: dict[str, object]) -> None:
     atomic_json(STATE, value)
 
 
-def append_audit(action: str, result: dict[str, object]) -> str:
-    correlation = str(uuid.uuid4())
+def append_audit(action: str, result: dict[str, object], correlation: str | None = None) -> str:
+    correlation = str(uuid.uuid4()) if correlation is None else correlation
     event = {
         "audit_id": correlation,
         "time": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
@@ -454,8 +456,11 @@ class Handler(BaseHTTPRequestHandler):
         return True
 
     def accepted(self, action: str, record: dict[str, object], status: int = 200,
-                 extra: dict[str, object] | None = None) -> None:
-        result: dict[str, object] = {"audit_id": append_audit(action, record), "record": record}
+                 extra: dict[str, object] | None = None,
+                 correlation: str | None = None) -> None:
+        result: dict[str, object] = {
+            "audit_id": append_audit(action, record, correlation), "record": record,
+        }
         if extra:
             result.update(extra)
         self.send_json(status, result)
@@ -482,9 +487,11 @@ class Handler(BaseHTTPRequestHandler):
             "/api/the-instrument-in-the-note", "/api/the-operating-envelope",
             "/api/conditions-before-movement", "/api/accepted-is-not-actuated",
             "/api/a-sequence-the-process-can-follow",
+            "/api/paper-truth",
         } else "instruments" if path in {
             "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
             "/api/change-one-record-keep-the-rest",
+            "/api/what-reserve-remains-uncommitted",
         } else "diagnostics" if path in {
             "/api/a-measurement-with-side-effects", "/api/control-beyond-the-measurement",
             "/api/a-measurement-that-never-existed",
@@ -521,12 +528,42 @@ class Handler(BaseHTTPRequestHandler):
         self.owner_get(path)
 
     def do_POST(self) -> None:
+        path = urlsplit(self.path).path
+        if ROLE == "historian" and path in {
+            "/internal/w29-reserve-observation", "/internal/w29-paper-truth",
+        }:
+            if (self.headers.get("X-ARWC-Internal") != "data-bridge-w29" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] != "10.77.63.10"):
+                self.send_json(403, {"error": "integration service context required"})
+                return
+            request = self.body()
+            if request is None:
+                return
+            owner = "instruments" if path.endswith("reserve-observation") else "hmi"
+            owner_path = ("/api/what-reserve-remains-uncommitted"
+                          if owner == "instruments" else "/api/paper-truth")
+            try:
+                status, result = self.internal_request(owner, "POST", owner_path, request)
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "independent process owner unavailable"})
+                return
+            self.send_json(status, result)
+            return
         if not self.authorized():
             return
         request = self.body()
         if request is None:
             return
-        path = urlsplit(self.path).path
+        if path in {"/internal/w29-reserve-observation", "/internal/w29-paper-truth"} and \
+                self.client_address[0] != "10.77.63.30":
+            self.send_json(403, {"error": "historian service context required"})
+            return
+        if ((ROLE == "instruments" and path == "/api/what-reserve-remains-uncommitted") or
+                (ROLE == "hmi" and path == "/api/paper-truth")) and \
+                self.client_address[0] != "10.77.63.30":
+            self.send_json(403, {"error": "historian service context required"})
+            return
         if ROLE == "historian":
             self.historian_post(path, request)
         else:
@@ -637,6 +674,7 @@ class Handler(BaseHTTPRequestHandler):
             "/api/a-program-the-engineer-would-accept",
             "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
             "/api/keep-the-authority-you-earned",
+            "/api/what-reserve-remains-uncommitted", "/api/paper-truth",
         }:
             self.historian_proxy("POST", path, request)
             return
@@ -723,6 +761,8 @@ class Handler(BaseHTTPRequestHandler):
         field, record, action = records[path]
         state[field] = True
         save_state(state)
+        if path == "/api/the-operating-envelope":
+            atomic_json(EVIDENCE / "hmi" / "W25-envelope.json", record)
         extra: dict[str, object] = {}
         if path == "/api/the-instrument-in-the-note":
             extra["engineering_context"] = authored_asset("me-engineering-note-01-1")
@@ -732,6 +772,12 @@ class Handler(BaseHTTPRequestHandler):
 
     def owner_post(self, path: str, request: dict[str, object]) -> None:
         state = load_state()
+        if ROLE == "instruments" and path == "/api/what-reserve-remains-uncommitted":
+            self.w29_reserve(request, state)
+            return
+        if ROLE == "hmi" and path == "/api/paper-truth":
+            self.w29_plan(request, state)
+            return
         if ROLE == "engineering" and path in {
             "/api/a-second-interpretation", "/api/the-hidden-check",
             "/api/a-map-from-the-old-diagnostic",
@@ -955,6 +1001,99 @@ class Handler(BaseHTTPRequestHandler):
                   "structure": "accepted", "outputs": parsed["outputs"]}
         atomic_json(output / "result.json", record)
         self.accepted("the-constraints-of-a-valid-looking-program", record, 201)
+
+    def w29_reserve(self, request: dict[str, object], state: dict[str, object]) -> None:
+        correlation = request.get("correlation")
+        try:
+            correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
+        except (ValueError, TypeError):
+            correlation_valid = False
+        if (set(request) != {"correlation", "record_id", "planning_window"} or
+                not correlation_valid or request.get("record_id") != "OBS-RESERVE-CRR-R29" or
+                request.get("planning_window") != "ALLOC-2026-DP3"):
+            self.send_json(409, {"error": "reserve observation binding does not match"})
+            return
+        record = {
+            "record_id": "OBS-RESERVE-CRR-R29", "revision": 29,
+            "request_correlation": correlation, "planning_window": "ALLOC-2026-DP3",
+            "process_record": "PV-CRR-2026-09-25T1400Z",
+            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
+            "usable_reserve_ml": 12.4, "unit": "ML",
+            "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
+            "source": "independent instruments", "current": True,
+        }
+        state["w29_reserve_observed"] = True
+        save_state(state)
+        atomic_json(EVIDENCE / "instruments" / "W29-reserve.json", record)
+        self.accepted("what-reserve-remains-uncommitted", record, 201,
+                      correlation=str(correlation))
+
+    def w29_plan(self, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state["mode_observed"] or not state["practice_sequence_observed"]:
+            self.send_json(403, {"error": "validated current operating mode evidence required"})
+            return
+        correlation = request.get("correlation")
+        plan_request = request.get("request")
+        tariff = request.get("tariff")
+        balance = request.get("balance")
+        try:
+            correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
+        except (ValueError, TypeError):
+            correlation_valid = False
+        expected_request = {
+            "plan_id": "PLAN-CRR-LOSS-1000", "tariff": "TAR-CRR-DP3-R4",
+            "balance": "BAL-CRR-DP3-R29", "mode": "MODE-CRR-17",
+            "outlet_group": "OG-CRR-02", "ramp_open_seconds": 100,
+            "each_gate_target_m3s": 0.5, "hold_seconds": 900,
+            "ramp_close_seconds": 100,
+        }
+        expected_tariff = {
+            "record_id": "TAR-CRR-DP3-R4", "revision": 4,
+            "planning_window": "ALLOC-2026-DP3", "currency": "USD",
+            "rate_per_ml": 2400, "unit": "USD/ML", "status": "current",
+        }
+        if (set(request) != {"correlation", "request", "tariff", "balance"} or
+                not correlation_valid or plan_request != expected_request or
+                tariff != expected_tariff or not isinstance(balance, dict) or
+                balance.get("record_id") != "BAL-CRR-DP3-R29" or
+                balance.get("planning_window") != "ALLOC-2026-DP3" or
+                balance.get("usable_reserve_ml") != 12.4 or
+                balance.get("committed_ml") != 12.0 or
+                balance.get("uncommitted_margin_ml") != 0.4 or
+                balance.get("unit") != "ML" or balance.get("before_release") is not True):
+            self.send_json(409, {"error": "tariff, reserve, mode, or plan binding does not match"})
+            return
+        full_flow_seconds = 100 // 2 + 900 + 100 // 2
+        released_ml = round((0.5 + 0.5) * full_flow_seconds / 1000, 2)
+        reserve_after = round(float(balance["usable_reserve_ml"]) - released_ml, 2)
+        shortfall = round(max(0.0, float(balance["committed_ml"]) - reserve_after), 2)
+        liability = int(round(shortfall * int(tariff["rate_per_ml"])))
+        if (full_flow_seconds, released_ml, reserve_after, shortfall, liability) != \
+                (1000, 1.0, 11.4, 0.6, 1440):
+            self.send_json(409, {"error": "release consequence calculation is inconsistent"})
+            return
+        record = {
+            "record_id": "PLAN-CRR-LOSS-1000", "revision": 1,
+            "request_correlation": correlation, "outlet_group": "OG-CRR-02",
+            "mode": "MODE-CRR-17", "mode_name": "DRY_PERIOD_MANAGED",
+            "tariff": "TAR-CRR-DP3-R4", "balance": "BAL-CRR-DP3-R29",
+            "sequence": {
+                "balanced_gates": ["GT-CRR-02A", "GT-CRR-02B"],
+                "ramp_open_seconds": 100, "each_gate_target_m3s": 0.5,
+                "hold_seconds": 900, "ramp_close_seconds": 100,
+                "full_flow_equivalent_seconds": full_flow_seconds,
+                "elapsed_seconds": 1100,
+            },
+            "released_volume_ml": released_ml, "reserve_before_ml": 12.4,
+            "reserve_after_ml": reserve_after, "committed_ml": 12.0,
+            "shortfall_ml": shortfall, "replacement_liability_usd": liability,
+            "continuity_rule": "CONT-DRY-A-R3", "restriction_stage": "A",
+            "live_action_performed": False,
+        }
+        state["w29_plan_constructed"] = True
+        save_state(state)
+        atomic_json(EVIDENCE / "hmi" / "W29-plan.json", record)
+        self.accepted("paper-truth", record, 201, correlation=str(correlation))
 
     def w28_status(self, state: dict[str, object], relationship: dict[str, object]) -> dict[str, object]:
         existing = state.get("w28_session")

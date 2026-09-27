@@ -33,6 +33,9 @@ PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.jso
 INTEGRATION_EVIDENCE = ROOT / "integration" / "W09-data.json"
 ARCHIVE_EVIDENCE = ROOT / "archive" / "W11-lineage.json"
 BUSINESS_RELATION_EVIDENCE = pathlib.Path("/run/arwc-business-relation/W02-association.json")
+OT_READ_EVIDENCE = pathlib.Path("/run/arwc-ot-read")
+PROCESS_EVIDENCE = pathlib.Path("/run/arwc-process-evidence")
+PLAN_METHOD = pathlib.Path("/opt/planning-data/assets/pl-arwc-plan-method-01-method.md")
 PROCESS_PATHS = {
     "/api/the-reservoir-s-present-tense", "/api/the-mode-the-plant-is-in",
     "/api/the-instrument-in-the-note", "/api/the-first-live-trace",
@@ -55,6 +58,7 @@ PROCESS_PATHS = {
     "/api/a-program-the-engineer-would-accept",
     "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
     "/api/keep-the-authority-you-earned",
+    "/api/what-reserve-remains-uncommitted", "/api/paper-truth",
 }
 
 DEFINITION = {
@@ -318,6 +322,11 @@ def initialize() -> None:
             "relation_exchange_observed": False,
             "lineage_observed": False,
             "diagnostic_estimate_observed": False,
+            "w29_tariff_observed": False,
+            "w29_balance_observed": False,
+            "w29_plan_observed": False,
+            "w29_tariff": None,
+            "w29_balance": None,
         })
     else:
         state = load_state()
@@ -326,9 +335,14 @@ def initialize() -> None:
             "allocation_observed", "meter_observed", "reserve_reconciled",
             "relation_contract_observed", "relation_exchange_observed", "lineage_observed",
             "diagnostic_estimate_observed",
+            "w29_tariff_observed", "w29_balance_observed", "w29_plan_observed",
         ):
             if key not in state:
                 state[key] = False
+                changed = True
+        for key in ("w29_tariff", "w29_balance"):
+            if key not in state:
+                state[key] = None
                 changed = True
         if changed:
             save_state(state)
@@ -358,8 +372,51 @@ def relation_prerequisite() -> bool:
     }
 
 
-def append_audit(action: str, result: dict[str, object]) -> str:
-    correlation = str(uuid.uuid4())
+def load_evidence(path: pathlib.Path) -> dict[str, object] | None:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def ot_read_prerequisite() -> bool:
+    expected = {
+        "corporate.json": ("OT-READ-CORPORATE-R21", "corporate-integration"),
+        "contractor.json": ("OT-READ-CONTRACTOR-R21", "contractor-field"),
+    }
+    for name, (record_id, branch) in expected.items():
+        evidence = load_evidence(OT_READ_EVIDENCE / name)
+        if (evidence is not None and evidence.get("record_id") == record_id and
+                evidence.get("branch") == branch and
+                evidence.get("scope") == "OG-CRR-02/read" and
+                isinstance(evidence.get("token_sha256"), str)):
+            return True
+    return False
+
+
+def process_interpretation_prerequisite() -> bool:
+    if not load_state().get("reserve_reconciled"):
+        return False
+    integration = load_evidence(INTEGRATION_EVIDENCE)
+    mapping = load_evidence(PROCESS_EVIDENCE / "historian" / "W18-map.json")
+    revision = load_evidence(PROCESS_EVIDENCE / "engineering" / "W21-revision.json")
+    envelope = load_evidence(PROCESS_EVIDENCE / "hmi" / "W25-envelope.json")
+    return bool(
+        integration is not None and
+        integration.get("record_id") == "REC-CRR-DP3-17" and
+        integration.get("planning_window") == "ALLOC-2026-DP3" and
+        mapping is not None and mapping.get("record_id") == "MAP-OG2-R8" and
+        mapping.get("project") == "CRR-CTRL-R21" and
+        revision is not None and revision.get("record_id") == "CMP-CRR-R21" and
+        revision.get("deployed_project") == "CRR-CTRL-R21" and
+        envelope is not None and envelope.get("record_id") == "ENV-OG2-R6" and
+        envelope.get("outlet_group") == "OG-CRR-02"
+    )
+
+
+def append_audit(action: str, result: dict[str, object], correlation: str | None = None) -> str:
+    correlation = str(uuid.uuid4()) if correlation is None else correlation
     event = {
         "audit_id": correlation,
         "time": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
@@ -452,8 +509,11 @@ class Handler(BaseHTTPRequestHandler):
             return None
 
     def accepted(self, action: str, result: dict[str, object], status: int = 200,
-                 extra: dict[str, object] | None = None) -> None:
-        response: dict[str, object] = {"audit_id": append_audit(action, result), "record": result}
+                 extra: dict[str, object] | None = None,
+                 correlation: str | None = None) -> None:
+        response: dict[str, object] = {
+            "audit_id": append_audit(action, result, correlation), "record": result,
+        }
         if extra:
             response.update(extra)
         self.send_json(status, response)
@@ -489,6 +549,28 @@ class Handler(BaseHTTPRequestHandler):
             return
         self.send_json(response.status, payload)
 
+    def w29_internal(self, path: str, request: dict[str, object]) -> tuple[int, dict[str, object]]:
+        data = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
+        outbound = urllib.request.Request(
+            "https://10.77.62.20" + path, data=data,
+            headers={
+                "Content-Type": "application/json", "X-ARWC-Internal": "planning-data-w29",
+                "X-ARWC-Tenant": "arwc",
+            }, method="POST",
+        )
+        context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
+        try:
+            response = urllib.request.urlopen(outbound, context=context, timeout=5)
+        except urllib.error.HTTPError as error:
+            response = error
+        except OSError:
+            return 409, {"error": "current process evidence is unavailable"}
+        try:
+            result = json.loads(response.read())
+        except json.JSONDecodeError:
+            return 409, {"error": "current process evidence is invalid"}
+        return response.status, result
+
     def do_GET(self) -> None:
         if (self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test" and
                 urlsplit(self.path).path in PROCESS_PATHS):
@@ -497,6 +579,23 @@ class Handler(BaseHTTPRequestHandler):
         if not self.authorized():
             return
         path = urlsplit(self.path).path
+        if path == "/api/the-price-of-this-planning-window":
+            if not ot_read_prerequisite():
+                self.send_json(403, {"error": "scoped process-read evidence required"})
+                return
+            state = load_state()
+            result = {
+                "record_id": "TAR-CRR-DP3-R4", "revision": 4,
+                "planning_window": "ALLOC-2026-DP3", "currency": "USD",
+                "rate_per_ml": 2400, "unit": "USD/ML", "status": "current",
+            }
+            state["w29_tariff_observed"] = True
+            state["w29_tariff"] = result
+            save_state(state)
+            self.accepted("the-price-of-this-planning-window", result, extra={
+                "planning_method": PLAN_METHOD.read_text(encoding="utf-8"),
+            })
+            return
         if path == "/api/water-already-promised":
             self.allocation()
             return
@@ -579,8 +678,113 @@ class Handler(BaseHTTPRequestHandler):
             self.relation_exchange(request, lineage=False)
         elif path == "/api/the-asset-s-true-lineage":
             self.relation_exchange(request, lineage=True)
+        elif path == "/api/what-reserve-remains-uncommitted":
+            self.w29_balance(request)
+        elif path == "/api/paper-truth":
+            self.w29_plan(request)
         else:
             self.send_json(404, {"error": "record not found"})
+
+    def w29_balance(self, request: dict[str, object]) -> None:
+        if not process_interpretation_prerequisite():
+            self.send_json(403, {"error": "current process interpretation evidence required"})
+            return
+        expected = {
+            "allocation": "ALLOC-2026-DP3-R9",
+            "reserve_observation": "OBS-RESERVE-CRR-R29",
+            "planning_window": "ALLOC-2026-DP3",
+            "expected_margin_ml": 0.4,
+        }
+        if request != expected:
+            self.send_json(409, {"error": "reserve and allocation binding does not match"})
+            return
+        with database() as connection, connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT record_id,revision,planning_window,committed_ml,unit "
+                "FROM allocation_ledger WHERE record_id=%s", (expected["allocation"],),
+            )
+            allocation = cursor.fetchone()
+        if allocation is None:
+            self.send_json(409, {"error": "current allocation record is unavailable"})
+            return
+        correlation = str(uuid.uuid4())
+        status, response = self.w29_internal("/internal/w29-reserve-observation", {
+            "correlation": correlation,
+            "record_id": "OBS-RESERVE-CRR-R29",
+            "planning_window": "ALLOC-2026-DP3",
+        })
+        observation = response.get("record")
+        if (status != 201 or not isinstance(observation, dict) or
+                observation.get("record_id") != "OBS-RESERVE-CRR-R29" or
+                observation.get("planning_window") != allocation[2] or
+                observation.get("usable_reserve_ml") != 12.4 or
+                observation.get("unit") != allocation[4] or
+                response.get("audit_id") != correlation):
+            self.send_json(409, {"error": "independent reserve observation did not join"})
+            return
+        committed = Decimal(str(allocation[3]))
+        reserve = Decimal(str(observation["usable_reserve_ml"]))
+        margin = reserve - committed
+        if margin != Decimal("0.40"):
+            self.send_json(409, {"error": "current reserve balance does not reconcile"})
+            return
+        result = {
+            "record_id": "BAL-CRR-DP3-R29", "revision": 29,
+            "request_correlation": correlation, "planning_window": allocation[2],
+            "allocation": allocation[0], "allocation_revision": allocation[1],
+            "reserve_observation": observation["record_id"],
+            "observation_revision": observation["revision"],
+            "usable_reserve_ml": float(reserve), "committed_ml": float(committed),
+            "uncommitted_margin_ml": float(margin), "unit": allocation[4],
+            "before_release": True,
+        }
+        state = load_state()
+        state["w29_balance_observed"] = True
+        state["w29_balance"] = result
+        save_state(state)
+        self.accepted("what-reserve-remains-uncommitted", result, 201, {
+            "instrument_audit_id": response["audit_id"],
+        }, correlation=correlation)
+
+    def w29_plan(self, request: dict[str, object]) -> None:
+        expected = {
+            "plan_id": "PLAN-CRR-LOSS-1000", "tariff": "TAR-CRR-DP3-R4",
+            "balance": "BAL-CRR-DP3-R29", "mode": "MODE-CRR-17",
+            "outlet_group": "OG-CRR-02", "ramp_open_seconds": 100,
+            "each_gate_target_m3s": 0.5, "hold_seconds": 900,
+            "ramp_close_seconds": 100,
+        }
+        if request != expected:
+            self.send_json(409, {"error": "release-plan binding or quantity does not match"})
+            return
+        state = load_state()
+        tariff = state.get("w29_tariff")
+        balance = state.get("w29_balance")
+        if (not state["w29_tariff_observed"] or not state["w29_balance_observed"] or
+                not isinstance(tariff, dict) or not isinstance(balance, dict)):
+            self.send_json(403, {"error": "current tariff and reserve balance are required"})
+            return
+        correlation = str(uuid.uuid4())
+        status, response = self.w29_internal("/internal/w29-paper-truth", {
+            "correlation": correlation, "request": request,
+            "tariff": tariff, "balance": balance,
+        })
+        result = response.get("record")
+        if status == 403:
+            self.send_json(403, {"error": "validated current operating mode evidence required"})
+            return
+        if (status != 201 or not isinstance(result, dict) or
+                result.get("record_id") != "PLAN-CRR-LOSS-1000" or
+                result.get("request_correlation") != correlation or
+                response.get("audit_id") != correlation):
+            self.send_json(409, {"error": "supervisory plan calculation did not join"})
+            return
+        state["w29_plan_observed"] = True
+        save_state(state)
+        atomic_json(ROOT / "results" / "PLAN-CRR-LOSS-1000.json", result)
+        self.accepted("paper-truth", result, 201, {
+            "supervisory_audit_id": response["audit_id"],
+        }, correlation=correlation)
 
     def relation_exchange(self, request: dict[str, object], *, lineage: bool) -> None:
         state = load_state()

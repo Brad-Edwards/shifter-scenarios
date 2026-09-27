@@ -45,6 +45,7 @@ PROCESS_PATHS = {
     "/api/a-program-the-engineer-would-accept",
     "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
     "/api/keep-the-authority-you-earned",
+    "/api/what-reserve-remains-uncommitted", "/api/paper-truth",
 }
 
 
@@ -176,6 +177,35 @@ class Handler(BaseHTTPRequestHandler):
         self.proxy_historian()
 
     def do_POST(self) -> None:
+        if urlsplit(self.path).path in {
+            "/internal/w29-reserve-observation", "/internal/w29-paper-truth",
+        }:
+            if (self.headers.get("X-ARWC-Internal") != "planning-data-w29" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] != "10.77.62.10"):
+                self.send_json(403, {"error": "planning service context required"})
+                return
+            request = self.body()
+            if request is None:
+                return
+            payload = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
+            context = ssl.create_default_context(cafile="/tmp/ca.crt")
+            connection = http.client.HTTPSConnection("10.77.63.30", 443, context=context, timeout=5)
+            try:
+                connection.request("POST", urlsplit(self.path).path, body=payload, headers={
+                    "Content-Type": "application/json", "Content-Length": str(len(payload)),
+                    "X-ARWC-Internal": "data-bridge-w29", "X-ARWC-Tenant": "arwc",
+                    "Host": "process-historian.arwc.test",
+                })
+                response = connection.getresponse()
+                result = json.loads(response.read())
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "process evidence service unavailable"})
+                return
+            finally:
+                connection.close()
+            self.send_json(response.status, result)
+            return
         if urlsplit(self.path).path == "/internal/diagnostic-estimate":
             if (self.headers.get("X-ARWC-Internal") != "diagnostics-r27" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
