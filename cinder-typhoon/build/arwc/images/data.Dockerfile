@@ -4,8 +4,9 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y ca-certificates python3 python3-psycopg2 util-linux \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system --gid 2291 arwc-planning \
+    && groupadd --system --gid 2293 arwc-integration \
     && groupadd --system arwc-data \
-    && useradd --system --gid arwc-data --groups arwc-planning --home-dir /var/lib/arwc-data --shell /usr/sbin/nologin arwc-data \
+    && useradd --system --gid arwc-data --groups arwc-planning,arwc-integration --home-dir /var/lib/arwc-data --shell /usr/sbin/nologin arwc-data \
     && install -d -o arwc-data -g arwc-data -m 0750 /opt/planning-data
 
 COPY --chown=arwc-data:arwc-data --chmod=0640 \

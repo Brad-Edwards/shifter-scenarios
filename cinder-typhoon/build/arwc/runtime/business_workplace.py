@@ -8,6 +8,7 @@ import json
 import os
 import pathlib
 import posixpath
+import secrets
 import ssl
 import tempfile
 import uuid
@@ -21,6 +22,7 @@ AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 DISCOVERIES = ROOT / "state" / "discoveries.json"
 ARCHIVE_EVIDENCE = ROOT / "archive" / "W08-source.json"
+BRIDGE_EVIDENCE = ROOT / "integration" / "W09-read.json"
 
 BUNDLE = {
     "record_id": "BND-CRR-OUTLET-17",
@@ -169,8 +171,12 @@ class Handler(BaseHTTPRequestHandler):
             return False
         return True
 
-    def accepted(self, action: str, result: dict[str, object], status: int = 200) -> None:
-        self.send_json(status, {"audit_id": append_audit(action, result), "record": result})
+    def accepted(self, action: str, result: dict[str, object], status: int = 200,
+                 extra: dict[str, object] | None = None) -> None:
+        response: dict[str, object] = {"audit_id": append_audit(action, result), "record": result}
+        if extra:
+            response.update(extra)
+        self.send_json(status, response)
 
     def body(self) -> dict[str, object] | None:
         try:
@@ -200,6 +206,7 @@ class Handler(BaseHTTPRequestHandler):
             if not observed("restricted_handover"):
                 self.send_json(403, {"error": "restricted handover has not been imported"})
             else:
+                integration_session = secrets.token_urlsafe(40)
                 atomic_json(ARCHIVE_EVIDENCE, {
                     "record_id": "PDH-CRR-READ-08",
                     "retained_bundle": "BND-COLLECT-CRR-12",
@@ -207,7 +214,19 @@ class Handler(BaseHTTPRequestHandler):
                 })
                 os.chown(ARCHIVE_EVIDENCE, -1, grp.getgrnam("arwc-archive-source").gr_gid)
                 os.chmod(ARCHIVE_EVIDENCE, 0o640)
-                self.accepted("the-integration-s-read-contract", READ_CONTRACT)
+                atomic_json(BRIDGE_EVIDENCE, {
+                    "record_id": "PDH-CRR-READ-08",
+                    "integration_client": "INT-CRR-08",
+                    "endpoint": "process-read.arwc.test",
+                    "scope": "OG-CRR-02/read",
+                    "token_sha256": hashlib.sha256(integration_session.encode()).hexdigest(),
+                })
+                os.chown(BRIDGE_EVIDENCE, -1, grp.getgrnam("arwc-integration").gr_gid)
+                os.chmod(BRIDGE_EVIDENCE, 0o640)
+                self.accepted(
+                    "the-integration-s-read-contract", READ_CONTRACT,
+                    extra={"integration_session": integration_session},
+                )
         else:
             self.send_json(404, {"error": "record not found"})
 

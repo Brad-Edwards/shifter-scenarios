@@ -55,6 +55,7 @@ services:
     volumes:
       - business-state:/var/lib/arwc-business
       - business-archive-evidence:/var/lib/arwc-business/archive
+      - business-integration-evidence:/var/lib/arwc-business/integration
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
@@ -92,16 +93,20 @@ services:
     volumes:
       - data-state:/var/lib/arwc-data
       - data-postgresql:/var/lib/postgresql/data
+      - data-integration-evidence:/var/lib/arwc-data/integration
       - identity-planning:/run/arwc-planning-evidence:ro
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
     networks:
       corporate:
         ipv4_address: 10.77.60.40
         aliases:
           - a-data
           - planning-data.arwc.test
+      dmz:
+        ipv4_address: 10.77.62.10
 
   a-archive:
     build:
@@ -175,6 +180,38 @@ services:
           - a-identity
           - corporate-identity.arwc.test
 
+  a-data-bridge:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/data-bridge.Dockerfile
+    image: cinder-arwc/a-data-bridge:hand-build
+    container_name: cinder-arwc-data-bridge
+    hostname: a-data-bridge
+    domainname: dmz.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - data-bridge-state:/var/lib/arwc-data-bridge
+      - business-integration-evidence:/run/arwc-business-integration:ro
+      - data-integration-evidence:/run/arwc-data-integration:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    networks:
+      dmz:
+        ipv4_address: 10.77.62.20
+        aliases:
+          - a-data-bridge
+          - integration-gateway.arwc.test
+
 networks:
   corporate:
     name: cinder-arwc-corporate
@@ -183,6 +220,13 @@ networks:
       config:
         - subnet: 10.77.60.0/24
           gateway: 10.77.60.1
+  dmz:
+    name: cinder-arwc-dmz
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.77.62.0/24
+          gateway: 10.77.62.1
 
 volumes:
   connector-fieldlink:
@@ -193,6 +237,8 @@ volumes:
     name: cinder-arwc-business-state
   business-archive-evidence:
     name: cinder-arwc-business-archive-evidence
+  business-integration-evidence:
+    name: cinder-arwc-business-integration-evidence
   archive-state:
     name: cinder-arwc-archive-state
   archive-handover:
@@ -205,5 +251,9 @@ volumes:
     name: cinder-arwc-identity-archive-evidence
   data-state:
     name: cinder-arwc-data-state
+  data-integration-evidence:
+    name: cinder-arwc-data-integration-evidence
   data-postgresql:
     name: cinder-arwc-data-postgresql
+  data-bridge-state:
+    name: cinder-arwc-data-bridge-state

@@ -5,12 +5,13 @@ ARWC SDL as an isolated participant environment. The SDL and its owned content
 remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
-**Status:** The isolated carrier and corporate-network foundation are deployed.
-W01-W08 (26 of 120 cards) are materialized and accepted. The customer handover
+**Status:** The isolated carrier and corporate/DMZ network foundation are deployed.
+W01-W09 (30 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
-reconciliation paths run against PostgreSQL on `a-data`.
+reconciliation paths run against PostgreSQL on `a-data`. The bounded live-feed
+integration runs through `a-data-bridge` in the isolated DMZ.
 
 ## Boundaries
 
@@ -36,7 +37,9 @@ reconciliation paths run against PostgreSQL on `a-data`.
 - Corporate target network: internal `10.77.60.0/24` bridge.
 - Current nodes: `a-connector` at `10.77.60.20`, `a-business` at
   `10.77.60.30`, `a-data` at `10.77.60.40`, `a-archive` at `10.77.60.50`,
-  and `a-identity` at `10.77.60.60`, matching the SDL address plan.
+  and `a-identity` at `10.77.60.60`, matching the SDL address plan. `a-data`
+  alone spans the internal DMZ at `10.77.62.10`; `a-data-bridge` is DMZ-only at
+  `10.77.62.20`.
 - `customer-handover` is a real TLS service on declared port 8443 and runs as
   `arwc-connector`; the participant context runs as the distinct locked
   `fieldlink` service identity.
@@ -51,7 +54,7 @@ reconciliation paths run against PostgreSQL on `a-data`.
 | AHB-00 | Architecture, isolation plan, topology and implementation ledger | Complete |
 | AHB-01 | `a-connector` and W01 opening slice | Complete |
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
-| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04-W08 complete) |
+| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04-W09 complete) |
 | AHB-04 | Maintenance W13-W15 | Not started |
 | AHB-05 | Read-only process routes and W16-W25 | Not started |
 | AHB-06 | Control paths W26-W28 | Not started |
@@ -151,6 +154,18 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   genuinely protected with the declared HKDF-SHA256 and AES-256-GCM inputs,
   nonce, AAD, and tag, and resolves to `ARC-COLD-CRR-2019` only after successful
   authenticated decryption. No W08 card binds a narrative asset.
+- 2026-09-27: W09 adds seven passing black-box tests across `a-business`,
+  `a-data`, and the DMZ-only `a-data-bridge`. PostgreSQL holds the declared
+  allocation and distinct meter records; reconciliation computes the exact
+  report, reserve, allocation, overstatement, and margin values from those
+  rows. The integration gateway requires independently owned business-read and
+  data-reconciliation evidence, rejects the stale feed, and returns the current
+  feed only through the bounded planning-data conduit. Direct connector access
+  to the DMZ is denied. No W09 card binds a narrative asset.
+- 2026-09-27: A destructive clean-volume rebuild passed all 51 W01-W09
+  black-box checks. Direct inspection confirmed exact corporate/DMZ addresses,
+  internal-only networks, a DMZ-only hardened bridge, PostgreSQL ownership and
+  grants, restart persistence, and no published service ports.
 - No SDL change was needed for AHB-00 or AHB-01. The validated contracts fully
   determined the observable W01 behavior; request serialization and carrier
   packaging are incidental implementation detail.

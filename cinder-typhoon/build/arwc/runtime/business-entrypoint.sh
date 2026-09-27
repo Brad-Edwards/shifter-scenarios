@@ -10,6 +10,8 @@ install -d -o arwc-business -g arwc-business -m 0700 \
   /var/lib/arwc-business/state
 install -d -o arwc-business -g arwc-archive-source -m 0750 \
   /var/lib/arwc-business/archive
+install -d -o arwc-business -g arwc-integration -m 0750 \
+  /var/lib/arwc-business/integration
 
 session=/run/arwc-corporate/handover/corporate-session
 for _ in $(seq 1 60); do
