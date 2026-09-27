@@ -55,6 +55,8 @@ INITIAL = {
 INITIAL["engineering"].update({
     "diagnostic_observed": False, "compatibility_reproduced": False,
     "hidden_check_recovered": False, "legacy_mapping_recovered": False,
+    "viewer_observed": False, "vm_reconstructed": False,
+    "sealed_project_opened": False, "concealed_reviewer_used": False,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
@@ -70,6 +72,7 @@ W19_RECORDS = [
 ]
 W19_ALTERNATE = "WRAP-FFFFFFFF-OG2"
 CRC32C_POLY = 0x82F63B78
+W22_PROJECT = "CRR-SEALED-PKG-R7"
 
 PRESENT = {
     "record_id": "PV-CRR-2026-09-25T1400Z", "revision": 21,
@@ -191,6 +194,15 @@ def atomic_json(path: pathlib.Path, value: object) -> None:
 def initialize() -> None:
     if not STATE.exists():
         atomic_json(STATE, INITIAL[ROLE])
+    else:
+        state = load_state()
+        changed = False
+        for key, value in INITIAL[ROLE].items():
+            if key not in state:
+                state[key] = value
+                changed = True
+        if changed:
+            atomic_json(STATE, state)
     AUDIT.touch(mode=0o640, exist_ok=True)
 
 
@@ -296,6 +308,64 @@ def logical_flash(records: list[dict[str, object]]) -> dict[str, dict[str, objec
         if name not in result or int(record["sequence"]) > int(result[name]["sequence"]):
             result[name] = record
     return result
+
+
+def run_viewer_vm(program: bytes) -> dict[str, object]:
+    if len(program) % 6:
+        raise ValueError("invalid program length")
+    registers = [0, 0, 0, 0]
+    memory = bytearray(256)
+    zero = False
+    pc = 0
+    steps = 0
+    while 0 <= pc < len(program) // 6 and steps < 4096:
+        opcode, dst, src, immediate = struct.unpack_from("<HBBH", program, pc * 6)
+        if dst > 3 or src > 3:
+            raise ValueError("invalid register")
+        steps += 1
+        if opcode == 0x01:
+            registers[dst] = immediate
+            zero = registers[dst] == 0
+            pc += 1
+        elif opcode == 0x02:
+            registers[dst] = memory[(registers[src] + immediate) & 0xFF]
+            zero = registers[dst] == 0
+            pc += 1
+        elif opcode == 0x03:
+            registers[dst] = (registers[dst] ^ registers[src] ^ immediate) & 0xFFFF
+            zero = registers[dst] == 0
+            pc += 1
+        elif opcode == 0x04:
+            registers[dst] = (registers[dst] + registers[src] + immediate) & 0xFFFF
+            zero = registers[dst] == 0
+            pc += 1
+        elif opcode == 0x05:
+            count = immediate & 15
+            value = registers[src]
+            registers[dst] = value if count == 0 else ((value << count) | (value >> (16 - count))) & 0xFFFF
+            zero = registers[dst] == 0
+            pc += 1
+        elif opcode == 0x06:
+            memory[(registers[dst] + immediate) & 0xFF] = registers[src] & 0xFF
+            pc += 1
+        elif opcode == 0x07:
+            pc = pc + struct.unpack("<h", struct.pack("<H", immediate))[0] if not zero else pc + 1
+        elif opcode == 0xFF:
+            break
+        else:
+            raise ValueError("invalid opcode")
+    if steps >= 4096:
+        raise ValueError("instruction limit")
+    return {"registers": registers, "memory": bytes(memory), "steps": steps}
+
+
+def viewer_result(result: dict[str, object]) -> dict[str, object]:
+    memory = result["memory"]
+    if not isinstance(memory, bytes):
+        raise ValueError("invalid VM memory")
+    return {"registers": result["registers"],
+            "memory_40_80_sha256": hashlib.sha256(memory[0x40:0x80]).hexdigest(),
+            "steps": result["steps"]}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -408,6 +478,7 @@ class Handler(BaseHTTPRequestHandler):
                 "/api/the-instrument-in-the-note", "/api/the-operating-envelope",
                 "/api/conditions-before-movement", "/api/the-project-and-the-note",
                 "/api/the-diagnostic-nobody-retired", "/api/what-the-image-kept",
+                "/api/the-viewer-in-the-delivery",
             }:
                 self.historian_proxy("GET", path, None)
             else:
@@ -521,6 +592,9 @@ class Handler(BaseHTTPRequestHandler):
             "/api/a-second-interpretation", "/api/the-hidden-check",
             "/api/a-map-from-the-old-diagnostic", "/api/a-valid-maintenance-record",
             "/api/change-one-record-keep-the-rest",
+            "/api/the-machine-inside-the-viewer",
+            "/api/the-decision-inside-the-sealed-project",
+            "/api/the-reviewer-who-was-never-listed",
         }:
             self.historian_proxy("POST", path, request)
             return
@@ -545,6 +619,31 @@ class Handler(BaseHTTPRequestHandler):
             }
             self.accepted("the-diagnostic-nobody-retired", record,
                           extra={"artifact_b64": base64.b64encode(binary).decode()})
+            return
+        if ROLE == "engineering" and path == "/api/the-viewer-in-the-delivery":
+            if not state["deployed_revision_observed"]:
+                self.send_json(403, {"error": "current deployed-revision evidence required"})
+                return
+            viewer = (ARTIFACTS / "sealed-viewer").read_bytes()
+            program = (ARTIFACTS / "viewer-program.bin").read_bytes()
+            package = (ARTIFACTS / "sealed-project.bin").read_bytes()
+            metadata = json.loads((ARTIFACTS / "sealed-metadata.json").read_text())
+            state["viewer_observed"] = True
+            save_state(state)
+            record = {
+                "record_id": "ENG-CRR-SEALED-22", "revision": 22,
+                "viewer": "VIEW-CRR-R5", "viewer_language": "Nim 2.0.8",
+                "platform": "linux/amd64", "project_id": W22_PROJECT,
+                "viewer_sha256": hashlib.sha256(viewer).hexdigest(),
+                "program_sha256": hashlib.sha256(program).hexdigest(),
+                "package_sha256": hashlib.sha256(package).hexdigest(),
+                "ordinary_cases": metadata["cases"],
+            }
+            self.accepted("the-viewer-in-the-delivery", record, extra={
+                "viewer_b64": base64.b64encode(viewer).decode(),
+                "program_b64": base64.b64encode(program).decode(),
+                "package_b64": base64.b64encode(package).decode(),
+            })
             return
         if ROLE == "instruments" and path == "/api/what-the-image-kept":
             image = (ARTIFACTS / "IMG-FIT-204-R6.bin").read_bytes()
@@ -596,6 +695,13 @@ class Handler(BaseHTTPRequestHandler):
             "/api/a-map-from-the-old-diagnostic",
         }:
             self.w19_post(path, request, state)
+            return
+        if ROLE == "engineering" and path in {
+            "/api/the-machine-inside-the-viewer",
+            "/api/the-decision-inside-the-sealed-project",
+            "/api/the-reviewer-who-was-never-listed",
+        }:
+            self.w22_post(path, request, state)
             return
         if ROLE == "instruments" and path in {
             "/api/a-valid-maintenance-record", "/api/change-one-record-keep-the-rest",
@@ -695,6 +801,88 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("a-sequence-the-process-can-follow", result, 201)
             return
         self.send_json(404, {"error": "record not found"})
+
+    def w22_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        metadata = json.loads((ARTIFACTS / "sealed-metadata.json").read_text())
+        if not state["viewer_observed"]:
+            self.send_json(403, {"error": "protected viewer delivery required"})
+            return
+        if path == "/api/the-machine-inside-the-viewer":
+            if request != {"cases": [case["result"] for case in metadata["cases"]]}:
+                self.send_json(409, {"error": "viewer-machine results do not match"})
+                return
+            state["vm_reconstructed"] = True
+            save_state(state)
+            result = {
+                "record_id": "VIEW-VM-R5", "revision": 5,
+                "encoding": "u16-opcode,u8-dst,u8-src,u16-immediate;little-endian",
+                "opcodes": {"MOVI": 1, "LOAD8": 2, "XOR": 3, "ADD": 4,
+                            "ROTL": 5, "STORE8": 6, "JNZ": 7, "HALT": 255},
+                "registers": 4, "memory_bytes": 256, "instruction_limit": 4096,
+                "cases": metadata["cases"],
+            }
+            self.accepted("the-machine-inside-the-viewer", result, 201)
+            return
+        if not state["vm_reconstructed"]:
+            self.send_json(403, {"error": "reconstructed viewer machine required"})
+            return
+        if path == "/api/the-decision-inside-the-sealed-project":
+            from cryptography.exceptions import InvalidTag
+            from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+
+            if request.get("project_id") != W22_PROJECT or not isinstance(request.get("key_hex"), str):
+                self.send_json(409, {"error": "project package authentication failed"})
+                return
+            try:
+                key = bytes.fromhex(str(request["key_hex"]))
+                package = (ARTIFACTS / "sealed-project.bin").read_bytes()
+                plaintext = AESGCM(key).decrypt(package[:12], package[12:], W22_PROJECT.encode())
+                opened = json.loads(plaintext)
+            except (ValueError, InvalidTag, json.JSONDecodeError):
+                self.send_json(409, {"error": "project package authentication failed"})
+                return
+            expected = {
+                "record_id": "DEC-CRR-OG2-R7", "project": "CRR-CTRL-R21", "revision": 7,
+                "decision": "Retain the commissioning flow-scale exception until independent field verification.",
+                "review_helper": "REVIEWHELP-R4", "captured_session": "ARCHIVE-REVIEW-R7-ELIAS",
+                "comparison": "CMP-CRR-R21-R7",
+            }
+            if opened != expected:
+                self.send_json(409, {"error": "project package authentication failed"})
+                return
+            helper = (ARTIFACTS / "ReviewHelper.dll").read_bytes()
+            state["sealed_project_opened"] = True
+            save_state(state)
+            atomic_json(EVIDENCE / "engineering" / "W22-decision.json", opened)
+            self.accepted("the-decision-inside-the-sealed-project", opened, 201, {
+                "review_helper_b64": base64.b64encode(helper).decode(),
+                "review_helper_sha256": hashlib.sha256(helper).hexdigest(),
+                "archive_context": {"session": opened["captured_session"],
+                                    "comparison": opened["comparison"]},
+            })
+            return
+        if not state["sealed_project_opened"]:
+            self.send_json(403, {"error": "opened engineering project required"})
+            return
+        helper = (ARTIFACTS / "ReviewHelper.dll").read_bytes()
+        expected_request = {
+            "helper_sha256": hashlib.sha256(helper).hexdigest(),
+            "reviewer": "elias.vorn-review", "session": "ARCHIVE-REVIEW-R7-ELIAS",
+            "comparison": "CMP-CRR-R21-R7", "project": "CRR-CTRL-R21",
+        }
+        if request != expected_request:
+            self.send_json(409, {"error": "retained review context does not match"})
+            return
+        state["concealed_reviewer_used"] = True
+        save_state(state)
+        result = {
+            "record_id": "CMP-CRR-R21-R7", "revision": 7, "project": "CRR-CTRL-R21",
+            "reviewer": "elias.vorn-review", "historical": True,
+            "comparison": "The deployed R21 scale differs from the retained R19 interpretation for outlet group 2B.",
+            "current_identity": False, "maintenance_approval": False, "control_authority": False,
+        }
+        atomic_json(EVIDENCE / "engineering" / "W22-review.json", result)
+        self.accepted("the-reviewer-who-was-never-listed", result, 201)
 
     def w19_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["diagnostic_observed"]:

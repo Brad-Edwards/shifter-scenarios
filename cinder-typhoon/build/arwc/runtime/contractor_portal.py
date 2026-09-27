@@ -68,6 +68,8 @@ PROCESS_PATHS = {
     "/api/accepted-is-not-actuated", "/api/a-sequence-the-process-can-follow",
     "/api/the-diagnostic-nobody-retired", "/api/a-second-interpretation",
     "/api/the-hidden-check", "/api/a-map-from-the-old-diagnostic",
+    "/api/the-viewer-in-the-delivery", "/api/the-machine-inside-the-viewer",
+    "/api/the-decision-inside-the-sealed-project", "/api/the-reviewer-who-was-never-listed",
     "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
     "/api/change-one-record-keep-the-rest",
 }

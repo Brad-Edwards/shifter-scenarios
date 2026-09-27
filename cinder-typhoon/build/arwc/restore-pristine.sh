@@ -124,7 +124,7 @@ for _ in $(seq 1 60); do
       && $hmi_audit == 0 \
       && $historian == '{"mapping_observed":false,"scale_observed":false,"tag_export_observed":false,"unit_change_interpreted":false}' \
       && $historian_audit == 0 \
-      && $engineering == '{"compatibility_reproduced":false,"deployed_revision_observed":false,"diagnostic_observed":false,"hidden_check_recovered":false,"legacy_mapping_recovered":false,"project_bundle_observed":false}' \
+      && $engineering == '{"compatibility_reproduced":false,"concealed_reviewer_used":false,"deployed_revision_observed":false,"diagnostic_observed":false,"hidden_check_recovered":false,"legacy_mapping_recovered":false,"project_bundle_observed":false,"sealed_project_opened":false,"viewer_observed":false,"vm_reconstructed":false}' \
       && $engineering_audit == 0 \
       && $instruments == '{"deployment_observed":false,"flash_observed":false,"image_rewrite_accepted":false,"inspection_recovered":false,"mapping_observed":false,"practice_observed":false,"trace_observed":false}' \
       && $instruments_audit == 0 ]] \

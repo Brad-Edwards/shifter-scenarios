@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W21, W25, and W35 (79 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W22, W25, and W35 (83 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -74,7 +74,7 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
 | AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
 | AHB-04 | Maintenance W13-W15 | Complete |
-| AHB-05 | Read-only process routes and W16-W25 | In progress (W16-W21, W25 complete) |
+| AHB-05 | Read-only process routes and W16-W25 | In progress (W16-W22, W25 complete) |
 | AHB-06 | Control paths W26-W28 | Not started |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
@@ -291,3 +291,24 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   determined the observable W01-W21, W25, and W35 behavior; request serialization,
   narrow conduit mechanics, and carrier packaging are incidental implementation
   detail.
+- 2026-09-27: W22 adds five passing black-box tests on `a-engineering`. The
+  delivery contains a real Nim 2.0.8 linux/amd64 viewer and a deterministic
+  eight-opcode program; executing and independently emulating it derives the
+  AES-256-GCM project key. Wrong keys and project bindings return the same
+  authentication failure. The opened package supplies the retained helper and
+  historical archive context without granting current identity, approval, or
+  control authority. The .NET 8 ReadyToRun helper has post-compilation native
+  immediates that yield the concealed reviewer while its unchanged managed IL
+  yields the listed benign reviewer when ReadyToRun is disabled. No W22 card
+  binds a narrative asset.
+- 2026-09-27: A destructive clean-volume rebuild passed all 121
+  W01-W22/W25/W35 black-box checks. Direct inspection again confirmed exact
+  addresses, hardened containers, internal-only networks, no published ports,
+  no participant egress, and no participant-visible operator or fourth-wall
+  content. Persistent W22 results and owned audits survived restart; the
+  delivered viewer, program, package, and helper remained immutable. The
+  environment was then restored and its expanded authored initial state
+  verified.
+- No SDL change was needed for W22; the existing contract fully specified the
+  VM encoding and bounds, key derivation, authenticated-package behavior, and
+  ReadyToRun representation mismatch.
