@@ -4,5 +4,7 @@ __pycache__/
 keplerops-ai/docs/campaign-v2/template/state/
 cinder-typhoon/build/training/.operator/
 cinder-typhoon/build/keplerops/.operator/
+cinder-typhoon/build/arwc/.operator/
 cinder-typhoon/build/training/gcp/.terraform/
 cinder-typhoon/build/keplerops/gcp/.terraform/
+cinder-typhoon/build/arwc/gcp/.terraform/

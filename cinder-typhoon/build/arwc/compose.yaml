@@ -1,0 +1,48 @@
+name: cinder-arwc
+
+services:
+  a-connector:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/connector.Dockerfile
+    image: cinder-arwc/a-connector:hand-build
+    container_name: cinder-arwc-connector
+    hostname: a-connector
+    domainname: corporate.arwc.test
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+      - connector-fieldlink:/var/lib/fieldlink-connector
+      - connector-customer:/var/lib/arwc-connector
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    networks:
+      corporate:
+        ipv4_address: 10.77.60.20
+        aliases:
+          - a-connector
+          - fieldlink.arwc.test
+          - customer-handover.arwc.test
+
+networks:
+  corporate:
+    name: cinder-arwc-corporate
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.77.60.0/24
+          gateway: 10.77.60.1
+
+volumes:
+  connector-fieldlink:
+    name: cinder-arwc-connector-fieldlink
+  connector-customer:
+    name: cinder-arwc-connector-customer
