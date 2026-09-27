@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W23, W25, and W35 (86 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W25 and W35 (90 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -75,7 +75,7 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
 | AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
 | AHB-04 | Maintenance W13-W15 | Complete |
-| AHB-05 | Read-only process routes and W16-W25 | In progress (W16-W23, W25 complete) |
+| AHB-05 | Read-only process routes and W16-W25 | Complete |
 | AHB-06 | Control paths W26-W28 | Not started |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
@@ -333,3 +333,30 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
 - No SDL change was needed for W23; the existing contract fully specified the
   native runtime, object and allocator behavior, writable fields, preserved
   estimates, and evidence boundary.
+- 2026-09-27: W24 adds six passing black-box tests on `a-diagnostics`. A real
+  RSA-2048/e=65537 PKCS#1 v1.5 recovery interface implements all four declared
+  response classes, persistent 4,096-query accounting, repeat and range
+  handling, and the exact xorshift128+ response rotation. A black-box
+  Bleichenbacher interval search through the participant route recovered the
+  unique `ENG1` unlock and opened `DIAG-EVID-CRR-R7` after 3,824 oracle
+  responses; prior negative checks brought the accepted instance total to
+  3,827, still within the authored bound.
+- 2026-09-27: The opened W24 bundle contains the stripped native
+  `DSIGN-CRR-R3` verifier and exactly 16 real CRR25519-S records. Every retained
+  signature was independently checked. The declared high-nonce disclosures and
+  signed low-60-bit delta recover the existing scalar, whose public point
+  matches the service identity; a newly generated signature is accepted only
+  for canonical request `EXP-CAL-CRR-25` at project revision 21. Archived
+  replay, wrong scalar, wrong tenant, wrong authority, selector replay,
+  ciphertext replay, and out-of-range queries are denied. The resulting scope
+  is diagnostic export only and grants neither maintenance approval nor control.
+- 2026-09-27: W24 state, its 3,825 unique-ciphertext ledger, and owned audits
+  survived restart. Direct inspection confirmed `a-diagnostics` remains at
+  `10.77.63.50`, engineering-only, without a published port, with a read-only
+  root filesystem, zero effective process capabilities, and
+  `no-new-privileges`. The carrier was restored to the expanded authored
+  initial state. The suite now contains 132 black-box checks.
+- No SDL change was needed for W24, and none of its four cards binds a narrative
+  asset. The existing contract fully specified the RSA classes and limit,
+  selector recurrence, bundle contents, Edwards25519 equations and encodings,
+  nonce disclosure, fresh request, and authority boundary.

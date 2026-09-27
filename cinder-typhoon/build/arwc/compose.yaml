@@ -445,6 +445,7 @@ services:
       - /run:rw,nosuid,nodev,size=16m,mode=0755
     volumes:
       - diagnostics-state:/var/lib/arwc-diagnostics
+      - engineering-state:/run/arwc-engineering:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro

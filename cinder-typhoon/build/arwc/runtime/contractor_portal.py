@@ -72,6 +72,8 @@ PROCESS_PATHS = {
     "/api/the-decision-inside-the-sealed-project", "/api/the-reviewer-who-was-never-listed",
     "/api/a-measurement-with-side-effects", "/api/control-beyond-the-measurement",
     "/api/a-measurement-that-never-existed",
+    "/api/two-kinds-of-answer", "/api/which-answer-comes-next",
+    "/api/the-diagnostic-evidence-bundle", "/api/signed-by-someone-who-never-approved-it",
     "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
     "/api/change-one-record-keep-the-rest",
 }

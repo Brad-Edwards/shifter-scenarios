@@ -153,8 +153,12 @@ class W23Live(unittest.TestCase):
         else: self.fail("diagnostic service did not return after restart")
         state = json.loads(subprocess.check_output(["docker", "exec", "--user", "arwc-diagnostics",
             "cinder-arwc-diagnostics", "cat", "/var/lib/arwc-diagnostics/state/service.json"], text=True))
-        self.assertEqual(state, {"side_effect_observed": True, "protected_state_controlled": True,
-                                 "false_estimate_observed": True})
+        self.assertEqual(state, {
+            "side_effect_observed": True, "protected_state_controlled": True,
+            "false_estimate_observed": True, "oracle_contract_observed": False,
+            "selector_predicted": False, "bundle_opened": False,
+            "calibration_exported": False, "oracle_queries": 0,
+        })
         audit = subprocess.check_output(["docker", "exec", "--user", "arwc-diagnostics",
             "cinder-arwc-diagnostics", "cat", "/var/lib/arwc-diagnostics/audit/events.jsonl"], text=True)
         self.assertIn("a-measurement-that-never-existed", audit)

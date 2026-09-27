@@ -99,6 +99,7 @@ python3 tests/test_w17_w18_w21_w25_live.py
 python3 tests/test_w19_w20_live.py
 python3 tests/test_w22_live.py
 python3 tests/test_w23_live.py
+python3 tests/test_w24_live.py
 
 [[ $(docker inspect -f '{{(index .NetworkSettings.Networks "cinder-arwc-corporate").IPAddress}}' cinder-arwc-connector) == 10.77.60.20 ]]
 [[ $(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cinder-arwc-business) == 10.77.60.30 ]]

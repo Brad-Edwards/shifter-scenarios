@@ -462,6 +462,8 @@ class Handler(BaseHTTPRequestHandler):
         } else "diagnostics" if path in {
             "/api/a-measurement-with-side-effects", "/api/control-beyond-the-measurement",
             "/api/a-measurement-that-never-existed",
+            "/api/two-kinds-of-answer", "/api/which-answer-comes-next",
+            "/api/the-diagnostic-evidence-bundle", "/api/signed-by-someone-who-never-approved-it",
         } else "engineering"
         try:
             status, result = self.internal_request(owner, method, path, body)
@@ -483,6 +485,7 @@ class Handler(BaseHTTPRequestHandler):
                 "/api/conditions-before-movement", "/api/the-project-and-the-note",
                 "/api/the-diagnostic-nobody-retired", "/api/what-the-image-kept",
                 "/api/the-viewer-in-the-delivery",
+                "/api/two-kinds-of-answer",
             }:
                 self.historian_proxy("GET", path, None)
             else:
@@ -601,6 +604,8 @@ class Handler(BaseHTTPRequestHandler):
             "/api/the-reviewer-who-was-never-listed",
             "/api/a-measurement-with-side-effects", "/api/control-beyond-the-measurement",
             "/api/a-measurement-that-never-existed",
+            "/api/which-answer-comes-next", "/api/the-diagnostic-evidence-bundle",
+            "/api/signed-by-someone-who-never-approved-it",
         }:
             self.historian_proxy("POST", path, request)
             return
