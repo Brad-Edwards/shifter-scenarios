@@ -124,9 +124,9 @@ for _ in $(seq 1 60); do
       && $hmi_audit == 0 \
       && $historian == '{"mapping_observed":false,"scale_observed":false,"tag_export_observed":false,"unit_change_interpreted":false}' \
       && $historian_audit == 0 \
-      && $engineering == '{"deployed_revision_observed":false,"project_bundle_observed":false}' \
+      && $engineering == '{"compatibility_reproduced":false,"deployed_revision_observed":false,"diagnostic_observed":false,"hidden_check_recovered":false,"legacy_mapping_recovered":false,"project_bundle_observed":false}' \
       && $engineering_audit == 0 \
-      && $instruments == '{"deployment_observed":false,"mapping_observed":false,"practice_observed":false,"trace_observed":false}' \
+      && $instruments == '{"deployment_observed":false,"flash_observed":false,"image_rewrite_accepted":false,"inspection_recovered":false,"mapping_observed":false,"practice_observed":false,"trace_observed":false}' \
       && $instruments_audit == 0 ]] \
       && docker exec --user arwc-archive cinder-arwc-archive \
         test ! -e /var/lib/arwc-archive/handover/W06-access.json \

@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W18, W21, W25, and W35 (72 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W21, W25, and W35 (79 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -74,7 +74,7 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
 | AHB-03 | Remaining corporate W04-W12 and W35 | Complete |
 | AHB-04 | Maintenance W13-W15 | Complete |
-| AHB-05 | Read-only process routes and W16-W25 | In progress (W16-W18, W21, W25 complete) |
+| AHB-05 | Read-only process routes and W16-W25 | In progress (W16-W21, W25 complete) |
 | AHB-06 | Control paths W26-W28 | Not started |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Not started |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
@@ -272,7 +272,22 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   and independently owned audits. The environment was then restored and its
   authored initial state verified, including absence of process sessions and
   derived evidence.
-- No SDL change was needed through W18/W21/W25. The validated contracts fully
-  determined the observable W01-W18, W21, W25, and W35 behavior; request serialization,
+- 2026-09-27: W19 adds four accepted paths backed by a stripped static x86-64
+  ELF. The artifact embeds the declared long/compatibility transfer and exact
+  32-bit rolling/64-bit verification recurrences; its ordinary traces,
+  distinguishing wrap case, complete decision set, and historical R19-to-R21
+  mapping are checked by the owning service. The mapping remains explicitly
+  historical and does not substitute for deployed-revision evidence.
+- 2026-09-27: W20 adds three accepted paths backed by an 8 KiB instrument flash
+  image. Its 64-byte little-endian records use real CRC32C and commit markers.
+  The accepted rewrite is replayed as ordered 1-to-0 NOR programming into a new
+  sequence, reparsed across the complete image, and rejected if it changes any
+  unrelated logical record, wear count, asset, or inspection date.
+- 2026-09-27: All eight new W19/W20 black-box tests pass, taking the suite to
+  116 tests. The persistent results and owned audits survived service restart;
+  the original ELF and flash image remained immutable. Destructive test state
+  was then removed and the expanded authored initial state verified.
+- No SDL change was needed through W21/W25. The validated contracts fully
+  determined the observable W01-W21, W25, and W35 behavior; request serialization,
   narrow conduit mechanics, and carrier packaging are incidental implementation
   detail.

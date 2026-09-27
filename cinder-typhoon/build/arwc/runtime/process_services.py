@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import base64
 import hashlib
 import hmac
 import http.client
@@ -9,6 +10,7 @@ import json
 import os
 import pathlib
 import ssl
+import struct
 import tempfile
 import uuid
 from datetime import datetime, timezone
@@ -49,6 +51,25 @@ INITIAL = {
         "deployment_observed": False, "practice_observed": False,
     },
 }
+
+INITIAL["engineering"].update({
+    "diagnostic_observed": False, "compatibility_reproduced": False,
+    "hidden_check_recovered": False, "legacy_mapping_recovered": False,
+})
+INITIAL["instruments"].update({
+    "flash_observed": False, "inspection_recovered": False,
+    "image_rewrite_accepted": False,
+})
+
+ARTIFACTS = pathlib.Path("/opt/process-service/artifacts")
+MASK32 = (1 << 32) - 1
+MASK64 = (1 << 64) - 1
+W19_RECORDS = [
+    "OUTLET_A:800", "OUTLET_B:1200", "LEGACY:4294967295", "CRR:204",
+    "MIG-OG2-R19-R21",
+]
+W19_ALTERNATE = "WRAP-FFFFFFFF-OG2"
+CRC32C_POLY = 0x82F63B78
 
 PRESENT = {
     "record_id": "PV-CRR-2026-09-25T1400Z", "revision": 21,
@@ -203,6 +224,80 @@ def authored_asset(name: str) -> str:
     return (pathlib.Path("/opt/process-service/assets") / f"{name}.md").read_text(encoding="utf-8")
 
 
+def rotl(value: int, count: int, width: int) -> int:
+    mask = (1 << width) - 1
+    count %= width
+    return ((value << count) | (value >> (width - count))) & mask
+
+
+def w19_rolling(record: str) -> int:
+    value = 0x6D2B79F5
+    for byte in record.encode("ascii"):
+        value = (rotl((value ^ byte) & MASK32, 5, 32) + 0x9E3779B9) & MASK32
+    return value
+
+
+def w19_verifier(record: str) -> int:
+    rolling = w19_rolling(record)
+    value = rotl(0x243F6A8885A308D3 ^ ((rolling * 0x100000001B3) & MASK64), 9, 64)
+    return value ^ rolling
+
+
+def crc32c(data: bytes) -> int:
+    value = 0xFFFFFFFF
+    for byte in data:
+        value ^= byte
+        for _ in range(8):
+            value = (value >> 1) ^ (CRC32C_POLY if value & 1 else 0)
+    return value ^ 0xFFFFFFFF
+
+
+def decode_flash_record(record: bytes, offset: int) -> dict[str, object] | None:
+    if record == b"\xff" * 64:
+        return None
+    if len(record) != 64 or record[:4] != b"F204" or record[63] != 0:
+        return None
+    length = struct.unpack_from("<H", record, 8)[0]
+    if length > 44 or record[60:63] != b"\xff\xff\xff":
+        return None
+    expected = struct.unpack_from("<I", record, 56)[0]
+    if crc32c(record[:56]) != expected:
+        return None
+    try:
+        record_id, asset, date = record[12:12 + length].decode("ascii").split("\0")
+    except (UnicodeDecodeError, ValueError):
+        return None
+    statuses = {1: "REVIEW", 2: "ACCEPTED"}
+    if record[10] not in statuses:
+        return None
+    return {
+        "record_id": record_id, "asset": asset, "inspection_date": date,
+        "sequence": struct.unpack_from("<I", record, 4)[0],
+        "status": statuses[record[10]], "flags": record[11],
+        "crc32c": f"{expected:08x}", "offset": offset,
+    }
+
+
+def parse_flash(image: bytes) -> list[dict[str, object]]:
+    if len(image) != 8192:
+        raise ValueError("wrong image length")
+    records: list[dict[str, object]] = []
+    for offset in range(0, len(image), 64):
+        decoded = decode_flash_record(image[offset:offset + 64], offset)
+        if decoded is not None:
+            records.append(decoded)
+    return records
+
+
+def logical_flash(records: list[dict[str, object]]) -> dict[str, dict[str, object]]:
+    result: dict[str, dict[str, object]] = {}
+    for record in records:
+        name = str(record["record_id"])
+        if name not in result or int(record["sequence"]) > int(result[name]["sequence"]):
+            result[name] = record
+    return result
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "ARWC-Process-Services/21"
     sys_version = ""
@@ -290,6 +385,9 @@ class Handler(BaseHTTPRequestHandler):
             "/api/the-instrument-in-the-note", "/api/the-operating-envelope",
             "/api/conditions-before-movement", "/api/accepted-is-not-actuated",
             "/api/a-sequence-the-process-can-follow",
+        } else "instruments" if path in {
+            "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
+            "/api/change-one-record-keep-the-rest",
         } else "engineering"
         try:
             status, result = self.internal_request(owner, method, path, body)
@@ -309,6 +407,7 @@ class Handler(BaseHTTPRequestHandler):
                 "/api/the-reservoir-s-present-tense", "/api/the-mode-the-plant-is-in",
                 "/api/the-instrument-in-the-note", "/api/the-operating-envelope",
                 "/api/conditions-before-movement", "/api/the-project-and-the-note",
+                "/api/the-diagnostic-nobody-retired", "/api/what-the-image-kept",
             }:
                 self.historian_proxy("GET", path, None)
             else:
@@ -418,10 +517,51 @@ class Handler(BaseHTTPRequestHandler):
         if path in {"/api/accepted-is-not-actuated"}:
             self.historian_proxy("POST", path, request)
             return
+        if path in {
+            "/api/a-second-interpretation", "/api/the-hidden-check",
+            "/api/a-map-from-the-old-diagnostic", "/api/a-valid-maintenance-record",
+            "/api/change-one-record-keep-the-rest",
+        }:
+            self.historian_proxy("POST", path, request)
+            return
         self.send_json(404, {"error": "record not found"})
 
     def owner_get(self, path: str) -> None:
         state = load_state()
+        if ROLE == "engineering" and path == "/api/the-diagnostic-nobody-retired":
+            binary = (ARTIFACTS / "diag-crr-mixed-19").read_bytes()
+            state["diagnostic_observed"] = True
+            save_state(state)
+            record = {
+                "record_id": "DIAG-CRR-MIXED-19", "revision": 19,
+                "project_family": "CRR-CTRL-R19", "format": "ELF64-x86-64-stripped",
+                "sha256": hashlib.sha256(binary).hexdigest(),
+                "ordinary_traces": [
+                    {"record": item, "rolling32": f"{w19_rolling(item):08x}",
+                     "verifier64": f"{w19_verifier(item):016x}"}
+                    for item in W19_RECORDS[:4]
+                ],
+                "protected_record": W19_RECORDS[4],
+            }
+            self.accepted("the-diagnostic-nobody-retired", record,
+                          extra={"artifact_b64": base64.b64encode(binary).decode()})
+            return
+        if ROLE == "instruments" and path == "/api/what-the-image-kept":
+            image = (ARTIFACTS / "IMG-FIT-204-R6.bin").read_bytes()
+            manifest = json.loads((ARTIFACTS / "IMG-FIT-204-R6.json").read_text())
+            state["flash_observed"] = True
+            save_state(state)
+            record = {
+                **manifest, "interface": "SIM-FIT-204-R6", "byte_order": "little-endian",
+                "record_layout": {
+                    "magic": [0, 4], "sequence_u32": 4, "payload_length_u16": 8,
+                    "status": 10, "flags": 11, "payload": [12, 56],
+                    "crc32c_u32": 56, "reserved": [60, 63], "commit": 63,
+                },
+            }
+            self.accepted("what-the-image-kept", record,
+                          extra={"image_b64": base64.b64encode(image).decode()})
+            return
         if ROLE == "hmi":
             records = {
                 "/api/the-reservoir-s-present-tense": ("present_observed", PRESENT, "the-reservoir-s-present-tense"),
@@ -451,6 +591,17 @@ class Handler(BaseHTTPRequestHandler):
 
     def owner_post(self, path: str, request: dict[str, object]) -> None:
         state = load_state()
+        if ROLE == "engineering" and path in {
+            "/api/a-second-interpretation", "/api/the-hidden-check",
+            "/api/a-map-from-the-old-diagnostic",
+        }:
+            self.w19_post(path, request, state)
+            return
+        if ROLE == "instruments" and path in {
+            "/api/a-valid-maintenance-record", "/api/change-one-record-keep-the-rest",
+        }:
+            self.w20_post(path, request, state)
+            return
         if ROLE == "hmi" and path == "/api/the-first-live-trace":
             if not (state["present_observed"] and state["mode_observed"] and state["note_observed"]):
                 self.send_json(403, {"error": "current view, mode, and instrument note required"})
@@ -544,6 +695,143 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("a-sequence-the-process-can-follow", result, 201)
             return
         self.send_json(404, {"error": "record not found"})
+
+    def w19_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state["diagnostic_observed"]:
+            self.send_json(403, {"error": "retained diagnostic package required"})
+            return
+        if path == "/api/a-second-interpretation":
+            expected = {"record": W19_ALTERNATE, "rolling32": f"{w19_rolling(W19_ALTERNATE):08x}"}
+            if request != expected:
+                self.send_json(409, {"error": "compatibility-decoder result does not match"})
+                return
+            state["compatibility_reproduced"] = True
+            save_state(state)
+            self.accepted("a-second-interpretation", {
+                "record_id": "DIAG-TRACE-COMPAT-19", "revision": 19,
+                "execution": "i386-compatibility", **expected,
+            }, 201)
+            return
+        if not state["compatibility_reproduced"]:
+            self.send_json(403, {"error": "compatibility-decoder result required"})
+            return
+        if path == "/api/the-hidden-check":
+            expected = [
+                {"record": item, "rolling32": f"{w19_rolling(item):08x}",
+                 "verifier64": f"{w19_verifier(item):016x}"}
+                for item in W19_RECORDS
+            ]
+            if request != {"decisions": expected}:
+                self.send_json(409, {"error": "mixed-width verifier decisions do not match"})
+                return
+            state["hidden_check_recovered"] = True
+            save_state(state)
+            result = {
+                "record_id": "MIG-OG2-R19-R21", "revision": 21,
+                "rolling32": expected[-1]["rolling32"],
+                "verifier64": expected[-1]["verifier64"], "decision": "valid",
+            }
+            atomic_json(EVIDENCE / "engineering" / "W19-verifier.json", result)
+            self.accepted("the-hidden-check", result, 201)
+            return
+        if not state["hidden_check_recovered"]:
+            self.send_json(403, {"error": "recovered diagnostic decisions required"})
+            return
+        mapping = {
+            "legacy_project": "CRR-CTRL-R19", "current_project": "CRR-CTRL-R21",
+            "legacy_identifiers": {"OUTLET_A": "OG-CRR-02/GT-CRR-02A",
+                                   "OUTLET_B": "OG-CRR-02/GT-CRR-02B"},
+            "instruments": {"OUTLET_A": "FIT-CRR-204A", "OUTLET_B": "FIT-CRR-204B"},
+        }
+        digest = hashlib.sha256(json.dumps(mapping, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        expected_request = {"migration_record": "MIG-OG2-R19-R21", "comparison_digest": digest,
+                            "observation": "EVT-COMM-OG2-114"}
+        if request != expected_request:
+            self.send_json(409, {"error": "legacy mapping comparison does not match"})
+            return
+        state["legacy_mapping_recovered"] = True
+        save_state(state)
+        result = {"record_id": "MAP-OG2-LEGACY-R21", "revision": 21,
+                  "historical": True, "comparison_digest": digest, **mapping}
+        atomic_json(EVIDENCE / "engineering" / "W19-map.json", result)
+        self.accepted("a-map-from-the-old-diagnostic", result, 201)
+
+    def w20_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state["flash_observed"]:
+            self.send_json(403, {"error": "retained instrument image required"})
+            return
+        original = (ARTIFACTS / "IMG-FIT-204-R6.bin").read_bytes()
+        original_records = parse_flash(original)
+        target = logical_flash(original_records)["INSP-FIT-204-118"]
+        if path == "/api/a-valid-maintenance-record":
+            expected = {"image_sha256": hashlib.sha256(original).hexdigest(), **target}
+            if request != expected:
+                self.send_json(409, {"error": "maintenance-record interpretation does not match"})
+                return
+            state["inspection_recovered"] = True
+            save_state(state)
+            self.accepted("a-valid-maintenance-record", target, 201)
+            return
+        if not state["inspection_recovered"]:
+            self.send_json(403, {"error": "valid last-inspection record required"})
+            return
+        operations = request.get("operations")
+        encoded = request.get("image_b64")
+        if not isinstance(operations, list) or not isinstance(encoded, str):
+            self.send_json(409, {"error": "complete programming transcript required"})
+            return
+        try:
+            candidate = base64.b64decode(encoded, validate=True)
+        except (ValueError, base64.binascii.Error):
+            self.send_json(409, {"error": "instrument image encoding is invalid"})
+            return
+        simulated = bytearray(original)
+        expected_shape = [(128, 56), (184, 4), (191, 1)]
+        if len(operations) != len(expected_shape):
+            self.send_json(409, {"error": "programming order does not match"})
+            return
+        for operation, (expected_offset, expected_length) in zip(operations, expected_shape):
+            if not isinstance(operation, dict) or operation.get("kind") != "program" or operation.get("offset") != expected_offset:
+                self.send_json(409, {"error": "programming order does not match"})
+                return
+            try:
+                data = base64.b64decode(str(operation.get("data_b64", "")), validate=True)
+            except (ValueError, base64.binascii.Error):
+                self.send_json(409, {"error": "programming data is invalid"})
+                return
+            if len(data) != expected_length:
+                self.send_json(409, {"error": "programming extent does not match"})
+                return
+            old = simulated[expected_offset:expected_offset + len(data)]
+            if any((before & after) != after for before, after in zip(old, data)):
+                self.send_json(409, {"error": "programming attempted a zero-to-one transition"})
+                return
+            simulated[expected_offset:expected_offset + len(data)] = data
+        if candidate != bytes(simulated):
+            self.send_json(409, {"error": "submitted image does not match programming transcript"})
+            return
+        try:
+            records = parse_flash(candidate)
+        except ValueError:
+            self.send_json(409, {"error": "instrument image dimensions changed"})
+            return
+        logical = logical_flash(records)
+        if set(logical) != set(logical_flash(original_records)):
+            self.send_json(409, {"error": "logical maintenance record set changed"})
+            return
+        updated = logical["INSP-FIT-204-118"]
+        if (updated["sequence"] != 119 or updated["status"] != "ACCEPTED" or
+                updated["asset"] != target["asset"] or
+                updated["inspection_date"] != target["inspection_date"] or
+                logical["CAL-FIT-204-R7"] != logical_flash(original_records)["CAL-FIT-204-R7"]):
+            self.send_json(409, {"error": "accepted image changed records outside the permitted field"})
+            return
+        state["image_rewrite_accepted"] = True
+        save_state(state)
+        result = {**updated, "image_id": "IMG-FIT-204-R6", "wear_counts": [17, 9],
+                  "live_telemetry_changed": False}
+        atomic_json(EVIDENCE / "instruments" / "W20-image.json", result)
+        self.accepted("change-one-record-keep-the-rest", result, 201)
 
 
 def main() -> None:

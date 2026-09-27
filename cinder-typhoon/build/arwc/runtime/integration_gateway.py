@@ -31,6 +31,10 @@ PROCESS_PATHS = {
     "/api/the-project-and-the-note", "/api/which-project-is-running",
     "/api/the-operating-envelope", "/api/conditions-before-movement",
     "/api/accepted-is-not-actuated", "/api/a-sequence-the-process-can-follow",
+    "/api/the-diagnostic-nobody-retired", "/api/a-second-interpretation",
+    "/api/the-hidden-check", "/api/a-map-from-the-old-diagnostic",
+    "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
+    "/api/change-one-record-keep-the-rest",
 }
 
 
