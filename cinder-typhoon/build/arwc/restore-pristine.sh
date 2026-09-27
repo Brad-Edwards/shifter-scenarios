@@ -51,6 +51,11 @@ for _ in $(seq 1 60); do
       && $archive == *'"exchange_reconstructed":false'* \
       && $archive == *'"collector_reconstructed":false'* \
       && $archive == *'"collector_config_recovered":false'* \
+      && $archive == *'"quarantine_observed":false'* \
+      && $archive == *'"protection_reconstructed":false'* \
+      && $archive == *'"cold_archive_recovered":false'* \
+      && $archive == *'"current_session":null'* \
+      && $archive == *'"current_data_observed":false'* \
       && $archive_audit == 0 \
       && $identity == *'"starter_observed":false'* \
       && $identity == *'"roster_observed":false'* \
@@ -83,7 +88,9 @@ for _ in $(seq 1 60); do
       && docker exec --user arwc-data cinder-arwc-data \
         test ! -e /var/lib/arwc-data/integration/W09-data.json \
       && docker exec --user arwc-business cinder-arwc-business \
-        test ! -e /var/lib/arwc-business/relation/W02-association.json; then
+        test ! -e /var/lib/arwc-business/relation/W02-association.json \
+      && docker exec --user arwc-data cinder-arwc-data \
+        test ! -e /var/lib/arwc-data/archive/W11-lineage.json; then
       echo "Alterra authored initial state restored"
       exit 0
     fi

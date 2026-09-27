@@ -19,6 +19,11 @@ from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
+from cryptography import x509
+from cryptography.exceptions import InvalidSignature
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+
 
 ROOT = pathlib.Path("/var/lib/arwc-archive")
 AUDIT = ROOT / "audit" / "events.jsonl"
@@ -29,6 +34,7 @@ HANDOVER_EVIDENCE = ROOT / "handover" / "W06-access.json"
 ARTIFACTS = ROOT / "artifacts"
 BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/W08-source.json")
 IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/W08-source.json")
+DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/W11-lineage.json")
 ARCHIVE_CA = "/tmp/archive-ca.crt"
 ARCHIVE_CA_KEY = "/tmp/archive-ca.key"
 
@@ -105,6 +111,27 @@ COLLECTOR_CONFIG = {
     "collection": "COL-CRR-2019-12",
 }
 
+QUARANTINE = {
+    "record_id": "QTN-COL-2019-12",
+    "revision": 1,
+    "format": "AQTN1",
+    "collector_build_id": "COLLECT-CRR-12",
+    "archive": "ARC-COLD-CRR-2019",
+    "digest": "SHA-256",
+}
+
+PROTECTION = {
+    "record_id": "AQTN1-KEYS-R1",
+    "revision": 1,
+    "kdf": "HKDF-SHA256",
+    "ikm": "COLLECT-CRR-12",
+    "salt": "ARC-COLD-CRR-2019",
+    "info": "aqtn1/keys",
+    "length": 64,
+    "content_cipher": "AES-256-GCM",
+    "key_cipher": "AES-256-KW",
+}
+
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
     descriptor, temporary = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.")
@@ -141,6 +168,11 @@ def initialize() -> None:
             "exchange_reconstructed": False,
             "collector_reconstructed": False,
             "collector_config_recovered": False,
+            "quarantine_observed": False,
+            "protection_reconstructed": False,
+            "cold_archive_recovered": False,
+            "current_session": None,
+            "current_data_observed": False,
         })
     else:
         state = load_state()
@@ -148,6 +180,8 @@ def initialize() -> None:
         for key in (
             "work_bundle_observed", "exchange_reconstructed",
             "collector_reconstructed", "collector_config_recovered",
+            "quarantine_observed", "protection_reconstructed",
+            "cold_archive_recovered", "current_session", "current_data_observed",
         ):
             if key not in state:
                 state[key] = False
@@ -196,6 +230,20 @@ def has_w08_source() -> bool:
         if value.get("retained_bundle") == "BND-COLLECT-CRR-12":
             return True
     return False
+
+
+def has_w12_source() -> bool:
+    if load_state().get("collector_config_recovered"):
+        return True
+    try:
+        value = json.loads(DATA_SOURCE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    return (
+        value.get("record_id") == "LIN-AST-CRR-017-R8" and
+        value.get("archive") == "ARC-COLD-CRR-2019" and
+        value.get("current_asset") == "AST-CRR-017"
+    )
 
 
 def issue_certificate(organizational_unit: str) -> tuple[str, str, str]:
@@ -388,6 +436,27 @@ class Handler(BaseHTTPRequestHandler):
                 "application/json", "collector.yaml.enc.json",
             )
             return
+        if path == "/api/a-collector-in-quarantine":
+            if not has_w12_source():
+                self.send_json(403, {"error": "collector or lineage archive reference required"})
+                return
+            state = load_state()
+            state["quarantine_observed"] = True
+            save_state(state)
+            self.accepted(
+                "a-collector-in-quarantine", QUARANTINE, "corporate-reader-principal", 200,
+                {"download": "/api/artifacts/QTN-COL-2019-12.aqtn",
+                 "samples": "/api/artifacts/AQTN1-samples.json"},
+            )
+            return
+        if path in ("/api/artifacts/QTN-COL-2019-12.aqtn", "/api/artifacts/AQTN1-samples.json"):
+            if not load_state()["quarantine_observed"]:
+                self.send_json(403, {"error": "quarantine object has not been located"})
+                return
+            name = path.rsplit("/", 1)[1]
+            content_type = "application/octet-stream" if name.endswith(".aqtn") else "application/json"
+            self.send_bytes((ARTIFACTS / name).read_bytes(), content_type, name)
+            return
         if path != "/api/the-archive-s-missing-contract":
             self.send_json(404, {"error": "record not found"})
             return
@@ -419,8 +488,153 @@ class Handler(BaseHTTPRequestHandler):
             self.reconstruct_collector(request)
         elif path == "/api/where-the-contractor-put-it":
             self.recover_collector_config(request)
+        elif path == "/api/how-the-collection-was-protected":
+            self.reconstruct_protection(request)
+        elif path == "/api/the-cold-archive-opens":
+            self.open_cold_archive(request)
+        elif path == "/api/a-collection-path-still-alive":
+            self.current_collection(request)
         else:
             self.send_json(404, {"error": "record not found"})
+
+    def reconstruct_protection(self, request: dict[str, object]) -> None:
+        state = load_state()
+        if not state["quarantine_observed"]:
+            self.send_json(403, {"error": "quarantine object has not been located"})
+            return
+        expected = json.loads((ARTIFACTS / "sample-results.json").read_text(encoding="utf-8"))
+        supplied = request.get("sample_results")
+        if not isinstance(supplied, dict) or supplied != expected:
+            self.send_json(409, {"error": "sample transformations do not match"})
+            return
+        state["protection_reconstructed"] = True
+        save_state(state)
+        self.accepted(
+            "how-the-collection-was-protected", PROTECTION, "corporate-reader-principal",
+            extra={"archive_object": "/api/artifacts/QTN-COL-2019-12.aqtn"},
+        )
+
+    def open_cold_archive(self, request: dict[str, object]) -> None:
+        state = load_state()
+        if not state["protection_reconstructed"]:
+            self.send_json(403, {"error": "archive protection has not been reconstructed"})
+            return
+        try:
+            plaintext = base64.b64decode(str(request["plaintext"]), validate=True)
+            pkcs8 = base64.b64decode(str(request["unwrapped_pkcs8"]), validate=True)
+        except (KeyError, ValueError):
+            self.send_json(409, {"error": "authenticated archive material is required"})
+            return
+        expected_plaintext = (ARTIFACTS / "cold-archive.plaintext").read_bytes()
+        expected_pkcs8 = (ARTIFACTS / "historical-key.pkcs8").read_bytes()
+        if (not hmac.compare_digest(plaintext, expected_plaintext) or
+                not hmac.compare_digest(pkcs8, expected_pkcs8)):
+            self.send_json(409, {"error": "cold archive authentication failed"})
+            return
+        try:
+            collection = json.loads(plaintext)
+        except json.JSONDecodeError:
+            self.send_json(409, {"error": "cold archive is invalid"})
+            return
+        if (collection.get("archive_id") != "ARC-COLD-CRR-2019" or
+                collection.get("index_revision") != "R6" or
+                len(collection.get("maintenance_records", [])) != 37):
+            self.send_json(409, {"error": "cold archive binding does not match"})
+            return
+        state["cold_archive_recovered"] = True
+        save_state(state)
+        result = {
+            "record_id": "ARC-COLD-CRR-2019", "revision": 6,
+            "index_revision": "R6", "maintenance_record_count": 37,
+            "retired_certificate": "COLLECT-2019-12",
+            "wrapped_private_key": "AES-256-KW", "rollover": "IDREL-COL-R4",
+        }
+        self.accepted(
+            "the-cold-archive-opens", result, "corporate-reader-principal",
+            extra={"collection": collection},
+        )
+
+    def current_collection(self, request: dict[str, object]) -> None:
+        state = load_state()
+        if not state["cold_archive_recovered"]:
+            self.send_json(403, {"error": "cold archive has not been recovered"})
+            return
+        operation = request.get("operation")
+        if operation == "exchange":
+            if state.get("current_session"):
+                self.send_json(409, {"error": "collection session has already been issued"})
+                return
+            try:
+                certificate_pem = str(request["certificate"]).encode()
+                rollover = request["rollover"]
+                nonce = str(request["nonce"])
+                proof = base64.b64decode(str(request["proof"]), validate=True)
+                if not isinstance(rollover, dict):
+                    raise ValueError
+                certificate = x509.load_pem_x509_certificate(certificate_pem)
+                ca = x509.load_pem_x509_certificate(pathlib.Path(ARCHIVE_CA).read_bytes())
+                ca.public_key().verify(
+                    certificate.signature, certificate.tbs_certificate_bytes,
+                    padding.PKCS1v15(), certificate.signature_hash_algorithm,
+                )
+                expected_rollover = json.loads((ARTIFACTS / "rollover.json").read_text(encoding="utf-8"))
+                if rollover != expected_rollover:
+                    raise ValueError
+                signature = base64.b64decode(str(rollover["signature"]), validate=True)
+                unsigned = {key: value for key, value in rollover.items() if key != "signature"}
+                ca.public_key().verify(
+                    signature,
+                    json.dumps(unsigned, sort_keys=True, separators=(",", ":")).encode(),
+                    padding.PKCS1v15(), hashes.SHA256(),
+                )
+                message = f"collect-archive/v3|CUR-COL-CRR-R11|R11|{nonce}".encode()
+                certificate.public_key().verify(proof, message)
+            except (KeyError, ValueError, InvalidSignature, TypeError):
+                self.send_json(409, {"error": "historical identity exchange was rejected"})
+                return
+            subject_ou = certificate.subject.get_attributes_for_oid(x509.oid.NameOID.ORGANIZATIONAL_UNIT_NAME)
+            if not subject_ou or subject_ou[0].value != "svc-field-collection":
+                self.send_json(409, {"error": "historical identity does not match"})
+                return
+            token = secrets.token_urlsafe(40)
+            expires = int(datetime.now(timezone.utc).timestamp()) + 600
+            state["current_session"] = {
+                "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
+                "expires_at_epoch": expires,
+            }
+            save_state(state)
+            result = {
+                "record_id": "COL-SESS-R11", "revision": 11,
+                "identity_mapping": "IDREL-COL-R4", "scope": "CUR-COL-CRR-R11/read",
+                "expires_in_seconds": 600,
+            }
+            self.accepted(
+                "a-collection-path-still-alive/exchange", result, "svc-field-collection",
+                extra={"collection_session": token, "expires_at_epoch": expires},
+            )
+            return
+        if operation != "read":
+            self.send_json(409, {"error": "unknown collection operation"})
+            return
+        session = state.get("current_session")
+        supplied = request.get("collection_session")
+        if (not isinstance(session, dict) or not isinstance(supplied, str) or
+                int(session.get("expires_at_epoch", 0)) <= int(datetime.now(timezone.utc).timestamp()) or
+                not hmac.compare_digest(hashlib.sha256(supplied.encode()).hexdigest(),
+                                        str(session.get("token_sha256")))):
+            self.send_json(403, {"error": "current collection session required"})
+            return
+        if request.get("dataset") != "CUR-COL-CRR-R11" or request.get("revision") != 11:
+            self.send_json(409, {"error": "current dataset binding does not match"})
+            return
+        result = {
+            "record_id": "CUR-COL-CRR-R11", "revision": 11, "current": True,
+            "scope": "read-only", "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
+            "source": "collect-archive/v3",
+        }
+        state["current_data_observed"] = True
+        save_state(state)
+        self.accepted("a-collection-path-still-alive/read", result, "svc-field-collection")
 
     def reassemble_exchange(self, request: dict[str, object]) -> None:
         state = load_state()

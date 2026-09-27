@@ -31,6 +31,7 @@ AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.json")
 INTEGRATION_EVIDENCE = ROOT / "integration" / "W09-data.json"
+ARCHIVE_EVIDENCE = ROOT / "archive" / "W11-lineage.json"
 BUSINESS_RELATION_EVIDENCE = pathlib.Path("/run/arwc-business-relation/W02-association.json")
 
 DEFINITION = {
@@ -513,6 +514,9 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "relationship type was not accepted"})
             return
         if lineage:
+            atomic_json(ARCHIVE_EVIDENCE, LINEAGE)
+            os.chown(ARCHIVE_EVIDENCE, -1, grp.getgrnam("arwc-archive-source").gr_gid)
+            os.chmod(ARCHIVE_EVIDENCE, 0o640)
             state["lineage_observed"] = True
             save_state(state)
             self.accepted(
