@@ -72,6 +72,8 @@ INITIAL["engineering"].update({
     "w27_verifier_reproduced": False, "w27_collision_modeled": False,
     "w28_contract_recovered": False, "w28_controlled_flow": False,
     "w28_session": None,
+    "w32_structure_recovered": False, "w32_transitions_reproduced": False,
+    "w32_condition_recovered": False, "w32_witness_response": None,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
@@ -83,6 +85,7 @@ W27_ARTIFACTS = ARTIFACTS / "w27"
 W27_STATE = ROOT / "artifacts"
 W28_ARTIFACTS = ARTIFACTS / "w28"
 W28_STATE = ROOT / "artifacts"
+W32_ARTIFACT = ARTIFACTS / "replay-crr-r19"
 MASK32 = (1 << 32) - 1
 MASK64 = (1 << 64) - 1
 W19_RECORDS = [
@@ -294,6 +297,12 @@ def crc32c(data: bytes) -> int:
         for _ in range(8):
             value = (value >> 1) ^ (CRC32C_POLY if value & 1 else 0)
     return value ^ 0xFFFFFFFF
+
+
+def run_replay32(mode: str) -> object:
+    completed = subprocess.run([str(W32_ARTIFACT), mode], stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE, check=True, timeout=3, text=True)
+    return json.loads(completed.stdout)
 
 
 def decode_flash_record(record: bytes, offset: int) -> dict[str, object] | None:
@@ -527,6 +536,7 @@ class Handler(BaseHTTPRequestHandler):
                 "/api/the-viewer-in-the-delivery",
                 "/api/two-kinds-of-answer",
                 "/api/the-vault-s-misleading-length",
+                "/api/the-replay-s-pieces",
             }:
                 self.historian_proxy("GET", path, None)
             else:
@@ -695,6 +705,8 @@ class Handler(BaseHTTPRequestHandler):
             "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
             "/api/past-the-parser-s-boundary", "/api/the-state-execution-returns-to",
             "/api/the-diagnostic-service-s-authority",
+            "/api/the-systems-that-update-it", "/api/the-condition-the-old-model-used",
+            "/api/replay-is-not-reality",
         }:
             self.historian_proxy("POST", path, request)
             return
@@ -702,6 +714,27 @@ class Handler(BaseHTTPRequestHandler):
 
     def owner_get(self, path: str) -> None:
         state = load_state()
+        if ROLE == "engineering" and path == "/api/the-replay-s-pieces":
+            if not state["deployed_revision_observed"]:
+                self.send_json(403, {"error": "current deployed-revision evidence required"})
+                return
+            binary = W32_ARTIFACT.read_bytes()
+            structure = run_replay32("structure")
+            cases = run_replay32("inputs")
+            if not isinstance(structure, dict) or not isinstance(cases, list):
+                self.send_json(409, {"error": "retained replay is unavailable"})
+                return
+            record = {**structure, "format": "ELF64-x86-64-stripped",
+                      "sha256": hashlib.sha256(binary).hexdigest(),
+                      "trace_binding": "TRACE-R19-DISPUTED",
+                      "distinguishing_case_count": len(cases)}
+            state["w32_structure_recovered"] = True; save_state(state)
+            atomic_json(ROOT / "artifacts/the-replay-s-pieces/result.json", record)
+            self.accepted("the-replay-s-pieces", record, extra={
+                "replay_b64": base64.b64encode(binary).decode(),
+                "distinguishing_cases": cases,
+            })
+            return
         if ROLE == "engineering" and path == "/api/the-diagnostic-nobody-retired":
             binary = (ARTIFACTS / "diag-crr-mixed-19").read_bytes()
             state["diagnostic_observed"] = True
@@ -833,6 +866,12 @@ class Handler(BaseHTTPRequestHandler):
             "/api/keep-the-authority-you-earned",
         }:
             self.w28_post(path, request, state)
+            return
+        if ROLE == "engineering" and path in {
+            "/api/the-systems-that-update-it", "/api/the-condition-the-old-model-used",
+            "/api/replay-is-not-reality",
+        }:
+            self.w32_post(path, request, state)
             return
         if ROLE == "instruments" and path in {
             "/api/a-valid-maintenance-record", "/api/change-one-record-keep-the-rest",
@@ -1033,6 +1072,62 @@ class Handler(BaseHTTPRequestHandler):
                   "structure": "accepted", "outputs": parsed["outputs"]}
         atomic_json(output / "result.json", record)
         self.accepted("the-constraints-of-a-valid-looking-program", record, 201)
+
+    def w32_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state["w32_structure_recovered"]:
+            self.send_json(403, {"error": "retained replay structure required"})
+            return
+        if path == "/api/the-systems-that-update-it":
+            expected = {"record_id": "REPLAY-CRR-R19", "revision": 19,
+                        "transitions": run_replay32("transitions")}
+            if request != expected:
+                self.send_json(409, {"error": "ECS state transitions do not match the retained replay"})
+                return
+            state["w32_transitions_reproduced"] = True; save_state(state)
+            record = {"record_id": "ECS-TRANSITIONS-R19", "revision": 19,
+                      "replay": "REPLAY-CRR-R19", "cases_reproduced": 4,
+                      "system_order": ["CommandApply", "RampLimit", "FlowIntegrate",
+                                       "ReserveUpdate", "ApprovalCheck"],
+                      "transitions_sha256": hashlib.sha256(json.dumps(
+                          expected["transitions"], sort_keys=True,
+                          separators=(",", ":")).encode()).hexdigest()}
+            atomic_json(ROOT / "artifacts/the-systems-that-update-it/result.json", record)
+            self.accepted("the-systems-that-update-it", record, 201)
+            return
+        if not state["w32_transitions_reproduced"]:
+            self.send_json(403, {"error": "reproduced ECS transitions required"})
+            return
+        if path == "/api/the-condition-the-old-model-used":
+            condition = run_replay32("condition")
+            expected = {"replay": "REPLAY-CRR-R19", "trace": "TRACE-R19-DISPUTED",
+                        "condition": condition}
+            if request != expected:
+                self.send_json(409, {"error": "retained approval condition does not match"})
+                return
+            state["w32_condition_recovered"] = True; save_state(state)
+            record = {**condition, "trace": "TRACE-R19-DISPUTED",
+                      "current_binding": "post-ReserveUpdate independently observed Reserve"}
+            atomic_json(ROOT / "artifacts/the-condition-the-old-model-used/result.json", record)
+            self.accepted("the-condition-the-old-model-used", record, 201)
+            return
+        if not state["w32_condition_recovered"]:
+            self.send_json(403, {"error": "retained approval condition required"})
+            return
+        witness = run_replay32("witness")
+        expected = {"replay": "REPLAY-CRR-R19", "trace": "TRACE-R19-DISPUTED",
+                    "witness": witness}
+        if request != expected:
+            self.send_json(409, {"error": "replay witness binding rejected"})
+            return
+        cached = state.get("w32_witness_response")
+        if isinstance(cached, dict):
+            self.send_json(201, cached)
+            return
+        record = {**witness, "evidence_role": "optional-model-evidence"}
+        atomic_json(ROOT / "artifacts/replay-is-not-reality/result.json", record)
+        response = {"audit_id": append_audit("replay-is-not-reality", record), "record": record}
+        state["w32_witness_response"] = response; save_state(state)
+        self.send_json(201, response)
 
     def w29_reserve(self, request: dict[str, object], state: dict[str, object]) -> None:
         correlation = request.get("correlation")

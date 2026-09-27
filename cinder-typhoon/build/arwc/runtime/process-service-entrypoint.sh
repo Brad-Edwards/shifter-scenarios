@@ -16,6 +16,11 @@ if [ "$role" = engineering ]; then
     "$root/artifacts/the-constraints-of-a-valid-looking-program" \
     "$root/artifacts/the-utility-s-small-world" \
     "$root/artifacts/control-with-very-little-room"
+  install -d -o "$user" -g "$user" -m 0700 \
+    "$root/artifacts/the-replay-s-pieces" \
+    "$root/artifacts/the-systems-that-update-it" \
+    "$root/artifacts/the-condition-the-old-model-used" \
+    "$root/artifacts/replay-is-not-reality"
   if [ ! -e "$root/artifacts/what-counts-as-intact/base.dpg" ]; then
     cp /opt/process-service/artifacts/w27/base.dpg \
       /opt/process-service/artifacts/w27/case-*.dpg \

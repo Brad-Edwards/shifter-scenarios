@@ -6,7 +6,7 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W31 and W35 (109 of 120 cards) are materialized and accepted. The customer handover
+deployed. W01-W32 and W35 (113 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -80,7 +80,7 @@ runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
 | AHB-04 | Maintenance W13-W15 | Complete |
 | AHB-05 | Read-only process routes and W16-W25 | Complete |
 | AHB-06 | Control paths W26-W28 | Complete |
-| AHB-07 | Consequence, verification, and reporting W29-W34 | In progress (W29-W31 complete) |
+| AHB-07 | Consequence, verification, and reporting W29-W34 | In progress (W29-W32 complete) |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Not started |
 
 ## W01 asset decision
@@ -510,3 +510,18 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   isolation, native posture, immutable audits, and restart persistence passed.
   The suite now contains 161 black-box checks. No SDL change was needed, and
   none of W31's four cards binds a narrative asset.
+- 2026-09-27: W32 adds five passing black-box checks around a supplied native
+  C++20 ECS replay. The artifact implements the five authored systems in fixed
+  order and exposes four distinguishing runs that establish the exact entity,
+  component, mutation, and outlet bindings rather than relying on embedded
+  names alone.
+- The R19 witness starts from the retained 13.40 ML cache, projects 12.40 ML
+  after the 1.00 ML request, and accepts against the 12.00 ML commitment. The
+  current R21 comparison starts from independently observed 12.40 ML, reaches
+  11.40 ML, and rejects. Results are explicitly optional model evidence, grant
+  no live authority, and do not replace current observation. Wrong authority,
+  tenant, revision, transition, state binding, quantity, and witness are
+  rejected; persistence, idempotence, immutable owner audits, and absence of
+  instrument or reservoir side effects passed. The suite now contains 166
+  black-box checks. No SDL change was needed, and none of W32's four cards
+  binds a narrative asset.

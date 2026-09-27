@@ -49,6 +49,8 @@ PROCESS_PATHS = {
     "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
     "/api/the-vault-s-misleading-length", "/api/past-the-parser-s-boundary",
     "/api/the-state-execution-returns-to", "/api/the-diagnostic-service-s-authority",
+    "/api/the-replay-s-pieces", "/api/the-systems-that-update-it",
+    "/api/the-condition-the-old-model-used", "/api/replay-is-not-reality",
 }
 
 

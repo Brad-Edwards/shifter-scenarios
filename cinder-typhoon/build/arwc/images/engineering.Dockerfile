@@ -5,10 +5,11 @@ RUN python3 /usr/local/bin/extract-document /tmp/arwc-documents.json me-project-
 
 FROM debian:bookworm-slim AS native
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y binutils gcc libc6-dev python3 \
+    && apt-get install --no-install-recommends -y binutils g++ gcc libc6-dev python3 \
     && rm -rf /var/lib/apt/lists/*
 COPY build/arwc/runtime/mixed-diagnostic.S /tmp/mixed-diagnostic.S
 COPY build/arwc/runtime/dpg1.py build/arwc/runtime/generate_dpg1.py build/arwc/runtime/rot128_verifier.c /tmp/w27-src/
+COPY build/arwc/runtime/replay32.cpp /tmp/replay32.cpp
 RUN gcc -nostdlib -static -no-pie -Wl,--build-id=none \
       -o /tmp/diag-crr-mixed-19 /tmp/mixed-diagnostic.S \
     && strip --strip-all /tmp/diag-crr-mixed-19 \
@@ -17,7 +18,11 @@ RUN gcc -nostdlib -static -no-pie -Wl,--build-id=none \
     && gcc -O2 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none \
       -I/tmp/w27 -o /tmp/w27/rot128-verifier rot128_verifier.c \
     && strip --strip-all /tmp/w27/rot128-verifier \
-    && /tmp/w27/rot128-verifier /tmp/w27/base.dpg | grep -F '"decision":"accepted"'
+    && /tmp/w27/rot128-verifier /tmp/w27/base.dpg | grep -F '"decision":"accepted"' \
+    && g++ -std=c++20 -O2 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none \
+      -o /tmp/replay-crr-r19 /tmp/replay32.cpp \
+    && strip --strip-all /tmp/replay-crr-r19 \
+    && /tmp/replay-crr-r19 witness | grep -F 'TRACE-R19-DISPUTED'
 
 FROM ubuntu:24.04 AS utility28
 ENV DEBIAN_FRONTEND=noninteractive
@@ -72,6 +77,7 @@ COPY --from=viewer --chown=arwc-engineering:arwc-engineering --chmod=0750 /tmp/s
 COPY --from=sealed --chown=arwc-engineering:arwc-engineering --chmod=0640 /tmp/sealed/ /opt/process-service/artifacts/
 COPY --from=review --chown=arwc-engineering:arwc-engineering --chmod=0640 /tmp/review-out/ReviewHelper.dll /opt/process-service/artifacts/ReviewHelper.dll
 COPY --from=native --chown=arwc-engineering:arwc-engineering /tmp/w27/ /opt/process-service/artifacts/w27/
+COPY --from=native --chown=arwc-engineering:arwc-engineering --chmod=0750 /tmp/replay-crr-r19 /opt/process-service/artifacts/replay-crr-r19
 COPY --from=utility28 --chown=arwc-engineering:arwc-engineering /tmp/w28/ /opt/process-service/artifacts/w28/
 COPY --from=utility28 /opt/process-service/w28/ /opt/process-service/w28/
 RUN chmod 0750 /opt/process-service/artifacts/w28/utility \

@@ -99,6 +99,7 @@ python3 tests/test_w29_live.py
 python3 tests/test_w30_live.py
 python3 tests/test_w17_w18_w21_w25_live.py
 python3 tests/test_w31_live.py
+python3 tests/test_w32_live.py
 python3 tests/test_w19_w20_live.py
 python3 tests/test_w22_live.py
 python3 tests/test_w23_live.py
@@ -203,4 +204,4 @@ if docker exec --user fieldlink cinder-arwc-connector sh -c \
   exit 1
 fi
 
-echo "Alterra W01-W31 and W35 local acceptance passed"
+echo "Alterra W01-W32 and W35 local acceptance passed"
