@@ -26,6 +26,9 @@ TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 STATE = ROOT / "state" / "archive.json"
 RESULT = ROOT / "results" / "HND-PLANNER-06.json"
 HANDOVER_EVIDENCE = ROOT / "handover" / "W06-access.json"
+ARTIFACTS = ROOT / "artifacts"
+BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/W08-source.json")
+IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/W08-source.json")
 ARCHIVE_CA = "/tmp/archive-ca.crt"
 ARCHIVE_CA_KEY = "/tmp/archive-ca.key"
 
@@ -67,6 +70,41 @@ HANDOVER = {
     "archive_helper": "7-Zip 23.01",
 }
 
+WORK_BUNDLE = {
+    "record_id": "BND-COLLECT-CRR-12",
+    "revision": 12,
+    "hidden_script": ".field/collect-handover.ps1",
+    "collection_id": "COL-CRR-2019-12",
+    "artifact": "BND-COLLECT-CRR-12.tar.gz",
+}
+
+EXCHANGE = {
+    "record_id": "XCHG-COL-CRR-2019-12",
+    "revision": 1,
+    "collection_id": "COL-CRR-2019-12",
+    "codec": "RS(14,12)",
+    "missing_data_positions": [7, 11],
+    "shard_size": 96,
+}
+
+COLLECTOR = {
+    "record_id": "COLLECTOR-CRR-12",
+    "revision": 1,
+    "name": "collector-crr",
+    "language": "Go 1.22",
+    "target": "linux/amd64",
+    "build_id": "COLLECT-CRR-12",
+}
+
+COLLECTOR_CONFIG = {
+    "record_id": "CFG-COLLECT-CRR-12",
+    "revision": 3,
+    "archive": "ARC-COLD-CRR-2019",
+    "service": "collect-archive/v3",
+    "identity": "svc-field-collection",
+    "collection": "COL-CRR-2019-12",
+}
+
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
     descriptor, temporary = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.")
@@ -99,7 +137,23 @@ def initialize() -> None:
             "protected_record_observed": False,
             "helper_handover_copied": False,
             "planner_handover_token": None,
+            "work_bundle_observed": False,
+            "exchange_reconstructed": False,
+            "collector_reconstructed": False,
+            "collector_config_recovered": False,
         })
+    else:
+        state = load_state()
+        changed = False
+        for key in (
+            "work_bundle_observed", "exchange_reconstructed",
+            "collector_reconstructed", "collector_config_recovered",
+        ):
+            if key not in state:
+                state[key] = False
+                changed = True
+        if changed:
+            save_state(state)
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
 
@@ -131,6 +185,17 @@ def append_audit(action: str, result: dict[str, object], principal: str) -> str:
         handle.flush()
         os.fsync(handle.fileno())
     return correlation
+
+
+def has_w08_source() -> bool:
+    for path in (BUSINESS_SOURCE, IDENTITY_SOURCE):
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if value.get("retained_bundle") == "BND-COLLECT-CRR-12":
+            return True
+    return False
 
 
 def issue_certificate(organizational_unit: str) -> tuple[str, str, str]:
@@ -231,6 +296,16 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(encoded)
 
+    def send_bytes(self, value: bytes, content_type: str, name: str) -> None:
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(value)))
+        self.send_header("Content-Disposition", f'attachment; filename="{name}"')
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.end_headers()
+        self.wfile.write(value)
+
     def authorized(self) -> bool:
         if self.headers.get("X-ARWC-Tenant", "arwc") != "arwc":
             self.send_json(403, {"error": "session is not valid for this tenant"})
@@ -271,7 +346,49 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         if not self.authorized():
             return
-        if urlsplit(self.path).path != "/api/the-archive-s-missing-contract":
+        path = urlsplit(self.path).path
+        if path == "/api/something-in-the-work-bundle":
+            if not has_w08_source():
+                self.send_json(403, {"error": "retained work reference required"})
+                return
+            state = load_state()
+            state["work_bundle_observed"] = True
+            save_state(state)
+            self.accepted(
+                "something-in-the-work-bundle", WORK_BUNDLE, "corporate-reader-principal", 200,
+                {"download": "/api/artifacts/BND-COLLECT-CRR-12.tar.gz"},
+            )
+            return
+        if path == "/api/artifacts/BND-COLLECT-CRR-12.tar.gz":
+            if not load_state()["work_bundle_observed"]:
+                self.send_json(403, {"error": "retained bundle has not been located"})
+                return
+            self.send_bytes(
+                (ARTIFACTS / "BND-COLLECT-CRR-12.tar.gz").read_bytes(),
+                "application/gzip", "BND-COLLECT-CRR-12.tar.gz",
+            )
+            return
+        if path.startswith("/api/artifacts/collector/part-"):
+            if not load_state()["exchange_reconstructed"]:
+                self.send_json(403, {"error": "exchange has not been reconstructed"})
+                return
+            match = re.fullmatch(r"/api/artifacts/collector/part-(\d{2})", path)
+            if not match or int(match.group(1)) not in range(4):
+                self.send_json(404, {"error": "artifact not found"})
+                return
+            name = f"collector-crr.part-{match.group(1)}"
+            self.send_bytes((ARTIFACTS / name).read_bytes(), "application/octet-stream", name)
+            return
+        if path == "/api/artifacts/collector/config":
+            if not load_state()["collector_reconstructed"]:
+                self.send_json(403, {"error": "collector has not been reconstructed"})
+                return
+            self.send_bytes(
+                (ARTIFACTS / "collector-config.json").read_bytes(),
+                "application/json", "collector.yaml.enc.json",
+            )
+            return
+        if path != "/api/the-archive-s-missing-contract":
             self.send_json(404, {"error": "record not found"})
             return
         state = load_state()
@@ -296,8 +413,83 @@ class Handler(BaseHTTPRequestHandler):
             self.query(request)
         elif path == "/api/the-archive-helper-acts":
             self.helper(request)
+        elif path == "/api/reassemble-the-exchange":
+            self.reassemble_exchange(request)
+        elif path == "/api/the-collector-inside-the-handover":
+            self.reconstruct_collector(request)
+        elif path == "/api/where-the-contractor-put-it":
+            self.recover_collector_config(request)
         else:
             self.send_json(404, {"error": "record not found"})
+
+    def reassemble_exchange(self, request: dict[str, object]) -> None:
+        state = load_state()
+        if not state["work_bundle_observed"]:
+            self.send_json(403, {"error": "retained bundle has not been located"})
+            return
+        try:
+            shard_7 = base64.b64decode(str(request["shard_7"]), validate=True)
+            shard_11 = base64.b64decode(str(request["shard_11"]), validate=True)
+            shards = json.loads((ARTIFACTS / "shards.json").read_text(encoding="utf-8"))
+            if len(shard_7) != 96 or len(shard_11) != 96:
+                raise ValueError
+            if not hmac.compare_digest(shard_7, base64.b64decode(shards["7"])):
+                raise ValueError
+            if not hmac.compare_digest(shard_11, base64.b64decode(shards["11"])):
+                raise ValueError
+            data = b"".join(
+                shard_7 if index == 7 else shard_11 if index == 11 else base64.b64decode(shards[str(index)])
+                for index in range(12)
+            )
+            instruction = json.loads(data.rstrip())
+        except (KeyError, ValueError, json.JSONDecodeError):
+            self.send_json(409, {"error": "exchange reconstruction does not match its manifest"})
+            return
+        if (instruction.get("collection_id") != "COL-CRR-2019-12" or
+                instruction.get("build_id") != "COLLECT-CRR-12"):
+            self.send_json(409, {"error": "exchange reconstruction does not match its manifest"})
+            return
+        state["exchange_reconstructed"] = True
+        save_state(state)
+        result = dict(EXCHANGE)
+        result["instruction_sha256"] = hashlib.sha256(data.rstrip()).hexdigest()
+        self.accepted(
+            "reassemble-the-exchange", result, "corporate-reader-principal",
+            extra={"collector": instruction},
+        )
+
+    def reconstruct_collector(self, request: dict[str, object]) -> None:
+        state = load_state()
+        if not state["exchange_reconstructed"]:
+            self.send_json(403, {"error": "exchange has not been reconstructed"})
+            return
+        manifest = json.loads((ARTIFACTS / "collector-manifest.json").read_text(encoding="utf-8"))
+        if (request.get("build_id") != manifest["build_id"] or
+                request.get("collector_sha256") != manifest["collector_sha256"]):
+            self.send_json(409, {"error": "collector does not match the exchange manifest"})
+            return
+        state["collector_reconstructed"] = True
+        save_state(state)
+        result = dict(COLLECTOR)
+        result["sha256"] = manifest["collector_sha256"]
+        self.accepted(
+            "the-collector-inside-the-handover", result, "corporate-reader-principal",
+            extra={"configuration": "/api/artifacts/collector/config"},
+        )
+
+    def recover_collector_config(self, request: dict[str, object]) -> None:
+        state = load_state()
+        if not state["collector_reconstructed"]:
+            self.send_json(403, {"error": "collector has not been reconstructed"})
+            return
+        expected = (ARTIFACTS / "collector-config.plaintext").read_text(encoding="utf-8")
+        supplied = request.get("plaintext")
+        if not isinstance(supplied, str) or not hmac.compare_digest(supplied, expected):
+            self.send_json(409, {"error": "collector configuration authentication failed"})
+            return
+        state["collector_config_recovered"] = True
+        save_state(state)
+        self.accepted("where-the-contractor-put-it", COLLECTOR_CONFIG, "corporate-reader-principal")
 
     def query(self, request: dict[str, object]) -> None:
         operation = request.get("operation")

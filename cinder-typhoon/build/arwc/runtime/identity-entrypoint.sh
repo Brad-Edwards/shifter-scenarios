@@ -11,6 +11,8 @@ install -d -o arwc-identity -g arwc-identity -m 0700 \
 install -d -o arwc-identity -g arwc-planning -m 0750 \
   /var/lib/arwc-identity/results \
   /var/lib/arwc-identity/planning
+install -d -o arwc-identity -g arwc-archive-source -m 0750 \
+  /var/lib/arwc-identity/archive
 
 session=/run/arwc-corporate/handover/corporate-session
 for _ in $(seq 1 60); do

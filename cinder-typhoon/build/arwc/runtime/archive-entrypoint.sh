@@ -11,6 +11,8 @@ install -d -o arwc-archive -g arwc-archive -m 0700 \
 install -d -o arwc-archive -g arwc-handover -m 0750 \
   /var/lib/arwc-archive/results \
   /var/lib/arwc-archive/handover
+install -d -o arwc-archive -g arwc-archive -m 0700 \
+  /var/lib/arwc-archive/artifacts
 
 session=/run/arwc-corporate/handover/corporate-session
 for _ in $(seq 1 60); do
@@ -26,6 +28,9 @@ chmod 0400 /var/lib/arwc-archive/auth/corporate-session.sha256
 for file in server.crt server.key archive-ca.crt archive-ca.key; do
   install -o arwc-archive -g arwc-archive -m 0400 "/run/arwc-tls/$file" "/tmp/$file"
 done
+
+setpriv --reuid=arwc-archive --regid=arwc-archive --init-groups \
+  python3 /opt/retained-archive/generate_archive_artifacts.py
 
 exec setpriv --reuid=arwc-archive --regid=arwc-archive --init-groups \
   python3 /opt/retained-archive/retained_archive.py

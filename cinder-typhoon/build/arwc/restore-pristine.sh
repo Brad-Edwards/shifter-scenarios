@@ -43,6 +43,10 @@ for _ in $(seq 1 60); do
       && $archive == *'"protected_record_observed":false'* \
       && $archive == *'"helper_handover_copied":false'* \
       && $archive == *'"planner_handover_token":null'* \
+      && $archive == *'"work_bundle_observed":false'* \
+      && $archive == *'"exchange_reconstructed":false'* \
+      && $archive == *'"collector_reconstructed":false'* \
+      && $archive == *'"collector_config_recovered":false'* \
       && $archive_audit == 0 \
       && $identity == *'"starter_observed":false'* \
       && $identity == *'"roster_observed":false'* \
@@ -55,7 +59,11 @@ for _ in $(seq 1 60); do
       && docker exec --user arwc-archive cinder-arwc-archive \
         test ! -e /var/lib/arwc-archive/handover/W06-access.json \
       && docker exec --user arwc-identity cinder-arwc-identity \
-        test ! -e /var/lib/arwc-identity/planning/planner-session.json; then
+        test ! -e /var/lib/arwc-identity/planning/planner-session.json \
+      && docker exec --user arwc-business cinder-arwc-business \
+        test ! -e /var/lib/arwc-business/archive/W08-source.json \
+      && docker exec --user arwc-identity cinder-arwc-identity \
+        test ! -e /var/lib/arwc-identity/archive/W08-source.json; then
       echo "Alterra authored initial state restored"
       exit 0
     fi

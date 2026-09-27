@@ -72,6 +72,7 @@ python3 tests/test_w02_w03_live.py
 python3 tests/test_w04_live.py
 python3 tests/test_w05_w06_live.py
 python3 tests/test_w07_live.py
+python3 tests/test_w08_live.py
 
 [[ $(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cinder-arwc-connector) == 10.77.60.20 ]]
 [[ $(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cinder-arwc-business) == 10.77.60.30 ]]
@@ -107,9 +108,9 @@ for address in ("10.77.39.2", "10.77.49.2", "10.201.0.2"):
 PY
 
 if docker exec --user fieldlink cinder-arwc-connector sh -c \
-  "find /var/lib/fieldlink-connector -type f -readable -exec grep -Eil '(^|[^[:alpha:]])(ctf|flag|scoring|challenge|hint|walkthrough|player|organizer|hand-build|meta-commentary)([^[:alpha:]]|$)' {} +"; then
+  "find /var/lib/fieldlink-connector -type f -readable -exec grep -EIl '(^|[^[:alpha:]])(ctf|flag|scoring|challenge|hint|walkthrough|player|organizer|hand-build|meta-commentary)([^[:alpha:]]|$)' {} +"; then
   echo "participant-visible fourth-wall terminology found" >&2
   exit 1
 fi
 
-echo "Alterra W01-W07 local acceptance passed"
+echo "Alterra W01-W08 local acceptance passed"

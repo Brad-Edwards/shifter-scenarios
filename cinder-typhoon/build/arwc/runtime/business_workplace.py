@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import grp
 import json
 import os
 import pathlib
@@ -19,6 +20,7 @@ ROOT = pathlib.Path("/var/lib/arwc-business")
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 DISCOVERIES = ROOT / "state" / "discoveries.json"
+ARCHIVE_EVIDENCE = ROOT / "archive" / "W08-source.json"
 
 BUNDLE = {
     "record_id": "BND-CRR-OUTLET-17",
@@ -198,6 +200,13 @@ class Handler(BaseHTTPRequestHandler):
             if not observed("restricted_handover"):
                 self.send_json(403, {"error": "restricted handover has not been imported"})
             else:
+                atomic_json(ARCHIVE_EVIDENCE, {
+                    "record_id": "PDH-CRR-READ-08",
+                    "retained_bundle": "BND-COLLECT-CRR-12",
+                    "integration_client": "INT-CRR-08",
+                })
+                os.chown(ARCHIVE_EVIDENCE, -1, grp.getgrnam("arwc-archive-source").gr_gid)
+                os.chmod(ARCHIVE_EVIDENCE, 0o640)
                 self.accepted("the-integration-s-read-contract", READ_CONTRACT)
         else:
             self.send_json(404, {"error": "record not found"})

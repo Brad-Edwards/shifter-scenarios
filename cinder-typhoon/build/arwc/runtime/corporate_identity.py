@@ -23,6 +23,7 @@ AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 HANDOVER = pathlib.Path("/run/arwc-archive-evidence/W06-access.json")
 PLANNER_EVIDENCE = ROOT / "planning" / "planner-session.json"
+ARCHIVE_EVIDENCE = ROOT / "archive" / "W08-source.json"
 
 STARTER = {
     "record_id": "START-MIRA-2026",
@@ -248,6 +249,13 @@ class Handler(BaseHTTPRequestHandler):
         token = secrets.token_urlsafe(32)
         state["limited_session_sha256"] = hashlib.sha256(token.encode()).hexdigest()
         save_state(state)
+        atomic_json(ARCHIVE_EVIDENCE, {
+            "record_id": "SESS-MIRA-RELIEF-7",
+            "assignment": "PLAN-RELIEF-7",
+            "retained_bundle": "BND-COLLECT-CRR-12",
+        })
+        os.chown(ARCHIVE_EVIDENCE, -1, grp.getgrnam("arwc-archive-source").gr_gid)
+        os.chmod(ARCHIVE_EVIDENCE, 0o640)
         result = {
             "record_id": "SESS-MIRA-RELIEF-7",
             "revision": 1,

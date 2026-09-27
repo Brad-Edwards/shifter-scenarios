@@ -6,9 +6,9 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate-network foundation are deployed.
-W01-W07 (22 of 120 cards) are materialized and accepted. The customer handover
+W01-W08 (26 of 120 cards) are materialized and accepted. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
-archive enrollment, query, and helper paths run on `a-archive`; onboarding and
+archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
 reconciliation paths run against PostgreSQL on `a-data`.
 
@@ -51,7 +51,7 @@ reconciliation paths run against PostgreSQL on `a-data`.
 | AHB-00 | Architecture, isolation plan, topology and implementation ledger | Complete |
 | AHB-01 | `a-connector` and W01 opening slice | Complete |
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
-| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04-W07 complete) |
+| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04-W08 complete) |
 | AHB-04 | Maintenance W13-W15 | Not started |
 | AHB-05 | Read-only process routes and W16-W25 | Not started |
 | AHB-06 | Control paths W26-W28 | Not started |
@@ -141,6 +141,16 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   black-box checks, including exact addresses and authorization, predecessor
   evidence, persistence, network isolation, no published ports, and
   participant-visible content inspection.
+- 2026-09-27: W08 adds six passing black-box tests on `a-archive`. Both the
+  temporary-staff and integration-handover prerequisites independently expose
+  the same retained bundle. Its hidden script identifies a real RS(14,12)
+  exchange with two missing 96-byte data shards over the specified GF(256)
+  convention. Reconstructing those shards yields a four-fragment Go 1.22
+  `linux/amd64` collector; the assembled executable runs in the participant
+  context and its manifest digest is enforced. The collector configuration is
+  genuinely protected with the declared HKDF-SHA256 and AES-256-GCM inputs,
+  nonce, AAD, and tag, and resolves to `ARC-COLD-CRR-2019` only after successful
+  authenticated decryption. No W08 card binds a narrative asset.
 - No SDL change was needed for AHB-00 or AHB-01. The validated contracts fully
   determined the observable W01 behavior; request serialization and carrier
   packaging are incidental implementation detail.

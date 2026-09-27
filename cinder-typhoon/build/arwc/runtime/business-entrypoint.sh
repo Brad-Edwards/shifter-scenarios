@@ -8,6 +8,8 @@ install -d -o arwc-business -g arwc-business -m 0700 \
   /var/lib/arwc-business/audit \
   /var/lib/arwc-business/auth \
   /var/lib/arwc-business/state
+install -d -o arwc-business -g arwc-archive-source -m 0750 \
+  /var/lib/arwc-business/archive
 
 session=/run/arwc-corporate/handover/corporate-session
 for _ in $(seq 1 60); do
