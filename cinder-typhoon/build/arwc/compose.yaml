@@ -91,7 +91,7 @@ services:
     volumes:
       - data-state:/var/lib/arwc-data
       - data-postgresql:/var/lib/postgresql/data
-      - identity-state:/run/arwc-identity-evidence:ro
+      - identity-planning:/run/arwc-planning-evidence:ro
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
@@ -124,6 +124,7 @@ services:
       - /run:rw,nosuid,nodev,size=16m,mode=0755
     volumes:
       - archive-state:/var/lib/arwc-archive
+      - archive-handover:/var/lib/arwc-archive/handover
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
@@ -158,7 +159,8 @@ services:
       - /run:rw,nosuid,nodev,size=16m,mode=0755
     volumes:
       - identity-state:/var/lib/arwc-identity
-      - archive-state:/run/arwc-archive-evidence:ro
+      - identity-planning:/var/lib/arwc-identity/planning
+      - archive-handover:/run/arwc-archive-evidence:ro
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
@@ -187,8 +189,12 @@ volumes:
     name: cinder-arwc-business-state
   archive-state:
     name: cinder-arwc-archive-state
+  archive-handover:
+    name: cinder-arwc-archive-handover
   identity-state:
     name: cinder-arwc-identity-state
+  identity-planning:
+    name: cinder-arwc-identity-planning
   data-state:
     name: cinder-arwc-data-state
   data-postgresql:

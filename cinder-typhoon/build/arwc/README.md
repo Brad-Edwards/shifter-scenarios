@@ -6,10 +6,11 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate-network foundation are deployed.
-W01-W04 are materialized and accepted: the customer handover runs on
-`a-connector`, while the asset association and annex-import paths run on the
-separate `a-business` service and the certificate/query/archive-helper path
-runs on `a-archive`.
+W01-W07 (22 of 120 cards) are materialized and accepted. The customer handover
+runs on `a-connector`; association and annex-import paths run on `a-business`;
+archive enrollment, query, and helper paths run on `a-archive`; onboarding and
+planner-browser paths run on `a-identity`; and the quoted-identifier and
+reconciliation paths run against PostgreSQL on `a-data`.
 
 ## Boundaries
 
@@ -33,9 +34,9 @@ runs on `a-archive`.
 
 - GCP VPC/carrier: `cinder-arwc-golden`, private `10.77.59.2`, no external IP.
 - Corporate target network: internal `10.77.60.0/24` bridge.
-- First nodes: `a-connector` at `10.77.60.20`, `a-business` at
-  `10.77.60.30`, and `a-archive` at `10.77.60.50`, matching the SDL address
-  plan.
+- Current nodes: `a-connector` at `10.77.60.20`, `a-business` at
+  `10.77.60.30`, `a-data` at `10.77.60.40`, `a-archive` at `10.77.60.50`,
+  and `a-identity` at `10.77.60.60`, matching the SDL address plan.
 - `customer-handover` is a real TLS service on declared port 8443 and runs as
   `arwc-connector`; the participant context runs as the distinct locked
   `fieldlink` service identity.
@@ -50,7 +51,7 @@ runs on `a-archive`.
 | AHB-00 | Architecture, isolation plan, topology and implementation ledger | Complete |
 | AHB-01 | `a-connector` and W01 opening slice | Complete |
 | AHB-02 | Corporate W02-W03 association and annex paths | Complete |
-| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04 complete) |
+| AHB-03 | Remaining corporate W04-W12 and W35 | In progress (W04-W07 complete) |
 | AHB-04 | Maintenance W13-W15 | Not started |
 | AHB-05 | Read-only process routes and W16-W25 | Not started |
 | AHB-06 | Control paths W26-W28 | Not started |
@@ -121,6 +122,25 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   `copy_handover(HND-PLANNER-06)`. State and independently owned audits survive
   restart; participant access to them is denied. No W04 card binds a narrative
   asset, so none was added.
+- 2026-09-27: W05-W06 add eight passing black-box tests on `a-identity`. The
+  onboarding path preserves distinct starter and roster records while omitting
+  only the assignment factor from activation. Both declared paths into the
+  protected rendering work: the limited onboarding session and the independent
+  archive-helper handover. OAuth state is checked before the mutable preview
+  origin is accepted, and the resulting planner-browser session is bounded and
+  delivered to downstream planning through a dedicated read-only evidence
+  volume. No W05-W06 card binds a narrative asset.
+- 2026-09-27: W07 adds seven passing black-box tests on `a-data`, backed by
+  PostgreSQL 16.4. The service constructs the declared quoted-identifier query;
+  the closing-quote/UNION path reaches only the protected allocation-adjustment
+  view, while semicolons, writes, and unrelated views are rejected. The actual
+  `SECURITY DEFINER` reconciliation function is narrowly executable and writes
+  only its declared copy. Results and audits persist across restart. No W07
+  card binds a narrative asset.
+- 2026-09-27: A destructive clean-volume rebuild passed all 38 W01-W07
+  black-box checks, including exact addresses and authorization, predecessor
+  evidence, persistence, network isolation, no published ports, and
+  participant-visible content inspection.
 - No SDL change was needed for AHB-00 or AHB-01. The validated contracts fully
   determined the observable W01 behavior; request serialization and carrier
   packaging are incidental implementation detail.

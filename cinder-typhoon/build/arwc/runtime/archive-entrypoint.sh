@@ -9,7 +9,8 @@ install -d -o arwc-archive -g arwc-archive -m 0700 \
   /var/lib/arwc-archive/auth \
   /var/lib/arwc-archive/state
 install -d -o arwc-archive -g arwc-handover -m 0750 \
-  /var/lib/arwc-archive/results
+  /var/lib/arwc-archive/results \
+  /var/lib/arwc-archive/handover
 
 session=/run/arwc-corporate/handover/corporate-session
 for _ in $(seq 1 60); do

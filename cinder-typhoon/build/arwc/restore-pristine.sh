@@ -30,6 +30,8 @@ for _ in $(seq 1 60); do
       cat /var/lib/arwc-data/state/planning.json 2>/dev/null || true)
     data_audit=$(docker exec --user arwc-data cinder-arwc-data \
       sh -c 'wc -c </var/lib/arwc-data/audit/events.jsonl' 2>/dev/null || true)
+    data_copy=$(docker exec --user postgres cinder-arwc-data \
+      psql -d arwc -Atc 'SELECT count(*) FROM reconciliation_copy' 2>/dev/null || true)
     if [[ $state == *'"record_id":"PLN-HO-CRR-17"'* \
       && $state == *'"revision":3'* \
       && $state == *'"filename":"inspection-summary-r2.md"'* \
@@ -48,7 +50,12 @@ for _ in $(seq 1 60); do
       && $identity == *'"planner_session":null'* \
       && $identity_audit == 0 \
       && $data == '{"adjustment_observed":false,"query_definition_observed":false,"reconciliation_copy_created":false}' \
-      && $data_audit == 0 ]]; then
+      && $data_audit == 0 \
+      && $data_copy == 0 ]] \
+      && docker exec --user arwc-archive cinder-arwc-archive \
+        test ! -e /var/lib/arwc-archive/handover/W06-access.json \
+      && docker exec --user arwc-identity cinder-arwc-identity \
+        test ! -e /var/lib/arwc-identity/planning/planner-session.json; then
       echo "Alterra authored initial state restored"
       exit 0
     fi

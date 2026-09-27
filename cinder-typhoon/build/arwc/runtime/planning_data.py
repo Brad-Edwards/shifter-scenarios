@@ -23,7 +23,7 @@ ROOT = pathlib.Path("/var/lib/arwc-data")
 STATE = ROOT / "state" / "planning.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
-PLANNER_EVIDENCE = pathlib.Path("/run/arwc-identity-evidence/planner-session.json")
+PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.json")
 
 DEFINITION = {
     "record_id": "QRY-RESERVE-R7",
@@ -239,9 +239,13 @@ class Handler(BaseHTTPRequestHandler):
         if request.get("function") != "arwc_reconcile_copy" or request.get("record_id") != "REC-CRR-DP3-17":
             self.send_json(409, {"error": "reconciliation invocation is not accepted"})
             return
-        with database() as connection, connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM arwc_reconcile_copy(%s)", (request["record_id"],))
-            row = cursor.fetchone()
+        try:
+            with database() as connection, connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM arwc_reconcile_copy(%s)", (request["record_id"],))
+                row = cursor.fetchone()
+        except psycopg2.Error:
+            self.send_json(409, {"error": "reconciliation function rejected the request"})
+            return
         result = {
             "record_id": row[0],
             "revision": row[1],

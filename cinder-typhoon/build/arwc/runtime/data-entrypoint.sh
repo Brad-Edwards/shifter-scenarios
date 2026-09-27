@@ -89,7 +89,7 @@ BEGIN
   END IF;
   INSERT INTO reconciliation_copy VALUES
     ('REC-CRR-DP3-17-COPY',1,'REC-CRR-DP3-17','svc-planner-query')
-  ON CONFLICT (record_id) DO NOTHING;
+  ON CONFLICT ON CONSTRAINT reconciliation_copy_pkey DO NOTHING;
   RETURN QUERY
     SELECT r.record_id, r.revision, r.source_record, r.database_identity
     FROM reconciliation_copy AS r WHERE r.record_id='REC-CRR-DP3-17-COPY';

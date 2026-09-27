@@ -22,7 +22,7 @@ STATE = ROOT / "state" / "identity.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 HANDOVER = pathlib.Path("/run/arwc-archive-evidence/W06-access.json")
-PLANNER_EVIDENCE = ROOT / "results" / "planner-session.json"
+PLANNER_EVIDENCE = ROOT / "planning" / "planner-session.json"
 
 STARTER = {
     "record_id": "START-MIRA-2026",
@@ -295,15 +295,15 @@ class Handler(BaseHTTPRequestHandler):
             state["planner_session_sha256"] = hashlib.sha256(token.encode()).hexdigest()
             state["planner_session_expires"] = expires
             save_state(state)
-            atomic_json(PLANNER_EVIDENCE, {
-                "record_id": "PLN-SESS-OAUTH-882",
-                "planner": "nadia.corvane",
-                "scope": "planning-records",
-                "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
-                "expires_at_epoch": expires,
-            })
-            os.chown(PLANNER_EVIDENCE, -1, grp.getgrnam("arwc-planning").gr_gid)
-            os.chmod(PLANNER_EVIDENCE, 0o640)
+        atomic_json(PLANNER_EVIDENCE, {
+            "record_id": "PLN-SESS-OAUTH-882",
+            "planner": "nadia.corvane",
+            "scope": "planning-records",
+            "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
+            "expires_at_epoch": expires,
+        })
+        os.chown(PLANNER_EVIDENCE, -1, grp.getgrnam("arwc-planning").gr_gid)
+        os.chmod(PLANNER_EVIDENCE, 0o640)
         result = {
             "record_id": "PLN-SESS-OAUTH-882",
             "revision": 1,

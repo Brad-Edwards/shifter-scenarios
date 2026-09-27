@@ -9,7 +9,8 @@ install -d -o arwc-identity -g arwc-identity -m 0700 \
   /var/lib/arwc-identity/auth \
   /var/lib/arwc-identity/state
 install -d -o arwc-identity -g arwc-planning -m 0750 \
-  /var/lib/arwc-identity/results
+  /var/lib/arwc-identity/results \
+  /var/lib/arwc-identity/planning
 
 session=/run/arwc-corporate/handover/corporate-session
 for _ in $(seq 1 60); do
