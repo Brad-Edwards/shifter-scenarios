@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import base64
 import json
+import os
 import subprocess
 import unittest
 
@@ -163,9 +164,11 @@ class PlatformLiveTest(unittest.TestCase):
         reconcile = call("support.keplerops.test", "/api/customers/TEN-ARWC-047/integrations/fieldlink/reconcile", method="POST", body={"candidates": [{"tenant": "TEN-ARWC-019", "revision": "FLK-6.9.8"}, {"tenant": "TEN-ARWC-047", "revision": "FLK-7.4.2"}]}, auth=None, cookie=COOKIE)
         self.assertEqual((dossier["account"], integration["tenant"], reconcile["active_revision"]), ("K-C-001", "TEN-ARWC-047", "FLK-7.4.2"))
         job = call("support.keplerops.test", "/api/customers/TEN-ARWC-047/diagnostics", method="POST", body={"connector_revision": "FLK-7.4.2"}, auth=None, cookie=COOKIE, expected=201)
-        package = call("support.keplerops.test", f"/api/diagnostics/{job['job_id']}/package", method="PUT", body={"interface": "fieldkest.connector/v3", "expected_output": {"assessment": "calibration-review"}}, auth=None, cookie=COOKIE)
-        delivery = call("support.keplerops.test", f"/api/diagnostics/{job['job_id']}/deliver", method="POST", body={}, auth=None, cookie=COOKIE, expected=201)
-        self.assertEqual((package["state"], delivery["output"]["assessment"]), ("packaged", "calibration-review"))
+        package = call("support.keplerops.test", f"/api/diagnostics/{job['job_id']}/package", method="PUT", body={"interface": "fieldkest.connector/v3", "source": "exports.diagnostic_summary = input => ({assessment:'calibration-review'});", "expected_output": {"assessment": "calibration-review"}}, auth=None, cookie=COOKIE)
+        self.assertEqual(package["state"], "packaged")
+        if os.environ.get("CINDER_CROSS_SEGMENT") == "1":
+            delivery = call("support.keplerops.test", f"/api/diagnostics/{job['job_id']}/deliver", method="POST", body={}, auth=None, cookie=COOKIE, expected=202)
+            self.assertEqual((delivery["runtime_identity"], delivery["output"]["assessment"]), ("svc-arwc-fieldlink", "calibration-review"))
         recovery = call("cloud-api.keplerops.test", "/api/build-records/BLD-REC-021", auth="workload-session")
         catalog = call("data.keplerops.test", "/api/backups/BAK-2026-021", auth=recovery["session"])
         restored = call("data.keplerops.test", "/api/backups/BAK-2026-021/restores", method="POST", body={}, auth=recovery["session"], expected=201)

@@ -3,50 +3,28 @@ set -eu
 umask 077
 
 chown fieldlink:fieldlink /var/lib/fieldlink-connector
-chmod 0700 /var/lib/fieldlink-connector
+chmod 0750 /var/lib/fieldlink-connector
 chown arwc-connector:arwc-connector /var/lib/arwc-connector
 chmod 0700 /var/lib/arwc-connector
 
-install -d -o fieldlink -g fieldlink -m 0700 \
+install -d -o fieldlink -g fieldlink -m 0770 \
   /var/lib/fieldlink-connector/handover \
   /var/lib/fieldlink-connector/receipts
+for shared_file in \
+  /var/lib/fieldlink-connector/handover/corporate-session \
+  /var/lib/fieldlink-connector/handover/customer-transition.json; do
+  if [ -f "$shared_file" ]; then
+    chown arwc-connector:fieldlink "$shared_file"
+    chmod 0440 "$shared_file"
+  fi
+done
+install -d -o arwc-connector -g fieldlink -m 0770 \
+  /var/lib/fieldlink-connector/consumer \
+  /var/lib/fieldlink-connector/consumer/candidates
 install -d -o arwc-connector -g arwc-connector -m 0700 \
   /var/lib/arwc-connector/audit \
   /var/lib/arwc-connector/auth \
   /var/lib/arwc-connector/state
-
-if [ ! -s /var/lib/fieldlink-connector/handover/corporate-session ]; then
-  openssl rand -hex 32 > /var/lib/fieldlink-connector/handover/corporate-session
-  chown fieldlink:fieldlink /var/lib/fieldlink-connector/handover/corporate-session
-  chmod 0400 /var/lib/fieldlink-connector/handover/corporate-session
-fi
-
-tr -d '\n' < /var/lib/fieldlink-connector/handover/corporate-session | sha256sum \
-  | awk '{print $1}' > /var/lib/arwc-connector/auth/corporate-session.sha256
-chown arwc-connector:arwc-connector /var/lib/arwc-connector/auth/corporate-session.sha256
-chmod 0400 /var/lib/arwc-connector/auth/corporate-session.sha256
-
-cat > /var/lib/fieldlink-connector/handover/customer-transition.json <<'EOF'
-{
-  "account": "Alterra Regional Water Company",
-  "tenant": "TEN-ARWC-047",
-  "active_connector": "FLK-7.4.2",
-  "maintenance_case": "MTN-CRR-204",
-  "customer_receipt": "RCP-742-047",
-  "customer_handover": "https://customer-handover.arwc.test:8443",
-  "business_workplace": "https://business-workplace.arwc.test",
-  "planning_data": "https://planning-data.arwc.test",
-  "retained_archive": "https://retained-archive.arwc.test",
-  "corporate_identity": "https://corporate-identity.arwc.test",
-  "contractor_portal": "https://contractor-portal.arwc.test",
-  "field_gateway": "https://field-gateway.arwc.test",
-  "maintenance_review": "https://maintenance-review.arwc.test",
-  "session_file": "/var/lib/fieldlink-connector/handover/corporate-session",
-  "request_header": "Authorization: Bearer <session>"
-}
-EOF
-chown fieldlink:fieldlink /var/lib/fieldlink-connector/handover/customer-transition.json
-chmod 0400 /var/lib/fieldlink-connector/handover/customer-transition.json
 
 install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.crt /tmp/arwc-server.crt
@@ -54,6 +32,19 @@ install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.key /tmp/arwc-server.key
 install -o fieldlink -g fieldlink -m 0444 \
   /run/arwc-tls/ca.crt /tmp/arwc-ca.crt
+install -o arwc-connector -g arwc-connector -m 0400 \
+  /run/arwc-peer/keplerops-ca.crt /tmp/keplerops-ca.crt
 
-exec setpriv --reuid=arwc-connector --regid=arwc-connector --init-groups \
-  python3 /opt/customer-handover/customer_handover.py
+setpriv --reuid=arwc-connector --regid=arwc-connector --init-groups \
+  python3 /opt/customer-handover/customer_handover.py &
+handover_pid=$!
+
+setpriv --reuid=arwc-connector --regid=arwc-connector --init-groups \
+  python3 /opt/fieldlink-connector/fieldlink_consumer.py &
+consumer_pid=$!
+
+trap 'kill "$handover_pid" "$consumer_pid" 2>/dev/null || true; wait || true' TERM INT EXIT
+while kill -0 "$handover_pid" "$consumer_pid" 2>/dev/null; do
+  sleep 1
+done
+exit 1

@@ -8,6 +8,7 @@ import gzip
 import hashlib
 import io
 import json
+import os
 import subprocess
 import tarfile
 import unittest
@@ -20,7 +21,7 @@ VERSION = "7.4.3-cinder.rowan"
 
 def package() -> bytes:
     metadata = {"name": "@keplerops/fieldlink-connector", "version": VERSION, "fieldkest": {"interface": "fieldkest.connector/v3", "compatible_interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"]}}
-    source = b"exports.consume = input => ({schema:'fieldkest.rehearsal-result/v1',tenant_id:input.tenant_id,asset_id:input.asset_id,assessment:input.schema === 'fieldkest.connector/v2' ? 'reference-compatible' : 'calibration-review'});\n"
+    source = b"const run = input => ({schema:'fieldkest.rehearsal-result/v1',tenant_id:input.tenant_id,asset_id:input.asset_id,assessment:input.schema === 'fieldkest.connector/v2' ? 'reference-compatible' : 'calibration-review'}); exports.consume = run; exports.diagnostic_summary = run;\n"
     raw = io.BytesIO()
     with tarfile.open(fileobj=raw, mode="w", format=tarfile.USTAR_FORMAT) as archive:
         for name, payload in (("package/index.js", source), ("package/package.json", json.dumps(metadata, sort_keys=True, separators=(",", ":")).encode())):
@@ -39,12 +40,8 @@ class DeliveryLiveTest(unittest.TestCase):
         self.assertEqual(published["sha256"], digest)
         approved = call("packages.keplerops.test", f"/api/releases/REL-FLK-{VERSION}/approval", method="POST", body={"version": VERSION, "interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"], "lineage": "fieldkest-release-2026", "key_id": "fk-release-2026-old"}, auth="release-admin-session-5m", expected=201)
         self.assertFalse(approved["signed"])
-        polled = call("connector.arwc.test", "/api/packages/poll", auth="registry-customer-channel")
-        activated = call("connector.arwc.test", "/api/packages/activate", method="POST", body={"version": polled["selected_version"]}, auth="registry-customer-channel", expected=201)
-        self.assertEqual(activated["diagnostic_summary"]["interface"], "fieldkest.connector/v3")
-        rollback = call("connector.arwc.test", "/api/rollback-rehearsal", method="POST", body={"version": "7.4.2"}, auth="registry-customer-channel", expected=201)
-        self.assertEqual((rollback["selected_version"], rollback["current_activation"]), ("7.4.2", VERSION))
 
+    @unittest.skipUnless(os.environ.get("CINDER_CROSS_SEGMENT") == "1", "requires paired KeplerOps and Alterra carriers")
     def test_02_recover_signer_and_verify_fresh_signature(self) -> None:
         record = call("cloud-api.keplerops.test", "/api/build-records/BLD-REL-742")
         dossier = call("ci.keplerops.test", "/api/runs/BLD-REL-742/artifacts/release-dossier.json", auth=record["exchange_handle"])
@@ -65,6 +62,20 @@ print(base64.b64encode(Ed25519PrivateKey.from_private_bytes(seed).sign(base64.b6
         self.assertTrue(signature)
         approved = call("packages.keplerops.test", f"/api/releases/REL-FLK-{VERSION}/approval", method="POST", body={"version": VERSION, "interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"], "lineage": "fieldkest-release-2026", "key_id": "fk-release-2026-old", "signature_base64": signature}, auth="release-admin-session-5m", expected=201)
         self.assertTrue(approved["signed"])
+        denied = call("connector.arwc.test", "/api/fieldlink/packages/poll", method="POST", body={"tenant": "TEN-ARWC-047", "channel": "arwc-stable", "version": VERSION}, auth="support-delivery", expected=403)
+        self.assertEqual(denied["error"], "channel_identity_denied")
+        wrong_tenant = call("connector.arwc.test", "/api/fieldlink/packages/poll", method="POST", body={"tenant": "TEN-ARWC-019", "channel": "arwc-stable", "version": VERSION}, auth="registry-customer-channel", expected=422)
+        self.assertEqual(wrong_tenant["error"], "customer_channel_denied")
+        missing_route = call("connector.arwc.test", "/api/fieldlink/packages", auth="registry-customer-channel", expected=404)
+        self.assertEqual(missing_route["error"], "route_not_found")
+        polled = call("connector.arwc.test", "/api/fieldlink/packages/poll", method="POST", body={"tenant": "TEN-ARWC-047", "channel": "arwc-stable", "version": VERSION}, auth="registry-customer-channel")
+        self.assertEqual((polled["version"], polled["sha256"]), (VERSION, digest))
+        activated = call("connector.arwc.test", f"/api/fieldlink/packages/{VERSION}/activate", method="POST", body={"tenant": "TEN-ARWC-047", "channel": "arwc-stable"}, auth="registry-customer-channel", expected=201)
+        self.assertEqual((activated["runtime_identity"], activated["output"]["assessment"]), ("svc-arwc-fieldlink", "calibration-review"))
+        receipt = call("connector.arwc.test", f"/api/fieldlink/packages/{VERSION}/receipt", auth="registry-customer-channel")
+        self.assertEqual((receipt["audit_id"], receipt["package_sha256"]), (activated["audit_id"], digest))
+        rollback = call("connector.arwc.test", "/api/fieldlink/rehearsals/rollback", method="POST", body={"tenant": "TEN-ARWC-047", "version": "7.4.2", "slot": "future-state"}, auth="registry-customer-channel", expected=201)
+        self.assertEqual((rollback["selected_version"], rollback["current_activation"]), ("7.4.2", "unchanged"))
         bad = call("packages.keplerops.test", f"/api/releases/REL-FLK-{VERSION}/approval", method="POST", body={"version": VERSION, "interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"], "lineage": "fieldkest-release-2026", "key_id": "fk-release-2026-old", "signature_base64": base64.b64encode(b"wrong").decode()}, auth="release-admin-session-5m", expected=422)
         self.assertEqual(bad["error"], "release_signature_denied")
 

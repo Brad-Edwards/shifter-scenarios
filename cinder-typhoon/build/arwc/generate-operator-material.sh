@@ -5,7 +5,8 @@ umask 077
 ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 OPERATOR_DIR=${ARWC_OPERATOR_DIR:-"$ROOT/.operator"}
 mkdir -p "$OPERATOR_DIR/tls"
-chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls"
+mkdir -p "$OPERATOR_DIR/integration"
+chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls" "$OPERATOR_DIR/integration"
 
 if [[ ! -s "$OPERATOR_DIR/tls/ca.key" ]]; then
   openssl req -x509 -newkey rsa:3072 -nodes -days 3650 \
@@ -33,5 +34,12 @@ openssl x509 -req -days 825 -sha256 \
   -extfile "$OPERATOR_DIR/tls/server.ext" \
   -out "$OPERATOR_DIR/tls/server.crt" 2>/dev/null
 
+# A locally valid placeholder keeps the connector available before the two
+# carriers are paired. The pairing script replaces it with KeplerOps' public CA.
+if [[ ! -s "$OPERATOR_DIR/integration/keplerops-ca.crt" ]]; then
+  cp "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/integration/keplerops-ca.crt"
+fi
+
 chmod 0600 "$OPERATOR_DIR/tls/ca.key" "$OPERATOR_DIR/tls/archive-ca.key" "$OPERATOR_DIR/tls/server.key"
 chmod 0644 "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/tls/archive-ca.crt" "$OPERATOR_DIR/tls/server.crt"
+chmod 0644 "$OPERATOR_DIR/integration/keplerops-ca.crt"

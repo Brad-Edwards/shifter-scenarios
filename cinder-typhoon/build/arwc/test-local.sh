@@ -5,9 +5,11 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
 
 bash ./generate-operator-material.sh
-docker compose -f compose.yaml down -v --remove-orphans
+if [[ ${CINDER_PRESERVE_DELIVERY:-0} != 1 ]]; then
+  docker compose -f compose.yaml down -v --remove-orphans
+fi
 docker compose -f compose.yaml build
-docker compose -f compose.yaml up -d --force-recreate a-connector a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-renderer a-control-broker a-hmi a-historian a-engineering a-instruments a-reservoir a-distribution a-diagnostics
+docker compose -f compose.yaml up -d --force-recreate a-connector fieldlink-edge a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-renderer a-control-broker a-hmi a-historian a-engineering a-instruments a-reservoir a-distribution a-diagnostics
 
 ready=0
 for _ in $(seq 1 60); do
@@ -163,7 +165,7 @@ python3 tests/test_w34_live.py
 docker exec --user fieldlink cinder-arwc-connector sh -c 'test -r /var/lib/fieldlink-connector/handover/customer-transition.json'
 docker exec --user fieldlink cinder-arwc-connector sh -c 'test ! -r /opt/customer-handover/customer_handover.py'
 docker exec --user fieldlink cinder-arwc-connector sh -c 'test ! -r /var/lib/arwc-connector/state/planner-handover.json'
-[[ $(docker exec cinder-arwc-connector stat -c '%U:%G:%a' /var/lib/fieldlink-connector) == fieldlink:fieldlink:700 ]]
+[[ $(docker exec cinder-arwc-connector stat -c '%U:%G:%a' /var/lib/fieldlink-connector) == fieldlink:fieldlink:750 ]]
 [[ $(docker exec cinder-arwc-connector stat -c '%U:%G:%a' /var/lib/arwc-connector) == arwc-connector:arwc-connector:700 ]]
 [[ $(docker exec cinder-arwc-business stat -c '%U:%G:%a' /var/lib/arwc-business) == arwc-business:arwc-business:700 ]]
 [[ $(docker exec cinder-arwc-archive stat -c '%U:%G:%a' /var/lib/arwc-archive) == arwc-archive:arwc-archive:700 ]]
@@ -199,6 +201,11 @@ done
 [[ $(docker inspect -f '{{json .HostConfig.CapDrop}}' cinder-arwc-engineering) == '["ALL"]' ]]
 [[ $(docker inspect -f '{{json .HostConfig.SecurityOpt}}' cinder-arwc-engineering) != *'no-new-privileges:true'* ]]
 [[ $(docker exec cinder-arwc-engineering getcap /opt/process-service/artifacts/w28/utility) == '/opt/process-service/artifacts/w28/utility cap_setuid=ep' ]]
+[[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-fieldlink-edge) == '443/tcp' ]]
+[[ $(docker inspect -f '{{.Config.User}}' cinder-arwc-fieldlink-edge) == fieldlink-edge ]]
+[[ $(docker inspect -f '{{.HostConfig.ReadonlyRootfs}}' cinder-arwc-fieldlink-edge) == true ]]
+[[ $(docker inspect -f '{{json .HostConfig.CapDrop}}' cinder-arwc-fieldlink-edge) == '["ALL"]' ]]
+[[ $(docker inspect -f '{{json .HostConfig.SecurityOpt}}' cinder-arwc-fieldlink-edge) == *'no-new-privileges:true'* ]]
 [[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-corporate) == true ]]
 [[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-maintenance) == true ]]
 [[ $(docker network inspect -f '{{.Internal}}' cinder-arwc-dmz) == true ]]

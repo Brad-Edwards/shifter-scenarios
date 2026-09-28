@@ -121,6 +121,9 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(encoded)
 
     def authorized(self) -> bool:
+        if not TOKEN_HASH.is_file():
+            self.send_json(403, {"error": "corporate session required"})
+            return False
         if self.headers.get("X-ARWC-Tenant", "arwc") != "arwc":
             self.send_json(403, {"error": "session is not valid for this tenant"})
             return False

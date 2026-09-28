@@ -6,8 +6,9 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W35 (120 of 120 cards) are fully materialized and whole-phase accepted, and the deployed
-environment is restored to its authored initial state. The customer handover
+deployed. W01-W35 (120 of 120 cards) passed standalone and cross-carrier
+whole-phase acceptance. The corporate capability is not pre-seeded and must be
+earned by real K26.2 or K27.3 destination execution. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
@@ -22,12 +23,15 @@ the control-only `a-distribution` service without altering live process state.
 
 ## Boundaries
 
-- The dedicated GCP carrier and VPC have no peering or routes to Training,
-  KeplerOps, Shifter, or any other target network.
-- Target networks are Docker-internal and publish no ports on the carrier.
-  Operator entry is through IAP SSH and `docker exec` only.
-- The participant begins in the already-earned `fieldlink` execution context
-  on `a-connector`. The private service identity, seed records, mutable state,
+- The dedicated GCP carrier has one reciprocal peering with the KeplerOps
+  carrier. Its only ingress allowance is `10.77.49.2/32` to TCP 443 on this
+  carrier; it has no route to Training, Shifter, or their target networks.
+- Target networks are Docker-internal. Only the mTLS FieldLink consumer on
+  carrier TCP 443 is published; customer handover and every other target port
+  remain internal. Operator entry is through IAP SSH and `docker exec` only.
+- The participant begins in the limited `fieldlink` execution context on
+  `a-connector`, but no corporate session exists until successful package or
+  diagnostic execution creates the retained handoff. The private service identity, seed records, mutable state,
   audits, operator material, and tests are not participant-readable.
 - Participant-visible files and responses are entirely in-world. Design
   contracts, test sources, build notes, and evaluation state remain on the
@@ -64,6 +68,11 @@ the control-only `a-distribution` service without altering live process state.
 - `a-contractors` provides the declared narrow field-gateway conduit to the
   DMZ bridge. The connector has no DMZ membership, and neither corporate nor
   maintenance callers can directly address the bridge.
+- `fieldlink-customer-consumer` is a real mutual-TLS service on declared port
+  443. It binds package and diagnostic routes to distinct supplier identities,
+  validates tenant/revision/digest/interface data, executes only
+  `diagnostic_summary` in a bounded runtime, and owns the destination audit and
+  receipt.
 - `customer-handover` is a real TLS service on declared port 8443 and runs as
   `arwc-connector`; the participant context runs as the distinct locked
   `fieldlink` service identity.
@@ -84,6 +93,7 @@ the control-only `a-distribution` service without altering live process state.
 | AHB-06 | Control paths W26-W28 | Complete |
 | AHB-07 | Consequence, verification, and reporting W29-W34 | Complete |
 | AHB-08 | Whole-phase integration, destructive acceptance, pristine restore | Complete |
+| AHB-09 | KeplerOps delivery transit, earned corporate handoff, and cross-carrier acceptance | Complete |
 
 ## W01 asset decision
 
@@ -118,8 +128,18 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
 ## Progress evidence
 
 - 2026-09-27: Terraform created the dedicated `cinder-arwc-golden` VPC and
-  private carrier at `10.77.59.2` with no external address, peering, or role
-  grant. The apply added only Alterra resources; subsequent applies are no-op.
+  private carrier at `10.77.59.2` with no external address or role grant. Its
+  only peering is the dedicated KeplerOps delivery transit; subsequent applies
+  are no-op.
+- 2026-09-27: The SDL and challenge cards require K26.2/K27.3 destination-side
+  execution to supply CORPORATE. The pre-generated corporate session was an
+  implementation defect. The build now starts without that session and exposes
+  only the declared mTLS consumer for the narrow KeplerOps delivery transit.
+- 2026-09-28: Clean-carrier cross-segment acceptance passed for both distinct
+  mTLS routes. Signed package activation and support-diagnostic execution each
+  ran in the bounded Alterra runtime, wrote destination-owned receipts and
+  audit records, earned the handoff, and persisted across connector restart.
+  Destructive restoration then verified a pristine pre-delivery state.
 - 2026-09-27: W01 passes six black-box tests on fresh volumes. The tests cover
   all four declared routes, exact authored-document reuse, TLS, tenant-bound
   authorization, wrong bindings, stale revision denial, immutable fields,

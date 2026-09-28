@@ -445,26 +445,39 @@ services:
       cloud: {ipv4_address: 10.77.52.50, aliases: [assistant.keplerops.test]}
 
   a-connector:
-    <<: *service-security
     build:
       context: ../..
-      dockerfile: build/keplerops/images/platform.Dockerfile
-      args: {SERVICE: connector}
-    image: cinder-keplerops/a-connector:hand-build
+      dockerfile: build/keplerops/images/customer-relay.Dockerfile
+    image: cinder-keplerops/customer-relay:hand-build
     container_name: cinder-keplerops-connector
     hostname: a-connector
     depends_on: [router]
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, NET_ADMIN, SETGID, SETPCAP, SETUID]
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
     environment:
-      <<: *tls-environment
-      FIELDKEST_SERVICE: connector
-      FIELDKEST_GATEWAY: 10.77.60.254
+      FIELDKEST_CUSTOMER_UPSTREAM: https://fieldlink.arwc.test
+    extra_hosts:
+      - fieldlink.arwc.test:${ARWC_CARRIER_ADDRESS:-10.77.59.2}
     volumes:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
-      - connector-state:/var/lib/fieldkest-connector
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/integration/arwc-ca.crt:/run/customer-auth/arwc-ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/integration/registry-delivery.crt:/run/customer-auth/package.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/integration/registry-delivery.key:/run/customer-auth/package.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/integration/support-delivery.crt:/run/customer-auth/diagnostic.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/integration/support-delivery.key:/run/customer-auth/diagnostic.key:ro
+      - registry-published:/var/lib/fieldkest-registry/published:ro
     networks:
       connector: {ipv4_address: 10.77.60.20, aliases: [connector.arwc.test]}
+      customer_transit: {}
 
 networks:
   corporate:
@@ -487,6 +500,10 @@ networks:
     name: cinder-keplerops-connector
     internal: true
     ipam: {config: [{subnet: 10.77.60.0/24, gateway: 10.77.60.1}]}
+  customer_transit:
+    name: cinder-keplerops-customer-transit
+    driver: bridge
+    ipam: {config: [{subnet: 10.77.54.0/29, gateway: 10.77.54.1}]}
 
 volumes:
   k-dev-home: {name: cinder-keplerops-k-dev-home}
@@ -513,6 +530,5 @@ volumes:
   data-postgres: {name: cinder-keplerops-data-postgres}
   assistant-state: {name: cinder-keplerops-assistant-state}
   assistant-handover: {name: cinder-keplerops-assistant-handover}
-  connector-state: {name: cinder-keplerops-connector-state}
   handover: {name: cinder-keplerops-handover}
   runner-socket: {name: cinder-keplerops-runner-socket}

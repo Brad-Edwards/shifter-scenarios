@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 import ssl
@@ -144,16 +145,22 @@ class SupportHandler(KeplerHandler):
         if match:
             data = self.read_json(); state = extended(); job = state["diagnostics"].get(match.group(1))
             if not job: return self.send_json(404, {"error": "job_not_found"})
-            if data.get("interface") != "fieldkest.connector/v3" or not isinstance(data.get("expected_output"), dict): return self.send_json(422, {"error": "package_denied"})
-            job.update({"package": data, "state": "packaged"}); save_extended(state); append_audit(AUDIT, "diagnostic-package", {"request_id": self.request_id, "principal": SESSION["principal"], "job_id": match.group(1), "digest": __import__("hashlib").sha256(json.dumps(data, sort_keys=True).encode()).hexdigest(), "status": 200}); return self.send_json(200, job)
+            if (data.get("interface") != "fieldkest.connector/v3"
+                    or not isinstance(data.get("expected_output"), dict)
+                    or not isinstance(data.get("source"), str)
+                    or len(data["source"].encode()) > 131_072):
+                return self.send_json(422, {"error": "package_denied"})
+            signed = {key: data[key] for key in ("interface", "source", "expected_output")}
+            data["package_sha256"] = hashlib.sha256(json.dumps(signed, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+            job.update({"package": data, "state": "packaged"}); save_extended(state); append_audit(AUDIT, "diagnostic-package", {"request_id": self.request_id, "principal": SESSION["principal"], "job_id": match.group(1), "digest": data["package_sha256"], "status": 200}); return self.send_json(200, job)
         match = __import__("re").fullmatch(r"/api/diagnostics/([^/]+)/deliver", path)
         if match:
             state = extended(); job = state["diagnostics"].get(match.group(1))
             if not job or job.get("state") != "packaged": return self.send_json(409, {"error": "job_not_ready"})
-            request = urlrequest.Request("https://connector.arwc.test/api/diagnostics/intake", data=json.dumps({"job_id": match.group(1), "tenant": job["tenant"], **job["package"]}).encode(), method="POST", headers={"Authorization": "Bearer support-delivery", "Content-Type": "application/json"})
+            request = urlrequest.Request("https://connector.arwc.test/api/fieldlink/diagnostics", data=json.dumps({"job_id": match.group(1), "tenant": job["tenant"], "connector_revision": job["connector_revision"], **job["package"]}, sort_keys=True, separators=(",", ":")).encode(), method="POST", headers={"Authorization": "Bearer support-delivery", "Content-Type": "application/json"})
             context = ssl.create_default_context(cafile="/tmp/fieldkest-ca.crt")
             with urlrequest.urlopen(request, context=context, timeout=8) as response: value = json.loads(response.read())
-            job.update({"state": "delivered", "receipt": value}); save_extended(state); append_audit(AUDIT, "diagnostic-delivery", {"request_id": self.request_id, "principal": SESSION["principal"], "job_id": match.group(1), "receipt_id": value["receipt_id"], "status": 201}); return self.send_json(201, value)
+            job.update({"state": "delivered", "receipt": value}); save_extended(state); append_audit(AUDIT, "diagnostic-delivery", {"request_id": self.request_id, "principal": SESSION["principal"], "job_id": match.group(1), "receipt_id": value["receipt_id"], "destination_audit_id": value["audit_id"], "status": 202}); return self.send_json(202, value)
         self.send_json(404, {"error": "not_found"})
 
     def do_PATCH(self) -> None:

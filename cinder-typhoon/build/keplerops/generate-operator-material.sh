@@ -5,7 +5,8 @@ umask 077
 ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 OPERATOR_DIR=${KEPLEROPS_OPERATOR_DIR:-"$ROOT/.operator"}
 mkdir -p "$OPERATOR_DIR/tls"
-chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls"
+mkdir -p "$OPERATOR_DIR/integration"
+chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls" "$OPERATOR_DIR/integration"
 
 if [[ ! -s "$OPERATOR_DIR/rowan_ed25519" ]]; then
   ssh-keygen -q -t ed25519 -N '' -C 'rowan@keplerops' -f "$OPERATOR_DIR/rowan_ed25519"
@@ -43,6 +44,26 @@ if [[ ! -s "$OPERATOR_DIR/fixture-issuer.key" ]]; then
 fi
 openssl pkey -in "$OPERATOR_DIR/fixture-issuer.key" -pubout -out "$OPERATOR_DIR/fixture-issuer.pub" 2>/dev/null
 
+for identity in registry-delivery support-delivery; do
+  if [[ ! -s "$OPERATOR_DIR/integration/$identity.key" ]]; then
+    common_name=svc-keplerops-registry-delivery
+    [[ $identity == support-delivery ]] && common_name=svc-keplerops-support-delivery
+    openssl req -newkey rsa:3072 -nodes \
+      -subj "/CN=$common_name/O=Kepler Operations" \
+      -keyout "$OPERATOR_DIR/integration/$identity.key" \
+      -out "$OPERATOR_DIR/integration/$identity.csr" 2>/dev/null
+    cat >"$OPERATOR_DIR/integration/$identity.ext" <<'EOF'
+keyUsage=digitalSignature
+extendedKeyUsage=clientAuth
+EOF
+    openssl x509 -req -days 825 -sha256 \
+      -in "$OPERATOR_DIR/integration/$identity.csr" \
+      -CA "$OPERATOR_DIR/tls/ca.crt" -CAkey "$OPERATOR_DIR/tls/ca.key" -CAcreateserial \
+      -extfile "$OPERATOR_DIR/integration/$identity.ext" \
+      -out "$OPERATOR_DIR/integration/$identity.crt" 2>/dev/null
+  fi
+done
+
 openssl req -newkey rsa:3072 -nodes \
   -subj '/CN=keplerops.test' \
   -keyout "$OPERATOR_DIR/tls/server.key" -out "$OPERATOR_DIR/tls/server.csr" 2>/dev/null
@@ -57,5 +78,11 @@ openssl x509 -req -days 825 -sha256 \
   -extfile "$OPERATOR_DIR/tls/server.ext" \
   -out "$OPERATOR_DIR/tls/server.crt" 2>/dev/null
 
-chmod 0600 "$OPERATOR_DIR/rowan_ed25519" "$OPERATOR_DIR/worker-hmac.key" "$OPERATOR_DIR/fixture-issuer.key" "$OPERATOR_DIR/tls/ca.key" "$OPERATOR_DIR/tls/server.key" "$OPERATOR_DIR/tls/evan.key"
+# The carrier pairing step replaces this public trust anchor with Alterra's CA.
+if [[ ! -s "$OPERATOR_DIR/integration/arwc-ca.crt" ]]; then
+  cp "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/integration/arwc-ca.crt"
+fi
+
+chmod 0600 "$OPERATOR_DIR/rowan_ed25519" "$OPERATOR_DIR/worker-hmac.key" "$OPERATOR_DIR/fixture-issuer.key" "$OPERATOR_DIR/tls/ca.key" "$OPERATOR_DIR/tls/server.key" "$OPERATOR_DIR/tls/evan.key" "$OPERATOR_DIR/integration/registry-delivery.key" "$OPERATOR_DIR/integration/support-delivery.key"
 chmod 0644 "$OPERATOR_DIR/rowan_ed25519.pub" "$OPERATOR_DIR/rowan_authorized_keys" "$OPERATOR_DIR/fixture-issuer.pub" "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/tls/server.crt" "$OPERATOR_DIR/tls/evan.crt"
+chmod 0644 "$OPERATOR_DIR/integration/arwc-ca.crt" "$OPERATOR_DIR/integration/registry-delivery.crt" "$OPERATOR_DIR/integration/support-delivery.crt"

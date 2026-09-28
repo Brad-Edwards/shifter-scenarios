@@ -6,14 +6,16 @@ content remain the source of truth. When hand-building exposes missing bytes,
 behavior, placement, or contradictory contracts, reconcile the design and pass
 the RAE gates before encoding the change here.
 
-**Status:** K01-K31 are materialized on the isolated private GCP carrier. The
-full participant-path, persistence, authorization, worker-confinement, network,
-security-posture, SDL, and pristine-state gates are the acceptance boundary.
+**Status:** K01-K31 are materialized and accepted on the isolated private GCP
+carrier. The former local stand-in for K26/K27 has been removed. Both delivery
+routes now cross the narrow private transit and execute on the separate Alterra
+carrier, where destination-owned receipts earn the corporate handoff.
 
 **Target:** A working, isolated KeplerOps range in GCP project `prod-hwmvjy`,
 with all 104 participant paths exercised from the supplied Rowan workstation.
-This stage does not create bakes and does not materialize ARWC beyond the
-bounded `a-connector` consumer needed by K26 and K27.
+This stage does not create bakes. The real `a-connector` consumer is owned and
+run by the Alterra build; KeplerOps contains only the supplier-side delivery
+relay and route-specific client identities.
 
 ## Non-negotiable boundaries
 
@@ -67,11 +69,14 @@ open where the contract explicitly permits equivalent behavior.
   network at `10.77.60.0/24`. Each named service receives its SDL address.
 - Provide only allowlisted routing between those networks. Runtime target
   networks have no public egress and publish no target ports on the carrier.
-  IAP SSH is the operator boundary.
+  The supplier relay alone has carrier egress, fixed to Alterra's private
+  connector address; IAP SSH remains the operator boundary.
 - Use one container per SDL node: `k-dev`, `k-staff`, `k-identity`, `k-cert`,
   `k-source`, `k-registry`, `k-ci`, `k-preview`, `k-support`, `k-indexer`,
-  `k-cloud-api`, `k-workload`, `k-data`, `k-assistant`, and the bounded
-  `a-connector` consumer.
+  `k-cloud-api`, `k-workload`, `k-data`, and `k-assistant`. A narrow supplier
+  relay presents `connector.arwc.test` internally and forwards only the six
+  declared FieldLink routes to Alterra using separate package and diagnostic
+  mTLS identities.
 - Build shared libraries for HTTP/TLS, exact request parsing, authorization,
   persistent state, audit receipts, deterministic repository construction and
   isolated workers. Domain behavior remains in node-owned modules.
@@ -132,8 +137,8 @@ demands it. A wave is not complete merely because its services start.
 | KHB-06 | Build and validate identity slice | Complete | K17-K20 and K25 persist support state across service boundaries; K19 issues a CA-signed client certificate/private key and staff verifies it by mTLS. |
 | KHB-07 | Build and validate cloud/data/workload slice | Complete | K13-K16 and K30-K31 implement authority exchange, coherent export state, recovery namespaces, and short-lived networkless workload execution. |
 | KHB-08 | Build and validate assistant slice | Complete | K21-K24 use the exact local Qwen2.5-3B-Instruct revision with deterministic decoding, retained retrieval state, a cross-service tool action, and bounded completion state. |
-| KHB-09 | Build and validate connector boundary | Complete | K26/K27 cross only the explicit supplier/customer connector boundary and retain destination receipts. |
-| KHB-10 | Full integration and participant play pass | Complete | The complete black-box suite, persistence/isolation checks, pinned SDL gates, and destructive-test pristine restore pass on the private carrier. |
+| KHB-09 | Build and validate connector boundary | Complete | The package and support routes use distinct mTLS identities across the one-flow private transit; Alterra performs bounded destination execution and owns the receipts and audit. |
+| KHB-10 | Full integration and participant play pass | Complete | All 104 paths, both earned delivery routes, persistence, isolation, security-posture inspection, clean rebuild, and destructive pristine restoration passed. |
 
 ## Current decisions and blockers
 
@@ -141,8 +146,17 @@ demands it. A wave is not complete merely because its services start.
   design gate remains authoritative, but runtime claims now require this
   ledger's evidence.
 - 2026-09-26: Use a separate KeplerOps carrier so the accepted Training build
-  remains stable. Cross-segment progression is an organizer/workspace boundary,
-  not a network link.
+  remains stable.
+- 2026-09-27: The campaign contract requires K26.2 or K27.3 to be a real
+  participant-executed transition. KeplerOps and Alterra therefore use a
+  dedicated private peering with one allowed flow: the Kepler carrier
+  (`10.77.49.2`) to Alterra's FieldLink consumer (`10.77.59.2:443`). Training,
+  Shifter, and all Docker target subnets remain unconnected.
+- 2026-09-28: Clean-carrier acceptance exercised both independent transition
+  routes. Signed package activation and support-diagnostic execution each ran
+  on Alterra, produced destination-owned audit evidence and receipts, earned
+  the corporate handoff, and survived connector restart. Both carriers were
+  then destructively restored to their authored pre-delivery state.
 - 2026-09-26: The 104 contracts distribute as: registry 14, assistant 12, data
   12, support 11, CI 10, source 8, preview 7, developer 6, cloud API 5, staff 5,
   workload 5, indexer 4, certificate 2, identity 1, and connector 2.
@@ -190,7 +204,7 @@ demands it. A wave is not complete merely because its services start.
   the authenticated workspace GET/PUT application routes to traverse the
   runner-owned `0710` workspace root while preserving per-workspace mounts for
   short-lived children.
-- 2026-09-27: Fresh-volume acceptance passes 50 black-box tests: 7 opening, 8
+- 2026-09-27: Before cross-carrier integration, fresh-volume acceptance passed 50 black-box tests: 7 opening, 8
   registry, 2 K04, 8 K09, 5 K11, 3 K28, 8 declared-component, 6 platform, and
   3 delivery tests. Direct checks additionally prove exact container
   addressing, internal-only networks, no host-published participant ports,
@@ -201,7 +215,7 @@ demands it. A wave is not complete merely because its services start.
   fourth-wall terminology. Operator tests and this implementation ledger are
   kept only on the carrier control surface and are absent from `k-dev` and the
   participant service interfaces.
-- 2026-09-27: Finalization removed only KeplerOps containers and named volumes,
+- 2026-09-27: The pre-integration checkpoint removed only KeplerOps containers and named volumes,
   then redeployed from the authored build. All 27 persistent volumes share the
   fresh creation time `2026-09-27T00:39:20Z`; CI jobs/rehearsals, registry
   publications, Rowan workspace files, and residual short-lived workers are
@@ -221,3 +235,6 @@ demands it. A wave is not complete merely because its services start.
 - Service state and audit streams are volume-backed. Acceptance deliberately
   mutates them; finalization removes only KeplerOps volumes and recreates the
   authored initial state before handoff.
+- `restore-pristine.sh` performs that finalization, verifies that no package
+  publication, diagnostic job, or rehearsal result remains, and rechecks the
+  relay's non-root, capability-free runtime posture.
