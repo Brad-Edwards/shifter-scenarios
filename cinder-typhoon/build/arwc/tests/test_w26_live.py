@@ -162,7 +162,7 @@ class W26Live(unittest.TestCase):
         self.assertEqual(result["handover"]["audience"], "control-broker.arwc.test")
         type(self).attestation = result["renderer_attestation"]
 
-    def test_04_role_omission_issues_exact_five_minute_client(self) -> None:
+    def test_04_role_omission_issues_exact_fifteen_minute_client(self) -> None:
         body = {
             "renderer_attestation": type(self).attestation, "approval": type(self).approval,
             "initiating_role": "contractor", "outlet_group": "OG-CRR-02",
@@ -187,7 +187,7 @@ class W26Live(unittest.TestCase):
         self.assertEqual(record["actions"], ["plan-execute", "readback"])
         issued = __import__("datetime").datetime.fromisoformat(record["issued_at"].replace("Z", "+00:00"))
         expires = __import__("datetime").datetime.fromisoformat(record["expires_at"].replace("Z", "+00:00"))
-        self.assertEqual((expires - issued).total_seconds(), 300)
+        self.assertEqual((expires - issued).total_seconds(), 900)
         type(self).control_client = result["control_client"]
 
     def test_05_client_authority_is_accepted_only_within_scope(self) -> None:

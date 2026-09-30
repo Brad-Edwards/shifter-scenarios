@@ -395,7 +395,7 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   retained.
 - 2026-09-27: The broker independently verifies the signed approval and fresh
   renderer attestation but intentionally omits the initiating-role comparison.
-  It issues an exact five-minute `CTRL-CLIENT-CRR-26` limited to `OG-CRR-02`,
+  It issues an exact fifteen-minute `CTRL-CLIENT-CRR-26` limited to `OG-CRR-02`,
   `CRR-CTRL-R21`, plan execution, and readback. Wrong evidence, tenant, outlet,
   project, wider action, and wrong client are denied; an accepted readback
   demonstrates the scoped authority without waiving mode, mapping, or release
@@ -409,7 +409,7 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   verified. The suite now contains 138 black-box checks.
 - No SDL change was needed for W26, and none of its four cards binds a narrative
   asset. The existing contracts fully specify the approval and inspection
-  binding, both caller-role omissions, bounded renderer action, five-minute
+  binding, both caller-role omissions, bounded renderer action, fifteen-minute
   control scope, and authority boundary.
 - 2026-09-27: W27 adds five passing black-box checks across `a-engineering`,
   `a-diagnostics`, `a-data-bridge`, and `a-data`. A stripped native x86-64
@@ -454,7 +454,7 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   its syscall allowlist, performs `setresuid(0,0,0)`, and calls exported
   `issue_client` with `ISSUER-UTIL-OG2-R4` and the current correlation. The DMZ
   broker independently enforces root Unix peer credentials on the fixed
-  `/run/arwc/control-issuer.sock` boundary and issues an exact five-minute
+  `/run/arwc/control-issuer.sock` boundary and issues an exact fifteen-minute
   `CTRL-CLIENT-CRR-28` limited to `OG-CRR-02`, `CRR-CTRL-R21`, plan execution,
   and readback. The engineering and DMZ containers retain disjoint internal
   networks; direct TCP, metadata, and Internet egress remain denied. Main
@@ -495,7 +495,7 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   the source package or unrelated narrative content.
 - 2026-09-27: W30 adds four passing black-box checks across `a-hmi`,
   independently owned `a-instruments`, and the new control-only `a-reservoir`.
-  The binder requires a current five-minute control client and exact asset,
+  The binder requires a current fifteen-minute control client and exact asset,
   outlet, project R21, map R8, mode R17, envelope R6, plan, revision, and unit
   bindings. HMI and reservoir evidence retain the same caller correlation;
   missing evidence, wrong tenant or authority, stale bindings, and removal of
@@ -567,17 +567,26 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   ports, internal target networks, metadata and Internet denial, and denied
   routes to Training, KeplerOps, and Shifter addresses. The retained acceptance
   exit status is zero.
-- The whole-phase run exposed the real five-minute planner-session boundary.
-  Each correctly authorized browser bootstrap now issues a fresh five-minute
-  credential, and the operator-only acceptance harness renews it between long
-  test groups. W27 posture inspection was also aligned with W28's declared
-  single-file `cap_setuid=ep` utility exception while continuing to require
-  zero service-process capabilities and the remaining hardening controls.
+- 2026-09-30: Event-readiness review found that the original five-minute
+  planner-session boundary interrupted longer participant workflows. The
+  planner session and both scoped control-client routes now last fifteen
+  minutes while retaining expiry, renewal, scope enforcement, and stale-token
+  rejection. The operator-only acceptance harness may still renew the planner
+  session between long test groups.
+- 2026-09-30: A clean-image whole-phase rerun passed all 176 black-box checks,
+  including exact 900-second planner and control-client lifetimes, addressing,
+  authorization, persistence, container posture, participant-content
+  inspection, and no-egress/isolation checks. The final posture gate was also
+  aligned with the edge image's explicit unprivileged user/group declaration.
+  W27 posture inspection continues to allow only W28's declared single-file
+  `cap_setuid=ep` utility exception while requiring zero service-process
+  capabilities and the remaining hardening controls.
 - Final static validation passed env-packs 6.1.0 author validation, RAE 5.0.0
   parsing and composition of 136 modules, instantiation and compilation of
   3,494 requirements and 281 source-bound observations, all 16 focused ARWC
   design checks, and the Training, KeplerOps, and 120-card ARWC hand-build
-  gates. No SDL change was required.
+  gates. The observable lifetime change was reconciled into the W06, W26, and
+  W28 SDL contracts and their generated challenge cards before deployment.
 - After destructive acceptance, `restore-pristine.sh` recreated every volume
   and directly verified the exact authored service states, empty audits and
   result stores, absent earned credentials/evidence, initial 12.40 ML reserve,

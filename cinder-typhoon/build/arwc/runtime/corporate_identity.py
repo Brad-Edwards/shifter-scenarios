@@ -24,6 +24,7 @@ TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 HANDOVER = pathlib.Path("/run/arwc-archive-evidence/W06-access.json")
 PLANNER_EVIDENCE = ROOT / "planning" / "planner-session.json"
 ARCHIVE_EVIDENCE = ROOT / "archive" / "W08-source.json"
+PLANNER_SESSION_LIFETIME_SECONDS = 15 * 60
 
 STARTER = {
     "record_id": "START-MIRA-2026",
@@ -295,7 +296,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "browser transaction binding does not match"})
             return
         token = secrets.token_urlsafe(40)
-        expires = int(time.time()) + 300
+        expires = int(time.time()) + PLANNER_SESSION_LIFETIME_SECONDS
         state["planner_session"] = token
         state["planner_session_sha256"] = hashlib.sha256(token.encode()).hexdigest()
         state["planner_session_expires"] = expires

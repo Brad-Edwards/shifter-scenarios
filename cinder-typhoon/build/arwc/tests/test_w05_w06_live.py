@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import time
 import unittest
 
 
@@ -186,6 +187,9 @@ class W05W06Live(unittest.TestCase):
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["planner"], "nadia.corvane")
         self.assertEqual(response["record"]["scope"], "planning-records")
+        remaining = response["record"]["expires_at_epoch"] - int(time.time())
+        self.assertGreaterEqual(remaining, 895)
+        self.assertLessEqual(remaining, 900)
         type(self).planner = response["planner_session"]
         saved = inside(
             "sh", "-c",

@@ -29,7 +29,7 @@ for attempt in range(30):
   time.sleep(1)
 assert response.status == 201
 assert result["record"]["scope"] == "planning-records"
-assert 295 <= result["record"]["expires_at_epoch"]-int(time.time()) <= 300
+assert 895 <= result["record"]["expires_at_epoch"]-int(time.time()) <= 900
 path=pathlib.Path("/var/lib/fieldlink-connector/receipts/planner-session")
 path.write_text(result["planner_session"]+"\n")
 path.chmod(0o600)

@@ -181,7 +181,7 @@ initial(5, [
 initial(6, [
     "Protected rendering record RENDER-CRR-882 binds planner nadia.corvane, drawing DRW-OG2-R8, review REV-CRR-4417, OAuth transaction OAUTH-PLN-882, and browser profile planner-review-3",
     "Preview callback validates OAuth state before replacing the pending preview origin; a controlled preview at preview-cinder.arwc.test can be attached to DRW-OG2-R8 in the isolated planner browser",
-    "The review browser posts its planner session bootstrap to the attached preview for compatibility; origin is checked against mutable pending-preview state and yields a five-minute planner session limited to planning records",
+    "The review browser posts its planner session bootstrap to the attached preview for compatibility; origin is checked against mutable pending-preview state and yields a fifteen-minute planner session limited to planning records",
 ])
 initial(7, [
     "Planner report definition QRY-RESERVE-R7 names PostgreSQL 16.4 view reserve_report_current, identifier quoting rules, SELECT-only policy, and ordinary request/result pairs",
@@ -293,7 +293,7 @@ initial(26, [
     "Renderer profile RENDER-MAINT-CRR-R9 binds approval APR-CRR-4417-R6, inspection INSP-CRR-2026-09-18, reviewer role maintenance-reviewer, and worker svc-maint-render",
     "Preview route resolves contractor work-package tenant after mapping its supplied approval; it verifies approval signature but omits caller-role comparison, accepting controlled package WP-CRR-CINDER-R1 for the privileged inspection preview",
     "Renderer action template permits only fetch_handover(HND-MAINT-CTRL-09) under svc-maint-render and then renders the required inspection fields; crafted package can select that action but no command or arbitrary URL",
-    "Control issuer verifies approval and renderer attestation but omits the initiating caller-role claim, issuing a five-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback",
+    "Control issuer verifies approval and renderer attestation but omits the initiating caller-role claim, issuing a fifteen-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback",
 ])
 initial(27, [
     "Legacy verifier VER-ROT128-R3 treats each 16-byte block as little-endian u128 and updates state s=ROTL128(s,17) XOR block XOR ROTL128(block,41) from IV 6a09e667f3bcc908bb67ae8584caa73b, then returns s XOR ROTL128(s,29) XOR byte_length; six programs freeze padding, length, and decisions",
@@ -303,7 +303,7 @@ initial(27, [
 initial(28, [
     "Utility UTIL-CRR-ISSUER-R4 is Linux x86_64 PIE built by clang 18.1 with -O2 -fstack-protector-strong -fPIE -pie -Wl,-z,relro,-z,now, glibc 2.39, CET disabled, 16 KiB executable text, ASLR enabled, seccomp allowlist, and file capability cap_setuid+ep; it serves engineering relation REL-UTIL-ISSUER-4",
     "Length field copies up to 384 bytes into a 192-byte frame with stack canary disclosure in a preceding status record; sparse gadgets plus fixed vDSO mapping permit a bounded call-oriented chain without a shell",
-    "Successful chain calls built-in issue_client for issuer record ISSUER-UTIL-OG2-R4 after setresuid(0,0,0); seccomp permits only the fixed issuer socket and the resulting client matches W26 scope",
+    "Successful chain calls built-in issue_client for issuer record ISSUER-UTIL-OG2-R4 after setresuid(0,0,0); seccomp permits only the fixed issuer socket and the resulting fifteen-minute client matches W26 scope",
 ])
 initial(29, [
     "Settlement tariff TAR-CRR-DP3-R4 is USD 2,400 per ML for planning window ALLOC-2026-DP3 and is distinct from the general procurement catalog",
@@ -522,7 +522,7 @@ MECHANIC_DETAILS = {
         "to immutable issuer record ISSUER-UTIL-OG2-R4 and the current request correlation. The seccomp policy "
         "permits the required credential syscalls and one Unix connect/send/receive sequence only to "
         "/run/arwc/control-issuer.sock. A shell, another path, another issuer record, or a client with broader "
-        "asset/project/action scope is rejected and leaves no client."
+        "asset/project/action scope or a lifetime other than fifteen minutes is rejected and leaves no client."
     ),
     "W31.1": (
         "DVL1 requests are at most 512 bytes: magic DVL1, declared allocation u16, header-copy length u16, CRC32C "

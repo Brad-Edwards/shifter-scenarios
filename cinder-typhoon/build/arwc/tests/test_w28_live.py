@@ -264,7 +264,7 @@ print(s.recv(4096).decode())
         self.assertEqual(record["project"], "CRR-CTRL-R21")
         self.assertEqual(record["actions"], ["plan-execute", "readback"])
         self.assertEqual((datetime.fromisoformat(record["expires_at"].replace("Z", "+00:00")) -
-                          datetime.fromisoformat(record["issued_at"].replace("Z", "+00:00"))).total_seconds(), 300)
+                          datetime.fromisoformat(record["issued_at"].replace("Z", "+00:00"))).total_seconds(), 900)
         type(self).control_client = result["control_client"]
 
     def test_04_client_authority_is_real_and_exactly_scoped(self) -> None:

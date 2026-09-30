@@ -1666,8 +1666,8 @@ nodes:
           auth_scheme: ARWC onboarding or planner session
           session_required: true
           description: The review browser posts its planner session bootstrap to the attached preview for compatibility;
-            origin is checked against mutable pending-preview state and yields a five-minute planner session limited
-            to planning records.
+            origin is checked against mutable pending-preview state and yields a fifteen-minute planner session
+            limited to planning records.
           responses:
           - status_code: 201
             content_type: application/json

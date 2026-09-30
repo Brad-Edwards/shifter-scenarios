@@ -32,6 +32,7 @@ MAINTENANCE_ROUTE = "/api/an-approval-becomes-a-control-client"
 UTILITY_ROUTE = "/api/keep-the-authority-you-earned"
 UTILITY_SOCKET = "/run/arwc/control-issuer.sock"
 AUTHORITY_EVIDENCE = ROOT / "authority"
+CONTROL_CLIENT_LIFETIME = timedelta(minutes=15)
 
 APPROVAL_FIELDS = {
     "record_id": "APR-CRR-4417-R6", "revision": 6,
@@ -209,7 +210,7 @@ def utility_response(request: dict[str, object], peer_uid: int) -> tuple[int, di
             "issuer_record": "ISSUER-UTIL-OG2-R4", "issuer_correlation": correlation,
             "outlet_group": "OG-CRR-02", "project": "CRR-CTRL-R21",
             "actions": ["plan-execute", "readback"],
-            "issued_at": timestamp(now), "expires_at": timestamp(now + timedelta(minutes=5)),
+            "issued_at": timestamp(now), "expires_at": timestamp(now + CONTROL_CLIENT_LIFETIME),
             "token_sha256": hashlib.sha256(raw.encode()).hexdigest(), "bearer_token": raw,
         }
         state["utility_control_client"] = current
@@ -393,7 +394,7 @@ class Handler(BaseHTTPRequestHandler):
                 "approval": "APR-CRR-4417-R6", "inspection": "INSP-CRR-2026-09-18",
                 "outlet_group": "OG-CRR-02", "project": "CRR-CTRL-R21",
                 "actions": ["plan-execute", "readback"],
-                "issued_at": timestamp(now), "expires_at": timestamp(now + timedelta(minutes=5)),
+                "issued_at": timestamp(now), "expires_at": timestamp(now + CONTROL_CLIENT_LIFETIME),
                 "token_sha256": hashlib.sha256(raw.encode()).hexdigest(), "bearer_token": raw,
             }
             state["control_client"] = current

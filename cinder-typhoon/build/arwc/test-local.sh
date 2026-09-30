@@ -202,7 +202,7 @@ done
 [[ $(docker inspect -f '{{json .HostConfig.SecurityOpt}}' cinder-arwc-engineering) != *'no-new-privileges:true'* ]]
 [[ $(docker exec cinder-arwc-engineering getcap /opt/process-service/artifacts/w28/utility) == '/opt/process-service/artifacts/w28/utility cap_setuid=ep' ]]
 [[ $(docker inspect -f '{{range $port, $bindings := .NetworkSettings.Ports}}{{if $bindings}}{{$port}}{{end}}{{end}}' cinder-arwc-fieldlink-edge) == '443/tcp' ]]
-[[ $(docker inspect -f '{{.Config.User}}' cinder-arwc-fieldlink-edge) == fieldlink-edge ]]
+[[ $(docker inspect -f '{{.Config.User}}' cinder-arwc-fieldlink-edge) == fieldlink-edge:fieldlink-edge ]]
 [[ $(docker inspect -f '{{.HostConfig.ReadonlyRootfs}}' cinder-arwc-fieldlink-edge) == true ]]
 [[ $(docker inspect -f '{{json .HostConfig.CapDrop}}' cinder-arwc-fieldlink-edge) == '["ALL"]' ]]
 [[ $(docker inspect -f '{{json .HostConfig.SecurityOpt}}' cinder-arwc-fieldlink-edge) == *'no-new-privileges:true'* ]]

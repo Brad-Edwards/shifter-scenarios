@@ -681,7 +681,7 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      The authored condition is **issuer initiating-role omission**. Control issuer verifies approval and renderer attestation but omits the initiating caller-role claim, issuing a five-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+      The authored condition is **issuer initiating-role omission**. Control issuer verifies approval and renderer attestation but omits the initiating caller-role claim, issuing a fifteen-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
 
       The required result is: Demonstrate the scoped client's accepted authority under the correct approval binding. This supplies W26.CONTROL and CONTROL; it does not waive mode, mapping, or release limits.
     realization_profile: backend-declared
@@ -699,7 +699,7 @@ action_contracts:
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-control-broker` and its `control-broker` application own this part of **An approval becomes a control client**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Control issuer verifies approval and renderer attestation but omits the initiating caller-role claim, issuing a five-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback.
+        `a-control-broker` and its `control-broker` application own this part of **An approval becomes a control client**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Control issuer verifies approval and renderer attestation but omits the initiating caller-role claim, issuing a fifteen-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback.
 
         Native bindings:
 
