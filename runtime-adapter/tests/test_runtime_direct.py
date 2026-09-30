@@ -48,11 +48,13 @@ def test_direct_plan_uses_container_identity_without_broker(phase):
     if phase == "configure":
         assert [action.action_id for action in plan.actions] == [
             "directory-firewall",
+            "metadata-token-responder",
+            "metadata-firewall",
             "container-bootstrap",
             "vertex-shell-env",
             "splice-watcher",
         ]
-        bootstrap = plan.actions[1].script
+        bootstrap = plan.actions[3].script
         assert 'CLAUDE_CODE_USE_VERTEX: "1"' in bootstrap
         assert 'CLOUD_ML_REGION: "us-east5"' in bootstrap
         assert 'ANTHROPIC_VERTEX_PROJECT_ID: "prod-qjpjnv"' in bootstrap
@@ -60,7 +62,7 @@ def test_direct_plan_uses_container_identity_without_broker(phase):
         assert "www.googleapis.com:199.36.153.8" in bootstrap
         assert "target=/etc/environment" in bootstrap
         assert "- /usr/local/libexec/polaris-splice-credential.py" in bootstrap
-        shell_env = plan.actions[2].script
+        shell_env = plan.actions[4].script
         assert "export CLAUDE_CODE_USE_VERTEX=1" in shell_env
         assert "export ANTHROPIC_VERTEX_PROJECT_ID=prod-qjpjnv" in shell_env
         assert "export CLOUD_ML_REGION=us-east5" in shell_env
@@ -70,13 +72,15 @@ def test_direct_plan_uses_container_identity_without_broker(phase):
         assert [action.action_id for action in plan.actions] == [
             "directory-firewall-ready",
             "bootstrap-ready",
+            "preconfigured-host-ready",
             "vertex-ready",
         ]
-        assert "/usr/local/bin/claude -p" in plan.actions[2].script
-        assert "--output-format json" in plan.actions[2].script
-        assert 'response.get("is_error")' in plan.actions[2].script
-        assert 'get("output_tokens",0)' in plan.actions[2].script
-        assert "grep -q pam_env.so /etc/pam.d/xrdp-sesman" in plan.actions[2].script
+        assert "preconfigured-range-host.ready" in plan.actions[2].script
+        assert "/usr/local/bin/claude -p" in plan.actions[3].script
+        assert "--output-format json" in plan.actions[3].script
+        assert 'r.get("is_error")' in plan.actions[3].script
+        assert 'get("output_tokens",0)' in plan.actions[3].script
+        assert "grep -q pam_env.so /etc/pam.d/xrdp-sesman" in plan.actions[3].script
 
 
 def test_direct_variant_rejects_other_clouds():

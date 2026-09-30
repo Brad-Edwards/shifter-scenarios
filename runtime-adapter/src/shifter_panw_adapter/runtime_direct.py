@@ -9,7 +9,11 @@ from importlib.resources import files
 from shifter_adapter_sdk.runtime import PROTOCOL, GuestAction, PluginManifest, RuntimeInput, RuntimePlan
 
 from ._polaris_scripts import POLARIS_RANGE_BOOTSTRAP_SCRIPT
-from ._polaris_scripts_aux import INSTALL_SPLICE_WATCHER_SCRIPT, VERIFY_POLARIS_BOOTSTRAP_COMMON
+from ._polaris_scripts_aux import (
+    INSTALL_SPLICE_WATCHER_SCRIPT,
+    VERIFY_POLARIS_BOOTSTRAP_COMMON,
+    WRITE_PRECONFIGURED_HOST_READY_MARKER,
+)
 from ._polaris_scripts_gcp import INSTALL_GCP_METADATA_FIREWALL_SCRIPT
 from .runtime import (
     _DIRECTORY_FIREWALL,
@@ -78,7 +82,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris-direct",
-        version="0.1.20",
+        version="0.1.22",
         distribution="shifter-panw-adapter",
         entry_point="polaris_direct",
         worker_image=worker_image,
@@ -259,6 +263,12 @@ class PolarisDirectAdapter:
             scripts = [
                 ("directory-firewall-ready", "directory", _DIRECTORY_FIREWALL_VERIFY, 30),
                 ("bootstrap-ready", "host", VERIFY_POLARIS_BOOTSTRAP_COMMON, 120),
+                # Assert preconfigured-machine-host readiness to the platform
+                # canary once the container and services are up (bootstrap-ready
+                # above). Model access (vertex-ready) is a separate concern and
+                # must not gate participant-host readiness, so write the marker
+                # before it.
+                ("preconfigured-host-ready", "host", WRITE_PRECONFIGURED_HOST_READY_MARKER, 300),
                 ("vertex-ready", "host", _VERIFY_VERTEX, 130),
             ]
         elif request.phase == "cleanup":

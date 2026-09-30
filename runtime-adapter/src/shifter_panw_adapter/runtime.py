@@ -9,7 +9,11 @@ from importlib.resources import files
 from shifter_adapter_sdk.runtime import PROTOCOL, GuestAction, PluginManifest, RuntimeInput, RuntimePlan
 
 from ._polaris_scripts import POLARIS_RANGE_BOOTSTRAP_SCRIPT
-from ._polaris_scripts_aux import INSTALL_SPLICE_WATCHER_SCRIPT, VERIFY_POLARIS_BOOTSTRAP_COMMON
+from ._polaris_scripts_aux import (
+    INSTALL_SPLICE_WATCHER_SCRIPT,
+    VERIFY_POLARIS_BOOTSTRAP_COMMON,
+    WRITE_PRECONFIGURED_HOST_READY_MARKER,
+)
 from ._polaris_scripts_aws import INSTALL_IMDS_FIREWALL_SCRIPT
 from ._polaris_scripts_gcp import INSTALL_GCP_METADATA_FIREWALL_SCRIPT
 
@@ -102,7 +106,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris",
-        version="0.1.20",
+        version="0.1.22",
         distribution="shifter-panw-adapter",
         entry_point="polaris",
         worker_image=worker_image,
@@ -202,6 +206,10 @@ class PolarisAdapter:
         elif request.phase == "verify":
             scripts = [
                 ("bootstrap-ready", VERIFY_POLARIS_BOOTSTRAP_COMMON, 120),
+                # Assert preconfigured-machine-host readiness to the platform
+                # canary once the container and services are up. Model-client
+                # checks are a separate concern, so write the marker first.
+                ("preconfigured-host-ready", WRITE_PRECONFIGURED_HOST_READY_MARKER, 300),
                 ("model-client-ready", _VERIFY_CLIENT, 100),
                 ("model-client-result", _CHECK_CLIENT, 10),
             ]

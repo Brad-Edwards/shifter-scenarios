@@ -253,3 +253,40 @@ echo "polaris verify: dc01 -> $resolved, kali key installed, splice gated, watch
 exit 0
 """
 )
+
+# Signal preconfigured-machine-host readiness to the platform participant-host
+# canary (engine PreconfiguredMachineHostPlan). That canary gates the range on
+# THREE conditions polled together: this marker exists, the participant
+# container is running, and the host RDP endpoint (127.0.0.1:3389) accepts a
+# connection. Nothing else in the polaris host bring-up writes the marker (the
+# adapter is what stands the compose stack up on the range host post-boot, so
+# the adapter owns asserting readiness), so without this the canary waits out
+# its full timeout and the range fails even though model access is up.
+#
+# We wait, bounded, for the container and RDP to come up so the marker is a
+# truthful signal, but write it unconditionally at the end: the platform canary
+# is the authoritative gate and independently re-checks the container and RDP
+# port with its own (longer) budget, so this step must never fail the verify
+# phase on a slow-but-healthy xrdp start.
+WRITE_PRECONFIGURED_HOST_READY_MARKER = r"""#!/bin/bash
+set -euo pipefail
+
+# Dot-prefixed Go template so the orchestrator's Jinja placeholder regex does
+# not treat it as a value substitution (see VERIFY_POLARIS_BOOTSTRAP_COMMON).
+deadline=$((SECONDS + 240))
+while (( SECONDS < deadline )); do
+  if [ "$(docker inspect --format '{{.State.Running}}' a14-kali 2>/dev/null || true)" = "true" ] \
+      && timeout 3 bash -c "</dev/tcp/127.0.0.1/3389" 2>/dev/null; then
+    break
+  fi
+  sleep 5
+done
+
+install -d -m 0755 /run/shifter
+boot_id=$(cat /proc/sys/kernel/random/boot_id 2>/dev/null || echo unknown)
+tmp="$(mktemp /run/shifter/.ready.XXXXXX)"
+printf '%s\n' "$boot_id preconfigured-range-host" > "$tmp"
+mv -f "$tmp" /run/shifter/preconfigured-range-host.ready
+echo "preconfigured-range-host: readiness marker written"
+exit 0
+"""
