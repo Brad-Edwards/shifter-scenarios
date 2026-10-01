@@ -76,6 +76,13 @@ references. The Linux binding uses image kind `image` with bootstrap capability
 `preconfigured-machine-host`; the directory uses its normal Compute Engine
 image reference.
 
+On a tenant project that blocks external IPs (the `compute.vmExternalIpAccess`
+organization policy), the shared `dc-prebaked` bake cannot capture the DC image
+over IAP and fails at `finalize` with exit `16001`, even though the DC finishes
+promoting and seeding. Follow
+[Baking the Polaris DC on GCP: manual capture for IAP-only projects](gcp-dc-bake-manual-capture.md)
+to keep the build VM, confirm the DC, and capture the image by hand.
+
 Before capturing the Linux boot image, stop the bake VM and detach its
 build-time service account (`gcloud compute instances set-service-account`
 with `--no-service-account`). Confirm the stopped VM reports no attached
