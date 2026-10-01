@@ -777,6 +777,11 @@ def write_matrix() -> None:
     for card in sorted(NODE_FOR_CARD, key=lambda item: (int(item[1:3]), int(item.split(".")[1]))):
         bindings = ", ".join(f"`{value}`" for value in surface_bindings(card))
         initial_text = sentence(INITIAL[card]).replace("|", "\\|")
+        for identifier in (
+            "FIT-CRR-204A", "FIT-CRR-204B", "CRR.OUTLET.02B.FLOW_ACTUAL",
+            "GT-CRR-02A", "GT-CRR-02B",
+        ):
+            initial_text = initial_text.replace(identifier, f"`{identifier}`")
         result = result_for(card).replace("|", "\\|")
         reuse = reuse_for(card).replace("|", "\\|")
         narrative = NARRATIVE_REUSE.get(card)

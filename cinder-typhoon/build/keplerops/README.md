@@ -136,7 +136,7 @@ demands it. A wave is not complete merely because its services start.
 | KHB-05 | Build and validate indexer/preview slice | Complete | A hardened native ELF implements the bounded K04 object transition; isolated Chromium/Playwright performs the K10/K12 service-worker render. |
 | KHB-06 | Build and validate identity slice | Complete | K17-K20 and K25 persist support state across service boundaries; K19 issues a CA-signed client certificate/private key and staff verifies it by mTLS. |
 | KHB-07 | Build and validate cloud/data/workload slice | Complete | K13-K16 and K30-K31 implement authority exchange, coherent export state, recovery namespaces, and short-lived networkless workload execution. |
-| KHB-08 | Build and validate assistant slice | Complete | K21-K24 use the exact local Qwen2.5-3B-Instruct revision with deterministic decoding, retained retrieval state, a cross-service tool action, and bounded completion state. |
+| KHB-08 | Build and validate assistant slice | Complete | K21-K24 use the exact local `Qwen2.5-3B-Instruct` revision with deterministic decoding, retained retrieval state, a cross-service tool action, and bounded completion state. |
 | KHB-09 | Build and validate connector boundary | Complete | The package and support routes use distinct mTLS identities across the one-flow private transit; Alterra performs bounded destination execution and owns the receipts and audit. |
 | KHB-10 | Full integration and participant play pass | Complete | All 104 paths, both earned delivery routes, persistence, isolation, security-posture inspection, clean rebuild, and destructive pristine restoration passed. |
 
