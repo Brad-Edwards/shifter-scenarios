@@ -1,0 +1,38 @@
+{
+  "archives": [
+    {
+      "archive": "k-source-k29-state.tar",
+      "sha256": "d7eeaad580feba4bb83d334b07632c2fbed2c6c2777d11d896ffe8aed0efc0ea",
+      "size": 10240
+    },
+    {
+      "archive": "k-registry-k29-state.tar",
+      "sha256": "c21bfae71800c51998e34de7c13311fd9f9cfd292dfd51e14a806ca37aeac62b",
+      "size": 10240
+    },
+    {
+      "archive": "k-ci-k29-state.tar",
+      "sha256": "768a06cfadfa4434927ca30538f67098e6e76b7a75a32589bc0ebe7f4b7d2819",
+      "size": 10240
+    },
+    {
+      "archive": "k-dev-k29-home.tar",
+      "sha256": "3cb4160cf16699e04aaf818a32c7952f662045b3e30ae6313314192425238039",
+      "size": 10240
+    }
+  ],
+  "lineage": {
+    "cutoff": "2026-09-30T12:00:00Z",
+    "lineage": "fieldkest-release-2026",
+    "next_key_id": "fk-release-2026-next",
+    "next_public_key_base64": "bzV/l4AzxDCfhSLUxPDtsoCwzgYBFtqG4xxlRxmY48c=",
+    "old_key_id": "fk-release-2026-old",
+    "old_public_key_base64": "fVb1PGuoR/d/np/rH3oJG9CgVCWD+nQkoEA/zK016dg="
+  },
+  "repository": {
+    "bundle_sha256": "55d47f601f8da4b75ecc3631f612c61f9b7ed3764e9bffd7f1ddb04f4481502c",
+    "current_commit": "e36239452900fd77164047f785d8116eaaea35b8",
+    "deleted_commit": "be1f58577829a77f999813b24a8fdeabb8a0298f"
+  },
+  "schema": "fieldkest.k29-artifacts/v1"
+}

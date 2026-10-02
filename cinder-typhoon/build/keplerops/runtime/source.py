@@ -24,24 +24,31 @@ REPOSITORY_ROOT = STATE / "repositories"
 REPOSITORIES = {
     "fieldlink-connector": REPOSITORY_ROOT / "fieldkest" / "fieldlink-connector.git",
     "policy-compiler": REPOSITORY_ROOT / "fieldkest" / "policy-compiler.git",
+    "connector-archive": REPOSITORY_ROOT / "fieldkest" / "connector-archive.git",
+    "release-signer-history": REPOSITORY_ROOT / "fieldkest" / "release-signer-history.git",
 }
 CONFIG = json.loads((STATE / "config/opening.json").read_text())
 K11_CONFIG = json.loads((STATE / "config/k11.json").read_text())
+K28_CONFIG = json.loads((STATE / "config/k28.json").read_text())
 TOKEN = CONFIG["credentials"][0]["token"]
 USERNAME = CONFIG["credentials"][0]["principal"]
 HANDOVER = json.loads((STATE / "handovers/HND-FLK-2026-09.json").read_text())
-API_CONTENT = re.compile(r"^/api/v1/repos/fieldkest/(fieldlink-connector|policy-compiler)/contents/(.+)$")
-GIT_ROUTE = re.compile(r"^/fieldkest/(fieldlink-connector|policy-compiler)\.git/(info/refs|git-upload-pack)$")
+API_CONTENT = re.compile(r"^/api/v1/repos/fieldkest/(fieldlink-connector|policy-compiler|connector-archive|release-signer-history)/contents/(.+)$")
+GIT_ROUTE = re.compile(r"^/fieldkest/(fieldlink-connector|policy-compiler|connector-archive|release-signer-history)\.git/(info/refs|git-upload-pack)$")
 WORKER_SECRET = Path("/tmp/worker-hmac.key").read_bytes()
 POLICY_BINARY = STATE / "exercises/k11/fieldkest-policyc"
 POLICY_STATE = AUDIT / "policy-state"
 POLICY_LOCK = threading.RLock()
+CONNECTOR_BINARY = STATE / "exercises/k28/fieldlink-connector"
+CONNECTOR_RESULTS = AUDIT / "connector-archive-results"
 
 
 def initialize_repository() -> None:
     seeds = {
         "fieldlink-connector": STATE / "seeds/fieldlink-connector.bundle",
         "policy-compiler": STATE / "seeds/policy-compiler.bundle",
+        "connector-archive": STATE / "seeds/connector-archive.bundle",
+        "release-signer-history": STATE / "seeds/release-signer-history.bundle",
     }
     for name, repository in REPOSITORIES.items():
         if (repository / "HEAD").is_file():
@@ -293,8 +300,52 @@ class SourceHandler(KeplerHandler):
                 self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
                 return
             self._policy_compiler_evaluate()
+        elif parsed.path == "/api/exercises/connector-archive/run":
+            if not self._developer():
+                self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
+                return
+            self._connector_archive_run()
         else:
             self.send_json(404, {"error": "not_found"})
+
+    def _connector_archive_run(self) -> None:
+        try:
+            fields = self.read_uploads(32 * 1024)
+            if set(fields) != {"input", "diagnostic_config"}:
+                raise ValueError("archive_run_fields_required")
+            if len(fields["input"]) > 4096 or len(fields["diagnostic_config"]) > 512:
+                raise OverflowError("archive_run_too_large")
+            with tempfile.TemporaryDirectory(prefix="connector-archive-", dir="/tmp") as temporary:
+                root = Path(temporary)
+                (root / "input.bin").write_bytes(fields["input"])
+                (root / "config.conf").write_bytes(fields["diagnostic_config"])
+                completed = subprocess.run(
+                    [str(CONNECTOR_BINARY), "--config", str(root / "config.conf"), "--input", str(root / "input.bin")],
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=2,
+                )
+            if completed.returncode != 0:
+                raise ValueError("connector_run_rejected")
+            result = json.loads(completed.stdout)
+            if result.get("interface") != "fieldkest.connector/v2" or result.get("mode") not in {"ordinary", "diagnostic"}:
+                raise RuntimeError("connector_result_invalid")
+        except (ValueError, KeyError, TypeError, json.JSONDecodeError, OverflowError, subprocess.TimeoutExpired) as error:
+            append_audit(AUDIT, "connector-archive", {"request_id": self.request_id, "principal": USERNAME, "outcome": str(error), "status": 422})
+            self.send_json(422, {"error": str(error)})
+            return
+        except (OSError, RuntimeError):
+            self.send_json(503, {"error": "connector_unavailable"})
+            return
+        if result["mode"] == "diagnostic":
+            if result.get("route") != K28_CONFIG["route"] or result.get("note_id") != K28_CONFIG["note_id"]:
+                self.send_json(503, {"error": "connector_result_invalid"})
+                return
+        result["request_id"] = self.request_id
+        receipt = "CARUN-" + secrets.token_hex(6).upper()
+        result["receipt_id"] = receipt
+        CONNECTOR_RESULTS.mkdir(parents=True, exist_ok=True)
+        (CONNECTOR_RESULTS / f"{receipt}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "connector-archive", {"request_id": self.request_id, "principal": USERNAME, "receipt_id": receipt, "mode": result["mode"], "input_sha256": sha256(fields["input"]), "output_sha256": result.get("output_sha256"), "status": 200})
+        self.send_json(200, result)
 
     def _repository_content(self, repository_name: str, path: str, revision: str, principal: str) -> None:
         candidate = PurePosixPath(path)

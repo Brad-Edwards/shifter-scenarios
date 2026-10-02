@@ -384,10 +384,10 @@ action_contracts:
       - content.keplerops-k-source.k28-1-a-connector-with-two-faces
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K28.2. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K28.2 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-source
     effects:
@@ -439,10 +439,10 @@ action_contracts:
       - content.keplerops-k-source.k28-2-what-the-loader-changes
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K28.3. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K28.3 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-source
     effects:
@@ -495,10 +495,10 @@ action_contracts:
       - content.keplerops-k-source.k28-3-the-path-that-appears-at-runtime
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Lead to W19 only. Participant-created service state persists for the life of the participant
-        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
-        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
-        this in-world contract.
+      description: Lead to W19 only Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-source
     effects:

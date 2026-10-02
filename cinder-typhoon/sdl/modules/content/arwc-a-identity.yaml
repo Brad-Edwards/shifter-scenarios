@@ -392,15 +392,15 @@ content:
       surface_bindings:
       - a-corporate.a-identity/corporate-identity/a-planner-session-that-works
       starting_state: The review browser posts its planner session bootstrap to the attached preview for compatibility;
-        origin is checked against mutable pending-preview state and yields a five-minute planner session limited to planning
-        records.
+        origin is checked against mutable pending-preview state and yields a fifteen-minute planner session limited to
+        planning records.
       narrative_reuse: []
       process_contract_refs: []
       mechanic_profile:
         kind: privileged-browser origin trust
         behavior_contract: The review browser posts its planner session bootstrap to the attached preview for compatibility;
-          origin is checked against mutable pending-preview state and yields a five-minute planner session limited to
-          planning records.
+          origin is checked against mutable pending-preview state and yields a fifteen-minute planner session limited
+          to planning records.
         normal_behavior: The declared route returns or changes only the ordinary caller-scoped object when all current
           identity, tenant, revision, and process bindings are valid.
         accepted_effect: Recover and demonstrate the planner session against the protected record. This supplies the declared
@@ -411,7 +411,7 @@ content:
         entry: Use only the declared native route or inventoried local artifact; no undeclared interaction exists.
         identity: ARWC onboarding or planner session
         input: The review browser posts its planner session bootstrap to the attached preview for compatibility; origin
-          is checked against mutable pending-preview state and yields a five-minute planner session limited to planning
+          is checked against mutable pending-preview state and yields a fifteen-minute planner session limited to planning
           records.
         success: Recover and demonstrate the planner session against the protected record. This supplies the declared
           prior result's application context; an exposed browser value without authority does not establish the result.
@@ -445,7 +445,7 @@ content:
         isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
       generation_input:
         algorithm: sha256
-        digest: a4416441e24b5b8976677cc2c9981bd2e5373eb5ea0b6d5984bc384e764074b0
+        digest: c0a9f17be697d992a17a89bbb000d3da063e7760fd8d89b278df59d2578ee2d9
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
     sensitive: true
     tags:

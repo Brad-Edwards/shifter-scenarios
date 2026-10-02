@@ -34,7 +34,10 @@ tar -C "$PACK_ROOT" -czf "$ARCHIVE" \
   build/keplerops \
   assets/keplerops/opening \
   assets/keplerops/registry \
-  assets/keplerops/build-operations
+  assets/keplerops/build-operations \
+  assets/keplerops/policy-compiler \
+  assets/keplerops/connector-archive \
+  assets/keplerops/release-lineage
 
 ready_attempt=0
 until gcloud compute ssh "$INSTANCE" --project "$PROJECT_ID" --zone "$ZONE" \
@@ -52,7 +55,7 @@ gcloud compute scp "$ARCHIVE" "$INSTANCE:/tmp/cinder-keplerops-release.tar.gz" \
 
 gcloud compute ssh "$INSTANCE" --project "$PROJECT_ID" --zone "$ZONE" \
   --tunnel-through-iap --command \
-  'sudo find /opt/cinder-typhoon -mindepth 1 -maxdepth 1 -exec rm -rf -- {} + && sudo tar -xzf /tmp/cinder-keplerops-release.tar.gz -C /opt/cinder-typhoon && cd /opt/cinder-typhoon/build/keplerops && sudo bash ./generate-operator-material.sh && sudo docker compose -f compose.yaml --profile build-only build && sudo docker compose -f compose.yaml up -d --force-recreate router runner k-source k-registry k-ci k-support k-cloud-api k-dev && rm -f /tmp/cinder-keplerops-release.tar.gz'
+  'sudo find /opt/cinder-typhoon -mindepth 1 -maxdepth 1 -exec rm -rf -- {} + && sudo tar -xzf /tmp/cinder-keplerops-release.tar.gz -C /opt/cinder-typhoon && cd /opt/cinder-typhoon/build/keplerops && sudo bash ./generate-operator-material.sh && sudo docker compose -f compose.yaml --profile build-only build && sudo docker compose -f compose.yaml up -d --force-recreate router runner k-source k-registry k-ci k-preview k-support k-indexer k-cloud-api k-workload k-data k-assistant k-staff k-identity k-cert a-connector k-dev && rm -f /tmp/cinder-keplerops-release.tar.gz'
 
 terraform -chdir="$GCP_ROOT" output
 echo "Participant shell: sudo docker exec -it --user rowan cinder-keplerops-k-dev bash -l"

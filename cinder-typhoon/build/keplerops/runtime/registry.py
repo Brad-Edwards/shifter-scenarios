@@ -19,8 +19,9 @@ import unicodedata
 from urllib.parse import unquote, urlsplit
 import uuid
 
-from cryptography.exceptions import InvalidTag
+from cryptography.exceptions import InvalidSignature, InvalidTag
 from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 
@@ -35,6 +36,7 @@ AUDIT = STATE / "audit"
 RESULTS = STATE / "results"
 PUBLISHED = STATE / "published"
 CONFIG = json.loads((STATE / "config/foundation.json").read_text())
+K29_CONFIG = json.loads((STATE / "config/k29.json").read_text())
 USERNAME = CONFIG["developer"]["username"]
 TOKEN = CONFIG["developer"]["token"]
 PUBLISHER_TOKEN = CONFIG["publisher"]["token"]
@@ -179,9 +181,11 @@ class RegistryHandler(KeplerHandler):
             self.send_json(404, {"error": "not_found"})
 
     def do_POST(self) -> None:
+        path = urlsplit(self.path).path
+        if path.startswith("/api/releases/") and path.endswith("/approval"):
+            return self._approve_release(path.removeprefix("/api/releases/").removesuffix("/approval"))
         if not self._require_developer():
             return
-        path = urlsplit(self.path).path
         if path == "/api/consumer-checks":
             self._consumer_check()
         elif path == "/api/reconcile/tenant-package":
@@ -198,6 +202,39 @@ class RegistryHandler(KeplerHandler):
             self._entitlement_check()
         else:
             self.send_json(404, {"error": "not_found"})
+
+    def _approve_release(self, release_id: str) -> None:
+        authorization = self.headers.get("Authorization", "")
+        if authorization not in {f"Bearer {PUBLISHER_TOKEN}", "Bearer release-admin-session-5m"}:
+            return self.send_json(403, {"error": "approval_scope_denied"})
+        try:
+            request = self.read_json(131_072)
+        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
+            return self.send_json(422, {"error": "invalid_approval"})
+        version = request.get("version")
+        record_path = PUBLISHED / f"{version}.json"
+        if release_id != f"REL-FLK-{version}" or not isinstance(version, str) or not record_path.is_file():
+            return self.send_json(404, {"error": "release_not_found"})
+        if request.get("interfaces") != ["fieldkest.connector/v2", "fieldkest.connector/v3"]:
+            return self.send_json(422, {"error": "interface_contract_denied"})
+        if request.get("lineage") != "fieldkest-release-2026" or request.get("key_id") not in {"fk-release-2026-old", "fk-release-2026-next"}:
+            return self.send_json(422, {"error": "signature_lineage_denied"})
+        record = json.loads(record_path.read_text())
+        signature = request.get("signature_base64")
+        signed = False
+        if signature is not None:
+            public_field = "old_public_key_base64" if request["key_id"] == K29_CONFIG["old_key_id"] else "next_public_key_base64"
+            message = canonical_bytes({"interfaces": request["interfaces"], "name": record["name"], "sha256": record["sha256"], "version": version})
+            try:
+                Ed25519PublicKey.from_public_bytes(base64.b64decode(K29_CONFIG[public_field], validate=True)).verify(base64.b64decode(signature, validate=True), message)
+            except (ValueError, InvalidSignature, binascii.Error):
+                return self.send_json(422, {"error": "release_signature_denied"})
+            signed = True
+        approval = {"release_id": release_id, "version": version, "approved": True, "approved_by": "evan.calderoux", "acting_principal": "svc-release-admin" if authorization.endswith("release-admin-session-5m") else CONFIG["publisher"]["principal"], "lineage": request["lineage"], "key_id": request["key_id"], "interfaces": request["interfaces"], "signed": signed}
+        record["approval"] = approval
+        record_path.write_text(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "release-approvals", {"request_id": self.request_id, **approval, "status": 201})
+        self.send_json(201, approval)
 
     def do_PUT(self) -> None:
         path = urlsplit(self.path).path

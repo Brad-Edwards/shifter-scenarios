@@ -194,6 +194,15 @@ content:
         - connector_api
         - signer_lineage
         - compatibility_exception
+        - channel
+        - tenant_class
+        evaluated_fields:
+        - tenant_state
+        - connector_api
+        - signer_lineage
+        - compatibility_exception
+        compatibility_context: channel and tenant_class are required input context but are
+          intentionally non-controlling in revision R4
         sets:
           active_tenant:
           - active
@@ -244,7 +253,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 486070200d972a3a9c780e6eee219b83ee3b88cfdd5085e79611381e72b8f35a
+        digest: 7ec0998653965a810fa5c7d8564f33790b0759c6f7df4c7d68669800b608c61a
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -266,6 +275,7 @@ content:
         node: k-source
         authority: Policy acceptance service
       surface_bindings:
+      - k-delivery.k-source/gitea/policy-compiler-nonce
       - k-delivery.k-source/gitea/policy-compiler-exercise
       starting_state: Fresh nonce-bound policy input; required meaning is active tenant,
         connector v3, accepted lineage, compatibility exception.
@@ -321,7 +331,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 0a04d0e0df1c4fa5451ec1bcedcc76f4f2db515d1053752c0cff0e1fd049b11a
+        digest: 9d92f48c2d476ca225920c5fc650f67dcc929e38ab6dd39f491d30b0e6212a96
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

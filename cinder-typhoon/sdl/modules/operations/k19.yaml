@@ -401,10 +401,10 @@ action_contracts:
       - content.keplerops-k-cert.k19-1-who-vouches-for-whom
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K19.2. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K19.2 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-corporate.k-cert
       - features.k-corporate.k-staff
@@ -461,10 +461,10 @@ action_contracts:
       - content.keplerops-k-cert.k19-2-borrowed-colleague
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Usable colleague identity. Participant-created service state persists for the life of the participant
-        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
-        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
-        this in-world contract.
+      description: Usable colleague identity Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-corporate.k-cert
       - features.k-corporate.k-staff
@@ -521,10 +521,10 @@ action_contracts:
       - content.keplerops-k-staff.k19-3-the-archive-delegates
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K20. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K20 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-corporate.k-staff
       - features.k-corporate.k-identity--delegation

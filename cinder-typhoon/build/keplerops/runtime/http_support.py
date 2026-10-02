@@ -1,4 +1,4 @@
-"""Shared HTTPS and persistence helpers for the KeplerOps hand build."""
+"""Shared HTTPS and persistence helpers for KeplerOps services."""
 
 from __future__ import annotations
 
@@ -37,6 +37,44 @@ def sha256_bytes(value: bytes) -> str:
 
 def _b64url(value: bytes) -> str:
     return base64.urlsafe_b64encode(value).decode().rstrip("=")
+
+
+def issue_rs256(private_key_path: Path, claims: dict[str, Any], *, key_id: str) -> str:
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import padding
+
+    header = _b64url(canonical_bytes({"alg": "RS256", "kid": key_id, "typ": "JWT"}))
+    payload = _b64url(canonical_bytes(claims))
+    signing_input = (header + "." + payload).encode()
+    private_key = serialization.load_pem_private_key(private_key_path.read_bytes(), password=None)
+    signature = private_key.sign(signing_input, padding.PKCS1v15(), hashes.SHA256())
+    return header + "." + payload + "." + _b64url(signature)
+
+
+def verify_rs256(public_key_path: Path, token: str, *, issuer: str, audience: str) -> dict[str, Any] | None:
+    from cryptography.exceptions import InvalidSignature
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import padding
+
+    try:
+        header_b64, payload_b64, signature_b64 = token.split(".")
+        header = json.loads(base64.urlsafe_b64decode(header_b64 + "=" * (-len(header_b64) % 4)))
+        claims = json.loads(base64.urlsafe_b64decode(payload_b64 + "=" * (-len(payload_b64) % 4)))
+        signature = base64.urlsafe_b64decode(signature_b64 + "=" * (-len(signature_b64) % 4))
+        if header != {"alg": "RS256", "kid": "fixture-2026", "typ": "JWT"}:
+            return None
+        public_key = serialization.load_pem_public_key(public_key_path.read_bytes())
+        public_key.verify(signature, (header_b64 + "." + payload_b64).encode(), padding.PKCS1v15(), hashes.SHA256())
+        now = int(time.time())
+        if claims.get("iss") != issuer or claims.get("aud") != audience:
+            return None
+        if not isinstance(claims.get("iat"), int) or not isinstance(claims.get("exp"), int):
+            return None
+        if claims["iat"] > now + 5 or claims["exp"] < now or claims["exp"] - claims["iat"] > 300:
+            return None
+        return claims
+    except (ValueError, TypeError, json.JSONDecodeError, InvalidSignature):
+        return None
 
 
 def issue_worker_token(
@@ -152,15 +190,22 @@ class KeplerHandler(BaseHTTPRequestHandler):
         return json.loads(self.read_body(maximum_bytes).decode("utf-8"))
 
     def read_upload(self, field_name: str, maximum_bytes: int = 1_048_576) -> bytes:
+        return self.read_uploads(maximum_bytes)[field_name]
+
+    def read_uploads(self, maximum_bytes: int = 1_048_576) -> dict[str, bytes]:
         if self.headers.get_content_type() != "multipart/form-data":
             raise ValueError("multipart_required")
         body = self.read_body(maximum_bytes)
         header = f"Content-Type: {self.headers['Content-Type']}\r\nMIME-Version: 1.0\r\n\r\n".encode()
         message = BytesParser(policy=default).parsebytes(header + body)
+        result = {}
         for part in message.iter_parts():
-            if part.get_param("name", header="content-disposition") == field_name:
-                return part.get_payload(decode=True)
-        raise ValueError("upload_missing")
+            name = part.get_param("name", header="content-disposition")
+            if name and name not in result:
+                result[name] = part.get_payload(decode=True)
+        if not result:
+            raise ValueError("upload_missing")
+        return result
 
     def basic_or_bearer(self, username: str, token: str) -> bool:
         value = self.headers.get("Authorization", "")
@@ -180,5 +225,9 @@ def serve_tls(handler: type[BaseHTTPRequestHandler], port: int = 443) -> None:
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     context.minimum_version = ssl.TLSVersion.TLSv1_2
     context.load_cert_chain(os.environ["FIELDKEST_TLS_CERT"], os.environ["FIELDKEST_TLS_KEY"])
+    client_ca = os.environ.get("FIELDKEST_CLIENT_CA")
+    if client_ca:
+        context.load_verify_locations(cafile=client_ca)
+        context.verify_mode = ssl.CERT_OPTIONAL
     server.socket = context.wrap_socket(server.socket, server_side=True)
     server.serve_forever()

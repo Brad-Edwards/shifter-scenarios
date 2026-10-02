@@ -9,7 +9,12 @@ from importlib.resources import files
 from shifter_adapter_sdk.runtime import PROTOCOL, GuestAction, PluginManifest, RuntimeInput, RuntimePlan
 
 from ._polaris_scripts import POLARIS_RANGE_BOOTSTRAP_SCRIPT
-from ._polaris_scripts_aux import INSTALL_SPLICE_WATCHER_SCRIPT, VERIFY_POLARIS_BOOTSTRAP_COMMON
+from ._polaris_scripts_aux import (
+    INSTALL_SPLICE_WATCHER_SCRIPT,
+    VERIFY_POLARIS_BOOTSTRAP_COMMON,
+    WRITE_PRECONFIGURED_HOST_READY_MARKER,
+)
+from ._polaris_scripts_gcp import INSTALL_GCP_METADATA_FIREWALL_SCRIPT
 from .runtime import (
     _DIRECTORY_FIREWALL,
     _DIRECTORY_FIREWALL_VERIFY,
@@ -20,12 +25,64 @@ from .runtime import (
     _render,
 )
 
+# The guest container must never reach the real metadata server (it would expose
+# the host's SSH keys, attributes and startup script to a rooted participant).
+# Instead a host-local responder exposes ONLY the service-account token endpoint,
+# and the container's google-auth is pointed at it with GCE_METADATA_HOST. The
+# container reaches the host over the Docker bridge via host.docker.internal;
+# the responder port is refused from every non-bridge source (range peers, DC).
+_METADATA_RESPONDER_HOST = "host.docker.internal"
+_METADATA_RESPONDER_PORT = "8081"
+_METADATA_HOST_VALUE = f"{_METADATA_RESPONDER_HOST}:{_METADATA_RESPONDER_PORT}"
+
+
+def _install_metadata_responder() -> str:
+    responder_b64 = base64.b64encode(
+        files("shifter_panw_adapter").joinpath("assets", "metadata-token-responder.py").read_bytes()
+    ).decode("ascii")
+    return f"""#!/bin/bash
+set -euo pipefail
+RESPONDER=/usr/local/bin/shifter-metadata-token-responder.py
+SERVICE=/etc/systemd/system/shifter-metadata-token-responder.service
+printf '%s' '{responder_b64}' | base64 -d > "$RESPONDER"
+chmod 0755 "$RESPONDER"
+chown root:root "$RESPONDER"
+cat > "$SERVICE" <<'UNIT_EOF'
+[Unit]
+Description=Shifter scoped metadata token responder for the guest model container
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/bin/shifter-metadata-token-responder.py 0.0.0.0 {_METADATA_RESPONDER_PORT}
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
+UNIT_EOF
+systemctl daemon-reload
+systemctl enable --now shifter-metadata-token-responder.service
+# Serve the responder only to Docker containers. Drop the responder port on the
+# range NIC (the default-route interface), so range peers, the DC and the
+# provisioner cannot reach it; Docker bridge traffic arrives on br-*/docker0 and
+# is unaffected. This targets only the responder port and never touches SSH.
+PRIMARY_IF=$(ip route show default 2>/dev/null | awk '{{print $5; exit}}')
+if [ -n "$PRIMARY_IF" ]; then
+  if ! iptables -C INPUT -i "$PRIMARY_IF" -p tcp --dport {_METADATA_RESPONDER_PORT} -j DROP 2>/dev/null; then
+    iptables -A INPUT -i "$PRIMARY_IF" -p tcp --dport {_METADATA_RESPONDER_PORT} -j DROP
+  fi
+fi
+systemctl is-active --quiet shifter-metadata-token-responder.service
+"""
+
 
 def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris-direct",
-        version="0.1.18",
+        version="0.1.22",
         distribution="shifter-panw-adapter",
         entry_point="polaris_direct",
         worker_image=worker_image,
@@ -36,30 +93,45 @@ def manifest(worker_image: str) -> PluginManifest:
 
 
 _VERIFY_VERTEX = """#!/bin/bash
-set -euo pipefail
-# Use the participant's interactive shell, not Docker Compose's container
-# environment, and require a successful response with actual output tokens.
+# Staged verify with distinct exit codes so the generic provisioner exit code
+# (logged without guest output) pinpoints exactly where keyless Vertex failed:
+#   41 a14-kali not running / docker exec unavailable
+#   42 required Vertex env vars missing from /etc/environment
+#   43 pam_env not wired for SSH/XRDP participant logins
+#   44 scoped metadata token responder unreachable (GCE_METADATA_HOST)
+#   45 the real claude -p Vertex call did not exit 0
+#   46 claude replied but with an error or zero output tokens
+set -uo pipefail
+
+docker exec a14-kali true 2>/dev/null || exit 41
+
 docker exec a14-kali sh -c '
-set -eu
 for key in CLAUDE_CODE_USE_VERTEX CLOUD_ML_REGION ANTHROPIC_VERTEX_PROJECT_ID \\
-  ANTHROPIC_MODEL ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL \\
+  GCE_METADATA_HOST ANTHROPIC_MODEL ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL \\
   CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC; do
-  grep -Fqx "$key=$(printenv "$key")" /etc/environment
+  grep -Fqx "$key=$(printenv "$key")" /etc/environment || exit 1
 done
-grep -q pam_env.so /etc/pam.d/sshd
-grep -q pam_env.so /etc/pam.d/xrdp-sesman
-'
-timeout 120 docker exec --user kali --workdir /home/kali a14-kali bash -ic '
-  test "$CLAUDE_CODE_USE_VERTEX" = 1 &&
-  test -n "$ANTHROPIC_VERTEX_PROJECT_ID" &&
-  test -n "$CLOUD_ML_REGION" &&
+' || exit 42
+
+docker exec a14-kali sh -c 'grep -q pam_env.so /etc/pam.d/sshd && grep -q pam_env.so /etc/pam.d/xrdp-sesman' || exit 43
+
+# Prove the guest can mint a token through the scoped responder before spending a
+# real model call, so a responder/networking fault is unambiguous.
+docker exec --user kali a14-kali sh -c '
+  curl -fsS -m 15 -H "Metadata-Flavor: Google" \\
+    "http://${GCE_METADATA_HOST}/computeMetadata/v1/instance/service-accounts/default/token" \\
+    | grep -q access_token' || exit 44
+
+out=$(timeout 120 docker exec --user kali --workdir /home/kali a14-kali bash -ic '
   /usr/local/bin/claude -p "Reply with OK." --output-format json --tools "" \\
-    --max-turns 1 --no-session-persistence
-' | python3 -c 'import json,sys
-response=json.load(sys.stdin)
-success=(not response.get("is_error") and
-         int(response.get("usage",{}).get("output_tokens",0)) > 0)
-sys.exit(0 if success else 1)'
+    --max-turns 1 --no-session-persistence' 2>/dev/null) || exit 45
+
+printf '%s' "$out" | python3 -c 'import json,sys
+try:
+    r=json.load(sys.stdin)
+except Exception:
+    sys.exit(1)
+sys.exit(0 if (not r.get("is_error") and int(r.get("usage",{}).get("output_tokens",0)) > 0) else 1)' || exit 46
 """
 
 
@@ -71,6 +143,7 @@ docker exec -i --user root a14-kali sh -c 'cat > /etc/profile.d/polaris-vertex.s
 export CLAUDE_CODE_USE_VERTEX=1
 export ANTHROPIC_VERTEX_PROJECT_ID={params["project"]}
 export CLOUD_ML_REGION={params["region"]}
+export GCE_METADATA_HOST={_METADATA_HOST_VALUE}
 export ANTHROPIC_MODEL={params["main-model"]}
 export ANTHROPIC_DEFAULT_SONNET_MODEL={params["main-model"]}
 export ANTHROPIC_DEFAULT_HAIKU_MODEL={params["small-model"]}
@@ -99,7 +172,7 @@ if [ -f "$target" ]; then
   cp "$target" "$tmp"
 fi
 for key in CLAUDE_CODE_USE_VERTEX CLOUD_ML_REGION ANTHROPIC_VERTEX_PROJECT_ID \
-  ANTHROPIC_MODEL ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL \
+  GCE_METADATA_HOST ANTHROPIC_MODEL ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL \
   CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC; do
   sed -i "/^$key=/d" "$tmp"
   value=$(printenv "$key")
@@ -148,6 +221,7 @@ class PolarisDirectAdapter:
             '\n      CLAUDE_CODE_USE_VERTEX: "1"'
             f'\n      CLOUD_ML_REGION: "{params["region"]}"'
             f'\n      ANTHROPIC_VERTEX_PROJECT_ID: "{params["project"]}"'
+            f'\n      GCE_METADATA_HOST: "{_METADATA_HOST_VALUE}"'
             f'\n      ANTHROPIC_MODEL: "{params["main-model"]}"'
             f'\n      ANTHROPIC_DEFAULT_SONNET_MODEL: "{params["main-model"]}"'
             f'\n      ANTHROPIC_DEFAULT_HAIKU_MODEL: "{params["small-model"]}"'
@@ -156,6 +230,7 @@ class PolarisDirectAdapter:
             "\n      - /opt/polaris/libexec/polaris-splice-credential.py:"
             "/usr/local/libexec/polaris-splice-credential.py:ro"
             "\n    extra_hosts:"
+            f'\n      - "{_METADATA_RESPONDER_HOST}:host-gateway"'
             '\n      - "oauth2.googleapis.com:199.36.153.8"'
             '\n      - "www.googleapis.com:199.36.153.8"'
             '\n      - "aiplatform.googleapis.com:199.36.153.8"'
@@ -174,6 +249,12 @@ class PolarisDirectAdapter:
         if request.phase == "configure":
             scripts = [
                 ("directory-firewall", "directory", _DIRECTORY_FIREWALL, 30),
+                # Stand up the scoped token responder and block the container from the
+                # real metadata server before the guest container starts, so the guest
+                # only ever reaches the token endpoint (host.docker.internal), never the
+                # host's metadata surface.
+                ("metadata-token-responder", "host", _install_metadata_responder(), 60),
+                ("metadata-firewall", "host", INSTALL_GCP_METADATA_FIREWALL_SCRIPT, 60),
                 ("container-bootstrap", "host", bootstrap, 300),
                 ("vertex-shell-env", "host", _vertex_shell_env(params), 30),
                 ("splice-watcher", "host", INSTALL_SPLICE_WATCHER_SCRIPT, 60),
@@ -182,6 +263,12 @@ class PolarisDirectAdapter:
             scripts = [
                 ("directory-firewall-ready", "directory", _DIRECTORY_FIREWALL_VERIFY, 30),
                 ("bootstrap-ready", "host", VERIFY_POLARIS_BOOTSTRAP_COMMON, 120),
+                # Assert preconfigured-machine-host readiness to the platform
+                # canary once the container and services are up (bootstrap-ready
+                # above). Model access (vertex-ready) is a separate concern and
+                # must not gate participant-host readiness, so write the marker
+                # before it.
+                ("preconfigured-host-ready", "host", WRITE_PRECONFIGURED_HOST_READY_MARKER, 300),
                 ("vertex-ready", "host", _VERIFY_VERTEX, 130),
             ]
         elif request.phase == "cleanup":

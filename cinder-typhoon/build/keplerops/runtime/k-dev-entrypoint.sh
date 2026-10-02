@@ -15,6 +15,16 @@ if [ ! -e /home/rowan/.local/share/keplerops/policy-compiler-2026-09-18 ]; then
   touch /home/rowan/.local/share/keplerops/policy-compiler-2026-09-18
   chown -R rowan:rowan /home/rowan/work/build-operations /home/rowan/.local/share/keplerops
 fi
+if [ ! -e /home/rowan/.local/share/keplerops/connector-archive-2026-09-18 ]; then
+  tar -xf /opt/fieldkest-seeds/k-dev-k28-home.tar -C /home/rowan
+  touch /home/rowan/.local/share/keplerops/connector-archive-2026-09-18
+  chown -R rowan:rowan /home/rowan/work/build-operations /home/rowan/.local/share/keplerops
+fi
+if [ ! -e /home/rowan/.local/share/keplerops/release-lineage-2026-09-18 ]; then
+  tar -xf /opt/fieldkest-seeds/k-dev-k29-home.tar -C /home/rowan
+  touch /home/rowan/.local/share/keplerops/release-lineage-2026-09-18
+  chown -R rowan:rowan /home/rowan/work/build-operations /home/rowan/.local/share/keplerops
+fi
 chown rowan:rowan /home/rowan/work
 install -m 0444 /run/fieldkest-auth/ca.crt /home/rowan/.local/share/keplerops/ca.crt
 install -m 0600 -o rowan -g rowan /run/fieldkest-auth/rowan_authorized_keys /home/rowan/.ssh/authorized_keys

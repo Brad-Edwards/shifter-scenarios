@@ -86,6 +86,7 @@ def test_production_plans_use_only_sdk_and_trusted_guest_enrollment(provider, ph
         assert [action.action_id for action in plan.actions] == [
             "directory-firewall-ready",
             "bootstrap-ready",
+            "preconfigured-host-ready",
             "model-client-ready",
             "model-client-result",
         ]

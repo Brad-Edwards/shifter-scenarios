@@ -504,7 +504,7 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      The authored condition is **privileged-browser origin trust**. The review browser posts its planner session bootstrap to the attached preview for compatibility; origin is checked against mutable pending-preview state and yields a five-minute planner session limited to planning records. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+      The authored condition is **privileged-browser origin trust**. The review browser posts its planner session bootstrap to the attached preview for compatibility; origin is checked against mutable pending-preview state and yields a fifteen-minute planner session limited to planning records. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
 
       The required result is: Recover and demonstrate the planner session against the protected record. This supplies W07's application context; an exposed browser value without authority does not establish the result.
     realization_profile: backend-declared
@@ -522,7 +522,7 @@ action_contracts:
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-identity` and its `corporate-identity` application own this part of **A planner session that works**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: The review browser posts its planner session bootstrap to the attached preview for compatibility; origin is checked against mutable pending-preview state and yields a five-minute planner session limited to planning records.
+        `a-identity` and its `corporate-identity` application own this part of **A planner session that works**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: The review browser posts its planner session bootstrap to the attached preview for compatibility; origin is checked against mutable pending-preview state and yields a fifteen-minute planner session limited to planning records.
 
         Native bindings:
 

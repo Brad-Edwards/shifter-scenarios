@@ -354,7 +354,7 @@ nodes:
           auth_scheme: ARWC issuer evidence or scoped control client
           session_required: true
           description: Control issuer verifies approval and renderer attestation but omits the initiating caller-role
-            claim, issuing a five-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback.
+            claim, issuing a fifteen-minute client limited to OG-CRR-02, CRR-CTRL-R21, plan execution, and readback.
           responses:
           - status_code: 201
             content_type: application/json
@@ -370,8 +370,8 @@ nodes:
           auth_scheme: ARWC issuer evidence or scoped control client
           session_required: true
           description: Successful chain calls built-in issue_client for issuer record ISSUER-UTIL-OG2-R4 after setresuid(0,0,0);
-            seccomp permits only the fixed issuer socket and the resulting client matches the declared prior result
-            scope.
+            seccomp permits only the fixed issuer socket and the resulting fifteen-minute client matches the declared
+            prior result scope.
           responses:
           - status_code: 201
             content_type: application/json

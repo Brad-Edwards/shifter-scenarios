@@ -520,10 +520,10 @@ action_contracts:
       - content.keplerops-k-cloud-api.k29-1-the-build-record-s-principal
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Required K29 context. Participant-created service state persists for the life of the participant
-        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
-        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
-        this in-world contract.
+      description: Required K29 context Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-cloud.k-cloud-api--build-records
       - features.k-delivery.k-ci
@@ -578,10 +578,10 @@ action_contracts:
       - content.keplerops-k-source.k29-2-the-signer-in-the-history
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Input to K29.3. Participant-created service state persists for the life of the participant world
-        and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records, packages,
-        identities, jobs, or services. Infrastructure recovery and submission adjudication are outside this in-world
-        contract.
+      description: Input to K29.3 Participant-created service state persists for the life of the participant world
+        and ordinary retries do not erase it. The action is limited to the exact records, identities, routes, and
+        destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-source
     effects:
@@ -636,10 +636,10 @@ action_contracts:
       - content.keplerops-k-ci.k29-3-signed-compatible-consumed
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Optional robust delivery conclusion. Participant-created service state persists for the life
-        of the participant world and ordinary retries do not erase it. The selected route cannot act on unrelated
-        tenants, records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication
-        are outside this in-world contract.
+      description: Optional robust delivery conclusion Participant-created service state persists for the life of
+        the participant world and ordinary retries do not erase it. The action is limited to the exact records,
+        identities, routes, and destination effects declared here; unrelated tenants and services remain denied.
+        Infrastructure recovery and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-registry
       - features.k-delivery.k-ci--rehearsals
@@ -695,10 +695,10 @@ action_contracts:
       - content.keplerops-k-ci.k29-4-after-the-old-key-expires
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Rehearsal only; main access unchanged. Participant-created service state persists for the life
-        of the participant world and ordinary retries do not erase it. The selected route cannot act on unrelated
-        tenants, records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication
-        are outside this in-world contract.
+      description: Rehearsal only; main access unchanged Participant-created service state persists for the life
+        of the participant world and ordinary retries do not erase it. The action is limited to the exact records,
+        identities, routes, and destination effects declared here; unrelated tenants and services remain denied.
+        Infrastructure recovery and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-ci
     effects:

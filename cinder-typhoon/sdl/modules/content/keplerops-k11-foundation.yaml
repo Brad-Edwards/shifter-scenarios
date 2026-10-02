@@ -1,0 +1,65 @@
+name: cinder-keplerops-k11-foundation-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/keplerops-k11-foundation-content
+  version: 0.1.0
+  exports:
+    content:
+    - k11-source-state
+    - k11-workstation-state
+realization:
+  default: open
+content:
+  k11-source-state:
+    type: directory
+    target: k-delivery.k-source
+    destination: /var/lib/gitea
+    description: Exact retained policy-compiler repository, deterministic Linux x86-64 compiler, private acceptance-service configuration, and immutable corpus for K11.
+    source:
+      name: cinder-typhoon/keplerops/policy-compiler/source-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: k11-source-state
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/policy-compiler/source-state
+          version: '2026-09-18'
+          digest: sha256:8a42cc0798b1d1780b193c4de7f888721c3b05fbf34378d4f97a6dbf323d8091
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, source, policy-compiler, k11, exact-artifact]
+  k11-workstation-state:
+    type: directory
+    target: k-corporate.k-dev
+    destination: /home/rowan
+    description: Exact in-world release-engineering handoff that directs Rowan to the retained policy-compiler repository through the existing source credential and workstation trust store.
+    source:
+      name: cinder-typhoon/keplerops/policy-compiler/workstation-state
+      version: '2026-09-18'
+      artifact_requirement:
+        requirement_id: k11-workstation-state
+        explicitness: exact
+        exact_artifact:
+          artifact_id: cinder-typhoon/keplerops/policy-compiler/workstation-state
+          version: '2026-09-18'
+          digest: sha256:e8a8df714d54cae770f77925101540bc660fe1dc75e0d29379d1d2f6c47d33c8
+          media_type: application/x-tar
+        permitted_routes:
+        - mechanism:
+            mechanism: exact-artifact
+            profile: raes/exact-artifact-local-lookup
+            version: '1'
+            digest: sha256:d0c9172c56f61294418fd94bf64bc3259b4af91fd3c7474fbc08120395ebad3a
+          acquisition: local-lookup
+          timing: realization
+    sensitive: true
+    tags: [keplerops, workstation, policy-compiler, k11, exact-artifact]

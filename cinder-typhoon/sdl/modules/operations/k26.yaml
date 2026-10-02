@@ -402,10 +402,10 @@ action_contracts:
       - content.keplerops-k-registry.k26-1-ready-for-their-channel
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Supplies A03; not execution. Participant-created service state persists for the life of the participant
-        world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants, records,
-        packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are outside
-        this in-world contract.
+      description: Supplies A03; not execution Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-registry
     effects:
@@ -460,10 +460,10 @@ action_contracts:
       - content.keplerops-a-connector.k26-2-customer-accepted
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Supplies A04 and CORPORATE; no other ARWC design implied. Participant-created service state persists
-        for the life of the participant world and ordinary retries do not erase it. The selected route cannot act
-        on unrelated tenants, records, packages, identities, jobs, or services. Infrastructure recovery and submission
-        adjudication are outside this in-world contract.
+      description: Supplies A04 and CORPORATE; no other ARWC design implied Participant-created service state persists
+        for the life of the participant world and ordinary retries do not erase it. The action is limited to the
+        exact records, identities, routes, and destination effects declared here; unrelated tenants and services
+        remain denied. Infrastructure recovery and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-registry
       - features.a-corporate.a-connector
@@ -521,10 +521,10 @@ action_contracts:
       - content.keplerops-a-connector.k26-3-the-release-they-can-roll-back-to
     - precondition_id: scope-and-persistence
       precondition_class: realization
-      description: Optional delivery durability. Participant-created service state persists for the life of the
-        participant world and ordinary retries do not erase it. The selected route cannot act on unrelated tenants,
-        records, packages, identities, jobs, or services. Infrastructure recovery and submission adjudication are
-        outside this in-world contract.
+      description: Optional delivery durability Participant-created service state persists for the life of the participant
+        world and ordinary retries do not erase it. The action is limited to the exact records, identities, routes,
+        and destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
+        and submission adjudication are outside this in-world contract.
       support_refs:
       - features.k-delivery.k-registry
       - features.a-corporate.a-connector

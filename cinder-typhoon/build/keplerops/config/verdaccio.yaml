@@ -1,0 +1,19 @@
+storage: /var/lib/verdaccio/storage
+auth:
+  htpasswd:
+    file: /var/lib/verdaccio/htpasswd
+uplinks: {}
+packages:
+  '@*/*':
+    access: $authenticated
+    publish: $authenticated
+  '**':
+    access: $authenticated
+    publish: $authenticated
+server:
+  keepAliveTimeout: 60
+log:
+  type: stdout
+  format: pretty
+  level: error
+listen: 127.0.0.1:4873

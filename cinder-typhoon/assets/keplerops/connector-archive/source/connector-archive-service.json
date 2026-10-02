@@ -1,0 +1,23 @@
+{
+  "binary_sha256": "f7f0fa564b984ea001debfb2a250c5dd30f2a63cdd92db887e294f580459a513",
+  "build_id": "698d42c6a1776e9fc002b91ef68431ad775e0c28",
+  "corpus": [
+    {
+      "input_hex": "",
+      "name": "empty"
+    },
+    {
+      "input_hex": "4669656c644b657374",
+      "name": "fieldkest"
+    },
+    {
+      "input_hex": "000102030405060708090a0b0c0d0e0f",
+      "name": "bytes-00-0f"
+    }
+  ],
+  "note_id": "ENG-FLK-LEGACY-42",
+  "repository_commit": "9b65bd4cea72ef35259fce2b0911a36c058e0688",
+  "route": "/internal/fieldlink/legacy-diagnostics/CRR-OG2",
+  "schema": "fieldkest.connector-archive-service/v1",
+  "version": "6.9.8"
+}
