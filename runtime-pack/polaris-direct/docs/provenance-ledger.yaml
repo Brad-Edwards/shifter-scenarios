@@ -1,6 +1,6 @@
 schema_version: environment-pack-provenance/v3
 pack:
-  name: polaris
+  name: polaris-direct
 sources:
   - source_id: original-design
     name: Polaris / NORTHSTORM scenario (Palo Alto Networks)

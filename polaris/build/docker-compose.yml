@@ -343,3 +343,6 @@ services:
     stdin_open: true
     tty: true
     restart: unless-stopped
+    volumes:
+      # Shifter delivers Claude Code here at range realization; never baked.
+      - /opt/shifter/bin:/opt/shifter/bin:ro

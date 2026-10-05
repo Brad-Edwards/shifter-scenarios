@@ -197,7 +197,10 @@ set -euo pipefail
 docker exec a14-kali bash -c "pkill -f '^claude' 2>/dev/null || true"
 docker exec a14-kali bash -c "pkill -f '/claude' 2>/dev/null || true"
 
-# 2) install retired wrapper at /usr/local/bin/claude
+# 2) remove the host-delivered binary (bind-mounted read-only into the
+#    container), then replace the container's link with the retired wrapper
+rm -f /opt/shifter/bin/claude
+docker exec a14-kali rm -f /usr/local/bin/claude
 echo "{wrapper_b64}" | base64 -d | docker exec -i a14-kali tee /usr/local/bin/claude >/dev/null
 docker exec a14-kali chmod +x /usr/local/bin/claude
 

@@ -2,7 +2,7 @@ FROM kalilinux/kali-last-release@sha256:c2632779b6cd7dc1a9f19a75997026a0cf5633fb
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Mirrors shifter/packer/scripts/kali/{base,tools,claude-code}.sh from the AWS AMI build,
+# Mirrors shifter/packer/scripts/kali/{base,tools}.sh from the AWS AMI build,
 # adapted for the docker-compose range. RDP via xrdp on 3389, SSH password auth on 22.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         kali-linux-headless \
@@ -56,8 +56,10 @@ RUN python3 -m venv /opt/tools && \
     ln -sf /opt/tools/bin/smbclient.py /usr/local/bin/impacket-smbclient.py
 ENV PATH="/opt/tools/bin:${PATH}"
 
-# Qualified client; the private adapter configures temporary broker access at runtime.
-RUN npm install -g @anthropic-ai/claude-code@2.1.108
+# Claude Code is never baked into this image. Shifter acquires the binary and
+# delivers it to the host's /opt/shifter/bin at range realization; Compose
+# bind-mounts that directory read-only and this link exposes it on PATH.
+RUN ln -s /opt/shifter/bin/claude /usr/local/bin/claude
 
 # Set kali user password and enable SSH password auth (matches AWS base.sh)
 RUN echo "kali:kali" | chpasswd && \

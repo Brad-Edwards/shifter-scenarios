@@ -5,9 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import io
-import shutil
 import tarfile
-import tempfile
 from pathlib import Path
 from urllib.parse import quote
 
@@ -16,7 +14,7 @@ from raes_contracts.associated_artifacts import associated_artifact_set_digest
 from raes_contracts.contracts import AssociatedArtifactManifestModel
 from raes_env_packs import pack_content_digest, validate_pack
 
-ROOT = Path(__file__).parent / "polaris"
+ROOT = Path(__file__).parent / "polaris-direct"
 MANIFEST = "associated-artifacts.json"
 
 
@@ -44,7 +42,7 @@ def _build_root(root: Path, output: Path, pack_name: str) -> str:
         {
             "schema_version": "associated-artifact-manifest/v1",
             "manifest_id": f"{pack_name}-associated-artifacts",
-            "manifest_version": "0.2.2",
+            "manifest_version": "0.3.0",
             "canonicalization_profile": "associated-artifact-set/v1",
             "scope": "scenario",
             "parent_ref": {"ref_kind": "scenario", "ref_id": pack_name},
@@ -69,29 +67,12 @@ def _build_root(root: Path, output: Path, pack_name: str) -> str:
     return digest
 
 
-def build(output: Path, variant: str = "broker") -> str:
-    if variant == "broker":
-        return _build_root(ROOT, output, "polaris")
-    if variant != "direct":
-        raise ValueError(f"Unknown runtime pack variant: {variant}")
-    # Keep the broker package immutable and build an independently installable
-    # pack that has no broker enrollment or per-participant broker limits.
-    with tempfile.TemporaryDirectory(prefix="polaris-direct-pack-") as temporary:
-        root = Path(temporary) / "polaris-direct"
-        shutil.copytree(ROOT, root, symlinks=True)
-        (root / "model-needs.json").unlink()
-        pack = root / "pack.yaml"
-        pack.write_text(pack.read_text().replace("name: polaris\n", "name: polaris-direct\n", 1))
-        scenario = root / "sdl/polaris.sdl.yaml"
-        scenario.write_text(scenario.read_text().replace("name: polaris\n", "name: polaris-direct\n", 1))
-        provenance = root / "docs/provenance-ledger.yaml"
-        provenance.write_text(provenance.read_text().replace("  name: polaris\n", "  name: polaris-direct\n", 1))
-        return _build_root(root, output, "polaris-direct")
+def build(output: Path) -> str:
+    return _build_root(ROOT, output, "polaris-direct")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--variant", choices=("broker", "direct"), default="broker")
     args = parser.parse_args()
-    print(build(args.output, args.variant))
+    print(build(args.output))

@@ -15,8 +15,8 @@ The operator needs:
 - permission to install tenant adapters and environment packs;
 - read access to the internal GHCR worker image;
 - GCP permission to publish the two tenant-owned guest image artifacts;
-- a tenant workload-identity principal that can invoke the approved Vertex AI
-  models; and
+- a range-host service account that can invoke the approved Vertex AI models;
+  and
 - the current checkout of this repository.
 
 Use separate operator and participant identities. Store operator recovery
@@ -31,12 +31,12 @@ archive merely because its filename looks current.
 ## Build and verify the environment pack
 
 From the repository root, build the upload archive from the authoritative
-`runtime-pack/polaris/` source:
+`runtime-pack/polaris-direct/` source:
 
 ```sh
 python -m pip install -r runtime-pack/requirements.txt
-python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.2.tar
-python -m pytest runtime-pack/tests -q
+python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-direct-0.3.0.tar
+python -m pytest runtime-pack/tests/test_package.py -q
 ```
 
 Retain the canonical digest printed by the builder with the run evidence. The
@@ -51,10 +51,9 @@ publish it to the approved internal registry, and verify that the manifest's
 must declare:
 
 - protocol `shifter.runtime-plugin/v1`;
-- entry point `polaris`;
-- bindings `host` and `directory`;
-- parameters `main-model`, `small-model`, and `max-output-tokens`; and
-- model binding `participant` on `host`.
+- entry point `polaris_direct`;
+- bindings `host` and `directory`; and
+- parameters `project`, `region`, `main-model`, and `small-model`.
 
 Give the tenant a read-only registry credential. A publishing credential does
 not belong in Shifter.
@@ -106,14 +105,14 @@ does not prove fleet capacity.
 The Linux build must preserve the participant readiness contract from
 `polaris/build/a14/participant-readiness.json`. Calculate and record the SHA-256
 of the installed readiness document; that value is the adapter binding's
-readiness digest. The participant workstation must contain the pinned Claude
-Code client described in the adapter README.
+readiness digest. Claude Code is not part of the image: the pack declares it,
+and Shifter delivers it to the host's `/opt/shifter/bin` at range realization.
+The participant container bind-mounts that directory read-only.
 
 Bake the Linux host from the current `polaris/build/build-v1.tar.gz` and publish
 its stopped boot disk as the custom image.
 Do not bind a newly installed adapter to an image baked from an older archive:
-the adapter and host image form one reviewed compatibility set, including the
-participant DNS forwarding configuration used for broker access.
+the adapter and host image form one reviewed compatibility set.
 
 When refreshing a bake VM, extract the current archive, compare its `build/`
 tree with the installed source, and rebuild every changed Compose service. In
@@ -132,32 +131,21 @@ services:
 ```
 
 Build and start DNS with both Compose files, then verify that the participant
-container resolves a public hostname through it. Also query the tenant's
-private `.internal` model-broker name against the scenario DNS service and
-confirm it resolves to the expected private broker address. BIND must exempt
-`.internal` from public DNSSEC validation; forwarding alone does not qualify
-private-zone resolution. The adapter's range bootstrap replaces the bake-only
+container resolves a public hostname through it. The adapter's range bootstrap replaces the bake-only
 directory address with that range's actual controller address. Remove bake-time
 SSH keys, access tags, startup scripts, and temporary payloads before capture;
 the bake VM must have no attached service account at capture time.
 
-Do not grant model-invocation credentials to the participant-controlled range
-host. The adapter receives a Shifter model grant and configures the participant
-client through the broker boundary.
-
-For the broker-backed `polaris` adapter described by the steps below, set the
-tenant deployment's `GCP_RANGE_PRIVATE_GOOGLE_ACCESS` variable to `false` and
-deploy that configuration before launching the event. The separate
-`polaris_direct` adapter described in
-[`runtime-adapter/README.md`](../../runtime-adapter/README.md) instead requires
-Private Google Access, a narrowly scoped range-host service account, and an
-unset broker guest VIP. Do not bind that direct adapter to the broker pack or
-assume the broker settings qualify its model access. Test a real `claude -p`
+The `polaris_direct` adapter described in
+[`runtime-adapter/README.md`](../../runtime-adapter/README.md) requires Private
+Google Access and a narrowly scoped range-host service account: set the tenant
+deployment's `GCP_RANGE_PRIVATE_GOOGLE_ACCESS` variable to `true` and deploy
+that configuration before launching the event. Test a real `claude -p`
 call from the participant's interactive workstation and require nonzero output
 tokens. Participant web research also needs explicit egress; the model path
 alone does not provide general internet access.
 
-For a bulk GCP event using the direct variant, select an event workspace with
+For a bulk GCP event, select an event workspace with
 `status-quo` egress before importing participants or provisioning managed
 spares. In a Shifter build with event-policy pinning and shared range-VPC NAT,
 that workspace policy is the source for both participant and spare launches;
@@ -192,10 +180,11 @@ Open **Administer → Adapters**.
    access. The range provisioner's guest verification makes a bounded Claude
    Code request, and participant acceptance repeats it with usage evidence.
 3. Open **Install packs and assign adapters**. For a first installation, upload
-   the rebuilt tar as pack name `polaris`, review it, and install it. If
-   `polaris` is already installed, use **Update polaris** and upload the new
-   revision there; **Install new pack** is only for a new pack identity.
-4. Choose **Configure polaris** and select the ready adapter.
+   the rebuilt tar as pack name `polaris-direct`, review it, and install it.
+   If `polaris-direct` is already installed, use **Update polaris-direct** and
+   upload the new revision there; **Install new pack** is only for a new pack
+   identity.
+4. Choose **Configure polaris-direct** and select the ready adapter.
 5. Bind `host` to `provision.node.a14-kali` with:
    - image enabled;
    - kind `image` and bootstrap capability `preconfigured-machine-host`;
@@ -213,52 +202,35 @@ Open **Administer → Adapters**.
    - a 100 GiB `pd-balanced` disk;
    - bootstrap capability `prepromoted-domain-controller`; and
    - DNS domain `boreas.local` and NetBIOS domain `BOREAS`.
-7. Set `main-model` to `coding-main`, `small-model` to `coding-small`, and
-   `max-output-tokens` to `8192`.
+7. Set `project` to the tenant GCP project, `region` to `us-east5`,
+   `main-model` to `claude-sonnet-4-6`, and `small-model` to
+   `claude-haiku-4-5`.
 8. Review and save the assignment.
 
 The pack installation is tenant content administration; it does not require a
 Shifter application deployment. Application deployments remain the path for
 core platform changes.
 
-## Configure model sources
+## Enable the Vertex models
 
-In **Administer → Model Sources**, create enabled tenant sources for the logical
-aliases required by the pack. For the current GCP profile:
-
-| Alias | Vertex model | Region |
-| --- | --- | --- |
-| `coding-main` | `publishers/anthropic/models/claude-sonnet-4-6` | `us-east5` |
-| `coding-small` | `publishers/anthropic/models/claude-haiku-4-5` | `us-east5` |
-
-Use workload identity, the tenant GCP project, and the dedicated
-model-invocation service account. Configure current quota, context-window, and
-price data from the approved deployment catalog, set an explicit price-validity
-date, and permit the event organization to use the sources. Do not store a
-provider API key in the pack or range.
-
-Model-source configuration does not enable a publisher model in Google Cloud.
-In the same tenant project, enable each exact Anthropic model in Vertex AI Model
+In the tenant project, enable each exact Anthropic model in Vertex AI Model
 Garden and accept the current Marketplace terms using the approved procurement
 operator. Confirm that the Vertex AI API is enabled and that the dedicated
-invocation service account has only the deployment-managed predict permission.
+range-host service account has only the deployment-managed predict permission.
 Do this before creating the event; a Vertex `404 NOT_FOUND` that says the model
 was not found or the project lacks access means Model Garden enablement is still
 missing, even when the model name and region are valid.
 
 Run one bounded prompt against each configured publisher model through the
-approved invocation identity or deployment probe. Require an HTTP success and a
+range-host identity or a deployment probe. Require an HTTP success and a
 nonzero output-token count. Listing custom Vertex models is not a valid check:
 managed publisher models do not appear in that inventory.
-
-Before event activation, confirm that the event workspace can see both sources
-and that each alias is bound to the intended source revision.
 
 ## Create and launch the CTF
 
 Open **Operate → CTF Events** and create an event using the Polaris scenario.
 Set a bounded active window, participant limit, and a spin-up allowance of at
-least 45 minutes. Select the approved source for each logical model alias.
+least 45 minutes.
 
 Before opening registration, render the private challenge document and import
 it from the event's **Challenges → Import pack** control:
@@ -315,8 +287,8 @@ operations pivot must fail, bunker access before the splice opens must fail,
 and the intended post-splice path must succeed.
 
 Also run Claude Code from the participant workstation with a small deterministic
-prompt. Require a successful response from the configured direct-Vertex or
-broker-backed model path and verify that the returned usage reports a nonzero
+prompt. Require a successful response from the configured Vertex model and
+verify that the returned usage reports a nonzero
 output-token count. Client startup alone is not model-access proof.
 
 Record only sanitized verdicts, counts, immutable artifact identifiers, and
@@ -331,8 +303,6 @@ range to report **destroyed**. Then end the CTF event.
 Confirm that no event-owned instances, disks, addresses, or firewall resources
 remain in GCP. Remove any temporary bake VM after its image has passed
 qualification. Keep the installed pack, ready adapter, qualified guest images,
-and intentionally configured model sources because they are tenant deliverables.
-Disable mistaken or superseded model-source records through the model-source
-administration API; do not edit the database. Finally, remove local temporary
+and enabled Vertex models because they are tenant deliverables. Finally, remove local temporary
 participant credentials and browser state with a secure deletion mechanism and
 verify that the tenant secret store contains no temporary or orphaned secrets.

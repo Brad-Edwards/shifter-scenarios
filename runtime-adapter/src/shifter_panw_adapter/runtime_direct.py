@@ -1,4 +1,4 @@
-"""Keyless GCP Vertex variant; the broker-backed Polaris plugin is unchanged."""
+"""Keyless GCP Vertex runtime plugin; Claude Code is delivered by Shifter, never baked."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from ._polaris_scripts_aux import (
     WRITE_PRECONFIGURED_HOST_READY_MARKER,
 )
 from ._polaris_scripts_gcp import INSTALL_GCP_METADATA_FIREWALL_SCRIPT
-from .runtime import (
+from ._runtime_common import (
     _DIRECTORY_FIREWALL,
     _DIRECTORY_FIREWALL_VERIFY,
     _GCP_DNS_ANCHOR,
@@ -82,7 +82,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris-direct",
-        version="0.1.22",
+        version="0.2.0",
         distribution="shifter-panw-adapter",
         entry_point="polaris_direct",
         worker_image=worker_image,
