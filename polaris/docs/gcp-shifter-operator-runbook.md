@@ -82,17 +82,26 @@ promoting and seeding. Follow
 [Baking the Polaris DC on GCP: manual capture for IAP-only projects](gcp-dc-bake-manual-capture.md)
 to keep the build VM, confirm the DC, and capture the image by hand.
 
-Before capturing the Linux boot image, stop the bake VM and detach its
-build-time service account (`gcloud compute instances set-service-account`
-with `--no-service-account`). Confirm the stopped VM reports no attached
-service account. Publish an exact, project-qualified custom image from the
-stopped host's **boot disk** and verify it is `READY`. The complete host runtime
-must live on that one boot disk; custom images do not capture secondary disks.
-Set the binding's boot disk size to at least the image's disk size (currently
-220 GiB). Do not bind an image family or a bare name. The range VM gets its
-identity from Shifter's administrator-owned range-host selection, not the bake
-VM. Never grant the range provisioner impersonation permission on the build
-identity.
+Bake the Linux host with
+[`polaris/packer/build-polaris-vm-image.sh`](../packer/build-polaris-vm-image.sh)
+from a clean checkout of the reviewed revision. It uploads
+`polaris/build/build-v1.tar.gz`, verifies it against its sidecar digest, builds
+and starts every Compose service, and captures the boot disk as an exact custom
+image in family `shifter-polaris-vm`. The builder has no service account, so the
+image carries no build identity. Run it against the tenant's image-build network
+over IAP:
+
+```sh
+polaris/packer/build-polaris-vm-image.sh --project-id <tenant-project> \
+  --image-name shifter-polaris-vm-v<yyyymmdd> \
+  --network <image-build-network> --subnetwork <image-build-subnetwork>
+```
+
+The complete host runtime lives on the one boot disk; custom images do not
+capture secondary disks. Set the binding's boot disk size to at least the
+image's disk size (currently 200 GiB; bind 220 GiB). Do not bind an image family
+or a bare name. The range VM gets its identity from Shifter's
+administrator-owned range-host selection, not the builder.
 
 This source choice matters for events: [Google limits a single machine image](https://cloud.google.com/compute/docs/machine-images/create-instance-from-machine-image) to
 six VM creations in a rolling 60 minutes, while [custom-image API/CLI creates](https://cloud.google.com/compute/docs/instances/create-vm-from-custom-image)
@@ -109,32 +118,9 @@ readiness digest. Claude Code is not part of the image: the pack declares it,
 and Shifter delivers it to the host's `/opt/shifter/bin` at range realization.
 The participant container bind-mounts that directory read-only.
 
-Bake the Linux host from the current `polaris/build/build-v1.tar.gz` and publish
-its stopped boot disk as the custom image.
 Do not bind a newly installed adapter to an image baked from an older archive:
-the adapter and host image form one reviewed compatibility set.
-
-When refreshing a bake VM, extract the current archive, compare its `build/`
-tree with the installed source, and rebuild every changed Compose service. In
-particular, the GCP DNS image must contain the current `dns/entrypoint.sh` and
-`dns/named.conf`; restarting an older DNS image does not apply those changes.
-The preconfigured bake host needs a placeholder `DC01_IP` so DNS stays running
-before any range exists, plus the GCP resolver as its forwarder. Use a
-`gcp-preconfigured-host.override.yml` with a `dns.environment` section such as:
-
-```yaml
-services:
-  dns:
-    environment:
-      DC01_IP: "10.201.0.11" # Bake-only placeholder; no directory is required.
-      DNS_FORWARDER: "169.254.169.254"
-```
-
-Build and start DNS with both Compose files, then verify that the participant
-container resolves a public hostname through it. The adapter's range bootstrap replaces the bake-only
-directory address with that range's actual controller address. Remove bake-time
-SSH keys, access tags, startup scripts, and temporary payloads before capture;
-the bake VM must have no attached service account at capture time.
+the adapter and host image form one reviewed compatibility set. Rebake whenever
+`build-v1.tar.gz` changes; the bake rebuilds every Compose service from it.
 
 The `polaris_direct` adapter described in
 [`runtime-adapter/README.md`](../../runtime-adapter/README.md) requires Private

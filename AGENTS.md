@@ -97,18 +97,17 @@ from whether the range reaches `Range.status=ready`.
   `shifter-polaris-dc-*` in the tenant project), not GHCR artifacts. GHCR holds
   only the OCI container images: the runtime adapter and the compose service
   containers that are baked into `polaris-vm`. AWS uses AMIs for the VM images.
-- The compose stack is fetched at bake time, not from the repository checkout.
-  GCP stages it in Cloud Storage (`POLARIS_STACK_BUCKET` and key, for example
-  `gs://<project>-polaris-stack/polaris/stack/polaris-stack.tar.gz`). AWS uses
-  the S3 bake tarball.
-- `scenario-dev/polaris/build/` is intentionally gitignored, because the flags
-  and solutions are scenario-sensitive (the tree was removed in commit
-  `b7c0972dc`). A fresh public-repository checkout has no `build/`, so the bake
-  cannot build `polaris-vm` from the checkout. The operator must supply the
-  private stack tarball (upload it to the stack bucket). The public tree keeps
-  only scenario-agnostic pieces (`containers/`, `content-packages/`, `sdl/`,
-  `design/`). Do not restore `build/` from the stale branches that still carry
-  it, because that re-leaks the solutions.
+- `polaris/packer/build-polaris-vm-image.sh` bakes `polaris-vm` from this
+  checkout's `polaris/build/build-v1.tar.gz` (verified against its sidecar
+  digest) and refuses uncommitted changes. Regenerate the archive with
+  `polaris/aws-range/repack_build_artifact.sh` after any `polaris/build/` change,
+  then rebake. The Compose stack lands at `/opt/polaris/scenario-dev/polaris/build`,
+  the directory the adapter's range bootstrap runs Compose from.
+- No image carries Claude Code. Shifter delivers it to `/opt/shifter/bin` on the
+  range host; the bake asserts the a14-kali link exists and no binary is present.
+- The public platform repository carries no Polaris build tree or bake
+  (removed in commit `b7c0972dc`). Do not restore them there from stale
+  branches, because that re-leaks the solutions.
 
 ## Runtime
 
