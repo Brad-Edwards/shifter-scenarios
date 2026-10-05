@@ -13,10 +13,43 @@ from typing import Any
 from polaris_manifest import PACK_ROOT, load_manifest
 
 
-def build_import_pack(pack_root: str | Path = PACK_ROOT) -> dict[str, Any]:
-    """Return the closed document accepted by Shifter's challenge importer."""
+ONBOARDING_RELATIVE_PATH = Path("build/ctfd-onboarding.json")
 
-    challenges = []
+
+def _difficulty_tags(tags: list[str]) -> list[str]:
+    """Keep only the difficulty:<level> tags Shifter's importer reads."""
+
+    return [tag for tag in tags if tag.startswith("difficulty:")]
+
+
+def _onboarding_challenges(pack_root: str | Path) -> list[dict[str, Any]]:
+    """Project the Start Here warm-up, which lives outside the mission manifest."""
+
+    path = Path(pack_root) / ONBOARDING_RELATIVE_PATH
+    document = json.loads(path.read_text(encoding="utf-8"))
+    return [
+        {
+            "name": challenge["name"],
+            "description": challenge["description"],
+            "category": challenge["category"],
+            "value": challenge["value"],
+            "type": challenge.get("type", "standard"),
+            "state": challenge.get("state", "visible"),
+            "flags": challenge["flags"],
+            "hints": challenge.get("hints", []),
+            "tags": _difficulty_tags(challenge.get("tags", [])),
+        }
+        for challenge in document["challenges"]
+    ]
+
+
+def build_import_pack(pack_root: str | Path = PACK_ROOT) -> dict[str, Any]:
+    """Return the closed document accepted by Shifter's challenge importer.
+
+    The Start Here warm-up comes first, then the mission manifest.
+    """
+
+    challenges = _onboarding_challenges(pack_root)
     for row in load_manifest(pack_root, runtime_profile_id="aws_event"):
         challenges.append(
             {
@@ -30,7 +63,7 @@ def build_import_pack(pack_root: str | Path = PACK_ROOT) -> dict[str, Any]:
                 "hints": row["hints"],
                 # CTFd has no native difficulty field; Shifter's importer reads
                 # it from the difficulty:<level> tag. Ownership tags stay out.
-                "tags": [tag for tag in row["tags"] if tag.startswith("difficulty:")],
+                "tags": _difficulty_tags(row["tags"]),
             }
         )
     return {"format": "ctfd", "challenges": challenges}
