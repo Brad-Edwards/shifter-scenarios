@@ -28,6 +28,9 @@ def build_import_pack(pack_root: str | Path = PACK_ROOT) -> dict[str, Any]:
                 "state": row["state"],
                 "flags": row["flags"],
                 "hints": row["hints"],
+                # CTFd has no native difficulty field; Shifter's importer reads
+                # it from the difficulty:<level> tag. Ownership tags stay out.
+                "tags": [tag for tag in row["tags"] if tag.startswith("difficulty:")],
             }
         )
     return {"format": "ctfd", "challenges": challenges}

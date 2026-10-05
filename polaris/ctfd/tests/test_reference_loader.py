@@ -207,6 +207,15 @@ class ManifestTests(unittest.TestCase):
         self.assertTrue(all(row["hints"] for row in payload["challenges"]))
         self.assertTrue(all("source_challenge" not in row for row in payload["challenges"]))
 
+    def test_shifter_import_pack_carries_each_difficulty_tag(self):
+        payload = shifter_export.build_import_pack(PACK_ROOT)
+        expected = {
+            row["name"]: [f"difficulty:{row['source_challenge']['difficulty']}"]
+            for row in manifest.load_manifest(PACK_ROOT, runtime_profile_id="aws_event")
+        }
+
+        self.assertEqual({row["name"]: row["tags"] for row in payload["challenges"]}, expected)
+
     def test_shifter_import_pack_is_written_owner_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             destination = Path(tmp) / "polaris-shifter-challenges.json"
