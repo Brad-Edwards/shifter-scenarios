@@ -175,8 +175,9 @@ Install the adapter and pack in the same organization as the workspace that will
 launch ranges. The adapter and pack are installed per organization, and a range
 launch binds to the organization of the workspace it runs in. If the pack is
 installed in one organization but a range launches from a workspace in another,
-the launch fails with "This pack is not available in the selected workspace's
-organization". When an operator account can see more than one organization,
+the launch fails with this error:
+`This pack is not available in the selected workspace's organization`.
+When an operator account can see more than one organization,
 confirm which organization owns the launching workspace before installing,
 because it is not always the first organization the administration view lists.
 For a bulk event this is the event workspace's organization; for a single
