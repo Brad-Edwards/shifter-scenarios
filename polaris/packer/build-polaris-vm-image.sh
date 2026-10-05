@@ -10,18 +10,19 @@ SIDECAR="$PACKER_ROOT/../build/build-v1.tar.gz.sha256"
 usage() {
   cat >&2 <<'EOF'
 usage: build-polaris-vm-image.sh --project-id ID --image-name NAME \
-  --network NETWORK --subnetwork SUBNETWORK [--zone ZONE]
+  --network NETWORK --subnetwork SUBNETWORK --service-account EMAIL [--zone ZONE]
 EOF
   exit 2
 }
 
-PROJECT_ID= IMAGE_NAME= NETWORK= SUBNETWORK= ZONE=us-central1-a
+PROJECT_ID= IMAGE_NAME= NETWORK= SUBNETWORK= SERVICE_ACCOUNT= ZONE=us-central1-a
 while (($#)); do
   case "$1" in
     --project-id) PROJECT_ID=${2-}; shift 2 ;;
     --image-name) IMAGE_NAME=${2-}; shift 2 ;;
     --network) NETWORK=${2-}; shift 2 ;;
     --subnetwork) SUBNETWORK=${2-}; shift 2 ;;
+    --service-account) SERVICE_ACCOUNT=${2-}; shift 2 ;;
     --zone) ZONE=${2-}; shift 2 ;;
     *) usage ;;
   esac
@@ -32,6 +33,7 @@ done
 [[ $NETWORK =~ ^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$ ]] || usage
 [[ $SUBNETWORK =~ ^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$ ]] || usage
 [[ $ZONE =~ ^[a-z]+-[a-z]+[0-9]-[a-z]$ ]] || usage
+[[ $SERVICE_ACCOUNT =~ ^[a-z][a-z0-9-]{4,28}[a-z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\.iam\.gserviceaccount\.com$ ]] || usage
 
 for tool in gcloud packer git; do
   command -v "$tool" >/dev/null || {
@@ -69,4 +71,5 @@ packer build \
   -var "network=$NETWORK" \
   -var "subnetwork=$SUBNETWORK" \
   -var "zone=$ZONE" \
+  -var "service_account_email=$SERVICE_ACCOUNT" \
   "$TEMPLATE"

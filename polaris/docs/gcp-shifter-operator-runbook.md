@@ -87,14 +87,17 @@ Bake the Linux host with
 from a clean checkout of the reviewed revision. It uploads
 `polaris/build/build-v1.tar.gz`, verifies it against its sidecar digest, builds
 and starts every Compose service, and captures the boot disk as an exact custom
-image in family `shifter-polaris-vm`. The builder has no service account, so the
-image carries no build identity. Run it against the tenant's image-build network
-over IAP:
+image in family `shifter-polaris-vm`. Run it over IAP against the tenant's
+image-build network as the tenant's image-build service account, which that
+network's IAP ingress rule targets. A custom image does not capture the
+builder's identity, and the bake blocks stack containers from the metadata
+server:
 
 ```sh
 polaris/packer/build-polaris-vm-image.sh --project-id <tenant-project> \
   --image-name shifter-polaris-vm-v<yyyymmdd> \
-  --network <image-build-network> --subnetwork <image-build-subnetwork>
+  --network <image-build-network> --subnetwork <image-build-subnetwork> \
+  --service-account <image-build-service-account>
 ```
 
 The complete host runtime lives on the one boot disk; custom images do not

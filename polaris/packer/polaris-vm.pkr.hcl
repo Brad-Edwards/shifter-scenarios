@@ -4,8 +4,10 @@
 // including a14-kali, dns and a9-splice), with the host sshd on the management
 // port so a14-kali can bind host :22 and :3389. The stack is the reviewed
 // build-v1.tar.gz from this repository, uploaded from the checkout and verified
-// against its sidecar digest. No service account is attached to the builder, so
-// the captured image carries no build identity.
+// against its sidecar digest. The builder runs as the tenant's image-build
+// service account, which the image-build network's IAP ingress rule targets; a
+// custom image does not capture that identity, and stage-stack.sh blocks stack
+// containers from the metadata server while it is attached.
 //
 // Claude Code is not part of this image. Shifter delivers it to the range host's
 // /opt/shifter/bin at realization; Compose bind-mounts that directory into
@@ -66,6 +68,11 @@ variable "subnetwork" {
   type = string
 }
 
+variable "service_account_email" {
+  type        = string
+  description = "Tenant image-build service account; the image-build IAP rule targets it."
+}
+
 variable "use_iap" {
   type    = bool
   default = true
@@ -88,13 +95,14 @@ source "googlecompute" "polaris_vm" {
   iap_tunnel_launch_wait = 300
   machine_type           = "e2-standard-8"
   // Docker Engine plus the built stack needs generous headroom.
-  disk_size                       = 200
-  disk_type                       = "pd-balanced"
-  disable_default_service_account = true
-  image_name                      = var.image_name
-  image_family                    = "shifter-polaris-vm"
-  image_description               = "Polaris range host: Debian Docker host running the Polaris Compose stack (no Claude Code)"
-  image_storage_locations         = ["us"]
+  disk_size               = 200
+  disk_type               = "pd-balanced"
+  service_account_email   = var.service_account_email
+  scopes                  = ["https://www.googleapis.com/auth/userinfo.email"]
+  image_name              = var.image_name
+  image_family            = "shifter-polaris-vm"
+  image_description       = "Polaris range host: Debian Docker host running the Polaris Compose stack (no Claude Code)"
+  image_storage_locations = ["us"]
   image_labels = {
     image-type      = "polaris-vm"
     managed-by      = "packer"

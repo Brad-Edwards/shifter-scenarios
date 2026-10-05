@@ -133,8 +133,8 @@ done < <(docker compose config --images)
 [[ -z "${missing_images}" ]] || fail_stack "compose images missing after build/pull:${missing_images}"
 
 # Block host and container traffic to the GCE metadata server before any stack
-# workload runs. The builder has no service account, but metadata still exposes
-# instance attributes. Privileged and host-namespace services were rejected
+# workload runs, so no stack image can obtain the builder's service-account
+# token or instance attributes. Privileged and host-namespace services were rejected
 # above, so a stack image cannot remove or bypass these rules.
 METADATA_IP="169.254.169.254/32"
 iptables -I OUTPUT 1 -d "${METADATA_IP}" -j DROP
