@@ -83,7 +83,10 @@ source "googlecompute" "polaris_vm" {
   use_internal_ip         = var.use_iap
   omit_external_ip        = var.use_iap
   use_iap                 = var.use_iap
-  machine_type            = "e2-standard-8"
+  // IAP answers "Failed to lookup instance" until a new instance propagates,
+  // which can outlast the plugin's default 30-second tunnel launch window.
+  iap_tunnel_launch_wait = 300
+  machine_type           = "e2-standard-8"
   // Docker Engine plus the built stack needs generous headroom.
   disk_size                       = 200
   disk_type                       = "pd-balanced"
