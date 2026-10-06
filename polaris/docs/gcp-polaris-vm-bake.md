@@ -107,6 +107,10 @@ same revision:
 sha256sum polaris/build/a14/participant-readiness.json
 ```
 
+Record the new host image name and readiness digest in
+[`runtime-pack/BINDING.md`](../../runtime-pack/BINDING.md) and
+`runtime-pack/polaris-direct.binding.json` in the same change.
+
 ## 4. Cold-boot the image
 
 Boot a throwaway VM from the image with no service account, on the image-build
