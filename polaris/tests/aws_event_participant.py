@@ -746,7 +746,7 @@ for host in ("172.20.50.10","172.20.50.11","172.20.50.12"):
                           capture_output=True,text=True,check=False)
     models.append(re.search(r"(?m)^\s*ProductName:\s*(\S+)",result.stdout).group(1))
     serials.append(re.search(r"\bSN:\s*(\S+)",result.stdout).group(1))
-rows["bunker-controller-map"]="".join(models)
+rows["bunker-controller-map"]=PREFIX+"".join(models)+"}"
 c=ModbusTcpClient("172.20.50.10",port=502); assert c.connect()
 c.write_register(address=20,value=3); c.write_register(address=99,value=int(serials[0][-3:]))
 time.sleep(.5); rows["tail-controller-unlock"]=read_flag(c,100); c.close()

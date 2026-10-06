@@ -63,9 +63,9 @@ A9 ships with `nmap`, `ncat`, `tcpdump`, `python3`, `pymodbus`, and the helper s
 
 3. Concatenate the three model numbers in network order: `AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42`
 
-4. Submit to CTFd.
+4. Submit the concatenation to CTFd, bare or wrapped.
 
-**Expected flag:** `FLAG{2e8c0a5d7f3b1946}` (static flag for this challenge)
+**Expected flag:** `FLAG{AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42}`
 
 ---
 

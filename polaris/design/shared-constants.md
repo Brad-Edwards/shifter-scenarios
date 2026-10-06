@@ -20,7 +20,8 @@ Flag 31 answer is the concatenation of the three model numbers in network order 
 AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42
 ```
 
-Submitted to CTFd as: `FLAG{2e8c0a5d7f3b1946}` (static flag, not derived)
+Canonical flag: `FLAG{AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42}`. The concatenation is the flag body, so CTFd
+accepts the bare string or the wrapped form.
 
 ### A13 Handshake Key
 

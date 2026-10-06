@@ -163,9 +163,9 @@ flags:
     path: /tmp/.deleted/full_integration_sim.mp4.gpg
   - flag_id: bunker-controller-map
     source: value
-    value: "FLAG{2e8c0a5d7f3b1946}"
+    value: "FLAG{AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42}"
     host: a9-splice-landing
-    path: /root/scan_results.txt
+    path: modbus://tail-ctrl,leg-ctrl,arms-ctrl/device-identification
   - flag_id: tail-controller-unlock
     source: value
     value: "FLAG{9b3e7c1d0f5a2846}"

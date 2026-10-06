@@ -36,8 +36,8 @@ An nmap scan from A9 reveals these four hosts and their open ports. The protocol
 
 ### Flag 31 — Underground Signals
 - **Difficulty:** Medium
-- **Location:** Run a Modbus scan or use the provided client script to query each controller's device identification (Modbus function code 43, device ID). Each of the three controllers (A10, A11, A12) returns a vendor string and model number. The participant must enumerate the three controllers correctly; the static flag is then recovered from the challenge logic, not by directly submitting the model-number concatenation itself. Requires understanding Modbus function code 43 (Read Device Identification) and querying all three hosts. No register-read shortcut — this is purely enumeration.
-- **Flag:** `FLAG{2e8c0a5d7f3b1946}`
+- **Location:** Run a Modbus scan or use the provided client script to query each controller's device identification (Modbus function code 43, device ID). Each of the three controllers (A10, A11, A12) returns a vendor string and model number. The participant must enumerate the three controllers correctly and submit the three model numbers concatenated in network order (A10, A11, A12); that concatenation is the flag body, and CTFd accepts it bare or wrapped. Requires understanding Modbus function code 43 (Read Device Identification) and querying all three hosts. No register-read shortcut — this is purely enumeration.
+- **Flag:** `FLAG{AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42}`
 - **Mission:** Mission 5 — Bunker
 
 ---

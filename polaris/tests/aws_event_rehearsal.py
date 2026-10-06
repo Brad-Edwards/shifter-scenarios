@@ -41,11 +41,6 @@ RESULT_PREFIX = "POLARIS_REHEARSAL_RESULT="
 REPORT_SCHEMA = "polaris.aws-event.rehearsal-report/v1"
 RUN_ID_RE = re.compile(r"^run-[0-9a-f]{16}$")
 VERSION_RE = re.compile(r"^\d+\.\d+\.\d+$")
-PARTICIPANT_ANSWER_OVERRIDES = {
-    # This challenge is value-derived: CTFd accepts the concatenated live
-    # controller models, while placement.yaml carries the awarded flag.
-    "bunker-controller-map": "AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42",
-}
 
 sys.path.insert(0, str(AWS_RANGE_ROOT))
 
@@ -84,9 +79,7 @@ def load_contracts(pack_root: Path = PACK_ROOT) -> Contracts:
     if not isinstance(placements, list) or not isinstance(challenges, list):
         raise RehearsalError("flag contracts require list roots")
     expected = {
-        row["flag_id"]: PARTICIPANT_ANSWER_OVERRIDES.get(
-            row["flag_id"], row.get("value")
-        )
+        row["flag_id"]: row.get("value")
         for row in placements
         if isinstance(row, dict)
     }
