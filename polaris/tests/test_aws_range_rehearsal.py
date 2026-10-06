@@ -269,7 +269,7 @@ class ParticipantSurfaceTests(unittest.TestCase):
             self.assertIn(service, zone)
 
         self.assertEqual(
-            "AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42",
+            "FLAG{AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42}",
             _driver().load_contracts(PACK_ROOT).expected["bunker-controller-map"],
         )
 

@@ -630,7 +630,7 @@ class CliTests(_TmpCase):
 
 _M5_KEY_PATH = "/home/kali/.ssh/splice_relay"
 _M5_RUNNER = "a14-kali"
-_M5_EXPECTED_ANSWER = "AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42"
+_M5_EXPECTED_FLAG = "FLAG{AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42}"
 _M5_DEVID_BODIES = {
     "tail-ctrl": "Device Identification:\n  VendorName: Aurora\n  ProductName: AHS-TAIL-7741\n  MajorMinorRevision: 2.4\n",
     "leg-ctrl": "Device Identification:\n  VendorName: Aurora\n  ProductName: AHS-LEG-MN07\n  MajorMinorRevision: 2.4\n",
@@ -672,9 +672,16 @@ class Mission5Tests(unittest.TestCase):
 
         assert "bunker-controller-map" in ADAPTERS
         adapter = ADAPTERS["bunker-controller-map"]
-        assert adapter.value_kind == "answer"
-        assert adapter.expected_answer == _M5_EXPECTED_ANSWER
+        assert adapter.value_kind == "flag"
         assert adapter.runner == _M5_RUNNER
+
+    def test_mission5_board_flag_is_the_derivable_concatenation(self):
+        """The configured flag is what the participant path produces (issue #183)."""
+        by_id = {
+            challenge.flag_id: challenge
+            for challenge in board.load_board(REPO_PLACEMENT, REPO_CHALLENGES)
+        }
+        assert by_id["bunker-controller-map"].static_flag == _M5_EXPECTED_FLAG
 
     def test_mission5_adapter_happy_path_produces_concatenated_models(self):
         import scenario_smoketest.adapters.mission5_bunker  # noqa: F401
@@ -683,8 +690,8 @@ class Mission5Tests(unittest.TestCase):
         fr = FakeRunner(_m5_happy_responses())
         ctx = AdapterContext(runner=fr, hosts={})
         produced = adapter.solve(ctx)
-        assert produced.value == _M5_EXPECTED_ANSWER
-        assert produced.kind == "answer"
+        assert produced.value == _M5_EXPECTED_FLAG
+        assert produced.kind == "flag"
 
         # Pin the exact SSH auth argv. Without this assertion the FakeRunner's
         # argv-prefix fallback would silently let a regression drop BatchMode=yes
@@ -777,7 +784,7 @@ class Mission5Tests(unittest.TestCase):
         # harness compare layer turns the mismatch into a redacted "fail" verdict.
         assert produced.value is not None
         assert "AHS-ARM-WRONG" in produced.value  # adapter doesn't lie about what it saw
-        verdict = compare.compare(produced.value, adapter.expected_answer, adapter.value_kind)
+        verdict = compare.compare(produced.value, _M5_EXPECTED_FLAG, adapter.value_kind)
         assert verdict.status == "fail"
         assert "AHS-ARM-WRONG" not in verdict.detail  # compare layer redacts
         assert "AHS-TAIL-7741" not in verdict.detail

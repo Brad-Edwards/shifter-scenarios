@@ -36,13 +36,17 @@ from typing import Any, Callable
 from common import CtfdClient
 
 
-# Source flags use the canonical ``FLAG{<16-hex>}`` wrapper. The bare-hex
-# alias is derived only when the wrapper is well-formed and the hex body is
-# exactly 16 chars. Anything
-# else stays as the operator wrote it. ``polaris_manifest.validate_manifest``
-# rejects malformed or non-16-hex wrappers upstream so the helper here only
-# ever sees the clean canonical shape on the canonical path.
-_CANONICAL_FLAG_WRAPPER_RE = re.compile(r"^FLAG\{([0-9a-fA-F]{16})\}$")
+# Source flags use the canonical ``FLAG{<body>}`` wrapper. The body is either
+# an opaque 16-hex token or, for a derive-and-submit challenge, the uppercase
+# hyphenated answer participants assemble on the range (for example the
+# concatenated controller models). Neither body shape contains a regex
+# metacharacter, so the bare-body alias embeds it verbatim. Anything else stays
+# as the operator wrote it. ``polaris_manifest.validate_manifest`` rejects
+# malformed wrappers upstream so the helper here only ever sees the clean
+# canonical shape on the canonical path.
+_CANONICAL_FLAG_WRAPPER_RE = re.compile(
+    r"^FLAG\{([0-9a-fA-F]{16}|[A-Z0-9]+(?:-[A-Z0-9]+)+)\}$"
+)
 
 
 # -----------------------------------------------------------------------------
@@ -288,10 +292,10 @@ def upsert_challenge(
 def normalize_flag(flag: dict[str, Any]) -> dict[str, Any]:
     """Return a CTFd flag-row body from a source-JSON flag entry.
 
-    Canonical ``FLAG{<16-hex>}`` static source content is aliased to a
+    Canonical ``FLAG{<body>}`` static source content is aliased to a
     single case-insensitive regex row that accepts either the wrapped form
-    or the bare ``<16-hex>``. The canonical answer in pack
-    content stays ``FLAG{<16-hex>}``; only the live CTFd row shape changes,
+    or the bare ``<body>``. The canonical answer in pack
+    content stays ``FLAG{<body>}``; only the live CTFd row shape changes,
     so existing walkthroughs and challenge descriptions are untouched.
 
     Source flags already typed ``regex``, and ``static`` entries whose
@@ -302,10 +306,10 @@ def normalize_flag(flag: dict[str, Any]) -> dict[str, Any]:
     if source_type == "static":
         match = _CANONICAL_FLAG_WRAPPER_RE.match(content)
         if match:
-            hex_part = match.group(1)
+            body = match.group(1)
             return {
                 "type": "regex",
-                "content": rf"^(?:FLAG\{{{hex_part}\}}|{hex_part})$",
+                "content": rf"^(?:FLAG\{{{body}\}}|{body})$",
                 "data": "case_insensitive",
             }
     return {

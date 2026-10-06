@@ -3,11 +3,11 @@
 The reference loader projects the canonical Polaris flag layer into CTFd. The
 source contracts are:
 
-- `../flags/placement.yaml` — stable flag ids, synthetic values, ACES hosts,
+- `../flags/placement.yaml`—stable flag ids, synthetic values, ACES hosts,
   and runtime recovery paths.
-- `../challenges/challenges.yaml` — participant-facing titles, questions,
+- `../challenges/challenges.yaml`—participant-facing titles, questions,
   difficulty, points, and hints.
-- `../oracle/affordances.yaml` — private `{flag_id, path_step}` bindings.
+- `../oracle/affordances.yaml`—private `{flag_id, path_step}` bindings.
 
 CTFd category, live numeric ids, managed tags, and presentation state are
 adapter-local. CTFd submissions and points never establish ACES objective
@@ -57,9 +57,11 @@ Plain HTTP is refused except when `--allow-loopback-http` is explicitly paired
 with a loopback URL. Requests have bounded time and response size, authorization
 does not cross origins, and failures never print remote bodies or answer data.
 
-Canonical `FLAG{<16-hex>}` values are represented on CTFd by a case-insensitive
-regular expression that accepts either the wrapped form or the inner 16 hex
-characters. Repository source and walkthroughs retain the wrapped form.
+Canonical `FLAG{<body>}` values are represented on CTFd by a case-insensitive
+regular expression that accepts either the wrapped form or the bare body. The
+body is an opaque 16-hex token, or, for a derive-and-submit challenge such as
+Underground Signals, the uppercase hyphenated answer participants assemble on
+the range. Repository source and walkthroughs retain the wrapped form.
 
 ## Separate event operations
 

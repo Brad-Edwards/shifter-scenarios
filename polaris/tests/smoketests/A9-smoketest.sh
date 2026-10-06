@@ -18,7 +18,7 @@ EXPECTED_A10_MODEL="AHS-TAIL-7741"
 EXPECTED_A11_MODEL="AHS-LEG-MN07"
 EXPECTED_A12_MODEL="AHS-ARM-AL42"
 EXPECTED_ANSWER="${EXPECTED_A10_MODEL}${EXPECTED_A11_MODEL}${EXPECTED_A12_MODEL}"
-EXPECTED_FLAG_31="FLAG{2e8c0a5d7f3b1946}"
+EXPECTED_FLAG_31="FLAG{${EXPECTED_ANSWER}}"
 
 FAIL=0
 pass() { echo "  [PASS] $1"; }
@@ -101,7 +101,7 @@ echo "--- Flag 31 concatenation answer ---"
 answer="${a10_model}${a11_model}${a12_model}"
 if [ "$answer" = "$EXPECTED_ANSWER" ]; then
     pass "concatenation = $answer"
-    echo "  (CTFd challenge accepts this string; issues static flag $EXPECTED_FLAG_31)"
+    echo "  (flag 31 is $EXPECTED_FLAG_31; the board also accepts the bare string)"
 else
     fail "concatenation expected=$EXPECTED_ANSWER got=$answer"
 fi

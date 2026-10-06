@@ -1,4 +1,4 @@
-# Shared Constants — Cross-Asset Values
+# Shared Constants—Cross-Asset Values
 
 These values must be consistent across multiple assets. This file is the single source of truth.
 
@@ -12,7 +12,7 @@ Used by: A10, A11, A12 (device ID responses), A13 (handshake key derivation), A9
 | A11 Leg | AURORA HEAVY SYSTEMS | AHS-LEG-MN07 | AHS-L-00483 |
 | A12 Arms | AURORA HEAVY SYSTEMS | AHS-ARM-AL42 | AHS-A-00484 |
 
-### Flag 31 — OT network enumeration
+### Flag 31—OT network enumeration
 
 Flag 31 answer is the concatenation of the three model numbers in network order (A10, A11, A12):
 
@@ -20,7 +20,8 @@ Flag 31 answer is the concatenation of the three model numbers in network order 
 AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42
 ```
 
-Submitted to CTFd as: `FLAG{2e8c0a5d7f3b1946}` (static flag, not derived)
+Canonical flag: `FLAG{AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42}`. The concatenation is the flag body, so CTFd
+accepts the bare string or the wrapped form.
 
 ### A13 Handshake Key
 
@@ -74,16 +75,16 @@ Used by: Decrypting A6 `/tmp/.deleted/full_integration_sim.mp4.gpg` after import
 | Account | Password | Source | Used At |
 |---------|----------|-------|---------|
 | d.kowalski | `P@ssw0rd123` | A0 employee info + guessing, or A3 `/.env` config | A1 webmail (flag 10), creds in sent mail → A4 (flag 15) |
-| m.webb | `Welcome1` | A3 intranet HR wiki names `Welcome1` as the corporate default; Webb is listed on A0 `/leadership` | A4 `/HR` and `/Procurement` shares (flags 9, 13) — Executives group |
+| m.webb | `Welcome1` | A3 intranet HR wiki names `Welcome1` as the corporate default; Webb is listed on A0 `/leadership` | A4 `/HR` and `/Procurement` shares (flags 9, 13)—Executives group |
 | v.harlan | `Boreas2025!` | A3 SQL injection on `/search` dumping the users table; also hardcoded in Flask source | A3 intranet admin, A4 shares as Executive |
 | e.vasik | `Reactor#Core9` | A1 employee directory / intranet | A1 mail (flag 8 source), A2 AD, A6 SSH, A8 `vasik` role |
 | r.tanaka | `SimEngine#42` | Hints in A6 environment | A6 SSH, A8 `tanaka` role, A7 Gitea `r_tanaka` |
 | p.nielsen | `Hydraulics1` | A6 `.pgpass` or A8 | A6 SSH, A8 `nielsen` role, A7 Gitea `p_nielsen` |
 | s.ivanov | `Welcome1` | A4 HR org chart + `Welcome1` default (same corporate-default pattern as m.webb) + A1 HR welcome-back reset thread | **A15 SSH (flag 37 chain)** |
-| p.shah | `Welcome1` | A4 HR org chart (NOT on A0 — HR-share gated) + `Welcome1` default | **A16 SSH (Lab pivot on-ramp, no dedicated flag)** |
+| p.shah | `Welcome1` | A4 HR org chart (NOT on A0—HR-share gated) + `Welcome1` default | **A16 SSH (Lab pivot on-ramp, no dedicated flag)** |
 | jenkins | `build2025` | A6 `/home/jenkins/.credentials` (flag 20) | A6 SSH as CI service account |
 
-The `Welcome1` corporate default is documented on the A3 intranet HR wiki ("New employee default password: `Welcome1` — must change on first login") with the accompanying note *"Several employees have not changed their default passwords."* That single leak powers cred discovery for `m.webb`, `s.ivanov`, and `p.shah` via username-guessing against names harvested from A0 leadership / A4 HR content.
+The `Welcome1` corporate default is documented on the A3 intranet HR wiki ("New employee default password: `Welcome1`—must change on first login") with the accompanying note *"Several employees have not changed their default passwords."* That single leak powers cred discovery for `m.webb`, `s.ivanov`, and `p.shah` via username-guessing against names harvested from A0 leadership / A4 HR content.
 
 ## PO Number (A12 cross-zone intel)
 

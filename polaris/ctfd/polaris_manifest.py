@@ -17,7 +17,11 @@ from ctfd_reconcile import get_all_items  # noqa: E402
 
 
 SUPPORTED_FLAG_TYPES = {"static", "regex"}
-_CANONICAL_FLAG_WRAPPER_RE = re.compile(r"^FLAG\{([0-9a-fA-F]{16})\}$")
+# Canonical answer body: an opaque 16-hex token, or the uppercase hyphenated
+# answer a derive-and-submit challenge has participants assemble on the range.
+_CANONICAL_FLAG_WRAPPER_RE = re.compile(
+    r"^FLAG\{([0-9a-fA-F]{16}|[A-Z0-9]+(?:-[A-Z0-9]+)+)\}$"
+)
 _FLAG_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 _NAMESPACE_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 

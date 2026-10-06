@@ -14,10 +14,10 @@ Bunker OT controllers. The adapter exercises the full participant chain:
      report.
   3. From the splice-relay shell, ``modbus_client.py <host> devid`` is run
      against the three Aurora controllers. Each ``ProductName`` is parsed and
-     concatenated in the canonical (tail, leg, arms) order; the harness'
-     ``answer`` comparator checks the result against the expected concatenation
-     declared on the adapter, and the compare layer redacts both sides on
-     mismatch.
+     concatenated in the canonical (tail, leg, arms) order. The concatenation
+     is the challenge's flag body, so the harness' ``flag`` comparator checks
+     ``FLAG{<concatenation>}`` against the configured static flag, and the
+     compare layer redacts both sides on mismatch.
 
 All exec calls originate from a14-kali. The Modbus probes are issued *through*
 the SSH tunnel, so a regression on either the key staging or the A9 sshd auth
@@ -35,9 +35,8 @@ _KEY_PATH = "/home/kali/.ssh/splice_relay"
 _REQUIRED_PERMS = "600"
 _SPLICE_TARGET = "root@splice-relay"
 
-# Order matters: the flag-31 answer is the (tail, leg, arms) concatenation.
+# Order matters: the flag-31 body is the (tail, leg, arms) concatenation.
 _CONTROLLERS = ("tail-ctrl", "leg-ctrl", "arms-ctrl")
-_EXPECTED_ANSWER = "AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42"
 
 _SSH_AUTH_ARGV = (
     "ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=5",
@@ -59,31 +58,26 @@ def _extract_product_name(devid_body: str) -> str | None:
     return match.group(1) if match else None
 
 
-@register(
-    "bunker-controller-map",
-    runner=RUNNER,
-    value_kind="answer",
-    expected_answer=_EXPECTED_ANSWER,
-)
+@register("bunker-controller-map", runner=RUNNER)
 def challenge_31(ctx: AdapterContext) -> Produced:
     """Underground Signals — concatenate A10/A11/A12 ProductName via the splice."""
     # 1. Discoverability evidence on a14-kali.
     present = ctx.runner.exec(RUNNER, ["test", "-f", _KEY_PATH])
     if present.returncode != 0:
-        return Produced(None, "answer", "splice key evidence missing on a14-kali")
+        return Produced(None, "flag", "splice key evidence missing on a14-kali")
 
     perms = ctx.runner.exec(RUNNER, ["stat", "-c", "%a", _KEY_PATH])
     observed = perms.stdout.strip()
     if observed != _REQUIRED_PERMS:
         return Produced(
-            None, "answer",
+            None, "flag",
             f"splice key wrong perms (expected {_REQUIRED_PERMS}, got {observed!r})",
         )
 
     # 2. Auth opens via the staged key.
     auth = ctx.runner.exec(RUNNER, list(_SSH_AUTH_ARGV))
     if auth.returncode != 0:
-        return Produced(None, "answer", "splice-relay ssh auth refused")
+        return Produced(None, "flag", "splice-relay ssh auth refused")
 
     # 3. Modbus device-id probes through the SSH tunnel; collect ProductNames.
     models: list[str] = []
@@ -96,17 +90,17 @@ def challenge_31(ctx: AdapterContext) -> Produced:
             ],
         )
         if probe.returncode != 0:
-            return Produced(None, "answer", f"modbus devid probe failed for {host}")
+            return Produced(None, "flag", f"modbus devid probe failed for {host}")
         model = _extract_product_name(probe.stdout)
         if not model:
             return Produced(
-                None, "answer",
+                None, "flag",
                 f"modbus devid response missing ProductName for {host}",
             )
         models.append(model)
 
     return Produced(
-        "".join(models),
-        "answer",
+        "FLAG{" + "".join(models) + "}",
+        "flag",
         "splice-relay auth opened; three ProductName values recovered via ssh",
     )
