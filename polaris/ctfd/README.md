@@ -3,11 +3,11 @@
 The reference loader projects the canonical Polaris flag layer into CTFd. The
 source contracts are:
 
-- `../flags/placement.yaml` — stable flag ids, synthetic values, ACES hosts,
+- `../flags/placement.yaml`—stable flag ids, synthetic values, ACES hosts,
   and runtime recovery paths.
-- `../challenges/challenges.yaml` — participant-facing titles, questions,
+- `../challenges/challenges.yaml`—participant-facing titles, questions,
   difficulty, points, and hints.
-- `../oracle/affordances.yaml` — private `{flag_id, path_step}` bindings.
+- `../oracle/affordances.yaml`—private `{flag_id, path_step}` bindings.
 
 CTFd category, live numeric ids, managed tags, and presentation state are
 adapter-local. CTFd submissions and points never establish ACES objective

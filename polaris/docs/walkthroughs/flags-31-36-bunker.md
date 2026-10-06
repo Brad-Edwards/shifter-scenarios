@@ -9,7 +9,7 @@ only after the range-local watcher observes flag 19's meltdown state and
 installs the local splice. A9 then resolves as `splice-relay` on
 `splice-link` (172.20.60.0/24).
 
-**Prerequisite — A7 playbooks and source:** several bunker flags reference content from the A7 Gitea repos (`aurora/manufacturing-orchestrator` for the PLC diag procedures, `aurora/weapons-integration` for `brain_client.py`, `aurora/navigation-controller` for the brain auth token). A7 lives on the lab network and is **not** reachable from A9 or Kali. You must have cloned those repos during the Lab phase from inside the A16 SSH session (flag 24's `.netrc` chain works for every one of them). Keep the A16 shell open alongside the A9 shell so you can cross-reference the already-cloned repos while working bunker flags.
+**Prerequisite—A7 playbooks and source:** several bunker flags reference content from the A7 Gitea repos (`aurora/manufacturing-orchestrator` for the PLC diag procedures, `aurora/weapons-integration` for `brain_client.py`, `aurora/navigation-controller` for the brain auth token). A7 lives on the lab network and is **not** reachable from A9 or Kali. You must have cloned those repos during the Lab phase from inside the A16 SSH session (flag 24's `.netrc` chain works for every one of them). Keep the A16 shell open alongside the A9 shell so you can cross-reference the already-cloned repos while working bunker flags.
 
 From Kali, SSH into A9:
 
@@ -19,25 +19,25 @@ ssh -i ~/.ssh/splice_relay root@splice-relay
 
 The Kali home directory carries a per-range private key at `~/.ssh/splice_relay`
 (mode `0600`). Select it explicitly as shown above. A9 has
-`PasswordAuthentication no` — the key is the only path in. If the key is missing, the build failed:
+`PasswordAuthentication no`—the key is the only path in. If the key is missing, the build failed:
 participants cannot repair it. The operator must tear down and rebuild the
 range, then restart participant proof from a fresh A14 session.
 
 A14 is **not** on the Bunker OT network itself. A9 is the only host with a route to the four controllers, so all work for flags 31–36 runs from inside the A9 shell:
 
-- A10 tail: 172.20.50.10:502 (Modbus/TCP) — hostname `tail-ctrl`
-- A11 leg: 172.20.50.11:502 (Modbus/TCP) — hostname `leg-ctrl`
-- A12 arms: 172.20.50.12:502 (Modbus/TCP) — hostname `arms-ctrl`
-- A13 brain: 172.20.50.50:9100 (custom binary TCP) — hostname `brain-main`
+- A10 tail: 172.20.50.10:502 (Modbus/TCP)—hostname `tail-ctrl`
+- A11 leg: 172.20.50.11:502 (Modbus/TCP)—hostname `leg-ctrl`
+- A12 arms: 172.20.50.12:502 (Modbus/TCP)—hostname `arms-ctrl`
+- A13 brain: 172.20.50.50:9100 (custom binary TCP)—hostname `brain-main`
 
 A9 ships with `nmap`, `ncat`, `tcpdump`, `python3`, `pymodbus`, and the helper script `/usr/local/bin/modbus_client.py`.
 
 ---
 
-## Flag 31 — Underground Signals (Medium, 100pts)
+## Flag 31—Underground Signals (Medium, 100pts)
 
 1. From the splice landing box (A9), read the pre-populated OT network scan
-   results — this is the fastest path and is what every walkthrough run
+   results—this is the fastest path and is what every walkthrough run
    should use by default:
    ```
    cat /root/scan_results.txt
@@ -59,7 +59,7 @@ A9 ships with `nmap`, `ncat`, `tcpdump`, `python3`, `pymodbus`, and the helper s
    - 172.20.50.11: model `AHS-LEG-MN07`, app name `Leg Locomotion Controller v2.4 -- SN: AHS-L-00483 -- calibration: gait sequence 0->1->2->0`
    - 172.20.50.12: model `AHS-ARM-AL42`, app name `Arms Weapons Controller v2.4 -- SN: AHS-A-00484 -- diagnostics: coil 50`
 
-   Keep both the **models** and the **serials** — flag 31 wants the models, flag 32 and flag 35 want the serials.
+   Keep both the **models** and the **serials**—flag 31 wants the models, flag 32 and flag 35 want the serials.
 
 3. Concatenate the three model numbers in network order: `AHS-TAIL-7741AHS-LEG-MN07AHS-ARM-AL42`
 
@@ -69,12 +69,12 @@ A9 ships with `nmap`, `ncat`, `tcpdump`, `python3`, `pymodbus`, and the helper s
 
 ---
 
-## Flag 32 — First Motion (Hard, 200pts)
+## Flag 32—First Motion (Hard, 200pts)
 
 1. Read the manufacturing-orchestrator Ansible playbooks from A7 (Gitea). In `deploy_combat_ai.yml`, the tail controller section says:
    > Diagnostic mode (register 20 = 3) enables full register access. Access diagnostic registers by writing mode 3, then providing the controller serial number to register 99.
 
-2. Pull the tail controller's serial from its devid response (flag 31 step 2 — it's in the `UserApplicationName` field as `SN: AHS-T-00482`). The challenge value is the last 3 digits: `482`.
+2. Pull the tail controller's serial from its devid response (flag 31 step 2—it's in the `UserApplicationName` field as `SN: AHS-T-00482`). The challenge value is the last 3 digits: `482`.
 
 3. Execute the unlock sequence via Modbus:
    ```python
@@ -96,7 +96,7 @@ A9 ships with `nmap`, `ncat`, `tcpdump`, `python3`, `pymodbus`, and the helper s
 
 ---
 
-## Flag 33 — Walking Pattern (Hard, 200pts)
+## Flag 33—Walking Pattern (Hard, 200pts)
 
 1. Read the manufacturing-orchestrator playbooks from A7. The leg controller section describes:
    > The leg controller requires a specific gait mode sequence to enter calibration mode: 0 → 1 → 2 → 0 (stationary → walk → run → stationary) within 10 seconds. After successful sequence, input register 60 returns a 4-digit calibration code. Write this code to register 99.
@@ -136,7 +136,7 @@ A9 ships with `nmap`, `ncat`, `tcpdump`, `python3`, `pymodbus`, and the helper s
 
 ---
 
-## Flag 34 — Response Window (Hard, 200pts)
+## Flag 34—Response Window (Hard, 200pts)
 
 1. The arms controller uses a rolling challenge-response. From the A7 playbooks you learn to enable diagnostics via coil 50, then read a challenge from input register 60.
 
@@ -175,14 +175,14 @@ A9 ships with `nmap`, `ncat`, `tcpdump`, `python3`, `pymodbus`, and the helper s
 
 ---
 
-## Flag 35 — Control Channel (Expert, 300pts)
+## Flag 35—Control Channel (Expert, 300pts)
 
-1. The brain at 172.20.50.50:9100 speaks a custom binary protocol. Connecting with plain netcat shows garbled bytes — that's the 8-byte challenge.
+1. The brain at 172.20.50.50:9100 speaks a custom binary protocol. Connecting with plain netcat shows garbled bytes—that's the 8-byte challenge.
 
 2. Find the protocol documentation in A7: clone `aurora/weapons-integration` and read `src/brain_client.py`. It documents:
    - Server sends 8-byte challenge
    - Client XORs each byte with a key: `SHA256(tail_serial + leg_serial + arms_serial)[:8]`
-   - Serials come from the Modbus device identification query on A10/A11/A12 (flag 31 step 2 — the `UserApplicationName` field carries `SN: AHS-T-00482`, `SN: AHS-L-00483`, `SN: AHS-A-00484` alongside the model number).
+   - Serials come from the Modbus device identification query on A10/A11/A12 (flag 31 step 2—the `UserApplicationName` field carries `SN: AHS-T-00482`, `SN: AHS-L-00483`, `SN: AHS-A-00484` alongside the model number).
 
 3. Get the auth token from A7: clone `aurora/navigation-controller` and read `config.yaml`:
    ```yaml
@@ -219,7 +219,7 @@ A9 ships with `nmap`, `ncat`, `tcpdump`, `python3`, `pymodbus`, and the helper s
 
 ---
 
-## Flag 36 — Full Override (Expert, 300pts)
+## Flag 36—Full Override (Expert, 300pts)
 
 1. After authenticating to the brain (flag 35), you need the override code. It's assembled from three pieces found across the range:
 
