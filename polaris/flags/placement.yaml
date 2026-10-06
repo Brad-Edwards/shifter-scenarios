@@ -35,37 +35,37 @@ flags:
     source: value
     value: "FLAG{4f2e8b7a1c6d9035}"
     host: a3-intranet
-    path: /app/.env
+    path: http://intranet.boreas.local/.env
   - flag_id: project-status-mail
     source: value
     value: "FLAG{3b7e9a2d1c8f4063}"
     host: a1-mail
-    path: /var/mail/e.vasik/project_status.pdf
+    path: /home/e.vasik/Maildir/cur/*.02_status_with_attachment.eml:2,S#project_status_report_oct2025.pdf
   - flag_id: terminated-engineer
     source: value
     value: "FLAG{7a1b3d9e2c8f0546}"
     host: a4-fileshare
-    path: /srv/smb/HR/chen_termination.pdf
+    path: /srv/shares/HR/personnel/chen_james_termination.pdf
   - flag_id: default-password-mail
     source: value
     value: "FLAG{e5d1f8c2a7b03946}"
     host: a1-mail
-    path: /var/mail/d.kowalski/welcome.eml
+    path: /home/d.kowalski/Maildir/cur/*.01_welcome.eml:2,S
   - flag_id: cafeteria-metadata
     source: value
     value: "FLAG{0e6f9c2d4a8b7135}"
     host: a4-fileshare
-    path: /srv/smb/Public/cafeteria_menu.pdf
+    path: /srv/shares/Public/cafeteria_menu_april.pdf
   - flag_id: project-wiki-comment
     source: value
     value: "FLAG{d8a3c5e9f1b07264}"
     host: a3-intranet
-    path: /wiki/project-coordination
+    path: http://intranet.boreas.local/wiki/project-coordination
   - flag_id: procurement-actuator
     source: value
     value: "FLAG{8c5a0d3f7e1b2964}"
     host: a4-fileshare
-    path: /srv/smb/Procurement/specs/actuator_requirements.pdf
+    path: /srv/shares/Procurement/specs/actuator_requirements_v4.pdf
   - flag_id: nested-project-group
     source: value
     value: "FLAG{2f8b4a6c1d9e7053}"
@@ -75,12 +75,12 @@ flags:
     source: value
     value: "FLAG{9a4c7e2f58d0b163}"
     host: a4-fileshare
-    path: /srv/smb/IT/backup_verification.log
+    path: /srv/shares/IT/backup_verification.log
   - flag_id: guard-badge-anomaly
     source: value
     value: "FLAG{b3d7e1f0c8a24596}"
     host: a2-dc01
-    path: /srv/badgelogs/underground-hatch.csv
+    path: 'C:\Shares\badgelogs\access_log_march_2026.csv'
   - flag_id: domain-admin-secrets
     source: value
     value: "FLAG{6c0a9d4e7f2b8135}"
@@ -95,17 +95,17 @@ flags:
     source: value
     value: "FLAG{1d4e7b0a3c9f8265}"
     host: a5-scada-gw
-    path: /srv/scada/dashboard/footer
+    path: http://scada-gw.boreas.local:8080/#footer
   - flag_id: scada-blackout
     source: value
     value: "FLAG{a7f2c8d0e5b34169}"
     host: a5-scada-gw
-    path: /srv/scada/state/blackout
+    path: http://scada-gw.boreas.local:8080/
   - flag_id: analyst-lab-pivot
     source: value
     value: "FLAG{8b2d4f1a0c5e7396}"
     host: a16-research-analyst01
-    path: /home/p.shah/ANALYST_TOKEN
+    path: /home/p.shah/.reports/ANALYST_TOKEN
   - flag_id: jenkins-default-creds
     source: value
     value: "FLAG{5b8e1d3a7c0f9246}"
@@ -150,7 +150,7 @@ flags:
     source: value
     value: "FLAG{a3f7d9e1c0b52846}"
     host: a8-research-db
-    path: postgres://research/compartment_c/assembly_status
+    path: postgres://research/compartment_c/assembly_log
   - flag_id: deleted-schematic
     source: value
     value: "FLAG{1f9b4e7c0a3d8265}"
