@@ -1,5 +1,5 @@
-name: polaris
-description: 'Polaris / NORTHSTORM runtime launch binding for AWS and GCP: a baked
+name: polaris-direct
+description: 'Polaris / NORTHSTORM runtime launch binding for GCP: a baked
   container host and pre-promoted directory guest. The private image and adapter own
   the internal scenario topology. Host-network addresses are allocated per range and
   supplied through SDK runtime values.'
@@ -16,6 +16,13 @@ nodes:
     resources:
       ram: 8 gib
       cpu: 2
+    # Shifter acquires Claude Code and delivers it to this host; the image
+    # bind-mounts the destination directory into the participant container.
+    features:
+      claude-code: participant
+    roles:
+      participant:
+        username: kali
     services:
     - port: 22
       name: ssh
@@ -36,6 +43,12 @@ nodes:
       name: ldap
     - port: 445
       name: smb
+features:
+  claude-code:
+    type: artifact
+    # Version left open: the platform resolves it to its reviewed default.
+    source: claude-code
+    destination: /opt/shifter/bin/claude
 entities:
   participant:
     description: Polaris participant

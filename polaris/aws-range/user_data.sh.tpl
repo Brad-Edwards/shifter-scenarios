@@ -158,6 +158,33 @@ shred -u "$splice_key_dir/splice_relay" "$splice_key_dir/splice_relay.pub" \
   2>/dev/null || rm -f "$splice_key_dir/splice_relay" "$splice_key_dir/splice_relay.pub"
 rmdir "$splice_key_dir"
 
+# Claude Code is never baked into the image. Fetch the pinned upstream build,
+# verify its registry integrity, and place it where Compose bind-mounts it into
+# a14-kali (the image links /usr/local/bin/claude to it).
+install -d -m 0755 /opt/shifter/bin
+python3 - <<'PY'
+import base64
+import hashlib
+import io
+import os
+import tarfile
+import urllib.request
+
+url = "https://registry.npmjs.org/@anthropic-ai/claude-code-linux-x64/-/claude-code-linux-x64-2.1.289.tgz"
+integrity = "I23SaSYE8vSwFbJ+Tc0mRlzvJmRQNaiyBUXK/K5R6BVr2lOoCdMI2SJR4N6xiVYy6yyIt39JNiyvPHoiOymyyw=="
+with urllib.request.urlopen(url, timeout=120) as response:
+    body = response.read()
+if base64.b64encode(hashlib.sha512(body).digest()).decode() != integrity:
+    raise SystemExit("claude-code package integrity mismatch")
+with tarfile.open(fileobj=io.BytesIO(body), mode="r:gz") as archive:
+    binary = archive.extractfile("package/claude").read()
+staging = "/opt/shifter/bin/.claude.tmp"
+with open(staging, "wb") as handle:
+    handle.write(binary)
+os.chmod(staging, 0o755)
+os.replace(staging, "/opt/shifter/bin/claude")
+PY
+
 # Build + start the stack.
 docker compose build
 docker compose up -d

@@ -12,14 +12,17 @@ plugin to bring scenario ranges up.
 
 ## Runtime adapter (`runtime-adapter/`)
 
-Two plugins: `panw.polaris` (broker) and `panw.polaris-direct` (keyless Vertex).
+One plugin: `panw.polaris-direct` (keyless Vertex, GCP only). The broker-backed
+`panw.polaris` plugin is retired. Claude Code is never baked into an image: the
+`polaris-direct` pack declares it and Shifter delivers it to the host's
+`/opt/shifter/bin`, which Compose bind-mounts into `a14-kali`.
 Published to GHCR as
 `ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter:<version>`.
 
 ### Rebuild and publish
 
-1. Bump the version in `runtime-adapter/pyproject.toml` AND both manifests
-   (the `version=` in `runtime.py` and `runtime_direct.py`). The SDK caps
+1. Bump the version in `runtime-adapter/pyproject.toml` AND the manifest
+   (the `version=` in `runtime_direct.py`). The SDK caps
    `GuestAction.timeout_seconds` at 300; exceeding it fails `plan()`, and the
    install probe does not catch that (only live provisioning does).
 2. `python3 prepare_release.py --sdk-wheel <shifter_adapter_sdk-*.whl> --output /tmp/adapter-release-<v>`.
@@ -37,7 +40,7 @@ The SDK is not on PyPI, so install it from the platform repository checkout:
 
 ```
 uv venv /tmp/av
-uv pip install --python /tmp/av pytest pydantic
+uv pip install --python /tmp/av pytest pydantic pyyaml
 uv pip install --python /tmp/av --no-deps -e <platform>/shifter/shifter_adapter_sdk
 uv pip install --python /tmp/av --no-deps -e runtime-adapter
 /tmp/av/bin/python -m pytest tests/ -q
@@ -74,7 +77,7 @@ exists, the `a14-kali` container is running, and host port `127.0.0.1:3389`
 The adapter owns writing that marker, because polaris brings the compose stack
 up through the adapter rather than a self-starting baked image.
 `WRITE_PRECONFIGURED_HOST_READY_MARKER` in `_polaris_scripts_aux.py` is wired
-into both the `runtime.py` and `runtime_direct.py` verify phases, before the
+into the `runtime_direct.py` verify phase, before the
 model checks. It waits (bounded) for the container and RDP, then writes the
 marker atomically. The write is best-effort and the platform canary is the
 authoritative gate. Any new preconfigured-host scenario must write this marker
@@ -94,18 +97,17 @@ from whether the range reaches `Range.status=ready`.
   `shifter-polaris-dc-*` in the tenant project), not GHCR artifacts. GHCR holds
   only the OCI container images: the runtime adapter and the compose service
   containers that are baked into `polaris-vm`. AWS uses AMIs for the VM images.
-- The compose stack is fetched at bake time, not from the repository checkout.
-  GCP stages it in Cloud Storage (`POLARIS_STACK_BUCKET` and key, for example
-  `gs://<project>-polaris-stack/polaris/stack/polaris-stack.tar.gz`). AWS uses
-  the S3 bake tarball.
-- `scenario-dev/polaris/build/` is intentionally gitignored, because the flags
-  and solutions are scenario-sensitive (the tree was removed in commit
-  `b7c0972dc`). A fresh public-repository checkout has no `build/`, so the bake
-  cannot build `polaris-vm` from the checkout. The operator must supply the
-  private stack tarball (upload it to the stack bucket). The public tree keeps
-  only scenario-agnostic pieces (`containers/`, `content-packages/`, `sdl/`,
-  `design/`). Do not restore `build/` from the stale branches that still carry
-  it, because that re-leaks the solutions.
+- `polaris/packer/build-polaris-vm-image.sh` bakes `polaris-vm` from this
+  checkout's `polaris/build/build-v1.tar.gz` (verified against its sidecar
+  digest) and refuses uncommitted changes. Regenerate the archive with
+  `polaris/aws-range/repack_build_artifact.sh` after any `polaris/build/` change,
+  then rebake. The Compose stack lands at `/opt/polaris/scenario-dev/polaris/build`,
+  the directory the adapter's range bootstrap runs Compose from.
+- No image carries Claude Code. Shifter delivers it to `/opt/shifter/bin` on the
+  range host; the bake asserts the a14-kali link exists and no binary is present.
+- The public platform repository carries no Polaris build tree or bake
+  (removed in commit `b7c0972dc`). Do not restore them there from stale
+  branches, because that re-leaks the solutions.
 
 ## Runtime
 

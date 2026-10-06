@@ -1,7 +1,6 @@
 """The installable outer runtime package is validated independently of Shifter."""
 
 import importlib.util
-import json
 import shutil
 import tarfile
 from pathlib import Path
@@ -10,10 +9,12 @@ import yaml
 from raes.scenarios import load_scenario
 from raes_env_packs import pack_content_digest, validate_pack, verify_pack_content_digest
 
-ROOT = Path(__file__).parents[1] / "polaris"
+ROOT = Path(__file__).parents[1] / "polaris-direct"
 
 
 def test_package_is_conformant_and_digest_bound():
+    # The pack declares no broker model demand; the direct plugin uses Vertex.
+    assert not (ROOT / "model-needs.json").exists()
     result = validate_pack(ROOT)
     assert result.errors == []
     digest = pack_content_digest(ROOT)
@@ -38,21 +39,11 @@ def test_outer_hosts_use_allocated_addresses_and_explicit_participant_access():
     assert data["nodes"]["dc01"]["os_version"] == "2022"
 
 
-def test_pack_declares_bounded_participant_model_demand_without_a_source():
-    declaration = json.loads((ROOT / "model-needs.json").read_text())
-    assert declaration["contract_version"] == "model-access-pack/v1"
-    participant = declaration["needs"]["participant"]
-    assert participant["workload_role"] == "participant"
-    assert participant["required_capabilities"] == ["messages"]
-    assert "provider" not in str(declaration).lower()
-    assert "credential" not in str(declaration).lower()
-
-
 def test_archive_is_reproducible_and_contains_exactly_the_validated_package(tmp_path):
     spec = importlib.util.spec_from_file_location("pack_builder", ROOT.parent / "build.py")
     builder = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(builder)
-    builder.ROOT = tmp_path / "polaris"
+    builder.ROOT = tmp_path / "polaris-direct"
     shutil.copytree(ROOT, builder.ROOT)
     first, second = tmp_path / "first.tar", tmp_path / "second.tar"
     digest = builder.build(first)
@@ -66,25 +57,7 @@ def test_archive_is_reproducible_and_contains_exactly_the_validated_package(tmp_
         for member in archive.getmembers():
             assert member.isfile() and member.mode == 0o644
             assert archive.extractfile(member).read() == expected[member.name]
-
-
-def test_direct_archive_has_separate_identity_and_no_broker_enrollment(tmp_path):
-    spec = importlib.util.spec_from_file_location("pack_builder_direct", ROOT.parent / "build.py")
-    builder = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(builder)
-    builder.ROOT = tmp_path / "polaris"
-    shutil.copytree(ROOT, builder.ROOT)
-    output = tmp_path / "direct.tar"
-    first = builder.build(output, "direct")
-    second = builder.build(tmp_path / "direct-second.tar", "direct")
-    assert first == second
-    assert output.read_bytes() == (tmp_path / "direct-second.tar").read_bytes()
-    with tarfile.open(output) as archive:
-        names = archive.getnames()
-        assert all(name.startswith("polaris-direct/") for name in names)
-        assert "polaris-direct/model-needs.json" not in names
         pack = yaml.safe_load(archive.extractfile("polaris-direct/pack.yaml").read())
         assert pack["name"] == "polaris-direct"
         scenario = yaml.safe_load(archive.extractfile("polaris-direct/sdl/polaris.sdl.yaml").read())
         assert scenario["name"] == "polaris-direct"
-    assert (builder.ROOT / "model-needs.json").exists()
