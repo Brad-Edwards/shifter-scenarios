@@ -1,61 +1,84 @@
+# Mirrors the live A4 share tree built by build/a4 (smb.conf and
+# A4-file-share/build_documents.py). Payloads are placeholders; the build
+# generates the real documents.
 shares:
   - name: Public
     comment: Public files
-    path_suffix: public
+    path_suffix: Public
     browseable: true
     guest_ok: true
     read_only: true
     posix_mode: "0755"
     tree:
-      README.txt: "Boreas Public share"
-      cafeteria_menu.pdf:
-        file: files/cafeteria_menu.bin
+      cafeteria_menu_april.pdf:
+        file: files/cafeteria_menu_april.bin
+      parking_policy_2025.pdf:
+        file: files/parking_policy_2025.bin
+      office_floorplan.pdf:
+        file: files/office_floorplan.bin
   - name: HR
     comment: HR docs
-    path_suffix: hr
+    path_suffix: HR
     browseable: true
     guest_ok: false
     read_only: true
-    valid_users: ["@HR"]
-    posix_mode: "0750"
+    valid_users: ["@hr", "@executives"]
+    posix_mode: "0755"
     tree:
-      chen_termination.pdf:
-        file: files/chen_termination.bin
-      org_chart.pdf:
-        file: files/org_chart.bin
+      personnel/chen_james_termination.pdf:
+        file: files/chen_james_termination.bin
+      personnel/chen_james_nda.pdf:
+        file: files/chen_james_nda.bin
+      org_chart_current.xlsx:
+        file: files/org_chart_current.bin
   - name: Procurement
     comment: Purchase orders
-    path_suffix: procurement
+    path_suffix: Procurement
     browseable: true
     guest_ok: false
     read_only: true
-    valid_users: ["@Procurement"]
-    posix_mode: "0750"
+    valid_users: ["@procurement", "@executives"]
+    posix_mode: "0755"
     tree:
-      PO-2847.pdf:
-        file: files/PO-2847.bin
-      invoice_reactor.pdf:
-        file: files/invoice_reactor.bin
+      PO-2847_hydraulic_actuators.pdf:
+        file: files/PO-2847_hydraulic_actuators.bin
+      specs/actuator_requirements_v4.pdf:
+        file: files/actuator_requirements_v4.bin
+      PO-3102_servo_motors.pdf:
+        file: files/PO-3102_servo_motors.bin
+      PO-3455_exotic_alloys.pdf:
+        file: files/PO-3455_exotic_alloys.bin
+      invoice_reactor_deposit.pdf:
+        file: files/invoice_reactor_deposit.bin
   - name: IT
     comment: IT administration
-    path_suffix: it
+    path_suffix: IT
     browseable: true
     guest_ok: false
     read_only: true
-    valid_users: ["@IT"]
-    posix_mode: "0750"
+    valid_users: ["@it"]
+    posix_mode: "0755"
     tree:
-      network_diagram.vsd: "VLAN layout: 10, 20, 30, 40, 50 (underground OFFLINE)"
-      backup_verification.log: |
-        2026-01-14 02:00 INFO svc-fileshare ok
-        2026-01-15 02:00 INFO svc-fileshare ok
+      network_diagram.pdf:
+        file: files/network_diagram.bin
+      server_inventory.xlsx:
+        file: files/server_inventory.bin
+      backup_verification.log:
+        file: files/backup_verification.bin
+      service_account_vault.pdf:
+        file: files/service_account_vault.bin
+      generator_maintenance_manual.pdf:
+        file: files/generator_maintenance_manual.bin
   - name: Executive
     comment: Executive share
-    path_suffix: executive
+    path_suffix: Executive
     browseable: true
     guest_ok: false
     read_only: true
-    valid_users: ["@Executive"]
-    posix_mode: "0750"
+    valid_users: ["@executives"]
+    posix_mode: "0755"
     tree:
-      README.txt: "Executives only"
+      board_minutes_Q3_2025.pdf:
+        file: files/board_minutes_Q3_2025.bin
+      budget_summary_2025.pdf:
+        file: files/budget_summary_2025.bin

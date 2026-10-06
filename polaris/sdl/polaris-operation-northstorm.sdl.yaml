@@ -1084,7 +1084,7 @@ content:
     type: directory
     format: smb-share
     target: a4-fileshare
-    destination: /srv/samba
+    destination: /srv/shares
     source: polaris/smb-share
     sensitive: true
     description: Public / HR / Procurement / IT / Executive shares with ACL mapping
