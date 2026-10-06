@@ -146,7 +146,7 @@ challenges:
     title: Lights Out
     difficulty: insane
     points: 300
-    question: Use the intended maintenance path to bypass the interlock and trigger the blackout.
+    question: Use the intended maintenance path to bypass the interlock and trigger the blackout. When the generator goes down, a maintenance splice link comes online and the splice relay (172.20.60.5, `ssh splice-relay` from Kali) becomes reachable.
     hints:
       - The maintenance procedure is on the IT share.
       - Inspect the HMI architecture guidance before changing controller state.
@@ -247,8 +247,9 @@ challenges:
     title: Underground Signals
     difficulty: medium
     points: 100
-    question: From the splice relay, identify the three industrial controllers below.
+    question: From the splice relay (172.20.60.5, `ssh splice-relay` from Kali), identify the three industrial controllers below.
     hints:
+      - The splice relay is only reachable after the SCADA blackout (Lights Out). If it does not answer, finish Lights Out, wait a few seconds, and retry.
       - Start with the committed scan results, then confirm device identity over the live protocol.
   - flag_id: tail-controller-unlock
     title: First Motion

@@ -67,11 +67,11 @@ auth_required: true
 
 <div class="polaris-page" markdown="1">
 
-<div class="brief-tag">§ 07 — SURFACES</div>
+<div class="brief-tag">§ 07—SURFACES</div>
 
 # TARGET REFERENCE
 
-Everything listed here is reachable from the Kali workstation from mission start. What lives at each surface, how it's configured, and which ports it exposes — that's yours to discover. If a mission is pivot-gated, further targets appear in the objective description once you unlock it.
+Everything listed here is reachable from the Kali workstation from mission start. What lives at each surface, how it's configured, and which ports it exposes is yours to discover. Pivot-gated targets open up as you work through earlier missions.
 
 ## Public-Facing
 
@@ -89,7 +89,7 @@ Everything listed here is reachable from the Kali workstation from mission start
 | Domain controller | `dc01.boreas.local` |
 
 <div class="callout">
-Further targets — SCADA, lab, bunker — are gated. Each objective's <strong>connection_info</strong> names what you need once it unlocks. If an objective is not visible yet, you have not met its prerequisites.
+Further targets (SCADA, lab, bunker) are not reachable from Kali at the start. You earn each pivot through earlier missions. The bunker's splice relay (172.20.60.5, <code>ssh splice-relay</code>) comes online only after the SCADA blackout in Lights Out.
 </div>
 
 ## Credential Discipline
