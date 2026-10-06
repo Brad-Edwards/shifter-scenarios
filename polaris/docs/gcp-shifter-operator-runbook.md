@@ -230,8 +230,9 @@ python3 polaris/ctfd/export_shifter_challenge_pack.py \
 ```
 
 The generated file contains answer material. Keep it owner-readable, do not
-attach it to tickets or reports, and delete it after import. Require exactly 38
-created challenges and no per-entry errors before continuing. The importer is
+attach it to tickets or reports, and delete it after import. Require exactly 39
+created challenges (the Start Here warm-up plus the 38 mission challenges) and
+no per-entry errors before continuing. The importer is
 the supported tenant content-administration path; do not write challenge rows
 directly to the tenant database.
 
