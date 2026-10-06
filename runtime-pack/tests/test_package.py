@@ -1,6 +1,7 @@
 """The installable outer runtime package is validated independently of Shifter."""
 
 import importlib.util
+import json
 import shutil
 import tarfile
 from pathlib import Path
@@ -61,3 +62,16 @@ def test_archive_is_reproducible_and_contains_exactly_the_validated_package(tmp_
         assert pack["name"] == "polaris-direct"
         scenario = yaml.safe_load(archive.extractfile("polaris-direct/sdl/polaris.sdl.yaml").read())
         assert scenario["name"] == "polaris-direct"
+
+
+def test_binding_matches_the_host_build():
+    import hashlib
+
+    binding = json.loads((ROOT.parent / "polaris-direct.binding.json").read_text())
+    host = binding["image_profiles"]["host"]
+    readiness = ROOT.parents[1] / "polaris/build/a14/participant-readiness.json"
+    assert host["participant_readiness_manifest_sha256"] == hashlib.sha256(readiness.read_bytes()).hexdigest()
+    image = host["image_ref"].rsplit("/", 1)[1]
+    guide = (ROOT.parent / "BINDING.md").read_text()
+    assert f"| Host image | `{image}` |" in guide
+    assert f"| Host readiness digest | `{host['participant_readiness_manifest_sha256']}` |" in guide

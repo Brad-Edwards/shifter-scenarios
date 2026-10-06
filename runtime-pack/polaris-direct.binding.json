@@ -1,0 +1,42 @@
+{
+  "targets": {
+    "host": "provision.node.a14-kali",
+    "directory": "provision.node.dc01"
+  },
+  "parameters": {
+    "project": "<tenant-project>",
+    "region": "us-east5",
+    "main-model": "claude-sonnet-4-6",
+    "small-model": "claude-haiku-4-5"
+  },
+  "image_profiles": {
+    "host": {
+      "provider": "gcp",
+      "image_kind": "image",
+      "image_ref": "projects/<tenant-project>/global/images/shifter-polaris-vm-v20261005",
+      "machine_type": "e2-standard-8",
+      "disk_size_gb": 220,
+      "disk_type": "pd-balanced",
+      "bootstrap_capability": "preconfigured-machine-host",
+      "management_ssh_username": "hostadmin",
+      "management_ssh_port": 2222,
+      "participant_container_name": "a14-kali",
+      "participant_username": "kali",
+      "participant_readiness_contract": "participant-readiness/v1",
+      "participant_readiness_manifest_sha256": "b3358834f9943353e02981aeee96a88976db7959f10b3494da41143879203199"
+    },
+    "directory": {
+      "provider": "gcp",
+      "image_kind": "image",
+      "image_ref": "projects/<tenant-project>/global/images/shifter-polaris-dc-1790561475",
+      "machine_type": "e2-standard-4",
+      "disk_size_gb": 100,
+      "disk_type": "pd-balanced",
+      "bootstrap_capability": "prepromoted-domain-controller",
+      "management_ssh_username": "Administrator",
+      "management_ssh_port": 22,
+      "domain_dns_name": "boreas.local",
+      "domain_netbios_name": "BOREAS"
+    }
+  }
+}
