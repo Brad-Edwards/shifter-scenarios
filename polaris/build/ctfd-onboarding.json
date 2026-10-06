@@ -12,6 +12,7 @@
       "value": 50,
       "type": "standard",
       "state": "visible",
+      "tags": ["difficulty:easy"],
       "connection_info": "The file is hidden somewhere under your home directory on the Kali box. Standard Linux tricks will find it — or ask Claude Code on the box to find it for you.",
       "next": "Company Info",
       "flags": [

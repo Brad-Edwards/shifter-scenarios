@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import stat
@@ -201,18 +202,26 @@ class ManifestTests(unittest.TestCase):
     def test_shifter_import_pack_projects_the_complete_private_inventory(self):
         payload = shifter_export.build_import_pack(PACK_ROOT)
 
+        # The Start Here warm-up (onboarding) plus the 38 mission challenges.
         self.assertEqual(payload["format"], "ctfd")
-        self.assertEqual(len(payload["challenges"]), 38)
+        self.assertEqual(len(payload["challenges"]), 39)
+        self.assertEqual(payload["challenges"][0]["category"], "Start Here")
+        names = [row["name"] for row in payload["challenges"]]
+        self.assertEqual(len(names), len(set(names)))
         self.assertTrue(all(len(row["flags"]) == 1 for row in payload["challenges"]))
         self.assertTrue(all(row["hints"] for row in payload["challenges"]))
         self.assertTrue(all("source_challenge" not in row for row in payload["challenges"]))
 
     def test_shifter_import_pack_carries_each_difficulty_tag(self):
         payload = shifter_export.build_import_pack(PACK_ROOT)
-        expected = {
-            row["name"]: [f"difficulty:{row['source_challenge']['difficulty']}"]
-            for row in manifest.load_manifest(PACK_ROOT, runtime_profile_id="aws_event")
-        }
+        onboarding = json.loads((PACK_ROOT / shifter_export.ONBOARDING_RELATIVE_PATH).read_text(encoding="utf-8"))
+        expected = {challenge["name"]: ["difficulty:easy"] for challenge in onboarding["challenges"]}
+        expected.update(
+            {
+                row["name"]: [f"difficulty:{row['source_challenge']['difficulty']}"]
+                for row in manifest.load_manifest(PACK_ROOT, runtime_profile_id="aws_event")
+            }
+        )
 
         self.assertEqual({row["name"]: row["tags"] for row in payload["challenges"]}, expected)
 
@@ -227,7 +236,7 @@ class ManifestTests(unittest.TestCase):
 
             self.assertEqual(stat.S_IMODE(destination.stat().st_mode), 0o600)
             payload = yaml.safe_load(destination.read_text(encoding="utf-8"))
-            self.assertEqual(len(payload["challenges"]), 38)
+            self.assertEqual(len(payload["challenges"]), 39)
 
 
 class SyncTests(unittest.TestCase):
