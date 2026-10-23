@@ -9,7 +9,7 @@ USER airflow
 
 RUN python -m pip install --no-cache-dir --no-deps \
       lpips==0.1.4 \
-      pillow==11.3.0 \
+      pillow==13.0.0 \
     && python -m pip install --no-cache-dir --no-deps \
       --index-url https://download.pytorch.org/whl/cpu \
       torchvision==0.23.0+cpu
