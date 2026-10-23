@@ -107,7 +107,8 @@ docker exec a14-kali true 2>/dev/null || exit 41
 
 docker exec a14-kali sh -c '
 for key in CLAUDE_CODE_USE_VERTEX CLOUD_ML_REGION ANTHROPIC_VERTEX_PROJECT_ID \\
-  GCE_METADATA_HOST ANTHROPIC_MODEL ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL \\
+  GCE_METADATA_HOST ANTHROPIC_MODEL ANTHROPIC_SMALL_FAST_MODEL \\
+  ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL \\
   CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC; do
   grep -Fqx "$key=$(printenv "$key")" /etc/environment || exit 1
 done
@@ -145,6 +146,7 @@ export ANTHROPIC_VERTEX_PROJECT_ID={params["project"]}
 export CLOUD_ML_REGION={params["region"]}
 export GCE_METADATA_HOST={_METADATA_HOST_VALUE}
 export ANTHROPIC_MODEL={params["main-model"]}
+export ANTHROPIC_SMALL_FAST_MODEL={params["small-model"]}
 export ANTHROPIC_DEFAULT_SONNET_MODEL={params["main-model"]}
 export ANTHROPIC_DEFAULT_HAIKU_MODEL={params["small-model"]}
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
@@ -172,7 +174,8 @@ if [ -f "$target" ]; then
   cp "$target" "$tmp"
 fi
 for key in CLAUDE_CODE_USE_VERTEX CLOUD_ML_REGION ANTHROPIC_VERTEX_PROJECT_ID \
-  GCE_METADATA_HOST ANTHROPIC_MODEL ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL \
+  GCE_METADATA_HOST ANTHROPIC_MODEL ANTHROPIC_SMALL_FAST_MODEL \
+  ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL \
   CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC; do
   sed -i "/^$key=/d" "$tmp"
   value=$(printenv "$key")
@@ -223,6 +226,7 @@ class PolarisDirectAdapter:
             f'\n      ANTHROPIC_VERTEX_PROJECT_ID: "{params["project"]}"'
             f'\n      GCE_METADATA_HOST: "{_METADATA_HOST_VALUE}"'
             f'\n      ANTHROPIC_MODEL: "{params["main-model"]}"'
+            f'\n      ANTHROPIC_SMALL_FAST_MODEL: "{params["small-model"]}"'
             f'\n      ANTHROPIC_DEFAULT_SONNET_MODEL: "{params["main-model"]}"'
             f'\n      ANTHROPIC_DEFAULT_HAIKU_MODEL: "{params["small-model"]}"'
             '\n      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"'
