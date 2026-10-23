@@ -1564,7 +1564,7 @@ features:
       version: '2'
       build:
         base_image: roundcube/roundcubemail:1.7.x-apache-nonroot
-        base_image_digest: sha256:fc5c038813a26781adb0f8f1b5639b8c519f7e684df825088508d9d1410f5028
+        base_image_digest: sha256:1fa5b106efce6c9168d5f606f8b04b26c432622529fb9985c0515fc0e7067191
         dockerfile_path: assets/services/platform-communications/mail/Dockerfile.roundcube
         description: Non-root Roundcube image with strict private-CA SMTP and IMAP verification.
     dependencies:

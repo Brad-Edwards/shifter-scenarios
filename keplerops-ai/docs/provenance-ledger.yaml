@@ -180,18 +180,18 @@ sources:
     used: "Version-pinned numerical dependency for the source-trained scikit-learn model families."
     excluded: "No external computation service, participant data, or mutable dependency version is used."
     captured: "2026-07-19"
-  - source_id: pillow-12-3-0
+  - source_id: pillow-13-0-0
     kind: tooling
-    name: "Pillow 12.3.0"
+    name: "Pillow 13.0.0"
     url: https://python-pillow.org/
-    ref: "PyPI pillow==12.3.0"
+    ref: "PyPI pillow==13.0.0"
     license: HPND
     usage: reused
     attribution_required: true
     attribution: "Pillow contributors, HPND License."
     used: "Version-pinned PNG decoding and deterministic grayscale rendering for the contained vision workbench."
     excluded: "No external image, participant identity, or mutable decoder version is used."
-    captured: "2026-07-19"
+    captured: "2026-10-23"
   - source_id: aiortc-1-15-0
     kind: tooling
     name: "aiortc 1.15.0"
@@ -300,18 +300,18 @@ sources:
     used: "Checksum-pinned server binary for stateful SMTP, authenticated STARTTLS submission, and IMAPS for wholly synthetic range mailboxes."
     excluded: "No external domain, public relay, real mailbox, participant credential, mutable server binary, or failing upstream container layer is used."
     captured: "2026-07-20"
-  - source_id: roundcube-1-7-2
+  - source_id: roundcube-1-7-5
     kind: tooling
-    name: "Roundcube 1.7.2"
+    name: "Roundcube 1.7.5"
     url: https://roundcube.net/
-    ref: "roundcube/roundcubemail:1.7.x-apache-nonroot@sha256:fc5c038813a26781adb0f8f1b5639b8c519f7e684df825088508d9d1410f5028"
+    ref: "roundcube/roundcubemail:1.7.x-apache-nonroot@sha256:1fa5b106efce6c9168d5f606f8b04b26c432622529fb9985c0515fc0e7067191"
     license: GPL-3.0-or-later
     usage: reused
     attribution_required: true
     attribution: "Roundcube contributors, GPL-3.0-or-later."
     used: "Digest-pinned non-root browser mail client with strict range-CA SMTP and IMAP verification."
     excluded: "No external mail provider, real mailbox, public certificate, or mutable image is used."
-    captured: "2026-07-19"
+    captured: "2026-10-22"
   - source_id: llamacpp-b10068
     kind: tooling
     name: "llama.cpp server b10068"
@@ -505,7 +505,7 @@ artifacts:
   - artifact_id: service-source
     path: assets/services/
     classification: commercial-only
-    sources: [all-minilm-l6-v2, pgvector-0-8-2, scikit-learn-1-7-2, scikit-learn-1-9-0, opensearch-3-7-0, coredns-1-14-6, nginx-1-28-1, beancount-3-2-3, fairlearn-0-14-0, pillow-12-3-0, aiortc-1-15-0, pyav-17-1-0, langgraph-1-2-9, docker-engine-29-6-1-rootless, opa-1-3-0-policy-lab, k6-2-0-0, gitea-1-24-5, google-cloud-run-storage-python, original-design]
+    sources: [all-minilm-l6-v2, pgvector-0-8-2, scikit-learn-1-7-2, scikit-learn-1-9-0, opensearch-3-7-0, coredns-1-14-6, nginx-1-28-1, beancount-3-2-3, fairlearn-0-14-0, pillow-13-0-0, aiortc-1-15-0, pyav-17-1-0, langgraph-1-2-9, docker-engine-29-6-1-rootless, opa-1-3-0-policy-lab, k6-2-0-0, gitea-1-24-5, google-cloud-run-storage-python, original-design]
     description: "Pack-local runtime services and real upstream-software wrappers, including the supervised durable agent-memory worker, OpenSearch, CoreDNS, NGINX discovery surfaces, contained outcome platform, guarded Gitea/Redmine/Keycloak context workers, HTTPS aiortc live-camera ingestion, LangGraph agent control, rootless disposable workers, isolation and edge services, bounded k6, isolated vulnerable OPA, Gitea OCI, and the tenant-bound Cloud Run Jobs broker."
   - artifact_id: model-artifacts
     path: assets/model-artifacts/

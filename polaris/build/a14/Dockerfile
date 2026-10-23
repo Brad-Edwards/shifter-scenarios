@@ -2,6 +2,29 @@ FROM kalilinux/kali-last-release@sha256:c2632779b6cd7dc1a9f19a75997026a0cf5633fb
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# kali-linux-headless hard-depends on php and libapache2-mod-php. The Kali
+# snapshot ships PHP 8.4.24, which is vulnerable to php2shell
+# (CVE-2026-109618 and CVE-2026-109619). Take only the PHP 8.4 packages from
+# Debian trixie-security, which carries the fix and later PHP security updates.
+# The low default pin keeps every other package on Kali. Only libxml2, which
+# the Debian PHP build needs and Kali does not ship, also comes from Debian.
+RUN printf '%s\n' \
+        'Types: deb' \
+        'URIs: http://deb.debian.org/debian-security' \
+        'Suites: trixie-security' \
+        'Components: main' \
+        'Signed-By: /usr/share/keyrings/debian-archive-trixie-security-automatic.pgp' \
+        > /etc/apt/sources.list.d/debian-trixie-security.sources \
+    && printf '%s\n' \
+        'Package: *' \
+        'Pin: release n=trixie-security' \
+        'Pin-Priority: 100' \
+        '' \
+        'Package: php8.4* libapache2-mod-php8.4' \
+        'Pin: release n=trixie-security' \
+        'Pin-Priority: 990' \
+        > /etc/apt/preferences.d/php-trixie-security
+
 # Mirrors shifter/packer/scripts/kali/{base,tools}.sh from the AWS AMI build,
 # adapted for the docker-compose range. RDP via xrdp on 3389, SSH password auth on 22.
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -14,7 +37,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates curl wget \
         poppler-utils python3-pdfminer \
         john wordlists ldap-utils smbclient \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && dpkg --compare-versions \
+        "$(dpkg-query -W -f='${Version}' libapache2-mod-php8.4)" ge 8.4.27
 
 # xfce4-screensaver + xfce4-power-manager are hard Depends of
 # kali-desktop-xfce so we can't apt-purge them without losing the desktop.

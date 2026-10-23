@@ -5,14 +5,14 @@
 
 ## Purpose
 
-The participant's attack box. Pre-configured with standard offensive tooling plus an AI coding assistant (Claude Code with Sonnet 4.5). This is the participant's home base for the entire operation — every attack originates here.
+The participant's attack box. Pre-configured with standard offensive tooling plus an AI coding assistant (Claude Code with Sonnet 4.5). This is the participant's home base for the entire operation—every attack originates here.
 
 ## Configuration
 
 - Kali Linux (container)
 - SSH access or browser-based terminal (Guacamole/ttyd)
 - Pre-installed AI agent (Claude Code or equivalent)
-- Network access to: A0 (shared) and all Front Office assets in the participant namespace. A5 (SCADA) is NOT directly reachable and A7 (Gitea) is not directly reachable from Kali — both require pivots.
+- Network access to: A0 (shared) and all Front Office assets in the participant namespace. A5 (SCADA) is NOT directly reachable and A7 (Gitea) is not directly reachable from Kali—both require pivots.
 - API key for Claude/AI agent pre-configured in environment
 
 ## Pre-installed Tools
@@ -89,9 +89,9 @@ None. This is the attack platform, not a target.
    - API key / runtime model config injected by Shifter at deploy time
 
 4. **Create kali user home directory**
-   - `/home/kali/START_HERE.txt` — visible first-five-minutes guide; explains the two-tab workflow and points to the warm-up note
-   - `/home/kali/.polaris/welcome.txt` — hidden warm-up challenge note containing the first flag
-   - `/home/kali/tools/modbus_scan.py` — OT helper script
+   - `/home/kali/START_HERE.txt`—visible first-five-minutes guide; explains the two-tab workflow and points to the warm-up note
+   - `/home/kali/.polaris/welcome.txt`—hidden warm-up challenge note containing the first flag
+   - `/home/kali/tools/modbus_scan.py`—OT helper script
 
 5. **Keep mission reference on CTFd**
    - POLARIS narrative, mission objectives, challenge briefs, hints, and flag submission live on CTFd.
@@ -123,6 +123,9 @@ None. This is the attack platform, not a target.
 10. **Write Dockerfile**
     - Start from kalilinux/kali-rolling
     - Install `kali-linux-headless` metapackage + desktop + xrdp
+    - Install the PHP 8.4 packages from Debian `trixie-security`, because the
+      Kali snapshot PHP is vulnerable to php2shell (CVE-2026-109618 and
+      CVE-2026-109619). The build fails if mod_php is older than 8.4.27.
     - Use the `kali` user (default in the metapackage layout)
     - Copy home directory content, tools, configs
     - Entrypoint: start xrdp + sshd

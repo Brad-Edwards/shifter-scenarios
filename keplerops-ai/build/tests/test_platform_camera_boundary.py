@@ -32,7 +32,7 @@ class PlatformCameraSourceTests(unittest.TestCase):
             "av==17.1.0",
             "fastapi==0.139.2",
             "httpx==0.28.1",
-            "pillow==12.3.0",
+            "pillow==13.0.0",
             "uvicorn==0.51.0",
         }
         pins = set(requirements.splitlines())

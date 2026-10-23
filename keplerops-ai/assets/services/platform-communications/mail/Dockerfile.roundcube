@@ -1,4 +1,4 @@
-FROM roundcube/roundcubemail@sha256:fc5c038813a26781adb0f8f1b5639b8c519f7e684df825088508d9d1410f5028
+FROM roundcube/roundcubemail@sha256:1fa5b106efce6c9168d5f606f8b04b26c432622529fb9985c0515fc0e7067191
 
 COPY assets/services/platform-communications/mail/roundcube-config.php /var/roundcube/config/keplerops.inc.php
 COPY assets/services/platform-communications/mail/roundcube-healthcheck.php /opt/keplerops/roundcube-healthcheck.php

@@ -504,7 +504,7 @@ services:
 
   mautic:
     <<: *restart
-    image: mautic/mautic:5.2.11-20260603-apache@sha256:e3fb45f69bf1a03effdf7d7cf214b269b82dd340acda328cf3cfb709971ada59
+    image: mautic/mautic:5.2.11-20261021-apache@sha256:9b95c4726ac3cb0ab644c118b4f43344092d19f167dbb3dd7dfc1464df5a1b4b
     container_name: kep-v2-mautic
     depends_on:
       mariadb:
