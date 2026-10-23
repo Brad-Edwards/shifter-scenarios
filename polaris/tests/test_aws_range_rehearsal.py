@@ -82,6 +82,33 @@ class BuildArtifactTests(unittest.TestCase):
                     archived_input.read(),
                 )
 
+    def test_php_images_refuse_php2shell_vulnerable_mod_php(self) -> None:
+        floors = {"a1": ("8.2", "8.2.35"), "a14": ("8.4", "8.4.27")}
+        with tarfile.open(TARBALL, "r:gz") as archive:
+            for asset, (branch, floor) in floors.items():
+                with self.subTest(asset=asset):
+                    source = (PACK_ROOT / "build" / asset / "Dockerfile").read_bytes()
+                    guard = (
+                        f"\"$(dpkg-query -W -f='${{Version}}' "
+                        f"libapache2-mod-php{branch})\" ge {floor}"
+                    )
+                    self.assertIn(guard.encode(), source)
+                    archived = archive.extractfile(f"polaris/build/{asset}/Dockerfile")
+                    self.assertIsNotNone(archived)
+                    self.assertEqual(source, archived.read())
+
+    def test_a14_takes_php_only_from_debian_security(self) -> None:
+        dockerfile = (PACK_ROOT / "build" / "a14" / "Dockerfile").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("'Suites: trixie-security'", dockerfile)
+        self.assertIn(
+            "'Signed-By: /usr/share/keyrings/debian-archive-trixie-security-automatic.pgp'",
+            dockerfile,
+        )
+        self.assertIn("'Package: *' \\\n        'Pin: release n=trixie-security' \\\n        'Pin-Priority: 100'", dockerfile)
+        self.assertIn("'Package: php8.4* libapache2-mod-php8.4'", dockerfile)
+
     def test_a14_uses_digest_pinned_kali_release(self) -> None:
         dockerfile = (PACK_ROOT / "build" / "a14" / "Dockerfile").read_text(
             encoding="utf-8"

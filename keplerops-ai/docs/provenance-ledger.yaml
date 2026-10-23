@@ -300,18 +300,18 @@ sources:
     used: "Checksum-pinned server binary for stateful SMTP, authenticated STARTTLS submission, and IMAPS for wholly synthetic range mailboxes."
     excluded: "No external domain, public relay, real mailbox, participant credential, mutable server binary, or failing upstream container layer is used."
     captured: "2026-07-20"
-  - source_id: roundcube-1-7-2
+  - source_id: roundcube-1-7-5
     kind: tooling
-    name: "Roundcube 1.7.2"
+    name: "Roundcube 1.7.5"
     url: https://roundcube.net/
-    ref: "roundcube/roundcubemail:1.7.x-apache-nonroot@sha256:fc5c038813a26781adb0f8f1b5639b8c519f7e684df825088508d9d1410f5028"
+    ref: "roundcube/roundcubemail:1.7.x-apache-nonroot@sha256:1fa5b106efce6c9168d5f606f8b04b26c432622529fb9985c0515fc0e7067191"
     license: GPL-3.0-or-later
     usage: reused
     attribution_required: true
     attribution: "Roundcube contributors, GPL-3.0-or-later."
     used: "Digest-pinned non-root browser mail client with strict range-CA SMTP and IMAP verification."
     excluded: "No external mail provider, real mailbox, public certificate, or mutable image is used."
-    captured: "2026-07-19"
+    captured: "2026-10-22"
   - source_id: llamacpp-b10068
     kind: tooling
     name: "llama.cpp server b10068"

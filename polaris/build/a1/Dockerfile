@@ -6,6 +6,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
+# Refuse to build with a PHP that is vulnerable to php2shell
+# (CVE-2026-109618 and CVE-2026-109619). Debian bookworm fixed it in 8.2.35.
+RUN dpkg --compare-versions \
+    "$(dpkg-query -W -f='${Version}' libapache2-mod-php8.2)" ge 8.2.35
+
 # Serve Roundcube at the web root. The debian roundcube package ships a
 # roundcube.conf with an `Alias /roundcube ...` line commented out and
 # expects the operator to either enable that alias OR point DocumentRoot
