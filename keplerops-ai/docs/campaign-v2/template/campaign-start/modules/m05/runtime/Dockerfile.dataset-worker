@@ -15,7 +15,7 @@ RUN apt-get update \
 
 RUN pip install --no-cache-dir \
       mlflow==${MLFLOW_VERSION} \
-      requests==2.31.0 \
+      requests==2.34.2 \
       langgraph==1.2.9 \
       PyYAML==6.0.2 \
     && useradd --system --uid 10001 --create-home --home-dir /var/lib/orion-dataset-worker orion-worker \
