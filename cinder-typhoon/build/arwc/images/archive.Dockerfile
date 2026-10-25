@@ -18,7 +18,7 @@ RUN apt-get update \
     && usermod -a -G arwc-handover,arwc-archive-source arwc-archive \
     && install -d -o arwc-archive -g arwc-archive -m 0750 /opt/retained-archive
 
-RUN pip install --no-cache-dir cryptography==42.0.8
+RUN pip install --no-cache-dir cryptography==50.0.2
 
 RUN curl -fsSL https://www.7-zip.org/a/7z2301-linux-x64.tar.xz -o /tmp/7zip.tar.xz \
     && echo '23babcab045b78016e443f862363e4ab63c77d75bc715c0b3463f6134cbcf318  /tmp/7zip.tar.xz' | sha256sum -c - \

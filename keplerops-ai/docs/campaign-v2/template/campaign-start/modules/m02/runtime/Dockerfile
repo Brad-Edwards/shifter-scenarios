@@ -39,7 +39,7 @@ RUN apt-get update \
 COPY vendor/picklescan-0.0.20-py3-none-any.whl /tmp/picklescan-0.0.20-py3-none-any.whl
 RUN echo '0f7380addf3a32f161ddec85d9fa1934cd39578e7e26ce1d947d25f03663bba5  /tmp/picklescan-0.0.20-py3-none-any.whl' | sha256sum -c - \
     && python -m pip install --no-cache-dir /tmp/picklescan-0.0.20-py3-none-any.whl \
-      boto3==1.40.20 cryptography==45.0.6 devpi-client==7.3.0 \
+      boto3==1.40.20 cryptography==50.0.2 devpi-client==7.3.0 \
       haystack-ai==2.17.1 minio==7.2.16 playwright==1.54.0 qdrant-client==1.15.1 \
     && python -m venv /opt/picklescan-patched \
     && /opt/picklescan-patched/bin/pip install --no-cache-dir picklescan==0.0.22 \

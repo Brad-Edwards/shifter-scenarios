@@ -11,7 +11,7 @@ RUN apt-get update \
     && useradd --system --gid arwc-control-broker --groups arwc-field-session,arwc-approval-evidence,arwc-renderer-evidence,arwc-control-authority --home-dir /var/lib/arwc-control-broker --shell /usr/sbin/nologin arwc-control-broker \
     && install -d -o arwc-control-broker -g arwc-control-broker -m 0750 /opt/control-broker
 
-RUN pip install --no-cache-dir cryptography==42.0.8
+RUN pip install --no-cache-dir cryptography==50.0.2
 
 COPY --chown=arwc-control-broker:arwc-control-broker --chmod=0640 \
   build/arwc/runtime/control_broker.py /opt/control-broker/control_broker.py

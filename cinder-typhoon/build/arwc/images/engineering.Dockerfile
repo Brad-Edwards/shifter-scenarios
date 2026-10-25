@@ -43,7 +43,7 @@ RUN nim c -d:release --opt:size --passL:-Wl,--build-id=none \
     && strip --strip-all /tmp/sealed-viewer
 
 FROM python:3.12.11-slim-bookworm AS sealed
-RUN pip install --no-cache-dir cryptography==42.0.8
+RUN pip install --no-cache-dir cryptography==50.0.2
 COPY build/arwc/runtime/generate_process_artifacts.py /tmp/generate-process-artifacts
 RUN python3 /tmp/generate-process-artifacts sealed /tmp/sealed
 
@@ -68,7 +68,7 @@ RUN apt-get update \
     && useradd --system --gid arwc-engineering --groups arwc-process-evidence --home-dir /var/lib/arwc-engineering --shell /usr/sbin/nologin arwc-engineering \
     && install -d -o arwc-engineering -g arwc-engineering -m 0750 \
       /opt/process-service/assets /opt/process-service/artifacts
-RUN pip install --no-cache-dir cryptography==42.0.8
+RUN pip install --no-cache-dir cryptography==50.0.2
 COPY --chown=arwc-engineering:arwc-engineering --chmod=0640 build/arwc/runtime/process_services.py /opt/process-service/process_services.py
 COPY --chown=arwc-engineering:arwc-engineering --chmod=0640 build/arwc/runtime/dpg1.py /opt/process-service/dpg1.py
 COPY --from=narrative --chown=arwc-engineering:arwc-engineering --chmod=0640 /tmp/me-project-handover-01.md /opt/process-service/assets/me-project-handover-01.md
