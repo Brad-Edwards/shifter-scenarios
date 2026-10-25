@@ -1,4 +1,4 @@
-cryptography==49.0.0
+cryptography==50.0.2
 fastapi==0.139.2
 google-cloud-run==0.16.1
 google-cloud-storage==3.13.0

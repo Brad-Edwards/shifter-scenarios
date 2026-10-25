@@ -514,20 +514,20 @@ class GcpBuildContractTests(unittest.TestCase):
             "minio-artifact-store", "minio-exfil-sink",
         ):
             self.assertEqual(by_component[component]["build_revision"], 2)
-        self.assertEqual(by_component["keplerops-lab-portal"]["build_revision"], 41)
-        self.assertEqual(by_component["terraform-gcp-range-controller"]["build_revision"], 40)
+        self.assertEqual(by_component["keplerops-lab-portal"]["build_revision"], 42)
+        self.assertEqual(by_component["terraform-gcp-range-controller"]["build_revision"], 41)
         self.assertEqual(by_component["keycloak-identity"]["build_revision"], 8)
-        self.assertEqual(by_component["envoy-fastapi-inference-gateway"]["build_revision"], 91)
+        self.assertEqual(by_component["envoy-fastapi-inference-gateway"]["build_revision"], 92)
         self.assertEqual(by_component["postgresql-dataset-store"]["build_revision"], 15)
         self.assertEqual(by_component["mlflow-model-registry"]["build_revision"], 2)
-        self.assertEqual(by_component["kali-browser-terminal"]["build_revision"], 7)
-        self.assertEqual(by_component["gitea-redmine-workhub"]["build_revision"], 15)
+        self.assertEqual(by_component["kali-browser-terminal"]["build_revision"], 8)
+        self.assertEqual(by_component["gitea-redmine-workhub"]["build_revision"], 16)
         self.assertEqual(by_component["jupyterlab-notebook-runner"]["build_revision"], 2)
-        self.assertEqual(by_component["opa-guardrail-policy"]["build_revision"], 44)
-        self.assertEqual(by_component["opentelemetry-proof-store"]["build_revision"], 49)
+        self.assertEqual(by_component["opa-guardrail-policy"]["build_revision"], 45)
+        self.assertEqual(by_component["opentelemetry-proof-store"]["build_revision"], 50)
         self.assertEqual(by_component["airflow-distillation-runner"]["build_revision"], 14)
         self.assertEqual(by_component["vllm-open-model-hosting"]["build_revision"], 3)
-        self.assertEqual(by_component["openvino-image-generation"]["build_revision"], 4)
+        self.assertEqual(by_component["openvino-image-generation"]["build_revision"], 5)
         mlflow_dockerfile = (
             PACK_ROOT / "assets/services/Dockerfile.mlflow"
         ).read_text(encoding="utf-8")
