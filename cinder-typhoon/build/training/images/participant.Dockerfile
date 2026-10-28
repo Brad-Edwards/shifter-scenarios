@@ -1,6 +1,7 @@
 FROM kalilinux/kali-rolling@sha256:30399bd65187e06525008dd13eecc2b3439d26a82b2c6b0ba32dee72bd843117
 
-RUN apt-get update \
+RUN sed -i 's/^Suites: .*/Suites: kali-last-snapshot/' /etc/apt/sources.list.d/kali.sources \
+    && apt-get update \
     && apt-get install --no-install-recommends -y \
       ca-certificates=20260601 \
       curl=8.21.0-2 \
