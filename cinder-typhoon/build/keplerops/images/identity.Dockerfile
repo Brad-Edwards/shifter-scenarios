@@ -3,7 +3,7 @@ FROM python:3.12.11-slim-bookworm
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get install --no-install-recommends -y ca-certificates gcc iproute2 krb5-admin-server krb5-kdc krb5-user libkrb5-dev util-linux \
-    && pip install --no-cache-dir cryptography==46.0.5 gssapi==1.10.1 \
+    && pip install --no-cache-dir cryptography==50.0.2 gssapi==1.10.1 \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system keplerops-identity \
     && useradd --system --gid keplerops-identity --home-dir /nonexistent --shell /usr/sbin/nologin keplerops-identity

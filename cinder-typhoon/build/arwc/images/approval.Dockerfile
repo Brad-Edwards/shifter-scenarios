@@ -19,7 +19,7 @@ RUN apt-get update \
     && useradd --system --gid arwc-approval --groups arwc-field-session,arwc-integration,arwc-approval-evidence --home-dir /var/lib/arwc-approval --shell /usr/sbin/nologin arwc-approval \
     && install -d -o arwc-approval -g arwc-approval -m 0750 /opt/maintenance-review
 
-RUN pip install --no-cache-dir cryptography==42.0.8
+RUN pip install --no-cache-dir cryptography==50.0.2
 
 COPY --from=browser /opt/chrome-headless-shell-linux64 /opt/chrome-headless-shell
 RUN /opt/chrome-headless-shell/chrome-headless-shell --no-sandbox --version 2>&1 | grep -F '128.0.6613.137'

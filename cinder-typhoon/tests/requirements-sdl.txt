@@ -3,4 +3,4 @@ raes==5.0.0
 raes-env-packs==6.1.0
 
 # Genuine finance PDFs are parsed during ordinary narrative checks.
-pypdf==6.19.0
+pypdf==6.21.2

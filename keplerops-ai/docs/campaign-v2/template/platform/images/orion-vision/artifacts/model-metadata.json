@@ -25,7 +25,7 @@
   "model_family": "vision-prototype",
   "model_name": "orion-vision-prototype",
   "onnx_opset": 17,
-  "onnx_sha256": "544819eff27e7a6b65599a8cc49fe1a6b734c57f08cf54ca861c88cc5d25a9c9",
+  "onnx_sha256": "d0b29557e606e3949e47bc32d0700ce2af9dce802e80618184f11e52ff01f799",
   "output_name": "logits",
   "output_shape": [
     null,

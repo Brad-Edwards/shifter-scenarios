@@ -106,7 +106,7 @@ class PlatformContextFoundationTests(unittest.TestCase):
         self.assertIn("EXPOSE 8480", dockerfile)
         self.assertIn('CMD ["api"]', dockerfile)
         self.assertIn("healthcheck.py", dockerfile)
-        self.assertIn("dulwich==0.24.10", requirements)
+        self.assertIn("dulwich==1.2.19", requirements)
         self.assertIn("psycopg[binary]==3.3.4", requirements)
         for line in requirements.splitlines():
             if line.strip():

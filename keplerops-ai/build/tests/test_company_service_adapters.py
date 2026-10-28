@@ -49,10 +49,10 @@ telemetry = load_module(
 
 
 CHALLENGE_FILE_DIGESTS = {
-    "assets/services/keycloak-realm.json": "ad279a818c3066b253f527aeb3e188e5afad7544b793578a7ef363b28381d33f",
+    "assets/services/keycloak-realm.json": "8f1988c2819aa24f86cabb9ccb53812593a16cb2326b4782691a5437148a7473",
     "assets/model-artifacts/deployment-manifest.yaml": "bee34c5c0e894e0c9c6314d957512d19fbe0309aabdc73dfc4812c8560cb2a1b",
     "assets/model-artifacts/model.yaml": "1ef0674d3d2b821c33a92c513f13376282f3f072a5f49fb9b28221dfcd6c0c83",
-    "assets/workflows/keplerops_distillation.py": "d0d458a21542272684f17ba36bfaed6d0392562b8e845b2834da9a7f5ac1acbe",
+    "assets/workflows/keplerops_distillation.py": "02ad2adea718ec722eb6a9353fa81b222a0205f1b977ea8289eee7b957dd323b",
     "assets/workflows/research_content.py": "4f446d49094af2a7d9b2d29d7e2b5716acd1bd2ed21b464f7e48f82519c59772",
     "assets/workflows/training_model.py": "24e447a952278656868d758b484615bc58475a07184194c779b0f26c0c8bf2d0",
     "assets/policies/guardrails.rego": "7139cc63184a3c74fb616db47347519d937ea13e42ab18e58705a1a8412ed9b1",

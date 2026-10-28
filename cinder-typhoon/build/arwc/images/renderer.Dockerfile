@@ -10,7 +10,7 @@ RUN apt-get update \
     && useradd --system --gid arwc-renderer --groups arwc-field-session,arwc-approval-evidence,arwc-renderer-evidence --home-dir /var/lib/arwc-renderer --shell /usr/sbin/nologin arwc-renderer \
     && install -d -o arwc-renderer -g arwc-renderer -m 0750 /opt/maintenance-renderer
 
-RUN pip install --no-cache-dir cryptography==42.0.8
+RUN pip install --no-cache-dir cryptography==50.0.2
 
 COPY --chown=arwc-renderer:arwc-renderer --chmod=0640 \
   build/arwc/runtime/maintenance_renderer.py /opt/maintenance-renderer/maintenance_renderer.py

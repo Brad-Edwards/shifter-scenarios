@@ -1188,7 +1188,7 @@ features:
     type: service
     source:
       name: keplerops/kali-browser-terminal
-      version: '7'
+      version: '8'
       build:
         base_image: kasmweb/core-kali-rolling:1.17.0
         base_image_digest: sha256:fbc140f08fecbca9843a713d9b14b56d81f362ebe59584ee3ef0f629c93f87f4
@@ -1200,7 +1200,7 @@ features:
     type: service
     source:
       name: keplerops/keplerops-lab-portal
-      version: '41'
+      version: '42'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1225,7 +1225,7 @@ features:
     type: service
     source:
       name: keplerops/gitea-redmine-workhub
-      version: '15'
+      version: '16'
       build:
         base_image: gitea/gitea:1.24.5
         base_image_digest: sha256:137a322f0308056415bc1a14a4ca8607b2e8efcb8154dfc5049b1f7f8b0a9b71
@@ -1240,7 +1240,7 @@ features:
     type: service
     source:
       name: keplerops/envoy-fastapi-inference-gateway
-      version: '91'
+      version: '92'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1267,7 +1267,7 @@ features:
     type: service
     source:
       name: keplerops/chromium-agent-action-worker
-      version: '5'
+      version: '6'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1279,7 +1279,7 @@ features:
     type: service
     source:
       name: keplerops/python-package-resolver
-      version: '3'
+      version: '4'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1291,7 +1291,7 @@ features:
     type: service
     source:
       name: keplerops/python-package-analysis-sandbox
-      version: '3'
+      version: '4'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1303,7 +1303,7 @@ features:
     type: service
     source:
       name: keplerops/python-package-evaluation-worker
-      version: '3'
+      version: '4'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1315,7 +1315,7 @@ features:
     type: service
     source:
       name: keplerops/opa-guardrail-policy
-      version: '44'
+      version: '45'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1407,7 +1407,7 @@ features:
     type: service
     source:
       name: keplerops/opentelemetry-proof-store
-      version: '49'
+      version: '50'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1433,7 +1433,7 @@ features:
     type: service
     source:
       name: keplerops/terraform-gcp-range-controller
-      version: '40'
+      version: '41'
       build:
         base_image: gcr.io/google.com/cloudsdktool/google-cloud-cli:535.0.0-stable
         base_image_digest: sha256:935f07ec4e69a212b8330c938291edff636626a07a8054cb488025f0669f4670
@@ -1536,7 +1536,7 @@ features:
     type: service
     source:
       name: keplerops/keplerops-platform-ml
-      version: '2'
+      version: '3'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1599,7 +1599,7 @@ features:
     type: service
     source:
       name: keplerops/openvino-image-generation
-      version: '4'
+      version: '5'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1612,7 +1612,7 @@ features:
     type: service
     source:
       name: keplerops/keplerops-platform-context
-      version: '7'
+      version: '8'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1625,7 +1625,7 @@ features:
     type: service
     source:
       name: keplerops/keplerops-platform-camera
-      version: '4'
+      version: '5'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1637,7 +1637,7 @@ features:
     type: service
     source:
       name: keplerops/keplerops-platform-agent
-      version: '3'
+      version: '4'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1655,7 +1655,7 @@ features:
     type: service
     source:
       name: keplerops/keplerops-platform-isolation-loader
-      version: '3'
+      version: '4'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1667,7 +1667,7 @@ features:
     type: service
     source:
       name: keplerops/keplerops-edge-registry
-      version: '3'
+      version: '4'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
@@ -1731,7 +1731,7 @@ features:
     type: service
     source:
       name: keplerops/keplerops-platform-deployment
-      version: '5'
+      version: '6'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689

@@ -1,4 +1,4 @@
-dulwich==0.24.10
+dulwich==1.2.19
 fastapi==0.139.2
 httpx==0.28.1
 opensearch-py==3.2.0

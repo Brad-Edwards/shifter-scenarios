@@ -3,7 +3,7 @@ FROM python:3.12.11-slim-bookworm
 RUN apt-get update \
     && apt-get install --no-install-recommends -y ca-certificates curl git iproute2 jq krb5-user openssh-server procps sqlite3 unzip util-linux zip \
     && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir cryptography==46.0.5 \
+    && pip install --no-cache-dir cryptography==50.0.2 \
     && groupadd --gid 2000 rowan \
     && useradd --uid 2000 --gid rowan --create-home --shell /bin/bash rowan \
     # Keep the account eligible for public-key SSH while leaving password

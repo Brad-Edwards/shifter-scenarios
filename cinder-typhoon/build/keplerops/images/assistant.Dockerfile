@@ -3,7 +3,7 @@ FROM python:3.12.11-slim-bookworm
 RUN apt-get update \
     && apt-get install --no-install-recommends -y ca-certificates iproute2 util-linux \
     && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch==2.6.0 \
+    && pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch==2.13.0 \
     && pip install --no-cache-dir transformers==4.48.3 huggingface-hub==0.28.1 safetensors==0.5.2 \
     && groupadd --system fieldkest-assistant \
     && useradd --system --gid fieldkest-assistant --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-assistant \

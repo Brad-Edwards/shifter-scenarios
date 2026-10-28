@@ -3,5 +3,5 @@ minio==7.2.20
 openvino-genai==2026.2.1.0
 pillow==13.0.0
 psycopg[binary]==3.3.4
-urllib3==2.7.0
+urllib3==2.8.0
 uvicorn==0.51.0
