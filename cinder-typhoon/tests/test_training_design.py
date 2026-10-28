@@ -122,6 +122,15 @@ class TrainingDesignTests(unittest.TestCase):
                      if grant.grant_id == 'read-any-training-brief')
         self.assertEqual(grant.resource_patterns, ['assignment-briefs/*'])
 
+    def test_participant_image_uses_snapshot_package_source(self):
+        dockerfile = (PACK / 'build/training/images/participant.Dockerfile').read_text(
+            encoding='utf-8')
+        snapshot = "Suites: kali-last-snapshot"
+        self.assertIn(snapshot, dockerfile)
+        self.assertLess(dockerfile.index(snapshot), dockerfile.index('apt-get update'))
+        for package in ('ca-certificates', 'curl', 'git', 'jq', 'python3'):
+            self.assertRegex(dockerfile, rf'\b{package}=[^\s\\]+')
+
 
 if __name__ == '__main__':
     unittest.main()

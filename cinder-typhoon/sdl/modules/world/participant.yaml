@@ -45,7 +45,7 @@ nodes:
         owner_user: cinder
         owner_group: cinder
         mode: '0444'
-        content_digest: 72e66a8561e4579801a66b1730c6bcd393799c5b1360465c0fb1cdbe86948da6
+        content_digest: 9a8e419f628edbba8917e812068a1e044f3d9b61462b8d7a3d98d46e380f19a5
         digest_algorithm: sha256
         stability: stable
         sensitivity: plain

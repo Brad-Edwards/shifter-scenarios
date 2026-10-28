@@ -52,7 +52,7 @@ content:
 
       ```text
 
-      git clone http://workbench.training:8080/git/handover.git
+      git clone http://workbench.training:8080/git/handover.git /tmp/handover
 
       ```
 
