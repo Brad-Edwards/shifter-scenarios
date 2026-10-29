@@ -5,82 +5,113 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
 
 bash ./generate-operator-material.sh
-if [[ ${CINDER_PRESERVE_DELIVERY:-0} != 1 ]]; then
-  docker compose -f compose.yaml down -v --remove-orphans
-fi
 docker compose -f compose.yaml build
-docker compose -f compose.yaml up -d --force-recreate a-connector fieldlink-edge a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-renderer a-control-broker a-hmi a-historian a-engineering a-instruments a-reservoir a-distribution a-diagnostics
 
-ready=0
-for _ in $(seq 1 60); do
-  if docker exec --user fieldlink cinder-arwc-connector \
-    sh -c 'token=$(cat /var/lib/fieldlink-connector/handover/corporate-session) && curl --silent --fail --cacert /tmp/arwc-ca.crt -H "Authorization: Bearer $token" https://customer-handover.arwc.test:8443/api/the-customer-s-copy >/dev/null'; then
-    ready=1
-    break
+start_fresh() {
+  if [[ ${CINDER_PRESERVE_DELIVERY:-0} != 1 ]]; then
+    docker compose -f compose.yaml down -v --remove-orphans
   fi
-  sleep 1
-done
-[[ $ready == 1 ]]
+  docker compose -f compose.yaml up -d --force-recreate a-connector fieldlink-edge a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-renderer a-control-broker a-hmi a-historian a-engineering a-instruments a-reservoir a-distribution a-diagnostics
 
-ready=0
-for _ in $(seq 1 60); do
-  status=$(docker exec --user fieldlink cinder-arwc-connector \
-    curl --silent --cacert /tmp/arwc-ca.crt -o /dev/null -w '%{http_code}' \
-    -H 'Authorization: Bearer unavailable' https://process-view.arwc.test/api/the-reservoir-s-present-tense || true)
-  if [[ $status == 403 ]]; then
-    ready=1
-    break
-  fi
-  sleep 1
-done
-[[ $ready == 1 ]]
+  # Wait for the connector container to accept exec (entrypoint sets up dirs).
+  ready=0
+  for _ in $(seq 1 60); do
+    if docker exec cinder-arwc-connector test -d /var/lib/fieldlink-connector/handover 2>/dev/null; then
+      ready=1
+      break
+    fi
+    sleep 1
+  done
+  [[ $ready == 1 ]]
 
-ready=0
-for _ in $(seq 1 60); do
-  if docker exec --user fieldlink cinder-arwc-connector \
-    sh -c 'token=$(cat /var/lib/fieldlink-connector/handover/corporate-session) && curl --silent --fail --cacert /tmp/arwc-ca.crt -H "Authorization: Bearer $token" https://business-workplace.arwc.test/api/the-asset-and-the-contractor >/dev/null'; then
-    ready=1
-    break
+  if [[ ${CINDER_PRESERVE_DELIVERY:-0} != 1 ]]; then
+    # A single-stack run has no live KeplerOps peer to deliver the real signed
+    # package that normally earns the corporate handoff; seed it the same way
+    # the connector's own earn_corporate would.
+    python3 tests/seed_corporate_handover.py
   fi
-  sleep 1
-done
-[[ $ready == 1 ]]
 
-ready=0
-for _ in $(seq 1 60); do
-  if docker exec --user fieldlink cinder-arwc-connector \
-    sh -c 'token=$(cat /var/lib/fieldlink-connector/handover/corporate-session) && curl --silent --fail --cacert /tmp/arwc-ca.crt -H "Authorization: Bearer $token" https://retained-archive.arwc.test/api/the-archive-s-missing-contract >/dev/null'; then
-    ready=1
-    break
-  fi
-  sleep 1
-done
-[[ $ready == 1 ]]
+  ready=0
+  for _ in $(seq 1 60); do
+    if docker exec --user fieldlink cinder-arwc-connector \
+      sh -c 'token=$(cat /var/lib/fieldlink-connector/handover/corporate-session) && curl --silent --fail --cacert /tmp/arwc-ca.crt -H "Authorization: Bearer $token" https://customer-handover.arwc.test:8443/api/the-customer-s-copy >/dev/null'; then
+      ready=1
+      break
+    fi
+    sleep 1
+  done
+  [[ $ready == 1 ]]
 
-ready=0
-for _ in $(seq 1 60); do
-  status=$(docker exec --user fieldlink cinder-arwc-connector \
-    sh -c 'token=$(cat /var/lib/fieldlink-connector/handover/corporate-session) && curl --silent --cacert /tmp/arwc-ca.crt -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $token" https://corporate-identity.arwc.test/api/not-found' || true)
-  if [[ $status == 404 ]]; then
-    ready=1
-    break
-  fi
-  sleep 1
-done
-[[ $ready == 1 ]]
+  ready=0
+  for _ in $(seq 1 60); do
+    status=$(docker exec --user fieldlink cinder-arwc-connector \
+      curl --silent --cacert /tmp/arwc-ca.crt -o /dev/null -w '%{http_code}' \
+      -H 'Authorization: Bearer unavailable' https://process-view.arwc.test/api/the-reservoir-s-present-tense || true)
+    if [[ $status == 403 ]]; then
+      ready=1
+      break
+    fi
+    sleep 1
+  done
+  [[ $ready == 1 ]]
 
-ready=0
-for _ in $(seq 1 60); do
-  status=$(docker exec --user fieldlink cinder-arwc-connector \
-    curl --silent --cacert /tmp/arwc-ca.crt -o /dev/null -w '%{http_code}' \
-    -H 'Authorization: Bearer unavailable' https://planning-data.arwc.test/api/not-found || true)
-  if [[ $status == 403 ]]; then
-    ready=1
-    break
-  fi
-  sleep 1
-done
-[[ $ready == 1 ]]
+  ready=0
+  for _ in $(seq 1 60); do
+    if docker exec --user fieldlink cinder-arwc-connector \
+      sh -c 'token=$(cat /var/lib/fieldlink-connector/handover/corporate-session) && curl --silent --fail --cacert /tmp/arwc-ca.crt -H "Authorization: Bearer $token" https://business-workplace.arwc.test/api/the-asset-and-the-contractor >/dev/null'; then
+      ready=1
+      break
+    fi
+    sleep 1
+  done
+  [[ $ready == 1 ]]
+
+  ready=0
+  for _ in $(seq 1 60); do
+    if docker exec --user fieldlink cinder-arwc-connector \
+      sh -c 'token=$(cat /var/lib/fieldlink-connector/handover/corporate-session) && curl --silent --fail --cacert /tmp/arwc-ca.crt -H "Authorization: Bearer $token" https://retained-archive.arwc.test/api/the-archive-s-missing-contract >/dev/null'; then
+      ready=1
+      break
+    fi
+    sleep 1
+  done
+  [[ $ready == 1 ]]
+
+  ready=0
+  for _ in $(seq 1 60); do
+    status=$(docker exec --user fieldlink cinder-arwc-connector \
+      sh -c 'token=$(cat /var/lib/fieldlink-connector/handover/corporate-session) && curl --silent --cacert /tmp/arwc-ca.crt -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $token" https://corporate-identity.arwc.test/api/not-found' || true)
+    if [[ $status == 404 ]]; then
+      ready=1
+      break
+    fi
+    sleep 1
+  done
+  [[ $ready == 1 ]]
+
+  ready=0
+  for _ in $(seq 1 60); do
+    status=$(docker exec --user fieldlink cinder-arwc-connector \
+      curl --silent --cacert /tmp/arwc-ca.crt -o /dev/null -w '%{http_code}' \
+      -H 'Authorization: Bearer unavailable' https://planning-data.arwc.test/api/not-found || true)
+    if [[ $status == 403 ]]; then
+      ready=1
+      break
+    fi
+    sleep 1
+  done
+  [[ $ready == 1 ]]
+}
+
+start_fresh
+if [[ ${CINDER_PRESERVE_DELIVERY:-0} != 1 ]]; then
+  python3 tests/test_participant_journey_live.py -v
+
+  # The journey intentionally consumes single-use state. Give the retained
+  # contract suites their own authored state. A cross-segment paired delivery
+  # is one-shot and is exercised by the journey alone, so it skips this reset.
+  start_fresh
+fi
 
 python3 tests/test_w01_live.py
 python3 tests/test_w02_w03_live.py

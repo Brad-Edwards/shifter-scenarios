@@ -94,6 +94,7 @@ def approval_record() -> dict[str, object]:
         "drawing": "DRW-OG2-R8",
         "drawing_revision": "R8",
         "status": "signed",
+        "renderer": "https://maintenance-renderer.arwc.test",
     }
     key = serialization.load_pem_private_key(SIGNING_KEY.read_bytes(), password=None)
     assert isinstance(key, Ed25519PrivateKey)

@@ -35,7 +35,7 @@ class CloudAPIHandler(KeplerHandler):
         if path == "/api/workspaces/current/token-exchange":
             if not developer:
                 return self.send_json(403, {"error": "developer_session_required"})
-            value = {"workspace": "WS-ROWAN-2026-09-G1", "subject": "svc-fieldlink-workload", "issuer": "https://workload.keplerops.test", "audience": "fieldkest-build-records", "fixture_token": "workload-oidc-wrong-aud"}
+            value = {"workspace": "WS-ROWAN-2026-09-G1", "subject": "svc-fieldlink-workload", "issuer": "https://workload.keplerops.test", "audience": "fieldkest-build-records", "fixture_token": "workload-oidc-wrong-aud", "trust_record": "TRUST-FLX-04"}
             append_audit(AUDIT, "workspace-exchange", {"request_id": self.request_id, "principal": DEV_USER, "status": 200})
             return self.send_json(200, value)
         if path == "/api/build-records/BLD-1842" and token == "workload-session":
@@ -57,6 +57,18 @@ class CloudAPIHandler(KeplerHandler):
         if path == "/api/build-records/BLD-REC-021" and token in {"workload-session", "support-export-role"}:
             value = {"build_id": "BLD-REC-021", "principal": "svc-history-recovery", "backup": "BAK-2026-021", "allowed": "restore", "source_database": "denied", "session": "history-recovery-session"}
             append_audit(AUDIT, "build-records", {"request_id": self.request_id, "principal": token, "build_id": value["build_id"], "status": 200})
+            return self.send_json(200, value)
+        if path == "/api/maintenance" and token in {"support-export-role", "workload-session", "ci-maintenance-worker"}:
+            # Maintenance management index the runner reads (see runner-operations.md):
+            # the policy, the managed workload, the field archive, and the worker
+            # and runtime credentials the scheduler issues for maintenance jobs.
+            value = {
+                "policy_id": "fieldlink-maintenance", "workload_id": "MAINT-FLK-01",
+                "field_archive": "FIELD-CRR-2026-09", "archive_asset": "CRR-OG2",
+                "workload_class": "maintenance", "worker_credential": "ci-maintenance-worker",
+                "runtime_credential": "maintenance-runtime",
+            }
+            append_audit(AUDIT, "maintenance-index", {"request_id": self.request_id, "principal": token, "status": 200})
             return self.send_json(200, value)
         if path == "/api/policies/fieldlink-maintenance" and (token in {"support-export-role", "ci-maintenance-worker"} or worker is not None):
             value = {"policy_id": "fieldlink-maintenance", "management_caller": "svc-fieldkest-runner", "scheduler": "fieldkest-scheduler", "runtime_identity": "svc-fieldlink-maintenance", "required_label": {"workload.class": "maintenance"}, "whoami": "svc-fieldkest-runner"}
