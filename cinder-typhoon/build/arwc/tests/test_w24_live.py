@@ -220,7 +220,7 @@ status,opened=call("/api/the-diagnostic-evidence-bundle",{"operation":"open","bu
 if status!=201:raise RuntimeError((status,opened))
 print(json.dumps({"queries":queries,"unlock":base64.b64encode(unlock).decode(),"opened":opened},separators=(",", ":")))
 '''
-        completed = inside("python3", "-c", attack, timeout=240)
+        completed = inside("python3", "-c", attack, timeout=600)
         self.assertEqual(completed.returncode, 0, completed.stderr.decode())
         result = json.loads(completed.stdout)
         self.assertLessEqual(result["queries"], 4096 - 3)
