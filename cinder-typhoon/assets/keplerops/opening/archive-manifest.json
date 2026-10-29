@@ -36,8 +36,8 @@
         {
           "mode": "0644",
           "path": "README.md",
-          "sha256": "b87027ff6315845a142dfc20f882b0e2a9c8d5b0842a35643666ed660944e496",
-          "size": 641
+          "sha256": "6c4481ecd66e69d77aa6e189ffc96440df2a7fe7e51d2a39a637a165987f9ae2",
+          "size": 789
         },
         {
           "mode": "0640",
@@ -71,6 +71,12 @@
         },
         {
           "mode": "0644",
+          "path": "work/service-catalog.md",
+          "sha256": "78ca1d0c66ff5e27eb37eb8a7572c854c6ca0c6972a0eebfe071625953808af7",
+          "size": 10424
+        },
+        {
+          "mode": "0644",
           "path": "work/service-notes.md",
           "sha256": "cef4cf0b5fa7c4653b0aeb6fc121c357214274e052926a86958cf34ac43cedf5",
           "size": 1533
@@ -78,8 +84,8 @@
       ],
       "group": "rowan",
       "owner": "rowan",
-      "sha256": "79ed598c6b084db72e923f702f3da9db37042cc55d38091844ba3505086e4b8a",
-      "size": 61440
+      "sha256": "9b26813a6b3ae5d4a949cbce0ac985858e7de4ea3e46309ce7b4a5a28cb8a16a",
+      "size": 81920
     },
     {
       "archive": "k-dev-workbench.tar",
@@ -186,8 +192,8 @@
         {
           "mode": "0640",
           "path": "conversations/SUP-2841.json",
-          "sha256": "2e3776399bbd34c3a7e3ecc701891b73fae343bcf6e42dadcdc546c4677c58f2",
-          "size": 899
+          "sha256": "3a56ae74649b38c8eee4f8f8efd2c4f218ae5c18f1d0e031eadcb66415f2ce58",
+          "size": 1219
         },
         {
           "mode": "0600",
@@ -198,7 +204,7 @@
       ],
       "group": "fieldkest-support",
       "owner": "fieldkest-support",
-      "sha256": "0a62c22aebf594156869addf18170a028cc244d52ada3c14ef875c9bbd46829d",
+      "sha256": "275e26580c88db806ff5780776a4ff146f07c57533fca8ec87ca0dea74b45d80",
       "size": 10240
     }
   ],

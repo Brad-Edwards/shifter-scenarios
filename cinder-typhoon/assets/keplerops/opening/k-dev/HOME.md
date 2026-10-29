@@ -6,6 +6,9 @@ exports, samples and the local helper are kept under `work` as well.
 The internal service paths used by the team are recorded in
 `work/service-notes.md`.
 
+The wider FieldKest API route templates used by release, support, cloud,
+identity, and maintenance work are recorded in `work/service-catalog.md`.
+
 Internal services use the workstation CA at
 `~/.local/share/keplerops/ca.crt`. The usual command-line clients already trust
 it. The local helper listens only on `127.0.0.1:8701`; its request examples are

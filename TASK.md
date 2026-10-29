@@ -46,6 +46,126 @@ tests expose, and submit all required changes to the
 8. Commit and publish only the intended Cinder Typhoon changes to the Palo Alto
    Networks repository. Do not include unrelated local deployment edits.
 
+## Current status
+
+### Repository and pull request
+
+- Work is on `fix/cinder-typhoon-golden-walkthrough`.
+- The draft pull request is
+  `PaloAltoNetworks/shifter-scenarios#204`.
+- The pull request currently contains the completed Training journey and its
+  source fixes. Later KeplerOps and ARWC work is not yet published.
+- Unrelated local GCP deployment and `terraform.tfvars` changes are present in
+  the checkout and must remain excluded from commits and the pull request.
+
+### Training: complete and passing
+
+- Added `build/training/tests/test_participant_journey_live.py`.
+- The journey covers all 16 Training cards from the participant's published
+  `TRAINING.md` entry point. It uses repository history, published links,
+  browser-facing assets, recovery flows, package publication, the fresh
+  consumer, and the practice outlet in the same sequence available to a
+  participant.
+- The journey derives identifiers, routes, credentials, and evidence from the
+  starting material or earlier responses instead of embedding author-only
+  shortcuts.
+- Fixed the Workbench clone instruction so it uses writable `/tmp` storage and
+  clarified that the participant home directory is read-only.
+- Reconciled the Training SDL content and digests.
+- Fixed the Kali participant-image package source by selecting the pinned Kali
+  snapshot before installing exact package versions.
+- Updated the Training runner to reset state, run the participant journey, reset
+  again, and retain the existing test suites.
+- The complete Training run passed: the 16-card journey followed by all 19
+  retained topology, Workbench, Accounts, Developer, and state tests.
+- The Training native hand-build design gate and focused design tests also
+  passed.
+
+### KeplerOps: complete and passing
+
+- Inventoried all 104 cards across K01-K31 and mapped them to their owning
+  services and retained test coverage.
+- Added `build/keplerops/tests/test_participant_journey_live.py`. The journey
+  covers all 104 KeplerOps cards from the supplied Rowan workstation, deriving
+  routes, identifiers, credentials, and evidence from the handover, repository
+  history, browser profile, and earlier responses.
+- Added a source draft of `opening/k-dev/service-catalog.md`, linked it from
+  `HOME.md`, and added it to the workstation archive generator. The catalog
+  records ordinary route templates while requiring concrete values to come from
+  the handover, repository, browser profile, object listings, or earlier
+  responses.
+- Fixed a K04 continuity defect: the indexer's runtime descriptor now returns
+  the scoped state route, completion route, record ID, routine, and ready state
+  needed to continue from participant-visible evidence.
+- Fixed a K10.1 discovery gap: added a preview-association route and seeded the
+  retained support document it points to.
+- Fixed a K23.1 discovery gap: the unpublished context route now returns its
+  retained conversations, selections, documents, and completion evidence.
+- Fixed smaller discovery gaps: a trust record on the workspace token-exchange
+  response, a maintenance index route, and a retained historical release name
+  in the support conversation.
+- The journey passed from pristine state against the deployed `prod-mgau4w`
+  range (two cards that need the real ARWC cross-segment delivery are skipped
+  in a single-stack run, matching the retained suite's own gating).
+- Updated `build/keplerops/test-local.sh` to reset state, run the participant
+  journey, reset again, and retain the existing test suites unchanged.
+
+### ARWC: complete and passing
+
+- Inventoried the retained W01-W35 live tests and their current execution
+  order.
+- Added `build/arwc/tests/test_participant_journey_live.py`. The journey covers
+  all 120 ARWC cards (W01-W35) from the supplied connector handover, deriving
+  every route, record identifier, credential, and value from the handover or an
+  earlier response.
+- A single-stack run has no live KeplerOps peer to deliver the real signed
+  package that normally earns the corporate handoff, so
+  `build/arwc/tests/seed_corporate_handover.py` calls the connector's own
+  `earn_corporate` function directly, inside its container, producing the same
+  handover files a real delivery produces. It is a no-op once a real delivery
+  has already earned the handoff, and it does not replace the W26/K27.3
+  cross-segment delivery coverage.
+- Fixed a W04 discovery gap: the archive workflow record now exposes the
+  planner handover target it hands off to, instead of requiring an author-only
+  identifier.
+- Fixed a W09 discovery gap: the live-feed integration response now exposes the
+  `process-view` route instead of requiring it to be guessed.
+- Fixed a W26 defect: the signed approval record did not list the maintenance
+  renderer host, so no participant response could ever resolve it. Added the
+  renderer host to the signed payload.
+- Fixed a W29.3 test error: the journey incorrectly expected a pre-condition
+  denial that the sequential journey had already satisfied during W25.
+- The journey passed from pristine state against the deployed `prod-mgau4w`
+  range.
+- Updated `build/arwc/test-local.sh` to seed the handover, reset state, run the
+  participant journey, reset and reseed, and retain the existing test suites
+  unchanged.
+
+### Deployed range
+
+- The Training, KeplerOps, and ARWC instances in GCP project `prod-mgau4w` were
+  confirmed running and initially pristine.
+- The manual Training check exposed the read-only-home clone defect described
+  above.
+- Every fix above was hand-patched onto the running `prod-mgau4w` containers
+  and the affected journey was re-run from pristine state to confirm the fix,
+  before being written back to source.
+- A consolidated clean rebuild, a full three-journey run against the rebuilt
+  images, and a final deployed-range validation remain outstanding.
+
+## Remaining work
+
+1. Run syntax, design, archive, and static regression checks for all
+   accumulated changes. Design, SDL hand-build-gate, and archive-generation
+   checks have passed; a final pass is needed after the consolidated rebuild.
+2. Perform one consolidated clean rebuild after both journeys and all fixes are
+   complete.
+3. From fresh state, run all three participant journeys and every retained test
+   suite against the rebuilt images.
+4. Publish all remaining required changes to pull request #204, excluding the
+   unrelated local deployment files.
+5. Validate the corrected deployed range and confirm a pristine reset.
+
 ## Completion criteria
 
 - Every challenge card has an integration test that properly exercises its

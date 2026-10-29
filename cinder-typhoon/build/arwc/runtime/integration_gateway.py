@@ -346,7 +346,7 @@ class Handler(BaseHTTPRequestHandler):
         os.chown(OT_EVIDENCE, -1, grp.getgrnam("arwc-ot-read").gr_gid)
         os.chmod(OT_EVIDENCE, 0o640)
         self.send_json(201, {"audit_id": append_audit(result), "record": result,
-                             "process_session": token})
+                             "process_session": token, "process_view": "https://process-view.arwc.test"})
 
 
 def main() -> None:

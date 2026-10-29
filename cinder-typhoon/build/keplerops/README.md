@@ -11,7 +11,7 @@ carrier. The former local stand-in for K26/K27 has been removed. Both delivery
 routes now cross the narrow private transit and execute on the separate Alterra
 carrier, where destination-owned receipts earn the corporate handoff.
 
-**Target:** A working, isolated KeplerOps range in GCP project `prod-hwmvjy`,
+**Target:** A working, isolated KeplerOps range in GCP project `prod-mgau4w`,
 with all 104 participant paths exercised from the supplied Rowan workstation.
 This stage does not create bakes. The real `a-connector` consumer is owned and
 run by the Alterra build; KeplerOps contains only the supplier-side delivery

@@ -231,7 +231,23 @@ class PlatformHandler(KeplerHandler):
     # Preview service: identity collision and privileged review workflow.
     def get_preview(self) -> None:
         if not self.dev_auth(): return self.deny(401, "authentication_required")
-        match = re.fullmatch(r"/api/renders/([A-Z0-9-]+)", urlparse.urlsplit(self.path).path)
+        path = urlparse.urlsplit(self.path).path
+        # Association lookup: the queue exposes the restricted derived identity for a
+        # supplied attachment without confirming the requester owns its case (K10.1).
+        match = re.fullmatch(r"/api/attachments/([A-Za-z0-9._-]+)/preview-association", path)
+        if match:
+            associations = {
+                "CRR-OG2": {
+                    "source_attachment": "CRR-OG2", "attachment_version": "FLK-7.4.2",
+                    "derived_document_id": "SUP-K-2841", "source_version": 7,
+                    "owner_case": "SUP-2841", "viewer_request": "PRV-771",
+                },
+            }
+            assoc = associations.get(match.group(1))
+            if not assoc: return self.deny(404, "association_not_found")
+            self.record("preview-association", principal=DEV_USER, attachment=match.group(1), derived_document_id=assoc["derived_document_id"])
+            return self.send_json(200, assoc)
+        match = re.fullmatch(r"/api/renders/([A-Z0-9-]+)", path)
         if not match: return self.deny(404, "not_found")
         result = load_state()["preview"]["renders"].get(match.group(1))
         if not result: return self.deny(404, "render_not_found")
@@ -343,7 +359,17 @@ class PlatformHandler(KeplerHandler):
     def get_staff(self) -> None:
         path = urlparse.urlsplit(self.path).path; token = bearer(self)
         if path == "/api/service-directory" and token in {DEV_TOKEN, "cert-enrollment-worker"}:
-            value = {"enrollment": "https://cert.keplerops.test/api/enrollment/StaffArchiveUser", "archive": "https://staff.keplerops.test/api/archive/handovers/{subject}"}
+            value = {
+                "enrollment": "https://cert.keplerops.test/api/enrollment/StaffArchiveUser",
+                "archive": "https://staff.keplerops.test/api/archive/handovers/{subject}",
+                "archive_subject": "evan.calderoux",
+                "restricted_note": "NOTE-SUP-2841-7",
+                "note_preview": "https://staff.keplerops.test/api/note-preview",
+                "support_registration": "OIDC-FIELDKEST-SUPPORT",
+                "staff_provider": "OIDC-FIELDKEST-STAFF",
+                "fixture_issuer": "https://support.keplerops.test/fixture-issuer",
+                "enrollment_worker": "cert-enrollment-worker",
+            }
         elif path == "/api/notes/NOTE-SUP-2841-7" and token == DEV_TOKEN:
             value = {"note_id": "NOTE-SUP-2841-7", "revision": 7, "consumer": "staff-note-preview", "status": "restricted-draft"}
         elif path == "/api/archive/handovers/evan.calderoux" and self.peer_common_name() == "evan.calderoux":
@@ -508,7 +534,17 @@ class PlatformHandler(KeplerHandler):
         if path == "/static/app.js":
             return self.send_bytes(200, Path("/opt/fieldkest-assistant/web/app.js").read_bytes(), "application/javascript")
         if path == "/api/config": value = {"context": "ctx-support-private-v4", "collection": "support-private", "policy_version": "retrieval-2026.09"}
-        elif path == "/api/contexts": value = {"contexts": [{"context_id": "ctx-support-private-v4", "collection": "support-private", "published": False}]}
+        elif path == "/api/contexts":
+            # The unpublished context view leaks the items it retains (K23.1).
+            value = {"contexts": [{
+                "context_id": "ctx-support-private-v4", "collection": "support-private", "published": False,
+                "conversations": ["CONV-SUP-2841-19", "CONV-RILL-442-8"],
+                "selections": ["SEL-SUP-2841-12"],
+                "documents": ["RILL-PRIVATE-442"],
+                "duplicate_review": "DREV-2841-2",
+                "completion_handover": "HANDOVER-COMP-2841",
+                "completion_example": "COMP-JOB-17",
+            }]}
         elif path == "/api/conversations/CONV-SUP-2841-19":
             if not self.support_auth(): return self.deny(403)
             value = {"conversation_id": "CONV-SUP-2841-19", "case": "SUP-2841", "deleted_from_ui": True, "detail": "Escalation review retained"}
@@ -612,7 +648,7 @@ class PlatformHandler(KeplerHandler):
             if data.get("operation") == "runtime-descriptor":
                 if indexer["sentinel"] != "mutated" or data.get("sentinel") != "mutated": return self.deny(403, "descriptor_probe_denied")
                 indexer["disclosed"] = True; save_state(state)
-                value = {"process_generation": indexer["generation"], "protected_object_marker": "release-exception-state", "integrity_relation": "sha256(generation:state)", "worker_lease": "indexer-worker-lease"}
+                value = {"process_generation": indexer["generation"], "protected_object_marker": "release-exception-state", "integrity_relation": "sha256(generation:state)", "worker_lease": "indexer-worker-lease", "record_id": "REL-EXC-2841", "ready_state": "queue-ready", "routine": "recover_exception_queue", "state_route": "/api/internal/release-exceptions/state", "completion_route": "/api/internal/release-exceptions/REL-EXC-2841/complete"}
                 self.record("runtime-disclosure", principal=DEV_USER, **value); return self.send_json(200, value)
             allocated = data.get("allocated_length"); body_hex = str(data.get("body_hex", "")); body = bytes.fromhex(body_hex)
             if not isinstance(allocated, int) or allocated < 1 or allocated > 4096 or len(body) < 1 or len(body) > 4096: raise ValueError("bundle_rejected")

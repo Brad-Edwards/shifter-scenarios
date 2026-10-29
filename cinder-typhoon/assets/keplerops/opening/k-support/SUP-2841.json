@@ -17,6 +17,11 @@
       "text": "The customer-side connector responds, but the maintenance callback sometimes arrives late. I attached the affected asset and revision to this conversation."
     },
     {
+      "at": "2026-09-18T14:10:00Z",
+      "from": "maya.ranscombe@keplerops.com",
+      "text": "Before the 7.4.2 maintenance this account kept FieldLink 6.9.8. The registry listing hides that yanked version. Its retained release record REL-FLK-6.9.8-ARCHIVE is still available for the maintenance review."
+    },
+    {
       "at": "2026-09-18T14:26:00Z",
       "from": "rowan.ito@keplerops.com",
       "text": "I captured FK-SAMPLE-017 for CRR-OG2 on FLK-7.4.2. I will compare the local summary with the report job before the next handover."
