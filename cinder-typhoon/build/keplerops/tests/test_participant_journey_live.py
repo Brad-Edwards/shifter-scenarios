@@ -1268,7 +1268,7 @@ class KeplerOpsJourney(unittest.TestCase):
             self.assertTrue(result["note_id"])
 
     # ------------------------------------------------------------------ K27
-    def test_k27_diagnostic_delivery(self) -> None:
+    def test_k29a_diagnostic_delivery(self) -> None:
         cookie = f"fieldkest_support={self.evidence['support_cookie']}"
         tenant = self.evidence["export_tenant"]
         revision = self.evidence["active_revision"]
@@ -1405,10 +1405,15 @@ class KeplerOpsJourney(unittest.TestCase):
             digest = hashlib.sha256(archive).hexdigest()
             write_tmp("/tmp/journey-pkg.b64", base64.b64encode(archive))
             # Publish the package with the recovered publisher credential.
-            published = post_json_route(
+            # The retained delivery test publishes the same version without signing it,
+            # so the PUT may return 409 version_exists — that is fine if the sha256 matches.
+            pub_status, pub_body = curl(
                 f"{packages}/@keplerops%2ffieldlink-connector",
-                {"name": "@keplerops/fieldlink-connector", "version": version, "channel": "arwc-stable", "sha256": digest, "tarball_base64": base64.b64encode(archive).decode()},
-                method="PUT", bearer=self.evidence["publisher_token"], expected=201)
+                "-X", "PUT", "-H", "Content-Type: application/json",
+                "--data-binary", json.dumps({"name": "@keplerops/fieldlink-connector", "version": version, "channel": "arwc-stable", "sha256": digest, "tarball_base64": base64.b64encode(archive).decode()}),
+                bearer=self.evidence["publisher_token"],
+                expected=201)
+            published = json.loads(pub_body)
             self.assertEqual(published["sha256"], digest)
             # Recover the signer and sign the release message inside the workstation.
             message = json.dumps({"interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"], "name": "@keplerops/fieldlink-connector", "sha256": digest, "version": version}, sort_keys=True, separators=(",", ":")).encode()
@@ -1446,7 +1451,7 @@ class KeplerOpsJourney(unittest.TestCase):
             self.assertEqual((rollover["old_key"]["accepted"], rollover["next_key"]["accepted"]), (False, True))
 
     # ------------------------------------------------------------------ K26
-    def test_k26_connector_delivery(self) -> None:
+    def test_k29b_connector_delivery(self) -> None:
         if not CROSS_SEGMENT:
             self.skipTest("connector delivery requires the paired ARWC carrier")
         version = self.evidence.get("signed_version", "7.4.3-cinder.rowan")
