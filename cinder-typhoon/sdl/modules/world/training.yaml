@@ -59,7 +59,7 @@ nodes:
         owner_user: root
         owner_group: cinder-workbench
         mode: '0444'
-        content_digest: 7c8a032b24a8458c51401d75e4e9ccd4b046517de398695ede35fee59dc1b4e6
+        content_digest: cb649aa62099d80adecbff34c435da0027bd73be0441d4dcdc4209e05fb7f298
         digest_algorithm: sha256
         stability: stable
         sensitivity: plain

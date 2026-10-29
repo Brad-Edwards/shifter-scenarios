@@ -3,27 +3,36 @@ set -euo pipefail
 
 ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
-docker compose -f compose.yaml down -v
 bash ./generate-operator-material.sh
 docker compose -f compose.yaml --profile build-only build
-docker compose -f compose.yaml up -d --force-recreate \
-  router runner k-source k-registry k-ci k-preview k-support k-indexer \
-  k-cloud-api k-workload k-data k-assistant k-staff k-identity k-cert a-connector k-dev
 
-for attempt in $(seq 1 30); do
-  if docker exec --user rowan cinder-keplerops-k-dev curl -sS --fail \
-      --cacert /home/rowan/.local/share/keplerops/ca.crt \
-      -u rowan.ito:kpl_rowan_7X4mQ9vN2cL6 \
-      https://source.keplerops.test/api/fieldkest/handovers/current >/dev/null; then
-    break
-  fi
-  if [[ $attempt -eq 30 ]]; then
-    echo "opening services did not become ready" >&2
-    exit 1
-  fi
-  sleep 1
-done
+start_fresh() {
+  docker compose -f compose.yaml down -v
+  docker compose -f compose.yaml up -d --force-recreate \
+    router runner k-source k-registry k-ci k-preview k-support k-indexer \
+    k-cloud-api k-workload k-data k-assistant k-staff k-identity k-cert a-connector k-dev
 
+  for attempt in $(seq 1 30); do
+    if docker exec --user rowan cinder-keplerops-k-dev curl -sS --fail \
+        --cacert /home/rowan/.local/share/keplerops/ca.crt \
+        -u rowan.ito:kpl_rowan_7X4mQ9vN2cL6 \
+        https://source.keplerops.test/api/fieldkest/handovers/current >/dev/null; then
+      return
+    fi
+    if [[ $attempt -eq 30 ]]; then
+      echo "opening services did not become ready" >&2
+      exit 1
+    fi
+    sleep 1
+  done
+}
+
+start_fresh
+python3 tests/test_participant_journey_live.py -v
+
+# The journey intentionally consumes single-use state. Give the retained
+# contract suites their own authored state.
+start_fresh
 python3 tests/test_opening_live.py
 python3 tests/test_registry_foundation_live.py
 python3 tests/test_k04_live.py

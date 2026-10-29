@@ -11,7 +11,7 @@ The outgoing operator left four work areas:
 The handover repository is read-only. Clone it with:
 
 ```text
-git clone http://workbench.training:8080/git/handover.git
+git clone http://workbench.training:8080/git/handover.git /tmp/handover
 ```
 
 The current handover is only a blank replacement. Its ordinary repository

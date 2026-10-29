@@ -15,4 +15,5 @@ systems are separate and are not reachable from this network.
 
 The supplied tools may be used from this workstation. Read-only records remain
 unchanged when inspected. Service activity that changes application state is
-retained by that service.
+retained by that service. The workstation home directory is read-only; use
+`/tmp` for clones, downloads, and other working files.

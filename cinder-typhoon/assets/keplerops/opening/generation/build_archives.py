@@ -27,6 +27,7 @@ ARCHIVES: dict[str, dict[str, object]] = {
             ".config/chromium/Default/Preferences": ("k-dev/chromium-Preferences", 0o600),
             "work/local-helper.md": ("k-dev/local-helper.md", 0o644),
             "work/service-notes.md": ("k-dev/service-notes.md", 0o644),
+            "work/service-catalog.md": ("k-dev/service-catalog.md", 0o644),
             "work/samples/FK-SAMPLE-017.json": ("k-dev/sample-FK-SAMPLE-017.json", 0o640),
             "work/review-exports/fieldlink-7.4.2-review.md": ("k-dev/fieldlink-7.4.2-review.md", 0o640),
             "work/analysis/field-notes-2026-08.odt": ("k-dev/field-notes-2026-08.odt", 0o640),

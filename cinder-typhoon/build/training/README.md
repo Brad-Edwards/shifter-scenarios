@@ -39,7 +39,7 @@ reconciled to the SDL and this implementation before any bake is taken.
 Provision or reconcile the private carrier with:
 
 ```sh
-./gcp/deploy.sh prod-hwmvjy
+./gcp/deploy.sh prod-mgau4w
 ```
 
 For author access after deployment:

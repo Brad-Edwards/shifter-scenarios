@@ -43,6 +43,7 @@ WORKFLOW = {
     "revision": 4,
     "attachment": "ARC-229-A",
     "protected_record": "AR-CRR-229",
+    "planner_handover_target": "HND-PLANNER-06",
     "enrollment_profile": {
         "name": "ArchiveSubmitter",
         "common_name": "corporate-reader-principal",
