@@ -37,7 +37,7 @@ SUPPORT_ALT_SESSION = "ksess_talia_review_9Kw4Pn7R"
 
 def initial_state() -> dict[str, object]:
     return {
-        "preview": {"documents": {}, "renders": {}, "review": {"id": "PRV-771", "assignment": "release-preview", "prepared": False, "worker": False}},
+        "preview": {"documents": {"SUP-K-2841": {"source_id": "SUP-K-2841", "source_version": 7, "derived_id": "sup-k-2841", "owner_case": "SUP-2841", "owner": "maya.ranscombe", "content": "Restricted release review: retain the compatibility exception."}}, "renders": {}, "review": {"id": "PRV-771", "assignment": "release-preview", "prepared": False, "worker": False}},
         "identity": {"registration_revision": 4, "providers": ["OIDC-FIELDKEST-STAFF"], "federated_sessions": {}, "staff_logins": 0},
         "workload": {"startup_hook": None, "assignment": "SHIFT-SEP16-A", "runs": {}, "jobs": {"MAINT-FLK-01": {"labels": {}, "command": ["maintenance-summary"]}}},
         "data": {"destination": "support-primary", "destination_revision": 6, "restores": {}, "exports": {}},
@@ -239,7 +239,7 @@ class PlatformHandler(KeplerHandler):
             associations = {
                 "CRR-OG2": {
                     "source_attachment": "CRR-OG2", "attachment_version": "FLK-7.4.2",
-                    "derived_document_id": "SUP-K-2841", "source_version": 7,
+                    "derived_document_id": "SUP-K-2841", "source_version": 7,
                     "owner_case": "SUP-2841", "viewer_request": "PRV-771",
                 },
             }
