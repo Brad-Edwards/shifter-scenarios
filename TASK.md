@@ -145,7 +145,7 @@ tests expose, and submit all required changes to the
 
 - The Training, KeplerOps, and ARWC instances in GCP project `prod-mgau4w` were
   confirmed running and initially pristine.
-- The manual Training check exposed the read-only-home clone defect described
+- The manual Training check exposed the read-only home clone defect described
   above.
 - Every fix above was hand-patched onto the running `prod-mgau4w` containers
   and the affected journey was re-run from pristine state to confirm the fix,
