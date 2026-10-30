@@ -223,8 +223,8 @@
             "owner": "rowan",
             "group": "rowan",
             "classification": "starting-briefing",
-            "size": 789,
-            "sha256": "6c4481ecd66e69d77aa6e189ffc96440df2a7fe7e51d2a39a637a165987f9ae2"
+            "size": 749,
+            "sha256": "0bd237d283cda2d2afd567dd8597e40d9367cd3906a8e3ec1bf04a802b6bdb97"
           },
           {
             "path": "results",
@@ -689,14 +689,22 @@
             "sha256": "b3cbf260a332f5a8d9b0cdde64e4d22d698a5ae28c11384149126ba694edd1e6"
           },
           {
-            "path": "work/service-catalog.md",
-            "type": "file",
-            "mode": "0644",
+            "path": "work/reproducers",
+            "type": "directory",
+            "mode": "0750",
             "owner": "rowan",
             "group": "rowan",
-            "classification": "discovery-document",
-            "size": 10424,
-            "sha256": "78ca1d0c66ff5e27eb37eb8a7572c854c6ca0c6972a0eebfe071625953808af7"
+            "classification": "offline-reproducer"
+          },
+          {
+            "path": "work/reproducers/indexer-client.json",
+            "type": "file",
+            "mode": "0640",
+            "owner": "rowan",
+            "group": "rowan",
+            "classification": "offline-reproducer",
+            "size": 353,
+            "sha256": "038f4bc3b8516a31c5a5ef600ad052556260137c06da99baade57ee4b398f801"
           },
           {
             "path": "work/service-notes.md",
@@ -705,8 +713,8 @@
             "owner": "rowan",
             "group": "rowan",
             "classification": "workplace-document",
-            "size": 1533,
-            "sha256": "cef4cf0b5fa7c4653b0aeb6fc121c357214274e052926a86958cf34ac43cedf5"
+            "size": 1618,
+            "sha256": "74699b2a54d77a65cdf555c9eb2080c374f6f9180c055bc8a9a758f5f0488c46"
           }
         ]
       },
@@ -1367,7 +1375,6 @@
       "path": "/home/rowan/README.md",
       "exposes": [
         "work/service-notes.md",
-        "work/service-catalog.md",
         "work/local-helper.md",
         "work/fieldlink-connector",
         "work/registry",
@@ -1381,19 +1388,36 @@
       "exposes": [
         "developer-credential-source",
         "fieldlink-handover-source",
-        "support-case-source"
+        "support-case-source",
+        "source-client-reference"
       ]
     },
     {
-      "id": "keplerops-service-catalog",
-      "kind": "exhaustive-route-catalog",
-      "path": "/home/rowan/work/service-catalog.md",
+      "id": "keplerops-indexer-client",
+      "kind": "offline-reproducer-manifest",
+      "path": "/home/rowan/work/reproducers/indexer-client.json",
+      "exposes": [
+        "indexer.indexes",
+        "offline-reproducer-binary"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-source",
+      "kind": "client-reference",
+      "path": "https://source.keplerops.test/.well-known/fieldkest-client",
       "exposes": [
         "source.repos",
         "source.handover",
         "source.policy-evaluate",
         "source.policy-nonce",
-        "source.connector-run",
+        "source.connector-run"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-ci",
+      "kind": "client-reference",
+      "path": "https://ci.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "ci.run",
         "ci.run-log",
         "ci.run-artifact",
@@ -1404,7 +1428,14 @@
         "ci.review-job",
         "ci.workspace-file",
         "ci.connector-rehearsal",
-        "ci.lineage-rollover",
+        "ci.lineage-rollover"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-packages",
+      "kind": "client-reference",
+      "path": "https://packages.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "packages.metadata",
         "packages.consumer-check",
         "packages.release",
@@ -1419,20 +1450,52 @@
         "packages.entitlement",
         "packages.entitlement-check",
         "packages.approval",
-        "indexer.indexes",
+        "connector.poll",
+        "connector.activate",
+        "connector.receipt",
+        "connector.rollback"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-preview",
+      "kind": "client-reference",
+      "path": "https://preview.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "preview.association",
         "preview.documents",
         "preview.render",
         "preview.assignment",
         "preview.prepare",
-        "preview.review-render",
+        "preview.review-render"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-indexer",
+      "kind": "client-reference",
+      "path": "https://indexer.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
+        "indexer.indexes"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-cloud",
+      "kind": "client-reference",
+      "path": "https://cloud-api.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "cloud.workspace-exchange",
         "cloud.workspace-token",
         "cloud.build-record",
         "cloud.trust-record",
         "cloud.role-exchange",
         "cloud.maintenance",
-        "cloud.policy",
+        "cloud.policy"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-data",
+      "kind": "client-reference",
+      "path": "https://data.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "data.workspace-list",
         "data.workspace-object",
         "data.export-object",
@@ -1443,12 +1506,26 @@
         "data.backup",
         "data.restore",
         "data.recovery-history",
-        "data.field-archive",
+        "data.field-archive"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-workloads",
+      "kind": "client-reference",
+      "path": "https://workloads.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "workloads.schedule",
         "workloads.schedule-update",
         "workloads.schedule-runs",
         "workloads.workload",
-        "workloads.whoami",
+        "workloads.whoami"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-support",
+      "kind": "client-reference",
+      "path": "https://support.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "support.conversation",
         "support.session",
         "support.handover",
@@ -1462,19 +1539,47 @@
         "support.diagnostics",
         "support.diagnostic-package",
         "support.diagnostic-deliver",
-        "support.fixture-assertion",
+        "support.fixture-assertion"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-staff",
+      "kind": "client-reference",
+      "path": "https://staff.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "staff.directory",
         "staff.note",
         "staff.note-preview",
         "staff.archive",
         "staff.delegation",
-        "staff.managed-session",
+        "staff.managed-session"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-cert",
+      "kind": "client-reference",
+      "path": "https://cert.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "cert.template",
-        "cert.requests",
+        "cert.requests"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-identity",
+      "kind": "client-reference",
+      "path": "https://identity.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "identity.registration",
         "identity.staff-login",
         "identity.login",
-        "identity.service-relation",
+        "identity.service-relation"
+      ]
+    },
+    {
+      "id": "keplerops-client-ref-assistant",
+      "kind": "client-reference",
+      "path": "https://assistant.keplerops.test/.well-known/fieldkest-client",
+      "exposes": [
         "assistant.app",
         "assistant.config",
         "assistant.contexts",
@@ -1485,17 +1590,7 @@
         "assistant.completion-example",
         "assistant.completion-context",
         "assistant.completion-jobs",
-        "assistant.completion-job",
-        "connector.poll",
-        "connector.activate",
-        "connector.receipt",
-        "connector.rollback",
-        "indexer.allocated_length=32",
-        "indexer.adjacent_marker=FIELDKEST-SENTNL",
-        "indexer.follow_up.operation=runtime-descriptor",
-        "indexer.follow_up.sentinel=mutated",
-        "indexer.descriptor=scoped-state-and-completion-routes",
-        "indexer.descriptor=integrity-relation-record-routine-generation-worker-lease"
+        "assistant.completion-job"
       ]
     },
     {

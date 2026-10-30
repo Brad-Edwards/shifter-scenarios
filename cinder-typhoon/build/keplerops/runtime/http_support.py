@@ -17,10 +17,12 @@ import ssl
 import threading
 import time
 from typing import Any
+from urllib.parse import urlsplit
 import uuid
 
 
 AUDIT_LOCK = threading.RLock()
+CLIENT_DOCUMENTS = Path("/opt/fieldkest/client_documents.json")
 
 
 def utc_now() -> str:
@@ -171,6 +173,27 @@ class KeplerHandler(BaseHTTPRequestHandler):
 
     def send_json(self, status: int, value: Any, *, headers: dict[str, str] | None = None) -> None:
         self.send_bytes(status, canonical_bytes(value) + b"\n", "application/json", headers=headers)
+
+    def send_client_document(self) -> bool:
+        """Serve this host's ordinary client reference when it is requested."""
+        if urlsplit(self.path).path != "/.well-known/fieldkest-client":
+            return False
+        try:
+            inventory = json.loads(CLIENT_DOCUMENTS.read_text(encoding="utf-8"))
+            host = self.headers.get("Host", "").partition(":")[0].lower()
+            document = inventory["documents"].get(host)
+        except (OSError, KeyError, TypeError, json.JSONDecodeError):
+            self.send_json(503, {"error": "client_reference_unavailable"})
+            return True
+        if document is None:
+            self.send_json(404, {"error": "client_reference_not_found"})
+            return True
+        self.send_json(200, {
+            "schema": inventory["schema"],
+            "service": host,
+            **document,
+        })
+        return True
 
     def read_body(self, maximum_bytes: int = 1_048_576) -> bytes:
         raw = self.headers.get("Content-Length")

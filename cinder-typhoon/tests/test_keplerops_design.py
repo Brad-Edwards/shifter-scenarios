@@ -11,8 +11,8 @@ sys.path.insert(0, str(PACK / "docs/design"))
 
 from validate_challenges import DesignError  # noqa: E402
 from validate_keplerops import (  # noqa: E402
-    FORBIDDEN_IN_WORLD, check_actions_and_evidence, check_fixture_contracts,
-    check_keplerops, check_native_semantics, check_world, matrix_rows,
+    FORBIDDEN_IN_WORLD, check_actions_and_evidence, check_client_reference_graph,
+    check_fixture_contracts, check_keplerops, check_native_semantics, check_world, matrix_rows,
 )
 
 
@@ -105,6 +105,21 @@ class KeplerOpsDesignTests(unittest.TestCase):
         for text in ("submit the flag", "open the next hint", "the score increases", "CTF task"):
             with self.subTest(text=text):
                 self.assertIsNotNone(FORBIDDEN_IN_WORLD.search(text))
+
+    def test_client_reference_graph_passes(self):
+        check_client_reference_graph(self.scenario)
+
+    def test_service_catalog_absent_from_opening_assets_raises(self):
+        from validate_keplerops import OPENING_ASSETS
+        import json
+        manifest_path = OPENING_ASSETS / "archive-manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        for archive_record in manifest["archives"]:
+            for file_entry in archive_record.get("files", []):
+                self.assertNotIn(
+                    "service-catalog", file_entry["path"],
+                    f"service-catalog.md found in archive: {archive_record['archive']}",
+                )
 
 
 if __name__ == "__main__":

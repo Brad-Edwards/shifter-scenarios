@@ -1012,6 +1012,15 @@
       "test_k04_native_indexer": {
         "citations": [
           {
+            "class": "supplied_starting_surface",
+            "inputs": [
+              "allocation boundary",
+              "trigger sentinel"
+            ],
+            "locator": "work/reproducers/indexer-client.json -> offline_reproducer binary; derived by binary analysis (strings + probe)",
+            "source": "offline reproducer binary at work/reproducers/fieldkest-bundle-indexer"
+          },
+          {
             "class": "earlier_accepted_response",
             "inputs": [
               "response-derived identifier",
@@ -1256,7 +1265,7 @@
             "source": "accepted response chain in test_k13_data_workspace_and_workload"
           }
         ],
-        "inventory_sha256": "d0567a8b2172f3330bf6e06c7054484332d015559566484f1718b69c487667ac",
+        "inventory_sha256": "30442a04762de020a9b43311da82db6446164ac12081ce6292e068e440293989",
         "profile": "keplerops",
         "request_count": 6,
         "review_status": "unresolved",
@@ -1282,7 +1291,7 @@
             "source": "accepted response chain in test_k14_trust_and_role"
           }
         ],
-        "inventory_sha256": "2550934db2535e477142c608bb9c735a6ffd13cf8e0b5ab5f6ca3cca29a5ffd2",
+        "inventory_sha256": "9a3cdf96aef9ca8dbd6972ae76ad3177563a4be7d3eb8198fb6beeabd855ec9b",
         "profile": "keplerops",
         "request_count": 3,
         "review_status": "unresolved",
@@ -1308,7 +1317,7 @@
             "source": "accepted response chain in test_k15_cross_account_export"
           }
         ],
-        "inventory_sha256": "a67f0420e164b5d74972c415edecb8997ae814b74cc3fdea4a407c6399996923",
+        "inventory_sha256": "b5b8670f667fbb0b72433bc8b7008a0369dc1580a67cc64cb3714257ff3f7e10",
         "profile": "keplerops",
         "request_count": 5,
         "review_status": "unresolved",
@@ -1360,7 +1369,7 @@
             "source": "accepted response chain in test_k17_support_recovery"
           }
         ],
-        "inventory_sha256": "a01e49331d912fb4ba28a331913e6a7f90fa4891770386213bac1464b264fb18",
+        "inventory_sha256": "33de0abe4e3e172e47815f6a341a0074c897c99129f3e0a9fc5c04e8008dc8c2",
         "profile": "keplerops",
         "request_count": 7,
         "review_status": "unresolved",
@@ -1386,7 +1395,7 @@
             "source": "accepted response chain in test_k18_note_and_federation"
           }
         ],
-        "inventory_sha256": "0a9daec080ccb92e393a75b0aa7e085984e9535ca7f338883569584a85afaa5b",
+        "inventory_sha256": "c6b40b11412d9a144e72a812eff7808425a07651a5dc3baf387aab4cf4040959",
         "profile": "keplerops",
         "request_count": 9,
         "review_status": "unresolved",
@@ -1418,7 +1427,7 @@
             "source": "accepted response chain in test_k19_archive_delegation"
           }
         ],
-        "inventory_sha256": "96b13c4ae3c1724337ce29d39db69371c35a99cd8f6582cc93671ae84f5d6d81",
+        "inventory_sha256": "38bcdfa62c39f30d04e81f2c270547e5d763afbf19787c83acebbdd5c164f17f",
         "profile": "keplerops",
         "request_count": 7,
         "review_status": "unresolved",
@@ -1444,7 +1453,7 @@
             "source": "accepted response chain in test_k21_assistant_retrieval"
           }
         ],
-        "inventory_sha256": "8a4c075b380cac46137f3c229b32fec671d0ed64700db8fc1e29909754f3d1eb",
+        "inventory_sha256": "3d9c44debfcddf658b93a335ad8a7c1cfcd4f6cb9d45980cb363884f6be9ab4b",
         "profile": "keplerops",
         "request_count": 14,
         "review_status": "unresolved",
@@ -1470,7 +1479,7 @@
             "source": "accepted response chain in test_k25_customer_history"
           }
         ],
-        "inventory_sha256": "ed61c81cdc3ed6317d7f0ba0ff36a5ae22c932ebbfed0ac9739848991a7c7872",
+        "inventory_sha256": "d01bf5ecffc916a2ee9fb7009fb490f3f942a85b2040fb6644d2b4ea0444a46b",
         "profile": "keplerops",
         "request_count": 4,
         "review_status": "unresolved",
@@ -1522,7 +1531,7 @@
             "source": "accepted response chain in test_k29_release_lineage"
           }
         ],
-        "inventory_sha256": "0ffdc4e1b4079bfb4f5760676685a352552a43ef9325cacaed0a02f4ea41d27f",
+        "inventory_sha256": "851a9619d39a79d13a367cd8dfd70e67150d526c62e4cf85f5d0acafac3fcee6",
         "profile": "keplerops",
         "request_count": 6,
         "review_status": "unresolved",
@@ -1548,7 +1557,7 @@
             "source": "accepted response chain in test_k29a_diagnostic_delivery"
           }
         ],
-        "inventory_sha256": "5caa02894adb5c2280c9b654ef139a2fb9f2bdb53e31e1cea0f7374d8b0b7f2e",
+        "inventory_sha256": "a2ad2d7f16c6fb803c94b1d1b9b98dc65699e79a41545f9ce4b086b389ebde85",
         "profile": "keplerops",
         "request_count": 3,
         "review_status": "unresolved",
@@ -1574,7 +1583,7 @@
             "source": "accepted response chain in test_k29b_connector_delivery"
           }
         ],
-        "inventory_sha256": "440ae04f524f95260803d4f9c39c0e0a3c68d654f47623dd4d22dc97edf6b773",
+        "inventory_sha256": "0f86dd55f96ab2c9d09935fde8b70650e58d35aba730ad4cb1bda8cfb4ce07b5",
         "profile": "keplerops",
         "request_count": 3,
         "review_status": "unresolved",
@@ -1606,7 +1615,7 @@
             "source": "accepted response chain in test_k30_backup_recovery"
           }
         ],
-        "inventory_sha256": "2bdbd5031832059c10bf6fd1d47a59a8ce42d088571ee6d74d579d527198d686",
+        "inventory_sha256": "12276d9c9cfcc9f1e9eb5a4ae0430c6d00a45cc9afa0dd2cd69a931b79a2eeb5",
         "profile": "keplerops",
         "request_count": 4,
         "review_status": "unresolved",
@@ -1632,7 +1641,7 @@
             "source": "accepted response chain in test_k31_maintenance"
           }
         ],
-        "inventory_sha256": "686d837f1fbdaf09911b2064ae9b1c7693f84344cfef339ea409fe13ec8c1512",
+        "inventory_sha256": "dd2f361b24b9245f98a03db6c305cffab4403350de2fefb77a0f32a210bb294b",
         "profile": "keplerops",
         "request_count": 5,
         "review_status": "unresolved",
@@ -2231,12 +2240,12 @@
     },
     "build/keplerops/runtime/http_support.py": {
       "citations": [],
-      "comparison_count": 6,
-      "inventory_sha256": "7d4d2b72536e68d35d106b5e295520bb79c9bb945f92455730258f4011bfe028",
+      "comparison_count": 7,
+      "inventory_sha256": "2e244ecc41b5619af9586fc3fd4311c61caad23aabb88ea3f6ad2cf987743f91",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "7d4d2b72536e68d35d106b5e295520bb79c9bb945f92455730258f4011bfe028",
+          "fingerprint": "2e244ecc41b5619af9586fc3fd4311c61caad23aabb88ea3f6ad2cf987743f91",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"
@@ -2767,17 +2776,20 @@
       ]
     },
     "build/keplerops/runtime/bundle_indexer.c": {
-      "citations": [],
-      "review_status": "unresolved",
-      "source_sha256": "6abf6bc2beddc613550f14793f1aa60e48cb1d7a5f37dd8bd8830d41f377fbde",
-      "unresolved": [
+      "citations": [
         {
-          "fingerprint": "6abf6bc2beddc613550f14793f1aa60e48cb1d7a5f37dd8bd8830d41f377fbde",
-          "input": "fixed comparisons in non-Python runtime source",
-          "issue": 224,
-          "reason": "Participant relevance and provenance classification are pending"
+          "class": "supplied_starting_surface",
+          "inputs": [
+            "allocation boundary (sizeof arena.body = 32)",
+            "trigger sentinel (FIELDKEST-SENTNL)"
+          ],
+          "locator": "compiled as offline reproducer at work/reproducers/fieldkest-bundle-indexer; participant derives values by binary analysis",
+          "source": "indexer-client.json offline_reproducer field points to the compiled binary"
         }
-      ]
+      ],
+      "review_status": "complete",
+      "source_sha256": "6abf6bc2beddc613550f14793f1aa60e48cb1d7a5f37dd8bd8830d41f377fbde",
+      "unresolved": []
     },
     "build/keplerops/runtime/ci-entrypoint.sh": {
       "citations": [],
