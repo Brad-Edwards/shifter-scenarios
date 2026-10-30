@@ -84,7 +84,15 @@ release defects:
 - KeplerOps exposes readable build-time seed archives and its entrypoint.
 - ARWC permits the participant to list the private customer-handover directory.
 
-Complete solution-input provenance is tracked separately by issue #209.
+The solution-input provenance gate is implemented by issue #209.
+
+The #209 ledger and report now inventory every known-solution request callsite
+and ratchet every fixed literal comparison in phase runtime Python. They contain
+only locations, provenance classes, citations and SHA-256 fingerprints—not
+literal values, credentials, request bodies or responses. The release form is
+intentionally unresolved: K18's federated subject (#216), K26's fixed channel
+bearer (#217), W33's test-only scheduler inputs (#223), and the broader exact
+comparison audit (#224) must be remediated and cited before provenance can pass.
 
 ### 4. Blind human-plus-agent playtests
 
@@ -129,6 +137,11 @@ The local phase scripts use `--development`, which is explicitly mutable and
 cannot qualify a release. Immutable-candidate invocation, report fields and the
 per-route reset contract are documented in
 `build/participant-runner/README.md`.
+
+Known-solution behavior and input provenance remain separate QA results. The
+candidate wrapper runs the fail-closed provenance gate before participant
+surface and behavioral acceptance, so an unexplained input blocks overall
+qualification without misreporting what the behavioral suite established.
 
 ## Release qualification
 

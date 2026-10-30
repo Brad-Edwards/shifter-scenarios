@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/input-provenance/ledger.schema.json",
+  "title": "Cinder Typhoon solution-input provenance ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profiles", "methods", "runtime_comparisons", "runtime_sources"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "profiles": {"type": "object"},
+    "methods": {"type": "object"},
+    "runtime_comparisons": {"type": "object"},
+    "runtime_sources": {"type": "object"}
+  }
+}

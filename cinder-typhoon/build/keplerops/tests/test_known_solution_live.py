@@ -26,6 +26,7 @@ import base64
 import gzip
 import hashlib
 import io
+import inspect
 import json
 import os
 import re
@@ -51,8 +52,16 @@ CA = "/home/rowan/.local/share/keplerops/ca.crt"
 def trace_event(kind: str, **fields: object) -> None:
     """Emit credential-free evidence for the operator-side acceptance runner."""
     if TRACE:
+        frame = inspect.currentframe()
+        test_method = "setup"
+        while frame:
+            if frame.f_code.co_name.startswith("test_"):
+                test_method = frame.f_code.co_name
+                break
+            frame = frame.f_back
         print("CINDER_ACCEPTANCE_EVENT " + json.dumps(
-            {"kind": kind, **fields}, sort_keys=True, separators=(",", ":"),
+            {"kind": kind, "test_method": test_method, **fields},
+            sort_keys=True, separators=(",", ":"),
         ), flush=True)
 
 
@@ -163,7 +172,8 @@ def curl(
         request_method = "POST"
     trace_event(
         "http", method=request_method, host=location.hostname or "",
-        path=location.path or "/", status=status, response_bytes=len(body.encode()),
+        path_sha256=hashlib.sha256((location.path or "/").encode()).hexdigest(),
+        status=status, response_bytes=len(body.encode()),
         response_sha256=hashlib.sha256(body.encode()).hexdigest(),
         elapsed_ms=round((time.monotonic() - started) * 1000),
     )

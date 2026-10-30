@@ -26,6 +26,11 @@ from urllib.request import ProxyHandler, Request, build_opener
 
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "build" / "input-provenance"))
+
+from provenance import ProvenanceError, attach_runtime_provenance  # noqa: E402
+
+
 EVENT_PREFIX = "CINDER_ACCEPTANCE_EVENT "
 RESULT_PREFIX = "CINDER_BOUNDARY_RESULT "
 SHA256 = re.compile(r"^sha256:[0-9a-f]{64}$")
@@ -513,8 +518,8 @@ def validated_event(value: Any) -> dict[str, Any]:
         raise RunnerError("acceptance emitted an invalid evidence event")
     if value["kind"] == "http":
         required = {
-            "kind", "method", "host", "path", "status", "response_bytes",
-            "response_sha256", "elapsed_ms",
+            "kind", "method", "host", "path_sha256", "status", "response_bytes",
+            "response_sha256", "elapsed_ms", "test_method",
         }
         if set(value) != required:
             raise RunnerError("HTTP evidence fields are invalid")
@@ -522,8 +527,8 @@ def validated_event(value: Any) -> dict[str, Any]:
             not isinstance(value["method"], str)
             or not re.fullmatch(r"[A-Z]+", value["method"])
             or not isinstance(value["host"], str)
-            or not isinstance(value["path"], str)
-            or not value["path"].startswith("/")
+            or not isinstance(value["path_sha256"], str)
+            or not re.fullmatch(r"[0-9a-f]{64}", value["path_sha256"])
             or not isinstance(value["status"], int)
             or not -1 <= value["status"] <= 599
             or not isinstance(value["response_bytes"], int)
@@ -535,7 +540,7 @@ def validated_event(value: Any) -> dict[str, Any]:
         if not isinstance(value["response_sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", value["response_sha256"]):
             raise RunnerError("HTTP response digest is invalid")
     else:
-        required = {"kind", "source", "bytes", "sha256"}
+        required = {"kind", "source", "bytes", "sha256", "test_method"}
         if (
             set(value) != required
             or not isinstance(value["source"], str)
@@ -545,6 +550,10 @@ def validated_event(value: Any) -> dict[str, Any]:
             raise RunnerError("artifact evidence fields are invalid")
         if not isinstance(value["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", value["sha256"]):
             raise RunnerError("artifact digest is invalid")
+    if not isinstance(value["test_method"], str) or not re.fullmatch(
+        r"(?:test_[A-Za-z0-9_]+|setup)", value["test_method"]
+    ):
+        raise RunnerError("evidence test method is invalid")
     for key, item in value.items():
         if isinstance(item, str) and (len(item) > 512 or any(ord(char) < 32 for char in item)):
             raise RunnerError(f"evidence string is unsafe: {key}")
@@ -736,21 +745,28 @@ def main() -> int:
             input=source, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
         )
         events, boundary = parse_output(completed.stdout)
+        events, provenance = attach_runtime_provenance(
+            arguments.phase, events, selected,
+        )
         report["boundary"] = boundary
         report["evidence"] = {
             "events": events,
             "event_count": len(events),
+            "provenance": provenance,
             "stdout_bytes": len(completed.stdout.encode()),
             "stdout_sha256": hashlib.sha256(completed.stdout.encode()).hexdigest(),
             "stderr_bytes": len(completed.stderr.encode()),
             "stderr_sha256": hashlib.sha256(completed.stderr.encode()).hexdigest(),
         }
-        passed = completed.returncode == 0 and boundary is not None and boundary.get("status") == "passed"
+        passed = (
+            completed.returncode == 0 and boundary is not None
+            and boundary.get("status") == "passed"
+        )
         report["result"] = "passed" if passed else "failed"
         if not passed and boundary is None:
             report["failure"] = "participant process returned no boundary result"
         exit_code = 0 if passed else 1
-    except (RunnerError, OSError, json.JSONDecodeError) as error:
+    except (RunnerError, ProvenanceError, OSError, json.JSONDecodeError) as error:
         report["result"] = "failed"
         report["failure"] = str(error)
     report["finished_at"] = datetime.now(timezone.utc).isoformat()
