@@ -515,26 +515,26 @@ class Handler(BaseHTTPRequestHandler):
 
     def historian_proxy(self, method: str, path: str, body: dict[str, object] | None) -> None:
         owner = "hmi" if path in {
-            "/api/the-reservoir-s-present-tense", "/api/the-mode-the-plant-is-in",
-            "/api/the-instrument-in-the-note", "/api/the-operating-envelope",
-            "/api/conditions-before-movement", "/api/accepted-is-not-actuated",
-            "/api/a-sequence-the-process-can-follow",
-            "/api/paper-truth",
-            "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
-            "/api/a-forecast-that-matches-the-instrument", "/api/the-expensive-hour",
-            "/api/the-schedule-the-service-accepts", "/api/when-the-forecast-moves",
+            "/api/process-views/state", "/api/process-views/mode",
+            "/api/process-views/instruments/active", "/api/operating-envelopes/current",
+            "/api/movement-conditions/current", "/api/commands",
+            "/api/practice-sequences",
+            "/api/reporting-checkpoints/current",
+            "/api/release-plans/current", "/api/release-plans/current/execute",
+            "/api/forecasts/current", "/api/schedule-windows/current",
+            "/api/schedules", "/api/feedback-policies",
         } else "instruments" if path in {
-            "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
-            "/api/change-one-record-keep-the-rest",
-            "/api/what-reserve-remains-uncommitted",
+            "/api/firmware-images/current", "/api/maintenance-records/current",
+            "/api/maintenance-records/current",
+            "/api/collision-solutions",
         } else "diagnostics" if path in {
-            "/api/a-measurement-with-side-effects", "/api/control-beyond-the-measurement",
-            "/api/a-measurement-that-never-existed",
-            "/api/two-kinds-of-answer", "/api/which-answer-comes-next",
-            "/api/the-diagnostic-evidence-bundle", "/api/signed-by-someone-who-never-approved-it",
-            "/api/a-program-the-engineer-would-accept",
-            "/api/the-vault-s-misleading-length", "/api/past-the-parser-s-boundary",
-            "/api/the-state-execution-returns-to", "/api/the-diagnostic-service-s-authority",
+            "/api/control-commands", "/api/control-commands/consequence",
+            "/api/estimator-runs",
+            "/api/signature-requests", "/api/signature-oracles/current",
+            "/api/estimator-tasks/current", "/api/reporting-submissions",
+            "/api/diagnostic-runs",
+            "/api/vault-records/current", "/api/signature-records/current",
+            "/api/replay-sessions/current/divergence", "/api/diagnostic-programs/authority",
         } else "engineering"
         try:
             status, result = self.internal_request(owner, method, path, body)
@@ -543,22 +543,269 @@ class Handler(BaseHTTPRequestHandler):
             return
         self.send_json(status, result)
 
+    def _base_url(self) -> str:
+        host = self.headers.get("Host", "process-view.arwc.test")
+        return f"https://{host}"
+
+    def _serve_client_document(self, base_url: str) -> bool:
+        if urlsplit(self.path).path != "/.well-known/arwc-client":
+            return False
+        routes = [
+    {
+        "key": "process.state",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/process-views/state"
+    },
+    {
+        "key": "process.mode",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/process-views/mode"
+    },
+    {
+        "key": "process.active-instrument",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/process-views/instruments/active"
+    },
+    {
+        "key": "process.observations",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/observations"
+    },
+    {
+        "key": "process.tag-export",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/tag-exports/current"
+    },
+    {
+        "key": "process.tag-scale",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/tag-scales/current"
+    },
+    {
+        "key": "process.tag-scale-history",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/tag-scales/current/history"
+    },
+    {
+        "key": "process.outlet-instruments",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/outlet-groups/current/instruments"
+    },
+    {
+        "key": "process.diagnostic-program",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/diagnostic-programs/current"
+    },
+    {
+        "key": "process.diagnostic-run",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/diagnostic-runs"
+    },
+    {
+        "key": "process.firmware-image",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/firmware-images/current"
+    },
+    {
+        "key": "process.maintenance-record",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/maintenance-records/current"
+    },
+    {
+        "key": "process.maintenance-record-update",
+        "method": "PATCH",
+        "template": "PROCESS_VIEW_BASE/api/maintenance-records/current"
+    },
+    {
+        "key": "process.sealed-project",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/sealed-projects/current"
+    },
+    {
+        "key": "process.sealed-viewer",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/sealed-projects/current/viewer"
+    },
+    {
+        "key": "process.sealed-viewer-execute",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/sealed-viewers/current/execute"
+    },
+    {
+        "key": "process.estimator-task",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/estimator-tasks/current"
+    },
+    {
+        "key": "process.estimator-run",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/estimator-runs"
+    },
+    {
+        "key": "process.signature-record",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/signature-records/current"
+    },
+    {
+        "key": "process.signature-request",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/signature-requests"
+    },
+    {
+        "key": "process.operating-envelope",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/operating-envelopes/current"
+    },
+    {
+        "key": "process.movement-conditions",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/movement-conditions/current"
+    },
+    {
+        "key": "process.command-accept",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/commands"
+    },
+    {
+        "key": "process.practice-sequence",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/practice-sequences"
+    },
+    {
+        "key": "process.control-authority",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/control-authority"
+    },
+    {
+        "key": "process.control-command",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/control-commands"
+    },
+    {
+        "key": "process.collision-inputs",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/collision-inputs/current"
+    },
+    {
+        "key": "process.collision-solve",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/collision-solutions"
+    },
+    {
+        "key": "process.vault-record",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/vault-records/current"
+    },
+    {
+        "key": "process.vault-access",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/vault-access"
+    },
+    {
+        "key": "process.replay-session",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/replay-sessions/current"
+    },
+    {
+        "key": "process.replay-execute",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/replay-sessions/current/execute"
+    },
+    {
+        "key": "process.replay-divergence",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/replay-sessions/current/divergence"
+    },
+    {
+        "key": "process.forecast",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/forecasts/current"
+    },
+    {
+        "key": "process.schedule-window",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/schedule-windows/current"
+    },
+    {
+        "key": "process.schedule-submit",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/schedules"
+    },
+    {
+        "key": "process.feedback-policy",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/feedback-policies"
+    },
+    {
+        "key": "process.planning-window-economics",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/planning-windows/current/economics"
+    },
+    {
+        "key": "process.planning-bid",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/planning-bids"
+    },
+    {
+        "key": "process.release-plan",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/release-plans/current"
+    },
+    {
+        "key": "process.release-execute",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/release-plans/current/execute"
+    },
+    {
+        "key": "process.release-confirmation",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/release-plans/current/confirmation"
+    },
+    {
+        "key": "process.reporting-checkpoint",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/reporting-checkpoints/current"
+    },
+    {
+        "key": "process.reporting-submit",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/reporting-submissions"
+    },
+    {
+        "key": "process.reporting-result",
+        "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/reporting-submissions/current/result"
+    }
+]
+        for r in routes:
+            r["template"] = r["template"].replace("PROCESS_VIEW_BASE", base_url)
+        self.send_json(200, {
+            "schema": "arwc.client-documents/v1",
+            "service": "process.arwc.test",
+            "title": "Process control view service",
+            "routes": routes,
+            "related": [],
+        })
+        return True
+
     def do_GET(self) -> None:
+        if self._serve_client_document(self._base_url()):
+            return
         if not self.authorized():
             return
         path = urlsplit(self.path).path
         if ROLE == "historian":
-            if path in {"/api/the-tag-export", "/api/the-scale-kept-elsewhere"}:
+            if path in {"/api/tag-exports/current", "/api/tag-scales/current"}:
                 self.historian_get(path)
             elif path in {
-                "/api/the-reservoir-s-present-tense", "/api/the-mode-the-plant-is-in",
-                "/api/the-instrument-in-the-note", "/api/the-operating-envelope",
-                "/api/conditions-before-movement", "/api/the-project-and-the-note",
-                "/api/the-diagnostic-nobody-retired", "/api/what-the-image-kept",
-                "/api/the-viewer-in-the-delivery",
-                "/api/two-kinds-of-answer",
-                "/api/the-vault-s-misleading-length",
-                "/api/the-replay-s-pieces",
+                "/api/process-views/state", "/api/process-views/mode",
+                "/api/process-views/instruments/active", "/api/operating-envelopes/current",
+                "/api/movement-conditions/current", "/api/the-project-and-the-note",
+                "/api/diagnostic-programs/current", "/api/firmware-images/current",
+                "/api/sealed-projects/current/viewer",
+                "/api/signature-requests",
+                "/api/vault-records/current",
+                "/api/replay-sessions/current",
             }:
                 self.historian_proxy("GET", path, None)
             else:
@@ -592,8 +839,8 @@ class Handler(BaseHTTPRequestHandler):
             if request is None:
                 return
             owner = "instruments" if path.endswith("reserve-observation") else "hmi"
-            owner_path = ("/api/what-reserve-remains-uncommitted"
-                          if owner == "instruments" else "/api/paper-truth")
+            owner_path = ("/api/collision-solutions"
+                          if owner == "instruments" else "/api/reporting-checkpoints/current")
             try:
                 status, result = self.internal_request(owner, "POST", owner_path, request)
             except (OSError, json.JSONDecodeError):
@@ -610,15 +857,15 @@ class Handler(BaseHTTPRequestHandler):
                 self.client_address[0] != "10.77.63.30":
             self.send_json(403, {"error": "historian service context required"})
             return
-        if ((ROLE == "instruments" and path == "/api/what-reserve-remains-uncommitted") or
-                (ROLE == "hmi" and path == "/api/paper-truth")) and \
+        if ((ROLE == "instruments" and path == "/api/collision-solutions") or
+                (ROLE == "hmi" and path == "/api/reporting-checkpoints/current")) and \
                 self.client_address[0] != "10.77.63.30":
             self.send_json(403, {"error": "historian service context required"})
             return
         if ROLE == "hmi" and path in {
-                "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
-                "/internal/w33-forecast", "/api/the-expensive-hour",
-                "/api/the-schedule-the-service-accepts", "/api/when-the-forecast-moves",
+                "/api/release-plans/current", "/api/release-plans/current/execute",
+                "/internal/w33-forecast", "/api/schedule-windows/current",
+                "/api/schedules", "/api/feedback-policies",
         } and self.client_address[0] != "10.77.63.30":
             self.send_json(403, {"error": "historian service context required"})
             return
@@ -636,7 +883,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def historian_get(self, path: str) -> None:
         state = load_state()
-        if path == "/api/the-tag-export":
+        if path == "/api/tag-exports/current":
             state["tag_export_observed"] = True
             record, action = TAG_EXPORT, "the-tag-export"
         else:
@@ -646,10 +893,10 @@ class Handler(BaseHTTPRequestHandler):
         self.accepted(action, record)
 
     def historian_post(self, path: str, request: dict[str, object]) -> None:
-        if path == "/api/a-forecast-that-matches-the-instrument":
+        if path == "/api/forecasts/current":
             self.w33_forecast(request)
             return
-        if path == "/api/the-first-live-trace":
+        if path == "/api/observations":
             expected = {"event": "EVT-COMM-OG2-114", "project": "CRR-CTRL-R21",
                         "hmi_series": "HMI-EVT-114", "instrument_series": "INST-EVT-114"}
             if request != expected:
@@ -665,7 +912,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
             self.send_json(201, {**h_result, "instrument_observation": i_result["record"]})
             return
-        if path == "/api/when-the-units-changed":
+        if path == "/api/tag-scales/current/history":
             state = load_state()
             if not state["tag_export_observed"] or not state["scale_observed"]:
                 self.send_json(403, {"error": "tag export and scale table required"})
@@ -678,7 +925,7 @@ class Handler(BaseHTTPRequestHandler):
             save_state(state)
             self.accepted("when-the-units-changed", UNIT_CHANGE, 201)
             return
-        if path == "/api/which-outlet-answers":
+        if path == "/api/outlet-groups/current/instruments":
             state = load_state()
             if not state["unit_change_interpreted"]:
                 self.send_json(403, {"error": "current scale interpretation required"})
@@ -702,7 +949,7 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("which-outlet-answers", MAPPING, 201,
                           {"instrument_observation": i_result["record"]})
             return
-        if path == "/api/which-project-is-running":
+        if path == "/api/vault-access":
             e_status, e_result = self.internal_request("engineering", "POST", path, request)
             if e_status != 201:
                 self.send_json(e_status, e_result)
@@ -713,7 +960,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
             self.send_json(201, {**e_result, "instrument_observation": i_result["record"]})
             return
-        if path == "/api/a-sequence-the-process-can-follow":
+        if path == "/api/practice-sequences":
             h_status, h_result = self.internal_request("hmi", "POST", path, request)
             if h_status != 201:
                 self.send_json(h_status, h_result)
@@ -724,32 +971,32 @@ class Handler(BaseHTTPRequestHandler):
                 return
             self.send_json(201, {**h_result, "instrument_observation": i_result["record"]})
             return
-        if path in {"/api/accepted-is-not-actuated"}:
+        if path in {"/api/commands"}:
             self.historian_proxy("POST", path, request)
             return
         if path in {
-            "/api/a-second-interpretation", "/api/the-hidden-check",
-            "/api/a-map-from-the-old-diagnostic", "/api/a-valid-maintenance-record",
-            "/api/change-one-record-keep-the-rest",
-            "/api/the-machine-inside-the-viewer",
-            "/api/the-decision-inside-the-sealed-project",
-            "/api/the-reviewer-who-was-never-listed",
-            "/api/a-measurement-with-side-effects", "/api/control-beyond-the-measurement",
-            "/api/a-measurement-that-never-existed",
-            "/api/which-answer-comes-next", "/api/the-diagnostic-evidence-bundle",
-            "/api/signed-by-someone-who-never-approved-it",
-            "/api/what-counts-as-intact", "/api/the-constraints-of-a-valid-looking-program",
-            "/api/a-program-the-engineer-would-accept",
-            "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
-            "/api/keep-the-authority-you-earned",
-            "/api/what-reserve-remains-uncommitted", "/api/paper-truth",
-            "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
-            "/api/past-the-parser-s-boundary", "/api/the-state-execution-returns-to",
-            "/api/the-diagnostic-service-s-authority",
-            "/api/the-systems-that-update-it", "/api/the-condition-the-old-model-used",
-            "/api/replay-is-not-reality",
-            "/api/the-expensive-hour", "/api/the-schedule-the-service-accepts",
-            "/api/when-the-forecast-moves",
+            "/api/signature-records/current/interpretation", "/api/signature-programs/current",
+            "/api/diagnostic-programs/legacy", "/api/maintenance-records/current",
+            "/api/maintenance-records/current",
+            "/api/sealed-viewers/current/execute",
+            "/api/sealed-projects/current",
+            "/api/unlisted-reviewers/current",
+            "/api/control-commands", "/api/control-commands/consequence",
+            "/api/estimator-runs",
+            "/api/signature-oracles/current", "/api/estimator-tasks/current",
+            "/api/reporting-submissions",
+            "/api/what-counts-as-intact", "/api/signature-programs/current/constraints",
+            "/api/diagnostic-runs",
+            "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
+            "/api/control-authority",
+            "/api/collision-solutions", "/api/reporting-checkpoints/current",
+            "/api/release-plans/current", "/api/release-plans/current/execute",
+            "/api/signature-records/current", "/api/replay-sessions/current/divergence",
+            "/api/diagnostic-programs/authority",
+            "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
+            "/api/replay-sessions/current/execute",
+            "/api/schedule-windows/current", "/api/schedules",
+            "/api/feedback-policies",
         }:
             self.historian_proxy("POST", path, request)
             return
@@ -757,7 +1004,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def owner_get(self, path: str) -> None:
         state = load_state()
-        if ROLE == "engineering" and path == "/api/the-replay-s-pieces":
+        if ROLE == "engineering" and path == "/api/replay-sessions/current":
             if not state["deployed_revision_observed"]:
                 self.send_json(403, {"error": "current deployed-revision evidence required"})
                 return
@@ -778,7 +1025,7 @@ class Handler(BaseHTTPRequestHandler):
                 "distinguishing_cases": cases,
             })
             return
-        if ROLE == "engineering" and path == "/api/the-diagnostic-nobody-retired":
+        if ROLE == "engineering" and path == "/api/diagnostic-programs/current":
             binary = (ARTIFACTS / "diag-crr-mixed-19").read_bytes()
             state["diagnostic_observed"] = True
             save_state(state)
@@ -796,7 +1043,7 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("the-diagnostic-nobody-retired", record,
                           extra={"artifact_b64": base64.b64encode(binary).decode()})
             return
-        if ROLE == "engineering" and path == "/api/the-viewer-in-the-delivery":
+        if ROLE == "engineering" and path == "/api/sealed-projects/current/viewer":
             if not state["deployed_revision_observed"]:
                 self.send_json(403, {"error": "current deployed-revision evidence required"})
                 return
@@ -821,7 +1068,7 @@ class Handler(BaseHTTPRequestHandler):
                 "package_b64": base64.b64encode(package).decode(),
             })
             return
-        if ROLE == "instruments" and path == "/api/what-the-image-kept":
+        if ROLE == "instruments" and path == "/api/firmware-images/current":
             image = (ARTIFACTS / "IMG-FIT-204-R6.bin").read_bytes()
             manifest = json.loads((ARTIFACTS / "IMG-FIT-204-R6.json").read_text())
             state["flash_observed"] = True
@@ -839,11 +1086,11 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "hmi":
             records = {
-                "/api/the-reservoir-s-present-tense": ("present_observed", PRESENT, "the-reservoir-s-present-tense"),
-                "/api/the-mode-the-plant-is-in": ("mode_observed", MODE, "the-mode-the-plant-is-in"),
-                "/api/the-instrument-in-the-note": ("note_observed", NOTE, "the-instrument-in-the-note"),
-                "/api/the-operating-envelope": ("envelope_observed", ENVELOPE, "the-operating-envelope"),
-                "/api/conditions-before-movement": ("practice_conditions_observed", CONDITIONS, "conditions-before-movement"),
+                "/api/process-views/state": ("present_observed", PRESENT, "the-reservoir-s-present-tense"),
+                "/api/process-views/mode": ("mode_observed", MODE, "the-mode-the-plant-is-in"),
+                "/api/process-views/instruments/active": ("note_observed", NOTE, "the-instrument-in-the-note"),
+                "/api/operating-envelopes/current": ("envelope_observed", ENVELOPE, "the-operating-envelope"),
+                "/api/movement-conditions/current": ("practice_conditions_observed", CONDITIONS, "conditions-before-movement"),
             }
         elif ROLE == "engineering":
             records = {
@@ -857,10 +1104,10 @@ class Handler(BaseHTTPRequestHandler):
         field, record, action = records[path]
         state[field] = True
         save_state(state)
-        if path == "/api/the-operating-envelope":
+        if path == "/api/operating-envelopes/current":
             atomic_json(EVIDENCE / "hmi" / "W25-envelope.json", record)
         extra: dict[str, object] = {}
-        if path == "/api/the-instrument-in-the-note":
+        if path == "/api/process-views/instruments/active":
             extra["engineering_context"] = authored_asset("me-engineering-note-01-1")
         elif path == "/api/the-project-and-the-note":
             extra["handover_context"] = authored_asset("me-project-handover-01")
@@ -868,28 +1115,28 @@ class Handler(BaseHTTPRequestHandler):
 
     def owner_post(self, path: str, request: dict[str, object]) -> None:
         state = load_state()
-        if ROLE == "instruments" and path == "/api/what-reserve-remains-uncommitted":
+        if ROLE == "instruments" and path == "/api/collision-solutions":
             self.w29_reserve(request, state)
             return
-        if ROLE == "hmi" and path == "/api/paper-truth":
+        if ROLE == "hmi" and path == "/api/reporting-checkpoints/current":
             self.w29_plan(request, state)
             return
-        if ROLE == "hmi" and path == "/api/bind-the-plan-to-the-plant":
+        if ROLE == "hmi" and path == "/api/release-plans/current":
             self.w30_bind(request, state)
             return
-        if ROLE == "hmi" and path == "/api/open-the-gates":
+        if ROLE == "hmi" and path == "/api/release-plans/current/execute":
             self.w30_open(request)
             return
         if ROLE == "hmi" and path == "/internal/w33-forecast":
             self.w33_hmi_forecast(request, state)
             return
-        if ROLE == "hmi" and path == "/api/the-expensive-hour":
+        if ROLE == "hmi" and path == "/api/schedule-windows/current":
             self.w33_schedule(request, state)
             return
-        if ROLE == "hmi" and path == "/api/the-schedule-the-service-accepts":
+        if ROLE == "hmi" and path == "/api/schedules":
             self.w33_rehearsal(request, state)
             return
-        if ROLE == "hmi" and path == "/api/when-the-forecast-moves":
+        if ROLE == "hmi" and path == "/api/feedback-policies":
             self.w33_policy(request, state)
             return
         if ROLE == "instruments" and path == "/internal/w30-bind":
@@ -908,41 +1155,41 @@ class Handler(BaseHTTPRequestHandler):
             self.w34_instrument_handover(request, state)
             return
         if ROLE == "engineering" and path in {
-            "/api/a-second-interpretation", "/api/the-hidden-check",
-            "/api/a-map-from-the-old-diagnostic",
+            "/api/signature-records/current/interpretation", "/api/signature-programs/current",
+            "/api/diagnostic-programs/legacy",
         }:
             self.w19_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
-            "/api/the-machine-inside-the-viewer",
-            "/api/the-decision-inside-the-sealed-project",
-            "/api/the-reviewer-who-was-never-listed",
+            "/api/sealed-viewers/current/execute",
+            "/api/sealed-projects/current",
+            "/api/unlisted-reviewers/current",
         }:
             self.w22_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
-            "/api/what-counts-as-intact", "/api/the-constraints-of-a-valid-looking-program",
+            "/api/what-counts-as-intact", "/api/signature-programs/current/constraints",
         }:
             self.w27_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
-            "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
-            "/api/keep-the-authority-you-earned",
+            "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
+            "/api/control-authority",
         }:
             self.w28_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
-            "/api/the-systems-that-update-it", "/api/the-condition-the-old-model-used",
-            "/api/replay-is-not-reality",
+            "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
+            "/api/replay-sessions/current/execute",
         }:
             self.w32_post(path, request, state)
             return
         if ROLE == "instruments" and path in {
-            "/api/a-valid-maintenance-record", "/api/change-one-record-keep-the-rest",
+            "/api/maintenance-records/current", "/api/maintenance-records/current",
         }:
             self.w20_post(path, request, state)
             return
-        if ROLE == "hmi" and path == "/api/the-first-live-trace":
+        if ROLE == "hmi" and path == "/api/observations":
             if not (state["present_observed"] and state["mode_observed"] and state["note_observed"]):
                 self.send_json(403, {"error": "current view, mode, and instrument note required"})
                 return
@@ -956,7 +1203,7 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("the-first-live-trace", TRACE, 201,
                           {"commissioning_context": authored_asset("me-commissioning-01")})
             return
-        if ROLE == "hmi" and path == "/api/accepted-is-not-actuated":
+        if ROLE == "hmi" and path == "/api/commands":
             if not state["envelope_observed"] or not state["practice_conditions_observed"]:
                 self.send_json(403, {"error": "practice envelope and permissive evidence required"})
                 return
@@ -968,7 +1215,7 @@ class Handler(BaseHTTPRequestHandler):
             save_state(state)
             self.accepted("accepted-is-not-actuated", INEFFECTIVE, 201)
             return
-        if ROLE == "hmi" and path == "/api/a-sequence-the-process-can-follow":
+        if ROLE == "hmi" and path == "/api/practice-sequences":
             if not state["ineffective_requests_observed"] or not state["trace_correlated"]:
                 self.send_json(403, {"error": "practice interpretation and current observation evidence required"})
                 return
@@ -983,7 +1230,7 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(EVIDENCE / "hmi" / "W25-practice.json", PRACTICE)
             self.accepted("a-sequence-the-process-can-follow", PRACTICE, 201)
             return
-        if ROLE == "engineering" and path == "/api/which-project-is-running":
+        if ROLE == "engineering" and path == "/api/vault-access":
             if not state["project_bundle_observed"]:
                 self.send_json(403, {"error": "project index and deployment note required"})
                 return
@@ -1001,14 +1248,14 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(EVIDENCE / "engineering" / "W21-revision.json", result)
             self.accepted("which-project-is-running", result, 201)
             return
-        if ROLE == "instruments" and path == "/api/the-first-live-trace":
+        if ROLE == "instruments" and path == "/api/observations":
             state["trace_observed"] = True
             save_state(state)
             result = {**TRACE, "record_id": "INST-EVT-114", "source": "independent instruments"}
             atomic_json(EVIDENCE / "instruments" / "W17-observation.json", result)
             self.accepted("the-first-live-trace", result, 201)
             return
-        if ROLE == "instruments" and path == "/api/which-outlet-answers":
+        if ROLE == "instruments" and path == "/api/outlet-groups/current/instruments":
             if not state["trace_observed"]:
                 self.send_json(403, {"error": "independent commissioning trace required"})
                 return
@@ -1019,13 +1266,13 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(EVIDENCE / "instruments" / "W18-map.json", result)
             self.accepted("which-outlet-answers", result, 201)
             return
-        if ROLE == "instruments" and path == "/api/which-project-is-running":
+        if ROLE == "instruments" and path == "/api/vault-access":
             state["deployment_observed"] = True
             save_state(state)
             atomic_json(EVIDENCE / "instruments" / "W21-deployment.json", DEPLOYMENT)
             self.accepted("which-project-is-running", DEPLOYMENT, 201)
             return
-        if ROLE == "instruments" and path == "/api/a-sequence-the-process-can-follow":
+        if ROLE == "instruments" and path == "/api/practice-sequences":
             state["practice_observed"] = True
             save_state(state)
             result = {"record_id": "INST-PRACTICE-OG2-07", "revision": 7,
@@ -1141,7 +1388,7 @@ class Handler(BaseHTTPRequestHandler):
         if not state["w32_structure_recovered"]:
             self.send_json(403, {"error": "retained replay structure required"})
             return
-        if path == "/api/the-systems-that-update-it":
+        if path == "/api/estimator-tasks/current/inputs":
             expected = {"record_id": "REPLAY-CRR-R19", "revision": 19,
                         "transitions": run_replay32("transitions")}
             if request != expected:
@@ -1161,7 +1408,7 @@ class Handler(BaseHTTPRequestHandler):
         if not state["w32_transitions_reproduced"]:
             self.send_json(403, {"error": "reproduced ECS transitions required"})
             return
-        if path == "/api/the-condition-the-old-model-used":
+        if path == "/api/estimator-results/current":
             condition = run_replay32("condition")
             expected = {"replay": "REPLAY-CRR-R19", "trace": "TRACE-R19-DISPUTED",
                         "condition": condition}
@@ -1808,7 +2055,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def w28_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         relationship = json.loads((W28_ARTIFACTS / "relationship.json").read_text())
-        if path == "/api/the-utility-s-small-world":
+        if path == "/api/collision-inputs/current":
             if not state["deployed_revision_observed"]:
                 self.send_json(403, {"error": "current deployed-revision evidence required"})
                 return
@@ -1846,7 +2093,7 @@ class Handler(BaseHTTPRequestHandler):
         if not state["w28_contract_recovered"] or not isinstance(session, dict):
             self.send_json(403, {"error": "current utility contract evidence required"})
             return
-        if path == "/api/control-with-very-little-room":
+        if path == "/api/release-plans/current/confirmation":
             encoded = request.get("frame_b64")
             if (set(request) != {"session_id", "length", "frame_b64"} or
                     request.get("session_id") != session.get("session_id") or
@@ -1941,7 +2188,7 @@ class Handler(BaseHTTPRequestHandler):
         if not state["viewer_observed"]:
             self.send_json(403, {"error": "protected viewer delivery required"})
             return
-        if path == "/api/the-machine-inside-the-viewer":
+        if path == "/api/sealed-viewers/current/execute":
             if request != {"cases": [case["result"] for case in metadata["cases"]]}:
                 self.send_json(409, {"error": "viewer-machine results do not match"})
                 return
@@ -1960,7 +2207,7 @@ class Handler(BaseHTTPRequestHandler):
         if not state["vm_reconstructed"]:
             self.send_json(403, {"error": "reconstructed viewer machine required"})
             return
-        if path == "/api/the-decision-inside-the-sealed-project":
+        if path == "/api/sealed-projects/current":
             from cryptography.exceptions import InvalidTag
             from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
@@ -2022,7 +2269,7 @@ class Handler(BaseHTTPRequestHandler):
         if not state["diagnostic_observed"]:
             self.send_json(403, {"error": "retained diagnostic package required"})
             return
-        if path == "/api/a-second-interpretation":
+        if path == "/api/signature-records/current/interpretation":
             expected = {"record": W19_ALTERNATE, "rolling32": f"{w19_rolling(W19_ALTERNATE):08x}"}
             if request != expected:
                 self.send_json(409, {"error": "compatibility-decoder result does not match"})
@@ -2037,7 +2284,7 @@ class Handler(BaseHTTPRequestHandler):
         if not state["compatibility_reproduced"]:
             self.send_json(403, {"error": "compatibility-decoder result required"})
             return
-        if path == "/api/the-hidden-check":
+        if path == "/api/signature-programs/current":
             expected = [
                 {"record": item, "rolling32": f"{w19_rolling(item):08x}",
                  "verifier64": f"{w19_verifier(item):016x}"}
@@ -2085,7 +2332,7 @@ class Handler(BaseHTTPRequestHandler):
         original = (ARTIFACTS / "IMG-FIT-204-R6.bin").read_bytes()
         original_records = parse_flash(original)
         target = logical_flash(original_records)["INSP-FIT-204-118"]
-        if path == "/api/a-valid-maintenance-record":
+        if path == "/api/maintenance-records/current":
             expected = {"image_sha256": hashlib.sha256(original).hexdigest(), **target}
             if request != expected:
                 self.send_json(409, {"error": "maintenance-record interpretation does not match"})

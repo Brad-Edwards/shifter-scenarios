@@ -265,7 +265,7 @@ class DomainInterfaceTests(unittest.TestCase):
             for item in findings
         ))
         self.assertTrue(any(
-            item["match"] == "/api/the-expensive-hour" for item in findings
+            item["match"] == "/api/schedule-windows/current" for item in findings
         ))
 
 

@@ -38,35 +38,35 @@ OT_READ_EVIDENCE = pathlib.Path("/run/arwc-ot-read")
 PROCESS_EVIDENCE = pathlib.Path("/run/arwc-process-evidence")
 PLAN_METHOD = pathlib.Path("/opt/planning-data/assets/pl-arwc-plan-method-01-method.md")
 PROCESS_PATHS = {
-    "/api/the-reservoir-s-present-tense", "/api/the-mode-the-plant-is-in",
-    "/api/the-instrument-in-the-note", "/api/the-first-live-trace",
-    "/api/the-tag-export", "/api/the-scale-kept-elsewhere",
-    "/api/when-the-units-changed", "/api/which-outlet-answers",
-    "/api/the-project-and-the-note", "/api/which-project-is-running",
-    "/api/the-operating-envelope", "/api/conditions-before-movement",
-    "/api/accepted-is-not-actuated", "/api/a-sequence-the-process-can-follow",
-    "/api/the-diagnostic-nobody-retired", "/api/a-second-interpretation",
-    "/api/the-hidden-check", "/api/a-map-from-the-old-diagnostic",
-    "/api/the-viewer-in-the-delivery", "/api/the-machine-inside-the-viewer",
-    "/api/the-decision-inside-the-sealed-project", "/api/the-reviewer-who-was-never-listed",
-    "/api/a-measurement-with-side-effects", "/api/control-beyond-the-measurement",
-    "/api/a-measurement-that-never-existed",
-    "/api/two-kinds-of-answer", "/api/which-answer-comes-next",
-    "/api/the-diagnostic-evidence-bundle", "/api/signed-by-someone-who-never-approved-it",
-    "/api/what-the-image-kept", "/api/a-valid-maintenance-record",
-    "/api/change-one-record-keep-the-rest",
-    "/api/what-counts-as-intact", "/api/the-constraints-of-a-valid-looking-program",
-    "/api/a-program-the-engineer-would-accept",
-    "/api/the-utility-s-small-world", "/api/control-with-very-little-room",
-    "/api/keep-the-authority-you-earned",
-    "/api/what-reserve-remains-uncommitted", "/api/paper-truth",
-    "/api/bind-the-plan-to-the-plant", "/api/open-the-gates",
-    "/api/the-vault-s-misleading-length", "/api/past-the-parser-s-boundary",
-    "/api/the-state-execution-returns-to", "/api/the-diagnostic-service-s-authority",
-    "/api/the-replay-s-pieces", "/api/the-systems-that-update-it",
-    "/api/a-forecast-that-matches-the-instrument", "/api/the-expensive-hour",
-    "/api/the-schedule-the-service-accepts", "/api/when-the-forecast-moves",
-    "/api/the-condition-the-old-model-used", "/api/replay-is-not-reality",
+    "/api/process-views/state", "/api/process-views/mode",
+    "/api/process-views/instruments/active", "/api/observations",
+    "/api/tag-exports/current", "/api/tag-scales/current",
+    "/api/tag-scales/current/history", "/api/outlet-groups/current/instruments",
+    "/api/the-project-and-the-note", "/api/vault-access",
+    "/api/operating-envelopes/current", "/api/movement-conditions/current",
+    "/api/commands", "/api/practice-sequences",
+    "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
+    "/api/signature-programs/current", "/api/diagnostic-programs/legacy",
+    "/api/sealed-projects/current/viewer", "/api/sealed-viewers/current/execute",
+    "/api/sealed-projects/current", "/api/unlisted-reviewers/current",
+    "/api/control-commands", "/api/control-commands/consequence",
+    "/api/estimator-runs",
+    "/api/signature-requests", "/api/signature-oracles/current",
+    "/api/estimator-tasks/current", "/api/reporting-submissions",
+    "/api/firmware-images/current", "/api/maintenance-records/current",
+    "/api/maintenance-records/current",
+    "/api/what-counts-as-intact", "/api/signature-programs/current/constraints",
+    "/api/diagnostic-runs",
+    "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
+    "/api/control-authority",
+    "/api/collision-solutions", "/api/reporting-checkpoints/current",
+    "/api/release-plans/current", "/api/release-plans/current/execute",
+    "/api/vault-records/current", "/api/signature-records/current",
+    "/api/replay-sessions/current/divergence", "/api/diagnostic-programs/authority",
+    "/api/replay-sessions/current", "/api/estimator-tasks/current/inputs",
+    "/api/forecasts/current", "/api/schedule-windows/current",
+    "/api/schedules", "/api/feedback-policies",
+    "/api/estimator-results/current", "/api/replay-sessions/current/execute",
 }
 
 DEFINITION = {
@@ -675,7 +675,7 @@ class Handler(BaseHTTPRequestHandler):
         if not self.authorized():
             return
         path = urlsplit(self.path).path
-        if path == "/api/the-price-of-this-planning-window":
+        if path == "/api/planning-windows/current/economics":
             if not ot_read_prerequisite():
                 self.send_json(403, {"error": "scoped process-read evidence required"})
                 return
@@ -806,15 +806,15 @@ class Handler(BaseHTTPRequestHandler):
             self.relation_exchange(request, lineage=False)
         elif path == "/api/asset-lineage/current":
             self.relation_exchange(request, lineage=True)
-        elif path == "/api/what-reserve-remains-uncommitted":
+        elif path == "/api/collision-solutions":
             self.w29_balance(request)
-        elif path == "/api/paper-truth":
+        elif path == "/api/reporting-checkpoints/current":
             self.w29_plan(request)
-        elif path == "/api/which-view-the-planner-trusts":
+        elif path == "/api/reporting-submissions/current/result":
             self.w34_view(request)
-        elif path == "/api/a-reassuring-decision":
+        elif path == "/api/planning-bids":
             self.w34_decision(request)
-        elif path == "/api/still-reassuring-after-the-handover":
+        elif path == "/api/planning-bids/current":
             self.w34_handover(request)
         else:
             self.send_json(404, {"error": "record not found"})
