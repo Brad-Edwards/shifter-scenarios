@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import inspect
 from io import StringIO
 import json
 import os
@@ -34,8 +35,16 @@ TRACE = os.environ.get("CINDER_ACCEPTANCE_TRACE") == "1"
 def trace_event(kind: str, **fields: object) -> None:
     """Emit credential-free evidence for the operator-side acceptance runner."""
     if TRACE:
+        frame = inspect.currentframe()
+        test_method = "setup"
+        while frame:
+            if frame.f_code.co_name.startswith("test_"):
+                test_method = frame.f_code.co_name
+                break
+            frame = frame.f_back
         print("CINDER_ACCEPTANCE_EVENT " + json.dumps(
-            {"kind": kind, **fields}, sort_keys=True, separators=(",", ":"),
+            {"kind": kind, "test_method": test_method, **fields},
+            sort_keys=True, separators=(",", ":"),
         ), flush=True)
 
 
@@ -66,7 +75,8 @@ def request(
             status, response_body, response_headers = error.code, error.read(), dict(error.headers)
     location = urlsplit(url)
     trace_event(
-        "http", method=method, host=location.hostname or "", path=location.path or "/",
+        "http", method=method, host=location.hostname or "",
+        path_sha256=hashlib.sha256((location.path or "/").encode()).hexdigest(),
         status=status, response_bytes=len(response_body),
         response_sha256=hashlib.sha256(response_body).hexdigest(),
         elapsed_ms=round((time.monotonic() - started) * 1000),

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/input-provenance/report.schema.json",
+  "title": "Cinder Typhoon solution-input provenance report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "report_kind", "overall_status", "summary", "requests", "runtime_comparisons", "runtime_sources"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "report_kind": {"const": "solution-input-provenance"},
+    "overall_status": {"enum": ["complete", "unresolved"]},
+    "summary": {"type": "object"},
+    "requests": {"type": "array"},
+    "runtime_comparisons": {"type": "array"},
+    "runtime_sources": {"type": "array"}
+  }
+}

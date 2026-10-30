@@ -145,9 +145,9 @@ class CandidateTests(unittest.TestCase):
 class EvidenceTests(unittest.TestCase):
     def test_evidence_events_accept_hashes_but_reject_bodies(self) -> None:
         event = {
-            "kind": "http", "method": "GET", "host": "service.test", "path": "/api/item",
+            "kind": "http", "method": "GET", "host": "service.test", "path_sha256": "d" * 64,
             "status": 200, "response_bytes": 14, "response_sha256": "c" * 64,
-            "elapsed_ms": 9,
+            "elapsed_ms": 9, "test_method": "test_01_first_contact",
         }
         self.assertEqual(runner.validated_event(event), event)
         event["response_body"] = "reusable-secret"
@@ -193,8 +193,10 @@ class EvidenceTests(unittest.TestCase):
         source = (
             ROOT / "build" / "participant-runner" / "check-candidate.sh"
         ).read_text()
+        provenance = source.index("input-provenance/provenance.py")
         surface = source.index("participant-surface/run.py")
         acceptance = source.index("participant-runner/run.py")
+        self.assertLess(provenance, surface)
         self.assertLess(surface, acceptance)
 
     def test_invalid_candidate_still_writes_sanitized_failure_report(self) -> None:

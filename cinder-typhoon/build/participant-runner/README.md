@@ -23,8 +23,8 @@ The JSON report contains:
 - immutable candidate identity, or an explicit mutable-development marker;
 - reset identity, selected operation and exact test methods;
 - participant identity and boundary controls;
-- request host/path/status, response size and SHA-256, without query strings,
-  headers, bodies, tokens or credentials;
+- request host, path SHA-256 and status, plus response size and SHA-256, without
+  path values, query strings, headers, bodies, tokens or credentials;
 - discovered artifact path, size and SHA-256, without contents;
 - completion counts, elapsed time and hashes of captured stdout/stderr.
 
@@ -62,6 +62,12 @@ development run may use the existing standalone handover seed; an immutable
 ARWC candidate run may not. A single-stack KeplerOps development run may record
 the two cross-carrier assertions as skipped; candidate mode rejects every skip.
 
+Live request entries include their current input-provenance sources and
+unresolved items. This does not conflate the QA layers: known-solution behavior
+and provenance retain separate statuses. The candidate wrapper runs the
+fail-closed provenance release gate before participant-surface and behavioral
+acceptance, so unresolved input still blocks overall qualification.
+
 ## Immutable candidates
 
 `--candidate` consumes the strict identity format in `candidate.schema.json`.
@@ -87,9 +93,10 @@ ending against the handover earned by that same route and reset.
 
 `check-candidate.sh` runs one operation against a documented GCP candidate. It
 expects the candidate manifest to already exist on the range host; it does not
-upload source or evidence. It first requires the phase's participant-surface
-manifest to match, then invokes known-solution acceptance. The current mutable
-goldens remain remediation targets and cannot produce a candidate pass.
+upload source or evidence. It first requires complete input provenance, then a
+matching participant-surface manifest, and finally invokes known-solution
+acceptance. The current mutable goldens remain remediation targets and cannot
+produce a candidate pass.
 
 ## Evidence limits
 

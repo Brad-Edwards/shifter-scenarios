@@ -10,7 +10,7 @@ or duration.
 | --- | --- | --- |
 | Service contract tests | Operator-side service and component suites | Normal, accepted, denied, persistence, isolation, and audit behavior match the contract. |
 | Known-solution acceptance | `build/participant-runner/` and `build/*/tests/test_known_solution_live.py` | The encoded solution sequence works from the verified participant boundary. |
-| Provenance and participant surface | Participant-surface manifests and per-input provenance | Starting visibility and every solution input have an allowed participant-visible origin. |
+| Provenance and participant surface | `build/participant-surface/` and `build/input-provenance/` | Starting visibility and every solution input have an allowed participant-visible origin. |
 | Blind human-plus-agent playtests | Fresh participants using event agents and support rules | Measured discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution. |
 
 The machine-readable current status and schema are `qa-status.json` and
@@ -32,6 +32,19 @@ They are operator-only, are not copied into participant images, and are streamed
 without a test mount into the real unprivileged workstation account. Reports
 contain request and artifact hashes rather than response bodies or credentials.
 They do not substitute for the blind playtests tracked by issue #229.
+
+Generate the value-free static provenance report with:
+
+```sh
+python3 cinder-typhoon/build/input-provenance/provenance.py \
+  --output /tmp/cinder-provenance-report.json
+```
+
+`--require-complete` currently exits nonzero for the explicit K18, K26 and W33
+gaps and the pending exact-comparison audit. Candidate known-solution runs also
+include those unresolved entries, while preserving a separate behavioral
+result. The candidate wrapper runs the provenance release gate first, so the
+overall candidate still fails without conflating the two QA layers.
 
 ## SDL validation
 

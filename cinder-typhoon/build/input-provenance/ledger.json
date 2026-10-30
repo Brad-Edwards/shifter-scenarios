@@ -1,0 +1,2940 @@
+{
+  "methods": {
+    "arwc": {
+      "test_w01_customer_copy": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w01_customer_copy"
+          }
+        ],
+        "inventory_sha256": "7b2bf40f65e7cb7ca5c25104abdbd6ef1076cc0e12e50ccccde48e9d02c313c1",
+        "profile": "arwc",
+        "request_count": 5,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "7b2bf40f65e7cb7ca5c25104abdbd6ef1076cc0e12e50ccccde48e9d02c313c1",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w02_asset_association": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w02_asset_association"
+          }
+        ],
+        "inventory_sha256": "acbcfd821d0f26d030ea0b67403bb7be8b7130e91cbfda9bab6a6bfc9ac781a2",
+        "profile": "arwc",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "acbcfd821d0f26d030ea0b67403bb7be8b7130e91cbfda9bab6a6bfc9ac781a2",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w03_annex_reference": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w03_annex_reference"
+          }
+        ],
+        "inventory_sha256": "a9cdb9d471c066b3e9653e54bda980d23f56d5a20c2f3c42db15bc0765bbb30b",
+        "profile": "arwc",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "a9cdb9d471c066b3e9653e54bda980d23f56d5a20c2f3c42db15bc0765bbb30b",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w04_archive_helper": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w04_archive_helper"
+          }
+        ],
+        "inventory_sha256": "24532dd130e58a39b581bf9d5503f286dc24d54885d6dbf7ceef482cee2542cb",
+        "profile": "arwc",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "24532dd130e58a39b581bf9d5503f286dc24d54885d6dbf7ceef482cee2542cb",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w05_temporary_identity": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w05_temporary_identity"
+          }
+        ],
+        "inventory_sha256": "645eb5aa459ba18807295b500ef02e51e8bba680377b29a382ed31ecec80f1f7",
+        "profile": "arwc",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "645eb5aa459ba18807295b500ef02e51e8bba680377b29a382ed31ecec80f1f7",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w06_planner_session": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w06_planner_session"
+          }
+        ],
+        "inventory_sha256": "8543ee7c876e0df2f7d9a7c8467b6f994a2ef326baaab41ebbe2e6fc5ac9a73b",
+        "profile": "arwc",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "8543ee7c876e0df2f7d9a7c8467b6f994a2ef326baaab41ebbe2e6fc5ac9a73b",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w07_planning_query": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w07_planning_query"
+          }
+        ],
+        "inventory_sha256": "44a869cbbd9d214cc398c993c17eb6058d4a52d7a6b72e6138591d51ca1f9103",
+        "profile": "arwc",
+        "request_count": 5,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "44a869cbbd9d214cc398c993c17eb6058d4a52d7a6b72e6138591d51ca1f9103",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w08_retained_bundle": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w08_retained_bundle"
+          }
+        ],
+        "inventory_sha256": "924d5d6effadb5a08096d514422f26c5209f67fbef6ab63923c716726389daad",
+        "profile": "arwc",
+        "request_count": 9,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "924d5d6effadb5a08096d514422f26c5209f67fbef6ab63923c716726389daad",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w09_water_reconciliation": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w09_water_reconciliation"
+          }
+        ],
+        "inventory_sha256": "bdd0ae0d766413d48bb8705e0f716f7af190cf53bda16e814c8911337e8c56f3",
+        "profile": "arwc",
+        "request_count": 8,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "bdd0ae0d766413d48bb8705e0f716f7af190cf53bda16e814c8911337e8c56f3",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w10_cross_district_excerpt": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w10_cross_district_excerpt"
+          }
+        ],
+        "inventory_sha256": "50f8a82f12f7d12143860878f802744ef87cbef7ef8d3a3e60f48cd77a441b67",
+        "profile": "arwc",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "50f8a82f12f7d12143860878f802744ef87cbef7ef8d3a3e60f48cd77a441b67",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w11_relation_protocol": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w11_relation_protocol"
+          }
+        ],
+        "inventory_sha256": "bf7a3b552544b935a2ed8b437d6a4b85bf2509ec786b1565a46a7b7c9d3094fc",
+        "profile": "arwc",
+        "request_count": 3,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "bf7a3b552544b935a2ed8b437d6a4b85bf2509ec786b1565a46a7b7c9d3094fc",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w12_cold_archive": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w12_cold_archive"
+          }
+        ],
+        "inventory_sha256": "a970e4ade78d962b05fa878c6b2b425a434f4a8ced6f11ebbe926ab921918fa9",
+        "profile": "arwc",
+        "request_count": 11,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "a970e4ade78d962b05fa878c6b2b425a434f4a8ced6f11ebbe926ab921918fa9",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w13_contractor_checkin": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w13_contractor_checkin"
+          }
+        ],
+        "inventory_sha256": "ab1a425e07e90df910791080765b96e1a7175106cb05f7e104d5c651fca678f9",
+        "profile": "arwc",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "ab1a425e07e90df910791080765b96e1a7175106cb05f7e104d5c651fca678f9",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w14_field_gateway": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w14_field_gateway"
+          }
+        ],
+        "inventory_sha256": "f6d41f5e4d7f0d4dbce2e7af90d4013fe8fa7ee24999a059e57dc266ae7557b4",
+        "profile": "arwc",
+        "request_count": 5,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "f6d41f5e4d7f0d4dbce2e7af90d4013fe8fa7ee24999a059e57dc266ae7557b4",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w15_drawing_cache": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w15_drawing_cache"
+          }
+        ],
+        "inventory_sha256": "82d052fbd13d433aeb85c8ec0619d932c9f42aa1acffdda3637c42c626a3144f",
+        "profile": "arwc",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "82d052fbd13d433aeb85c8ec0619d932c9f42aa1acffdda3637c42c626a3144f",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w16_sequencer_signal": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w16_sequencer_signal"
+          }
+        ],
+        "inventory_sha256": "7b6184c4ee8deb1a79837ee227ff290fbdd3ec1abb28858026a60db4389260da",
+        "profile": "arwc",
+        "request_count": 7,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "7b6184c4ee8deb1a79837ee227ff290fbdd3ec1abb28858026a60db4389260da",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w17_process_view": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w17_process_view"
+          }
+        ],
+        "inventory_sha256": "370cf222ab6b2216fdb72e060ab90dde594ebabd1f6cdd4fb0b2fd1d89dc6034",
+        "profile": "arwc",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "370cf222ab6b2216fdb72e060ab90dde594ebabd1f6cdd4fb0b2fd1d89dc6034",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w18_tag_scale": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w18_tag_scale"
+          }
+        ],
+        "inventory_sha256": "ef673c60a239992ef65b4268cbb77be05f20f19f25e7ca42be2c0f7abcfebc00",
+        "profile": "arwc",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "ef673c60a239992ef65b4268cbb77be05f20f19f25e7ca42be2c0f7abcfebc00",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w19_diagnostic_binary": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w19_diagnostic_binary"
+          }
+        ],
+        "inventory_sha256": "4bbbd9f5fd898a62ee6abd003e2ceae220115753e1d9a8b70dd24d90801ac53c",
+        "profile": "arwc",
+        "request_count": 7,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "4bbbd9f5fd898a62ee6abd003e2ceae220115753e1d9a8b70dd24d90801ac53c",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w20_nor_flash_image": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w20_nor_flash_image"
+          }
+        ],
+        "inventory_sha256": "95b3f2322e1858948d12759cb6ebd51147aa9ab3a5d4576deffca31a7094b1a4",
+        "profile": "arwc",
+        "request_count": 5,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "95b3f2322e1858948d12759cb6ebd51147aa9ab3a5d4576deffca31a7094b1a4",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w21_project_identity": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w21_project_identity"
+          }
+        ],
+        "inventory_sha256": "88d5a8841490c60689f79a07605d82bf362d564224df960db42f1488874104cf",
+        "profile": "arwc",
+        "request_count": 3,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "88d5a8841490c60689f79a07605d82bf362d564224df960db42f1488874104cf",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w22_sealed_viewer": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w22_sealed_viewer"
+          }
+        ],
+        "inventory_sha256": "bcd8e9479a9abe94b304019edddf30e22993121650a49de3a41ea98a6606b00e",
+        "profile": "arwc",
+        "request_count": 8,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "bcd8e9479a9abe94b304019edddf30e22993121650a49de3a41ea98a6606b00e",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w23_estimator_heap": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w23_estimator_heap"
+          }
+        ],
+        "inventory_sha256": "e96c971a2af22cba5455d699ef4c376ebd44b0a118c85893159c8df872a6c206",
+        "profile": "arwc",
+        "request_count": 1,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "e96c971a2af22cba5455d699ef4c376ebd44b0a118c85893159c8df872a6c206",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w24_crypto_oracle": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w24_crypto_oracle"
+          }
+        ],
+        "inventory_sha256": "316e978d93b10ed392004bbd6025d6a20b9417912797b48c91982b9d45ac3bfb",
+        "profile": "arwc",
+        "request_count": 2,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "316e978d93b10ed392004bbd6025d6a20b9417912797b48c91982b9d45ac3bfb",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w25_practice_sequence": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w25_practice_sequence"
+          }
+        ],
+        "inventory_sha256": "0657346345de5a62d08570e72b15744b8da1d723fa56e4cd0aa3b0e78b42fc52",
+        "profile": "arwc",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "0657346345de5a62d08570e72b15744b8da1d723fa56e4cd0aa3b0e78b42fc52",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w26_control_authority": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w26_control_authority"
+          }
+        ],
+        "inventory_sha256": "4df89d35dc384e967a5b2d96660d2a2bdd7f4f6154db58c6d64a64548d9b4257",
+        "profile": "arwc",
+        "request_count": 9,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "4df89d35dc384e967a5b2d96660d2a2bdd7f4f6154db58c6d64a64548d9b4257",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w27_integrity_collision": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w27_integrity_collision"
+          }
+        ],
+        "inventory_sha256": "5178540de442208f7604e08a225e238d98dee92352723815ba701d3f84929e51",
+        "profile": "arwc",
+        "request_count": 9,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "5178540de442208f7604e08a225e238d98dee92352723815ba701d3f84929e51",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w28_utility_privilege_escalation": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w28_utility_privilege_escalation"
+          }
+        ],
+        "inventory_sha256": "b81efd39402c84ebcc946fdac69d8cfe068f1257811cba967c6c215dedfe0daf",
+        "profile": "arwc",
+        "request_count": 8,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "b81efd39402c84ebcc946fdac69d8cfe068f1257811cba967c6c215dedfe0daf",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w29_planning_window_economics": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w29_planning_window_economics"
+          }
+        ],
+        "inventory_sha256": "e88233cd3a59423383471ef94cb9eeb6a38bee6afdaa6787a91293a5acd5a79f",
+        "profile": "arwc",
+        "request_count": 2,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "e88233cd3a59423383471ef94cb9eeb6a38bee6afdaa6787a91293a5acd5a79f",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w30_command_release": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w30_command_release"
+          }
+        ],
+        "inventory_sha256": "0f83d06ceefa4105bd1b4c560e8e2a2fb26006f102f70772bc33e95d57c858d6",
+        "profile": "arwc",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "0f83d06ceefa4105bd1b4c560e8e2a2fb26006f102f70772bc33e95d57c858d6",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w31_diagnostic_vault": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w31_diagnostic_vault"
+          }
+        ],
+        "inventory_sha256": "1deb49de26d25c01d903de20c3d5f775a301028ca56d1017c0c9007eded6c29b",
+        "profile": "arwc",
+        "request_count": 8,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "1deb49de26d25c01d903de20c3d5f775a301028ca56d1017c0c9007eded6c29b",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w32_replay_divergence": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w32_replay_divergence"
+          }
+        ],
+        "inventory_sha256": "95b20c06ec0a043d5d1d35605f3d50c4bf23877acce96410beeef49c97e1d8a0",
+        "profile": "arwc",
+        "request_count": 8,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "95b20c06ec0a043d5d1d35605f3d50c4bf23877acce96410beeef49c97e1d8a0",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w33_forecast_scheduling": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w33_forecast_scheduling"
+          }
+        ],
+        "inventory_sha256": "5cd6980a6b437196e7002f9fb68cf63480bd5f14ae5c7de4ed3c5e67f8b8352f",
+        "profile": "arwc",
+        "request_count": 8,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "5cd6980a6b437196e7002f9fb68cf63480bd5f14ae5c7de4ed3c5e67f8b8352f",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          },
+          {
+            "fingerprint": "bad22df8a4351ecbf155d9ef7696628039aa45f80070c4d8d1474a1d4d79b991",
+            "input": "scheduler checkpoint",
+            "issue": 223,
+            "reason": "The checkpoint is not supplied by a participant-visible record"
+          },
+          {
+            "fingerprint": "c2bd8215973a6295967cf4b9529aeb0f8b7ad61662afb0d3b7d9c6c1a20b885e",
+            "input": "forecast demand and release model vectors",
+            "issue": 223,
+            "reason": "The model vectors and bounds exist only in the known-solution test"
+          },
+          {
+            "fingerprint": "2d67289b356bf85adc2421adcbbe422887ec0396a1c091b45ec81206f01319ec",
+            "input": "feedback policy format and gains",
+            "issue": 223,
+            "reason": "The accepted policy contract is not participant-visible"
+          }
+        ]
+      },
+      "test_w34_reporting_checkpoint": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w34_reporting_checkpoint"
+          }
+        ],
+        "inventory_sha256": "8bed845438bb8cef5bb880377166dbd54aa06cb18922b29139fbd77a09a709b3",
+        "profile": "arwc",
+        "request_count": 1,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "8bed845438bb8cef5bb880377166dbd54aa06cb18922b29139fbd77a09a709b3",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_w35_replacement_water_costs": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w35_replacement_water_costs"
+          }
+        ],
+        "inventory_sha256": "fb0110ba6a00cead1d219f0fed24388c845b86b77d3127c91487d02f04a83550",
+        "profile": "arwc",
+        "request_count": 7,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "fb0110ba6a00cead1d219f0fed24388c845b86b77d3127c91487d02f04a83550",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      }
+    },
+    "keplerops": {
+      "test_k01_opening_foothold": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k01_opening_foothold"
+          }
+        ],
+        "inventory_sha256": "d14404972b908c8369e08f8dee53d1952b34f5a65290200e6d69afc5cbd4839d",
+        "profile": "keplerops",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "d14404972b908c8369e08f8dee53d1952b34f5a65290200e6d69afc5cbd4839d",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k02_report_fixture_and_changed_report": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k02_report_fixture_and_changed_report"
+          }
+        ],
+        "inventory_sha256": "dd1035ba64f2a511baef5e46db02a92aead4d3f8a82f1d25e97196ae2ed5be17",
+        "profile": "keplerops",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "dd1035ba64f2a511baef5e46db02a92aead4d3f8a82f1d25e97196ae2ed5be17",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k03_predecessor_callback": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k03_predecessor_callback"
+          }
+        ],
+        "inventory_sha256": "8fecfbd4d2b1f40e2c304b3c1f22c4848cc4cc6e662d374384a7a6e04cb622a2",
+        "profile": "keplerops",
+        "request_count": 3,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "8fecfbd4d2b1f40e2c304b3c1f22c4848cc4cc6e662d374384a7a6e04cb622a2",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k04_native_indexer": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k04_native_indexer"
+          }
+        ],
+        "inventory_sha256": "7e1db3fb230f987b8cf407f749dfa1b61f0be83806522c0b4889b5dbca42cefc",
+        "profile": "keplerops",
+        "request_count": 7,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "7e1db3fb230f987b8cf407f749dfa1b61f0be83806522c0b4889b5dbca42cefc",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k05_package_foundation": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k05_package_foundation"
+          }
+        ],
+        "inventory_sha256": "f622593ed5895bcc88cce032e0ed0aa7bc069d76cb954580d8c2274742644599",
+        "profile": "keplerops",
+        "request_count": 7,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "f622593ed5895bcc88cce032e0ed0aa7bc069d76cb954580d8c2274742644599",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k06_house_credentials_and_rehearsal": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k06_house_credentials_and_rehearsal"
+          }
+        ],
+        "inventory_sha256": "62e646238d27a19d5ea3bd92e77af90ac4bd8aca87fa771bb989d4aa6d767b72",
+        "profile": "keplerops",
+        "request_count": 5,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "62e646238d27a19d5ea3bd92e77af90ac4bd8aca87fa771bb989d4aa6d767b72",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k07_inspector_boundary": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k07_inspector_boundary"
+          }
+        ],
+        "inventory_sha256": "aea58c24778f0c361d7aa6e023ad4797a8ad9873ddfaad0676df2ef1a16f454c",
+        "profile": "keplerops",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "aea58c24778f0c361d7aa6e023ad4797a8ad9873ddfaad0676df2ef1a16f454c",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k08_legacy_entitlement": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k08_legacy_entitlement"
+          }
+        ],
+        "inventory_sha256": "de31a170ab325c40727cb213dd0c26f31f99935777e42c12690534021f4342df",
+        "profile": "keplerops",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "de31a170ab325c40727cb213dd0c26f31f99935777e42c12690534021f4342df",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k09_runner_execution": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k09_runner_execution"
+          }
+        ],
+        "inventory_sha256": "88176752768382cb9c48808f9693180e1a784046a162eb2580145f7bdd982f3c",
+        "profile": "keplerops",
+        "request_count": 7,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "88176752768382cb9c48808f9693180e1a784046a162eb2580145f7bdd982f3c",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k10_preview_identity": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k10_preview_identity"
+          }
+        ],
+        "inventory_sha256": "753cd69d9a04af3219df9a79c463ad3c3cfd600e71279fdaef6dccd53e419847",
+        "profile": "keplerops",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "753cd69d9a04af3219df9a79c463ad3c3cfd600e71279fdaef6dccd53e419847",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k11_policy_compiler": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k11_policy_compiler"
+          }
+        ],
+        "inventory_sha256": "662654958e636505cf54d57fc611ccab2d86d3f5ed968bf04c0192877507650f",
+        "profile": "keplerops",
+        "request_count": 5,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "662654958e636505cf54d57fc611ccab2d86d3f5ed968bf04c0192877507650f",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k12_privileged_review": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k12_privileged_review"
+          }
+        ],
+        "inventory_sha256": "3416731c4c40adfa0a0f99e3d45f8fd4f03be1ff4ef613ef20dbe422a08ef70a",
+        "profile": "keplerops",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "3416731c4c40adfa0a0f99e3d45f8fd4f03be1ff4ef613ef20dbe422a08ef70a",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k13_data_workspace_and_workload": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k13_data_workspace_and_workload"
+          }
+        ],
+        "inventory_sha256": "d0567a8b2172f3330bf6e06c7054484332d015559566484f1718b69c487667ac",
+        "profile": "keplerops",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "d0567a8b2172f3330bf6e06c7054484332d015559566484f1718b69c487667ac",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k14_trust_and_role": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k14_trust_and_role"
+          }
+        ],
+        "inventory_sha256": "2550934db2535e477142c608bb9c735a6ffd13cf8e0b5ab5f6ca3cca29a5ffd2",
+        "profile": "keplerops",
+        "request_count": 3,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "2550934db2535e477142c608bb9c735a6ffd13cf8e0b5ab5f6ca3cca29a5ffd2",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k15_cross_account_export": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k15_cross_account_export"
+          }
+        ],
+        "inventory_sha256": "a67f0420e164b5d74972c415edecb8997ae814b74cc3fdea4a407c6399996923",
+        "profile": "keplerops",
+        "request_count": 5,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "a67f0420e164b5d74972c415edecb8997ae814b74cc3fdea4a407c6399996923",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k16_schedule_runtime": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k16_schedule_runtime"
+          }
+        ],
+        "inventory_sha256": "9dfcf226d9ae4062b9872cd6afcb8f8d6d0188b8f21a704f5e66b803ab1594fa",
+        "profile": "keplerops",
+        "request_count": 5,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "9dfcf226d9ae4062b9872cd6afcb8f8d6d0188b8f21a704f5e66b803ab1594fa",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k17_support_recovery": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k17_support_recovery"
+          }
+        ],
+        "inventory_sha256": "a01e49331d912fb4ba28a331913e6a7f90fa4891770386213bac1464b264fb18",
+        "profile": "keplerops",
+        "request_count": 7,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "a01e49331d912fb4ba28a331913e6a7f90fa4891770386213bac1464b264fb18",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k18_note_and_federation": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k18_note_and_federation"
+          }
+        ],
+        "inventory_sha256": "0a9daec080ccb92e393a75b0aa7e085984e9535ca7f338883569584a85afaa5b",
+        "profile": "keplerops",
+        "request_count": 9,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "0a9daec080ccb92e393a75b0aa7e085984e9535ca7f338883569584a85afaa5b",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          },
+          {
+            "fingerprint": "823d157f653a527c7635574802bd1b3a5197c0399f92f4f5c8ee39ed4357c249",
+            "input": "federated subject construction",
+            "issue": 216,
+            "reason": "The accepted subject prefix is author-only"
+          }
+        ]
+      },
+      "test_k19_archive_delegation": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k19_archive_delegation"
+          }
+        ],
+        "inventory_sha256": "b2623b898b32d1a7fc213c8150032ada30757df8e7e7eea7dca45afc50c08ac3",
+        "profile": "keplerops",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "b2623b898b32d1a7fc213c8150032ada30757df8e7e7eea7dca45afc50c08ac3",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k21_assistant_retrieval": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k21_assistant_retrieval"
+          }
+        ],
+        "inventory_sha256": "8a4c075b380cac46137f3c229b32fec671d0ed64700db8fc1e29909754f3d1eb",
+        "profile": "keplerops",
+        "request_count": 14,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "8a4c075b380cac46137f3c229b32fec671d0ed64700db8fc1e29909754f3d1eb",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k25_customer_history": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k25_customer_history"
+          }
+        ],
+        "inventory_sha256": "ed61c81cdc3ed6317d7f0ba0ff36a5ae22c932ebbfed0ac9739848991a7c7872",
+        "profile": "keplerops",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "ed61c81cdc3ed6317d7f0ba0ff36a5ae22c932ebbfed0ac9739848991a7c7872",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k28_connector_archive": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k28_connector_archive"
+          }
+        ],
+        "inventory_sha256": "5fe549a9082de5ca66e9ecbb8f99c1691f17be9e3a9de7cc1f1d11cd80ed33b3",
+        "profile": "keplerops",
+        "request_count": 2,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "5fe549a9082de5ca66e9ecbb8f99c1691f17be9e3a9de7cc1f1d11cd80ed33b3",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k29_release_lineage": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k29_release_lineage"
+          }
+        ],
+        "inventory_sha256": "0ffdc4e1b4079bfb4f5760676685a352552a43ef9325cacaed0a02f4ea41d27f",
+        "profile": "keplerops",
+        "request_count": 6,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "0ffdc4e1b4079bfb4f5760676685a352552a43ef9325cacaed0a02f4ea41d27f",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k29a_diagnostic_delivery": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k29a_diagnostic_delivery"
+          }
+        ],
+        "inventory_sha256": "5caa02894adb5c2280c9b654ef139a2fb9f2bdb53e31e1cea0f7374d8b0b7f2e",
+        "profile": "keplerops",
+        "request_count": 3,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "5caa02894adb5c2280c9b654ef139a2fb9f2bdb53e31e1cea0f7374d8b0b7f2e",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k29b_connector_delivery": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k29b_connector_delivery"
+          }
+        ],
+        "inventory_sha256": "440ae04f524f95260803d4f9c39c0e0a3c68d654f47623dd4d22dc97edf6b773",
+        "profile": "keplerops",
+        "request_count": 3,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "440ae04f524f95260803d4f9c39c0e0a3c68d654f47623dd4d22dc97edf6b773",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          },
+          {
+            "fingerprint": "399e846d148764b5f6b2becc2957365363cb8033ea9521114019f435dbd0d13c",
+            "input": "customer-channel bearer",
+            "issue": 217,
+            "reason": "The relay bearer is a fixed image-wide literal"
+          }
+        ]
+      },
+      "test_k30_backup_recovery": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k30_backup_recovery"
+          }
+        ],
+        "inventory_sha256": "2bdbd5031832059c10bf6fd1d47a59a8ce42d088571ee6d74d579d527198d686",
+        "profile": "keplerops",
+        "request_count": 4,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "2bdbd5031832059c10bf6fd1d47a59a8ce42d088571ee6d74d579d527198d686",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_k31_maintenance": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_k31_maintenance"
+          }
+        ],
+        "inventory_sha256": "686d837f1fbdaf09911b2064ae9b1c7693f84344cfef339ea409fe13ec8c1512",
+        "profile": "keplerops",
+        "request_count": 5,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "686d837f1fbdaf09911b2064ae9b1c7693f84344cfef339ea409fe13ec8c1512",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      }
+    },
+    "training": {
+      "test_01_first_contact": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_01_first_contact"
+          }
+        ],
+        "inventory_sha256": "fe96a4536b9a15e63cde50365fb755204b4f6cd2a54968820d14dfd40bf7ef6f",
+        "profile": "training",
+        "request_count": 11,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "fe96a4536b9a15e63cde50365fb755204b4f6cd2a54968820d14dfd40bf7ef6f",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_02_someone_can_log_in": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_02_someone_can_log_in"
+          }
+        ],
+        "inventory_sha256": "9e8721c4db5116476b4e346d5beec89b5078a5598975ab308f11e81e5dde8aad",
+        "profile": "training",
+        "request_count": 9,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "9e8721c4db5116476b4e346d5beec89b5078a5598975ab308f11e81e5dde8aad",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_03_left_in_the_checkout": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_03_left_in_the_checkout"
+          }
+        ],
+        "inventory_sha256": "c135189728733fe9624f128c11523ec5b48ed0d8968d3fb5f7f288d5eb2f4b95",
+        "profile": "training",
+        "request_count": 10,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "c135189728733fe9624f128c11523ec5b48ed0d8968d3fb5f7f288d5eb2f4b95",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      },
+      "test_04_trust_the_instrument": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_04_trust_the_instrument"
+          }
+        ],
+        "inventory_sha256": "13af725f20c65b9160790122f6aca0598f51addf1940f70a4b888b491faadd2f",
+        "profile": "training",
+        "request_count": 12,
+        "review_status": "unresolved",
+        "unresolved": [
+          {
+            "fingerprint": "13af725f20c65b9160790122f6aca0598f51addf1940f70a4b888b491faadd2f",
+            "input": "exact request literals and protocol constants",
+            "issue": 224,
+            "reason": "Per-value review of exact accepted inputs is pending"
+          }
+        ]
+      }
+    }
+  },
+  "profiles": {
+    "arwc": {
+      "sources": [
+        {
+          "class": "supplied_starting_surface",
+          "inputs": [
+            "route",
+            "hostname",
+            "tenant",
+            "corporate session",
+            "CA"
+          ],
+          "locator": "handover route fields, tenant binding, earned session and supplied CA",
+          "source": "/var/lib/fieldlink-connector/handover/customer-transition.json, corporate-session and /tmp/arwc-ca.crt"
+        },
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "record identifier",
+            "revision",
+            "field name",
+            "protocol input",
+            "exploit input"
+          ],
+          "locator": "response field or returned artifact cited by the method review",
+          "source": "ARWC corporate, maintenance, DMZ, engineering and control responses"
+        }
+      ],
+      "title": "FieldLink connector handover and earned corporate interfaces"
+    },
+    "keplerops": {
+      "sources": [
+        {
+          "class": "supplied_starting_surface",
+          "inputs": [
+            "route",
+            "hostname",
+            "CA",
+            "starting credential"
+          ],
+          "locator": "named route, CA, repository and credential entries consumed by the method",
+          "source": "/home/rowan/README.md, work/service-notes.md, work/service-catalog.md and .config/git/credentials"
+        },
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "artifact",
+            "schema",
+            "protocol constant"
+          ],
+          "locator": "artifact path or response field cited by the method review",
+          "source": "FieldKest normal service responses and workstation artifacts"
+        }
+      ],
+      "title": "Rowan workstation, FieldKest documents and earned responses"
+    },
+    "training": {
+      "sources": [
+        {
+          "class": "supplied_starting_surface",
+          "inputs": [
+            "route",
+            "hostname",
+            "starting document"
+          ],
+          "locator": "the four published desk URLs",
+          "source": "/home/cinder/TRAINING.md"
+        },
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "record identifier",
+            "revision",
+            "field name",
+            "protocol input"
+          ],
+          "locator": "response field names and linked artifact paths used by the method",
+          "source": "HTTP resources linked from the published Training desks"
+        }
+      ],
+      "title": "Training participant workstation and linked desks"
+    }
+  },
+  "runtime_comparisons": {
+    "build/arwc/runtime/build_w28_native.py": {
+      "citations": [],
+      "comparison_count": 2,
+      "inventory_sha256": "61d9234ba4df65201b0e68b1f42bc833bc0e4e41d23d8cd9715750e60d8706e3",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "61d9234ba4df65201b0e68b1f42bc833bc0e4e41d23d8cd9715750e60d8706e3",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/business_workplace.py": {
+      "citations": [],
+      "comparison_count": 25,
+      "inventory_sha256": "cf726eb90284b097de688d84d5c95467c0ffeba1358d6216ad72cada6acca8f3",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "cf726eb90284b097de688d84d5c95467c0ffeba1358d6216ad72cada6acca8f3",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/contractor_portal.py": {
+      "citations": [],
+      "comparison_count": 13,
+      "inventory_sha256": "0ccacca859216321b7ae1fe5f003ee36a8ec64dd59a6184805c8319999fb17f2",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "0ccacca859216321b7ae1fe5f003ee36a8ec64dd59a6184805c8319999fb17f2",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/control_broker.py": {
+      "citations": [],
+      "comparison_count": 28,
+      "inventory_sha256": "975e1000bd68f7480fce674b04fde1b61f2b1216f17e07d2cf51445a718d2a6a",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "975e1000bd68f7480fce674b04fde1b61f2b1216f17e07d2cf51445a718d2a6a",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/corporate_identity.py": {
+      "citations": [],
+      "comparison_count": 16,
+      "inventory_sha256": "ee6d07709b30f722e3e1dd2f78c342352f2586d507dfec52153967a694db0298",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "ee6d07709b30f722e3e1dd2f78c342352f2586d507dfec52153967a694db0298",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/customer_handover.py": {
+      "citations": [],
+      "comparison_count": 7,
+      "inventory_sha256": "8fe693011a08afb8daebbb583a6014052ad3ef42f9a8cd6c1fd9721f023f1f68",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "8fe693011a08afb8daebbb583a6014052ad3ef42f9a8cd6c1fd9721f023f1f68",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/diagnostic_services.py": {
+      "citations": [],
+      "comparison_count": 47,
+      "inventory_sha256": "b8fc9148fc05dafd5461f9494885a0ff2ebae11c3c3d8cdd91c4a0c3767df1e6",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "b8fc9148fc05dafd5461f9494885a0ff2ebae11c3c3d8cdd91c4a0c3767df1e6",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/distribution_controller.py": {
+      "citations": [],
+      "comparison_count": 9,
+      "inventory_sha256": "dccab5b01528dc0b895ef4065ad62cdeba87801daa1b04d58b7a55901a52d6c9",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "dccab5b01528dc0b895ef4065ad62cdeba87801daa1b04d58b7a55901a52d6c9",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/dpg1.py": {
+      "citations": [],
+      "comparison_count": 3,
+      "inventory_sha256": "88807fdb0d1c7094f9728477442017aad61ce3fda0b7a1a5e655cdb078771d8c",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "88807fdb0d1c7094f9728477442017aad61ce3fda0b7a1a5e655cdb078771d8c",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/extract_document.py": {
+      "citations": [],
+      "comparison_count": 3,
+      "inventory_sha256": "4aec1d19bc8d7e5c7140f57e8b4c0abbeeb2cb09d922e24da0395b8418760049",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "4aec1d19bc8d7e5c7140f57e8b4c0abbeeb2cb09d922e24da0395b8418760049",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/field_gateway.py": {
+      "citations": [],
+      "comparison_count": 11,
+      "inventory_sha256": "9aef4a6c21cc700337b287c2166cb0b688c530fb9641a7711e4ffbeab48af242",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "9aef4a6c21cc700337b287c2166cb0b688c530fb9641a7711e4ffbeab48af242",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/fieldlink_consumer.py": {
+      "citations": [],
+      "comparison_count": 19,
+      "inventory_sha256": "26f12cafb593863c213070d26537f052b3e30b16c8f6216c69759403d35c813b",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "26f12cafb593863c213070d26537f052b3e30b16c8f6216c69759403d35c813b",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/generate_archive_artifacts.py": {
+      "citations": [],
+      "comparison_count": 3,
+      "inventory_sha256": "615dbe3f3d2e9682a856de3d11589b0d3e84b763f8c16272ad541a8082cfc267",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "615dbe3f3d2e9682a856de3d11589b0d3e84b763f8c16272ad541a8082cfc267",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/generate_dpg1.py": {
+      "citations": [],
+      "comparison_count": 1,
+      "inventory_sha256": "801ed8b69bec30bab6e2566cf42a50d444d211c18a3768943cb6b06b0fa61cc1",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "801ed8b69bec30bab6e2566cf42a50d444d211c18a3768943cb6b06b0fa61cc1",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/generate_process_artifacts.py": {
+      "citations": [],
+      "comparison_count": 18,
+      "inventory_sha256": "ad739658d8456340527ede0506746458aa8f925d4018879afacb7bf0a69f63e0",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "ad739658d8456340527ede0506746458aa8f925d4018879afacb7bf0a69f63e0",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/integration_gateway.py": {
+      "citations": [],
+      "comparison_count": 28,
+      "inventory_sha256": "5ab9e5d449025c5d3a594197cce112366342dba9f8ff944c0e5d5d87dd9d3e12",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "5ab9e5d449025c5d3a594197cce112366342dba9f8ff944c0e5d5d87dd9d3e12",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/maintenance_renderer.py": {
+      "citations": [],
+      "comparison_count": 15,
+      "inventory_sha256": "f9dd8851ae2d0f0fe4abff0099e6a6006bac168f1e276c1384896886aeba3f6e",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "f9dd8851ae2d0f0fe4abff0099e6a6006bac168f1e276c1384896886aeba3f6e",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/maintenance_review.py": {
+      "citations": [],
+      "comparison_count": 21,
+      "inventory_sha256": "c5e1486708c44531e52ca5318ba433826c8e857b848e269ea302d80a30be7e11",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "c5e1486708c44531e52ca5318ba433826c8e857b848e269ea302d80a30be7e11",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/patch_review_helper.py": {
+      "citations": [],
+      "comparison_count": 3,
+      "inventory_sha256": "521e00685bd33e1a30d9321e5cf2a172763165a6f3ee51f990dbf1c02115e720",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "521e00685bd33e1a30d9321e5cf2a172763165a6f3ee51f990dbf1c02115e720",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/planning_data.py": {
+      "citations": [],
+      "comparison_count": 89,
+      "inventory_sha256": "f2a9ce4052eaca9da16c7f5d9a11025089a5f9a0e82ff476a06841a9169b845d",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "f2a9ce4052eaca9da16c7f5d9a11025089a5f9a0e82ff476a06841a9169b845d",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/process_services.py": {
+      "citations": [],
+      "comparison_count": 238,
+      "inventory_sha256": "b9ac0633239a22012abc63075c99b0f09922f47fcce4ddbe97670b522615abe6",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "b9ac0633239a22012abc63075c99b0f09922f47fcce4ddbe97670b522615abe6",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/reservoir_controller.py": {
+      "citations": [],
+      "comparison_count": 37,
+      "inventory_sha256": "ae915656c2eedca5c6f2ec5df5aefb24fafa498dad10708c2a6d5d9079db044b",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "ae915656c2eedca5c6f2ec5df5aefb24fafa498dad10708c2a6d5d9079db044b",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/retained_archive.py": {
+      "citations": [],
+      "comparison_count": 71,
+      "inventory_sha256": "e58c106b1d5b36be3224972798d7c5a994b79b2fdbddb6139daba3cc89792488",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "e58c106b1d5b36be3224972798d7c5a994b79b2fdbddb6139daba3cc89792488",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/schedule33.py": {
+      "citations": [],
+      "comparison_count": 4,
+      "inventory_sha256": "a7d165dd40269b2f5446af744568494225b8a52a3ff2f633b59e80fa1eee703d",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "a7d165dd40269b2f5446af744568494225b8a52a3ff2f633b59e80fa1eee703d",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/ci.py": {
+      "citations": [],
+      "comparison_count": 29,
+      "inventory_sha256": "5d3cedeff5f99e83b13b1757e01a602c12b8c4fd253548c92d330125cb3f518d",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "5d3cedeff5f99e83b13b1757e01a602c12b8c4fd253548c92d330125cb3f518d",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/cloud_api.py": {
+      "citations": [],
+      "comparison_count": 20,
+      "inventory_sha256": "31bfee784a79bcf7f415cc46db7da3d8472edf0ea9547e3e1f6318a290ddfcf3",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "31bfee784a79bcf7f415cc46db7da3d8472edf0ea9547e3e1f6318a290ddfcf3",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/command_worker.py": {
+      "citations": [],
+      "comparison_count": 1,
+      "inventory_sha256": "801ed8b69bec30bab6e2566cf42a50d444d211c18a3768943cb6b06b0fa61cc1",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "801ed8b69bec30bab6e2566cf42a50d444d211c18a3768943cb6b06b0fa61cc1",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/customer_relay.py": {
+      "citations": [],
+      "comparison_count": 7,
+      "inventory_sha256": "206a9fed8113cb006b0fe0aed4bcb7caf448fb3f9135c7c97e89c8d9047030a2",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "206a9fed8113cb006b0fe0aed4bcb7caf448fb3f9135c7c97e89c8d9047030a2",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/http_support.py": {
+      "citations": [],
+      "comparison_count": 6,
+      "inventory_sha256": "7d4d2b72536e68d35d106b5e295520bb79c9bb945f92455730258f4011bfe028",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "7d4d2b72536e68d35d106b5e295520bb79c9bb945f92455730258f4011bfe028",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/platform_service.py": {
+      "citations": [],
+      "comparison_count": 131,
+      "inventory_sha256": "eac930d80069bbc752c0cdf79ebd99e44000be177451e09a5c805e1ab3d861b1",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "eac930d80069bbc752c0cdf79ebd99e44000be177451e09a5c805e1ab3d861b1",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/preview_worker.py": {
+      "citations": [],
+      "comparison_count": 2,
+      "inventory_sha256": "f33fd3da6f6ac2b01e56b96b6c15146e4a3aba581d469a0f2effffc706b7e4f3",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "f33fd3da6f6ac2b01e56b96b6c15146e4a3aba581d469a0f2effffc706b7e4f3",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/registry.py": {
+      "citations": [],
+      "comparison_count": 43,
+      "inventory_sha256": "03ac4f7a10b3b51197e64a5f38efc2fe706df59ebbf8e52b7c510057da577665",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "03ac4f7a10b3b51197e64a5f38efc2fe706df59ebbf8e52b7c510057da577665",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/report_runner.py": {
+      "citations": [],
+      "comparison_count": 32,
+      "inventory_sha256": "766556a643755a1d29ad792acf64898817cb07ad295efcc8a22c52002929981d",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "766556a643755a1d29ad792acf64898817cb07ad295efcc8a22c52002929981d",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/source.py": {
+      "citations": [],
+      "comparison_count": 43,
+      "inventory_sha256": "1156d81f5d541b561a7b3a7eb5d5bb2ace9ef63cc9455cc231fcbc4ad532f132",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "1156d81f5d541b561a7b3a7eb5d5bb2ace9ef63cc9455cc231fcbc4ad532f132",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/support.py": {
+      "citations": [],
+      "comparison_count": 28,
+      "inventory_sha256": "e37c1e7428adbf09a0faf1ba55b8044cdb6e688800f516811a3489bbcce4f7a9",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "e37c1e7428adbf09a0faf1ba55b8044cdb6e688800f516811a3489bbcce4f7a9",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/workbench.py": {
+      "citations": [],
+      "comparison_count": 1,
+      "inventory_sha256": "801ed8b69bec30bab6e2566cf42a50d444d211c18a3768943cb6b06b0fa61cc1",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "801ed8b69bec30bab6e2566cf42a50d444d211c18a3768943cb6b06b0fa61cc1",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/training/runtime/accounts.py": {
+      "citations": [],
+      "comparison_count": 14,
+      "inventory_sha256": "5a4e3718af0988d6d613344cf3b43de633703d0660bdc16c05f39bc140669fd4",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "5a4e3718af0988d6d613344cf3b43de633703d0660bdc16c05f39bc140669fd4",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/training/runtime/build_repository.py": {
+      "citations": [],
+      "comparison_count": 3,
+      "inventory_sha256": "c537814ce3b5d2234a7193638dc3b77c996cc39cd2dd367433e5bcff7920d2e9",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "c537814ce3b5d2234a7193638dc3b77c996cc39cd2dd367433e5bcff7920d2e9",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/training/runtime/developer.py": {
+      "citations": [],
+      "comparison_count": 37,
+      "inventory_sha256": "8e84e1b1ad274793504f4a42e8b2f919cac571be06a4131f882c2851f712ab29",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "8e84e1b1ad274793504f4a42e8b2f919cac571be06a4131f882c2851f712ab29",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/training/runtime/http_support.py": {
+      "citations": [],
+      "comparison_count": 1,
+      "inventory_sha256": "8e22339256e7775b8b3fa10a81887057d7d1c7dced921ebe88ecc0130f900e8a",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "8e22339256e7775b8b3fa10a81887057d7d1c7dced921ebe88ecc0130f900e8a",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/training/runtime/runner_controller.py": {
+      "citations": [],
+      "comparison_count": 4,
+      "inventory_sha256": "b7cac31f63edc5e9e19f8bbade7a27e70f42cd6f411095e193c34be874e212d9",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "b7cac31f63edc5e9e19f8bbade7a27e70f42cd6f411095e193c34be874e212d9",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/training/runtime/state.py": {
+      "citations": [],
+      "comparison_count": 15,
+      "inventory_sha256": "63881fb8ab82c7e737f601bfc0c9329724321b904d32f31fd928f4440d8767dc",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "63881fb8ab82c7e737f601bfc0c9329724321b904d32f31fd928f4440d8767dc",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/training/runtime/workbench.py": {
+      "citations": [],
+      "comparison_count": 24,
+      "inventory_sha256": "2f8d612f9d4ffcfa9954678d2a2309f8456f386573c6ca4be59525eea0a7db96",
+      "review_status": "unresolved",
+      "unresolved": [
+        {
+          "fingerprint": "2f8d612f9d4ffcfa9954678d2a2309f8456f386573c6ca4be59525eea0a7db96",
+          "input": "fixed runtime comparison inventory",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    }
+  },
+  "runtime_sources": {
+    "build/arwc/runtime/ReviewHelper.cs": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "bcf582718c74d68c0bd34a59e38201d4c5e9998d7012e0267a63dcd2a1a03fa7",
+      "unresolved": [
+        {
+          "fingerprint": "bcf582718c74d68c0bd34a59e38201d4c5e9998d7012e0267a63dcd2a1a03fa7",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/approval-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "11478305abd2bf31b69c3230736d6c90ec396581a63e6d6727ffaa2a546c3b73",
+      "unresolved": [
+        {
+          "fingerprint": "11478305abd2bf31b69c3230736d6c90ec396581a63e6d6727ffaa2a546c3b73",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/archive-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "9b75445d08009d3f5c42a7fbea7c82610c473d23bd5d0363212fe513726f0d86",
+      "unresolved": [
+        {
+          "fingerprint": "9b75445d08009d3f5c42a7fbea7c82610c473d23bd5d0363212fe513726f0d86",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/business-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "1b84f9bda2e08c899d12ed3ccaa91d81deade2f65efd5b0bf3f84a886b71f8dd",
+      "unresolved": [
+        {
+          "fingerprint": "1b84f9bda2e08c899d12ed3ccaa91d81deade2f65efd5b0bf3f84a886b71f8dd",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/collector-crr.go": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "b9c0df3b3cc7025e966808c7cf0a6bb1e144f77bf7eb6f598c13ee25058efdfe",
+      "unresolved": [
+        {
+          "fingerprint": "b9c0df3b3cc7025e966808c7cf0a6bb1e144f77bf7eb6f598c13ee25058efdfe",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/connector-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "fbead0c706e808028f06ef18f6d20ec6ccf5fb18a69ca3d86cc031d0503c7fb6",
+      "unresolved": [
+        {
+          "fingerprint": "fbead0c706e808028f06ef18f6d20ec6ccf5fb18a69ca3d86cc031d0503c7fb6",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/contractor-bridge-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "078dc99752f12bc9380f9ad2f57424e8b0397c042a4bca005bbefec1a84fab2b",
+      "unresolved": [
+        {
+          "fingerprint": "078dc99752f12bc9380f9ad2f57424e8b0397c042a4bca005bbefec1a84fab2b",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/contractors-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "1ac6279060d415d833839cdbfa9a9b10997b244dcf606efc423ac052a1148a5f",
+      "unresolved": [
+        {
+          "fingerprint": "1ac6279060d415d833839cdbfa9a9b10997b244dcf606efc423ac052a1148a5f",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/control-broker-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "3a6b99320d4a765cb03e08e31f30f345f206e49f65f1c3ab680525d03eb4ec84",
+      "unresolved": [
+        {
+          "fingerprint": "3a6b99320d4a765cb03e08e31f30f345f206e49f65f1c3ab680525d03eb4ec84",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/data-bridge-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "508475efbfa270998a2b3d79b6efd237d47267f584c3510c9969fc648f207b9a",
+      "unresolved": [
+        {
+          "fingerprint": "508475efbfa270998a2b3d79b6efd237d47267f584c3510c9969fc648f207b9a",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/data-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "b90a532e5669dc2ec0d4af11331b4b3c96689f986b02a977327268a04618bea8",
+      "unresolved": [
+        {
+          "fingerprint": "b90a532e5669dc2ec0d4af11331b4b3c96689f986b02a977327268a04618bea8",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/diagnostics-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "963010b40046882b208b1ddceee125d14c3af3ec79757be41a5da56b37d905e7",
+      "unresolved": [
+        {
+          "fingerprint": "963010b40046882b208b1ddceee125d14c3af3ec79757be41a5da56b37d905e7",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/distribution-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "ce81f205cc7feed4d1d24679a2b7e60b08cf169d3078c6e3db7dab4ff7aa80f7",
+      "unresolved": [
+        {
+          "fingerprint": "ce81f205cc7feed4d1d24679a2b7e60b08cf169d3078c6e3db7dab4ff7aa80f7",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/estimator23.cpp": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "538ce81140bff28be56914f3180a6c1ec90dad069fe45e5d1a122455994e67af",
+      "unresolved": [
+        {
+          "fingerprint": "538ce81140bff28be56914f3180a6c1ec90dad069fe45e5d1a122455994e67af",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/identity-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "fa5d2aad30acd30eb8a304ed94f88e4e18daa9fb7161d51819ed4e87a702cc7f",
+      "unresolved": [
+        {
+          "fingerprint": "fa5d2aad30acd30eb8a304ed94f88e4e18daa9fb7161d51819ed4e87a702cc7f",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/mixed-diagnostic.S": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "facaaa02d039838f554a678b70f206104adbdf29e01c7c0d0eceea0116299eb9",
+      "unresolved": [
+        {
+          "fingerprint": "facaaa02d039838f554a678b70f206104adbdf29e01c7c0d0eceea0116299eb9",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/process-service-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "d06cb38de5181ae28010eab2c48effd1bb6387ef62b4b00c086456264851c09c",
+      "unresolved": [
+        {
+          "fingerprint": "d06cb38de5181ae28010eab2c48effd1bb6387ef62b4b00c086456264851c09c",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/renderer-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "bc78865c1195f923cf59956cf8736b5f95c9297fe3f6f6c04e97f955922f84d7",
+      "unresolved": [
+        {
+          "fingerprint": "bc78865c1195f923cf59956cf8736b5f95c9297fe3f6f6c04e97f955922f84d7",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/replay32.cpp": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "f88f00b6e51c2cf2498403f9badc99f4cfc7075764c15927892ca5ca7d63b2b8",
+      "unresolved": [
+        {
+          "fingerprint": "f88f00b6e51c2cf2498403f9badc99f4cfc7075764c15927892ca5ca7d63b2b8",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/reservoir-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "0b494136aed57f84f96cfa44be6ccd371ce3e75e43837cb0492701a91427d574",
+      "unresolved": [
+        {
+          "fingerprint": "0b494136aed57f84f96cfa44be6ccd371ce3e75e43837cb0492701a91427d574",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/rot128_verifier.c": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "1f63ed8caa81fd56abc1ad3a7f61fcc80b03251b390adf89928215dcaa78b099",
+      "unresolved": [
+        {
+          "fingerprint": "1f63ed8caa81fd56abc1ad3a7f61fcc80b03251b390adf89928215dcaa78b099",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/sealed_viewer.nim": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "7708b7ed9a429b6871b9fa81c52080322dc3b22abb208201ed0418352cf5a74b",
+      "unresolved": [
+        {
+          "fingerprint": "7708b7ed9a429b6871b9fa81c52080322dc3b22abb208201ed0418352cf5a74b",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/signer24.c": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "88bc003a607fe30ce45d07b6f93efe5bf42386aed3ce519f90ea43053d687f23",
+      "unresolved": [
+        {
+          "fingerprint": "88bc003a607fe30ce45d07b6f93efe5bf42386aed3ce519f90ea43053d687f23",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/utility28.c": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "c7124ab510e48712fc2ad6a1ca115097b0808ccdf83c872e6c7739b4af6516fb",
+      "unresolved": [
+        {
+          "fingerprint": "c7124ab510e48712fc2ad6a1ca115097b0808ccdf83c872e6c7739b4af6516fb",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/arwc/runtime/vault31.c": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "8b1417dde0358686e76c973a7d43b4f9d8a652d3ff5d8257103f05a3b4d1ba6e",
+      "unresolved": [
+        {
+          "fingerprint": "8b1417dde0358686e76c973a7d43b4f9d8a652d3ff5d8257103f05a3b4d1ba6e",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/bundle_indexer.c": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "6abf6bc2beddc613550f14793f1aa60e48cb1d7a5f37dd8bd8830d41f377fbde",
+      "unresolved": [
+        {
+          "fingerprint": "6abf6bc2beddc613550f14793f1aa60e48cb1d7a5f37dd8bd8830d41f377fbde",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/ci-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "b1b7bb05c3bea3bc613566a9658596f6be5d64dec7e3e31e55aa3c61d7b2c55b",
+      "unresolved": [
+        {
+          "fingerprint": "b1b7bb05c3bea3bc613566a9658596f6be5d64dec7e3e31e55aa3c61d7b2c55b",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/cloud-api-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "6e18210b6d20dea500f20c2af2c49d9859d9473a141bb8dad02ec7fa290769c1",
+      "unresolved": [
+        {
+          "fingerprint": "6e18210b6d20dea500f20c2af2c49d9859d9473a141bb8dad02ec7fa290769c1",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/customer-relay-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "a66242ceccfca72084b89ce4d9029ba05714d47b5ba8e108bc1432543d07c342",
+      "unresolved": [
+        {
+          "fingerprint": "a66242ceccfca72084b89ce4d9029ba05714d47b5ba8e108bc1432543d07c342",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/data-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "f8d5d7989fe89f32adc19b4c87d2f047d4a7ba737d910a22f355ef1a67749915",
+      "unresolved": [
+        {
+          "fingerprint": "f8d5d7989fe89f32adc19b4c87d2f047d4a7ba737d910a22f355ef1a67749915",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/k-dev-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "cb09e99488f5e5d66197c6fee4b5c0329b43280c29722538b9160412c8a371f8",
+      "unresolved": [
+        {
+          "fingerprint": "cb09e99488f5e5d66197c6fee4b5c0329b43280c29722538b9160412c8a371f8",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/platform-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "004c834ee4100dda12299e21e2c593ca4ff9c1aeb57154fdab80e548a87002fc",
+      "unresolved": [
+        {
+          "fingerprint": "004c834ee4100dda12299e21e2c593ca4ff9c1aeb57154fdab80e548a87002fc",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/provision-kerberos.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "3d0d5102056aeec80b2985f8ac68fb4795b3b3274a32321c7e8c6cc46dddf7be",
+      "unresolved": [
+        {
+          "fingerprint": "3d0d5102056aeec80b2985f8ac68fb4795b3b3274a32321c7e8c6cc46dddf7be",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/registry-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "910ddcb13cd0ef7526f0b39a7022285d216b707ef6b574b18685f5e6ea54388c",
+      "unresolved": [
+        {
+          "fingerprint": "910ddcb13cd0ef7526f0b39a7022285d216b707ef6b574b18685f5e6ea54388c",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/router.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "4cd25c25661f38c21f0271cad93c446a8078272b02f33eed67d98d29070f4f88",
+      "unresolved": [
+        {
+          "fingerprint": "4cd25c25661f38c21f0271cad93c446a8078272b02f33eed67d98d29070f4f88",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/service-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "0944d30026a5212c02315303b161e505df05f3946d84547db472b359ee049961",
+      "unresolved": [
+        {
+          "fingerprint": "0944d30026a5212c02315303b161e505df05f3946d84547db472b359ee049961",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/source-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "7d3fc2cd5faf8884c6fadb812fe215ce729d9ec489a6875c63264241b6aecebd",
+      "unresolved": [
+        {
+          "fingerprint": "7d3fc2cd5faf8884c6fadb812fe215ce729d9ec489a6875c63264241b6aecebd",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    },
+    "build/keplerops/runtime/support-entrypoint.sh": {
+      "citations": [],
+      "review_status": "unresolved",
+      "source_sha256": "e6c12a3ea6ecb1a2d4d80df7e3392a2df70cc9c56c91000bda669005a4c01c02",
+      "unresolved": [
+        {
+          "fingerprint": "e6c12a3ea6ecb1a2d4d80df7e3392a2df70cc9c56c91000bda669005a4c01c02",
+          "input": "fixed comparisons in non-Python runtime source",
+          "issue": 224,
+          "reason": "Participant relevance and provenance classification are pending"
+        }
+      ]
+    }
+  },
+  "schema_version": 1
+}

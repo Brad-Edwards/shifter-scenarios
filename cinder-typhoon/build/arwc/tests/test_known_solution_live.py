@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import inspect
 import json
 import os
 import re
@@ -44,8 +45,16 @@ TRACE = os.environ.get("CINDER_ACCEPTANCE_TRACE") == "1"
 def trace_event(kind: str, **fields: object) -> None:
     """Emit credential-free evidence for the operator-side acceptance runner."""
     if TRACE:
+        frame = inspect.currentframe()
+        test_method = "setup"
+        while frame:
+            if frame.f_code.co_name.startswith("test_"):
+                test_method = frame.f_code.co_name
+                break
+            frame = frame.f_back
         print("CINDER_ACCEPTANCE_EVENT " + json.dumps(
-            {"kind": kind, **fields}, sort_keys=True, separators=(",", ":"),
+            {"kind": kind, "test_method": test_method, **fields},
+            sort_keys=True, separators=(",", ":"),
         ), flush=True)
 
 
@@ -238,7 +247,8 @@ def request(url: str, *, method: str = "GET", body: dict | None = None,
     data = json.loads(payload) if payload.strip() else {}
     location = urlsplit(url)
     trace_event(
-        "http", method=method, host=location.hostname or "", path=location.path or "/",
+        "http", method=method, host=location.hostname or "",
+        path_sha256=hashlib.sha256((location.path or "/").encode()).hexdigest(),
         status=status, response_bytes=len(payload.encode()),
         response_sha256=hashlib.sha256(payload.encode()).hexdigest(),
         elapsed_ms=round((time.monotonic() - started) * 1000),
@@ -279,7 +289,8 @@ def get_bytes(url: str, *, token: str | None = None, tenant: str = "arwc", expec
     value = base64.b64decode(encoded)
     location = urlsplit(url)
     trace_event(
-        "http", method="GET", host=location.hostname or "", path=location.path or "/",
+        "http", method="GET", host=location.hostname or "",
+        path_sha256=hashlib.sha256((location.path or "/").encode()).hexdigest(),
         status=int(status_line), response_bytes=len(value),
         response_sha256=hashlib.sha256(value).hexdigest(),
         elapsed_ms=round((time.monotonic() - started) * 1000),
@@ -398,7 +409,8 @@ def cbor_request(url: str, body: bytes, token: str, *, expected: int | None = No
     data = json.loads(payload) if payload.strip() else {}
     location = urlsplit(url)
     trace_event(
-        "http", method="POST", host=location.hostname or "", path=location.path or "/",
+        "http", method="POST", host=location.hostname or "",
+        path_sha256=hashlib.sha256((location.path or "/").encode()).hexdigest(),
         status=status, response_bytes=len(payload.encode()),
         response_sha256=hashlib.sha256(payload.encode()).hexdigest(),
         elapsed_ms=round((time.monotonic() - started) * 1000),
