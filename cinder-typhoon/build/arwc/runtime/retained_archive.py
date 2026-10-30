@@ -558,11 +558,81 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         return state
 
+    def _serve_client_document(self) -> bool:
+        if urlsplit(self.path).path != "/.well-known/arwc-client":
+            return False
+        self.send_json(200, {
+            "schema": "arwc.client-documents/v1",
+            "service": "retained-archive.arwc.test",
+            "title": "Retained archive, bundle, and sequencer service",
+            "routes": [
+                {
+                    "key": "archive.contract",
+                    "method": "GET",
+                    "template": "https://retained-archive.arwc.test/api/archive-contracts/current"
+                },
+                {
+                    "key": "archive.archived-query",
+                    "method": "GET",
+                    "template": "https://retained-archive.arwc.test/api/archived-queries/current"
+                },
+                {
+                    "key": "archive.run-operation",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/archive-operations"
+                },
+                {
+                    "key": "archive.bundle",
+                    "method": "GET",
+                    "template": "https://retained-archive.arwc.test/api/bundles/current"
+                },
+                {
+                    "key": "archive.bundle-collection-policy",
+                    "method": "GET",
+                    "template": "https://retained-archive.arwc.test/api/bundles/current/collection-policy"
+                },
+                {
+                    "key": "archive.bundle-integrity",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/bundles/current/integrity-checks"
+                },
+                {
+                    "key": "archive.sequencer-spec",
+                    "method": "GET",
+                    "template": "https://retained-archive.arwc.test/api/sequencer-specs/current"
+                },
+                {
+                    "key": "archive.observations",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/observations"
+                },
+                {
+                    "key": "archive.signal-experiment",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/signal-experiments"
+                },
+                {
+                    "key": "archive.instrument-history",
+                    "method": "GET",
+                    "template": "https://retained-archive.arwc.test/api/instrument-history/current"
+                },
+                {
+                    "key": "archive.cold-archive-job",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/archive-jobs"
+                }
+            ],
+            "related": ["https://business-workplace.arwc.test/.well-known/arwc-client"],
+        })
+        return True
+
     def do_GET(self) -> None:
+        if self._serve_client_document():
+            return
         if not self.authorized():
             return
         path = urlsplit(self.path).path
-        if path == "/api/the-sequencer-s-vocabulary":
+        if path == "/api/sequencer-specs/current":
             state = load_state()
             state["sequencer_descriptor_observed"] = True
             save_state(state)
@@ -574,7 +644,7 @@ class Handler(BaseHTTPRequestHandler):
                 ).hexdigest()},
             )
             return
-        if path == "/api/something-in-the-work-bundle":
+        if path == "/api/bundles/current":
             if not has_w08_source():
                 self.send_json(403, {"error": "retained work reference required"})
                 return
@@ -615,7 +685,7 @@ class Handler(BaseHTTPRequestHandler):
                 "application/json", "collector.yaml.enc.json",
             )
             return
-        if path == "/api/a-collector-in-quarantine":
+        if path == "/api/collectors/quarantine":
             if not has_w12_source():
                 self.send_json(403, {"error": "collector or lineage archive reference required"})
                 return
@@ -636,7 +706,7 @@ class Handler(BaseHTTPRequestHandler):
             content_type = "application/octet-stream" if name.endswith(".aqtn") else "application/json"
             self.send_bytes((ARTIFACTS / name).read_bytes(), content_type, name)
             return
-        if path != "/api/the-archive-s-missing-contract":
+        if path != "/api/archive-contracts/current":
             self.send_json(404, {"error": "record not found"})
             return
         state = load_state()
@@ -657,27 +727,27 @@ class Handler(BaseHTTPRequestHandler):
         request = self.body()
         if request is None:
             return
-        if path == "/api/the-query-behind-the-identity":
+        if path == "/api/archived-queries/current":
             self.query(request)
-        elif path == "/api/the-archive-helper-acts":
+        elif path == "/api/archive-operations":
             self.helper(request)
         elif path == "/api/reassemble-the-exchange":
             self.reassemble_exchange(request)
-        elif path == "/api/the-collector-inside-the-handover":
+        elif path == "/api/collectors/handover":
             self.reconstruct_collector(request)
         elif path == "/api/where-the-contractor-put-it":
             self.recover_collector_config(request)
-        elif path == "/api/how-the-collection-was-protected":
+        elif path == "/api/bundles/current/collection-policy":
             self.reconstruct_protection(request)
-        elif path == "/api/the-cold-archive-opens":
+        elif path == "/api/archive-jobs":
             self.open_cold_archive(request)
-        elif path == "/api/a-collection-path-still-alive":
+        elif path == "/api/collection-paths/current":
             self.current_collection(request)
-        elif path == "/api/an-observation-outside-the-window":
+        elif path == "/api/observations":
             self.sequencer_boundary(request)
-        elif path == "/api/an-experiment-with-a-signal":
+        elif path == "/api/signal-experiments":
             self.sequencer_signal(request)
-        elif path == "/api/what-the-instrument-remembers":
+        elif path == "/api/instrument-history/current":
             self.sequencer_calibration(request)
         else:
             self.send_json(404, {"error": "record not found"})

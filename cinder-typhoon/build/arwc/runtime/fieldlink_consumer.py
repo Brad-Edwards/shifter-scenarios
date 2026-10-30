@@ -181,6 +181,7 @@ def earn_corporate(route: str, receipt_id: str, version: str) -> None:
             "contractor_portal": "https://contractor-portal.arwc.test",
             "field_gateway": "https://field-gateway.arwc.test",
             "maintenance_review": "https://maintenance-review.arwc.test",
+            "client_reference": "https://customer-handover.arwc.test:8443/.well-known/arwc-client",
             "session_file": "/var/lib/fieldlink-connector/handover/corporate-session",
             "request_header": "Authorization: Bearer <session>",
         }

@@ -143,29 +143,49 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(200, {"audit_id": correlation, "record": result})
 
     def do_GET(self) -> None:
+        path = urlsplit(self.path).path
+        if path == "/.well-known/arwc-client":
+            self.send_json(200, {
+                "schema": "arwc.client-documents/v1",
+                "service": "customer-handover.arwc.test",
+                "title": "Corporate handover and work order service",
+                "routes": [
+                    {"key": "corporate.handover", "method": "GET",
+                     "template": "https://customer-handover.arwc.test:8443/api/handovers/current"},
+                    {"key": "corporate.work-order", "method": "GET",
+                     "template": "https://customer-handover.arwc.test:8443/api/work-orders/{wo_id}"},
+                    {"key": "corporate.continuity-plan", "method": "GET",
+                     "template": "https://customer-handover.arwc.test:8443/api/continuity-plans/current"},
+                    {"key": "corporate.work-order-update", "method": "POST",
+                     "template": "https://customer-handover.arwc.test:8443/api/work-orders/{wo_id}"},
+                ],
+                "related": ["https://business-workplace.arwc.test/.well-known/arwc-client"],
+            })
+            return
         if not self.authorized():
             return
-        path = urlsplit(self.path).path
-        if path == "/api/the-customer-s-copy":
-            self.accepted_read("the-customer-s-copy", CUSTOMER_COPY)
+        if path == "/api/handovers/current":
+            self.accepted_read("handover-read", CUSTOMER_COPY)
             return
-        if path == "/api/the-planner-s-unfinished-handover":
+        if path == "/api/work-orders/current" or path == f"/api/work-orders/{json.loads(STATE.read_text(encoding='utf-8')).get('record_id', '')}":
             self.accepted_read(
-                "the-planner-s-unfinished-handover",
+                "work-order-read",
                 json.loads(STATE.read_text(encoding="utf-8")),
             )
             return
-        if path == "/api/how-the-company-buys-time":
+        if path == "/api/continuity-plans/current":
             record = dict(CONTINUITY_NOTE)
             record["planning_context"] = PLANNING_CONTEXT.read_text(encoding="utf-8")
-            self.accepted_read("how-the-company-buys-time", record)
+            self.accepted_read("continuity-plan-read", record)
             return
         self.send_json(404, {"error": "record not found"})
 
     def do_POST(self) -> None:
         if not self.authorized():
             return
-        if urlsplit(self.path).path != "/api/change-the-corporate-record":
+        path = urlsplit(self.path).path
+        state = json.loads(STATE.read_text(encoding="utf-8"))
+        if path != f"/api/work-orders/{state.get('record_id', '')}":
             self.send_json(404, {"error": "record not found"})
             return
         try:
@@ -181,7 +201,6 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "invalid attachment revision request"})
             return
 
-        state = json.loads(STATE.read_text(encoding="utf-8"))
         immutable = {
             "record_id": "PLN-HO-CRR-17",
             "inspection": "INSP-CRR-2026-09-18",
@@ -209,7 +228,7 @@ class Handler(BaseHTTPRequestHandler):
             "sha256": digest,
         }
         atomic_json(STATE, state)
-        correlation = append_audit("change-the-corporate-record", state)
+        correlation = append_audit("work-order-update", state)
         self.send_json(
             201,
             {

@@ -604,6 +604,69 @@ class Handler(BaseHTTPRequestHandler):
         except json.JSONDecodeError: return 409, {"error": "reporting dependency returned invalid data"}
         return response.status, result
 
+    def _serve_client_document(self) -> bool:
+        if urlsplit(self.path).path != "/.well-known/arwc-client":
+            return False
+        self.send_json(200, {
+            "schema": "arwc.client-documents/v1",
+            "service": "planning-data.arwc.test",
+            "title": "Planning query, allocation, and integration service",
+            "routes": [
+                {
+                    "key": "planning.saved-query",
+                    "method": "GET",
+                    "template": "https://planning-data.arwc.test/api/saved-queries/current"
+                },
+                {
+                    "key": "planning.query-run",
+                    "method": "POST",
+                    "template": "https://planning-data.arwc.test/api/query-runs"
+                },
+                {
+                    "key": "planning.allocation-ledger",
+                    "method": "GET",
+                    "template": "https://planning-data.arwc.test/api/allocation-ledgers/current"
+                },
+                {
+                    "key": "planning.meter-allocation",
+                    "method": "GET",
+                    "template": "https://planning-data.arwc.test/api/meter-allocations/current"
+                },
+                {
+                    "key": "planning.allocation-discrepancy",
+                    "method": "GET",
+                    "template": "https://planning-data.arwc.test/api/allocation-discrepancies/current"
+                },
+                {
+                    "key": "planning.live-feed",
+                    "method": "GET",
+                    "template": "https://planning-data.arwc.test/api/live-feeds/current"
+                },
+                {
+                    "key": "planning.relation-schema",
+                    "method": "GET",
+                    "template": "https://planning-data.arwc.test/api/relation-schemas/current"
+                },
+                {
+                    "key": "planning.relation-exchange",
+                    "method": "POST",
+                    "template": "https://planning-data.arwc.test/api/relation-exchanges"
+                },
+                {
+                    "key": "planning.asset-lineage",
+                    "method": "GET",
+                    "template": "https://planning-data.arwc.test/api/asset-lineage/current"
+                },
+                {
+                    "key": "planning.integration-session",
+                    "method": "POST",
+                    "template": "https://planning-data.arwc.test/api/integration-sessions"
+                }
+            ],
+            "related": ["https://retained-archive.arwc.test/.well-known/arwc-client"],
+        })
+        return True
+
     def do_GET(self) -> None:
         if (self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test" and
                 urlsplit(self.path).path in PROCESS_PATHS):
@@ -629,16 +692,16 @@ class Handler(BaseHTTPRequestHandler):
                 "planning_method": PLAN_METHOD.read_text(encoding="utf-8"),
             })
             return
-        if path == "/api/water-already-promised":
+        if path == "/api/allocation-ledgers/current":
             self.allocation()
             return
-        if path == "/api/the-meter-s-own-account":
+        if path == "/api/meter-allocations/current":
             self.meter()
             return
-        if path == "/api/the-missing-megalitre":
+        if path == "/api/allocation-discrepancies/current":
             self.reserve_reconciliation()
             return
-        if path == "/api/the-relation-service-s-language":
+        if path == "/api/relation-schemas/current":
             if not relation_prerequisite():
                 self.send_json(403, {"error": "asset association or reconciled allocation is required"})
                 return
@@ -647,7 +710,7 @@ class Handler(BaseHTTPRequestHandler):
             save_state(state)
             self.accepted("the-relation-service-s-language", RELATION_CONTRACT)
             return
-        if path != "/api/the-query-the-planner-keeps":
+        if path != "/api/saved-queries/current":
             self.send_json(404, {"error": "record not found"})
             return
         state = load_state()
@@ -733,15 +796,15 @@ class Handler(BaseHTTPRequestHandler):
         if request is None:
             return
         path = urlsplit(self.path).path
-        if path == "/api/read-beyond-the-allowed-statement":
+        if path == "/api/query-runs":
             self.query_report(request)
-        elif path == "/api/the-database-does-more-than-read":
+        elif path == "/api/query-runs":
             self.reconcile(request)
-        elif path == "/api/integration/from-the-report-to-the-live-feed":
+        elif path == "/api/integration-sessions":
             self.integration(request)
-        elif path == "/api/an-exchange-the-backend-accepts":
+        elif path == "/api/relation-exchanges":
             self.relation_exchange(request, lineage=False)
-        elif path == "/api/the-asset-s-true-lineage":
+        elif path == "/api/asset-lineage/current":
             self.relation_exchange(request, lineage=True)
         elif path == "/api/what-reserve-remains-uncommitted":
             self.w29_balance(request)

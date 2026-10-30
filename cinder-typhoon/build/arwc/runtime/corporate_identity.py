@@ -195,20 +195,63 @@ class Handler(BaseHTTPRequestHandler):
             response.update(extra)
         self.send_json(status, response)
 
+    def _serve_client_document(self) -> bool:
+        if urlsplit(self.path).path != "/.well-known/arwc-client":
+            return False
+        self.send_json(200, {
+            "schema": "arwc.client-documents/v1",
+            "service": "identity.arwc.test",
+            "title": "Corporate identity, provisioning, and session service",
+            "routes": [
+                {
+                    "key": "identity.provisioning-package",
+                    "method": "GET",
+                    "template": "https://identity.arwc.test/api/provisioning-packages/current"
+                },
+                {
+                    "key": "identity.activation-roster",
+                    "method": "GET",
+                    "template": "https://identity.arwc.test/api/activations/current"
+                },
+                {
+                    "key": "identity.temporary-credential",
+                    "method": "GET",
+                    "template": "https://identity.arwc.test/api/temporary-credentials/current"
+                },
+                {
+                    "key": "identity.session-audit",
+                    "method": "GET",
+                    "template": "https://identity.arwc.test/api/sessions/current/audit"
+                },
+                {
+                    "key": "identity.drawing-context",
+                    "method": "GET",
+                    "template": "https://identity.arwc.test/api/drawing-contexts/current"
+                },
+                {
+                    "key": "identity.sessions",
+                    "method": "POST",
+                    "template": "https://identity.arwc.test/api/sessions"
+                }
+            ],
+            "related": ["https://planning-data.arwc.test/.well-known/arwc-client"],
+        })
+        return True
+
     def do_GET(self) -> None:
         if not self.corporate_authorized():
             return
         path = urlsplit(self.path).path
         state = load_state()
-        if path == "/api/a-starter-pack-left-open":
+        if path == "/api/provisioning-packages/current":
             state["starter_observed"] = True
             save_state(state)
             self.accepted("a-starter-pack-left-open", STARTER, "fieldlink")
-        elif path == "/api/the-activation-roster":
+        elif path == "/api/activations/current":
             state["roster_observed"] = True
             save_state(state)
             self.accepted("the-activation-roster", ROSTER, "fieldlink")
-        elif path == "/api/the-planner-s-login-trail":
+        elif path == "/api/sessions/current/audit":
             if not self.planning_authorized():
                 return
             result = dict(RENDERING)
@@ -225,12 +268,12 @@ class Handler(BaseHTTPRequestHandler):
         request = self.body()
         if request is None:
             return
-        if path == "/api/temporary-with-the-wrong-rights":
+        if path == "/api/temporary-credentials/current":
             self.activate(request)
-        elif path == "/api/a-drawing-in-the-wrong-context":
+        elif path == "/api/drawing-contexts/current":
             if self.planning_authorized():
                 self.attach_preview(request)
-        elif path == "/api/a-planner-session-that-works":
+        elif path == "/api/sessions":
             if self.planning_authorized():
                 self.bootstrap(request)
         else:
