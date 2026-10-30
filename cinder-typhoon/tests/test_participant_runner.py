@@ -195,11 +195,16 @@ class EvidenceTests(unittest.TestCase):
         ).read_text()
         coverage = source.index("card-coverage/coverage.py")
         provenance = source.index("input-provenance/provenance.py")
+        fourth_wall = source.index("fourth-wall/run.py")
+        fourth_wall_after = source.rindex("fourth-wall/run.py")
         surface = source.index("participant-surface/run.py")
         acceptance = source.index("participant-runner/run.py")
         self.assertLess(coverage, provenance)
-        self.assertLess(provenance, surface)
+        self.assertLess(provenance, fourth_wall)
+        self.assertLess(fourth_wall, surface)
         self.assertLess(surface, acceptance)
+        self.assertLess(acceptance, fourth_wall_after)
+        self.assertEqual(source.count("fourth-wall/run.py"), 2)
 
     def test_invalid_candidate_still_writes_sanitized_failure_report(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

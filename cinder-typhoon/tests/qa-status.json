@@ -58,8 +58,8 @@
       "blocking_issues": [212, 213, 214, 215, 219, 220, 221, 222, 226, 232]
     },
     "provenance_and_surface": {
-      "title": "Input provenance and participant-surface checks",
-      "purpose": "Verify what is visible at the participant boundary and where every solution-path input originates.",
+      "title": "Input provenance, participant-surface, and fourth-wall checks",
+      "purpose": "Verify what is visible at the participant boundary, where every solution-path input originates, and that observed content stays in world.",
       "method": "automated",
       "implementation_status": "partial",
       "candidate_status": "failed",
@@ -68,12 +68,15 @@
         "build/participant-surface/manifests/training.json",
         "build/participant-surface/manifests/keplerops.json",
         "build/participant-surface/manifests/arwc.json",
-        "build/input-provenance/ledger.json"
+        "build/input-provenance/ledger.json",
+        "build/fourth-wall/allowlist.json",
+        "build/fourth-wall/domain-interfaces.json"
       ],
       "supports": [
         "participant-visible boundary",
         "unexpected disclosure detection",
-        "solution-input provenance"
+        "solution-input provenance",
+        "absence of challenge implementation language"
       ],
       "does_not_support": [
         "human discovery",
@@ -82,7 +85,7 @@
         "difficulty",
         "duration"
       ],
-      "blocking_issues": [216, 217, 223, 224, 232]
+      "blocking_issues": [212, 213, 214, 215, 216, 217, 219, 220, 221, 222, 223, 224, 232]
     },
     "blind_human_agent_playtest": {
       "title": "Blind human-plus-agent playtests",

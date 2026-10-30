@@ -27,7 +27,7 @@ The four evidence layers are separate gates:
 | --- | --- | --- |
 | Service contract tests | Normal, accepted, denied, persistence, isolation, and audit behavior | Not run on an immutable event candidate |
 | Participant-boundary known-solution acceptance | The encoded solution sequence remains executable from the participant account and network | Failed/incomplete: every card has a named assertion, but independent-evidence, simple-read, and delivery-catalog gates remain open; no immutable candidate run exists |
-| Provenance and participant-surface checks | Starting visibility and the origin of every solution-path input | Failed/incomplete: the current goldens drift from the intended boundary and input provenance is pending |
+| Provenance, participant-surface, and fourth-wall checks | Starting visibility, in-world presentation, and the origin of every solution-path input | Failed/incomplete: the current goldens drift from the intended boundary, fourth-wall findings remain, and input provenance is pending |
 | Blind human-plus-agent playtests | Discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution | Not run |
 
 `--require-release-qualified` returns nonzero until all four layers have passing
@@ -104,6 +104,17 @@ current SDL evidence-owner declaration because each overlaps the component
 that accepted the action; an observed-state label alone is not independent
 evidence.
 
+The #211 fourth-wall gate derives card IDs and normalized titles from that
+private registry, scans authored participant-facing runtime and image inputs,
+then repeats the check against readable files and safe `GET` responses from the
+real unprivileged phase container before and after known-solution acceptance.
+It emits locations, rule matches, and hashes only. The current result remains
+failed: ARWC still uses card-title routes,
+KeplerOps retains challenge-derived build names, and the domain-interface
+reviews required by #212 and #219 are pending. Exact hash-bound allowlist
+entries are supported for credible in-world uses; the committed allowlist is
+empty.
+
 ### 4. Blind human-plus-agent playtests
 
 Fresh participants must use the event UI, supported agents, and normal support
@@ -148,11 +159,12 @@ cannot qualify a release. Immutable-candidate invocation, report fields and the
 per-route reset contract are documented in
 `build/participant-runner/README.md`.
 
-Known-solution behavior, card coverage, and input provenance remain separate
-QA results. The candidate wrapper runs the fail-closed coverage and provenance
-gates before participant-surface and behavioral acceptance, so an incomplete
-card or unexplained input blocks overall qualification without misreporting
-what the behavioral suite established.
+Known-solution behavior, card coverage, fourth-wall leakage, and input
+provenance remain separate QA results. The candidate wrapper runs the
+fail-closed coverage, provenance, and live leakage gates before
+participant-surface and behavioral acceptance, so an incomplete card,
+unexplained input, or fourth-wall finding blocks overall qualification without
+misreporting what the behavioral suite established.
 
 ## Release qualification
 
@@ -161,7 +173,7 @@ Release qualification requires all of the following on one immutable candidate:
 1. service-contract suites pass;
 2. unprivileged known-solution acceptance passes from the real participant
    boundary, including both ordinary cross-carrier routes;
-3. card coverage, participant-surface, and complete input-provenance checks pass;
+3. card coverage, fourth-wall, participant-surface, and complete input-provenance checks pass;
 4. blind human-plus-agent playtests pass their cohort and specialist coverage;
 5. reset and restore reproduce the manifested pristine state; and
 6. the 300-range production-equivalent soak passes its declared thresholds.

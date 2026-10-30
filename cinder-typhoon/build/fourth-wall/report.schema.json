@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/fourth-wall/report-v1.schema.json",
+  "title": "Cinder Typhoon fourth-wall report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "report_kind", "phase", "policy_sha256",
+    "observation_status", "overall_status", "summary", "findings",
+    "allowlisted", "observation_summary"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "report_kind": {"const": "fourth-wall"},
+    "phase": {"enum": ["training", "keplerops", "arwc"]},
+    "policy_sha256": {"$ref": "#/$defs/digest"},
+    "observation_status": {"enum": ["complete", "not_run"]},
+    "overall_status": {"enum": ["clean", "unresolved"]},
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "static_finding_count", "live_finding_count", "unresolved_finding_count",
+        "allowlisted_finding_count"
+      ],
+      "properties": {
+        "static_finding_count": {"type": "integer", "minimum": 0},
+        "live_finding_count": {"type": "integer", "minimum": 0},
+        "unresolved_finding_count": {"type": "integer", "minimum": 0},
+        "allowlisted_finding_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}},
+    "allowlisted": {"type": "array", "items": {"$ref": "#/$defs/allowedFinding"}},
+    "observation_summary": {"type": ["object", "null"]}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "finding": {
+      "type": "object",
+      "required": ["source_kind", "location", "rule_id", "match", "content_sha256"],
+      "properties": {
+        "source_kind": {"type": "string", "minLength": 1},
+        "location": {"type": "string", "minLength": 1},
+        "rule_id": {"type": "string", "minLength": 1},
+        "match": {"type": "string", "minLength": 1},
+        "content_sha256": {"$ref": "#/$defs/digest"},
+        "card_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "allowedFinding": {
+      "allOf": [
+        {"$ref": "#/$defs/finding"},
+        {
+          "type": "object",
+          "required": ["allowlist_id", "rationale"],
+          "properties": {
+            "allowlist_id": {"type": "string", "minLength": 1},
+            "rationale": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    }
+  }
+}
