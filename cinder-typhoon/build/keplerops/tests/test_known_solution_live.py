@@ -1174,16 +1174,17 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 self.discovered_route("identity.staff-login"), "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"username": self.evidence["dev"][0], "password": dev_secret}), expected=201)
             tenant = self.evidence["export_tenant"]
-            subject = "fixture-reviewer-" + re.search(r"TEN-ARWC-(\d+)", tenant).group(1)
+            # The customer-history dossier names the protected record and the
+            # expected reviewer subject, which the fixture issuer will accept.
+            dossier_tmpl = self.discovered_route("support.dossier")
+            hist = curl_json(dossier_tmpl.replace("{tenant}", tenant).replace("{dossier_id}", "DOS-ARWC-HIST-01"), cookie=cookie)
+            subject = hist["reviewer_subject"]
             assertion = curl_json(
                 self.discovered_route("support.fixture-assertion"), "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"subject": subject, "tenant": tenant}), bearer=None, expected=201)
             federated = curl_json(
                 self.discovered_route("identity.login"), "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"assertion": assertion["assertion"]}), expected=201)
-            # The customer-history dossier names the protected record.
-            dossier_tmpl = self.discovered_route("support.dossier")
-            hist = curl_json(dossier_tmpl.replace("{tenant}", tenant).replace("{dossier_id}", "DOS-ARWC-HIST-01"), cookie=cookie)
             record = curl_json(dossier_tmpl.replace("{tenant}", tenant).replace("{dossier_id}", hist["customer_record"]), cookie=federated["session_cookie"])
             self.assertEqual(record["federated_subject"], subject)
 

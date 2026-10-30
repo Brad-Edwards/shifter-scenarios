@@ -1393,9 +1393,17 @@
             ],
             "locator": "named evidence fields carried into a later request by this method",
             "source": "accepted response chain in test_k18_note_and_federation"
+          },
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "reviewer_subject"
+            ],
+            "locator": "DOS-ARWC-HIST-01 dossier response field read via support.dossier in K18.4",
+            "source": "customer dossier served by support.keplerops.test"
           }
         ],
-        "inventory_sha256": "c6b40b11412d9a144e72a812eff7808425a07651a5dc3baf387aab4cf4040959",
+        "inventory_sha256": "7d82f89bfcac3484dc9f23492bb9caae5cf2c027c8bc204c38df180177585b44",
         "profile": "keplerops",
         "request_count": 9,
         "review_status": "unresolved",
@@ -1405,12 +1413,6 @@
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
-          },
-          {
-            "fingerprint": "823d157f653a527c7635574802bd1b3a5197c0399f92f4f5c8ee39ed4357c249",
-            "input": "federated subject construction",
-            "issue": 216,
-            "reason": "The accepted subject prefix is author-only"
           }
         ]
       },
