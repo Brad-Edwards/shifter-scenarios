@@ -2088,11 +2088,11 @@
     "build/arwc/runtime/integration_gateway.py": {
       "citations": [],
       "comparison_count": 28,
-      "inventory_sha256": "5ab9e5d449025c5d3a594197cce112366342dba9f8ff944c0e5d5d87dd9d3e12",
+      "inventory_sha256": "15ddac7d816e5b2ee6626d07ca7626e23bb06c4c1b852725acaa5b793bed0096",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "5ab9e5d449025c5d3a594197cce112366342dba9f8ff944c0e5d5d87dd9d3e12",
+          "fingerprint": "15ddac7d816e5b2ee6626d07ca7626e23bb06c4c1b852725acaa5b793bed0096",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"
@@ -2158,11 +2158,11 @@
     "build/arwc/runtime/process_services.py": {
       "citations": [],
       "comparison_count": 239,
-      "inventory_sha256": "061545c24bec0a82624a953a1ec9a5c64b8ea992f8fda588112808a4dbf902e6",
+      "inventory_sha256": "b30e097fb57b5924aaafab2cea1bbc19daee6c54cec45ccd710710a766faf43b",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "061545c24bec0a82624a953a1ec9a5c64b8ea992f8fda588112808a4dbf902e6",
+          "fingerprint": "b30e097fb57b5924aaafab2cea1bbc19daee6c54cec45ccd710710a766faf43b",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"
@@ -2186,11 +2186,11 @@
     "build/arwc/runtime/retained_archive.py": {
       "citations": [],
       "comparison_count": 72,
-      "inventory_sha256": "a7a537bc732523f7b037b8a8461b170e7b21ac0f0786b080632cc6eae3a806a7",
+      "inventory_sha256": "6d7d915f1d7ecb91caebd244f8cb1e590cbfa3c1434b488c5eda8cb06f06baf3",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "a7a537bc732523f7b037b8a8461b170e7b21ac0f0786b080632cc6eae3a806a7",
+          "fingerprint": "6d7d915f1d7ecb91caebd244f8cb1e590cbfa3c1434b488c5eda8cb06f06baf3",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"

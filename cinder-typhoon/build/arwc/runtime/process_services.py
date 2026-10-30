@@ -800,7 +800,7 @@ class Handler(BaseHTTPRequestHandler):
             elif path in {
                 "/api/process-views/state", "/api/process-views/mode",
                 "/api/process-views/instruments/active", "/api/operating-envelopes/current",
-                "/api/movement-conditions/current", "/api/the-project-and-the-note",
+                "/api/movement-conditions/current", "/api/sealed-projects/current/note",
                 "/api/diagnostic-programs/current", "/api/firmware-images/current",
                 "/api/sealed-projects/current/viewer",
                 "/api/signature-requests",
@@ -1094,7 +1094,7 @@ class Handler(BaseHTTPRequestHandler):
             }
         elif ROLE == "engineering":
             records = {
-                "/api/the-project-and-the-note": ("project_bundle_observed", PROJECT_BUNDLE, "the-project-and-the-note"),
+                "/api/sealed-projects/current/note": ("project_bundle_observed", PROJECT_BUNDLE, "sealed-project-note-read"),
             }
         else:
             records = {}
@@ -1109,7 +1109,7 @@ class Handler(BaseHTTPRequestHandler):
         extra: dict[str, object] = {}
         if path == "/api/process-views/instruments/active":
             extra["engineering_context"] = authored_asset("me-engineering-note-01-1")
-        elif path == "/api/the-project-and-the-note":
+        elif path == "/api/sealed-projects/current/note":
             extra["handover_context"] = authored_asset("me-project-handover-01")
         self.accepted(action, record, extra=extra)
 

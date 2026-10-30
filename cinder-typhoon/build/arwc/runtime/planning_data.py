@@ -42,7 +42,7 @@ PROCESS_PATHS = {
     "/api/process-views/instruments/active", "/api/observations",
     "/api/tag-exports/current", "/api/tag-scales/current",
     "/api/tag-scales/current/history", "/api/outlet-groups/current/instruments",
-    "/api/the-project-and-the-note", "/api/vault-access",
+    "/api/sealed-projects/current/note", "/api/vault-access",
     "/api/operating-envelopes/current", "/api/movement-conditions/current",
     "/api/commands", "/api/practice-sequences",
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
@@ -1176,7 +1176,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         data = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
         outbound = urllib.request.Request(
-            "https://10.77.62.20/api/from-the-report-to-the-live-feed",
+            "https://10.77.62.20/api/integration/process-session",
             data=data,
             headers={
                 "Authorization": "Bearer " + supplied,

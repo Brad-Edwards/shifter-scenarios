@@ -63,7 +63,7 @@ PROCESS_PATHS = {
     "/api/process-views/instruments/active", "/api/observations",
     "/api/tag-exports/current", "/api/tag-scales/current",
     "/api/tag-scales/current/history", "/api/outlet-groups/current/instruments",
-    "/api/the-project-and-the-note", "/api/vault-access",
+    "/api/sealed-projects/current/note", "/api/vault-access",
     "/api/operating-envelopes/current", "/api/movement-conditions/current",
     "/api/commands", "/api/practice-sequences",
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
@@ -329,7 +329,7 @@ class Handler(BaseHTTPRequestHandler):
         path = urlsplit(self.path).path
         if (self.headers.get("Host", "").split(":", 1)[0] in
                 {"field-gateway.arwc.test", "process-read.arwc.test"} and
-                path in PROCESS_PATHS | {"/api/the-service-that-replaced-it"}):
+                path in PROCESS_PATHS | {"/api/instruments/current"}):
             self.proxy_field_gateway()
             return
         state = json.loads(STATE.read_text(encoding="utf-8"))
@@ -361,7 +361,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         if (self.headers.get("Host", "").split(":", 1)[0] in
                 {"field-gateway.arwc.test", "process-read.arwc.test"} and
-                path in PROCESS_PATHS | {"/api/a-fresh-reading-from-the-field"}):
+                path in PROCESS_PATHS | {"/api/readings/current"}):
             self.proxy_field_gateway()
             return
         if not self.corporate_authorized():

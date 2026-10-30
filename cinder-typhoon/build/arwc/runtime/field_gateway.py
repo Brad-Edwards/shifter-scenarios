@@ -27,7 +27,7 @@ PROCESS_PATHS = {
     "/api/process-views/instruments/active", "/api/observations",
     "/api/tag-exports/current", "/api/tag-scales/current",
     "/api/tag-scales/current/history", "/api/outlet-groups/current/instruments",
-    "/api/the-project-and-the-note", "/api/vault-access",
+    "/api/sealed-projects/current/note", "/api/vault-access",
     "/api/operating-envelopes/current", "/api/movement-conditions/current",
     "/api/commands", "/api/practice-sequences",
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
@@ -250,7 +250,7 @@ class Handler(BaseHTTPRequestHandler):
         state = json.loads(STATE.read_text(encoding="utf-8"))
         state["manifest_observed"] = True
         atomic_json(STATE, state)
-        self.send_json(200, {"audit_id": append_audit("the-service-that-replaced-it", MANIFEST), "record": MANIFEST})
+        self.send_json(200, {"audit_id": append_audit("instrument-read", MANIFEST), "record": MANIFEST})
 
     def do_POST(self) -> None:
         if urlsplit(self.path).path in PROCESS_PATHS:
@@ -320,7 +320,7 @@ class Handler(BaseHTTPRequestHandler):
         })
         os.chown(OT_EVIDENCE, -1, grp.getgrnam("arwc-ot-read").gr_gid)
         os.chmod(OT_EVIDENCE, 0o640)
-        self.send_json(201, {"audit_id": append_audit("a-fresh-reading-from-the-field", result),
+        self.send_json(201, {"audit_id": append_audit("reading-read", result),
                              "record": result, "process_session": token})
 
 

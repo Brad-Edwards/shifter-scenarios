@@ -28,7 +28,7 @@ PROCESS_PATHS = {
     "/api/process-views/instruments/active", "/api/observations",
     "/api/tag-exports/current", "/api/tag-scales/current",
     "/api/tag-scales/current/history", "/api/outlet-groups/current/instruments",
-    "/api/the-project-and-the-note", "/api/vault-access",
+    "/api/sealed-projects/current/note", "/api/vault-access",
     "/api/operating-envelopes/current", "/api/movement-conditions/current",
     "/api/commands", "/api/practice-sequences",
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
@@ -90,7 +90,7 @@ def append_audit(result: dict[str, object]) -> str:
         "time": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "tenant": "arwc",
         "principal": "integration-reader-principal",
-        "action": "from-the-report-to-the-live-feed",
+        "action": "process-session-integration",
         "object": result["record_id"],
         "revision": result["revision"],
         "result_digest": hashlib.sha256(
@@ -282,7 +282,7 @@ class Handler(BaseHTTPRequestHandler):
                 connection.close()
             self.send_json(response.status, result)
             return
-        if urlsplit(self.path).path != "/api/from-the-report-to-the-live-feed":
+        if urlsplit(self.path).path != "/api/integration/process-session":
             self.proxy_historian()
             return
         if self.headers.get("X-ARWC-Tenant", "arwc") != "arwc":

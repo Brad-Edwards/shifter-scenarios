@@ -731,11 +731,11 @@ class Handler(BaseHTTPRequestHandler):
             self.query(request)
         elif path == "/api/archive-operations":
             self.helper(request)
-        elif path == "/api/reassemble-the-exchange":
+        elif path == "/api/replay-exchange/current":
             self.reassemble_exchange(request)
         elif path == "/api/collectors/handover":
             self.reconstruct_collector(request)
-        elif path == "/api/where-the-contractor-put-it":
+        elif path == "/api/collection-artifacts/current":
             self.recover_collector_config(request)
         elif path == "/api/bundles/current/collection-policy":
             self.reconstruct_protection(request)
@@ -1048,7 +1048,7 @@ class Handler(BaseHTTPRequestHandler):
         result = dict(EXCHANGE)
         result["instruction_sha256"] = hashlib.sha256(data.rstrip()).hexdigest()
         self.accepted(
-            "reassemble-the-exchange", result, "corporate-reader-principal",
+            "replay-exchange-read", result, "corporate-reader-principal",
             extra={"collector": instruction},
         )
 
@@ -1083,7 +1083,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         state["collector_config_recovered"] = True
         save_state(state)
-        self.accepted("where-the-contractor-put-it", COLLECTOR_CONFIG, "corporate-reader-principal")
+        self.accepted("collection-artifact-read", COLLECTOR_CONFIG, "corporate-reader-principal")
 
     def query(self, request: dict[str, object]) -> None:
         operation = request.get("operation")
