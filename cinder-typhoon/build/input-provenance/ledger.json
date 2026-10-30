@@ -844,36 +844,38 @@
             ],
             "locator": "named evidence fields carried into a later request by this method",
             "source": "accepted response chain in test_w33_forecast_scheduling"
+          },
+          {
+            "class": "normal_interface_or_artifact",
+            "inputs": [
+              "demand_m3s",
+              "reference_release_m3s",
+              "reference_alternate_m3s",
+              "checkpoint",
+              "policy_format"
+            ],
+            "locator": "GET process.schedule-window in test_w33_forecast_scheduling",
+            "source": "process service /api/schedule-windows/current GET endpoint"
+          },
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "schedule_result record_id"
+            ],
+            "locator": "schedule-submit response record.record_id in W33.3",
+            "source": "process.schedule-submit POST response"
           }
         ],
-        "inventory_sha256": "9786d62378b56566968fa8c8caf5ca793496d99cdd05c3b3cade98b97152e1dd",
+        "inventory_sha256": "43eac4d28b59f2dab6f61654d794a021310b03dbca1d6afcb063dffa3ba7a353",
         "profile": "arwc",
-        "request_count": 8,
+        "request_count": 9,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "9786d62378b56566968fa8c8caf5ca793496d99cdd05c3b3cade98b97152e1dd",
+            "fingerprint": "43eac4d28b59f2dab6f61654d794a021310b03dbca1d6afcb063dffa3ba7a353",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
-          },
-          {
-            "fingerprint": "9786d62378b56566968fa8c8caf5ca793496d99cdd05c3b3cade98b97152e1dd",
-            "input": "scheduler checkpoint",
-            "issue": 223,
-            "reason": "The checkpoint is not supplied by a participant-visible record"
-          },
-          {
-            "fingerprint": "9786d62378b56566968fa8c8caf5ca793496d99cdd05c3b3cade98b97152e1dd",
-            "input": "forecast demand and release model vectors",
-            "issue": 223,
-            "reason": "The model vectors and bounds exist only in the known-solution test"
-          },
-          {
-            "fingerprint": "9786d62378b56566968fa8c8caf5ca793496d99cdd05c3b3cade98b97152e1dd",
-            "input": "feedback policy format and gains",
-            "issue": 223,
-            "reason": "The accepted policy contract is not participant-visible"
           }
         ]
       },
@@ -2157,12 +2159,12 @@
     },
     "build/arwc/runtime/process_services.py": {
       "citations": [],
-      "comparison_count": 239,
-      "inventory_sha256": "b30e097fb57b5924aaafab2cea1bbc19daee6c54cec45ccd710710a766faf43b",
+      "comparison_count": 240,
+      "inventory_sha256": "b4f88bfa362faac99d41144a8ec16703e2fd0d17895a8e9bb703ae9e6469eb81",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "b30e097fb57b5924aaafab2cea1bbc19daee6c54cec45ccd710710a766faf43b",
+          "fingerprint": "b4f88bfa362faac99d41144a8ec16703e2fd0d17895a8e9bb703ae9e6469eb81",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"

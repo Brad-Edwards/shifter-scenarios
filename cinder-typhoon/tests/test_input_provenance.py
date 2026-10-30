@@ -32,7 +32,7 @@ class ProvenanceInventoryTests(unittest.TestCase):
             for methods in inventory.values()
             for method in methods.values()
         )
-        self.assertEqual(expected, 391)
+        self.assertEqual(expected, 392)
         self.assertEqual(self.report["summary"]["request_count"], expected)
         self.assertEqual(len(self.report["requests"]), expected)
         self.assertEqual(
@@ -42,7 +42,7 @@ class ProvenanceInventoryTests(unittest.TestCase):
     def test_every_fixed_runtime_comparison_is_in_the_ratcheted_inventory(self) -> None:
         inventory = provenance.runtime_comparison_inventory()
         expected = sum(item["comparison_count"] for item in inventory.values())
-        self.assertEqual(expected, 1164)
+        self.assertEqual(expected, 1165)
         self.assertEqual(self.report["summary"]["runtime_comparison_count"], expected)
         self.assertEqual(len(self.report["runtime_comparisons"]), expected)
 
@@ -75,7 +75,6 @@ class ProvenanceInventoryTests(unittest.TestCase):
 
     def test_known_author_only_inputs_are_explicit_failures(self) -> None:
         cases = {
-            ("arwc", "test_w33_forecast_scheduling"): {223},
         }
         for (phase, method), expected in cases.items():
             with self.subTest(phase=phase, method=method):
