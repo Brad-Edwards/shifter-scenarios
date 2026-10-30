@@ -33,11 +33,12 @@
       "title": "Participant-boundary known-solution acceptance",
       "purpose": "Verify that an authored solution sequence is executable from the participant account and network boundary.",
       "method": "automated",
-      "implementation_status": "complete",
-      "candidate_status": "not_run",
+      "implementation_status": "partial",
+      "candidate_status": "failed",
       "evidence_visibility": "operator_only",
       "evidence": [
         "build/participant-runner/run.py",
+        "build/card-coverage/registry.json",
         "build/training/tests/test_known_solution_live.py",
         "build/keplerops/tests/test_known_solution_live.py",
         "build/arwc/tests/test_known_solution_live.py"
@@ -54,7 +55,7 @@
         "difficulty",
         "duration"
       ],
-      "blocking_issues": [232]
+      "blocking_issues": [212, 213, 214, 215, 219, 220, 221, 222, 226, 232]
     },
     "provenance_and_surface": {
       "title": "Input provenance and participant-surface checks",

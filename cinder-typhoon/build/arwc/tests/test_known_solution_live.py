@@ -672,6 +672,8 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="W03.1 an annex left with the order"):
             status, response = request(f"{base}/api/an-annex-left-with-the-order", expected=200)
             record = response["record"]
+            self.assertRegex(record["record_id"], r"^ANN-")
+            self.assertRegex(record["process_data_handover"], r"^PDH-")
             self.evidence["process_data_handover"] = record["process_data_handover"]
 
         with self.subTest(card="W03.2 a reference outside the order"):
@@ -702,6 +704,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["archive_token"] = record["enrollment_token"]
             self.evidence["protected_record"] = record["protected_record"]
             self.evidence["planner_target"] = record["planner_handover_target"]
+            self.assertRegex(record["record_id"], r"^AWF-")
+            self.assertEqual(record["enrollment_profile"]["use"], "one time")
+            self.assertNotEqual(record["protected_record"], record["planner_handover_target"])
 
         with self.subTest(card="W04.2 the query behind the identity"):
             # The enrollment copies the caller-supplied OU into the backend query;
@@ -801,6 +806,8 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             record = response["record"]
             self.evidence["report_view"] = record["view"]
             self.evidence["quote"] = record["identifier_quote"]
+            self.assertEqual(record["policy"], "SELECT only")
+            self.assertEqual(record["ordinary_request"]["report_name"], record["view"])
 
         with self.subTest(card="W07.2 read beyond the allowed statement"):
             # The ordinary quoted-identifier request reveals the exact column list.
@@ -843,6 +850,8 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["ledger_record"] = ledger["record_id"]
             self.evidence["planning_window"] = ledger["planning_window"]
             self.evidence["committed_ml"] = ledger["committed_ml"]
+            self.assertRegex(ledger["record_id"], r"^ALLOC-")
+            self.assertGreater(ledger["committed_ml"], 0)
 
         with self.subTest(card="W09.2 the meter's own account"):
             status, response = request(f"{planning}/api/the-meter-s-own-account", headers=planner, expected=200)
@@ -897,6 +906,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["source_set"] = record["record_id"]
             self.evidence["source_revision"] = record["revision"]
             self.evidence["source_district"] = record["district"]
+            self.assertEqual(record["assistant"], "district-report-assistant")
+            self.assertGreaterEqual(len(record["sources"]), 2)
+            self.assertTrue(all(source["status"] == "current" for source in record["sources"]))
 
         with self.subTest(card="W10.2 another district in the results"):
             # The handler checks the role and the exact source set/revision, but
@@ -936,6 +948,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             magic = bytes.fromhex(contract["magic"].replace(" ", ""))
             major, minor = (int(part) for part in contract["protocol"].rsplit(" ", 1)[1].split("."))
             version = bytes([0, 0, minor, major])
+            self.assertEqual(len(magic), 4)
+            self.assertEqual(len(version), 4)
+            self.assertNotEqual(contract["relation"], contract["association"])
             self.evidence["bolt"] = {"magic": magic, "version": version, "relation": contract["relation"], "association": contract["association"]}
 
         with self.subTest(card="W11.2 an exchange the backend accepts"):
@@ -975,6 +990,8 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["appointment_window"] = appointment["window"]
             self.evidence["appointment_inspection"] = appointment["inspection"]
             self.evidence["appointment_asset"] = appointment["asset"]
+            self.assertEqual(appointment["window"]["day"], "Thursday")
+            self.assertRegex(appointment["record_id"], r"^APT-")
 
         with self.subTest(card="W13.2 who is expected at the gate"):
             status, response = request(f"{base}/api/who-is-expected-at-the-gate", expected=200)
@@ -982,6 +999,8 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["roster_id"] = roster["record_id"]
             self.evidence["contractor_identity"] = roster["identity"]
             self.evidence["contractor_assignment"] = roster["assignment"]
+            self.assertEqual(roster["inspection"], self.evidence["appointment_inspection"])
+            self.assertNotEqual(roster["identity"], appointment["attendee"])
 
         with self.subTest(card="W13.3 an appointment we do not own"):
             # The expected caller organization is implied by the gate roster's
@@ -1252,7 +1271,10 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W18.1 the tag export"):
             status, export = request(f"{base}/api/the-tag-export", token=session, expected=200)
-            self.evidence["tag_export"] = export["record"]["record_id"]
+            record = export["record"]
+            self.assertEqual(record["project"], self.evidence["project"])
+            self.assertGreaterEqual(len(record["tags"]), 6)
+            self.evidence["tag_export"] = record["record_id"]
 
         with self.subTest(card="W18.2 the scale kept elsewhere"):
             status, scale = request(f"{base}/api/the-scale-kept-elsewhere", token=session, expected=200)
@@ -1289,6 +1311,8 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             record = response["record"]
             self.evidence["workspace_claim"] = record["workspace_claim"]
             self.evidence["deployment_note"] = record["deployment_note"]
+            self.assertTrue(record["deployment_note"]["signed"])
+            self.assertNotEqual(record["workspace_claim"], record["deployment_note"]["manifest_project"])
 
         with self.subTest(card="W21.2 which project is running"):
             note = self.evidence["deployment_note"]
@@ -1311,6 +1335,8 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="W25.1 the operating envelope"):
             status, envelope = request(f"{base}/api/the-operating-envelope", token=session, expected=200)
             self.evidence["envelope"] = envelope["record"]
+            self.assertEqual(envelope["record"]["outlet_group"], self.evidence["outlet_group"])
+            self.assertGreater(envelope["record"]["aggregate_max_m3s"], max(envelope["record"]["per_gate_m3s"]))
 
         with self.subTest(card="W25.2 conditions before movement"):
             status, conditions = request(f"{base}/api/conditions-before-movement", token=session, expected=200)
@@ -1538,7 +1564,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         def post(path: str, body: dict, *, expected: int | None = None) -> tuple[int, dict]:
             return request(f"{base}{path}", method="POST", token=session, body=body, expected=expected)
 
-        with self.subTest(card="W23.1 a measurement with side effects (baseline)"):
+        with self.subTest(step="W23 baseline before the scored action"):
             status, _ = post("/api/a-measurement-with-side-effects", {"estimator": estimator, "mode": "baseline"}, expected=201)
 
         with self.subTest(card="W23.1 a measurement with side effects (exploit)"):
@@ -1624,7 +1650,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             status, response = post("/api/which-answer-comes-next", {"record_id": contract["engineering_record"], "prediction_set": "SELECTOR-CRR-R4", "predictions": predictions}, expected=201)
             self.assertEqual(response["record"]["cases_accepted"], len(predictions))
 
-        with self.subTest(card="W24.3/W24.4 the Bleichenbacher recovery and the forged signature"):
+        with self.subTest(card="W24.3 the diagnostic evidence bundle"):
             contract = self.evidence["w24_contract"]
             site_code = self.evidence["asset_bundle"]["asset"].split("-")[1]
             project_revision = int(self.evidence["w22_project"].rsplit("R", 1)[1])
@@ -1761,6 +1787,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             scalar = (nonce + challenge * recovered) % scalar_l
             forged = {"export_request_b64": base64.b64encode(message).decode(), "R": r_encoded.hex(), "s": scalar.to_bytes(32, "little").hex()}
 
+        with self.subTest(card="W24.4 signed by someone who never approved it"):
             status, _ = post("/api/signed-by-someone-who-never-approved-it", dict(forged, s=(scalar + 1).to_bytes(32, "little").hex()))
             self.assertEqual(status, 409)
             status, response = post("/api/signed-by-someone-who-never-approved-it", forged, expected=201)
@@ -1860,6 +1887,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["w12_object"] = record["record_id"]
             self.evidence["w12_archive_id"] = record["archive"]
             self.evidence["w12_build_id"] = record["collector_build_id"]
+            self.assertEqual(record["format"], "AQTN1")
+            self.assertEqual(record["digest"], "SHA-256")
+            self.assertNotEqual(record["record_id"], record["archive"])
 
         with self.subTest(card="W12.2 how the collection was protected"):
             frame, content_type = get_bytes(f"{base}/api/artifacts/{self.evidence['w12_object']}.aqtn")

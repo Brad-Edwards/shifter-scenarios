@@ -24,6 +24,10 @@ class QALayerContractTests(unittest.TestCase):
             status["layers"]["blind_human_agent_playtest"]["candidate_status"],
             "passed",
         )
+        known_solution = status["layers"]["known_solution_acceptance"]
+        self.assertEqual(known_solution["candidate_status"], "failed")
+        self.assertIn("build/card-coverage/registry.json", known_solution["evidence"])
+        self.assertIn(226, known_solution["blocking_issues"])
 
     def test_schema_is_machine_readable(self) -> None:
         schema = json.loads((TESTS / "qa-status.schema.json").read_text())

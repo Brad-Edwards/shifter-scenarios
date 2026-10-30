@@ -49,4 +49,4 @@ gcloud compute ssh "$instance" \
   --zone "$zone" \
   --account "$account" \
   --tunnel-through-iap \
-  --command "cd '$remote_root' && sudo python3 build/input-provenance/provenance.py --require-complete --output '/var/tmp/cinder-input-provenance-$phase.json' && sudo python3 build/participant-surface/run.py --phase '$phase' && sudo python3 build/participant-runner/run.py --phase '$phase' --operation '$operation' --candidate '$remote_candidate' --reset-identity '$reset_identity' --report '$remote_report'$extra"
+  --command "cd '$remote_root' && sudo python3 build/card-coverage/coverage.py --require-complete --output '/var/tmp/cinder-card-coverage-$phase.json' && sudo python3 build/input-provenance/provenance.py --require-complete --output '/var/tmp/cinder-input-provenance-$phase.json' && sudo python3 build/participant-surface/run.py --phase '$phase' && sudo python3 build/participant-runner/run.py --phase '$phase' --operation '$operation' --candidate '$remote_candidate' --reset-identity '$reset_identity' --report '$remote_report'$extra"

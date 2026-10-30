@@ -1334,13 +1334,13 @@
             "source": "accepted response chain in test_k16_schedule_runtime"
           }
         ],
-        "inventory_sha256": "9dfcf226d9ae4062b9872cd6afcb8f8d6d0188b8f21a704f5e66b803ab1594fa",
+        "inventory_sha256": "1ce6496ca4b11538c5e4e29f7b8e88767a5049a1d4c70047971e0d76b87dde67",
         "profile": "keplerops",
         "request_count": 5,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "9dfcf226d9ae4062b9872cd6afcb8f8d6d0188b8f21a704f5e66b803ab1594fa",
+            "fingerprint": "1ce6496ca4b11538c5e4e29f7b8e88767a5049a1d4c70047971e0d76b87dde67",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -1418,13 +1418,13 @@
             "source": "accepted response chain in test_k19_archive_delegation"
           }
         ],
-        "inventory_sha256": "b2623b898b32d1a7fc213c8150032ada30757df8e7e7eea7dca45afc50c08ac3",
+        "inventory_sha256": "96b13c4ae3c1724337ce29d39db69371c35a99cd8f6582cc93671ae84f5d6d81",
         "profile": "keplerops",
-        "request_count": 4,
+        "request_count": 7,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "b2623b898b32d1a7fc213c8150032ada30757df8e7e7eea7dca45afc50c08ac3",
+            "fingerprint": "96b13c4ae3c1724337ce29d39db69371c35a99cd8f6582cc93671ae84f5d6d81",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -2273,12 +2273,12 @@
     },
     "build/keplerops/runtime/registry.py": {
       "citations": [],
-      "comparison_count": 43,
-      "inventory_sha256": "03ac4f7a10b3b51197e64a5f38efc2fe706df59ebbf8e52b7c510057da577665",
+      "comparison_count": 45,
+      "inventory_sha256": "d7ab96ecb7fdb36457cd9eb5364a85a29f9b6c976f20002d77a5e8484eda84a2",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "03ac4f7a10b3b51197e64a5f38efc2fe706df59ebbf8e52b7c510057da577665",
+          "fingerprint": "d7ab96ecb7fdb36457cd9eb5364a85a29f9b6c976f20002d77a5e8484eda84a2",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"

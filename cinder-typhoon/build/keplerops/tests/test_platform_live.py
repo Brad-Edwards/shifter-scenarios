@@ -132,6 +132,10 @@ class PlatformLiveTest(unittest.TestCase):
         relation = call_negotiate("identity.keplerops.test", "/api/service-relations/svc-release-admin")
         managed = call_negotiate("staff.keplerops.test", "/api/managed-identities/svc-release-admin/session", method="POST", body={}, expected=201)
         self.assertEqual((archive["service_relation"], relation["service_id"], managed["principal"]), ("svc-release-admin", "svc-release-admin", "svc-release-admin"))
+        denied = call("packages.keplerops.test", "/api/release-administration/session", auth="ordinary-developer", expected=403)
+        self.assertEqual(denied["error"], "release_administration_denied")
+        administration = call("packages.keplerops.test", "/api/release-administration/session", auth=managed["token"])
+        self.assertEqual((administration["principal"], administration["approval_scope"]), ("svc-release-admin", "fieldlink-connector-rehearsal"))
         self.assertEqual(delegated["authentication"], "SPNEGO")
 
     def test_05_assistant_retrieval_action_and_completion(self) -> None:

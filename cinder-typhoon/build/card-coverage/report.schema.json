@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/card-coverage/report.schema.json",
+  "title": "Cinder Typhoon card coverage report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "report_kind", "overall_status", "summary", "findings", "cards"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "report_kind": {"const": "card-coverage"},
+    "overall_status": {"enum": ["complete", "unresolved"]},
+    "summary": {"type": "object"},
+    "findings": {"type": "array"},
+    "cards": {"type": "array"}
+  }
+}
