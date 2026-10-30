@@ -109,11 +109,11 @@ start_fresh() {
 
 start_fresh
 if [[ ${CINDER_PRESERVE_DELIVERY:-0} != 1 ]]; then
-  python3 tests/test_participant_journey_live.py -v
+  python3 tests/test_known_solution_live.py -v
 
-  # The journey intentionally consumes single-use state. Give the retained
-  # contract suites their own authored state. A cross-segment paired delivery
-  # is one-shot and is exercised by the journey alone, so it skips this reset.
+  # Known-solution acceptance consumes single-use state. Give the contract
+  # suites their own authored state. A cross-segment paired delivery is one-shot
+  # and is exercised by known-solution acceptance alone, so it skips this reset.
   start_fresh
 fi
 

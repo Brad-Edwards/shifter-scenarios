@@ -104,7 +104,7 @@ open where the contract explicitly permits equivalent behavior.
 | KHB-07 | Cloud, data and workload: K13-K16, K30-K31 | Role exchange, export, scheduling, backup recovery and runtime-identity paths work and retain independently observed state. |
 | KHB-08 | Assistant: K21-K24 | The pinned model revision, deterministic decoding, retrieval defects, tool action and completion job behave as specified within bounded resources. |
 | KHB-09 | Customer boundary: K26-K27 and bounded `a-connector` | Package activation/rollback and diagnostic delivery cross the supplier/customer boundary with both sides' receipts. |
-| KHB-10 | Whole-phase integration and participant play pass | All 104 paths, cross-wave joins, persistence, isolation and fourth-wall checks pass from `k-dev`; Terraform is converged and documented. |
+| KHB-10 | Whole-phase contract and known-solution acceptance | The encoded 104-card sequence, cross-wave joins, persistence, isolation and fourth-wall checks pass from `k-dev`; Terraform is converged and documented. This does not establish blind discovery or difficulty. |
 
 KHB-04 may be split into source, CI and registry sub-waves; KHB-08 may use a
 larger carrier shape only when the pinned model's measured memory requirement
@@ -116,13 +116,15 @@ demands it. A wave is not complete merely because its services start.
    RAE parse/composition/instantiation/compilation gate when SDL changes.
 2. Service-level normal, malformed, negative-authorization, replay,
    cross-tenant and persistence tests.
-3. Participant-path tests from `k-dev`, using only published in-world material.
+3. Known-solution acceptance from `k-dev`, using only published in-world
+   material and reporting only known-path executability.
 4. Worker confinement, target-network isolation, resource-limit and cleanup
    checks for every execution mechanic.
 5. Restart tests proving retained state and immutable history survive without
    inventing an in-world reset.
-6. A manual author play pass for the completed slice; later waves rerun prior
-   entry and downstream joins as integration regressions.
+6. A manual author smoke test for the completed slice; it is not a blind
+   playtest. Later waves rerun prior entry and downstream joins as integration
+   regressions.
 
 ## Progress ledger
 
@@ -138,7 +140,7 @@ demands it. A wave is not complete merely because its services start.
 | KHB-07 | Build and validate cloud/data/workload slice | Complete | K13-K16 and K30-K31 implement authority exchange, coherent export state, recovery namespaces, and short-lived networkless workload execution. |
 | KHB-08 | Build and validate assistant slice | Complete | K21-K24 use the exact local `Qwen2.5-3B-Instruct` revision with deterministic decoding, retained retrieval state, a cross-service tool action, and bounded completion state. |
 | KHB-09 | Build and validate connector boundary | Complete | The package and support routes use distinct mTLS identities across the one-flow private transit; Alterra performs bounded destination execution and owns the receipts and audit. |
-| KHB-10 | Full integration and participant play pass | Complete | All 104 paths, both earned delivery routes, persistence, isolation, security-posture inspection, clean rebuild, and destructive pristine restoration passed. |
+| KHB-10 | Full contract and known-solution acceptance | Complete | The encoded 104-card sequence, both earned delivery routes, persistence, isolation, security-posture inspection, clean rebuild, and destructive pristine restoration passed on the recorded mutable range. Blind discovery and difficulty remain untested. |
 
 ## Current decisions and blockers
 
@@ -167,7 +169,8 @@ demands it. A wave is not complete merely because its services start.
 - 2026-09-26: K01-K03 are implemented with actual retained Git history,
   Chromium SQLite state, a normalization-order importer flaw, isolated report
   execution and a non-executing staged reconstruction/callback flow. The same
-  seven participant-path suites pass locally and on the private GCP carrier.
+  seven participant-boundary black-box suites pass locally and on the private
+  GCP carrier.
 - 2026-09-26: The GCP carrier is `cinder-keplerops-golden` at private carrier
   address `10.77.49.2`, with no external address. Target listeners remain on
   internal Docker networks and publish no carrier ports; operator entry is IAP
@@ -175,8 +178,9 @@ demands it. A wave is not complete merely because its services start.
 - 2026-09-26: K05-K08 use exact deterministic registry/workstation archives,
   immutable package versions, scoped publication, a real npm-compatible
   package executed in a networkless Node worker, the FKI1 parser discrepancy,
-  and AES-256-GCM/HKDF entitlement fixtures. All eight participant-path suites
-  pass locally and on GCP alongside the K01-K03 regression suite.
+  and AES-256-GCM/HKDF entitlement fixtures. All eight participant-boundary
+  black-box suites pass locally and on GCP alongside the K01-K03 regression
+  suite.
 - 2026-09-26: TLS material rotation now recreates every certificate-consuming
   container atomically; a GCP redeploy test caught and closed the former
   mixed-generation certificate window.

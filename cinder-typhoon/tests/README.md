@@ -1,4 +1,37 @@
-# SDL validation
+# Cinder Typhoon QA and SDL validation
+
+## Four evidence layers
+
+QA results are reported in four separate layers. No automated layer may be
+reported as evidence of human discovery, fairness, understanding, difficulty,
+or duration.
+
+| Layer | Evidence | What a pass means |
+| --- | --- | --- |
+| Service contract tests | Operator-side service and component suites | Normal, accepted, denied, persistence, isolation, and audit behavior match the contract. |
+| Known-solution acceptance | `build/*/tests/test_known_solution_live.py` | The encoded solution sequence works from the participant boundary. |
+| Provenance and participant surface | Participant-surface manifests and per-input provenance | Starting visibility and every solution input have an allowed participant-visible origin. |
+| Blind human-plus-agent playtests | Fresh participants using event agents and support rules | Measured discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution. |
+
+The machine-readable current status and schema are `qa-status.json` and
+`qa-status.schema.json`. Print and validate the status with:
+
+```sh
+python3 cinder-typhoon/tests/report_qa_status.py
+```
+
+The release form of the check deliberately fails until every layer has passing
+evidence from the same immutable candidate:
+
+```sh
+python3 cinder-typhoon/tests/report_qa_status.py --require-release-qualified
+```
+
+The known-solution suites contain solution algorithms and expected assertions.
+They are operator-only, are not copied into participant images, and do not
+substitute for the blind playtests tracked by issue #229.
+
+## SDL validation
 
 From the repository root, create an isolated Python 3.12+ environment and install
 the matching upstream releases:

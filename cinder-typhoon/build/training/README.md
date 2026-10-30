@@ -29,12 +29,14 @@ The four stateful live suites are intentionally a first-build acceptance pass:
 they exercise single-redemption and append-only behavior and therefore require
 fresh named volumes if they are to be repeated from their initial conditions.
 
-The automated materialization gate and an initial participant-side play pass
-have passed. The play pass followed only the published workstation and desk
-materials through all 16 Training cards, including a fresh registry-to-consumer
-publication and the complete 200 L practice transfer. This hand build is the
-current Training golden range; further observed playtest issues must still be
-reconciled to the SDL and this implementation before any bake is taken.
+The automated materialization gate and operator-authored known-solution
+acceptance passed on the then-current mutable golden. The encoded sequence used
+the published workstation and desk materials across all 16 Training cards,
+including a fresh registry-to-consumer publication and the complete 200 L
+practice transfer. That result establishes known-path executability, not blind
+human discovery, understanding, difficulty, or duration. The current golden
+must pass the participant-surface, immutable-candidate, and blind-playtest gates
+before any event bake is accepted.
 
 Provision or reconcile the private carrier with:
 

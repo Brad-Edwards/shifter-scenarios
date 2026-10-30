@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "overall_status": "not_release_qualified",
+  "layers": {
+    "service_contract": {
+      "title": "Service contract tests",
+      "purpose": "Verify normal, accepted, denied, persistence, isolation, and audit behavior at service boundaries.",
+      "method": "automated",
+      "implementation_status": "complete",
+      "candidate_status": "not_run",
+      "evidence_visibility": "operator_only",
+      "evidence": [
+        "build/training/tests",
+        "build/keplerops/tests",
+        "build/arwc/tests"
+      ],
+      "supports": [
+        "service behavior",
+        "denial behavior",
+        "persistence",
+        "audit ownership"
+      ],
+      "does_not_support": [
+        "human discovery",
+        "fairness",
+        "participant understanding",
+        "difficulty",
+        "duration"
+      ],
+      "blocking_issues": [232]
+    },
+    "known_solution_acceptance": {
+      "title": "Participant-boundary known-solution acceptance",
+      "purpose": "Verify that an authored solution sequence is executable from the participant account and network boundary.",
+      "method": "automated",
+      "implementation_status": "complete",
+      "candidate_status": "not_run",
+      "evidence_visibility": "operator_only",
+      "evidence": [
+        "build/training/tests/test_known_solution_live.py",
+        "build/keplerops/tests/test_known_solution_live.py",
+        "build/arwc/tests/test_known_solution_live.py"
+      ],
+      "supports": [
+        "known-path executability",
+        "participant-boundary reachability",
+        "expected completion evidence"
+      ],
+      "does_not_support": [
+        "human discovery",
+        "fairness",
+        "participant understanding",
+        "difficulty",
+        "duration"
+      ],
+      "blocking_issues": [208, 232]
+    },
+    "provenance_and_surface": {
+      "title": "Input provenance and participant-surface checks",
+      "purpose": "Verify what is visible at the participant boundary and where every solution-path input originates.",
+      "method": "automated",
+      "implementation_status": "partial",
+      "candidate_status": "failed",
+      "evidence_visibility": "operator_only",
+      "evidence": [
+        "build/participant-surface/manifests/training.json",
+        "build/participant-surface/manifests/keplerops.json",
+        "build/participant-surface/manifests/arwc.json"
+      ],
+      "supports": [
+        "participant-visible boundary",
+        "unexpected disclosure detection",
+        "solution-input provenance"
+      ],
+      "does_not_support": [
+        "human discovery",
+        "fairness",
+        "participant understanding",
+        "difficulty",
+        "duration"
+      ],
+      "blocking_issues": [209, 232]
+    },
+    "blind_human_agent_playtest": {
+      "title": "Blind human-plus-agent playtests",
+      "purpose": "Measure discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution with fresh participants.",
+      "method": "human_plus_agent",
+      "implementation_status": "not_started",
+      "candidate_status": "not_run",
+      "evidence_visibility": "operator_only",
+      "evidence": [],
+      "supports": [
+        "human discovery",
+        "fairness",
+        "participant understanding",
+        "difficulty",
+        "duration"
+      ],
+      "does_not_support": [
+        "service-contract completeness",
+        "immutable build identity"
+      ],
+      "blocking_issues": [229]
+    }
+  }
+}
