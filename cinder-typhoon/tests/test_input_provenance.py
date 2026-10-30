@@ -32,7 +32,7 @@ class ProvenanceInventoryTests(unittest.TestCase):
             for methods in inventory.values()
             for method in methods.values()
         )
-        self.assertEqual(expected, 390)
+        self.assertEqual(expected, 391)
         self.assertEqual(self.report["summary"]["request_count"], expected)
         self.assertEqual(len(self.report["requests"]), expected)
         self.assertEqual(

@@ -1548,15 +1548,23 @@
             ],
             "locator": "named evidence fields carried into a later request by this method",
             "source": "accepted response chain in test_k29_release_lineage"
+          },
+          {
+            "class": "normal_interface_or_artifact",
+            "inputs": [
+              "pending_release version"
+            ],
+            "locator": "packages.metadata response field pending_release in test_k29_release_lineage",
+            "source": "packages.keplerops.test @keplerops/fieldlink-connector metadata"
           }
         ],
-        "inventory_sha256": "851a9619d39a79d13a367cd8dfd70e67150d526c62e4cf85f5d0acafac3fcee6",
+        "inventory_sha256": "6d8bf04bbaa35eede1fc682aab768d8e0a9a4c998c3a3fc5e373200a7c3a5fd7",
         "profile": "keplerops",
-        "request_count": 6,
+        "request_count": 7,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "0ffdc4e1b4079bfb4f5760676685a352552a43ef9325cacaed0a02f4ea41d27f",
+            "fingerprint": "6d8bf04bbaa35eede1fc682aab768d8e0a9a4c998c3a3fc5e373200a7c3a5fd7",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
