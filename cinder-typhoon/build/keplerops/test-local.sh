@@ -28,6 +28,7 @@ start_fresh() {
 }
 
 start_fresh
+python3 "$ROOT/../participant-surface/run.py" --phase keplerops
 python3 tests/test_participant_journey_live.py -v
 
 # The journey intentionally consumes single-use state. Give the retained

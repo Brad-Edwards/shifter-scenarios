@@ -1,0 +1,496 @@
+{
+  "schema_version": 1,
+  "manifest_kind": "authored",
+  "phase": "training",
+  "state": "pristine",
+  "participant": {
+    "user": "cinder",
+    "uid": 2000,
+    "group": "cinder",
+    "gid": 2000,
+    "groups": [
+      "cinder"
+    ],
+    "home": "/home/cinder",
+    "workdir": "/home/cinder"
+  },
+  "filesystem": {
+    "roots": [
+      {
+        "path": "/home/cinder",
+        "opaque": [],
+        "entries": [
+          {
+            "path": ".bash_logout",
+            "type": "file",
+            "mode": "0644",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile",
+            "size": 220,
+            "sha256": "26882b79471c25f945c970f8233d8ce29d54e9d5eedcd2884f88affa84a18f56"
+          },
+          {
+            "path": ".bashrc",
+            "type": "file",
+            "mode": "0644",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile",
+            "size": 5578,
+            "sha256": "3198cdeb02295c3f433577b43966046d66c49748a9e542530160d86ad173c2b1"
+          },
+          {
+            "path": ".bashrc.original",
+            "type": "file",
+            "mode": "0644",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile",
+            "size": 3526,
+            "sha256": "afae8986f549c6403410e029f9cce7983311512d04b1f02af02e4ce0af0dd2bf"
+          },
+          {
+            "path": ".cache",
+            "type": "directory",
+            "mode": "0700",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "participant-runtime"
+          },
+          {
+            "path": ".config",
+            "type": "directory",
+            "mode": "0755",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile"
+          },
+          {
+            "path": ".config/powershell",
+            "type": "directory",
+            "mode": "0755",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile"
+          },
+          {
+            "path": ".config/powershell/Microsoft.PowerShell_profile.ps1",
+            "type": "file",
+            "mode": "0644",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile",
+            "size": 1345,
+            "sha256": "8c9919428cd89ef13b83c8504f2a511129942ab13ceafdaec8a2c67815d93e06"
+          },
+          {
+            "path": ".java",
+            "type": "directory",
+            "mode": "0755",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile"
+          },
+          {
+            "path": ".java/.userPrefs",
+            "type": "directory",
+            "mode": "0755",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile"
+          },
+          {
+            "path": ".java/.userPrefs/burp",
+            "type": "directory",
+            "mode": "0755",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile"
+          },
+          {
+            "path": ".java/.userPrefs/burp/prefs.xml",
+            "type": "file",
+            "mode": "0644",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile",
+            "size": 741,
+            "sha256": "867f5b927cc54681f367e2947ce144abeb7e9dc68c30c2b64d7b7d3f8cc2fec8"
+          },
+          {
+            "path": ".local",
+            "type": "directory",
+            "mode": "0755",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile"
+          },
+          {
+            "path": ".local/bin",
+            "type": "directory",
+            "mode": "0755",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile"
+          },
+          {
+            "path": ".profile",
+            "type": "file",
+            "mode": "0644",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile",
+            "size": 807,
+            "sha256": "28b4a453b68dde64f814e94bab14ee651f4f162e15dd9920490aa1d49f05d2a4"
+          },
+          {
+            "path": ".zprofile",
+            "type": "file",
+            "mode": "0644",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile",
+            "size": 336,
+            "sha256": "54ccdd24f52857bb92e90881e81218b4020f578d0e92db92a8fa1a97ae718d79"
+          },
+          {
+            "path": ".zshrc",
+            "type": "file",
+            "mode": "0644",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "base-image-profile",
+            "size": 10882,
+            "sha256": "56ad0fc1f9cb19c6c8f3c1db7e370ba79629b8c08d645350e7697ba5fd58a3ed"
+          },
+          {
+            "path": "TRAINING.md",
+            "type": "file",
+            "mode": "0444",
+            "owner": "cinder",
+            "group": "cinder",
+            "classification": "starting-briefing",
+            "size": 906,
+            "sha256": "9a8e419f628edbba8917e812068a1e044f3d9b61462b8d7a3d98d46e380f19a5"
+          }
+        ]
+      },
+      {
+        "path": "/tmp",
+        "opaque": [],
+        "entries": []
+      }
+    ],
+    "forbidden_paths": [
+      {
+        "path": "/opt/operator-tests",
+        "visible": false,
+        "readable": false
+      },
+      {
+        "path": "/opt/cinder-typhoon",
+        "visible": false,
+        "readable": false
+      },
+      {
+        "path": "/var/run/docker.sock",
+        "visible": false,
+        "readable": false
+      },
+      {
+        "path": "/var/lib/cinder-workbench",
+        "visible": false,
+        "readable": false
+      },
+      {
+        "path": "/var/lib/cinder-accounts",
+        "visible": false,
+        "readable": false
+      },
+      {
+        "path": "/var/lib/cinder-developer",
+        "visible": false,
+        "readable": false
+      },
+      {
+        "path": "/var/lib/cinder-state",
+        "visible": false,
+        "readable": false
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "bash",
+      "path": "/usr/bin/bash"
+    },
+    {
+      "name": "curl",
+      "path": "/usr/bin/curl"
+    },
+    {
+      "name": "git",
+      "path": "/usr/bin/git"
+    },
+    {
+      "name": "jq",
+      "path": "/usr/bin/jq"
+    },
+    {
+      "name": "python3",
+      "path": "/usr/bin/python3"
+    }
+  ],
+  "network": {
+    "dns": [
+      {
+        "name": "workbench.training",
+        "addresses": [
+          "10.77.40.20"
+        ]
+      },
+      {
+        "name": "accounts.training",
+        "addresses": [
+          "10.77.40.30"
+        ]
+      },
+      {
+        "name": "developer.training",
+        "addresses": [
+          "10.77.40.40"
+        ]
+      },
+      {
+        "name": "state.training",
+        "addresses": [
+          "10.77.40.50"
+        ]
+      }
+    ],
+    "listeners": [
+      {
+        "host": "workbench.training",
+        "port": 22,
+        "reachable": false
+      },
+      {
+        "host": "workbench.training",
+        "port": 80,
+        "reachable": false
+      },
+      {
+        "host": "workbench.training",
+        "port": 443,
+        "reachable": false
+      },
+      {
+        "host": "workbench.training",
+        "port": 8080,
+        "reachable": true
+      },
+      {
+        "host": "workbench.training",
+        "port": 8081,
+        "reachable": true
+      },
+      {
+        "host": "workbench.training",
+        "port": 8082,
+        "reachable": true
+      },
+      {
+        "host": "workbench.training",
+        "port": 8083,
+        "reachable": true
+      },
+      {
+        "host": "workbench.training",
+        "port": 8084,
+        "reachable": false
+      },
+      {
+        "host": "workbench.training",
+        "port": 8443,
+        "reachable": false
+      },
+      {
+        "host": "accounts.training",
+        "port": 22,
+        "reachable": false
+      },
+      {
+        "host": "accounts.training",
+        "port": 80,
+        "reachable": false
+      },
+      {
+        "host": "accounts.training",
+        "port": 443,
+        "reachable": false
+      },
+      {
+        "host": "accounts.training",
+        "port": 8080,
+        "reachable": true
+      },
+      {
+        "host": "accounts.training",
+        "port": 8081,
+        "reachable": false
+      },
+      {
+        "host": "accounts.training",
+        "port": 8082,
+        "reachable": false
+      },
+      {
+        "host": "accounts.training",
+        "port": 8083,
+        "reachable": false
+      },
+      {
+        "host": "accounts.training",
+        "port": 8084,
+        "reachable": false
+      },
+      {
+        "host": "accounts.training",
+        "port": 8443,
+        "reachable": false
+      },
+      {
+        "host": "developer.training",
+        "port": 22,
+        "reachable": false
+      },
+      {
+        "host": "developer.training",
+        "port": 80,
+        "reachable": false
+      },
+      {
+        "host": "developer.training",
+        "port": 443,
+        "reachable": false
+      },
+      {
+        "host": "developer.training",
+        "port": 8080,
+        "reachable": true
+      },
+      {
+        "host": "developer.training",
+        "port": 8081,
+        "reachable": true
+      },
+      {
+        "host": "developer.training",
+        "port": 8082,
+        "reachable": true
+      },
+      {
+        "host": "developer.training",
+        "port": 8083,
+        "reachable": true
+      },
+      {
+        "host": "developer.training",
+        "port": 8084,
+        "reachable": true
+      },
+      {
+        "host": "developer.training",
+        "port": 8443,
+        "reachable": false
+      },
+      {
+        "host": "state.training",
+        "port": 22,
+        "reachable": false
+      },
+      {
+        "host": "state.training",
+        "port": 80,
+        "reachable": false
+      },
+      {
+        "host": "state.training",
+        "port": 443,
+        "reachable": false
+      },
+      {
+        "host": "state.training",
+        "port": 8080,
+        "reachable": true
+      },
+      {
+        "host": "state.training",
+        "port": 8081,
+        "reachable": false
+      },
+      {
+        "host": "state.training",
+        "port": 8082,
+        "reachable": false
+      },
+      {
+        "host": "state.training",
+        "port": 8083,
+        "reachable": false
+      },
+      {
+        "host": "state.training",
+        "port": 8084,
+        "reachable": false
+      },
+      {
+        "host": "state.training",
+        "port": 8443,
+        "reachable": false
+      }
+    ]
+  },
+  "disclosures": [
+    {
+      "id": "training-briefing",
+      "kind": "starting-briefing",
+      "path": "/home/cinder/TRAINING.md",
+      "exposes": [
+        "workbench.training:8080",
+        "accounts.training:8080",
+        "developer.training:8080",
+        "state.training:8080",
+        "working-directory-guidance"
+      ]
+    }
+  ],
+  "delivery": {
+    "cards": {
+      "status": "external_unverified",
+      "items": [
+        "T01.1",
+        "T01.2",
+        "T01.3",
+        "T01.4",
+        "T02.1",
+        "T02.2",
+        "T02.3",
+        "T02.4",
+        "T03.1",
+        "T03.2",
+        "T03.3",
+        "T03.4",
+        "T04.1",
+        "T04.2",
+        "T04.3",
+        "T04.4"
+      ]
+    },
+    "hints": {
+      "status": "not_materialized",
+      "items": []
+    }
+  }
+}

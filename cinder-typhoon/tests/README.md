@@ -61,6 +61,31 @@ The earlier standard-library authoring checks remain beside their inputs in
 [docs/design/](../docs/design/README.md). None of these checks establishes runtime
 exploitability, isolation, evidence-adapter correctness, or event capacity.
 
+## Participant-surface manifest checks
+
+The operator-only participant-surface manifests inventory the exact pristine
+Training, KeplerOps, and ARWC workstation files, supplied tools, DNS results,
+reviewed TCP listener probe universe, forbidden paths, discovery-document
+disclosures, and current card/hint delivery status:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s cinder-typhoon/tests -p test_participant_surface.py -v
+```
+
+The focused suite validates the authored manifests and schemas, checks source
+hashes for the authored Training briefing and KeplerOps service catalog,
+requires the catalog to enumerate every route and its exploit-specific K04
+disclosures, proves the observer emits hashes rather than content, and verifies
+that missing, additional or forbidden participant files fail comparison.
+
+The live phase runners call
+`build/participant-surface/run.py` after pristine startup. Golden candidates use
+`build/participant-surface/check-golden.sh`. The observer runs inside the
+participant context without root, Docker control, added mounts, host paths or
+operator tests. It also verifies that participant-mounted service state remains
+inaccessible. These checks establish the visible boundary only; they do not
+claim human discovery, challenge fairness, difficulty or duration.
+
 ## Training content and hand-build gate
 
 ```sh
