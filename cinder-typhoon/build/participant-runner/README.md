@@ -63,10 +63,11 @@ ARWC candidate run may not. A single-stack KeplerOps development run may record
 the two cross-carrier assertions as skipped; candidate mode rejects every skip.
 
 Live request entries include their current input-provenance sources and
-unresolved items. This does not conflate the QA layers: known-solution behavior
-and provenance retain separate statuses. The candidate wrapper runs the
-fail-closed provenance release gate before participant-surface and behavioral
-acceptance, so unresolved input still blocks overall qualification.
+unresolved items. This does not conflate the QA layers: known-solution behavior,
+card coverage, and provenance retain separate statuses. The candidate wrapper
+runs the fail-closed card-coverage and provenance gates before
+participant-surface and behavioral acceptance, so incomplete coverage or an
+unresolved input still blocks overall qualification.
 
 ## Immutable candidates
 
@@ -93,10 +94,10 @@ ending against the handover earned by that same route and reset.
 
 `check-candidate.sh` runs one operation against a documented GCP candidate. It
 expects the candidate manifest to already exist on the range host; it does not
-upload source or evidence. It first requires complete input provenance, then a
-matching participant-surface manifest, and finally invokes known-solution
-acceptance. The current mutable goldens remain remediation targets and cannot
-produce a candidate pass.
+upload source or evidence. It first requires complete card coverage and input
+provenance, then a matching participant-surface manifest, and finally invokes
+known-solution acceptance. The current mutable goldens remain remediation
+targets and cannot produce a candidate pass.
 
 ## Evidence limits
 

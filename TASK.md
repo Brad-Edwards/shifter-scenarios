@@ -26,7 +26,7 @@ The four evidence layers are separate gates:
 | Layer | What it establishes | Current candidate status |
 | --- | --- | --- |
 | Service contract tests | Normal, accepted, denied, persistence, isolation, and audit behavior | Not run on an immutable event candidate |
-| Participant-boundary known-solution acceptance | The encoded solution sequence remains executable from the participant account and network | Not run on an immutable event candidate |
+| Participant-boundary known-solution acceptance | The encoded solution sequence remains executable from the participant account and network | Failed/incomplete: every card has a named assertion, but independent-evidence, simple-read, and delivery-catalog gates remain open; no immutable candidate run exists |
 | Provenance and participant-surface checks | Starting visibility and the origin of every solution-path input | Failed/incomplete: the current goldens drift from the intended boundary and input provenance is pending |
 | Blind human-plus-agent playtests | Discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution | Not run |
 
@@ -94,6 +94,16 @@ intentionally unresolved: K18's federated subject (#216), K26's fixed channel
 bearer (#217), W33's test-only scheduler inputs (#223), and the broader exact
 comparison audit (#224) must be remediated and cited before provenance can pass.
 
+The #210 card-coverage registry independently reconciles the 240 SDL contracts,
+briefs, dependency entries, and named participant-boundary assertions. K20.1,
+K20.2, and K20.3 now perform and assert separate relation, managed-identity, and
+approval-plus-consumer actions. The release form remains unresolved where a
+simple endpoint read has no reviewed interpretive achievement and while the
+participant delivery catalog is empty pending #226. It also rejects every
+current SDL evidence-owner declaration because each overlaps the component
+that accepted the action; an observed-state label alone is not independent
+evidence.
+
 ### 4. Blind human-plus-agent playtests
 
 Fresh participants must use the event UI, supported agents, and normal support
@@ -138,10 +148,11 @@ cannot qualify a release. Immutable-candidate invocation, report fields and the
 per-route reset contract are documented in
 `build/participant-runner/README.md`.
 
-Known-solution behavior and input provenance remain separate QA results. The
-candidate wrapper runs the fail-closed provenance gate before participant
-surface and behavioral acceptance, so an unexplained input blocks overall
-qualification without misreporting what the behavioral suite established.
+Known-solution behavior, card coverage, and input provenance remain separate
+QA results. The candidate wrapper runs the fail-closed coverage and provenance
+gates before participant-surface and behavioral acceptance, so an incomplete
+card or unexplained input blocks overall qualification without misreporting
+what the behavioral suite established.
 
 ## Release qualification
 
@@ -150,7 +161,7 @@ Release qualification requires all of the following on one immutable candidate:
 1. service-contract suites pass;
 2. unprivileged known-solution acceptance passes from the real participant
    boundary, including both ordinary cross-carrier routes;
-3. participant-surface and complete input-provenance checks pass;
+3. card coverage, participant-surface, and complete input-provenance checks pass;
 4. blind human-plus-agent playtests pass their cohort and specialist coverage;
 5. reset and restore reproduce the manifested pristine state; and
 6. the 300-range production-equivalent soak passes its declared thresholds.

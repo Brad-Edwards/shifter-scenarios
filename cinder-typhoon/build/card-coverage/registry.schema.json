@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/card-coverage/registry.schema.json",
+  "title": "Cinder Typhoon card coverage registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "authored_card_source", "delivery_catalog", "cards"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "authored_card_source": {"type": "string"},
+    "delivery_catalog": {"type": "object"},
+    "cards": {"type": "object", "minProperties": 240, "maxProperties": 240}
+  }
+}

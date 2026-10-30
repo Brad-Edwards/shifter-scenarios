@@ -414,7 +414,13 @@ class PlatformHandler(KeplerHandler):
             if principal is None: return
             if principal != "evan.calderoux@KEPLEROPS.TEST": return self.deny(403)
             if match.group(1) != "svc-release-admin": return self.deny(404, "identity_not_found")
-            value = {"principal": "svc-release-admin", "token": "release-admin-session-5m", "audience": "registry-release-administration", "expires_in": 300}
+            value = {
+                "principal": "svc-release-admin",
+                "token": "release-admin-session-5m",
+                "audience": "registry-release-administration",
+                "administration": "https://packages.keplerops.test/api/release-administration/session",
+                "expires_in": 300,
+            }
             self.record("managed-session", actor="evan.calderoux", principal=value["principal"]); return self.send_json(201, value)
         self.deny(404, "not_found")
 

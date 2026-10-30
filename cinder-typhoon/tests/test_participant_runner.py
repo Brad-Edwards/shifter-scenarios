@@ -189,13 +189,15 @@ class EvidenceTests(unittest.TestCase):
             self.assertEqual(value["$schema"], "https://json-schema.org/draft/2020-12/schema")
             self.assertIn("$id", value)
 
-    def test_candidate_wrapper_requires_participant_surface_first(self) -> None:
+    def test_candidate_wrapper_requires_coverage_and_provenance_before_acceptance(self) -> None:
         source = (
             ROOT / "build" / "participant-runner" / "check-candidate.sh"
         ).read_text()
+        coverage = source.index("card-coverage/coverage.py")
         provenance = source.index("input-provenance/provenance.py")
         surface = source.index("participant-surface/run.py")
         acceptance = source.index("participant-runner/run.py")
+        self.assertLess(coverage, provenance)
         self.assertLess(provenance, surface)
         self.assertLess(surface, acceptance)
 

@@ -150,7 +150,25 @@ class RegistryHandler(KeplerHandler):
     def do_GET(self) -> None:
         path = urlsplit(self.path).path
         lower = path.lower()
-        if lower == "/@keplerops%2ffieldlink-connector":
+        if path == "/api/release-administration/session":
+            if self.headers.get("Authorization", "") != "Bearer release-admin-session-5m":
+                self.send_json(403, {"error": "release_administration_denied"})
+                return
+            value = {
+                "principal": "svc-release-admin",
+                "approval_scope": "fieldlink-connector-rehearsal",
+                "approval_route": "/api/releases/{release_id}/approval",
+                "consumer": "support-rehearsal-v3",
+                "consumer_interface": "fieldkest.connector/v3",
+            }
+            append_audit(AUDIT, "release-administration", {
+                "request_id": self.request_id,
+                "principal": value["principal"],
+                "approval_scope": value["approval_scope"],
+                "status": 200,
+            })
+            self.send_json(200, value)
+        elif lower == "/@keplerops%2ffieldlink-connector":
             worker = self._worker()
             if not self._developer() and worker is None:
                 self.send_json(401, {"error": "authentication_required"})

@@ -540,7 +540,11 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                     "package": "@keplerops/fieldlink-connector", "version": "7.4.2",
                     "registry_view": "customer-preview-unavailable"}),
                 creds=dev, expected=422)
-            token = disclosed["resolved_registry_client"]["token"]
+            client = disclosed["resolved_registry_client"]
+            self.assertEqual(client["principal"], "fieldlink-importer-publisher")
+            self.assertEqual(client["scope"], "@keplerops/fieldlink-connector:arwc-stable")
+            token = client["token"]
+            self.assertTrue(token)
             self.evidence["publisher_token"] = token
 
         with self.subTest(card="K06.2 read the private package view in bounds"):
@@ -585,6 +589,7 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 creds=dev, expected=202)
             self.assertEqual((result["state"], result["version"]), ("success", version))
             self.assertEqual(result["output"]["assessment"], "operator-confirmed-change")
+            self.evidence["rehearsal_version"] = version
 
     # ------------------------------------------------------------------ K07
     def test_k07_inspector_boundary(self) -> None:
@@ -911,7 +916,7 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 f"{preview}/api/reviews/{review_id}/actions/prepare", "-X", "POST",
                 "-H", "Content-Type: application/json", "--data-binary", "{}", bearer=nonce, expected=403)
 
-        with self.subTest(card="K12.3/K12.4 drive the constrained renderer"):
+        with self.subTest(card="K12.3 the worker changes sides"):
             # The review-render route's leading path segment is the worker scope.
             render_path = re.search(r"https://[^/]+(/\S+)", review_render_tmpl).group(1)
             worker_scope = "/" + render_path.strip("/").split("/")[0] + "/"
@@ -920,6 +925,13 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 "--data-binary", json.dumps({"worker_scope": worker_scope}), bearer="reviewer-worker")
             self.assertEqual(final["renderer_identity"], "svc-preview-reviewer")
             self.assertEqual(final["execution_backend"], "isolated-container")
+            self.evidence["privileged_preview"] = final
+
+        with self.subTest(card="K12.4 the preview is ours"):
+            final = self.evidence["privileged_preview"]
+            self.assertEqual(final["worker_scope"], "/review/")
+            self.assertEqual(final["compatibility_summary"], "fieldlink.connector/v3 compatible")
+            self.assertRegex(final["support_receipt"], r"^PRV-RCPT-")
 
     # ------------------------------------------------------------------ K13
     def test_k13_data_workspace_and_workload(self) -> None:
@@ -1028,12 +1040,16 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="K16.1 tomorrow's job"):
             schedule = curl_json(schedule_route, bearer=self.evidence["role_token"])
+            self.assertEqual(schedule["schedule_id"], schedule_id)
+            self.assertEqual(schedule["profile"], "support-export")
             self.evidence["first_assignment"] = schedule["assignment"]
 
         with self.subTest(card="K16.2 the next startup hook"):
-            curl_json(update_route, "-X", "PATCH", "-H", "Content-Type: application/json",
-                      "--data-binary", json.dumps({"startup_hook": ["/opt/fieldkest/hooks/support-marker", "--export", self.evidence["export_id"]]}),
-                      bearer=self.evidence["role_token"])
+            hook = ["/opt/fieldkest/hooks/support-marker", "--export", self.evidence["export_id"]]
+            updated = curl_json(update_route, "-X", "PATCH", "-H", "Content-Type: application/json",
+                                "--data-binary", json.dumps({"startup_hook": hook}),
+                                bearer=self.evidence["role_token"])
+            self.assertEqual(updated["startup_hook"], hook)
 
         with self.subTest(card="K16.3 beyond the current session"):
             run = curl_json(runs_route, "-H", "Content-Type: application/json", "--data-binary", "{}", bearer=self.evidence["role_token"], expected=201)
@@ -1175,7 +1191,7 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             self.assertEqual(delegated["authentication"], "SPNEGO")
             write_tmp("/tmp/journey-evan.ccache", base64.b64decode(delegated["credential_cache"]))
 
-        with self.subTest(card="K20 delegation reaches the managed service identity"):
+        with self.subTest(card="K20.1 a delegation that reaches further"):
             def negotiate(url: str, *extra: str, expected: int = 200) -> dict:
                 result = rowan("env", "KRB5CCNAME=FILE:/tmp/journey-evan.ccache", "KRB5_CONFIG=/etc/krb5.conf",
                                "curl", "-sS", "--cacert", ca, "--negotiate", "-u", ":",
@@ -1185,11 +1201,54 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                     raise AssertionError(f"{url} -> {result.stdout}: {body[:300]}")
                 return json.loads(body) if body else {}
             relation = negotiate(self.catalog_route("identity.service-relation").replace("{service_id}", self.evidence["service_relation"]))
+            self.assertEqual(relation["service_id"], self.evidence["service_relation"])
+            self.assertEqual(relation["release_owner"], directory["archive_subject"])
+
+        with self.subTest(card="K20.2 the managed identity"):
             managed = negotiate(self.catalog_route("staff.managed-session").replace("{service_id}", self.evidence["service_relation"]),
                                 "-X", "POST", "-H", "Content-Type: application/json", "--data-binary", "{}", expected=201)
-            self.assertEqual(relation["service_id"], self.evidence["service_relation"])
             self.assertEqual(managed["principal"], self.evidence["service_relation"])
+            self.assertEqual(managed["audience"], "registry-release-administration")
+            administration = curl_json(managed["administration"], bearer=managed["token"])
+            self.assertEqual(administration["principal"], managed["principal"])
+            self.assertEqual(administration["approval_scope"], "fieldlink-connector-rehearsal")
             self.evidence["release_admin_token"] = managed["token"]
+            self.evidence["release_administration"] = administration
+
+        with self.subTest(card="K20.3 the service wears a person"):
+            administration = self.evidence["release_administration"]
+            version = self.evidence["rehearsal_version"]
+            release_id = f"REL-FLK-{version}"
+            approval_url = self.catalog_route("packages.approval").replace("{release_id}", release_id)
+            approved = post_json_route(
+                approval_url,
+                {
+                    "version": version,
+                    "interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"],
+                    "lineage": "fieldkest-release-2026",
+                    "key_id": "fk-release-2026-old",
+                },
+                bearer=self.evidence["release_admin_token"], expected=201,
+            )
+            self.assertEqual(approved["acting_principal"], administration["principal"])
+            self.assertTrue(approved["approved"])
+            ci = re.search(r"(https://ci\.keplerops\.test)", self.service_notes).group(1)
+            consumed = post_json_route(
+                f"{ci}/api/rehearsals/connector",
+                {
+                    "version": version,
+                    "consumer": administration["consumer"],
+                    "input": {
+                        "schema": administration["consumer_interface"],
+                        "tenant_id": "TEN-SYNTH-REHEARSAL-01",
+                        "asset_id": "SYNTH-PUMP-07",
+                        "operation": "support_review",
+                    },
+                },
+                creds=self.evidence["dev"], expected=202,
+            )
+            self.assertEqual((consumed["state"], consumed["version"]), ("success", version))
+            self.assertRegex(consumed["rehearsal_id"], r"^REH-")
 
     # ------------------------------------------------------------------ K21-K24
     def test_k21_assistant_retrieval(self) -> None:
@@ -1197,6 +1256,8 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="K21.1 the policy beside the prompt"):
             config = curl_json(self.catalog_route("assistant.config"), bearer=None)
+            self.assertEqual(config["collection"], "support-private")
+            self.assertRegex(config["policy_version"], r"^retrieval-")
             self.evidence["assistant_context"] = config["context"]
 
         with self.subTest(card="K23.1 a context view left open"):
@@ -1217,6 +1278,8 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="K22.1 what the assistant reads"):
             sel_id = self.evidence["ctx_view"]["selections"][0]
             selection = curl_json(self.catalog_route("assistant.selection").replace("{selection_id}", sel_id), cookie=cookie)
+            self.assertEqual(selection["case"], self.evidence["ticket"])
+            self.assertRegex(selection["attachment"], r"^ATT-")
             self.evidence["selection_id"] = selection["selection_id"]
 
         with self.subTest(card="K22.2 instructions in the attachment"):
@@ -1227,9 +1290,16 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             action = post_json_route(self.catalog_route("assistant.answers"), {"request": "accept-duplicate", "review_id": self.evidence["ctx_view"]["duplicate_review"]}, cookie=cookie, timeout=120)
             self.assertIn(action.get("status", action.get("disposition", "")), {"accepted", "duplicate", "obsolete"})
 
-        with self.subTest(card="K23.2/K23.3 cross-tenant conversation and document"):
+        with self.subTest(card="K23.2 the conversation reference"):
             rill_conv = next(c for c in self.evidence["ctx_view"]["conversations"] if "RILL" in c)
             conv = curl_json(self.catalog_route("assistant.conversation").replace("{conversation_id}", rill_conv), cookie=cookie)
+            self.assertEqual(conv["conversation_id"], rill_conv)
+            self.assertNotEqual(conv["tenant"], self.evidence["export_tenant"])
+            self.evidence["foreign_conversation"] = conv
+
+        with self.subTest(card="K23.3 a missing tenant boundary"):
+            conv = self.evidence["foreign_conversation"]
+            rill_conv = conv["conversation_id"]
             doc_id = self.evidence["ctx_view"]["documents"][0]
             doc_route = (self.catalog_route("assistant.document")
                          .replace("{context_id}", self.evidence["assistant_context"])
@@ -1237,20 +1307,30 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                          .replace("{document_id}", doc_id))
             document = curl_json(doc_route, cookie=cookie)
             self.assertEqual(conv["tenant"], document["tenant"])
+            self.assertEqual(document["document_id"], doc_id)
 
-        with self.subTest(card="K24.1 complete the job: lease via context credential"):
+        with self.subTest(card="K24.1 complete the job"):
             example_id = self.evidence["ctx_view"]["completion_example"]
             example = curl_json(self.catalog_route("assistant.completion-example").replace("{example_id}", example_id), cookie=cookie)
+            self.assertEqual(example["example_id"], example_id)
+            self.assertIn("assigned internal handover", example["note"])
+            self.evidence["completion_context"] = example["context"]
+
+        with self.subTest(card="K24.2 context with a credential"):
             # Traverse from the examples context to the completion credential.
-            context_field = f"{example['context']}/../credentials/cred-completion-handover"
+            context_field = f"{self.evidence['completion_context']}/../credentials/cred-completion-handover"
             lease = post_json_route(self.catalog_route("assistant.completion-context"), {"context": context_field}, cookie=cookie, expected=201)
+            self.assertEqual(lease["audience"], "completion-handover")
+            self.assertEqual(lease["scope_probe"], "accepted")
             self.evidence["completion_lease"] = lease["lease"]
 
-        with self.subTest(card="K24.2/K24.3 the completion runs under the service identity"):
+        with self.subTest(card="K24.3 the completion runs"):
             handover_id = self.evidence["ctx_view"]["completion_handover"]
             job = post_json_route(self.catalog_route("assistant.completion-jobs"), {"handover_id": handover_id, "script": "read_assigned_handover"}, bearer=self.evidence["completion_lease"], expected=202)
             result = curl_json(self.catalog_route("assistant.completion-job").replace("{job_id}", job["job_id"]), bearer=self.evidence["completion_lease"])
             self.assertEqual(result["runtime_identity"], "svc-assistant-completion")
+            self.assertEqual(result["handover"]["handover_id"], handover_id)
+            self.assertTrue(result["destination_read"])
             # The completion lease is single-use.
             post_json_route(self.catalog_route("assistant.completion-jobs"), {"handover_id": handover_id, "script": "read_assigned_handover"}, bearer=self.evidence["completion_lease"], expected=403)
 
@@ -1332,6 +1412,8 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 self.catalog_route("support.diagnostics").replace("{tenant}", tenant),
                 {"connector_revision": revision}, cookie=cookie, expected=201)
             self.evidence["diag_job"] = job["job_id"]
+            self.assertEqual(job["tenant"], tenant)
+            self.assertEqual(job["connector_revision"], revision)
 
         with self.subTest(card="K27.2 our diagnostic, their interface"):
             package = post_json_route(
