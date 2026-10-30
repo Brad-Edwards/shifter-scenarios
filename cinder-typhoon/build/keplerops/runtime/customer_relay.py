@@ -19,18 +19,27 @@ from cryptography.hazmat.primitives.asymmetric import padding
 
 
 UPSTREAM = os.environ.get("FIELDKEST_CUSTOMER_UPSTREAM", "https://connector.arwc.test")
-PACKAGE_TOKEN = "registry-customer-channel"
+INTERNAL_PACKAGE_TOKEN = "registry-customer-channel"
 DIAGNOSTIC_TOKEN = "support-delivery"
 PACKAGE = re.compile(r"/api/fieldlink/packages(?:/poll|/[^/]+/(?:activate|receipt))$")
 DIAGNOSTIC = re.compile(r"/api/fieldlink/diagnostics(?:/[^/]+/receipt)?$")
 ROLLBACK = "/api/fieldlink/rehearsals/rollback"
 PUBLISHED = Path("/var/lib/fieldkest-registry/published")
+CHANNEL_CREDENTIAL = Path("/var/lib/fieldkest-registry/channel-credential.json")
 VERSION = re.compile(r"7\.4\.3-cinder\.[a-z0-9][a-z0-9-]{0,23}")
+
+
+def _channel_token() -> str | None:
+    try:
+        cred = json.loads(CHANNEL_CREDENTIAL.read_text())
+        return cred.get("token") if isinstance(cred, dict) else None
+    except (OSError, json.JSONDecodeError):
+        return None
 
 
 def identity(path: str) -> tuple[str, str, str] | None:
     if PACKAGE.fullmatch(path) or path == ROLLBACK:
-        return PACKAGE_TOKEN, "/tmp/customer-auth/package.crt", "/tmp/customer-auth/package.key"
+        return INTERNAL_PACKAGE_TOKEN, "/tmp/customer-auth/package.crt", "/tmp/customer-auth/package.key"
     if DIAGNOSTIC.fullmatch(path):
         return DIAGNOSTIC_TOKEN, "/tmp/customer-auth/diagnostic.crt", "/tmp/customer-auth/diagnostic.key"
     return None
@@ -58,8 +67,13 @@ class Handler(BaseHTTPRequestHandler):
         selected = identity(path)
         if selected is None:
             return self.send_payload(404, b'{"error":"route_not_found"}\n', "application/json")
-        token, certificate, key_path = selected
-        if self.headers.get("Authorization") != f"Bearer {token}":
+        internal_token, certificate, key_path = selected
+        presented = self.headers.get("Authorization", "")
+        if internal_token == INTERNAL_PACKAGE_TOKEN:
+            channel_token = _channel_token()
+            if channel_token is None or presented != f"Bearer {channel_token}":
+                return self.send_payload(403, b'{"error":"channel_identity_denied"}\n', "application/json")
+        elif presented != f"Bearer {internal_token}":
             return self.send_payload(403, b'{"error":"channel_identity_denied"}\n', "application/json")
         raw = b""
         if self.command == "POST":

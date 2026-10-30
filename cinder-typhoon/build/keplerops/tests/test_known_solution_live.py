@@ -1604,6 +1604,9 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 {"version": version, "interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"], "lineage": history["lineage"], "key_id": history["key_id"], "signature_base64": signature},
                 bearer=self.evidence["release_admin_token"], expected=201)
             self.assertTrue(approved["signed"])
+            # The approval returns a scoped channel token for delivery operations.
+            self.assertIn("channel_token", approved)
+            self.evidence["channel_token"] = approved["channel_token"]
             # Consumed: the dual rehearsal consumers accept the signed package.
             arwc = post_json_route(f"{ci}/api/rehearsals/connector", {"version": version, "consumer": "arwc-release-v3", "input": {"schema": "fieldkest.connector/v3", "tenant_id": self.evidence["export_tenant"], "asset_id": "CRR-OG2", "operation": "diagnostic_summary"}}, creds=dev, expected=202)
             self.assertEqual(arwc["output"]["assessment"], "calibration-review")
@@ -1623,16 +1626,17 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         version = self.evidence.get("signed_version", "7.4.3-cinder.rowan")
         connector = self.discovered_route("connector.poll").rsplit("/api/", 1)[0]
 
+        channel_token = self.evidence["channel_token"]
         with self.subTest(card="K26.1 ready for their channel"):
-            polled = post_json_route(self.discovered_route("connector.poll"), {"tenant": self.evidence["export_tenant"], "channel": "arwc-stable", "version": version}, bearer="registry-customer-channel")
+            polled = post_json_route(self.discovered_route("connector.poll"), {"tenant": self.evidence["export_tenant"], "channel": "arwc-stable", "version": version}, bearer=channel_token)
             self.assertEqual(polled["version"], version)
 
         with self.subTest(card="K26.2 customer accepted"):
-            activated = post_json_route(self.discovered_route("connector.activate").replace("{version}", version), {"tenant": self.evidence["export_tenant"], "channel": "arwc-stable"}, bearer="registry-customer-channel", expected=201)
+            activated = post_json_route(self.discovered_route("connector.activate").replace("{version}", version), {"tenant": self.evidence["export_tenant"], "channel": "arwc-stable"}, bearer=channel_token, expected=201)
             self.assertEqual(activated["runtime_identity"], "svc-arwc-fieldlink")
 
         with self.subTest(card="K26.3 the release they can roll back to"):
-            rollback = post_json_route(self.discovered_route("connector.rollback"), {"tenant": self.evidence["export_tenant"], "version": "7.4.2", "slot": "future-state"}, bearer="registry-customer-channel", expected=201)
+            rollback = post_json_route(self.discovered_route("connector.rollback"), {"tenant": self.evidence["export_tenant"], "version": "7.4.2", "slot": "future-state"}, bearer=channel_token, expected=201)
             self.assertEqual(rollback["selected_version"], "7.4.2")
 
 

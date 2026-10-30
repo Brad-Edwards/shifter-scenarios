@@ -33,6 +33,7 @@ from http_support import (
 
 STATE = Path("/var/lib/fieldkest-registry")
 AUDIT = STATE / "audit"
+CHANNEL_CREDENTIAL = STATE / "channel-credential.json"
 RESULTS = STATE / "results"
 PUBLISHED = STATE / "published"
 CONFIG = json.loads((STATE / "config/foundation.json").read_text())
@@ -148,6 +149,8 @@ class RegistryHandler(KeplerHandler):
         return False
 
     def do_GET(self) -> None:
+        if self.send_client_document():
+            return
         path = urlsplit(self.path).path
         lower = path.lower()
         if path == "/api/release-administration/session":
@@ -250,9 +253,16 @@ class RegistryHandler(KeplerHandler):
             signed = True
         approval = {"release_id": release_id, "version": version, "approved": True, "approved_by": "evan.calderoux", "acting_principal": "svc-release-admin" if authorization.endswith("release-admin-session-5m") else CONFIG["publisher"]["principal"], "lineage": request["lineage"], "key_id": request["key_id"], "interfaces": request["interfaces"], "signed": signed}
         record["approval"] = approval
+        response = dict(approval)
+        if signed:
+            channel_token = uuid.uuid4().hex
+            credential = {"token": channel_token, "channel": record.get("channel", "arwc-stable"), "approved_version": version, "issued_at": utc_now()}
+            record["approval"]["channel_token"] = channel_token
+            CHANNEL_CREDENTIAL.write_text(json.dumps(credential, sort_keys=True, separators=(",", ":")) + "\n")
+            response["channel_token"] = channel_token
         record_path.write_text(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "release-approvals", {"request_id": self.request_id, **approval, "status": 201})
-        self.send_json(201, approval)
+        self.send_json(201, response)
 
     def do_PUT(self) -> None:
         path = urlsplit(self.path).path

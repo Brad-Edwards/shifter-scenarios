@@ -1583,9 +1583,17 @@
             ],
             "locator": "named evidence fields carried into a later request by this method",
             "source": "accepted response chain in test_k29b_connector_delivery"
+          },
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "channel_token"
+            ],
+            "locator": "packages.approval response in test_k29_release_lineage K29.3; stored in evidence[\"channel_token\"]",
+            "source": "release approval response from packages.keplerops.test"
           }
         ],
-        "inventory_sha256": "0f86dd55f96ab2c9d09935fde8b70650e58d35aba730ad4cb1bda8cfb4ce07b5",
+        "inventory_sha256": "cfeeffed2e7c349c1e0aec8d71141cf12bef34d3ece0fadc0baa21dc26370824",
         "profile": "keplerops",
         "request_count": 3,
         "review_status": "unresolved",
@@ -1595,12 +1603,6 @@
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
-          },
-          {
-            "fingerprint": "399e846d148764b5f6b2becc2957365363cb8033ea9521114019f435dbd0d13c",
-            "input": "customer-channel bearer",
-            "issue": 217,
-            "reason": "The relay bearer is a fixed image-wide literal"
           }
         ]
       },
