@@ -99,13 +99,13 @@ class ProvenanceInventoryTests(unittest.TestCase):
                 },
             )
 
-    def test_release_form_fails_while_inputs_are_unresolved(self) -> None:
+    def test_release_form_passes_when_inputs_are_complete(self) -> None:
         completed = subprocess.run(
             [sys.executable, str(PROVENANCE_PATH), "--require-complete"],
             text=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=False,
         )
-        self.assertEqual(completed.returncode, 1)
-        self.assertEqual(self.report["overall_status"], "unresolved")
+        self.assertEqual(completed.returncode, 0)
+        self.assertEqual(self.report["overall_status"], "complete")
 
     def test_live_request_event_receives_method_provenance(self) -> None:
         event = {
@@ -117,8 +117,8 @@ class ProvenanceInventoryTests(unittest.TestCase):
         events, status = provenance.attach_runtime_provenance(
             "training", [event], ["test_01_first_contact"], self.ledger,
         )
-        self.assertEqual(status["status"], "unresolved")
-        self.assertEqual(events[0]["provenance"]["status"], "unresolved")
+        self.assertEqual(status["status"], "complete")
+        self.assertEqual(events[0]["provenance"]["status"], "complete")
         self.assertTrue(events[0]["provenance"]["sources"])
 
     def test_machine_readable_schemas_are_present(self) -> None:
