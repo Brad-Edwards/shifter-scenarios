@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/participant-runner/candidate.schema.json",
+  "title": "Cinder Typhoon immutable candidate identity consumed by participant acceptance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "immutable",
+    "source_commit",
+    "artifact_digests",
+    "deployments"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "candidate_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+\\-]{0,159}$"},
+    "immutable": {"const": true},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "artifact_digests": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+\\-]{0,159}$"},
+      "additionalProperties": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+    },
+    "deployments": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "training": {"$ref": "#/$defs/deployment"},
+        "keplerops": {"$ref": "#/$defs/deployment"},
+        "arwc": {"$ref": "#/$defs/deployment"}
+      }
+    }
+  },
+  "$defs": {
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project", "zone", "instance", "participant_image_digest"],
+      "properties": {
+        "project": {"type": "string"},
+        "zone": {"type": "string"},
+        "instance": {"type": "string"},
+        "participant_image_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

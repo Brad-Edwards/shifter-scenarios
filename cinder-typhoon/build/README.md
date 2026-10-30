@@ -6,3 +6,9 @@ outputs with `--check`. It performs no provisioning or outbound communication.
 
 Runtime placement and infrastructure choices remain undecided. The reference
 triangle layer in `pack.yaml` remains disabled.
+
+`participant-surface/` defines and observes the pristine participant boundary.
+`participant-runner/` streams the operator-authored known solution into that
+unprivileged boundary without mounting test or repository files, and records a
+credential-free structured acceptance report. Neither directory is participant
+content or copied into scenario images.

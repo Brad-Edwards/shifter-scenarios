@@ -10,8 +10,11 @@ deployed. The operator-authored W01-W35 known-solution sequence and service
 contracts previously passed standalone and cross-carrier acceptance on the
 mutable range. This establishes known-path behavior, not blind discovery,
 difficulty, or duration. The corporate capability is not pre-seeded and must be
-earned by real K26.2 or K27.3 destination execution. The customer handover
-runs on `a-connector`; association and annex-import paths run on `a-business`;
+earned by real K26.2 or K27.3 destination execution. Participant-boundary
+acceptance runs only after the runner verifies a non-seeded package or
+diagnostic transition receipt. The two routes are selectable independently and
+require separate pristine reset identities. The customer handover runs on
+`a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
 planner-browser paths run on `a-identity`; and the quoted-identifier and
 reconciliation paths run against PostgreSQL on `a-data`. The bounded live-feed

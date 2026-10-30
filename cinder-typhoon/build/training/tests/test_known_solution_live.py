@@ -12,8 +12,10 @@ difficulty or duration.
 from __future__ import annotations
 
 import csv
+import hashlib
 from io import StringIO
 import json
+import os
 from pathlib import Path
 import re
 import shlex
@@ -21,11 +23,27 @@ import subprocess
 import time
 import unittest
 from urllib.error import HTTPError
-from urllib.parse import quote, urljoin
+from urllib.parse import quote, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
 
 ENTRY = Path("/home/cinder/TRAINING.md")
+TRACE = os.environ.get("CINDER_ACCEPTANCE_TRACE") == "1"
+
+
+def trace_event(kind: str, **fields: object) -> None:
+    """Emit credential-free evidence for the operator-side acceptance runner."""
+    if TRACE:
+        print("CINDER_ACCEPTANCE_EVENT " + json.dumps(
+            {"kind": kind, **fields}, sort_keys=True, separators=(",", ":"),
+        ), flush=True)
+
+
+def trace_artifact(source: str, value: bytes) -> None:
+    trace_event(
+        "artifact", source=source, bytes=len(value),
+        sha256=hashlib.sha256(value).hexdigest(),
+    )
 
 
 def request(
@@ -35,16 +53,25 @@ def request(
     method: str = "GET",
     headers: dict[str, str] | None = None,
 ) -> tuple[int, bytes, dict[str, str]]:
+    started = time.monotonic()
     data = None if body is None else json.dumps(body).encode()
     request_headers = {**(headers or {})}
     if body is not None:
         request_headers["Content-Type"] = "application/json"
     try:
         with urlopen(Request(url, data=data, headers=request_headers, method=method), timeout=8) as response:
-            return response.status, response.read(), dict(response.headers)
+            status, response_body, response_headers = response.status, response.read(), dict(response.headers)
     except HTTPError as error:
         with error:
-            return error.code, error.read(), dict(error.headers)
+            status, response_body, response_headers = error.code, error.read(), dict(error.headers)
+    location = urlsplit(url)
+    trace_event(
+        "http", method=method, host=location.hostname or "", path=location.path or "/",
+        status=status, response_bytes=len(response_body),
+        response_sha256=hashlib.sha256(response_body).hexdigest(),
+        elapsed_ms=round((time.monotonic() - started) * 1000),
+    )
+    return status, response_body, response_headers
 
 
 def get_text(url: str) -> str:
@@ -70,7 +97,9 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.entry = ENTRY.read_text(encoding="utf-8")
+        entry_bytes = ENTRY.read_bytes()
+        trace_artifact(ENTRY.as_posix(), entry_bytes)
+        cls.entry = entry_bytes.decode()
         cls.desks = dict(re.findall(r"^- ([^:]+): `(http://[^`]+)`$", cls.entry, re.MULTILINE))
         if set(cls.desks) != {"Workbench", "Accounts", "Developer artifacts", "Outlet desk"}:
             raise AssertionError(f"incomplete Training entry document: {cls.desks}")

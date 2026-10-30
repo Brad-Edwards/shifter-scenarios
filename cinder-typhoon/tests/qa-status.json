@@ -37,6 +37,7 @@
       "candidate_status": "not_run",
       "evidence_visibility": "operator_only",
       "evidence": [
+        "build/participant-runner/run.py",
         "build/training/tests/test_known_solution_live.py",
         "build/keplerops/tests/test_known_solution_live.py",
         "build/arwc/tests/test_known_solution_live.py"
@@ -53,7 +54,7 @@
         "difficulty",
         "duration"
       ],
-      "blocking_issues": [208, 232]
+      "blocking_issues": [232]
     },
     "provenance_and_surface": {
       "title": "Input provenance and participant-surface checks",

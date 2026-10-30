@@ -42,8 +42,18 @@ class QALayerContractTests(unittest.TestCase):
     def test_phase_runners_name_known_solution_acceptance(self) -> None:
         for phase in ("training", "keplerops", "arwc"):
             runner = (ROOT / "build" / phase / "test-local.sh").read_text()
-            self.assertIn("test_known_solution_live.py", runner)
+            self.assertIn("participant-runner/run.py", runner)
             self.assertNotIn("test_participant_journey_live.py", runner)
+
+    def test_known_solution_runs_without_mounting_test_source(self) -> None:
+        participant_runner = (ROOT / "build" / "participant-runner" / "run.py").read_text()
+        self.assertIn("input=source", participant_runner)
+        for phase in ("training", "keplerops", "arwc"):
+            runner = (ROOT / "build" / phase / "test-local.sh").read_text()
+            known_solution_line = next(
+                line for line in runner.splitlines() if "participant-runner/run.py" in line
+            )
+            self.assertNotIn("run_test", known_solution_line)
 
     def test_solution_suites_are_not_copied_into_images(self) -> None:
         for dockerfile in (ROOT / "build").glob("**/*.Dockerfile"):

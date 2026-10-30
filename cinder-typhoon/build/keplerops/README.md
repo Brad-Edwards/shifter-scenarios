@@ -104,7 +104,7 @@ open where the contract explicitly permits equivalent behavior.
 | KHB-07 | Cloud, data and workload: K13-K16, K30-K31 | Role exchange, export, scheduling, backup recovery and runtime-identity paths work and retain independently observed state. |
 | KHB-08 | Assistant: K21-K24 | The pinned model revision, deterministic decoding, retrieval defects, tool action and completion job behave as specified within bounded resources. |
 | KHB-09 | Customer boundary: K26-K27 and bounded `a-connector` | Package activation/rollback and diagnostic delivery cross the supplier/customer boundary with both sides' receipts. |
-| KHB-10 | Whole-phase contract and known-solution acceptance | The encoded 104-card sequence, cross-wave joins, persistence, isolation and fourth-wall checks pass from `k-dev`; Terraform is converged and documented. This does not establish blind discovery or difficulty. |
+| KHB-10 | Whole-phase contract and known-solution acceptance | The encoded 104-card sequence, cross-wave joins, persistence, isolation and fourth-wall checks pass from the verified unprivileged `k-dev` boundary; Terraform is converged and documented. The suite is streamed without a test mount and records credential-free evidence. This does not establish blind discovery or difficulty. |
 
 KHB-04 may be split into source, CI and registry sub-waves; KHB-08 may use a
 larger carrier shape only when the pinned model's measured memory requirement
@@ -140,7 +140,7 @@ demands it. A wave is not complete merely because its services start.
 | KHB-07 | Build and validate cloud/data/workload slice | Complete | K13-K16 and K30-K31 implement authority exchange, coherent export state, recovery namespaces, and short-lived networkless workload execution. |
 | KHB-08 | Build and validate assistant slice | Complete | K21-K24 use the exact local `Qwen2.5-3B-Instruct` revision with deterministic decoding, retained retrieval state, a cross-service tool action, and bounded completion state. |
 | KHB-09 | Build and validate connector boundary | Complete | The package and support routes use distinct mTLS identities across the one-flow private transit; Alterra performs bounded destination execution and owns the receipts and audit. |
-| KHB-10 | Full contract and known-solution acceptance | Complete | The encoded 104-card sequence, both earned delivery routes, persistence, isolation, security-posture inspection, clean rebuild, and destructive pristine restoration passed on the recorded mutable range. Blind discovery and difficulty remain untested. |
+| KHB-10 | Full contract and known-solution acceptance | Complete | The encoded 104-card sequence, both earned delivery routes, persistence, isolation, security-posture inspection, clean rebuild, and destructive pristine restoration passed on the recorded mutable range. The current runner selects the diagnostic and package routes independently after separate pristine resets and runs inside the exact `rowan` boundary. Blind discovery and difficulty remain untested. |
 
 ## Current decisions and blockers
 

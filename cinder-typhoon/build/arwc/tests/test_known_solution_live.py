@@ -2,9 +2,9 @@
 """Known-solution acceptance for every ARWC card (W01-W35).
 
 This operator-only suite follows an authored solution sequence from the ARWC
-participant boundary. The harness runs on the host. Every tested action runs
-inside the supplied connector workstation (`cinder-arwc-connector`) as user
-`fieldlink`, using the corporate session and customer transition handover.
+participant boundary. The operator runner streams it into the supplied
+connector workstation (`cinder-arwc-connector`) as user `fieldlink`, using the
+corporate session and customer transition handover.
 
 Boundary rules this suite enforces:
 - It starts from the supplied connector handover: the `corporate-session` token
@@ -28,27 +28,160 @@ import os
 import re
 import struct
 import subprocess
-import sys
+import time
 import unittest
 import uuid
-
-sys.path.insert(0, os.path.dirname(__file__))
-from test_w08_live import reconstruct as w08_reconstruct  # noqa: E402 (reuse the existing erasure-coding math)
-from test_w31_live import (  # noqa: E402 (reuse the existing binary-format/ELF parsing helpers)
-    crc32c as w31_crc32c, dvl1 as w31_dvl1, elf_symbol as w31_elf_symbol,
-    elf_string_vaddr as w31_elf_string_vaddr, elf_posture as w31_elf_posture,
-)
+from urllib.parse import urlsplit
 
 
 CONTAINER = "cinder-arwc-connector"
 HANDOVER = "/var/lib/fieldlink-connector/handover"
 CA = "/tmp/arwc-ca.crt"
+IN_PARTICIPANT_BOUNDARY = os.environ.get("CINDER_PARTICIPANT_BOUNDARY") == "1"
+TRACE = os.environ.get("CINDER_ACCEPTANCE_TRACE") == "1"
+
+
+def trace_event(kind: str, **fields: object) -> None:
+    """Emit credential-free evidence for the operator-side acceptance runner."""
+    if TRACE:
+        print("CINDER_ACCEPTANCE_EVENT " + json.dumps(
+            {"kind": kind, **fields}, sort_keys=True, separators=(",", ":"),
+        ), flush=True)
+
+
+def trace_artifact(source: str, value: bytes) -> None:
+    trace_event(
+        "artifact", source=source, bytes=len(value),
+        sha256=hashlib.sha256(value).hexdigest(),
+    )
+
+
+def w08_gf_multiply(left: int, right: int) -> int:
+    product = 0
+    while right:
+        if right & 1:
+            product ^= left
+        right >>= 1
+        left <<= 1
+        if left & 0x100:
+            left ^= 0x11D
+    return product
+
+
+def w08_gf_power(value: int, exponent: int) -> int:
+    result = 1
+    for _ in range(exponent):
+        result = w08_gf_multiply(result, value)
+    return result
+
+
+def w08_reconstruct(retained: dict[int, bytes]) -> tuple[bytes, bytes]:
+    """Reconstruct the two declared missing RS(14,12) shards."""
+    coefficients = {
+        row: [w08_gf_power(2, row * column) for column in range(12)]
+        for row in (12, 13)
+    }
+    residuals = {12: bytearray(retained[12]), 13: bytearray(retained[13])}
+    for row in (12, 13):
+        for column in range(12):
+            if column in (7, 11):
+                continue
+            for offset, value in enumerate(retained[column]):
+                residuals[row][offset] ^= w08_gf_multiply(coefficients[row][column], value)
+    a, b = coefficients[12][7], coefficients[12][11]
+    c, d = coefficients[13][7], coefficients[13][11]
+    determinant = w08_gf_multiply(a, d) ^ w08_gf_multiply(b, c)
+    inverse_det = w08_gf_power(determinant, 254)
+    shard_7 = bytearray(96)
+    shard_11 = bytearray(96)
+    for offset in range(96):
+        e, f = residuals[12][offset], residuals[13][offset]
+        shard_7[offset] = w08_gf_multiply(
+            w08_gf_multiply(d, e) ^ w08_gf_multiply(b, f), inverse_det,
+        )
+        shard_11[offset] = w08_gf_multiply(
+            w08_gf_multiply(c, e) ^ w08_gf_multiply(a, f), inverse_det,
+        )
+    return bytes(shard_7), bytes(shard_11)
+
+
+def w31_crc32c(data: bytes) -> int:
+    value = 0xFFFFFFFF
+    for octet in data:
+        value ^= octet
+        for _ in range(8):
+            value = (value >> 1) ^ (0x82F63B78 if value & 1 else 0)
+    return value ^ 0xFFFFFFFF
+
+
+def w31_dvl1(payload: bytes, declared: int = 0xFE08, header: int = 0x01F8) -> bytes:
+    if len(payload) != 500:
+        raise AssertionError("DVL1 payload must be 500 bytes")
+    return b"DVL1" + struct.pack("<HHI", declared, header, w31_crc32c(payload)) + payload
+
+
+def w31_elf_symbol(binary: bytes, name: str) -> int:
+    section_offset = struct.unpack_from("<Q", binary, 0x28)[0]
+    section_size = struct.unpack_from("<H", binary, 0x3A)[0]
+    section_count = struct.unpack_from("<H", binary, 0x3C)[0]
+    sections = [
+        struct.unpack_from("<IIQQQQIIQQ", binary, section_offset + index * section_size)
+        for index in range(section_count)
+    ]
+    for section in sections:
+        if section[1] not in (2, 11):
+            continue
+        strings = sections[section[6]]
+        string_table = binary[strings[4]:strings[4] + strings[5]]
+        for offset in range(section[4], section[4] + section[5], section[9]):
+            name_offset, _, _, _, value, _ = struct.unpack_from("<IBBHQQ", binary, offset)
+            end = string_table.find(b"\0", name_offset)
+            if string_table[name_offset:end].decode(errors="replace") == name:
+                return value
+    raise AssertionError(f"ELF symbol {name} not found")
+
+
+def w31_elf_string_vaddr(binary: bytes, needle: bytes) -> int:
+    file_offset = binary.index(needle)
+    program_offset = struct.unpack_from("<Q", binary, 0x20)[0]
+    program_size = struct.unpack_from("<H", binary, 0x36)[0]
+    program_count = struct.unpack_from("<H", binary, 0x38)[0]
+    for index in range(program_count):
+        header = struct.unpack_from("<IIQQQQQQ", binary, program_offset + index * program_size)
+        if header[0] == 1 and header[2] <= file_offset < header[2] + header[5]:
+            return header[3] + file_offset - header[2]
+    raise AssertionError("history identifier is not in a loadable segment")
+
+
+def w31_elf_posture(binary: bytes) -> tuple[bool, bool, bool]:
+    pie = struct.unpack_from("<H", binary, 0x10)[0] == 3
+    program_offset = struct.unpack_from("<Q", binary, 0x20)[0]
+    program_size = struct.unpack_from("<H", binary, 0x36)[0]
+    program_count = struct.unpack_from("<H", binary, 0x38)[0]
+    nx = relro = bind_now = False
+    for index in range(program_count):
+        header = struct.unpack_from("<IIQQQQQQ", binary, program_offset + index * program_size)
+        if header[0] == 0x6474E551:
+            nx = not bool(header[1] & 1)
+        elif header[0] == 0x6474E552:
+            relro = True
+        elif header[0] == 2:
+            for offset in range(header[2], header[2] + header[5], 16):
+                tag, value = struct.unpack_from("<QQ", binary, offset)
+                if tag == 0:
+                    break
+                if tag == 24 or (tag == 30 and value & 8) or (tag == 0x6FFFFFFB and value & 1):
+                    bind_now = True
+    return pie, nx, relro and bind_now
 
 
 def inside(*arguments: str, input_text: str | None = None) -> subprocess.CompletedProcess[str]:
     """Run a command inside the connector workstation as the participant user."""
+    command = list(arguments) if IN_PARTICIPANT_BOUNDARY else [
+        "docker", "exec", "-i", "--user", "fieldlink", "--workdir", "/var/lib/fieldlink-connector", CONTAINER, *arguments,
+    ]
     return subprocess.run(
-        ["docker", "exec", "-i", "--user", "fieldlink", "--workdir", "/var/lib/fieldlink-connector", CONTAINER, *arguments],
+        command,
         input=input_text, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
     )
 
@@ -90,6 +223,7 @@ def request(url: str, *, method: str = "GET", body: dict | None = None,
             token: str | None = None, tenant: str = "arwc", expected: int | None = None,
             headers: dict | None = None, certificate: str = "", private_key: str = "") -> tuple[int, dict]:
     """Issue a request from the connector workstation with its CA and tenant header."""
+    started = time.monotonic()
     completed = inside(
         "python3", "-c", _REQUEST, method, url, tenant,
         "@session" if token is None else token,
@@ -102,6 +236,13 @@ def request(url: str, *, method: str = "GET", body: dict | None = None,
     status_line, _, payload = completed.stdout.partition("\n")
     status = int(status_line)
     data = json.loads(payload) if payload.strip() else {}
+    location = urlsplit(url)
+    trace_event(
+        "http", method=method, host=location.hostname or "", path=location.path or "/",
+        status=status, response_bytes=len(payload.encode()),
+        response_sha256=hashlib.sha256(payload.encode()).hexdigest(),
+        elapsed_ms=round((time.monotonic() - started) * 1000),
+    )
     if expected is not None and status != expected:
         raise AssertionError(f"{method} {url} -> {status} (want {expected}): {payload[:300]}")
     return status, data
@@ -128,13 +269,22 @@ print(base64.b64encode(response.read()).decode())
 
 def get_bytes(url: str, *, token: str | None = None, tenant: str = "arwc", expected: int = 200) -> tuple[bytes, str]:
     """Fetch a binary artifact (not JSON) from the connector workstation."""
+    started = time.monotonic()
     completed = inside("python3", "-c", _GET_BYTES, url, tenant, "@session" if token is None else token)
     if completed.returncode:
         raise AssertionError(completed.stderr)
     status_line, content_type, encoded = completed.stdout.splitlines()
     if int(status_line) != expected:
         raise AssertionError(f"GET {url} -> {status_line} (want {expected})")
-    return base64.b64decode(encoded), content_type
+    value = base64.b64decode(encoded)
+    location = urlsplit(url)
+    trace_event(
+        "http", method="GET", host=location.hostname or "", path=location.path or "/",
+        status=int(status_line), response_bytes=len(value),
+        response_sha256=hashlib.sha256(value).hexdigest(),
+        elapsed_ms=round((time.monotonic() - started) * 1000),
+    )
+    return value, content_type
 
 
 _MAKE_ARCHIVE = r'''
@@ -229,6 +379,7 @@ def cbor_map(value: dict[str, str]) -> bytes:
 
 def cbor_request(url: str, body: bytes, token: str, *, expected: int | None = None) -> tuple[int, dict]:
     """POST a raw CBOR body with a bearer token (the field gateway's v2 protocol)."""
+    started = time.monotonic()
     script = (
         "import json, ssl, sys, urllib.error, urllib.request\n"
         "url, token = sys.argv[1:]\n"
@@ -239,15 +390,19 @@ def cbor_request(url: str, body: bytes, token: str, *, expected: int | None = No
         "except urllib.error.HTTPError as error: response = error\n"
         "print(response.status); print(response.read().decode())\n"
     )
-    completed = subprocess.run(
-        ["docker", "exec", "-i", "--user", "fieldlink", CONTAINER, "python3", "-c", script, url, token],
-        input=body, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
-    )
+    completed = inside_bytes("python3", "-c", script, url, token, input_bytes=body)
     if completed.returncode:
         raise AssertionError(completed.stderr.decode())
     status_line, _, payload = completed.stdout.decode().partition("\n")
     status = int(status_line)
     data = json.loads(payload) if payload.strip() else {}
+    location = urlsplit(url)
+    trace_event(
+        "http", method="POST", host=location.hostname or "", path=location.path or "/",
+        status=status, response_bytes=len(payload.encode()),
+        response_sha256=hashlib.sha256(payload.encode()).hexdigest(),
+        elapsed_ms=round((time.monotonic() - started) * 1000),
+    )
     if expected is not None and status != expected:
         raise AssertionError(f"POST {url} -> {status} (want {expected}): {payload[:300]}")
     return status, data
@@ -377,19 +532,23 @@ def write_receipt(name: str, value: str) -> None:
         raise AssertionError(result.stderr)
 
 
-def inside_bytes(*arguments: str) -> subprocess.CompletedProcess:
+def inside_bytes(*arguments: str, input_bytes: bytes | None = None) -> subprocess.CompletedProcess:
     """Run a command inside the workstation and return raw (undecoded) output."""
+    command = list(arguments) if IN_PARTICIPANT_BOUNDARY else [
+        "docker", "exec", "-i", "--user", "fieldlink", CONTAINER, *arguments,
+    ]
     return subprocess.run(
-        ["docker", "exec", "-i", "--user", "fieldlink", CONTAINER, *arguments],
+        command,
+        input=input_bytes,
         stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
     )
 
 
 def write_bytes(path: str, data: bytes, *, mode: str = "0700") -> None:
     """Write raw bytes to a path inside the connector workstation."""
-    result = subprocess.run(
-        ["docker", "exec", "-i", "--user", "fieldlink", CONTAINER, "sh", "-c", f"umask 077; cat > {path} && chmod {mode} {path}"],
-        input=data, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
+    result = inside_bytes(
+        "sh", "-c", f"umask 077; cat > {path} && chmod {mode} {path}",
+        input_bytes=data,
     )
     if result.returncode:
         raise AssertionError(result.stderr.decode())
@@ -399,6 +558,7 @@ def read_handover(name: str) -> str:
     result = inside("cat", f"{HANDOVER}/{name}")
     if result.returncode:
         raise AssertionError(f"handover file not found: {name}: {result.stderr}")
+    trace_artifact(f"{HANDOVER}/{name}", result.stdout.encode())
     return result.stdout
 
 
@@ -934,9 +1094,10 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             )
             canonical = json.dumps({k: v for k, v in record.items() if k not in {"signature_algorithm", "signature", "signing_public_key"}},
                                     sort_keys=True, separators=(",", ":")).encode()
-            verified = subprocess.run(
-                ["docker", "exec", "-i", "--user", "fieldlink", CONTAINER, "python3", "-c", verify, record["signing_public_key"], record["signature"]],
-                input=canonical, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+            verified = inside_bytes(
+                "python3", "-c", verify, record["signing_public_key"], record["signature"],
+                input_bytes=canonical,
+            )
             self.assertEqual(verified.returncode, 0, verified.stderr.decode())
 
     # ------------------------------------------------------------------ W16
