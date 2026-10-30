@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/qa-status-v1.schema.json",
+  "title": "Cinder Typhoon four-layer QA status",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "overall_status", "layers"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "overall_status": {
+      "enum": ["not_release_qualified", "release_qualified"]
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "service_contract",
+        "known_solution_acceptance",
+        "provenance_and_surface",
+        "blind_human_agent_playtest"
+      ],
+      "properties": {
+        "service_contract": {"$ref": "#/$defs/layer"},
+        "known_solution_acceptance": {"$ref": "#/$defs/layer"},
+        "provenance_and_surface": {"$ref": "#/$defs/layer"},
+        "blind_human_agent_playtest": {"$ref": "#/$defs/layer"}
+      }
+    }
+  },
+  "$defs": {
+    "layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "purpose",
+        "method",
+        "implementation_status",
+        "candidate_status",
+        "evidence_visibility",
+        "evidence",
+        "supports",
+        "does_not_support",
+        "blocking_issues"
+      ],
+      "properties": {
+        "title": {"type": "string", "minLength": 1},
+        "purpose": {"type": "string", "minLength": 1},
+        "method": {"enum": ["automated", "human_plus_agent"]},
+        "implementation_status": {
+          "enum": ["complete", "partial", "not_started"]
+        },
+        "candidate_status": {"enum": ["passed", "failed", "not_run"]},
+        "evidence_visibility": {"const": "operator_only"},
+        "evidence": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "supports": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "does_not_support": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "blocking_issues": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1},
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

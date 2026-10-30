@@ -29,10 +29,10 @@ start_fresh() {
 
 start_fresh
 python3 "$ROOT/../participant-surface/run.py" --phase keplerops
-python3 tests/test_participant_journey_live.py -v
+python3 tests/test_known_solution_live.py -v
 
-# The journey intentionally consumes single-use state. Give the retained
-# contract suites their own authored state.
+# Known-solution acceptance consumes single-use state. Give the contract suites
+# their own authored state.
 start_fresh
 python3 tests/test_opening_live.py
 python3 tests/test_registry_foundation_live.py

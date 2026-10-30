@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
-"""Discovery-first happy-path journey through every ARWC card (W01-W35).
+"""Known-solution acceptance for every ARWC card (W01-W35).
 
-This journey is the connected participant experience for the ARWC phase. The
-harness runs on the host. Every participant action runs inside the supplied
-connector workstation (`cinder-arwc-connector`) as user `fieldlink`, using only
-the corporate session and customer transition handover the participant is given.
+This operator-only suite follows an authored solution sequence from the ARWC
+participant boundary. The harness runs on the host. Every tested action runs
+inside the supplied connector workstation (`cinder-arwc-connector`) as user
+`fieldlink`, using the corporate session and customer transition handover.
 
-Rules this journey keeps:
+Boundary rules this suite enforces:
 - It starts from the supplied connector handover: the `corporate-session` token
   and `customer-transition.json` under `/var/lib/fieldlink-connector/handover`.
 - It derives every route host, record identifier, token and value from that
   handover or from an earlier response. It never embeds an author-only value.
-- It carries discovered evidence forward across cards and operations.
+- It carries response evidence forward across cards and operations.
 
-The journey consumes single-use state and must run from a pristine range.
+The suite contains solution algorithms and expected assertions. Its passing
+result proves known-path executability only; it does not prove that a fresh
+person would discover or understand the path, or establish difficulty or
+duration. It consumes single-use state and must run from a pristine range.
 """
 
 from __future__ import annotations
@@ -399,8 +402,8 @@ def read_handover(name: str) -> str:
     return result.stdout
 
 
-class ARWCJourney(unittest.TestCase):
-    """One connected ARWC journey; methods run in card order and share evidence."""
+class ARWCKnownSolutionAcceptance(unittest.TestCase):
+    """One connected known-solution sequence with shared response evidence."""
 
     maxDiff = None
     evidence: dict[str, object] = {}

@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
-"""Discovery-first happy-path journey through every KeplerOps card (K01-K31).
+"""Known-solution acceptance for every KeplerOps card (K01-K31).
 
-This journey is the connected participant experience, not a service-contract
-check. The harness runs on the host. Every participant action runs inside the
-k-dev workstation container as user `rowan`, using only the tools and files a
-participant has from the supplied foothold.
+This operator-only suite follows an authored solution sequence from the Rowan
+workstation boundary; it is not a service-contract test. The harness runs on
+the host. Every tested action runs inside the k-dev workstation container as
+user `rowan`, using the tools and files supplied with the foothold.
 
-Rules this journey keeps:
+Boundary rules this suite enforces:
 - It starts from the workstation material a participant is handed: `HOME.md`,
   `work/service-notes.md`, `work/service-catalog.md`, the browser profile, the
   saved git credential, the connector checkout, and the local helper.
 - It derives every route, identifier, credential and answer from that material
   or from an earlier response. It never embeds a value known only to the author.
-- It carries discovered evidence forward across cards and operations.
+- It carries response evidence forward across cards and operations.
 
-The journey consumes single-use state and must run from a pristine range.
+The suite contains solution algorithms and expected assertions. Its passing
+result proves known-path executability only; it does not prove that a fresh
+person would discover or understand the path, or establish difficulty or
+duration. It consumes single-use state and must run from a pristine range.
 """
 
 from __future__ import annotations
@@ -133,8 +136,8 @@ def curl_json(url: str, *extra: str, expected: int = 200, **kwargs: object) -> d
     return json.loads(body) if body else {}
 
 
-class KeplerOpsJourney(unittest.TestCase):
-    """One connected journey; methods run in card order and share evidence."""
+class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
+    """One connected known-solution sequence with shared response evidence."""
 
     maxDiff = None
     evidence: dict[str, object] = {}

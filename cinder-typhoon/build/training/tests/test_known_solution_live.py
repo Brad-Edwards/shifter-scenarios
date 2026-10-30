@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Discovery-first happy-path journey through all sixteen Training cards."""
+"""Known-solution acceptance for all sixteen Training cards.
+
+This operator-only suite follows an authored solution sequence from the
+participant workstation boundary. It verifies that the known sequence remains
+executable and produces the expected evidence. Because the sequence and its
+assertions are already encoded here, a pass does not prove that a fresh person
+would discover, understand, or complete the work, and says nothing about
+difficulty or duration.
+"""
 
 from __future__ import annotations
 
@@ -57,7 +65,7 @@ def markdown_link(document: str, label: str, base: str) -> str:
     return urljoin(base, match.group(1))
 
 
-class TrainingParticipantJourneyTest(unittest.TestCase):
+class TrainingKnownSolutionAcceptance(unittest.TestCase):
     maxDiff = None
 
     @classmethod

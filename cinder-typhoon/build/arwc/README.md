@@ -6,8 +6,10 @@ remain the source of truth. Runtime discoveries that change an observable
 contract are reconciled there before the implementation changes.
 
 **Status:** The isolated carrier and corporate/maintenance/DMZ/engineering/control network foundation is
-deployed. W01-W35 (120 of 120 cards) passed standalone and cross-carrier
-whole-phase acceptance. The corporate capability is not pre-seeded and must be
+deployed. The operator-authored W01-W35 known-solution sequence and service
+contracts previously passed standalone and cross-carrier acceptance on the
+mutable range. This establishes known-path behavior, not blind discovery,
+difficulty, or duration. The corporate capability is not pre-seeded and must be
 earned by real K26.2 or K27.3 destination execution. The customer handover
 runs on `a-connector`; association and annex-import paths run on `a-business`;
 archive enrollment, query, helper, and retained-collector paths run on `a-archive`; onboarding and
@@ -560,13 +562,14 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   handover to independent 0.81 ML / 11.59 ML process truth without modifying
   W30 or prior evidence. The suite now contains 176 black-box checks. No SDL
   change was needed, and W34 binds no narrative asset.
-- 2026-09-27: Final whole-phase acceptance rebuilt all 18 images, destroyed and
-  recreated every mutable volume, and passed all 176 black-box checks across
-  W01-W35. The pass included exact addressing and authorization, persistence,
-  participant-content inspection, container posture, absence of published
-  ports, internal target networks, metadata and Internet denial, and denied
-  routes to Training, KeplerOps, and Shifter addresses. The retained acceptance
-  exit status is zero.
+- 2026-09-27: Final service-contract and known-solution acceptance rebuilt all
+  18 images, destroyed and recreated every mutable volume, and passed all 176
+  black-box checks across W01-W35. The pass included exact addressing and
+  authorization, persistence, participant-content inspection, container
+  posture, absence of published ports, internal target networks, metadata and
+  Internet denial, and denied routes to Training, KeplerOps, and Shifter
+  addresses. The retained exit status is zero; the run was not a blind
+  human-plus-agent playtest.
 - 2026-09-30: Event-readiness review found that the original five-minute
   planner-session boundary interrupted longer participant workflows. The
   planner session and both scoped control-client routes now last fifteen

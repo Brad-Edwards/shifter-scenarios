@@ -45,10 +45,10 @@ run_test() {
 start_fresh
 docker exec cinder-training-kali test ! -e /opt/tests
 python3 "$ROOT/../participant-surface/run.py" --phase training
-run_test test_participant_journey_live.py -v
+run_test test_known_solution_live.py -v
 
-# The journey intentionally consumes single-use state and performs the full
-# practice transfer. Give the retained contract suites their own authored state.
+# Known-solution acceptance consumes single-use state and performs the full
+# practice transfer. Give the contract suites their own authored state.
 start_fresh
 run_test test_topology_live.py -v
 run_test test_workbench_live.py --base http://workbench.training -v
