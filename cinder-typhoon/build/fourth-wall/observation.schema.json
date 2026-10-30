@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/fourth-wall/observation-v1.schema.json",
+  "title": "Cinder Typhoon live fourth-wall observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "report_kind", "phase", "policy_sha256",
+    "identity", "summary", "findings"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "report_kind": {"const": "fourth-wall-observation"},
+    "phase": {"enum": ["training", "keplerops", "arwc"]},
+    "policy_sha256": {"$ref": "#/$defs/digest"},
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uid", "unprivileged"],
+      "properties": {
+        "uid": {"type": "integer", "minimum": 1},
+        "unprivileged": {"const": true}
+      }
+    },
+    "summary": {"$ref": "#/$defs/summary"},
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/finding"}
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scanned_file_count", "scanned_byte_count", "skipped_file_count",
+        "visited_file_count", "file_limit_exceeded", "byte_limit_exceeded",
+        "probed_response_count", "probe_error_count", "probe_limit_exceeded",
+        "truncated_response_count", "finding_count"
+      ],
+      "properties": {
+        "scanned_file_count": {"type": "integer", "minimum": 0},
+        "scanned_byte_count": {"type": "integer", "minimum": 0},
+        "skipped_file_count": {"type": "integer", "minimum": 0},
+        "visited_file_count": {"type": "integer", "minimum": 0},
+        "file_limit_exceeded": {"type": "integer", "minimum": 0},
+        "byte_limit_exceeded": {"type": "integer", "minimum": 0},
+        "probed_response_count": {"type": "integer", "minimum": 0},
+        "probe_error_count": {"type": "integer", "minimum": 0},
+        "probe_limit_exceeded": {"type": "integer", "minimum": 0},
+        "truncated_response_count": {"type": "integer", "minimum": 0},
+        "finding_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_kind", "location", "rule_id", "match", "content_sha256"],
+      "properties": {
+        "source_kind": {"type": "string", "minLength": 1},
+        "location": {"type": "string", "minLength": 1},
+        "rule_id": {"type": "string", "minLength": 1},
+        "match": {"type": "string", "minLength": 1},
+        "content_sha256": {"$ref": "#/$defs/digest"},
+        "card_id": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

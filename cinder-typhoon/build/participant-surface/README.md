@@ -28,6 +28,13 @@ It refuses to run as uid 0. This is the same boundary currently used by the
 range's participant shell. The observed manifest records this fact so a
 privileged or incorrectly mounted check cannot silently pass.
 
+The companion `build/fourth-wall/` gate uses the same unprivileged phase
+containers to inspect actual readable content and safe `GET` responses for
+challenge implementation language and challenge-derived names. Its reports
+contain matches and hashes, not file or response contents. Participant-surface
+comparison establishes what is present; the fourth-wall check establishes that
+the observed content does not break the scenario's in-world boundary.
+
 ## Schema
 
 Both formats use `schema_version: 1`.

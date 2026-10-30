@@ -10,7 +10,7 @@ or duration.
 | --- | --- | --- |
 | Service contract tests | Operator-side service and component suites | Normal, accepted, denied, persistence, isolation, and audit behavior match the contract. |
 | Known-solution acceptance | `build/participant-runner/` and `build/*/tests/test_known_solution_live.py` | The encoded solution sequence works from the verified participant boundary. |
-| Provenance and participant surface | `build/participant-surface/` and `build/input-provenance/` | Starting visibility and every solution input have an allowed participant-visible origin. |
+| Provenance, participant surface, and fourth wall | `build/participant-surface/`, `build/input-provenance/`, and `build/fourth-wall/` | Starting visibility and every solution input have an allowed participant-visible origin, and observed content stays in world. |
 | Blind human-plus-agent playtests | Fresh participants using event agents and support rules | Measured discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution. |
 
 The machine-readable current status and schema are `qa-status.json` and
@@ -50,6 +50,21 @@ owners for all 240 cards; those declarations do not pass the independent-owner
 check. Missing, extra, combined, duplicated, or assertion-free card coverage
 also fails this gate.
 
+Run the static fourth-wall author check with:
+
+```sh
+python3 cinder-typhoon/build/fourth-wall/run.py \
+  --phase arwc --static-only
+```
+
+The release form omits `--static-only`; it scans readable files, binary browser
+state, generated artifacts, and bounded read-only service responses from the
+actual unprivileged participant context. The candidate runner performs this
+check before and after known-solution acceptance. Reports contain only rule
+matches, locations, and content hashes. The current gate fails on
+challenge-derived routes and the pending KeplerOps and ARWC domain-interface
+reviews.
+
 Generate the value-free static provenance report with:
 
 ```sh
@@ -60,8 +75,9 @@ python3 cinder-typhoon/build/input-provenance/provenance.py \
 `--require-complete` currently exits nonzero for the explicit K18, K26 and W33
 gaps and the pending exact-comparison audit. Candidate known-solution runs also
 include those unresolved entries, while preserving a separate behavioral
-result. The candidate wrapper runs the provenance release gate first, so the
-overall candidate still fails without conflating the two QA layers.
+result. The candidate wrapper runs the card-coverage gate, provenance gate,
+and fourth-wall gate before the remaining participant-surface checks, so the
+overall candidate still fails without conflating the separate QA results.
 
 ## SDL validation
 

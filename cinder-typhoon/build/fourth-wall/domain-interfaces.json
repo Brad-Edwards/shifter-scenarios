@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "phases": {
+    "training": {
+      "status": "not_applicable",
+      "blocking_issue": null,
+      "approved_route_patterns": []
+    },
+    "keplerops": {
+      "status": "pending_review",
+      "blocking_issue": 212,
+      "approved_route_patterns": []
+    },
+    "arwc": {
+      "status": "pending_review",
+      "blocking_issue": 219,
+      "approved_route_patterns": []
+    }
+  }
+}
