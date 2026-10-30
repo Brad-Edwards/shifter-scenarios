@@ -12,9 +12,11 @@
       "approved_route_patterns": []
     },
     "arwc": {
-      "status": "pending_review",
-      "blocking_issue": 219,
-      "approved_route_patterns": []
+      "status": "approved",
+      "blocking_issue": null,
+      "approved_route_patterns": [
+        "/(?:api|internal)/.*"
+      ]
     }
   }
 }
