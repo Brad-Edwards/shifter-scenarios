@@ -254,6 +254,8 @@ class SourceHandler(KeplerHandler):
         return str(worker["principal"]) if worker else None
 
     def do_GET(self) -> None:
+        if self.send_client_document():
+            return
         parsed = urlsplit(self.path)
         if GIT_ROUTE.fullmatch(parsed.path):
             self._git_backend(parsed)
@@ -275,6 +277,12 @@ class SourceHandler(KeplerHandler):
                 return
             append_audit(AUDIT, "handover", {"request_id": self.request_id, "principal": principal, "handover_id": HANDOVER["handover_id"], "revision": HANDOVER["revision"], "status": 200})
             self.send_json(200, HANDOVER)
+            return
+        if parsed.path == "/api/exercises/policy-compiler/opcode-model":
+            if principal != USERNAME:
+                self.send_json(403, {"error": "developer_scope_required"})
+                return
+            self.send_json(200, K11_CONFIG["opcode_model"])
             return
         if parsed.path == "/api/exercises/policy-compiler/nonce":
             if principal != USERNAME:

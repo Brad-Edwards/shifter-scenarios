@@ -801,6 +801,9 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         evaluate = f"{source}/api/exercises/policy-compiler/evaluate"
         nonce_route = f"{source}/api/exercises/policy-compiler/nonce"
 
+        # Fetch the opcode model from the source service client reference.
+        opcode_model = curl_json(self.discovered_route("source.policy-opcode-model"), creds=dev)
+
         def recover_program(raw: bytes, program_id: str) -> dict:
             start = raw.find(b"FKPC")
             self.assertGreaterEqual(start, 0, "retained program table absent")
@@ -809,13 +812,6 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             count = int.from_bytes(raw[start + 8:start + 10], "little")
             width = int.from_bytes(raw[start + 10:start + 12], "little")
             table = raw[start:start + offset + count * width]
-            # Opcode operations recovered by reverse-engineering the bytecode dispatch.
-            opcode_model = {
-                "schema": "fieldkest.policy-opcode-model/v1", "instruction_width": 4,
-                "opcodes": {"0x00": "PUSH_FIELD", "0x01": "PUSH_CONST", "0x02": "EQ",
-                            "0x03": "SEMVER_GTE", "0x04": "IN_SET", "0x05": "AND",
-                            "0x06": "OR", "0x07": "RETURN"},
-            }
             return {
                 "schema": "fieldkest.policy-program-model/v1", "program_id": program_id,
                 "instruction_width": width, "instruction_count": count,

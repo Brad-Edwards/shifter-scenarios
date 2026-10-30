@@ -1211,11 +1211,19 @@
             ],
             "locator": "named evidence fields carried into a later request by this method",
             "source": "accepted response chain in test_k11_policy_compiler"
+          },
+          {
+            "class": "normal_interface_or_artifact",
+            "inputs": [
+              "opcode_model"
+            ],
+            "locator": "GET source.policy-opcode-model from client reference graph in setUpClass context",
+            "source": "source.keplerops.test /api/exercises/policy-compiler/opcode-model"
           }
         ],
-        "inventory_sha256": "662654958e636505cf54d57fc611ccab2d86d3f5ed968bf04c0192877507650f",
+        "inventory_sha256": "b25beba7db17cbdfcb2fcec54b0a5c61a1a7cee6a693bcbaa21e3e0a4272f654",
         "profile": "keplerops",
-        "request_count": 5,
+        "request_count": 6,
         "review_status": "unresolved",
         "unresolved": [
           {
@@ -2314,12 +2322,12 @@
     },
     "build/keplerops/runtime/source.py": {
       "citations": [],
-      "comparison_count": 43,
-      "inventory_sha256": "1156d81f5d541b561a7b3a7eb5d5bb2ace9ef63cc9455cc231fcbc4ad532f132",
+      "comparison_count": 44,
+      "inventory_sha256": "0efda20bcfa1e3f8cc113d5ada8697cad21b7d138f7bc3ec8826cc18b6128bf5",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "1156d81f5d541b561a7b3a7eb5d5bb2ace9ef63cc9455cc231fcbc4ad532f132",
+          "fingerprint": "0efda20bcfa1e3f8cc113d5ada8697cad21b7d138f7bc3ec8826cc18b6128bf5",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"
