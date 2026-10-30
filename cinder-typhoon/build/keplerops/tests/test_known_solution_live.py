@@ -1169,11 +1169,11 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             curl_json(
                 self.discovered_route("identity.staff-login"), "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"username": self.evidence["dev"][0], "password": dev_secret}), expected=201)
-            tenant = self.evidence["export_tenant"]
-            # The customer-history dossier names the protected record and the
-            # expected reviewer subject, which the fixture issuer will accept.
+            # The support session names the customer tenant and history dossier.
+            session = curl_json(self.discovered_route("support.session"), cookie=cookie)
+            tenant = session["customer"]["tenant"]
             dossier_tmpl = self.discovered_route("support.dossier")
-            hist = curl_json(dossier_tmpl.replace("{tenant}", tenant).replace("{dossier_id}", "DOS-ARWC-HIST-01"), cookie=cookie)
+            hist = curl_json(dossier_tmpl.replace("{tenant}", tenant).replace("{dossier_id}", session["customer"]["history_dossier"]), cookie=cookie)
             subject = hist["reviewer_subject"]
             assertion = curl_json(
                 self.discovered_route("support.fixture-assertion"), "-H", "Content-Type: application/json",

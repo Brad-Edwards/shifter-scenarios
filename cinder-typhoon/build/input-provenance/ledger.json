@@ -1409,15 +1409,24 @@
             ],
             "locator": "DOS-ARWC-HIST-01 dossier response field read via support.dossier in K18.4",
             "source": "customer dossier served by support.keplerops.test"
+          },
+          {
+            "class": "normal_interface_or_artifact",
+            "inputs": [
+              "tenant",
+              "history_dossier"
+            ],
+            "locator": "support.session response customer.tenant and customer.history_dossier in K18.4",
+            "source": "support.keplerops.test /api/session"
           }
         ],
-        "inventory_sha256": "7d82f89bfcac3484dc9f23492bb9caae5cf2c027c8bc204c38df180177585b44",
+        "inventory_sha256": "1398bc84517ccb3d2f7b58ee7ff829444c13bb1eb21443acbb198648646e7353",
         "profile": "keplerops",
-        "request_count": 9,
+        "request_count": 10,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "0a9daec080ccb92e393a75b0aa7e085984e9535ca7f338883569584a85afaa5b",
+            "fingerprint": "1398bc84517ccb3d2f7b58ee7ff829444c13bb1eb21443acbb198648646e7353",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
