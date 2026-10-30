@@ -2,9 +2,9 @@
 """Known-solution acceptance for every KeplerOps card (K01-K31).
 
 This operator-only suite follows an authored solution sequence from the Rowan
-workstation boundary; it is not a service-contract test. The harness runs on
-the host. Every tested action runs inside the k-dev workstation container as
-user `rowan`, using the tools and files supplied with the foothold.
+workstation boundary; it is not a service-contract test. The operator runner
+streams it into the existing k-dev workstation process as user `rowan`, using
+the tools and files supplied with the foothold.
 
 Boundary rules this suite enforces:
 - It starts from the workstation material a participant is handed: `HOME.md`,
@@ -36,19 +36,40 @@ import unittest
 import uuid
 import zipfile
 import zlib
+from urllib.parse import urlsplit
 
 
 CONTAINER = "cinder-keplerops-k-dev"
+IN_PARTICIPANT_BOUNDARY = os.environ.get("CINDER_PARTICIPANT_BOUNDARY") == "1"
 # The KeplerOps->ARWC delivery handoff needs both carriers paired. Like the
 # retained suite, those cross-segment steps run only when this is set.
 CROSS_SEGMENT = os.environ.get("CINDER_CROSS_SEGMENT") == "1"
+TRACE = os.environ.get("CINDER_ACCEPTANCE_TRACE") == "1"
 CA = "/home/rowan/.local/share/keplerops/ca.crt"
+
+
+def trace_event(kind: str, **fields: object) -> None:
+    """Emit credential-free evidence for the operator-side acceptance runner."""
+    if TRACE:
+        print("CINDER_ACCEPTANCE_EVENT " + json.dumps(
+            {"kind": kind, **fields}, sort_keys=True, separators=(",", ":"),
+        ), flush=True)
+
+
+def trace_artifact(source: str, value: bytes) -> None:
+    trace_event(
+        "artifact", source=source, bytes=len(value),
+        sha256=hashlib.sha256(value).hexdigest(),
+    )
 
 
 def rowan(*arguments: str, input_text: str | None = None) -> subprocess.CompletedProcess[str]:
     """Run a command inside the workstation as the participant user `rowan`."""
+    command = list(arguments) if IN_PARTICIPANT_BOUNDARY else [
+        "docker", "exec", "-i", "--user", "rowan", "--workdir", "/home/rowan", CONTAINER, *arguments,
+    ]
     return subprocess.run(
-        ["docker", "exec", "-i", "--user", "rowan", "--workdir", "/home/rowan", CONTAINER, *arguments],
+        command,
         input=input_text, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
     )
 
@@ -58,13 +79,17 @@ def read_home(path: str) -> str:
     result = rowan("cat", path)
     if result.returncode != 0:
         raise AssertionError(f"workstation file not found: {path}: {result.stderr}")
+    trace_artifact(path, result.stdout.encode())
     return result.stdout
 
 
 def rowan_bytes(*arguments: str) -> bytes:
     """Run a workstation command and return its raw stdout bytes."""
+    command = list(arguments) if IN_PARTICIPANT_BOUNDARY else [
+        "docker", "exec", "--user", "rowan", "--workdir", "/home/rowan", CONTAINER, *arguments,
+    ]
     result = subprocess.run(
-        ["docker", "exec", "--user", "rowan", "--workdir", "/home/rowan", CONTAINER, *arguments],
+        command,
         stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
     )
     if result.returncode != 0:
@@ -74,19 +99,18 @@ def rowan_bytes(*arguments: str) -> bytes:
 
 def read_home_bytes(path: str) -> bytes:
     """Read a binary file from the participant home directory."""
-    result = subprocess.run(
-        ["docker", "exec", "--user", "rowan", "--workdir", "/home/rowan", CONTAINER, "cat", path],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
-    )
-    if result.returncode != 0:
-        raise AssertionError(f"workstation file not found: {path}: {result.stderr.decode()}")
-    return result.stdout
+    value = rowan_bytes("cat", path)
+    trace_artifact(path, value)
+    return value
 
 
 def write_tmp(path: str, data: bytes) -> None:
     """Stage participant-authored content inside the workstation (e.g. /tmp)."""
+    command = ["tee", path] if IN_PARTICIPANT_BOUNDARY else [
+        "docker", "exec", "-i", "--user", "rowan", CONTAINER, "tee", path,
+    ]
     result = subprocess.run(
-        ["docker", "exec", "-i", "--user", "rowan", CONTAINER, "tee", path],
+        command,
         input=data, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=False,
     )
     if result.returncode != 0:
@@ -113,6 +137,7 @@ def curl(
     timeout: int = 20,
 ) -> tuple[int, str]:
     """Issue an authenticated request from the workstation with its CA."""
+    started = time.monotonic()
     command = ["curl", "-sS", "--cacert", CA, "-o", "/tmp/journey.out", "-w", "%{http_code}", "--max-time", str(timeout)]
     if creds is not None:
         command += ["-u", f"{creds[0]}:{creds[1]}"]
@@ -126,6 +151,22 @@ def curl(
     result = rowan(*command)
     body = rowan("cat", "/tmp/journey.out").stdout
     status = int(result.stdout) if result.stdout.strip().isdigit() else -1
+    location = urlsplit(url)
+    request_method = "GET"
+    if "-X" in extra:
+        request_method = extra[extra.index("-X") + 1]
+    elif any(
+        value in {"-F", "--form", "-d", "--data", "--data-binary", "--data-raw", "--data-urlencode"}
+        or value.startswith(("--data=", "--data-binary=", "--form="))
+        for value in extra
+    ):
+        request_method = "POST"
+    trace_event(
+        "http", method=request_method, host=location.hostname or "",
+        path=location.path or "/", status=status, response_bytes=len(body.encode()),
+        response_sha256=hashlib.sha256(body.encode()).hexdigest(),
+        elapsed_ms=round((time.monotonic() - started) * 1000),
+    )
     if status != expected:
         raise AssertionError(f"{url} -> {result.stdout} (want {expected}): {body[:400]} {result.stderr[:200]}")
     return status, body

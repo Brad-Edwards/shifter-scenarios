@@ -109,7 +109,13 @@ start_fresh() {
 
 start_fresh
 if [[ ${CINDER_PRESERVE_DELIVERY:-0} != 1 ]]; then
-  python3 tests/test_known_solution_live.py -v
+  reset_identity=$(docker inspect --format '{{.Id}}' cinder-arwc-connector)
+  python3 "$ROOT/../participant-runner/run.py" \
+    --phase arwc \
+    --operation ending \
+    --development \
+    --reset-identity "$reset_identity" \
+    --report "$ROOT/.operator/known-solution-report.json"
 
   # Known-solution acceptance consumes single-use state. Give the contract
   # suites their own authored state. A cross-segment paired delivery is one-shot

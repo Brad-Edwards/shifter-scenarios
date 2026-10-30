@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/participant-runner/report.schema.json",
+  "title": "Participant-boundary known-solution acceptance report",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "report_kind",
+    "phase",
+    "operation",
+    "selected_assertions",
+    "reset_identity",
+    "candidate",
+    "started_at",
+    "finished_at",
+    "elapsed_seconds",
+    "result"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "report_kind": {"const": "participant-boundary-known-solution"},
+    "phase": {"enum": ["training", "keplerops", "arwc"]},
+    "operation": {"type": "string"},
+    "selected_assertions": {"type": "array", "items": {"type": "string"}},
+    "reset_identity": {"type": "string"},
+    "candidate": {"type": "object"},
+    "started_at": {"type": "string"},
+    "finished_at": {"type": "string"},
+    "elapsed_seconds": {"type": "number", "minimum": 0},
+    "result": {"enum": ["passed", "failed"]},
+    "cross_segment": {"type": "boolean"},
+    "expected_transition": {"type": ["string", "null"]},
+    "container_boundary": {"type": "object"},
+    "host_identity": {"type": "object"},
+    "boundary": {"type": ["object", "null"]},
+    "evidence": {"type": "object"},
+    "failure": {"type": "string"}
+  },
+  "additionalProperties": false
+}

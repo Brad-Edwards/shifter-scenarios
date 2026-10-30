@@ -29,7 +29,13 @@ start_fresh() {
 
 start_fresh
 python3 "$ROOT/../participant-surface/run.py" --phase keplerops
-python3 tests/test_known_solution_live.py -v
+reset_identity=$(docker inspect --format '{{.Id}}' cinder-keplerops-k-dev)
+python3 "$ROOT/../participant-runner/run.py" \
+  --phase keplerops \
+  --operation all \
+  --development \
+  --reset-identity "$reset_identity" \
+  --report "$ROOT/.operator/known-solution-report.json"
 
 # Known-solution acceptance consumes single-use state. Give the contract suites
 # their own authored state.

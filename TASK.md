@@ -58,9 +58,21 @@ assertions:
 | ARWC | `build/arwc/tests/test_known_solution_live.py` | 120 |
 
 They start from the intended participant accounts, workstations, files, tools,
-DNS, CA material, and network positions. A pass establishes known-path
-executability and expected completion evidence only. It is not evidence of
-independent discovery, fairness, understanding, difficulty, or duration.
+DNS, CA material, and network positions. `build/participant-runner/run.py`
+streams each suite into that unprivileged account without mounting test or
+repository files. It verifies exact workstation networks and mounts, rejects
+operator control and readable private state, and writes a credential-free
+structured report containing request/response hashes, discovered artifact
+hashes, completion assertions, reset identity and elapsed time. A pass
+establishes known-path executability and expected completion evidence only. It
+is not evidence of independent discovery, fairness, understanding, difficulty,
+or duration.
+
+The KeplerOps diagnostic and package deliveries are separate selectable
+operations. Release evidence must run each after its own pristine reset, then
+run the ARWC ending against the non-seeded transition earned by that route.
+Candidate mode refuses a KeplerOps delivery without paired-carrier mode and
+refuses an ARWC run without a declared, matching transition route.
 
 ### 3. Provenance and participant-surface checks
 
@@ -112,6 +124,11 @@ The KeplerOps-to-ARWC transition requires the paired carriers. A single-stack
 ARWC run may seed the ordinary handover for local contract and known-solution
 testing; that seed is not evidence that the real cross-carrier transition
 passed.
+
+The local phase scripts use `--development`, which is explicitly mutable and
+cannot qualify a release. Immutable-candidate invocation, report fields and the
+per-route reset contract are documented in
+`build/participant-runner/README.md`.
 
 ## Release qualification
 

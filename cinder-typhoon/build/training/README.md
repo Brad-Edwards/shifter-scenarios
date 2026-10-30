@@ -24,7 +24,11 @@ bridge, no published target ports, read-only container roots, dropped Linux
 capabilities, runner network isolation, Docker-socket confinement to the trusted
 runner, one-shot worker cleanup, and persistence across target-service restarts.
 The tests are operator material and are not copied into the participant image;
-the local test wrapper supplies them only to a one-shot, read-only test container.
+the service-contract wrapper supplies them only to a one-shot, read-only test
+container. Known-solution acceptance is separate: the operator runner streams
+it into the existing unprivileged `cinder` workstation process, verifies that
+process has no Docker control, host paths, private service state or test files,
+and retains only credential-free structured evidence outside the workstation.
 The four stateful live suites are intentionally a first-build acceptance pass:
 they exercise single-redemption and append-only behavior and therefore require
 fresh named volumes if they are to be repeated from their initial conditions.

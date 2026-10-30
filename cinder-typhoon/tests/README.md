@@ -9,7 +9,7 @@ or duration.
 | Layer | Evidence | What a pass means |
 | --- | --- | --- |
 | Service contract tests | Operator-side service and component suites | Normal, accepted, denied, persistence, isolation, and audit behavior match the contract. |
-| Known-solution acceptance | `build/*/tests/test_known_solution_live.py` | The encoded solution sequence works from the participant boundary. |
+| Known-solution acceptance | `build/participant-runner/` and `build/*/tests/test_known_solution_live.py` | The encoded solution sequence works from the verified participant boundary. |
 | Provenance and participant surface | Participant-surface manifests and per-input provenance | Starting visibility and every solution input have an allowed participant-visible origin. |
 | Blind human-plus-agent playtests | Fresh participants using event agents and support rules | Measured discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution. |
 
@@ -28,8 +28,10 @@ python3 cinder-typhoon/tests/report_qa_status.py --require-release-qualified
 ```
 
 The known-solution suites contain solution algorithms and expected assertions.
-They are operator-only, are not copied into participant images, and do not
-substitute for the blind playtests tracked by issue #229.
+They are operator-only, are not copied into participant images, and are streamed
+without a test mount into the real unprivileged workstation account. Reports
+contain request and artifact hashes rather than response bodies or credentials.
+They do not substitute for the blind playtests tracked by issue #229.
 
 ## SDL validation
 
