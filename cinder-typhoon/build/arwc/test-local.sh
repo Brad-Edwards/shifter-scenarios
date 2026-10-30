@@ -25,6 +25,10 @@ start_fresh() {
   [[ $ready == 1 ]]
 
   if [[ ${CINDER_PRESERVE_DELIVERY:-0} != 1 ]]; then
+    # Inventory the authored pristine participant boundary before the local
+    # single-stack handover unlocks the corporate services.
+    python3 "$ROOT/../participant-surface/run.py" --phase arwc
+
     # A single-stack run has no live KeplerOps peer to deliver the real signed
     # package that normally earns the corporate handoff; seed it the same way
     # the connector's own earn_corporate would.

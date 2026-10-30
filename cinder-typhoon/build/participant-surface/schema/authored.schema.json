@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/participant-surface/authored-v1.schema.json",
+  "title": "Cinder Typhoon authored participant-surface manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "manifest_kind",
+    "phase",
+    "state",
+    "participant",
+    "filesystem",
+    "tools",
+    "network",
+    "disclosures",
+    "delivery"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "manifest_kind": {"const": "authored"},
+    "phase": {"enum": ["training", "keplerops", "arwc"]},
+    "state": {"type": "string", "minLength": 1},
+    "participant": {"$ref": "#/$defs/participant"},
+    "filesystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["roots", "forbidden_paths"],
+      "properties": {
+        "roots": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/root"}
+        },
+        "forbidden_paths": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/forbidden_path"},
+          "uniqueItems": true
+        }
+      }
+    },
+    "tools": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/tool"},
+      "uniqueItems": true
+    },
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dns", "listeners"],
+      "properties": {
+        "dns": {"type": "array", "items": {"$ref": "#/$defs/dns"}},
+        "listeners": {"type": "array", "items": {"$ref": "#/$defs/listener"}}
+      }
+    },
+    "disclosures": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/disclosure"}
+    },
+    "delivery": {"$ref": "#/$defs/delivery"}
+  },
+  "$defs": {
+    "participant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["user", "uid", "group", "gid", "groups", "home", "workdir"],
+      "properties": {
+        "user": {"type": "string", "minLength": 1},
+        "uid": {"type": "integer", "minimum": 1},
+        "group": {"type": "string", "minLength": 1},
+        "gid": {"type": "integer", "minimum": 1},
+        "groups": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "home": {"type": "string", "pattern": "^/"},
+        "workdir": {"type": "string", "pattern": "^/"}
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "type", "mode", "owner", "group", "classification"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "type": {"enum": ["directory", "file", "symlink"]},
+        "mode": {"type": "string", "pattern": "^[0-7]{4}$"},
+        "owner": {"type": "string", "minLength": 1},
+        "group": {"type": "string", "minLength": 1},
+        "classification": {"type": "string", "minLength": 1},
+        "size": {"type": "integer", "minimum": 0},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "target": {"type": "string"}
+      }
+    },
+    "root": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "opaque", "entries"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^/"},
+        "opaque": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "entries": {"type": "array", "items": {"$ref": "#/$defs/entry"}}
+      }
+    },
+    "tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "path"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "pattern": "^/"}
+      }
+    },
+    "forbidden_path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "visible", "readable"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^/"},
+        "visible": {"type": "boolean"},
+        "readable": {"type": "boolean"}
+      }
+    },
+    "dns": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "addresses"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "addresses": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "format": "ipv4"},
+          "uniqueItems": true
+        }
+      }
+    },
+    "listener": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["host", "port", "reachable"],
+      "properties": {
+        "host": {"type": "string", "minLength": 1},
+        "port": {"type": "integer", "minimum": 1, "maximum": 65535},
+        "reachable": {"type": "boolean"}
+      }
+    },
+    "disclosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "path", "exposes"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "pattern": "^/"},
+        "exposes": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      }
+    },
+    "delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cards", "hints"],
+      "properties": {
+        "cards": {"$ref": "#/$defs/delivery_item"},
+        "hints": {"$ref": "#/$defs/delivery_item"}
+      }
+    },
+    "delivery_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "items"],
+      "properties": {
+        "status": {"enum": ["observed", "not_materialized", "external_unverified"]},
+        "items": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    }
+  }
+}

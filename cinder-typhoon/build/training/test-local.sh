@@ -44,6 +44,7 @@ run_test() {
 
 start_fresh
 docker exec cinder-training-kali test ! -e /opt/tests
+python3 "$ROOT/../participant-surface/run.py" --phase training
 run_test test_participant_journey_live.py -v
 
 # The journey intentionally consumes single-use state and performs the full
