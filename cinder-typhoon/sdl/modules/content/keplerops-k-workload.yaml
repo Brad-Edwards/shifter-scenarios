@@ -31,12 +31,12 @@ content:
       starting_state: Schedule SCH-SUP-2841, systemd-timer-equivalent cadence, profile and
         startup-config reference.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: workloads.keplerops.test schedule API
+        normal_case: authorized role reads schedule metadata and assignment
+        defect: the schedule assignment names the cross-account partition window and the
+          export tenant
+        bounds: only the named schedule is accessible; no schedule enumeration
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -77,7 +77,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: f0c01fc54a4c0dc0f710d6636d04caed892b094548b56f23b69d839f870ff2e5
+        digest: 788cc77dd8e23fe2d4017fbf94bc717555a32f92100e32cc65df3e81c1f56970
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -253,12 +253,13 @@ content:
       starting_state: Shift transition changes assignment from SHIFT-SEP16-A to SHIFT-SEP17-B
         without replacing schedule.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: workloads.keplerops.test schedule-runs API
+        normal_case: authorized scheduler triggers a new schedule run
+        defect: the run executes against the cross-account partition, delivering into the
+          next schedule window
+        bounds: only the schedule identified by the evidence chain is runnable with the
+          role token
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -301,7 +302,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: d4326bad2b1dd5654b9740350a6894813c8b59ae8ad422917f1de434b5e342cf
+        digest: c826c2f1bccc132d5f25853c854e4afd88221dd0d39446c04a94b54340639aae
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

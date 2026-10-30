@@ -34,12 +34,13 @@ content:
         file /home/rowan/.config/git/credentials, principal rowan.ito, read-only project
         fieldkest/fieldlink-connector, and handover HND-FLK-2026-09 revision 12.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: Chromium SQLite (History, Cookies) and git credential store
+        normal_case: developer authenticates to source service and browses support console
+        defect: retained browser cookies and plaintext git credentials give session access
+          to both services without re-authentication
+        bounds: the recovered identity has no push access to the connector repository and
+          no operator authority
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -83,7 +84,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 86349ad891a776beb33d7e18f9d4b7c5871992266dc2a4062e5aa649fbb923f1
+        digest: 024b10aa542af5db5b8ea0f9068e3ba439941a45cbe57af1287f30cc177668ec
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -109,12 +110,13 @@ content:
       starting_state: Checkout pointer review/FLK-7.4.2.md; external export /home/rowan/work/review-exports/fieldlink-7.4.2-review.md;
         release REL-FLK-7.4.2-09; unresolved comments REV-219, REV-224, and REV-231.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: source.keplerops.test git clone and CI review-import API
+        normal_case: developer clones the connector repository and reviews release exports
+        defect: the developer credential also permits submitting a CI review import, which
+          leaks the workspace file path
+        bounds: the import stores the review document and reveals only the scoped workspace
+          URI
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -156,7 +158,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 87940d7bf435763391980b0e627044cf6d85f293d019d7ec2349bd51194ad5b4
+        digest: 77c3d87997139945b42ecccb813a1433c922fbffb51e2a7fed290b36d2b1aecb
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -182,12 +184,14 @@ content:
       starting_state: Route /api/inspection-summary; sample /home/rowan/work/samples/FK-SAMPLE-017.json
         using fieldkest.sample/v1, asset CRR-OG2, revision FLK-7.4.2, and SHA-256 b3cbf260a332f5a8d9b0cdde64e4d22d698a5ae28c11384149126ba694edd1e6.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: local-helper.md workbench report route; source.keplerops.test report-jobs
+          API
+        normal_case: developer submits the staged collection report to the workbench helper
+        defect: the helper accepts any form upload; a review export submitted instead of
+          the collection report is forwarded to the CI report queue
+        bounds: only the report-consumer workflow is reachable; no audit or platform authority
+          is granted
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -229,7 +233,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: d58636b306875af37be02b41b20857a8611665a140eead7437f1e12f07f66b16
+        digest: 61dd176fb4f0efe65a67785650ccdee564719ce113408ee3bed20282e7c7a9a5
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -256,12 +260,13 @@ content:
         source attachment Attachments/staging-FKCOL-2841.bin; collection FKCOL-2841; ODT
         SHA-256 659f1b9ab844f2e7b379de9a3c91f0b0ccc02858b83e6bf07860e557a0e0c834.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: ci.keplerops.test run and run-log APIs
+        normal_case: developer fetches build run status and log for the current handover
+          build
+        defect: the run log names the policy-compiler binary path and the build-operations
+          repository
+        bounds: only the run and log records for the developer-accessible CI run are returned
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -303,7 +308,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: c396bff2c5d1c3826085aca9a77b192ffca5ac31c998679b51d43f26f294f515
+        digest: f3b684bc0f60ec00e5c89be86d81c472ba09571a23cccf84cfe79ab63875de30
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -331,12 +336,15 @@ content:
         3c00e634751ab73c2d2573486245dc15125ebaaf82572da8a44201e159fcfaee, and instruction
         SHA-256 73fcb0d5af86b73b78155cac36cd6e80afea42ae6f17693164d681125741e3b3.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: ci.keplerops.test run-artifact API; source.keplerops.test policy-nonce
+          API
+        normal_case: developer retrieves a build artifact and obtains a nonce for policy
+          acceptance
+        defect: the run artifact (release-dossier.json) names the cloud build record and
+          release exchange handle
+        bounds: only the artifact identified by the run record is accessible; no other run
+          artifact is enumerable
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -380,7 +388,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 093717baa0fde3a385406b1854fb62de05ffb9e51f58b84cf19eac309517ba10
+        digest: 504803d1b8bcce5617a296a35da9ec55a8b9a745cb23175d6cd06a4632df0ec6
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -407,12 +415,15 @@ content:
         and integrity e52f22b6b2b9fa277fa94c2f3207171d7aaa9a4e94120f195625aafb8701aed1;
         one retained collection returns ticket SUP-2841, asset CRR-OG2, and revision FLK-7.4.2.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: source.keplerops.test connector-archive-run API; build-operations handoff
+          note
+        normal_case: developer exercises the retained connector archive binary through the
+          source service
+        defect: the diagnostic config switches the loader behavior and discloses the internal
+          diagnostic route path
+        bounds: only the two supplied configs are accepted; arbitrary config construction
+          is rejected by signature
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -456,7 +467,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: c420a370a257af2e088a9cfdfe6471ad2285605bafece130ef25c28699822ea2
+        digest: 1cdfeeb35aceffa6315799349215ed0e76c89d408253b90db4967f2d1c19b604
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

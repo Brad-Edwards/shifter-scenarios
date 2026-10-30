@@ -31,12 +31,14 @@ content:
       starting_state: Customer poll/activation endpoint accepts only signed approved active-tenant
         channel; connector implements fieldkest.connector/v3.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: connector.arwc.test customer-relay activate endpoint
+        normal_case: authorized channel agent activates the selected package version for
+          the ARWC customer
+        defect: the channel_token allows activating a new connector version without explicit
+          ARWC administrator approval
+        bounds: activation is scoped to the one approved version and tenant; any other combination
+          is denied
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -79,7 +81,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 3691c175a1e887257ab1bd4924c314af943e50c399f6465e8bce69325f5b5935
+        digest: 7dab0ea74b062d34852c4c754d317f220855da79b2d1291d6f164a2c1cc4d254
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -106,12 +108,13 @@ content:
       starting_state: Retained release slot and private future-state rehearsal separate
         from current activation.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: connector.arwc.test customer-relay rollback-rehearsal endpoint
+        normal_case: authorized channel agent rehearses a rollback to an older version
+        defect: the channel_token allows scheduling a rollback to version 7.4.2 using a
+          retained fallback slot
+        bounds: only the declared rollback version is accepted; arbitrary version selection
+          is denied
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -154,7 +157,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 70694e999f61fc5549d8f679f5b70d88de0bc8757bb7337a68b3a0b7898bf89b
+        digest: 7f8f6d7fcf51da6036099ccd040073bd20b657e62ea4ab8aab06fada0671b4cb
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
