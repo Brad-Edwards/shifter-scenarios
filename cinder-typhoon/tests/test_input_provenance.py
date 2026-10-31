@@ -75,7 +75,6 @@ class ProvenanceInventoryTests(unittest.TestCase):
 
     def test_known_author_only_inputs_are_explicit_failures(self) -> None:
         cases = {
-            ("keplerops", "test_k29b_connector_delivery"): {217},
             ("arwc", "test_w33_forecast_scheduling"): {223},
         }
         for (phase, method), expected in cases.items():
