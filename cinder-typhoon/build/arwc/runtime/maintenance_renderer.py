@@ -175,7 +175,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(status, response)
 
     def do_GET(self) -> None:
-        if urlsplit(self.path).path != "/api/which-renderer-holds-the-approval":
+        if urlsplit(self.path).path != "/api/renderers/current":
             self.send_json(404, {"error": "record not found"})
             return
         if not self.authorized():
@@ -199,7 +199,7 @@ class Handler(BaseHTTPRequestHandler):
         path = urlsplit(self.path).path
         state = load_json(STATE)
         assert state is not None
-        if path == "/api/authority-behind-the-preview":
+        if path == "/api/preview-authority/current":
             if not state["profile_observed"]:
                 self.send_json(403, {"error": "current renderer profile must be inspected"})
                 return
@@ -226,7 +226,7 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(STATE, state)
             self.accepted("authority-behind-the-preview", record, status=201)
             return
-        if path == "/api/the-preview-executes":
+        if path == "/api/preview-executions":
             if not state["restricted_preview_accepted"]:
                 self.send_json(403, {"error": "accepted restricted preview required"})
                 return

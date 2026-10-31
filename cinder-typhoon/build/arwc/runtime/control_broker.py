@@ -28,8 +28,8 @@ AUDIT = ROOT / "audit" / "events.jsonl"
 CONTRACTOR_SESSION = pathlib.Path("/run/arwc-field-session/contractor-session.json")
 APPROVAL_EVIDENCE = pathlib.Path("/run/arwc-approval-evidence/approval.json")
 RENDERER_EVIDENCE = pathlib.Path("/run/arwc-renderer-evidence/renderer-attestation.json")
-MAINTENANCE_ROUTE = "/api/an-approval-becomes-a-control-client"
-UTILITY_ROUTE = "/api/keep-the-authority-you-earned"
+MAINTENANCE_ROUTE = "/api/approval-clients/current"
+UTILITY_ROUTE = "/api/control-authority"
 UTILITY_SOCKET = "/run/arwc/control-issuer.sock"
 AUTHORITY_EVIDENCE = ROOT / "authority"
 CONTROL_CLIENT_LIFETIME = timedelta(minutes=15)

@@ -196,13 +196,13 @@
             "source": "accepted response chain in test_w08_retained_bundle"
           }
         ],
-        "inventory_sha256": "37cfaca370e290724218587e3f3aa32c060334c967342a4b07305fc1b4dd351a",
+        "inventory_sha256": "0e3f886c34236e7ca6ce84873d826d409ec56bf3cf38b8abfdda73378c5761ca",
         "profile": "arwc",
         "request_count": 9,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "37cfaca370e290724218587e3f3aa32c060334c967342a4b07305fc1b4dd351a",
+            "fingerprint": "0e3f886c34236e7ca6ce84873d826d409ec56bf3cf38b8abfdda73378c5761ca",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -300,13 +300,13 @@
             "source": "accepted response chain in test_w12_cold_archive"
           }
         ],
-        "inventory_sha256": "bff40a9ffc45209a2f797708b7bebebcf47fde048ff419bfb842ee45ba6e41ef",
+        "inventory_sha256": "3f4241b2c1f1aa2440532fca8c50064e2a30880ba7497b53d4f0fa9a0ccf0f5f",
         "profile": "arwc",
         "request_count": 11,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "bff40a9ffc45209a2f797708b7bebebcf47fde048ff419bfb842ee45ba6e41ef",
+            "fingerprint": "3f4241b2c1f1aa2440532fca8c50064e2a30880ba7497b53d4f0fa9a0ccf0f5f",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -430,13 +430,13 @@
             "source": "accepted response chain in test_w17_process_view"
           }
         ],
-        "inventory_sha256": "370cf222ab6b2216fdb72e060ab90dde594ebabd1f6cdd4fb0b2fd1d89dc6034",
+        "inventory_sha256": "f1153ee04dd834cfd54b542c71f3d06455f213118b3315d085b14aaaa162fb70",
         "profile": "arwc",
         "request_count": 6,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "370cf222ab6b2216fdb72e060ab90dde594ebabd1f6cdd4fb0b2fd1d89dc6034",
+            "fingerprint": "f1153ee04dd834cfd54b542c71f3d06455f213118b3315d085b14aaaa162fb70",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -456,13 +456,13 @@
             "source": "accepted response chain in test_w18_tag_scale"
           }
         ],
-        "inventory_sha256": "ef673c60a239992ef65b4268cbb77be05f20f19f25e7ca42be2c0f7abcfebc00",
+        "inventory_sha256": "a7b457d3cda81dc2c636cd05d60a634e2cbc8e33ccda835fa572d4c841b6bb0c",
         "profile": "arwc",
         "request_count": 6,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "ef673c60a239992ef65b4268cbb77be05f20f19f25e7ca42be2c0f7abcfebc00",
+            "fingerprint": "a7b457d3cda81dc2c636cd05d60a634e2cbc8e33ccda835fa572d4c841b6bb0c",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -482,13 +482,13 @@
             "source": "accepted response chain in test_w19_diagnostic_binary"
           }
         ],
-        "inventory_sha256": "4bbbd9f5fd898a62ee6abd003e2ceae220115753e1d9a8b70dd24d90801ac53c",
+        "inventory_sha256": "82ad1a89ae3c32719849a8523b94c13534de48dad3e7b8340657239cfe3ac59b",
         "profile": "arwc",
         "request_count": 7,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "4bbbd9f5fd898a62ee6abd003e2ceae220115753e1d9a8b70dd24d90801ac53c",
+            "fingerprint": "82ad1a89ae3c32719849a8523b94c13534de48dad3e7b8340657239cfe3ac59b",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -508,13 +508,13 @@
             "source": "accepted response chain in test_w20_nor_flash_image"
           }
         ],
-        "inventory_sha256": "95b3f2322e1858948d12759cb6ebd51147aa9ab3a5d4576deffca31a7094b1a4",
+        "inventory_sha256": "a127c4039b7071163916e30c3fedf859e49d2b301523c5fcbd67836d2f9bd19a",
         "profile": "arwc",
         "request_count": 5,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "95b3f2322e1858948d12759cb6ebd51147aa9ab3a5d4576deffca31a7094b1a4",
+            "fingerprint": "a127c4039b7071163916e30c3fedf859e49d2b301523c5fcbd67836d2f9bd19a",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -534,13 +534,13 @@
             "source": "accepted response chain in test_w21_project_identity"
           }
         ],
-        "inventory_sha256": "88d5a8841490c60689f79a07605d82bf362d564224df960db42f1488874104cf",
+        "inventory_sha256": "dd92984ce754605011fc0db5dd911aaa484a0067a89eefcea28aa3adab6ffc41",
         "profile": "arwc",
         "request_count": 3,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "88d5a8841490c60689f79a07605d82bf362d564224df960db42f1488874104cf",
+            "fingerprint": "dd92984ce754605011fc0db5dd911aaa484a0067a89eefcea28aa3adab6ffc41",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -560,13 +560,13 @@
             "source": "accepted response chain in test_w22_sealed_viewer"
           }
         ],
-        "inventory_sha256": "bcd8e9479a9abe94b304019edddf30e22993121650a49de3a41ea98a6606b00e",
+        "inventory_sha256": "0bba0ef302cd156efbbf9ab22f8bf0d97ea93114a7148a4bc2a72c93dac95db6",
         "profile": "arwc",
         "request_count": 8,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "bcd8e9479a9abe94b304019edddf30e22993121650a49de3a41ea98a6606b00e",
+            "fingerprint": "0bba0ef302cd156efbbf9ab22f8bf0d97ea93114a7148a4bc2a72c93dac95db6",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -638,13 +638,13 @@
             "source": "accepted response chain in test_w25_practice_sequence"
           }
         ],
-        "inventory_sha256": "0657346345de5a62d08570e72b15744b8da1d723fa56e4cd0aa3b0e78b42fc52",
+        "inventory_sha256": "691fe92260b43da17c79ea0faa9a2e8e557b774e9b543e90ed589c292ea9c045",
         "profile": "arwc",
         "request_count": 6,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "0657346345de5a62d08570e72b15744b8da1d723fa56e4cd0aa3b0e78b42fc52",
+            "fingerprint": "691fe92260b43da17c79ea0faa9a2e8e557b774e9b543e90ed589c292ea9c045",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -664,13 +664,13 @@
             "source": "accepted response chain in test_w26_control_authority"
           }
         ],
-        "inventory_sha256": "4df89d35dc384e967a5b2d96660d2a2bdd7f4f6154db58c6d64a64548d9b4257",
+        "inventory_sha256": "7e097ca042af55d6fdb3261a0087115e58fbde05d11f090f9f46fb123ec0a759",
         "profile": "arwc",
         "request_count": 9,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "4df89d35dc384e967a5b2d96660d2a2bdd7f4f6154db58c6d64a64548d9b4257",
+            "fingerprint": "7e097ca042af55d6fdb3261a0087115e58fbde05d11f090f9f46fb123ec0a759",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -690,13 +690,13 @@
             "source": "accepted response chain in test_w27_integrity_collision"
           }
         ],
-        "inventory_sha256": "f4d144000ba03a0141ec9beae855f2fca43bfb1b763fbb513b9e36e7aa9dfaa9",
+        "inventory_sha256": "a94359877e6a81b058b81da764dc4ed6fff33cc55cfb933c828ed6cd39188b4a",
         "profile": "arwc",
         "request_count": 9,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "f4d144000ba03a0141ec9beae855f2fca43bfb1b763fbb513b9e36e7aa9dfaa9",
+            "fingerprint": "a94359877e6a81b058b81da764dc4ed6fff33cc55cfb933c828ed6cd39188b4a",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -716,13 +716,13 @@
             "source": "accepted response chain in test_w28_utility_privilege_escalation"
           }
         ],
-        "inventory_sha256": "b81efd39402c84ebcc946fdac69d8cfe068f1257811cba967c6c215dedfe0daf",
+        "inventory_sha256": "004e4a178c2e264ed70a54e4b3608c0d63a98c28dd1d578667d39b5b04d92d72",
         "profile": "arwc",
         "request_count": 8,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "b81efd39402c84ebcc946fdac69d8cfe068f1257811cba967c6c215dedfe0daf",
+            "fingerprint": "004e4a178c2e264ed70a54e4b3608c0d63a98c28dd1d578667d39b5b04d92d72",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -742,13 +742,13 @@
             "source": "accepted response chain in test_w29_planning_window_economics"
           }
         ],
-        "inventory_sha256": "e88233cd3a59423383471ef94cb9eeb6a38bee6afdaa6787a91293a5acd5a79f",
+        "inventory_sha256": "f69e883365efd28e71282d75cff67f405c70afbe11cca143e44cd714710561f5",
         "profile": "arwc",
         "request_count": 2,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "e88233cd3a59423383471ef94cb9eeb6a38bee6afdaa6787a91293a5acd5a79f",
+            "fingerprint": "f69e883365efd28e71282d75cff67f405c70afbe11cca143e44cd714710561f5",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -768,13 +768,13 @@
             "source": "accepted response chain in test_w30_command_release"
           }
         ],
-        "inventory_sha256": "0f83d06ceefa4105bd1b4c560e8e2a2fb26006f102f70772bc33e95d57c858d6",
+        "inventory_sha256": "0d6c3474cff0722ee27343ea0db816a21186925cd4a8211cf60e98f00c3163b9",
         "profile": "arwc",
         "request_count": 6,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "0f83d06ceefa4105bd1b4c560e8e2a2fb26006f102f70772bc33e95d57c858d6",
+            "fingerprint": "0d6c3474cff0722ee27343ea0db816a21186925cd4a8211cf60e98f00c3163b9",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -794,13 +794,13 @@
             "source": "accepted response chain in test_w31_diagnostic_vault"
           }
         ],
-        "inventory_sha256": "1deb49de26d25c01d903de20c3d5f775a301028ca56d1017c0c9007eded6c29b",
+        "inventory_sha256": "e3da73aa06f7a8bfb0a9d798a104890e9737ebd532027e1cc48206328f985d03",
         "profile": "arwc",
         "request_count": 8,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "1deb49de26d25c01d903de20c3d5f775a301028ca56d1017c0c9007eded6c29b",
+            "fingerprint": "e3da73aa06f7a8bfb0a9d798a104890e9737ebd532027e1cc48206328f985d03",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -820,13 +820,13 @@
             "source": "accepted response chain in test_w32_replay_divergence"
           }
         ],
-        "inventory_sha256": "95b20c06ec0a043d5d1d35605f3d50c4bf23877acce96410beeef49c97e1d8a0",
+        "inventory_sha256": "b4f075c35ddb912be3e292d89091d175af79a84b9822f840208e0a186578caaf",
         "profile": "arwc",
         "request_count": 8,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "95b20c06ec0a043d5d1d35605f3d50c4bf23877acce96410beeef49c97e1d8a0",
+            "fingerprint": "b4f075c35ddb912be3e292d89091d175af79a84b9822f840208e0a186578caaf",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
@@ -846,31 +846,31 @@
             "source": "accepted response chain in test_w33_forecast_scheduling"
           }
         ],
-        "inventory_sha256": "5cd6980a6b437196e7002f9fb68cf63480bd5f14ae5c7de4ed3c5e67f8b8352f",
+        "inventory_sha256": "9786d62378b56566968fa8c8caf5ca793496d99cdd05c3b3cade98b97152e1dd",
         "profile": "arwc",
         "request_count": 8,
         "review_status": "unresolved",
         "unresolved": [
           {
-            "fingerprint": "5cd6980a6b437196e7002f9fb68cf63480bd5f14ae5c7de4ed3c5e67f8b8352f",
+            "fingerprint": "9786d62378b56566968fa8c8caf5ca793496d99cdd05c3b3cade98b97152e1dd",
             "input": "exact request literals and protocol constants",
             "issue": 224,
             "reason": "Per-value review of exact accepted inputs is pending"
           },
           {
-            "fingerprint": "bad22df8a4351ecbf155d9ef7696628039aa45f80070c4d8d1474a1d4d79b991",
+            "fingerprint": "9786d62378b56566968fa8c8caf5ca793496d99cdd05c3b3cade98b97152e1dd",
             "input": "scheduler checkpoint",
             "issue": 223,
             "reason": "The checkpoint is not supplied by a participant-visible record"
           },
           {
-            "fingerprint": "c2bd8215973a6295967cf4b9529aeb0f8b7ad61662afb0d3b7d9c6c1a20b885e",
+            "fingerprint": "9786d62378b56566968fa8c8caf5ca793496d99cdd05c3b3cade98b97152e1dd",
             "input": "forecast demand and release model vectors",
             "issue": 223,
             "reason": "The model vectors and bounds exist only in the known-solution test"
           },
           {
-            "fingerprint": "2d67289b356bf85adc2421adcbbe422887ec0396a1c091b45ec81206f01319ec",
+            "fingerprint": "9786d62378b56566968fa8c8caf5ca793496d99cdd05c3b3cade98b97152e1dd",
             "input": "feedback policy format and gains",
             "issue": 223,
             "reason": "The accepted policy contract is not participant-visible"
@@ -1962,11 +1962,11 @@
     "build/arwc/runtime/diagnostic_services.py": {
       "citations": [],
       "comparison_count": 47,
-      "inventory_sha256": "b8fc9148fc05dafd5461f9494885a0ff2ebae11c3c3d8cdd91c4a0c3767df1e6",
+      "inventory_sha256": "cf4647374ad7294ac74fd345aefcbc4ff9fb3f78c790b4343e1837e56c38f17b",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "b8fc9148fc05dafd5461f9494885a0ff2ebae11c3c3d8cdd91c4a0c3767df1e6",
+          "fingerprint": "cf4647374ad7294ac74fd345aefcbc4ff9fb3f78c790b4343e1837e56c38f17b",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"
@@ -2088,11 +2088,11 @@
     "build/arwc/runtime/integration_gateway.py": {
       "citations": [],
       "comparison_count": 28,
-      "inventory_sha256": "5ab9e5d449025c5d3a594197cce112366342dba9f8ff944c0e5d5d87dd9d3e12",
+      "inventory_sha256": "15ddac7d816e5b2ee6626d07ca7626e23bb06c4c1b852725acaa5b793bed0096",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "5ab9e5d449025c5d3a594197cce112366342dba9f8ff944c0e5d5d87dd9d3e12",
+          "fingerprint": "15ddac7d816e5b2ee6626d07ca7626e23bb06c4c1b852725acaa5b793bed0096",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"
@@ -2102,11 +2102,11 @@
     "build/arwc/runtime/maintenance_renderer.py": {
       "citations": [],
       "comparison_count": 15,
-      "inventory_sha256": "f9dd8851ae2d0f0fe4abff0099e6a6006bac168f1e276c1384896886aeba3f6e",
+      "inventory_sha256": "a22d655dfa1336e73af6f9e8a0f8a36ffe590c5554dc4456fc08978b8c79124b",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "f9dd8851ae2d0f0fe4abff0099e6a6006bac168f1e276c1384896886aeba3f6e",
+          "fingerprint": "a22d655dfa1336e73af6f9e8a0f8a36ffe590c5554dc4456fc08978b8c79124b",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"
@@ -2144,11 +2144,11 @@
     "build/arwc/runtime/planning_data.py": {
       "citations": [],
       "comparison_count": 90,
-      "inventory_sha256": "8a4df59e779ebc4e0a8cc37ea8c3cea209ee3e9d714fe726da9e8613ebf04cfd",
+      "inventory_sha256": "397b32afb9dffc953c6b7db3d8bec6d10a9b88762cd99ef48fd7c38c52e298d8",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "8a4df59e779ebc4e0a8cc37ea8c3cea209ee3e9d714fe726da9e8613ebf04cfd",
+          "fingerprint": "397b32afb9dffc953c6b7db3d8bec6d10a9b88762cd99ef48fd7c38c52e298d8",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"
@@ -2157,12 +2157,12 @@
     },
     "build/arwc/runtime/process_services.py": {
       "citations": [],
-      "comparison_count": 238,
-      "inventory_sha256": "b9ac0633239a22012abc63075c99b0f09922f47fcce4ddbe97670b522615abe6",
+      "comparison_count": 239,
+      "inventory_sha256": "b30e097fb57b5924aaafab2cea1bbc19daee6c54cec45ccd710710a766faf43b",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "b9ac0633239a22012abc63075c99b0f09922f47fcce4ddbe97670b522615abe6",
+          "fingerprint": "b30e097fb57b5924aaafab2cea1bbc19daee6c54cec45ccd710710a766faf43b",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"
@@ -2186,11 +2186,11 @@
     "build/arwc/runtime/retained_archive.py": {
       "citations": [],
       "comparison_count": 72,
-      "inventory_sha256": "a7a537bc732523f7b037b8a8461b170e7b21ac0f0786b080632cc6eae3a806a7",
+      "inventory_sha256": "6d7d915f1d7ecb91caebd244f8cb1e590cbfa3c1434b488c5eda8cb06f06baf3",
       "review_status": "unresolved",
       "unresolved": [
         {
-          "fingerprint": "a7a537bc732523f7b037b8a8461b170e7b21ac0f0786b080632cc6eae3a806a7",
+          "fingerprint": "6d7d915f1d7ecb91caebd244f8cb1e590cbfa3c1434b488c5eda8cb06f06baf3",
           "input": "fixed runtime comparison inventory",
           "issue": 224,
           "reason": "Participant relevance and provenance classification are pending"
