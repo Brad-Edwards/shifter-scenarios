@@ -23,6 +23,7 @@ COPY --chown=arwc-business:arwc-business --chmod=0640 \
   build/arwc/runtime/business_workplace.py /opt/business-workplace/business_workplace.py
 COPY --from=narrative --chown=arwc-business:arwc-business --chmod=0640 \
   /tmp/as003-agreement-summary.md /opt/business-workplace/assets/as003-agreement-summary.md
+COPY --chmod=0755 build/arwc/runtime/arwc_handover.py /usr/local/libexec/arwc-handover.py
 COPY --chmod=0750 build/arwc/runtime/business-entrypoint.sh /usr/local/sbin/arwc-business-entrypoint
 
 EXPOSE 443

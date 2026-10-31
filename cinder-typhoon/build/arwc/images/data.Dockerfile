@@ -25,6 +25,7 @@ COPY --chown=arwc-data:arwc-data --chmod=0640 \
   build/arwc/runtime/schedule33.py /opt/planning-data/schedule33.py
 COPY --from=narrative --chown=arwc-data:arwc-data --chmod=0640 \
   /tmp/pl-arwc-plan-method-01-method.md /opt/planning-data/assets/pl-arwc-plan-method-01-method.md
+COPY --chmod=0755 build/arwc/runtime/arwc_handover.py /usr/local/libexec/arwc-handover.py
 COPY --chmod=0750 build/arwc/runtime/data-entrypoint.sh /usr/local/sbin/arwc-data-entrypoint
 
 EXPOSE 443 5432

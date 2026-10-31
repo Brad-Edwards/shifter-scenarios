@@ -239,6 +239,8 @@ class Handler(BaseHTTPRequestHandler):
         return True
 
     def do_GET(self) -> None:
+        if self._serve_client_document():
+            return
         if not self.corporate_authorized():
             return
         path = urlsplit(self.path).path

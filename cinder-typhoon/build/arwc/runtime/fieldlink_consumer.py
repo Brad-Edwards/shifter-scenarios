@@ -22,6 +22,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 import uuid
 
+from arwc_handover import build_attestation
+
 from cryptography import x509
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import hashes
@@ -35,6 +37,7 @@ CANDIDATES = CONSUMER / "candidates"
 RECEIPTS = FIELDLINK / "receipts"
 AUDIT = CUSTOMER / "audit" / "fieldlink-consumer.jsonl"
 TOKEN = FIELDLINK / "handover" / "corporate-session"
+ATTESTATION = FIELDLINK / "handover" / "corporate-session.json"
 TRANSITION = FIELDLINK / "handover" / "customer-transition.json"
 TOKEN_HASH = CUSTOMER / "auth" / "corporate-session.sha256"
 LOCK = threading.RLock()
@@ -80,6 +83,21 @@ def atomic_json(path: Path, value: object, mode: int = 0o600) -> None:
     try:
         with os.fdopen(descriptor, "wb") as handle:
             handle.write(canonical(value) + b"\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.chmod(temporary, mode)
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
+
+def atomic_bytes(path: Path, value: bytes, mode: int = 0o600) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.")
+    try:
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(value)
             handle.flush()
             os.fsync(handle.fileno())
         os.chmod(temporary, mode)
@@ -159,10 +177,18 @@ def earn_corporate(route: str, receipt_id: str, version: str) -> None:
         if TOKEN.exists():
             return
         token = secrets.token_hex(32)
-        TOKEN.write_text(token + "\n", encoding="ascii")
-        os.chown(TOKEN, -1, FIELDLINK.stat().st_gid)
-        os.chmod(TOKEN, 0o440)
-        TOKEN_HASH.write_text(hashlib.sha256(token.encode()).hexdigest() + "\n", encoding="ascii")
+        token_hash = hashlib.sha256(token.encode()).hexdigest()
+        handover_id = uuid.uuid4().hex
+        attestation = build_attestation(
+            token.encode(),
+            Path("/tmp/arwc-server.crt").read_bytes(),
+            Path("/tmp/arwc-handover.key").read_bytes(),
+            handover_id,
+            now(),
+        )
+        atomic_json(ATTESTATION, attestation, 0o440)
+        os.chown(ATTESTATION, -1, FIELDLINK.stat().st_gid)
+        atomic_bytes(TOKEN_HASH, (token_hash + "\n").encode(), 0o400)
         os.chmod(TOKEN_HASH, 0o400)
         transition = {
             "account": "Alterra Regional Water Company",
@@ -182,11 +208,16 @@ def earn_corporate(route: str, receipt_id: str, version: str) -> None:
             "field_gateway": "https://field-gateway.arwc.test",
             "maintenance_review": "https://maintenance-review.arwc.test",
             "client_reference": "https://customer-handover.arwc.test:8443/.well-known/arwc-client",
+            "handover_id": handover_id,
             "session_file": "/var/lib/fieldlink-connector/handover/corporate-session",
             "request_header": "Authorization: Bearer <session>",
         }
         atomic_json(TRANSITION, transition, 0o440)
         os.chown(TRANSITION, -1, FIELDLINK.stat().st_gid)
+        # Publish the token last so consumers never observe it before its
+        # authenticated metadata and participant-facing transition record.
+        atomic_bytes(TOKEN, (token + "\n").encode(), 0o440)
+        os.chown(TOKEN, -1, FIELDLINK.stat().st_gid)
 
 
 class Handler(BaseHTTPRequestHandler):

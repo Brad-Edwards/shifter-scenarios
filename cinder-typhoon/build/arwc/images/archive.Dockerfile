@@ -31,6 +31,7 @@ COPY --chown=arwc-archive:arwc-archive --chmod=0640 \
   build/arwc/runtime/generate_archive_artifacts.py /opt/retained-archive/generate_archive_artifacts.py
 COPY --from=collector --chown=arwc-archive:arwc-archive --chmod=0750 \
   /collector-crr /opt/retained-archive/collector-crr
+COPY --chmod=0755 build/arwc/runtime/arwc_handover.py /usr/local/libexec/arwc-handover.py
 COPY --chmod=0750 build/arwc/runtime/archive-entrypoint.sh /usr/local/sbin/arwc-archive-entrypoint
 
 EXPOSE 443

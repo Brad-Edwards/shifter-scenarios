@@ -11,7 +11,8 @@ start_fresh() {
   if [[ ${CINDER_PRESERVE_DELIVERY:-0} != 1 ]]; then
     docker compose -f compose.yaml down -v --remove-orphans
   fi
-  docker compose -f compose.yaml up -d --force-recreate a-connector fieldlink-edge a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-renderer a-control-broker a-hmi a-historian a-engineering a-instruments a-reservoir a-distribution a-diagnostics
+  docker compose -f compose.yaml up -d --force-recreate a-connector fieldlink-edge a-business a-archive a-identity a-data-bridge a-data a-contractors a-contractor-bridge a-approval a-renderer a-control-broker a-hmi a-historian a-engineering a-instruments a-reservoir a-distribution a-diagnostics &
+  compose_pid=$!
 
   # Wait for the connector container to accept exec (entrypoint sets up dirs).
   ready=0
@@ -32,8 +33,10 @@ start_fresh() {
     # A single-stack run has no live KeplerOps peer to deliver the real signed
     # package that normally earns the corporate handoff; seed it the same way
     # the connector's own earn_corporate would.
-    python3 tests/seed_corporate_handover.py
+    python3 tests/test_handover_stability_live.py
   fi
+
+  wait "$compose_pid"
 
   ready=0
   for _ in $(seq 1 60); do

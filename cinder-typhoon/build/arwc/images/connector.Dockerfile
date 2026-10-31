@@ -31,6 +31,8 @@ COPY --chown=arwc-connector:arwc-connector --chmod=0640 \
   build/arwc/runtime/customer_handover.py /opt/customer-handover/customer_handover.py
 COPY --chown=arwc-connector:arwc-connector --chmod=0640 \
   build/arwc/runtime/fieldlink_consumer.py /opt/fieldlink-connector/fieldlink_consumer.py
+COPY --chown=arwc-connector:arwc-connector --chmod=0640 \
+  build/arwc/runtime/arwc_handover.py /opt/fieldlink-connector/arwc_handover.py
 COPY --from=narrative --chown=arwc-connector:arwc-connector --chmod=0640 \
   /tmp/pl-arwc-plan-method-01-method.md /opt/customer-handover/assets/pl-arwc-plan-method-01-method.md
 COPY --chmod=0750 build/arwc/runtime/connector-entrypoint.sh /usr/local/sbin/arwc-connector-entrypoint

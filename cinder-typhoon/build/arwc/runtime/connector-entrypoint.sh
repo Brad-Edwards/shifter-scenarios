@@ -12,6 +12,7 @@ install -d -o fieldlink -g fieldlink -m 0770 \
   /var/lib/fieldlink-connector/receipts
 for shared_file in \
   /var/lib/fieldlink-connector/handover/corporate-session \
+  /var/lib/fieldlink-connector/handover/corporate-session.json \
   /var/lib/fieldlink-connector/handover/customer-transition.json; do
   if [ -f "$shared_file" ]; then
     chown arwc-connector:fieldlink "$shared_file"
@@ -30,6 +31,8 @@ install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.crt /tmp/arwc-server.crt
 install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.key /tmp/arwc-server.key
+install -o arwc-connector -g arwc-connector -m 0400 \
+  /run/arwc-handover/authentication.key /tmp/arwc-handover.key
 install -o fieldlink -g fieldlink -m 0444 \
   /run/arwc-tls/ca.crt /tmp/arwc-ca.crt
 install -o arwc-connector -g arwc-connector -m 0400 \

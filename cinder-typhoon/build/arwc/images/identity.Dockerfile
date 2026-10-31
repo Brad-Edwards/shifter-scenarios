@@ -12,6 +12,7 @@ RUN apt-get update \
 
 COPY --chown=arwc-identity:arwc-identity --chmod=0640 \
   build/arwc/runtime/corporate_identity.py /opt/corporate-identity/corporate_identity.py
+COPY --chmod=0755 build/arwc/runtime/arwc_handover.py /usr/local/libexec/arwc-handover.py
 COPY --chmod=0750 build/arwc/runtime/identity-entrypoint.sh /usr/local/sbin/arwc-identity-entrypoint
 
 EXPOSE 443

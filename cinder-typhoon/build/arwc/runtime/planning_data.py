@@ -672,6 +672,8 @@ class Handler(BaseHTTPRequestHandler):
                 urlsplit(self.path).path in PROCESS_PATHS):
             self.process_proxy()
             return
+        if self._serve_client_document():
+            return
         if not self.authorized():
             return
         path = urlsplit(self.path).path
