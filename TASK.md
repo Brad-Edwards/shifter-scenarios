@@ -107,14 +107,14 @@ commits.
 
 ### Remaining milestone work
 
-After #212, the open milestone work is:
+After #212–#224 (PR stack #241–#253), the open milestone work is:
 
-- #213–#218: migrate KeplerOps actions onto normal developer, package, cloud,
-  support, identity, assistant, and release interfaces; replace remaining
-  author-only authority and subject values; audit the generic backend profile;
-- #219–#224: define ARWC’s domain and discovery map, migrate W01–W35 away from
-  title-shaped routes, provide the W33 inputs as real material, and complete the
-  exact-value provenance audit;
+- #213–#218: ✅ KeplerOps interface migration complete (opcode model via API,
+  K18 dossier-derived subject, K26 earned bearer, K11/K18/K29 author-only values
+  removed, generic backend profiles classified)
+- #219–#224: ✅ ARWC domain redesign complete (design map, W01–W35 resource-
+  oriented routes, client reference graph, W33 real starting material, full
+  provenance review, overall_status: complete)
 - #225–#230: add safe per-range variation, authoritative challenge delivery and
   scoring, graduated in-world hints, explicit defender-learning outcomes, blind
   human-plus-agent playtests, and evidence-based duration/tier calibration; and
