@@ -25,10 +25,10 @@ The four evidence layers are separate gates:
 
 | Layer | What it establishes | Current candidate status |
 | --- | --- | --- |
-| Service contract tests | Normal, accepted, denied, persistence, isolation, and audit behavior | Not run on an immutable event candidate |
-| Participant-boundary known-solution acceptance | The encoded solution sequence remains executable from the participant account and network | Failed/incomplete: every card has a named assertion, but independent-evidence, simple-read, and delivery-catalog gates remain open; no immutable candidate run exists |
-| Provenance, participant-surface, and fourth-wall checks | Starting visibility, in-world presentation, and the origin of every solution-path input | Failed/incomplete: the current goldens drift from the intended boundary, fourth-wall findings remain, and input provenance is pending |
-| Blind human-plus-agent playtests | Discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution | Not run |
+| Service contract tests | Normal, accepted, denied, persistence, isolation, and audit behavior | Implementation complete. Not run on an immutable event candidate (#232). |
+| Participant-boundary known-solution acceptance | The encoded solution sequence remains executable from the participant account and network | Implementation complete. Challenge delivery catalog not yet authoritative (#226). No immutable candidate run (#232). |
+| Provenance, participant-surface, and fourth-wall checks | Starting visibility, in-world presentation, and the origin of every solution-path input | Implementation complete, provenance overall_status: complete. No immutable candidate run (#232). |
+| Blind human-plus-agent playtests | Discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution | Not started (#229). |
 
 `--require-release-qualified` returns nonzero until all four layers have passing
 evidence from the same immutable candidate:
@@ -37,73 +37,25 @@ evidence from the same immutable candidate:
 python3 cinder-typhoon/tests/report_qa_status.py --require-release-qualified
 ```
 
-## Remediation campaign handoff (2026-10-30)
+## Remediation campaign status (2026-10-31)
 
-The remediation work is being delivered as one pull request per issue on a
-stack of feature branches. Nothing in the stack has been merged. Each new
-branch is based on the preceding issue branch so work can continue without
-waiting for reviews or merges:
+All issues through #224 are merged. The ARWC pre-handoff crash loop is fixed
+(#231 open). The open work is event-readiness (#225–#234).
 
-| Issue | Pull request | State in this stack |
-| --- | --- | --- |
-| #206 participant-surface manifest | #235 | Implemented and published |
-| #207 four-layer QA model | #236 | Implemented and published on #206 |
-| #208 participant-boundary acceptance | #237 | Implemented and published on #207 |
-| #209 solution-input provenance | #238 | Implemented and published on #208 |
-| #210 independent card coverage | #239 | Implemented and published on #209 |
-| #211 fourth-wall checks | #240 | Implemented and published on #210 |
-| #212 KeplerOps discovery design | Not opened yet | In progress on `212-keplerops-discovery-design`, based on #211 |
-
-“Implemented” here means the issue branch and pull request exist; it does not
-mean approved, merged, or release qualified. GitHub still correctly reports
-#206–#212 as open.
-
-### Issue #212 current state
-
-The participant-visible `work/service-catalog.md` was an exhaustive list of 101
-routes and also disclosed the native indexer’s decisive values and continuation
-request. The known-solution suite imported those answers directly. The current
-uncommitted #212 work has:
-
-- removed that catalog from the authored workstation source and archive recipe;
-- added a graph of 13 service-owned client references, beginning at the one
-  ordinary source reference in Rowan’s developer notes;
-- added a common `/.well-known/fieldkest-client` response on the relevant
-  services, with each response limited to that service and explicit links to
-  related references;
-- added a normal offline indexer reproducer manifest and a stripped reproducer
-  build for the developer workstation; and
-- changed the indexer to return its continuation request only in the successful
-  state-changing response, so it is earned rather than disclosed up front.
-
-The #212 source and test remediation is complete and committed. The following
-items were implemented and verified by static tests (all pass locally):
-
-1. `test_known_solution_live.py`: `setUpClass` now crawls the linked client
-   references from `service-notes.md` instead of reading `service-catalog.md`;
-   `discovered_route` resolves from the crawled dict; K04.1 derives allocation
-   and sentinel by probing the offline reproducer binary.
-2. Provenance ledger updated: K04 and `bundle_indexer.c` cite the binary as
-   `supplied_starting_surface`; 13 changed method fingerprints regenerated;
-   `http_support.py` comparison count updated.
-3. Participant-surface manifest: `service-catalog.md` replaced by
-   `work/reproducers/indexer-client.json`; `keplerops-service-catalog`
-   disclosure replaced by 13 `client-reference` disclosures (one per service in
-   the graph) plus `keplerops-indexer-client`; `HOME.md` and `service-notes.md`
-   hashes updated.
-4. Static gates: `validate_keplerops.py` adds catalog-absence check and
-   `check_client_reference_graph`; `test_keplerops_design.py` and
-   `test_participant_surface.py` verify the new design and the absence of the
-   catalog.
-5. SDL bindings: `k-dev-home.tar` and `k-support-state.tar` digest drift fixed.
-6. `validate.py`: allows `https://` paths for `client-reference` disclosures.
-
-The stacked PR for #212 is open. The next open milestone items are #213–#218
-(KeplerOps interface migration) and #219–#224 (ARWC domain and discovery).
-
-There are unrelated pre-existing local edits in the GCP deployment files and
-untracked local QA material. Preserve them and do not stage them in remediation
-commits.
+| Issue range | State |
+| --- | --- |
+| #206–#211 | Merged |
+| #212–#224 | Merged (PRs #241–#253) |
+| #225 per-range variation | Open |
+| #226 challenge/scoring delivery | Open |
+| #227 graduated hints | Open |
+| #228 defender-learning material | Open |
+| #229 blind playtests | Open, requires human participants |
+| #230 recalibrate from playtest data | Open, requires #229 |
+| #231 ARWC service stability | PR #254 open |
+| #232 release manifest | Open |
+| #233 300-range soak | Open, requires GCP infrastructure |
+| #234 reconcile docs | PR open |
 
 ### Remaining milestone work
 
