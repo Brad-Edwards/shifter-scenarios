@@ -1,993 +1,1292 @@
 {
-  "schema_version": 1,
-  "manifest_kind": "authored",
-  "phase": "keplerops",
-  "state": "pristine",
-  "participant": {
-    "user": "rowan",
-    "uid": 2000,
-    "group": "rowan",
-    "gid": 2000,
-    "groups": [
-      "rowan"
-    ],
-    "home": "/home/rowan",
-    "workdir": "/home/rowan"
+  "delivery": {
+    "cards": {
+      "items": [
+        "K01.1",
+        "K01.2",
+        "K01.3",
+        "K01.4",
+        "K02.1",
+        "K02.2",
+        "K02.3",
+        "K03.1",
+        "K03.2",
+        "K03.3",
+        "K04.1",
+        "K04.2",
+        "K04.3",
+        "K04.4",
+        "K05.1",
+        "K05.2",
+        "K05.3",
+        "K05.4",
+        "K06.1",
+        "K06.2",
+        "K06.3",
+        "K07.1",
+        "K07.2",
+        "K07.3",
+        "K08.1",
+        "K08.2",
+        "K08.3",
+        "K09.1",
+        "K09.2",
+        "K09.3",
+        "K09.4",
+        "K10.1",
+        "K10.2",
+        "K10.3",
+        "K11.1",
+        "K11.2",
+        "K11.3",
+        "K11.4",
+        "K12.1",
+        "K12.2",
+        "K12.3",
+        "K12.4",
+        "K13.1",
+        "K13.2",
+        "K13.3",
+        "K13.4",
+        "K14.1",
+        "K14.2",
+        "K14.3",
+        "K15.1",
+        "K15.2",
+        "K15.3",
+        "K15.4",
+        "K16.1",
+        "K16.2",
+        "K16.3",
+        "K16.4",
+        "K17.1",
+        "K17.2",
+        "K17.3",
+        "K17.4",
+        "K18.1",
+        "K18.2",
+        "K18.3",
+        "K18.4",
+        "K19.1",
+        "K19.2",
+        "K19.3",
+        "K20.1",
+        "K20.2",
+        "K20.3",
+        "K21.1",
+        "K21.2",
+        "K21.3",
+        "K22.1",
+        "K22.2",
+        "K22.3",
+        "K23.1",
+        "K23.2",
+        "K23.3",
+        "K24.1",
+        "K24.2",
+        "K24.3",
+        "K25.1",
+        "K25.2",
+        "K26.1",
+        "K26.2",
+        "K26.3",
+        "K27.1",
+        "K27.2",
+        "K27.3",
+        "K28.1",
+        "K28.2",
+        "K28.3",
+        "K29.1",
+        "K29.2",
+        "K29.3",
+        "K29.4",
+        "K30.1",
+        "K30.2",
+        "K30.3",
+        "K31.1",
+        "K31.2",
+        "K31.3"
+      ],
+      "status": "versioned"
+    },
+    "hints": {
+      "items": [],
+      "status": "not_materialized"
+    }
   },
+  "disclosures": [
+    {
+      "exposes": [
+        "work/service-notes.md",
+        "work/local-helper.md",
+        "work/fieldlink-connector",
+        "work/registry",
+        "work/build-operations"
+      ],
+      "id": "keplerops-home-briefing",
+      "kind": "starting-briefing",
+      "path": "/home/rowan/README.md"
+    },
+    {
+      "exposes": [
+        "developer-credential-source",
+        "fieldlink-handover-source",
+        "support-case-source",
+        "source-client-reference"
+      ],
+      "id": "keplerops-service-notes",
+      "kind": "workplace-document",
+      "path": "/home/rowan/work/service-notes.md"
+    },
+    {
+      "exposes": [
+        "indexer.indexes",
+        "offline-reproducer-binary"
+      ],
+      "id": "keplerops-indexer-client",
+      "kind": "offline-reproducer-manifest",
+      "path": "/home/rowan/work/reproducers/indexer-client.json"
+    },
+    {
+      "exposes": [
+        "source.repos",
+        "source.handover",
+        "source.policy-evaluate",
+        "source.policy-nonce",
+        "source.policy-opcode-model",
+        "source.connector-run"
+      ],
+      "id": "keplerops-client-ref-source",
+      "kind": "client-reference",
+      "path": "https://source.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "ci.run",
+        "ci.run-log",
+        "ci.run-artifact",
+        "ci.review-import",
+        "ci.report-jobs",
+        "ci.report-job",
+        "ci.review-jobs",
+        "ci.review-job",
+        "ci.workspace-file",
+        "ci.connector-rehearsal",
+        "ci.lineage-rollover"
+      ],
+      "id": "keplerops-client-ref-ci",
+      "kind": "client-reference",
+      "path": "https://ci.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "packages.metadata",
+        "packages.consumer-check",
+        "packages.release",
+        "packages.reconcile",
+        "packages.resolver",
+        "packages.import",
+        "packages.publish",
+        "packages.view",
+        "packages.inspections",
+        "packages.inspection-trace",
+        "packages.inspection-envelope",
+        "packages.entitlement",
+        "packages.entitlement-check",
+        "packages.approval",
+        "connector.poll",
+        "connector.activate",
+        "connector.receipt",
+        "connector.rollback"
+      ],
+      "id": "keplerops-client-ref-packages",
+      "kind": "client-reference",
+      "path": "https://packages.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "preview.association",
+        "preview.documents",
+        "preview.render",
+        "preview.assignment",
+        "preview.prepare",
+        "preview.review-render"
+      ],
+      "id": "keplerops-client-ref-preview",
+      "kind": "client-reference",
+      "path": "https://preview.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "indexer.indexes"
+      ],
+      "id": "keplerops-client-ref-indexer",
+      "kind": "client-reference",
+      "path": "https://indexer.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "cloud.workspace-exchange",
+        "cloud.workspace-token",
+        "cloud.build-record",
+        "cloud.trust-record",
+        "cloud.role-exchange",
+        "cloud.maintenance",
+        "cloud.policy"
+      ],
+      "id": "keplerops-client-ref-cloud",
+      "kind": "client-reference",
+      "path": "https://cloud-api.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "data.workspace-list",
+        "data.workspace-object",
+        "data.export-object",
+        "data.export",
+        "data.export-definition",
+        "data.export-destination",
+        "data.export-runs",
+        "data.backup",
+        "data.restore",
+        "data.recovery-history",
+        "data.field-archive"
+      ],
+      "id": "keplerops-client-ref-data",
+      "kind": "client-reference",
+      "path": "https://data.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "workloads.schedule",
+        "workloads.schedule-update",
+        "workloads.schedule-runs",
+        "workloads.workload",
+        "workloads.whoami"
+      ],
+      "id": "keplerops-client-ref-workloads",
+      "kind": "client-reference",
+      "path": "https://workloads.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "support.conversation",
+        "support.session",
+        "support.handover",
+        "support.recovery-lookup",
+        "support.recovery-redeem",
+        "support.assignment",
+        "support.copy-handover",
+        "support.dossier",
+        "support.integration",
+        "support.reconcile",
+        "support.diagnostics",
+        "support.diagnostic-package",
+        "support.diagnostic-deliver",
+        "support.fixture-assertion"
+      ],
+      "id": "keplerops-client-ref-support",
+      "kind": "client-reference",
+      "path": "https://support.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "staff.directory",
+        "staff.note",
+        "staff.note-preview",
+        "staff.archive",
+        "staff.delegation",
+        "staff.managed-session"
+      ],
+      "id": "keplerops-client-ref-staff",
+      "kind": "client-reference",
+      "path": "https://staff.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "cert.template",
+        "cert.requests"
+      ],
+      "id": "keplerops-client-ref-cert",
+      "kind": "client-reference",
+      "path": "https://cert.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "identity.registration",
+        "identity.staff-login",
+        "identity.login",
+        "identity.service-relation"
+      ],
+      "id": "keplerops-client-ref-identity",
+      "kind": "client-reference",
+      "path": "https://identity.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "assistant.app",
+        "assistant.config",
+        "assistant.contexts",
+        "assistant.conversation",
+        "assistant.selection",
+        "assistant.document",
+        "assistant.answers",
+        "assistant.completion-example",
+        "assistant.completion-context",
+        "assistant.completion-jobs",
+        "assistant.completion-job"
+      ],
+      "id": "keplerops-client-ref-assistant",
+      "kind": "client-reference",
+      "path": "https://assistant.keplerops.test/.well-known/fieldkest-client"
+    },
+    {
+      "exposes": [
+        "local-workbench-interface",
+        "limited-helper-action"
+      ],
+      "id": "keplerops-local-helper",
+      "kind": "workplace-document",
+      "path": "/home/rowan/work/local-helper.md"
+    }
+  ],
   "filesystem": {
-    "roots": [
-      {
-        "path": "/home/rowan",
-        "opaque": [],
-        "entries": [
-          {
-            "path": ".bash_logout",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "base-image-profile",
-            "size": 220,
-            "sha256": "26882b79471c25f945c970f8233d8ce29d54e9d5eedcd2884f88affa84a18f56"
-          },
-          {
-            "path": ".bashrc",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "base-image-profile",
-            "size": 3526,
-            "sha256": "afae8986f549c6403410e029f9cce7983311512d04b1f02af02e4ce0af0dd2bf"
-          },
-          {
-            "path": ".config",
-            "type": "directory",
-            "mode": "0700",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "base-image-profile"
-          },
-          {
-            "path": ".config/chromium",
-            "type": "directory",
-            "mode": "0700",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "base-image-profile"
-          },
-          {
-            "path": ".config/chromium/Default",
-            "type": "directory",
-            "mode": "0700",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "browser-artifact"
-          },
-          {
-            "path": ".config/chromium/Default/Cookies",
-            "type": "file",
-            "mode": "0600",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "browser-artifact"
-          },
-          {
-            "path": ".config/chromium/Default/History",
-            "type": "file",
-            "mode": "0600",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "browser-artifact",
-            "size": 20480,
-            "sha256": "4415fd5363aa5f4c043b3b01e27211f706509dbb08740dd5e9baf9f3be9c1297"
-          },
-          {
-            "path": ".config/chromium/Default/Preferences",
-            "type": "file",
-            "mode": "0600",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "browser-artifact",
-            "size": 202,
-            "sha256": "6cd677fa4b0c3ca9c34e0b459a2699b06ad32891cbe747bb7975f2e98feec00f"
-          },
-          {
-            "path": ".config/git",
-            "type": "directory",
-            "mode": "0700",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "base-image-profile"
-          },
-          {
-            "path": ".config/git/credentials",
-            "type": "file",
-            "mode": "0600",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "credential"
-          },
-          {
-            "path": ".gitconfig",
-            "type": "file",
-            "mode": "0600",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "client-configuration",
-            "size": 225,
-            "sha256": "af5527a44521d17e0a57ab03e1ec685e9ec28812e60f694907516375000cddd3"
-          },
-          {
-            "path": ".local",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "base-image-profile"
-          },
-          {
-            "path": ".local/share",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "base-image-profile"
-          },
-          {
-            "path": ".local/share/keplerops",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "base-image-profile"
-          },
-          {
-            "path": ".local/share/keplerops/ca.crt",
-            "type": "file",
-            "mode": "0444",
-            "owner": "root",
-            "group": "root",
-            "classification": "ca-material"
-          },
-          {
-            "path": ".local/share/keplerops/connector-archive-2026-09-18",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "seed-marker",
-            "size": 0,
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-          },
-          {
-            "path": ".local/share/keplerops/policy-compiler-2026-09-18",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "seed-marker",
-            "size": 0,
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-          },
-          {
-            "path": ".local/share/keplerops/registry-foundation-2026-09-18",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "seed-marker",
-            "size": 0,
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-          },
-          {
-            "path": ".local/share/keplerops/release-lineage-2026-09-18",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "seed-marker",
-            "size": 0,
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-          },
-          {
-            "path": ".profile",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "base-image-profile",
-            "size": 807,
-            "sha256": "28b4a453b68dde64f814e94bab14ee651f4f162e15dd9920490aa1d49f05d2a4"
-          },
-          {
-            "path": ".ssh",
-            "type": "directory",
-            "mode": "0700",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "participant-access"
-          },
-          {
-            "path": ".ssh/authorized_keys",
-            "type": "file",
-            "mode": "0600",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "participant-access"
-          },
-          {
-            "path": "README.md",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "starting-briefing",
-            "size": 749,
-            "sha256": "0bd237d283cda2d2afd567dd8597e40d9367cd3906a8e3ec1bf04a802b6bdb97"
-          },
-          {
-            "path": "results",
-            "type": "directory",
-            "mode": "0700",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "participant-output"
-          },
-          {
-            "path": "work",
-            "type": "directory",
-            "mode": "0750",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "participant-workspace"
-          },
-          {
-            "path": "work/analysis",
-            "type": "directory",
-            "mode": "0750",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "analysis-artifact"
-          },
-          {
-            "path": "work/analysis/field-notes-2026-08.odt",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "analysis-artifact",
-            "size": 2018,
-            "sha256": "659f1b9ab844f2e7b379de9a3c91f0b0ccc02858b83e6bf07860e557a0e0c834"
-          },
-          {
-            "path": "work/analysis/staging-decoder.ps1",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "analysis-artifact",
-            "size": 488,
-            "sha256": "86e59b0fc25552e89e4c734fc58d808c36b8f4ab503a3ac4ffe035310890a7d6"
-          },
-          {
-            "path": "work/build-operations",
-            "type": "directory",
-            "mode": "0750",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-reproducer-context"
-          },
-          {
-            "path": "work/build-operations/connector-archive-review.md",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-reproducer-context",
-            "size": 272,
-            "sha256": "578558735527c96323c2dcdf2cda73220dc5dac4edecc65a29f0240d752bd3ae"
-          },
-          {
-            "path": "work/build-operations/policy-compiler-handoff.md",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-reproducer-context",
-            "size": 383,
-            "sha256": "b86d3fffc9d6909a5f64715ccd673701c776cbc48fb677e3a6fa69941328688f"
-          },
-          {
-            "path": "work/build-operations/release-lineage-review.md",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-reproducer-context",
-            "size": 205,
-            "sha256": "d16a36dcdc2510fca974e95da366c0b460b6837fd753eaa34e24a0ba0642880e"
-          },
-          {
-            "path": "work/fieldlink-connector",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-source"
-          },
-          {
-            "path": "work/fieldlink-connector/.git",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/HEAD",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history",
-            "size": 21,
-            "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/config",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history",
-            "size": 284,
-            "sha256": "9bc5985441b902f14820be6ff0974d14a19cee3854c9055f17f431849ba5b549"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/index",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/logs",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/logs/HEAD",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/logs/refs",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/logs/refs/heads",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/logs/refs/heads/main",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/logs/refs/remotes",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/logs/refs/remotes/origin",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/logs/refs/remotes/origin/HEAD",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/objects",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/objects/info",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/objects/pack",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/objects/pack/pack-1efdd51c606c1efb50d01bdedd570b2fff891f2e.idx",
-            "type": "file",
-            "mode": "0444",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history",
-            "size": 1436,
-            "sha256": "ea7cc302325e1c5000c7249f5dce79532c82561f0fef8f0b9bbd7146cf31370d"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/objects/pack/pack-1efdd51c606c1efb50d01bdedd570b2fff891f2e.pack",
-            "type": "file",
-            "mode": "0444",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history",
-            "size": 1973,
-            "sha256": "9951c5c9fd22434f599b51148bbaa844c749c462c7ccedfd0688ec269fee3699"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/packed-refs",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history",
-            "size": 179,
-            "sha256": "3643efd1ae0a6be71ae391f8456d5029b6190d663878fd5253bd47155bf0a73c"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/refs",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/refs/heads",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/refs/heads/main",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history",
-            "size": 41,
-            "sha256": "43182b65af67d80e9b0ea2b65b8602758fac86537151912887d556e3b6049a5b"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/refs/remotes",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/refs/remotes/origin",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/refs/remotes/origin/HEAD",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history",
-            "size": 30,
-            "sha256": "2bb6a24aa0fc6c484100f5d51a29bbad841cd2c755f5d93faa204e5dbb4eb2b4"
-          },
-          {
-            "path": "work/fieldlink-connector/.git/refs/tags",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "source-history"
-          },
-          {
-            "path": "work/fieldlink-connector/README.md",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-source",
-            "size": 79,
-            "sha256": "468d224e7ee6f8099e3d3b8b039ae4a03892ddfb48a01676ed83c1926a57c730"
-          },
-          {
-            "path": "work/fieldlink-connector/docs",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-source"
-          },
-          {
-            "path": "work/fieldlink-connector/docs/report-provider.md",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-source",
-            "size": 511,
-            "sha256": "1349ebe71dcf24e724bae9103618098b96e1bae4e7216d85058633345fcc9e84"
-          },
-          {
-            "path": "work/fieldlink-connector/review",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-source"
-          },
-          {
-            "path": "work/fieldlink-connector/review/FLK-7.4.2.md",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-source",
-            "size": 325,
-            "sha256": "81b51c7eda742cdc9bc0f655b7c8df9a291af64844834bbb9c023c9f0c65c6c3"
-          },
-          {
-            "path": "work/fieldlink-connector/tests",
-            "type": "directory",
-            "mode": "0755",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-source"
-          },
-          {
-            "path": "work/fieldlink-connector/tests/test_crr_og2_report.py",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "supplied-source",
-            "size": 290,
-            "sha256": "c53eb1c8c8f5bbc58b38587ad24e3d6245e2a65b5b7041c37f7725dae60d5d24"
-          },
-          {
-            "path": "work/local-helper.md",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "workplace-document",
-            "size": 821,
-            "sha256": "e9f253d764e30d22ae0af5273c8ee9ecc93794eb4b566cfdb3655508c954d505"
-          },
-          {
-            "path": "work/registry",
-            "type": "directory",
-            "mode": "0750",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "registry-artifact"
-          },
-          {
-            "path": "work/registry/README.md",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "registry-artifact",
-            "size": 1477,
-            "sha256": "3f45d36c75305242974c197e024e5f7e99c3691ef8cdcf46fed05505f8baf106"
-          },
-          {
-            "path": "work/registry/consumer-request.json",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "registry-artifact",
-            "size": 217,
-            "sha256": "15ff74f745b4e66558bfd2776f30be5400a7ff5ae7a4791898a8fafe14fba0a2"
-          },
-          {
-            "path": "work/registry/inspection-compat.fki",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "registry-artifact",
-            "size": 13,
-            "sha256": "47430e0cf68733cda0bcb7515e5fefa4f263801761e8b4c1f899e8306ceec098"
-          },
-          {
-            "path": "work/registry/inspection-normal.json",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "registry-artifact",
-            "size": 181,
-            "sha256": "b2d5239b836934aed0b4a5939ebc93326da761c3d694918c8b04facede25f5cb"
-          },
-          {
-            "path": "work/review-exports",
-            "type": "directory",
-            "mode": "0750",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "workplace-document"
-          },
-          {
-            "path": "work/review-exports/fieldlink-7.4.2-review.md",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "workplace-document",
-            "size": 541,
-            "sha256": "f568f44c8fcb8e9b13929931f441c4951ef65187c89a06cf2de326c172e2c597"
-          },
-          {
-            "path": "work/samples",
-            "type": "directory",
-            "mode": "0750",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "client-example"
-          },
-          {
-            "path": "work/samples/FK-SAMPLE-017.json",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "client-example",
-            "size": 398,
-            "sha256": "b3cbf260a332f5a8d9b0cdde64e4d22d698a5ae28c11384149126ba694edd1e6"
-          },
-          {
-            "path": "work/reproducers",
-            "type": "directory",
-            "mode": "0750",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "offline-reproducer"
-          },
-          {
-            "path": "work/reproducers/indexer-client.json",
-            "type": "file",
-            "mode": "0640",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "offline-reproducer",
-            "size": 353,
-            "sha256": "038f4bc3b8516a31c5a5ef600ad052556260137c06da99baade57ee4b398f801"
-          },
-          {
-            "path": "work/service-notes.md",
-            "type": "file",
-            "mode": "0644",
-            "owner": "rowan",
-            "group": "rowan",
-            "classification": "workplace-document",
-            "size": 1618,
-            "sha256": "74699b2a54d77a65cdf555c9eb2080c374f6f9180c055bc8a9a758f5f0488c46"
-          }
-        ]
-      },
-      {
-        "path": "/tmp",
-        "opaque": [],
-        "entries": [
-          {
-            "path": "sshd.pid",
-            "type": "file",
-            "mode": "0644",
-            "owner": "root",
-            "group": "root",
-            "classification": "runtime-process-metadata"
-          }
-        ]
-      },
-      {
-        "path": "/run/fieldkest-auth",
-        "opaque": [],
-        "entries": [
-          {
-            "path": "ca.crt",
-            "type": "file",
-            "mode": "0644",
-            "owner": "root",
-            "group": "root",
-            "classification": "participant-ca-material"
-          },
-          {
-            "path": "rowan_authorized_keys",
-            "type": "file",
-            "mode": "0644",
-            "owner": "root",
-            "group": "root",
-            "classification": "participant-public-key-material"
-          }
-        ]
-      },
-      {
-        "path": "/etc/krb5.conf",
-        "opaque": [],
-        "entries": [
-          {
-            "path": ".",
-            "type": "file",
-            "mode": "0664",
-            "owner": "root",
-            "group": "root",
-            "classification": "participant-client-configuration",
-            "size": 330,
-            "sha256": "aa84822f924d637ba79b3e11934a0da307049d62c770e7a88d655aee434040cd"
-          }
-        ]
-      }
-    ],
     "forbidden_paths": [
       {
         "path": "/opt/operator-tests",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/opt/cinder-typhoon",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/var/run/docker.sock",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/opt/fieldkest-seeds",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/opt/fieldkest-workbench",
-        "visible": true,
-        "readable": false
+        "readable": false,
+        "visible": true
       },
       {
         "path": "/opt/fieldkest-workbench/workbench.py",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/opt/keplerops-workbench",
-        "visible": true,
-        "readable": false
+        "readable": false,
+        "visible": true
       },
       {
         "path": "/usr/local/bin/fieldkest-k-dev-entrypoint",
-        "visible": true,
-        "readable": false
+        "readable": false,
+        "visible": true
       },
       {
         "path": "/var/lib/fieldkest-workbench",
-        "visible": true,
-        "readable": false
+        "readable": false,
+        "visible": true
       },
       {
         "path": "/var/lib/fieldkest-workbench/audit",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/var/lib/fieldkest-ci",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/var/lib/fieldkest-registry",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/var/lib/fieldkest-support",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/var/lib/fieldkest-cloud-api",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/var/lib/fieldkest-data",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/var/lib/fieldkest-identity",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
       },
       {
         "path": "/run/fieldkest-auth/worker-hmac.key",
-        "visible": false,
-        "readable": false
+        "readable": false,
+        "visible": false
+      }
+    ],
+    "roots": [
+      {
+        "entries": [
+          {
+            "classification": "base-image-profile",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": ".bash_logout",
+            "sha256": "26882b79471c25f945c970f8233d8ce29d54e9d5eedcd2884f88affa84a18f56",
+            "size": 220,
+            "type": "file"
+          },
+          {
+            "classification": "base-image-profile",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": ".bashrc",
+            "sha256": "afae8986f549c6403410e029f9cce7983311512d04b1f02af02e4ce0af0dd2bf",
+            "size": 3526,
+            "type": "file"
+          },
+          {
+            "classification": "base-image-profile",
+            "group": "rowan",
+            "mode": "0700",
+            "owner": "rowan",
+            "path": ".config",
+            "type": "directory"
+          },
+          {
+            "classification": "base-image-profile",
+            "group": "rowan",
+            "mode": "0700",
+            "owner": "rowan",
+            "path": ".config/chromium",
+            "type": "directory"
+          },
+          {
+            "classification": "browser-artifact",
+            "group": "rowan",
+            "mode": "0700",
+            "owner": "rowan",
+            "path": ".config/chromium/Default",
+            "type": "directory"
+          },
+          {
+            "classification": "browser-artifact",
+            "group": "rowan",
+            "mode": "0600",
+            "owner": "rowan",
+            "path": ".config/chromium/Default/Cookies",
+            "type": "file"
+          },
+          {
+            "classification": "browser-artifact",
+            "group": "rowan",
+            "mode": "0600",
+            "owner": "rowan",
+            "path": ".config/chromium/Default/History",
+            "sha256": "4415fd5363aa5f4c043b3b01e27211f706509dbb08740dd5e9baf9f3be9c1297",
+            "size": 20480,
+            "type": "file"
+          },
+          {
+            "classification": "browser-artifact",
+            "group": "rowan",
+            "mode": "0600",
+            "owner": "rowan",
+            "path": ".config/chromium/Default/Preferences",
+            "sha256": "6cd677fa4b0c3ca9c34e0b459a2699b06ad32891cbe747bb7975f2e98feec00f",
+            "size": 202,
+            "type": "file"
+          },
+          {
+            "classification": "base-image-profile",
+            "group": "rowan",
+            "mode": "0700",
+            "owner": "rowan",
+            "path": ".config/git",
+            "type": "directory"
+          },
+          {
+            "classification": "credential",
+            "group": "rowan",
+            "mode": "0600",
+            "owner": "rowan",
+            "path": ".config/git/credentials",
+            "type": "file"
+          },
+          {
+            "classification": "client-configuration",
+            "group": "rowan",
+            "mode": "0600",
+            "owner": "rowan",
+            "path": ".gitconfig",
+            "sha256": "af5527a44521d17e0a57ab03e1ec685e9ec28812e60f694907516375000cddd3",
+            "size": 225,
+            "type": "file"
+          },
+          {
+            "classification": "base-image-profile",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": ".local",
+            "type": "directory"
+          },
+          {
+            "classification": "base-image-profile",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": ".local/share",
+            "type": "directory"
+          },
+          {
+            "classification": "base-image-profile",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": ".local/share/keplerops",
+            "type": "directory"
+          },
+          {
+            "classification": "ca-material",
+            "group": "root",
+            "mode": "0444",
+            "owner": "root",
+            "path": ".local/share/keplerops/ca.crt",
+            "type": "file"
+          },
+          {
+            "classification": "seed-marker",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": ".local/share/keplerops/connector-archive-2026-09-18",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size": 0,
+            "type": "file"
+          },
+          {
+            "classification": "seed-marker",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": ".local/share/keplerops/policy-compiler-2026-09-18",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size": 0,
+            "type": "file"
+          },
+          {
+            "classification": "seed-marker",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": ".local/share/keplerops/registry-foundation-2026-09-18",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size": 0,
+            "type": "file"
+          },
+          {
+            "classification": "seed-marker",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": ".local/share/keplerops/release-lineage-2026-09-18",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size": 0,
+            "type": "file"
+          },
+          {
+            "classification": "base-image-profile",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": ".profile",
+            "sha256": "28b4a453b68dde64f814e94bab14ee651f4f162e15dd9920490aa1d49f05d2a4",
+            "size": 807,
+            "type": "file"
+          },
+          {
+            "classification": "participant-access",
+            "group": "rowan",
+            "mode": "0700",
+            "owner": "rowan",
+            "path": ".ssh",
+            "type": "directory"
+          },
+          {
+            "classification": "participant-access",
+            "group": "rowan",
+            "mode": "0600",
+            "owner": "rowan",
+            "path": ".ssh/authorized_keys",
+            "type": "file"
+          },
+          {
+            "classification": "starting-briefing",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "README.md",
+            "sha256": "0bd237d283cda2d2afd567dd8597e40d9367cd3906a8e3ec1bf04a802b6bdb97",
+            "size": 749,
+            "type": "file"
+          },
+          {
+            "classification": "participant-output",
+            "group": "rowan",
+            "mode": "0700",
+            "owner": "rowan",
+            "path": "results",
+            "type": "directory"
+          },
+          {
+            "classification": "participant-workspace",
+            "group": "rowan",
+            "mode": "0750",
+            "owner": "rowan",
+            "path": "work",
+            "type": "directory"
+          },
+          {
+            "classification": "analysis-artifact",
+            "group": "rowan",
+            "mode": "0750",
+            "owner": "rowan",
+            "path": "work/analysis",
+            "type": "directory"
+          },
+          {
+            "classification": "analysis-artifact",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/analysis/field-notes-2026-08.odt",
+            "sha256": "659f1b9ab844f2e7b379de9a3c91f0b0ccc02858b83e6bf07860e557a0e0c834",
+            "size": 2018,
+            "type": "file"
+          },
+          {
+            "classification": "analysis-artifact",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/analysis/staging-decoder.ps1",
+            "sha256": "86e59b0fc25552e89e4c734fc58d808c36b8f4ab503a3ac4ffe035310890a7d6",
+            "size": 488,
+            "type": "file"
+          },
+          {
+            "classification": "supplied-reproducer-context",
+            "group": "rowan",
+            "mode": "0750",
+            "owner": "rowan",
+            "path": "work/build-operations",
+            "type": "directory"
+          },
+          {
+            "classification": "supplied-reproducer-context",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/build-operations/connector-archive-review.md",
+            "sha256": "578558735527c96323c2dcdf2cda73220dc5dac4edecc65a29f0240d752bd3ae",
+            "size": 272,
+            "type": "file"
+          },
+          {
+            "classification": "supplied-reproducer-context",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/build-operations/policy-compiler-handoff.md",
+            "sha256": "b86d3fffc9d6909a5f64715ccd673701c776cbc48fb677e3a6fa69941328688f",
+            "size": 383,
+            "type": "file"
+          },
+          {
+            "classification": "supplied-reproducer-context",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/build-operations/release-lineage-review.md",
+            "sha256": "d16a36dcdc2510fca974e95da366c0b460b6837fd753eaa34e24a0ba0642880e",
+            "size": 205,
+            "type": "file"
+          },
+          {
+            "classification": "supplied-source",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/HEAD",
+            "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80",
+            "size": 21,
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/config",
+            "sha256": "9bc5985441b902f14820be6ff0974d14a19cee3854c9055f17f431849ba5b549",
+            "size": 284,
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/index",
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/logs",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/logs/HEAD",
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/logs/refs",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/logs/refs/heads",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/logs/refs/heads/main",
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/logs/refs/remotes",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/logs/refs/remotes/origin",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/logs/refs/remotes/origin/HEAD",
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/objects",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/objects/info",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/objects/pack",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0444",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/objects/pack/pack-1efdd51c606c1efb50d01bdedd570b2fff891f2e.idx",
+            "sha256": "ea7cc302325e1c5000c7249f5dce79532c82561f0fef8f0b9bbd7146cf31370d",
+            "size": 1436,
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0444",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/objects/pack/pack-1efdd51c606c1efb50d01bdedd570b2fff891f2e.pack",
+            "sha256": "9951c5c9fd22434f599b51148bbaa844c749c462c7ccedfd0688ec269fee3699",
+            "size": 1973,
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/packed-refs",
+            "sha256": "3643efd1ae0a6be71ae391f8456d5029b6190d663878fd5253bd47155bf0a73c",
+            "size": 179,
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/refs",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/refs/heads",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/refs/heads/main",
+            "sha256": "43182b65af67d80e9b0ea2b65b8602758fac86537151912887d556e3b6049a5b",
+            "size": 41,
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/refs/remotes",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/refs/remotes/origin",
+            "type": "directory"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/refs/remotes/origin/HEAD",
+            "sha256": "2bb6a24aa0fc6c484100f5d51a29bbad841cd2c755f5d93faa204e5dbb4eb2b4",
+            "size": 30,
+            "type": "file"
+          },
+          {
+            "classification": "source-history",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/.git/refs/tags",
+            "type": "directory"
+          },
+          {
+            "classification": "supplied-source",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/README.md",
+            "sha256": "468d224e7ee6f8099e3d3b8b039ae4a03892ddfb48a01676ed83c1926a57c730",
+            "size": 79,
+            "type": "file"
+          },
+          {
+            "classification": "supplied-source",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/docs",
+            "type": "directory"
+          },
+          {
+            "classification": "supplied-source",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/docs/report-provider.md",
+            "sha256": "1349ebe71dcf24e724bae9103618098b96e1bae4e7216d85058633345fcc9e84",
+            "size": 511,
+            "type": "file"
+          },
+          {
+            "classification": "supplied-source",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/review",
+            "type": "directory"
+          },
+          {
+            "classification": "supplied-source",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/review/FLK-7.4.2.md",
+            "sha256": "81b51c7eda742cdc9bc0f655b7c8df9a291af64844834bbb9c023c9f0c65c6c3",
+            "size": 325,
+            "type": "file"
+          },
+          {
+            "classification": "supplied-source",
+            "group": "rowan",
+            "mode": "0755",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/tests",
+            "type": "directory"
+          },
+          {
+            "classification": "supplied-source",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/fieldlink-connector/tests/test_crr_og2_report.py",
+            "sha256": "c53eb1c8c8f5bbc58b38587ad24e3d6245e2a65b5b7041c37f7725dae60d5d24",
+            "size": 290,
+            "type": "file"
+          },
+          {
+            "classification": "workplace-document",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/local-helper.md",
+            "sha256": "e9f253d764e30d22ae0af5273c8ee9ecc93794eb4b566cfdb3655508c954d505",
+            "size": 821,
+            "type": "file"
+          },
+          {
+            "classification": "registry-artifact",
+            "group": "rowan",
+            "mode": "0750",
+            "owner": "rowan",
+            "path": "work/registry",
+            "type": "directory"
+          },
+          {
+            "classification": "registry-artifact",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/registry/README.md",
+            "sha256": "3f45d36c75305242974c197e024e5f7e99c3691ef8cdcf46fed05505f8baf106",
+            "size": 1477,
+            "type": "file"
+          },
+          {
+            "classification": "registry-artifact",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/registry/consumer-request.json",
+            "sha256": "15ff74f745b4e66558bfd2776f30be5400a7ff5ae7a4791898a8fafe14fba0a2",
+            "size": 217,
+            "type": "file"
+          },
+          {
+            "classification": "registry-artifact",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/registry/inspection-compat.fki",
+            "sha256": "47430e0cf68733cda0bcb7515e5fefa4f263801761e8b4c1f899e8306ceec098",
+            "size": 13,
+            "type": "file"
+          },
+          {
+            "classification": "registry-artifact",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/registry/inspection-normal.json",
+            "sha256": "b2d5239b836934aed0b4a5939ebc93326da761c3d694918c8b04facede25f5cb",
+            "size": 181,
+            "type": "file"
+          },
+          {
+            "classification": "workplace-document",
+            "group": "rowan",
+            "mode": "0750",
+            "owner": "rowan",
+            "path": "work/review-exports",
+            "type": "directory"
+          },
+          {
+            "classification": "workplace-document",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/review-exports/fieldlink-7.4.2-review.md",
+            "sha256": "f568f44c8fcb8e9b13929931f441c4951ef65187c89a06cf2de326c172e2c597",
+            "size": 541,
+            "type": "file"
+          },
+          {
+            "classification": "client-example",
+            "group": "rowan",
+            "mode": "0750",
+            "owner": "rowan",
+            "path": "work/samples",
+            "type": "directory"
+          },
+          {
+            "classification": "client-example",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/samples/FK-SAMPLE-017.json",
+            "sha256": "b3cbf260a332f5a8d9b0cdde64e4d22d698a5ae28c11384149126ba694edd1e6",
+            "size": 398,
+            "type": "file"
+          },
+          {
+            "classification": "offline-reproducer",
+            "group": "rowan",
+            "mode": "0750",
+            "owner": "rowan",
+            "path": "work/reproducers",
+            "type": "directory"
+          },
+          {
+            "classification": "offline-reproducer",
+            "group": "rowan",
+            "mode": "0640",
+            "owner": "rowan",
+            "path": "work/reproducers/indexer-client.json",
+            "sha256": "038f4bc3b8516a31c5a5ef600ad052556260137c06da99baade57ee4b398f801",
+            "size": 353,
+            "type": "file"
+          },
+          {
+            "classification": "workplace-document",
+            "group": "rowan",
+            "mode": "0644",
+            "owner": "rowan",
+            "path": "work/service-notes.md",
+            "sha256": "74699b2a54d77a65cdf555c9eb2080c374f6f9180c055bc8a9a758f5f0488c46",
+            "size": 1618,
+            "type": "file"
+          }
+        ],
+        "opaque": [],
+        "path": "/home/rowan"
+      },
+      {
+        "entries": [
+          {
+            "classification": "runtime-process-metadata",
+            "group": "root",
+            "mode": "0644",
+            "owner": "root",
+            "path": "sshd.pid",
+            "type": "file"
+          }
+        ],
+        "opaque": [],
+        "path": "/tmp"
+      },
+      {
+        "entries": [
+          {
+            "classification": "participant-ca-material",
+            "group": "root",
+            "mode": "0644",
+            "owner": "root",
+            "path": "ca.crt",
+            "type": "file"
+          },
+          {
+            "classification": "participant-public-key-material",
+            "group": "root",
+            "mode": "0644",
+            "owner": "root",
+            "path": "rowan_authorized_keys",
+            "type": "file"
+          }
+        ],
+        "opaque": [],
+        "path": "/run/fieldkest-auth"
+      },
+      {
+        "entries": [
+          {
+            "classification": "participant-client-configuration",
+            "group": "root",
+            "mode": "0664",
+            "owner": "root",
+            "path": ".",
+            "sha256": "aa84822f924d637ba79b3e11934a0da307049d62c770e7a88d655aee434040cd",
+            "size": 330,
+            "type": "file"
+          }
+        ],
+        "opaque": [],
+        "path": "/etc/krb5.conf"
       }
     ]
   },
-  "tools": [
-    {
-      "name": "bash",
-      "path": "/usr/bin/bash"
-    },
-    {
-      "name": "curl",
-      "path": "/usr/bin/curl"
-    },
-    {
-      "name": "git",
-      "path": "/usr/bin/git"
-    },
-    {
-      "name": "jq",
-      "path": "/usr/bin/jq"
-    },
-    {
-      "name": "kinit",
-      "path": "/usr/bin/kinit"
-    },
-    {
-      "name": "python3",
-      "path": "/usr/local/bin/python3"
-    },
-    {
-      "name": "sqlite3",
-      "path": "/usr/bin/sqlite3"
-    },
-    {
-      "name": "unzip",
-      "path": "/usr/bin/unzip"
-    },
-    {
-      "name": "zip",
-      "path": "/usr/bin/zip"
-    }
-  ],
+  "manifest_kind": "authored",
   "network": {
     "dns": [
       {
-        "name": "k-dev.keplerops.test",
         "addresses": [
           "10.77.50.20"
-        ]
+        ],
+        "name": "k-dev.keplerops.test"
       },
       {
-        "name": "staff.keplerops.test",
         "addresses": [
           "10.77.50.30"
-        ]
+        ],
+        "name": "staff.keplerops.test"
       },
       {
-        "name": "identity.keplerops.test",
         "addresses": [
           "10.77.50.40"
-        ]
+        ],
+        "name": "identity.keplerops.test"
       },
       {
-        "name": "cert.keplerops.test",
         "addresses": [
           "10.77.50.50"
-        ]
+        ],
+        "name": "cert.keplerops.test"
       },
       {
-        "name": "source.keplerops.test",
         "addresses": [
           "10.77.51.20"
-        ]
+        ],
+        "name": "source.keplerops.test"
       },
       {
-        "name": "packages.keplerops.test",
         "addresses": [
           "10.77.51.30"
-        ]
+        ],
+        "name": "packages.keplerops.test"
       },
       {
-        "name": "ci.keplerops.test",
         "addresses": [
           "10.77.51.40"
-        ]
+        ],
+        "name": "ci.keplerops.test"
       },
       {
-        "name": "preview.keplerops.test",
         "addresses": [
           "10.77.51.50"
-        ]
+        ],
+        "name": "preview.keplerops.test"
       },
       {
-        "name": "support.keplerops.test",
         "addresses": [
           "10.77.51.60"
-        ]
+        ],
+        "name": "support.keplerops.test"
       },
       {
-        "name": "indexer.keplerops.test",
         "addresses": [
           "10.77.51.70"
-        ]
+        ],
+        "name": "indexer.keplerops.test"
       },
       {
-        "name": "cloud-api.keplerops.test",
         "addresses": [
           "10.77.52.20"
-        ]
+        ],
+        "name": "cloud-api.keplerops.test"
       },
       {
-        "name": "workloads.keplerops.test",
         "addresses": [
           "10.77.52.30"
-        ]
+        ],
+        "name": "workloads.keplerops.test"
       },
       {
-        "name": "data.keplerops.test",
         "addresses": [
           "10.77.52.40"
-        ]
+        ],
+        "name": "data.keplerops.test"
       },
       {
-        "name": "assistant.keplerops.test",
         "addresses": [
           "10.77.52.50"
-        ]
+        ],
+        "name": "assistant.keplerops.test"
       },
       {
-        "name": "connector.arwc.test",
         "addresses": [
           "10.77.60.20"
-        ]
+        ],
+        "name": "connector.arwc.test"
       }
     ],
     "listeners": [
@@ -1368,355 +1667,56 @@
       }
     ]
   },
-  "disclosures": [
+  "participant": {
+    "gid": 2000,
+    "group": "rowan",
+    "groups": [
+      "rowan"
+    ],
+    "home": "/home/rowan",
+    "uid": 2000,
+    "user": "rowan",
+    "workdir": "/home/rowan"
+  },
+  "phase": "keplerops",
+  "schema_version": 1,
+  "state": "pristine",
+  "tools": [
     {
-      "id": "keplerops-home-briefing",
-      "kind": "starting-briefing",
-      "path": "/home/rowan/README.md",
-      "exposes": [
-        "work/service-notes.md",
-        "work/local-helper.md",
-        "work/fieldlink-connector",
-        "work/registry",
-        "work/build-operations"
-      ]
+      "name": "bash",
+      "path": "/usr/bin/bash"
     },
     {
-      "id": "keplerops-service-notes",
-      "kind": "workplace-document",
-      "path": "/home/rowan/work/service-notes.md",
-      "exposes": [
-        "developer-credential-source",
-        "fieldlink-handover-source",
-        "support-case-source",
-        "source-client-reference"
-      ]
+      "name": "curl",
+      "path": "/usr/bin/curl"
     },
     {
-      "id": "keplerops-indexer-client",
-      "kind": "offline-reproducer-manifest",
-      "path": "/home/rowan/work/reproducers/indexer-client.json",
-      "exposes": [
-        "indexer.indexes",
-        "offline-reproducer-binary"
-      ]
+      "name": "git",
+      "path": "/usr/bin/git"
     },
     {
-      "id": "keplerops-client-ref-source",
-      "kind": "client-reference",
-      "path": "https://source.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "source.repos",
-        "source.handover",
-        "source.policy-evaluate",
-        "source.policy-nonce",
-        "source.policy-opcode-model",
-        "source.connector-run"
-      ]
+      "name": "jq",
+      "path": "/usr/bin/jq"
     },
     {
-      "id": "keplerops-client-ref-ci",
-      "kind": "client-reference",
-      "path": "https://ci.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "ci.run",
-        "ci.run-log",
-        "ci.run-artifact",
-        "ci.review-import",
-        "ci.report-jobs",
-        "ci.report-job",
-        "ci.review-jobs",
-        "ci.review-job",
-        "ci.workspace-file",
-        "ci.connector-rehearsal",
-        "ci.lineage-rollover"
-      ]
+      "name": "kinit",
+      "path": "/usr/bin/kinit"
     },
     {
-      "id": "keplerops-client-ref-packages",
-      "kind": "client-reference",
-      "path": "https://packages.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "packages.metadata",
-        "packages.consumer-check",
-        "packages.release",
-        "packages.reconcile",
-        "packages.resolver",
-        "packages.import",
-        "packages.publish",
-        "packages.view",
-        "packages.inspections",
-        "packages.inspection-trace",
-        "packages.inspection-envelope",
-        "packages.entitlement",
-        "packages.entitlement-check",
-        "packages.approval",
-        "connector.poll",
-        "connector.activate",
-        "connector.receipt",
-        "connector.rollback"
-      ]
+      "name": "python3",
+      "path": "/usr/local/bin/python3"
     },
     {
-      "id": "keplerops-client-ref-preview",
-      "kind": "client-reference",
-      "path": "https://preview.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "preview.association",
-        "preview.documents",
-        "preview.render",
-        "preview.assignment",
-        "preview.prepare",
-        "preview.review-render"
-      ]
+      "name": "sqlite3",
+      "path": "/usr/bin/sqlite3"
     },
     {
-      "id": "keplerops-client-ref-indexer",
-      "kind": "client-reference",
-      "path": "https://indexer.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "indexer.indexes"
-      ]
+      "name": "unzip",
+      "path": "/usr/bin/unzip"
     },
     {
-      "id": "keplerops-client-ref-cloud",
-      "kind": "client-reference",
-      "path": "https://cloud-api.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "cloud.workspace-exchange",
-        "cloud.workspace-token",
-        "cloud.build-record",
-        "cloud.trust-record",
-        "cloud.role-exchange",
-        "cloud.maintenance",
-        "cloud.policy"
-      ]
-    },
-    {
-      "id": "keplerops-client-ref-data",
-      "kind": "client-reference",
-      "path": "https://data.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "data.workspace-list",
-        "data.workspace-object",
-        "data.export-object",
-        "data.export",
-        "data.export-definition",
-        "data.export-destination",
-        "data.export-runs",
-        "data.backup",
-        "data.restore",
-        "data.recovery-history",
-        "data.field-archive"
-      ]
-    },
-    {
-      "id": "keplerops-client-ref-workloads",
-      "kind": "client-reference",
-      "path": "https://workloads.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "workloads.schedule",
-        "workloads.schedule-update",
-        "workloads.schedule-runs",
-        "workloads.workload",
-        "workloads.whoami"
-      ]
-    },
-    {
-      "id": "keplerops-client-ref-support",
-      "kind": "client-reference",
-      "path": "https://support.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "support.conversation",
-        "support.session",
-        "support.handover",
-        "support.recovery-lookup",
-        "support.recovery-redeem",
-        "support.assignment",
-        "support.copy-handover",
-        "support.dossier",
-        "support.integration",
-        "support.reconcile",
-        "support.diagnostics",
-        "support.diagnostic-package",
-        "support.diagnostic-deliver",
-        "support.fixture-assertion"
-      ]
-    },
-    {
-      "id": "keplerops-client-ref-staff",
-      "kind": "client-reference",
-      "path": "https://staff.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "staff.directory",
-        "staff.note",
-        "staff.note-preview",
-        "staff.archive",
-        "staff.delegation",
-        "staff.managed-session"
-      ]
-    },
-    {
-      "id": "keplerops-client-ref-cert",
-      "kind": "client-reference",
-      "path": "https://cert.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "cert.template",
-        "cert.requests"
-      ]
-    },
-    {
-      "id": "keplerops-client-ref-identity",
-      "kind": "client-reference",
-      "path": "https://identity.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "identity.registration",
-        "identity.staff-login",
-        "identity.login",
-        "identity.service-relation"
-      ]
-    },
-    {
-      "id": "keplerops-client-ref-assistant",
-      "kind": "client-reference",
-      "path": "https://assistant.keplerops.test/.well-known/fieldkest-client",
-      "exposes": [
-        "assistant.app",
-        "assistant.config",
-        "assistant.contexts",
-        "assistant.conversation",
-        "assistant.selection",
-        "assistant.document",
-        "assistant.answers",
-        "assistant.completion-example",
-        "assistant.completion-context",
-        "assistant.completion-jobs",
-        "assistant.completion-job"
-      ]
-    },
-    {
-      "id": "keplerops-local-helper",
-      "kind": "workplace-document",
-      "path": "/home/rowan/work/local-helper.md",
-      "exposes": [
-        "local-workbench-interface",
-        "limited-helper-action"
-      ]
+      "name": "zip",
+      "path": "/usr/bin/zip"
     }
-  ],
-  "delivery": {
-    "cards": {
-      "status": "external_unverified",
-      "items": [
-        "K01.1",
-        "K01.2",
-        "K01.3",
-        "K01.4",
-        "K02.1",
-        "K02.2",
-        "K02.3",
-        "K03.1",
-        "K03.2",
-        "K03.3",
-        "K04.1",
-        "K04.2",
-        "K04.3",
-        "K04.4",
-        "K05.1",
-        "K05.2",
-        "K05.3",
-        "K05.4",
-        "K06.1",
-        "K06.2",
-        "K06.3",
-        "K07.1",
-        "K07.2",
-        "K07.3",
-        "K08.1",
-        "K08.2",
-        "K08.3",
-        "K09.1",
-        "K09.2",
-        "K09.3",
-        "K09.4",
-        "K10.1",
-        "K10.2",
-        "K10.3",
-        "K11.1",
-        "K11.2",
-        "K11.3",
-        "K11.4",
-        "K12.1",
-        "K12.2",
-        "K12.3",
-        "K12.4",
-        "K13.1",
-        "K13.2",
-        "K13.3",
-        "K13.4",
-        "K14.1",
-        "K14.2",
-        "K14.3",
-        "K15.1",
-        "K15.2",
-        "K15.3",
-        "K15.4",
-        "K16.1",
-        "K16.2",
-        "K16.3",
-        "K16.4",
-        "K17.1",
-        "K17.2",
-        "K17.3",
-        "K17.4",
-        "K18.1",
-        "K18.2",
-        "K18.3",
-        "K18.4",
-        "K19.1",
-        "K19.2",
-        "K19.3",
-        "K20.1",
-        "K20.2",
-        "K20.3",
-        "K21.1",
-        "K21.2",
-        "K21.3",
-        "K22.1",
-        "K22.2",
-        "K22.3",
-        "K23.1",
-        "K23.2",
-        "K23.3",
-        "K24.1",
-        "K24.2",
-        "K24.3",
-        "K25.1",
-        "K25.2",
-        "K26.1",
-        "K26.2",
-        "K26.3",
-        "K27.1",
-        "K27.2",
-        "K27.3",
-        "K28.1",
-        "K28.2",
-        "K28.3",
-        "K29.1",
-        "K29.2",
-        "K29.3",
-        "K29.4",
-        "K30.1",
-        "K30.2",
-        "K30.3",
-        "K31.1",
-        "K31.2",
-        "K31.3"
-      ]
-    },
-    "hints": {
-      "status": "not_materialized",
-      "items": []
-    }
-  }
+  ]
 }

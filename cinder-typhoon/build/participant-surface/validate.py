@@ -12,7 +12,7 @@ from typing import Any
 
 PHASES = {"training", "keplerops", "arwc"}
 ENTRY_TYPES = {"directory", "file", "symlink"}
-DELIVERY_STATES = {"observed", "not_materialized", "external_unverified"}
+DELIVERY_STATES = {"observed", "not_materialized", "external_unverified", "versioned"}
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 MODE = re.compile(r"^[0-7]{4}$")
 
