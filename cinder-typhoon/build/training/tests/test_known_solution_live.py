@@ -17,14 +17,14 @@ import inspect
 from io import StringIO
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import shlex
 import subprocess
 import time
 import unittest
 from urllib.error import HTTPError
-from urllib.parse import quote, urljoin, urlsplit
+from urllib.parse import parse_qs, quote, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
 
@@ -102,6 +102,39 @@ def markdown_link(document: str, label: str, base: str) -> str:
     return urljoin(base, match.group(1))
 
 
+def published_request(document: str, label: str) -> tuple[str, str]:
+    match = re.search(
+        rf"{re.escape(label)}\s*`(GET|POST|PUT)\s+([^`]+)`",
+        document,
+    )
+    if not match:
+        raise AssertionError(f"missing published request: {label}")
+    return match.group(1), match.group(2)
+
+
+def published_table_request(document: str, operation: str) -> tuple[str, str]:
+    rows = re.findall(
+        r"\| `(GET|POST|PUT)\s+([^`]+)` \| ([^|]+) \|",
+        document,
+    )
+    matching = [row for row in rows if row[2].strip().startswith(operation)]
+    if len(matching) != 1:
+        raise AssertionError(f"missing or ambiguous published operation: {operation}")
+    method, target, _ = matching[0]
+    return method, target
+
+
+def published_url(base: str, target: str, **parameters: object) -> str:
+    for name, value in parameters.items():
+        marker = "{" + name + "}"
+        if marker not in target:
+            raise AssertionError(f"published request has no {marker} parameter")
+        target = target.replace(marker, quote(str(value), safe=""))
+    if re.search(r"\{[^{}]+\}", target):
+        raise AssertionError(f"published request still has parameters: {target}")
+    return urljoin(base, target)
+
+
 class TrainingKnownSolutionAcceptance(unittest.TestCase):
     maxDiff = None
 
@@ -136,8 +169,9 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
             self.assertIn("courier CR-17", retained)
 
         with self.subTest(challenge="T01.2"):
-            dispatch = get_text(markdown_link(index, "Dispatch desk", base))
-            notice_url = markdown_link(dispatch, "public delivery notice", "http://workbench.training:8081/")
+            dispatch_url = markdown_link(index, "Dispatch desk", base)
+            dispatch = get_text(dispatch_url)
+            notice_url = markdown_link(dispatch, "public delivery notice", dispatch_url)
             notice = get_text(notice_url)
             manifest_path = re.search(r"`(/site\.webmanifest)`", notice).group(1)
             manifest = get_json(urljoin(notice_url, manifest_path))
@@ -148,9 +182,18 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
             self.assertEqual((amendment["delivery_id"], amendment["receiving_bay"]), ("DL-204", "Bay 4"))
 
         with self.subTest(challenge="T01.3"):
-            profile = get_json(markdown_link(index, "Retired courier client", base))
+            profile_url = markdown_link(index, "Retired courier client", base)
+            profile = get_json(profile_url)
+            history = get_text(urljoin(profile_url, profile["request_history"]))
+            history_request = re.search(
+                r"^\S+\s+(GET|POST|PUT)\s+(\S+)\s+Authorization:",
+                history,
+                re.MULTILINE,
+            )
+            self.assertIsNotNone(history_request)
             status, body, _ = request(
-                f'{profile["api_base"]}/api/deliveries/{profile["delivery_id"]}/manifest',
+                published_url(profile["api_base"], history_request.group(2)),
+                method=history_request.group(1),
                 headers={"Authorization": profile["authorization"]},
             )
             self.assertEqual(status, 200)
@@ -164,7 +207,13 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
             helper = markdown_link(index, "Diagnostic helper", base)
             public = get_json(helper)
             self.assertIn("omitted", public["detail"].lower())
-            intended = helper.replace("public/DL-204.json", "public/%2E%2E/internal/DL-204.json")
+            helper_query = parse_qs(urlsplit(helper).query)
+            public_view = helper_query["view"][0]
+            delivery_id = helper_query["delivery_id"][0]
+            self.assertEqual(public["delivery_id"], delivery_id)
+            public_path = PurePosixPath(public_view)
+            intended_view = f"{public_path.parent}/%2E%2E/internal/{public_path.name}"
+            intended = helper.replace(f"view={public_view}", f"view={intended_view}")
             internal = get_json(intended)
             self.assertEqual(internal["summary_id"], "DS-204-I")
 
@@ -173,12 +222,17 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
         index = get_text(base)
         candidates = get_text(markdown_link(index, "Candidate notes", base))
         handles = re.findall(r"`([a-z]+\.[a-z]+)`", candidates)
+        lookup_method, lookup_target = published_request(index, "Account lookup:")
+        recovery_method, recovery_target = published_request(index, "Account recovery:")
+        handover_method, handover_target = published_request(index, "Own handover:")
 
         with self.subTest(challenge="T02.1"):
             active = None
             for handle in handles:
                 status, body, _ = request(
-                    urljoin(base, "/api/recovery/lookup"), method="POST", body={"account": handle})
+                    published_url(base, lookup_target), method=lookup_method,
+                    body={"account": handle},
+                )
                 if status == 200:
                     active = json.loads(body)
             self.assertIsNotNone(active)
@@ -200,8 +254,8 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(challenge="T02.3"):
             status, body, response_headers = request(
-                urljoin(base, "/api/recovery/redeem"),
-                method="POST",
+                published_url(base, recovery_target),
+                method=recovery_method,
                 body={
                     "account": active["account"],
                     "case_fragment": active["case_fragment"],
@@ -212,15 +266,23 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
             session = json.loads(body)["session"]
             self.assertIn("CINDER_REHEARSAL_SESSION", response_headers["Set-Cookie"])
             bearer = {"Authorization": f"Bearer {session}"}
-            status, handover_body, _ = request(urljoin(base, "/api/handover"), headers=bearer)
+            status, handover_body, _ = request(
+                published_url(base, handover_target), method=handover_method, headers=bearer,
+            )
             self.assertEqual(status, 200)
             handover = handover_body.decode()
             self.assertIn(active["account"], handover)
 
         with self.subTest(challenge="T02.4"):
             own_assignment, other_assignment = re.findall(r"`(ASG-[0-9]+)`", handover)
+            brief_method, brief_target = published_request(
+                handover, "assignment desk publishes brief records through",
+            )
             status, body, _ = request(
-                urljoin(base, f"/api/assignments/{other_assignment}/brief"), headers=bearer)
+                published_url(base, brief_target, assignment_id=other_assignment),
+                method=brief_method,
+                headers=bearer,
+            )
             self.assertEqual(status, 200)
             brief = json.loads(body)
             self.assertEqual(brief["assignment_id"], other_assignment)
@@ -231,6 +293,9 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
         base = self.desks["Developer artifacts"]
         index = get_text(base)
         forge_page = re.search(r"Forge repository: `(http://[^`]+)`", index).group(1)
+        channel_method, channel_target = published_request(index, "Read the channel with")
+        publish_method, publish_target = published_request(index, "Publish with")
+        consumer_method, consumer_target = published_request(index, "Run the consumer with")
 
         with self.subTest(challenge="T03.1"):
             forge = get_text(forge_page)
@@ -253,7 +318,8 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
             token = re.search(r"publisher_[A-Za-z0-9_]+", build_log).group(0)
             registry = re.search(r"Registry: `(http://[^`]+)`", index).group(1)
             status, body, _ = request(
-                urljoin(registry, "/api/channels/rehearsal/manifest"),
+                published_url(registry, channel_target),
+                method=channel_method,
                 headers={"Authorization": f"Bearer {token}"},
             )
             self.assertEqual(status, 200)
@@ -269,16 +335,23 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
             fixture_url = urljoin(package_url, source.removeprefix("/opt/cinder-sample/"))
             source_record = get_json(fixture_url)
             self.assertEqual(source_record["record_id"], "SRC-204")
-            self.assertEqual(destination_url, "http://developer.training:8084/api/rehearsal/ingest")
+            destination = urlsplit(destination_url)
+            self.assertEqual(
+                (destination.scheme, destination.hostname, destination.port),
+                ("http", "developer.training", 8084),
+            )
+            self.assertTrue(destination.path)
 
         with self.subTest(challenge="T03.4"):
             consumer = re.search(r"Consumer: `(http://[^`]+)`", index).group(1)
             status, baseline_body, _ = request(
-                urljoin(consumer, "/api/consumer/run"), method="POST", body={})
+                published_url(consumer, consumer_target), method=consumer_method, body={},
+            )
             self.assertEqual(status, 200)
             baseline = json.loads(baseline_body)
             self.assertEqual(baseline["selected_version"], channel["baseline_version"])
-            version = "1.5.0"
+            major, minor, _ = map(int, channel["baseline_version"].split("."))
+            version = f"{major}.{minor + 1}.0"
             package_manifest = json.dumps(
                 {"name": channel["package"], "version": version, "main": "index.js"},
                 separators=(",", ":"),
@@ -294,17 +367,17 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
                 "version": version,
                 "files": {"package.json": package_manifest, "index.js": source_code},
             }
-            package_path = f'/api/packages/{channel["package"]}/{version}'
             status, published_body, _ = request(
-                urljoin(registry, quote(package_path, safe="/@")),
-                method="PUT",
+                published_url(registry, publish_target, version=version),
+                method=publish_method,
                 body=publication,
                 headers={"Authorization": f"Bearer {token}"},
             )
             self.assertEqual(status, 201)
             published = json.loads(published_body)
             status, fresh_body, _ = request(
-                urljoin(consumer, "/api/consumer/run"), method="POST", body={})
+                published_url(consumer, consumer_target), method=consumer_method, body={},
+            )
             self.assertEqual(status, 200)
             fresh = json.loads(fresh_body)
             self.assertEqual(fresh["selected_version"], version)
@@ -315,6 +388,14 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
         base = self.desks["Outlet desk"]
         index = get_text(base)
         guide = get_text(markdown_link(index, "Field and operating guide", base))
+        state_method, state_target = published_table_request(guide, "Current tank ID")
+        observations_method, observations_target = published_table_request(
+            guide, "Retained observations",
+        )
+        hold_method, hold_target = published_table_request(guide, "JSON fields `request_id` and boolean")
+        transfer_method, transfer_target = published_table_request(
+            guide, "JSON fields `request_id` and integer",
+        )
 
         with self.subTest(challenge="T04.1"):
             capture = get_json(markdown_link(index, "Volume capture: VC-017", base))
@@ -323,6 +404,7 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
                 ("VS-017", 1200.0, "L", "good"),
             )
             self.assertNotEqual(capture["observed_volume_l"], capture["requested_volume_l"])
+            transfer_quantity = int(capture["observed_volume_l"] - capture["requested_volume_l"])
 
         with self.subTest(challenge="T04.2"):
             status_capture = get_json(markdown_link(index, "Controller capture: SC-018", base))
@@ -333,30 +415,43 @@ class TrainingKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(challenge="T04.3"):
             practice = markdown_link(index, "Practice tank", base)
-            api = urljoin(practice, "/api/practice/")
-            initial = get_json(urljoin(api, "state"))
+            self.assertEqual(state_method, "GET")
+            initial = get_json(published_url(practice, state_target))
             self.assertEqual((initial["tank_id"], initial["observed_volume_l"]), ("PT-01", 1200.0))
+            hold_request_id = f"{initial['tank_id']}-hold-clear".lower()
             status, _, _ = request(
-                urljoin(api, "hold"), method="POST", body={"request_id": "journey-hold-clear", "active": False})
+                published_url(practice, hold_target), method=hold_method,
+                body={"request_id": hold_request_id, "active": False},
+            )
             self.assertEqual(status, 200)
+            transfer_request_id = f"{initial['tank_id']}-transfer-{transfer_quantity}".lower()
             status, receipt_body, _ = request(
-                urljoin(api, "transfer"),
-                method="POST",
-                body={"request_id": "journey-transfer-200", "quantity_l": 200},
+                published_url(practice, transfer_target),
+                method=transfer_method,
+                body={"request_id": transfer_request_id, "quantity_l": transfer_quantity},
             )
             self.assertEqual(status, 202)
             self.assertEqual(json.loads(receipt_body)["result"], "accepted")
             deadline = time.monotonic() + 15
             while time.monotonic() < deadline:
-                final = get_json(urljoin(api, "state"))
+                final = get_json(published_url(practice, state_target))
                 if final["outlet_position"] == "closed":
                     break
                 time.sleep(0.25)
-            self.assertEqual(final["observed_volume_l"], 1000.0)
-            observations = get_json(urljoin(api, "observations"))["observations"]
-            movement = [row for row in observations if row["request_id"] == "journey-transfer-200"]
+            self.assertEqual(
+                final["observed_volume_l"],
+                initial["observed_volume_l"] - transfer_quantity,
+            )
+            self.assertEqual(observations_method, "GET")
+            observations = get_json(
+                published_url(practice, observations_target),
+            )["observations"]
+            movement = [row for row in observations if row["request_id"] == transfer_request_id]
             self.assertGreaterEqual(len(movement), 2)
-            self.assertEqual(movement[0]["observed_volume_l"] - movement[-1]["observed_volume_l"], 200.0)
+            self.assertEqual(
+                movement[0]["observed_volume_l"] - movement[-1]["observed_volume_l"],
+                float(transfer_quantity),
+            )
             self.assertTrue(movement[-1]["terminal"])
             self.assertEqual(movement[-1]["outlet_position"], "closed")
 

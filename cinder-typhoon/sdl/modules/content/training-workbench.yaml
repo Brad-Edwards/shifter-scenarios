@@ -188,7 +188,7 @@ content:
     path: /srv/cinder-workbench/public/retired-client/profile.json
     description: Exact authored starting artifact.
     text: "{\n  \"profile\": \"retired-courier-client\",\n  \"courier_id\": \"CR-17\",\n  \"api_base\": \"http://workbench.training:8082\"\
-      ,\n  \"delivery_id\": \"DL-204\",\n  \"authorization\": \"Bearer courier_DL204_CR17_4N7Q2M9K\",\n  \"scope\"\
+      ,\n  \"request_history\": \"request-history.txt\",\n  \"delivery_id\": \"DL-204\",\n  \"authorization\": \"Bearer courier_DL204_CR17_4N7Q2M9K\",\n  \"scope\"\
       : [\"manifest:DL-204:read\"]\n}\n"
     sensitive: true
   workbench-courier-request-history-txt:
