@@ -75,8 +75,7 @@ PROCESS_PATHS = {
     "/api/signature-requests", "/api/signature-oracles/current",
     "/api/estimator-tasks/current", "/api/reporting-submissions",
     "/api/firmware-images/current", "/api/maintenance-records/current",
-    "/api/maintenance-records/current",
-    "/api/what-counts-as-intact", "/api/signature-programs/current/constraints",
+    "/api/signature-programs/current/reproductions", "/api/signature-programs/current/constraints",
     "/api/diagnostic-runs",
     "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
     "/api/control-authority",
@@ -319,18 +318,23 @@ class Handler(BaseHTTPRequestHandler):
                     "template": "https://contractor-portal.arwc.test/api/contractor-artifacts/current"
                 }
             ],
-            "related": ["https://field-gateway.arwc.test/.well-known/arwc-client"],
+            "related": [
+                "https://field-gateway.arwc.test/.well-known/arwc-client",
+                "https://maintenance-review.arwc.test/.well-known/arwc-client",
+            ],
         })
         return True
 
     def do_GET(self) -> None:
-        if self._serve_client_document():
-            return
         path = urlsplit(self.path).path
         if (self.headers.get("Host", "").split(":", 1)[0] in
                 {"field-gateway.arwc.test", "process-read.arwc.test"} and
-                path in PROCESS_PATHS | {"/api/instruments/current"}):
+                path in PROCESS_PATHS | {
+                    "/.well-known/arwc-client", "/api/instruments/current",
+                }):
             self.proxy_field_gateway()
+            return
+        if self._serve_client_document():
             return
         state = json.loads(STATE.read_text(encoding="utf-8"))
         if path == "/api/field-kits/current":

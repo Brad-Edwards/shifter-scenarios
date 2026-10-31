@@ -20,10 +20,11 @@ from urllib.parse import urlsplit
 ROOT = pathlib.Path("/var/lib/arwc-data-bridge")
 STATE = ROOT / "state" / "integration.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
-READ_EVIDENCE = pathlib.Path("/run/arwc-business-integration/W09-read.json")
-DATA_EVIDENCE = pathlib.Path("/run/arwc-data-integration/W09-data.json")
+READ_EVIDENCE = pathlib.Path("/run/arwc-business-integration/business-read.json")
+DATA_EVIDENCE = pathlib.Path("/run/arwc-data-integration/planning-data.json")
 OT_EVIDENCE = ROOT / "handover" / "corporate.json"
 PROCESS_PATHS = {
+    "/.well-known/arwc-client",
     "/api/process-views/state", "/api/process-views/mode",
     "/api/process-views/instruments/active", "/api/observations",
     "/api/tag-exports/current", "/api/tag-scales/current",
@@ -40,8 +41,7 @@ PROCESS_PATHS = {
     "/api/signature-requests", "/api/signature-oracles/current",
     "/api/estimator-tasks/current", "/api/reporting-submissions",
     "/api/firmware-images/current", "/api/maintenance-records/current",
-    "/api/maintenance-records/current",
-    "/api/what-counts-as-intact", "/api/signature-programs/current/constraints",
+    "/api/signature-programs/current/reproductions", "/api/signature-programs/current/constraints",
     "/api/diagnostic-runs",
     "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
     "/api/control-authority",
@@ -155,7 +155,7 @@ class Handler(BaseHTTPRequestHandler):
         headers = {
             "Authorization": self.headers.get("Authorization", ""),
             "X-ARWC-Tenant": self.headers.get("X-ARWC-Tenant", "arwc"),
-            "Host": "process-historian.arwc.test",
+            "Host": self.headers.get("Host", "process-view.arwc.test"),
         }
         if payload is not None:
             headers["Content-Type"] = "application/json"
@@ -184,7 +184,7 @@ class Handler(BaseHTTPRequestHandler):
         self.proxy_historian()
 
     def do_POST(self) -> None:
-        if urlsplit(self.path).path in {"/internal/w34-estimate", "/internal/w34-handover"}:
+        if urlsplit(self.path).path in {"/internal/handover-estimates", "/internal/control-handovers"}:
             if (self.headers.get("X-ARWC-Internal") != "planning-data-w34" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
                     self.client_address[0] != "10.77.62.10"):
@@ -192,7 +192,7 @@ class Handler(BaseHTTPRequestHandler):
             request = self.body()
             if request is None: return
             path = urlsplit(self.path).path
-            target = "10.77.63.50" if path.endswith("estimate") else "10.77.63.20"
+            target = "10.77.63.50" if path == "/internal/handover-estimates" else "10.77.63.20"
             target_path = path
             payload = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
             context = ssl.create_default_context(cafile="/tmp/ca.crt")
@@ -208,7 +208,7 @@ class Handler(BaseHTTPRequestHandler):
             finally:
                 connection.close()
             self.send_json(response.status, result); return
-        if urlsplit(self.path).path == "/internal/w33-schedule":
+        if urlsplit(self.path).path == "/internal/schedule-validations":
             if (self.headers.get("X-ARWC-Internal") != "hmi-w33" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
                     self.client_address[0] != "10.77.63.20"):
@@ -219,7 +219,7 @@ class Handler(BaseHTTPRequestHandler):
             context = ssl.create_default_context(cafile="/tmp/ca.crt")
             connection = http.client.HTTPSConnection("10.77.62.10", 443, context=context, timeout=5)
             try:
-                connection.request("POST", "/internal/w33-schedule", body=payload, headers={
+                connection.request("POST", "/internal/schedule-validations", body=payload, headers={
                     "Content-Type": "application/json", "Content-Length": str(len(payload)),
                     "X-ARWC-Internal": "data-bridge-w33", "X-ARWC-Tenant": "arwc",
                 })
@@ -230,7 +230,7 @@ class Handler(BaseHTTPRequestHandler):
                 connection.close()
             self.send_json(response.status, result); return
         if urlsplit(self.path).path in {
-            "/internal/w29-reserve-observation", "/internal/w29-paper-truth",
+            "/internal/reserve-observations", "/internal/release-plan-assessments",
         }:
             if (self.headers.get("X-ARWC-Internal") != "planning-data-w29" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or

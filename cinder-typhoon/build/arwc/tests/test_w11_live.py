@@ -130,7 +130,7 @@ def response_signatures(encoded: str) -> list[int]:
 
 class W11Live(unittest.TestCase):
     def test_01_each_declared_prerequisite_independently_exposes_contract(self) -> None:
-        evidence = "/var/lib/arwc-business/relation/W02-association.json"
+        evidence = "/var/lib/arwc-business/relation/drawing-association.json"
         original = subprocess.run(
             ["docker", "exec", "--user", "arwc-data", DATA,
              "cat", "/var/lib/arwc-data/state/planning.json"],

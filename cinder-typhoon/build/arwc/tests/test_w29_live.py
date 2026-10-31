@@ -84,19 +84,19 @@ class W29Live(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         data_base = "https://planning-data.arwc.test"
-        for path in ("/api/water-already-promised", "/api/the-meter-s-own-account",
-                     "/api/the-missing-megalitre"):
+        for path in ("/api/allocation-ledgers/current", "/api/meter-allocations/current",
+                     "/api/allocation-discrepancies/current"):
             status, response = request(data_base, path, planner=True)
             if status != 200:
                 raise AssertionError(response)
 
         status, contract = request(
-            "https://business-workplace.arwc.test", "/api/the-integration-s-read-contract",
+            "https://business-workplace.arwc.test", "/api/integration-contracts/current",
         )
         if status != 200:
             raise AssertionError(contract)
         status, current = request(
-            data_base, "/api/integration/from-the-report-to-the-live-feed", method="POST",
+            data_base, "/api/integration-sessions", method="POST",
             planner=True, integration=contract["integration_session"], body={
                 "integration_client": "INT-CRR-08", "report_binding": "REC-CRR-DP3-17",
                 "scope": "OG-CRR-02/read", "feed": "FEED-OG2-R21",
@@ -107,33 +107,33 @@ class W29Live(unittest.TestCase):
         cls.process_session = current["process_session"]
 
         process_base = "https://process-view.arwc.test"
-        for path in ("/api/the-reservoir-s-present-tense", "/api/the-mode-the-plant-is-in",
-                     "/api/the-instrument-in-the-note"):
+        for path in ("/api/process-views/state", "/api/process-views/mode",
+                     "/api/process-views/instruments/active"):
             status, response = request(process_base, path, token=cls.process_session)
             if status != 200:
                 raise AssertionError(response)
         setup: list[tuple[str, str, dict | None, int]] = [
-            ("/api/the-first-live-trace", "POST", {
+            ("/api/observations", "POST", {
                 "event": "EVT-COMM-OG2-114", "project": "CRR-CTRL-R21",
                 "hmi_series": "HMI-EVT-114", "instrument_series": "INST-EVT-114",
             }, 201),
-            ("/api/the-tag-export", "GET", None, 200),
-            ("/api/the-scale-kept-elsewhere", "GET", None, 200),
-            ("/api/when-the-units-changed", "POST", {
+            ("/api/tag-exports/current", "GET", None, 200),
+            ("/api/tag-scales/current", "GET", None, 200),
+            ("/api/tag-scales/current/history", "POST", {
                 "sample_counts": 1200, "current_divisor": 10000,
                 "retained_divisor": 8000, "deployment": "CRR-CTRL-R21",
             }, 201),
-            ("/api/which-outlet-answers", "POST", {
+            ("/api/outlet-groups/current/instruments", "POST", {
                 "event": "EVT-COMM-OG2-114", "scale": "SCALE-CRR-R8",
                 "project": "CRR-CTRL-R21", "outlet_group": "OG-CRR-02",
             }, 201),
-            ("/api/the-project-and-the-note", "GET", None, 200),
-            ("/api/which-project-is-running", "POST", {
+            ("/api/sealed-projects/current/note", "GET", None, 200),
+            ("/api/vault-access", "POST", {
                 "project_index": "PROJ-CRR-INDEX-R9", "workspace_claim": "CRR-CTRL-R19",
                 "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": "CRR-CTRL-R21",
                 "observed_digest": hashlib.sha256(b"CRR-CTRL-R21/deployed").hexdigest(),
             }, 201),
-            ("/api/the-operating-envelope", "GET", None, 200),
+            ("/api/operating-envelopes/current", "GET", None, 200),
         ]
         for path, method, body, expected in setup:
             status, response = request(
@@ -157,11 +157,11 @@ class W29Live(unittest.TestCase):
         )
 
     def test_01_tariff_requires_ot_read_and_reuses_the_authored_method(self) -> None:
-        denied, body = self.planning("/api/the-price-of-this-planning-window", token="wrong")
+        denied, body = self.planning("/api/planning-windows/current/economics", token="wrong")
         self.assertEqual(denied, 403)
         self.assertNotIn("TAR-CRR-DP3-R4", json.dumps(body))
         denied, body = self.planning(
-            "/api/the-price-of-this-planning-window", tenant="merewick",
+            "/api/planning-windows/current/economics", tenant="merewick",
         )
         self.assertEqual(denied, 403)
         self.assertNotIn("2400", json.dumps(body))
@@ -177,7 +177,7 @@ class W29Live(unittest.TestCase):
                  'if [ -e "$1" ]; then mv "$1" "$1.held"; fi', "sh", path], check=True,
             )
         try:
-            denied, body = self.planning("/api/the-price-of-this-planning-window")
+            denied, body = self.planning("/api/planning-windows/current/economics")
             self.assertEqual(denied, 403)
             self.assertNotIn("TAR-CRR-DP3-R4", json.dumps(body))
         finally:
@@ -186,7 +186,7 @@ class W29Live(unittest.TestCase):
                     ["docker", "exec", "--user", user, container, "sh", "-c",
                      'if [ -e "$1.held" ]; then mv "$1.held" "$1"; fi', "sh", path], check=True,
                 )
-        status, response = self.planning("/api/the-price-of-this-planning-window")
+        status, response = self.planning("/api/planning-windows/current/economics")
         self.assertEqual(status, 200)
         self.assertEqual(response["record"], {
             "record_id": "TAR-CRR-DP3-R4", "revision": 4,
@@ -203,7 +203,7 @@ class W29Live(unittest.TestCase):
             "planning_window": "ALLOC-2026-DP3", "expected_margin_ml": 0.4,
         }
         wrong, body = self.planning(
-            "/api/what-reserve-remains-uncommitted", method="POST",
+            "/api/collision-solutions", method="POST",
             body=dict(binding, allocation="ALLOC-2026-DP3-R8"),
         )
         self.assertEqual(wrong, 409)
@@ -218,7 +218,7 @@ class W29Live(unittest.TestCase):
         self.assertEqual(held.returncode, 0)
         try:
             denied, body = self.planning(
-                "/api/what-reserve-remains-uncommitted", method="POST", body=binding,
+                "/api/collision-solutions", method="POST", body=binding,
             )
             self.assertEqual(denied, 403)
             self.assertNotIn("usable_reserve_ml", json.dumps(body))
@@ -232,7 +232,7 @@ class W29Live(unittest.TestCase):
         subprocess.run(["docker", "stop", INSTRUMENTS], check=True, stdout=subprocess.DEVNULL)
         try:
             unavailable, body = self.planning(
-                "/api/what-reserve-remains-uncommitted", method="POST", body=binding,
+                "/api/collision-solutions", method="POST", body=binding,
             )
             self.assertEqual(unavailable, 409)
             self.assertNotIn("BAL-CRR-DP3-R29", json.dumps(body))
@@ -251,7 +251,7 @@ class W29Live(unittest.TestCase):
 
         for _ in range(20):
             status, response = self.planning(
-                "/api/what-reserve-remains-uncommitted", method="POST", body=binding,
+                "/api/collision-solutions", method="POST", body=binding,
             )
             if status == 201:
                 break
@@ -283,18 +283,23 @@ class W29Live(unittest.TestCase):
             "each_gate_target_m3s": 0.5, "hold_seconds": 900,
             "ramp_close_seconds": 100,
         }
-        denied, body = self.planning("/api/paper-truth", method="POST", body=binding)
+        missing, body = self.planning("/api/paper-truth", method="POST", body=binding)
+        self.assertEqual(missing, 404)
+        self.assertNotIn("released_volume_ml", json.dumps(body))
+        denied, body = self.planning(
+            "/api/reporting-checkpoints/current", method="POST", body=binding,
+        )
         self.assertEqual(denied, 403)
         self.assertNotIn("released_volume_ml", json.dumps(body))
 
-        status, _ = self.process("/api/conditions-before-movement")
+        status, _ = self.process("/api/movement-conditions/current")
         self.assertEqual(status, 200)
-        status, _ = self.process("/api/accepted-is-not-actuated", method="POST", body={
+        status, _ = self.process("/api/commands", method="POST", body={
             "requests": ["PRACTICE-REQ-11", "PRACTICE-REQ-12"],
             "permissive": "PRACTICE-PERM-02", "expected_actuation": False,
         })
         self.assertEqual(status, 201)
-        status, _ = self.process("/api/a-sequence-the-process-can-follow", method="POST", body={
+        status, _ = self.process("/api/practice-sequences", method="POST", body={
             "checkpoint": "PRACTICE-OG2-07", "reset_complete": True,
             "each_gate_target_m3s": 0.15, "ramp_open_seconds": 30,
             "hold_seconds": 70, "ramp_close_seconds": 30,
@@ -302,11 +307,13 @@ class W29Live(unittest.TestCase):
         self.assertEqual(status, 201)
 
         wrong, body = self.planning(
-            "/api/paper-truth", method="POST", body=dict(binding, hold_seconds=899),
+            "/api/reporting-checkpoints/current", method="POST", body=dict(binding, hold_seconds=899),
         )
         self.assertEqual(wrong, 409)
         self.assertNotIn("PLAN-CRR-LOSS-1000", json.dumps(body))
-        status, response = self.planning("/api/paper-truth", method="POST", body=binding)
+        status, response = self.planning(
+            "/api/reporting-checkpoints/current", method="POST", body=binding,
+        )
         self.assertEqual(status, 201)
         record = response["record"]
         self.assertEqual(record["record_id"], "PLAN-CRR-LOSS-1000")
@@ -322,7 +329,10 @@ class W29Live(unittest.TestCase):
         self.assertEqual(response["audit_id"], response["supervisory_audit_id"])
         self.assertEqual(response["audit_id"], record["request_correlation"])
         type(self).plan_audit = response["audit_id"]
-        status, present = self.process("/api/the-reservoir-s-present-tense")
+        missing, body = self.planning("/api/paper-truth", method="POST", body=binding)
+        self.assertEqual(missing, 404)
+        self.assertNotIn("released_volume_ml", json.dumps(body))
+        status, present = self.process("/api/process-views/state")
         self.assertEqual(status, 200)
         self.assertEqual(present["record"]["measurements"]["usable_reserve_ml"], 12.4)
         self.assertEqual(present["record"]["measurements"]["integrated_volume_ml"], 0.0)
@@ -334,7 +344,7 @@ class W29Live(unittest.TestCase):
         )
         for _ in range(50):
             try:
-                status, _ = self.planning("/api/the-price-of-this-planning-window")
+                status, _ = self.planning("/api/planning-windows/current/economics")
                 if status == 200:
                     break
             except AssertionError:

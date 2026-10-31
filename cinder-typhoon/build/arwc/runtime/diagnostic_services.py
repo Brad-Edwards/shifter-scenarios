@@ -411,7 +411,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(200, {"audit_id": append_audit("two-kinds-of-answer", record), "record": record})
 
     def do_POST(self) -> None:
-        if urlsplit(self.path).path == "/internal/w34-estimate":
+        if urlsplit(self.path).path == "/internal/handover-estimates":
             if (self.headers.get("X-ARWC-Internal") != "data-bridge-w34" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
                     self.client_address[0] != "10.77.63.10"):

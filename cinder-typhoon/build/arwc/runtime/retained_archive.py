@@ -30,11 +30,11 @@ AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 STATE = ROOT / "state" / "archive.json"
 RESULT = ROOT / "results" / "HND-PLANNER-06.json"
-HANDOVER_EVIDENCE = ROOT / "handover" / "W06-access.json"
+HANDOVER_EVIDENCE = ROOT / "handover" / "access-grant.json"
 ARTIFACTS = ROOT / "artifacts"
-BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/W08-source.json")
-IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/W08-source.json")
-DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/W11-lineage.json")
+BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/archive-source.json")
+IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/archive-source.json")
+DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/archive-lineage.json")
 ARCHIVE_CA = "/tmp/archive-ca.crt"
 ARCHIVE_CA_KEY = "/tmp/archive-ca.key"
 

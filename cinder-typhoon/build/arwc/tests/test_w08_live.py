@@ -125,8 +125,8 @@ class W08Live(unittest.TestCase):
 
     def test_01_each_declared_source_reaches_the_same_bundle(self) -> None:
         paths = {
-            "business": "/var/lib/arwc-business/archive/W08-source.json",
-            "identity": "/var/lib/arwc-identity/archive/W08-source.json",
+            "business": "/var/lib/arwc-business/archive/archive-source.json",
+            "identity": "/var/lib/arwc-identity/archive/archive-source.json",
         }
         for container, path in (
             ("cinder-arwc-business", paths["business"]),

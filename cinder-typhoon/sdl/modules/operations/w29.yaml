@@ -537,8 +537,8 @@ action_contracts:
 
         Native bindings:
 
-        - `a-engineering.a-hmi/supervisory-operations/paper-truth`
-        - `a-corporate.a-data/planning-data/paper-truth`
+        - `a-engineering.a-hmi/supervisory-operations/reporting-checkpoint-submit`
+        - `a-corporate.a-data/planning-data/reporting-checkpoint-submit`
 
         The private service-loader contract is `content.arwc-a-hmi.w29-3-paper-truth`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
       support_refs:

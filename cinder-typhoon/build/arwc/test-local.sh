@@ -111,6 +111,7 @@ start_fresh() {
 }
 
 start_fresh
+python3 tests/test_client_references_live.py
 if [[ ${CINDER_PRESERVE_DELIVERY:-0} != 1 ]]; then
   reset_identity=$(docker inspect --format '{{.Id}}' cinder-arwc-connector)
   python3 "$ROOT/../participant-runner/run.py" \

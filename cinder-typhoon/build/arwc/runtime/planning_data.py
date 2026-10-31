@@ -31,13 +31,14 @@ STATE = ROOT / "state" / "planning.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.json")
-INTEGRATION_EVIDENCE = ROOT / "integration" / "W09-data.json"
-ARCHIVE_EVIDENCE = ROOT / "archive" / "W11-lineage.json"
-BUSINESS_RELATION_EVIDENCE = pathlib.Path("/run/arwc-business-relation/W02-association.json")
+INTEGRATION_EVIDENCE = ROOT / "integration" / "planning-data.json"
+ARCHIVE_EVIDENCE = ROOT / "archive" / "archive-lineage.json"
+BUSINESS_RELATION_EVIDENCE = pathlib.Path("/run/arwc-business-relation/drawing-association.json")
 OT_READ_EVIDENCE = pathlib.Path("/run/arwc-ot-read")
 PROCESS_EVIDENCE = pathlib.Path("/run/arwc-process-evidence")
 PLAN_METHOD = pathlib.Path("/opt/planning-data/assets/pl-arwc-plan-method-01-method.md")
 PROCESS_PATHS = {
+    "/.well-known/arwc-client",
     "/api/process-views/state", "/api/process-views/mode",
     "/api/process-views/instruments/active", "/api/observations",
     "/api/tag-exports/current", "/api/tag-scales/current",
@@ -54,8 +55,7 @@ PROCESS_PATHS = {
     "/api/signature-requests", "/api/signature-oracles/current",
     "/api/estimator-tasks/current", "/api/reporting-submissions",
     "/api/firmware-images/current", "/api/maintenance-records/current",
-    "/api/maintenance-records/current",
-    "/api/what-counts-as-intact", "/api/signature-programs/current/constraints",
+    "/api/signature-programs/current/reproductions", "/api/signature-programs/current/constraints",
     "/api/diagnostic-runs",
     "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
     "/api/control-authority",
@@ -543,6 +543,7 @@ class Handler(BaseHTTPRequestHandler):
         headers = {
             "Authorization": self.headers.get("Authorization", ""),
             "X-ARWC-Tenant": self.headers.get("X-ARWC-Tenant", "arwc"),
+            "Host": "process-view.arwc.test",
         }
         if data is not None:
             headers["Content-Type"] = "application/json"
@@ -663,20 +664,25 @@ class Handler(BaseHTTPRequestHandler):
                     "template": "https://planning-data.arwc.test/api/integration-sessions"
                 }
             ],
-            "related": ["https://retained-archive.arwc.test/.well-known/arwc-client"],
+            "related": [
+                "https://retained-archive.arwc.test/.well-known/arwc-client",
+                "https://process-view.arwc.test/.well-known/arwc-client",
+            ],
         })
         return True
 
     def do_GET(self) -> None:
-        if (self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test" and
-                urlsplit(self.path).path in PROCESS_PATHS):
-            self.process_proxy()
+        path = urlsplit(self.path).path
+        if self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test":
+            if path in PROCESS_PATHS:
+                self.process_proxy()
+            else:
+                self.send_json(404, {"error": "record not found"})
             return
         if self._serve_client_document():
             return
         if not self.authorized():
             return
-        path = urlsplit(self.path).path
         if path == "/api/planning-windows/current/economics":
             if not ot_read_prerequisite():
                 self.send_json(403, {"error": "scoped process-read evidence required"})
@@ -721,7 +727,7 @@ class Handler(BaseHTTPRequestHandler):
         self.accepted("the-query-the-planner-keeps", DEFINITION)
 
     def do_POST(self) -> None:
-        if urlsplit(self.path).path == "/internal/w33-schedule":
+        if urlsplit(self.path).path == "/internal/schedule-validations":
             if (self.headers.get("X-ARWC-Internal") != "data-bridge-w33" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
                     self.client_address[0] != "10.77.62.20"):
@@ -788,16 +794,18 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(ROOT / "results/PLAN-CONSUMER-R8.json", result)
             self.accepted("diagnostic-estimate-consumed", result, 201)
             return
-        if (self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test" and
-                urlsplit(self.path).path in PROCESS_PATHS):
-            self.process_proxy()
+        path = urlsplit(self.path).path
+        if self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test":
+            if path in PROCESS_PATHS:
+                self.process_proxy()
+            else:
+                self.send_json(404, {"error": "record not found"})
             return
         if not self.authorized():
             return
         request = self.body()
         if request is None:
             return
-        path = urlsplit(self.path).path
         if path == "/api/query-runs":
             self.query_report(request)
         elif path == "/api/query-runs":
@@ -835,7 +843,7 @@ class Handler(BaseHTTPRequestHandler):
         if source == "DPG-CRR-CINDER":
             capability = load_evidence(ROOT / "results/PLAN-CONSUMER-R8.json")
         else:
-            status, response = self.w34_internal("/internal/w34-estimate", {
+            status, response = self.w34_internal("/internal/handover-estimates", {
                 "source": source, "consumer": "PLAN-CONSUMER-R8",
             })
             if status != 200:
@@ -917,7 +925,7 @@ class Handler(BaseHTTPRequestHandler):
             else: self.send_json(409, {"error": "another schedule already owns this reporting checkpoint"})
             return
         correlation = str(uuid.uuid4())
-        status, observed = self.w34_internal("/internal/w34-handover", {
+        status, observed = self.w34_internal("/internal/control-handovers", {
             "correlation": correlation, "request": request, "evaluation": evaluated,
         })
         instrument = observed.get("record")
@@ -965,7 +973,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "current allocation record is unavailable"})
             return
         correlation = str(uuid.uuid4())
-        status, response = self.w29_internal("/internal/w29-reserve-observation", {
+        status, response = self.w29_internal("/internal/reserve-observations", {
             "correlation": correlation,
             "record_id": "OBS-RESERVE-CRR-R29",
             "planning_window": "ALLOC-2026-DP3",
@@ -1022,7 +1030,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(403, {"error": "current tariff and reserve balance are required"})
             return
         correlation = str(uuid.uuid4())
-        status, response = self.w29_internal("/internal/w29-paper-truth", {
+        status, response = self.w29_internal("/internal/release-plan-assessments", {
             "correlation": correlation, "request": request,
             "tariff": tariff, "balance": balance,
         })

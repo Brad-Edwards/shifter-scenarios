@@ -39,8 +39,7 @@ PROCESS_PATHS = {
     "/api/signature-requests", "/api/signature-oracles/current",
     "/api/estimator-tasks/current", "/api/reporting-submissions",
     "/api/firmware-images/current", "/api/maintenance-records/current",
-    "/api/maintenance-records/current",
-    "/api/what-counts-as-intact", "/api/signature-programs/current/constraints",
+    "/api/signature-programs/current/reproductions", "/api/signature-programs/current/constraints",
     "/api/diagnostic-runs",
     "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
     "/api/control-authority",
@@ -239,6 +238,8 @@ class Handler(BaseHTTPRequestHandler):
         return True
 
     def do_GET(self) -> None:
+        if self._serve_client_document():
+            return
         if urlsplit(self.path).path in PROCESS_PATHS:
             self.proxy_historian()
             return

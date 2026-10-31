@@ -73,7 +73,7 @@ class W12Live(unittest.TestCase):
     session = ""
 
     def test_01_each_declared_source_independently_exposes_quarantine(self) -> None:
-        evidence = "/var/lib/arwc-data/archive/W11-lineage.json"
+        evidence = "/var/lib/arwc-data/archive/archive-lineage.json"
         original = subprocess.run(
             ["docker", "exec", "--user", "arwc-archive", ARCHIVE,
              "cat", "/var/lib/arwc-archive/state/archive.json"],

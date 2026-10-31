@@ -21,9 +21,9 @@ ROOT = pathlib.Path("/var/lib/arwc-identity")
 STATE = ROOT / "state" / "identity.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
-HANDOVER = pathlib.Path("/run/arwc-archive-evidence/W06-access.json")
+HANDOVER = pathlib.Path("/run/arwc-archive-evidence/access-grant.json")
 PLANNER_EVIDENCE = ROOT / "planning" / "planner-session.json"
-ARCHIVE_EVIDENCE = ROOT / "archive" / "W08-source.json"
+ARCHIVE_EVIDENCE = ROOT / "archive" / "archive-source.json"
 PLANNER_SESSION_LIFETIME_SECONDS = 15 * 60
 
 STARTER = {
@@ -200,38 +200,38 @@ class Handler(BaseHTTPRequestHandler):
             return False
         self.send_json(200, {
             "schema": "arwc.client-documents/v1",
-            "service": "identity.arwc.test",
+            "service": "corporate-identity.arwc.test",
             "title": "Corporate identity, provisioning, and session service",
             "routes": [
                 {
                     "key": "identity.provisioning-package",
                     "method": "GET",
-                    "template": "https://identity.arwc.test/api/provisioning-packages/current"
+                    "template": "https://corporate-identity.arwc.test/api/provisioning-packages/current"
                 },
                 {
                     "key": "identity.activation-roster",
                     "method": "GET",
-                    "template": "https://identity.arwc.test/api/activations/current"
+                    "template": "https://corporate-identity.arwc.test/api/activations/current"
                 },
                 {
                     "key": "identity.temporary-credential",
                     "method": "GET",
-                    "template": "https://identity.arwc.test/api/temporary-credentials/current"
+                    "template": "https://corporate-identity.arwc.test/api/temporary-credentials/current"
                 },
                 {
                     "key": "identity.session-audit",
                     "method": "GET",
-                    "template": "https://identity.arwc.test/api/sessions/current/audit"
+                    "template": "https://corporate-identity.arwc.test/api/sessions/current/audit"
                 },
                 {
                     "key": "identity.drawing-context",
                     "method": "GET",
-                    "template": "https://identity.arwc.test/api/drawing-contexts/current"
+                    "template": "https://corporate-identity.arwc.test/api/drawing-contexts/current"
                 },
                 {
                     "key": "identity.sessions",
                     "method": "POST",
-                    "template": "https://identity.arwc.test/api/sessions"
+                    "template": "https://corporate-identity.arwc.test/api/sessions"
                 }
             ],
             "related": ["https://planning-data.arwc.test/.well-known/arwc-client"],

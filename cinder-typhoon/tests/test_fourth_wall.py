@@ -246,6 +246,18 @@ class DomainInterfaceTests(unittest.TestCase):
         findings = scan.domain_interface_findings("arwc")
         self.assertEqual(findings, [])
 
+    def test_arwc_domain_interface_names_reviewed_resource_families(self) -> None:
+        value = scan.load_domain_interfaces()
+        patterns = value["phases"]["arwc"]["approved_route_patterns"]
+        self.assertGreaterEqual(len(patterns), 2)
+        self.assertFalse({
+            r"/api/.*", r"/internal/.*", r"/(?:api|internal)/.*",
+        }.intersection(patterns))
+        self.assertTrue(all(
+            pattern.startswith((r"/api/(?:", r"/internal/(?:"))
+            for pattern in patterns
+        ))
+
     def test_an_approved_map_rejects_arbitrary_unreviewed_aliases(self) -> None:
         value = json.loads((FOURTH_WALL / "domain-interfaces.json").read_text())
         value["phases"]["arwc"] = {
@@ -280,6 +292,46 @@ class StaticAndLiveContractTests(unittest.TestCase):
             and item.get("card_id") == "W33.2"
             for item in self.arwc["findings"]
         ))
+
+    def test_arwc_runtime_routes_have_no_card_derived_names(self) -> None:
+        findings = [
+            item for item in self.arwc["findings"]
+            if item["source_kind"] == "route"
+            and item["rule_id"] in {"card-id-alias", "card-title-alias"}
+        ]
+        self.assertEqual(findings, [])
+
+    def test_arwc_replacement_routes_are_published_for_discovery(self) -> None:
+        runtime = ROOT / "build" / "arwc" / "runtime"
+        process = (runtime / "process_services.py").read_text()
+        integration = (runtime / "integration_gateway.py").read_text()
+        business = (runtime / "business_workplace.py").read_text()
+        identity = (runtime / "corporate_identity.py").read_text()
+        maintenance = (runtime / "maintenance_review.py").read_text()
+        self.assertIn(
+            '"key": "process.signature-program-reproduction"', process,
+        )
+        self.assertIn(
+            '"template": "PROCESS_VIEW_BASE/api/signature-programs/current/reproductions"',
+            process,
+        )
+        self.assertIn(
+            '"key": "process.reporting-checkpoint-submit"', process,
+        )
+        self.assertIn(
+            '"template": "PROCESS_VIEW_BASE/api/reporting-checkpoints/current"',
+            process,
+        )
+        self.assertIn(
+            '"client_reference": "https://process-view.arwc.test/.well-known/arwc-client"',
+            integration,
+        )
+        client_documents = business + identity + maintenance
+        self.assertNotIn("https://identity.arwc.test", client_documents)
+        self.assertIn(
+            "https://corporate-identity.arwc.test/.well-known/arwc-client",
+            client_documents,
+        )
 
     def test_non_python_runtime_sources_are_scanned(self) -> None:
         findings = scan.static_findings(self.policy, "keplerops")
