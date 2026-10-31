@@ -224,7 +224,7 @@ class AllowlistTests(unittest.TestCase):
         self.assertEqual(scan.load_allowlist(), {"schema_version": 1, "entries": []})
 
     def test_structural_gates_cannot_be_allowlisted(self) -> None:
-        item = scan.domain_interface_findings("arwc")[0]
+        item = scan.domain_interface_findings("keplerops")[0]
         entry = {
             "id": "invalid-structural-exception",
             "source_kind": item["source_kind"],
@@ -242,11 +242,9 @@ class AllowlistTests(unittest.TestCase):
 
 
 class DomainInterfaceTests(unittest.TestCase):
-    def test_arwc_remains_blocked_on_the_domain_interface_review(self) -> None:
-        finding = scan.domain_interface_findings("arwc")
-        self.assertEqual(len(finding), 1)
-        self.assertEqual(finding[0]["rule_id"], "domain-interface-review-required")
-        self.assertEqual(finding[0]["match"], "219")
+    def test_arwc_domain_interface_is_approved_and_clean(self) -> None:
+        findings = scan.domain_interface_findings("arwc")
+        self.assertEqual(findings, [])
 
     def test_an_approved_map_rejects_arbitrary_unreviewed_aliases(self) -> None:
         value = json.loads((FOURTH_WALL / "domain-interfaces.json").read_text())
