@@ -130,7 +130,25 @@ class AuthoredManifestTests(unittest.TestCase):
                 }
                 self.assertIn(delivery["cards"]["status"], {"external_unverified", "versioned"})
                 self.assertEqual(set(delivery["cards"]["items"]), expected)
-                self.assertEqual(delivery["hints"], {"status": "not_materialized", "items": []})
+                hints = delivery["hints"]
+                self.assertIn(hints["status"], {"not_materialized", "authored"},
+                              f"{phase} hints status must be not_materialized or authored")
+
+    def test_authored_hints_cover_all_cards_in_phase(self) -> None:
+        import yaml
+        registry = json.loads((ROOT / "build" / "card-coverage" / "registry.json").read_text())
+        for phase in PHASES:
+            hints_path = ROOT / "build" / "card-coverage" / f"hints-{phase}.yaml"
+            if not hints_path.exists():
+                continue
+            hints_doc = yaml.safe_load(hints_path.read_text())
+            phase_cards = {k for k, v in registry["cards"].items() if v["phase"] == phase}
+            hinted_cards = set(hints_doc.get("hints", {}).keys())
+            with self.subTest(phase=phase):
+                missing = phase_cards - hinted_cards
+                self.assertFalse(missing,
+                    f"{phase}: {len(missing)} cards missing from hints file: "
+                    + ", ".join(sorted(missing)[:5]))
 
     def test_versioned_challenge_catalog_matches_card_registry(self) -> None:
         import yaml

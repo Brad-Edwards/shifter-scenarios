@@ -127,7 +127,9 @@
     },
     "hints": {
       "items": [],
-      "status": "not_materialized"
+      "levels": 3,
+      "path": "build/card-coverage/hints-arwc.yaml",
+      "status": "authored"
     }
   },
   "disclosures": [],

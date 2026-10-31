@@ -1,0 +1,419 @@
+schema_version: 1
+phase: keplerops
+hints:
+  K01.1:
+    h1: '[hint 1 for K01.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K01.1 — class of boundary or technique]'
+    h3: '[hint 3 for K01.1 — concrete next diagnostic step]'
+  K01.2:
+    h1: '[hint 1 for K01.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K01.2 — class of boundary or technique]'
+    h3: '[hint 3 for K01.2 — concrete next diagnostic step]'
+  K01.3:
+    h1: '[hint 1 for K01.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K01.3 — class of boundary or technique]'
+    h3: '[hint 3 for K01.3 — concrete next diagnostic step]'
+  K01.4:
+    h1: '[hint 1 for K01.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K01.4 — class of boundary or technique]'
+    h3: '[hint 3 for K01.4 — concrete next diagnostic step]'
+  K02.1:
+    h1: '[hint 1 for K02.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K02.1 — class of boundary or technique]'
+    h3: '[hint 3 for K02.1 — concrete next diagnostic step]'
+  K02.2:
+    h1: '[hint 1 for K02.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K02.2 — class of boundary or technique]'
+    h3: '[hint 3 for K02.2 — concrete next diagnostic step]'
+  K02.3:
+    h1: '[hint 1 for K02.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K02.3 — class of boundary or technique]'
+    h3: '[hint 3 for K02.3 — concrete next diagnostic step]'
+  K03.1:
+    h1: '[hint 1 for K03.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K03.1 — class of boundary or technique]'
+    h3: '[hint 3 for K03.1 — concrete next diagnostic step]'
+  K03.2:
+    h1: '[hint 1 for K03.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K03.2 — class of boundary or technique]'
+    h3: '[hint 3 for K03.2 — concrete next diagnostic step]'
+  K03.3:
+    h1: '[hint 1 for K03.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K03.3 — class of boundary or technique]'
+    h3: '[hint 3 for K03.3 — concrete next diagnostic step]'
+  K04.1:
+    h1: '[hint 1 for K04.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K04.1 — class of boundary or technique]'
+    h3: '[hint 3 for K04.1 — concrete next diagnostic step]'
+  K04.2:
+    h1: '[hint 1 for K04.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K04.2 — class of boundary or technique]'
+    h3: '[hint 3 for K04.2 — concrete next diagnostic step]'
+  K04.3:
+    h1: '[hint 1 for K04.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K04.3 — class of boundary or technique]'
+    h3: '[hint 3 for K04.3 — concrete next diagnostic step]'
+  K04.4:
+    h1: '[hint 1 for K04.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K04.4 — class of boundary or technique]'
+    h3: '[hint 3 for K04.4 — concrete next diagnostic step]'
+  K05.1:
+    h1: '[hint 1 for K05.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K05.1 — class of boundary or technique]'
+    h3: '[hint 3 for K05.1 — concrete next diagnostic step]'
+  K05.2:
+    h1: '[hint 1 for K05.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K05.2 — class of boundary or technique]'
+    h3: '[hint 3 for K05.2 — concrete next diagnostic step]'
+  K05.3:
+    h1: '[hint 1 for K05.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K05.3 — class of boundary or technique]'
+    h3: '[hint 3 for K05.3 — concrete next diagnostic step]'
+  K05.4:
+    h1: '[hint 1 for K05.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K05.4 — class of boundary or technique]'
+    h3: '[hint 3 for K05.4 — concrete next diagnostic step]'
+  K06.1:
+    h1: '[hint 1 for K06.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K06.1 — class of boundary or technique]'
+    h3: '[hint 3 for K06.1 — concrete next diagnostic step]'
+  K06.2:
+    h1: '[hint 1 for K06.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K06.2 — class of boundary or technique]'
+    h3: '[hint 3 for K06.2 — concrete next diagnostic step]'
+  K06.3:
+    h1: '[hint 1 for K06.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K06.3 — class of boundary or technique]'
+    h3: '[hint 3 for K06.3 — concrete next diagnostic step]'
+  K07.1:
+    h1: '[hint 1 for K07.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K07.1 — class of boundary or technique]'
+    h3: '[hint 3 for K07.1 — concrete next diagnostic step]'
+  K07.2:
+    h1: '[hint 1 for K07.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K07.2 — class of boundary or technique]'
+    h3: '[hint 3 for K07.2 — concrete next diagnostic step]'
+  K07.3:
+    h1: '[hint 1 for K07.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K07.3 — class of boundary or technique]'
+    h3: '[hint 3 for K07.3 — concrete next diagnostic step]'
+  K08.1:
+    h1: '[hint 1 for K08.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K08.1 — class of boundary or technique]'
+    h3: '[hint 3 for K08.1 — concrete next diagnostic step]'
+  K08.2:
+    h1: '[hint 1 for K08.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K08.2 — class of boundary or technique]'
+    h3: '[hint 3 for K08.2 — concrete next diagnostic step]'
+  K08.3:
+    h1: '[hint 1 for K08.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K08.3 — class of boundary or technique]'
+    h3: '[hint 3 for K08.3 — concrete next diagnostic step]'
+  K09.1:
+    h1: '[hint 1 for K09.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K09.1 — class of boundary or technique]'
+    h3: '[hint 3 for K09.1 — concrete next diagnostic step]'
+  K09.2:
+    h1: '[hint 1 for K09.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K09.2 — class of boundary or technique]'
+    h3: '[hint 3 for K09.2 — concrete next diagnostic step]'
+  K09.3:
+    h1: '[hint 1 for K09.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K09.3 — class of boundary or technique]'
+    h3: '[hint 3 for K09.3 — concrete next diagnostic step]'
+  K09.4:
+    h1: '[hint 1 for K09.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K09.4 — class of boundary or technique]'
+    h3: '[hint 3 for K09.4 — concrete next diagnostic step]'
+  K10.1:
+    h1: '[hint 1 for K10.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K10.1 — class of boundary or technique]'
+    h3: '[hint 3 for K10.1 — concrete next diagnostic step]'
+  K10.2:
+    h1: '[hint 1 for K10.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K10.2 — class of boundary or technique]'
+    h3: '[hint 3 for K10.2 — concrete next diagnostic step]'
+  K10.3:
+    h1: '[hint 1 for K10.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K10.3 — class of boundary or technique]'
+    h3: '[hint 3 for K10.3 — concrete next diagnostic step]'
+  K11.1:
+    h1: '[hint 1 for K11.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K11.1 — class of boundary or technique]'
+    h3: '[hint 3 for K11.1 — concrete next diagnostic step]'
+  K11.2:
+    h1: '[hint 1 for K11.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K11.2 — class of boundary or technique]'
+    h3: '[hint 3 for K11.2 — concrete next diagnostic step]'
+  K11.3:
+    h1: '[hint 1 for K11.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K11.3 — class of boundary or technique]'
+    h3: '[hint 3 for K11.3 — concrete next diagnostic step]'
+  K11.4:
+    h1: '[hint 1 for K11.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K11.4 — class of boundary or technique]'
+    h3: '[hint 3 for K11.4 — concrete next diagnostic step]'
+  K12.1:
+    h1: '[hint 1 for K12.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K12.1 — class of boundary or technique]'
+    h3: '[hint 3 for K12.1 — concrete next diagnostic step]'
+  K12.2:
+    h1: '[hint 1 for K12.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K12.2 — class of boundary or technique]'
+    h3: '[hint 3 for K12.2 — concrete next diagnostic step]'
+  K12.3:
+    h1: '[hint 1 for K12.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K12.3 — class of boundary or technique]'
+    h3: '[hint 3 for K12.3 — concrete next diagnostic step]'
+  K12.4:
+    h1: '[hint 1 for K12.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K12.4 — class of boundary or technique]'
+    h3: '[hint 3 for K12.4 — concrete next diagnostic step]'
+  K13.1:
+    h1: '[hint 1 for K13.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K13.1 — class of boundary or technique]'
+    h3: '[hint 3 for K13.1 — concrete next diagnostic step]'
+  K13.2:
+    h1: '[hint 1 for K13.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K13.2 — class of boundary or technique]'
+    h3: '[hint 3 for K13.2 — concrete next diagnostic step]'
+  K13.3:
+    h1: '[hint 1 for K13.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K13.3 — class of boundary or technique]'
+    h3: '[hint 3 for K13.3 — concrete next diagnostic step]'
+  K13.4:
+    h1: '[hint 1 for K13.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K13.4 — class of boundary or technique]'
+    h3: '[hint 3 for K13.4 — concrete next diagnostic step]'
+  K14.1:
+    h1: '[hint 1 for K14.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K14.1 — class of boundary or technique]'
+    h3: '[hint 3 for K14.1 — concrete next diagnostic step]'
+  K14.2:
+    h1: '[hint 1 for K14.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K14.2 — class of boundary or technique]'
+    h3: '[hint 3 for K14.2 — concrete next diagnostic step]'
+  K14.3:
+    h1: '[hint 1 for K14.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K14.3 — class of boundary or technique]'
+    h3: '[hint 3 for K14.3 — concrete next diagnostic step]'
+  K15.1:
+    h1: '[hint 1 for K15.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K15.1 — class of boundary or technique]'
+    h3: '[hint 3 for K15.1 — concrete next diagnostic step]'
+  K15.2:
+    h1: '[hint 1 for K15.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K15.2 — class of boundary or technique]'
+    h3: '[hint 3 for K15.2 — concrete next diagnostic step]'
+  K15.3:
+    h1: '[hint 1 for K15.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K15.3 — class of boundary or technique]'
+    h3: '[hint 3 for K15.3 — concrete next diagnostic step]'
+  K15.4:
+    h1: '[hint 1 for K15.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K15.4 — class of boundary or technique]'
+    h3: '[hint 3 for K15.4 — concrete next diagnostic step]'
+  K16.1:
+    h1: '[hint 1 for K16.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K16.1 — class of boundary or technique]'
+    h3: '[hint 3 for K16.1 — concrete next diagnostic step]'
+  K16.2:
+    h1: '[hint 1 for K16.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K16.2 — class of boundary or technique]'
+    h3: '[hint 3 for K16.2 — concrete next diagnostic step]'
+  K16.3:
+    h1: '[hint 1 for K16.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K16.3 — class of boundary or technique]'
+    h3: '[hint 3 for K16.3 — concrete next diagnostic step]'
+  K16.4:
+    h1: '[hint 1 for K16.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K16.4 — class of boundary or technique]'
+    h3: '[hint 3 for K16.4 — concrete next diagnostic step]'
+  K17.1:
+    h1: '[hint 1 for K17.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K17.1 — class of boundary or technique]'
+    h3: '[hint 3 for K17.1 — concrete next diagnostic step]'
+  K17.2:
+    h1: '[hint 1 for K17.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K17.2 — class of boundary or technique]'
+    h3: '[hint 3 for K17.2 — concrete next diagnostic step]'
+  K17.3:
+    h1: '[hint 1 for K17.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K17.3 — class of boundary or technique]'
+    h3: '[hint 3 for K17.3 — concrete next diagnostic step]'
+  K17.4:
+    h1: '[hint 1 for K17.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K17.4 — class of boundary or technique]'
+    h3: '[hint 3 for K17.4 — concrete next diagnostic step]'
+  K18.1:
+    h1: '[hint 1 for K18.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K18.1 — class of boundary or technique]'
+    h3: '[hint 3 for K18.1 — concrete next diagnostic step]'
+  K18.2:
+    h1: '[hint 1 for K18.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K18.2 — class of boundary or technique]'
+    h3: '[hint 3 for K18.2 — concrete next diagnostic step]'
+  K18.3:
+    h1: '[hint 1 for K18.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K18.3 — class of boundary or technique]'
+    h3: '[hint 3 for K18.3 — concrete next diagnostic step]'
+  K18.4:
+    h1: '[hint 1 for K18.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K18.4 — class of boundary or technique]'
+    h3: '[hint 3 for K18.4 — concrete next diagnostic step]'
+  K19.1:
+    h1: '[hint 1 for K19.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K19.1 — class of boundary or technique]'
+    h3: '[hint 3 for K19.1 — concrete next diagnostic step]'
+  K19.2:
+    h1: '[hint 1 for K19.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K19.2 — class of boundary or technique]'
+    h3: '[hint 3 for K19.2 — concrete next diagnostic step]'
+  K19.3:
+    h1: '[hint 1 for K19.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K19.3 — class of boundary or technique]'
+    h3: '[hint 3 for K19.3 — concrete next diagnostic step]'
+  K20.1:
+    h1: '[hint 1 for K20.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K20.1 — class of boundary or technique]'
+    h3: '[hint 3 for K20.1 — concrete next diagnostic step]'
+  K20.2:
+    h1: '[hint 1 for K20.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K20.2 — class of boundary or technique]'
+    h3: '[hint 3 for K20.2 — concrete next diagnostic step]'
+  K20.3:
+    h1: '[hint 1 for K20.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K20.3 — class of boundary or technique]'
+    h3: '[hint 3 for K20.3 — concrete next diagnostic step]'
+  K21.1:
+    h1: '[hint 1 for K21.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K21.1 — class of boundary or technique]'
+    h3: '[hint 3 for K21.1 — concrete next diagnostic step]'
+  K21.2:
+    h1: '[hint 1 for K21.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K21.2 — class of boundary or technique]'
+    h3: '[hint 3 for K21.2 — concrete next diagnostic step]'
+  K21.3:
+    h1: '[hint 1 for K21.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K21.3 — class of boundary or technique]'
+    h3: '[hint 3 for K21.3 — concrete next diagnostic step]'
+  K22.1:
+    h1: '[hint 1 for K22.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K22.1 — class of boundary or technique]'
+    h3: '[hint 3 for K22.1 — concrete next diagnostic step]'
+  K22.2:
+    h1: '[hint 1 for K22.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K22.2 — class of boundary or technique]'
+    h3: '[hint 3 for K22.2 — concrete next diagnostic step]'
+  K22.3:
+    h1: '[hint 1 for K22.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K22.3 — class of boundary or technique]'
+    h3: '[hint 3 for K22.3 — concrete next diagnostic step]'
+  K23.1:
+    h1: '[hint 1 for K23.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K23.1 — class of boundary or technique]'
+    h3: '[hint 3 for K23.1 — concrete next diagnostic step]'
+  K23.2:
+    h1: '[hint 1 for K23.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K23.2 — class of boundary or technique]'
+    h3: '[hint 3 for K23.2 — concrete next diagnostic step]'
+  K23.3:
+    h1: '[hint 1 for K23.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K23.3 — class of boundary or technique]'
+    h3: '[hint 3 for K23.3 — concrete next diagnostic step]'
+  K24.1:
+    h1: '[hint 1 for K24.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K24.1 — class of boundary or technique]'
+    h3: '[hint 3 for K24.1 — concrete next diagnostic step]'
+  K24.2:
+    h1: '[hint 1 for K24.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K24.2 — class of boundary or technique]'
+    h3: '[hint 3 for K24.2 — concrete next diagnostic step]'
+  K24.3:
+    h1: '[hint 1 for K24.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K24.3 — class of boundary or technique]'
+    h3: '[hint 3 for K24.3 — concrete next diagnostic step]'
+  K25.1:
+    h1: '[hint 1 for K25.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K25.1 — class of boundary or technique]'
+    h3: '[hint 3 for K25.1 — concrete next diagnostic step]'
+  K25.2:
+    h1: '[hint 1 for K25.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K25.2 — class of boundary or technique]'
+    h3: '[hint 3 for K25.2 — concrete next diagnostic step]'
+  K26.1:
+    h1: '[hint 1 for K26.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K26.1 — class of boundary or technique]'
+    h3: '[hint 3 for K26.1 — concrete next diagnostic step]'
+  K26.2:
+    h1: '[hint 1 for K26.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K26.2 — class of boundary or technique]'
+    h3: '[hint 3 for K26.2 — concrete next diagnostic step]'
+  K26.3:
+    h1: '[hint 1 for K26.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K26.3 — class of boundary or technique]'
+    h3: '[hint 3 for K26.3 — concrete next diagnostic step]'
+  K27.1:
+    h1: '[hint 1 for K27.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K27.1 — class of boundary or technique]'
+    h3: '[hint 3 for K27.1 — concrete next diagnostic step]'
+  K27.2:
+    h1: '[hint 1 for K27.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K27.2 — class of boundary or technique]'
+    h3: '[hint 3 for K27.2 — concrete next diagnostic step]'
+  K27.3:
+    h1: '[hint 1 for K27.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K27.3 — class of boundary or technique]'
+    h3: '[hint 3 for K27.3 — concrete next diagnostic step]'
+  K28.1:
+    h1: '[hint 1 for K28.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K28.1 — class of boundary or technique]'
+    h3: '[hint 3 for K28.1 — concrete next diagnostic step]'
+  K28.2:
+    h1: '[hint 1 for K28.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K28.2 — class of boundary or technique]'
+    h3: '[hint 3 for K28.2 — concrete next diagnostic step]'
+  K28.3:
+    h1: '[hint 1 for K28.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K28.3 — class of boundary or technique]'
+    h3: '[hint 3 for K28.3 — concrete next diagnostic step]'
+  K29.1:
+    h1: '[hint 1 for K29.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K29.1 — class of boundary or technique]'
+    h3: '[hint 3 for K29.1 — concrete next diagnostic step]'
+  K29.2:
+    h1: '[hint 1 for K29.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K29.2 — class of boundary or technique]'
+    h3: '[hint 3 for K29.2 — concrete next diagnostic step]'
+  K29.3:
+    h1: '[hint 1 for K29.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K29.3 — class of boundary or technique]'
+    h3: '[hint 3 for K29.3 — concrete next diagnostic step]'
+  K29.4:
+    h1: '[hint 1 for K29.4 — orientation to the relevant system]'
+    h2: '[hint 2 for K29.4 — class of boundary or technique]'
+    h3: '[hint 3 for K29.4 — concrete next diagnostic step]'
+  K30.1:
+    h1: '[hint 1 for K30.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K30.1 — class of boundary or technique]'
+    h3: '[hint 3 for K30.1 — concrete next diagnostic step]'
+  K30.2:
+    h1: '[hint 1 for K30.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K30.2 — class of boundary or technique]'
+    h3: '[hint 3 for K30.2 — concrete next diagnostic step]'
+  K30.3:
+    h1: '[hint 1 for K30.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K30.3 — class of boundary or technique]'
+    h3: '[hint 3 for K30.3 — concrete next diagnostic step]'
+  K31.1:
+    h1: '[hint 1 for K31.1 — orientation to the relevant system]'
+    h2: '[hint 2 for K31.1 — class of boundary or technique]'
+    h3: '[hint 3 for K31.1 — concrete next diagnostic step]'
+  K31.2:
+    h1: '[hint 1 for K31.2 — orientation to the relevant system]'
+    h2: '[hint 2 for K31.2 — class of boundary or technique]'
+    h3: '[hint 3 for K31.2 — concrete next diagnostic step]'
+  K31.3:
+    h1: '[hint 1 for K31.3 — orientation to the relevant system]'
+    h2: '[hint 2 for K31.3 — class of boundary or technique]'
+    h3: '[hint 3 for K31.3 — concrete next diagnostic step]'

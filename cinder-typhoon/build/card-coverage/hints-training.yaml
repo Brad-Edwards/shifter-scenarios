@@ -1,0 +1,194 @@
+schema_version: 1
+phase: training
+hints:
+  T01.1:
+    h1: >-
+      The workbench landing page names the data source for the initial handover.
+      Check what the training dispatch site exposes at its root before looking further.
+    h2: >-
+      The resource is accessible without credentials.
+      Look for an endpoint that serves structured data rather than a form.
+    h3: >-
+      Fetch the handover endpoint listed on the landing page.
+      The response structure names the next resource you need.
+
+  T01.2:
+    h1: >-
+      The dispatch site has a documented rehearsal path that was removed from
+      the public navigation. Historical references in client-side code can expose
+      paths that are no longer linked.
+    h2: >-
+      Look for JavaScript or markup that references an unlisted route.
+      Browser developer tools or a simple page source review will surface it.
+    h3: >-
+      Inspect the dispatch site's static resources for route strings that do
+      not appear in the visible navigation. One of them still responds.
+
+  T01.3:
+    h1: >-
+      The handover names a courier service. The courier client's credentials
+      are somewhere on the workstation or in its session history.
+    h2: >-
+      Look for stored credentials in the workstation's standard locations
+      for application sessions and authentication tokens.
+    h3: >-
+      Check the local credential store for a token bound to the courier's
+      service hostname. The handover names the host.
+
+  T01.4:
+    h1: >-
+      The local workbench helper accepts diagnostic input.
+      The handover or the helper's documentation names what inputs it accepts
+      and what it produces beyond a normal summary.
+    h2: >-
+      The helper's interface accepts more than one content type.
+      A non-standard input triggers a different code path.
+    h3: >-
+      Submit a sample from the handover to the helper using the input type
+      the handover says the helper was built to process. Read the full response.
+
+  T02.1:
+    h1: >-
+      The identity desk has a directory of active accounts.
+      The rehearsal account appears in the directory under its own entry.
+    h2: >-
+      The directory exposes account metadata that includes enough information
+      to identify the rehearsal account's role and its recovery state.
+    h3: >-
+      Query the identity desk's directory endpoint and look for the account
+      whose role matches the one named in the handover.
+
+  T02.2:
+    h1: >-
+      The identity desk's public directory page hides some entries from the
+      default view. The underlying data source includes more than the UI shows.
+    h2: >-
+      The directory data is served from an API endpoint that does not apply
+      the same visibility filter as the HTML view.
+    h3: >-
+      Fetch the directory API endpoint directly and look for the rehearsal
+      account that is absent from the rendered page.
+
+  T02.3:
+    h1: >-
+      The identity evidence you recovered includes the information needed to
+      prove ownership without the original password.
+      The identity desk has a recovery path for exactly this situation.
+    h2: >-
+      Look for a credential recovery flow that accepts identity proof
+      rather than a password. The evidence you have is the required proof.
+    h3: >-
+      Use the recovery endpoint on the identity desk with the account
+      identifier and the evidence token you recovered. Read what it issues.
+
+  T02.4:
+    h1: >-
+      Your recovered account belongs to an assignment.
+      The identity desk or the workbench can show you what that assignment
+      contains.
+    h2: >-
+      The assignment record names one or more tasks that belong to your
+      recovered account. Look for a resource listing endpoint.
+    h3: >-
+      Query the assignment resource linked in your recovered session.
+      One of the listed tasks belongs to a different account.
+
+  T03.1:
+    h1: >-
+      The delivery fixture is named in the handover, but the file is not
+      present at its documented path. Version-control history for the checkout
+      holds deleted content.
+    h2: >-
+      Deleted files remain in git history.
+      Standard git commands can recover content that was removed from the
+      working tree but not from the repository.
+    h3: >-
+      Use git log and git show to find the commit that removed the fixture
+      file and recover its contents.
+
+  T03.2:
+    h1: >-
+      The failed test run produced verbose output.
+      CI logs for failed jobs often expose internal paths, tokens, or
+      configuration that would not appear in a success.
+    h2: >-
+      Look for credential or token material in the CI job log for the
+      failed build. Verbose error output sometimes includes authentication
+      material bound to the build environment.
+    h3: >-
+      Fetch the log for the failed CI run referenced in the handover.
+      A token that appears in the error output has a specific scope — read
+      what resource it authorizes.
+
+  T03.3:
+    h1: >-
+      The supplied training package is an archive that can be inspected
+      without running it. Its structure names what it does.
+    h2: >-
+      Inspect the package manifest and its entry point source.
+      The exports describe what the package does when installed.
+    h3: >-
+      Unpack the package archive and read its package.json and main module.
+      The exports tell you what the package produces when called.
+
+  T03.4:
+    h1: >-
+      The rehearsal endpoint accepts a compatible package and runs it against
+      a named tenant. The existing package gives you the interface contract.
+    h2: >-
+      Build a package that implements the same interface as the supplied one
+      but adds the diagnostic output the handover requests. Publish it before
+      submitting it to the rehearsal.
+    h3: >-
+      Publish a new package version that satisfies the interface contract and
+      adds the extra field named in the handover. Then invoke the rehearsal
+      endpoint with that version and the target tenant.
+
+  T04.1:
+    h1: >-
+      The training tank produces observation readings.
+      The observation record contains multiple values; only one represents
+      the current physical state of the tank.
+    h2: >-
+      Compare the observation fields with the sensor specification in the
+      handover. The spec identifies which measurement is the authoritative
+      current reading.
+    h3: >-
+      Read the observation record and the sensor spec. The field whose units
+      match the spec's primary measurement is the authoritative value.
+
+  T04.2:
+    h1: >-
+      The controller status capture is encoded.
+      The handover includes the encoding specification.
+    h2: >-
+      The encoding is a standard binary format described in the handover.
+      Decode each field according to the field map in the spec.
+    h3: >-
+      Apply the byte layout from the handover's controller status spec
+      to the capture bytes. The decoded field at the named offset gives
+      the current mode identifier.
+
+  T04.3:
+    h1: >-
+      The control interface accepts bounded release commands.
+      The handover specifies the target amount and the command format.
+    h2: >-
+      The release command requires a signed request that binds the amount
+      to the current session. Look for the signing mechanism in the
+      handover or the client documentation.
+    h3: >-
+      Construct a release command for the specified amount using the
+      session credential and the request format in the handover.
+      Submit it to the control endpoint and confirm the acceptance receipt.
+
+  T04.4:
+    h1: >-
+      The training report states that the outlet test passed.
+      The independent physical record of the test result may disagree.
+    h2: >-
+      Look for the instrument or audit record that independently recorded
+      the outlet test outcome. It is a different data source than the report.
+    h3: >-
+      Query the instrument record for the outlet named in the report.
+      Compare its value for the test period with what the report claims.

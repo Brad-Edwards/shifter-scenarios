@@ -12,7 +12,7 @@ from typing import Any
 
 PHASES = {"training", "keplerops", "arwc"}
 ENTRY_TYPES = {"directory", "file", "symlink"}
-DELIVERY_STATES = {"observed", "not_materialized", "external_unverified", "versioned"}
+DELIVERY_STATES = {"observed", "not_materialized", "external_unverified", "versioned", "authored"}
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 MODE = re.compile(r"^[0-7]{4}$")
 
@@ -121,7 +121,11 @@ def validate_authored(value: dict[str, Any]) -> None:
     delivery = value["delivery"]
     exact_keys(delivery, {"cards", "hints"}, set(), "delivery")
     for name, item in delivery.items():
-        exact_keys(item, {"status", "items"}, set(), f"delivery.{name}")
+        # hints authored in this repo may include path and levels fields
+        if name == "hints" and item.get("status") == "authored":
+            exact_keys(item, {"status", "items", "path", "levels"}, set(), f"delivery.{name}")
+        else:
+            exact_keys(item, {"status", "items"}, set(), f"delivery.{name}")
         require(item["status"] in DELIVERY_STATES, f"delivery.{name}: invalid status")
         require(len(item["items"]) == len(set(item["items"])), f"delivery.{name}: duplicate items")
 
