@@ -33,7 +33,7 @@ must appear in the graph.
 
 ## Service domains
 
-### 1. customer_handover — `corporate.arwc.test`
+### 1. customer_handover: `corporate.arwc.test`
 
 Corporate work order and customer handover management.
 
@@ -52,7 +52,7 @@ with inspection attachments.
 
 ---
 
-### 2. business_workplace — `business.arwc.test`
+### 2. business_workplace: `business.arwc.test`
 
 Business asset records, associations, reports, and procurement.
 
@@ -78,7 +78,7 @@ quotes and invoices.
 
 ---
 
-### 3. retained_archive — `archive.arwc.test`
+### 3. retained_archive: `archive.arwc.test`
 
 Retained archive contracts, bundles, and cold archive access.
 
@@ -105,7 +105,7 @@ instrument history, check bundle integrity, and request cold archive retrieval.
 
 ---
 
-### 4. corporate_identity — `identity.arwc.test`
+### 4. corporate_identity: `identity.arwc.test`
 
 Identity management, temporary credentials, and planner sessions.
 
@@ -126,7 +126,7 @@ through the session API and access drawing contexts.
 
 ---
 
-### 5. planning_data — `planning.arwc.test`
+### 5. planning_data: `planning.arwc.test`
 
 Planning queries, water allocation ledgers, and integration sessions.
 
@@ -152,7 +152,7 @@ sessions to the live process feed.
 
 ---
 
-### 6. contractor_portal — `contractors.arwc.test`
+### 6. contractor_portal: `contractors.arwc.test`
 
 Contractor appointments, check-ins, and field kit management.
 
@@ -171,7 +171,7 @@ windows, and issue field kits at check-in.
 
 ---
 
-### 7. field_gateway — `field.arwc.test`
+### 7. field_gateway: `field.arwc.test`
 
 Field instrumentation readings and instrument management.
 
@@ -187,7 +187,7 @@ up instrument metadata.
 
 ---
 
-### 8. maintenance_review — `maintenance.arwc.test`
+### 8. maintenance_review: `maintenance.arwc.test`
 
 Maintenance drawing cache and approval workflows.
 
@@ -205,7 +205,7 @@ Approvers issue scoped approval tokens for drawing acceptance.
 
 ---
 
-### 9. process_view — discovered via `planning.integration-session`
+### 9. process_view: discovered via `planning.integration-session`
 
 Process control views for reservoir, instrument, and HMI operations.
 The base URL is returned by the `planning.integration-session` response.
@@ -297,66 +297,66 @@ customer-transition.json
 
 ---
 
-## W08 — retained bundle (archive service)
+## W08: retained bundle (archive service)
 
 The collector bundle (`BND-COLLECT-CRR-12`) is discovered through
 `business.asset-bundle` (W02.1), which names the bundle identifier.
 The integrity check (W08.3) requires reading the collection policy first.
 
-## W12 — cold archive (archive service)
+## W12: cold archive (archive service)
 
 The cold archive job is created via `archive.cold-archive-job` then polled.
 Discovery: `archive.contract` names the archive job endpoint (W04.1).
 
-## W16 — sequencer signal (archive service)
+## W16: sequencer signal (archive service)
 
 The sequencer spec (W16.1) is discoverable from the instrument history
 endpoint referenced in the retained bundle. The observation and experiment
 routes are standard archive service operations.
 
-## W19 — diagnostic binary (process service)
+## W19: diagnostic binary (process service)
 
 The diagnostic program record is fetched from `process.diagnostic-program`.
 The binary artifact is at `{view_base}/api/artifacts/{program_id}`, discovered
 from the program record's `binary` field.
 
-## W20 — NOR flash image (process service)
+## W20: NOR flash image (process service)
 
 The firmware image artifact is at `{view_base}/api/artifacts/{image_id}`,
 discovered from `process.firmware-image`.
 
-## W21 — sealed viewer (process service)
+## W21: sealed viewer (process service)
 
 The sealed viewer binary is discovered from `process.sealed-project-viewer`.
 The viewer ID and access token come from the sealed project record.
 
-## W22 — estimator heap (process service)
+## W22: estimator heap (process service)
 
 The estimator binary is discovered from `process.estimator-task`. The task
 record names the binary artifact URL.
 
-## W23 — signature record (process service)
+## W23: signature record (process service)
 
 The signature record is fetched via `process.signature-record`. The program
 to sign comes from the maintenance record or project artifact.
 
-## W24 — crypto oracle (signer24 binary)
+## W24: crypto oracle (signer24 binary)
 
 Discovered from `process.signature-record` which names the signing binary.
 The binary path comes from the signature record's `signer_binary` field.
 
-## W28 — utility privilege escalation (utility28 binary)
+## W28: utility privilege escalation (utility28 binary)
 
 Discovered from a maintenance record or archive job that names the utility
 binary artifact. Not served through the HTTP API.
 
-## W33 — forecast scheduling
+## W33: forecast scheduling
 
 All W33 inputs (forecast, model, constraints, schema) are served from
 `process.forecast` and `process.schedule-window`. See #223 for full
 starting-material specification.
 
-## W34 — reporting checkpoint
+## W34: reporting checkpoint
 
 The reporting checkpoint ID comes from the release plan confirmation (W30.3).
 The submission accepts a structured report derived from observable plant state.
@@ -372,5 +372,5 @@ The submission accepts a structured report derived from observable plant state.
 3. Error responses describe validation failures in terms of the resource schema.
    They never reveal challenge card IDs, card titles, or expected exploit values.
 4. Identifiers in routes are record IDs discoverable from earlier responses or
-   the starting handover — not guessable slugs.
+   the starting handover: not guessable slugs.
 5. Mutation routes require the correct resource revision to prevent replay.
