@@ -2672,10 +2672,18 @@
           ],
           "locator": "fixed values in build/arwc/runtime/archive-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
           "source": "service runtime implementation"
+        },
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "entrypoint logic \u2014 indefinite wait replaces timed exit loop"
+          ],
+          "locator": "build/arwc/runtime/archive-entrypoint.sh",
+          "source": "ARWC service entrypoint"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "9b75445d08009d3f5c42a7fbea7c82610c473d23bd5d0363212fe513726f0d86",
+      "source_sha256": "02fe62b3893e296adc6dc7c2b86071bf9fc91be5133624d5f41bce94e1e1dc54",
       "unresolved": []
     },
     "build/arwc/runtime/business-entrypoint.sh": {
@@ -2687,10 +2695,18 @@
           ],
           "locator": "fixed values in build/arwc/runtime/business-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
           "source": "service runtime implementation"
+        },
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "entrypoint logic \u2014 indefinite wait replaces timed exit loop"
+          ],
+          "locator": "build/arwc/runtime/business-entrypoint.sh",
+          "source": "ARWC service entrypoint"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "1b84f9bda2e08c899d12ed3ccaa91d81deade2f65efd5b0bf3f84a886b71f8dd",
+      "source_sha256": "011ac6aa8faab74e8b79c11f53f0ea1aa773b6866590ad2884efde7e43948ae7",
       "unresolved": []
     },
     "build/arwc/runtime/collector-crr.go": {
@@ -2747,10 +2763,18 @@
           ],
           "locator": "fixed values in build/arwc/runtime/contractors-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
           "source": "service runtime implementation"
+        },
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "entrypoint logic \u2014 indefinite wait replaces timed exit loop"
+          ],
+          "locator": "build/arwc/runtime/contractors-entrypoint.sh",
+          "source": "ARWC service entrypoint"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "1ac6279060d415d833839cdbfa9a9b10997b244dcf606efc423ac052a1148a5f",
+      "source_sha256": "3925fd8493b8caa101b81a549244826882c72291b32c01729d91d7aeb6da0262",
       "unresolved": []
     },
     "build/arwc/runtime/control-broker-entrypoint.sh": {
@@ -2792,10 +2816,18 @@
           ],
           "locator": "fixed values in build/arwc/runtime/data-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
           "source": "service runtime implementation"
+        },
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "entrypoint logic \u2014 indefinite wait replaces timed exit loop"
+          ],
+          "locator": "build/arwc/runtime/data-entrypoint.sh",
+          "source": "ARWC service entrypoint"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "b90a532e5669dc2ec0d4af11331b4b3c96689f986b02a977327268a04618bea8",
+      "source_sha256": "afce26ba3b15be0c637d37fb13f31d6cafbac576e49aa9bbfae037e90ddcb819",
       "unresolved": []
     },
     "build/arwc/runtime/diagnostics-entrypoint.sh": {
@@ -2852,10 +2884,18 @@
           ],
           "locator": "fixed values in build/arwc/runtime/identity-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
           "source": "service runtime implementation"
+        },
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "entrypoint logic \u2014 indefinite wait replaces timed exit loop"
+          ],
+          "locator": "build/arwc/runtime/identity-entrypoint.sh",
+          "source": "ARWC service entrypoint"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "fa5d2aad30acd30eb8a304ed94f88e4e18daa9fb7161d51819ed4e87a702cc7f",
+      "source_sha256": "c0f60b149282849368585d64e4c6bb8f7d29503701a609ac5af7bb85d8610dce",
       "unresolved": []
     },
     "build/arwc/runtime/mixed-diagnostic.S": {

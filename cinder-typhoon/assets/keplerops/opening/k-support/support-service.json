@@ -1,6 +1,7 @@
 {
   "schema": "fieldkest.support-service/v1",
   "audit_directory": "/var/lib/fieldkest-support/audit",
+  "reviewer_session_id": "ksess_talia_review_9Kw4Pn7R",
   "sessions": [
     {
       "session_id": "ksess_rowan_2841_6Hs8Qp3V",
