@@ -27,7 +27,7 @@ threat actor. The scenario is fictional and bounded.
 
 ---
 
-## Training phase — T01–T04
+## Training phase: T01–T04
 
 ### T01: Supplier onboarding and credential exposure
 
@@ -142,7 +142,7 @@ a safety or financial decision.
 
 ---
 
-## KeplerOps phase — K01–K31
+## KeplerOps phase: K01–K31
 
 ### K01–K03: Developer workstation foothold and source access
 
@@ -270,7 +270,7 @@ the diagnostic delivery receipt.
 
 ---
 
-## ARWC phase — W01–W35
+## ARWC phase: W01–W35
 
 ### W01–W06: Corporate access and identity escalation
 
@@ -425,7 +425,7 @@ confirmation.
 | Service identity used as SSRF proxy | K18 | Outbound requests from service identities require explicit destination allowlists |
 | Practice and live modes sharing evidence | W25, W32 | Practice receipts must be cryptographically isolated from live action evidence |
 | Report corruption concealing physical events | W34 | Independent physical audit trails that reports cannot alter |
-| Supply-chain delivery authority | K26–K29 | Approval binding to package digest; delivery credentials scoped per operation |
+| Supply chain delivery authority | K26–K29 | Approval binding to package digest; delivery credentials scoped per operation |
 
 ---
 
