@@ -61,6 +61,8 @@ class SupportHandler(KeplerHandler):
         return self._cookies().get("fieldkest_support") in {SESSION["session_id"], ALT_SESSION} or self._federated_claims() is not None
 
     def do_GET(self) -> None:
+        if self.send_client_document():
+            return
         path = urlsplit(self.path).path
         if not self._authorized():
             self.send_json(403, {"error": "session_denied"})
@@ -90,7 +92,7 @@ class SupportHandler(KeplerHandler):
             append_audit(AUDIT, "assignment", {"request_id": self.request_id, "principal": SESSION["principal"], "assignment_id": "B01", "status": 200})
             self.send_json(200, value)
         elif path == "/api/customers/TEN-ARWC-047/dossiers/DOS-ARWC-HIST-01":
-            value = {"dossier_id": "DOS-ARWC-HIST-01", "tenant": "TEN-ARWC-047", "account": "K-C-001", "recurring_case": "SUP-2841", "attachment": "arwc-fieldlink-history.json", "customer_record": "CUSTREC-047-R6"}
+            value = {"dossier_id": "DOS-ARWC-HIST-01", "tenant": "TEN-ARWC-047", "account": "K-C-001", "recurring_case": "SUP-2841", "attachment": "arwc-fieldlink-history.json", "customer_record": "CUSTREC-047-R6", "reviewer_subject": "fixture-reviewer-047"}
             append_audit(AUDIT, "customer-dossier", {"request_id": self.request_id, "principal": SESSION["principal"], "dossier_id": value["dossier_id"], "status": 200})
             self.send_json(200, value)
         elif path == "/api/customers/TEN-ARWC-047/dossiers/CUSTREC-047-R6":
