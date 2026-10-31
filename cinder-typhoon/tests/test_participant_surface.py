@@ -128,9 +128,27 @@ class AuthoredManifestTests(unittest.TestCase):
                     for path in challenge_root.glob(f"{prefix}*/*.md")
                     if re.fullmatch(rf"{prefix}\d+\.\d+", path.stem)
                 }
-                self.assertEqual(delivery["cards"]["status"], "external_unverified")
+                self.assertIn(delivery["cards"]["status"], {"external_unverified", "versioned"})
                 self.assertEqual(set(delivery["cards"]["items"]), expected)
                 self.assertEqual(delivery["hints"], {"status": "not_materialized", "items": []})
+
+    def test_versioned_challenge_catalog_matches_card_registry(self) -> None:
+        import yaml
+        catalog_path = ROOT / "build" / "card-coverage" / "challenges" / "challenges.yaml"
+        registry_path = ROOT / "build" / "card-coverage" / "registry.json"
+        self.assertTrue(catalog_path.exists(), "challenges/challenges.yaml must exist")
+        catalog = yaml.safe_load(catalog_path.read_text())
+        registry = json.loads(registry_path.read_text())
+        self.assertEqual(catalog.get("schema"), "cinder-typhoon.challenges/v1")
+        # Total card count in catalog must match registry.
+        total_in_catalog = sum(
+            sum(v for v in op["cards"].values())
+            for ph in catalog["phases"].values()
+            for op in ph["operations"]
+        )
+        total_in_registry = len(registry.get("cards", {}))
+        self.assertEqual(total_in_catalog, total_in_registry,
+                         "challenge catalog card count must match card registry")
 
     def test_operator_surface_is_not_copied_by_any_image(self) -> None:
         for dockerfile in (ROOT / "build").glob("**/*.Dockerfile"):
@@ -233,7 +251,7 @@ class ObservationTests(unittest.TestCase):
             "network": {"dns": [], "listeners": []},
             "disclosures": [],
             "delivery": {
-                "cards": {"status": "external_unverified", "items": []},
+                "cards": {"status": "versioned", "items": []},
                 "hints": {"status": "not_materialized", "items": []},
             },
         }

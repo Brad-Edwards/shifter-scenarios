@@ -1,0 +1,1082 @@
+schema: cinder-typhoon.challenges/v1
+phases:
+  training:
+    operations:
+    - operation: T01
+      chapter: Workbench
+      title: First contact
+      available_from: Start
+      work: Recover a local handover; find an unlisted web amendment; recover and
+        use a scoped courier credential as one achievement; exploit a simple command-injection
+        flaw to recover a separate internal summary.
+      cards:
+        easy: 4
+      card_ids:
+      - T01.1
+      - T01.2
+      - T01.3
+      - T01.4
+    - operation: T02
+      chapter: Accounts
+      title: Someone can log in
+      available_from: Start
+      work: Infer an active account and recover its case reference from authentication
+        responses; recover private roster data hidden only by the client; exploit
+        weak account recovery using those disclosures; cross a separate assignment-ownership
+        boundary.
+      cards:
+        easy: 3
+        medium: 1
+      card_ids:
+      - T02.1
+      - T02.2
+      - T02.3
+      - T02.4
+    - operation: T03
+      chapter: Developer artifacts
+      title: Left in the checkout
+      available_from: Start
+      work: Recover a deleted fixture from history; recover and use a synthetic release
+        credential as one achievement; reconstruct a readable package installation
+        hook; adapt the example client and deliver a compatible changed package to
+        the intended training consumer.
+      cards:
+        easy: 3
+        medium: 1
+      card_ids:
+      - T03.1
+      - T03.2
+      - T03.3
+      - T03.4
+    - operation: T04
+      chapter: State
+      title: Trust the instrument
+      available_from: Start
+      work: Distinguish measured volume from its setpoint; decode a documented status
+        word; produce and independently verify a bounded practice transfer; resolve
+        a separate client report that misattributes an earlier successful observation
+        to the current attempt.
+      cards:
+        easy: 2
+        medium: 2
+      card_ids:
+      - T04.1
+      - T04.2
+      - T04.3
+      - T04.4
+  keplerops:
+    operations:
+    - operation: K01
+      chapter: Borrowed desk
+      title: Desk drawer
+      available_from: Developer foothold
+      work: Recover repository access (G01); inspect a browser artifact; retrieve
+        an exposed work file; demonstrate a limited local service action. Each is
+        a separate simple surface.
+      cards:
+        easy: 4
+      card_ids:
+      - K01.1
+      - K01.2
+      - K01.3
+      - K01.4
+    - operation: K02
+      chapter: Borrowed desk
+      title: The first green report
+      available_from: Developer foothold
+      work: Recover the missing fixture through its exposed artifact surface; exploit
+        the test-input import boundary; change the limited test job to produce an
+        altered report that still passes its interface checks. Reading and tracing
+        are part of these three achievements.
+      cards:
+        easy: 2
+        medium: 1
+      card_ids:
+      - K02.1
+      - K02.2
+      - K02.3
+    - operation: K03
+      chapter: Borrowed desk
+      title: Quiet callback
+      available_from: Developer foothold
+      work: Recover an old Cinder staging artifact; unpack its embedded script; reconstruct
+        the final callback configuration to recover the earlier operation's collection.
+      cards:
+        medium: 1
+        hard: 2
+      card_ids:
+      - K03.1
+      - K03.2
+      - K03.3
+    - operation: K04
+      chapter: Borrowed desk
+      title: The native indexer
+      available_from: Developer foothold; local reproducer supplied
+      work: Find the constrained corruption; obtain useful leaks; turn partial pointer
+        control into allocator control; achieve execution despite blocked convenient
+        targets. The indexer processes support bundles. Production use compromises
+        the indexer account and recovers the release-exception queue; the proof includes
+        its access scope. This supplies an optional route to the K29 build dossier,
+        not automatic build authority.
+      cards:
+        hard: 1
+        expert: 1
+        elite: 2
+      card_ids:
+      - K04.1
+      - K04.2
+      - K04.3
+      - K04.4
+    - operation: K05
+      chapter: Package line
+      title: What the customer installs
+      available_from: G01
+      work: Exercise the package interface (G03); recover version history; resolve
+        a manifest discrepancy; prove which dependency the consumer actually selects.
+      cards:
+        easy: 2
+        medium: 2
+      card_ids:
+      - K05.1
+      - K05.2
+      - K05.3
+      - K05.4
+    - operation: K06
+      chapter: Package line
+      title: House package
+      available_from: G03
+      work: Exploit importer fetch behavior to recover usable registry authority (A01,
+        including former A02); recover a separately protected private package; compromise
+        the independent test consumer. The production ARWC package remains K26.
+      cards:
+        medium: 3
+      card_ids:
+      - K06.1
+      - K06.2
+      - K06.3
+    - operation: K07
+      chapter: Package line
+      title: One request too many
+      available_from: G01; registry inspection access
+      work: Recover the inspector boundary contract; construct the request-framing
+        primitive from the two parsers; adapt it to the protected inspector action.
+        Discovery, modeling, and confirmation are not separate flags.
+      cards:
+        medium: 1
+        hard: 1
+        expert: 1
+      card_ids:
+      - K07.1
+      - K07.2
+      - K07.3
+    - operation: K08
+      chapter: Package line
+      title: Four keys, one entitlement
+      available_from: G01; legacy license test service
+      work: Identify the old entitlement format; recover the encryption context; exploit
+        equivalent-key behavior in the retained legacy checker. This is an obsolete
+        compatibility path, not a claim against modern signatures.
+      cards:
+        medium: 1
+        hard: 2
+      card_ids:
+      - K08.1
+      - K08.2
+      - K08.3
+    - operation: K09
+      chapter: Build and preview
+      title: Runner diary
+      available_from: G01
+      work: Use a log disclosure, recover an omitted build artifact, alter an unsafe
+        job input, and demonstrate execution in that job's limited context.
+      cards:
+        easy: 2
+        medium: 2
+      card_ids:
+      - K09.1
+      - K09.2
+      - K09.3
+      - K09.4
+    - operation: K10
+      chapter: Build and preview
+      title: Preview belongs to whom
+      available_from: G01; preview source available
+      work: Characterize the preview boundary; identify ambiguous binding of its inputs;
+        construct a document that crosses the intended isolation boundary.
+      cards:
+        medium: 2
+        hard: 1
+      card_ids:
+      - K10.1
+      - K10.2
+      - K10.3
+    - operation: K11
+      chapter: Build and preview
+      title: The compiler knows
+      available_from: G01; rules compiler artifact
+      work: Find the compiled policy entry point, recover virtual instruction semantics,
+        lift the actual constraint program, and generate a package policy input it
+        accepts.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - K11.1
+      - K11.2
+      - K11.3
+      - K11.4
+    - operation: K12
+      chapter: Build and preview
+      title: Approved in the browser
+      available_from: G01; ordinary preview account
+      work: Compose the account-ordering flaw into a useful privileged browser position;
+        recover and use the protected browser value across its separate action boundary;
+        take over the preview worker; achieve constrained renderer execution. The
+        completed chain lets Cinder control the release preview seen by support.
+      cards:
+        hard: 1
+        expert: 2
+        elite: 1
+      card_ids:
+      - K12.1
+      - K12.2
+      - K12.3
+      - K12.4
+    - operation: K13
+      chapter: Cloud workspace
+      title: Cloud notebook
+      available_from: G01
+      work: Use an exposed object listing, recover a previous object version, discover
+        a separate export, and establish the supplied workload identity's actual access.
+      cards:
+        easy: 3
+        medium: 1
+      card_ids:
+      - K13.1
+      - K13.2
+      - K13.3
+      - K13.4
+    - operation: K14
+      chapter: Cloud workspace
+      title: The wrong audience
+      available_from: K09 job execution OR K13 workload access
+      work: Recover the workload trust document; exploit its audience condition and
+        demonstrate the resulting scoped role as one achievement; cross a distinct
+        resource-policy boundary to the support export. Role use alone receives no
+        second flag.
+      cards:
+        easy: 1
+        medium: 2
+      card_ids:
+      - K14.1
+      - K14.2
+      - K14.3
+    - operation: K15
+      chapter: Cloud workspace
+      title: Support has an export
+      available_from: K13 OR K17
+      work: Find a customer export job; cross an object-authorization boundary; change
+        a destination through delegated job rights; retrieve the resulting bounded
+        data collection.
+      cards:
+        easy: 1
+        medium: 3
+      card_ids:
+      - K15.1
+      - K15.2
+      - K15.3
+      - K15.4
+    - operation: K16
+      chapter: Cloud workspace
+      title: The job that survives
+      available_from: K14 OR K15
+      work: Discover a scheduled workflow; change its startup configuration; establish
+        a separate execution context; demonstrate recurrence across a simulated shift
+        change. No real waiting required.
+      cards:
+        easy: 1
+        medium: 3
+      card_ids:
+      - K16.1
+      - K16.2
+      - K16.3
+      - K16.4
+    - operation: K30
+      chapter: Cloud workspace
+      title: The database you cannot reach
+      available_from: K13.4 workload access OR K09.4 job execution; G02 also required
+        for final customer-history join
+      work: Recover the backup-capable identity from build metadata; exploit snapshot/restore
+        authority to recover a protected database without source-database access;
+        reconcile the recovered tenant/deployment history against G02 to identify
+        the still-valid ARWC migration record. Snapshot, restore, password change,
+        and successful read form one hard achievement.
+      cards:
+        medium: 2
+        hard: 1
+      card_ids:
+      - K30.1
+      - K30.2
+      - K30.3
+    - operation: K31
+      chapter: Cloud workspace
+      title: The maintenance label
+      available_from: K14 scoped role OR K09 job execution
+      work: Recover the scheduler-to-maintenance trust contract; change a permitted
+        workload to obtain its different runtime identity; abuse mutable resource
+        labels under that identity to reach the protected maintenance archive. The
+        role, label condition, and data-plane reachability must all fit; the archive
+        contains the field commissioning evidence.
+      cards:
+        medium: 1
+        hard: 2
+      card_ids:
+      - K31.1
+      - K31.2
+      - K31.3
+    - operation: K17
+      chapter: People and authority
+      title: Support session
+      available_from: G01
+      work: Recover the limited support session (B01); use a distinct account-recovery
+        weakness; enumerate its actual customer scope; exploit one delegated support
+        action.
+      cards:
+        easy: 2
+        medium: 2
+      card_ids:
+      - K17.1
+      - K17.2
+      - K17.3
+      - K17.4
+    - operation: K18
+      chapter: People and authority
+      title: Federated notes
+      available_from: K17 ordinary access
+      work: Understand support note processing; exploit its client-side binding; change
+        the identity-provider configuration; cross the backend query boundary through
+        the altered identity response.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - K18.1
+      - K18.2
+      - K18.3
+      - K18.4
+    - operation: K19
+      chapter: People and authority
+      title: Borrowed colleague
+      available_from: K17 OR K09; isolated staff workflow
+      work: Recover the certificate trust relation; establish a usable colleague identity;
+        compose the archive workflow into delegated authentication. This first half
+        of University has no separate elite allocation.
+      cards:
+        medium: 1
+        hard: 1
+        expert: 1
+      card_ids:
+      - K19.1
+      - K19.2
+      - K19.3
+    - operation: K20
+      chapter: People and authority
+      title: The service wears a person
+      available_from: K19 delegated context
+      work: Exploit the relay/delegation relationship; obtain the managed service
+        capability across its independent boundary; impersonate release administration
+        while preserving the consumer identity binding. Mapping the relationship is
+        included in the first achievement.
+      cards:
+        hard: 1
+        expert: 1
+        elite: 1
+      card_ids:
+      - K20.1
+      - K20.2
+      - K20.3
+    - operation: K21
+      chapter: Assistant desk
+      title: Policy in the margins
+      available_from: G01
+      work: Read exposed assistant configuration; recover a separate retained conversation;
+        use the discovered context to extract a synthetic restricted support datum.
+        Only the last achievement needs inference.
+      cards:
+        easy: 2
+        medium: 1
+      card_ids:
+      - K21.1
+      - K21.2
+      - K21.3
+    - operation: K22
+      chapter: Assistant desk
+      title: Helpful attachment
+      available_from: K17 ordinary access
+      work: Discover what the assistant retrieves; introduce an instruction through
+        a support attachment; cause a bounded unauthorized tool action whose effect
+        is independently visible.
+      cards:
+        easy: 1
+        medium: 2
+      card_ids:
+      - K22.1
+      - K22.2
+      - K22.3
+    - operation: K23
+      chapter: Assistant desk
+      title: The missing tenant filter
+      available_from: K17 ordinary access
+      work: Find a context endpoint; recover an exposed conversation identifier; cross
+        the retrieval authorization boundary to another fictional customer's document.
+        Deterministic application flaw.
+      cards:
+        easy: 2
+        medium: 1
+      card_ids:
+      - K23.1
+      - K23.2
+      - K23.3
+    - operation: K24
+      chapter: Assistant desk
+      title: Complete and run
+      available_from: K21 configuration access
+      work: Discover the completion feature; abuse its context selection to obtain
+        its scoped key; exploit the application's decision to execute completed code.
+        No sophisticated jailbreak required.
+      cards:
+        easy: 1
+        medium: 2
+      card_ids:
+      - K24.1
+      - K24.2
+      - K24.3
+    - operation: K25
+      chapter: Customer delivery
+      title: ARWC is a real customer
+      available_from: G01
+      work: Recover the customer dossier and its support attachment as one disclosure;
+        reconcile the active ARWC tenant and revision (G02). The dossier gives both
+        ordinary delivery routes their customer context.
+      cards:
+        easy: 1
+        medium: 1
+      card_ids:
+      - K25.1
+      - K25.2
+    - operation: K26
+      chapter: Customer delivery
+      title: Customer accepted
+      available_from: A01 AND G02
+      work: Build and publish a compatible changed package (A03); demonstrate ARWC
+        consumption and corporate execution (A04); exploit a separate rollback/version-selection
+        weakness for an optional retained delivery capability.
+      cards:
+        medium: 3
+      card_ids:
+      - K26.1
+      - K26.2
+      - K26.3
+    - operation: K27
+      chapter: Customer delivery
+      title: Diagnostic delivery
+      available_from: B01 AND G02 AND G03
+      work: Bind a diagnostic job to the correct customer (B02); alter its package
+        through the template/import boundary (B03); demonstrate the equivalent corporate
+        execution effect (B04).
+      cards:
+        medium: 3
+      card_ids:
+      - K27.1
+      - K27.2
+      - K27.3
+    - operation: K28
+      chapter: Customer delivery
+      title: The release has a second life
+      available_from: G01; archived customer connector binary
+      work: Recognize environment-dependent behavior; reconstruct the indirect-function
+        hook; recover the runtime-decoded diagnostic path. Its output supplies an
+        optional engineering clue later at ARWC.
+      cards:
+        medium: 1
+        hard: 2
+      card_ids:
+      - K28.1
+      - K28.2
+      - K28.3
+    - operation: K29
+      chapter: Customer delivery
+      title: The next release is ours
+      available_from: G01 AND G02 AND (K09 job records OR K13 cloud records OR K04
+        exception queue)
+      work: Recover a scoped build principal from the cloud-backed release dossier;
+        recover historical source/signing authority through the separate repository
+        boundary; deliver one signed release that changes ARWC while preserving the
+        reference customer across current and retained supported interfaces; retain
+        delivery through an independently changeable build definition after a disclosed
+        credential rotation. C27 supplies the chain; the final persistence constraint
+        is an authored extension.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - K29.1
+      - K29.2
+      - K29.3
+      - K29.4
+  arwc:
+    operations:
+    - operation: W01
+      chapter: Corporate arrival
+      title: New letterhead
+      available_from: ARWC corporate execution
+      work: Find the local integration artifact, read an exposed handover, use a separate
+        corporate resource, and demonstrate a limited application action. Customer-side
+        evidence gives the transition its payoff.
+      cards:
+        easy: 3
+        medium: 1
+      card_ids:
+      - W01.1
+      - W01.2
+      - W01.3
+      - W01.4
+    - operation: W02
+      chapter: Corporate arrival
+      title: Names do not match
+      available_from: ARWC corporate execution
+      work: Recover the asset and contractor bundle; reconcile independent identifier
+        systems; exploit the confused object association to retrieve a protected maintenance
+        record.
+      cards:
+        easy: 1
+        medium: 2
+      card_ids:
+      - W02.1
+      - W02.2
+      - W02.3
+    - operation: W03
+      chapter: Corporate arrival
+      title: The work-order annex
+      available_from: ARWC corporate execution
+      work: Find the annex importer; exploit its file-reference boundary; recover
+        a read integration configuration used with W09 for OT visibility.
+      cards:
+        easy: 1
+        medium: 2
+      card_ids:
+      - W03.1
+      - W03.2
+      - W03.3
+    - operation: W04
+      chapter: Corporate arrival
+      title: Archive hatch
+      available_from: ARWC corporate execution; attachment service
+      work: Recover the archive workflow contract; cross the certificate-derived graph-query
+        boundary; compose its result with the archive helper to gain execution. Exploit
+        construction and its confirmation share credit.
+      cards:
+        medium: 1
+        hard: 1
+        expert: 1
+      card_ids:
+      - W04.1
+      - W04.2
+      - W04.3
+    - operation: W05
+      chapter: Corporate trust
+      title: The temporary employee
+      available_from: ARWC corporate execution
+      work: Recover two independently exposed onboarding artifacts and exploit a role-assignment
+        mistake to establish a limited staff identity.
+      cards:
+        easy: 2
+        medium: 1
+      card_ids:
+      - W05.1
+      - W05.2
+      - W05.3
+    - operation: W06
+      chapter: Corporate trust
+      title: Someone else's browser
+      available_from: W05 OR W04
+      work: Recover the login/rendering contract; compose login state and client-side
+        execution; cross the session boundary through cookie handling. The resulting
+        planner session supplies actual application authority.
+      cards:
+        medium: 1
+        hard: 1
+        expert: 1
+      card_ids:
+      - W06.1
+      - W06.2
+      - W06.3
+    - operation: W07
+      chapter: Corporate trust
+      title: The read-only query
+      available_from: W06 browser capability
+      work: Recover the protected query interface; defeat its statement restriction
+        with a useful data primitive; turn the independent privileged database behavior
+        into execution. Construction and execution confirmation share credit.
+      cards:
+        medium: 1
+        hard: 1
+        expert: 1
+      card_ids:
+      - W07.1
+      - W07.2
+      - W07.3
+    - operation: W08
+      chapter: Corporate trust
+      title: A contractor left something
+      available_from: W05 OR W03
+      work: Recover a hidden script, reconstruct its messaging exchange, extract the
+        associated compiled collector, and dynamically recover its protected configuration.
+        All messaging is represented inside the fictional range.
+      cards:
+        medium: 2
+        hard: 2
+      card_ids:
+      - W08.1
+      - W08.2
+      - W08.3
+      - W08.4
+    - operation: W09
+      chapter: Water on paper
+      title: The missing megalitre
+      available_from: ARWC corporate execution
+      work: Recover the allocation ledger and a separate meter export; align units
+        and dates; demonstrate the reserve discrepancy. With W03, identify and use
+        the read-only process-data integration.
+      cards:
+        easy: 2
+        medium: 2
+      card_ids:
+      - W09.1
+      - W09.2
+      - W09.3
+      - W09.4
+    - operation: W10
+      chapter: Water on paper
+      title: Another district's answer
+      available_from: ARWC corporate execution
+      work: Discover the report assistant's source selection; cross its district filter;
+        retrieve a restricted planning record through the exposed retrieval path.
+        No authority to operate the plant.
+      cards:
+        easy: 1
+        medium: 2
+      card_ids:
+      - W10.1
+      - W10.2
+      - W10.3
+    - operation: W11
+      chapter: Water on paper
+      title: Records behind the graph
+      available_from: W02 OR W09
+      work: Recover the relation-service protocol contract; construct a valid protected
+        backend exchange; cross its scoped relation boundary to recover current asset
+        lineage. Interface discovery and tracing share credit.
+      cards:
+        medium: 1
+        hard: 1
+        expert: 1
+      card_ids:
+      - W11.1
+      - W11.2
+      - W11.3
+    - operation: W12
+      chapter: Water on paper
+      title: Cold archive
+      available_from: W08 OR W11
+      work: Recover a quarantined legacy collector; reconstruct its cryptographic
+        behavior; recover a lost archive; connect that recovered content to a still-usable
+        data path. No ransomware deployment.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - W12.1
+      - W12.2
+      - W12.3
+      - W12.4
+    - operation: W35
+      chapter: Water on paper
+      title: The wrong bill
+      available_from: ARWC corporate execution
+      work: Recover the replacement-supply price catalog; cross a procurement object
+        boundary to recover the protected district quote; exploit the report-import
+        association flaw to issue an unauthorized replacement order against the wrong
+        district budget. The signed order and limited simulated liability provide
+        a complete corporate-side ending before OT.
+      cards:
+        easy: 1
+        medium: 2
+      card_ids:
+      - W35.1
+      - W35.2
+      - W35.3
+    - operation: W13
+      chapter: Maintenance
+      title: Window on Thursday
+      available_from: ARWC corporate execution
+      work: Recover the appointment and a separate access roster; exploit an appointment
+        ownership flaw; establish a scoped contractor session. The clock is a resettable
+        scenario state, not real waiting.
+      cards:
+        easy: 2
+        medium: 2
+      card_ids:
+      - W13.1
+      - W13.2
+      - W13.3
+      - W13.4
+    - operation: W14
+      chapter: Maintenance
+      title: The field bag
+      available_from: W13 contractor session
+      work: Recover a field export; distinguish an obsolete endpoint from the active
+        service; adapt the retained client to the current read interface within the
+        contractor's documented inspection and asset scope. This completes the other
+        medium OT-visibility route; login alone earns no separate score.
+      cards:
+        easy: 1
+        medium: 2
+      card_ids:
+      - W14.1
+      - W14.2
+      - W14.3
+    - operation: W15
+      chapter: Maintenance
+      title: The cached drawing
+      available_from: W13 OR W03
+      work: Trace the project cache; exploit header injection to poison its response;
+        cross the resulting session boundary; recover a protected maintenance approval
+        artifact through the downstream token-validation flaw.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - W15.1
+      - W15.2
+      - W15.3
+      - W15.4
+    - operation: W16
+      chapter: Maintenance
+      title: The instrument whispers
+      available_from: ARWC corporate execution; retained diagnostic binary
+      work: Recover the sequencer interface; identify an out-of-bounds observation
+        path; build a controlled timing experiment; recover protected calibration
+        data from the measured signal. Optional research, not an access gate. The
+        recovered calibration revision resolves the disputed sensor scale for W33;
+        an ordinary medium commissioning-record route supplies equivalent data.
+      cards:
+        medium: 1
+        hard: 1
+        expert: 1
+        elite: 1
+      card_ids:
+      - W16.1
+      - W16.2
+      - W16.3
+      - W16.4
+    - operation: W17
+      chapter: OT observation
+      title: First live trace
+      available_from: Either OT-visibility route
+      work: Read live values, identify a mode, find a tag from its engineering description,
+        and correlate the recorded routine commissioning event with independent telemetry.
+        Read access suffices; this branch does not require a live write.
+      cards:
+        easy: 3
+        medium: 1
+      card_ids:
+      - W17.1
+      - W17.2
+      - W17.3
+      - W17.4
+    - operation: W18
+      chapter: OT observation
+      title: Tags that lie
+      available_from: OT visibility
+      work: Recover a tag export and a separate scale table; resolve the unit/revision
+        mismatch; identify the real outlet group by observed behavior. No blind guessing
+        of registers.
+      cards:
+        easy: 2
+        medium: 2
+      card_ids:
+      - W18.1
+      - W18.2
+      - W18.3
+      - W18.4
+    - operation: W19
+      chapter: OT observation
+      title: The old diagnostic
+      available_from: OT visibility; K28 is helpful but optional
+      work: Locate the engineering diagnostic; identify its mixed instruction modes;
+        recover the hidden check logic; reconstruct an alternate source of process
+        mapping. K28 explains the product history but does not supply this different
+        solution. Its output substitutes only for tag mapping. Current revision, allocation,
+        and operating-envelope evidence remain separate requirements.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - W19.1
+      - W19.2
+      - W19.3
+      - W19.4
+    - operation: W20
+      chapter: OT observation
+      title: Write before erase
+      available_from: OT visibility; retained maintenance image
+      work: Read the flash interface; recover its event layout and checks; modify
+        a selected maintenance record while preserving unrelated sector contents.
+        A simulated device interface, no physical kit per player.
+      cards:
+        medium: 1
+        hard: 2
+      card_ids:
+      - W20.1
+      - W20.2
+      - W20.3
+    - operation: W21
+      chapter: Engineering
+      title: Which project is running
+      available_from: OT visibility
+      work: Recover the engineering project and commissioning note as one bundle;
+        compare their revision claims with the independently read deployed revision.
+        The result supplies current revision evidence, never inferred from W19.
+      cards:
+        easy: 1
+        medium: 1
+      card_ids:
+      - W21.1
+      - W21.2
+    - operation: W22
+      chapter: Engineering
+      title: The sealed project
+      available_from: W21
+      work: Recover the protected viewer; reconstruct its instruction behavior; recover
+        the key, readable engineering project, and omitted commissioning decision
+        as one achievement; separately analyze the retained review helper and captured
+        session to recover a concealed identity and use its scoped archive access.
+        C25 supplies the VM problem; C31 supplies the conflicting managed/native behavior.
+        Historical archive access grants no current control.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - W22.1
+      - W22.2
+      - W22.3
+      - W22.4
+    - operation: W23
+      chapter: Engineering
+      title: A measurement that never existed
+      available_from: OT visibility; estimator reproducer
+      work: Diagnose the measurement-list lifecycle fault; develop a usable memory
+        primitive; turn it into controlled estimator-state corruption. Cinder can
+        now alter a genuine district planning estimate; W34 uses that capability against
+        the reporting workflow. The live process evaluator stays independent.
+      cards:
+        hard: 1
+        expert: 1
+        elite: 1
+      card_ids:
+      - W23.1
+      - W23.2
+      - W23.3
+    - operation: W24
+      chapter: Engineering
+      title: Two answers from one box
+      available_from: W21
+      work: Identify the legacy recovery interface; predict its response selection;
+        recover the archive-unlock value and open the diagnostic evidence bundle as
+        one achievement; separately analyze the retained signer and signed records
+        to produce a fresh authorization for the private calibration-exception export.
+        C23 supplies oracle recovery; C32 supplies the independent binary/signature
+        problem. Diagnostic authorization grants no maintenance approval or live control.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - W24.1
+      - W24.2
+      - W24.3
+      - W24.4
+    - operation: W25
+      chapter: Control
+      title: Mode and meaning
+      available_from: OT visibility
+      work: Recover the documented operating envelope; read current mode/interlock
+        evidence; distinguish accepted requests from actuation using the practice
+        model; construct a valid practice sequence. These provide ENVELOPE and MODE
+        without write authority.
+      cards:
+        easy: 2
+        medium: 2
+      card_ids:
+      - W25.1
+      - W25.2
+      - W25.3
+      - W25.4
+    - operation: W26
+      chapter: Control
+      title: The approval that became a command
+      available_from: W13 AND W15
+      work: Identify the maintenance renderer; gain its application authority; turn
+        unsafe renderer behavior into execution in the scoped maintenance context;
+        demonstrate a usable control client. This uses the server-side tail of C08.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - W26.1
+      - W26.2
+      - W26.3
+      - W26.4
+    - operation: W27
+      chapter: Control
+      title: A valid-looking program
+      available_from: W21; isolated program verifier
+      work: Recover the legacy integrity algorithm; model its linear collision constraints;
+        create a semantically valid altered diagnostic program accepted by the engineering
+        consumer. A useful collision and its final accepted program form one elite
+        achievement; W34 can use the program to alter a planning view.
+      cards:
+        hard: 1
+        expert: 1
+        elite: 1
+      card_ids:
+      - W27.1
+      - W27.2
+      - W27.3
+    - operation: W28
+      chapter: Control
+      title: The utility has no room
+      available_from: W21
+      work: Characterize the small engineering utility; build a control-flow exploit
+        with its constrained code surface; retain the correct execution privilege
+        to obtain the scoped control capability.
+      cards:
+        medium: 1
+        hard: 2
+      card_ids:
+      - W28.1
+      - W28.2
+      - W28.3
+    - operation: W29
+      chapter: Release and consequences
+      title: Paper truth
+      available_from: PROCESS_INTERPRETATION AND MODE; tariff artifact visible from
+        OT visibility
+      work: Recover the current replacement-supply tariff; reconcile live usable reserve
+        with allocation commitments; construct a bounded release/consequence plan
+        using the supplied equation and current envelope. W30 requires the last output;
+        no exploit or extra riddle is added.
+      cards:
+        easy: 1
+        medium: 2
+      card_ids:
+      - W29.1
+      - W29.2
+      - W29.3
+    - operation: W30
+      chapter: Release and consequences
+      title: Open the gates
+      available_from: PROCESS_INTERPRETATION AND CONTROL AND MODE AND CONSEQUENCE_PLAN
+      work: Bind the scoped control client and validated process evidence into a correct
+        command plan; execute the opening and prove the volume effect independently
+        as one achievement. The visible financial consequence completes the episode.
+      cards:
+        medium: 2
+      card_ids:
+      - W30.1
+      - W30.2
+    - operation: W31
+      chapter: Release and consequences
+      title: The diagnostic vault
+      available_from: W21; optional native diagnostic service
+      work: Find the formatting/length discrepancy; combine it with the parser boundary
+        error; construct control over the saved execution state; obtain the diagnostic
+        service privilege despite its stack protection. Optional alternative control
+        research, not a finale requirement.
+      cards:
+        medium: 1
+        hard: 1
+        expert: 2
+      card_ids:
+      - W31.1
+      - W31.2
+      - W31.3
+      - W31.4
+    - operation: W32
+      chapter: Release and consequences
+      title: Replay is not reality
+      available_from: W21; optional offline replay artifact
+      work: Identify the replay tool's entity/component layout; reconstruct the relevant
+        update systems; recover the hidden state condition; produce a trace that exposes
+        why replay and live process disagree. Distinct from modifying the actual process.
+        The resulting witness explains why the replay approved a gate schedule that
+        current observations reject; it supplies an optional scenario model for W33,
+        never authority or current telemetry.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - W32.1
+      - W32.2
+      - W32.3
+      - W32.4
+    - operation: W33
+      chapter: Release and consequences
+      title: The expensive hour
+      available_from: OT visibility for investigation; PROCESS_INTERPRETATION AND
+        MODE AND CONTROL AND CONSEQUENCE_PLAN for execution
+      work: Reconstruct a forecast from observable calibration evidence; derive a
+        feasible constrained gate schedule in the practice model; exploit the overly
+        broad scheduler authority to apply it under the current mode; run a feedback
+        policy through that earned capability across disclosed demand/calibration
+        changes in private live rehearsals. A finite horizon, ramp limits, channel
+        capacity, and allocation cost make timing and process interpretation matter.
+      cards:
+        medium: 1
+        hard: 2
+        expert: 1
+      card_ids:
+      - W33.1
+      - W33.2
+      - W33.3
+      - W33.4
+    - operation: W34
+      chapter: Release and consequences
+      title: The reassuring dashboard
+      available_from: PROCESS_INTERPRETATION AND (W23 estimator corruption OR W27
+        accepted diagnostic program); MODE AND CONTROL AND CONSEQUENCE_PLAN join at
+        W34.3 only
+      work: Reconstruct which planning view consumes the compromised output; construct
+        a semantically plausible false view consistent with unaffected meters and
+        the known observation delays; couple that view to a bounded release across
+        a disclosed reporting/shift transition. Grade both changed planning decisions
+        and independent physical truth. The source exploit is credited in W23 or W27,
+        never again here.
+      cards:
+        medium: 1
+        hard: 1
+        expert: 1
+      card_ids:
+      - W34.1
+      - W34.2
+      - W34.3

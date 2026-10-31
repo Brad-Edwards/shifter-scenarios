@@ -16724,8 +16724,11 @@
     }
   },
   "delivery_catalog": {
-    "blocking_issue": 226,
-    "path": "challenges/challenges.yaml"
+    "path": "challenges/challenges.yaml",
+    "schema": "cinder-typhoon.challenges/v1",
+    "status": "versioned-snapshot",
+    "total_cards": 240,
+    "total_operations": 70
   },
   "schema_version": 1
 }
