@@ -149,7 +149,7 @@ nodes:
         owner_user: root
         owner_group: cinder-workbench
         mode: '0444'
-        content_digest: 9ea2719ea7b90b825cb8a43bbcb3fd291d6cac3c2ffe6e131a075066a1f5e526
+        content_digest: f58f00170ab29837abc11f44fc31a5aeabccf04ca970d0f0cc9bc35545a6af91
         digest_algorithm: sha256
         stability: stable
         sensitivity: secret_fixture
@@ -645,7 +645,7 @@ nodes:
         owner_user: root
         owner_group: cinder-accounts
         mode: '0440'
-        content_digest: c28eaa7ad4b6fb43ce9368c23fc2c984ae0ab4b46710c868992b5001b4a357c4
+        content_digest: 475ad780ee1071652f6e944b3519b7511321ad3c4faa33e3e4a380701986aa46
         digest_algorithm: sha256
         stability: stable
         sensitivity: plain

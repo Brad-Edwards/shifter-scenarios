@@ -126,7 +126,9 @@ content:
 
       `ASG-317` for the sealed rehearsal transfer. Use the assignment desk to read
 
-      your own receiving brief.
+      your own receiving brief. The assignment desk publishes brief records through
+
+      `GET /api/assignments/{assignment_id}/brief`.
 
       '
     sensitive: true

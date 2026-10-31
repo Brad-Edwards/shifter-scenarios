@@ -724,9 +724,9 @@
             "source": "prior accepted API responses in the known-solution sequence"
           }
         ],
-        "inventory_sha256": "a94359877e6a81b058b81da764dc4ed6fff33cc55cfb933c828ed6cd39188b4a",
+        "inventory_sha256": "4c35c94bfa7e4787c524d643e0b7f2ce6c711c1bfc61cef9c52dfb62edfca9b7",
         "profile": "arwc",
-        "request_count": 9,
+        "request_count": 11,
         "review_status": "complete",
         "unresolved": []
       },
@@ -778,9 +778,9 @@
             "source": "prior accepted API responses in the known-solution sequence"
           }
         ],
-        "inventory_sha256": "f69e883365efd28e71282d75cff67f405c70afbe11cca143e44cd714710561f5",
+        "inventory_sha256": "0039a490861d0d05cc917277d4c2b96f6725beb39bba09fc8f2cbe8c57de46e4",
         "profile": "arwc",
-        "request_count": 2,
+        "request_count": 4,
         "review_status": "complete",
         "unresolved": []
       },
@@ -1752,52 +1752,79 @@
       "test_01_first_contact": {
         "citations": [
           {
-            "class": "earlier_accepted_response",
+            "class": "normal_interface_or_artifact",
             "inputs": [
-              "response-derived identifier",
-              "revision",
-              "credential or session"
+              "handover repository URL",
+              "delivery tracker URL",
+              "dispatch URL",
+              "courier profile URL",
+              "diagnostic helper URL"
             ],
-            "locator": "named evidence fields carried into a later request by this method",
-            "source": "accepted response chain in test_01_first_contact"
+            "locator": "the five named links and clone command published by the workbench landing page",
+            "source": "http://workbench.training:8080/"
           },
           {
-            "class": "earlier_accepted_response",
+            "class": "normal_interface_or_artifact",
             "inputs": [
-              "exact request field values from prior API responses and protocol schema"
+              "delivery manifest route",
+              "courier authorization",
+              "delivery identifier"
             ],
-            "locator": "fields in test_01_first_contact derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
-            "source": "prior accepted API responses in the known-solution sequence"
+            "locator": "request_history links to request-history.txt; its first GET line supplies the route and the profile supplies api_base, authorization, and delivery_id",
+            "source": "http://workbench.training:8080/retired-client/profile.json and request-history.txt"
+          },
+          {
+            "class": "deterministic_transformation",
+            "inputs": [
+              "diagnostic request route",
+              "delivery_id query value",
+              "view query value"
+            ],
+            "locator": "the published Diagnostic helper URL supplies the route and query; the public view path is normalized through its parent before requesting the sibling internal record",
+            "source": "Diagnostic helper link on http://workbench.training:8080/"
           }
         ],
-        "inventory_sha256": "fe96a4536b9a15e63cde50365fb755204b4f6cd2a54968820d14dfd40bf7ef6f",
+        "inventory_sha256": "788fdefa838cf59f0cefe3167f8fc0474512874e107702f6b4156d526c024413",
         "profile": "training",
-        "request_count": 11,
+        "request_count": 12,
         "review_status": "complete",
         "unresolved": []
       },
       "test_02_someone_can_log_in": {
         "citations": [
           {
-            "class": "earlier_accepted_response",
+            "class": "normal_interface_or_artifact",
             "inputs": [
-              "response-derived identifier",
-              "revision",
-              "credential or session"
+              "recovery lookup route and method",
+              "recovery redemption route and method",
+              "handover route and method"
             ],
-            "locator": "named evidence fields carried into a later request by this method",
-            "source": "accepted response chain in test_02_someone_can_log_in"
+            "locator": "the Account lookup, Account recovery, and Own handover method-and-path entries",
+            "source": "http://accounts.training:8080/"
+          },
+          {
+            "class": "normal_interface_or_artifact",
+            "inputs": [
+              "directory assignment route template",
+              "staff identifiers"
+            ],
+            "locator": "loadCoordinatorAssignment fetch template and staff rows reached from the Public staff directory link",
+            "source": "http://accounts.training:8080/directory/app.js and directory/"
           },
           {
             "class": "earlier_accepted_response",
             "inputs": [
-              "exact request field values from prior API responses and protocol schema"
+              "case fragment",
+              "staff detail",
+              "session",
+              "assignment identifiers",
+              "assignment brief route template"
             ],
-            "locator": "fields in test_02_someone_can_log_in derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
-            "source": "prior accepted API responses in the known-solution sequence"
+            "locator": "lookup and directory responses supply recovery inputs; recovery supplies the session; the recovered handover supplies both assignment IDs and the published brief template",
+            "source": "accepted Accounts responses and http://accounts.training:8080/api/handover"
           }
         ],
-        "inventory_sha256": "9e8721c4db5116476b4e346d5beec89b5078a5598975ab308f11e81e5dde8aad",
+        "inventory_sha256": "7279861874af6ea34cecb22c0161505b94a4b9c450644402598d9fad486e17ee",
         "profile": "training",
         "request_count": 9,
         "review_status": "complete",
@@ -1806,25 +1833,40 @@
       "test_03_left_in_the_checkout": {
         "citations": [
           {
-            "class": "earlier_accepted_response",
+            "class": "normal_interface_or_artifact",
             "inputs": [
-              "response-derived identifier",
-              "revision",
-              "credential or session"
+              "Forge URL",
+              "build log URL",
+              "registry URL",
+              "channel manifest route and method",
+              "package publication template and method",
+              "consumer route and method"
             ],
-            "locator": "named evidence fields carried into a later request by this method",
-            "source": "accepted response chain in test_03_left_in_the_checkout"
+            "locator": "the named service URLs and the Read the channel, Publish with, and Run the consumer method-and-target entries",
+            "source": "http://developer.training:8080/"
+          },
+          {
+            "class": "normal_interface_or_artifact",
+            "inputs": [
+              "package lifecycle path",
+              "fixture path",
+              "consumer destination"
+            ],
+            "locator": "scripts.postinstall selects register-rehearsal.js; that script publishes its source and destination constants",
+            "source": "http://developer.training:8080/sample-package/package.json and scripts/register-rehearsal.js"
           },
           {
             "class": "earlier_accepted_response",
             "inputs": [
-              "exact request field values from prior API responses and protocol schema"
+              "package name",
+              "baseline version",
+              "publication version"
             ],
-            "locator": "fields in test_03_left_in_the_checkout derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
-            "source": "prior accepted API responses in the known-solution sequence"
+            "locator": "the authenticated channel response supplies package and baseline_version; the publication version is the next minor release derived from baseline_version",
+            "source": "accepted channel-manifest response"
           }
         ],
-        "inventory_sha256": "c135189728733fe9624f128c11523ec5b48ed0d8968d3fb5f7f288d5eb2f4b95",
+        "inventory_sha256": "59233a839d9418e1df2fbebc28e43f392aa78c57cb78bbcc8e1306b6f26e9fea",
         "profile": "training",
         "request_count": 10,
         "review_status": "complete",
@@ -1833,25 +1875,41 @@
       "test_04_trust_the_instrument": {
         "citations": [
           {
-            "class": "earlier_accepted_response",
+            "class": "normal_interface_or_artifact",
             "inputs": [
-              "response-derived identifier",
-              "revision",
-              "credential or session"
+              "capture URLs",
+              "practice URL",
+              "issued report URL",
+              "request register URL",
+              "observation register URL"
             ],
-            "locator": "named evidence fields carried into a later request by this method",
-            "source": "accepted response chain in test_04_trust_the_instrument"
+            "locator": "the seven named links on the Outlet desk landing page",
+            "source": "http://state.training:8080/"
           },
           {
-            "class": "earlier_accepted_response",
+            "class": "normal_interface_or_artifact",
             "inputs": [
-              "exact request field values from prior API responses and protocol schema"
+              "practice state route",
+              "practice observation route",
+              "hold route and request schema",
+              "transfer route and request schema"
             ],
-            "locator": "fields in test_04_trust_the_instrument derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
-            "source": "prior accepted API responses in the known-solution sequence"
+            "locator": "the Request interface table publishes each method, path, operation, and JSON field set",
+            "source": "http://state.training:8080/field-guide.md"
+          },
+          {
+            "class": "computed_from_participant_visible_inputs",
+            "inputs": [
+              "transfer quantity",
+              "hold request ID",
+              "transfer request ID",
+              "expected final volume"
+            ],
+            "locator": "quantity is observed_volume_l minus requested_volume_l from VC-017; request IDs use the live tank_id and quantity; final volume is live initial volume minus quantity",
+            "source": "Volume capture VC-017 and accepted live practice-state response"
           }
         ],
-        "inventory_sha256": "13af725f20c65b9160790122f6aca0598f51addf1940f70a4b888b491faadd2f",
+        "inventory_sha256": "c85bf8ae5225706f0b9af8714b9f98be448f62be2fa99ff8f5d3128d1c973a67",
         "profile": "training",
         "request_count": 12,
         "review_status": "complete",
@@ -1926,23 +1984,28 @@
           ],
           "locator": "the four published desk URLs",
           "source": "/home/cinder/TRAINING.md"
-        },
-        {
-          "class": "normal_interface_or_artifact",
-          "inputs": [
-            "record identifier",
-            "revision",
-            "field name",
-            "protocol input"
-          ],
-          "locator": "response field names and linked artifact paths used by the method",
-          "source": "HTTP resources linked from the published Training desks"
         }
       ],
       "title": "Training participant workstation and linked desks"
     }
   },
   "runtime_comparisons": {
+    "build/arwc/runtime/arwc_handover.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed accepted request structures in service runtime"
+          ],
+          "locator": "exact equality checks in build/arwc/runtime/arwc_handover.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
+          "source": "service runtime protocol implementation"
+        }
+      ],
+      "comparison_count": 7,
+      "inventory_sha256": "4b795d57f69053aa18e5d2966f76b35f0fc118b9b970ce551f88f5eb967b09b5",
+      "review_status": "complete",
+      "unresolved": []
+    },
     "build/arwc/runtime/build_w28_native.py": {
       "citations": [
         {
@@ -2051,7 +2114,7 @@
         }
       ],
       "comparison_count": 47,
-      "inventory_sha256": "cf4647374ad7294ac74fd345aefcbc4ff9fb3f78c790b4343e1837e56c38f17b",
+      "inventory_sha256": "9dfb1e241360cdf70fe5c4bdbc33d347cd9c162a6508242520b8352b70e0bae8",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2067,7 +2130,7 @@
         }
       ],
       "comparison_count": 9,
-      "inventory_sha256": "dccab5b01528dc0b895ef4065ad62cdeba87801daa1b04d58b7a55901a52d6c9",
+      "inventory_sha256": "538987c2389325a42ee7af8b007d1e4809656a4a254e4b8ccc55e15decdb94e0",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2194,8 +2257,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 28,
-      "inventory_sha256": "15ddac7d816e5b2ee6626d07ca7626e23bb06c4c1b852725acaa5b793bed0096",
+      "comparison_count": 29,
+      "inventory_sha256": "06d41259aa8eb6ffb6e705ba600515deed36a1ffc308600f521060616673d41e",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2259,7 +2322,7 @@
         }
       ],
       "comparison_count": 90,
-      "inventory_sha256": "397b32afb9dffc953c6b7db3d8bec6d10a9b88762cd99ef48fd7c38c52e298d8",
+      "inventory_sha256": "fbd330dd04c7f5d9444dfe91561f4c36c421bfb80481a420a8b3d879c065a5f8",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2274,8 +2337,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 240,
-      "inventory_sha256": "b4f88bfa362faac99d41144a8ec16703e2fd0d17895a8e9bb703ae9e6469eb81",
+      "comparison_count": 241,
+      "inventory_sha256": "497881fac18ac82b5d9f361769e9ab67ec894643d4bae1c56c03131ef44138fd",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2291,7 +2354,7 @@
         }
       ],
       "comparison_count": 37,
-      "inventory_sha256": "ae915656c2eedca5c6f2ec5df5aefb24fafa498dad10708c2a6d5d9079db044b",
+      "inventory_sha256": "3d2e4b5a93a063cfd0e03fb4680d426dffa9340d854ad7b9644adef45a4a86a3",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2683,7 +2746,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "02fe62b3893e296adc6dc7c2b86071bf9fc91be5133624d5f41bce94e1e1dc54",
+      "source_sha256": "29a3e589a8668d5d56fd4bcb9a495847ffcbf40aaa82a01f764b3f3c859c4ef6",
       "unresolved": []
     },
     "build/arwc/runtime/business-entrypoint.sh": {
@@ -2706,7 +2769,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "011ac6aa8faab74e8b79c11f53f0ea1aa773b6866590ad2884efde7e43948ae7",
+      "source_sha256": "54756f35665b60b9265c25db5c6d4ca9a1e02e3a3f9f64fe7370eb34f328d9fa",
       "unresolved": []
     },
     "build/arwc/runtime/collector-crr.go": {
@@ -2736,7 +2799,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "fbead0c706e808028f06ef18f6d20ec6ccf5fb18a69ca3d86cc031d0503c7fb6",
+      "source_sha256": "0db5a0dd6f2a446e28f00764b69fb42c9ccde9a354855219eb135bf6fcd6d893",
       "unresolved": []
     },
     "build/arwc/runtime/contractor-bridge-entrypoint.sh": {
@@ -2774,7 +2837,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "3925fd8493b8caa101b81a549244826882c72291b32c01729d91d7aeb6da0262",
+      "source_sha256": "ea3d76b8036de264bd526de9a24334badf6e8804c46a9699e98367abe173d4a5",
       "unresolved": []
     },
     "build/arwc/runtime/control-broker-entrypoint.sh": {
@@ -2827,7 +2890,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "afce26ba3b15be0c637d37fb13f31d6cafbac576e49aa9bbfae037e90ddcb819",
+      "source_sha256": "e2f691ff659b0a25b2fa4a8c99ab24711fcda22bfecd4feae09e5b9d5d5a86b4",
       "unresolved": []
     },
     "build/arwc/runtime/diagnostics-entrypoint.sh": {
@@ -2895,7 +2958,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "c0f60b149282849368585d64e4c6bb8f7d29503701a609ac5af7bb85d8610dce",
+      "source_sha256": "628e210ba626f24ffe45febbecf6977620c092be4df4d7d4214cc26ac69c0381",
       "unresolved": []
     },
     "build/arwc/runtime/mixed-diagnostic.S": {

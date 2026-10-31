@@ -82,13 +82,21 @@ class AuthoredManifestTests(unittest.TestCase):
 
     def test_training_briefing_tracks_authored_source(self) -> None:
         source = (ROOT / "assets" / "training" / "workstation" / "TRAINING.md").read_bytes()
+        training = manifest("training")
         entry = next(
             item
-            for item in manifest("training")["filesystem"]["roots"][0]["entries"]
+            for item in training["filesystem"]["roots"][0]["entries"]
             if item["path"] == "TRAINING.md"
         )
         self.assertEqual(entry["size"], len(source))
         self.assertEqual(entry["sha256"], hashlib.sha256(source).hexdigest())
+        self.assertEqual(entry["owner"], training["participant"]["user"])
+        self.assertNotEqual(int(entry["mode"], 8) & 0o444, 0)
+        disclosure = next(
+            item for item in training["disclosures"]
+            if item["id"] == "training-briefing"
+        )
+        self.assertEqual(disclosure["path"], "/home/cinder/TRAINING.md")
 
     def test_keplerops_client_reference_graph_is_present(self) -> None:
         client_documents = ROOT / "build" / "keplerops" / "runtime" / "client_documents.json"
