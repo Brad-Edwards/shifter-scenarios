@@ -215,11 +215,34 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(result)
 
+    def _serve_client_document(self) -> bool:
+        if urlsplit(self.path).path != "/.well-known/arwc-client":
+            return False
+        self.send_json(200, {
+            "schema": "arwc.client-documents/v1",
+            "service": "field-gateway.arwc.test",
+            "title": "Field instrument and reading service",
+            "routes": [
+                {
+                    "key": "field.instrument",
+                    "method": "GET",
+                    "template": "https://field-gateway.arwc.test/api/instruments/current"
+                },
+                {
+                    "key": "field.current-reading",
+                    "method": "GET",
+                    "template": "https://field-gateway.arwc.test/api/readings/current"
+                }
+            ],
+            "related": ["https://planning-data.arwc.test/.well-known/arwc-client"],
+        })
+        return True
+
     def do_GET(self) -> None:
         if urlsplit(self.path).path in PROCESS_PATHS:
             self.proxy_historian()
             return
-        if urlsplit(self.path).path != "/api/the-service-that-replaced-it":
+        if urlsplit(self.path).path != "/api/instruments/current":
             self.send_json(404, {"error": "record not found"})
             return
         if self.authorized() is None:
@@ -233,7 +256,7 @@ class Handler(BaseHTTPRequestHandler):
         if urlsplit(self.path).path in PROCESS_PATHS:
             self.proxy_historian()
             return
-        if urlsplit(self.path).path != "/api/a-fresh-reading-from-the-field":
+        if urlsplit(self.path).path != "/api/readings/current":
             self.send_json(404, {"error": "record not found"})
             return
         session = self.authorized()

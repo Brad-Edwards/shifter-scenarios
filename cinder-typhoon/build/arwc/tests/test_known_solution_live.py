@@ -584,6 +584,31 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
     def setUpClass(cls) -> None:
         # The participant is handed the corporate session and the transition note.
         cls.transition = json.loads(read_handover("customer-transition.json"))
+        # Crawl client references starting from the transition's discovery entry point.
+        first_ref = cls.transition.get("client_reference")
+        cls._routes: dict[str, str] = {}
+        if first_ref:
+            visited: set[str] = set()
+            queue = [first_ref]
+            while queue:
+                url = queue.pop(0)
+                if url in visited:
+                    continue
+                visited.add(url)
+                _, doc = request(url, expected=200)
+                if isinstance(doc, dict):
+                    for route in doc.get("routes", []):
+                        cls._routes[route["key"]] = route["template"]
+                    for link in doc.get("related", []):
+                        if link not in visited:
+                            queue.append(link)
+
+    @classmethod
+    def discovered_route(cls, key: str) -> str:
+        """Resolve a route template from the linked client reference graph."""
+        if key not in cls._routes:
+            raise AssertionError(f"route not in discovered client references: {key}")
+        return cls._routes[key]
 
     @classmethod
     def host(cls, key: str) -> str:
@@ -598,7 +623,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         base = self.host("customer_handover")
 
         with self.subTest(card="W01.1 the customer's copy"):
-            status, response = request(f"{base}/api/the-customer-s-copy", expected=200)
+            status, response = request(self.discovered_route("corporate.handover"), expected=200)
             record = response["record"]
             # The copy is bound to the delivered customer and active connector.
             self.assertEqual(record["tenant"], self.transition["tenant"])
@@ -606,13 +631,13 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["customer_record"] = record
 
         with self.subTest(card="W01.2 the planner's unfinished handover"):
-            status, response = request(f"{base}/api/the-planner-s-unfinished-handover", expected=200)
+            status, response = request(self.discovered_route("corporate.work-order"), expected=200)
             record = response["record"]
             self.assertNotIn("customer_receipt", record)
             self.evidence["planner_handover"] = record
 
         with self.subTest(card="W01.3 how the company buys time"):
-            status, response = request(f"{base}/api/how-the-company-buys-time", expected=200)
+            status, response = request(self.discovered_route("corporate.continuity-plan"), expected=200)
             record = response["record"]
             self.assertTrue(record["planning_reference"])
             self.assertTrue(record["measures"])
@@ -628,11 +653,11 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "assignee": original["assignee"],
                 "attachment": {"filename": "cinder-inspection-summary.md", "content": content},
             }
-            status, changed = request(f"{base}/api/change-the-corporate-record", method="POST", body=body, expected=201)
+            status, changed = request(self.discovered_route("corporate.work-order-update").replace("{wo_id}", self.evidence["planner_handover"]["record_id"]), method="POST", body=body, expected=201)
             self.assertEqual(changed["attachment_sha256"], hashlib.sha256(content.encode()).hexdigest())
             self.assertEqual(changed["inspection"], original["inspection"])
             # A replayed stale-revision change is refused.
-            status, _ = request(f"{base}/api/change-the-corporate-record", method="POST", body=body)
+            status, _ = request(self.discovered_route("corporate.work-order-update").replace("{wo_id}", self.evidence["planner_handover"]["record_id"]), method="POST", body=body)
             self.assertEqual(status, 409)
 
     # ------------------------------------------------------------------ W02
@@ -640,12 +665,12 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         base = self.host("business_workplace")
 
         with self.subTest(card="W02.1 the asset and the contractor"):
-            status, response = request(f"{base}/api/the-asset-and-the-contractor", expected=200)
+            status, response = request(self.discovered_route("business.asset-bundle"), expected=200)
             self.assertIn("record", response)
             self.evidence["asset_bundle"] = response["record"]
 
         with self.subTest(card="W02.2 three names for one job"):
-            status, response = request(f"{base}/api/three-names-for-one-job", expected=200)
+            status, response = request(self.discovered_route("business.association-record"), expected=200)
             sources = response["record"]["sources"]
             self.assertIn("work_order", sources)
             self.evidence["work_order"] = sources["work_order"]["id"]
@@ -656,12 +681,12 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             suffix = self.evidence["work_order"].split("-", 1)[1]
             association = f"ASC-{suffix}-ALT"
             status, result = request(
-                f"{base}/api/the-record-behind-the-wrong-association", method="POST",
+                self.discovered_route("business.work-order-attachment"), method="POST",
                 body={"association_id": association, "expected_revision": 6}, expected=201)
             self.assertTrue(result["record"]["record_id"])
             # An unrelated association is refused.
             status, _ = request(
-                f"{base}/api/the-record-behind-the-wrong-association", method="POST",
+                self.discovered_route("business.work-order-attachment"), method="POST",
                 body={"association_id": "ASC-MER-1000", "expected_revision": 6})
             self.assertEqual(status, 409)
 
@@ -670,7 +695,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         base = self.host("business_workplace")
 
         with self.subTest(card="W03.1 an annex left with the order"):
-            status, response = request(f"{base}/api/an-annex-left-with-the-order", expected=200)
+            status, response = request(self.discovered_route("business.work-order-annex"), expected=200)
             record = response["record"]
             self.assertRegex(record["record_id"], r"^ANN-")
             self.assertRegex(record["process_data_handover"], r"^PDH-")
@@ -681,16 +706,16 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             # A plain restricted reference is refused; a validate-before-decode
             # traversal from the attachments namespace reaches it.
             status, _ = request(
-                f"{base}/api/a-reference-outside-the-order", method="POST",
+                self.discovered_route("business.work-order-references"), method="POST",
                 body={"reference": f"restricted/{handover}"})
             self.assertEqual(status, 409)
             status, imported = request(
-                f"{base}/api/a-reference-outside-the-order", method="POST",
+                self.discovered_route("business.work-order-references"), method="POST",
                 body={"reference": f"attachments/%2e%2e%2frestricted%2f{handover}"}, expected=201)
             self.assertEqual(imported["record"]["record_id"], handover)
 
         with self.subTest(card="W03.3 the integration's read contract"):
-            status, contract = request(f"{base}/api/the-integration-s-read-contract", expected=200)
+            status, contract = request(self.discovered_route("business.integration-contract"), expected=200)
             self.assertEqual(contract["record"]["record_id"], self.evidence["process_data_handover"])
             self.evidence["read_contract"] = contract["record"]
 
@@ -699,7 +724,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         base = self.host("retained_archive")
 
         with self.subTest(card="W04.1 the archive's missing contract"):
-            status, response = request(f"{base}/api/the-archive-s-missing-contract", expected=200)
+            status, response = request(self.discovered_route("archive.contract"), expected=200)
             record = response["record"]
             self.evidence["archive_token"] = record["enrollment_token"]
             self.evidence["protected_record"] = record["protected_record"]
@@ -714,11 +739,11 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             protected = self.evidence["protected_record"]
             ou = f"MaintenanceArchive' OR r.id='{protected}' OR 'a'='b"
             status, enrolled = request(
-                f"{base}/api/the-query-behind-the-identity", method="POST",
+                self.discovered_route("archive.archived-query"), method="POST",
                 body={"operation": "enroll", "enrollment_token": self.evidence["archive_token"], "organizational_unit": ou},
                 expected=201)
             status, result = request(
-                f"{base}/api/the-query-behind-the-identity", method="POST", body={"operation": "query"},
+                self.discovered_route("archive.archived-query"), method="POST", body={"operation": "query"},
                 certificate=enrolled["certificate"], private_key=enrolled["private_key"], expected=201)
             self.assertEqual(result["record"]["record_id"], protected)
 
@@ -727,7 +752,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             # normalizes to the protected copy_handover path.
             crafted = make_archive(f"．．／copy_handover({self.evidence['planner_target']})")
             status, response = request(
-                f"{base}/api/the-archive-helper-acts", method="POST", body={"archive": crafted}, expected=201)
+                self.discovered_route("archive.run-operation"), method="POST", body={"archive": crafted}, expected=201)
             self.assertEqual(response["record"]["record_id"], self.evidence["planner_target"])
             # The recovered planner handover token is saved for the planning path.
             write_receipt("planner-handover", response["planner_handover"])
@@ -738,14 +763,14 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         base = self.host("corporate_identity")
 
         with self.subTest(card="W05.1 a starter pack left open"):
-            status, starter = request(f"{base}/api/a-starter-pack-left-open", expected=200)
+            status, starter = request(self.discovered_route("identity.provisioning-package"), expected=200)
             record = starter["record"]
             self.assertIsNone(record["activation_secret"])
             self.evidence["temp_employee"] = record["employee_number"]
             self.evidence["temp_assignment"] = record["assignment"]
 
         with self.subTest(card="W05.2 the activation roster"):
-            status, roster = request(f"{base}/api/the-activation-roster", expected=200)
+            status, roster = request(self.discovered_route("identity.activation-roster"), expected=200)
             self.evidence["activation_code"] = roster["record"]["activation_code"]
             self.assertNotEqual(roster["record"]["approved_assignment"], self.evidence["temp_assignment"])
 
@@ -753,11 +778,11 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             # Activation checks the code but omits the assignment binding, so the
             # starter's own assignment is granted instead of the approved one.
             status, _ = request(
-                f"{base}/api/temporary-with-the-wrong-rights", method="POST",
+                self.discovered_route("identity.temporary-credential"), method="POST",
                 body={"employee_number": self.evidence["temp_employee"], "activation_code": "000000", "requested_assignment": self.evidence["temp_assignment"]})
             self.assertEqual(status, 409)
             status, response = request(
-                f"{base}/api/temporary-with-the-wrong-rights", method="POST",
+                self.discovered_route("identity.temporary-credential"), method="POST",
                 body={"employee_number": self.evidence["temp_employee"], "activation_code": self.evidence["activation_code"], "requested_assignment": self.evidence["temp_assignment"]},
                 expected=201)
             self.assertEqual(response["record"]["assignment"], self.evidence["temp_assignment"])
@@ -771,26 +796,26 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         preview_origin = "https://preview-cinder.arwc.test"
 
         with self.subTest(card="W06.1 the planner's login trail"):
-            status, response = request(f"{base}/api/the-planner-s-login-trail", headers=access, expected=200)
+            status, response = request(self.discovered_route("identity.session-audit"), headers=access, expected=200)
             record = response["record"]
             self.evidence["oauth_transaction"] = record["oauth_transaction"]
             self.evidence["oauth_state"] = record["oauth_state"]
             self.evidence["planner_drawing"] = record.get("drawing", "DRW-OG2-R8")
             self.evidence["planner_review"] = record["review"]
             # A wrong planning access is refused.
-            status, _ = request(f"{base}/api/the-planner-s-login-trail", headers={"X-ARWC-Planning-Access": "wrong"})
+            status, _ = request(self.discovered_route("identity.session-audit"), headers={"X-ARWC-Planning-Access": "wrong"})
             self.assertEqual(status, 403)
 
         with self.subTest(card="W06.2 a drawing in the wrong context"):
             status, response = request(
-                f"{base}/api/a-drawing-in-the-wrong-context", method="POST", headers=access,
+                self.discovered_route("identity.drawing-context"), method="POST", headers=access,
                 body={"oauth_state": self.evidence["oauth_state"], "drawing": self.evidence["planner_drawing"],
                       "review": self.evidence["planner_review"], "preview_origin": preview_origin}, expected=201)
             self.assertEqual(response["record"]["preview_origin"], preview_origin)
 
         with self.subTest(card="W06.3 a planner session that works"):
             status, response = request(
-                f"{base}/api/a-planner-session-that-works", method="POST", headers=access,
+                self.discovered_route("identity.sessions"), method="POST", headers=access,
                 body={"oauth_transaction": self.evidence["oauth_transaction"], "preview_origin": preview_origin}, expected=201)
             self.assertEqual(response["record"]["scope"], "planning-records")
             write_receipt("planner-session", response["planner_session"])
@@ -802,7 +827,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         planner = {"X-ARWC-Planner-Session": "@planner"}
 
         with self.subTest(card="W07.1 the query the planner keeps"):
-            status, response = request(f"{base}/api/the-query-the-planner-keeps", headers=planner, expected=200)
+            status, response = request(self.discovered_route("planning.saved-query"), headers=planner, expected=200)
             record = response["record"]
             self.evidence["report_view"] = record["view"]
             self.evidence["quote"] = record["identifier_quote"]
@@ -812,20 +837,20 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="W07.2 read beyond the allowed statement"):
             # The ordinary quoted-identifier request reveals the exact column list.
             status, ordinary = request(
-                f"{base}/api/read-beyond-the-allowed-statement", method="POST", headers=planner,
+                self.discovered_route("planning.query-run"), method="POST", headers=planner,
                 body={"report_name": self.evidence["report_view"]}, expected=201)
             columns = re.search(r"SELECT ([a-z_,]+) FROM", ordinary["statement"]).group(1)
             q = self.evidence["quote"]
             # Close the quoted identifier and UNION in the protected allocation view.
             injection = f'{self.evidence["report_view"]}{q} UNION ALL SELECT {columns} FROM district_allocation_adjustment --'
             status, response = request(
-                f"{base}/api/read-beyond-the-allowed-statement", method="POST", headers=planner,
+                self.discovered_route("planning.query-run"), method="POST", headers=planner,
                 body={"report_name": injection}, expected=201)
             self.assertIn("UNION ALL SELECT", response["statement"])
             self.evidence["allocation_record"] = response["record"]["record_id"]
             # A write or semicolon attempt is refused.
             status, _ = request(
-                f"{base}/api/read-beyond-the-allowed-statement", method="POST", headers=planner,
+                self.discovered_route("planning.query-run"), method="POST", headers=planner,
                 body={"report_name": f'{self.evidence["report_view"]}{q} DELETE FROM {self.evidence["report_view"]} --'})
             self.assertIn(status, (403, 409))
 
@@ -833,7 +858,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             # The allocation adjustment names its reconciliation record (ADJ -> REC).
             reconcile_record = self.evidence["allocation_record"].replace("ADJ-", "REC-")
             status, response = request(
-                f"{base}/api/the-database-does-more-than-read", method="POST", headers=planner,
+                self.discovered_route("planning.query-run"), method="POST", headers=planner,
                 body={"function": "arwc_reconcile_copy", "record_id": reconcile_record}, expected=201)
             self.assertEqual(response["record"]["execution_context"], "SECURITY DEFINER")
             self.assertEqual(response["record"]["source_record"], reconcile_record)
@@ -845,7 +870,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         planner = {"X-ARWC-Planner-Session": "@planner"}
 
         with self.subTest(card="W09.1 water already promised"):
-            status, response = request(f"{planning}/api/water-already-promised", headers=planner, expected=200)
+            status, response = request(self.discovered_route("planning.allocation-ledger"), headers=planner, expected=200)
             ledger = response["record"]
             self.evidence["ledger_record"] = ledger["record_id"]
             self.evidence["planning_window"] = ledger["planning_window"]
@@ -854,7 +879,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.assertGreater(ledger["committed_ml"], 0)
 
         with self.subTest(card="W09.2 the meter's own account"):
-            status, response = request(f"{planning}/api/the-meter-s-own-account", headers=planner, expected=200)
+            status, response = request(self.discovered_route("planning.meter-allocation"), headers=planner, expected=200)
             meter = response["record"]
             # The meter export is a distinct record; it does not carry the ledger's identity.
             self.assertNotIn(self.evidence["ledger_record"], json.dumps(meter))
@@ -864,7 +889,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W09.3 the missing megalitre"):
             # Reconciliation requires both independent sources (ledger + meter).
-            status, response = request(f"{planning}/api/the-missing-megalitre", headers=planner, expected=200)
+            status, response = request(self.discovered_route("planning.allocation-discrepancy"), headers=planner, expected=200)
             record = response["record"]
             self.assertEqual(record["committed_ml"], self.evidence["committed_ml"])
             self.assertEqual(record["usable_reserve_ml"], self.evidence["usable_reserve_ml"])
@@ -873,25 +898,25 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["outlet_group"] = record["outlet_group"]
 
         with self.subTest(card="W09.4 from the report to the live feed"):
-            status, contract = request(f"{business}/api/the-integration-s-read-contract", expected=200)
+            status, contract = request(self.discovered_route("business.integration-contract"), expected=200)
             # planning-data requires both the planner session and the integration session.
             integration = {**planner, "X-ARWC-Integration-Session": contract["integration_session"]}
             client = contract["record"]["integration_client"]
             scope = contract["record"]["scope"]
             # The report's current source list names the live feed record to join.
-            status, sources = request(f"{business}/api/the-report-s-source-list", expected=200)
+            status, sources = request(self.discovered_route("business.report-sources"), expected=200)
             feed_id = next(s["record_id"] for s in sources["record"]["sources"] if s["record_id"].startswith("FEED-"))
             self.evidence["feed_id"] = feed_id
             # Without the integration session, the gateway refuses even a correct binding.
             binding = {"integration_client": client, "report_binding": self.evidence["reconciliation_record"],
                        "scope": scope, "feed": feed_id}
-            status, _ = request(f"{planning}/api/integration/from-the-report-to-the-live-feed", method="POST", headers=planner, body=binding)
+            status, _ = request(self.discovered_route("planning.integration-session"), method="POST", headers=planner, body=binding)
             self.assertEqual(status, 403)
             # A wrong client is refused once the session is supplied.
-            status, _ = request(f"{planning}/api/integration/from-the-report-to-the-live-feed", method="POST",
+            status, _ = request(self.discovered_route("planning.integration-session"), method="POST",
                                  headers=integration, body=dict(binding, integration_client="INT-MER-01"))
             self.assertEqual(status, 409)
-            status, response = request(f"{planning}/api/integration/from-the-report-to-the-live-feed", method="POST",
+            status, response = request(self.discovered_route("planning.integration-session"), method="POST",
                                         headers=integration, body=binding, expected=201)
             self.assertTrue(response["record"]["current"])
             self.assertEqual(response["record"]["outlet_group"], self.evidence["outlet_group"])
@@ -901,7 +926,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         base = self.host("business_workplace")
 
         with self.subTest(card="W10.1 the report's source list"):
-            status, response = request(f"{base}/api/the-report-s-source-list", expected=200)
+            status, response = request(self.discovered_route("business.report-sources"), expected=200)
             record = response["record"]
             self.evidence["source_set"] = record["record_id"]
             self.evidence["source_revision"] = record["revision"]
@@ -915,11 +940,11 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             # not that the requested district matches the session's own district.
             baseline = {"source_set": self.evidence["source_set"], "expected_revision": self.evidence["source_revision"],
                         "role": "planning-reader", "district": self.evidence["source_district"]}
-            status, _ = request(f"{base}/api/another-district-in-the-results", method="POST", body=dict(baseline, expected_revision=baseline["expected_revision"] - 1))
+            status, _ = request(self.discovered_route("business.report-row-external"), method="POST", body=dict(baseline, expected_revision=baseline["expected_revision"] - 1))
             self.assertEqual(status, 409)
-            status, _ = request(f"{base}/api/another-district-in-the-results", method="POST", body=dict(baseline, role="customer-service"))
+            status, _ = request(self.discovered_route("business.report-row-external"), method="POST", body=dict(baseline, role="customer-service"))
             self.assertEqual(status, 403)
-            status, response = request(f"{base}/api/another-district-in-the-results", method="POST", body=baseline, expected=201)
+            status, response = request(self.discovered_route("business.report-row-external"), method="POST", body=baseline, expected=201)
             excerpt = response["record"]
             self.assertNotEqual(excerpt["district"], self.evidence["source_district"])
             self.evidence["excerpt_id"] = excerpt["record_id"]
@@ -928,10 +953,10 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W10.3 the document behind the answer"):
             # Linking is checked by possession of the exact excerpt, not district.
-            status, _ = request(f"{base}/api/the-document-behind-the-answer", method="POST",
+            status, _ = request(self.discovered_route("business.report-document"), method="POST",
                                  body={"excerpt_id": self.evidence["excerpt_id"], "expected_revision": self.evidence["excerpt_revision"] - 1})
             self.assertEqual(status, 409)
-            status, response = request(f"{base}/api/the-document-behind-the-answer", method="POST",
+            status, response = request(self.discovered_route("business.report-document"), method="POST",
                                         body={"excerpt_id": self.evidence["excerpt_id"], "expected_revision": self.evidence["excerpt_revision"], "district": self.evidence["source_district"]},
                                         expected=201)
             self.assertEqual(response["record"]["record_id"], self.evidence["linked_document"])
@@ -943,7 +968,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         asset = self.evidence["asset_bundle"]["asset"]
 
         with self.subTest(card="W11.1 the relation service's language"):
-            status, response = request(f"{base}/api/the-relation-service-s-language", headers=planner, expected=200)
+            status, response = request(self.discovered_route("planning.relation-schema"), headers=planner, expected=200)
             contract = response["record"]
             magic = bytes.fromhex(contract["magic"].replace(" ", ""))
             major, minor = (int(part) for part in contract["protocol"].rsplit(" ", 1)[1].split("."))
@@ -958,7 +983,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             exchange = bolt_exchange(bolt["magic"], bolt["version"], asset=asset, association=bolt["association"],
                                       relation=bolt["relation"], ou=bolt["relation"],
                                       query="MATCH (a:Asset {record_id: $asset})-[r:RELATION]->(w:Work) RETURN r.record_id,w.record_id")
-            status, response = request(f"{base}/api/an-exchange-the-backend-accepts", method="POST", headers=planner, body={"exchange": exchange}, expected=201)
+            status, response = request(self.discovered_route("planning.relation-exchange"), method="POST", headers=planner, body={"exchange": exchange}, expected=201)
             self.assertEqual(response["record"]["asset"], asset)
             self.evidence["work_order_from_relation"] = response["record"]["work_order"]
             self.assertNotIn("archive", json.dumps(response))
@@ -973,7 +998,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             exchange = bolt_exchange(bolt["magic"], bolt["version"], asset=asset, association=bolt["association"],
                                       relation=bolt["relation"], ou=lineage_ou,
                                       query="MATCH (a:Asset {record_id: $asset})-[r:RELATION]->(w:Work) RETURN r.record_id,w.record_id")
-            status, response = request(f"{base}/api/the-asset-s-true-lineage", method="POST", headers=planner, body={"exchange": exchange}, expected=201)
+            status, response = request(self.discovered_route("planning.asset-lineage"), method="POST", headers=planner, body={"exchange": exchange}, expected=201)
             record = response["record"]
             self.assertEqual(record["current_asset"], asset)
             self.assertTrue(record["archive"])
@@ -984,7 +1009,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         base = self.host("contractor_portal")
 
         with self.subTest(card="W13.1 window on Thursday"):
-            status, response = request(f"{base}/api/window-on-thursday", expected=200)
+            status, response = request(self.discovered_route("contractors.appointment-window"), expected=200)
             appointment = response["record"]
             self.evidence["appointment_id"] = appointment["record_id"]
             self.evidence["appointment_window"] = appointment["window"]
@@ -994,7 +1019,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.assertRegex(appointment["record_id"], r"^APT-")
 
         with self.subTest(card="W13.2 who is expected at the gate"):
-            status, response = request(f"{base}/api/who-is-expected-at-the-gate", expected=200)
+            status, response = request(self.discovered_route("contractors.expected-visitors"), expected=200)
             roster = response["record"]
             self.evidence["roster_id"] = roster["record_id"]
             self.evidence["contractor_identity"] = roster["identity"]
@@ -1012,16 +1037,16 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "inspection": self.evidence["appointment_inspection"], "asset": self.evidence["appointment_asset"],
                 "window": self.evidence["appointment_window"],
             }
-            status, _ = request(f"{base}/api/an-appointment-we-do-not-own", method="POST", body=dict(baseline, asset="AST-MER-004"))
+            status, _ = request(self.discovered_route("contractors.appointment"), method="POST", body=dict(baseline, asset="AST-MER-004"))
             self.assertEqual(status, 409)
-            status, response = request(f"{base}/api/an-appointment-we-do-not-own", method="POST", body=baseline, expected=201)
+            status, response = request(self.discovered_route("contractors.appointment"), method="POST", body=baseline, expected=201)
             self.assertEqual(response["record"]["attendee"], self.evidence["contractor_identity"])
 
         with self.subTest(card="W13.4 checked in as the contractor"):
-            status, _ = request(f"{base}/api/checked-in-as-the-contractor", method="POST",
+            status, _ = request(self.discovered_route("contractors.check-in"), method="POST",
                                  body={"appointment_id": self.evidence["appointment_id"], "roster_id": "ROSTER-CRR-SEP18-R1", "identity": self.evidence["contractor_identity"]})
             self.assertEqual(status, 403)
-            status, response = request(f"{base}/api/checked-in-as-the-contractor", method="POST",
+            status, response = request(self.discovered_route("contractors.check-in"), method="POST",
                                         body={"appointment_id": self.evidence["appointment_id"], "roster_id": self.evidence["roster_id"], "identity": self.evidence["contractor_identity"]},
                                         expected=201)
             self.assertEqual(response["record"]["assignment"], self.evidence["contractor_assignment"])
@@ -1034,14 +1059,14 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         field_base = self.host("field_gateway")
 
         with self.subTest(card="W14.1 the field bag"):
-            status, response = request(f"{contractor_base}/api/the-field-bag", token=contractor, expected=200)
+            status, response = request(self.discovered_route("contractors.field-kit"), token=contractor, expected=200)
             bag = response["record"]
             self.assertEqual(bag["retained_client"]["protocol"], "fieldbag/v1")
             self.evidence["inspection"] = bag["inspection"]
             self.evidence["expected_outlets"] = bag["expected_outlets"]
 
         with self.subTest(card="W14.2 the service that replaced it"):
-            status, response = request(f"{field_base}/api/the-service-that-replaced-it", token=contractor, expected=200)
+            status, response = request(self.discovered_route("field.instrument"), token=contractor, expected=200)
             services = response["record"]["services"]
             current = next(s for s in services if s["status"] == "active")
             self.evidence["current_protocol"] = current["protocol"]
@@ -1053,16 +1078,16 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             observed = _dt.datetime.now(_dt.timezone.utc).isoformat().replace("+00:00", "Z")
             group = self.evidence["expected_outlets"][0]
             # The retired v1/JSON protocol is rejected on the current endpoint.
-            status, _ = request(f"{field_base}/api/a-fresh-reading-from-the-field", method="POST", token=contractor,
+            status, _ = request(self.discovered_route("field.current-reading"), method="POST", token=contractor,
                                  body={"asset_id": self.evidence["asset_bundle"]["asset"], "outlet_group": group, "sample_time": "now"})
             self.assertEqual(status, 409)
             # The current CBOR protocol with the correct outlet group is accepted.
             payload = {"asset": self.evidence["asset_bundle"]["asset"], "group": group, "observed_at": observed, "nonce": "journey-reading-1"}
-            status, response = cbor_request(f"{field_base}/api/a-fresh-reading-from-the-field", cbor_map(payload), contractor, expected=201)
+            status, response = cbor_request(self.discovered_route("field.current-reading"), cbor_map(payload), contractor, expected=201)
             self.assertEqual(response["record"]["group"], group)
             self.assertTrue(response["record"]["observations"])
             # A replayed nonce is refused.
-            status, _ = cbor_request(f"{field_base}/api/a-fresh-reading-from-the-field", cbor_map(payload), contractor)
+            status, _ = cbor_request(self.discovered_route("field.current-reading"), cbor_map(payload), contractor)
             self.assertEqual(status, 409)
 
     # ------------------------------------------------------------------ W15
@@ -1074,7 +1099,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         preview_origin = "https://preview-cinder.arwc.test"
 
         with self.subTest(card="W15.1 which drawing did the cache keep"):
-            status, response = request(f"{base}/api/which-drawing-did-the-cache-keep", token=contractor, expected=200)
+            status, response = request(self.discovered_route("maintenance.drawing-cache"), token=contractor, expected=200)
             record = response["record"]
             self.assertEqual(record["drawing"], drawing)
             self.evidence["cache_record"] = record
@@ -1094,25 +1119,25 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 },
             }
             # An unlisted preview origin is refused.
-            status, _ = request(f"{base}/api/a-drawing-of-our-choosing", method="POST", token=contractor, body=body,
+            status, _ = request(self.discovered_route("maintenance.drawing-cache-update"), method="POST", token=contractor, body=body,
                                  headers={"X-Preview-Origin": "https://unlisted-preview.arwc.test"})
             self.assertEqual(status, 409)
             # A prior drawing revision lets the write proceed with a fresh poisoned cache key.
-            status, response = request(f"{base}/api/a-drawing-of-our-choosing", method="POST", token=contractor, body=body,
+            status, response = request(self.discovered_route("maintenance.drawing-cache-update"), method="POST", token=contractor, body=body,
                                         headers={"X-Preview-Origin": preview_origin, "X-Drawing-Revision": "R7"}, expected=201)
             self.evidence["cache_key"] = response["record"]["cache_key"]
 
         with self.subTest(card="W15.3 the reviewer trusts the drawing"):
-            status, response = request(f"{base}/api/the-reviewer-trusts-the-drawing", method="POST", token=contractor,
+            status, response = request(self.discovered_route("maintenance.drawing-approval"), method="POST", token=contractor,
                                         body={"cache_key": self.evidence["cache_key"], "reviewer_queue": review_queue}, expected=201)
             self.assertEqual(response["record"]["subject"], drawing)
             self.evidence["review_capability"] = response["review_capability"]
 
         with self.subTest(card="W15.4 approval beyond the token"):
-            status, _ = request(f"{base}/api/approval-beyond-the-token", method="POST", token=contractor,
+            status, _ = request(self.discovered_route("maintenance.approval-token"), method="POST", token=contractor,
                                  body={"review_capability": "wrong", "approval_id": "APR-CRR-4417-R6", "inspection": self.evidence["inspection"]})
             self.assertEqual(status, 403)
-            status, response = request(f"{base}/api/approval-beyond-the-token", method="POST", token=contractor,
+            status, response = request(self.discovered_route("maintenance.approval-token"), method="POST", token=contractor,
                                         body={"review_capability": self.evidence["review_capability"], "approval_id": "APR-CRR-4417-R6", "inspection": self.evidence["inspection"]},
                                         expected=201)
             record = response["record"]
@@ -1146,7 +1171,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             return {"sequencer": sequencer, "revision": revision, "request_id": "req-" + uuid.uuid4().hex, **extra}
 
         with self.subTest(card="W16.1 the sequencer's vocabulary"):
-            status, response = request(f"{base}/api/the-sequencer-s-vocabulary", expected=200)
+            status, response = request(self.discovered_route("archive.sequencer-spec"), expected=200)
             descriptor = response["record"]
             canonical = json.dumps(descriptor, sort_keys=True, separators=(",", ":")).encode()
             self.assertEqual(response["descriptor_sha256"], hashlib.sha256(canonical).hexdigest())
@@ -1158,7 +1183,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 measurements: dict[int, list[int]] = {probe: [] for probe in probes}
                 for group in (probes[:7], probes[7:]):
                     instructions = [("TEST", slot, probe) for probe in group for _ in range(8)] + [("HALT",)]
-                    status, body = request(f"{base}/api/an-experiment-with-a-signal", method="POST", body=binding(sequencer_id, revision, operation="measure", program=program(descriptor["opcodes"], *instructions)),
+                    status, body = request(self.discovered_route("archive.signal-experiment"), method="POST", body=binding(sequencer_id, revision, operation="measure", program=program(descriptor["opcodes"], *instructions)),
                         expected=201)
                     for observation in body["record"]["observations"]:
                         measurements[observation["probe"]].append(observation["cycles"])
@@ -1174,12 +1199,12 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             measure_byte = self.evidence["measure_byte"]
             descriptor = self.evidence["sequencer"]
             baseline = binding(sequencer_id, revision, program=program(descriptor["opcodes"], ("LOAD", 4), ("HALT",)))
-            status, response = request(f"{base}/api/an-observation-outside-the-window", method="POST", body=baseline, expected=201)
+            status, response = request(self.discovered_route("archive.observations"), method="POST", body=baseline, expected=201)
             self.assertEqual(response["record"]["status"], "completed")
             # The first authorized_indices boundary is crossed; the read is rejected but timed.
             boundary = max(descriptor["authorized_indices"]) + 1
             crossing = binding(sequencer_id, revision, program=program(descriptor["opcodes"], ("LOAD", boundary), ("HALT",)))
-            status, response = request(f"{base}/api/an-observation-outside-the-window", method="POST", body=crossing, expected=201)
+            status, response = request(self.discovered_route("archive.observations"), method="POST", body=crossing, expected=201)
             record = response["record"]
             self.assertEqual(record["status"], "late-authorization-rejection")
             self.assertFalse(record["write_performed"])
@@ -1192,9 +1217,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             target_slot = self.evidence["boundary"] + 127
             target = measure_byte(target_slot)
             status, _ = request(
-                f"{base}/api/an-experiment-with-a-signal", method="POST", body=binding(sequencer_id, revision, operation="verify", reference_values=references, target_slot=target_slot,
+                self.discovered_route("archive.signal-experiment"), method="POST", body=binding(sequencer_id, revision, operation="verify", reference_values=references, target_slot=target_slot,
                         recovered_byte=target ^ 1, repetitions=8, bit_order="lsb0"))
-            status, response = request(f"{base}/api/an-experiment-with-a-signal", method="POST", body=binding(sequencer_id, revision, operation="verify", reference_values=references, target_slot=target_slot,
+            status, response = request(self.discovered_route("archive.signal-experiment"), method="POST", body=binding(sequencer_id, revision, operation="verify", reference_values=references, target_slot=target_slot,
                         recovered_byte=target, repetitions=8, bit_order="lsb0"),
                 expected=201)
             self.assertEqual(response["record"]["independent_conditions"], 8)
@@ -1208,7 +1233,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             field_revision = recovered[:2].decode(errors="replace").strip()
             record_request = binding(sequencer_id, revision, record_id=f"CAL-CRR-OG2-{field_revision}",
                                       field_revision=field_revision, calibration=base64.b64encode(recovered).decode())
-            status, response = request(f"{base}/api/what-the-instrument-remembers", method="POST", body=record_request, expected=201)
+            status, response = request(self.discovered_route("archive.instrument-history"), method="POST", body=record_request, expected=201)
             self.assertEqual(response["record"]["sha256"], hashlib.sha256(recovered).hexdigest())
 
     def _process_session(self) -> str:
@@ -1216,7 +1241,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         business = self.host("business_workplace")
         planning = self.host("planning_data")
         planner = {"X-ARWC-Planner-Session": "@planner"}
-        status, contract = request(f"{business}/api/the-integration-s-read-contract", expected=200)
+        status, contract = request(self.discovered_route("business.integration-contract"), expected=200)
         binding = {
             "integration_client": contract["record"]["integration_client"],
             "report_binding": self.evidence["reconciliation_record"],
@@ -1224,7 +1249,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             "feed": self.evidence["feed_id"],
         }
         integration = {**planner, "X-ARWC-Integration-Session": contract["integration_session"]}
-        status, result = request(f"{planning}/api/integration/from-the-report-to-the-live-feed", method="POST",
+        status, result = request(self.discovered_route("planning.integration-session"), method="POST",
                                   headers=integration, body=binding, expected=201)
         self.evidence["process_view"] = result["process_view"]
         return result["process_session"]
@@ -1803,7 +1828,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         bundle_id = self.evidence["read_contract"]["retained_bundle"]
 
         with self.subTest(card="W08.1 something in the work bundle"):
-            status, response = request(f"{base}/api/something-in-the-work-bundle", expected=200)
+            status, response = request(self.discovered_route("archive.bundle"), expected=200)
             record = response["record"]
             self.assertEqual(record["record_id"], bundle_id)
             self.evidence["w08_collection_id"] = record["collection_id"]
@@ -1871,9 +1896,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             )
             decrypted = inside("python3", "-c", script, base64.b64encode(json.dumps(envelope).encode()).decode())
             self.assertEqual(decrypted.returncode, 0, decrypted.stderr)
-            status, _ = request(f"{base}/api/where-the-contractor-put-it", method="POST", body={"plaintext": "wrong"})
+            status, _ = request(self.discovered_route("contractors.artifact"), method="POST", body={"plaintext": "wrong"})
             self.assertEqual(status, 409)
-            status, response = request(f"{base}/api/where-the-contractor-put-it", method="POST", body={"plaintext": decrypted.stdout}, expected=201)
+            status, response = request(self.discovered_route("contractors.artifact"), method="POST", body={"plaintext": decrypted.stdout}, expected=201)
             self.assertEqual(response["record"]["identity"], "svc-field-collection")
             self.evidence["w08_archive"] = response["record"]["archive"]
 
@@ -1936,10 +1961,10 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             computed = inside("python3", "-c", script, base64.b64encode(samples_bytes).decode())
             self.assertEqual(computed.returncode, 0, computed.stderr)
             results = json.loads(computed.stdout)
-            status, _ = request(f"{base}/api/how-the-collection-was-protected", method="POST",
+            status, _ = request(self.discovered_route("archive.bundle-collection-policy"), method="POST",
                                  body={"sample_results": dict(results, **{next(iter(results)): "wrong"})})
             self.assertEqual(status, 409)
-            status, response = request(f"{base}/api/how-the-collection-was-protected", method="POST",
+            status, response = request(self.discovered_route("archive.bundle-collection-policy"), method="POST",
                                         body={"sample_results": results}, expected=201)
             self.assertEqual(response["record"]["key_cipher"], "AES-256-KW")
 
@@ -1963,10 +1988,10 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.assertEqual(opened.returncode, 0, opened.stderr)
             values = json.loads(opened.stdout)
             key_bytes = base64.b64decode(values["pkcs8"])
-            status, _ = request(f"{base}/api/the-cold-archive-opens", method="POST",
+            status, _ = request(self.discovered_route("archive.cold-archive-job"), method="POST",
                                  body={"plaintext": values["plaintext"], "unwrapped_pkcs8": base64.b64encode(bytes(len(key_bytes))).decode()})
             self.assertEqual(status, 409)
-            status, response = request(f"{base}/api/the-cold-archive-opens", method="POST",
+            status, response = request(self.discovered_route("archive.cold-archive-job"), method="POST",
                                         body={"plaintext": values["plaintext"], "unwrapped_pkcs8": values["pkcs8"]}, expected=201)
             self.assertEqual(response["record"]["maintenance_record_count"], 37)
             self.evidence["w12_collection"] = response["collection"]
@@ -2069,10 +2094,10 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         integrity_id = "VER-ROT128-R3"
 
         with self.subTest(card="W27.1 what counts as intact"):
-            status, _ = request(f"{base}/api/what-counts-as-intact", method="POST", token="wrong",
+            status, _ = request(self.discovered_route("archive.bundle-integrity"), method="POST", token="wrong",
                                  body={"operation": "materials", "record_id": integrity_id})
             self.assertEqual(status, 403)
-            status, result = request(f"{base}/api/what-counts-as-intact", method="POST", token=session,
+            status, result = request(self.discovered_route("archive.bundle-integrity"), method="POST", token=session,
                                       body={"operation": "materials", "record_id": integrity_id}, expected=201)
             record = result["record"]
             verifier = base64.b64decode(result["verifier_b64"])
@@ -2091,11 +2116,11 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W27.2 the constraints of a valid-looking program"):
             results = self.evidence["w27_results"]
-            status, _ = request(f"{base}/api/what-counts-as-intact", method="POST", token=session,
+            status, _ = request(self.discovered_route("archive.bundle-integrity"), method="POST", token=session,
                                  body={"operation": "results", "record_id": integrity_id, "program_set": "DPG1-CASES-R3",
                                        "results": [dict(results[0], decision="rejected"), *results[1:]]})
             self.assertEqual(status, 409)
-            status, accepted = request(f"{base}/api/what-counts-as-intact", method="POST", token=session,
+            status, accepted = request(self.discovered_route("archive.bundle-integrity"), method="POST", token=session,
                                         body={"operation": "results", "record_id": integrity_id, "program_set": "DPG1-CASES-R3", "results": list(reversed(results))}, expected=201)
             self.assertEqual(accepted["record"]["cases_verified"], len(results))
             status, contract = request(f"{base}/api/the-constraints-of-a-valid-looking-program", method="POST", token=session,
@@ -2572,9 +2597,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         business = self.host("business_workplace")
 
         with self.subTest(card="W35.1 what replacement water costs"):
-            status, _ = request(f"{business}/api/what-replacement-water-costs", token="wrong")
+            status, _ = request(self.discovered_route("business.procurement-quote"), token="wrong")
             self.assertEqual(status, 403)
-            status, response = request(f"{business}/api/what-replacement-water-costs", expected=200)
+            status, response = request(self.discovered_route("business.procurement-quote"), expected=200)
             record = response["record"]
             self.evidence["replacement_catalog"] = record["record_id"]
             self.evidence["replacement_catalog_revision"] = record["revision"]
@@ -2586,9 +2611,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "catalog_revision": self.evidence["replacement_catalog_revision"],
                 "role": "corporate-reader", "district": self.evidence["source_district"],
             }
-            status, _ = request(f"{business}/api/a-quote-outside-your-district", method="POST", body=dict(baseline, role="field-reader"))
+            status, _ = request(self.discovered_route("business.procurement-quote-external"), method="POST", body=dict(baseline, role="field-reader"))
             self.assertEqual(status, 403)
-            status, response = request(f"{business}/api/a-quote-outside-your-district", method="POST", body=baseline, expected=201)
+            status, response = request(self.discovered_route("business.procurement-quote-external"), method="POST", body=baseline, expected=201)
             record = response["record"]
             self.evidence["foreign_quote"] = record["record_id"]
             self.evidence["foreign_quote_revision"] = record["revision"]
@@ -2603,14 +2628,14 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "planning_window": self.evidence["planning_window"], "charge_district": self.evidence["source_district"],
                 "budget": f"BUD-{self.evidence['asset_bundle']['asset'].split('-')[1]}-DP3",
             }
-            status, _ = request(f"{business}/api/the-wrong-bill", method="POST", body=dict(order_request, quantity_ml=1.0))
+            status, _ = request(self.discovered_route("business.invoice"), method="POST", body=dict(order_request, quantity_ml=1.0))
             self.assertEqual(status, 409)
-            status, response = request(f"{business}/api/the-wrong-bill", method="POST", body=order_request, expected=201)
+            status, response = request(self.discovered_route("business.invoice"), method="POST", body=order_request, expected=201)
             record = response["record"]
             self.assertEqual(record["quote_owner_district"], "Merewick")
             self.assertEqual(record["charge_district"], self.evidence["source_district"])
             self.assertEqual(record["liability_usd"], self.evidence["foreign_quote_total_usd"])
-            status, repeated = request(f"{business}/api/the-wrong-bill", method="POST", body=order_request, expected=201)
+            status, repeated = request(self.discovered_route("business.invoice"), method="POST", body=order_request, expected=201)
             self.assertEqual(repeated["record"], record)
 
 

@@ -280,7 +280,52 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _serve_client_document(self) -> bool:
+        if urlsplit(self.path).path != "/.well-known/arwc-client":
+            return False
+        self.send_json(200, {
+            "schema": "arwc.client-documents/v1",
+            "service": "contractor-portal.arwc.test",
+            "title": "Contractor appointment and field kit service",
+            "routes": [
+                {
+                    "key": "contractors.appointment-window",
+                    "method": "GET",
+                    "template": "https://contractor-portal.arwc.test/api/appointment-windows/current"
+                },
+                {
+                    "key": "contractors.expected-visitors",
+                    "method": "GET",
+                    "template": "https://contractor-portal.arwc.test/api/appointment-windows/current/visitors"
+                },
+                {
+                    "key": "contractors.appointment",
+                    "method": "GET",
+                    "template": "https://contractor-portal.arwc.test/api/appointments/current"
+                },
+                {
+                    "key": "contractors.check-in",
+                    "method": "POST",
+                    "template": "https://contractor-portal.arwc.test/api/check-ins"
+                },
+                {
+                    "key": "contractors.field-kit",
+                    "method": "GET",
+                    "template": "https://contractor-portal.arwc.test/api/field-kits/current"
+                },
+                {
+                    "key": "contractors.artifact",
+                    "method": "GET",
+                    "template": "https://contractor-portal.arwc.test/api/contractor-artifacts/current"
+                }
+            ],
+            "related": ["https://field-gateway.arwc.test/.well-known/arwc-client"],
+        })
+        return True
+
     def do_GET(self) -> None:
+        if self._serve_client_document():
+            return
         path = urlsplit(self.path).path
         if (self.headers.get("Host", "").split(":", 1)[0] in
                 {"field-gateway.arwc.test", "process-read.arwc.test"} and
@@ -288,7 +333,7 @@ class Handler(BaseHTTPRequestHandler):
             self.proxy_field_gateway()
             return
         state = json.loads(STATE.read_text(encoding="utf-8"))
-        if path == "/api/the-field-bag":
+        if path == "/api/field-kits/current":
             if not self.contractor_authorized(state):
                 return
             state["field_bag_observed"] = True
@@ -297,12 +342,12 @@ class Handler(BaseHTTPRequestHandler):
             return
         if not self.corporate_authorized():
             return
-        if path == "/api/window-on-thursday":
+        if path == "/api/appointment-windows/current":
             state["appointment_observed"] = True
             atomic_json(STATE, state)
             self.accepted("window-on-thursday", "corporate-reader-principal", state["appointment"])
             return
-        if path == "/api/who-is-expected-at-the-gate":
+        if path == "/api/appointment-windows/current/visitors":
             state["roster_observed"] = True
             atomic_json(STATE, state)
             self.accepted("who-is-expected-at-the-gate", "corporate-reader-principal", ROSTER)
@@ -325,7 +370,7 @@ class Handler(BaseHTTPRequestHandler):
         if request is None:
             return
         state = json.loads(STATE.read_text(encoding="utf-8"))
-        if path == "/api/an-appointment-we-do-not-own":
+        if path == "/api/appointments/current":
             if not state["appointment_observed"] or not state["roster_observed"]:
                 self.send_json(403, {"error": "appointment and current roster must be inspected"})
                 return
@@ -348,7 +393,7 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(STATE, state)
             self.accepted("an-appointment-we-do-not-own", ROSTER["identity"], appointment, 201)
             return
-        if path == "/api/checked-in-as-the-contractor":
+        if path == "/api/check-ins":
             appointment = state["appointment"]
             if (request.get("appointment_id") != APPOINTMENT["record_id"] or
                     request.get("roster_id") != ROSTER["record_id"] or

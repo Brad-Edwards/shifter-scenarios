@@ -235,8 +235,41 @@ class Handler(BaseHTTPRequestHandler):
             response.update(extra)
         self.send_json(status, response)
 
+    def _serve_client_document(self) -> bool:
+        if urlsplit(self.path).path != "/.well-known/arwc-client":
+            return False
+        self.send_json(200, {
+            "schema": "arwc.client-documents/v1",
+            "service": "maintenance-review.arwc.test",
+            "title": "Maintenance drawing cache and approval service",
+            "routes": [
+                {
+                    "key": "maintenance.drawing-cache",
+                    "method": "GET",
+                    "template": "https://maintenance-review.arwc.test/api/drawing-cache/current"
+                },
+                {
+                    "key": "maintenance.drawing-cache-update",
+                    "method": "PUT",
+                    "template": "https://maintenance-review.arwc.test/api/drawing-cache/current"
+                },
+                {
+                    "key": "maintenance.drawing-approval",
+                    "method": "POST",
+                    "template": "https://maintenance-review.arwc.test/api/drawing-approvals"
+                },
+                {
+                    "key": "maintenance.approval-token",
+                    "method": "GET",
+                    "template": "https://maintenance-review.arwc.test/api/approval-tokens/current"
+                }
+            ],
+            "related": ["https://identity.arwc.test/.well-known/arwc-client"],
+        })
+        return True
+
     def do_GET(self) -> None:
-        if urlsplit(self.path).path != "/api/which-drawing-did-the-cache-keep":
+        if urlsplit(self.path).path != "/api/drawing-cache/current":
             self.send_json(404, {"error": "record not found"})
             return
         principal = self.authorized()
@@ -258,7 +291,7 @@ class Handler(BaseHTTPRequestHandler):
         path = urlsplit(self.path).path
         state = load_json(STATE)
         assert state is not None
-        if path == "/api/a-drawing-of-our-choosing":
+        if path == "/api/drawing-cache/current":
             if not state["association_observed"]:
                 self.send_json(403, {"error": "cache association must be inspected"})
                 return
@@ -289,7 +322,7 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(STATE, state)
             self.accepted("a-drawing-of-our-choosing", principal, record, 201)
             return
-        if path == "/api/the-reviewer-trusts-the-drawing":
+        if path == "/api/drawing-approvals":
             cached = state.get("cached_response")
             if (not isinstance(cached, dict) or
                     request.get("cache_key") != "GET:/viewer/drawings/DRW-OG2-R8" or
@@ -324,7 +357,7 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("the-reviewer-trusts-the-drawing", principal, public, 201,
                           {"review_capability": token})
             return
-        if path == "/api/approval-beyond-the-token":
+        if path == "/api/approval-tokens/current":
             capability = state.get("review_capability")
             token = request.get("review_capability")
             if (not isinstance(capability, dict) or not isinstance(token, str) or
