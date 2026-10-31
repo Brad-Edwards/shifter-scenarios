@@ -15,11 +15,14 @@ install -d -o arwc-identity -g arwc-archive-source -m 0750 \
   /var/lib/arwc-identity/archive
 
 session=/run/arwc-corporate/handover/corporate-session
-for _ in $(seq 1 60); do
-  [ -s "$session" ] && break
-  sleep 1
-done
-[ -s "$session" ]
+install -d -m 0755 /run/arwc-status
+echo waiting > /run/arwc-status/state
+until [[ -s "$session" ]]; do sleep 5; done
+token=$(tr -d '\n' < "$session")
+if ! [[ "$token" =~ ^[0-9a-f]{64}$ ]]; then
+  echo "arwc-identity: invalid or cross-range handover token" >&2; exit 1
+fi
+echo ready > /run/arwc-status/state
 tr -d '\n' < "$session" | sha256sum | awk '{print $1}' \
   > /var/lib/arwc-identity/auth/corporate-session.sha256
 chown arwc-identity:arwc-identity /var/lib/arwc-identity/auth/corporate-session.sha256

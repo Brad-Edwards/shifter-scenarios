@@ -15,11 +15,14 @@ install -d -o arwc-archive -g arwc-archive -m 0700 \
   /var/lib/arwc-archive/artifacts
 
 session=/run/arwc-corporate/handover/corporate-session
-for _ in $(seq 1 60); do
-  [ -s "$session" ] && break
-  sleep 1
-done
-[ -s "$session" ]
+install -d -m 0755 /run/arwc-status
+echo waiting > /run/arwc-status/state
+until [[ -s "$session" ]]; do sleep 5; done
+token=$(tr -d '\n' < "$session")
+if ! [[ "$token" =~ ^[0-9a-f]{64}$ ]]; then
+  echo "arwc-archive: invalid or cross-range handover token" >&2; exit 1
+fi
+echo ready > /run/arwc-status/state
 tr -d '\n' < "$session" | sha256sum | awk '{print $1}' \
   > /var/lib/arwc-archive/auth/corporate-session.sha256
 chown arwc-archive:arwc-archive /var/lib/arwc-archive/auth/corporate-session.sha256

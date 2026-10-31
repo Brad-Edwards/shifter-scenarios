@@ -68,6 +68,12 @@ services:
     hostname: a-business
     domainname: corporate.arwc.test
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "grep -qx ready /run/arwc-status/state 2>/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     read_only: true
     cap_drop: [ALL]
     cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
@@ -104,6 +110,12 @@ services:
     hostname: a-data
     domainname: corporate.arwc.test
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "grep -qx ready /run/arwc-status/state 2>/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     read_only: true
     cap_drop: [ALL]
     cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
@@ -113,7 +125,11 @@ services:
       net.ipv4.ip_unprivileged_port_start: 0
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
-    depends_on: [a-connector, a-identity]
+    depends_on:
+      a-connector:
+        condition: service_started
+      a-identity:
+        condition: service_healthy
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
       - /run:rw,nosuid,nodev,size=16m,mode=0755
@@ -150,6 +166,12 @@ services:
     hostname: a-archive
     domainname: corporate.arwc.test
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "grep -qx ready /run/arwc-status/state 2>/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     read_only: true
     cap_drop: [ALL]
     cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
@@ -188,6 +210,12 @@ services:
     hostname: a-identity
     domainname: corporate.arwc.test
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "grep -qx ready /run/arwc-status/state 2>/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     read_only: true
     cap_drop: [ALL]
     cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
@@ -195,7 +223,11 @@ services:
       - no-new-privileges:true
     sysctls:
       net.ipv4.ip_unprivileged_port_start: 0
-    depends_on: [a-connector, a-archive]
+    depends_on:
+      a-connector:
+        condition: service_started
+      a-archive:
+        condition: service_healthy
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
       - /run:rw,nosuid,nodev,size=16m,mode=0755
@@ -259,6 +291,12 @@ services:
     hostname: a-contractors
     domainname: maintenance.arwc.test
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "grep -qx ready /run/arwc-status/state 2>/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     read_only: true
     cap_drop: [ALL]
     cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
@@ -305,7 +343,9 @@ services:
       - no-new-privileges:true
     sysctls:
       net.ipv4.ip_unprivileged_port_start: 0
-    depends_on: [a-contractors]
+    depends_on:
+      a-contractors:
+        condition: service_healthy
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
       - /run:rw,nosuid,nodev,size=16m,mode=0755
@@ -554,7 +594,11 @@ services:
       - no-new-privileges:true
     sysctls:
       net.ipv4.ip_unprivileged_port_start: 0
-    depends_on: [a-business, a-contractors]
+    depends_on:
+      a-business:
+        condition: service_healthy
+      a-contractors:
+        condition: service_healthy
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=256m,mode=1777
       - /run:rw,nosuid,nodev,size=16m,mode=0755
@@ -586,7 +630,11 @@ services:
     cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
     security_opt: [no-new-privileges:true]
     sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
-    depends_on: [a-approval, a-contractors]
+    depends_on:
+      a-approval:
+        condition: service_started
+      a-contractors:
+        condition: service_healthy
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
       - /run:rw,nosuid,nodev,size=16m,mode=0755
