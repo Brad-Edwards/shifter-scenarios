@@ -21,7 +21,7 @@ CONFIG = json.loads((STATE / "config/opening.json").read_text())
 SESSION = CONFIG["sessions"][0]
 CONVERSATION = json.loads((STATE / "conversations/SUP-2841.json").read_text())
 EXTENDED = AUDIT / "extended-state.json"
-ALT_SESSION = "ksess_talia_review_9Kw4Pn7R"
+ALT_SESSION = CONFIG.get("reviewer_session_id", "ksess_talia_review_9Kw4Pn7R")
 ASSISTANT_TOKEN = "assistant-tool-session"
 
 
