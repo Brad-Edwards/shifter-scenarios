@@ -114,7 +114,7 @@ After #212–#224 (PR stack #241–#253), the open milestone work is:
   removed, generic backend profiles classified)
 - #219–#224: ✅ ARWC domain redesign complete (design map, W01–W35 resource-
   oriented routes, client reference graph, W33 real starting material, full
-  provenance review — overall_status: complete)
+  provenance review, overall_status: complete)
 - #225–#230: add safe per-range variation, authoritative challenge delivery and
   scoring, graduated in-world hints, explicit defender-learning outcomes, blind
   human-plus-agent playtests, and evidence-based duration/tier calibration; and
