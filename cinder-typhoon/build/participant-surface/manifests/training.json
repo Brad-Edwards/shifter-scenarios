@@ -23,7 +23,9 @@
     },
     "hints": {
       "items": [],
-      "status": "not_materialized"
+      "levels": 3,
+      "path": "build/card-coverage/hints-training.yaml",
+      "status": "authored"
     }
   },
   "disclosures": [

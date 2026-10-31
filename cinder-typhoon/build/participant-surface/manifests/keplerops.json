@@ -111,7 +111,9 @@
     },
     "hints": {
       "items": [],
-      "status": "not_materialized"
+      "levels": 3,
+      "path": "build/card-coverage/hints-keplerops.yaml",
+      "status": "authored"
     }
   },
   "disclosures": [

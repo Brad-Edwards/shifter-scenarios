@@ -1,0 +1,483 @@
+schema_version: 1
+phase: arwc
+hints:
+  W01.1:
+    h1: '[hint 1 for W01.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W01.1 — class of boundary or technique]'
+    h3: '[hint 3 for W01.1 — concrete next diagnostic step]'
+  W01.2:
+    h1: '[hint 1 for W01.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W01.2 — class of boundary or technique]'
+    h3: '[hint 3 for W01.2 — concrete next diagnostic step]'
+  W01.3:
+    h1: '[hint 1 for W01.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W01.3 — class of boundary or technique]'
+    h3: '[hint 3 for W01.3 — concrete next diagnostic step]'
+  W01.4:
+    h1: '[hint 1 for W01.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W01.4 — class of boundary or technique]'
+    h3: '[hint 3 for W01.4 — concrete next diagnostic step]'
+  W02.1:
+    h1: '[hint 1 for W02.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W02.1 — class of boundary or technique]'
+    h3: '[hint 3 for W02.1 — concrete next diagnostic step]'
+  W02.2:
+    h1: '[hint 1 for W02.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W02.2 — class of boundary or technique]'
+    h3: '[hint 3 for W02.2 — concrete next diagnostic step]'
+  W02.3:
+    h1: '[hint 1 for W02.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W02.3 — class of boundary or technique]'
+    h3: '[hint 3 for W02.3 — concrete next diagnostic step]'
+  W03.1:
+    h1: '[hint 1 for W03.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W03.1 — class of boundary or technique]'
+    h3: '[hint 3 for W03.1 — concrete next diagnostic step]'
+  W03.2:
+    h1: '[hint 1 for W03.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W03.2 — class of boundary or technique]'
+    h3: '[hint 3 for W03.2 — concrete next diagnostic step]'
+  W03.3:
+    h1: '[hint 1 for W03.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W03.3 — class of boundary or technique]'
+    h3: '[hint 3 for W03.3 — concrete next diagnostic step]'
+  W04.1:
+    h1: '[hint 1 for W04.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W04.1 — class of boundary or technique]'
+    h3: '[hint 3 for W04.1 — concrete next diagnostic step]'
+  W04.2:
+    h1: '[hint 1 for W04.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W04.2 — class of boundary or technique]'
+    h3: '[hint 3 for W04.2 — concrete next diagnostic step]'
+  W04.3:
+    h1: '[hint 1 for W04.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W04.3 — class of boundary or technique]'
+    h3: '[hint 3 for W04.3 — concrete next diagnostic step]'
+  W05.1:
+    h1: '[hint 1 for W05.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W05.1 — class of boundary or technique]'
+    h3: '[hint 3 for W05.1 — concrete next diagnostic step]'
+  W05.2:
+    h1: '[hint 1 for W05.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W05.2 — class of boundary or technique]'
+    h3: '[hint 3 for W05.2 — concrete next diagnostic step]'
+  W05.3:
+    h1: '[hint 1 for W05.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W05.3 — class of boundary or technique]'
+    h3: '[hint 3 for W05.3 — concrete next diagnostic step]'
+  W06.1:
+    h1: '[hint 1 for W06.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W06.1 — class of boundary or technique]'
+    h3: '[hint 3 for W06.1 — concrete next diagnostic step]'
+  W06.2:
+    h1: '[hint 1 for W06.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W06.2 — class of boundary or technique]'
+    h3: '[hint 3 for W06.2 — concrete next diagnostic step]'
+  W06.3:
+    h1: '[hint 1 for W06.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W06.3 — class of boundary or technique]'
+    h3: '[hint 3 for W06.3 — concrete next diagnostic step]'
+  W07.1:
+    h1: '[hint 1 for W07.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W07.1 — class of boundary or technique]'
+    h3: '[hint 3 for W07.1 — concrete next diagnostic step]'
+  W07.2:
+    h1: '[hint 1 for W07.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W07.2 — class of boundary or technique]'
+    h3: '[hint 3 for W07.2 — concrete next diagnostic step]'
+  W07.3:
+    h1: '[hint 1 for W07.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W07.3 — class of boundary or technique]'
+    h3: '[hint 3 for W07.3 — concrete next diagnostic step]'
+  W08.1:
+    h1: '[hint 1 for W08.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W08.1 — class of boundary or technique]'
+    h3: '[hint 3 for W08.1 — concrete next diagnostic step]'
+  W08.2:
+    h1: '[hint 1 for W08.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W08.2 — class of boundary or technique]'
+    h3: '[hint 3 for W08.2 — concrete next diagnostic step]'
+  W08.3:
+    h1: '[hint 1 for W08.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W08.3 — class of boundary or technique]'
+    h3: '[hint 3 for W08.3 — concrete next diagnostic step]'
+  W08.4:
+    h1: '[hint 1 for W08.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W08.4 — class of boundary or technique]'
+    h3: '[hint 3 for W08.4 — concrete next diagnostic step]'
+  W09.1:
+    h1: '[hint 1 for W09.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W09.1 — class of boundary or technique]'
+    h3: '[hint 3 for W09.1 — concrete next diagnostic step]'
+  W09.2:
+    h1: '[hint 1 for W09.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W09.2 — class of boundary or technique]'
+    h3: '[hint 3 for W09.2 — concrete next diagnostic step]'
+  W09.3:
+    h1: '[hint 1 for W09.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W09.3 — class of boundary or technique]'
+    h3: '[hint 3 for W09.3 — concrete next diagnostic step]'
+  W09.4:
+    h1: '[hint 1 for W09.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W09.4 — class of boundary or technique]'
+    h3: '[hint 3 for W09.4 — concrete next diagnostic step]'
+  W10.1:
+    h1: '[hint 1 for W10.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W10.1 — class of boundary or technique]'
+    h3: '[hint 3 for W10.1 — concrete next diagnostic step]'
+  W10.2:
+    h1: '[hint 1 for W10.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W10.2 — class of boundary or technique]'
+    h3: '[hint 3 for W10.2 — concrete next diagnostic step]'
+  W10.3:
+    h1: '[hint 1 for W10.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W10.3 — class of boundary or technique]'
+    h3: '[hint 3 for W10.3 — concrete next diagnostic step]'
+  W11.1:
+    h1: '[hint 1 for W11.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W11.1 — class of boundary or technique]'
+    h3: '[hint 3 for W11.1 — concrete next diagnostic step]'
+  W11.2:
+    h1: '[hint 1 for W11.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W11.2 — class of boundary or technique]'
+    h3: '[hint 3 for W11.2 — concrete next diagnostic step]'
+  W11.3:
+    h1: '[hint 1 for W11.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W11.3 — class of boundary or technique]'
+    h3: '[hint 3 for W11.3 — concrete next diagnostic step]'
+  W12.1:
+    h1: '[hint 1 for W12.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W12.1 — class of boundary or technique]'
+    h3: '[hint 3 for W12.1 — concrete next diagnostic step]'
+  W12.2:
+    h1: '[hint 1 for W12.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W12.2 — class of boundary or technique]'
+    h3: '[hint 3 for W12.2 — concrete next diagnostic step]'
+  W12.3:
+    h1: '[hint 1 for W12.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W12.3 — class of boundary or technique]'
+    h3: '[hint 3 for W12.3 — concrete next diagnostic step]'
+  W12.4:
+    h1: '[hint 1 for W12.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W12.4 — class of boundary or technique]'
+    h3: '[hint 3 for W12.4 — concrete next diagnostic step]'
+  W13.1:
+    h1: '[hint 1 for W13.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W13.1 — class of boundary or technique]'
+    h3: '[hint 3 for W13.1 — concrete next diagnostic step]'
+  W13.2:
+    h1: '[hint 1 for W13.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W13.2 — class of boundary or technique]'
+    h3: '[hint 3 for W13.2 — concrete next diagnostic step]'
+  W13.3:
+    h1: '[hint 1 for W13.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W13.3 — class of boundary or technique]'
+    h3: '[hint 3 for W13.3 — concrete next diagnostic step]'
+  W13.4:
+    h1: '[hint 1 for W13.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W13.4 — class of boundary or technique]'
+    h3: '[hint 3 for W13.4 — concrete next diagnostic step]'
+  W14.1:
+    h1: '[hint 1 for W14.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W14.1 — class of boundary or technique]'
+    h3: '[hint 3 for W14.1 — concrete next diagnostic step]'
+  W14.2:
+    h1: '[hint 1 for W14.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W14.2 — class of boundary or technique]'
+    h3: '[hint 3 for W14.2 — concrete next diagnostic step]'
+  W14.3:
+    h1: '[hint 1 for W14.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W14.3 — class of boundary or technique]'
+    h3: '[hint 3 for W14.3 — concrete next diagnostic step]'
+  W15.1:
+    h1: '[hint 1 for W15.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W15.1 — class of boundary or technique]'
+    h3: '[hint 3 for W15.1 — concrete next diagnostic step]'
+  W15.2:
+    h1: '[hint 1 for W15.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W15.2 — class of boundary or technique]'
+    h3: '[hint 3 for W15.2 — concrete next diagnostic step]'
+  W15.3:
+    h1: '[hint 1 for W15.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W15.3 — class of boundary or technique]'
+    h3: '[hint 3 for W15.3 — concrete next diagnostic step]'
+  W15.4:
+    h1: '[hint 1 for W15.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W15.4 — class of boundary or technique]'
+    h3: '[hint 3 for W15.4 — concrete next diagnostic step]'
+  W16.1:
+    h1: '[hint 1 for W16.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W16.1 — class of boundary or technique]'
+    h3: '[hint 3 for W16.1 — concrete next diagnostic step]'
+  W16.2:
+    h1: '[hint 1 for W16.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W16.2 — class of boundary or technique]'
+    h3: '[hint 3 for W16.2 — concrete next diagnostic step]'
+  W16.3:
+    h1: '[hint 1 for W16.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W16.3 — class of boundary or technique]'
+    h3: '[hint 3 for W16.3 — concrete next diagnostic step]'
+  W16.4:
+    h1: '[hint 1 for W16.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W16.4 — class of boundary or technique]'
+    h3: '[hint 3 for W16.4 — concrete next diagnostic step]'
+  W17.1:
+    h1: '[hint 1 for W17.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W17.1 — class of boundary or technique]'
+    h3: '[hint 3 for W17.1 — concrete next diagnostic step]'
+  W17.2:
+    h1: '[hint 1 for W17.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W17.2 — class of boundary or technique]'
+    h3: '[hint 3 for W17.2 — concrete next diagnostic step]'
+  W17.3:
+    h1: '[hint 1 for W17.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W17.3 — class of boundary or technique]'
+    h3: '[hint 3 for W17.3 — concrete next diagnostic step]'
+  W17.4:
+    h1: '[hint 1 for W17.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W17.4 — class of boundary or technique]'
+    h3: '[hint 3 for W17.4 — concrete next diagnostic step]'
+  W18.1:
+    h1: '[hint 1 for W18.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W18.1 — class of boundary or technique]'
+    h3: '[hint 3 for W18.1 — concrete next diagnostic step]'
+  W18.2:
+    h1: '[hint 1 for W18.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W18.2 — class of boundary or technique]'
+    h3: '[hint 3 for W18.2 — concrete next diagnostic step]'
+  W18.3:
+    h1: '[hint 1 for W18.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W18.3 — class of boundary or technique]'
+    h3: '[hint 3 for W18.3 — concrete next diagnostic step]'
+  W18.4:
+    h1: '[hint 1 for W18.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W18.4 — class of boundary or technique]'
+    h3: '[hint 3 for W18.4 — concrete next diagnostic step]'
+  W19.1:
+    h1: '[hint 1 for W19.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W19.1 — class of boundary or technique]'
+    h3: '[hint 3 for W19.1 — concrete next diagnostic step]'
+  W19.2:
+    h1: '[hint 1 for W19.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W19.2 — class of boundary or technique]'
+    h3: '[hint 3 for W19.2 — concrete next diagnostic step]'
+  W19.3:
+    h1: '[hint 1 for W19.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W19.3 — class of boundary or technique]'
+    h3: '[hint 3 for W19.3 — concrete next diagnostic step]'
+  W19.4:
+    h1: '[hint 1 for W19.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W19.4 — class of boundary or technique]'
+    h3: '[hint 3 for W19.4 — concrete next diagnostic step]'
+  W20.1:
+    h1: '[hint 1 for W20.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W20.1 — class of boundary or technique]'
+    h3: '[hint 3 for W20.1 — concrete next diagnostic step]'
+  W20.2:
+    h1: '[hint 1 for W20.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W20.2 — class of boundary or technique]'
+    h3: '[hint 3 for W20.2 — concrete next diagnostic step]'
+  W20.3:
+    h1: '[hint 1 for W20.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W20.3 — class of boundary or technique]'
+    h3: '[hint 3 for W20.3 — concrete next diagnostic step]'
+  W21.1:
+    h1: '[hint 1 for W21.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W21.1 — class of boundary or technique]'
+    h3: '[hint 3 for W21.1 — concrete next diagnostic step]'
+  W21.2:
+    h1: '[hint 1 for W21.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W21.2 — class of boundary or technique]'
+    h3: '[hint 3 for W21.2 — concrete next diagnostic step]'
+  W22.1:
+    h1: '[hint 1 for W22.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W22.1 — class of boundary or technique]'
+    h3: '[hint 3 for W22.1 — concrete next diagnostic step]'
+  W22.2:
+    h1: '[hint 1 for W22.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W22.2 — class of boundary or technique]'
+    h3: '[hint 3 for W22.2 — concrete next diagnostic step]'
+  W22.3:
+    h1: '[hint 1 for W22.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W22.3 — class of boundary or technique]'
+    h3: '[hint 3 for W22.3 — concrete next diagnostic step]'
+  W22.4:
+    h1: '[hint 1 for W22.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W22.4 — class of boundary or technique]'
+    h3: '[hint 3 for W22.4 — concrete next diagnostic step]'
+  W23.1:
+    h1: '[hint 1 for W23.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W23.1 — class of boundary or technique]'
+    h3: '[hint 3 for W23.1 — concrete next diagnostic step]'
+  W23.2:
+    h1: '[hint 1 for W23.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W23.2 — class of boundary or technique]'
+    h3: '[hint 3 for W23.2 — concrete next diagnostic step]'
+  W23.3:
+    h1: '[hint 1 for W23.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W23.3 — class of boundary or technique]'
+    h3: '[hint 3 for W23.3 — concrete next diagnostic step]'
+  W24.1:
+    h1: '[hint 1 for W24.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W24.1 — class of boundary or technique]'
+    h3: '[hint 3 for W24.1 — concrete next diagnostic step]'
+  W24.2:
+    h1: '[hint 1 for W24.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W24.2 — class of boundary or technique]'
+    h3: '[hint 3 for W24.2 — concrete next diagnostic step]'
+  W24.3:
+    h1: '[hint 1 for W24.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W24.3 — class of boundary or technique]'
+    h3: '[hint 3 for W24.3 — concrete next diagnostic step]'
+  W24.4:
+    h1: '[hint 1 for W24.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W24.4 — class of boundary or technique]'
+    h3: '[hint 3 for W24.4 — concrete next diagnostic step]'
+  W25.1:
+    h1: '[hint 1 for W25.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W25.1 — class of boundary or technique]'
+    h3: '[hint 3 for W25.1 — concrete next diagnostic step]'
+  W25.2:
+    h1: '[hint 1 for W25.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W25.2 — class of boundary or technique]'
+    h3: '[hint 3 for W25.2 — concrete next diagnostic step]'
+  W25.3:
+    h1: '[hint 1 for W25.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W25.3 — class of boundary or technique]'
+    h3: '[hint 3 for W25.3 — concrete next diagnostic step]'
+  W25.4:
+    h1: '[hint 1 for W25.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W25.4 — class of boundary or technique]'
+    h3: '[hint 3 for W25.4 — concrete next diagnostic step]'
+  W26.1:
+    h1: '[hint 1 for W26.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W26.1 — class of boundary or technique]'
+    h3: '[hint 3 for W26.1 — concrete next diagnostic step]'
+  W26.2:
+    h1: '[hint 1 for W26.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W26.2 — class of boundary or technique]'
+    h3: '[hint 3 for W26.2 — concrete next diagnostic step]'
+  W26.3:
+    h1: '[hint 1 for W26.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W26.3 — class of boundary or technique]'
+    h3: '[hint 3 for W26.3 — concrete next diagnostic step]'
+  W26.4:
+    h1: '[hint 1 for W26.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W26.4 — class of boundary or technique]'
+    h3: '[hint 3 for W26.4 — concrete next diagnostic step]'
+  W27.1:
+    h1: '[hint 1 for W27.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W27.1 — class of boundary or technique]'
+    h3: '[hint 3 for W27.1 — concrete next diagnostic step]'
+  W27.2:
+    h1: '[hint 1 for W27.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W27.2 — class of boundary or technique]'
+    h3: '[hint 3 for W27.2 — concrete next diagnostic step]'
+  W27.3:
+    h1: '[hint 1 for W27.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W27.3 — class of boundary or technique]'
+    h3: '[hint 3 for W27.3 — concrete next diagnostic step]'
+  W28.1:
+    h1: '[hint 1 for W28.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W28.1 — class of boundary or technique]'
+    h3: '[hint 3 for W28.1 — concrete next diagnostic step]'
+  W28.2:
+    h1: '[hint 1 for W28.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W28.2 — class of boundary or technique]'
+    h3: '[hint 3 for W28.2 — concrete next diagnostic step]'
+  W28.3:
+    h1: '[hint 1 for W28.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W28.3 — class of boundary or technique]'
+    h3: '[hint 3 for W28.3 — concrete next diagnostic step]'
+  W29.1:
+    h1: '[hint 1 for W29.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W29.1 — class of boundary or technique]'
+    h3: '[hint 3 for W29.1 — concrete next diagnostic step]'
+  W29.2:
+    h1: '[hint 1 for W29.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W29.2 — class of boundary or technique]'
+    h3: '[hint 3 for W29.2 — concrete next diagnostic step]'
+  W29.3:
+    h1: '[hint 1 for W29.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W29.3 — class of boundary or technique]'
+    h3: '[hint 3 for W29.3 — concrete next diagnostic step]'
+  W30.1:
+    h1: '[hint 1 for W30.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W30.1 — class of boundary or technique]'
+    h3: '[hint 3 for W30.1 — concrete next diagnostic step]'
+  W30.2:
+    h1: '[hint 1 for W30.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W30.2 — class of boundary or technique]'
+    h3: '[hint 3 for W30.2 — concrete next diagnostic step]'
+  W31.1:
+    h1: '[hint 1 for W31.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W31.1 — class of boundary or technique]'
+    h3: '[hint 3 for W31.1 — concrete next diagnostic step]'
+  W31.2:
+    h1: '[hint 1 for W31.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W31.2 — class of boundary or technique]'
+    h3: '[hint 3 for W31.2 — concrete next diagnostic step]'
+  W31.3:
+    h1: '[hint 1 for W31.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W31.3 — class of boundary or technique]'
+    h3: '[hint 3 for W31.3 — concrete next diagnostic step]'
+  W31.4:
+    h1: '[hint 1 for W31.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W31.4 — class of boundary or technique]'
+    h3: '[hint 3 for W31.4 — concrete next diagnostic step]'
+  W32.1:
+    h1: '[hint 1 for W32.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W32.1 — class of boundary or technique]'
+    h3: '[hint 3 for W32.1 — concrete next diagnostic step]'
+  W32.2:
+    h1: '[hint 1 for W32.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W32.2 — class of boundary or technique]'
+    h3: '[hint 3 for W32.2 — concrete next diagnostic step]'
+  W32.3:
+    h1: '[hint 1 for W32.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W32.3 — class of boundary or technique]'
+    h3: '[hint 3 for W32.3 — concrete next diagnostic step]'
+  W32.4:
+    h1: '[hint 1 for W32.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W32.4 — class of boundary or technique]'
+    h3: '[hint 3 for W32.4 — concrete next diagnostic step]'
+  W33.1:
+    h1: '[hint 1 for W33.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W33.1 — class of boundary or technique]'
+    h3: '[hint 3 for W33.1 — concrete next diagnostic step]'
+  W33.2:
+    h1: '[hint 1 for W33.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W33.2 — class of boundary or technique]'
+    h3: '[hint 3 for W33.2 — concrete next diagnostic step]'
+  W33.3:
+    h1: '[hint 1 for W33.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W33.3 — class of boundary or technique]'
+    h3: '[hint 3 for W33.3 — concrete next diagnostic step]'
+  W33.4:
+    h1: '[hint 1 for W33.4 — orientation to the relevant system]'
+    h2: '[hint 2 for W33.4 — class of boundary or technique]'
+    h3: '[hint 3 for W33.4 — concrete next diagnostic step]'
+  W34.1:
+    h1: '[hint 1 for W34.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W34.1 — class of boundary or technique]'
+    h3: '[hint 3 for W34.1 — concrete next diagnostic step]'
+  W34.2:
+    h1: '[hint 1 for W34.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W34.2 — class of boundary or technique]'
+    h3: '[hint 3 for W34.2 — concrete next diagnostic step]'
+  W34.3:
+    h1: '[hint 1 for W34.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W34.3 — class of boundary or technique]'
+    h3: '[hint 3 for W34.3 — concrete next diagnostic step]'
+  W35.1:
+    h1: '[hint 1 for W35.1 — orientation to the relevant system]'
+    h2: '[hint 2 for W35.1 — class of boundary or technique]'
+    h3: '[hint 3 for W35.1 — concrete next diagnostic step]'
+  W35.2:
+    h1: '[hint 1 for W35.2 — orientation to the relevant system]'
+    h2: '[hint 2 for W35.2 — class of boundary or technique]'
+    h3: '[hint 3 for W35.2 — concrete next diagnostic step]'
+  W35.3:
+    h1: '[hint 1 for W35.3 — orientation to the relevant system]'
+    h2: '[hint 2 for W35.3 — class of boundary or technique]'
+    h3: '[hint 3 for W35.3 — concrete next diagnostic step]'

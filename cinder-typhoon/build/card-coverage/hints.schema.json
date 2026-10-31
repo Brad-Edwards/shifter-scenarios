@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/card-coverage/hints.schema.json",
+  "title": "Cinder Typhoon graduated in-world hints",
+  "description": "Three-level graduated hints per card. Authored in-world language only. Must not reveal credentials, exact payloads, winning schedules, secrets, or final answers.",
+  "type": "object",
+  "required": ["schema_version", "phase", "hints"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": 1},
+    "phase": {"type": "string", "enum": ["training", "keplerops", "arwc"]},
+    "hints": {
+      "type": "object",
+      "description": "Map from card ID to three-level hint object.",
+      "additionalProperties": {
+        "$ref": "#/$defs/card_hints"
+      }
+    }
+  },
+  "$defs": {
+    "card_hints": {
+      "type": "object",
+      "required": ["h1", "h2", "h3"],
+      "additionalProperties": false,
+      "properties": {
+        "h1": {
+          "type": "string",
+          "description": "Orientation: points to the relevant system or evidence without naming the technique."
+        },
+        "h2": {
+          "type": "string",
+          "description": "Technique class: names the class of boundary or technique to investigate."
+        },
+        "h3": {
+          "type": "string",
+          "description": "Concrete next step: a specific diagnostic action that still requires participant work."
+        }
+      }
+    }
+  }
+}
