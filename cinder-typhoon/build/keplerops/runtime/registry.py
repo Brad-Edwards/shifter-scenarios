@@ -284,6 +284,7 @@ class RegistryHandler(KeplerHandler):
             "versions": CONFIG["versions"],
             "published_customer_versions": [item["version"] for item in published],
             "interface": "fieldkest.connector/v3",
+            "pending_release": CONFIG.get("pending_release", "7.4.3-cinder.rowan"),
         }
         append_audit(AUDIT, "metadata", {"request_id": self.request_id, "principal": principal, "package": result["name"], "status": 200})
         self.send_json(200, result)

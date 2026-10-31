@@ -1528,7 +1528,9 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         source = re.search(r"Repository remote: `(https://\S+?)/fieldkest", self.service_notes).group(1)
         ci = re.search(r"(https://ci\.keplerops\.test)", self.service_notes).group(1)
         packages = re.search(r"(https://packages\.keplerops\.test)", read_home("work/registry/README.md")).group(1)
-        version = "7.4.3-cinder.rowan"
+        # The package metadata names the pending release version for this range.
+        pkg_meta = curl_json(self.discovered_route("packages.metadata"), creds=dev)
+        version = pkg_meta["pending_release"]
 
         def build_package() -> bytes:
             metadata = {"name": "@keplerops/fieldlink-connector", "version": version, "fieldkest": {"interface": "fieldkest.connector/v3", "compatible_interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"]}}
