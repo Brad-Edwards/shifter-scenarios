@@ -525,7 +525,6 @@ class Handler(BaseHTTPRequestHandler):
             "/api/schedules", "/api/feedback-policies",
         } else "instruments" if path in {
             "/api/firmware-images/current", "/api/maintenance-records/current",
-            "/api/maintenance-records/current",
             "/api/collision-solutions",
         } else "diagnostics" if path in {
             "/api/control-commands", "/api/control-commands/consequence",
@@ -652,6 +651,21 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/signature-requests"
     },
     {
+        "key": "process.signature-program-reproduction",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/signature-programs/current/reproductions"
+    },
+    {
+        "key": "process.signature-program",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/signature-programs/current"
+    },
+    {
+        "key": "process.signature-program-constraints",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/signature-programs/current/constraints"
+    },
+    {
         "key": "process.operating-envelope",
         "method": "GET",
         "template": "PROCESS_VIEW_BASE/api/operating-envelopes/current"
@@ -767,6 +781,11 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/reporting-checkpoints/current"
     },
     {
+        "key": "process.reporting-checkpoint-submit",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/reporting-checkpoints/current"
+    },
+    {
         "key": "process.reporting-submit",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/reporting-submissions"
@@ -815,7 +834,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
-        if ROLE == "hmi" and path == "/internal/w34-handover":
+        if ROLE == "hmi" and path == "/internal/control-handovers":
             if (self.headers.get("X-ARWC-Internal") != "data-bridge-w34" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
                     self.client_address[0] != "10.77.63.10"):
@@ -823,12 +842,12 @@ class Handler(BaseHTTPRequestHandler):
             request = self.body()
             if request is None: return
             try:
-                status, result = self.internal_request("instruments", "POST", "/internal/w34-handover", request)
+                status, result = self.internal_request("instruments", "POST", "/internal/control-handovers", request)
             except (OSError, json.JSONDecodeError):
                 self.send_json(409, {"error": "independent instrument path unavailable"}); return
             self.send_json(status, result); return
         if ROLE == "historian" and path in {
-            "/internal/w29-reserve-observation", "/internal/w29-paper-truth",
+            "/internal/reserve-observations", "/internal/release-plan-assessments",
         }:
             if (self.headers.get("X-ARWC-Internal") != "data-bridge-w29" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
@@ -838,7 +857,7 @@ class Handler(BaseHTTPRequestHandler):
             request = self.body()
             if request is None:
                 return
-            owner = "instruments" if path.endswith("reserve-observation") else "hmi"
+            owner = "instruments" if path == "/internal/reserve-observations" else "hmi"
             owner_path = ("/api/collision-solutions"
                           if owner == "instruments" else "/api/reporting-checkpoints/current")
             try:
@@ -853,7 +872,7 @@ class Handler(BaseHTTPRequestHandler):
         request = self.body()
         if request is None:
             return
-        if path in {"/internal/w29-reserve-observation", "/internal/w29-paper-truth"} and \
+        if path in {"/internal/reserve-observations", "/internal/release-plan-assessments"} and \
                 self.client_address[0] != "10.77.63.30":
             self.send_json(403, {"error": "historian service context required"})
             return
@@ -864,15 +883,15 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "hmi" and path in {
                 "/api/release-plans/current", "/api/release-plans/current/execute",
-                "/internal/w33-forecast", "/api/schedule-windows/current",
+                "/internal/forecast-updates", "/api/schedule-windows/current",
                 "/api/schedules", "/api/feedback-policies",
         } and self.client_address[0] != "10.77.63.30":
             self.send_json(403, {"error": "historian service context required"})
             return
         if ROLE == "instruments" and path in {
-                "/internal/w30-bind", "/internal/w30-open",
-                "/internal/w33-schedule", "/internal/w33-policy",
-                "/internal/w34-handover",
+                "/internal/release-plan-bindings", "/internal/release-executions",
+                "/internal/schedule-validations", "/internal/feedback-policy-validations",
+                "/internal/control-handovers",
         } and self.client_address[0] != "10.77.63.20":
             self.send_json(403, {"error": "supervisory service context required"})
             return
@@ -977,7 +996,6 @@ class Handler(BaseHTTPRequestHandler):
         if path in {
             "/api/signature-records/current/interpretation", "/api/signature-programs/current",
             "/api/diagnostic-programs/legacy", "/api/maintenance-records/current",
-            "/api/maintenance-records/current",
             "/api/sealed-viewers/current/execute",
             "/api/sealed-projects/current",
             "/api/unlisted-reviewers/current",
@@ -985,7 +1003,7 @@ class Handler(BaseHTTPRequestHandler):
             "/api/estimator-runs",
             "/api/signature-oracles/current", "/api/estimator-tasks/current",
             "/api/reporting-submissions",
-            "/api/what-counts-as-intact", "/api/signature-programs/current/constraints",
+            "/api/signature-programs/current/reproductions", "/api/signature-programs/current/constraints",
             "/api/diagnostic-runs",
             "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
             "/api/control-authority",
@@ -1145,7 +1163,7 @@ class Handler(BaseHTTPRequestHandler):
         if ROLE == "hmi" and path == "/api/release-plans/current/execute":
             self.w30_open(request)
             return
-        if ROLE == "hmi" and path == "/internal/w33-forecast":
+        if ROLE == "hmi" and path == "/internal/forecast-updates":
             self.w33_hmi_forecast(request, state)
             return
         if ROLE == "hmi" and path == "/api/schedule-windows/current":
@@ -1157,19 +1175,19 @@ class Handler(BaseHTTPRequestHandler):
         if ROLE == "hmi" and path == "/api/feedback-policies":
             self.w33_policy(request, state)
             return
-        if ROLE == "instruments" and path == "/internal/w30-bind":
+        if ROLE == "instruments" and path == "/internal/release-plan-bindings":
             self.w30_reservoir_request(path, request)
             return
-        if ROLE == "instruments" and path == "/internal/w30-open":
+        if ROLE == "instruments" and path == "/internal/release-executions":
             self.w30_observe_release(request, state)
             return
-        if ROLE == "instruments" and path == "/internal/w33-schedule":
+        if ROLE == "instruments" and path == "/internal/schedule-validations":
             self.w33_instrument_schedule(request, state)
             return
-        if ROLE == "instruments" and path == "/internal/w33-policy":
+        if ROLE == "instruments" and path == "/internal/feedback-policy-validations":
             self.w33_instrument_policy(request, state)
             return
-        if ROLE == "instruments" and path == "/internal/w34-handover":
+        if ROLE == "instruments" and path == "/internal/control-handovers":
             self.w34_instrument_handover(request, state)
             return
         if ROLE == "engineering" and path in {
@@ -1186,7 +1204,7 @@ class Handler(BaseHTTPRequestHandler):
             self.w22_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
-            "/api/what-counts-as-intact", "/api/signature-programs/current/constraints",
+            "/api/signature-programs/current/reproductions", "/api/signature-programs/current/constraints",
         }:
             self.w27_post(path, request, state)
             return
@@ -1307,7 +1325,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         manifest = json.loads((W27_ARTIFACTS / "manifest.json").read_text())
         base = (W27_ARTIFACTS / "base.dpg").read_bytes()
-        if path == "/api/what-counts-as-intact":
+        if path == "/api/signature-programs/current/reproductions":
             operation = request.get("operation")
             if operation == "materials" and request == {
                 "operation": "materials", "record_id": "VER-ROT128-R3",
@@ -1472,7 +1490,7 @@ class Handler(BaseHTTPRequestHandler):
         if isinstance(existing, dict): self.send_json(201, existing); return
         correlation = str(uuid.uuid4())
         try:
-            status, result = self.internal_request("hmi", "POST", "/internal/w33-forecast", {
+            status, result = self.internal_request("hmi", "POST", "/internal/forecast-updates", {
                 "correlation": correlation, "request": request,
             })
         except (OSError, json.JSONDecodeError):
@@ -1550,7 +1568,7 @@ class Handler(BaseHTTPRequestHandler):
         correlation = str(uuid.uuid4())
         wrapped = {"correlation": correlation, "request": request, "evaluation": evaluated}
         try:
-            status, data_result = self.internal_request("data_bridge", "POST", "/internal/w33-schedule",
+            status, data_result = self.internal_request("data_bridge", "POST", "/internal/schedule-validations",
                                                         wrapped, "hmi-w33")
         except (OSError, json.JSONDecodeError):
             self.send_json(409, {"error": "planning schedule service unavailable"}); return
@@ -1592,7 +1610,7 @@ class Handler(BaseHTTPRequestHandler):
         correlation = str(uuid.uuid4())
         wrapped = {"correlation": correlation, "request": request, "schedule": schedule}
         try:
-            status, result = self.internal_request("instruments", "POST", "/internal/w33-schedule", wrapped)
+            status, result = self.internal_request("instruments", "POST", "/internal/schedule-validations", wrapped)
         except (OSError, json.JSONDecodeError):
             self.send_json(409, {"error": "independent rehearsal path unavailable"}); return
         record = result.get("record")
@@ -1622,7 +1640,7 @@ class Handler(BaseHTTPRequestHandler):
         correlation = str(uuid.uuid4())
         wrapped = {"correlation": correlation, "request": request, "evaluation": evaluated}
         try:
-            status, result = self.internal_request("instruments", "POST", "/internal/w33-policy", wrapped)
+            status, result = self.internal_request("instruments", "POST", "/internal/feedback-policy-validations", wrapped)
         except (OSError, json.JSONDecodeError):
             self.send_json(409, {"error": "independent policy path unavailable"}); return
         record = result.get("record")
@@ -1651,7 +1669,7 @@ class Handler(BaseHTTPRequestHandler):
             else: self.send_json(409, {"error": "rehearsal already recorded under another correlation"})
             return
         for owner in ("reservoir", "distribution"):
-            try: status, result = self.w33_control_call(owner, "/internal/w33-schedule", request)
+            try: status, result = self.w33_control_call(owner, "/internal/schedule-validations", request)
             except (OSError, json.JSONDecodeError):
                 self.send_json(409, {"error": f"{owner} observation unavailable"}); return
             if status != 201 or result.get("audit_id") != correlation:
@@ -1688,7 +1706,7 @@ class Handler(BaseHTTPRequestHandler):
             else: self.send_json(409, {"error": "policy already recorded under another correlation"})
             return
         for owner in ("reservoir", "distribution"):
-            try: status, result = self.w33_control_call(owner, "/internal/w33-policy", request)
+            try: status, result = self.w33_control_call(owner, "/internal/feedback-policy-validations", request)
             except (OSError, json.JSONDecodeError):
                 self.send_json(409, {"error": f"{owner} policy evaluation unavailable"}); return
             if status != 201 or result.get("audit_id") != correlation:
@@ -1725,7 +1743,7 @@ class Handler(BaseHTTPRequestHandler):
             else: self.send_json(409, {"error": "reporting handover already recorded under another correlation"})
             return
         try:
-            status, reservoir = self.internal_request("reservoir", "POST", "/internal/w34-handover",
+            status, reservoir = self.internal_request("reservoir", "POST", "/internal/control-handovers",
                                                       request, "instruments-w34")
         except (OSError, json.JSONDecodeError):
             self.send_json(409, {"error": "reservoir rehearsal unavailable"}); return
@@ -1883,7 +1901,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "current command-plan bindings do not agree"})
             return
         try:
-            status, result = self.internal_request("instruments", "POST", "/internal/w30-bind", request)
+            status, result = self.internal_request("instruments", "POST", "/internal/release-plan-bindings", request)
         except (OSError, json.JSONDecodeError):
             self.send_json(409, {"error": "independent command path unavailable"})
             return
@@ -1905,7 +1923,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(403, {"error": "bound command plan required"})
             return
         try:
-            status, result = self.internal_request("instruments", "POST", "/internal/w30-open", request)
+            status, result = self.internal_request("instruments", "POST", "/internal/release-executions", request)
         except (OSError, json.JSONDecodeError):
             self.send_json(409, {"error": "independent release path unavailable"})
             return
@@ -1939,7 +1957,7 @@ class Handler(BaseHTTPRequestHandler):
     def w30_observe_release(self, request: dict[str, object],
                             state: dict[str, object]) -> None:
         try:
-            status, reservoir = self.w30_reservoir_call("/internal/w30-open", request)
+            status, reservoir = self.w30_reservoir_call("/internal/release-executions", request)
         except (OSError, json.JSONDecodeError):
             self.send_json(409, {"error": "reservoir controller unavailable"})
             return

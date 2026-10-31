@@ -21,9 +21,9 @@ ROOT = pathlib.Path("/var/lib/arwc-business")
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 DISCOVERIES = ROOT / "state" / "discoveries.json"
-ARCHIVE_EVIDENCE = ROOT / "archive" / "W08-source.json"
-BRIDGE_EVIDENCE = ROOT / "integration" / "W09-read.json"
-RELATION_EVIDENCE = ROOT / "relation" / "W02-association.json"
+ARCHIVE_EVIDENCE = ROOT / "archive" / "archive-source.json"
+BRIDGE_EVIDENCE = ROOT / "integration" / "business-read.json"
+RELATION_EVIDENCE = ROOT / "relation" / "drawing-association.json"
 AGREEMENT = pathlib.Path("/opt/business-workplace/assets/as003-agreement-summary.md")
 
 BUNDLE = {
@@ -318,7 +318,8 @@ class Handler(BaseHTTPRequestHandler):
             ],
             "related": [
                 "https://planning-data.arwc.test/.well-known/arwc-client",
-                "https://identity.arwc.test/.well-known/arwc-client",
+                "https://corporate-identity.arwc.test/.well-known/arwc-client",
+                "https://contractor-portal.arwc.test/.well-known/arwc-client",
             ],
         })
         return True

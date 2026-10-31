@@ -43,11 +43,11 @@ Candidate qualification observes the pristine participant surface before the
 known-solution run and repeats the observation afterward. The second pass
 covers generated files and the resulting read-only service state.
 
-The current gate is intentionally unresolved. KeplerOps and ARWC still contain
-challenge-derived names, and their domain-interface reviews remain pending
-under #212 and #219. Renaming a title route to a card ID also fails. Once a
-domain map is approved, every `/api/` and `/internal/` route must match one of
-its reviewed patterns, so an arbitrary alias cannot satisfy the check.
+The current gate remains unresolved for non-route findings. KeplerOps domain
+interface review is pending under #212. The ARWC domain interface is approved
+as explicit resource families: every `/api/` and `/internal/` route must match
+one of those reviewed patterns, so an arbitrary title or card-ID alias cannot
+satisfy the check.
 
 ## Allowlist
 

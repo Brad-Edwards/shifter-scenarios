@@ -803,7 +803,7 @@ content:
         node: a-engineering
         application: engineering-workbench
       surface_bindings:
-      - a-engineering.a-engineering/engineering-workbench/what-counts-as-intact
+      - a-engineering.a-engineering/engineering-workbench/signature-program-reproduction
       - a-engineering.a-engineering/filesystem:/var/lib/arwc-engineering/artifacts/what-counts-as-intact
       starting_state: Legacy verifier VER-ROT128-R3 treats each 16-byte block as little-endian u128 and updates state
         s=ROTL128(s,17) XOR block XOR ROTL128(block,41) from IV 6a09e667f3bcc908bb67ae8584caa73b, then returns s XOR ROTL128(s,29)

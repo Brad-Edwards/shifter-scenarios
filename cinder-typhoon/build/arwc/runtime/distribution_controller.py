@@ -91,8 +91,8 @@ class Handler(BaseHTTPRequestHandler):
         request = self.body()
         if request is None: return
         path = urlsplit(self.path).path
-        if path == "/internal/w33-schedule": self.schedule(request)
-        elif path == "/internal/w33-policy": self.policy(request)
+        if path == "/internal/schedule-validations": self.schedule(request)
+        elif path == "/internal/feedback-policy-validations": self.policy(request)
         else: self.send_json(404, {"error": "record not found"})
 
     def schedule(self, request: dict[str, object]) -> None:

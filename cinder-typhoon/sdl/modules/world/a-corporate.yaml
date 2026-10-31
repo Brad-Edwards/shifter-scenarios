@@ -963,8 +963,8 @@ nodes:
             content_type: application/json
           - status_code: 409
             content_type: application/json
-        - route_id: paper-truth
-          path: /api/paper-truth
+        - route_id: reporting-checkpoint-submit
+          path: /api/reporting-checkpoints/current
           methods:
           - POST
           auth_required: true
@@ -1081,7 +1081,7 @@ nodes:
           - the-asset-s-true-lineage
           - the-price-of-this-planning-window
           - what-reserve-remains-uncommitted
-          - paper-truth
+          - reporting-checkpoint-submit
           - the-expensive-hour
           - which-view-the-planner-trusts
           - a-reassuring-decision

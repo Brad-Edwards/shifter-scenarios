@@ -29,7 +29,7 @@ AUDIT = ROOT / "audit" / "events.jsonl"
 SIGNING_KEY = ROOT / "auth" / "approval-signing-key.pem"
 APPROVAL_EVIDENCE = ROOT / "evidence" / "approval.json"
 CONTRACTOR_SESSION = pathlib.Path("/run/arwc-field-session/contractor-session.json")
-READ_EVIDENCE = pathlib.Path("/run/arwc-read-evidence/W09-read.json")
+READ_EVIDENCE = pathlib.Path("/run/arwc-read-evidence/business-read.json")
 CHROME = "/opt/chrome-headless-shell/chrome-headless-shell"
 
 ASSOCIATION = {
@@ -264,11 +264,13 @@ class Handler(BaseHTTPRequestHandler):
                     "template": "https://maintenance-review.arwc.test/api/approval-tokens/current"
                 }
             ],
-            "related": ["https://identity.arwc.test/.well-known/arwc-client"],
+            "related": ["https://corporate-identity.arwc.test/.well-known/arwc-client"],
         })
         return True
 
     def do_GET(self) -> None:
+        if self._serve_client_document():
+            return
         if urlsplit(self.path).path != "/api/drawing-cache/current":
             self.send_json(404, {"error": "record not found"})
             return

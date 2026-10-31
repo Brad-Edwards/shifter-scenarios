@@ -2114,10 +2114,16 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         integrity_id = "VER-ROT128-R3"
 
         with self.subTest(card="W27.1 what counts as intact"):
-            status, _ = request(self.discovered_route("archive.bundle-integrity"), method="POST", token="wrong",
+            status, missing = request(
+                f"{base}/api/what-counts-as-intact", method="POST", token=session,
+                body={"operation": "materials", "record_id": integrity_id},
+            )
+            self.assertEqual(status, 404)
+            self.assertNotIn("verifier_b64", missing)
+            status, _ = request(self.discovered_route("process.signature-program-reproduction"), method="POST", token="wrong",
                                  body={"operation": "materials", "record_id": integrity_id})
             self.assertEqual(status, 403)
-            status, result = request(self.discovered_route("archive.bundle-integrity"), method="POST", token=session,
+            status, result = request(self.discovered_route("process.signature-program-reproduction"), method="POST", token=session,
                                       body={"operation": "materials", "record_id": integrity_id}, expected=201)
             record = result["record"]
             verifier = base64.b64decode(result["verifier_b64"])
@@ -2136,14 +2142,20 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W27.2 the constraints of a valid-looking program"):
             results = self.evidence["w27_results"]
-            status, _ = request(self.discovered_route("archive.bundle-integrity"), method="POST", token=session,
+            status, _ = request(self.discovered_route("process.signature-program-reproduction"), method="POST", token=session,
                                  body={"operation": "results", "record_id": integrity_id, "program_set": "DPG1-CASES-R3",
                                        "results": [dict(results[0], decision="rejected"), *results[1:]]})
             self.assertEqual(status, 409)
-            status, accepted = request(self.discovered_route("archive.bundle-integrity"), method="POST", token=session,
+            status, accepted = request(self.discovered_route("process.signature-program-reproduction"), method="POST", token=session,
                                         body={"operation": "results", "record_id": integrity_id, "program_set": "DPG1-CASES-R3", "results": list(reversed(results))}, expected=201)
             self.assertEqual(accepted["record"]["cases_verified"], len(results))
-            status, contract = request(self.discovered_route("process.signature-program"), method="POST", token=session,
+            status, missing = request(
+                f"{base}/api/what-counts-as-intact", method="POST", token=session,
+                body={"operation": "materials", "record_id": integrity_id},
+            )
+            self.assertEqual(status, 404)
+            self.assertNotIn("verifier_b64", missing)
+            status, contract = request(self.discovered_route("process.signature-program-constraints"), method="POST", token=session,
                                         body={"operation": "contract", "record_id": "DPG-CONTRACT-R8"}, expected=201)
             record = contract["record"]
             program_base = base64.b64decode(contract["base_program_b64"])
@@ -2153,11 +2165,11 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 self.assertEqual(case["delta"], f"{w27_rot128(bytes(changed)) ^ w27_rot128(program_base):032x}")
             identical = {"operation": "model", "record_id": "DPG-MODEL-R8", "cases": record["distinguishing_cases"],
                          "program_b64": base64.b64encode(program_base).decode()}
-            status, _ = request(self.discovered_route("process.signature-program"), method="POST", token=session, body=identical)
+            status, _ = request(self.discovered_route("process.signature-program-constraints"), method="POST", token=session, body=identical)
             self.assertEqual(status, 409)
             seed = bytearray(program_base); seed[48:64] = b"DPG-CRR-MODEL1".ljust(16, b"\0")
             candidate = w27_solve_collision(bytes(seed), program_base, record["reservoir_bits"])
-            status, modeled = request(self.discovered_route("process.signature-program"), method="POST", token=session,
+            status, modeled = request(self.discovered_route("process.signature-program-constraints"), method="POST", token=session,
                                        body={**identical, "program_b64": base64.b64encode(candidate).decode()}, expected=201)
             self.assertTrue(modeled["record"]["nonidentical"])
             self.evidence["w27_contract"] = record
@@ -2298,12 +2310,24 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "ramp_open_seconds": 100, "each_gate_target_m3s": 0.5, "hold_seconds": 900, "ramp_close_seconds": 100,
             }
             # The practice sequence (W25) already satisfied the required movement conditions.
-            status, _ = plan("/api/paper-truth", method="POST", body=dict(binding, hold_seconds=899))
+            status, missing = plan("/api/paper-truth", method="POST", body=binding)
+            self.assertEqual(status, 404)
+            self.assertNotIn("released_volume_ml", json.dumps(missing))
+            status, _ = request(
+                self.discovered_route("process.reporting-checkpoint-submit"), method="POST",
+                token=session, body=dict(binding, hold_seconds=899),
+            )
             self.assertEqual(status, 409)
-            status, result = plan("/api/paper-truth", method="POST", body=binding, expected=201)
+            status, result = request(
+                self.discovered_route("process.reporting-checkpoint-submit"), method="POST",
+                token=session, body=binding, expected=201,
+            )
             record = result["record"]
             self.assertEqual(record["record_id"], plan_id)
             self.assertFalse(record["live_action_performed"])
+            status, missing = plan("/api/paper-truth", method="POST", body=binding)
+            self.assertEqual(status, 404)
+            self.assertNotIn("released_volume_ml", json.dumps(missing))
             self.evidence["w29_plan"] = plan_id
             status, present = request(self.discovered_route("process.state"), token=session, expected=200)
             self.assertEqual(present["record"]["measurements"]["usable_reserve_ml"], self.evidence["usable_reserve_ml"])

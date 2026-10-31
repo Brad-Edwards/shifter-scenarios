@@ -232,8 +232,8 @@ nodes:
             content_type: application/json
           - status_code: 409
             content_type: application/json
-        - route_id: paper-truth
-          path: /api/paper-truth
+        - route_id: reporting-checkpoint-submit
+          path: /api/reporting-checkpoints/current
           methods:
           - POST
           auth_required: true
@@ -328,7 +328,7 @@ nodes:
           - conditions-before-movement
           - accepted-is-not-actuated
           - a-sequence-the-process-can-follow
-          - paper-truth
+          - reporting-checkpoint-submit
           - bind-the-plan-to-the-plant
           - a-forecast-that-matches-the-instrument
           - the-expensive-hour
@@ -757,8 +757,8 @@ nodes:
             content_type: application/json
           - status_code: 409
             content_type: application/json
-        - route_id: what-counts-as-intact
-          path: /api/what-counts-as-intact
+        - route_id: signature-program-reproduction
+          path: /api/signature-programs/current/reproductions
           methods:
           - POST
           auth_required: true
@@ -920,7 +920,7 @@ nodes:
           - the-machine-inside-the-viewer
           - the-decision-inside-the-sealed-project
           - the-reviewer-who-was-never-listed
-          - what-counts-as-intact
+          - signature-program-reproduction
           - the-constraints-of-a-valid-looking-program
           - the-utility-s-small-world
           - control-with-very-little-room

@@ -66,7 +66,7 @@ import json,ssl,sys,urllib.error,urllib.request
 token=sys.argv[1]; data=sys.stdin.buffer.read()
 headers={"Authorization":"Bearer "+token,"X-ARWC-Tenant":"arwc","Content-Type":"application/cbor"}
 context=ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
-try: response=urllib.request.urlopen(urllib.request.Request("https://field-gateway.arwc.test/api/a-fresh-reading-from-the-field",data=data,headers=headers,method="POST"),context=context)
+try: response=urllib.request.urlopen(urllib.request.Request("https://field-gateway.arwc.test/api/readings/current",data=data,headers=headers,method="POST"),context=context)
 except urllib.error.HTTPError as error: response=error
 print(response.status); print(response.read().decode())
 '''
@@ -131,10 +131,10 @@ class W27Live(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         portal = "https://contractor-portal.arwc.test"
-        _, appointment = request(portal, "/api/window-on-thursday")
-        request(portal, "/api/who-is-expected-at-the-gate")
+        _, appointment = request(portal, "/api/appointment-windows/current")
+        request(portal, "/api/appointment-windows/current/visitors")
         if appointment["record"]["attendee"] != "veybridge.tech.204":
-            status, result = request(portal, "/api/an-appointment-we-do-not-own", method="POST", body={
+            status, result = request(portal, "/api/appointments/current", method="POST", body={
                 "appointment_id": "APT-CRR-2026-09-18",
                 "expected_revision": appointment["record"]["revision"],
                 "attendee": "veybridge.tech.204",
@@ -142,17 +142,17 @@ class W27Live(unittest.TestCase):
             })
             if status != 201:
                 raise AssertionError(result)
-        status, result = request(portal, "/api/checked-in-as-the-contractor", method="POST", body={
+        status, result = request(portal, "/api/check-ins", method="POST", body={
             "appointment_id": "APT-CRR-2026-09-18", "roster_id": "ROSTER-CRR-SEP18-R2",
             "identity": "veybridge.tech.204",
         })
         if status != 201:
             raise AssertionError(result)
         contractor = result["contractor_session"]
-        status, result = request(portal, "/api/the-field-bag", token=contractor)
+        status, result = request(portal, "/api/field-kits/current", token=contractor)
         if status != 200:
             raise AssertionError(result)
-        status, result = request("https://field-gateway.arwc.test", "/api/the-service-that-replaced-it",
+        status, result = request("https://field-gateway.arwc.test", "/api/instruments/current",
                                  token=contractor)
         if status != 200:
             raise AssertionError(result)
@@ -164,7 +164,7 @@ class W27Live(unittest.TestCase):
         if status != 201:
             raise AssertionError(result)
         cls.process_session = result["process_session"]
-        status, result = request(PROCESS, "/api/the-project-and-the-note", token=cls.process_session)
+        status, result = request(PROCESS, "/api/sealed-projects/current/note", token=cls.process_session)
         if status != 200:
             raise AssertionError(result)
         binding = {
@@ -172,7 +172,7 @@ class W27Live(unittest.TestCase):
             "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": "CRR-CTRL-R21",
             "observed_digest": hashlib.sha256(b"CRR-CTRL-R21/deployed").hexdigest(),
         }
-        status, result = request(PROCESS, "/api/which-project-is-running", method="POST",
+        status, result = request(PROCESS, "/api/vault-access", method="POST",
                                  body=binding, token=cls.process_session)
         if status != 201:
             raise AssertionError(result)
@@ -183,16 +183,21 @@ class W27Live(unittest.TestCase):
                        token=type(self).process_session if token is None else token, tenant=tenant)
 
     def test_01_native_verifier_and_six_programs_freeze_rot128(self) -> None:
-        status, denied = self.process("/api/what-counts-as-intact", {
+        status, missing = self.process("/api/what-counts-as-intact", {
+            "operation": "materials", "record_id": "VER-ROT128-R3",
+        })
+        self.assertEqual(status, 404)
+        self.assertNotIn("verifier_b64", missing)
+        status, denied = self.process("/api/signature-programs/current/reproductions", {
             "operation": "materials", "record_id": "VER-ROT128-R3",
         }, token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("verifier_b64", denied)
-        status, denied = self.process("/api/what-counts-as-intact", {
+        status, denied = self.process("/api/signature-programs/current/reproductions", {
             "operation": "materials", "record_id": "VER-ROT128-R3",
         }, tenant="merewick")
         self.assertEqual(status, 403)
-        status, result = self.process("/api/what-counts-as-intact", {
+        status, result = self.process("/api/signature-programs/current/reproductions", {
             "operation": "materials", "record_id": "VER-ROT128-R3",
         })
         self.assertEqual(status, 201, result)
@@ -226,18 +231,23 @@ for item in value['programs']: (root/item['filename']).write_bytes(base64.b64dec
 
     def test_02_results_and_real_gf2_model_are_required(self) -> None:
         results = type(self).materials["results"]
-        status, _ = self.process("/api/what-counts-as-intact", {
+        status, _ = self.process("/api/signature-programs/current/reproductions", {
             "operation": "results", "record_id": "VER-ROT128-R3", "program_set": "DPG1-CASES-R3",
             "results": [dict(results[0], decision="rejected"), *results[1:]],
         })
         self.assertEqual(status, 409)
-        status, accepted = self.process("/api/what-counts-as-intact", {
+        status, accepted = self.process("/api/signature-programs/current/reproductions", {
             "operation": "results", "record_id": "VER-ROT128-R3", "program_set": "DPG1-CASES-R3",
             "results": list(reversed(results)),
         })
         self.assertEqual(status, 201)
         self.assertEqual(accepted["record"]["cases_verified"], 6)
-        status, contract = self.process("/api/the-constraints-of-a-valid-looking-program", {
+        status, missing = self.process("/api/what-counts-as-intact", {
+            "operation": "materials", "record_id": "VER-ROT128-R3",
+        })
+        self.assertEqual(status, 404)
+        self.assertNotIn("verifier_b64", missing)
+        status, contract = self.process("/api/signature-programs/current/constraints", {
             "operation": "contract", "record_id": "DPG-CONTRACT-R8",
         })
         self.assertEqual(status, 201)
@@ -253,11 +263,11 @@ for item in value['programs']: (root/item['filename']).write_bytes(base64.b64dec
             "operation": "model", "record_id": "DPG-MODEL-R8",
             "cases": record["distinguishing_cases"], "program_b64": base64.b64encode(base).decode(),
         }
-        status, _ = self.process("/api/the-constraints-of-a-valid-looking-program", identical)
+        status, _ = self.process("/api/signature-programs/current/constraints", identical)
         self.assertEqual(status, 409)
         seed = bytearray(base); seed[48:64] = b"DPG-CRR-MODEL1".ljust(16, b"\0")
         candidate = solve_collision(bytes(seed), base, record["reservoir_bits"])
-        status, modeled = self.process("/api/the-constraints-of-a-valid-looking-program", {
+        status, modeled = self.process("/api/signature-programs/current/constraints", {
             **identical, "program_b64": base64.b64encode(candidate).decode(),
         })
         self.assertEqual(status, 201)
@@ -271,7 +281,7 @@ for item in value['programs']: (root/item['filename']).write_bytes(base64.b64dec
         struct.pack_into("<f", seed, 284, 13.4)
         candidate = solve_collision(bytes(seed), base, record["reservoir_bits"])
         malformed = bytearray(candidate); malformed[64] ^= 1
-        path = "/api/a-program-the-engineer-would-accept"
+        path = "/api/diagnostic-runs"
         status, _ = self.process(path, {
             "record_id": "DPG-CRR-CINDER", "consumer": "PLAN-CONSUMER-R8",
             "program_b64": base64.b64encode(malformed).decode(),

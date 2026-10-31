@@ -198,15 +198,15 @@ class Handler(BaseHTTPRequestHandler):
         if request is None:
             return
         path = urlsplit(self.path).path
-        if path == "/internal/w30-bind":
+        if path == "/internal/release-plan-bindings":
             self.bind_plan(request)
-        elif path == "/internal/w30-open":
+        elif path == "/internal/release-executions":
             self.open_gates(request)
-        elif path == "/internal/w33-schedule":
+        elif path == "/internal/schedule-validations":
             self.w33_schedule(request)
-        elif path == "/internal/w33-policy":
+        elif path == "/internal/feedback-policy-validations":
             self.w33_policy(request)
-        elif path == "/internal/w34-handover":
+        elif path == "/internal/control-handovers":
             self.w34_handover(request)
         else:
             self.send_json(404, {"error": "record not found"})
