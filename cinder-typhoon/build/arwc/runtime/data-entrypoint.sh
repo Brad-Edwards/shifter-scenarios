@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 umask 077
 
 chown arwc-data:arwc-data /var/lib/arwc-data
@@ -14,17 +14,9 @@ install -d -o arwc-data -g arwc-integration -m 0750 \
 install -d -o arwc-data -g arwc-archive-source -m 0750 \
   /var/lib/arwc-data/archive
 
-session=/run/arwc-corporate/handover/corporate-session
-install -d -m 0755 /run/arwc-status
-echo waiting > /run/arwc-status/state
-until [[ -s "$session" ]]; do sleep 5; done
-token=$(tr -d '\n' < "$session")
-if ! [[ "$token" =~ ^[0-9a-f]{64}$ ]]; then
-  echo "arwc-data: invalid or cross-range handover token" >&2; exit 1
-fi
-echo ready > /run/arwc-status/state
-tr -d '\n' < "$session" | sha256sum | awk '{print $1}' \
-  > /var/lib/arwc-data/auth/corporate-session.sha256
+python3 /usr/local/libexec/arwc-handover.py wait \
+  --service arwc-data \
+  --accepted-hash /var/lib/arwc-data/auth/corporate-session.sha256
 chown arwc-data:arwc-data /var/lib/arwc-data/auth/corporate-session.sha256
 chmod 0400 /var/lib/arwc-data/auth/corporate-session.sha256
 
@@ -35,7 +27,7 @@ done
 install -d -o postgres -g postgres -m 0700 "$PGDATA"
 chown postgres:postgres /var/run/postgresql
 chmod 2775 /var/run/postgresql
-if [[ ! -s $PGDATA/PG_VERSION ]]; then
+if [ ! -s "$PGDATA/PG_VERSION" ]; then
   gosu postgres initdb -D "$PGDATA" --auth-local=trust --auth-host=scram-sha-256 >/dev/null
   cat >>"$PGDATA/postgresql.conf" <<'EOF'
 listen_addresses = '*'

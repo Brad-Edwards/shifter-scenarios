@@ -25,6 +25,7 @@ services:
       - connector-customer:/var/lib/arwc-connector
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/integration/keplerops-ca.crt:/run/arwc-peer/keplerops-ca.crt:ro
     networks:
@@ -69,7 +70,7 @@ services:
     domainname: corporate.arwc.test
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "grep -qx ready /run/arwc-status/state 2>/dev/null"]
+      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -93,6 +94,7 @@ services:
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
     networks:
       corporate:
@@ -111,7 +113,7 @@ services:
     domainname: corporate.arwc.test
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "grep -qx ready /run/arwc-status/state 2>/dev/null"]
+      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -146,6 +148,7 @@ services:
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
     networks:
       corporate:
@@ -167,7 +170,7 @@ services:
     domainname: corporate.arwc.test
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "grep -qx ready /run/arwc-status/state 2>/dev/null"]
+      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -192,6 +195,7 @@ services:
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/archive-ca.crt:/run/arwc-tls/archive-ca.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/archive-ca.key:/run/arwc-tls/archive-ca.key:ro
     networks:
@@ -211,7 +215,7 @@ services:
     domainname: corporate.arwc.test
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "grep -qx ready /run/arwc-status/state 2>/dev/null"]
+      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -239,6 +243,7 @@ services:
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
     networks:
       corporate:
         ipv4_address: 10.77.60.60
@@ -292,7 +297,7 @@ services:
     domainname: maintenance.arwc.test
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "grep -qx ready /run/arwc-status/state 2>/dev/null"]
+      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -314,6 +319,7 @@ services:
       - connector-fieldlink:/run/arwc-corporate:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
     networks:
       maintenance:

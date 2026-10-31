@@ -10,6 +10,7 @@ RUN apt-get update \
 
 COPY --chown=arwc-contractors:arwc-contractors --chmod=0640 \
   build/arwc/runtime/contractor_portal.py /opt/contractor-portal/contractor_portal.py
+COPY --chmod=0755 build/arwc/runtime/arwc_handover.py /usr/local/libexec/arwc-handover.py
 COPY --chmod=0750 build/arwc/runtime/contractors-entrypoint.sh /usr/local/sbin/arwc-contractors-entrypoint
 
 EXPOSE 443

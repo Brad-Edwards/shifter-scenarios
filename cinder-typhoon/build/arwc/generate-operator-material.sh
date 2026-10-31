@@ -8,6 +8,10 @@ mkdir -p "$OPERATOR_DIR/tls"
 mkdir -p "$OPERATOR_DIR/integration"
 chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls" "$OPERATOR_DIR/integration"
 
+# This key authenticates the corporate handover only. Rotate it for every
+# freshly generated range or restore so prior handover material cannot replay.
+openssl rand -hex 32 > "$OPERATOR_DIR/handover.key"
+
 if [[ ! -s "$OPERATOR_DIR/tls/ca.key" ]]; then
   openssl req -x509 -newkey rsa:3072 -nodes -days 3650 \
     -subj '/CN=Alterra Corporate CA/O=Alterra Regional Water Company' \
@@ -41,5 +45,6 @@ if [[ ! -s "$OPERATOR_DIR/integration/keplerops-ca.crt" ]]; then
 fi
 
 chmod 0600 "$OPERATOR_DIR/tls/ca.key" "$OPERATOR_DIR/tls/archive-ca.key" "$OPERATOR_DIR/tls/server.key"
+chmod 0600 "$OPERATOR_DIR/handover.key"
 chmod 0644 "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/tls/archive-ca.crt" "$OPERATOR_DIR/tls/server.crt"
 chmod 0644 "$OPERATOR_DIR/integration/keplerops-ca.crt"
