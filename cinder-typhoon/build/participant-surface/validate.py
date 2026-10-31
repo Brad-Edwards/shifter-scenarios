@@ -112,7 +112,10 @@ def validate_authored(value: dict[str, Any]) -> None:
     for index, item in enumerate(value["disclosures"]):
         exact_keys(item, {"id", "kind", "path", "exposes"}, set(), f"disclosures[{index}]")
         require(item["id"] not in disclosure_ids, f"disclosures[{index}]: duplicate id")
-        require(item["path"].startswith("/"), f"disclosures[{index}]: absolute path required")
+        if item["kind"] == "client-reference":
+            require(item["path"].startswith("https://"), f"disclosures[{index}]: https URL required for client-reference")
+        else:
+            require(item["path"].startswith("/"), f"disclosures[{index}]: absolute path required")
         require(len(item["exposes"]) == len(set(item["exposes"])), f"disclosures[{index}]: duplicate exposure")
         disclosure_ids.add(item["id"])
     delivery = value["delivery"]

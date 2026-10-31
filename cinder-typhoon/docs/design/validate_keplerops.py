@@ -507,6 +507,52 @@ def check_opening_assets(scenario):
             continue
         require(not FORBIDDEN_IN_WORLD.search(text),
                 f"Fourth-wall wording in KeplerOps opening asset: {path.relative_to(PACK)}")
+    # service-catalog.md must not appear in any opening archive.
+    for archive_record in manifest["archives"]:
+        for file_entry in archive_record.get("files", []):
+            require("service-catalog" not in file_entry["path"],
+                    "service-catalog.md must not appear in participant opening archive")
+
+
+def check_client_reference_graph(scenario):
+    runtime_dir = PACK / "build" / "keplerops" / "runtime"
+    inventory_path = runtime_dir / "client_documents.json"
+    require(inventory_path.exists(), "client_documents.json not found in keplerops runtime")
+    inventory = json.loads(inventory_path.read_text())
+    require(inventory.get("schema") == "fieldkest.client-documents/v1",
+            "client_documents.json has unexpected schema")
+    documents = inventory.get("documents", {})
+    require(documents, "client_documents.json has no service documents")
+    # Every route key and template must be present and well-formed.
+    all_keys: set[str] = set()
+    for host, doc in documents.items():
+        for route in doc.get("routes", []):
+            key = route.get("key", "")
+            template = route.get("template", "")
+            require(key and template.startswith("https://"),
+                    f"Malformed route entry in client reference for {host}: {route}")
+            require(key not in all_keys, f"Duplicate route key in client references: {key}")
+            all_keys.add(key)
+    # The graph must be fully reachable from the source entry point.
+    source_host = "source.keplerops.test"
+    require(source_host in documents, "source.keplerops.test not in client_documents.json")
+    visited: set[str] = set()
+    queue = [source_host]
+    while queue:
+        host = queue.pop(0)
+        if host in visited:
+            continue
+        visited.add(host)
+        for link in documents[host].get("related", []):
+            linked_host = link.split("//", 1)[1].split("/")[0] if "//" in link else ""
+            if linked_host and linked_host not in visited:
+                queue.append(linked_host)
+    require(visited == set(documents),
+            f"Client reference graph is not fully connected: unreachable={set(documents) - visited}")
+    # No fourth-wall wording in the client reference inventory.
+    inventory_text = inventory_path.read_text()
+    require(not FORBIDDEN_IN_WORLD.search(inventory_text),
+            "Fourth-wall wording in client_documents.json")
 
 
 def check_registry_assets(scenario):
@@ -830,6 +876,7 @@ def hand_build_gaps(scenario) -> list[str]:
         ("world substrate", lambda current, rows: check_world(current)),
         ("native semantics", lambda current, rows: check_native_semantics(current)),
         ("opening assets", lambda current, rows: check_opening_assets(current)),
+        ("client reference graph", lambda current, rows: check_client_reference_graph(current)),
         ("registry assets", lambda current, rows: check_registry_assets(current)),
         ("K09 foundation assets", lambda current, rows: check_k09_foundation_assets(current)),
         ("K11 foundation assets", lambda current, rows: check_k11_foundation_assets(current)),

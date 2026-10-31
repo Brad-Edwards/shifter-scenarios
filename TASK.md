@@ -37,6 +37,117 @@ evidence from the same immutable candidate:
 python3 cinder-typhoon/tests/report_qa_status.py --require-release-qualified
 ```
 
+## Remediation campaign handoff (2026-10-30)
+
+The remediation work is being delivered as one pull request per issue on a
+stack of feature branches. Nothing in the stack has been merged. Each new
+branch is based on the preceding issue branch so work can continue without
+waiting for reviews or merges:
+
+| Issue | Pull request | State in this stack |
+| --- | --- | --- |
+| #206 participant-surface manifest | #235 | Implemented and published |
+| #207 four-layer QA model | #236 | Implemented and published on #206 |
+| #208 participant-boundary acceptance | #237 | Implemented and published on #207 |
+| #209 solution-input provenance | #238 | Implemented and published on #208 |
+| #210 independent card coverage | #239 | Implemented and published on #209 |
+| #211 fourth-wall checks | #240 | Implemented and published on #210 |
+| #212 KeplerOps discovery design | Not opened yet | In progress on `212-keplerops-discovery-design`, based on #211 |
+
+“Implemented” here means the issue branch and pull request exist; it does not
+mean approved, merged, or release qualified. GitHub still correctly reports
+#206–#212 as open.
+
+### Issue #212 current state
+
+The participant-visible `work/service-catalog.md` was an exhaustive list of 101
+routes and also disclosed the native indexer’s decisive values and continuation
+request. The known-solution suite imported those answers directly. The current
+uncommitted #212 work has:
+
+- removed that catalog from the authored workstation source and archive recipe;
+- added a graph of 13 service-owned client references, beginning at the one
+  ordinary source reference in Rowan’s developer notes;
+- added a common `/.well-known/fieldkest-client` response on the relevant
+  services, with each response limited to that service and explicit links to
+  related references;
+- added a normal offline indexer reproducer manifest and a stripped reproducer
+  build for the developer workstation; and
+- changed the indexer to return its continuation request only in the successful
+  state-changing response, so it is earned rather than disclosed up front.
+
+The #212 source and test remediation is complete and committed. The following
+items were implemented and verified by static tests (all pass locally):
+
+1. `test_known_solution_live.py`: `setUpClass` now crawls the linked client
+   references from `service-notes.md` instead of reading `service-catalog.md`;
+   `discovered_route` resolves from the crawled dict; K04.1 derives allocation
+   and sentinel by probing the offline reproducer binary.
+2. Provenance ledger updated: K04 and `bundle_indexer.c` cite the binary as
+   `supplied_starting_surface`; 13 changed method fingerprints regenerated;
+   `http_support.py` comparison count updated.
+3. Participant-surface manifest: `service-catalog.md` replaced by
+   `work/reproducers/indexer-client.json`; `keplerops-service-catalog`
+   disclosure replaced by 13 `client-reference` disclosures (one per service in
+   the graph) plus `keplerops-indexer-client`; `HOME.md` and `service-notes.md`
+   hashes updated.
+4. Static gates: `validate_keplerops.py` adds catalog-absence check and
+   `check_client_reference_graph`; `test_keplerops_design.py` and
+   `test_participant_surface.py` verify the new design and the absence of the
+   catalog.
+5. SDL bindings: `k-dev-home.tar` and `k-support-state.tar` digest drift fixed.
+6. `validate.py`: allows `https://` paths for `client-reference` disclosures.
+
+The stacked PR for #212 is open. The next open milestone items are #213–#218
+(KeplerOps interface migration) and #219–#224 (ARWC domain and discovery).
+
+There are unrelated pre-existing local edits in the GCP deployment files and
+untracked local QA material. Preserve them and do not stage them in remediation
+commits.
+
+### Remaining milestone work
+
+After #212, the open milestone work is:
+
+- #213–#218: migrate KeplerOps actions onto normal developer, package, cloud,
+  support, identity, assistant, and release interfaces; replace remaining
+  author-only authority and subject values; audit the generic backend profile;
+- #219–#224: define ARWC’s domain and discovery map, migrate W01–W35 away from
+  title-shaped routes, provide the W33 inputs as real material, and complete the
+  exact-value provenance audit;
+- #225–#230: add safe per-range variation, authoritative challenge delivery and
+  scoring, graduated in-world hints, explicit defender-learning outcomes, blind
+  human-plus-agent playtests, and evidence-based duration/tier calibration; and
+- #231–#234: repair pre-handoff service health, bind goldens to an immutable
+  release manifest, run the production-equivalent 300-range soak/transition/
+  reset test, and reconcile every public readiness claim with measured evidence.
+
+### Guidance for subsequent implementations
+
+- A known-solution test must prove the path a participant can derive. It must
+  not act as the source of routes, credentials, protocol values, or accepted
+  payloads.
+- Put ordinary first contacts in workstation material. Put the rest in the
+  systems that naturally own them: client references, application navigation,
+  package metadata, source history, browser history, build records, support
+  records, cloud policy, identity metadata, and earlier accepted responses.
+- Service documentation may describe normal methods and schemas. It must not
+  explain the challenge, name a card, prescribe an exploit, publish a flag, or
+  reveal a later privileged continuation.
+- Earned responses should carry the identifiers, authority, and next interfaces
+  needed later. This both models real attack chaining and gives tests a concrete
+  provenance trail.
+- Keep component contract tests and participant-boundary acceptance distinct.
+  Contract tests may inspect operator-owned evidence; participant acceptance may
+  use only the participant account, its network, its tools, and earned state.
+- Bounds in automated analysis are reliability controls, not reductions in the
+  attacker experience. Candidate values should come from supplied artifacts or
+  observed interfaces, and a missing derivation should fail clearly rather than
+  fall back to guessing or an author literal.
+- No automated pass supports claims about discovery, fairness, difficulty,
+  defender learning, or event duration. Preserve those claims for blind tests
+  with fresh people and their supported agents.
+
 ## Evidence definitions
 
 ### 1. Service contract tests

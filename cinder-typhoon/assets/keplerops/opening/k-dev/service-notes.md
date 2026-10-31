@@ -6,6 +6,7 @@ accepted by the developer CI routes.
 ## Source
 
 - Repository remote: `https://source.keplerops.test/fieldkest/fieldlink-connector.git`
+- Client reference: `GET https://source.keplerops.test/.well-known/fieldkest-client`
 - Current handover: `GET https://source.keplerops.test/api/fieldkest/handovers/current`
 - Repository content: `GET https://source.keplerops.test/api/v1/repos/fieldkest/fieldlink-connector/contents/{path}?ref={revision}`
 

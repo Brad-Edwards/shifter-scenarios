@@ -75,6 +75,9 @@ class AuthoredManifestTests(unittest.TestCase):
                     for entry in root["entries"]
                 }
                 for disclosure in value["disclosures"]:
+                    # Client-reference disclosures use HTTP URLs, not filesystem paths.
+                    if disclosure["path"].startswith("https://"):
+                        continue
                     self.assertIn(disclosure["path"], visible)
 
     def test_training_briefing_tracks_authored_source(self) -> None:
@@ -87,26 +90,32 @@ class AuthoredManifestTests(unittest.TestCase):
         self.assertEqual(entry["size"], len(source))
         self.assertEqual(entry["sha256"], hashlib.sha256(source).hexdigest())
 
-    def test_keplerops_catalog_exposure_is_exhaustive(self) -> None:
-        source = (ROOT / "assets" / "keplerops" / "opening" / "k-dev" / "service-catalog.md").read_text()
-        route_keys = set(re.findall(r"^- `([^`]+)`: `[A-Z]+ ", source, re.MULTILINE))
-        catalog = next(
-            item
-            for item in manifest("keplerops")["disclosures"]
-            if item["id"] == "keplerops-service-catalog"
+    def test_keplerops_client_reference_graph_is_present(self) -> None:
+        client_documents = ROOT / "build" / "keplerops" / "runtime" / "client_documents.json"
+        inventory = json.loads(client_documents.read_text())
+        all_route_keys = {
+            route["key"]
+            for doc in inventory["documents"].values()
+            for route in doc.get("routes", [])
+        }
+        disclosures = manifest("keplerops")["disclosures"]
+        # No exhaustive catalog disclosure is allowed.
+        self.assertFalse(
+            any(d["id"] == "keplerops-service-catalog" for d in disclosures),
+            "exhaustive route catalog disclosure must be absent",
         )
-        exposed_routes = {item for item in catalog["exposes"] if "=" not in item}
-        self.assertEqual(exposed_routes, route_keys)
-        self.assertIn("indexer.allocated_length=32", catalog["exposes"])
-        self.assertIn("indexer.adjacent_marker=FIELDKEST-SENTNL", catalog["exposes"])
-        self.assertIn("indexer.follow_up.operation=runtime-descriptor", catalog["exposes"])
-        entry = next(
-            item
-            for item in manifest("keplerops")["filesystem"]["roots"][0]["entries"]
-            if item["path"] == "work/service-catalog.md"
+        # No service-catalog.md in the filesystem entries.
+        entries = manifest("keplerops")["filesystem"]["roots"][0]["entries"]
+        self.assertFalse(
+            any(e.get("path") == "work/service-catalog.md" for e in entries),
+            "service-catalog.md must not appear in participant filesystem",
         )
-        self.assertEqual(entry["classification"], "discovery-document")
-        self.assertEqual(entry["sha256"], hashlib.sha256(source.encode()).hexdigest())
+        # All route keys from client_documents.json appear in client-reference disclosures.
+        client_ref_disclosures = [d for d in disclosures if d["kind"] == "client-reference"]
+        self.assertTrue(client_ref_disclosures, "no client-reference disclosures found")
+        exposed = {key for d in client_ref_disclosures for key in d["exposes"]}
+        self.assertEqual(exposed, all_route_keys,
+                         "client-reference disclosures must expose exactly the routes in client_documents.json")
 
     def test_external_cards_and_absent_hints_are_explicit(self) -> None:
         prefixes = {"training": "T", "keplerops": "K", "arwc": "W"}

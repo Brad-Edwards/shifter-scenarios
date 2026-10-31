@@ -36,8 +36,8 @@
         {
           "mode": "0644",
           "path": "README.md",
-          "sha256": "6c4481ecd66e69d77aa6e189ffc96440df2a7fe7e51d2a39a637a165987f9ae2",
-          "size": 789
+          "sha256": "0bd237d283cda2d2afd567dd8597e40d9367cd3906a8e3ec1bf04a802b6bdb97",
+          "size": 749
         },
         {
           "mode": "0640",
@@ -59,6 +59,12 @@
         },
         {
           "mode": "0640",
+          "path": "work/reproducers/indexer-client.json",
+          "sha256": "038f4bc3b8516a31c5a5ef600ad052556260137c06da99baade57ee4b398f801",
+          "size": 353
+        },
+        {
+          "mode": "0640",
           "path": "work/review-exports/fieldlink-7.4.2-review.md",
           "sha256": "f568f44c8fcb8e9b13929931f441c4951ef65187c89a06cf2de326c172e2c597",
           "size": 541
@@ -71,21 +77,15 @@
         },
         {
           "mode": "0644",
-          "path": "work/service-catalog.md",
-          "sha256": "78ca1d0c66ff5e27eb37eb8a7572c854c6ca0c6972a0eebfe071625953808af7",
-          "size": 10424
-        },
-        {
-          "mode": "0644",
           "path": "work/service-notes.md",
-          "sha256": "cef4cf0b5fa7c4653b0aeb6fc121c357214274e052926a86958cf34ac43cedf5",
-          "size": 1533
+          "sha256": "74699b2a54d77a65cdf555c9eb2080c374f6f9180c055bc8a9a758f5f0488c46",
+          "size": 1618
         }
       ],
       "group": "rowan",
       "owner": "rowan",
-      "sha256": "9b26813a6b3ae5d4a949cbce0ac985858e7de4ea3e46309ce7b4a5a28cb8a16a",
-      "size": 81920
+      "sha256": "7d6365f6074078643d941b1e51ae9421ffbe755c9a09fae2abacab209073a238",
+      "size": 71680
     },
     {
       "archive": "k-dev-workbench.tar",

@@ -3,11 +3,9 @@
 The connector checkout is under `work/fieldlink-connector`. Release-review
 exports, samples and the local helper are kept under `work` as well.
 
-The internal service paths used by the team are recorded in
-`work/service-notes.md`.
-
-The wider FieldKest API route templates used by release, support, cloud,
-identity, and maintenance work are recorded in `work/service-catalog.md`.
+The team’s usual source, CI, and support entry points are recorded in
+`work/service-notes.md`. Each service publishes its own client reference and
+links the references used by related teams.
 
 Internal services use the workstation CA at
 `~/.local/share/keplerops/ca.crt`. The usual command-line clients already trust

@@ -1,0 +1,10 @@
+{
+  "schema": "fieldkest.bundle-index-client/v1",
+  "route_key": "indexer.indexes",
+  "offline_reproducer": "work/reproducers/fieldkest-bundle-indexer",
+  "arguments": [
+    {"name": "allocated_length", "encoding": "decimal integer"},
+    {"name": "body_hex", "encoding": "lowercase hexadecimal"}
+  ],
+  "result": "one JSON object on standard output"
+}

@@ -1,0 +1,214 @@
+{
+  "schema": "fieldkest.client-documents/v1",
+  "path": "/.well-known/fieldkest-client",
+  "documents": {
+    "source.keplerops.test": {
+      "title": "Source client reference",
+      "purpose": "Repository, handover, and source-side engineering operations.",
+      "routes": [
+        {"key": "source.repos", "method": "GET", "template": "https://source.keplerops.test/api/v1/user/repos"},
+        {"key": "source.handover", "method": "GET", "template": "https://source.keplerops.test/api/fieldkest/handovers/current"},
+        {"key": "source.policy-evaluate", "method": "POST", "template": "https://source.keplerops.test/api/exercises/policy-compiler/evaluate"},
+        {"key": "source.policy-nonce", "method": "GET", "template": "https://source.keplerops.test/api/exercises/policy-compiler/nonce"},
+        {"key": "source.connector-run", "method": "POST", "template": "https://source.keplerops.test/api/exercises/connector-archive/run"}
+      ],
+      "related": [
+        "https://ci.keplerops.test/.well-known/fieldkest-client",
+        "https://packages.keplerops.test/.well-known/fieldkest-client",
+        "https://support.keplerops.test/.well-known/fieldkest-client"
+      ]
+    },
+    "ci.keplerops.test": {
+      "title": "CI client reference",
+      "purpose": "Run, review, workspace, and release-rehearsal operations.",
+      "routes": [
+        {"key": "ci.run", "method": "GET", "template": "https://ci.keplerops.test/api/runs/{run_id}"},
+        {"key": "ci.run-log", "method": "GET", "template": "https://ci.keplerops.test/api/runs/{run_id}/log"},
+        {"key": "ci.run-artifact", "method": "GET", "template": "https://ci.keplerops.test/api/runs/{run_id}/artifacts/{artifact}"},
+        {"key": "ci.review-import", "method": "POST", "template": "https://ci.keplerops.test/api/reviews/import"},
+        {"key": "ci.report-jobs", "method": "POST", "template": "https://ci.keplerops.test/api/jobs"},
+        {"key": "ci.report-job", "method": "GET", "template": "https://ci.keplerops.test/api/jobs/{job_id}"},
+        {"key": "ci.review-jobs", "method": "POST", "template": "https://ci.keplerops.test/api/review-jobs"},
+        {"key": "ci.review-job", "method": "GET", "template": "https://ci.keplerops.test/api/review-jobs/{run_id}"},
+        {"key": "ci.workspace-file", "method": "GET", "template": "https://ci.keplerops.test/api/review-workspace/files/{path}"},
+        {"key": "ci.connector-rehearsal", "method": "POST", "template": "https://ci.keplerops.test/api/rehearsals/connector"},
+        {"key": "ci.lineage-rollover", "method": "POST", "template": "https://ci.keplerops.test/api/rehearsals/lineage-rollover"}
+      ],
+      "related": []
+    },
+    "packages.keplerops.test": {
+      "title": "Package and delivery client reference",
+      "purpose": "Package lifecycle, inspection, entitlement, approval, and customer delivery operations.",
+      "routes": [
+        {"key": "packages.metadata", "method": "GET", "template": "https://packages.keplerops.test/@keplerops%2ffieldlink-connector"},
+        {"key": "packages.consumer-check", "method": "POST", "template": "https://packages.keplerops.test/api/consumer-checks"},
+        {"key": "packages.release", "method": "GET", "template": "https://packages.keplerops.test/api/releases/{release_id}"},
+        {"key": "packages.reconcile", "method": "POST", "template": "https://packages.keplerops.test/api/reconcile/tenant-package"},
+        {"key": "packages.resolver", "method": "POST", "template": "https://packages.keplerops.test/api/resolver/runs"},
+        {"key": "packages.import", "method": "POST", "template": "https://packages.keplerops.test/api/imports"},
+        {"key": "packages.publish", "method": "PUT", "template": "https://packages.keplerops.test/@keplerops%2ffieldlink-connector"},
+        {"key": "packages.view", "method": "GET", "template": "https://packages.keplerops.test/api/package-views/{view}/{package}"},
+        {"key": "packages.inspections", "method": "POST", "template": "https://packages.keplerops.test/api/inspections"},
+        {"key": "packages.inspection-trace", "method": "GET", "template": "https://packages.keplerops.test/api/inspections/{inspection_id}/trace"},
+        {"key": "packages.inspection-envelope", "method": "POST", "template": "https://packages.keplerops.test/api/inspections/envelope"},
+        {"key": "packages.entitlement", "method": "GET", "template": "https://packages.keplerops.test/api/compatibility/entitlements/{entitlement_id}"},
+        {"key": "packages.entitlement-check", "method": "POST", "template": "https://packages.keplerops.test/api/compatibility/entitlements/check"},
+        {"key": "packages.approval", "method": "POST", "template": "https://packages.keplerops.test/api/releases/{release_id}/approval"},
+        {"key": "connector.poll", "method": "POST", "template": "https://connector.arwc.test/api/fieldlink/packages/poll"},
+        {"key": "connector.activate", "method": "POST", "template": "https://connector.arwc.test/api/fieldlink/packages/{version}/activate"},
+        {"key": "connector.receipt", "method": "GET", "template": "https://connector.arwc.test/api/fieldlink/packages/{version}/receipt"},
+        {"key": "connector.rollback", "method": "POST", "template": "https://connector.arwc.test/api/fieldlink/rehearsals/rollback"}
+      ],
+      "related": [
+        "https://preview.keplerops.test/.well-known/fieldkest-client",
+        "https://indexer.keplerops.test/.well-known/fieldkest-client",
+        "https://cloud-api.keplerops.test/.well-known/fieldkest-client"
+      ]
+    },
+    "preview.keplerops.test": {
+      "title": "Preview client reference",
+      "purpose": "Attachment, document rendering, and assigned-review operations.",
+      "routes": [
+        {"key": "preview.association", "method": "GET", "template": "https://preview.keplerops.test/api/attachments/{attachment}/preview-association"},
+        {"key": "preview.documents", "method": "POST", "template": "https://preview.keplerops.test/api/documents"},
+        {"key": "preview.render", "method": "POST", "template": "https://preview.keplerops.test/api/documents/{source_id}/render"},
+        {"key": "preview.assignment", "method": "PATCH", "template": "https://preview.keplerops.test/api/reviews/{review_id}/assignment"},
+        {"key": "preview.prepare", "method": "POST", "template": "https://preview.keplerops.test/api/reviews/{review_id}/actions/prepare"},
+        {"key": "preview.review-render", "method": "POST", "template": "https://preview.keplerops.test/review/{review_id}/render"}
+      ],
+      "related": []
+    },
+    "indexer.keplerops.test": {
+      "title": "Bundle index client reference",
+      "purpose": "Submit native bundle index requests.",
+      "routes": [
+        {"key": "indexer.indexes", "method": "POST", "template": "https://indexer.keplerops.test/api/indexes"}
+      ],
+      "related": []
+    },
+    "cloud-api.keplerops.test": {
+      "title": "Cloud workspace client reference",
+      "purpose": "Workspace identity, build records, trust records, and maintenance policy operations.",
+      "routes": [
+        {"key": "cloud.workspace-exchange", "method": "GET", "template": "https://cloud-api.keplerops.test/api/workspaces/current/token-exchange"},
+        {"key": "cloud.workspace-token", "method": "POST", "template": "https://cloud-api.keplerops.test/api/workspaces/current/token-exchange"},
+        {"key": "cloud.build-record", "method": "GET", "template": "https://cloud-api.keplerops.test/api/build-records/{build_id}"},
+        {"key": "cloud.trust-record", "method": "GET", "template": "https://cloud-api.keplerops.test/api/trust-records/{trust_id}"},
+        {"key": "cloud.role-exchange", "method": "POST", "template": "https://cloud-api.keplerops.test/api/token-exchange/{role}"},
+        {"key": "cloud.maintenance", "method": "GET", "template": "https://cloud-api.keplerops.test/api/maintenance"},
+        {"key": "cloud.policy", "method": "GET", "template": "https://cloud-api.keplerops.test/api/policies/{policy_id}"}
+      ],
+      "related": [
+        "https://data.keplerops.test/.well-known/fieldkest-client",
+        "https://workloads.keplerops.test/.well-known/fieldkest-client"
+      ]
+    },
+    "data.keplerops.test": {
+      "title": "Data service client reference",
+      "purpose": "Workspace objects, exports, backups, recovery records, and field archives.",
+      "routes": [
+        {"key": "data.workspace-list", "method": "GET", "template": "https://data.keplerops.test/s3/fieldkest-workspaces"},
+        {"key": "data.workspace-object", "method": "GET", "template": "https://data.keplerops.test/s3/fieldkest-workspaces/{key}"},
+        {"key": "data.export-object", "method": "GET", "template": "https://data.keplerops.test/s3/fieldkest-exports/{key}"},
+        {"key": "data.export", "method": "GET", "template": "https://data.keplerops.test/api/exports/{export_id}"},
+        {"key": "data.export-definition", "method": "GET", "template": "https://data.keplerops.test/api/exports/{export_id}/definition"},
+        {"key": "data.export-destination", "method": "PATCH", "template": "https://data.keplerops.test/api/exports/{export_id}/destination"},
+        {"key": "data.export-runs", "method": "POST", "template": "https://data.keplerops.test/api/exports/{export_id}/runs"},
+        {"key": "data.backup", "method": "GET", "template": "https://data.keplerops.test/api/backups/{backup_id}"},
+        {"key": "data.restore", "method": "POST", "template": "https://data.keplerops.test/api/backups/{backup_id}/restores"},
+        {"key": "data.recovery-history", "method": "GET", "template": "https://data.keplerops.test/api/recovery/{namespace_id}/customer-migration-history"},
+        {"key": "data.field-archive", "method": "GET", "template": "https://data.keplerops.test/api/field-archive/{archive_id}"}
+      ],
+      "related": []
+    },
+    "workloads.keplerops.test": {
+      "title": "Workload scheduler client reference",
+      "purpose": "Scheduled export and managed-workload operations.",
+      "routes": [
+        {"key": "workloads.schedule", "method": "GET", "template": "https://workloads.keplerops.test/api/schedules/{schedule_id}"},
+        {"key": "workloads.schedule-update", "method": "PATCH", "template": "https://workloads.keplerops.test/api/schedules/{schedule_id}"},
+        {"key": "workloads.schedule-runs", "method": "POST", "template": "https://workloads.keplerops.test/api/schedules/{schedule_id}/runs"},
+        {"key": "workloads.workload", "method": "PATCH", "template": "https://workloads.keplerops.test/api/workloads/{workload_id}"},
+        {"key": "workloads.whoami", "method": "GET", "template": "https://workloads.keplerops.test/api/workloads/{workload_id}/whoami"}
+      ],
+      "related": []
+    },
+    "support.keplerops.test": {
+      "title": "Support desk client reference",
+      "purpose": "Conversation, recovery, assignment, customer integration, and diagnostic operations.",
+      "routes": [
+        {"key": "support.conversation", "method": "GET", "template": "https://support.keplerops.test/api/conversations/{conversation_id}"},
+        {"key": "support.session", "method": "GET", "template": "https://support.keplerops.test/api/session"},
+        {"key": "support.handover", "method": "GET", "template": "https://support.keplerops.test/api/handovers/current"},
+        {"key": "support.recovery-lookup", "method": "POST", "template": "https://support.keplerops.test/api/recovery/lookup"},
+        {"key": "support.recovery-redeem", "method": "POST", "template": "https://support.keplerops.test/api/recovery/redeem"},
+        {"key": "support.assignment", "method": "GET", "template": "https://support.keplerops.test/api/assignments/{assignment_id}"},
+        {"key": "support.copy-handover", "method": "POST", "template": "https://support.keplerops.test/api/cases/{case_id}/copy-handover"},
+        {"key": "support.dossier", "method": "GET", "template": "https://support.keplerops.test/api/customers/{tenant}/dossiers/{dossier_id}"},
+        {"key": "support.integration", "method": "GET", "template": "https://support.keplerops.test/api/customers/{tenant}/integrations/fieldlink"},
+        {"key": "support.reconcile", "method": "POST", "template": "https://support.keplerops.test/api/customers/{tenant}/integrations/fieldlink/reconcile"},
+        {"key": "support.diagnostics", "method": "POST", "template": "https://support.keplerops.test/api/customers/{tenant}/diagnostics"},
+        {"key": "support.diagnostic-package", "method": "PUT", "template": "https://support.keplerops.test/api/diagnostics/{job_id}/package"},
+        {"key": "support.diagnostic-deliver", "method": "POST", "template": "https://support.keplerops.test/api/diagnostics/{job_id}/deliver"},
+        {"key": "support.fixture-assertion", "method": "POST", "template": "https://support.keplerops.test/fixture-issuer/assertions"}
+      ],
+      "related": [
+        "https://staff.keplerops.test/.well-known/fieldkest-client",
+        "https://identity.keplerops.test/.well-known/fieldkest-client",
+        "https://cert.keplerops.test/.well-known/fieldkest-client",
+        "https://assistant.keplerops.test/.well-known/fieldkest-client"
+      ]
+    },
+    "staff.keplerops.test": {
+      "title": "Staff service client reference",
+      "purpose": "Directory, note, archive, delegation, and managed-identity operations.",
+      "routes": [
+        {"key": "staff.directory", "method": "GET", "template": "https://staff.keplerops.test/api/service-directory"},
+        {"key": "staff.note", "method": "GET", "template": "https://staff.keplerops.test/api/notes/{note_id}"},
+        {"key": "staff.note-preview", "method": "POST", "template": "https://staff.keplerops.test/api/note-preview"},
+        {"key": "staff.archive", "method": "GET", "template": "https://staff.keplerops.test/api/archive/handovers/{subject}"},
+        {"key": "staff.delegation", "method": "POST", "template": "https://staff.keplerops.test/api/archive/delegation/probe"},
+        {"key": "staff.managed-session", "method": "POST", "template": "https://staff.keplerops.test/api/managed-identities/{service_id}/session"}
+      ],
+      "related": []
+    },
+    "cert.keplerops.test": {
+      "title": "Certificate enrollment client reference",
+      "purpose": "Certificate template and enrollment request operations.",
+      "routes": [
+        {"key": "cert.template", "method": "GET", "template": "https://cert.keplerops.test/api/enrollment/{template}"},
+        {"key": "cert.requests", "method": "POST", "template": "https://cert.keplerops.test/api/enrollment/{template}/requests"}
+      ],
+      "related": []
+    },
+    "identity.keplerops.test": {
+      "title": "Identity client reference",
+      "purpose": "Registration, federation, and service-relation operations.",
+      "routes": [
+        {"key": "identity.registration", "method": "GET", "template": "https://identity.keplerops.test/api/registrations/{registration_id}"},
+        {"key": "identity.staff-login", "method": "POST", "template": "https://identity.keplerops.test/api/federation/staff-login"},
+        {"key": "identity.login", "method": "POST", "template": "https://identity.keplerops.test/api/federation/login"},
+        {"key": "identity.service-relation", "method": "GET", "template": "https://identity.keplerops.test/api/service-relations/{service_id}"}
+      ],
+      "related": []
+    },
+    "assistant.keplerops.test": {
+      "title": "Assistant client reference",
+      "purpose": "Browser application, conversation, answer, and completion operations.",
+      "routes": [
+        {"key": "assistant.app", "method": "GET", "template": "https://assistant.keplerops.test/static/app.js"},
+        {"key": "assistant.config", "method": "GET", "template": "https://assistant.keplerops.test/api/config"},
+        {"key": "assistant.contexts", "method": "GET", "template": "https://assistant.keplerops.test/api/contexts"},
+        {"key": "assistant.conversation", "method": "GET", "template": "https://assistant.keplerops.test/api/conversations/{conversation_id}"},
+        {"key": "assistant.selection", "method": "GET", "template": "https://assistant.keplerops.test/api/selections/{selection_id}"},
+        {"key": "assistant.document", "method": "GET", "template": "https://assistant.keplerops.test/api/contexts/{context_id}/conversations/{conversation_id}/documents/{document_id}"},
+        {"key": "assistant.answers", "method": "POST", "template": "https://assistant.keplerops.test/api/answers"},
+        {"key": "assistant.completion-example", "method": "GET", "template": "https://assistant.keplerops.test/api/completions/examples/{example_id}"},
+        {"key": "assistant.completion-context", "method": "POST", "template": "https://assistant.keplerops.test/api/completions/context"},
+        {"key": "assistant.completion-jobs", "method": "POST", "template": "https://assistant.keplerops.test/api/completions/jobs"},
+        {"key": "assistant.completion-job", "method": "GET", "template": "https://assistant.keplerops.test/api/completions/jobs/{job_id}"}
+      ],
+      "related": []
+    }
+  }
+}
