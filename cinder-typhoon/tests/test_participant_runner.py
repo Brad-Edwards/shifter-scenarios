@@ -142,6 +142,46 @@ class CandidateTests(unittest.TestCase):
             )
 
 
+class CommittedCandidateTests(unittest.TestCase):
+    CANDIDATE_PATH = ROOT / "build" / "participant-runner" / "candidate.json"
+    SCHEMA_PATH = ROOT / "build" / "participant-runner" / "candidate.schema.json"
+
+    def test_committed_candidate_has_required_fields(self) -> None:
+        doc = json.loads(self.CANDIDATE_PATH.read_text())
+        for field in ("schema_version", "candidate_id", "immutable",
+                      "source_commit", "artifact_digests", "deployments"):
+            self.assertIn(field, doc, f"candidate.json missing required field: {field}")
+        self.assertEqual(doc["schema_version"], 1)
+        self.assertIsInstance(doc["candidate_id"], str)
+        self.assertIsInstance(doc["immutable"], bool)
+        self.assertRegex(doc["source_commit"], r"^[0-9a-f]{40}$")
+        self.assertIsInstance(doc["artifact_digests"], dict)
+        self.assertTrue(doc["artifact_digests"])
+        for phase in ("training", "keplerops", "arwc"):
+            self.assertIn(phase, doc["deployments"],
+                          f"candidate.json missing deployment: {phase}")
+
+    def test_committed_candidate_is_not_immutable_without_real_digests(self) -> None:
+        doc = json.loads(self.CANDIDATE_PATH.read_text())
+        placeholder = "sha256:" + "0" * 64
+        has_placeholders = any(
+            v == placeholder for v in doc.get("artifact_digests", {}).values()
+        )
+        if has_placeholders:
+            self.assertFalse(doc.get("immutable"),
+                             "candidate.json is marked immutable but contains placeholder digests")
+
+    def test_committed_candidate_source_commit_is_reachable(self) -> None:
+        doc = json.loads(self.CANDIDATE_PATH.read_text())
+        commit = doc.get("source_commit", "")
+        result = subprocess.run(
+            ["git", "cat-file", "-e", commit],
+            cwd=ROOT, capture_output=True,
+        )
+        self.assertEqual(result.returncode, 0,
+                         f"candidate source_commit {commit[:12]} not in git history")
+
+
 class EvidenceTests(unittest.TestCase):
     def test_evidence_events_accept_hashes_but_reject_bodies(self) -> None:
         event = {

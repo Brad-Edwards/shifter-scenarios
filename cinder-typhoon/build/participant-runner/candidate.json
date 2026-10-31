@@ -1,0 +1,31 @@
+{
+  "artifact_digests": {
+    "cinder-arwc/a-connector:hand-build": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "cinder-keplerops/k-dev:hand-build": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "cinder-training/workstation:hand-build": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "candidate_id": "mutable-dev-20261031",
+  "deployments": {
+    "arwc": {
+      "instance": "cinder-arwc-golden",
+      "participant_image_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "project": "prod-mgau4w",
+      "zone": "us-central1-a"
+    },
+    "keplerops": {
+      "instance": "cinder-keplerops-golden",
+      "participant_image_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "project": "prod-mgau4w",
+      "zone": "us-central1-a"
+    },
+    "training": {
+      "instance": "cinder-training-golden",
+      "participant_image_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "project": "prod-mgau4w",
+      "zone": "us-central1-a"
+    }
+  },
+  "immutable": false,
+  "schema_version": 1,
+  "source_commit": "d810f1d275c6369252a717b310cf4e53e9e99a8a"
+}
