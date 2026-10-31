@@ -2492,10 +2492,14 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         session = self.evidence["process_session"]
         site_code = self.evidence["asset_bundle"]["asset"].split("-")[1]
         forecast_id = f"FCST-{site_code}-33"
-        checkpoint = "REH-SCHED-33"
-        demand = [0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.70, 0.65, 0.60, 0.55, 0.50, 0.45]
-        release = [0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.35, 0.30, 0.25, 0.20, 0.15, 0.10]
-        alternate = [0.35] * 12
+        # Derive schedule parameters from the schedule-window GET endpoint.
+        _, window = request(self.discovered_route("process.schedule-window"), token=session, expected=200)
+        checkpoint = window["checkpoint"]
+        demand = window["demand_m3s"]
+        policy_format = window["policy_format"]
+        # The schedule window supplies a reference release that satisfies the published bounds.
+        release = window["reference_release_m3s"]
+        alternate = window["reference_alternate_m3s"]
 
         with self.subTest(card="W33.1 a forecast that matches the instrument"):
             forecast = {
@@ -2529,11 +2533,13 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.assertEqual(status, 403)
             status, result = request(self.discovered_route("process.schedule-submit"), method="POST", token=session, body=rehearsal, expected=201)
             self.assertFalse(result["record"]["live_state_changed"])
+            self.evidence["w33_schedule_result"] = result["record"]["record_id"]
 
         with self.subTest(card="W33.4 when the forecast moves"):
             policy = {
-                "control_client": self.evidence["w26_control_client"], "schedule_result": "REH-RESULT-CRR-33",
-                "policy": {"format": "ARWC-POL1", "checkpoint": checkpoint, "base_release_m3s": release, "buffer_gain": 1.0, "demand_gain": 1.0},
+                "control_client": self.evidence["w26_control_client"],
+                "schedule_result": self.evidence["w33_schedule_result"],
+                "policy": {"format": policy_format, "checkpoint": checkpoint, "base_release_m3s": release, "buffer_gain": 1.0, "demand_gain": 1.0},
             }
             wrong = json.loads(json.dumps(policy)); wrong["policy"]["buffer_gain"] = 1.01
             status, _ = request(self.discovered_route("process.feedback-policy"), method="POST", token=session, body=wrong)

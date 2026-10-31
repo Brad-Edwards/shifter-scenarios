@@ -1085,6 +1085,24 @@ class Handler(BaseHTTPRequestHandler):
                           extra={"image_b64": base64.b64encode(image).decode()})
             return
         if ROLE == "hmi":
+            if path == "/api/schedule-windows/current":
+                self.send_json(200, {
+                    "checkpoint": schedule33.CHECKPOINT,
+                    "interval_seconds": 300,
+                    "interval_count": 12,
+                    "demand_m3s": schedule33.DEMAND,
+                    "initial_buffer_m3": 180.0,
+                    "state_bounds_m3": {"min": 120.0, "max": 240.0},
+                    "terminal_bounds_m3": {"min": 160.0, "max": 200.0},
+                    "volume_objective_ml": {"min": 0.78, "max": 0.84},
+                    "ramp_bound_m3s": 0.1,
+                    "release_bounds_m3s": {"min": 0.0, "max": 0.8},
+                    "supply_bounds_m3s": {"min": 0.0, "max": 0.5},
+                    "policy_format": "ARWC-POL1",
+                    "reference_release_m3s": schedule33.REFERENCE_RELEASE,
+                    "reference_alternate_m3s": schedule33.REFERENCE_ALTERNATE,
+                })
+                return
             records = {
                 "/api/process-views/state": ("present_observed", PRESENT, "the-reservoir-s-present-tense"),
                 "/api/process-views/mode": ("mode_observed", MODE, "the-mode-the-plant-is-in"),
