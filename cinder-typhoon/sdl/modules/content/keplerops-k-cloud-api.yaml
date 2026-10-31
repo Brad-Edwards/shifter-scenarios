@@ -33,12 +33,14 @@ content:
       starting_state: Workspace token exchange record for svc-fieldlink-workload; grant
         limited to own workload and authenticated build metadata.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: cloud-api.keplerops.test workspace-token and build-record APIs
+        normal_case: developer exchanges workspace identity for a workload token and reads
+          the build record
+        defect: the workload token carries build-record read authority and a fixture token
+          for cross-role exchange
+        bounds: the workload token is scoped to the developer workspace; no operator-level
+          build authority
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -79,7 +81,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: bbc4214b98f2b8d8e449811dacbdf225907c76773c0c468bc188007ab9c7247b
+        digest: a7a3dcec0fa438645480c566f5e55ce00c838d70c2ddec7689d3c6f2944ee528
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -105,12 +107,13 @@ content:
       starting_state: Trust record TRUST-FLX-04 with issuer, subject, accepted audiences
         and export-role relationship.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: cloud-api.keplerops.test trust-record API
+        normal_case: workload agent fetches the trust record linked in its own build record
+        defect: the trust record names a role with a broader data-export scope than the
+          workload holds
+        bounds: trust record read is scoped to the workload token; no arbitrary trust record
+          enumeration
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -151,7 +154,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 09add384e1ce5db6687a3dacfc390090aa706659c24a9bbff67cab40d72f8a10
+        digest: 11c0c07ac43884b19aa2c56318470b9ed6025ae485b81c2e7b6d36e252b70871
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -253,12 +256,15 @@ content:
         membership but omits release-dossier entitlement and returns short-lived release-reader
         exchange handle.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: cloud-api.keplerops.test build-record API; ci.keplerops.test run-artifact
+          API
+        normal_case: developer reads the build record for the handover release and fetches
+          the release dossier artifact
+        defect: the build record carries an exchange handle that grants access to the release
+          dossier, naming the signer repository
+        bounds: the exchange handle is scoped to the one release dossier; no other build
+          records are accessible with it
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -301,7 +307,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 7172a223b33deb42d0d8eaf99d0cf53b7edd3d555bc0802beb7d61d547ce92f1
+        digest: cbbbf56b6ef948aa1e2f72c3391bd6bf2362d9a549790c320563cccd01f015b2
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -327,12 +333,13 @@ content:
       starting_state: Policy distinguishes management caller, scheduler, runtime service
         account and resource label; worker may manage own bounded job.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: cloud-api.keplerops.test maintenance and policy APIs
+        normal_case: authorized workload reads the maintenance index and its policy record
+        defect: the maintenance index carries a worker credential with a different runtime
+          identity than the developer credential
+        bounds: the worker credential is scoped to the maintenance workload; no operator
+          or platform authority is granted
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -373,7 +380,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: c81fbc7d961f6ed1f790c6a5e3b6c373eaa8d3bf04a01b50b93c34c3414997b7
+        digest: 6c18331b8a8af55945015a3bc10d992f3bd876762f8d5e12f42fb9aedebb8932
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

@@ -162,10 +162,13 @@ demands it. A wave is not complete merely because its services start.
 - 2026-09-26: The 104 contracts distribute as: registry 14, assistant 12, data
   12, support 11, CI 10, source 8, preview 7, developer 6, cloud API 5, staff 5,
   workload 5, indexer 4, certificate 2, identity 1, and connector 2.
-- 2026-09-26: Fifty-three contracts use the generic equivalent-backend mechanic
-  profile. That is not permission to invent exploit-relevant artifacts during
-  coding; their exact starting bytes and configurations must be audited and,
-  where absent, added to SDL content first.
+- 2026-10-30: All 104 contracts have explicit mechanic profiles. The 62 with
+  detailed implementation specs cover the exact binary, cryptographic, parser,
+  and protocol mechanics. The remaining 42 are classified as service-native:
+  they exercise real browser state, git history, cloud API surfaces, data
+  export records, support desk operations, and customer channel delivery through
+  the owning service's declared interface. No contract relies on a
+  challenge-only handler that exists solely to accept one expected request.
 - 2026-09-26: K01-K03 are implemented with actual retained Git history,
   Chromium SQLite state, a normalization-order importer flaw, isolated report
   execution and a non-executing staged reconstruction/callback flow. The same

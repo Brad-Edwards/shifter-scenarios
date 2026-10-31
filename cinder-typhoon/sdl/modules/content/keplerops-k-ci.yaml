@@ -38,12 +38,15 @@ content:
         and commit 80560bcf8381c36ef82be771e58fc164a349ea07; test tests/test_crr_og2_report.py;
         fixture SHA-256 da511020fa2f2e23ec74ea3e8e2f8e19452ae90bcdd32fea2e0602b8573d6564.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: source.keplerops.test repository content API; ci.keplerops.test review-job
+          API
+        normal_case: reviewer reads connector source and CI review job for the handover
+          commit
+        defect: the review job carries a signed pointer to the policy-compiler workspace
+          file path
+        bounds: only the workspace file identified by the review job is readable; no other
+          workspace or job is enumerable
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -86,7 +89,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: c31d84b333826941753600b675679d82829fb9ec8562d449c68962c199f2e0b6
+        digest: d1deacaa2031851cb57464accc192a5c8e4f181031be742ddb76094159b81898
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -113,12 +116,14 @@ content:
         occurs before one percent-decode and dot-segment normalization; normal object inputs/report-request.json;
         protected object selected by inputs/%2e%2e/reviews/REVNOTE-1842.json.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: ci.keplerops.test review-import API; source.keplerops.test policy-evaluate
+          API
+        normal_case: developer imports a CI review and submits the policy program for evaluation
+        defect: the review import credential also accepts a policy-evaluate request with
+          an author-controlled program model
+        bounds: only the one-use evaluate route is reachable; no CI run trigger or artifact
+          delete authority
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -162,7 +167,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 509f8d77ccee4f4b260dd59bd728a20ae69c6967ea2c569f5e478331251bb04e
+        digest: a4aa5b65f80a9e6095c463c62b25bda6c29e8b789e60352d5fe7115bcbb97a71
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -192,12 +197,13 @@ content:
         capture, and observation fields; mutable assessment rating and summary; support
         handover consumer.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: ci.keplerops.test workspace-file API
+        normal_case: developer retrieves the review workspace artifact uploaded during CI
+        defect: the workspace path disclosed by the review job allows reading an operator-scoped
+          staging artifact
+        bounds: only the named workspace path is readable; no directory listing or arbitrary
+          workspace traversal
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -242,7 +248,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: b51bd85d0016d045ae46a064b9ec9ba0e8a54834914c63585c43201ef4c74d22
+        digest: 8fa882648eb0ed7f546e12fb55648f55b3d3b57b27f9afbd94b1716f2fefa661
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

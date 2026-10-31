@@ -39,12 +39,14 @@ content:
         retained cookie fieldkest_support; authoritative conversation SUP-2841 revision
         7.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: Chromium SQLite (History, Cookies); support.keplerops.test conversation
+          and cookie APIs
+        normal_case: developer closes browser tab, leaving session cookie in profile
+        defect: closed-tab URL in History plus retained session cookie give read access
+          to the support conversation
+        bounds: only the retained SUP-2841 conversation is accessible; no write or assignment
+          authority is granted
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -87,7 +89,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 73b1a1c3965e938883cad357629f273d95c5408ac6e21cb66bedfb92afbbfa8d
+        digest: e236a70d494a1d7cc24fd740f2cee4d0caec34bc1cde6f0302752d1bc8faf92a
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -113,12 +115,13 @@ content:
       starting_state: Retained fieldkest-support session cookie and server session for maya.ranscombe;
         private handover.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: support.keplerops.test handover API
+        normal_case: support reviewer reads the current support handover for their open
+          case
+        defect: the retained session cookie accesses the handover for SUP-2841 and names
+          the reviewer recovery account
+        bounds: only the one handover associated with the session's active case is accessible
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -159,7 +162,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 549c7fc5059f709ad09659c7cd35b02f501f9909f3d320aa92e35403c7e9c1cb
+        digest: fbd9f1ffbf76207aa4bbd17510664e46ac6b23fa83d1440dd795ae34815d6dbb
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -186,12 +189,15 @@ content:
       starting_state: Alternate talia.mornac-review recovery record; recovery lookup reveals
         case fragment and retained browser artifact supplies second factor.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: support.keplerops.test recovery-lookup and recovery-redeem APIs
+        normal_case: support reviewer redeems a pending account recovery using a browser-retained
+          factor
+        defect: the support case ticket (retained in browser history) serves as the browser
+          factor, completing a reviewer recovery without the second factor the account owner
+          would supply
+        bounds: only the one pending recovery for talia.mornac-review is redeemable; the
+          factor must match the case number
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -232,7 +238,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 86d96a8a20fcc9cb51db459b3cc03c3218cd159a782a97309cfd6ff3cd5d5f50
+        digest: e990b49d91eaf63e3020dca40f755525c602238fd268f08b90a91fff9c8883d5
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -257,12 +263,12 @@ content:
       - k-delivery.k-support/support-service/assignment
       starting_state: B01 principal's private customer assignment and case SUP-2841.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: support.keplerops.test session and assignment APIs
+        normal_case: support reviewer inspects their current assignment and customer list
+        defect: the session assignment excludes the ARWC customer, confirming the operator
+          holds cross-account access not scoped to the reviewer's normal assignment
+        bounds: only the session's own assignment record is accessible
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -302,7 +308,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 2f65289aff169e27d4506d111d854b92de72a9c79ee2ae66146e63e4549bd880
+        digest: 436884c640ddc2e9b26a45ff2d3a32f734caebf39938eb4e1ca7801544cb6d7a
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -328,12 +334,13 @@ content:
       starting_state: Case note names Talia; copy-handover route authorizes source-case
         reader but omits target-reviewer assignment permission.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: support.keplerops.test copy-handover API
+        normal_case: support supervisor delegates a handover copy to a reviewer
+        defect: the recovered reviewer session permits requesting a handover copy to the
+          reviewer account, staging the material for cross-account federation
+        bounds: only handovers associated with the delegating session's active case are
+          copyable
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -376,7 +383,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 4865ee61a86ee4e803d65b92fd2c3be70551280919a4f8c98aa754d8f2d4d9a2
+        digest: 607fb1ef5d713419cd78e2c706f826d4a2e029ad91d88056532cec078a6ba9f7
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -475,12 +482,13 @@ content:
       starting_state: Dossier DOS-ARWC-HIST-01 and retained attachment, cross-referenced
         to narrative account K-C-001 and recurring SUP-2841.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: support.keplerops.test session and customer-dossier APIs
+        normal_case: support reviewer reads the customer history dossier for their active
+          session
+        defect: the dossier links a protected customer record that requires a federated
+          reviewer session
+        bounds: the history dossier ID comes from the session; no guessing is required
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -521,7 +529,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 6ed6db3cba6a0db5858f1df65b9f94df674f41205627ae53924b473cea775ada
+        digest: 5bec7c794321d22ab5cfadc941017b942caa2cf75094a01db9b0da8751542a94
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -548,12 +556,13 @@ content:
       starting_state: Current TEN-ARWC-047/FLK-7.4.2 and obsolete TEN-ARWC-019/FLK-6.9.8,
         each with dates/provenance.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: support.keplerops.test integration and reconcile APIs
+        normal_case: support reviewer checks the current connector integration for the active
+          customer
+        defect: the integration names both the current and an obsolete tenant binding, enabling
+          cross-tenant reconciliation
+        bounds: only the integration record for the session's active customer is accessible
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -594,7 +603,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: c2babb5718f0ab2bbb84d54f01fc52fc683ce9b821ece71acab8d58c4e0a9720
+        digest: 25cc0d191ef3a0b1e2f00b3568a1dac8ab699db138ab0129d61212b008e71515
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -619,12 +628,14 @@ content:
       - k-delivery.k-support/support-service/diagnostic-job
       starting_state: B01 session, G02 binding, job schema and active connector registration.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: support.keplerops.test diagnostics API
+        normal_case: support reviewer creates a diagnostic job for the active customer's
+          current connector revision
+        defect: the diagnostic job accepts the cross-account connector revision identified
+          during K25.2
+        bounds: only the tenant and revision named in the job request are scoped; no other
+          customer's diagnostics are affected
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -666,7 +677,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 643a998a90b73446470828615e72d7e678cea285155addb71cf52a1f8b98d9e5
+        digest: 0e29bd67e97944b8eb95d13eb77bc831025c90f27bbf0e3a7b360a45b65b17d4
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -693,12 +704,13 @@ content:
       starting_state: Diagnostic package template with G03 interface; edit endpoint validates
         schema/digest but fails immutable-source enforcement.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: support.keplerops.test diagnostic-package PUT API
+        normal_case: support reviewer uploads a diagnostic program package for the job
+        defect: the service accepts a operator-authored evaluator as the diagnostic program,
+          subject to the declared interface contract
+        bounds: the evaluator is executed in an isolated sandbox with no network or file
+          access beyond the job scope
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -739,7 +751,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: d8b612cf3d76d17cfb5c68e3227e1e6f34ab5d70a109ce0a4f5cfa822a5f1af4
+        digest: 1ef308125faef4adf96a8b2ec1a46c26839fdc143cd10bc9a8146096394f7db6
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -767,12 +779,14 @@ content:
       starting_state: Connector diagnostic intake accepts signed job package and returns
         invocation/receipt.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: support.keplerops.test diagnostic-deliver API
+        normal_case: support reviewer delivers the validated diagnostic package to the customer's
+          ARWC runtime
+        defect: delivery crosses into the ARWC segment, running the operator-authored evaluator
+          against the customer connector
+        bounds: delivery requires both a validated package and the cross-segment carrier;
+          the evaluator output is scoped to the diagnostic receipt
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -813,7 +827,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: b80b807a1ffdef38da004413f7b64ce8c42a3829dcba3084c4cc4b73d4b7b887
+        digest: 5b2c92f9f45bfc4fd16a1ba596167f22a291cb5f0e509d60b0e1326637e3c2e4
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

@@ -30,12 +30,14 @@ content:
       - k-corporate.k-staff/staff-workplace/note-record
       starting_state: Restricted draft NOTE-SUP-2841-7 and preview-consumer binding.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: staff.keplerops.test directory and note APIs
+        normal_case: developer reads the restricted note referenced in the staff service
+          directory
+        defect: the note carries a consumer field naming a preview-service-owned entity,
+          revealing the preview service identity context
+        bounds: only the note ID named in the directory is accessible; the developer credential
+          has no write authority
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -75,7 +77,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 306c70dc661aa618e39074edc767b28c6e149e0ecbffe8ab7676dd924d5ed740
+        digest: 19f5bb296c7be83d56bb8569aef2befaa5fd4d2f8eea3ed7719eee480ac5b29c
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

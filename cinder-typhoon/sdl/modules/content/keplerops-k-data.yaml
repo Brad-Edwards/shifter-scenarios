@@ -39,12 +39,11 @@ content:
       starting_state: Anonymous listing on bucket fieldkest-workspaces; key notebooks/deploy-2026-09.json
         binds notebook to job/dossier objects.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: data.keplerops.test S3-compatible workspace listing API
+        normal_case: service or workload agent lists workspace objects
+        defect: the listing endpoint is anonymous; the developer credential is not required
+        bounds: only workspace-scoped object keys are returned; no export or backup enumeration
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -85,7 +84,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 1a56fbc83005ef01ddd009af70daa60fc9e7346daa26ce6af78156614b12421f
+        digest: 2165715649ce34133a22be8b6721d1b00687b5a82a655b031a98af093ec3c11d
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -111,12 +110,13 @@ content:
       starting_state: Current notebook version and retained prior version v-20260908 containing
         removed customer note.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: data.keplerops.test S3-compatible workspace object API
+        normal_case: workload agent fetches a named workspace object
+        defect: the object at the key revealed by the anonymous listing contains the developer
+          handover metadata
+        bounds: only the key named in the listing is accessible; the object path is not
+          guessable without the listing
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -157,7 +157,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 3cec9c639514d827275d1b223d3e8ed0dc55176361b9a0b1e3960b39e9bb49ac
+        digest: ffb5b424288eaf0221dd5c6b63a9218bf467b2c680dbd7b6805479734966a48b
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -182,12 +182,13 @@ content:
       - k-cloud.k-data/fieldkest-data-api/workspace-object
       starting_state: Notebook note points to separate export exports/EXP-2841/handover.json.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: data.keplerops.test workspace object API
+        normal_case: developer fetches the handover workspace object and reads the export
+          reference
+        defect: the handover object names the export ID and the legacy tenant
+        bounds: only the export ID earned from the object is usable in subsequent export
+          operations
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -227,7 +228,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: aafb5dd78cd64b3760264431d6195ab142e5c764bf2cb581d12d2367eedbc231
+        digest: 75e29b2562944184611087ae13707b81dfdca66a5d807ec4af946f826a87cea9
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -325,12 +326,13 @@ content:
       starting_state: SUP-2841 references unpublished job EXP-2841, dataset support-case-history,
         revision 6.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: data.keplerops.test export API
+        normal_case: authorized exporter reads the export record state
+        defect: the role token earned from K14 permits reading an export that belongs to
+          a different account
+        bounds: the export is in the unpublished state; the role token grants read-only
+          export access
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -371,7 +373,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 5a27dad0856843044d9953024a7d7956a031c04b4479d69d226a89fa209c600f
+        digest: 1abccc4b5b0af2cba4d0d0cafe79a4b58bc20eb0da6a2ae3cb0b49a388cabd91
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -397,12 +399,12 @@ content:
       starting_state: Protected definition with source partitions, owner maya.ranscombe,
         tenant and destination; detail route checks tenant visibility but omits job ownership.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: workloads.keplerops.test schedule API
+        normal_case: authorized scheduler reads the schedule record
+        defect: the role token also grants read access to a schedule belonging to an external
+          account
+        bounds: only the schedule named in the export definition is accessible
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -443,7 +445,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: ce179c4690fb6b549e32b562c034a95a166d6e5b9cefa8a6094cb1080087a548
+        digest: 7d2c12ddb653037366ac11a6fcf995cfbcac32be9681964406b6e95745d2cebd
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -470,12 +472,13 @@ content:
         server-owned dataset/partitions but checks generic editor grant rather than job
         ownership.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: data.keplerops.test export-destination PATCH API
+        normal_case: authorized exporter updates the export destination
+        defect: the role token permits updating the destination to a support-owned sink
+          in a different account
+        bounds: only the destination field is writable; no export deletion or tenant-scope
+          change
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -516,7 +519,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: fbfb8c9c93d04ea2951d507e3c927fa371c865f75681453964a829804604a1ba
+        digest: d56645935d5f21f762748892c5a7d6401a0b7483e66bb19da562ef16ebfcf81e
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -542,12 +545,12 @@ content:
       starting_state: Export manifest with current and stale tenant partitions; G02 identifies
         TEN-ARWC-047/FLK-7.4.2.
       mechanic_profile:
-        implementation_rule: Implement the exact records, identities, permissions, configuration
-          and state in starting_state through the owning node's declared native listener,
-          application route and authorization policy.
-        permitted_variation: Backend framework and storage engine may vary only when request
-          behavior, authorization decisions, persistent mutations, denial behavior and evidence
-          remain byte-for-byte or field-for-field equivalent.
+        classification: service-native
+        surface: data.keplerops.test export-runs API
+        normal_case: authorized exporter triggers an export run to the configured destination
+        defect: the cross-account destination is accepted, delivering the export to the
+          support sink
+        bounds: a coherent cross-tenant collection (mismatched tenant and revision) is denied
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -590,7 +593,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: ef377c64c9d482394f05e8630cdb0b3ca2f406c8b18c42c227cb473117fe86f2
+        digest: 94bb0c0bb852bcd5142ef58931826b764e2013818f00c772f9fb7504dc037e34
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

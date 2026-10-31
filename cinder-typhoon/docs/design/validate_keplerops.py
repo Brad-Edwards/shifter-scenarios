@@ -403,6 +403,23 @@ def check_native_semantics(scenario):
                     f"Composed KeplerOps relationship has private semantic properties: {key}")
 
 
+def check_mechanic_profiles(scenario) -> None:
+    """Reject any contract that still uses the generic implementation_rule fallback."""
+    generic_contracts = []
+    for content_id, payload in scenario.content.items():
+        if not content_id.startswith("keplerops-k"):
+            continue
+        try:
+            profile = payload.text if hasattr(payload, "text") else ""
+            if "implementation_rule" in str(profile):
+                generic_contracts.append(content_id)
+        except Exception:
+            pass
+    require(not generic_contracts,
+            "KeplerOps contracts still use generic equivalent-backend fallback: "
+            + ", ".join(generic_contracts[:5]))
+
+
 def check_prose_and_assets(scenario):
     scoped = list(OPERATIONS.glob("k*.yaml")) + list(KEPLER_CONTENT.glob("keplerops-*.yaml"))
     scoped += list(ASSETS.rglob("*"))
@@ -882,6 +899,7 @@ def hand_build_gaps(scenario) -> list[str]:
         ("K11 foundation assets", lambda current, rows: check_k11_foundation_assets(current)),
         ("K28 foundation assets", lambda current, rows: check_k28_foundation_assets(current)),
         ("K29 foundation assets", lambda current, rows: check_k29_foundation_assets(current)),
+        ("mechanic profiles", lambda current, rows: check_mechanic_profiles(current)),
         ("prose/assets", lambda current, rows: check_prose_and_assets(current)),
     )
     rows = matrix_rows()

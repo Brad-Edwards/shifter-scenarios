@@ -260,6 +260,319 @@ JOINED_FEATURES: dict[str, list[str]] = {
 # and scenario meaning. A builder may choose an equivalent implementation only
 # where the profile explicitly says so.
 MECHANIC_PROFILE: dict[str, dict[str, object]] = {
+    # K01 — developer workstation opening
+    "K01.1": {
+        "classification": "service-native",
+        "surface": "Chromium SQLite (History, Cookies) and git credential store",
+        "normal_case": "developer authenticates to source service and browses support console",
+        "defect": "retained browser cookies and plaintext git credentials give session access to both services without re-authentication",
+        "bounds": "the recovered identity has no push access to the connector repository and no operator authority",
+    },
+    "K01.2": {
+        "classification": "service-native",
+        "surface": "Chromium SQLite (History, Cookies); support.keplerops.test conversation and cookie APIs",
+        "normal_case": "developer closes browser tab, leaving session cookie in profile",
+        "defect": "closed-tab URL in History plus retained session cookie give read access to the support conversation",
+        "bounds": "only the retained SUP-2841 conversation is accessible; no write or assignment authority is granted",
+    },
+    "K01.3": {
+        "classification": "service-native",
+        "surface": "source.keplerops.test git clone and CI review-import API",
+        "normal_case": "developer clones the connector repository and reviews release exports",
+        "defect": "the developer credential also permits submitting a CI review import, which leaks the workspace file path",
+        "bounds": "the import stores the review document and reveals only the scoped workspace URI",
+    },
+    "K01.4": {
+        "classification": "service-native",
+        "surface": "local-helper.md workbench report route; source.keplerops.test report-jobs API",
+        "normal_case": "developer submits the staged collection report to the workbench helper",
+        "defect": "the helper accepts any form upload; a review export submitted instead of the collection report is forwarded to the CI report queue",
+        "bounds": "only the report-consumer workflow is reachable; no audit or platform authority is granted",
+    },
+    # K02 — source and CI review chain
+    "K02.1": {
+        "classification": "service-native",
+        "surface": "source.keplerops.test repository content API; ci.keplerops.test review-job API",
+        "normal_case": "reviewer reads connector source and CI review job for the handover commit",
+        "defect": "the review job carries a signed pointer to the policy-compiler workspace file path",
+        "bounds": "only the workspace file identified by the review job is readable; no other workspace or job is enumerable",
+    },
+    "K02.2": {
+        "classification": "service-native",
+        "surface": "ci.keplerops.test review-import API; source.keplerops.test policy-evaluate API",
+        "normal_case": "developer imports a CI review and submits the policy program for evaluation",
+        "defect": "the review import credential also accepts a policy-evaluate request with an author-controlled program model",
+        "bounds": "only the one-use evaluate route is reachable; no CI run trigger or artifact delete authority",
+    },
+    "K02.3": {
+        "classification": "service-native",
+        "surface": "ci.keplerops.test workspace-file API",
+        "normal_case": "developer retrieves the review workspace artifact uploaded during CI",
+        "defect": "the workspace path disclosed by the review job allows reading an operator-scoped staging artifact",
+        "bounds": "only the named workspace path is readable; no directory listing or arbitrary workspace traversal",
+    },
+    # K03 — CI build operations
+    "K03.1": {
+        "classification": "service-native",
+        "surface": "ci.keplerops.test run and run-log APIs",
+        "normal_case": "developer fetches build run status and log for the current handover build",
+        "defect": "the run log names the policy-compiler binary path and the build-operations repository",
+        "bounds": "only the run and log records for the developer-accessible CI run are returned",
+    },
+    "K03.2": {
+        "classification": "service-native",
+        "surface": "ci.keplerops.test run-artifact API; source.keplerops.test policy-nonce API",
+        "normal_case": "developer retrieves a build artifact and obtains a nonce for policy acceptance",
+        "defect": "the run artifact (release-dossier.json) names the cloud build record and release exchange handle",
+        "bounds": "only the artifact identified by the run record is accessible; no other run artifact is enumerable",
+    },
+    "K03.3": {
+        "classification": "service-native",
+        "surface": "source.keplerops.test connector-archive-run API; build-operations handoff note",
+        "normal_case": "developer exercises the retained connector archive binary through the source service",
+        "defect": "the diagnostic config switches the loader behavior and discloses the internal diagnostic route path",
+        "bounds": "only the two supplied configs are accepted; arbitrary config construction is rejected by signature",
+    },
+    # K13 — cloud workspace and data plane
+    "K13.1": {
+        "classification": "service-native",
+        "surface": "data.keplerops.test S3-compatible workspace listing API",
+        "normal_case": "service or workload agent lists workspace objects",
+        "defect": "the listing endpoint is anonymous; the developer credential is not required",
+        "bounds": "only workspace-scoped object keys are returned; no export or backup enumeration",
+    },
+    "K13.2": {
+        "classification": "service-native",
+        "surface": "data.keplerops.test S3-compatible workspace object API",
+        "normal_case": "workload agent fetches a named workspace object",
+        "defect": "the object at the key revealed by the anonymous listing contains the developer handover metadata",
+        "bounds": "only the key named in the listing is accessible; the object path is not guessable without the listing",
+    },
+    "K13.3": {
+        "classification": "service-native",
+        "surface": "data.keplerops.test workspace object API",
+        "normal_case": "developer fetches the handover workspace object and reads the export reference",
+        "defect": "the handover object names the export ID and the legacy tenant",
+        "bounds": "only the export ID earned from the object is usable in subsequent export operations",
+    },
+    "K13.4": {
+        "classification": "service-native",
+        "surface": "cloud-api.keplerops.test workspace-token and build-record APIs",
+        "normal_case": "developer exchanges workspace identity for a workload token and reads the build record",
+        "defect": "the workload token carries build-record read authority and a fixture token for cross-role exchange",
+        "bounds": "the workload token is scoped to the developer workspace; no operator-level build authority",
+    },
+    # K14 — trust and role escalation
+    "K14.1": {
+        "classification": "service-native",
+        "surface": "cloud-api.keplerops.test trust-record API",
+        "normal_case": "workload agent fetches the trust record linked in its own build record",
+        "defect": "the trust record names a role with a broader data-export scope than the workload holds",
+        "bounds": "trust record read is scoped to the workload token; no arbitrary trust record enumeration",
+    },
+    # K15 — data export cross-account
+    "K15.1": {
+        "classification": "service-native",
+        "surface": "data.keplerops.test export API",
+        "normal_case": "authorized exporter reads the export record state",
+        "defect": "the role token earned from K14 permits reading an export that belongs to a different account",
+        "bounds": "the export is in the unpublished state; the role token grants read-only export access",
+    },
+    "K15.2": {
+        "classification": "service-native",
+        "surface": "workloads.keplerops.test schedule API",
+        "normal_case": "authorized scheduler reads the schedule record",
+        "defect": "the role token also grants read access to a schedule belonging to an external account",
+        "bounds": "only the schedule named in the export definition is accessible",
+    },
+    "K15.3": {
+        "classification": "service-native",
+        "surface": "data.keplerops.test export-destination PATCH API",
+        "normal_case": "authorized exporter updates the export destination",
+        "defect": "the role token permits updating the destination to a support-owned sink in a different account",
+        "bounds": "only the destination field is writable; no export deletion or tenant-scope change",
+    },
+    "K15.4": {
+        "classification": "service-native",
+        "surface": "data.keplerops.test export-runs API",
+        "normal_case": "authorized exporter triggers an export run to the configured destination",
+        "defect": "the cross-account destination is accepted, delivering the export to the support sink",
+        "bounds": "a coherent cross-tenant collection (mismatched tenant and revision) is denied",
+    },
+    # K16 — workload schedule escalation
+    "K16.1": {
+        "classification": "service-native",
+        "surface": "workloads.keplerops.test schedule API",
+        "normal_case": "authorized role reads schedule metadata and assignment",
+        "defect": "the schedule assignment names the cross-account partition window and the export tenant",
+        "bounds": "only the named schedule is accessible; no schedule enumeration",
+    },
+    "K16.4": {
+        "classification": "service-native",
+        "surface": "workloads.keplerops.test schedule-runs API",
+        "normal_case": "authorized scheduler triggers a new schedule run",
+        "defect": "the run executes against the cross-account partition, delivering into the next schedule window",
+        "bounds": "only the schedule identified by the evidence chain is runnable with the role token",
+    },
+    # K17 — support session recovery
+    "K17.1": {
+        "classification": "service-native",
+        "surface": "support.keplerops.test handover API",
+        "normal_case": "support reviewer reads the current support handover for their open case",
+        "defect": "the retained session cookie accesses the handover for SUP-2841 and names the reviewer recovery account",
+        "bounds": "only the one handover associated with the session's active case is accessible",
+    },
+    "K17.2": {
+        "classification": "service-native",
+        "surface": "support.keplerops.test recovery-lookup and recovery-redeem APIs",
+        "normal_case": "support reviewer redeems a pending account recovery using a browser-retained factor",
+        "defect": "the support case ticket (retained in browser history) serves as the browser factor, completing a reviewer recovery without the second factor the account owner would supply",
+        "bounds": "only the one pending recovery for talia.mornac-review is redeemable; the factor must match the case number",
+    },
+    "K17.3": {
+        "classification": "service-native",
+        "surface": "support.keplerops.test session and assignment APIs",
+        "normal_case": "support reviewer inspects their current assignment and customer list",
+        "defect": "the session assignment excludes the ARWC customer, confirming the participant holds cross-account access not scoped to the reviewer's normal assignment",
+        "bounds": "only the session's own assignment record is accessible",
+    },
+    "K17.4": {
+        "classification": "service-native",
+        "surface": "support.keplerops.test copy-handover API",
+        "normal_case": "support supervisor delegates a handover copy to a reviewer",
+        "defect": "the recovered reviewer session permits requesting a handover copy to the reviewer account, staging the material for cross-account federation",
+        "bounds": "only handovers associated with the delegating session's active case are copyable",
+    },
+    # K18 — staff note and federation
+    "K18.1": {
+        "classification": "service-native",
+        "surface": "staff.keplerops.test directory and note APIs",
+        "normal_case": "developer reads the restricted note referenced in the staff service directory",
+        "defect": "the note carries a consumer field naming a preview-service-owned entity, revealing the preview service identity context",
+        "bounds": "only the note ID named in the directory is accessible; the developer credential has no write authority",
+    },
+    # K21 — assistant context and selection
+    "K21.1": {
+        "classification": "service-native",
+        "surface": "assistant.keplerops.test contexts and app APIs",
+        "normal_case": "support reviewer reads their own assistant context list and app source",
+        "defect": "the context list includes a context whose document set crosses tenant boundaries",
+        "bounds": "only contexts associated with the reviewer session are listed",
+    },
+    "K21.2": {
+        "classification": "service-native",
+        "surface": "assistant.keplerops.test selection API",
+        "normal_case": "support reviewer reads an assistant selection record",
+        "defect": "the selection carries cross-tenant document references, confirming the boundary defect",
+        "bounds": "only the selection named in the context is accessible",
+    },
+    # K22 — assistant answers
+    "K22.1": {
+        "classification": "service-native",
+        "surface": "assistant.keplerops.test answers API",
+        "normal_case": "support reviewer submits a query and receives an assistant answer",
+        "defect": "the answer context includes a document outside the reviewer's tenant scope, delivered by the deterministic cross-tenant document path",
+        "bounds": "the defect produces a bounded document read; no arbitrary file or database access is granted",
+    },
+    # K23 — assistant conversation cross-tenant
+    "K23.1": {
+        "classification": "service-native",
+        "surface": "assistant.keplerops.test contexts and conversation APIs",
+        "normal_case": "support reviewer reads the context's conversation list",
+        "defect": "the context includes a conversation belonging to a different tenant",
+        "bounds": "only conversations in the reviewer's context are enumerated; the cross-tenant conversation is identified by tenant mismatch",
+    },
+    "K23.2": {
+        "classification": "service-native",
+        "surface": "assistant.keplerops.test conversation API",
+        "normal_case": "support reviewer reads a conversation by ID",
+        "defect": "the cross-tenant conversation ID (from the context) is readable by the reviewer session",
+        "bounds": "only the conversation ID found in the context is accessible without guessing",
+    },
+    # K24 — completion context and credential
+    "K24.1": {
+        "classification": "service-native",
+        "surface": "assistant.keplerops.test completion-example API",
+        "normal_case": "support reviewer reads a completion example record",
+        "defect": "the example names the completion handover and its context path, which contains a credential reference",
+        "bounds": "only the completion example named in the assistant context is accessible",
+    },
+    # K25 — customer history and reconciliation
+    "K25.1": {
+        "classification": "service-native",
+        "surface": "support.keplerops.test session and customer-dossier APIs",
+        "normal_case": "support reviewer reads the customer history dossier for their active session",
+        "defect": "the dossier links a protected customer record that requires a federated reviewer session",
+        "bounds": "the history dossier ID comes from the session; no guessing is required",
+    },
+    "K25.2": {
+        "classification": "service-native",
+        "surface": "support.keplerops.test integration and reconcile APIs",
+        "normal_case": "support reviewer checks the current connector integration for the active customer",
+        "defect": "the integration names both the current and an obsolete tenant binding, enabling cross-tenant reconciliation",
+        "bounds": "only the integration record for the session's active customer is accessible",
+    },
+    # K26 — customer channel delivery (earned bearer)
+    "K26.1": {
+        "classification": "service-native",
+        "surface": "connector.arwc.test customer-relay via earned channel_token",
+        "normal_case": "authorized channel agent polls for the selected package version",
+        "defect": "the channel_token earned from the package approval (K29.3) grants poll authority over the ARWC customer channel",
+        "bounds": "only the signed and approved version matching the relay's version pattern is returned",
+    },
+    "K26.2": {
+        "classification": "service-native",
+        "surface": "connector.arwc.test customer-relay activate endpoint",
+        "normal_case": "authorized channel agent activates the selected package version for the ARWC customer",
+        "defect": "the channel_token allows activating a new connector version without explicit ARWC administrator approval",
+        "bounds": "activation is scoped to the one approved version and tenant; any other combination is denied",
+    },
+    "K26.3": {
+        "classification": "service-native",
+        "surface": "connector.arwc.test customer-relay rollback-rehearsal endpoint",
+        "normal_case": "authorized channel agent rehearses a rollback to an older version",
+        "defect": "the channel_token allows scheduling a rollback to version 7.4.2 using a retained fallback slot",
+        "bounds": "only the declared rollback version is accepted; arbitrary version selection is denied",
+    },
+    # K27 — diagnostic delivery
+    "K27.1": {
+        "classification": "service-native",
+        "surface": "support.keplerops.test diagnostics API",
+        "normal_case": "support reviewer creates a diagnostic job for the active customer's current connector revision",
+        "defect": "the diagnostic job accepts the cross-account connector revision identified during K25.2",
+        "bounds": "only the tenant and revision named in the job request are scoped; no other customer's diagnostics are affected",
+    },
+    "K27.2": {
+        "classification": "service-native",
+        "surface": "support.keplerops.test diagnostic-package PUT API",
+        "normal_case": "support reviewer uploads a diagnostic program package for the job",
+        "defect": "the service accepts a participant-authored evaluator as the diagnostic program, subject to the declared interface contract",
+        "bounds": "the evaluator is executed in an isolated sandbox with no network or file access beyond the job scope",
+    },
+    "K27.3": {
+        "classification": "service-native",
+        "surface": "support.keplerops.test diagnostic-deliver API",
+        "normal_case": "support reviewer delivers the validated diagnostic package to the customer's ARWC runtime",
+        "defect": "delivery crosses into the ARWC segment, running the participant-authored evaluator against the customer connector",
+        "bounds": "delivery requires both a validated package and the cross-segment carrier; the evaluator output is scoped to the diagnostic receipt",
+    },
+    # K29 — release lineage and signing
+    "K29.1": {
+        "classification": "service-native",
+        "surface": "cloud-api.keplerops.test build-record API; ci.keplerops.test run-artifact API",
+        "normal_case": "developer reads the build record for the handover release and fetches the release dossier artifact",
+        "defect": "the build record carries an exchange handle that grants access to the release dossier, naming the signer repository",
+        "bounds": "the exchange handle is scoped to the one release dossier; no other build records are accessible with it",
+    },
+    # K31 — maintenance identity
+    "K31.1": {
+        "classification": "service-native",
+        "surface": "cloud-api.keplerops.test maintenance and policy APIs",
+        "normal_case": "authorized workload reads the maintenance index and its policy record",
+        "defect": "the maintenance index carries a worker credential with a different runtime identity than the developer credential",
+        "bounds": "the worker credential is scoped to the maintenance workload; no operator or platform authority is granted",
+    },
+    # --- explicitly-profiled cards below ---
     "K04.1": {
         "implementation": "C++17, Linux x86_64, fieldkest-bundle-indexer 1.8.0",
         "build": ["-std=c++17", "-O2", "-fno-omit-frame-pointer", "retain symbols and linker map"],
