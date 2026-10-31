@@ -16,11 +16,21 @@ nohup docker compose -f compose.yaml up -d --force-recreate \
 compose_pid=$!
 printf '%s\n' "$compose_pid" >"$startup_pid"
 
+handover_services_waiting() {
+  for container in cinder-arwc-business cinder-arwc-archive cinder-arwc-contractors; do
+    docker exec "$container" grep -qx waiting /run/arwc-status/state 2>/dev/null \
+      || return 1
+    [[ $(docker inspect -f '{{.RestartCount}}' "$container") == 0 ]] \
+      || return 1
+  done
+}
+
 for attempt in $(seq 1 60); do
   if docker exec --user arwc-connector cinder-arwc-connector \
       test -s /var/lib/arwc-connector/state/planner-handover.json 2>/dev/null \
     && docker exec --user arwc-connector cinder-arwc-connector \
-      test -e /var/lib/arwc-connector/audit/fieldlink-consumer.jsonl 2>/dev/null; then
+      test -e /var/lib/arwc-connector/audit/fieldlink-consumer.jsonl 2>/dev/null \
+    && handover_services_waiting; then
     break
   fi
   if ! kill -0 "$compose_pid" 2>/dev/null; then
@@ -34,10 +44,7 @@ for attempt in $(seq 1 60); do
   sleep 1
 done
 
-for container in cinder-arwc-business cinder-arwc-archive cinder-arwc-contractors; do
-  docker exec "$container" grep -qx waiting /run/arwc-status/state
-  [[ $(docker inspect -f '{{.RestartCount}}' "$container") == 0 ]]
-done
+handover_services_waiting
 kill -0 "$compose_pid"
 
 docker exec --user fieldlink cinder-arwc-connector \

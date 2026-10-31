@@ -160,6 +160,8 @@ class ArwcHandoverTests(unittest.TestCase):
         self.assertIn('printf \'%s\\n\' "$compose_pid"', restore)
         self.assertIn('kill -0 "$compose_pid"', restore)
         self.assertIn("bash ./generate-operator-material.sh", restore)
+        self.assertIn("handover_services_waiting()", restore)
+        self.assertIn("&& handover_services_waiting", restore)
         self.assertIn("grep -qx waiting /run/arwc-status/state", restore)
 
     def test_no_handover_waits_without_exit_or_repeated_errors(self) -> None:
