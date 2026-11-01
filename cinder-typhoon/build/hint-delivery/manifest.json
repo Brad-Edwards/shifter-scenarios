@@ -1,0 +1,6186 @@
+{
+  "catalog": {
+    "revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+    "schema": "cinder-typhoon.challenge-delivery/v2"
+  },
+  "items": [
+    {
+      "card_id": "T01.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "21050f2f4ad4940430122c293c1bdd0b51b107df2d0a07945e3229b4b778121b"
+        },
+        {
+          "level": 2,
+          "sha256": "8f4037bb83d4b0b79afb5a62980118fd770a070a3410920aaf66dc355555ff20"
+        },
+        {
+          "level": 3,
+          "sha256": "44fd91f15e0daf85117afee368a8a4dd1475e2016c69adb6b97cddb56dc03219"
+        }
+      ],
+      "operation_id": "T01",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T01.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "8fe268ad84d906bc13c9da2190158ffd879a2298b24d15735b07d9655a2ab2be"
+        },
+        {
+          "level": 2,
+          "sha256": "d4fd6c0fa962a163e6686d816b5cd9c4245c9600bed4e3fd7818d5e34ae77d8d"
+        },
+        {
+          "level": 3,
+          "sha256": "94018020953321bc763d3c6749f35d0a69b5b08474d73695100a9802f4ff49fe"
+        }
+      ],
+      "operation_id": "T01",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T01.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "5b9514b6f314f7d46130bbce254657c8a4a6ece44c235e6b6493251199dc01b9"
+        },
+        {
+          "level": 2,
+          "sha256": "b1acb51ff97ef29ae6f18db7ec4c145db6882dc2b5a9e5d943eb2d2532852472"
+        },
+        {
+          "level": 3,
+          "sha256": "b8682ea02e6ef479cb691922d8343f2735fc37846bc056320db25582501e2433"
+        }
+      ],
+      "operation_id": "T01",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T01.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "1b970d5c61215f3e61acf403bb3cc8e2fd5c6fa0f5348b15ff12ed89c7e5286f"
+        },
+        {
+          "level": 2,
+          "sha256": "7a378e5c1a4f275513f8bb104a39c42264e8e578ca27e90f502742515f51d5a0"
+        },
+        {
+          "level": 3,
+          "sha256": "aa7c559a1516f3e2d502f9a82ce4eb2e5efdba50d805efabe565afb93a884838"
+        }
+      ],
+      "operation_id": "T01",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T02.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "6719ee8a2454593a588993eb4d4ada159eac56669c5dc06cc0fb1f715d3f1b3d"
+        },
+        {
+          "level": 2,
+          "sha256": "246818285f859ed9f5757608baa0db312f5e067c3e50d5d4a8cdf403e6ff3573"
+        },
+        {
+          "level": 3,
+          "sha256": "41e87f69542dec23d87b064c7d21706b6e9b056fc7156c9581ed78870df505b2"
+        }
+      ],
+      "operation_id": "T02",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T02.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d0f45b38e6ebe79bfcc73199c25ce776d01312261cd6beccafeb784e1e74a6cf"
+        },
+        {
+          "level": 2,
+          "sha256": "6ecdb69962c5c8c2082ffb4a552c615b785faf09d62ae2af306a37a756aad802"
+        },
+        {
+          "level": 3,
+          "sha256": "8bfeb587ccff1cf5e07497fbd4d5443728fc0b2670c2307db815791021fb89d0"
+        }
+      ],
+      "operation_id": "T02",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T02.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "6d47237f192ac66611674aea995f40e60000ccdbc442764659ea0dbf03c44994"
+        },
+        {
+          "level": 2,
+          "sha256": "929994bc89348e9c4680dd58e399d3e9c8d0cc90eb51dddf854f9e7417e5bf31"
+        },
+        {
+          "level": 3,
+          "sha256": "b3e4aa39ac6b5ec4c69502ecfc7908ffe3a55d4b0a8d716e520f55442866a00c"
+        }
+      ],
+      "operation_id": "T02",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T02.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "8324c2b3d0d81dd5d8a0164133026dccc79999635205a1b22ddb384a96da32bc"
+        },
+        {
+          "level": 2,
+          "sha256": "367fe9cf7b554c8d1e4f286f93c858eee0fa8b84aa8de5e95975f5fdb46069f5"
+        },
+        {
+          "level": 3,
+          "sha256": "4f4b7e43bdffdd69b8161ee28b25649ded69135b7d91846719962c75645842a2"
+        }
+      ],
+      "operation_id": "T02",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T03.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "32beb3dd42180f1d4022227c0f864d3eb0d497c2a964b65b9c20a482ef9be987"
+        },
+        {
+          "level": 2,
+          "sha256": "0dd4e2f3cb90edacd741de815f05c9d45fc1bf3315b613dbf595757ca4633fba"
+        },
+        {
+          "level": 3,
+          "sha256": "e3512f16e8af10a0d005b0b3078060ee1b172f4fbd068492ddafcfe7f824d257"
+        }
+      ],
+      "operation_id": "T03",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T03.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "00c909e27ecb788663e2a9e6dc179435abc5e4fff26f06631e8532059f8255d5"
+        },
+        {
+          "level": 2,
+          "sha256": "c043b25490eac0d4a31ecf63aff0d624cb6f7f2835890f922dc585ecbe4a9759"
+        },
+        {
+          "level": 3,
+          "sha256": "7863a5e7709da2c3175dcb9f9efa8139bd63b5408806b107cf42103447f15d43"
+        }
+      ],
+      "operation_id": "T03",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T03.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "888c12bc4031d28b4dbe92fed144af5fe4828664eade19c22230936e2dd09d25"
+        },
+        {
+          "level": 2,
+          "sha256": "7fecb45016533e6d6bcb7eb742a2659d20954962e83251d48d8af02234436e7c"
+        },
+        {
+          "level": 3,
+          "sha256": "77dcfea86e4418982e6021ed4f7a6253f51110f3ba973cfb7ac3a0072678915d"
+        }
+      ],
+      "operation_id": "T03",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T03.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "44efde0f10d61bdb594c0f8ee27c90a3d7dd9500b4067f9c71a5cf0e2243058a"
+        },
+        {
+          "level": 2,
+          "sha256": "44b8cd863f3b160916665f0ce662cc2733415aac1bb5d7c8ad2d8520758d1c67"
+        },
+        {
+          "level": 3,
+          "sha256": "447229990128c337bc57e8d22d8476867226d4158f605f05a5feaae4ea2c07f5"
+        }
+      ],
+      "operation_id": "T03",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T04.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "0e12cc05e6d1236cc3cf020991171e8eaa7876391bb05ffd29754334b7ce50f8"
+        },
+        {
+          "level": 2,
+          "sha256": "0a8d1148a4b1bcb49d192e8e8cf2380c065a315addc45133c2b78614435192e4"
+        },
+        {
+          "level": 3,
+          "sha256": "6a41e3874f14d0d44f5e4abcff26869305239151dc16592d5ac09a5ebea23e7a"
+        }
+      ],
+      "operation_id": "T04",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T04.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "19cf0af710f908ebe05492539bc62b71066f411baadbc0f0191455cf1bd099c5"
+        },
+        {
+          "level": 2,
+          "sha256": "1b3cdb124c3e860ef2f0441fb566ed666f327c1662cc3c8f9bcd23b573fc67a5"
+        },
+        {
+          "level": 3,
+          "sha256": "a50cd9dc2a4c858f10e92cffc286170429823ae553fc57974f6ee2e79f986825"
+        }
+      ],
+      "operation_id": "T04",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T04.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d1f058792aa9a2dbbc5de6e5a53f98ee2f1200a6e94d8ad76ac2c5b09a6ff8ce"
+        },
+        {
+          "level": 2,
+          "sha256": "655dd77de93ff54efc689ddd96c517cee096baa2f957abccaf7ccfc2820d5f94"
+        },
+        {
+          "level": 3,
+          "sha256": "ecec226bec83ee2cf24d8a78241617a49567c57ea272a90db64c3257e0f2e826"
+        }
+      ],
+      "operation_id": "T04",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "T04.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "ca84f4c594a85e570c69d5c873677556a199073da61073b95387e7814efa46ad"
+        },
+        {
+          "level": 2,
+          "sha256": "35f4f6a72c7525bd719a6791597b73f274e501550dfcabf4f1c0d576f46a6e14"
+        },
+        {
+          "level": 3,
+          "sha256": "a85555d4a6fe31bf947a33df3687fc5df70d14e5e4574f805f6bace4ae52075b"
+        }
+      ],
+      "operation_id": "T04",
+      "phase": "training",
+      "references": [
+        {
+          "id": "training-briefing",
+          "kind": "starting_material"
+        }
+      ]
+    },
+    {
+      "card_id": "K01.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "bca72d39a5a8c06b1c0d9683afcdf936abf8aee84420c9b8e71b9d41995c8f7f"
+        },
+        {
+          "level": 2,
+          "sha256": "3c639c5f9bae5ed27939d29fd639f43ec93a540a21b0e7996461239455568dd6"
+        },
+        {
+          "level": 3,
+          "sha256": "4e163dcc426f5f328f9a74fe87cc01982b81c5d77b9f0015eab495413a572103"
+        }
+      ],
+      "operation_id": "K01",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": ".config/git/credentials",
+          "kind": "participant_artifact"
+        }
+      ]
+    },
+    {
+      "card_id": "K01.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "35dcc3d0461a8c8680f52cd7554861afa71ffdf9301937559755ab8a293b87a8"
+        },
+        {
+          "level": 2,
+          "sha256": "3c639c5f9bae5ed27939d29fd639f43ec93a540a21b0e7996461239455568dd6"
+        },
+        {
+          "level": 3,
+          "sha256": "37e2a300bae8db6ab31cace45a1d2bd17e0149c6e8b04f2dfe494648af41a37b"
+        }
+      ],
+      "operation_id": "K01",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "source.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K01.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "da8b05e69ce7e007b37c33297656bcdc56fdde9ff382db69bb61c4d28d12d6f5"
+        },
+        {
+          "level": 2,
+          "sha256": "3c639c5f9bae5ed27939d29fd639f43ec93a540a21b0e7996461239455568dd6"
+        },
+        {
+          "level": 3,
+          "sha256": "98582b8edd7a6d4c5ea49aee9593294e1595d96b26428d0556ed547077e80d22"
+        }
+      ],
+      "operation_id": "K01",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "work/review-exports/fieldlink-7.4.2-review.md",
+          "kind": "participant_artifact"
+        }
+      ]
+    },
+    {
+      "card_id": "K01.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "34a626d7afd88d2fc87f5314093e3840909a5d8a0248550ce9b42501ec9512ab"
+        },
+        {
+          "level": 2,
+          "sha256": "3c639c5f9bae5ed27939d29fd639f43ec93a540a21b0e7996461239455568dd6"
+        },
+        {
+          "level": 3,
+          "sha256": "a4205408bb37eb7b5cf4d70a89dde5f25c1c0d924ce297bfc7c79c6ba0448f54"
+        }
+      ],
+      "operation_id": "K01",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "work/local-helper.md",
+          "kind": "participant_artifact"
+        }
+      ]
+    },
+    {
+      "card_id": "K02.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "8a7e55f8597d64fc060ad7c5693967b97e491bdac2c9a1d3b27d9a341f0c5932"
+        },
+        {
+          "level": 2,
+          "sha256": "127ab8543c37c7c8efabbf29b505546610feb03c80ae25dccc00f67b527b8b3a"
+        },
+        {
+          "level": 3,
+          "sha256": "12eaeeb706195594a19d1f3401685769296f60af5249df15df8ba04d96cfe2fe"
+        }
+      ],
+      "operation_id": "K02",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K02.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "9fde0502135f8cf37dd7cdcb741b2829a6c57ba6e242d9370b8c89de06101380"
+        },
+        {
+          "level": 2,
+          "sha256": "ac1bfb3d52651d2d53619f5336d4f0be687c605a42ed5f741dcebbec79dcda80"
+        },
+        {
+          "level": 3,
+          "sha256": "7f4a09fe63750b8ccdb006655f5bc733e0af0cbada2b7d99d36eb08a5aca192c"
+        }
+      ],
+      "operation_id": "K02",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K02.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "586482613f9bd926d54fd94b062866ededc349d2a8715a93dc6552029ff9c580"
+        },
+        {
+          "level": 2,
+          "sha256": "8ad18dede7d3b7579c1781446f90273be1a24c16f4c74a78c34c800a9398d5e0"
+        },
+        {
+          "level": 3,
+          "sha256": "cd3e10caee31d8453c03142aa1f1743b841a6599c14bde9cb2178808f5764300"
+        }
+      ],
+      "operation_id": "K02",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K03.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "c2501e60e7d33b1aab75391fec1ec163bd86136ea40dfdac2ceb5bbca0971ab1"
+        },
+        {
+          "level": 2,
+          "sha256": "27342309ffdd2a9b2fa78fb4b56c9754dd2c13f830749e21d9365522fa045d80"
+        },
+        {
+          "level": 3,
+          "sha256": "9f0bb480ae2ec08fb989c2a7d689a3914f356d6e19fe9efc6288c231d3591787"
+        }
+      ],
+      "operation_id": "K03",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K03.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "4f136459184c49f9f89b7633d99eb33d825314a4d31bdbeecca624869b2d9357"
+        },
+        {
+          "level": 2,
+          "sha256": "27342309ffdd2a9b2fa78fb4b56c9754dd2c13f830749e21d9365522fa045d80"
+        },
+        {
+          "level": 3,
+          "sha256": "fca29764836eb79981a8a45a50c3ae17ef255e15efba34d211e3b9fa94c1e733"
+        }
+      ],
+      "operation_id": "K03",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "work/analysis/staging-decoder.ps1",
+          "kind": "participant_artifact"
+        }
+      ]
+    },
+    {
+      "card_id": "K03.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "ee6f10d24f30fcfafb00176265922eed66d8c828fb2570fa84a17435f8104d17"
+        },
+        {
+          "level": 2,
+          "sha256": "e74c9079700086d28959401ef11b6431b1fb65f6ea3ff6d6a12fe71d665402a7"
+        },
+        {
+          "level": 3,
+          "sha256": "4e5d9c5d6be442f49dc37473c9120a8b535d677bc671e57bbb8201c31ebefb97"
+        }
+      ],
+      "operation_id": "K03",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "work/local-helper.md",
+          "kind": "participant_artifact"
+        }
+      ]
+    },
+    {
+      "card_id": "K04.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3bfb6c6d1fea4200d5309f2731dc6fd00b0cafce12bae95e67b11b0e72ef4160"
+        },
+        {
+          "level": 2,
+          "sha256": "c30f3cfda1472017014b58cc3c6d11a5e5e7d21cf87afda9ded05b09ed8f6740"
+        },
+        {
+          "level": 3,
+          "sha256": "495b910dfb1455c62f315a850cb139f3366196f3ff1f245615803a3740960b86"
+        }
+      ],
+      "operation_id": "K04",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "work/reproducers/indexer-client.json",
+          "kind": "participant_artifact"
+        }
+      ]
+    },
+    {
+      "card_id": "K04.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "f5d7f203bad0ff956ae8ced23361340d55e0841edf4c592f4929deb60768730a"
+        },
+        {
+          "level": 2,
+          "sha256": "29ff679085f294b88ce5b4b2fda21a9dec6a5e6f01277b440e96a63b87b2695e"
+        },
+        {
+          "level": 3,
+          "sha256": "79fd866149a168409d1d35b794e1ce0d59763fb46151a6fb129cc3b94a7cc3c5"
+        }
+      ],
+      "operation_id": "K04",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "indexer.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K04.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "f5d7f203bad0ff956ae8ced23361340d55e0841edf4c592f4929deb60768730a"
+        },
+        {
+          "level": 2,
+          "sha256": "c30f3cfda1472017014b58cc3c6d11a5e5e7d21cf87afda9ded05b09ed8f6740"
+        },
+        {
+          "level": 3,
+          "sha256": "b528557b0af2709ca936f6ca40e46ce89a1f9bd9ae67117a7faf57ac80281c0c"
+        }
+      ],
+      "operation_id": "K04",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "indexer.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K04.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "f5d7f203bad0ff956ae8ced23361340d55e0841edf4c592f4929deb60768730a"
+        },
+        {
+          "level": 2,
+          "sha256": "fd61cdb25707fb4c97fee7a893174591851583cf8f910bf2badcc1ceaa4697f1"
+        },
+        {
+          "level": 3,
+          "sha256": "b9bdd1753471d1248dbf27da297102ffa65b86fa0d4f83bee8a57855f8c92c53"
+        }
+      ],
+      "operation_id": "K04",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "indexer.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K05.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "8e4aa8605f7d59b531d6f3ed04db09c4f689ce1d460bd8d3b6af1226957da8f2"
+        },
+        {
+          "level": 2,
+          "sha256": "c512f57369bf9354ee45d0fb29a4027b05fc3cf8b1adbac5831d0ae5759f119f"
+        },
+        {
+          "level": 3,
+          "sha256": "15f2205441cc969512f0b5b84e6ebc722d3adfc09d4d17c837b4ec787cf797a1"
+        }
+      ],
+      "operation_id": "K05",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.consumer-check",
+          "kind": "client_route"
+        },
+        {
+          "id": "packages.metadata",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K05.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "41eda6d5dfcdef3349d5b260c9f01eb6dac7e5d61e414d15e42aec44d8f1f4ba"
+        },
+        {
+          "level": 2,
+          "sha256": "dd8aec4a3ef32d323b9f9b012c9daba950460f44fbe2f9496df53152ba75ccb7"
+        },
+        {
+          "level": 3,
+          "sha256": "d15718130f22d40d57358115c1da5cde6fa284b97ba836fb7bff3706b6b1b149"
+        }
+      ],
+      "operation_id": "K05",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.release",
+          "kind": "client_route"
+        },
+        {
+          "id": "support.conversation",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K05.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "14a48bdc5895327f3e0f7b5d237df67c219b9eed210724eddbd23947bca15413"
+        },
+        {
+          "level": 2,
+          "sha256": "dd8aec4a3ef32d323b9f9b012c9daba950460f44fbe2f9496df53152ba75ccb7"
+        },
+        {
+          "level": 3,
+          "sha256": "d50e18662bf64fbe532aa42e832bb0fcb1c4810b2749fe37006ed5f7f430e255"
+        }
+      ],
+      "operation_id": "K05",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.reconcile",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K05.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "a1566b38566dfb7730c5c4abde93a6608dc89c055505b91d4dab3a12b9ba406c"
+        },
+        {
+          "level": 2,
+          "sha256": "dd8aec4a3ef32d323b9f9b012c9daba950460f44fbe2f9496df53152ba75ccb7"
+        },
+        {
+          "level": 3,
+          "sha256": "e74e1457a90d68db460e763e5b7c8d7c775987edc768e8cd991fc93715bdc56f"
+        }
+      ],
+      "operation_id": "K05",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.resolver",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K06.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "6c1c994e127ccb978b91c2a5be270a52e0a11fa990de60ee8072c237b363c28c"
+        },
+        {
+          "level": 2,
+          "sha256": "3a0f5e2bcde638ac46a212a372bc8248bd92e832406f08380abba120b5482de8"
+        },
+        {
+          "level": 3,
+          "sha256": "23ca56516ec46097df497506dd7697232c2a98be51f3e81b63f11791f634eb59"
+        }
+      ],
+      "operation_id": "K06",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.import",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K06.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "c937aca98a37cf335c57bbac18ceb0b68a6466b47379e92629825132c4592267"
+        },
+        {
+          "level": 2,
+          "sha256": "3a0f5e2bcde638ac46a212a372bc8248bd92e832406f08380abba120b5482de8"
+        },
+        {
+          "level": 3,
+          "sha256": "c0c517bc4dd8540adbb2fa4ab471f3bd48515a59aa2668e15a2247f60551d1d1"
+        }
+      ],
+      "operation_id": "K06",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.view",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K06.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "ba539727404b30cf295198bc3af483f0c5ea29972b9d45d70634e3ad8fa4bd7a"
+        },
+        {
+          "level": 2,
+          "sha256": "9b1bc875512c31ffb05a565652982e4946d64000eec15fbd9d959fd8c4feeec2"
+        },
+        {
+          "level": 3,
+          "sha256": "0935e981a0643d67e88a8daaefa3e1a67f0c286aaa17eb37c1f57b4b27deece3"
+        }
+      ],
+      "operation_id": "K06",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.connector-rehearsal",
+          "kind": "client_route"
+        },
+        {
+          "id": "packages.publish",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K07.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "95d1d88b0c86e2b24690e58fa6e0bcf82140da9fa7e44db4ad2348ebb723a74e"
+        },
+        {
+          "level": 2,
+          "sha256": "eaa3b8235e7b396efbcd6717cc8b087e22e2ad498d64590116dbea88587d15cc"
+        },
+        {
+          "level": 3,
+          "sha256": "cdd725ba59110ce052fb39453d373a74035ba0eed96c81bc162598ca6a01d66e"
+        }
+      ],
+      "operation_id": "K07",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.inspection-trace",
+          "kind": "client_route"
+        },
+        {
+          "id": "packages.inspections",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K07.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "9c60df3de7410db146c4a76b419dce5e784eecc727d0a6759d4b1b733627b2ab"
+        },
+        {
+          "level": 2,
+          "sha256": "58adff133e587dabe38583c29250a85a86decf9d5fa2582ba8cc1073c62da824"
+        },
+        {
+          "level": 3,
+          "sha256": "c9e0021d378107f9dd217037bf7e30c205a0a0ae389aeea9621d7179f313aae1"
+        }
+      ],
+      "operation_id": "K07",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.inspection-envelope",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K07.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "9c60df3de7410db146c4a76b419dce5e784eecc727d0a6759d4b1b733627b2ab"
+        },
+        {
+          "level": 2,
+          "sha256": "f4dc1c49acde05dade2341049fbdda9e49d09864028263da0854f9f44e005c9c"
+        },
+        {
+          "level": 3,
+          "sha256": "6f15e16e8f2c6a5c11e90d0d6c6e39ed753b6ded9928563efb8cdfae8d05a860"
+        }
+      ],
+      "operation_id": "K07",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.inspection-envelope",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K08.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "78610e730296fe0ee1eff3548313a3ab13e6fd958297dedc1d3b7c832f113238"
+        },
+        {
+          "level": 2,
+          "sha256": "c3e224595238ac0372a4b8f7abb2e19ce44463ad00c076ed3382e98577dc8ab3"
+        },
+        {
+          "level": 3,
+          "sha256": "231dede5afceb33e1cf7b51e236d7006f5b9c203bbcc1dbd4d72fbfb9bd6ae99"
+        }
+      ],
+      "operation_id": "K08",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.entitlement",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K08.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "5115a2fa4788bd8a6ef5fa42715408ec86134a8ff765f29614fe5940479ca7df"
+        },
+        {
+          "level": 2,
+          "sha256": "81e3f5e72c6ac0f3fd8ff86afa3f490ca1264227f3079a0d688e40419d3e8c9c"
+        },
+        {
+          "level": 3,
+          "sha256": "1c26f700254b10696e6264daf3b3fdd30450b2eb5ee6338a1843d996b4959479"
+        }
+      ],
+      "operation_id": "K08",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.entitlement-check",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K08.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "5115a2fa4788bd8a6ef5fa42715408ec86134a8ff765f29614fe5940479ca7df"
+        },
+        {
+          "level": 2,
+          "sha256": "e592a50dd63834d18aeb80919d0515a835fd039a1bb49595715320bb7289c87f"
+        },
+        {
+          "level": 3,
+          "sha256": "e36a1e7be3e674539299d54f6d791dfc9e8766a044363abd374e37b8459904ab"
+        }
+      ],
+      "operation_id": "K08",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "packages.entitlement-check",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K09.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "6488e9740e63caa3bc9d062c666edd1ab407d8764ed641edc164bd85925c3847"
+        },
+        {
+          "level": 2,
+          "sha256": "566e1374584458aff2b18c3a18312ae350d074843ecf91f389179cd514f46cea"
+        },
+        {
+          "level": 3,
+          "sha256": "2e51873e95e06c60ae57d928741c0a342d0603646d0eabe7c08961c9b9d3d870"
+        }
+      ],
+      "operation_id": "K09",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.run",
+          "kind": "client_route"
+        },
+        {
+          "id": "ci.run-log",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K09.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "7d1d9fa8c4acf163891da2e5a14a732ab253c8939115ce625e9582f265d60286"
+        },
+        {
+          "level": 2,
+          "sha256": "566e1374584458aff2b18c3a18312ae350d074843ecf91f389179cd514f46cea"
+        },
+        {
+          "level": 3,
+          "sha256": "06ffa174b3c4d1b1cb837751b54a89256cbbb0190fcda70d26ff64888465e746"
+        }
+      ],
+      "operation_id": "K09",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.run",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K09.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "acbb872ccaad774c7b8d7360af2471c8f87ae586262d167dd2781b42275c0a4f"
+        },
+        {
+          "level": 2,
+          "sha256": "8090f1c339ba2615b60187e050041d5e8e69ed04a6b44998aeaa17e5d3cd36cf"
+        },
+        {
+          "level": 3,
+          "sha256": "4e1e9a6578e75f293fbde9e78046cacfda5f787bf10a21c95e51a914cfb38c34"
+        }
+      ],
+      "operation_id": "K09",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.review-jobs",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K09.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "8ceaf5eeabcee059e7808dcc4d8cddfe9cbc6948078b8560debc58301d07e1be"
+        },
+        {
+          "level": 2,
+          "sha256": "c9872829c58bc136f4c0c723564538bf28d3b9b243b896ce2719e2a797e27587"
+        },
+        {
+          "level": 3,
+          "sha256": "e87709490c1e86c686c7291f2ccb632773e7d04078a4d4bad902e06fad7403d7"
+        }
+      ],
+      "operation_id": "K09",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K10.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3f9dca253d5b5d9db5682b4cd983084a299dbd0aa2105b7ab38b80583d1011b0"
+        },
+        {
+          "level": 2,
+          "sha256": "b6136eed9d1e3b41132fcaa72d6be0629c756b56d5d3102a5ccdc7595000002a"
+        },
+        {
+          "level": 3,
+          "sha256": "9fd23124b045c17212740d8f5252ec6db9ed418b0a8a4139021c3a6c4a38e07e"
+        }
+      ],
+      "operation_id": "K10",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "preview.association",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K10.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "e5beb4daa1f7f1257c38bd9de1f854637c19ff7f2c67e37bccfd1d451216a8ca"
+        },
+        {
+          "level": 2,
+          "sha256": "b6136eed9d1e3b41132fcaa72d6be0629c756b56d5d3102a5ccdc7595000002a"
+        },
+        {
+          "level": 3,
+          "sha256": "082c0923eb11e4cebd79ff5a7cfa309f27efa739fd7bb964dc27ee585e9f1a6c"
+        }
+      ],
+      "operation_id": "K10",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "preview.documents",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K10.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d99ac4f9e3e2d9c6a3f271fdc1d6fcb93e7badf7ba896c5ea62528971dcfba2b"
+        },
+        {
+          "level": 2,
+          "sha256": "eddfc571b9af4556230f18debb273c447771c7648c1e28cb4edfd4a96a52a7fd"
+        },
+        {
+          "level": 3,
+          "sha256": "5d75fd0ffe2ad03af2d12917fffd5395a7b17f26023cbf738d7382a93bcda7c6"
+        }
+      ],
+      "operation_id": "K10",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "preview.render",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K11.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "0e8efaf159d6977b383643cd2875e047e20bdbff266e2997b696f08c46c36399"
+        },
+        {
+          "level": 2,
+          "sha256": "49d90eff46364106607f1b14fbd84f6a9aa31291de2083f2ab5e1bba870a4b55"
+        },
+        {
+          "level": 3,
+          "sha256": "d296236b8f8ff732d99bb8ec0f9d4ef2bad2d48722171af105486526c56b451f"
+        }
+      ],
+      "operation_id": "K11",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "work/build-operations/policy-compiler-handoff.md",
+          "kind": "participant_artifact"
+        }
+      ]
+    },
+    {
+      "card_id": "K11.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "cbab8a6fcf46d230313477ec19716b01f653e4ff413dbe7cfc89ff5cbc08d986"
+        },
+        {
+          "level": 2,
+          "sha256": "69a0dae3c24b3e35bc41e62275e0e0396c4b1019479dc022909c82526ae76183"
+        },
+        {
+          "level": 3,
+          "sha256": "e5257d27f16c6b24549dcf3eebfc0e12d26bd6e2ae2162cd5d5217eb6440b1dc"
+        }
+      ],
+      "operation_id": "K11",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "source.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K11.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "cbab8a6fcf46d230313477ec19716b01f653e4ff413dbe7cfc89ff5cbc08d986"
+        },
+        {
+          "level": 2,
+          "sha256": "49d90eff46364106607f1b14fbd84f6a9aa31291de2083f2ab5e1bba870a4b55"
+        },
+        {
+          "level": 3,
+          "sha256": "70109ec5a4e44bbafa7917137a2f8caf500686d05a2dc7482fa860489eb12287"
+        }
+      ],
+      "operation_id": "K11",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "source.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K11.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "cbab8a6fcf46d230313477ec19716b01f653e4ff413dbe7cfc89ff5cbc08d986"
+        },
+        {
+          "level": 2,
+          "sha256": "463dc223ae01df1786202f84591bf0854f73e61400223176507e43e37f098088"
+        },
+        {
+          "level": 3,
+          "sha256": "f1700b91dfdd4fccc7ea81a5c85285745fe0c630ebf8a5a44bee4aaffccd6556"
+        }
+      ],
+      "operation_id": "K11",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "source.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K12.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "fe11569ae5071e87638190218bf0ae9cd03ccee2b0880b1718d4b8be20b129fa"
+        },
+        {
+          "level": 2,
+          "sha256": "1ef14a8120361541a9ddf283a5b285e55eaf264a9babeff48cb5625d7077d164"
+        },
+        {
+          "level": 3,
+          "sha256": "748fba5676d8148283bd5b71f928786a6b339105d7ae06993f881ca4a974632c"
+        }
+      ],
+      "operation_id": "K12",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "preview.assignment",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K12.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3ccfe1d6f0d75585bf9263fccd3a12dca1631c21f481e646cb5debe2ea1106c9"
+        },
+        {
+          "level": 2,
+          "sha256": "60f3cd33061d6db521a3f1f137a42fad49602a9f120492c9a539dc35a18e229a"
+        },
+        {
+          "level": 3,
+          "sha256": "917b6f0c5c2dbbaabb30c331c312a7037b5e4ca906ded415d93dd023411dfd99"
+        }
+      ],
+      "operation_id": "K12",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "preview.prepare",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K12.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "2684557a331387bac39c3a928f0b53fd73e4cd3db8266321ad1994cde29029d2"
+        },
+        {
+          "level": 2,
+          "sha256": "239771ffa7e509928d5e7083f1a19a86772722b3f7b9c24e113a919f2d9a0602"
+        },
+        {
+          "level": 3,
+          "sha256": "84618f4fbadba56df5ffc88e7ef793fedf3b24a34393d50547031756f7121991"
+        }
+      ],
+      "operation_id": "K12",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "preview.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K12.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "2684557a331387bac39c3a928f0b53fd73e4cd3db8266321ad1994cde29029d2"
+        },
+        {
+          "level": 2,
+          "sha256": "f1e935db6fc3dfed01d55eaf2cff97418b91b33dc78a7e261348c982ec4e2fbb"
+        },
+        {
+          "level": 3,
+          "sha256": "c06d682eceaed54524cdbddc8538f4831a5f959759f293950edfea999e489c8f"
+        }
+      ],
+      "operation_id": "K12",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "preview.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K13.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "03ab015b12f59f09b4303f9416e8ce393f46756643b917fe94a99c4a6c24d7b3"
+        },
+        {
+          "level": 2,
+          "sha256": "c16542e09e1b62ed30a369a6226c299517eedf1291ff130be08d9eb1813bca64"
+        },
+        {
+          "level": 3,
+          "sha256": "8586909bcb75506577407c2c296ba9a88d82d05e8ba6e74e25508b4a898560e6"
+        }
+      ],
+      "operation_id": "K13",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "cloud-api.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K13.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "e9628a823a79bdac3a9c5d00445608571e924e5223e5d786e6b057c3d4232b84"
+        },
+        {
+          "level": 2,
+          "sha256": "db10e8e6762952681fc3bc7c1cc217dd2870aba514dad71903a6a243a3afaa36"
+        },
+        {
+          "level": 3,
+          "sha256": "625b6137527a5efd68532327a905a04e23a75b4dbef661013003a2bf2868aa72"
+        }
+      ],
+      "operation_id": "K13",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "cloud-api.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K13.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "278da5bb4a9e862be076d7ddd5eac9cf0cfb302b38afcc68d10c2d1725ff1f5b"
+        },
+        {
+          "level": 2,
+          "sha256": "e9a5d3d30ae73a4638be11c48bb2ca46a732fdc01ac7df9e1d9ac9a75ccf1f35"
+        },
+        {
+          "level": 3,
+          "sha256": "1a27cc35b4d04bfa68c0f8bf0d8e4dbf5189c3ecfe65e9aa720129c60aaa5b23"
+        }
+      ],
+      "operation_id": "K13",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "cloud-api.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K13.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "69b4356eb3f7d819ba28b02bc7432d2703eba66f66724e18e913afe79d8cad22"
+        },
+        {
+          "level": 2,
+          "sha256": "d0e19256f504c15ab07b618bbe8f2f064201b3f08563212d64dc92b2ba3ed205"
+        },
+        {
+          "level": 3,
+          "sha256": "857f9fa421a7ef75336c7a216a73df7699f7325967bdacc346466a355e104789"
+        }
+      ],
+      "operation_id": "K13",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "cloud.build-record",
+          "kind": "client_route"
+        },
+        {
+          "id": "cloud.workspace-exchange",
+          "kind": "client_route"
+        },
+        {
+          "id": "cloud.workspace-token",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K14.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "540db96d9573df5a24089ef9866e56ab8dec4999c4395cca15cddd71ea5637f2"
+        },
+        {
+          "level": 2,
+          "sha256": "1b3882ab9b04fbae52cfe06e5a5fa58bc8bc33638d9d17c271d9a60fa767f277"
+        },
+        {
+          "level": 3,
+          "sha256": "716e8df292bf996b8c1143f5d3afca2e1de8f10073de6f0dcf32467e862eb53b"
+        }
+      ],
+      "operation_id": "K14",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "cloud.trust-record",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K14.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "c6fddeb82b806a6c2573e547d86081b275dd8ccd41a508113be7795628b97a3e"
+        },
+        {
+          "level": 2,
+          "sha256": "2dcabdd952fde105e7562bc38d2f6a40cd80a2266ceb447dc360c0ba03a80ccf"
+        },
+        {
+          "level": 3,
+          "sha256": "88cd8699e6bcfcf7b00610a2b8cef5b11e5588e9522a01d93446da28a85eee46"
+        }
+      ],
+      "operation_id": "K14",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "cloud.role-exchange",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K14.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d7f271827b744c62d92aef4ae137315bf3ddf4672dfe0c7ba41e660c7f8d53d8"
+        },
+        {
+          "level": 2,
+          "sha256": "492a05d24e598766549bf08205ba509efce67d8a1590148536c63bd1598fa6bf"
+        },
+        {
+          "level": 3,
+          "sha256": "7e5fc5f9312e3a5a93af4a2a745ab06cb2aa1b44b231a0fece0bb4ab03d552ec"
+        }
+      ],
+      "operation_id": "K14",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "data.export-definition",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K15.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d3260861a933d047a0d2f6a4851fb83b2be0311658893d0371916c85727beddd"
+        },
+        {
+          "level": 2,
+          "sha256": "ac77aecddb5a074d1ba0947a3c2612e1eeb01cf82f7910265a1a1dddcc1a0c3a"
+        },
+        {
+          "level": 3,
+          "sha256": "c866080362c19e777edac9f42921ae86e220baf3efa8ae09aafafaf22d34a125"
+        }
+      ],
+      "operation_id": "K15",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "data.export",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K15.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "8708a71f4a807977a7a843b4e06672994685d6d5ba13f1784fea4cda69ab221b"
+        },
+        {
+          "level": 2,
+          "sha256": "e6d8a1d0026d2210d701f98c4c452526399eadcaa2711c05f2033ea161020dd7"
+        },
+        {
+          "level": 3,
+          "sha256": "cd14f4af457570c12de9aa44a9448ae57813509286619d65fe7f2b1da70fc4fb"
+        }
+      ],
+      "operation_id": "K15",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "workloads.schedule",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K15.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "0348784a90c8b5dff7e65a6c28383852f1cd89a2d20b5224b4d1b80a164faf69"
+        },
+        {
+          "level": 2,
+          "sha256": "232d081f38e50fc9b6e0bd5d640477e82d5b8a0cfe0e6933c8b32a90ea4873b1"
+        },
+        {
+          "level": 3,
+          "sha256": "a6082cafffb6a7e103f4ba975261e1d10eeb4b6dcb9935a689abe6388995cf49"
+        }
+      ],
+      "operation_id": "K15",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "data.export-destination",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K15.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "7216e31f4999e9589e1a2a70acd61c5399a2960ab3c428a5c864aed705a66803"
+        },
+        {
+          "level": 2,
+          "sha256": "ac77aecddb5a074d1ba0947a3c2612e1eeb01cf82f7910265a1a1dddcc1a0c3a"
+        },
+        {
+          "level": 3,
+          "sha256": "d006d9a45f467ba6766bbd873f4e8846d2cb478cbb791c8b2a91edb3c59f73af"
+        }
+      ],
+      "operation_id": "K15",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "data.export-runs",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K16.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "cd16ac8e834a98dad1d3769a42cb12c3e5482c38f7ae4a98396c0a93f78c32ec"
+        },
+        {
+          "level": 2,
+          "sha256": "7e998e5670d097a04f3591244de87088457ac05ad8716149873e524c9bc94fd2"
+        },
+        {
+          "level": 3,
+          "sha256": "a8bc57c7b94e6683d6aa732a9a2e3ff30202505290c7a65a903003159b2b737e"
+        }
+      ],
+      "operation_id": "K16",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "workloads.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K16.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "cd16ac8e834a98dad1d3769a42cb12c3e5482c38f7ae4a98396c0a93f78c32ec"
+        },
+        {
+          "level": 2,
+          "sha256": "ac8cc2acb14050284d92414a94e49bd19c510c9e7c8744f63ff9fd319d128edb"
+        },
+        {
+          "level": 3,
+          "sha256": "7f36f23bea938685afe18d4a39fe43f894ee29400b9a793cc0f938fe97e4b256"
+        }
+      ],
+      "operation_id": "K16",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "workloads.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K16.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "cd16ac8e834a98dad1d3769a42cb12c3e5482c38f7ae4a98396c0a93f78c32ec"
+        },
+        {
+          "level": 2,
+          "sha256": "bc875f0a85fb6d6d789b2343c879aaba639a87ab77b24c586b6fecf0d251c9c4"
+        },
+        {
+          "level": 3,
+          "sha256": "ecfb78d2ac5a3638b31b886a69562b7006067df9cf9748b773029bbe91f77e3a"
+        }
+      ],
+      "operation_id": "K16",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "workloads.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K16.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "cd16ac8e834a98dad1d3769a42cb12c3e5482c38f7ae4a98396c0a93f78c32ec"
+        },
+        {
+          "level": 2,
+          "sha256": "057ff9a8085f93856a2672a6b399e5ae8890b17267c8a3816bee36cd8ab53e86"
+        },
+        {
+          "level": 3,
+          "sha256": "75d2137dbd2f4ae546f42c47a5417c50f8f7e176161311ca2a094ee9fe3f7050"
+        }
+      ],
+      "operation_id": "K16",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "workloads.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K30.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "689522a95a9234c8e5b9cf58e1f5459312535d1a340d936909c1f1c685b51036"
+        },
+        {
+          "level": 2,
+          "sha256": "7dfa8a2a8c447bae397e08043e17dc5724eb1b4556761ddf51a09bfe825a954c"
+        },
+        {
+          "level": 3,
+          "sha256": "316722cd5099c0108ed3db7cd5cb45d71307c2e0d35fc5564bc179afb887c3a9"
+        }
+      ],
+      "operation_id": "K30",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "cloud.build-record",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K30.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "2353ef2686b9e0eb6b94ab84a90640a161b919921addb5a71cc2255cfb6550d4"
+        },
+        {
+          "level": 2,
+          "sha256": "7dfa8a2a8c447bae397e08043e17dc5724eb1b4556761ddf51a09bfe825a954c"
+        },
+        {
+          "level": 3,
+          "sha256": "50b2b96b4409bd791b2fe70f8525272f64e5b3a939986c0b596d7c3b4470f35e"
+        }
+      ],
+      "operation_id": "K30",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "data.backup",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K30.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "a57046175539081649a246ff40935bee7e882fe71fd0b3736574c6ff37c619f3"
+        },
+        {
+          "level": 2,
+          "sha256": "8e771e59ab84c4605e47ea28b3a3ed9efcf331ec924a30903fb88d97d9194443"
+        },
+        {
+          "level": 3,
+          "sha256": "b140d3617f5f685726b62745b59a68f0fac10e76f5be9d30bf16e11a1672d06f"
+        }
+      ],
+      "operation_id": "K30",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "data.recovery-history",
+          "kind": "client_route"
+        },
+        {
+          "id": "data.restore",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K31.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "853c2f3d991b6f22d29c1d14953c18592f094fc96718327563b9b429e99f5e42"
+        },
+        {
+          "level": 2,
+          "sha256": "e228e88ddb5469d595dbce830329965173e0ddb3604a3ce985ba82cd7dcb6c8d"
+        },
+        {
+          "level": 3,
+          "sha256": "52c79a16bd40cf5b15412ca1f7939b23241f24768a6db5d6293661c5f3ae393e"
+        }
+      ],
+      "operation_id": "K31",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "cloud.maintenance",
+          "kind": "client_route"
+        },
+        {
+          "id": "cloud.policy",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K31.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3782ff55c92dabafe110d9d521d61c5a8c2fa7407f08a263b3de44bdda7e7b62"
+        },
+        {
+          "level": 2,
+          "sha256": "eba05ed9b17887fc9307650bd4d2257f809aa54f59bf054cf4e6b35721218c9b"
+        },
+        {
+          "level": 3,
+          "sha256": "4ddc62ece4713d03f96fc01889ee11159c651b0dcc63061687ece724cd46fdf8"
+        }
+      ],
+      "operation_id": "K31",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "workloads.whoami",
+          "kind": "client_route"
+        },
+        {
+          "id": "workloads.workload",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K31.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "b5a9839499435d2a535d89460b509f9e46e960013165436b44c436d40818d658"
+        },
+        {
+          "level": 2,
+          "sha256": "5ad212ddc7eda68423fa1f976971147d18c6d0b7c480d9f8caadea679dd1f963"
+        },
+        {
+          "level": 3,
+          "sha256": "3ec5ca3594c2e59477d827db36802b1ae58ccbbb2d1c9fa8dceeb7f74f6eab63"
+        }
+      ],
+      "operation_id": "K31",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "data.field-archive",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K17.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "6a50fe6cfc55eac035e7ec0e74f116e9fafa67f04ac4ff24b006fb4bbfd97c82"
+        },
+        {
+          "level": 2,
+          "sha256": "c8ef6c4a869537c0fb2500944ee543a1874bb91700c935287849b239a0c7dde2"
+        },
+        {
+          "level": 3,
+          "sha256": "cdd452b953af2186d458b905eadd79d0704a59f856ae74cdb86845ce584aadb3"
+        }
+      ],
+      "operation_id": "K17",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "support.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K17.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "a9e1057758aac6fa064890287c99a27b8f51f0415f7102863fcbdd0c4894f70d"
+        },
+        {
+          "level": 2,
+          "sha256": "233848b4ad901990ecc93194876c392e9c6ad4ce09d3a0068c8b4100167b7fc3"
+        },
+        {
+          "level": 3,
+          "sha256": "6b6881556ade4ef9e21f6e90115b42914cc2463b92851133f4600c520a9cb644"
+        }
+      ],
+      "operation_id": "K17",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "support.recovery-lookup",
+          "kind": "client_route"
+        },
+        {
+          "id": "support.recovery-redeem",
+          "kind": "client_route"
+        },
+        {
+          "id": "support.session",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K17.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "b802a77adc58e03d1c9b85014634f7e863f061dbbcf273e8593f85a0f1881341"
+        },
+        {
+          "level": 2,
+          "sha256": "c8ef6c4a869537c0fb2500944ee543a1874bb91700c935287849b239a0c7dde2"
+        },
+        {
+          "level": 3,
+          "sha256": "94fa6ef80156ac481f4a8506964a2e9d888b4bb0652b724ff1d8f51c7fa2d786"
+        }
+      ],
+      "operation_id": "K17",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "support.assignment",
+          "kind": "client_route"
+        },
+        {
+          "id": "support.session",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K17.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "2f9e570066fe7f9074876bdef254b1d5246445d0fe80d2c274df1ae7c5920876"
+        },
+        {
+          "level": 2,
+          "sha256": "233848b4ad901990ecc93194876c392e9c6ad4ce09d3a0068c8b4100167b7fc3"
+        },
+        {
+          "level": 3,
+          "sha256": "b4dc1b0ea9ffd9f220d9aae5758875277ccbe431df5edc535efa67332e662c28"
+        }
+      ],
+      "operation_id": "K17",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "support.copy-handover",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K18.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "9d6479a80f18298830a0c6b51a223fed6d8c9d0a1a1b2f68d7431a148122cdac"
+        },
+        {
+          "level": 2,
+          "sha256": "a4494ed204ecf4320e12a5f8fcbdd0faf8c8c966515e20043ab9ae9249d91ed7"
+        },
+        {
+          "level": 3,
+          "sha256": "f7b0d8d5fdcdf849414e3a4378bc35e78161db718d2fa5524a7a7059f9dd069e"
+        }
+      ],
+      "operation_id": "K18",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "staff.note",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K18.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "fb43f690c7493a6e8cb3ddca7eb83acbe732a013e47d3c6dc70892ef2a58ee91"
+        },
+        {
+          "level": 2,
+          "sha256": "5909ec49b5a60c9526670f32a6fb6144ad39302fe68c37093867903abed34554"
+        },
+        {
+          "level": 3,
+          "sha256": "4afafe0057177bd727a73bb93d388d98f4173917ccba51771b62f89cf410f0bc"
+        }
+      ],
+      "operation_id": "K18",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "identity.registration",
+          "kind": "client_route"
+        },
+        {
+          "id": "staff.note-preview",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K18.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d97e2616dd3345bd2dfa71842111a94dc707fefa4fc4a9eb22e7776862a3de73"
+        },
+        {
+          "level": 2,
+          "sha256": "5909ec49b5a60c9526670f32a6fb6144ad39302fe68c37093867903abed34554"
+        },
+        {
+          "level": 3,
+          "sha256": "30d574f5d53e7bd0c8c01d1e0b43f5cf49fea8898d6f5d7f7f231f1bb85a450c"
+        }
+      ],
+      "operation_id": "K18",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "staff.note-preview",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K18.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "a549bad3e77bdccfd9028e3f95ec9c068b2b51d43d7a407ff27b5f3cee61377a"
+        },
+        {
+          "level": 2,
+          "sha256": "b8a52f81734605533931f1ed007961470bfcb2cdd87b61de9315b84152a980f7"
+        },
+        {
+          "level": 3,
+          "sha256": "9184393dce2a70dcbd8f72222386727a31c59eae4ae3a9c72fc571dc22085112"
+        }
+      ],
+      "operation_id": "K18",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "identity.login",
+          "kind": "client_route"
+        },
+        {
+          "id": "identity.staff-login",
+          "kind": "client_route"
+        },
+        {
+          "id": "support.dossier",
+          "kind": "client_route"
+        },
+        {
+          "id": "support.fixture-assertion",
+          "kind": "client_route"
+        },
+        {
+          "id": "support.session",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K19.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "ebe145a80c8f205536dcb0fd68ec57de597ed12002517896d1a0faeb50016dd1"
+        },
+        {
+          "level": 2,
+          "sha256": "eb324629560445af7645d6fa03847295deb760cca436b6a0b8cd62da3bf08b46"
+        },
+        {
+          "level": 3,
+          "sha256": "8bfaf16282907287ff77c87c7ebc19164c8de9e1764fd2e5cde0dc2c7dda6307"
+        }
+      ],
+      "operation_id": "K19",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "cert.requests",
+          "kind": "client_route"
+        },
+        {
+          "id": "cert.template",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K19.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "5b89ff8fc8dbe325f8b24a002b40f9b7e66bece2a14a2089c223a55dd9b735ed"
+        },
+        {
+          "level": 2,
+          "sha256": "f7d9bf47305b31d2cfec3a2ee85e3538f0e58a74931f4e4f5a78dc9dcda14e6d"
+        },
+        {
+          "level": 3,
+          "sha256": "0e6f232fce6d53636d38c5069a13397de88bdba25aa3e881ff222ee56eac5254"
+        }
+      ],
+      "operation_id": "K19",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "staff.archive",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K19.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "542374bf3d2f9c943cbedbe76a1a72c9664bc8bc08975e97fc0e17492d5e269d"
+        },
+        {
+          "level": 2,
+          "sha256": "a5668359350cea625f189174505090f4ff603ce35a7fcaaedc38154a03fe197b"
+        },
+        {
+          "level": 3,
+          "sha256": "0456a4cce49ca86b078c30859185a6d5668b6a7e3021b308bbb0fcf5653a342c"
+        }
+      ],
+      "operation_id": "K19",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "staff.delegation",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K20.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "87f5fd866a90b8fdbd5ee857bf129c6b716f818f7a5cfd5ac9b6c8ef62f76d9d"
+        },
+        {
+          "level": 2,
+          "sha256": "4e6d1045c51466c25a449b94d291815e2367a30f5cb05793c2fccdb8d01dcc25"
+        },
+        {
+          "level": 3,
+          "sha256": "dbcebbd683472274f132660350c706e3c65b9d97cf4516bdd6b8f7779d225379"
+        }
+      ],
+      "operation_id": "K20",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "identity.service-relation",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K20.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "fb915de5c09ccda71b07aa16485d4f6bba6a59290530dc10bbd433c25f8b22d3"
+        },
+        {
+          "level": 2,
+          "sha256": "624bf950fc6e46fcf9800b6548c3710819f47111b2ce4ac74158e3e799d21450"
+        },
+        {
+          "level": 3,
+          "sha256": "320bf785f033f8647be44c846fb73b93defa427be71cfa30087723707f9ccfc5"
+        }
+      ],
+      "operation_id": "K20",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "staff.managed-session",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K20.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "189bb947a8c6a9f5ca0cb6c48c30ccf82b94aee3895a0376953e496b3f014ec8"
+        },
+        {
+          "level": 2,
+          "sha256": "7b7185cabf2913eefc6233d6cead1e680b6135b1cbdbaf739c5ecc8f5fbee72d"
+        },
+        {
+          "level": 3,
+          "sha256": "b38bb769d5ba7dbde14ffcab2c2157e58842a0f0049232d5690c5576f36eb223"
+        }
+      ],
+      "operation_id": "K20",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.connector-rehearsal",
+          "kind": "client_route"
+        },
+        {
+          "id": "packages.approval",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K21.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "4aea9ec33bbb8328891f009b059e0bd9221ed9fc176d15b737fceb6f8d6a747a"
+        },
+        {
+          "level": 2,
+          "sha256": "263b2e4070d454a94cc686505c524bb0c61da560207ca72c8180c36fd2ebe443"
+        },
+        {
+          "level": 3,
+          "sha256": "e3950871430a64bb80ccd76cdd86655c493e87fd613e1887e18c5e8ebd211a64"
+        }
+      ],
+      "operation_id": "K21",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.config",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K21.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "af98f378d628096c92cd5db3f415abae536fefc83e3f32d8b30734ec77da7b2c"
+        },
+        {
+          "level": 2,
+          "sha256": "263b2e4070d454a94cc686505c524bb0c61da560207ca72c8180c36fd2ebe443"
+        },
+        {
+          "level": 3,
+          "sha256": "41efd4b3a417a528dfef728d43936abef3d5ff24fb639881e2d9f04d0196c688"
+        }
+      ],
+      "operation_id": "K21",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.conversation",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K21.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "cf05eb001145fcafe7a25e4306e457675461380d5c5193ac5952f3636ec8339a"
+        },
+        {
+          "level": 2,
+          "sha256": "263b2e4070d454a94cc686505c524bb0c61da560207ca72c8180c36fd2ebe443"
+        },
+        {
+          "level": 3,
+          "sha256": "b6a3c64225e25d6a6def2d0076c358756f573cf152980b79f73da60a6eafd6ca"
+        }
+      ],
+      "operation_id": "K21",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.answers",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K22.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "6408fcf042777c793a9b071c8341c8c429a25cb460bcf36cf844120f4c13781e"
+        },
+        {
+          "level": 2,
+          "sha256": "4510aae14850174b68d9d11ed89a2bf7300734c0a63c1fdd484dcfc8d35a33f9"
+        },
+        {
+          "level": 3,
+          "sha256": "c52b8ad3f4fe9f9f6d05d679b5e70219164e6f43ab6471f71cb3928f56cbd83d"
+        }
+      ],
+      "operation_id": "K22",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.selection",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K22.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "78a930f1251c2f2d1e2cd43f4ed4124de4fa0621d02ce46d846c415102cdf6f3"
+        },
+        {
+          "level": 2,
+          "sha256": "1114b6babea99248c9184fc417f9466d09493f9b120681ee6dcc08bc5d2cfad7"
+        },
+        {
+          "level": 3,
+          "sha256": "c5b3724ff8c42089b49e0ab1a3b8e4bd7fcae223a4df464e6adc1b3b39fcf112"
+        }
+      ],
+      "operation_id": "K22",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.answers",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K22.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "fc601340149b7f9735de6898d439c84d822becf95c173df4c111d7e354213020"
+        },
+        {
+          "level": 2,
+          "sha256": "1fa96c80d4ec30ffb86210053561dea810c915893c2c2be37d75b79f6f41f3a9"
+        },
+        {
+          "level": 3,
+          "sha256": "0a40a688d354e70b8a66610011c3edac9e03df862ab9bc151e8b02e3b5dff03b"
+        }
+      ],
+      "operation_id": "K22",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.answers",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K23.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "47e2e5b8060e8855215b7c38beeb63d29dc3c60fd58d23a57b7d14d63817bc13"
+        },
+        {
+          "level": 2,
+          "sha256": "90698d225a67a4a8f8f6f5d0a05b625ddc4ee2318015472883ca8a553b883b2c"
+        },
+        {
+          "level": 3,
+          "sha256": "5963a9b3746a6adbb859afce943f9f2f38d9c9d9bc2bbf90fe2c633dc3ed7096"
+        }
+      ],
+      "operation_id": "K23",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.contexts",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K23.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "f66a3e2af2f328001e74342f610d33e1e6cea6953a8cda0b2edaf50c5d294156"
+        },
+        {
+          "level": 2,
+          "sha256": "70f2fd128864a565b8734154a909d0a2e6a223fa57e31c36a292c814ccf3e4e1"
+        },
+        {
+          "level": 3,
+          "sha256": "d69b74f87dafac9aedec7a28e1a3a0ea9b068bc3bfad503ee99652d382e99019"
+        }
+      ],
+      "operation_id": "K23",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.conversation",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K23.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "008ce93a5d3306b387766446767e2db8348f04814b7ebb60a8ad95a4b0cf57be"
+        },
+        {
+          "level": 2,
+          "sha256": "a3261f5dd4e9584c4040d7d8e505a01b826f278ce850708c292ee1d1eb000496"
+        },
+        {
+          "level": 3,
+          "sha256": "bce334319fd94b8c830ad256ae1f0f06f0a2e479bbf9c1f4b9bf022991c20a2f"
+        }
+      ],
+      "operation_id": "K23",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.document",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K24.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "07a728212c07658015464f44da01e74a2cb9cf0cfcc01c2d155ed41fe885245a"
+        },
+        {
+          "level": 2,
+          "sha256": "384a30c23018dcf16b5eaf1b3c2ca60bf2892f675f3a8d06418a524f9b5e9481"
+        },
+        {
+          "level": 3,
+          "sha256": "967730d0c7efdfa7e0724c5866aa57d5595da8b4261835b69464f33ef13c4c0c"
+        }
+      ],
+      "operation_id": "K24",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.completion-example",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K24.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "4630ca3266b07d16782dfcc3c9d61b39e8bd20b67918ff429dcfe6de2a89a963"
+        },
+        {
+          "level": 2,
+          "sha256": "922397cdd22896817e375f9d63a0f053dc5fb459a511ea720cc50522fa55d638"
+        },
+        {
+          "level": 3,
+          "sha256": "7579c4cebad5476e1bbb708ec35cae38b5344fc464077a670d8bfe8bafe7039e"
+        }
+      ],
+      "operation_id": "K24",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.completion-context",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K24.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "eb1f6eb698a5f3ce1f86e017ccf98a2cae4a0b36d6f1dfa92d03566e2d90beaa"
+        },
+        {
+          "level": 2,
+          "sha256": "25e6523830c9c21dc2fe0fb4dbb25b1b3b66ead80537e61292ea57c76a4c463d"
+        },
+        {
+          "level": 3,
+          "sha256": "aa3f0a544df7bc2723575fc00289b5ceb20e10d4615565a60267742f564ec682"
+        }
+      ],
+      "operation_id": "K24",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "assistant.completion-job",
+          "kind": "client_route"
+        },
+        {
+          "id": "assistant.completion-jobs",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K25.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3cf33ddf963837b77a595d8cfeb14b79601182043389e067730f971bd4bb9588"
+        },
+        {
+          "level": 2,
+          "sha256": "51e5dc627c54285a21cd88ec0fb77b5af01073e1c876eead5a4992d5202376f7"
+        },
+        {
+          "level": 3,
+          "sha256": "417bcf59637505228fb65362f44154b2439e6da8cb7b39971344cd16ef42f214"
+        }
+      ],
+      "operation_id": "K25",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "support.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K25.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "98ef4b75f3b65a4218a5b0dac4acbfc4792f8fec5ffd51e1bac1c901a3e894f9"
+        },
+        {
+          "level": 2,
+          "sha256": "04d78630778c61a1202c40a0f7ad8b67c291dda680d62c81f36329aa5246abb7"
+        },
+        {
+          "level": 3,
+          "sha256": "7d4fc1d3a8d9ccffdfa5cebc4c572f7b2ea584bbb19e6952fde3ef38deda281a"
+        }
+      ],
+      "operation_id": "K25",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "support.integration",
+          "kind": "client_route"
+        },
+        {
+          "id": "support.reconcile",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K26.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d1a0c85b7abb986d8aa0282ccad443856dd6b0c0e8ea6c6f5065db7879fe03aa"
+        },
+        {
+          "level": 2,
+          "sha256": "12c131f4275a76d5cbec97258d7b10edae10928042199033141a359f7ce46d9f"
+        },
+        {
+          "level": 3,
+          "sha256": "147b5cb9792cb3baa08210ae1ede306a3d310bcedb3d8f8daca064785ae59a3e"
+        }
+      ],
+      "operation_id": "K26",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "connector.poll",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K26.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "e263e11ad515692493ef3cb329d622aab7f5785f4a9d1f2f9f4930e8a5779100"
+        },
+        {
+          "level": 2,
+          "sha256": "880915a579d95ca73f52b48575eb1f179f78017127ffe5eecafb38a91690430b"
+        },
+        {
+          "level": 3,
+          "sha256": "2f020643a8da6e9d670c12330e07d7b10db041923aef2b68d93e12c0e9fac7f2"
+        }
+      ],
+      "operation_id": "K26",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "connector.activate",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K26.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "7cc6edbb7ad08f71cc90ec481f829e22aff8274ec5929e431b5546d43567c9db"
+        },
+        {
+          "level": 2,
+          "sha256": "66208cd5ba9e8fb4d9191db51e7f087e24df1e4bc5787725d41902ac964a6965"
+        },
+        {
+          "level": 3,
+          "sha256": "620991e28bfc701cc83d3f1ebf2736d7329471c5a1a01970d61ebf254571fe05"
+        }
+      ],
+      "operation_id": "K26",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "connector.rollback",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K27.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "2ddf79b4380c77889e9b5f23b0f051b694dad9d3481b388e6fffc0cd1a3cba4e"
+        },
+        {
+          "level": 2,
+          "sha256": "1baa5456644b69c19ef05e09afb40007345d06141516ec12c5a12eb005cf36b1"
+        },
+        {
+          "level": 3,
+          "sha256": "7dbb962f2d21b88953b6fd034a347e9146167a0fbd2afdaa3994a7f88861edb1"
+        }
+      ],
+      "operation_id": "K27",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "support.diagnostics",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K27.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "68a30622abcbfc6d73264d99dd7ba9ebc3085408ee03423fb23673fdb8329860"
+        },
+        {
+          "level": 2,
+          "sha256": "f3f006a36cab9e8a7153e013fc7adf4c4c043f7805de0b309fb449e70c09628f"
+        },
+        {
+          "level": 3,
+          "sha256": "55e9b1684eaf5e3a560cdd4db75fd2452fe9a04bc83bdbb017d8f69706e151ff"
+        }
+      ],
+      "operation_id": "K27",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "support.diagnostic-package",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K27.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "aab9ddaf71a5e276d1d77927a228b4c6858bc12db0d28a4a84adbaf710708814"
+        },
+        {
+          "level": 2,
+          "sha256": "ca3f37f852ecacdfd3e31cb97be007b5b7ed5db198e3224759e4cf3bdc7012bc"
+        },
+        {
+          "level": 3,
+          "sha256": "097f1e50cae88ab7c5271ee84934408ace76433e42cf78a3096d71e198fd6e73"
+        }
+      ],
+      "operation_id": "K27",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "support.diagnostic-deliver",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K28.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "6922dcc690f662899df08bcf48c26172b72b34fd0078a6339a4c33bf78ef1b31"
+        },
+        {
+          "level": 2,
+          "sha256": "0a88dfa2c73db560ce97b0b4aaa21b6498fbfcd08e8af6bd78acbc83bb3c8215"
+        },
+        {
+          "level": 3,
+          "sha256": "f77e7c8773a939b1a11e22147e7d17bcca07906a5b4fa79621eb16c1fd766363"
+        }
+      ],
+      "operation_id": "K28",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "work/build-operations/connector-archive-review.md",
+          "kind": "participant_artifact"
+        }
+      ]
+    },
+    {
+      "card_id": "K28.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d9a3ebe79a1608498026067cec9c638a12546c21b5f9f0f77eba8e8b08a04f42"
+        },
+        {
+          "level": 2,
+          "sha256": "a7275e885986f53b523411108661946cdbba2260a1de80e57da8614b6a67c2c4"
+        },
+        {
+          "level": 3,
+          "sha256": "877bc742fd9876532923332e694a958db001337c36652d1ba1d50e2e3a89403e"
+        }
+      ],
+      "operation_id": "K28",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "source.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K28.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d9a3ebe79a1608498026067cec9c638a12546c21b5f9f0f77eba8e8b08a04f42"
+        },
+        {
+          "level": 2,
+          "sha256": "5fa932c168afef3afeff7fc78c1f2601a6d969c6f9df79c48193809904ca033e"
+        },
+        {
+          "level": 3,
+          "sha256": "9f79b60e39b20b1d0a22b969519929f86aaac64eda1320c4305df5fe358d6e99"
+        }
+      ],
+      "operation_id": "K28",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "source.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K29.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "4698e81b400c11cff9efcc8dc366460b811b3104aa1b11438a2ae5270530e9a3"
+        },
+        {
+          "level": 2,
+          "sha256": "7be28db6ff4c94014b862617386b48e56266b2c7311153e906ab58a35ef4a050"
+        },
+        {
+          "level": 3,
+          "sha256": "011591fbfcf14fb2c8d3f2bc87e55863cb1ee2bd8141cf721416c0c1a528a4fc"
+        }
+      ],
+      "operation_id": "K29",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.run-artifact",
+          "kind": "client_route"
+        },
+        {
+          "id": "cloud.build-record",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K29.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "c9eed3258cbb68c99fd507bbe7f745ee4aef2fee018d87abc14236914defaee3"
+        },
+        {
+          "level": 2,
+          "sha256": "7be28db6ff4c94014b862617386b48e56266b2c7311153e906ab58a35ef4a050"
+        },
+        {
+          "level": 3,
+          "sha256": "cd770aedd3e2c3f569a0113a6fe8c7e2b50f74bb3b43e1bb05f9626afa76c918"
+        }
+      ],
+      "operation_id": "K29",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.keplerops.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "K29.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "b4eb99ead7251fe2f1807cc5bc76a8b7b998977881319f03681c70c3c807f527"
+        },
+        {
+          "level": 2,
+          "sha256": "ae195470b6b7b0d84ed0481d2fbe63cb6b343de1ab72ee397c8b1e18d19bf119"
+        },
+        {
+          "level": 3,
+          "sha256": "38b80d9aad4467282a42c30bf9995636cc815817d32354e83f214719ec2189ad"
+        }
+      ],
+      "operation_id": "K29",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.connector-rehearsal",
+          "kind": "client_route"
+        },
+        {
+          "id": "packages.approval",
+          "kind": "client_route"
+        },
+        {
+          "id": "packages.publish",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "K29.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "359850793f852af979aa0af742134fc7077967ba3b09d16bc5acc44c92cc5bc5"
+        },
+        {
+          "level": 2,
+          "sha256": "ae195470b6b7b0d84ed0481d2fbe63cb6b343de1ab72ee397c8b1e18d19bf119"
+        },
+        {
+          "level": 3,
+          "sha256": "752886ab9022dfd543cf7df4c2a5d14b56b8075fa667dd2b0b295645327a1ee5"
+        }
+      ],
+      "operation_id": "K29",
+      "phase": "keplerops",
+      "references": [
+        {
+          "id": "ci.lineage-rollover",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W01.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "0f9d7e2ebe124658906fa7b4febf379fde7d65051ea0ab22edcd6b7637f142cc"
+        },
+        {
+          "level": 2,
+          "sha256": "edfba2552c0badf6c812102c8072c1b9d909f9dc525d0a95775aa16dfbb78ccc"
+        },
+        {
+          "level": 3,
+          "sha256": "8c572b79c966f8944571eaf08bce5c2c44bc7c5b456b76ee1a5298813f397686"
+        }
+      ],
+      "operation_id": "W01",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "corporate.handover",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W01.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "c2a5f623b79ed144188dd1e41a05a094e00fb7eb489e9bede47acd19c370d1b6"
+        },
+        {
+          "level": 2,
+          "sha256": "edfba2552c0badf6c812102c8072c1b9d909f9dc525d0a95775aa16dfbb78ccc"
+        },
+        {
+          "level": 3,
+          "sha256": "ddaee875d7be52474182ae8c68c02c9ea6b41be1862878102cbb6e367504b321"
+        }
+      ],
+      "operation_id": "W01",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "corporate.work-order",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W01.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "b83e6ce0f9e974f46503aa727e35d78db55fa66450c46aa438118283a6c93571"
+        },
+        {
+          "level": 2,
+          "sha256": "edfba2552c0badf6c812102c8072c1b9d909f9dc525d0a95775aa16dfbb78ccc"
+        },
+        {
+          "level": 3,
+          "sha256": "a1d7336fb14b3081431121f519900afd101aeb3b6d90bb58c5e5fb763949a3e4"
+        }
+      ],
+      "operation_id": "W01",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "corporate.continuity-plan",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W01.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "ec57dd5769ff5738f88a97e824b206df2edb7198fd49f7ccbb7b2d5d9abe2dfc"
+        },
+        {
+          "level": 2,
+          "sha256": "fe6d0d29e8af11a7a1e904dd479ab692864b9bfe7e28c61e6bfab06eb0f8a62e"
+        },
+        {
+          "level": 3,
+          "sha256": "3b0281a71b0b484b8926a8f266b7103f39d13fbb5197c3c5504d93c1156a94aa"
+        }
+      ],
+      "operation_id": "W01",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "corporate.work-order-update",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W02.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "c6421af862685b1c3c70ab395454ecec21ec4fb7713c816a8a551425eb092cff"
+        },
+        {
+          "level": 2,
+          "sha256": "ae88bd035134ed9181486cf109c868509f63aa1b3fc510cd1c857aef6f1f45c5"
+        },
+        {
+          "level": 3,
+          "sha256": "ba3701b1b80b326e387201aec628c48c1cd58abe90c1955af550a42384a2c004"
+        }
+      ],
+      "operation_id": "W02",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.asset-bundle",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W02.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "7e7466b2f647ad0182b23c9d84c530d850bd6547b6d9b9e4461382fad726d167"
+        },
+        {
+          "level": 2,
+          "sha256": "34799bf310621bee81cedb7532905e9d91bef308bc902a8c2b056078b9875af0"
+        },
+        {
+          "level": 3,
+          "sha256": "bb79d54b5eec76e4b06dfc90f1c46fd988135f4893734f08193efb3a7ad97967"
+        }
+      ],
+      "operation_id": "W02",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.association-record",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W02.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "155103efb1090a49ffdc02812dce958e8b1aa5a36134c8a580c2c88e14494d9e"
+        },
+        {
+          "level": 2,
+          "sha256": "f9e236f318edbf4e9baa66d1729ef6d758899d7dbb9ac3bcdcec6df9b8f19c2b"
+        },
+        {
+          "level": 3,
+          "sha256": "934e298bc4a44fb592fc404639b2cf00144ed7cf7775dfad603c65ac2179a016"
+        }
+      ],
+      "operation_id": "W02",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.work-order-attachment",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W03.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "c934357f38e4dd17a4b7bfee2030b6ed5b41a56c9afe349e9010e83bc2ad6676"
+        },
+        {
+          "level": 2,
+          "sha256": "2369be02eecbda43f958fd3224ee9fc2628cfbd087ba2a62e61813dbdbd1c2e4"
+        },
+        {
+          "level": 3,
+          "sha256": "bbfee01d544774e5a76573050a2cff93f1ce73e818619e6c6eb76d112355a137"
+        }
+      ],
+      "operation_id": "W03",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.work-order-annex",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W03.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "601ce51cac79c9603702d57316843fec41182659ea5496e455bd5db5b7c3f5f6"
+        },
+        {
+          "level": 2,
+          "sha256": "ec5e908cdfe53215361a9df06dc4ba91f55668ff8e22dc0de63cfeabdecd9d5b"
+        },
+        {
+          "level": 3,
+          "sha256": "0c3f02838a03f298eba46dfcc33babb3d94546228cce7e2f9a7405418c163800"
+        }
+      ],
+      "operation_id": "W03",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.work-order-references",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W03.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "9049b158afb7ca7042dd5e97722dbd6fb78aba2d89e0337c7ede35f878e072e0"
+        },
+        {
+          "level": 2,
+          "sha256": "2369be02eecbda43f958fd3224ee9fc2628cfbd087ba2a62e61813dbdbd1c2e4"
+        },
+        {
+          "level": 3,
+          "sha256": "fe6a13d96758360e658d9c35d1260657ca4af3e9073671405a28047f98385db1"
+        }
+      ],
+      "operation_id": "W03",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.integration-contract",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W04.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "536b20ea918ab8a4426cbe97f2b206869b4ad6467a4a89c317b83fd98750f78b"
+        },
+        {
+          "level": 2,
+          "sha256": "9ba1d97cf381df2a2f53dd1787727aec4935cd6f257ea2ade6bd0b2c7add7014"
+        },
+        {
+          "level": 3,
+          "sha256": "510eca7668e21e47139cabcbc6c49ea55ce323c29854a4bf94659edb310abba1"
+        }
+      ],
+      "operation_id": "W04",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "archive.contract",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W04.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "1d332552efba29a9e22c3a8a539263dc351f8797653c74812d2d98ed8b01a663"
+        },
+        {
+          "level": 2,
+          "sha256": "16b0b186ac0b0f1c26301357f1eb0b7316cffd31a7899bb6ebf6b5c3c300809a"
+        },
+        {
+          "level": 3,
+          "sha256": "ea3541cef795c9ff4de71fa7ebe5096a2589ca2b38b4dc647126365f8e727317"
+        }
+      ],
+      "operation_id": "W04",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "archive.archived-query",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W04.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "ea661540a9014f535df7cc85a5a61b9f4edf8435b9c93bf61cb367ccf40049f6"
+        },
+        {
+          "level": 2,
+          "sha256": "d0096cb3e13f18c5b103389cffdace5ebc0102551bc5a7ab921d9d65096c69ec"
+        },
+        {
+          "level": 3,
+          "sha256": "56b90ed66bda3486b2588944c781df3bec15a1330115dbb3c34dd31c50300212"
+        }
+      ],
+      "operation_id": "W04",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "archive.run-operation",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W05.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "4556fb748084fd2ae4c1787d6899de9462a50c413e222bb0fc157ceb1dc41656"
+        },
+        {
+          "level": 2,
+          "sha256": "0deb9ff637e682c2e82e77c9a4a1f2b377c61b59cff66e1702834c412e828876"
+        },
+        {
+          "level": 3,
+          "sha256": "e0b0a3d3cdd5f55479c5762ddd3a241f5062395dcd519a3c17591b5cae3ea733"
+        }
+      ],
+      "operation_id": "W05",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "identity.provisioning-package",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W05.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "acd7cca4ca484412cd98397b0fa1fa042776d8084ede4df4ed00c0480b93e698"
+        },
+        {
+          "level": 2,
+          "sha256": "0deb9ff637e682c2e82e77c9a4a1f2b377c61b59cff66e1702834c412e828876"
+        },
+        {
+          "level": 3,
+          "sha256": "388e1675a4fbf551eede5581eed5e02ee405d140d6172e9d6547307c76e8bbd2"
+        }
+      ],
+      "operation_id": "W05",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "identity.activation-roster",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W05.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "b878e1b8a36053ab8c4abc203f40c3f76ff5202c3d8af9f7e47b3426a4a1e1ce"
+        },
+        {
+          "level": 2,
+          "sha256": "99a1b64e62f1ad756ab2cff7305199da8cc3ccc6d7c9209174a38acd4dc45f45"
+        },
+        {
+          "level": 3,
+          "sha256": "52e9509e5f2d539c66a7a37b52edc6d92b0b2c9d798692b442a3767c94c12f9e"
+        }
+      ],
+      "operation_id": "W05",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "identity.temporary-credential",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W06.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "fcbb1e1a881092ff38a7013511b0e397084b0ef8a9cbc6ec47647a4aedb89c08"
+        },
+        {
+          "level": 2,
+          "sha256": "b7cb4685dd9f904aecbbfbe1822f5423dd9593fe46f7fa7b0aeb1daea1ce7422"
+        },
+        {
+          "level": 3,
+          "sha256": "ef77d82ba8068c2708cb948fadc16f5ec9a8fa879401bbe0ba60ccbaa037f252"
+        }
+      ],
+      "operation_id": "W06",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "identity.session-audit",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W06.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "07a1f600c4340e9950a220c26ccd69a295b4c1bde03177643304a2f3cf9f6a11"
+        },
+        {
+          "level": 2,
+          "sha256": "4fafada67a36650f6e93919b821d29ec6f121577f5c7cb9ee4c9bb8c5d1e8cd9"
+        },
+        {
+          "level": 3,
+          "sha256": "e92a52008940e409ed0cfb9d034948189c636684059b47bb63e9666ae4074b6e"
+        }
+      ],
+      "operation_id": "W06",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "identity.drawing-context",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W06.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "0b84415cc477423cb08dbb2085a71034188c77d2d6c2ef13a1be7fc645de9538"
+        },
+        {
+          "level": 2,
+          "sha256": "b2c40e3f4f9cefc0cdf16566fda4379acb00adab520d039611897808beb3bd82"
+        },
+        {
+          "level": 3,
+          "sha256": "f0c17ac60eadf66643e210d0e03214c30760af7405fc736a479c21cc5f2d4d5c"
+        }
+      ],
+      "operation_id": "W06",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "identity.sessions",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W07.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "ae2de1d3593a0c3c8e52f5c2626efeec1cfcd8a5c1c906190b32f143b161a5d4"
+        },
+        {
+          "level": 2,
+          "sha256": "a94cdda129b1f8da5a9e46869b2f87f39c5e3a8925ffda0597bfc11952d2d11e"
+        },
+        {
+          "level": 3,
+          "sha256": "5c197656fe48b50ce3a531757a9211d1b3b378e581f16db7830846311d368d30"
+        }
+      ],
+      "operation_id": "W07",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning.saved-query",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W07.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3a3beb6567fcbef3f189f2bd5475733b63b67b3b07128adaa970d6ca5bd12a7c"
+        },
+        {
+          "level": 2,
+          "sha256": "a94cdda129b1f8da5a9e46869b2f87f39c5e3a8925ffda0597bfc11952d2d11e"
+        },
+        {
+          "level": 3,
+          "sha256": "836f46bf56bbcde57d43afb9499dfac85a91a732f2e1ff50f6a4001ef42fa548"
+        }
+      ],
+      "operation_id": "W07",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning.query-run",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W07.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3a3beb6567fcbef3f189f2bd5475733b63b67b3b07128adaa970d6ca5bd12a7c"
+        },
+        {
+          "level": 2,
+          "sha256": "50d16a8102433862b5d8425881baf22712fb370113a9dedc67542c9e71a49fff"
+        },
+        {
+          "level": 3,
+          "sha256": "cec3b594e95b0fc3f0da23705bffa6c5ad3b4417ae7114db00fad561b9017585"
+        }
+      ],
+      "operation_id": "W07",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning.query-run",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W08.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "a2d778b5961c73f46658fef0935d0dccff5a00e01de29753dda018c08f7e80b0"
+        },
+        {
+          "level": 2,
+          "sha256": "746f64980595ff3031c1d46f31e50b8f16faa66b3575e871ec6a070044f689cd"
+        },
+        {
+          "level": 3,
+          "sha256": "5b6dee4473788d1fb15ff140b0d5962e2ad710a8cac1bccbf66d2131c33ddf33"
+        }
+      ],
+      "operation_id": "W08",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "archive.bundle",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W08.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "60e66b43b80b0e7412ebdda4f016e4dea9b96f766bf587c84e230db54d228181"
+        },
+        {
+          "level": 2,
+          "sha256": "ecd304e189a706b454f43ace811bd3b82dded21bd32a267f8652d10297221a1d"
+        },
+        {
+          "level": 3,
+          "sha256": "3c056a20b18c60868772262f127d9be2bbedba3dd3e8e5dc5ed55c02719665c6"
+        }
+      ],
+      "operation_id": "W08",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "retained-archive.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W08.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "60e66b43b80b0e7412ebdda4f016e4dea9b96f766bf587c84e230db54d228181"
+        },
+        {
+          "level": 2,
+          "sha256": "746f64980595ff3031c1d46f31e50b8f16faa66b3575e871ec6a070044f689cd"
+        },
+        {
+          "level": 3,
+          "sha256": "74a822aa0c5752acf946f96230863d7bd6c5fac61bb0a82f3beda408eccec716"
+        }
+      ],
+      "operation_id": "W08",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "retained-archive.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W08.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "79720487105e7223f9bcb465a17fc096844430c0fc3212daf839c1b1da99dd10"
+        },
+        {
+          "level": 2,
+          "sha256": "746f64980595ff3031c1d46f31e50b8f16faa66b3575e871ec6a070044f689cd"
+        },
+        {
+          "level": 3,
+          "sha256": "5a3780a476b4ef2ea86c5cdcd8d951e442c681acef4abc45eb4ce4d16f8fc75a"
+        }
+      ],
+      "operation_id": "W08",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "contractors.artifact",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W09.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "c85ff4995e2cd1482694e73d4786c35dae4ada169495d6592accd6ba77cba850"
+        },
+        {
+          "level": 2,
+          "sha256": "c9d3fb590ac40b3bca70ddceff6c86e3c95737528349c23cd35e7532abccb6cb"
+        },
+        {
+          "level": 3,
+          "sha256": "45382cf395443b1b185e4f16356a08b9aafc81dda050e8bf607ed9d341f3c251"
+        }
+      ],
+      "operation_id": "W09",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning.allocation-ledger",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W09.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "95da031f9c34adfe2e8146e7cfa0612e1a9d147798430dfbe2c72bd259ef5dea"
+        },
+        {
+          "level": 2,
+          "sha256": "c9d3fb590ac40b3bca70ddceff6c86e3c95737528349c23cd35e7532abccb6cb"
+        },
+        {
+          "level": 3,
+          "sha256": "3bebc28d48fa95a9c550f73b4ae2b88932c78e26de79adfe619560b31adcb220"
+        }
+      ],
+      "operation_id": "W09",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning.meter-allocation",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W09.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "265107d7a4d2807f30fdc79b6fcf5b38886a016f2e2fab38a86741299a127718"
+        },
+        {
+          "level": 2,
+          "sha256": "457566b7da7a3d9ac8a814b57d41a24c0fffd3af561f6a188df985b9fc2dd395"
+        },
+        {
+          "level": 3,
+          "sha256": "b5031d1dd9b8fd37fc282922bf884a8de08f5b6f0b6518ae0d60dbea683e9844"
+        }
+      ],
+      "operation_id": "W09",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning.allocation-discrepancy",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W09.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "87aef11fa6181b7fe5a2022c36cc60397a9ae9e4dea93ffafd51b3aff5c736c5"
+        },
+        {
+          "level": 2,
+          "sha256": "e2f4b7e56de6cf96b9ca235def944d4ae4e67ed63549490b8e51fbf4fa38fce9"
+        },
+        {
+          "level": 3,
+          "sha256": "6c02f20de989936a7f8a76ccd503ecb99ff82fb0158fedb5187f9a0677c2a374"
+        }
+      ],
+      "operation_id": "W09",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.integration-contract",
+          "kind": "client_route"
+        },
+        {
+          "id": "business.report-sources",
+          "kind": "client_route"
+        },
+        {
+          "id": "planning.integration-session",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W10.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "b8dc5f5b6e249a0699c1fa5f3aa750b2910fdabbd3e6a6e8965fec4feae6968e"
+        },
+        {
+          "level": 2,
+          "sha256": "4faea4ecc6e98c74608f857974ffcd2e5d5750bab60a84b8b4761969038bf3d8"
+        },
+        {
+          "level": 3,
+          "sha256": "99a6c3f7dd0888da1dfeef11f608fc2cab6c7c895d12df324f9c42afad2b147e"
+        }
+      ],
+      "operation_id": "W10",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.report-sources",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W10.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "409e9f1b8d6f9a7b8f8d01af517a0c307fcd86e6b067598545287d8ae5664718"
+        },
+        {
+          "level": 2,
+          "sha256": "4faea4ecc6e98c74608f857974ffcd2e5d5750bab60a84b8b4761969038bf3d8"
+        },
+        {
+          "level": 3,
+          "sha256": "bd1c83cbaa7b567d422b10265c4cdbf2e21bec07f19c262ff435dbb9f8031bc9"
+        }
+      ],
+      "operation_id": "W10",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.report-row-external",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W10.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "afb638854fe13456bb635ec87c84c047d7f8c0546f96e1fa802700d82f6865bf"
+        },
+        {
+          "level": 2,
+          "sha256": "805ed024c50c00537456a6380348ef659d4a6e7b614ca2e78ecf34ba2a4457e1"
+        },
+        {
+          "level": 3,
+          "sha256": "8a69f5f188422f7b95fdd43efb70f699a67c8e679724447417a84613de01c6b9"
+        }
+      ],
+      "operation_id": "W10",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.report-document",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W11.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "c94466b159a5acabd87de6ae7f2debc006f88319f0b12d7dc414abedcc634fc4"
+        },
+        {
+          "level": 2,
+          "sha256": "1ad7817d88439c746794b3e3314f98e2cd8c43e64d3df7dc334bc8056082c20c"
+        },
+        {
+          "level": 3,
+          "sha256": "11221420648320436397497905d3720f613cfd5544c5209471dc85c7978cbf29"
+        }
+      ],
+      "operation_id": "W11",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning.relation-schema",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W11.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "83d9298f5a0e6f252840461cd99fc9c6438a1b96b3a578dd74db3dc8635f25dd"
+        },
+        {
+          "level": 2,
+          "sha256": "3c853a97dc0b750b40144e4bd4cac376a9f38ce815200af1bccd0d3141505c8b"
+        },
+        {
+          "level": 3,
+          "sha256": "fa5a889947d5ab06d2125535bb7b6e48f8d54b1921b30f17279f09c44419187d"
+        }
+      ],
+      "operation_id": "W11",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning.relation-exchange",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W11.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "5036c33667537b0f4182e5b8cc48619dc2fcbaf85b1c0b184de342fe78c65acb"
+        },
+        {
+          "level": 2,
+          "sha256": "2980fa3d95ef2ef510203126f933bb59c5caa9ac5650f2e10fdd5f2a8a156e0d"
+        },
+        {
+          "level": 3,
+          "sha256": "fd497b248e6ffee4dcca044983e108afd92d78553376bdd4c676a04bc8c09883"
+        }
+      ],
+      "operation_id": "W11",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning.asset-lineage",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W12.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "80abd65577e0523896e50df35b21800a06f0b652b875b29ea2ec922a11cda9fd"
+        },
+        {
+          "level": 2,
+          "sha256": "a222e50f00ff56a8cdde14de5f1e258cc5991ba1e8a23fe160bf4de4a4a1cd97"
+        },
+        {
+          "level": 3,
+          "sha256": "57e8dcac550becba4159ad7a7fc0fd488d60e8bb1259368aea315105256bf857"
+        }
+      ],
+      "operation_id": "W12",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "retained-archive.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W12.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "f62337771fab922472f292d384c88840e3cf04aa1336c9cdf409a2e09693a36b"
+        },
+        {
+          "level": 2,
+          "sha256": "7e620eaadd59c2c577f8302ad5d11daedb7f693dbcc81bbbe20e6ec789ecad69"
+        },
+        {
+          "level": 3,
+          "sha256": "75f28e01ab9f9a7ade7aa9b01dd032e97e987394a60171b0a00753e4e29e9f80"
+        }
+      ],
+      "operation_id": "W12",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "archive.bundle-collection-policy",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W12.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d2a84acfcd9cdbefe84cc1c824870ada35330ae4afe786eb0e88ebf9064bc4c7"
+        },
+        {
+          "level": 2,
+          "sha256": "a222e50f00ff56a8cdde14de5f1e258cc5991ba1e8a23fe160bf4de4a4a1cd97"
+        },
+        {
+          "level": 3,
+          "sha256": "5ff9d6b8d50a432a910755e515c9d1cb83a544275f124daaddc5c58b181f0f73"
+        }
+      ],
+      "operation_id": "W12",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "archive.cold-archive-job",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W12.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "80abd65577e0523896e50df35b21800a06f0b652b875b29ea2ec922a11cda9fd"
+        },
+        {
+          "level": 2,
+          "sha256": "7e620eaadd59c2c577f8302ad5d11daedb7f693dbcc81bbbe20e6ec789ecad69"
+        },
+        {
+          "level": 3,
+          "sha256": "eebd104fc74e52bbec0f2ee655ff4a40fd0b0309b128fec91fe4a8be6dc2752b"
+        }
+      ],
+      "operation_id": "W12",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "retained-archive.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W35.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "533299931a566df1796b7cbd17d611ee4b80bd3bb2f7d4ee5fe1e1ac44b3eabd"
+        },
+        {
+          "level": 2,
+          "sha256": "8556778d1cc3fb31d69493b59b59ad977a5d5393d754ff4e6c7b53dc375448b2"
+        },
+        {
+          "level": 3,
+          "sha256": "9b9a64598cca18a647f7b2e569b600ad0381fe252b154e4ae2cbb2ff8852a959"
+        }
+      ],
+      "operation_id": "W35",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.procurement-quote",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W35.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "1e29b498891aa8c00b2372cf6dbb62f58f05a35162a9d914a4095a337cd64c7a"
+        },
+        {
+          "level": 2,
+          "sha256": "8556778d1cc3fb31d69493b59b59ad977a5d5393d754ff4e6c7b53dc375448b2"
+        },
+        {
+          "level": 3,
+          "sha256": "86d66d13e880d0eb5a618d3c25a430416509cc3b7e6845ccc30bdb07dc9bff6b"
+        }
+      ],
+      "operation_id": "W35",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.procurement-quote-external",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W35.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "8a718186bd6f1e46653553257bc69113b005af065c7a5adb5ad61b81b2eb762c"
+        },
+        {
+          "level": 2,
+          "sha256": "073ef4e6358214860171c911d76c4d33fa59ffc693e5ed1c1be769c402cb7900"
+        },
+        {
+          "level": 3,
+          "sha256": "5cf38e76402cd96a81e91755cdfe15289c29f4a8f6dc262d0fe403abb216399c"
+        }
+      ],
+      "operation_id": "W35",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "business.invoice",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W13.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "af26e0140b633f280e0e50deda2a8b343689ebe90237d76192c6e77ec7516927"
+        },
+        {
+          "level": 2,
+          "sha256": "5c7de9880042ddee5ac986ab5026547c64404ba26747c8c0ad0c7f01191c051d"
+        },
+        {
+          "level": 3,
+          "sha256": "633c10ba1319954f1f726977673316585fac0ec8e65abf60f4a5c7a21a5d9d86"
+        }
+      ],
+      "operation_id": "W13",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "contractors.appointment-window",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W13.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "73ef3156a1ceabe5e03a29d9e014cd456fb177696f9dfa26eb8eb9ef000e3673"
+        },
+        {
+          "level": 2,
+          "sha256": "5c7de9880042ddee5ac986ab5026547c64404ba26747c8c0ad0c7f01191c051d"
+        },
+        {
+          "level": 3,
+          "sha256": "aa2d9981f8c734cad1f2ba965e9a915e830d16af2e470d52444f65c4671a29f6"
+        }
+      ],
+      "operation_id": "W13",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "contractors.expected-visitors",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W13.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d7f950e9cb21cdb7a6cae1717fa9e0f789b7ee9f71c4a21deab193b20279672b"
+        },
+        {
+          "level": 2,
+          "sha256": "33d603bb4920cbe63e7116246d88372cc9c3a9c949d606447f5525cb1396dc14"
+        },
+        {
+          "level": 3,
+          "sha256": "b56ac2cd6903c9ffaa0bf37701367fbd84ecf9ac06902347e8495904291fcbc3"
+        }
+      ],
+      "operation_id": "W13",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "contractors.appointment",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W13.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "722aa940ab77e444118841d59af11bcd132cfb3ebb3382eda440bf676895316b"
+        },
+        {
+          "level": 2,
+          "sha256": "1709d63b1289c756d46d17bcbf0616b01a45e388049e848ad4d0a151bc8d2b3e"
+        },
+        {
+          "level": 3,
+          "sha256": "99bd27f4581bd9cc705ec66ea8767fd849f7f11cfb059956c576a62e67913bfb"
+        }
+      ],
+      "operation_id": "W13",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "contractors.check-in",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W14.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "cbe31d1ebfa9a7ba9378207468892f547feebb233d185798fa3edd5e86fe2edd"
+        },
+        {
+          "level": 2,
+          "sha256": "6a4c520df3a9c49f4d4fdcbb93b765fec28ad90b2b157bf5bc0295c0a3c0e799"
+        },
+        {
+          "level": 3,
+          "sha256": "cc296ef5158dc1e0b5bdf7c1a7ac8a2ee2d53db2565df24c5b64e7ee272de3b5"
+        }
+      ],
+      "operation_id": "W14",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "contractors.field-kit",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W14.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "eb58f4e968a86c0c8bf2e8e8cbc9a5aa5a99eb00be9e5f03a861f2f1db731bb9"
+        },
+        {
+          "level": 2,
+          "sha256": "1089084bc8dcb19cabafc15bbdbf0e940127eccb50e5f4b4dcb6ee9fd4d42e67"
+        },
+        {
+          "level": 3,
+          "sha256": "fed6359c3a8fa1471dd89c8d45f18a0ba57f7b8776d04c99f74a723e99682aac"
+        }
+      ],
+      "operation_id": "W14",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "field.instrument",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W14.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3c3837785b81dba455eb31b739ea414ce22fa4bd8e84bd7249a31d6687f99bcc"
+        },
+        {
+          "level": 2,
+          "sha256": "424860270d5d1fdc10b1e932aa97551f73b98b3ad39945f298b5c40461b57a2b"
+        },
+        {
+          "level": 3,
+          "sha256": "62fd30324580670d4345898b894751794f579de16a8a85e2aba68e7ed82dec35"
+        }
+      ],
+      "operation_id": "W14",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "field.current-reading",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W15.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "c834e3f9c77256392b971a2aa0287ff1d87ec1315eb219f6c9d71b5b52fa9d16"
+        },
+        {
+          "level": 2,
+          "sha256": "af35e5e0947ab84a262dea1164189b16e11cfdbd533ccd74964cd8490fcf341e"
+        },
+        {
+          "level": 3,
+          "sha256": "2907692f53a7479858e44fcd90300b321fd2369d2a0ff93a39882f9f9f540344"
+        }
+      ],
+      "operation_id": "W15",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "maintenance.drawing-cache",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W15.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "89fb5442fa659283f3c84c4e96da1e063f961f9f9fe3640372c57e2850e0e658"
+        },
+        {
+          "level": 2,
+          "sha256": "a76be86f1de7f7463d27d67780765fd602dc2457a81ab392f1ca298f2bc04bf0"
+        },
+        {
+          "level": 3,
+          "sha256": "53d03adad2cc5a547e532a4113a84f22947053773731ec11cb23a6d98c379049"
+        }
+      ],
+      "operation_id": "W15",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "maintenance.drawing-cache-update",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W15.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "4da7e18476b787ff7cea1b4a60701a4c5d8e87e99790dab866d252590e29a50c"
+        },
+        {
+          "level": 2,
+          "sha256": "5e06993d3d164bdd036fc6b6310fe22bfbe6cb245dac20bfca2d7e50543c9fed"
+        },
+        {
+          "level": 3,
+          "sha256": "493645f41f9fe10942468e6342ba3889081fe77b90d6dacbf750dca09718e16b"
+        }
+      ],
+      "operation_id": "W15",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "maintenance.drawing-approval",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W15.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "4df92761ba069c5270fe424991ea757a3757020f776ab81bcb4d03fb6330545c"
+        },
+        {
+          "level": 2,
+          "sha256": "af35e5e0947ab84a262dea1164189b16e11cfdbd533ccd74964cd8490fcf341e"
+        },
+        {
+          "level": 3,
+          "sha256": "11d4415094f211dc0573fe1a2d7deb4f80a2d7923d5ba94f62657f7c9222032e"
+        }
+      ],
+      "operation_id": "W15",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "maintenance.approval-token",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W16.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "71a5fa5add58590a7ae404861ab629daf7a8c31f53b2a42220ab97e59d1f1784"
+        },
+        {
+          "level": 2,
+          "sha256": "33b9fc7f476c35c7991772a9595faab430ed0b86e3397baa2f24a3e3a85b9602"
+        },
+        {
+          "level": 3,
+          "sha256": "b653489054b900d7a8da47e0fc8d466205be231d8dd9c30d5134a75588707437"
+        }
+      ],
+      "operation_id": "W16",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "archive.sequencer-spec",
+          "kind": "client_route"
+        },
+        {
+          "id": "archive.signal-experiment",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W16.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d693714f16c2c72ee4ee58a38369c4dae44ec5ebbb780628985a069b37df73ae"
+        },
+        {
+          "level": 2,
+          "sha256": "c3a0559ab11ff8c4b19c6121e840ed139b3d710f466bd963273e07eb720e70de"
+        },
+        {
+          "level": 3,
+          "sha256": "715c568482a66b05c3208723e57e1fa50c380b1e7a74209e1a93c94980ed5d4a"
+        }
+      ],
+      "operation_id": "W16",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "archive.observations",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W16.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "5c9ab19f3606059f3397c914fe1279ddb6657762e9e03ff200f1d7395f9d0fa2"
+        },
+        {
+          "level": 2,
+          "sha256": "7563594df9487bdf478dc50d24337203c443a8e91f5198e2972acd17a453c429"
+        },
+        {
+          "level": 3,
+          "sha256": "91898034a2fe1760a085cf98ae7b118cf443f094b40cf106647a641e27c0a5e9"
+        }
+      ],
+      "operation_id": "W16",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "archive.signal-experiment",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W16.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "1c3678bd67f68a9936617bcf5cd8d6ff728f50eea3ac41a4751727b7ee30f247"
+        },
+        {
+          "level": 2,
+          "sha256": "33b9fc7f476c35c7991772a9595faab430ed0b86e3397baa2f24a3e3a85b9602"
+        },
+        {
+          "level": 3,
+          "sha256": "0ee64ef30674748e29c4c6ed2615bf449c3a674c61d4ac0b9572ef1217430096"
+        }
+      ],
+      "operation_id": "W16",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "archive.instrument-history",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W17.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "5b23d3f3d35a7b4d1bce735588d2d1d8ca9e8706bf1c92073a8602ac14f7f019"
+        },
+        {
+          "level": 2,
+          "sha256": "9203a8461234d3db3c3c689ae288297ee7ad6574393b064ffb498ca53b90799d"
+        },
+        {
+          "level": 3,
+          "sha256": "6b1440cde1216c1aa36a899dc8a4d6348d33e5adad445aff5d3e78b85b0917ed"
+        }
+      ],
+      "operation_id": "W17",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.state",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W17.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "63b2b6e424e00a9561f6b18ba17816213cd3caba4f18c44be7e49811f0089eb6"
+        },
+        {
+          "level": 2,
+          "sha256": "9203a8461234d3db3c3c689ae288297ee7ad6574393b064ffb498ca53b90799d"
+        },
+        {
+          "level": 3,
+          "sha256": "3f8a40f3c643062196dfa798c4bb9ac2f959909bcce8b41db167ca764399c4bd"
+        }
+      ],
+      "operation_id": "W17",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.mode",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W17.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "7609ecb87408b5d8ef8fadf34167483ff55ceb0a32fe49c739f187264e75679b"
+        },
+        {
+          "level": 2,
+          "sha256": "9203a8461234d3db3c3c689ae288297ee7ad6574393b064ffb498ca53b90799d"
+        },
+        {
+          "level": 3,
+          "sha256": "2856f3cde460c17fec4fc1e4a3124f28eefdc46a2ee68fab84e64ed572647542"
+        }
+      ],
+      "operation_id": "W17",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.active-instrument",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W17.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "374729af2ccf76624b1b7e6f2753984ea936e770f226b520462891cd567b3063"
+        },
+        {
+          "level": 2,
+          "sha256": "6196529ec8b02ed9d19212becd8b0b820ec88b70d4873fc5c0bc925781207c7c"
+        },
+        {
+          "level": 3,
+          "sha256": "a9d3a145629502845e7baa73800b8a4d2c3002c496803ef2be10f4db677884a3"
+        }
+      ],
+      "operation_id": "W17",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.observations",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W18.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "2df2d08bc2346725d67064909a0508706f4589df64cbbfafd18a6838ea821f09"
+        },
+        {
+          "level": 2,
+          "sha256": "f4da4e14e39eb89eab84f1e7e39ab0452789c9358474c654114c2471e496c012"
+        },
+        {
+          "level": 3,
+          "sha256": "75b67e2ed3d687a90cff842f536b2277c258308ca3ed5c0432bc76f244806680"
+        }
+      ],
+      "operation_id": "W18",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.tag-export",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W18.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "954cae1fc3458d47c671a0177d3c4626d0a17e417e2b790242031da46639f374"
+        },
+        {
+          "level": 2,
+          "sha256": "f4da4e14e39eb89eab84f1e7e39ab0452789c9358474c654114c2471e496c012"
+        },
+        {
+          "level": 3,
+          "sha256": "8d2d2737cb72b46ac3c427bf01e57572fb032b32b2ee30e029615928a77aa069"
+        }
+      ],
+      "operation_id": "W18",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.tag-scale",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W18.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "4ed6dd470dfdefe9fc31bd0f11552bf71adf6d0b0e7418a119c78c6ca67dbe6a"
+        },
+        {
+          "level": 2,
+          "sha256": "4b9aba991c2dab57eab386156016e405711ad9e4d29ad140a480d25a5bf4b708"
+        },
+        {
+          "level": 3,
+          "sha256": "a24d62f747a63d5532a27bd3a2b5350d2e790ff5e9bc94263d9e892e61e75a82"
+        }
+      ],
+      "operation_id": "W18",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.tag-scale-history",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W18.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "17f6fca3519fd5a5079bc73353870ea4199cdde5f12e31124e552d5d45920fad"
+        },
+        {
+          "level": 2,
+          "sha256": "a9c2d4cb9c9a7529b6ffa3a4d426eebfe369ea639500c65e5b27d64175972ab3"
+        },
+        {
+          "level": 3,
+          "sha256": "0732c8cd80d53b6cd96e614776522d3fcfd4823bf0a72c9c543f816e80144eaf"
+        }
+      ],
+      "operation_id": "W18",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.outlet-instruments",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W19.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "662ace4c76a5643a9c1498fab7058a8768a78ca2b488edebd60af55966f2f23a"
+        },
+        {
+          "level": 2,
+          "sha256": "8c50d017301bd8d524c7e240ec8ed23a14800bb0860e793d28af3c274ceb7a91"
+        },
+        {
+          "level": 3,
+          "sha256": "ac05dbd4d9c337347f7dab3d5c644344b1db6e4550aeb941c5139d3a3389a7cf"
+        }
+      ],
+      "operation_id": "W19",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.diagnostic-program",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W19.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "5a6333bc9b16a1e20584fed8009671ef97a88e1926ea42e64cba50c8e4f9f244"
+        },
+        {
+          "level": 2,
+          "sha256": "cdd6776eae8719e47421414661484a107b09e3f907aa21519bebdc0976567dd1"
+        },
+        {
+          "level": 3,
+          "sha256": "2236559c6f2cb908d86eba454b9f1cd0ef5df088d93f7f9f30fd691737d71b7f"
+        }
+      ],
+      "operation_id": "W19",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.signature-record",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W19.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3b4f3d854f5653add644ff9a5b3bd0a0f2cfa386bc4e32fd8e7478465e56160d"
+        },
+        {
+          "level": 2,
+          "sha256": "8c50d017301bd8d524c7e240ec8ed23a14800bb0860e793d28af3c274ceb7a91"
+        },
+        {
+          "level": 3,
+          "sha256": "4cd4a2f0a1f1c364de5ae5c042d2443fa1a36664c4991315b8c3aa6243cddcb0"
+        }
+      ],
+      "operation_id": "W19",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.signature-program",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W19.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "662ace4c76a5643a9c1498fab7058a8768a78ca2b488edebd60af55966f2f23a"
+        },
+        {
+          "level": 2,
+          "sha256": "e26e3561942b3a22d49d4f6ed40f1894f1a855102eb6b61fa8fe9bcf0566307b"
+        },
+        {
+          "level": 3,
+          "sha256": "247b1bdd4fa2e0c5732ff92f365721fc609d82ecfe80f93469564e65790e74d7"
+        }
+      ],
+      "operation_id": "W19",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.diagnostic-program",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W20.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "21501f53cb196c8195cba0f2dcf1e2e56f9722121649fdf9c20e094f59034c4e"
+        },
+        {
+          "level": 2,
+          "sha256": "3e7961d9de7c8dee6e305641b8d4f204fa2a98a911bf3af718d6501fb1b3659e"
+        },
+        {
+          "level": 3,
+          "sha256": "4ca457925a11e74d9b16a7ee9debaf22b96e694113fd22b2f2c99ea36c14538b"
+        }
+      ],
+      "operation_id": "W20",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.firmware-image",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W20.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "8371bec2ab73085383569ce63403b0fb5aaff2bcbeef3da8bbcb043a5ee74ebb"
+        },
+        {
+          "level": 2,
+          "sha256": "3e7961d9de7c8dee6e305641b8d4f204fa2a98a911bf3af718d6501fb1b3659e"
+        },
+        {
+          "level": 3,
+          "sha256": "65afa68df6ef65fa0be35834f4586c8eec6dc5a8042dcf8234e4dd4b54b18f8e"
+        }
+      ],
+      "operation_id": "W20",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.maintenance-record",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W20.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "76a444bab07ad75e9c192174b01d96a19979adce9cbedcf9f4cd8ce699c75134"
+        },
+        {
+          "level": 2,
+          "sha256": "e2b795c7035b3820d7598c5fa600819568766dda9992c9f478543890b5f440b7"
+        },
+        {
+          "level": 3,
+          "sha256": "b87a47755d9b1510246bc71bf6d33efa17176c97197195228d3459bacc6622d4"
+        }
+      ],
+      "operation_id": "W20",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.maintenance-record-update",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W21.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "4947080f4881622e508f16ba392eb2fd26a0289104f12333b4acfa656207109c"
+        },
+        {
+          "level": 2,
+          "sha256": "43340f394b7e6df940ece229d7e8252da6194037c0aa7452b934f87c9b635f6d"
+        },
+        {
+          "level": 3,
+          "sha256": "d5b3f6a2d66830f6d23df5c9c6d6858905401d883208e1f292ac6bfe16b84c8e"
+        }
+      ],
+      "operation_id": "W21",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.sealed-project",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W21.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "02142639a5f85cf79df55a50c35369fddce6a70853b8fe06bbc5ee92e6bd7f7a"
+        },
+        {
+          "level": 2,
+          "sha256": "73d17fa9f51e451184ce38b1516440e0e83413e542b51d65afde4091258f7ff5"
+        },
+        {
+          "level": 3,
+          "sha256": "2da90f4cc6f409b72038a945b4c6c86a735f3b2940ddbdae021dab32a3be6efd"
+        }
+      ],
+      "operation_id": "W21",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.vault-access",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W22.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "f76f0a2c37e424a742656b97ff9cdca1ae3173be5565c8e9eb7cc94b7402384e"
+        },
+        {
+          "level": 2,
+          "sha256": "7888ee220fc247776cf130540585cef109d463490e57060fd668fc76e495d105"
+        },
+        {
+          "level": 3,
+          "sha256": "4c258d1866a5602f0350751ff1d283b865a40e20b2d786e896676106e1c0140d"
+        }
+      ],
+      "operation_id": "W22",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.sealed-viewer",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W22.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "f9d268c42f8f763369a923252288b52144ab28941464dc9adadec33ef04c5fe1"
+        },
+        {
+          "level": 2,
+          "sha256": "fe765edbddfce8970cbb6bc23842d6220c70e2412a1e6c86d6e18928b7ed38a3"
+        },
+        {
+          "level": 3,
+          "sha256": "958744cd6d03b4baf3701e677c4fc36f12608139235f3dddfac174a053320d97"
+        }
+      ],
+      "operation_id": "W22",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.sealed-viewer-execute",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W22.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d0fa2a3a4baa9a6d2e9b5ac67b0221fbd20c96e03564b310868b8b2866fdad1b"
+        },
+        {
+          "level": 2,
+          "sha256": "b199844bf1adf7a33e2a21f98519b92a8dd65564949120dd26c3fe0a36b4124d"
+        },
+        {
+          "level": 3,
+          "sha256": "7fe9aaae1201043235e934c4d7cf89f898f4ee8ef1b55952c101e9d322064950"
+        }
+      ],
+      "operation_id": "W22",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.sealed-project",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W22.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "36b45772a71d1d8d907b198aad6a99851819ff57026b9270ab193d46add0c092"
+        },
+        {
+          "level": 2,
+          "sha256": "b199844bf1adf7a33e2a21f98519b92a8dd65564949120dd26c3fe0a36b4124d"
+        },
+        {
+          "level": 3,
+          "sha256": "63d6c51c29ffac9ea0c046c8a34739fc1f5298d582faaf3a0fbe10636d8b9167"
+        }
+      ],
+      "operation_id": "W22",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W23.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "0a58a02f5fb946e9ff1b413867ea948a709365016beff2e546c82d17c1e71846"
+        },
+        {
+          "level": 2,
+          "sha256": "f129992269afaeb1475083a4e6954757ef2e4cf4820311e0afd184dc71819d61"
+        },
+        {
+          "level": 3,
+          "sha256": "760ff6c3e9c51ede4e5156cd75698a1fa5624879fe42fe77842735a5fa2326ac"
+        }
+      ],
+      "operation_id": "W23",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W23.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "0a58a02f5fb946e9ff1b413867ea948a709365016beff2e546c82d17c1e71846"
+        },
+        {
+          "level": 2,
+          "sha256": "6bc5c1a3dc904c1a08f39b5f29dc6c1f66638fc8379e12e3933884f74beb80f5"
+        },
+        {
+          "level": 3,
+          "sha256": "c914f60b1eb730d1c94a672a60babf775acfa913856561250b95b6cb194fab8b"
+        }
+      ],
+      "operation_id": "W23",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W23.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "0a58a02f5fb946e9ff1b413867ea948a709365016beff2e546c82d17c1e71846"
+        },
+        {
+          "level": 2,
+          "sha256": "9d63de1231b16b32dcf6333b2221e00e2054e5c69757570f54534aed0f92c8e5"
+        },
+        {
+          "level": 3,
+          "sha256": "fa117f0bc5d9a36d05b688e0a37c73edb1f4f6cd8634802d28527f8e62c53a84"
+        }
+      ],
+      "operation_id": "W23",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W24.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "076288e6da3a6b2757257dce1a3362c665ec6dedd29841360b4d91c84336c971"
+        },
+        {
+          "level": 2,
+          "sha256": "ce02c14d860b8b44c61cd8fae6e43e2f2bc2f98fd54c4e3ca298dbd08cff387e"
+        },
+        {
+          "level": 3,
+          "sha256": "244a91be5bf413dd778440e254ffbace27f10e9e40daefcc505ea5a24ef6de17"
+        }
+      ],
+      "operation_id": "W24",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W24.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "2b1ad380a7cc711f04702c260c05080a146e6378e74f7dd2eeba99910a1712c9"
+        },
+        {
+          "level": 2,
+          "sha256": "5b6818651be6d513c3a5056be6894dd9f909c4efa381288f6938a1e932a64563"
+        },
+        {
+          "level": 3,
+          "sha256": "9981e163f388a5282d8c2aeef963fdc547fea32cbae857b9d79673140c62a32d"
+        }
+      ],
+      "operation_id": "W24",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W24.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "0a0af6ce905c948c608293839c38f3e704f8096db5075c91e7cdb2ce8641f6a9"
+        },
+        {
+          "level": 2,
+          "sha256": "f0ef3acefecd1d8e1c355411f164dd6d87e708c4918121d8f296f8661e94025c"
+        },
+        {
+          "level": 3,
+          "sha256": "9b598b4937ea0c7772454df1d93c77a9c878a456345c8ef7ab9da699200df37d"
+        }
+      ],
+      "operation_id": "W24",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W24.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "68239f54f7681fd855f191fc5dccc27888a3e7407c4d2ab55bc1bc16feefea4e"
+        },
+        {
+          "level": 2,
+          "sha256": "8208423fe298e17a1b8667d50934be47e47980fbea65b619de8ddd4101a98e4a"
+        },
+        {
+          "level": 3,
+          "sha256": "59bcc88ce17618be38d909380165984056527e96f1410f377948bb3ec05ca290"
+        }
+      ],
+      "operation_id": "W24",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W25.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "2dafd0bb54f4264d3016636f532a8261a4dd775cb3ae043b3a6da5d8011cb8cf"
+        },
+        {
+          "level": 2,
+          "sha256": "e8944d7dd2c75056ce08fab41a3d578b8239610c9c7542b6e677666524725237"
+        },
+        {
+          "level": 3,
+          "sha256": "302b38fc8a19c72ef196d940d52968241a6f088f090fe5e91e487026dd3aaa9b"
+        }
+      ],
+      "operation_id": "W25",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.operating-envelope",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W25.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3147812028218ac9787b5ba1ca4d78c980832a18ef88b313765d806032f4a9eb"
+        },
+        {
+          "level": 2,
+          "sha256": "e8944d7dd2c75056ce08fab41a3d578b8239610c9c7542b6e677666524725237"
+        },
+        {
+          "level": 3,
+          "sha256": "9b6142079036a9172baf741ce4800e860d3d9c07cd4114bf2d0496dbe62d668d"
+        }
+      ],
+      "operation_id": "W25",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.movement-conditions",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W25.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "7248ea96da1e43932872e681e3520821876ceee60f001ca047ce098b6635ca28"
+        },
+        {
+          "level": 2,
+          "sha256": "d9e58c6f1f4d985a4b1af382c751c6254f2b12ef4fcf475485dd35a4541963f8"
+        },
+        {
+          "level": 3,
+          "sha256": "19159f36edab4ebc3e1cd8168c02baefe772455eeff5535f932c0de089de72d0"
+        }
+      ],
+      "operation_id": "W25",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.command-accept",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W25.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "27a4026a75492cb1dcb82173438b158c29be87bfeb5fd04d6fa4e60eb9611dff"
+        },
+        {
+          "level": 2,
+          "sha256": "b715bd2409fc0e479ea600e7a072fa3fbd2c828ba9f5581dc6aaee4fa04ae1f1"
+        },
+        {
+          "level": 3,
+          "sha256": "b1a75fa8a091b0d8e288e221ca8f65adb62367995220303151b80d0a2ef8b636"
+        }
+      ],
+      "operation_id": "W25",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.practice-sequence",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W26.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "ed16bb2e8a3108d8c51e68197b065c1ad59e98d4be64126b2b8bb578dd2bf9de"
+        },
+        {
+          "level": 2,
+          "sha256": "24943ac8df85e8f6b3ad9f0534007c3ae598667c2151ff68120ed5ec9e4cce06"
+        },
+        {
+          "level": 3,
+          "sha256": "3f817b755241b6f2700774933146e737ad6b9be27183304703b50b786bdac3a0"
+        }
+      ],
+      "operation_id": "W26",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "maintenance-renderer.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W26.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "6663d6e0420ba78db9076fb1f5331bbc5b8c0089ee0f634cd588b8bb3edd6903"
+        },
+        {
+          "level": 2,
+          "sha256": "56153d15a5dd5c88f7caaeb78908915a397521ce63611141727489e64b3829dd"
+        },
+        {
+          "level": 3,
+          "sha256": "9e1911dc6b8f64a265a7a369926ba69bdcd98f3875609199e0da1e2b6b5c67eb"
+        }
+      ],
+      "operation_id": "W26",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "maintenance-renderer.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W26.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "1557b263c1f74f11b635fc6a603e040b038daba095eeaaa6019153b9c830111a"
+        },
+        {
+          "level": 2,
+          "sha256": "aa445911366a09f8a32086dbaeb73dd1afeae3db0263e40f3dd3caac86074856"
+        },
+        {
+          "level": 3,
+          "sha256": "c6a3a63bd750efe3e82ab7aebe3bdbe2ba4c615f0c222da41e67efc4cf67c3c8"
+        }
+      ],
+      "operation_id": "W26",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "maintenance-renderer.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W26.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "ed16bb2e8a3108d8c51e68197b065c1ad59e98d4be64126b2b8bb578dd2bf9de"
+        },
+        {
+          "level": 2,
+          "sha256": "244d9829cef36551cd3323397b2633b36c7af3943f8a6e70fef7f26d1536370b"
+        },
+        {
+          "level": 3,
+          "sha256": "5708d27d00d11b6e795c3399d6770ef88be6b01d2fa7395c798873f770835a46"
+        }
+      ],
+      "operation_id": "W26",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "maintenance-renderer.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W27.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "f4732edcea617b4391d79a546187caac438182ce83a031306113b6cb904160b4"
+        },
+        {
+          "level": 2,
+          "sha256": "47fbac3cb19cb5bd26e567482afc4edecd692654481fd88006f5edd43a3ad806"
+        },
+        {
+          "level": 3,
+          "sha256": "dd457424cf3ba188774669fe9823fa23de613b80fa455a67183c33441ce17ec9"
+        }
+      ],
+      "operation_id": "W27",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.signature-program-reproduction",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W27.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "13e958de793052eb59e851984524c73a0724913fd2a4f7a4af73d282a8a167c1"
+        },
+        {
+          "level": 2,
+          "sha256": "74acf4374bf71aad0385fe81c4b8ef85a5582965f233021f52db2f787d8df002"
+        },
+        {
+          "level": 3,
+          "sha256": "d2358062517c832356c0a41edb8ad56775151617b96d3291a8e2ec15d6356fb1"
+        }
+      ],
+      "operation_id": "W27",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.signature-program-constraints",
+          "kind": "client_route"
+        },
+        {
+          "id": "process.signature-program-reproduction",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W27.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "27bbf8ac43c950386966373064b0e57ce98847ed6bfa6f863f15082ec6b57564"
+        },
+        {
+          "level": 2,
+          "sha256": "74acf4374bf71aad0385fe81c4b8ef85a5582965f233021f52db2f787d8df002"
+        },
+        {
+          "level": 3,
+          "sha256": "d1bdece0668ce4ad1f8d52ec2dabcb7f418581dc503ed350f7c1f8bb703be263"
+        }
+      ],
+      "operation_id": "W27",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.diagnostic-run",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W28.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "09944752b57722e461bc609e0c1a9435d5ffcf5a9571c9f578871f6456926398"
+        },
+        {
+          "level": 2,
+          "sha256": "c673fb5aeabeeefd3fe5ad87b4ddde617df14d921685dad65ec05b4798ace475"
+        },
+        {
+          "level": 3,
+          "sha256": "14ee0493ef618cc8a0f2d1cb9eb601a9aed23517c27c716e0507698fdbf7a1bc"
+        }
+      ],
+      "operation_id": "W28",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.collision-inputs",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W28.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "767f18729be8b106bfdac18d96688b9ebbe25a466c61fb849c99ed24a661e624"
+        },
+        {
+          "level": 2,
+          "sha256": "bc7347d7b41158cd3c80747b5521b454b429c4bf09a9f694f1c05979f005588d"
+        },
+        {
+          "level": 3,
+          "sha256": "4b8d21df023e09d116520a6c8df39223cd760a2d3b87cbfbfd7d2f1e78dd32e2"
+        }
+      ],
+      "operation_id": "W28",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.release-confirmation",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W28.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d3795c799521f8bf8e49b29ee8c0f6be6e16c85b2b5b889dcbec943b29c60ba6"
+        },
+        {
+          "level": 2,
+          "sha256": "4ddb971df07b70ae601725577d0492274a1d322daf567531a8105fc58542efac"
+        },
+        {
+          "level": 3,
+          "sha256": "ec40eb4b5cfbff79d847dfa71028fa796d8ececea6b7c2368002a4ce45c3ca72"
+        }
+      ],
+      "operation_id": "W28",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.control-authority",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W29.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "fcd507baacb42b5e452b8d4992f13c1d973e9e5ae76de76a5d9ec072c48dc014"
+        },
+        {
+          "level": 2,
+          "sha256": "ec2e53c901ae622f1803fa68da34cc16b9f204fe426a20643aaa0bdc7d0512aa"
+        },
+        {
+          "level": 3,
+          "sha256": "6a20224042501444dbaef33bb8f9f71d808dec5dfd9b67a4a4041b92eeaf6eb2"
+        }
+      ],
+      "operation_id": "W29",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W29.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "fcd507baacb42b5e452b8d4992f13c1d973e9e5ae76de76a5d9ec072c48dc014"
+        },
+        {
+          "level": 2,
+          "sha256": "4b94676318b0614d4ae29228aceec7f2021ed2f96338dc0a5d027ee271c13c78"
+        },
+        {
+          "level": 3,
+          "sha256": "64302d85d69fcd964add67e67d9de6b87f1934dd611430f20da8b9a32b729e0c"
+        }
+      ],
+      "operation_id": "W29",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W29.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "50fddd1a91dfe1bc2191043adc439e3972a0f092464ff794f7c756b57941d9d0"
+        },
+        {
+          "level": 2,
+          "sha256": "7f0539209cdf8e48c7696be89a1e5e1df93d083481c76c141864379a2369efcf"
+        },
+        {
+          "level": 3,
+          "sha256": "64183904cb79daeef31db7405c434eb192da9d0be3a0f6dfd557e2be02dcb865"
+        }
+      ],
+      "operation_id": "W29",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.reporting-checkpoint-submit",
+          "kind": "client_route"
+        },
+        {
+          "id": "process.state",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W30.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "e46af40ff08016ee0cc0c39740b4060a767ac7bdec2d265088b36ba5bd5b6f05"
+        },
+        {
+          "level": 2,
+          "sha256": "afa9bf117d4ef0679ff25a68601b827a537606962bd425f76dbe02c1c6495afb"
+        },
+        {
+          "level": 3,
+          "sha256": "59a815c3a94c7e803a1068579fcc76c8e184302748d3eaca962fe1734e36a536"
+        }
+      ],
+      "operation_id": "W30",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.release-plan",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W30.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "bdf2790c107e4c7bd4a7339299e9158809ec71cb13ddce0fdf90c08c2f5bcf3e"
+        },
+        {
+          "level": 2,
+          "sha256": "a164a97a607ddde5da01785b61cb32a446dff63db3d4bd8017c8bda7cb99f43b"
+        },
+        {
+          "level": 3,
+          "sha256": "fcf4d7268eedadc0d0dc105e8dab27d782c2561664cf97bc1d7c271c870cb900"
+        }
+      ],
+      "operation_id": "W30",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.release-execute",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W31.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "3ccc016a7bceaedd95a6fbc53fbaf9716c01484f436d86695e1dfec98bba9ba2"
+        },
+        {
+          "level": 2,
+          "sha256": "e8a50e7fdbd73a0ff38e84a062b92fe394d1919e14d67a2fcbd63a629a6c436a"
+        },
+        {
+          "level": 3,
+          "sha256": "543bdd84bfdc1a91df74e58d83e56155207e847bfd1b5078642e09c867b30383"
+        }
+      ],
+      "operation_id": "W31",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.vault-record",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W31.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "7b92da80af285bfd9522c9f4a06b2dab0386a0adb6956003d2a0c576e7749559"
+        },
+        {
+          "level": 2,
+          "sha256": "0d1a85006908ab96163261238177c616e1d27195c42f1bb453ac82c3ab8d0541"
+        },
+        {
+          "level": 3,
+          "sha256": "e0afee213b3d9f278cabf9b8b84724e4e685a7cc45bf27517c42b245e081c20e"
+        }
+      ],
+      "operation_id": "W31",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.signature-record",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W31.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "79a80b0f8256a80a43a23aa214378b908a35e429701e22d6aa3d0264ce34d50e"
+        },
+        {
+          "level": 2,
+          "sha256": "5f08d538aa31e1ad53aebbf12426e8d8da88ed55f1ad165010de889d575178bf"
+        },
+        {
+          "level": 3,
+          "sha256": "9908180c1e793a48713bd47669d567ca53c4fa7b19c8bd8ded86810e4d85522d"
+        }
+      ],
+      "operation_id": "W31",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.replay-divergence",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W31.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "b7a8fd1423d29507d918318977208955c34f5112675248b38678ba97435b8335"
+        },
+        {
+          "level": 2,
+          "sha256": "0d1a85006908ab96163261238177c616e1d27195c42f1bb453ac82c3ab8d0541"
+        },
+        {
+          "level": 3,
+          "sha256": "6efbe49b12b85652d4c5b27c3096ab6e36a2e4855bf9ae68325d4e821d5b8dbe"
+        }
+      ],
+      "operation_id": "W31",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.diagnostic-program",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W32.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "e288cb9a12f5a18e062191a18bc0f4158ed730a29a6d6e5b87b303d316558201"
+        },
+        {
+          "level": 2,
+          "sha256": "e09acbe4aee430c083ea6883b1cd0b7e6946651d941e18d1d9346e3750025424"
+        },
+        {
+          "level": 3,
+          "sha256": "c1e205c964f4977e2b4c73b3f0cf8bd5ae038d98d28ff366fb284f5f37a067e3"
+        }
+      ],
+      "operation_id": "W32",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.replay-session",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W32.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "a2f84b5db22bf1ab6dad7765302c4bac014f4bc4f2e52df809ee81f0af303018"
+        },
+        {
+          "level": 2,
+          "sha256": "9d1e681a778ee28b6f8e24ddcb3aa6f968906af9a9480f60659ef3743e8fadcc"
+        },
+        {
+          "level": 3,
+          "sha256": "669791c7a0228eb59549ad053ae30416a2f5fc9712889c1ef79567e7939aa86c"
+        }
+      ],
+      "operation_id": "W32",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.estimator-task",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W32.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "f4ec8fe14cedc82fd5f2b51f7bfcad86d06a2ac9f16f7906561d5c969bad9baf"
+        },
+        {
+          "level": 2,
+          "sha256": "e09acbe4aee430c083ea6883b1cd0b7e6946651d941e18d1d9346e3750025424"
+        },
+        {
+          "level": 3,
+          "sha256": "c7482bfb7e69559198af66fd55662091e28dd2a0fb88bfdc23ff0d397d615096"
+        }
+      ],
+      "operation_id": "W32",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process-view.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W32.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "d0efea819b908af50c13bf42d244b3cd4638dadae7f6745d76a6e2849f7c4b6e"
+        },
+        {
+          "level": 2,
+          "sha256": "2ee1ef648b40b9a88f8a64ca0fd4e63e0afcae7a05920bdc3310b20c3d45d56e"
+        },
+        {
+          "level": 3,
+          "sha256": "ff984426a9069e88820b462912a13c2abd1e2477c98f2d6d3a4ca4d1fb589402"
+        }
+      ],
+      "operation_id": "W32",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.replay-execute",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W33.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "291f8ff545f04e0f9de6bee8c16a9c93c33879f84be37e375347fc0d9e31c149"
+        },
+        {
+          "level": 2,
+          "sha256": "0b28c58c6532b1d9d7e0c290aeb1060485ccb2eca40aef55f868dcf80338b7cb"
+        },
+        {
+          "level": 3,
+          "sha256": "379bd8d455db8392c901d4f7d63b5a1c9e866ae56c3cecb03d7b31fef48aa300"
+        }
+      ],
+      "operation_id": "W33",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.forecast",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W33.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "9c4f4bad4eae08bdbe4abcb5d62c4962a165c0b822197053728da07e55af191c"
+        },
+        {
+          "level": 2,
+          "sha256": "0348e9aaec11a9648eabba675344ca79d38a9e7324025c06bf931b16a75f9aaa"
+        },
+        {
+          "level": 3,
+          "sha256": "86a1cc95119eeac07e12873a09ef94e23520551586968a9fbc3931d7b9a64fda"
+        }
+      ],
+      "operation_id": "W33",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.schedule-window",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W33.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "dc9ea84e39273bd1fc6b9fe1b1a02ad7b1fe19cbbc65320341998a37cf967f8b"
+        },
+        {
+          "level": 2,
+          "sha256": "4a6de868c947db1666e592845c647af3fd26ac3f00a2930fee54213885df0032"
+        },
+        {
+          "level": 3,
+          "sha256": "0a0e5295e3b7564eb53f81fa12d3b4ef8f926d5015f769b9ef0c9b42249d5130"
+        }
+      ],
+      "operation_id": "W33",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.schedule-submit",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W33.4",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "07c423b8e843b625b2ef686fff77f8e77f6fdecbf36f8d17d8dbe483839d9b8e"
+        },
+        {
+          "level": 2,
+          "sha256": "d1eff638edcee98c37ab9b5dd962805c6179bd0182ff7da231b18e1335d39df3"
+        },
+        {
+          "level": 3,
+          "sha256": "d236906be969ed9bac3bdae03ea8b140ac4097675bcc6d3d777176c2c4b958f3"
+        }
+      ],
+      "operation_id": "W33",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "process.feedback-policy",
+          "kind": "client_route"
+        }
+      ]
+    },
+    {
+      "card_id": "W34.1",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "b2172232715dbab4dd2327560ac1314badf38d8b7813a86a9bab5322d8ccde64"
+        },
+        {
+          "level": 2,
+          "sha256": "679dac8eb53e3023c71a16afe3386173c01ee9c5bb84fd6235a883bace739420"
+        },
+        {
+          "level": 3,
+          "sha256": "f575e9b1590193323681c2797e5370dddfd0ee33c3c9a47e4afb0ea08e9fe096"
+        }
+      ],
+      "operation_id": "W34",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning-data.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W34.2",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "b2172232715dbab4dd2327560ac1314badf38d8b7813a86a9bab5322d8ccde64"
+        },
+        {
+          "level": 2,
+          "sha256": "1656c8a51e66db3d16df3da41dd24c4b0a2aa85c90de56996df9fec6b4e42de3"
+        },
+        {
+          "level": 3,
+          "sha256": "b0dd324f3c7c81fd81e0d0e007dbb203c64358edbecab9c891fa954a1be2e946"
+        }
+      ],
+      "operation_id": "W34",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning-data.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    },
+    {
+      "card_id": "W34.3",
+      "levels": [
+        {
+          "level": 1,
+          "sha256": "b2172232715dbab4dd2327560ac1314badf38d8b7813a86a9bab5322d8ccde64"
+        },
+        {
+          "level": 2,
+          "sha256": "00f31979b88112b7b0ec890ceb798b5ed835136e4fccb348c7f0f846b33ad8e0"
+        },
+        {
+          "level": 3,
+          "sha256": "5694e79c09cad04ec439f1a245cea6a4f8bce5a6c0702e9d68f74b1ec901c6b4"
+        }
+      ],
+      "operation_id": "W34",
+      "phase": "arwc",
+      "references": [
+        {
+          "id": "planning-data.arwc.test",
+          "kind": "participant_service"
+        }
+      ]
+    }
+  ],
+  "playtest_evidence": {
+    "required_fields": [
+      "card_id",
+      "level_observations",
+      "observer_notes"
+    ],
+    "schema_path": "build/hint-delivery/playtest-observation.schema.json",
+    "schema_sha256": "5ac437df62a287050dc0f943cdf68917f8f46495f4edff35eef810fb50cccdd4"
+  },
+  "release": {
+    "audit": "append_only_metadata_without_hint_text",
+    "independent_levels": true,
+    "levels": [
+      1,
+      2,
+      3
+    ],
+    "mode": "facilitator_on_request"
+  },
+  "review": {
+    "operation_count": 70,
+    "path": "build/hint-delivery/operation-reviews.json",
+    "sha256": "b6758f518cabba179165877677714d20d66d6c15185008142934be89ab2d5cd2"
+  },
+  "revision": "907dab15d49a4658ad2624d622ff304c3c5f6ab2f2c3a8217558249975f67d61",
+  "schema": "cinder-typhoon.hint-delivery/v1",
+  "score_effect": {
+    "maximum_score_unchanged": true,
+    "penalty": 0
+  },
+  "sources": [
+    {
+      "card_count": 16,
+      "hint_count": 48,
+      "path": "build/card-coverage/hints-training.yaml",
+      "phase": "training",
+      "sha256": "a8769e0c45dca05de5a7f4f2e4e57b98c0c9746f4a675be3167c97dc83269161"
+    },
+    {
+      "card_count": 104,
+      "hint_count": 312,
+      "path": "build/card-coverage/hints-keplerops.yaml",
+      "phase": "keplerops",
+      "sha256": "d11ed96779246988a772898b83f9dbe6b85ee3f5ef70a269c71929c4849aaa5b"
+    },
+    {
+      "card_count": 120,
+      "hint_count": 360,
+      "path": "build/card-coverage/hints-arwc.yaml",
+      "phase": "arwc",
+      "sha256": "5b70136c1f5b0f6b5af34b521ef60bbab78246e9536213a767dc3e0c371468a0"
+    }
+  ],
+  "summary": {
+    "card_count": 240,
+    "hint_count": 720,
+    "operation_count": 70
+  }
+}

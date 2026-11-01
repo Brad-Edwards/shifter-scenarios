@@ -7,11 +7,10 @@ import argparse
 import csv
 import hashlib
 import json
+import re
 from collections import Counter
 from pathlib import Path
-import re
 from typing import Any, Iterable
-
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = Path(__file__).resolve().parent / "challenges.yaml"
@@ -19,6 +18,10 @@ PORTFOLIO = ROOT / "docs" / "design" / "portfolio.csv"
 DEPENDENCIES = ROOT / "docs" / "design" / "challenge-dependencies.json"
 BRIEFS = ROOT / "docs" / "design" / "challenges"
 HINT_ROOT = ROOT / "build" / "card-coverage"
+HINT_DELIVERY_ROOT = ROOT / "build" / "hint-delivery"
+HINT_MANIFEST = HINT_DELIVERY_ROOT / "manifest.json"
+HINT_REVIEWS = HINT_DELIVERY_ROOT / "operation-reviews.json"
+HINT_PLAYTEST_SCHEMA = HINT_DELIVERY_ROOT / "playtest-observation.schema.json"
 SURFACE_MANIFESTS = ROOT / "build" / "participant-surface" / "manifests"
 CANDIDATE_MANIFEST = ROOT / "build" / "participant-runner" / "candidate.json"
 CATALOG_SCHEMA = "cinder-typhoon.challenge-delivery/v2"
@@ -45,6 +48,13 @@ EXPECTED_PHASE_COUNTS = {
 CARD_ID = re.compile(r"^[TKW]\d{2}\.\d+$")
 OPERATION_ID = re.compile(r"^[TKW]\d{2}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
+HINT_LEVELS = ("h1", "h2", "h3")
+HINT_POLICY = {
+    "release": "facilitator_on_request",
+    "levels": 3,
+    "independent_levels": True,
+    "penalty": 0,
+}
 
 
 class CatalogError(ValueError):
@@ -135,23 +145,58 @@ def _briefs() -> dict[str, dict[str, str]]:
     return result
 
 
-def _hints() -> dict[str, list[str]]:
+def _hint_documents() -> dict[str, dict[str, Any]]:
     yaml = _yaml()
-    result: dict[str, list[str]] = {}
+    result: dict[str, dict[str, Any]] = {}
     for phase in PHASES:
         path = HINT_ROOT / f"hints-{phase}.yaml"
         value = yaml.safe_load(path.read_text(encoding="utf-8"))
-        if not isinstance(value, dict) or value.get("schema_version") != 1 or value.get("phase") != phase:
+        if (
+            not isinstance(value, dict)
+            or set(value) != {"schema_version", "phase", "hints"}
+            or value.get("schema_version") != 2
+            or value.get("phase") != phase
+            or not isinstance(value.get("hints"), dict)
+        ):
             raise CatalogError(f"invalid hint catalog: {path}")
         for card_id, levels in value.get("hints", {}).items():
-            if card_id in result or not CARD_ID.fullmatch(card_id):
-                raise CatalogError(f"duplicate or invalid hint card: {card_id}")
-            if not isinstance(levels, dict) or set(levels) != {"h1", "h2", "h3"}:
+            if not CARD_ID.fullmatch(card_id) or not card_id.startswith(PREFIXES[phase]):
+                raise CatalogError(f"invalid hint card: {card_id}")
+            if not isinstance(levels, dict) or set(levels) != {*HINT_LEVELS, "references"}:
                 raise CatalogError(f"{card_id}: exactly three hint levels are required")
             hints = [levels[f"h{level}"] for level in range(1, 4)]
-            if not all(isinstance(hint, str) and hint.strip() for hint in hints):
+            if not all(isinstance(hint, str) and len(hint.split()) >= 12 for hint in hints):
                 raise CatalogError(f"{card_id}: hint text is required")
-            result[card_id] = [" ".join(hint.split()) for hint in hints]
+            references = levels["references"]
+            if not isinstance(references, list) or not references:
+                raise CatalogError(f"{card_id}: participant-boundary hint references are required")
+            reference_keys: set[tuple[str, str]] = set()
+            for reference in references:
+                if (
+                    not isinstance(reference, dict)
+                    or set(reference) != {"kind", "id"}
+                    or reference["kind"] not in {
+                        "client_route", "participant_artifact", "participant_service", "starting_material",
+                    }
+                    or not isinstance(reference["id"], str)
+                    or not reference["id"].strip()
+                ):
+                    raise CatalogError(f"{card_id}: invalid participant-boundary hint reference")
+                key = (reference["kind"], reference["id"])
+                if key in reference_keys:
+                    raise CatalogError(f"{card_id}: duplicate participant-boundary hint reference")
+                reference_keys.add(key)
+        result[phase] = value
+    return result
+
+
+def _hints() -> dict[str, list[str]]:
+    result: dict[str, list[str]] = {}
+    for document in _hint_documents().values():
+        for card_id, levels in document["hints"].items():
+            if card_id in result:
+                raise CatalogError(f"duplicate hint card: {card_id}")
+            result[card_id] = [" ".join(levels[level].split()) for level in HINT_LEVELS]
     return result
 
 
@@ -243,11 +288,7 @@ def build_catalog() -> dict[str, Any]:
             "tier_points": TIER_POINTS,
             "max_score": sum(TIER_POINTS[brief["difficulty"]] for brief in briefs.values()),
             "max_out": "Complete all 240 cards; hints do not reduce score.",
-            "hint_policy": {
-                "release": "on_request",
-                "levels": 3,
-                "penalty": 0,
-            },
+            "hint_policy": HINT_POLICY,
         },
         "summary": {
             "operation_count": 70,
@@ -292,7 +333,7 @@ def validate_catalog(value: Any) -> None:
         raise CatalogError("catalog scoring model is invalid")
     if scoring["model"] != "static" or scoring["tier_points"] != TIER_POINTS:
         raise CatalogError("catalog tier scores are invalid")
-    if scoring["hint_policy"] != {"release": "on_request", "levels": 3, "penalty": 0}:
+    if scoring["hint_policy"] != HINT_POLICY:
         raise CatalogError("catalog hint rule is invalid")
 
     seen_cards: set[str] = set()
@@ -416,6 +457,157 @@ def catalog_metadata(path: Path = CATALOG_PATH, *, require_current: bool = True)
     }
 
 
+def _relative(path: Path) -> str:
+    return path.relative_to(ROOT).as_posix()
+
+
+def _canonical_sha256(value: Any) -> str:
+    encoded = json.dumps(value, ensure_ascii=True, separators=(",", ":"), sort_keys=True).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _operation_hint_reviews(catalog: dict[str, Any]) -> dict[str, Any]:
+    try:
+        value = json.loads(HINT_REVIEWS.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise CatalogError(f"operation hint reviews cannot be read: {error}") from error
+    if not isinstance(value, dict) or set(value) != {"schema_version", "operations"}:
+        raise CatalogError("operation hint reviews have invalid top-level fields")
+    reviews = value.get("operations")
+    if value.get("schema_version") != 1 or not isinstance(reviews, dict):
+        raise CatalogError("operation hint reviews have an invalid schema")
+    operations = {operation["id"]: operation for operation in catalog_operations(catalog)}
+    if set(reviews) != set(operations):
+        raise CatalogError("operation hint reviews must exactly cover all 70 operations")
+    required_checks = {
+        "in_world_orientation", "technique_boundary", "diagnostic_next_step",
+        "no_sensitive_answer", "references_current",
+    }
+    for operation_id, review in reviews.items():
+        if not isinstance(review, dict) or set(review) != {
+            "sample_card", "status", "checks", "rationale",
+        }:
+            raise CatalogError(f"{operation_id}: invalid operation hint review")
+        operation_cards = {card["id"] for card in operations[operation_id]["cards"]}
+        if review["sample_card"] not in operation_cards or review["status"] != "reviewed":
+            raise CatalogError(f"{operation_id}: hint sample review is incomplete")
+        if set(review["checks"]) != required_checks:
+            raise CatalogError(f"{operation_id}: hint sample review checks are incomplete")
+        if not isinstance(review["rationale"], str) or len(review["rationale"].split()) < 15:
+            raise CatalogError(f"{operation_id}: hint sample review rationale is not substantive")
+    return value
+
+
+def build_hint_manifest(catalog: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Build the operator release manifest without copying unreleased hint text."""
+
+    current = catalog if catalog is not None else build_catalog()
+    validate_catalog(current)
+    documents = _hint_documents()
+    reviews = _operation_hint_reviews(current)
+    items: list[dict[str, Any]] = []
+    sources = []
+    for phase in PHASES:
+        path = HINT_ROOT / f"hints-{phase}.yaml"
+        document = documents[phase]
+        sources.append({
+            "phase": phase,
+            "path": _relative(path),
+            "sha256": _sha256(path),
+            "card_count": len(document["hints"]),
+            "hint_count": 3 * len(document["hints"]),
+        })
+        for operation in current["phases"][phase]["operations"]:
+            for card in operation["cards"]:
+                authored = document["hints"][card["id"]]
+                level_records = [
+                    {
+                        "level": level,
+                        "sha256": hashlib.sha256(
+                            " ".join(authored[f"h{level}"].split()).encode()
+                        ).hexdigest(),
+                    }
+                    for level in range(1, 4)
+                ]
+                items.append({
+                    "card_id": card["id"],
+                    "operation_id": operation["id"],
+                    "phase": phase,
+                    "levels": level_records,
+                    "references": authored["references"],
+                })
+    payload = {
+        "schema": "cinder-typhoon.hint-delivery/v1",
+        "catalog": {
+            "schema": current["schema"],
+            "revision": current["revision"],
+        },
+        "sources": sources,
+        "release": {
+            "mode": "facilitator_on_request",
+            "levels": [1, 2, 3],
+            "independent_levels": True,
+            "audit": "append_only_metadata_without_hint_text",
+        },
+        "score_effect": {"penalty": 0, "maximum_score_unchanged": True},
+        "review": {
+            "path": _relative(HINT_REVIEWS),
+            "sha256": _sha256(HINT_REVIEWS),
+            "operation_count": len(reviews["operations"]),
+        },
+        "playtest_evidence": {
+            "schema_path": _relative(HINT_PLAYTEST_SCHEMA),
+            "schema_sha256": _sha256(HINT_PLAYTEST_SCHEMA),
+            "required_fields": [
+                "card_id", "level_observations", "observer_notes",
+            ],
+        },
+        "summary": {
+            "operation_count": 70,
+            "card_count": len(items),
+            "hint_count": sum(len(item["levels"]) for item in items),
+        },
+        "items": items,
+    }
+    return {"revision": _canonical_sha256(payload), **payload}
+
+
+def validate_hint_manifest(value: Any, catalog: dict[str, Any] | None = None) -> None:
+    current = catalog if catalog is not None else load_catalog()
+    if not isinstance(value, dict) or set(value) != {
+        "revision", "schema", "catalog", "sources", "release", "score_effect",
+        "review", "playtest_evidence", "summary", "items",
+    }:
+        raise CatalogError("hint delivery manifest has invalid top-level fields")
+    if value["schema"] != "cinder-typhoon.hint-delivery/v1" or not SHA256.fullmatch(
+        str(value["revision"])
+    ):
+        raise CatalogError("hint delivery manifest identity is invalid")
+    if value != build_hint_manifest(current):
+        raise CatalogError("hint delivery manifest is stale; regenerate and review it")
+
+
+def load_hint_manifest(*, require_current: bool = True) -> dict[str, Any]:
+    try:
+        value = json.loads(HINT_MANIFEST.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise CatalogError(f"hint delivery manifest cannot be read: {error}") from error
+    if require_current:
+        validate_hint_manifest(value)
+    return value
+
+
+def hint_manifest_metadata(*, require_current: bool = True) -> dict[str, Any]:
+    value = load_hint_manifest(require_current=require_current)
+    return {
+        "path": _relative(HINT_MANIFEST),
+        "schema": value["schema"],
+        "revision": value["revision"],
+        "sha256": _sha256(HINT_MANIFEST),
+        **value["summary"],
+    }
+
+
 def write_catalog(path: Path = CATALOG_PATH) -> None:
     value = build_catalog()
     serialized = _yaml().safe_dump(
@@ -427,11 +619,19 @@ def write_catalog(path: Path = CATALOG_PATH) -> None:
     path.write_text(serialized, encoding="utf-8")
 
 
+def write_hint_manifest(path: Path = HINT_MANIFEST) -> None:
+    value = build_hint_manifest(load_catalog())
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
 def write_surface_bindings() -> None:
     """Bind each participant-surface manifest to its catalog slice by digest."""
 
     catalog = load_catalog()
     metadata = catalog_metadata()
+    hint_manifest = load_hint_manifest()
+    hint_metadata = hint_manifest_metadata()
     for phase in PHASES:
         path = SURFACE_MANIFESTS / f"{phase}.json"
         manifest = json.loads(path.read_text(encoding="utf-8"))
@@ -447,7 +647,19 @@ def write_surface_bindings() -> None:
             "cards": {"status": "versioned"},
             "hints": {
                 "status": "versioned",
-                **catalog["scoring"]["hint_policy"],
+                "manifest": hint_metadata,
+                "source": next(source for source in hint_manifest["sources"] if source["phase"] == phase),
+                "release": hint_manifest["release"],
+                "score_effect": hint_manifest["score_effect"],
+                "items": [
+                    {
+                        "card_id": item["card_id"],
+                        "levels": [level["level"] for level in item["levels"]],
+                        "content_revision": _canonical_sha256(item["levels"]),
+                    }
+                    for item in hint_manifest["items"]
+                    if item["phase"] == phase
+                ],
             },
         }
         path.write_text(
@@ -462,6 +674,7 @@ def write_candidate_binding() -> None:
     candidate = json.loads(CANDIDATE_MANIFEST.read_text(encoding="utf-8"))
     candidate["schema_version"] = 2
     candidate["challenge_delivery"] = catalog_metadata()
+    candidate["hint_delivery"] = hint_manifest_metadata()
     CANDIDATE_MANIFEST.write_text(
         json.dumps(candidate, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -471,6 +684,7 @@ def write_candidate_binding() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--write", action="store_true")
+    parser.add_argument("--write-hint-delivery", action="store_true")
     parser.add_argument("--write-surfaces", action="store_true")
     parser.add_argument("--write-candidate-binding", action="store_true")
     parser.add_argument("--check", action="store_true")
@@ -478,6 +692,8 @@ def main() -> int:
     arguments = parser.parse_args()
     if arguments.write:
         write_catalog()
+    if arguments.write_hint_delivery:
+        write_hint_manifest()
     if arguments.write_surfaces:
         write_surface_bindings()
     if arguments.write_candidate_binding:

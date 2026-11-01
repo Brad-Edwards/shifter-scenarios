@@ -31,8 +31,10 @@ challenge objectives, dependencies, scoped routes, required records, and consequ
 | [docs/walkthroughs/](docs/walkthroughs/README.md) | Reserved for reference walkthroughs. |
 | [runtime-adapter/](runtime-adapter/README.md) | Reserved for the eventual adapter. |
 
-The existing challenge cards include 50 technical drafts; the remaining 190
-are briefs. All hint sections remain blank. Start at the
+All 240 challenge cards have technical drafts. Their embedded operator-only
+hint headings remain blank by design; the reviewed participant hints live in
+the three versioned catalogs under `build/card-coverage/` and are bound to the
+facilitator release manifest under `build/hint-delivery/`. Start at the
 [design index](docs/design/README.md) for the retained work.
 
 Existing design checks, run from the repository root:

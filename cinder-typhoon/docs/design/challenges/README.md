@@ -21,8 +21,11 @@ The briefs state the problem and intended outcome. A card starts as a
 `Technical draft` adds logical application behavior, seeded-data requirements,
 intended solution class, completion evidence, boundaries, and author checks.
 It still contains no deployment layout, grading code, flags, or player-facing
-solution walkthrough. **All three hint sections remain deliberately empty**
-until the technical work is settled.
+solution walkthrough. The three embedded hint sections remain deliberately
+empty so operator design and participant delivery do not drift together.
+Reviewed participant hints are authored separately in the versioned phase
+catalogs under `build/card-coverage/` and released through
+`build/hint-delivery/manifest.json`.
 
 Only the challenge description is player-facing text. The remaining populated
 sections support author review and may disclose dependencies or source lineage.
@@ -93,8 +96,9 @@ The second command also checks deliberate failures, including cycles, discovery
 mistaken for authority, accidentally mandatory alternatives, harder entry gates,
 and omitted live-control evidence. It accepts only blank technical sections in
 `Challenge brief` cards and complete five-part technical sections in `Technical
-draft` cards; hints must always remain empty. These commands do not modify
-documents.
+draft` cards; the brief-local hint headings must remain empty because the
+versioned delivery catalogs are the authoritative hint source. These commands
+do not modify documents.
 
 After an intentional dependency or title change, regenerate the existing index
 rows and [dependency report](../challenge-dependency-report.md) with:

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/hint-playtest-observation.schema.json",
+  "title": "Cinder Typhoon blind-playtest hint observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "candidate_revision",
+    "participant_id",
+    "operation_id",
+    "card_id",
+    "level_observations",
+    "observer_notes"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "candidate_revision": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "participant_id": {"type": "string", "minLength": 1},
+    "operation_id": {"type": "string", "pattern": "^[TKW][0-9]{2}$"},
+    "card_id": {"type": "string", "pattern": "^[TKW][0-9]{2}\\.[0-9]+$"},
+    "level_observations": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "1": {"$ref": "#/$defs/level_observation"},
+        "2": {"$ref": "#/$defs/level_observation"},
+        "3": {"$ref": "#/$defs/level_observation"}
+      }
+    },
+    "observer_notes": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "level_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release_event_id", "understanding_check", "participant_explanation"],
+      "properties": {
+        "release_event_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "understanding_check": {"enum": ["explained", "partial", "not_explained"]},
+        "participant_explanation": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

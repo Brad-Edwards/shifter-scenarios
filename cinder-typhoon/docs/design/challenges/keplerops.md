@@ -9,7 +9,9 @@ advanced work has its own conclusions and later uses; it does not become a
 hidden requirement for the ordinary customer transition.
 
 Difficulty is conditional on the named prerequisites. All 104 cards have
-complete five-part technical designs; all three hint sections remain empty.
+complete five-part technical designs. Their brief-local hint sections remain
+empty; 312 reviewed participant hints are versioned in the separate KeplerOps
+hint catalog.
 
 ## Operations
 

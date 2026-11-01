@@ -11,19 +11,18 @@ from __future__ import annotations
 
 import argparse
 import ast
-from dataclasses import dataclass
-from datetime import datetime, timezone
 import hashlib
 import json
 import os
-from pathlib import Path
 import re
 import subprocess
 import sys
 import time
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 from urllib.request import ProxyHandler, Request, build_opener
-
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "build" / "input-provenance"))
@@ -31,7 +30,6 @@ sys.path.insert(0, str(ROOT / "challenges"))
 
 import catalog as delivery_catalog  # noqa: E402
 from provenance import ProvenanceError, attach_runtime_provenance  # noqa: E402
-
 
 EVENT_PREFIX = "CINDER_ACCEPTANCE_EVENT "
 RESULT_PREFIX = "CINDER_BOUNDARY_RESULT "
@@ -358,7 +356,7 @@ def validate_candidate(path: Path, phase_name: str, cross_segment: bool) -> dict
         raise RunnerError(f"candidate manifest cannot be read: {error}") from error
     required = {
         "schema_version", "candidate_id", "immutable", "source_commit",
-        "challenge_delivery", "artifact_digests", "deployments",
+        "challenge_delivery", "hint_delivery", "artifact_digests", "deployments",
     }
     if not isinstance(value, dict) or set(value) != required:
         raise RunnerError(f"candidate manifest fields must be exactly {sorted(required)}")
@@ -374,6 +372,12 @@ def validate_candidate(path: Path, phase_name: str, cross_segment: bool) -> dict
         raise RunnerError(f"canonical challenge delivery is invalid: {error}") from error
     if value["challenge_delivery"] != expected_delivery:
         raise RunnerError("candidate challenge delivery does not match the canonical catalog")
+    try:
+        expected_hint_delivery = delivery_catalog.hint_manifest_metadata()
+    except ValueError as error:
+        raise RunnerError(f"canonical hint delivery is invalid: {error}") from error
+    if value["hint_delivery"] != expected_hint_delivery:
+        raise RunnerError("candidate hint delivery does not match the versioned hint manifest")
     digests = value["artifact_digests"]
     if not isinstance(digests, dict) or not digests:
         raise RunnerError("artifact_digests must be a non-empty object")
@@ -406,6 +410,7 @@ def validate_candidate(path: Path, phase_name: str, cross_segment: bool) -> dict
         "source_commit": value["source_commit"],
         "manifest_sha256": hashlib.sha256(raw).hexdigest(),
         "challenge_delivery": expected_delivery,
+        "hint_delivery": expected_hint_delivery,
         "artifact_digests": dict(sorted(digests.items())),
         "deployments": {name: deployments[name] for name in sorted(deployments)},
     }
@@ -710,6 +715,7 @@ def main() -> int:
                 "candidate_id": "development-mutable", "immutable": False,
                 "source_commit": None, "manifest_sha256": None,
                 "challenge_delivery": delivery_catalog.catalog_metadata(),
+                "hint_delivery": delivery_catalog.hint_manifest_metadata(),
                 "artifact_digests": {}, "deployments": {},
             }
         )
@@ -719,6 +725,7 @@ def main() -> int:
             "candidate_id": "invalid", "immutable": False,
             "source_commit": None, "manifest_sha256": None,
             "challenge_delivery": None,
+            "hint_delivery": None,
             "artifact_digests": {}, "deployments": {},
         }
     report: dict[str, Any] = {

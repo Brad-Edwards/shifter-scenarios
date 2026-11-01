@@ -45,7 +45,9 @@ operator_surfaces: []
 validation:
   commands:
     - python3 challenges/catalog.py --check
+    - python3 build/hint-delivery/release.py verify
     - python3 build/card-coverage/coverage.py --require-complete
   gates:
     - challenge-delivery-current
+    - hint-delivery-current
     - card-coverage-exact

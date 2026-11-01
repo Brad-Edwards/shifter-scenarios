@@ -1,419 +1,1142 @@
-schema_version: 1
+schema_version: 2
 phase: keplerops
 hints:
   K01.1:
-    h1: '[hint 1 for K01.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K01.1 — class of boundary or technique]'
-    h3: '[hint 3 for K01.1 — concrete next diagnostic step]'
+    h1: Begin with the developer workspace, service notes, and normal source clients. The supplied credentials artifact
+      carries the relevant lead; check its provenance and references before contacting another service.
+    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
+      cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Inspect the supplied credentials artifact and the normal client documentation it names. Record the normal
+      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
+      difference.
+    references:
+    - kind: participant_artifact
+      id: .config/git/credentials
   K01.2:
-    h1: '[hint 1 for K01.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K01.2 — class of boundary or technique]'
-    h3: '[hint 3 for K01.2 — concrete next diagnostic step]'
+    h1: Begin with the developer workspace, service notes, and normal source clients. Start from source.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
+      cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Review the published client document and ordinary records for source.keplerops.test. Record the normal result
+      and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: participant_service
+      id: source.keplerops.test
   K01.3:
-    h1: '[hint 1 for K01.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K01.3 — class of boundary or technique]'
-    h3: '[hint 3 for K01.3 — concrete next diagnostic step]'
+    h1: Begin with the developer workspace, service notes, and normal source clients. The supplied fieldlink 7.4.2
+      review.md artifact carries the relevant lead; check its provenance and references before contacting another
+      service.
+    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
+      cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Inspect the supplied fieldlink 7.4.2 review.md artifact and the normal client documentation it names. Record
+      the normal result and a denied variant, alter one dimension, and keep the service-owned evidence needed to
+      explain the difference.
+    references:
+    - kind: participant_artifact
+      id: work/review-exports/fieldlink-7.4.2-review.md
   K01.4:
-    h1: '[hint 1 for K01.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K01.4 — class of boundary or technique]'
-    h3: '[hint 3 for K01.4 — concrete next diagnostic step]'
+    h1: Begin with the developer workspace, service notes, and normal source clients. The supplied local helper.md
+      artifact carries the relevant lead; check its provenance and references before contacting another service.
+    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
+      cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Inspect the supplied local helper.md artifact and the normal client documentation it names. Record the normal
+      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
+      difference.
+    references:
+    - kind: participant_artifact
+      id: work/local-helper.md
   K02.1:
-    h1: '[hint 1 for K02.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K02.1 — class of boundary or technique]'
-    h3: '[hint 3 for K02.1 — concrete next diagnostic step]'
+    h1: Begin with the retained source history and the continuous-integration review workflow. The failing-job note
+      identifies a repository revision, so the removed fixture should be sought in version history rather than the
+      current tree.
+    h2: This stage is version-history recovery. Keep the named revision and fixture path bound together; importer
+      behavior is a later boundary.
+    h3: Compare the revision in the failing-job note with the repository history, then inspect the change that removed
+      the named fixture without restoring unrelated files.
+    references:
+    - kind: participant_service
+      id: ci.keplerops.test
   K02.2:
-    h1: '[hint 1 for K02.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K02.2 — class of boundary or technique]'
-    h3: '[hint 3 for K02.2 — concrete next diagnostic step]'
+    h1: Stay with the continuous-integration client and compare the importer's accepted job namespace with the object
+      it actually resolves. The ordinary form is the baseline, not the complete boundary.
+    h2: This is path resolution before authorization. Test whether a job-relative reference remains inside the intended
+      input collection after normalization.
+    h3: Submit one ordinary job input and one minimally changed relative reference, then compare the resolved object
+      and denial evidence before trying a second variation.
+    references:
+    - kind: participant_service
+      id: ci.keplerops.test
   K02.3:
-    h1: '[hint 1 for K02.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K02.3 — class of boundary or technique]'
-    h3: '[hint 3 for K02.3 — concrete next diagnostic step]'
+    h1: Begin with the retained source history and the continuous-integration review workflow. Start from ci.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as version-history recovery followed by importer-boundary and extension-point analysis. Establish
+      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h3: Review the published client document and ordinary records for ci.keplerops.test. Read the current revision,
+      submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: participant_service
+      id: ci.keplerops.test
   K03.1:
-    h1: '[hint 1 for K03.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K03.1 — class of boundary or technique]'
-    h3: '[hint 3 for K03.1 — concrete next diagnostic step]'
+    h1: Begin with the predecessor notes, staged attachments, and the workstation analysis helper. Start from ci.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as layered payload reconstruction with integrity and callback correlation. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Review the published client document and ordinary records for ci.keplerops.test. Record the normal result
+      and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: participant_service
+      id: ci.keplerops.test
   K03.2:
-    h1: '[hint 1 for K03.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K03.2 — class of boundary or technique]'
-    h3: '[hint 3 for K03.2 — concrete next diagnostic step]'
+    h1: Begin with the predecessor notes, staged attachments, and the workstation analysis helper. The supplied
+      staging decoder.ps1 artifact carries the relevant lead; check its provenance and references before contacting
+      another service.
+    h2: Treat this as layered payload reconstruction with integrity and callback correlation. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Inspect the supplied staging decoder.ps1 artifact and the normal client documentation it names. Record the
+      normal result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
+      the difference.
+    references:
+    - kind: participant_artifact
+      id: work/analysis/staging-decoder.ps1
   K03.3:
-    h1: '[hint 1 for K03.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K03.3 — class of boundary or technique]'
-    h3: '[hint 3 for K03.3 — concrete next diagnostic step]'
+    h1: Begin with the predecessor notes, staged attachments, and the workstation analysis helper. The supplied
+      local helper.md artifact carries the relevant lead; check its provenance and references before contacting
+      another service.
+    h2: Treat this as layered payload reconstruction with integrity and callback correlation. Build a local model
+      from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
+    h3: Inspect the supplied local helper.md artifact and the normal client documentation it names. Extract the
+      supplied cases into a small local reproducer and do not use its result until every reference case matches.
+    references:
+    - kind: participant_artifact
+      id: work/local-helper.md
   K04.1:
-    h1: '[hint 1 for K04.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K04.1 — class of boundary or technique]'
-    h3: '[hint 3 for K04.1 — concrete next diagnostic step]'
+    h1: Begin with the offline indexer reproducer and its protected runtime service. The supplied indexer client.json
+      artifact carries the relevant lead; check its provenance and references before contacting another service.
+    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Inspect the supplied indexer client.json artifact and the normal client documentation it names. Record the
+      normal result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
+      the difference.
+    references:
+    - kind: participant_artifact
+      id: work/reproducers/indexer-client.json
   K04.2:
-    h1: '[hint 1 for K04.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K04.2 — class of boundary or technique]'
-    h3: '[hint 3 for K04.2 — concrete next diagnostic step]'
+    h1: Begin with the offline indexer reproducer and its protected runtime service. Start from indexer.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Carry forward only
+      earned identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
+    h3: Review the published client document and ordinary records for indexer.keplerops.test. Replay the preceding
+      evidence through the next documented boundary and verify the downstream service, not the client, records the
+      outcome.
+    references:
+    - kind: participant_service
+      id: indexer.keplerops.test
   K04.3:
-    h1: '[hint 1 for K04.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K04.3 — class of boundary or technique]'
-    h3: '[hint 3 for K04.3 — concrete next diagnostic step]'
+    h1: Begin with the offline indexer reproducer and its protected runtime service. Start from indexer.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Review the published client document and ordinary records for indexer.keplerops.test. Record the normal
+      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
+      difference.
+    references:
+    - kind: participant_service
+      id: indexer.keplerops.test
   K04.4:
-    h1: '[hint 1 for K04.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K04.4 — class of boundary or technique]'
-    h3: '[hint 3 for K04.4 — concrete next diagnostic step]'
+    h1: Begin with the offline indexer reproducer and its protected runtime service. Start from indexer.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Correlate independently
+      owned records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Review the published client document and ordinary records for indexer.keplerops.test. Join the independent
+      records on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    references:
+    - kind: participant_service
+      id: indexer.keplerops.test
   K05.1:
-    h1: '[hint 1 for K05.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K05.1 — class of boundary or technique]'
-    h3: '[hint 3 for K05.1 — concrete next diagnostic step]'
+    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
+      client document exposes the consumer check and metadata operation, so use that ordinary contract instead of
+      guessing a path.
+    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Separate
+      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the consumer check and metadata operation in the published client reference. Capture one ordinary
+      response and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: packages.consumer-check
+    - kind: client_route
+      id: packages.metadata
   K05.2:
-    h1: '[hint 1 for K05.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K05.2 — class of boundary or technique]'
-    h3: '[hint 3 for K05.2 — concrete next diagnostic step]'
+    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
+      client document exposes the release and conversation operation, so use that ordinary contract instead of guessing
+      a path.
+    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Observe
+      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the release and conversation operation in the published client reference. Record the normal result
+      and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: packages.release
+    - kind: client_route
+      id: support.conversation
   K05.3:
-    h1: '[hint 1 for K05.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K05.3 — class of boundary or technique]'
-    h3: '[hint 3 for K05.3 — concrete next diagnostic step]'
+    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
+      client document exposes the reconcile operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Observe
+      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the reconcile operation in the published client reference. Record the normal result and a denied
+      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: packages.reconcile
   K05.4:
-    h1: '[hint 1 for K05.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K05.4 — class of boundary or technique]'
-    h3: '[hint 3 for K05.4 — concrete next diagnostic step]'
+    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
+      client document exposes the resolver operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Observe
+      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the resolver operation in the published client reference. Record the normal result and a denied variant,
+      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: packages.resolver
   K06.1:
-    h1: '[hint 1 for K06.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K06.1 — class of boundary or technique]'
-    h3: '[hint 3 for K06.1 — concrete next diagnostic step]'
+    h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
+      exposes the import operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as publisher credential scope and package publication without release-administration authority.
+      Observe the ordinary and denied cases first, then change one input at a time and keep every unrelated binding
+      fixed.
+    h3: Locate the import operation in the published client reference. Record the normal result and a denied variant,
+      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: packages.import
   K06.2:
-    h1: '[hint 1 for K06.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K06.2 — class of boundary or technique]'
-    h3: '[hint 3 for K06.2 — concrete next diagnostic step]'
+    h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
+      exposes the view operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as publisher credential scope and package publication without release-administration authority.
+      Observe the ordinary and denied cases first, then change one input at a time and keep every unrelated binding
+      fixed.
+    h3: Locate the view operation in the published client reference. Record the normal result and a denied variant,
+      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: packages.view
   K06.3:
-    h1: '[hint 1 for K06.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K06.3 — class of boundary or technique]'
-    h3: '[hint 3 for K06.3 — concrete next diagnostic step]'
+    h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
+      exposes the connector rehearsal and publish operation, so use that ordinary contract instead of guessing a
+      path.
+    h2: Treat this as publisher credential scope and package publication without release-administration authority.
+      Establish the denied and ordinary baselines first, then vary only the boundary input the service is meant
+      to bind.
+    h3: Locate the connector rehearsal and publish operation in the published client reference. Read the current
+      revision, submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: client_route
+      id: ci.connector-rehearsal
+    - kind: client_route
+      id: packages.publish
   K07.1:
-    h1: '[hint 1 for K07.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K07.1 — class of boundary or technique]'
-    h3: '[hint 3 for K07.1 — concrete next diagnostic step]'
+    h1: Begin with the package inspection contract and its trace records. Its published client document exposes
+      the inspection trace and inspections operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as message-envelope interpretation across a parser and a protected downstream action. Separate
+      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the inspection trace and inspections operation in the published client reference. Capture one ordinary
+      response and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: packages.inspection-trace
+    - kind: client_route
+      id: packages.inspections
   K07.2:
-    h1: '[hint 1 for K07.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K07.2 — class of boundary or technique]'
-    h3: '[hint 3 for K07.2 — concrete next diagnostic step]'
+    h1: Begin with the package inspection contract and its trace records. Its published client document exposes
+      the inspection envelope operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as message-envelope interpretation across a parser and a protected downstream action. Derive
+      every constraint from supplied records or normal responses, test a deliberately failing candidate, and only
+      then produce a candidate.
+    h3: Locate the inspection envelope operation in the published client reference. List the observed constraints,
+      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    references:
+    - kind: client_route
+      id: packages.inspection-envelope
   K07.3:
-    h1: '[hint 1 for K07.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K07.3 — class of boundary or technique]'
-    h3: '[hint 3 for K07.3 — concrete next diagnostic step]'
+    h1: Begin with the package inspection contract and its trace records. Its published client document exposes
+      the inspection envelope operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as message-envelope interpretation across a parser and a protected downstream action. Carry forward
+      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
+      boundary.
+    h3: Locate the inspection envelope operation in the published client reference. Replay the preceding evidence
+      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: client_route
+      id: packages.inspection-envelope
   K08.1:
-    h1: '[hint 1 for K08.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K08.1 — class of boundary or technique]'
-    h3: '[hint 3 for K08.1 — concrete next diagnostic step]'
+    h1: Begin with the package entitlement records and versioned checking service. Its published client document
+      exposes the entitlement operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cryptographic context binding and legacy-versus-current validation behavior. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the entitlement operation in the published client reference. Record the normal result and a denied
+      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: packages.entitlement
   K08.2:
-    h1: '[hint 1 for K08.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K08.2 — class of boundary or technique]'
-    h3: '[hint 3 for K08.2 — concrete next diagnostic step]'
+    h1: Begin with the package entitlement records and versioned checking service. Its published client document
+      exposes the entitlement check operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cryptographic context binding and legacy-versus-current validation behavior. Separate the
+      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the entitlement check operation in the published client reference. Capture one ordinary response
+      and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: packages.entitlement-check
   K08.3:
-    h1: '[hint 1 for K08.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K08.3 — class of boundary or technique]'
-    h3: '[hint 3 for K08.3 — concrete next diagnostic step]'
+    h1: Begin with the package entitlement records and versioned checking service. Its published client document
+      exposes the entitlement check operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cryptographic context binding and legacy-versus-current validation behavior. Derive every
+      constraint from supplied records or normal responses, test a deliberately failing candidate, and only then
+      produce a candidate.
+    h3: Locate the entitlement check operation in the published client reference. List the observed constraints,
+      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    references:
+    - kind: client_route
+      id: packages.entitlement-check
   K09.1:
-    h1: '[hint 1 for K09.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K09.1 — class of boundary or technique]'
-    h3: '[hint 3 for K09.1 — concrete next diagnostic step]'
+    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
+      document exposes the run and run log operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as job-input trust and execution under a constrained service identity. Observe the ordinary and
+      denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the run and run log operation in the published client reference. Record the normal result and a denied
+      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: ci.run
+    - kind: client_route
+      id: ci.run-log
   K09.2:
-    h1: '[hint 1 for K09.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K09.2 — class of boundary or technique]'
-    h3: '[hint 3 for K09.2 — concrete next diagnostic step]'
+    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
+      document exposes the run operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as job-input trust and execution under a constrained service identity. Observe the ordinary and
+      denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the run operation in the published client reference. Record the normal result and a denied variant,
+      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: ci.run
   K09.3:
-    h1: '[hint 1 for K09.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K09.3 — class of boundary or technique]'
-    h3: '[hint 3 for K09.3 — concrete next diagnostic step]'
+    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
+      document exposes the review jobs operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as job-input trust and execution under a constrained service identity. Establish the denied and
+      ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h3: Locate the review jobs operation in the published client reference. Read the current revision, submit one
+      minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: client_route
+      id: ci.review-jobs
   K09.4:
-    h1: '[hint 1 for K09.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K09.4 — class of boundary or technique]'
-    h3: '[hint 3 for K09.4 — concrete next diagnostic step]'
+    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Start from ci.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as job-input trust and execution under a constrained service identity. Carry forward only earned
+      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
+    h3: Review the published client document and ordinary records for ci.keplerops.test. Replay the preceding evidence
+      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: participant_service
+      id: ci.keplerops.test
   K10.1:
-    h1: '[hint 1 for K10.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K10.1 — class of boundary or technique]'
-    h3: '[hint 3 for K10.1 — concrete next diagnostic step]'
+    h1: Begin with the preview queue associations and document-rendering services. Its published client document
+      exposes the association operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as canonical-name collision across preview storage and rendering boundaries. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the association operation in the published client reference. Capture one ordinary response and one
+      denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: preview.association
   K10.2:
-    h1: '[hint 1 for K10.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K10.2 — class of boundary or technique]'
-    h3: '[hint 3 for K10.2 — concrete next diagnostic step]'
+    h1: Begin with the preview queue associations and document-rendering services. Its published client document
+      exposes the documents operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as canonical-name collision across preview storage and rendering boundaries. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the documents operation in the published client reference. Capture one ordinary response and one
+      denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: preview.documents
   K10.3:
-    h1: '[hint 1 for K10.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K10.3 — class of boundary or technique]'
-    h3: '[hint 3 for K10.3 — concrete next diagnostic step]'
+    h1: Begin with the preview queue associations and document-rendering services. Its published client document
+      exposes the render operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as canonical-name collision across preview storage and rendering boundaries. Carry forward only
+      earned identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
+    h3: Locate the render operation in the published client reference. Replay the preceding evidence through the
+      next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: client_route
+      id: preview.render
   K11.1:
-    h1: '[hint 1 for K11.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K11.1 — class of boundary or technique]'
-    h3: '[hint 3 for K11.1 — concrete next diagnostic step]'
+    h1: Begin with the retained policy compiler repository and build-operations handover. The supplied policy compiler
+      handoff.md artifact carries the relevant lead; check its provenance and references before contacting another
+      service.
+    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Inspect the supplied policy compiler handoff.md artifact and the normal client documentation it names. Capture
+      one ordinary response and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: participant_artifact
+      id: work/build-operations/policy-compiler-handoff.md
   K11.2:
-    h1: '[hint 1 for K11.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K11.2 — class of boundary or technique]'
-    h3: '[hint 3 for K11.2 — concrete next diagnostic step]'
+    h1: Begin with the retained policy compiler repository and build-operations handover. Start from source.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Build a local model from
+      the supplied reference cases, then confirm it explains both accepted and rejected behavior.
+    h3: Review the published client document and ordinary records for source.keplerops.test. Extract the supplied
+      cases into a small local reproducer and do not use its result until every reference case matches.
+    references:
+    - kind: participant_service
+      id: source.keplerops.test
   K11.3:
-    h1: '[hint 1 for K11.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K11.3 — class of boundary or technique]'
-    h3: '[hint 3 for K11.3 — concrete next diagnostic step]'
+    h1: Begin with the retained policy compiler repository and build-operations handover. Start from source.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Review the published client document and ordinary records for source.keplerops.test. Capture one ordinary
+      response and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: participant_service
+      id: source.keplerops.test
   K11.4:
-    h1: '[hint 1 for K11.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K11.4 — class of boundary or technique]'
-    h3: '[hint 3 for K11.4 — concrete next diagnostic step]'
+    h1: Begin with the retained policy compiler repository and build-operations handover. Start from source.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Derive every constraint
+      from supplied records or normal responses, test a deliberately failing candidate, and only then produce a
+      candidate.
+    h3: Review the published client document and ordinary records for source.keplerops.test. List the observed constraints,
+      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    references:
+    - kind: participant_service
+      id: source.keplerops.test
   K12.1:
-    h1: '[hint 1 for K12.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K12.1 — class of boundary or technique]'
-    h3: '[hint 3 for K12.1 — concrete next diagnostic step]'
+    h1: Begin with the preview assignment, privileged review, and worker-render services. Its published client document
+      exposes the assignment operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cross-action value handling and worker-scope confusion in a privileged preview. Establish
+      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h3: Locate the assignment operation in the published client reference. Read the current revision, submit one
+      minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: client_route
+      id: preview.assignment
   K12.2:
-    h1: '[hint 1 for K12.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K12.2 — class of boundary or technique]'
-    h3: '[hint 3 for K12.2 — concrete next diagnostic step]'
+    h1: Begin with the preview assignment, privileged review, and worker-render services. Its published client document
+      exposes the prepare operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cross-action value handling and worker-scope confusion in a privileged preview. Separate the
+      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the prepare operation in the published client reference. Capture one ordinary response and one denial,
+      then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: preview.prepare
   K12.3:
-    h1: '[hint 1 for K12.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K12.3 — class of boundary or technique]'
-    h3: '[hint 3 for K12.3 — concrete next diagnostic step]'
+    h1: Begin with the preview assignment, privileged review, and worker-render services. Start from preview.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as cross-action value handling and worker-scope confusion in a privileged preview. Observe the
+      ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Review the published client document and ordinary records for preview.keplerops.test. Record the normal
+      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
+      difference.
+    references:
+    - kind: participant_service
+      id: preview.keplerops.test
   K12.4:
-    h1: '[hint 1 for K12.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K12.4 — class of boundary or technique]'
-    h3: '[hint 3 for K12.4 — concrete next diagnostic step]'
+    h1: Begin with the preview assignment, privileged review, and worker-render services. Start from preview.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as cross-action value handling and worker-scope confusion in a privileged preview. Carry forward
+      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
+      boundary.
+    h3: Review the published client document and ordinary records for preview.keplerops.test. Replay the preceding
+      evidence through the next documented boundary and verify the downstream service, not the client, records the
+      outcome.
+    references:
+    - kind: participant_service
+      id: preview.keplerops.test
   K13.1:
-    h1: '[hint 1 for K13.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K13.1 — class of boundary or technique]'
-    h3: '[hint 3 for K13.1 — concrete next diagnostic step]'
+    h1: Begin at the cloud workspace service named in the workstation notes. Its object listing is the evidence
+      source; follow the notebook reference carried by the listed object.
+    h2: Treat the listing and notebook as separate cloud objects joined by stable object identity. Do not assume
+      the visible notebook is the only retained version.
+    h3: List the workspace objects through the published client, open the referenced notebook, and record its object
+      identity and revision before following any export lead.
+    references:
+    - kind: participant_service
+      id: cloud-api.keplerops.test
   K13.2:
-    h1: '[hint 1 for K13.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K13.2 — class of boundary or technique]'
-    h3: '[hint 3 for K13.2 — concrete next diagnostic step]'
+    h1: Begin with the workspace object history, support exports, and cloud identity exchange. Start from cloud-api.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as object-version recovery followed by workload-identity scope analysis. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Review the published client document and ordinary records for cloud-api.keplerops.test. Record the normal
+      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
+      difference.
+    references:
+    - kind: participant_service
+      id: cloud-api.keplerops.test
   K13.3:
-    h1: '[hint 1 for K13.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K13.3 — class of boundary or technique]'
-    h3: '[hint 3 for K13.3 — concrete next diagnostic step]'
+    h1: Return to the workspace notes after recovering the earlier notebook version. The support export is a separate
+      object relationship, not another notebook revision.
+    h2: This stage is cross-object correlation. Preserve the export identity and handover revision instead of carrying
+      across a display name from the notebook.
+    h3: Follow the export reference exposed by the recovered notes, retrieve its retained handover through the ordinary
+      cloud client, and verify both records name the same export identity.
+    references:
+    - kind: participant_service
+      id: cloud-api.keplerops.test
   K13.4:
-    h1: '[hint 1 for K13.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K13.4 — class of boundary or technique]'
-    h3: '[hint 3 for K13.4 — concrete next diagnostic step]'
+    h1: Begin with the workspace object history, support exports, and cloud identity exchange. Its published client
+      document exposes the build record and workspace exchange operation, so use that ordinary contract instead
+      of guessing a path.
+    h2: Treat this as object-version recovery followed by workload-identity scope analysis. Correlate independently
+      owned records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Locate the build record and workspace exchange operation in the published client reference. Join the independent
+      records on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    references:
+    - kind: client_route
+      id: cloud.build-record
+    - kind: client_route
+      id: cloud.workspace-exchange
+    - kind: client_route
+      id: cloud.workspace-token
   K14.1:
-    h1: '[hint 1 for K14.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K14.1 — class of boundary or technique]'
-    h3: '[hint 3 for K14.1 — concrete next diagnostic step]'
+    h1: Begin with the cloud trust records, role exchange, and support-export policy. Its published client document
+      exposes the trust record operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as audience confusion combined with a separate resource-policy boundary. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the trust record operation in the published client reference. Capture one ordinary response and one
+      denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: cloud.trust-record
   K14.2:
-    h1: '[hint 1 for K14.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K14.2 — class of boundary or technique]'
-    h3: '[hint 3 for K14.2 — concrete next diagnostic step]'
+    h1: Begin with the cloud trust records, role exchange, and support-export policy. Its published client document
+      exposes the role exchange operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as audience confusion combined with a separate resource-policy boundary. Carry forward only earned
+      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
+    h3: Locate the role exchange operation in the published client reference. Replay the preceding evidence through
+      the next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: client_route
+      id: cloud.role-exchange
   K14.3:
-    h1: '[hint 1 for K14.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K14.3 — class of boundary or technique]'
-    h3: '[hint 3 for K14.3 — concrete next diagnostic step]'
+    h1: Begin with the cloud trust records, role exchange, and support-export policy. Its published client document
+      exposes the export definition operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as audience confusion combined with a separate resource-policy boundary. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the export definition operation in the published client reference. Record the normal result and a
+      denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: data.export-definition
   K15.1:
-    h1: '[hint 1 for K15.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K15.1 — class of boundary or technique]'
-    h3: '[hint 3 for K15.1 — concrete next diagnostic step]'
+    h1: Begin with the support export definitions, scheduled assignments, and handed-over runs. Its published client
+      document exposes the export operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cross-account export authorization with delegated destination rights. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the export operation in the published client reference. Capture one ordinary response and one denial,
+      then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: data.export
   K15.2:
-    h1: '[hint 1 for K15.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K15.2 — class of boundary or technique]'
-    h3: '[hint 3 for K15.2 — concrete next diagnostic step]'
+    h1: Begin with the support export definitions, scheduled assignments, and handed-over runs. Its published client
+      document exposes the schedule operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cross-account export authorization with delegated destination rights. Correlate independently
+      owned records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Locate the schedule operation in the published client reference. Join the independent records on their stable
+      identifiers and revisions, then explain any mismatch before acting on it.
+    references:
+    - kind: client_route
+      id: workloads.schedule
   K15.3:
-    h1: '[hint 1 for K15.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K15.3 — class of boundary or technique]'
-    h3: '[hint 3 for K15.3 — concrete next diagnostic step]'
+    h1: Begin with the support export definitions, scheduled assignments, and handed-over runs. Its published client
+      document exposes the export destination operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cross-account export authorization with delegated destination rights. Carry forward only earned
+      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
+    h3: Locate the export destination operation in the published client reference. Replay the preceding evidence
+      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: client_route
+      id: data.export-destination
   K15.4:
-    h1: '[hint 1 for K15.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K15.4 — class of boundary or technique]'
-    h3: '[hint 3 for K15.4 — concrete next diagnostic step]'
+    h1: Begin with the support export definitions, scheduled assignments, and handed-over runs. Its published client
+      document exposes the export runs operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cross-account export authorization with delegated destination rights. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the export runs operation in the published client reference. Capture one ordinary response and one
+      denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: data.export-runs
   K16.1:
-    h1: '[hint 1 for K16.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K16.1 — class of boundary or technique]'
-    h3: '[hint 3 for K16.1 — concrete next diagnostic step]'
+    h1: Begin with the scheduled support workflow, startup configuration, and shift-transition records. Start from
+      workloads.keplerops.test's published client document and records already earned in this operation, not from
+      an invented endpoint.
+    h2: Treat this as durable scheduled execution across session and assignment changes. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Review the published client document and ordinary records for workloads.keplerops.test. Capture one ordinary
+      response and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: participant_service
+      id: workloads.keplerops.test
   K16.2:
-    h1: '[hint 1 for K16.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K16.2 — class of boundary or technique]'
-    h3: '[hint 3 for K16.2 — concrete next diagnostic step]'
+    h1: Begin with the scheduled support workflow, startup configuration, and shift-transition records. Start from
+      workloads.keplerops.test's published client document and records already earned in this operation, not from
+      an invented endpoint.
+    h2: Treat this as durable scheduled execution across session and assignment changes. Establish the denied and
+      ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h3: Review the published client document and ordinary records for workloads.keplerops.test. Read the current
+      revision, submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: participant_service
+      id: workloads.keplerops.test
   K16.3:
-    h1: '[hint 1 for K16.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K16.3 — class of boundary or technique]'
-    h3: '[hint 3 for K16.3 — concrete next diagnostic step]'
+    h1: Begin with the scheduled support workflow, startup configuration, and shift-transition records. Start from
+      workloads.keplerops.test's published client document and records already earned in this operation, not from
+      an invented endpoint.
+    h2: Treat this as durable scheduled execution across session and assignment changes. Correlate independently
+      owned records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Review the published client document and ordinary records for workloads.keplerops.test. Join the independent
+      records on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    references:
+    - kind: participant_service
+      id: workloads.keplerops.test
   K16.4:
-    h1: '[hint 1 for K16.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K16.4 — class of boundary or technique]'
-    h3: '[hint 3 for K16.4 — concrete next diagnostic step]'
+    h1: Begin with the scheduled support workflow, startup configuration, and shift-transition records. Start from
+      workloads.keplerops.test's published client document and records already earned in this operation, not from
+      an invented endpoint.
+    h2: Treat this as durable scheduled execution across session and assignment changes. Carry forward only earned
+      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
+    h3: Review the published client document and ordinary records for workloads.keplerops.test. Replay the preceding
+      evidence through the next documented boundary and verify the downstream service, not the client, records the
+      outcome.
+    references:
+    - kind: participant_service
+      id: workloads.keplerops.test
   K17.1:
-    h1: '[hint 1 for K17.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K17.1 — class of boundary or technique]'
-    h3: '[hint 3 for K17.1 — concrete next diagnostic step]'
+    h1: Begin with the retained support browser state, recovery workflow, and assignment records. Start from support.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as session recovery, alternate identity proof, and bounded support delegation. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Review the published client document and ordinary records for support.keplerops.test. Capture one ordinary
+      response and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: participant_service
+      id: support.keplerops.test
   K17.2:
-    h1: '[hint 1 for K17.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K17.2 — class of boundary or technique]'
-    h3: '[hint 3 for K17.2 — concrete next diagnostic step]'
+    h1: Begin with the retained support browser state, recovery workflow, and assignment records. Its published
+      client document exposes the recovery lookup and recovery redeem operation, so use that ordinary contract instead
+      of guessing a path.
+    h2: Treat this as session recovery, alternate identity proof, and bounded support delegation. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the recovery lookup and recovery redeem operation in the published client reference. Record the normal
+      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
+      difference.
+    references:
+    - kind: client_route
+      id: support.recovery-lookup
+    - kind: client_route
+      id: support.recovery-redeem
+    - kind: client_route
+      id: support.session
   K17.3:
-    h1: '[hint 1 for K17.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K17.3 — class of boundary or technique]'
-    h3: '[hint 3 for K17.3 — concrete next diagnostic step]'
+    h1: Begin with the retained support browser state, recovery workflow, and assignment records. Its published
+      client document exposes the assignment and session operation, so use that ordinary contract instead of guessing
+      a path.
+    h2: Treat this as session recovery, alternate identity proof, and bounded support delegation. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the assignment and session operation in the published client reference. Capture one ordinary response
+      and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: support.assignment
+    - kind: client_route
+      id: support.session
   K17.4:
-    h1: '[hint 1 for K17.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K17.4 — class of boundary or technique]'
-    h3: '[hint 3 for K17.4 — concrete next diagnostic step]'
+    h1: Begin with the retained support browser state, recovery workflow, and assignment records. Its published
+      client document exposes the copy handover operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as session recovery, alternate identity proof, and bounded support delegation. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the copy handover operation in the published client reference. Record the normal result and a denied
+      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: support.copy-handover
   K18.1:
-    h1: '[hint 1 for K18.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K18.1 — class of boundary or technique]'
-    h3: '[hint 3 for K18.1 — concrete next diagnostic step]'
+    h1: Begin with the restricted staff-note preview and identity-provider registration. Its published client document
+      exposes the note operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as privileged preview access followed by federation trust-boundary analysis. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the note operation in the published client reference. Capture one ordinary response and one denial,
+      then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: staff.note
   K18.2:
-    h1: '[hint 1 for K18.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K18.2 — class of boundary or technique]'
-    h3: '[hint 3 for K18.2 — concrete next diagnostic step]'
+    h1: Begin with the restricted staff-note preview and identity-provider registration. Its published client document
+      exposes the registration and note preview operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as privileged preview access followed by federation trust-boundary analysis. Establish the denied
+      and ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h3: Locate the registration and note preview operation in the published client reference. Read the current revision,
+      submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: client_route
+      id: identity.registration
+    - kind: client_route
+      id: staff.note-preview
   K18.3:
-    h1: '[hint 1 for K18.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K18.3 — class of boundary or technique]'
-    h3: '[hint 3 for K18.3 — concrete next diagnostic step]'
+    h1: Begin with the restricted staff-note preview and identity-provider registration. Its published client document
+      exposes the note preview operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as privileged preview access followed by federation trust-boundary analysis. Establish the denied
+      and ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h3: Locate the note preview operation in the published client reference. Read the current revision, submit one
+      minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: client_route
+      id: staff.note-preview
   K18.4:
-    h1: '[hint 1 for K18.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K18.4 — class of boundary or technique]'
-    h3: '[hint 3 for K18.4 — concrete next diagnostic step]'
+    h1: Begin with the restricted staff-note preview and identity-provider registration. Its published client document
+      exposes the login and staff login operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as privileged preview access followed by federation trust-boundary analysis. Carry forward only
+      earned identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
+    h3: Locate the login and staff login operation in the published client reference. Replay the preceding evidence
+      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: client_route
+      id: identity.login
+    - kind: client_route
+      id: identity.staff-login
+    - kind: client_route
+      id: support.dossier
+    - kind: client_route
+      id: support.fixture-assertion
+    - kind: client_route
+      id: support.session
   K19.1:
-    h1: '[hint 1 for K19.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K19.1 — class of boundary or technique]'
-    h3: '[hint 3 for K19.1 — concrete next diagnostic step]'
+    h1: Begin with the staff directory, certificate enrollment, and archive handover. Its published client document
+      exposes the requests and template operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as certificate identity enrollment followed by delegated service authentication. Separate the
+      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the requests and template operation in the published client reference. Capture one ordinary response
+      and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: cert.requests
+    - kind: client_route
+      id: cert.template
   K19.2:
-    h1: '[hint 1 for K19.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K19.2 — class of boundary or technique]'
-    h3: '[hint 3 for K19.2 — concrete next diagnostic step]'
+    h1: Begin with the staff directory, certificate enrollment, and archive handover. Its published client document
+      exposes the archive operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as certificate identity enrollment followed by delegated service authentication. Correlate independently
+      owned records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Locate the archive operation in the published client reference. Join the independent records on their stable
+      identifiers and revisions, then explain any mismatch before acting on it.
+    references:
+    - kind: client_route
+      id: staff.archive
   K19.3:
-    h1: '[hint 1 for K19.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K19.3 — class of boundary or technique]'
-    h3: '[hint 3 for K19.3 — concrete next diagnostic step]'
+    h1: Begin with the staff directory, certificate enrollment, and archive handover. Its published client document
+      exposes the delegation operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as certificate identity enrollment followed by delegated service authentication. Carry forward
+      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
+      boundary.
+    h3: Locate the delegation operation in the published client reference. Replay the preceding evidence through
+      the next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: client_route
+      id: staff.delegation
   K20.1:
-    h1: '[hint 1 for K20.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K20.1 — class of boundary or technique]'
-    h3: '[hint 3 for K20.1 — concrete next diagnostic step]'
+    h1: Begin with the delegated service relation, managed session, and package approval. Its published client document
+      exposes the service relation operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as multi-hop delegation across distinct authentication and release identities. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the service relation operation in the published client reference. Record the normal result and a
+      denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: identity.service-relation
   K20.2:
-    h1: '[hint 1 for K20.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K20.2 — class of boundary or technique]'
-    h3: '[hint 3 for K20.2 — concrete next diagnostic step]'
+    h1: Begin with the delegated service relation, managed session, and package approval. Its published client document
+      exposes the managed session operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as multi-hop delegation across distinct authentication and release identities. Correlate independently
+      owned records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Locate the managed session operation in the published client reference. Join the independent records on
+      their stable identifiers and revisions, then explain any mismatch before acting on it.
+    references:
+    - kind: client_route
+      id: staff.managed-session
   K20.3:
-    h1: '[hint 1 for K20.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K20.3 — class of boundary or technique]'
-    h3: '[hint 3 for K20.3 — concrete next diagnostic step]'
+    h1: Begin with the delegated service relation, managed session, and package approval. Its published client document
+      exposes the connector rehearsal and approval operation, so use that ordinary contract instead of guessing
+      a path.
+    h2: Treat this as multi-hop delegation across distinct authentication and release identities. Establish the
+      denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h3: Locate the connector rehearsal and approval operation in the published client reference. Read the current
+      revision, submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: client_route
+      id: ci.connector-rehearsal
+    - kind: client_route
+      id: packages.approval
   K21.1:
-    h1: '[hint 1 for K21.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K21.1 — class of boundary or technique]'
-    h3: '[hint 3 for K21.1 — concrete next diagnostic step]'
+    h1: Begin with the support assistant configuration, retained context, and answer service. Its published client
+      document exposes the config operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as exposed context selection and authorization failure over retained support data. Separate the
+      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the config operation in the published client reference. Capture one ordinary response and one denial,
+      then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: assistant.config
   K21.2:
-    h1: '[hint 1 for K21.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K21.2 — class of boundary or technique]'
-    h3: '[hint 3 for K21.2 — concrete next diagnostic step]'
+    h1: Begin with the support assistant configuration, retained context, and answer service. Its published client
+      document exposes the conversation operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as exposed context selection and authorization failure over retained support data. Separate the
+      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the conversation operation in the published client reference. Capture one ordinary response and one
+      denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: assistant.conversation
   K21.3:
-    h1: '[hint 1 for K21.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K21.3 — class of boundary or technique]'
-    h3: '[hint 3 for K21.3 — concrete next diagnostic step]'
+    h1: Begin with the support assistant configuration, retained context, and answer service. Its published client
+      document exposes the answers operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as exposed context selection and authorization failure over retained support data. Separate the
+      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the answers operation in the published client reference. Capture one ordinary response and one denial,
+      then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: assistant.answers
   K22.1:
-    h1: '[hint 1 for K22.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K22.1 — class of boundary or technique]'
-    h3: '[hint 3 for K22.1 — concrete next diagnostic step]'
+    h1: Begin with the assistant source selection, retained attachments, and action tools. Its published client
+      document exposes the selection operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as instruction injection through a trusted attachment into a constrained tool action. Separate
+      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the selection operation in the published client reference. Capture one ordinary response and one
+      denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: assistant.selection
   K22.2:
-    h1: '[hint 1 for K22.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K22.2 — class of boundary or technique]'
-    h3: '[hint 3 for K22.2 — concrete next diagnostic step]'
+    h1: Start with the assistant's recorded source selection and the attachment it actually reads for the ARWC case.
+      The attachment boundary matters more than the visible conversation wording.
+    h2: This is indirect instruction injection through a trusted attachment. Separate a change to the assistant's
+      recommendation from any tool action it may later request.
+    h3: Ask the same support question with and without the selected attachment, compare the cited sources, and determine
+      which attachment instruction changes only the bundle recommendation.
+    references:
+    - kind: client_route
+      id: assistant.answers
   K22.3:
-    h1: '[hint 1 for K22.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K22.3 — class of boundary or technique]'
-    h3: '[hint 3 for K22.3 — concrete next diagnostic step]'
+    h1: Use the recommendation trace from the preceding stage and inspect the assistant action record for the duplicate
+      diagnostic review. The action receipt is independent of the answer text.
+    h2: This is a tool-authorization boundary reached through injected assistant context. Track the review identity
+      and approval state rather than treating persuasive output as success.
+    h3: Repeat the controlled attachment case while observing the review record, then verify whether the service
+      records an approval action for the exact duplicate review and leaves unrelated reviews unchanged.
+    references:
+    - kind: client_route
+      id: assistant.answers
   K23.1:
-    h1: '[hint 1 for K23.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K23.1 — class of boundary or technique]'
-    h3: '[hint 3 for K23.1 — concrete next diagnostic step]'
+    h1: Begin with the assistant context inventory and retained conversation references. Its published client document
+      exposes the contexts operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cross-tenant context confusion across conversation and document retrieval. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the contexts operation in the published client reference. Capture one ordinary response and one denial,
+      then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: assistant.contexts
   K23.2:
-    h1: '[hint 1 for K23.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K23.2 — class of boundary or technique]'
-    h3: '[hint 3 for K23.2 — concrete next diagnostic step]'
+    h1: Begin with the assistant context inventory and retained conversation references. Its published client document
+      exposes the conversation operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cross-tenant context confusion across conversation and document retrieval. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the conversation operation in the published client reference. Record the normal result and a denied
+      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: assistant.conversation
   K23.3:
-    h1: '[hint 1 for K23.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K23.3 — class of boundary or technique]'
-    h3: '[hint 3 for K23.3 — concrete next diagnostic step]'
+    h1: Begin with the assistant context inventory and retained conversation references. Its published client document
+      exposes the document operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as cross-tenant context confusion across conversation and document retrieval. Carry forward only
+      earned identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
+    h3: Locate the document operation in the published client reference. Replay the preceding evidence through the
+      next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: client_route
+      id: assistant.document
   K24.1:
-    h1: '[hint 1 for K24.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K24.1 — class of boundary or technique]'
-    h3: '[hint 3 for K24.1 — concrete next diagnostic step]'
+    h1: Begin with the completion examples, context selection, and job execution service. Its published client document
+      exposes the completion example operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as context traversal followed by execution under a separate completion identity. Separate the
+      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the completion example operation in the published client reference. Capture one ordinary response
+      and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: assistant.completion-example
   K24.2:
-    h1: '[hint 1 for K24.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K24.2 — class of boundary or technique]'
-    h3: '[hint 3 for K24.2 — concrete next diagnostic step]'
+    h1: Begin with the completion examples, context selection, and job execution service. Its published client document
+      exposes the completion context operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as context traversal followed by execution under a separate completion identity. Correlate independently
+      owned records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Locate the completion context operation in the published client reference. Join the independent records
+      on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    references:
+    - kind: client_route
+      id: assistant.completion-context
   K24.3:
-    h1: '[hint 1 for K24.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K24.3 — class of boundary or technique]'
-    h3: '[hint 3 for K24.3 — concrete next diagnostic step]'
+    h1: Begin with the completion examples, context selection, and job execution service. Its published client document
+      exposes the completion job and completion jobs operation, so use that ordinary contract instead of guessing
+      a path.
+    h2: Treat this as context traversal followed by execution under a separate completion identity. Establish the
+      denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h3: Locate the completion job and completion jobs operation in the published client reference. Read the current
+      revision, submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: client_route
+      id: assistant.completion-job
+    - kind: client_route
+      id: assistant.completion-jobs
   K25.1:
-    h1: '[hint 1 for K25.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K25.1 — class of boundary or technique]'
-    h3: '[hint 3 for K25.1 — concrete next diagnostic step]'
+    h1: Begin with the customer support dossier and current integration records. Start from support.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as customer-history correlation and active-versus-obsolete tenant binding. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Open the customer dossier named by the retained support case, compare its attachment references with the
+      recurring maintenance ticket, and record the dossier revision before reconciling any integration.
+    references:
+    - kind: participant_service
+      id: support.keplerops.test
   K25.2:
-    h1: '[hint 1 for K25.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K25.2 — class of boundary or technique]'
-    h3: '[hint 3 for K25.2 — concrete next diagnostic step]'
+    h1: Begin with the customer support dossier and current integration records. Its published client document exposes
+      the integration and reconcile operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as customer-history correlation and active-versus-obsolete tenant binding. Observe the ordinary
+      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the integration and reconcile operation in the published client reference. Record the normal result
+      and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: support.integration
+    - kind: client_route
+      id: support.reconcile
   K26.1:
-    h1: '[hint 1 for K26.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K26.1 — class of boundary or technique]'
-    h3: '[hint 3 for K26.1 — concrete next diagnostic step]'
+    h1: Begin with the package release channel and active customer connector. Its published client document exposes
+      the poll operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as compatible package publication, customer-side selection, and retained rollback. Derive every
+      constraint from supplied records or normal responses, test a deliberately failing candidate, and only then
+      produce a candidate.
+    h3: Locate the poll operation in the published client reference. List the observed constraints, exercise a known
+      rejection, and use the difference to test a candidate that still requires service validation.
+    references:
+    - kind: client_route
+      id: connector.poll
   K26.2:
-    h1: '[hint 1 for K26.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K26.2 — class of boundary or technique]'
-    h3: '[hint 3 for K26.2 — concrete next diagnostic step]'
+    h1: Begin with the package release channel and active customer connector. Its published client document exposes
+      the activate operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as compatible package publication, customer-side selection, and retained rollback. Establish
+      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h3: Locate the activate operation in the published client reference. Read the current revision, submit one minimal
+      variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: client_route
+      id: connector.activate
   K26.3:
-    h1: '[hint 1 for K26.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K26.3 — class of boundary or technique]'
-    h3: '[hint 3 for K26.3 — concrete next diagnostic step]'
+    h1: Begin with the package release channel and active customer connector. Its published client document exposes
+      the rollback operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as compatible package publication, customer-side selection, and retained rollback. Correlate
+      independently owned records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Locate the rollback operation in the published client reference. Join the independent records on their stable
+      identifiers and revisions, then explain any mismatch before acting on it.
+    references:
+    - kind: client_route
+      id: connector.rollback
   K27.1:
-    h1: '[hint 1 for K27.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K27.1 — class of boundary or technique]'
-    h3: '[hint 3 for K27.1 — concrete next diagnostic step]'
+    h1: Begin with the support diagnostic jobs, package interface, and customer delivery. Its published client document
+      exposes the diagnostics operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as customer-scope confusion while preserving the connector's expected package contract. Observe
+      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Locate the diagnostics operation in the published client reference. Record the normal result and a denied
+      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    references:
+    - kind: client_route
+      id: support.diagnostics
   K27.2:
-    h1: '[hint 1 for K27.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K27.2 — class of boundary or technique]'
-    h3: '[hint 3 for K27.2 — concrete next diagnostic step]'
+    h1: Begin with the support diagnostic jobs, package interface, and customer delivery. Its published client document
+      exposes the diagnostic package operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as customer-scope confusion while preserving the connector's expected package contract. Establish
+      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h3: Locate the diagnostic package operation in the published client reference. Read the current revision, submit
+      one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    references:
+    - kind: client_route
+      id: support.diagnostic-package
   K27.3:
-    h1: '[hint 1 for K27.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K27.3 — class of boundary or technique]'
-    h3: '[hint 3 for K27.3 — concrete next diagnostic step]'
+    h1: Begin with the support diagnostic jobs, package interface, and customer delivery. Its published client document
+      exposes the diagnostic deliver operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as customer-scope confusion while preserving the connector's expected package contract. Carry
+      forward only earned identities and record bindings; possession of a copied identifier alone does not cross
+      the next boundary.
+    h3: Locate the diagnostic deliver operation in the published client reference. Replay the preceding evidence
+      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: client_route
+      id: support.diagnostic-deliver
   K28.1:
-    h1: '[hint 1 for K28.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K28.1 — class of boundary or technique]'
-    h3: '[hint 3 for K28.1 — concrete next diagnostic step]'
+    h1: Begin with the retained connector archive and its signed diagnostic configuration. The supplied connector
+      archive review.md artifact carries the relevant lead; check its provenance and references before contacting
+      another service.
+    h2: Treat this as static and dynamic loader analysis for behavior that appears only at runtime. Correlate independently
+      owned records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Inspect the supplied connector archive review.md artifact and the normal client documentation it names.
+      Join the independent records on their stable identifiers and revisions, then explain any mismatch before acting
+      on it.
+    references:
+    - kind: participant_artifact
+      id: work/build-operations/connector-archive-review.md
   K28.2:
-    h1: '[hint 1 for K28.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K28.2 — class of boundary or technique]'
-    h3: '[hint 3 for K28.2 — concrete next diagnostic step]'
+    h1: Begin with the retained connector archive and its signed diagnostic configuration. Start from source.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as static and dynamic loader analysis for behavior that appears only at runtime. Build a local
+      model from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
+    h3: Compare the archived connector's static entry points with behavior observed under the signed diagnostic
+      configuration, then reproduce only the transformation shared by every supplied reference case.
+    references:
+    - kind: participant_service
+      id: source.keplerops.test
   K28.3:
-    h1: '[hint 1 for K28.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K28.3 — class of boundary or technique]'
-    h3: '[hint 3 for K28.3 — concrete next diagnostic step]'
+    h1: Begin with the retained connector archive and its signed diagnostic configuration. Start from source.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as static and dynamic loader analysis for behavior that appears only at runtime. Separate the
+      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Trace the diagnostic-only loader branch in the retained source, follow the runtime path it registers, and
+      verify the engineering note comes from that loaded branch rather than an ordinary connector response.
+    references:
+    - kind: participant_service
+      id: source.keplerops.test
   K29.1:
-    h1: '[hint 1 for K29.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K29.1 — class of boundary or technique]'
-    h3: '[hint 3 for K29.1 — concrete next diagnostic step]'
+    h1: Begin with the protected build dossier, signing lineage, and dual release consumers. Its published client
+      document exposes the run artifact and build record operation, so use that ordinary contract instead of guessing
+      a path.
+    h2: Treat this as release-principal scope, historical signing authority, and credential rollover. Separate the
+      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the run artifact and build record operation in the published client reference. Capture one ordinary
+      response and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: ci.run-artifact
+    - kind: client_route
+      id: cloud.build-record
   K29.2:
-    h1: '[hint 1 for K29.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K29.2 — class of boundary or technique]'
-    h3: '[hint 3 for K29.2 — concrete next diagnostic step]'
+    h1: Begin with the protected build dossier, signing lineage, and dual release consumers. Start from ci.keplerops.test's
+      published client document and records already earned in this operation, not from an invented endpoint.
+    h2: Treat this as release-principal scope, historical signing authority, and credential rollover. Separate the
+      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Review the published client document and ordinary records for ci.keplerops.test. Capture one ordinary response
+      and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: participant_service
+      id: ci.keplerops.test
   K29.3:
-    h1: '[hint 1 for K29.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K29.3 — class of boundary or technique]'
-    h3: '[hint 3 for K29.3 — concrete next diagnostic step]'
+    h1: Begin with the protected build dossier, signing lineage, and dual release consumers. Its published client
+      document exposes the connector rehearsal and approval operation, so use that ordinary contract instead of
+      guessing a path.
+    h2: Treat this as release-principal scope, historical signing authority, and credential rollover. Carry forward
+      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
+      boundary.
+    h3: Locate the connector rehearsal and approval operation in the published client reference. Replay the preceding
+      evidence through the next documented boundary and verify the downstream service, not the client, records the
+      outcome.
+    references:
+    - kind: client_route
+      id: ci.connector-rehearsal
+    - kind: client_route
+      id: packages.approval
+    - kind: client_route
+      id: packages.publish
   K29.4:
-    h1: '[hint 1 for K29.4 — orientation to the relevant system]'
-    h2: '[hint 2 for K29.4 — class of boundary or technique]'
-    h3: '[hint 3 for K29.4 — concrete next diagnostic step]'
+    h1: Begin with the protected build dossier, signing lineage, and dual release consumers. Its published client
+      document exposes the lineage rollover operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as release-principal scope, historical signing authority, and credential rollover. Carry forward
+      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
+      boundary.
+    h3: Locate the lineage rollover operation in the published client reference. Replay the preceding evidence through
+      the next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: client_route
+      id: ci.lineage-rollover
   K30.1:
-    h1: '[hint 1 for K30.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K30.1 — class of boundary or technique]'
-    h3: '[hint 3 for K30.1 — concrete next diagnostic step]'
+    h1: Begin with the recovery build records, backup catalog, and migration history. Its published client document
+      exposes the build record operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as scoped backup authority without direct source-database access. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the build record operation in the published client reference. Capture one ordinary response and one
+      denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: cloud.build-record
   K30.2:
-    h1: '[hint 1 for K30.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K30.2 — class of boundary or technique]'
-    h3: '[hint 3 for K30.2 — concrete next diagnostic step]'
+    h1: Begin with the recovery build records, backup catalog, and migration history. Its published client document
+      exposes the backup operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as scoped backup authority without direct source-database access. Separate the authoritative
+      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the backup operation in the published client reference. Capture one ordinary response and one denial,
+      then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: data.backup
   K30.3:
-    h1: '[hint 1 for K30.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K30.3 — class of boundary or technique]'
-    h3: '[hint 3 for K30.3 — concrete next diagnostic step]'
+    h1: Begin with the recovery build records, backup catalog, and migration history. Its published client document
+      exposes the recovery history and restore operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as scoped backup authority without direct source-database access. Correlate independently owned
+      records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Locate the recovery history and restore operation in the published client reference. Join the independent
+      records on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    references:
+    - kind: client_route
+      id: data.recovery-history
+    - kind: client_route
+      id: data.restore
   K31.1:
-    h1: '[hint 1 for K31.1 — orientation to the relevant system]'
-    h2: '[hint 2 for K31.1 — class of boundary or technique]'
-    h3: '[hint 3 for K31.1 — concrete next diagnostic step]'
+    h1: Begin with the maintenance scheduler policy, workload identity, and field archive. Its published client
+      document exposes the maintenance and policy operation, so use that ordinary contract instead of guessing a
+      path.
+    h2: Treat this as scheduler-versus-runtime identity separation and classification-bound archive access. Separate
+      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
+    h3: Locate the maintenance and policy operation in the published client reference. Capture one ordinary response
+      and one denial, then correlate the returned identifiers with evidence already earned.
+    references:
+    - kind: client_route
+      id: cloud.maintenance
+    - kind: client_route
+      id: cloud.policy
   K31.2:
-    h1: '[hint 1 for K31.2 — orientation to the relevant system]'
-    h2: '[hint 2 for K31.2 — class of boundary or technique]'
-    h3: '[hint 3 for K31.2 — concrete next diagnostic step]'
+    h1: Begin with the maintenance scheduler policy, workload identity, and field archive. Its published client
+      document exposes the whoami and workload operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as scheduler-versus-runtime identity separation and classification-bound archive access. Correlate
+      independently owned records by identity, revision, units, and scope instead of trusting a display label.
+    h3: Locate the whoami and workload operation in the published client reference. Join the independent records
+      on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    references:
+    - kind: client_route
+      id: workloads.whoami
+    - kind: client_route
+      id: workloads.workload
   K31.3:
-    h1: '[hint 1 for K31.3 — orientation to the relevant system]'
-    h2: '[hint 2 for K31.3 — class of boundary or technique]'
-    h3: '[hint 3 for K31.3 — concrete next diagnostic step]'
+    h1: Begin with the maintenance scheduler policy, workload identity, and field archive. Its published client
+      document exposes the field archive operation, so use that ordinary contract instead of guessing a path.
+    h2: Treat this as scheduler-versus-runtime identity separation and classification-bound archive access. Carry
+      forward only earned identities and record bindings; possession of a copied identifier alone does not cross
+      the next boundary.
+    h3: Locate the field archive operation in the published client reference. Replay the preceding evidence through
+      the next documented boundary and verify the downstream service, not the client, records the outcome.
+    references:
+    - kind: client_route
+      id: data.field-archive

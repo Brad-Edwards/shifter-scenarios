@@ -15,7 +15,7 @@ After reviewing an intentional source change, regenerate and check with:
 
 ```sh
 python3 cinder-typhoon/challenges/catalog.py \
-  --write --write-surfaces --write-candidate-binding
+  --write --write-hint-delivery --write-surfaces --write-candidate-binding
 python3 cinder-typhoon/challenges/catalog.py --check
 python3 cinder-typhoon/build/card-coverage/coverage.py --write-registry
 ```
@@ -23,4 +23,6 @@ python3 cinder-typhoon/build/card-coverage/coverage.py --write-registry
 `../ctfd/import_catalog.py` consumes this snapshot directly to produce the
 transient native Shifter event bundle. Participant-surface manifests, the card
 coverage registry, and release-candidate manifest all pin the same catalog
-schema, revision, and file digest.
+schema, revision, and file digest. The hint-delivery manifest separately pins
+all 720 hint levels, their participant-boundary references, facilitator release
+rules, zero score effect, and the 70-operation review.

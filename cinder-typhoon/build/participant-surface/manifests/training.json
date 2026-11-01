@@ -11,15 +11,188 @@
       "phase_card_count": 16,
       "phase_operation_count": 4,
       "phase_score_total": 1000,
-      "revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+      "revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
       "schema": "cinder-typhoon.challenge-delivery/v2",
       "score_total": 39200,
-      "sha256": "35d2308e33356711324593608835609f9e01502ce8b6dca3df669b1f4b5b835d"
+      "sha256": "7d3c1a77a51184ee90f2b343de5d575cb2a25d361dc02899aff1fade6bbc7f9c"
     },
     "hints": {
-      "levels": 3,
-      "penalty": 0,
-      "release": "on_request",
+      "items": [
+        {
+          "card_id": "T01.1",
+          "content_revision": "295d98836920e4927c6856d3a6ec9a05c12cecb08a74b925b7aff1d3f59d23b0",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T01.2",
+          "content_revision": "6ef99475897fd2b5084b445eb1e14963d2fe230c43c42d52221aa7977d6a028e",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T01.3",
+          "content_revision": "ba1d8a6fcc72cc229fc4723c616e374fe92d02b25aafce0a3832bcece5972647",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T01.4",
+          "content_revision": "b227f6268a2c68776357e01a83b5dfe20c97096b8c25b2ab5b66c7cd522ce6dc",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T02.1",
+          "content_revision": "8847c43b7177fbc23de94be4191818979ed1cf873702bf52325ab5d0d05db3de",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T02.2",
+          "content_revision": "19deea8f9351e53590ad380bf619b27d79fb661615ce530fc0c39cb70c4e7cd6",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T02.3",
+          "content_revision": "f2eabbcb4994ff10a60d834a48f121295795ccd57be1fce0a6ea8bc7c3f36047",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T02.4",
+          "content_revision": "82927514efd34060210a9d62509cdac715795a3c86367218d116e8c9dca95263",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T03.1",
+          "content_revision": "457f431dc9956e82874d9b6be535ab41984f6fc50b6f53fbd18ea099604a0c2f",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T03.2",
+          "content_revision": "5bc306863e7dc28d3178b87063503d041c69ac75d77130840a7a7cc776a584ea",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T03.3",
+          "content_revision": "93774025907834702ea423a7d763332961e4164f3086f5673d60235c22ff484c",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T03.4",
+          "content_revision": "6f11b5acaab72bc375841f6e7889b611f06033da80f38f1a57acd374179b4193",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T04.1",
+          "content_revision": "1c6498f4357ba9ee145db1ed052e54a6ea0e850cb23b17a9cb88eeb1993f5445",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T04.2",
+          "content_revision": "851e6e0558c40610e7e48d756de4a74f855fe975c2ca405d707fa5faabbbb748",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T04.3",
+          "content_revision": "399c740c11d02547a42a3ddee675ed7ec9c3feb42cfe245d8615d29e6c29f563",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "card_id": "T04.4",
+          "content_revision": "0ab6b816ed11e625ba1f03f61d5443ce4e821c66ed05aaf69a226d7a7b9a0cdf",
+          "levels": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "manifest": {
+        "card_count": 240,
+        "hint_count": 720,
+        "operation_count": 70,
+        "path": "build/hint-delivery/manifest.json",
+        "revision": "907dab15d49a4658ad2624d622ff304c3c5f6ab2f2c3a8217558249975f67d61",
+        "schema": "cinder-typhoon.hint-delivery/v1",
+        "sha256": "d91f4734a8b10aa3ce3155d62e2175463f6429379f38b3440adb23f4f98c02f3"
+      },
+      "release": {
+        "audit": "append_only_metadata_without_hint_text",
+        "independent_levels": true,
+        "levels": [
+          1,
+          2,
+          3
+        ],
+        "mode": "facilitator_on_request"
+      },
+      "score_effect": {
+        "maximum_score_unchanged": true,
+        "penalty": 0
+      },
+      "source": {
+        "card_count": 16,
+        "hint_count": 48,
+        "path": "build/card-coverage/hints-training.yaml",
+        "phase": "training",
+        "sha256": "a8769e0c45dca05de5a7f4f2e4e57b98c0c9746f4a675be3167c97dc83269161"
+      },
       "status": "versioned"
     }
   },

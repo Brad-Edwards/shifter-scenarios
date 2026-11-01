@@ -27,6 +27,11 @@ python3 cinder-typhoon/ctfd/import_catalog.py \
 The output is written atomically with owner-only permissions. It contains no
 answers, credentials, solution text, or operator-only design data.
 
+The separately versioned `build/hint-delivery/manifest.json` pins the hint
+sources and facilitator release rules. Use `build/hint-delivery/release.py` to
+release one level and create the content-free audit record; do not disclose the
+owner-only event bundle as a substitute.
+
 ## Golden GCP acceptance
 
 `check-golden-gcp.sh` is the only supported live acceptance entrypoint. It

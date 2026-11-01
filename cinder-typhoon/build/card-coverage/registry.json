@@ -55,7 +55,7 @@
         "assertions": [
           "k01.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k01.c1",
         "observation_rule": "fact-k01-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -141,7 +141,7 @@
         "assertions": [
           "k01.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k01.c2",
         "observation_rule": "fact-k01-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -226,7 +226,7 @@
         "assertions": [
           "k01.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k01.c3",
         "observation_rule": "fact-k01-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -302,7 +302,7 @@
         "assertions": [
           "k01.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k01.c4",
         "observation_rule": "fact-k01-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -379,7 +379,7 @@
         "assertions": [
           "k02.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k02.c1",
         "observation_rule": "fact-k02-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -460,7 +460,7 @@
         "assertions": [
           "k02.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k02.c2",
         "observation_rule": "fact-k02-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -561,7 +561,7 @@
         "assertions": [
           "k02.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k02.c3",
         "observation_rule": "fact-k02-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -639,7 +639,7 @@
         "assertions": [
           "k03.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k03.c1",
         "observation_rule": "fact-k03-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -723,7 +723,7 @@
         "assertions": [
           "k03.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k03.c2",
         "observation_rule": "fact-k03-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -799,7 +799,7 @@
         "assertions": [
           "k03.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k03.c3",
         "observation_rule": "fact-k03-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -883,7 +883,7 @@
         "assertions": [
           "k04.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k04.c1",
         "observation_rule": "fact-k04-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -959,7 +959,7 @@
         "assertions": [
           "k04.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k04.c2",
         "observation_rule": "fact-k04-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1035,7 +1035,7 @@
         "assertions": [
           "k04.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k04.c3",
         "observation_rule": "fact-k04-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1111,7 +1111,7 @@
         "assertions": [
           "k04.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k04.c4",
         "observation_rule": "fact-k04-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1187,7 +1187,7 @@
         "assertions": [
           "k05.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k05.c1",
         "observation_rule": "fact-k05-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1267,7 +1267,7 @@
         "assertions": [
           "k05.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k05.c2",
         "observation_rule": "fact-k05-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1343,7 +1343,7 @@
         "assertions": [
           "k05.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k05.c3",
         "observation_rule": "fact-k05-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1423,7 +1423,7 @@
         "assertions": [
           "k05.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k05.c4",
         "observation_rule": "fact-k05-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1507,7 +1507,7 @@
         "assertions": [
           "k06.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k06.c1",
         "observation_rule": "fact-k06-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1583,7 +1583,7 @@
         "assertions": [
           "k06.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k06.c2",
         "observation_rule": "fact-k06-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1672,7 +1672,7 @@
         "assertions": [
           "k06.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k06.c3",
         "observation_rule": "fact-k06-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1749,7 +1749,7 @@
         "assertions": [
           "k07.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k07.c1",
         "observation_rule": "fact-k07-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1829,7 +1829,7 @@
         "assertions": [
           "k07.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k07.c2",
         "observation_rule": "fact-k07-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1905,7 +1905,7 @@
         "assertions": [
           "k07.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k07.c3",
         "observation_rule": "fact-k07-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1981,7 +1981,7 @@
         "assertions": [
           "k08.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k08.c1",
         "observation_rule": "fact-k08-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2057,7 +2057,7 @@
         "assertions": [
           "k08.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k08.c2",
         "observation_rule": "fact-k08-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2137,7 +2137,7 @@
         "assertions": [
           "k08.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k08.c3",
         "observation_rule": "fact-k08-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2213,7 +2213,7 @@
         "assertions": [
           "k09.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k09.c1",
         "observation_rule": "fact-k09-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2293,7 +2293,7 @@
         "assertions": [
           "k09.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k09.c2",
         "observation_rule": "fact-k09-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2373,7 +2373,7 @@
         "assertions": [
           "k09.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k09.c3",
         "observation_rule": "fact-k09-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2470,7 +2470,7 @@
         "assertions": [
           "k09.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k09.c4",
         "observation_rule": "fact-k09-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2547,7 +2547,7 @@
         "assertions": [
           "k10.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k10.c1",
         "observation_rule": "fact-k10-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2627,7 +2627,7 @@
         "assertions": [
           "k10.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k10.c2",
         "observation_rule": "fact-k10-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2711,7 +2711,7 @@
         "assertions": [
           "k10.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k10.c3",
         "observation_rule": "fact-k10-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2791,7 +2791,7 @@
         "assertions": [
           "k11.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k11.c1",
         "observation_rule": "fact-k11-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2867,7 +2867,7 @@
         "assertions": [
           "k11.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k11.c2",
         "observation_rule": "fact-k11-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2943,7 +2943,7 @@
         "assertions": [
           "k11.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k11.c3",
         "observation_rule": "fact-k11-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3019,7 +3019,7 @@
         "assertions": [
           "k11.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k11.c4",
         "observation_rule": "fact-k11-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3095,7 +3095,7 @@
         "assertions": [
           "k12.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k12.c1",
         "observation_rule": "fact-k12-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3171,7 +3171,7 @@
         "assertions": [
           "k12.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k12.c2",
         "observation_rule": "fact-k12-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3251,7 +3251,7 @@
         "assertions": [
           "k12.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k12.c3",
         "observation_rule": "fact-k12-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3335,7 +3335,7 @@
         "assertions": [
           "k12.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k12.c4",
         "observation_rule": "fact-k12-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3411,7 +3411,7 @@
         "assertions": [
           "k13.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k13.c1",
         "observation_rule": "fact-k13-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3487,7 +3487,7 @@
         "assertions": [
           "k13.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k13.c2",
         "observation_rule": "fact-k13-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3563,7 +3563,7 @@
         "assertions": [
           "k13.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k13.c3",
         "observation_rule": "fact-k13-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3639,7 +3639,7 @@
         "assertions": [
           "k13.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k13.c4",
         "observation_rule": "fact-k13-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3715,7 +3715,7 @@
         "assertions": [
           "k14.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k14.c1",
         "observation_rule": "fact-k14-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3794,7 +3794,7 @@
         "assertions": [
           "k14.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k14.c2",
         "observation_rule": "fact-k14-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3870,7 +3870,7 @@
         "assertions": [
           "k14.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k14.c3",
         "observation_rule": "fact-k14-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3950,7 +3950,7 @@
         "assertions": [
           "k15.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k15.c1",
         "observation_rule": "fact-k15-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4029,7 +4029,7 @@
         "assertions": [
           "k15.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k15.c2",
         "observation_rule": "fact-k15-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4105,7 +4105,7 @@
         "assertions": [
           "k15.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k15.c3",
         "observation_rule": "fact-k15-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4181,7 +4181,7 @@
         "assertions": [
           "k15.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k15.c4",
         "observation_rule": "fact-k15-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4262,7 +4262,7 @@
         "assertions": [
           "k16.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k16.c1",
         "observation_rule": "fact-k16-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4341,7 +4341,7 @@
         "assertions": [
           "k16.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k16.c2",
         "observation_rule": "fact-k16-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4422,7 +4422,7 @@
         "assertions": [
           "k16.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k16.c3",
         "observation_rule": "fact-k16-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4499,7 +4499,7 @@
         "assertions": [
           "k16.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k16.c4",
         "observation_rule": "fact-k16-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4575,7 +4575,7 @@
         "assertions": [
           "k17.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k17.c1",
         "observation_rule": "fact-k17-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4655,7 +4655,7 @@
         "assertions": [
           "k17.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k17.c2",
         "observation_rule": "fact-k17-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4731,7 +4731,7 @@
         "assertions": [
           "k17.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k17.c3",
         "observation_rule": "fact-k17-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4807,7 +4807,7 @@
         "assertions": [
           "k17.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k17.c4",
         "observation_rule": "fact-k17-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4883,7 +4883,7 @@
         "assertions": [
           "k18.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k18.c1",
         "observation_rule": "fact-k18-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4960,7 +4960,7 @@
         "assertions": [
           "k18.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k18.c2",
         "observation_rule": "fact-k18-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5038,7 +5038,7 @@
         "assertions": [
           "k18.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k18.c3",
         "observation_rule": "fact-k18-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5115,7 +5115,7 @@
         "assertions": [
           "k18.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k18.c4",
         "observation_rule": "fact-k18-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5192,7 +5192,7 @@
         "assertions": [
           "k19.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k19.c1",
         "observation_rule": "fact-k19-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5273,7 +5273,7 @@
         "assertions": [
           "k19.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k19.c2",
         "observation_rule": "fact-k19-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5351,7 +5351,7 @@
         "assertions": [
           "k19.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k19.c3",
         "observation_rule": "fact-k19-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5432,7 +5432,7 @@
         "assertions": [
           "k20.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k20.c1",
         "observation_rule": "fact-k20-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5520,7 +5520,7 @@
         "assertions": [
           "k20.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k20.c2",
         "observation_rule": "fact-k20-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5609,7 +5609,7 @@
         "assertions": [
           "k20.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k20.c3",
         "observation_rule": "fact-k20-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5690,7 +5690,7 @@
         "assertions": [
           "k21.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k21.c1",
         "observation_rule": "fact-k21-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5766,7 +5766,7 @@
         "assertions": [
           "k21.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k21.c2",
         "observation_rule": "fact-k21-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5842,7 +5842,7 @@
         "assertions": [
           "k21.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k21.c3",
         "observation_rule": "fact-k21-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5922,7 +5922,7 @@
         "assertions": [
           "k22.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k22.c1",
         "observation_rule": "fact-k22-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5998,7 +5998,7 @@
         "assertions": [
           "k22.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k22.c2",
         "observation_rule": "fact-k22-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6075,7 +6075,7 @@
         "assertions": [
           "k22.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k22.c3",
         "observation_rule": "fact-k22-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6152,7 +6152,7 @@
         "assertions": [
           "k23.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k23.c1",
         "observation_rule": "fact-k23-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6232,7 +6232,7 @@
         "assertions": [
           "k23.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k23.c2",
         "observation_rule": "fact-k23-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6312,7 +6312,7 @@
         "assertions": [
           "k23.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k23.c3",
         "observation_rule": "fact-k23-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6393,7 +6393,7 @@
         "assertions": [
           "k24.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k24.c1",
         "observation_rule": "fact-k24-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6473,7 +6473,7 @@
         "assertions": [
           "k24.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k24.c2",
         "observation_rule": "fact-k24-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6557,7 +6557,7 @@
         "assertions": [
           "k24.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k24.c3",
         "observation_rule": "fact-k24-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6633,7 +6633,7 @@
         "assertions": [
           "k25.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k25.c1",
         "observation_rule": "fact-k25-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6717,7 +6717,7 @@
         "assertions": [
           "k25.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k25.c2",
         "observation_rule": "fact-k25-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6793,7 +6793,7 @@
         "assertions": [
           "k26.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k26.c1",
         "observation_rule": "fact-k26-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6876,7 +6876,7 @@
         "assertions": [
           "k26.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k26.c2",
         "observation_rule": "fact-k26-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6954,7 +6954,7 @@
         "assertions": [
           "k26.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k26.c3",
         "observation_rule": "fact-k26-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7035,7 +7035,7 @@
         "assertions": [
           "k27.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k27.c1",
         "observation_rule": "fact-k27-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7113,7 +7113,7 @@
         "assertions": [
           "k27.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k27.c2",
         "observation_rule": "fact-k27-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7192,7 +7192,7 @@
         "assertions": [
           "k27.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k27.c3",
         "observation_rule": "fact-k27-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7277,7 +7277,7 @@
         "assertions": [
           "k28.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k28.c1",
         "observation_rule": "fact-k28-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7353,7 +7353,7 @@
         "assertions": [
           "k28.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k28.c2",
         "observation_rule": "fact-k28-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7433,7 +7433,7 @@
         "assertions": [
           "k28.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k28.c3",
         "observation_rule": "fact-k28-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7510,7 +7510,7 @@
         "assertions": [
           "k29.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k29.c1",
         "observation_rule": "fact-k29-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7603,7 +7603,7 @@
         "assertions": [
           "k29.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k29.c2",
         "observation_rule": "fact-k29-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7696,7 +7696,7 @@
         "assertions": [
           "k29.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k29.c3",
         "observation_rule": "fact-k29-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7773,7 +7773,7 @@
         "assertions": [
           "k29.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k29.c4",
         "observation_rule": "fact-k29-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7850,7 +7850,7 @@
         "assertions": [
           "k30.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k30.c1",
         "observation_rule": "fact-k30-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7930,7 +7930,7 @@
         "assertions": [
           "k30.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k30.c2",
         "observation_rule": "fact-k30-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8006,7 +8006,7 @@
         "assertions": [
           "k30.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k30.c3",
         "observation_rule": "fact-k30-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8083,7 +8083,7 @@
         "assertions": [
           "k31.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k31.c1",
         "observation_rule": "fact-k31-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8166,7 +8166,7 @@
         "assertions": [
           "k31.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k31.c2",
         "observation_rule": "fact-k31-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8247,7 +8247,7 @@
         "assertions": [
           "k31.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "k31.c3",
         "observation_rule": "fact-k31-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8340,7 +8340,7 @@
         "assertions": [
           "t01.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t01.c1",
         "observation_rule": "fact-t01-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8416,7 +8416,7 @@
         "assertions": [
           "t01.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t01.c2",
         "observation_rule": "fact-t01-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8500,7 +8500,7 @@
         "assertions": [
           "t01.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t01.c3",
         "observation_rule": "fact-t01-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8584,7 +8584,7 @@
         "assertions": [
           "t01.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t01.c4",
         "observation_rule": "fact-t01-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8664,7 +8664,7 @@
         "assertions": [
           "t02.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t02.c1",
         "observation_rule": "fact-t02-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8744,7 +8744,7 @@
         "assertions": [
           "t02.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t02.c2",
         "observation_rule": "fact-t02-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8832,7 +8832,7 @@
         "assertions": [
           "t02.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t02.c3",
         "observation_rule": "fact-t02-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8921,7 +8921,7 @@
         "assertions": [
           "t02.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t02.c4",
         "observation_rule": "fact-t02-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9005,7 +9005,7 @@
         "assertions": [
           "t03.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t03.c1",
         "observation_rule": "fact-t03-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9081,7 +9081,7 @@
         "assertions": [
           "t03.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t03.c2",
         "observation_rule": "fact-t03-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9165,7 +9165,7 @@
         "assertions": [
           "t03.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t03.c3",
         "observation_rule": "fact-t03-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9265,7 +9265,7 @@
         "assertions": [
           "t03.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t03.c4",
         "observation_rule": "fact-t03-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9345,7 +9345,7 @@
         "assertions": [
           "t04.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t04.c1",
         "observation_rule": "fact-t04-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9433,7 +9433,7 @@
         "assertions": [
           "t04.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t04.c2",
         "observation_rule": "fact-t04-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9549,7 +9549,7 @@
         "assertions": [
           "t04.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t04.c3",
         "observation_rule": "fact-t04-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9641,7 +9641,7 @@
         "assertions": [
           "t04.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "t04.c4",
         "observation_rule": "fact-t04-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9721,7 +9721,7 @@
         "assertions": [
           "w01.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w01.c1",
         "observation_rule": "fact-w01-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9797,7 +9797,7 @@
         "assertions": [
           "w01.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w01.c2",
         "observation_rule": "fact-w01-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9877,7 +9877,7 @@
         "assertions": [
           "w01.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w01.c3",
         "observation_rule": "fact-w01-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9961,7 +9961,7 @@
         "assertions": [
           "w01.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w01.c4",
         "observation_rule": "fact-w01-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10037,7 +10037,7 @@
         "assertions": [
           "w02.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w02.c1",
         "observation_rule": "fact-w02-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10113,7 +10113,7 @@
         "assertions": [
           "w02.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w02.c2",
         "observation_rule": "fact-w02-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10193,7 +10193,7 @@
         "assertions": [
           "w02.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w02.c3",
         "observation_rule": "fact-w02-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10273,7 +10273,7 @@
         "assertions": [
           "w03.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w03.c1",
         "observation_rule": "fact-w03-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10353,7 +10353,7 @@
         "assertions": [
           "w03.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w03.c2",
         "observation_rule": "fact-w03-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10429,7 +10429,7 @@
         "assertions": [
           "w03.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w03.c3",
         "observation_rule": "fact-w03-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10513,7 +10513,7 @@
         "assertions": [
           "w04.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w04.c1",
         "observation_rule": "fact-w04-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10589,7 +10589,7 @@
         "assertions": [
           "w04.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w04.c2",
         "observation_rule": "fact-w04-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10665,7 +10665,7 @@
         "assertions": [
           "w04.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w04.c3",
         "observation_rule": "fact-w04-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10741,7 +10741,7 @@
         "assertions": [
           "w05.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w05.c1",
         "observation_rule": "fact-w05-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10817,7 +10817,7 @@
         "assertions": [
           "w05.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w05.c2",
         "observation_rule": "fact-w05-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10901,7 +10901,7 @@
         "assertions": [
           "w05.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w05.c3",
         "observation_rule": "fact-w05-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10978,7 +10978,7 @@
         "assertions": [
           "w06.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w06.c1",
         "observation_rule": "fact-w06-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11057,7 +11057,7 @@
         "assertions": [
           "w06.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w06.c2",
         "observation_rule": "fact-w06-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11133,7 +11133,7 @@
         "assertions": [
           "w06.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w06.c3",
         "observation_rule": "fact-w06-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11213,7 +11213,7 @@
         "assertions": [
           "w07.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w07.c1",
         "observation_rule": "fact-w07-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11293,7 +11293,7 @@
         "assertions": [
           "w07.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w07.c2",
         "observation_rule": "fact-w07-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11373,7 +11373,7 @@
         "assertions": [
           "w07.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w07.c3",
         "observation_rule": "fact-w07-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11449,7 +11449,7 @@
         "assertions": [
           "w08.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w08.c1",
         "observation_rule": "fact-w08-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11544,7 +11544,7 @@
         "assertions": [
           "w08.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w08.c2",
         "observation_rule": "fact-w08-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11640,7 +11640,7 @@
         "assertions": [
           "w08.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w08.c3",
         "observation_rule": "fact-w08-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11724,7 +11724,7 @@
         "assertions": [
           "w08.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w08.c4",
         "observation_rule": "fact-w08-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11804,7 +11804,7 @@
         "assertions": [
           "w09.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w09.c1",
         "observation_rule": "fact-w09-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11880,7 +11880,7 @@
         "assertions": [
           "w09.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w09.c2",
         "observation_rule": "fact-w09-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11960,7 +11960,7 @@
         "assertions": [
           "w09.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w09.c3",
         "observation_rule": "fact-w09-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12049,7 +12049,7 @@
         "assertions": [
           "w09.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w09.c4",
         "observation_rule": "fact-w09-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12134,7 +12134,7 @@
         "assertions": [
           "w10.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w10.c1",
         "observation_rule": "fact-w10-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12218,7 +12218,7 @@
         "assertions": [
           "w10.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w10.c2",
         "observation_rule": "fact-w10-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12298,7 +12298,7 @@
         "assertions": [
           "w10.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w10.c3",
         "observation_rule": "fact-w10-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12382,7 +12382,7 @@
         "assertions": [
           "w11.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w11.c1",
         "observation_rule": "fact-w11-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12465,7 +12465,7 @@
         "assertions": [
           "w11.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w11.c2",
         "observation_rule": "fact-w11-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12549,7 +12549,7 @@
         "assertions": [
           "w11.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w11.c3",
         "observation_rule": "fact-w11-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12633,7 +12633,7 @@
         "assertions": [
           "w12.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w12.c1",
         "observation_rule": "fact-w12-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12732,7 +12732,7 @@
         "assertions": [
           "w12.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w12.c2",
         "observation_rule": "fact-w12-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12816,7 +12816,7 @@
         "assertions": [
           "w12.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w12.c3",
         "observation_rule": "fact-w12-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12908,7 +12908,7 @@
         "assertions": [
           "w12.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w12.c4",
         "observation_rule": "fact-w12-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12988,7 +12988,7 @@
         "assertions": [
           "w13.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w13.c1",
         "observation_rule": "fact-w13-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13068,7 +13068,7 @@
         "assertions": [
           "w13.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w13.c2",
         "observation_rule": "fact-w13-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13148,7 +13148,7 @@
         "assertions": [
           "w13.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w13.c3",
         "observation_rule": "fact-w13-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13229,7 +13229,7 @@
         "assertions": [
           "w13.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w13.c4",
         "observation_rule": "fact-w13-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13305,7 +13305,7 @@
         "assertions": [
           "w14.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w14.c1",
         "observation_rule": "fact-w14-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13381,7 +13381,7 @@
         "assertions": [
           "w14.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w14.c2",
         "observation_rule": "fact-w14-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13469,7 +13469,7 @@
         "assertions": [
           "w14.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w14.c3",
         "observation_rule": "fact-w14-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13545,7 +13545,7 @@
         "assertions": [
           "w15.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w15.c1",
         "observation_rule": "fact-w15-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13624,7 +13624,7 @@
         "assertions": [
           "w15.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w15.c2",
         "observation_rule": "fact-w15-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13700,7 +13700,7 @@
         "assertions": [
           "w15.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w15.c3",
         "observation_rule": "fact-w15-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13784,7 +13784,7 @@
         "assertions": [
           "w15.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w15.c4",
         "observation_rule": "fact-w15-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13860,7 +13860,7 @@
         "assertions": [
           "w16.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w16.c1",
         "observation_rule": "fact-w16-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13944,7 +13944,7 @@
         "assertions": [
           "w16.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w16.c2",
         "observation_rule": "fact-w16-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14020,7 +14020,7 @@
         "assertions": [
           "w16.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w16.c3",
         "observation_rule": "fact-w16-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14100,7 +14100,7 @@
         "assertions": [
           "w16.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w16.c4",
         "observation_rule": "fact-w16-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14180,7 +14180,7 @@
         "assertions": [
           "w17.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w17.c1",
         "observation_rule": "fact-w17-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14256,7 +14256,7 @@
         "assertions": [
           "w17.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w17.c2",
         "observation_rule": "fact-w17-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14332,7 +14332,7 @@
         "assertions": [
           "w17.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w17.c3",
         "observation_rule": "fact-w17-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14413,7 +14413,7 @@
         "assertions": [
           "w17.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w17.c4",
         "observation_rule": "fact-w17-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14496,7 +14496,7 @@
         "assertions": [
           "w18.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w18.c1",
         "observation_rule": "fact-w18-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14572,7 +14572,7 @@
         "assertions": [
           "w18.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w18.c2",
         "observation_rule": "fact-w18-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14652,7 +14652,7 @@
         "assertions": [
           "w18.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w18.c3",
         "observation_rule": "fact-w18-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14734,7 +14734,7 @@
         "assertions": [
           "w18.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w18.c4",
         "observation_rule": "fact-w18-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14824,7 +14824,7 @@
         "assertions": [
           "w19.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w19.c1",
         "observation_rule": "fact-w19-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14904,7 +14904,7 @@
         "assertions": [
           "w19.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w19.c2",
         "observation_rule": "fact-w19-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14988,7 +14988,7 @@
         "assertions": [
           "w19.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w19.c3",
         "observation_rule": "fact-w19-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15068,7 +15068,7 @@
         "assertions": [
           "w19.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w19.c4",
         "observation_rule": "fact-w19-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15152,7 +15152,7 @@
         "assertions": [
           "w20.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w20.c1",
         "observation_rule": "fact-w20-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15232,7 +15232,7 @@
         "assertions": [
           "w20.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w20.c2",
         "observation_rule": "fact-w20-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15316,7 +15316,7 @@
         "assertions": [
           "w20.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w20.c3",
         "observation_rule": "fact-w20-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15396,7 +15396,7 @@
         "assertions": [
           "w21.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w21.c1",
         "observation_rule": "fact-w21-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15481,7 +15481,7 @@
         "assertions": [
           "w21.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w21.c2",
         "observation_rule": "fact-w21-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15586,7 +15586,7 @@
         "assertions": [
           "w22.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w22.c1",
         "observation_rule": "fact-w22-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15666,7 +15666,7 @@
         "assertions": [
           "w22.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w22.c2",
         "observation_rule": "fact-w22-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15746,7 +15746,7 @@
         "assertions": [
           "w22.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w22.c3",
         "observation_rule": "fact-w22-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15834,7 +15834,7 @@
         "assertions": [
           "w22.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w22.c4",
         "observation_rule": "fact-w22-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15918,7 +15918,7 @@
         "assertions": [
           "w23.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w23.c1",
         "observation_rule": "fact-w23-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16002,7 +16002,7 @@
         "assertions": [
           "w23.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w23.c2",
         "observation_rule": "fact-w23-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16086,7 +16086,7 @@
         "assertions": [
           "w23.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w23.c3",
         "observation_rule": "fact-w23-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16162,7 +16162,7 @@
         "assertions": [
           "w24.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w24.c1",
         "observation_rule": "fact-w24-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16242,7 +16242,7 @@
         "assertions": [
           "w24.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w24.c2",
         "observation_rule": "fact-w24-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16334,7 +16334,7 @@
         "assertions": [
           "w24.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w24.c3",
         "observation_rule": "fact-w24-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16418,7 +16418,7 @@
         "assertions": [
           "w24.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w24.c4",
         "observation_rule": "fact-w24-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16498,7 +16498,7 @@
         "assertions": [
           "w25.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w25.c1",
         "observation_rule": "fact-w25-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16578,7 +16578,7 @@
         "assertions": [
           "w25.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w25.c2",
         "observation_rule": "fact-w25-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16662,7 +16662,7 @@
         "assertions": [
           "w25.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w25.c3",
         "observation_rule": "fact-w25-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16744,7 +16744,7 @@
         "assertions": [
           "w25.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w25.c4",
         "observation_rule": "fact-w25-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16826,7 +16826,7 @@
         "assertions": [
           "w26.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w26.c1",
         "observation_rule": "fact-w26-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16907,7 +16907,7 @@
         "assertions": [
           "w26.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w26.c2",
         "observation_rule": "fact-w26-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16987,7 +16987,7 @@
         "assertions": [
           "w26.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w26.c3",
         "observation_rule": "fact-w26-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17071,7 +17071,7 @@
         "assertions": [
           "w26.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w26.c4",
         "observation_rule": "fact-w26-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17167,7 +17167,7 @@
         "assertions": [
           "w27.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w27.c1",
         "observation_rule": "fact-w27-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17267,7 +17267,7 @@
         "assertions": [
           "w27.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w27.c2",
         "observation_rule": "fact-w27-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17351,7 +17351,7 @@
         "assertions": [
           "w27.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w27.c3",
         "observation_rule": "fact-w27-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17435,7 +17435,7 @@
         "assertions": [
           "w28.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w28.c1",
         "observation_rule": "fact-w28-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17519,7 +17519,7 @@
         "assertions": [
           "w28.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w28.c2",
         "observation_rule": "fact-w28-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17611,7 +17611,7 @@
         "assertions": [
           "w28.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w28.c3",
         "observation_rule": "fact-w28-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17687,7 +17687,7 @@
         "assertions": [
           "w29.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w29.c1",
         "observation_rule": "fact-w29-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17764,7 +17764,7 @@
         "assertions": [
           "w29.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w29.c2",
         "observation_rule": "fact-w29-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17870,7 +17870,7 @@
         "assertions": [
           "w29.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w29.c3",
         "observation_rule": "fact-w29-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17962,7 +17962,7 @@
         "assertions": [
           "w30.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w30.c1",
         "observation_rule": "fact-w30-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18063,7 +18063,7 @@
         "assertions": [
           "w30.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w30.c2",
         "observation_rule": "fact-w30-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18152,7 +18152,7 @@
         "assertions": [
           "w31.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w31.c1",
         "observation_rule": "fact-w31-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18232,7 +18232,7 @@
         "assertions": [
           "w31.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w31.c2",
         "observation_rule": "fact-w31-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18316,7 +18316,7 @@
         "assertions": [
           "w31.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w31.c3",
         "observation_rule": "fact-w31-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18404,7 +18404,7 @@
         "assertions": [
           "w31.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w31.c4",
         "observation_rule": "fact-w31-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18488,7 +18488,7 @@
         "assertions": [
           "w32.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w32.c1",
         "observation_rule": "fact-w32-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18568,7 +18568,7 @@
         "assertions": [
           "w32.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w32.c2",
         "observation_rule": "fact-w32-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18648,7 +18648,7 @@
         "assertions": [
           "w32.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w32.c3",
         "observation_rule": "fact-w32-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18736,7 +18736,7 @@
         "assertions": [
           "w32.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w32.c4",
         "observation_rule": "fact-w32-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18817,7 +18817,7 @@
         "assertions": [
           "w33.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w33.c1",
         "observation_rule": "fact-w33-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18895,7 +18895,7 @@
         "assertions": [
           "w33.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w33.c2",
         "observation_rule": "fact-w33-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18979,7 +18979,7 @@
         "assertions": [
           "w33.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w33.c3",
         "observation_rule": "fact-w33-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19071,7 +19071,7 @@
         "assertions": [
           "w33.c4-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w33.c4",
         "observation_rule": "fact-w33-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19170,7 +19170,7 @@
         "assertions": [
           "w34.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w34.c1",
         "observation_rule": "fact-w34-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19269,7 +19269,7 @@
         "assertions": [
           "w34.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w34.c2",
         "observation_rule": "fact-w34-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19369,7 +19369,7 @@
         "assertions": [
           "w34.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w34.c3",
         "observation_rule": "fact-w34-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19451,7 +19451,7 @@
         "assertions": [
           "w35.c1-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w35.c1",
         "observation_rule": "fact-w35-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19527,7 +19527,7 @@
         "assertions": [
           "w35.c2-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w35.c2",
         "observation_rule": "fact-w35-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19619,7 +19619,7 @@
         "assertions": [
           "w35.c3-done"
         ],
-        "catalog_revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
         "evidence_requirement": "w35.c3",
         "observation_rule": "fact-w35-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19667,10 +19667,10 @@
     "card_count": 240,
     "operation_count": 70,
     "path": "challenges/challenges.yaml",
-    "revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+    "revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
     "schema": "cinder-typhoon.challenge-delivery/v2",
     "score_total": 39200,
-    "sha256": "35d2308e33356711324593608835609f9e01502ce8b6dca3df669b1f4b5b835d"
+    "sha256": "7d3c1a77a51184ee90f2b343de5d575cb2a25d361dc02899aff1fade6bbc7f9c"
   },
   "read_only_review_source": {
     "path": "build/card-coverage/read-only-reviews.json",

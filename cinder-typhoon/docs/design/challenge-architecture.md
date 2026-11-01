@@ -404,8 +404,10 @@ player-experience contract. The briefs cover sixteen training challenges,
 Each document follows the [shared template](challenges/TEMPLATE.md): a
 player-facing description, story purpose, prerequisites and starting position,
 completion and downstream use, and difficulty/source references. All 240 cards
-now have complete technical drafts. The inherited empty hint headings are not a
-plan to deliver hints.
+now have complete technical drafts. The inherited hint headings stay empty to
+keep operator briefs separate from participant delivery; all 720 graduated
+hints are versioned in the phase hint catalogs and released through the
+facilitator hint-delivery manifest.
 Discoverability must be authored through
 in-world records and ordinary interfaces under the
 [experience contract](player-experience.md#how-choices-become-legible).

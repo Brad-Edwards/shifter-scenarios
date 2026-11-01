@@ -10,6 +10,7 @@
     "immutable",
     "source_commit",
     "challenge_delivery",
+    "hint_delivery",
     "artifact_digests",
     "deployments"
   ],
@@ -30,6 +31,20 @@
         "operation_count": {"const": 70},
         "card_count": {"const": 240},
         "score_total": {"type": "integer", "minimum": 1}
+      }
+    },
+    "hint_delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "schema", "revision", "sha256", "operation_count", "card_count", "hint_count"],
+      "properties": {
+        "path": {"const": "build/hint-delivery/manifest.json"},
+        "schema": {"const": "cinder-typhoon.hint-delivery/v1"},
+        "revision": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "operation_count": {"const": 70},
+        "card_count": {"const": 240},
+        "hint_count": {"const": 720}
       }
     },
     "artifact_digests": {

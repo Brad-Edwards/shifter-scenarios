@@ -66,9 +66,10 @@ challenge mechanisms or ownership decisions.
   event grants permissions. The approved execution boundary allows native
   clients to use separately earned identities; downstream mechanisms still need
   full design and acceptance tests.
-- The experience and calibration plans now require in-world discovery instead
-  of published solution hints, difficulty announcements inside the fiction, or
-  score-triggered access. Inherited empty hint headings remain empty.
+- The experience and calibration plans require in-world discovery instead of
+  solution catalogs, difficulty announcements inside the fiction, or
+  score-triggered access. Inherited brief-local hint headings remain empty;
+  optional graduated hints are maintained in the separate delivery catalogs.
 - The production order now follows the user's design-first, progressively
   hand-built golden-range sequence; isolated pre-design prototypes are not a
   substitute.

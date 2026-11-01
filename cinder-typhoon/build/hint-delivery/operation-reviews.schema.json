@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/hint-operation-reviews.schema.json",
+  "title": "Cinder Typhoon operation hint sample reviews",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "operations"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "operations": {
+      "type": "object",
+      "minProperties": 70,
+      "maxProperties": 70,
+      "propertyNames": {"pattern": "^[TKW][0-9]{2}$"},
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sample_card", "status", "checks", "rationale"],
+        "properties": {
+          "sample_card": {"type": "string", "pattern": "^[TKW][0-9]{2}\\.[0-9]+$"},
+          "status": {"const": "reviewed"},
+          "checks": {
+            "type": "array",
+            "minItems": 5,
+            "maxItems": 5,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "in_world_orientation",
+                "technique_boundary",
+                "diagnostic_next_step",
+                "no_sensitive_answer",
+                "references_current"
+              ]
+            }
+          },
+          "rationale": {"type": "string", "minLength": 80}
+        }
+      }
+    }
+  }
+}
