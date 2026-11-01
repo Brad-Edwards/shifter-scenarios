@@ -65,7 +65,7 @@ install -m 0700 "$script_root/run-golden-acceptance-remote.sh" "$transfer/run-go
 gcloud compute machine-images create "$machine_image" \
   --project "$project" --account "$account" \
   --source-instance "$source_instance" --source-instance-zone "$zone" \
-  --labels managed-by=shifter-scenarios,purpose=issue-verification,issue=268 >/dev/null
+  --description "Temporary shifter-scenarios issue 268 verification image" >/dev/null
 image_created=1
 gcloud compute instances create "$instance" \
   --project "$project" --zone "$zone" --account "$account" \
