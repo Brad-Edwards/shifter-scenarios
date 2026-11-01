@@ -1,4 +1,4 @@
-# SDL and design readiness review — 23 September 2026
+# SDL and design readiness review: 23 September 2026
 
 This is the 23 September snapshot. For subsequent Training changes and current
 validation limits, see the [25 September Training gate](training-readiness.md).
