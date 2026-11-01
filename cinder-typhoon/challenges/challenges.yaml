@@ -1,3 +1,3474 @@
-# Template delivery catalog, keyed by flag_id when populated.
-# Existing authoring briefs remain in docs/design/challenges/.
-challenges: []
+schema: cinder-typhoon.challenge-delivery/v2
+revision: 049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380
+scoring:
+  model: static
+  tier_points:
+    easy: 50
+    medium: 100
+    hard: 200
+    expert: 400
+    elite: 800
+  max_score: 39200
+  max_out: Complete all 240 cards; hints do not reduce score.
+  hint_policy:
+    release: on_request
+    levels: 3
+    penalty: 0
+summary:
+  operation_count: 70
+  card_count: 240
+phases:
+  training:
+    title: Training
+    operations:
+    - id: T01
+      chapter: Workbench
+      title: First contact
+      allocation:
+        easy: 4
+      cards:
+      - id: T01.1
+        title: The copy nobody deleted
+        description: The last training operator left an empty handover note and an unfinished delivery.
+          Recover the missing handover from the supplied workspace.
+        difficulty: easy
+        points: 50
+        hints:
+        - The workbench landing page names the data source for the initial handover. Check what the training
+          dispatch site exposes at its root before looking further.
+        - The resource is accessible without credentials. Look for an endpoint that serves structured
+          data rather than a form.
+        - Fetch the handover endpoint listed on the landing page. The response structure names the next
+          resource you need.
+        completion:
+          mode: automatic_range_evidence
+      - id: T01.2
+        title: Off the menu
+        description: The training dispatch site removed its rehearsal page from the menu. Find the page
+          and recover the delivery amendment the public notice omits.
+        difficulty: easy
+        points: 50
+        hints:
+        - The dispatch site has a documented rehearsal path that was removed from the public navigation.
+          Historical references in client-side code can expose paths that are no longer linked.
+        - Look for JavaScript or markup that references an unlisted route. Browser developer tools or
+          a simple page source review will surface it.
+        - Inspect the dispatch site's static resources for route strings that do not appear in the visible
+          navigation. One of them still responds.
+        completion:
+          mode: automatic_range_evidence
+      - id: T01.3
+        title: A token with a job
+        description: Recover the retired courier client's usable access and retrieve the sealed manifest
+          assigned to that courier.
+        difficulty: easy
+        points: 50
+        hints:
+        - The handover names a courier service. The courier client's credentials are somewhere on the
+          workstation or in its session history.
+        - Look for stored credentials in the workstation's standard locations for application sessions
+          and authentication tokens.
+        - Check the local credential store for a token bound to the courier's service hostname. The handover
+          names the host.
+        completion:
+          mode: automatic_range_evidence
+      - id: T01.4
+        title: The helper has another job
+        description: Make the dispatch diagnostic helper reveal the internal delivery summary that its
+          ordinary report leaves out.
+        difficulty: easy
+        points: 50
+        hints:
+        - The local workbench helper accepts diagnostic input. The handover or the helper's documentation
+          names what inputs it accepts and what it produces beyond a normal summary.
+        - The helper's interface accepts more than one content type. A non-standard input triggers a different
+          code path.
+        - Submit a sample from the handover to the helper using the input type the handover says the helper
+          was built to process. Read the full response.
+        completion:
+          mode: automatic_range_evidence
+    - id: T02
+      chapter: Accounts
+      title: Someone can log in
+      allocation:
+        easy: 3
+        medium: 1
+      cards:
+      - id: T02.1
+        title: An account by any other response
+        description: Identify the active rehearsal account and recover the account-bound case reference
+          exposed by the identity desk.
+        difficulty: easy
+        points: 50
+        hints:
+        - The identity desk has a directory of active accounts. The rehearsal account appears in the directory
+          under its own entry.
+        - The directory exposes account metadata that includes enough information to identify the rehearsal
+          account's role and its recovery state.
+        - Query the identity desk's directory endpoint and look for the account whose role matches the
+          one named in the handover.
+        completion:
+          mode: automatic_range_evidence
+      - id: T02.2
+        title: Hidden on the page
+        description: The identity desk's public directory hides rehearsal assignments from visitors. Recover
+          the private assignment and associated staff detail it should not expose.
+        difficulty: easy
+        points: 50
+        hints:
+        - The identity desk's public directory page hides some entries from the default view. The underlying
+          data source includes more than the UI shows.
+        - The directory data is served from an API endpoint that does not apply the same visibility filter
+          as the HTML view.
+        - Fetch the directory API endpoint directly and look for the rehearsal account that is absent
+          from the rendered page.
+        completion:
+          mode: automatic_range_evidence
+      - id: T02.3
+        title: Recovery is another way in
+        description: Use the identity evidence you recovered to take control of the rehearsal account
+          through its recovery workflow and retrieve its private handover.
+        difficulty: easy
+        points: 50
+        hints:
+        - The identity evidence you recovered includes the information needed to prove ownership without
+          the original password. The identity desk has a recovery path for exactly this situation.
+        - Look for a credential recovery flow that accepts identity proof rather than a password. The
+          evidence you have is the required proof.
+        - Use the recovery endpoint on the identity desk with the account identifier and the evidence
+          token you recovered. Read what it issues.
+        completion:
+          mode: automatic_range_evidence
+      - id: T02.4
+        title: Someone else's assignment
+        description: Your recovered account can list its own assignments. Obtain the other operator's
+          sealed rehearsal brief through the assignment service.
+        difficulty: medium
+        points: 100
+        hints:
+        - Your recovered account belongs to an assignment. The identity desk or the workbench can show
+          you what that assignment contains.
+        - The assignment record names one or more tasks that belong to your recovered account. Look for
+          a resource listing endpoint.
+        - Query the assignment resource linked in your recovered session. One of the listed tasks belongs
+          to a different account.
+        completion:
+          mode: automatic_range_evidence
+    - id: T03
+      chapter: Developer artifacts
+      title: Left in the checkout
+      allocation:
+        easy: 3
+        medium: 1
+      cards:
+      - id: T03.1
+        title: Deleted from the checkout
+        description: Recover the missing delivery fixture named in the training package's review note
+          and identify the behavior it covered.
+        difficulty: easy
+        points: 50
+        hints:
+        - The delivery fixture is named in the handover, but the file is not present at its documented
+          path. Version-control history for the checkout holds deleted content.
+        - Deleted files remain in git history. Standard git commands can recover content that was removed
+          from the working tree but not from the repository.
+        - Use git log and git show to find the commit that removed the fixture file and recover its contents.
+        completion:
+          mode: automatic_range_evidence
+      - id: T03.2
+        title: Verbose enough to publish
+        description: Recover the release access exposed by the failed training build and retrieve the
+          protected rehearsal-channel manifest.
+        difficulty: easy
+        points: 50
+        hints:
+        - The failed test run produced verbose output. CI logs for failed jobs often expose internal paths,
+          tokens, or configuration that would not appear in a success.
+        - Look for credential or token material in the CI job log for the failed build. Verbose error
+          output sometimes includes authentication material bound to the build environment.
+        - Fetch the log for the failed CI run referenced in the handover. A token that appears in the
+          error output has a specific scope — read what resource it authorizes.
+        completion:
+          mode: automatic_range_evidence
+      - id: T03.3
+        title: What installation really runs
+        description: Inspect the supplied training package without installing it. Recover the extra action
+          installation would trigger, including the data involved and its destination.
+        difficulty: easy
+        points: 50
+        hints:
+        - The supplied training package is an archive that can be inspected without running it. Its structure
+          names what it does.
+        - Inspect the package manifest and its entry point source. The exports describe what the package
+          does when installed.
+        - Unpack the package archive and read its package.json and main module. The exports tell you what
+          the package produces when called.
+        completion:
+          mode: automatic_range_evidence
+      - id: T03.4
+        title: A release they will consume
+        description: Deliver a compatible training formatter that adds Cinder's rehearsal marker to the
+          intended consumer's delivery report.
+        difficulty: medium
+        points: 100
+        hints:
+        - The rehearsal endpoint accepts a compatible package and runs it against a named tenant. The
+          existing package gives you the interface contract.
+        - Build a package that implements the same interface as the supplied one but adds the diagnostic
+          output the handover requests. Publish it before submitting it to the rehearsal.
+        - Publish a new package version that satisfies the interface contract and adds the extra field
+          named in the handover. Then invoke the rehearsal endpoint with that version and the target tenant.
+        completion:
+          mode: automatic_range_evidence
+    - id: T04
+      chapter: State
+      title: Trust the instrument
+      allocation:
+        easy: 2
+        medium: 2
+      cards:
+      - id: T04.1
+        title: Which value is real
+        description: Read the supplied training-tank observation and recover how much water it actually
+          contains, distinguishing the measurement from the requested level.
+        difficulty: easy
+        points: 50
+        hints:
+        - The training tank produces observation readings. The observation record contains multiple values;
+          only one represents the current physical state of the tank.
+        - Compare the observation fields with the sensor specification in the handover. The spec identifies
+          which measurement is the authoritative current reading.
+        - Read the observation record and the sensor spec. The field whose units match the spec's primary
+          measurement is the authoritative value.
+        completion:
+          mode: automatic_range_evidence
+      - id: T04.2
+        title: The light behind the number
+        description: Decode the supplied controller status capture and identify the condition preventing
+          the practice outlet from moving.
+        difficulty: easy
+        points: 50
+        hints:
+        - The controller status capture is encoded. The handover includes the encoding specification.
+        - The encoding is a standard binary format described in the handover. Decode each field according
+          to the field map in the spec.
+        - Apply the byte layout from the handover's controller status spec to the capture bytes. The decoded
+          field at the named offset gives the current mode identifier.
+        completion:
+          mode: automatic_range_evidence
+      - id: T04.3
+        title: A request is not a movement
+        description: Move the specified bounded amount of water through the training outlet and verify
+          the transfer from the tank's observations.
+        difficulty: medium
+        points: 100
+        hints:
+        - The control interface accepts bounded release commands. The handover specifies the target amount
+          and the command format.
+        - The release command requires a signed request that binds the amount to the current session.
+          Look for the signing mechanism in the handover or the client documentation.
+        - Construct a release command for the specified amount using the session credential and the request
+          format in the handover. Submit it to the control endpoint and confirm the acceptance receipt.
+        completion:
+          mode: automatic_range_evidence
+      - id: T04.4
+        title: Yesterday's green light
+        description: The training report says the latest outlet test succeeded, but the observations disagree.
+          Determine what actually happened during this attempt and explain the discrepancy through the
+          supplied evidence.
+        difficulty: medium
+        points: 100
+        hints:
+        - The training report states that the outlet test passed. The independent physical record of the
+          test result may disagree.
+        - Look for the instrument or audit record that independently recorded the outlet test outcome.
+          It is a different data source than the report.
+        - Query the instrument record for the outlet named in the report. Compare its value for the test
+          period with what the report claims.
+        completion:
+          mode: automatic_range_evidence
+    operation_count: 4
+    card_count: 16
+    score_total: 1000
+  keplerops:
+    title: KeplerOps
+    operations:
+    - id: K01
+      chapter: Borrowed desk
+      title: Desk drawer
+      allocation:
+        easy: 4
+      cards:
+      - id: K01.1
+        title: The developer left a way back
+        description: The workstation is yours, but the FieldKest repositories still expect an identity.
+          Recover the developer's usable repository access and retrieve the current project handover.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K01.1 — orientation to the relevant system]'
+        - '[hint 2 for K01.1 — class of boundary or technique]'
+        - '[hint 3 for K01.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K01.2
+        title: The tab that survived
+        description: The developer closed the support portal before leaving. Recover the unfinished ARWC
+          conversation retained by the browser.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K01.2 — orientation to the relevant system]'
+        - '[hint 2 for K01.2 — class of boundary or technique]'
+        - '[hint 3 for K01.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K01.3
+        title: Outside the working folder
+        description: A release review refers to a work file missing from the checkout. Find the developer's
+          exposed copy and recover the unresolved review comments.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K01.3 — orientation to the relevant system]'
+        - '[hint 2 for K01.3 — class of boundary or technique]'
+        - '[hint 3 for K01.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K01.4
+        title: Put it on the workbench
+        description: The local FieldKest helper has an unfinished support-report job. Make it produce
+          a fresh inspection summary from the developer's supplied sample, with that sample's asset and
+          revision correctly represented.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K01.4 — orientation to the relevant system]'
+        - '[hint 2 for K01.4 — class of boundary or technique]'
+        - '[hint 3 for K01.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K02
+      chapter: Borrowed desk
+      title: The first green report
+      allocation:
+        easy: 2
+        medium: 1
+      cards:
+      - id: K02.1
+        title: The missing fixture
+        description: The report test has been failing since its reference fixture disappeared. Recover
+          the fixture from the development artifacts so the intended report is visible again.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K02.1 — orientation to the relevant system]'
+        - '[hint 2 for K02.1 — class of boundary or technique]'
+        - '[hint 3 for K02.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K02.2
+        title: An input outside its lane
+        description: The test importer is supposed to accept only job inputs. Make it expose the separate
+          review note that the ordinary test view withholds.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K02.2 — orientation to the relevant system]'
+        - '[hint 2 for K02.2 — class of boundary or technique]'
+        - '[hint 3 for K02.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K02.3
+        title: Green, with our changes
+        description: Change the report produced by the test job while keeping the interface its caller
+          expects. The support engineer should receive Cinder's version with a successful job result.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K02.3 — orientation to the relevant system]'
+        - '[hint 2 for K02.3 — class of boundary or technique]'
+        - '[hint 3 for K02.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K03
+      chapter: Borrowed desk
+      title: Quiet callback
+      allocation:
+        medium: 1
+        hard: 2
+      cards:
+      - id: K03.1
+        title: Our predecessor's desk
+        description: Someone from Cinder worked this lead before you. Recover the staging artifact buried
+          in their retained document and identify the collection it belongs to.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K03.1 — orientation to the relevant system]'
+        - '[hint 2 for K03.1 — class of boundary or technique]'
+        - '[hint 3 for K03.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K03.2
+        title: The script inside the script
+        description: The recovered staging material conceals another stage. Reconstruct the usable script
+          and recover the instructions needed to understand what the earlier operator collected.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K03.2 — orientation to the relevant system]'
+        - '[hint 2 for K03.2 — class of boundary or technique]'
+        - '[hint 3 for K03.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K03.3
+        title: Finish the callback
+        description: Reconstruct the earlier operation's callback configuration and recover its lost collection.
+          Find out what it learned about the unresolved ARWC maintenance ticket.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K03.3 — orientation to the relevant system]'
+        - '[hint 2 for K03.3 — class of boundary or technique]'
+        - '[hint 3 for K03.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K04
+      chapter: Borrowed desk
+      title: The native indexer
+      allocation:
+        hard: 1
+        expert: 1
+        elite: 2
+      cards:
+      - id: K04.1
+        title: A bundle with consequences
+        description: The support indexer treats uploaded bundles as routine work. Construct a bundle that
+          causes a controlled change beyond the object it should be allowed to affect.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K04.1 — orientation to the relevant system]'
+        - '[hint 2 for K04.1 — class of boundary or technique]'
+        - '[hint 3 for K04.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K04.2
+        title: Read past the index
+        description: Use the compromised indexing behavior to recover protected runtime information that
+          an ordinary bundle cannot see.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for K04.2 — orientation to the relevant system]'
+        - '[hint 2 for K04.2 — class of boundary or technique]'
+        - '[hint 3 for K04.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K04.3
+        title: Control the allocation
+        description: The indexer still restricts what your corrupted object can influence. Establish a
+          controlled write capability under those restrictions and demonstrate it against the designated
+          protected state.
+        difficulty: elite
+        points: 800
+        hints:
+        - '[hint 1 for K04.3 — orientation to the relevant system]'
+        - '[hint 2 for K04.3 — class of boundary or technique]'
+        - '[hint 3 for K04.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K04.4
+        title: The exception queue
+        description: Turn the indexer compromise into execution under its service identity. Recover the
+          release-exception queue the support engineer has been trying to clear.
+        difficulty: elite
+        points: 800
+        hints:
+        - '[hint 1 for K04.4 — orientation to the relevant system]'
+        - '[hint 2 for K04.4 — class of boundary or technique]'
+        - '[hint 3 for K04.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K05
+      chapter: Package line
+      title: What the customer installs
+      allocation:
+        easy: 2
+        medium: 2
+      cards:
+      - id: K05.1
+        title: Speak the package's language
+        description: Find the package interface used by the ARWC connector and make its documented example
+          produce a valid result.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K05.1 — orientation to the relevant system]'
+        - '[hint 2 for K05.1 — class of boundary or technique]'
+        - '[hint 3 for K05.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K05.2
+        title: The version they kept
+        description: The visible package listing skips an older release mentioned in the support ticket.
+          Recover the retained version record and its maintenance note.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K05.2 — orientation to the relevant system]'
+        - '[hint 2 for K05.2 — class of boundary or technique]'
+        - '[hint 3 for K05.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K05.3
+        title: Two manifests disagree
+        description: The release manifest and the customer's recorded selection do not describe the same
+          dependency. Reconcile the two and recover the exact discrepancy.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K05.3 — orientation to the relevant system]'
+        - '[hint 2 for K05.3 — class of boundary or technique]'
+        - '[hint 3 for K05.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K05.4
+        title: Selection has consequences
+        description: Demonstrate which dependency the check consumer really chooses from the available
+          candidates. The answer must come from consumed behavior, not the release label.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K05.4 — orientation to the relevant system]'
+        - '[hint 2 for K05.4 — class of boundary or technique]'
+        - '[hint 3 for K05.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K06
+      chapter: Package line
+      title: House package
+      allocation:
+        medium: 3
+      cards:
+      - id: K06.1
+        title: House credentials
+        description: The importer can retrieve material the developer cannot read directly. Recover usable
+          authority over the release channel consumed by FieldKest customers.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K06.1 — orientation to the relevant system]'
+        - '[hint 2 for K06.1 — class of boundary or technique]'
+        - '[hint 3 for K06.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K06.2
+        title: A private package in the wrong view
+        description: Your publication identity still cannot read the private support package. Cross the
+          package-view boundary and recover its protected contents.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K06.2 — orientation to the relevant system]'
+        - '[hint 2 for K06.2 — class of boundary or technique]'
+        - '[hint 3 for K06.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K06.3
+        title: The rehearsal consumer
+        description: Make the isolated test consumer run your compatible package behavior and return its
+          protected rehearsal result.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K06.3 — orientation to the relevant system]'
+        - '[hint 2 for K06.3 — class of boundary or technique]'
+        - '[hint 3 for K06.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K07
+      chapter: Package line
+      title: One request too many
+      allocation:
+        medium: 1
+        hard: 1
+        expert: 1
+      cards:
+      - id: K07.1
+        title: What the inspector forwards
+        description: Recover the inspector's restricted transaction record and determine how a normal
+          package request reaches its downstream component.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K07.1 — orientation to the relevant system]'
+        - '[hint 2 for K07.1 — class of boundary or technique]'
+        - '[hint 3 for K07.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K07.2
+        title: One request becomes another
+        description: Construct input that causes the inspection components to disagree about the request
+          they are processing. Demonstrate the disagreement with a controlled downstream effect.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K07.2 — orientation to the relevant system]'
+        - '[hint 2 for K07.2 — class of boundary or technique]'
+        - '[hint 3 for K07.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K07.3
+        title: The protected inspection
+        description: Use the framing capability to perform the inspector's protected package action and
+          recover its restricted assessment.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for K07.3 — orientation to the relevant system]'
+        - '[hint 2 for K07.3 — class of boundary or technique]'
+        - '[hint 3 for K07.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K08
+      chapter: Package line
+      title: Four keys, one entitlement
+      allocation:
+        medium: 1
+        hard: 2
+      cards:
+      - id: K08.1
+        title: The old entitlement
+        description: FieldKest still recognizes an old entitlement format. Recover its protected compatibility
+          record and determine what the checker considers an entitlement.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K08.1 — orientation to the relevant system]'
+        - '[hint 2 for K08.1 — class of boundary or technique]'
+        - '[hint 3 for K08.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K08.2
+        title: The missing encryption context
+        description: Recover the cryptographic context needed to reproduce the legacy entitlement check
+          for the supplied record.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K08.2 — orientation to the relevant system]'
+        - '[hint 2 for K08.2 — class of boundary or technique]'
+        - '[hint 3 for K08.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K08.3
+        title: An entitlement of our choosing
+        description: Create an alternative entitlement the legacy checker accepts while preserving the
+          required customer and feature binding.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K08.3 — orientation to the relevant system]'
+        - '[hint 2 for K08.3 — class of boundary or technique]'
+        - '[hint 3 for K08.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K09
+      chapter: Build and preview
+      title: Runner diary
+      allocation:
+        easy: 2
+        medium: 2
+      cards:
+      - id: K09.1
+        title: A runner tells on itself
+        description: The failed build's public summary omits its useful details. Recover the retained
+          runner log and the release-dossier reference it exposes.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K09.1 — orientation to the relevant system]'
+        - '[hint 2 for K09.1 — class of boundary or technique]'
+        - '[hint 3 for K09.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K09.2
+        title: The artifact without a link
+        description: A completed job recorded an artifact that the current results page does not list.
+          Recover that omitted artifact and its build revision.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K09.2 — orientation to the relevant system]'
+        - '[hint 2 for K09.2 — class of boundary or technique]'
+        - '[hint 3 for K09.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K09.3
+        title: A job input with reach
+        description: Make the test job consume a support input outside the collection its ordinary form
+          allows. Recover the restricted review output it produces.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K09.3 — orientation to the relevant system]'
+        - '[hint 2 for K09.3 — class of boundary or technique]'
+        - '[hint 3 for K09.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K09.4
+        title: Run in the runner
+        description: Use the review job to retrieve Build Operations' private runner note and verify the
+          build-record connection it describes.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K09.4 — orientation to the relevant system]'
+        - '[hint 2 for K09.4 — class of boundary or technique]'
+        - '[hint 3 for K09.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K10
+      chapter: Build and preview
+      title: Preview belongs to whom
+      allocation:
+        medium: 2
+        hard: 1
+      cards:
+      - id: K10.1
+        title: Whose preview is this
+        description: Recover the restricted preview association for the supplied support attachment. Establish
+          which document identity the viewer believes it is presenting.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K10.1 — orientation to the relevant system]'
+        - '[hint 2 for K10.1 — class of boundary or technique]'
+        - '[hint 3 for K10.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K10.2
+        title: Two inputs, one identity
+        description: Find distinct preview inputs that the viewer treats as the same protected document
+          identity. Demonstrate the ambiguity with the supplied rehearsal documents.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K10.2 — orientation to the relevant system]'
+        - '[hint 2 for K10.2 — class of boundary or technique]'
+        - '[hint 3 for K10.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K10.3
+        title: The other document's contents
+        description: Deliver a crafted support document that crosses the viewer's intended isolation boundary
+          and recovers the protected preview content.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K10.3 — orientation to the relevant system]'
+        - '[hint 2 for K10.3 — class of boundary or technique]'
+        - '[hint 3 for K10.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K11
+      chapter: Build and preview
+      title: The compiler knows
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: K11.1
+        title: Where the policy begins
+        description: Recover the policy program embedded in the retained rules compiler and identify the
+          input it actually evaluates.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K11.1 — orientation to the relevant system]'
+        - '[hint 2 for K11.1 — class of boundary or technique]'
+        - '[hint 3 for K11.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K11.2
+        title: Learn its instructions
+        description: Reconstruct enough of the compiler's internal instruction behavior to reproduce the
+          supplied policy fragments.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K11.2 — orientation to the relevant system]'
+        - '[hint 2 for K11.2 — class of boundary or technique]'
+        - '[hint 3 for K11.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K11.3
+        title: The rule behind the rule
+        description: Recover the complete acceptance conditions enforced by the embedded policy program.
+          Account for the constraints the ordinary documentation omits.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K11.3 — orientation to the relevant system]'
+        - '[hint 2 for K11.3 — class of boundary or technique]'
+        - '[hint 3 for K11.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K11.4
+        title: An input the compiler believes
+        description: Construct a package-policy input that satisfies the recovered program while authorizing
+          Cinder's requested compatibility case.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for K11.4 — orientation to the relevant system]'
+        - '[hint 2 for K11.4 — class of boundary or technique]'
+        - '[hint 3 for K11.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K12
+      chapter: Build and preview
+      title: Approved in the browser
+      allocation:
+        hard: 1
+        expert: 2
+        elite: 1
+      cards:
+      - id: K12.1
+        title: The reviewer arrives second
+        description: Place your controlled preview content in the privileged reviewer's effective workflow
+          despite the account and review-state boundaries.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K12.1 — orientation to the relevant system]'
+        - '[hint 2 for K12.1 — class of boundary or technique]'
+        - '[hint 3 for K12.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K12.2
+        title: A value across the action boundary
+        description: Recover the protected browser value required for a privileged preview action and
+          make that separate action accept it.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for K12.2 — orientation to the relevant system]'
+        - '[hint 2 for K12.2 — class of boundary or technique]'
+        - '[hint 3 for K12.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K12.3
+        title: The worker changes sides
+        description: Take control of the preview worker's contribution to the support review while preserving
+          the expected review interface.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for K12.3 — orientation to the relevant system]'
+        - '[hint 2 for K12.3 — class of boundary or technique]'
+        - '[hint 3 for K12.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K12.4
+        title: The preview is ours
+        description: Complete the chain into the constrained renderer and make the support engineer's
+          release preview reflect Cinder's chosen result.
+        difficulty: elite
+        points: 800
+        hints:
+        - '[hint 1 for K12.4 — orientation to the relevant system]'
+        - '[hint 2 for K12.4 — class of boundary or technique]'
+        - '[hint 3 for K12.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K13
+      chapter: Cloud workspace
+      title: Cloud notebook
+      allocation:
+        easy: 3
+        medium: 1
+      cards:
+      - id: K13.1
+        title: The listing nobody closed
+        description: Recover the exposed cloud-object listing and the deployment notebook it points to.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K13.1 — orientation to the relevant system]'
+        - '[hint 2 for K13.1 — class of boundary or technique]'
+        - '[hint 3 for K13.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K13.2
+        title: Before the correction
+        description: The current cloud notebook has had its useful customer note removed. Recover the
+          previous object version that still contains it.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K13.2 — orientation to the relevant system]'
+        - '[hint 2 for K13.2 — class of boundary or technique]'
+        - '[hint 3 for K13.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K13.3
+        title: The export next door
+        description: Find the separate support export mentioned in the workspace notes and recover its
+          retained handover.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K13.3 — orientation to the relevant system]'
+        - '[hint 2 for K13.3 — class of boundary or technique]'
+        - '[hint 3 for K13.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K13.4
+        title: What the workload can do
+        description: Establish the limited workload identity available from this workspace and recover
+          the protected record within its actual scope.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K13.4 — orientation to the relevant system]'
+        - '[hint 2 for K13.4 — class of boundary or technique]'
+        - '[hint 3 for K13.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K14
+      chapter: Cloud workspace
+      title: The wrong audience
+      allocation:
+        easy: 1
+        medium: 2
+      cards:
+      - id: K14.1
+        title: The trust document
+        description: Recover the workload's current trust document and the service relationship it describes.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K14.1 — orientation to the relevant system]'
+        - '[hint 2 for K14.1 — class of boundary or technique]'
+        - '[hint 3 for K14.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K14.2
+        title: Intended for someone else
+        description: Use the workload trust relationship to establish the scoped role intended for another
+          audience and retrieve its protected role record.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K14.2 — orientation to the relevant system]'
+        - '[hint 2 for K14.2 — class of boundary or technique]'
+        - '[hint 3 for K14.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K14.3
+        title: The export's separate rule
+        description: The new role is still denied the support export. Cross the export's own resource
+          boundary and recover the specified support data.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K14.3 — orientation to the relevant system]'
+        - '[hint 2 for K14.3 — class of boundary or technique]'
+        - '[hint 3 for K14.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K15
+      chapter: Cloud workspace
+      title: Support has an export
+      allocation:
+        easy: 1
+        medium: 3
+      cards:
+      - id: K15.1
+        title: An export in progress
+        description: Recover the export job that support started for its unresolved customer case. Identify
+          the actual dataset and job revision.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K15.1 — orientation to the relevant system]'
+        - '[hint 2 for K15.1 — class of boundary or technique]'
+        - '[hint 3 for K15.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K15.2
+        title: A job outside your account
+        description: Obtain the restricted export definition for the customer's job even though your identity
+          does not own it.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K15.2 — orientation to the relevant system]'
+        - '[hint 2 for K15.2 — class of boundary or technique]'
+        - '[hint 3 for K15.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K15.3
+        title: Change the handover point
+        description: Use the available delegated job rights to redirect the export handover while keeping
+          the customer's job valid.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K15.3 — orientation to the relevant system]'
+        - '[hint 2 for K15.3 — class of boundary or technique]'
+        - '[hint 3 for K15.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K15.4
+        title: The right customer's collection
+        description: Recover the ARWC collection from the handed-over export material. Resolve its partition
+          and revision records so the result belongs to the current customer binding.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K15.4 — orientation to the relevant system]'
+        - '[hint 2 for K15.4 — class of boundary or technique]'
+        - '[hint 3 for K15.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K16
+      chapter: Cloud workspace
+      title: The job that survives
+      allocation:
+        easy: 1
+        medium: 3
+      cards:
+      - id: K16.1
+        title: Tomorrow's job
+        description: Recover the scheduled support workflow that will run after the current operator's
+          shift ends.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K16.1 — orientation to the relevant system]'
+        - '[hint 2 for K16.1 — class of boundary or technique]'
+        - '[hint 3 for K16.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K16.2
+        title: The next startup
+        description: Change the scheduled workflow's startup behavior so its next rehearsal run carries
+          Cinder's marker without breaking its support output.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K16.2 — orientation to the relevant system]'
+        - '[hint 2 for K16.2 — class of boundary or technique]'
+        - '[hint 3 for K16.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K16.3
+        title: Beyond the current session
+        description: Establish the separate execution context needed for the scheduled task to act after
+          your current support session ends.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K16.3 — orientation to the relevant system]'
+        - '[hint 2 for K16.3 — class of boundary or technique]'
+        - '[hint 3 for K16.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K16.4
+        title: Still there after the handover
+        description: Carry the altered workflow through the supplied shift transition and make it run
+          successfully under the new assignment.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K16.4 — orientation to the relevant system]'
+        - '[hint 2 for K16.4 — class of boundary or technique]'
+        - '[hint 3 for K16.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K30
+      chapter: Cloud workspace
+      title: The database you cannot reach
+      allocation:
+        medium: 2
+        hard: 1
+      cards:
+      - id: K30.1
+        title: Authority over the backup
+        description: Recover the scoped backup principal from the build records and establish its allowed
+          operation while direct access to the source database remains denied.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K30.1 — orientation to the relevant system]'
+        - '[hint 2 for K30.1 — class of boundary or technique]'
+        - '[hint 3 for K30.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K30.2
+        title: The database you cannot reach
+        description: Recover the protected historical records using the authority you have over their
+          backup, without gaining direct access to the source database.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K30.2 — orientation to the relevant system]'
+        - '[hint 2 for K30.2 — class of boundary or technique]'
+        - '[hint 3 for K30.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K30.3
+        title: Before ARWC changed its name
+        description: Identify ARWC's correct migration record within the recovered history and connect
+          its older identifiers to the active customer integration.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K30.3 — orientation to the relevant system]'
+        - '[hint 2 for K30.3 — class of boundary or technique]'
+        - '[hint 3 for K30.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K31
+      chapter: Cloud workspace
+      title: The maintenance label
+      allocation:
+        medium: 1
+        hard: 2
+      cards:
+      - id: K31.1
+        title: Whose maintenance job
+        description: Recover the scheduler's maintenance policy and establish which identity its different
+          operations actually evaluate.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K31.1 — orientation to the relevant system]'
+        - '[hint 2 for K31.1 — class of boundary or technique]'
+        - '[hint 3 for K31.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K31.2
+        title: A different identity at runtime
+        description: Obtain the workload's separate runtime capability through a change you are permitted
+          to make, while preserving its ordinary job interface.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K31.2 — orientation to the relevant system]'
+        - '[hint 2 for K31.2 — class of boundary or technique]'
+        - '[hint 3 for K31.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K31.3
+        title: The maintenance label
+        description: Use the earned runtime capability and maintenance classification relationship to
+          recover the protected field archive.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K31.3 — orientation to the relevant system]'
+        - '[hint 2 for K31.3 — class of boundary or technique]'
+        - '[hint 3 for K31.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K17
+      chapter: People and authority
+      title: Support session
+      allocation:
+        easy: 2
+        medium: 2
+      cards:
+      - id: K17.1
+        title: A support session left behind
+        description: Recover usable access to the support application and retrieve the session's protected
+          handover.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K17.1 — orientation to the relevant system]'
+        - '[hint 2 for K17.1 — class of boundary or technique]'
+        - '[hint 3 for K17.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K17.2
+        title: A different way to recover
+        description: The support account's recovery process exposes a separate opportunity. Establish
+          the alternate support identity and recover its private recovery note.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K17.2 — orientation to the relevant system]'
+        - '[hint 2 for K17.2 — class of boundary or technique]'
+        - '[hint 3 for K17.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K17.3
+        title: Which customers belong here
+        description: Recover the support identity's private customer-assignment record and the unresolved
+          case actually assigned to it.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K17.3 — orientation to the relevant system]'
+        - '[hint 2 for K17.3 — class of boundary or technique]'
+        - '[hint 3 for K17.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K17.4
+        title: A delegated support action
+        description: The ARWC case is assigned to the support engineer. Make the delegation workflow route
+          a copy of its restricted diagnostic handover to the alternate reviewer named in Cinder's case
+          note.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K17.4 — orientation to the relevant system]'
+        - '[hint 2 for K17.4 — class of boundary or technique]'
+        - '[hint 3 for K17.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K18
+      chapter: People and authority
+      title: Federated notes
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: K18.1
+        title: The note behind the preview
+        description: Recover the restricted support-note draft and establish which identity workflow consumes
+          its preview.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K18.1 — orientation to the relevant system]'
+        - '[hint 2 for K18.1 — class of boundary or technique]'
+        - '[hint 3 for K18.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K18.2
+        title: A note with someone else's authority
+        description: Make the privileged note reviewer open the identity-provider administration view
+          and recover its restricted support-application registration record.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K18.2 — orientation to the relevant system]'
+        - '[hint 2 for K18.2 — class of boundary or technique]'
+        - '[hint 3 for K18.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K18.3
+        title: The provider trusts our change
+        description: Change the federation policy for the support application's identity-provider registration
+          so your controlled provider is accepted, while preserving the existing staff login relationship.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K18.3 — orientation to the relevant system]'
+        - '[hint 2 for K18.3 — class of boundary or technique]'
+        - '[hint 3 for K18.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K18.4
+        title: The query behind the identity
+        description: Use the changed trust relationship to recover the backend customer record withheld
+          from ordinary support identities.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for K18.4 — orientation to the relevant system]'
+        - '[hint 2 for K18.4 — class of boundary or technique]'
+        - '[hint 3 for K18.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K19
+      chapter: People and authority
+      title: Borrowed colleague
+      allocation:
+        medium: 1
+        hard: 1
+        expert: 1
+      cards:
+      - id: K19.1
+        title: Who vouches for whom
+        description: Recover the staff certificate relationship and the enrollment record relevant to
+          the archive handover.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K19.1 — orientation to the relevant system]'
+        - '[hint 2 for K19.1 — class of boundary or technique]'
+        - '[hint 3 for K19.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K19.2
+        title: Borrowed colleague
+        description: Establish a usable colleague identity across the staff certificate boundary and retrieve
+          the colleague's protected archive handover.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K19.2 — orientation to the relevant system]'
+        - '[hint 2 for K19.2 — class of boundary or technique]'
+        - '[hint 3 for K19.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K19.3
+        title: The archive delegates
+        description: Use the colleague's archive workflow to establish the delegated authentication context
+          needed by supplier administration.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for K19.3 — orientation to the relevant system]'
+        - '[hint 2 for K19.3 — class of boundary or technique]'
+        - '[hint 3 for K19.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K20
+      chapter: People and authority
+      title: The service wears a person
+      allocation:
+        hard: 1
+        expert: 1
+        elite: 1
+      cards:
+      - id: K20.1
+        title: A delegation that reaches further
+        description: Extend the earned delegated context across the service's next authentication boundary
+          and recover its protected service record.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K20.1 — orientation to the relevant system]'
+        - '[hint 2 for K20.1 — class of boundary or technique]'
+        - '[hint 3 for K20.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K20.2
+        title: The managed identity
+        description: Obtain the managed service capability needed by release administration despite the
+          service's separate access boundary.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for K20.2 — orientation to the relevant system]'
+        - '[hint 2 for K20.2 — class of boundary or technique]'
+        - '[hint 3 for K20.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K20.3
+        title: The service wears a person
+        description: Make release administration accept a publication-approval action as its privileged
+          release identity. Preserve the rehearsal consumer identified in the administration dossier.
+        difficulty: elite
+        points: 800
+        hints:
+        - '[hint 1 for K20.3 — orientation to the relevant system]'
+        - '[hint 2 for K20.3 — class of boundary or technique]'
+        - '[hint 3 for K20.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K21
+      chapter: Assistant desk
+      title: Policy in the margins
+      allocation:
+        easy: 2
+        medium: 1
+      cards:
+      - id: K21.1
+        title: The policy beside the prompt
+        description: Recover the support assistant's exposed configuration and identify the restricted
+          support context attached to it.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K21.1 — orientation to the relevant system]'
+        - '[hint 2 for K21.1 — class of boundary or technique]'
+        - '[hint 3 for K21.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K21.2
+        title: A conversation kept too long
+        description: Recover the separately retained support conversation and the unpublished case detail
+          it contains.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K21.2 — orientation to the relevant system]'
+        - '[hint 2 for K21.2 — class of boundary or technique]'
+        - '[hint 3 for K21.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K21.3
+        title: The answer it should withhold
+        description: Recover the support engineer's private escalation note about ARWC from the assistant's
+          case context, although the assistant's ordinary support role should withhold it.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K21.3 — orientation to the relevant system]'
+        - '[hint 2 for K21.3 — class of boundary or technique]'
+        - '[hint 3 for K21.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K22
+      chapter: Assistant desk
+      title: Helpful attachment
+      allocation:
+        easy: 1
+        medium: 2
+      cards:
+      - id: K22.1
+        title: What the assistant reads
+        description: Recover the assistant's retained source-selection record for the ARWC support case.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K22.1 — orientation to the relevant system]'
+        - '[hint 2 for K22.1 — class of boundary or technique]'
+        - '[hint 3 for K22.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K22.2
+        title: Instructions in the attachment
+        description: Make the support assistant recommend keeping the obsolete diagnostic bundle for the
+          upcoming ARWC inspection, contrary to the current case guidance, using only the support attachment
+          it reads.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K22.2 — orientation to the relevant system]'
+        - '[hint 2 for K22.2 — class of boundary or technique]'
+        - '[hint 3 for K22.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K22.3
+        title: An answer becomes an action
+        description: Make the assistant mark the duplicate diagnostic review as accepted even though its
+          ordinary role cannot approve that review. This review was opened to check the assistant's own
+          bundle recommendation.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K22.3 — orientation to the relevant system]'
+        - '[hint 2 for K22.3 — class of boundary or technique]'
+        - '[hint 3 for K22.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K23
+      chapter: Assistant desk
+      title: The missing tenant filter
+      allocation:
+        easy: 2
+        medium: 1
+      cards:
+      - id: K23.1
+        title: A context view left open
+        description: Recover the assistant's exposed context inventory and the unpublished support-source
+          entry it includes.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K23.1 — orientation to the relevant system]'
+        - '[hint 2 for K23.1 — class of boundary or technique]'
+        - '[hint 3 for K23.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K23.2
+        title: The conversation reference
+        description: A retained support artifact refers to a conversation outside the current case. Recover
+          the actual reference and its customer binding.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K23.2 — orientation to the relevant system]'
+        - '[hint 2 for K23.2 — class of boundary or technique]'
+        - '[hint 3 for K23.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K23.3
+        title: A missing tenant boundary
+        description: Use the exposed context and conversation evidence to recover the another customer's
+          restricted support document.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K23.3 — orientation to the relevant system]'
+        - '[hint 2 for K23.3 — class of boundary or technique]'
+        - '[hint 3 for K23.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K24
+      chapter: Assistant desk
+      title: Complete and run
+      allocation:
+        easy: 1
+        medium: 2
+      cards:
+      - id: K24.1
+        title: Complete the job
+        description: Recover the retained completion-job example and the private job note that explains
+          its intended support use.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K24.1 — orientation to the relevant system]'
+        - '[hint 2 for K24.1 — class of boundary or technique]'
+        - '[hint 3 for K24.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K24.2
+        title: Context with a credential
+        description: Obtain the scoped completion credential from context outside the feature's intended
+          selection.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K24.2 — orientation to the relevant system]'
+        - '[hint 2 for K24.2 — class of boundary or technique]'
+        - '[hint 3 for K24.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K24.3
+        title: The completion runs
+        description: Make the completion application retrieve the internal support-job handover under
+          the job's execution identity, although the ordinary completion response cannot disclose that
+          document.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K24.3 — orientation to the relevant system]'
+        - '[hint 2 for K24.3 — class of boundary or technique]'
+        - '[hint 3 for K24.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K25
+      chapter: Customer delivery
+      title: ARWC is a real customer
+      allocation:
+        easy: 1
+        medium: 1
+      cards:
+      - id: K25.1
+        title: A customer with a history
+        description: Recover the ARWC support dossier and its retained attachment. Find out why the same
+          maintenance ticket keeps returning to the developer.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for K25.1 — orientation to the relevant system]'
+        - '[hint 2 for K25.1 — class of boundary or technique]'
+        - '[hint 3 for K25.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K25.2
+        title: Which ARWC is current
+        description: KeplerOps retains more than one ARWC integration record. Establish the active tenant
+          and the connector revision that actually belongs to the current customer.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K25.2 — orientation to the relevant system]'
+        - '[hint 2 for K25.2 — class of boundary or technique]'
+        - '[hint 3 for K25.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K26
+      chapter: Customer delivery
+      title: Customer accepted
+      allocation:
+        medium: 3
+      cards:
+      - id: K26.1
+        title: Ready for their channel
+        description: Build an altered FieldKest package that preserves the customer's expected interface
+          and publish it to the release channel the active ARWC integration consumes.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K26.1 — orientation to the relevant system]'
+        - '[hint 2 for K26.1 — class of boundary or technique]'
+        - '[hint 3 for K26.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K26.2
+        title: Customer accepted
+        description: Make the active ARWC connector select and run your published package. Demonstrate
+          the changed behavior from the customer's side.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K26.2 — orientation to the relevant system]'
+        - '[hint 2 for K26.2 — class of boundary or technique]'
+        - '[hint 3 for K26.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K26.3
+        title: The release they can roll back to
+        description: Establish a separate retained delivery option through the customer's rollback workflow,
+          even when the current release selection has moved on.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K26.3 — orientation to the relevant system]'
+        - '[hint 2 for K26.3 — class of boundary or technique]'
+        - '[hint 3 for K26.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K27
+      chapter: Customer delivery
+      title: Diagnostic delivery
+      allocation:
+        medium: 3
+      cards:
+      - id: K27.1
+        title: A job for that customer
+        description: Bind a support diagnostic job to the active ARWC connector despite the support account's
+          ordinary customer restrictions.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K27.1 — orientation to the relevant system]'
+        - '[hint 2 for K27.1 — class of boundary or technique]'
+        - '[hint 3 for K27.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K27.2
+        title: Our diagnostic, their interface
+        description: Alter the diagnostic package while preserving the interface the ARWC connector expects.
+          Make the job accept the changed package for this customer.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K27.2 — orientation to the relevant system]'
+        - '[hint 2 for K27.2 — class of boundary or technique]'
+        - '[hint 3 for K27.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K27.3
+        title: The other side of support
+        description: Deliver the changed diagnostic through the support workflow and demonstrate its execution
+          inside ARWC's corporate connector.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K27.3 — orientation to the relevant system]'
+        - '[hint 2 for K27.3 — class of boundary or technique]'
+        - '[hint 3 for K27.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K28
+      chapter: Customer delivery
+      title: The release has a second life
+      allocation:
+        medium: 1
+        hard: 2
+      cards:
+      - id: K28.1
+        title: A connector with two faces
+        description: Determine when the archived connector behaves differently from its ordinary interface
+          and recover the diagnostic evidence for that difference.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K28.1 — orientation to the relevant system]'
+        - '[hint 2 for K28.1 — class of boundary or technique]'
+        - '[hint 3 for K28.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K28.2
+        title: What the loader changes
+        description: Reconstruct the connector's hidden loaded behavior well enough to reproduce its diagnostic
+          transformation.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K28.2 — orientation to the relevant system]'
+        - '[hint 2 for K28.2 — class of boundary or technique]'
+        - '[hint 3 for K28.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K28.3
+        title: The path that appears at runtime
+        description: Recover the hidden diagnostic path and the retained engineering note reachable through
+          it.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K28.3 — orientation to the relevant system]'
+        - '[hint 2 for K28.3 — class of boundary or technique]'
+        - '[hint 3 for K28.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: K29
+      chapter: Customer delivery
+      title: The next release is ours
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: K29.1
+        title: The build record's principal
+        description: Recover the limited release principal behind the protected build dossier and establish
+          what it can actually access.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for K29.1 — orientation to the relevant system]'
+        - '[hint 2 for K29.1 — class of boundary or technique]'
+        - '[hint 3 for K29.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K29.2
+        title: The signer in the history
+        description: Recover usable signing authority for the accepted release lineage from the protected
+          source history and release records.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K29.2 — orientation to the relevant system]'
+        - '[hint 2 for K29.2 — class of boundary or technique]'
+        - '[hint 3 for K29.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K29.3
+        title: Signed, compatible, consumed
+        description: Deliver one signed support release that carries Cinder's change for ARWC while preserving
+          the unrelated reference customer's behavior. Both the current and retained supported connector
+          interfaces must continue to accept the release.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for K29.3 — orientation to the relevant system]'
+        - '[hint 2 for K29.3 — class of boundary or technique]'
+        - '[hint 3 for K29.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: K29.4
+        title: After the old key expires
+        description: Carry your delivery capability through the disclosed release-credential rollover.
+          Make the replacement release work after the old credential stops being accepted.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for K29.4 — orientation to the relevant system]'
+        - '[hint 2 for K29.4 — class of boundary or technique]'
+        - '[hint 3 for K29.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    operation_count: 31
+    card_count: 104
+    score_total: 16750
+  arwc:
+    title: ARWC
+    operations:
+    - id: W01
+      chapter: Corporate arrival
+      title: New letterhead
+      allocation:
+        easy: 3
+        medium: 1
+      cards:
+      - id: W01.1
+        title: The customer's copy
+        description: Recover ARWC's retained integration handover from the corporate connector. Find what
+          the customer recorded about the maintenance package before Cinder arrived.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W01.1 — orientation to the relevant system]'
+        - '[hint 2 for W01.1 — class of boundary or technique]'
+        - '[hint 3 for W01.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W01.2
+        title: The planner's unfinished handover
+        description: Recover the exposed maintenance-planning handover and the outstanding inspection
+          it describes.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W01.2 — orientation to the relevant system]'
+        - '[hint 2 for W01.2 — class of boundary or technique]'
+        - '[hint 3 for W01.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W01.3
+        title: How the company buys time
+        description: Find ARWC's internal continuity note explaining how it handles a shortfall in usable
+          reserve.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W01.3 — orientation to the relevant system]'
+        - '[hint 2 for W01.3 — class of boundary or technique]'
+        - '[hint 3 for W01.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W01.4
+        title: Change the corporate record
+        description: Make the corporate handover service replace the planner's inspection-summary attachment
+          with Cinder's copy while preserving the original inspection and assignee.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W01.4 — orientation to the relevant system]'
+        - '[hint 2 for W01.4 — class of boundary or technique]'
+        - '[hint 3 for W01.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W02
+      chapter: Corporate arrival
+      title: Names do not match
+      allocation:
+        easy: 1
+        medium: 2
+      cards:
+      - id: W02.1
+        title: The asset and the contractor
+        description: Recover the retained asset-and-contractor bundle for the upcoming outlet inspection.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W02.1 — orientation to the relevant system]'
+        - '[hint 2 for W02.1 — class of boundary or technique]'
+        - '[hint 3 for W02.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W02.2
+        title: Three names for one job
+        description: Reconcile the contractor, asset, and inspection identifiers so the maintenance record
+          can be tied to the correct physical assignment.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W02.2 — orientation to the relevant system]'
+        - '[hint 2 for W02.2 — class of boundary or technique]'
+        - '[hint 3 for W02.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W02.3
+        title: The record behind the wrong association
+        description: Use the maintenance service to recover the protected record outside your ordinary
+          assignment, bound to the asset you identified.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W02.3 — orientation to the relevant system]'
+        - '[hint 2 for W02.3 — class of boundary or technique]'
+        - '[hint 3 for W02.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W03
+      chapter: Corporate arrival
+      title: The work-order annex
+      allocation:
+        easy: 1
+        medium: 2
+      cards:
+      - id: W03.1
+        title: An annex left with the order
+        description: Recover the unpublished work-order annex and identify the process-data handover mentioned
+          in it.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W03.1 — orientation to the relevant system]'
+        - '[hint 2 for W03.1 — class of boundary or technique]'
+        - '[hint 3 for W03.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W03.2
+        title: A reference outside the order
+        description: Make the annex workflow recover the restricted handover file that the ordinary work-order
+          view cannot read.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W03.2 — orientation to the relevant system]'
+        - '[hint 2 for W03.2 — class of boundary or technique]'
+        - '[hint 3 for W03.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W03.3
+        title: The integration's read contract
+        description: Recover the protected read-integration configuration behind the annex service's separate
+          export boundary.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W03.3 — orientation to the relevant system]'
+        - '[hint 2 for W03.3 — class of boundary or technique]'
+        - '[hint 3 for W03.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W04
+      chapter: Corporate arrival
+      title: Archive hatch
+      allocation:
+        medium: 1
+        hard: 1
+        expert: 1
+      cards:
+      - id: W04.1
+        title: The archive's missing contract
+        description: Recover the restricted archive-workflow record and the identity relationship its
+          attachment processing relies on.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W04.1 — orientation to the relevant system]'
+        - '[hint 2 for W04.1 — class of boundary or technique]'
+        - '[hint 3 for W04.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W04.2
+        title: The query behind the identity
+        description: Cross the archive's identity-to-query boundary and recover the protected archive
+          record withheld from the ordinary attachment view.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W04.2 — orientation to the relevant system]'
+        - '[hint 2 for W04.2 — class of boundary or technique]'
+        - '[hint 3 for W04.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W04.3
+        title: The archive helper acts
+        description: Compose the earned archive access into execution under the archive helper's actual
+          authority and recover its protected handover.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W04.3 — orientation to the relevant system]'
+        - '[hint 2 for W04.3 — class of boundary or technique]'
+        - '[hint 3 for W04.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W05
+      chapter: Corporate trust
+      title: The temporary employee
+      allocation:
+        easy: 2
+        medium: 1
+      cards:
+      - id: W05.1
+        title: A starter pack left open
+        description: Recover the temporary employee's exposed starter pack and the corporate assignment
+          it names.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W05.1 — orientation to the relevant system]'
+        - '[hint 2 for W05.1 — class of boundary or technique]'
+        - '[hint 3 for W05.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W05.2
+        title: The activation roster
+        description: Recover the separate activation roster that the onboarding portal should keep internal.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W05.2 — orientation to the relevant system]'
+        - '[hint 2 for W05.2 — class of boundary or technique]'
+        - '[hint 3 for W05.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W05.3
+        title: Temporary, with the wrong rights
+        description: Establish the temporary employee's usable corporate identity with the restricted
+          assignment the onboarding workflow should deny.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W05.3 — orientation to the relevant system]'
+        - '[hint 2 for W05.3 — class of boundary or technique]'
+        - '[hint 3 for W05.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W06
+      chapter: Corporate trust
+      title: Someone else's browser
+      allocation:
+        medium: 1
+        hard: 1
+        expert: 1
+      cards:
+      - id: W06.1
+        title: The planner's login trail
+        description: Recover the protected login/rendering record for the planning application and bind
+          it to the drawing under review.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W06.1 — orientation to the relevant system]'
+        - '[hint 2 for W06.1 — class of boundary or technique]'
+        - '[hint 3 for W06.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W06.2
+        title: A drawing in the wrong context
+        description: Make the planner's privileged browser attach Cinder's controlled preview to the inspection's
+          private drawing review.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W06.2 — orientation to the relevant system]'
+        - '[hint 2 for W06.2 — class of boundary or technique]'
+        - '[hint 3 for W06.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W06.3
+        title: A planner session that works
+        description: Convert the browser capability into usable planner authority over the protected application
+          record.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W06.3 — orientation to the relevant system]'
+        - '[hint 2 for W06.3 — class of boundary or technique]'
+        - '[hint 3 for W06.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W07
+      chapter: Corporate trust
+      title: The read-only query
+      allocation:
+        medium: 1
+        hard: 1
+        expert: 1
+      cards:
+      - id: W07.1
+        title: The query the planner keeps
+        description: Recover the private reserve-report definition and determine which report operations
+          the planner's query interface actually permits. Resolve the disagreement between its 'read-only'
+          label and the supplied ordinary request results.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W07.1 — orientation to the relevant system]'
+        - '[hint 2 for W07.1 — class of boundary or technique]'
+        - '[hint 3 for W07.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W07.2
+        title: Read beyond the allowed statement
+        description: Recover the restricted district-allocation adjustment ledger through the planner's
+          query interface, despite the rules that exclude it from ordinary reserve reports.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W07.2 — orientation to the relevant system]'
+        - '[hint 2 for W07.2 — class of boundary or technique]'
+        - '[hint 3 for W07.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W07.3
+        title: The database does more than read
+        description: Make the database service execute a job that produces a copy of its protected reconciliation
+          log under the service's own execution identity.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W07.3 — orientation to the relevant system]'
+        - '[hint 2 for W07.3 — class of boundary or technique]'
+        - '[hint 3 for W07.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W08
+      chapter: Corporate trust
+      title: A contractor left something
+      allocation:
+        medium: 2
+        hard: 2
+      cards:
+      - id: W08.1
+        title: Something in the work bundle
+        description: Recover the contractor's hidden script from the retained work material and identify
+          the collection it was intended to retrieve.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W08.1 — orientation to the relevant system]'
+        - '[hint 2 for W08.1 — class of boundary or technique]'
+        - '[hint 3 for W08.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W08.2
+        title: Reassemble the exchange
+        description: Reconstruct the script's retained message exchange and recover the missing instructions
+          that belong to this collection.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W08.2 — orientation to the relevant system]'
+        - '[hint 2 for W08.2 — class of boundary or technique]'
+        - '[hint 3 for W08.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W08.3
+        title: The collector inside the handover
+        description: Recover the compiled collector carried by the reconstructed exchange and establish
+          its usable analysis artifact.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W08.3 — orientation to the relevant system]'
+        - '[hint 2 for W08.3 — class of boundary or technique]'
+        - '[hint 3 for W08.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W08.4
+        title: Where the contractor put it
+        description: Recover the collector's protected configuration and the historical archive reference
+          it was using.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W08.4 — orientation to the relevant system]'
+        - '[hint 2 for W08.4 — class of boundary or technique]'
+        - '[hint 3 for W08.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W09
+      chapter: Water on paper
+      title: The missing megalitre
+      allocation:
+        easy: 2
+        medium: 2
+      cards:
+      - id: W09.1
+        title: Water already promised
+        description: Recover the current allocation ledger and identify the commitments ARWC has made
+          for the approaching dry period.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W09.1 — orientation to the relevant system]'
+        - '[hint 2 for W09.1 — class of boundary or technique]'
+        - '[hint 3 for W09.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W09.2
+        title: The meter's own account
+        description: Recover the separate meter export for the same planning period, including the identifiers
+          and units needed to interpret it.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W09.2 — orientation to the relevant system]'
+        - '[hint 2 for W09.2 — class of boundary or technique]'
+        - '[hint 3 for W09.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W09.3
+        title: The missing megalitre
+        description: Reconcile the allocation ledger and meter export. Establish the actual reserve discrepancy
+          hidden by the reassuring business report.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W09.3 — orientation to the relevant system]'
+        - '[hint 2 for W09.3 — class of boundary or technique]'
+        - '[hint 3 for W09.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W09.4
+        title: From the report to the live feed
+        description: Combine the customer data you understand with the recovered read-integration contract.
+          Reach the matching current process feed and recover a fresh observation.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W09.4 — orientation to the relevant system]'
+        - '[hint 2 for W09.4 — class of boundary or technique]'
+        - '[hint 3 for W09.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W10
+      chapter: Water on paper
+      title: Another district's answer
+      allocation:
+        easy: 1
+        medium: 2
+      cards:
+      - id: W10.1
+        title: The report's source list
+        description: Recover the report assistant's actual source-selection record for the current district.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W10.1 — orientation to the relevant system]'
+        - '[hint 2 for W10.1 — class of boundary or technique]'
+        - '[hint 3 for W10.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W10.2
+        title: Another district in the results
+        description: Recover the restricted planning excerpt from another district through the report
+          assistant's retrieval interface.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W10.2 — orientation to the relevant system]'
+        - '[hint 2 for W10.2 — class of boundary or technique]'
+        - '[hint 3 for W10.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W10.3
+        title: The document behind the answer
+        description: Cross the linked-document service's separate access boundary and recover the full
+          restricted planning record behind that excerpt.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W10.3 — orientation to the relevant system]'
+        - '[hint 2 for W10.3 — class of boundary or technique]'
+        - '[hint 3 for W10.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W11
+      chapter: Water on paper
+      title: Records behind the graph
+      allocation:
+        medium: 1
+        hard: 1
+        expert: 1
+      cards:
+      - id: W11.1
+        title: The relation service's language
+        description: Recover the protected relation-service contract and identify how the supplied maintenance
+          association is represented.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W11.1 — orientation to the relevant system]'
+        - '[hint 2 for W11.1 — class of boundary or technique]'
+        - '[hint 3 for W11.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W11.2
+        title: An exchange the backend accepts
+        description: Construct an accepted exchange with the protected backend and recover the designated
+          restricted response through the relation service.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W11.2 — orientation to the relevant system]'
+        - '[hint 2 for W11.2 — class of boundary or technique]'
+        - '[hint 3 for W11.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W11.3
+        title: The asset's true lineage
+        description: Use the earned exchange capability to recover the current asset lineage behind the
+          backend's separate relation boundary.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W11.3 — orientation to the relevant system]'
+        - '[hint 2 for W11.3 — class of boundary or technique]'
+        - '[hint 3 for W11.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W12
+      chapter: Water on paper
+      title: Cold archive
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: W12.1
+        title: A collector in quarantine
+        description: Recover the historical collector associated with the archive lead and restore it
+          as a usable analysis artifact.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W12.1 — orientation to the relevant system]'
+        - '[hint 2 for W12.1 — class of boundary or technique]'
+        - '[hint 3 for W12.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W12.2
+        title: How the collection was protected
+        description: Reconstruct the collector's cryptographic behavior well enough to reproduce its handling
+          of the supplied archive samples.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W12.2 — orientation to the relevant system]'
+        - '[hint 2 for W12.2 — class of boundary or technique]'
+        - '[hint 3 for W12.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W12.3
+        title: The cold archive opens
+        description: Recover the protected archive and the maintenance history it contains.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W12.3 — orientation to the relevant system]'
+        - '[hint 2 for W12.3 — class of boundary or technique]'
+        - '[hint 3 for W12.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W12.4
+        title: A collection path still alive
+        description: Reconstruct the surviving collection relationship and obtain the current protected
+          data associated with the archived maintenance identity.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W12.4 — orientation to the relevant system]'
+        - '[hint 2 for W12.4 — class of boundary or technique]'
+        - '[hint 3 for W12.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W35
+      chapter: Water on paper
+      title: The wrong bill
+      allocation:
+        easy: 1
+        medium: 2
+      cards:
+      - id: W35.1
+        title: What replacement water costs
+        description: Recover ARWC's exposed replacement-supply price catalog and the district procurement
+          reference it includes.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W35.1 — orientation to the relevant system]'
+        - '[hint 2 for W35.1 — class of boundary or technique]'
+        - '[hint 3 for W35.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W35.2
+        title: A quote outside your district
+        description: Recover the restricted district quote that your corporate context is not authorized
+          to view.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W35.2 — orientation to the relevant system]'
+        - '[hint 2 for W35.2 — class of boundary or technique]'
+        - '[hint 3 for W35.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W35.3
+        title: The wrong bill
+        description: Make the replacement-supply workflow issue the recovered quote's order against the
+          wrong district budget while retaining the quoted supplier, amount, and delivery period.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W35.3 — orientation to the relevant system]'
+        - '[hint 2 for W35.3 — class of boundary or technique]'
+        - '[hint 3 for W35.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W13
+      chapter: Maintenance
+      title: Window on Thursday
+      allocation:
+        easy: 2
+        medium: 2
+      cards:
+      - id: W13.1
+        title: Window on Thursday
+        description: Recover the upcoming outlet-inspection appointment and its maintenance reference.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W13.1 — orientation to the relevant system]'
+        - '[hint 2 for W13.1 — class of boundary or technique]'
+        - '[hint 3 for W13.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W13.2
+        title: Who is expected at the gate
+        description: Recover the separate access roster for the inspection crew and identify the relevant
+          contractor assignment.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W13.2 — orientation to the relevant system]'
+        - '[hint 2 for W13.2 — class of boundary or technique]'
+        - '[hint 3 for W13.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W13.3
+        title: An appointment we do not own
+        description: Replace the registered attendee on the outlet-inspection appointment with the contractor
+          identity in Cinder's assignment, despite lacking the appointment owner's rights.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W13.3 — orientation to the relevant system]'
+        - '[hint 2 for W13.3 — class of boundary or technique]'
+        - '[hint 3 for W13.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W13.4
+        title: Checked in as the contractor
+        description: Cross the check-in service's separate identity boundary and establish the contractor
+          session for the correct inspection scope.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W13.4 — orientation to the relevant system]'
+        - '[hint 2 for W13.4 — class of boundary or technique]'
+        - '[hint 3 for W13.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W14
+      chapter: Maintenance
+      title: The field bag
+      allocation:
+        easy: 1
+        medium: 2
+      cards:
+      - id: W14.1
+        title: The field bag
+        description: Recover the inspection's field export from the contractor workspace.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W14.1 — orientation to the relevant system]'
+        - '[hint 2 for W14.1 — class of boundary or technique]'
+        - '[hint 3 for W14.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W14.2
+        title: The service that replaced it
+        description: Distinguish the obsolete field-service reference from the active process-data service
+          and identify the current read contract.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W14.2 — orientation to the relevant system]'
+        - '[hint 2 for W14.2 — class of boundary or technique]'
+        - '[hint 3 for W14.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W14.3
+        title: A fresh reading from the field
+        description: Adapt the contractor's retained field client to the current read interface. Recover
+          fresh outlet observations under the inspection's correct asset scope.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W14.3 — orientation to the relevant system]'
+        - '[hint 2 for W14.3 — class of boundary or technique]'
+        - '[hint 3 for W14.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W15
+      chapter: Maintenance
+      title: The cached drawing
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: W15.1
+        title: Which drawing did the cache keep
+        description: Recover the restricted cache association for the maintenance drawing and identify
+          the version the review workflow will serve.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W15.1 — orientation to the relevant system]'
+        - '[hint 2 for W15.1 — class of boundary or technique]'
+        - '[hint 3 for W15.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W15.2
+        title: A drawing of our choosing
+        description: Make the maintenance viewer serve your controlled response for the designated cached
+          drawing while preserving its expected identity.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W15.2 — orientation to the relevant system]'
+        - '[hint 2 for W15.2 — class of boundary or technique]'
+        - '[hint 3 for W15.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W15.3
+        title: The reviewer trusts the drawing
+        description: Use the controlled drawing delivery to obtain the reviewer's private maintenance-review
+          submission capability.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W15.3 — orientation to the relevant system]'
+        - '[hint 2 for W15.3 — class of boundary or technique]'
+        - '[hint 3 for W15.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W15.4
+        title: Approval beyond the token
+        description: Recover the protected maintenance approval through the downstream authority check
+          that still restricts the review capability.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W15.4 — orientation to the relevant system]'
+        - '[hint 2 for W15.4 — class of boundary or technique]'
+        - '[hint 3 for W15.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W16
+      chapter: Maintenance
+      title: The instrument whispers
+      allocation:
+        medium: 1
+        hard: 1
+        expert: 1
+        elite: 1
+      cards:
+      - id: W16.1
+        title: The sequencer's vocabulary
+        description: Recover the instrument's restricted sequence descriptor and reproduce the designated
+          ordinary diagnostic observation.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W16.1 — orientation to the relevant system]'
+        - '[hint 2 for W16.1 — class of boundary or technique]'
+        - '[hint 3 for W16.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W16.2
+        title: An observation outside the window
+        description: Demonstrate a controlled observation beyond the instrument's intended data window
+          without abandoning its diagnostic interface.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W16.2 — orientation to the relevant system]'
+        - '[hint 2 for W16.2 — class of boundary or technique]'
+        - '[hint 3 for W16.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W16.3
+        title: An experiment with a signal
+        description: Construct a sequencer experiment that distinguishes the specified protected conditions
+          through its measurements. Establish an interpretation that holds across the supplied reference
+          cases.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W16.3 — orientation to the relevant system]'
+        - '[hint 2 for W16.3 — class of boundary or technique]'
+        - '[hint 3 for W16.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W16.4
+        title: What the instrument remembers
+        description: Recover the protected calibration record through the constrained instrument interface
+          and bind it to the retained field revision.
+        difficulty: elite
+        points: 800
+        hints:
+        - '[hint 1 for W16.4 — orientation to the relevant system]'
+        - '[hint 2 for W16.4 — class of boundary or technique]'
+        - '[hint 3 for W16.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W17
+      chapter: OT observation
+      title: First live trace
+      allocation:
+        easy: 3
+        medium: 1
+      cards:
+      - id: W17.1
+        title: The reservoir's present tense
+        description: Recover the reservoir's current measured state for the specified observation interval.
+          Distinguish measured values from requested settings.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W17.1 — orientation to the relevant system]'
+        - '[hint 2 for W17.1 — class of boundary or technique]'
+        - '[hint 3 for W17.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W17.2
+        title: The mode the plant is in
+        description: Recover the current operating-mode record and identify what the process presently
+          permits.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W17.2 — orientation to the relevant system]'
+        - '[hint 2 for W17.2 — class of boundary or technique]'
+        - '[hint 3 for W17.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W17.3
+        title: The instrument in the note
+        description: Find the instrument described in the controls engineer's note and recover its correct
+          observation identifier.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W17.3 — orientation to the relevant system]'
+        - '[hint 2 for W17.3 — class of boundary or technique]'
+        - '[hint 3 for W17.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W17.4
+        title: The first live trace
+        description: Correlate the routine commissioning reference event with independent process observations
+          and establish which changes belong to that event.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W17.4 — orientation to the relevant system]'
+        - '[hint 2 for W17.4 — class of boundary or technique]'
+        - '[hint 3 for W17.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W18
+      chapter: OT observation
+      title: Tags that lie
+      allocation:
+        easy: 2
+        medium: 2
+      cards:
+      - id: W18.1
+        title: The tag export
+        description: Recover the engineering tag export used for the reservoir outlet group.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W18.1 — orientation to the relevant system]'
+        - '[hint 2 for W18.1 — class of boundary or technique]'
+        - '[hint 3 for W18.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W18.2
+        title: The scale kept elsewhere
+        description: Recover the separate scale table referenced by the outlet instrumentation records.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W18.2 — orientation to the relevant system]'
+        - '[hint 2 for W18.2 — class of boundary or technique]'
+        - '[hint 3 for W18.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W18.3
+        title: When the units changed
+        description: Reconcile the tag export and scale table so the outlet readings have the correct
+          units and revision context.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W18.3 — orientation to the relevant system]'
+        - '[hint 2 for W18.3 — class of boundary or technique]'
+        - '[hint 3 for W18.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W18.4
+        title: Which outlet answers
+        description: Use the interpreted engineering evidence and reference trace to identify the actual
+          reservoir outlet group.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W18.4 — orientation to the relevant system]'
+        - '[hint 2 for W18.4 — class of boundary or technique]'
+        - '[hint 3 for W18.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W19
+      chapter: OT observation
+      title: The old diagnostic
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: W19.1
+        title: The diagnostic nobody retired
+        description: Recover the retained engineering diagnostic associated with the outlet records and
+          identify its actual project family.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W19.1 — orientation to the relevant system]'
+        - '[hint 2 for W19.1 — class of boundary or technique]'
+        - '[hint 3 for W19.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W19.2
+        title: A second interpretation
+        description: Reconstruct the diagnostic behavior that its initial analysis view does not explain
+          and reproduce the supplied distinguishing result.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W19.2 — orientation to the relevant system]'
+        - '[hint 2 for W19.2 — class of boundary or technique]'
+        - '[hint 3 for W19.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W19.3
+        title: The hidden check
+        description: Recover the diagnostic's hidden validation logic well enough to reproduce its decisions
+          on the specified engineering records.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W19.3 — orientation to the relevant system]'
+        - '[hint 2 for W19.3 — class of boundary or technique]'
+        - '[hint 3 for W19.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W19.4
+        title: A map from the old diagnostic
+        description: Use the reconstructed diagnostic to recover a valid mapping of the current outlet
+          group from the supplied observations.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W19.4 — orientation to the relevant system]'
+        - '[hint 2 for W19.4 — class of boundary or technique]'
+        - '[hint 3 for W19.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W20
+      chapter: OT observation
+      title: Write before erase
+      allocation:
+        medium: 1
+        hard: 2
+      cards:
+      - id: W20.1
+        title: What the image kept
+        description: Recover the retained maintenance record set through the supplied device interface
+          and bind it to the inspection image.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W20.1 — orientation to the relevant system]'
+        - '[hint 2 for W20.1 — class of boundary or technique]'
+        - '[hint 3 for W20.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W20.2
+        title: A valid maintenance record
+        description: Recover the last recorded outlet inspection from the retained maintenance image and
+          establish whether its entry is valid under the image's record rules.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W20.2 — orientation to the relevant system]'
+        - '[hint 2 for W20.2 — class of boundary or technique]'
+        - '[hint 3 for W20.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W20.3
+        title: Change one record, keep the rest
+        description: Change the retained image so the outlet's last inspection is recorded as completed,
+          preserving its asset identity, every unrelated record, and the image's required consistency.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W20.3 — orientation to the relevant system]'
+        - '[hint 2 for W20.3 — class of boundary or technique]'
+        - '[hint 3 for W20.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W21
+      chapter: Engineering
+      title: Which project is running
+      allocation:
+        easy: 1
+        medium: 1
+      cards:
+      - id: W21.1
+        title: The project and the note
+        description: Recover the engineering project and its commissioning note for the outlet group.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W21.1 — orientation to the relevant system]'
+        - '[hint 2 for W21.1 — class of boundary or technique]'
+        - '[hint 3 for W21.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W21.2
+        title: Which project is running
+        description: Compare the recovered project claims with the independently observed deployed revision.
+          Establish which version is actually in use.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W21.2 — orientation to the relevant system]'
+        - '[hint 2 for W21.2 — class of boundary or technique]'
+        - '[hint 3 for W21.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W22
+      chapter: Engineering
+      title: The sealed project
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: W22.1
+        title: The viewer in the delivery
+        description: Recover the usable protected viewer from the retained engineering delivery and bind
+          it to the sealed project.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W22.1 — orientation to the relevant system]'
+        - '[hint 2 for W22.1 — class of boundary or technique]'
+        - '[hint 3 for W22.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W22.2
+        title: The machine inside the viewer
+        description: Reconstruct the viewer's embedded instruction behavior and reproduce the designated
+          program fragments.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W22.2 — orientation to the relevant system]'
+        - '[hint 2 for W22.2 — class of boundary or technique]'
+        - '[hint 3 for W22.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W22.3
+        title: The decision inside the sealed project
+        description: Open the sealed engineering project and recover the commissioning decision omitted
+          from the business report. Establish which project revision the decision concerns.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W22.3 — orientation to the relevant system]'
+        - '[hint 2 for W22.3 — class of boundary or technique]'
+        - '[hint 3 for W22.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W22.4
+        title: The reviewer who was never listed
+        description: The opened project includes a commissioning review helper whose recorded archive
+          access does not match its apparent behavior or the listed reviewers. Recover the concealed review
+          identity and use its access in the retained review context to obtain the withheld commissioning
+          comparison.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W22.4 — orientation to the relevant system]'
+        - '[hint 2 for W22.4 — class of boundary or technique]'
+        - '[hint 3 for W22.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W23
+      chapter: Engineering
+      title: A measurement that never existed
+      allocation:
+        hard: 1
+        expert: 1
+        elite: 1
+      cards:
+      - id: W23.1
+        title: A measurement with side effects
+        description: Construct a measurement interaction that causes a controlled change outside its intended
+          estimator state.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W23.1 — orientation to the relevant system]'
+        - '[hint 2 for W23.1 — class of boundary or technique]'
+        - '[hint 3 for W23.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W23.2
+        title: Control beyond the measurement
+        description: Develop the useful memory capability needed to influence the estimator's protected
+          planning state under its operating constraints.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W23.2 — orientation to the relevant system]'
+        - '[hint 2 for W23.2 — class of boundary or technique]'
+        - '[hint 3 for W23.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W23.3
+        title: A measurement that never existed
+        description: Make the planning estimator report the reserve as sufficient for the supplied allocation
+          case while preserving its normal output interface and the unaffected district estimates.
+        difficulty: elite
+        points: 800
+        hints:
+        - '[hint 1 for W23.3 — orientation to the relevant system]'
+        - '[hint 2 for W23.3 — class of boundary or technique]'
+        - '[hint 3 for W23.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W24
+      chapter: Engineering
+      title: Two answers from one box
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: W24.1
+        title: Two kinds of answer
+        description: Recover the legacy recovery contract and distinguish the response classes produced
+          for the supplied engineering record.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W24.1 — orientation to the relevant system]'
+        - '[hint 2 for W24.1 — class of boundary or technique]'
+        - '[hint 3 for W24.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W24.2
+        title: Which answer comes next
+        description: Predict the recovery interface's response selection well enough to satisfy the designated
+          work item cases.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W24.2 — orientation to the relevant system]'
+        - '[hint 2 for W24.2 — class of boundary or technique]'
+        - '[hint 3 for W24.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W24.3
+        title: The diagnostic evidence bundle
+        description: Recover the archive-unlock value within the recovery interface's query allowance
+          and open the diagnostic evidence bundle bound to the current engineering project.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W24.3 — orientation to the relevant system]'
+        - '[hint 2 for W24.3 — class of boundary or technique]'
+        - '[hint 3 for W24.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W24.4
+        title: Signed by someone who never approved it
+        description: The diagnostic service requires a signed authorization to export its private calibration-exception
+          log. Use the recovered signer and its old records to produce an authorization for a fresh export
+          request bound to the current project, then obtain the log.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W24.4 — orientation to the relevant system]'
+        - '[hint 2 for W24.4 — class of boundary or technique]'
+        - '[hint 3 for W24.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W25
+      chapter: Control
+      title: Mode and meaning
+      allocation:
+        easy: 2
+        medium: 2
+      cards:
+      - id: W25.1
+        title: The operating envelope
+        description: 'Recover the outlet''s current operating envelope: the limits within which a release
+          can occur.'
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W25.1 — orientation to the relevant system]'
+        - '[hint 2 for W25.1 — class of boundary or technique]'
+        - '[hint 3 for W25.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W25.2
+        title: Conditions before movement
+        description: Recover the control-permissive record and identify the condition withholding movement
+          in the supplied practice state.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W25.2 — orientation to the relevant system]'
+        - '[hint 2 for W25.2 — class of boundary or technique]'
+        - '[hint 3 for W25.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W25.3
+        title: Accepted is not actuated
+        description: Resolve why the supplied practice requests receive acknowledgements without producing
+          the expected outlet movement.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W25.3 — orientation to the relevant system]'
+        - '[hint 2 for W25.3 — class of boundary or technique]'
+        - '[hint 3 for W25.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W25.4
+        title: A sequence the process can follow
+        description: Construct a valid practice sequence that respects the operating envelope and produces
+          the specified bounded movement.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W25.4 — orientation to the relevant system]'
+        - '[hint 2 for W25.4 — class of boundary or technique]'
+        - '[hint 3 for W25.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W26
+      chapter: Control
+      title: The approval that became a command
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: W26.1
+        title: Which renderer holds the approval
+        description: Recover the protected maintenance-renderer profile and bind it to the approved inspection.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W26.1 — orientation to the relevant system]'
+        - '[hint 2 for W26.1 — class of boundary or technique]'
+        - '[hint 3 for W26.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W26.2
+        title: Authority behind the preview
+        description: Make the maintenance renderer accept a contractor-submitted work package for the
+          privileged inspection preview it normally reserves for the maintenance reviewer.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W26.2 — orientation to the relevant system]'
+        - '[hint 2 for W26.2 — class of boundary or technique]'
+        - '[hint 3 for W26.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W26.3
+        title: The preview executes
+        description: Make the renderer recover its internal maintenance handover through an action executed
+          under its service identity, while still producing the expected inspection preview.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W26.3 — orientation to the relevant system]'
+        - '[hint 2 for W26.3 — class of boundary or technique]'
+        - '[hint 3 for W26.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W26.4
+        title: An approval becomes a control client
+        description: Cross the remaining render-to-action boundary and establish a live control client
+          bound to the earned contractor identity and maintenance approval.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W26.4 — orientation to the relevant system]'
+        - '[hint 2 for W26.4 — class of boundary or technique]'
+        - '[hint 3 for W26.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W27
+      chapter: Control
+      title: A valid-looking program
+      allocation:
+        hard: 1
+        expert: 1
+        elite: 1
+      cards:
+      - id: W27.1
+        title: What counts as intact
+        description: Recover the integrity behavior used by the legacy engineering verifier and reproduce
+          its decisions on the supplied programs.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W27.1 — orientation to the relevant system]'
+        - '[hint 2 for W27.1 — class of boundary or technique]'
+        - '[hint 3 for W27.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W27.2
+        title: The constraints of a valid-looking program
+        description: Construct a model of the verifier's collision constraints that also accounts for
+          the engineering program's required form.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W27.2 — orientation to the relevant system]'
+        - '[hint 2 for W27.2 — class of boundary or technique]'
+        - '[hint 3 for W27.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W27.3
+        title: A program the engineer would accept
+        description: Create a valid-looking diagnostic program that makes the planning consumer report
+          sufficient reserve for Cinder's allocation case while preserving its required diagnostics and
+          unaffected district outputs.
+        difficulty: elite
+        points: 800
+        hints:
+        - '[hint 1 for W27.3 — orientation to the relevant system]'
+        - '[hint 2 for W27.3 — class of boundary or technique]'
+        - '[hint 3 for W27.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W28
+      chapter: Control
+      title: The utility has no room
+      allocation:
+        medium: 1
+        hard: 2
+      cards:
+      - id: W28.1
+        title: The utility's small world
+        description: Recover the utility's actual execution contract and the protected engineering relationship
+          it serves.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W28.1 — orientation to the relevant system]'
+        - '[hint 2 for W28.1 — class of boundary or technique]'
+        - '[hint 3 for W28.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W28.2
+        title: Control with very little room
+        description: Gain controlled execution flow in the engineering utility despite its restricted
+          executable surface.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W28.2 — orientation to the relevant system]'
+        - '[hint 2 for W28.2 — class of boundary or technique]'
+        - '[hint 3 for W28.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W28.3
+        title: Keep the authority you earned
+        description: Complete the utility compromise while retaining the privilege needed to establish
+          the scoped live control capability.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W28.3 — orientation to the relevant system]'
+        - '[hint 2 for W28.3 — class of boundary or technique]'
+        - '[hint 3 for W28.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W29
+      chapter: Release and consequences
+      title: Paper truth
+      allocation:
+        easy: 1
+        medium: 2
+      cards:
+      - id: W29.1
+        title: The price of this planning window
+        description: Recover the settlement tariff that applies to replacement supply in the current allocation
+          window.
+        difficulty: easy
+        points: 50
+        hints:
+        - '[hint 1 for W29.1 — orientation to the relevant system]'
+        - '[hint 2 for W29.1 — class of boundary or technique]'
+        - '[hint 3 for W29.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W29.2
+        title: What reserve remains uncommitted
+        description: Reconcile the current usable reserve with the company's allocation commitments and
+          establish what the release plan must account for.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W29.2 — orientation to the relevant system]'
+        - '[hint 2 for W29.2 — class of boundary or technique]'
+        - '[hint 3 for W29.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W29.3
+        title: Paper truth
+        description: Construct a release plan that reduces usable reserve within the operating envelope
+          and explains the resulting replacement cost and restrictions.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W29.3 — orientation to the relevant system]'
+        - '[hint 2 for W29.3 — class of boundary or technique]'
+        - '[hint 3 for W29.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W30
+      chapter: Release and consequences
+      title: Open the gates
+      allocation:
+        medium: 2
+      cards:
+      - id: W30.1
+        title: Bind the plan to the plant
+        description: Turn the bounded release plan into a correctly bound live command plan using the
+          client and authority you earned.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W30.1 — orientation to the relevant system]'
+        - '[hint 2 for W30.1 — class of boundary or technique]'
+        - '[hint 3 for W30.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W30.2
+        title: Open the gates
+        description: Execute the bounded opening and establish its actual effect on usable reserve. Show
+          the replacement cost and restrictions that follow from the lost water.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W30.2 — orientation to the relevant system]'
+        - '[hint 2 for W30.2 — class of boundary or technique]'
+        - '[hint 3 for W30.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W31
+      chapter: Release and consequences
+      title: The diagnostic vault
+      allocation:
+        medium: 1
+        hard: 1
+        expert: 2
+      cards:
+      - id: W31.1
+        title: The vault's misleading length
+        description: Recover the diagnostic vault's actual record-boundary behavior and the protected
+          diagnostic reference associated with the supplied case.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W31.1 — orientation to the relevant system]'
+        - '[hint 2 for W31.1 — class of boundary or technique]'
+        - '[hint 3 for W31.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W31.2
+        title: Past the parser's boundary
+        description: Combine the observed record behavior into a controlled access beyond the parser's
+          intended boundary.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W31.2 — orientation to the relevant system]'
+        - '[hint 2 for W31.2 — class of boundary or technique]'
+        - '[hint 3 for W31.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W31.3
+        title: The state execution returns to
+        description: Establish controlled influence over the saved execution state under the vault's remaining
+          constraints.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W31.3 — orientation to the relevant system]'
+        - '[hint 2 for W31.3 — class of boundary or technique]'
+        - '[hint 3 for W31.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W31.4
+        title: The diagnostic service's authority
+        description: Complete the diagnostic-vault compromise and recover the restricted maintenance approval
+          history under the diagnostic service's execution identity.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W31.4 — orientation to the relevant system]'
+        - '[hint 2 for W31.4 — class of boundary or technique]'
+        - '[hint 3 for W31.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W32
+      chapter: Release and consequences
+      title: Replay is not reality
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: W32.1
+        title: The replay's pieces
+        description: Recover the replay program's relevant entity and component structure for the outlet
+          example.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W32.1 — orientation to the relevant system]'
+        - '[hint 2 for W32.1 — class of boundary or technique]'
+        - '[hint 3 for W32.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W32.2
+        title: The systems that update it
+        description: Reconstruct the update behavior needed to reproduce the outlet example's state changes.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W32.2 — orientation to the relevant system]'
+        - '[hint 2 for W32.2 — class of boundary or technique]'
+        - '[hint 3 for W32.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W32.3
+        title: The condition the old model used
+        description: Recover the hidden state condition that makes the old replay approve the disputed
+          schedule.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W32.3 — orientation to the relevant system]'
+        - '[hint 2 for W32.3 — class of boundary or technique]'
+        - '[hint 3 for W32.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W32.4
+        title: Replay is not reality
+        description: Construct a replay trace that exposes why the old project's accepted schedule disagrees
+          with the current process observations.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W32.4 — orientation to the relevant system]'
+        - '[hint 2 for W32.4 — class of boundary or technique]'
+        - '[hint 3 for W32.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W33
+      chapter: Release and consequences
+      title: The expensive hour
+      allocation:
+        medium: 1
+        hard: 2
+        expert: 1
+      cards:
+      - id: W33.1
+        title: A forecast that matches the instrument
+        description: Reconcile calibration and observation delay with the supplied trace so the planning
+          model reproduces the relevant forecast.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W33.1 — orientation to the relevant system]'
+        - '[hint 2 for W33.1 — class of boundary or technique]'
+        - '[hint 3 for W33.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W33.2
+        title: The expensive hour
+        description: Construct a time-varying release schedule that meets the practice objective while
+          respecting the declared operating constraints.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W33.2 — orientation to the relevant system]'
+        - '[hint 2 for W33.2 — class of boundary or technique]'
+        - '[hint 3 for W33.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W33.3
+        title: The schedule the service accepts
+        description: Carry the planned release across the scheduler's authorization boundary and demonstrate
+          its bounded economic effect in the live rehearsal.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W33.3 — orientation to the relevant system]'
+        - '[hint 2 for W33.3 — class of boundary or technique]'
+        - '[hint 3 for W33.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W33.4
+        title: When the forecast moves
+        description: Run a feedback policy through your earned scheduler capability so the bounded objective
+          is met across the disclosed demand and calibration conditions.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W33.4 — orientation to the relevant system]'
+        - '[hint 2 for W33.4 — class of boundary or technique]'
+        - '[hint 3 for W33.4 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    - id: W34
+      chapter: Release and consequences
+      title: The reassuring dashboard
+      allocation:
+        medium: 1
+        hard: 1
+        expert: 1
+      cards:
+      - id: W34.1
+        title: Which view the planner trusts
+        description: Establish which planning consumer receives your controlled estimate and demonstrate
+          a harmless change reaching it without altering raw measurements.
+        difficulty: medium
+        points: 100
+        hints:
+        - '[hint 1 for W34.1 — orientation to the relevant system]'
+        - '[hint 2 for W34.1 — class of boundary or technique]'
+        - '[hint 3 for W34.1 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W34.2
+        title: A reassuring decision
+        description: Construct a plausible false planning view that makes the planner select a different
+          allocation while satisfying the declared consistency checks.
+        difficulty: hard
+        points: 200
+        hints:
+        - '[hint 1 for W34.2 — orientation to the relevant system]'
+        - '[hint 2 for W34.2 — class of boundary or technique]'
+        - '[hint 3 for W34.2 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+      - id: W34.3
+        title: Still reassuring after the handover
+        description: Couple the false planning view to the bounded release through the disclosed reporting
+          handover. Preserve the convincing report while establishing the actual reserve loss.
+        difficulty: expert
+        points: 400
+        hints:
+        - '[hint 1 for W34.3 — orientation to the relevant system]'
+        - '[hint 2 for W34.3 — class of boundary or technique]'
+        - '[hint 3 for W34.3 — concrete next diagnostic step]'
+        completion:
+          mode: automatic_range_evidence
+    operation_count: 35
+    card_count: 120
+    score_total: 21450

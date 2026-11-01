@@ -1,31 +1,26 @@
 {
   "delivery": {
     "cards": {
-      "items": [
-        "T01.1",
-        "T01.2",
-        "T01.3",
-        "T01.4",
-        "T02.1",
-        "T02.2",
-        "T02.3",
-        "T02.4",
-        "T03.1",
-        "T03.2",
-        "T03.3",
-        "T03.4",
-        "T04.1",
-        "T04.2",
-        "T04.3",
-        "T04.4"
-      ],
       "status": "versioned"
     },
+    "catalog": {
+      "card_count": 240,
+      "operation_count": 70,
+      "path": "challenges/challenges.yaml",
+      "phase": "training",
+      "phase_card_count": 16,
+      "phase_operation_count": 4,
+      "phase_score_total": 1000,
+      "revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+      "schema": "cinder-typhoon.challenge-delivery/v2",
+      "score_total": 39200,
+      "sha256": "35d2308e33356711324593608835609f9e01502ce8b6dca3df669b1f4b5b835d"
+    },
     "hints": {
-      "items": [],
       "levels": 3,
-      "path": "build/card-coverage/hints-training.yaml",
-      "status": "authored"
+      "penalty": 0,
+      "release": "on_request",
+      "status": "versioned"
     }
   },
   "disclosures": [

@@ -170,19 +170,48 @@
     "delivery": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["cards", "hints"],
+      "required": ["catalog", "cards", "hints"],
       "properties": {
-        "cards": {"$ref": "#/$defs/delivery_item"},
-        "hints": {"$ref": "#/$defs/delivery_item"}
+        "catalog": {"$ref": "#/$defs/delivery_catalog"},
+        "cards": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status"],
+          "properties": {"status": {"const": "versioned"}}
+        },
+        "hints": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "release", "levels", "penalty"],
+          "properties": {
+            "status": {"const": "versioned"},
+            "release": {"const": "on_request"},
+            "levels": {"const": 3},
+            "penalty": {"const": 0}
+          }
+        }
       }
     },
-    "delivery_item": {
+    "delivery_catalog": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status", "items"],
+      "required": [
+        "path", "schema", "revision", "sha256", "operation_count", "card_count",
+        "score_total", "phase", "phase_operation_count", "phase_card_count",
+        "phase_score_total"
+      ],
       "properties": {
-        "status": {"enum": ["observed", "not_materialized", "external_unverified"]},
-        "items": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+        "path": {"const": "challenges/challenges.yaml"},
+        "schema": {"const": "cinder-typhoon.challenge-delivery/v2"},
+        "revision": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "operation_count": {"const": 70},
+        "card_count": {"const": 240},
+        "score_total": {"type": "integer", "minimum": 1},
+        "phase": {"enum": ["training", "keplerops", "arwc"]},
+        "phase_operation_count": {"type": "integer", "minimum": 1},
+        "phase_card_count": {"type": "integer", "minimum": 1},
+        "phase_score_total": {"type": "integer", "minimum": 1}
       }
     }
   }

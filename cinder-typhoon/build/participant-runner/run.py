@@ -27,7 +27,9 @@ from urllib.request import ProxyHandler, Request, build_opener
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "build" / "input-provenance"))
+sys.path.insert(0, str(ROOT / "challenges"))
 
+import catalog as delivery_catalog  # noqa: E402
 from provenance import ProvenanceError, attach_runtime_provenance  # noqa: E402
 
 
@@ -356,16 +358,22 @@ def validate_candidate(path: Path, phase_name: str, cross_segment: bool) -> dict
         raise RunnerError(f"candidate manifest cannot be read: {error}") from error
     required = {
         "schema_version", "candidate_id", "immutable", "source_commit",
-        "artifact_digests", "deployments",
+        "challenge_delivery", "artifact_digests", "deployments",
     }
     if not isinstance(value, dict) or set(value) != required:
         raise RunnerError(f"candidate manifest fields must be exactly {sorted(required)}")
-    if value["schema_version"] != 1 or value["immutable"] is not True:
-        raise RunnerError("candidate manifest must declare schema_version 1 and immutable true")
+    if value["schema_version"] != 2 or value["immutable"] is not True:
+        raise RunnerError("candidate manifest must declare schema_version 2 and immutable true")
     if not isinstance(value["candidate_id"], str) or not SAFE_ID.fullmatch(value["candidate_id"]):
         raise RunnerError("candidate_id is invalid")
     if not isinstance(value["source_commit"], str) or not re.fullmatch(r"[0-9a-f]{40}", value["source_commit"]):
         raise RunnerError("source_commit must be a full lowercase Git commit")
+    try:
+        expected_delivery = delivery_catalog.catalog_metadata()
+    except ValueError as error:
+        raise RunnerError(f"canonical challenge delivery is invalid: {error}") from error
+    if value["challenge_delivery"] != expected_delivery:
+        raise RunnerError("candidate challenge delivery does not match the canonical catalog")
     digests = value["artifact_digests"]
     if not isinstance(digests, dict) or not digests:
         raise RunnerError("artifact_digests must be a non-empty object")
@@ -397,6 +405,7 @@ def validate_candidate(path: Path, phase_name: str, cross_segment: bool) -> dict
         "candidate_id": value["candidate_id"], "immutable": True,
         "source_commit": value["source_commit"],
         "manifest_sha256": hashlib.sha256(raw).hexdigest(),
+        "challenge_delivery": expected_delivery,
         "artifact_digests": dict(sorted(digests.items())),
         "deployments": {name: deployments[name] for name in sorted(deployments)},
     }
@@ -700,6 +709,7 @@ def main() -> int:
             if arguments.candidate else {
                 "candidate_id": "development-mutable", "immutable": False,
                 "source_commit": None, "manifest_sha256": None,
+                "challenge_delivery": delivery_catalog.catalog_metadata(),
                 "artifact_digests": {}, "deployments": {},
             }
         )
@@ -708,6 +718,7 @@ def main() -> int:
         candidate_evidence = {
             "candidate_id": "invalid", "immutable": False,
             "source_commit": None, "manifest_sha256": None,
+            "challenge_delivery": None,
             "artifact_digests": {}, "deployments": {},
         }
     report: dict[str, Any] = {

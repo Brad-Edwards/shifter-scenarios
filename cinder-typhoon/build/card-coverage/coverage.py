@@ -7,6 +7,7 @@ import argparse
 import ast
 from collections import Counter, defaultdict
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import re
@@ -17,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 REGISTRY_PATH = HERE / "registry.json"
 DELIVERY_CATALOG = ROOT / "challenges" / "challenges.yaml"
+CATALOG_MODULE_PATH = ROOT / "challenges" / "catalog.py"
 DEPENDENCIES = ROOT / "docs" / "design" / "challenge-dependencies.json"
 OPERATIONS = ROOT / "sdl" / "modules" / "operations"
 BRIEFS = ROOT / "docs" / "design" / "challenges"
@@ -27,9 +29,13 @@ SUITES = {
 }
 CARD = re.compile(r"[TKW]\d{2}\.\d")
 SEMANTIC_CARD = re.compile(r"urn:cinder-typhoon:fact:([TKW]\d{2}\.\d)")
-DELIVERY_FLAG = re.compile(
-    r"(?m)^\s*(?:-\s*)?flag_id:\s*['\"]?([^'\"\s#]+)['\"]?\s*(?:#.*)?$",
+CATALOG_SPEC = importlib.util.spec_from_file_location(
+    "cinder_card_delivery_catalog", CATALOG_MODULE_PATH,
 )
+if CATALOG_SPEC is None or CATALOG_SPEC.loader is None:
+    raise RuntimeError("cannot load challenge catalog module")
+catalog_module = importlib.util.module_from_spec(CATALOG_SPEC)
+CATALOG_SPEC.loader.exec_module(catalog_module)
 REQUEST_CALLS = {
     "request", "get_text", "get_json", "get_bytes", "curl", "curl_json",
     "post_json_route", "cbor_request", "negotiate",
@@ -109,15 +115,35 @@ def dependency_cards() -> dict[str, list[list[str]]]:
     return result
 
 
+def delivery_catalog(path: Path = DELIVERY_CATALOG) -> dict[str, Any]:
+    try:
+        return catalog_module.load_catalog(
+            path,
+            require_current=path.resolve() == DELIVERY_CATALOG.resolve(),
+        )
+    except (OSError, ValueError) as error:
+        raise CoverageError(f"participant delivery catalog is invalid: {error}") from error
+
+
 def delivered_cards(path: Path = DELIVERY_CATALOG) -> set[str]:
-    source = path.read_text(encoding="utf-8")
-    cards = DELIVERY_FLAG.findall(source)
+    value = delivery_catalog(path)
+    cards = [card["id"] for card in catalog_module.catalog_cards(value)]
     if len(cards) != len(set(cards)):
         raise CoverageError("participant delivery catalog contains duplicate card IDs")
     invalid = sorted(card_id for card_id in cards if not CARD.fullmatch(card_id))
     if invalid:
         raise CoverageError(f"participant delivery catalog contains invalid card IDs: {invalid}")
     return set(cards)
+
+
+def delivery_metadata(path: Path = DELIVERY_CATALOG) -> dict[str, Any]:
+    try:
+        return catalog_module.catalog_metadata(
+            path,
+            require_current=path.resolve() == DELIVERY_CATALOG.resolve(),
+        )
+    except (OSError, ValueError) as error:
+        raise CoverageError(f"participant delivery catalog metadata is invalid: {error}") from error
 
 
 def call_name(call: ast.Call) -> str:
@@ -363,12 +389,9 @@ def build_registry() -> dict[str, Any]:
             },
         }
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "authored_card_source": "SDL semantic references, challenge briefs and dependency ledger",
-        "delivery_catalog": {
-            "path": relative(DELIVERY_CATALOG),
-            "blocking_issue": 226,
-        },
+        "delivery_catalog": delivery_metadata(),
         "cards": cards,
     }
 
@@ -387,8 +410,10 @@ def validate_registry(value: Any) -> None:
         "schema_version", "authored_card_source", "delivery_catalog", "cards",
     }:
         raise CoverageError("card registry has invalid top-level fields")
-    if value["schema_version"] != 1:
-        raise CoverageError("card registry schema_version must be 1")
+    if value["schema_version"] != 2:
+        raise CoverageError("card registry schema_version must be 2")
+    if value["delivery_catalog"] != delivery_metadata():
+        raise CoverageError("delivery catalog changed without registry regeneration and review")
     cards = value["cards"]
     if not isinstance(cards, dict):
         raise CoverageError("card registry cards must be an object")
@@ -480,7 +505,7 @@ def build_report(registry: dict[str, Any]) -> dict[str, Any]:
     if missing_delivery or extra_delivery:
         findings.append({
             "kind": "delivery_catalog_mismatch",
-            "issue": registry["delivery_catalog"]["blocking_issue"],
+            "issue": 268,
             "missing_count": len(missing_delivery),
             "extra_count": len(extra_delivery),
             "missing": missing_delivery,

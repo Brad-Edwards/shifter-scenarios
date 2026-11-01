@@ -5,6 +5,15 @@
     "cinder-training/workstation:hand-build": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
   },
   "candidate_id": "mutable-dev-20261031",
+  "challenge_delivery": {
+    "card_count": 240,
+    "operation_count": 70,
+    "path": "challenges/challenges.yaml",
+    "revision": "049acc650bd2184f151adce4ad13a140ceffa39e4ed727bf0cd5e774b9eaf380",
+    "schema": "cinder-typhoon.challenge-delivery/v2",
+    "score_total": 39200,
+    "sha256": "35d2308e33356711324593608835609f9e01502ce8b6dca3df669b1f4b5b835d"
+  },
   "deployments": {
     "arwc": {
       "instance": "cinder-arwc-golden",
@@ -26,6 +35,6 @@
     }
   },
   "immutable": false,
-  "schema_version": 1,
+  "schema_version": 2,
   "source_commit": "d810f1d275c6369252a717b310cf4e53e9e99a8a"
 }

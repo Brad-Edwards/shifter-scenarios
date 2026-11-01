@@ -20,9 +20,11 @@ and updating relative links and command paths:
 | `cinder-typhoon/design/logical-network/` | `docs/diagrams/` |
 
 Challenge briefs remain operator authoring documents under
-`docs/design/challenges/`. The template's `challenges/challenges.yaml` is
-reserved for the later delivery catalog. Existing design scripts remain beside
-their inputs; they have not been converted into runtime contracts.
+`docs/design/challenges/`. The template's `challenges/challenges.yaml` is now
+the generated, versioned participant delivery catalog. It contains only
+participant-facing card text, score, difficulty, hints, and the automatic
+completion mode. Operator design sections and solution material remain in the
+authoring tree. Existing design scripts remain beside their inputs.
 
 The only structural addition beyond the template is `runtime-adapter/`, reserved
 using the folder convention of this repository's Polaris adapter. No adapter

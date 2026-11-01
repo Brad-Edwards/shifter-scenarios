@@ -111,10 +111,11 @@ class BoundaryTests(unittest.TestCase):
 class CandidateTests(unittest.TestCase):
     def candidate(self) -> dict:
         return {
-            "schema_version": 1,
+            "schema_version": 2,
             "candidate_id": "event-2026.10.30-01",
             "immutable": True,
             "source_commit": "a" * 40,
+            "challenge_delivery": runner.delivery_catalog.catalog_metadata(),
             "artifact_digests": {"training-image": "sha256:" + "b" * 64},
             "deployments": {
                 "training": {"project": "project-1", "zone": "zone-1", "instance": "training-1", "participant_image_digest": "sha256:" + "b" * 64},
@@ -136,12 +137,14 @@ class CandidateTests(unittest.TestCase):
         self.assertTrue(result["immutable"])
         self.assertRegex(result["manifest_sha256"], r"^[0-9a-f]{64}$")
         self.assertEqual(set(result["deployments"]), {"training", "keplerops", "arwc"})
+        self.assertEqual(result["challenge_delivery"], runner.delivery_catalog.catalog_metadata())
 
     def test_candidate_rejects_mutability_missing_digest_and_extra_fields(self) -> None:
         mutations = []
         mutable = self.candidate(); mutable["immutable"] = False; mutations.append(mutable)
         no_digest = self.candidate(); no_digest["artifact_digests"] = {}; mutations.append(no_digest)
         extra = self.candidate(); extra["operator_token"] = "not-allowed"; mutations.append(extra)
+        stale = self.candidate(); stale["challenge_delivery"]["sha256"] = "0" * 64; mutations.append(stale)
         for value in mutations:
             with self.subTest(value=value):
                 with tempfile.TemporaryDirectory() as directory:
@@ -173,14 +176,15 @@ class CommittedCandidateTests(unittest.TestCase):
     def test_committed_candidate_has_required_fields(self) -> None:
         doc = json.loads(self.CANDIDATE_PATH.read_text())
         for field in ("schema_version", "candidate_id", "immutable",
-                      "source_commit", "artifact_digests", "deployments"):
+                      "source_commit", "challenge_delivery", "artifact_digests", "deployments"):
             self.assertIn(field, doc, f"candidate.json missing required field: {field}")
-        self.assertEqual(doc["schema_version"], 1)
+        self.assertEqual(doc["schema_version"], 2)
         self.assertIsInstance(doc["candidate_id"], str)
         self.assertIsInstance(doc["immutable"], bool)
         self.assertRegex(doc["source_commit"], r"^[0-9a-f]{40}$")
         self.assertIsInstance(doc["artifact_digests"], dict)
         self.assertTrue(doc["artifact_digests"])
+        self.assertEqual(doc["challenge_delivery"], runner.delivery_catalog.catalog_metadata())
         for phase in ("training", "keplerops", "arwc"):
             self.assertIn(phase, doc["deployments"],
                           f"candidate.json missing deployment: {phase}")

@@ -12,7 +12,7 @@ from typing import Any
 
 PHASES = {"training", "keplerops", "arwc"}
 ENTRY_TYPES = {"directory", "file", "symlink"}
-DELIVERY_STATES = {"observed", "not_materialized", "external_unverified", "versioned", "authored"}
+DELIVERY_STATES = {"versioned"}
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 MODE = re.compile(r"^[0-7]{4}$")
 
@@ -119,15 +119,28 @@ def validate_authored(value: dict[str, Any]) -> None:
         require(len(item["exposes"]) == len(set(item["exposes"])), f"disclosures[{index}]: duplicate exposure")
         disclosure_ids.add(item["id"])
     delivery = value["delivery"]
-    exact_keys(delivery, {"cards", "hints"}, set(), "delivery")
-    for name, item in delivery.items():
-        # hints authored in this repo may include path and levels fields
-        if name == "hints" and item.get("status") == "authored":
-            exact_keys(item, {"status", "items", "path", "levels"}, set(), f"delivery.{name}")
-        else:
-            exact_keys(item, {"status", "items"}, set(), f"delivery.{name}")
-        require(item["status"] in DELIVERY_STATES, f"delivery.{name}: invalid status")
-        require(len(item["items"]) == len(set(item["items"])), f"delivery.{name}: duplicate items")
+    exact_keys(delivery, {"catalog", "cards", "hints"}, set(), "delivery")
+    catalog = delivery["catalog"]
+    exact_keys(catalog, {
+        "path", "schema", "revision", "sha256", "operation_count", "card_count",
+        "score_total", "phase", "phase_operation_count", "phase_card_count",
+        "phase_score_total",
+    }, set(), "delivery.catalog")
+    require(catalog["path"] == "challenges/challenges.yaml", "delivery.catalog: invalid path")
+    require(catalog["schema"] == "cinder-typhoon.challenge-delivery/v2", "delivery.catalog: invalid schema")
+    require(bool(SHA256.fullmatch(catalog["revision"])), "delivery.catalog: invalid revision")
+    require(bool(SHA256.fullmatch(catalog["sha256"])), "delivery.catalog: invalid digest")
+    require(catalog["operation_count"] == 70 and catalog["card_count"] == 240, "delivery.catalog: invalid totals")
+    require(catalog["score_total"] > 0, "delivery.catalog: score total is required")
+    require(catalog["phase"] == value["phase"], "delivery.catalog: phase mismatch")
+    require(catalog["phase_operation_count"] > 0 and catalog["phase_card_count"] > 0, "delivery.catalog: phase counts are required")
+    require(catalog["phase_score_total"] > 0, "delivery.catalog: phase score is required")
+    exact_keys(delivery["cards"], {"status"}, set(), "delivery.cards")
+    require(delivery["cards"]["status"] in DELIVERY_STATES, "delivery.cards: invalid status")
+    exact_keys(delivery["hints"], {"status", "release", "levels", "penalty"}, set(), "delivery.hints")
+    require(delivery["hints"] == {
+        "status": "versioned", "release": "on_request", "levels": 3, "penalty": 0,
+    }, "delivery.hints: invalid hint rule")
 
 
 def validate_observed(value: dict[str, Any]) -> None:

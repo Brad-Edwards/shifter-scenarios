@@ -160,12 +160,12 @@ comparison audit (#224) must be remediated and cited before provenance can pass.
 The #210 card-coverage registry independently reconciles the 240 SDL contracts,
 briefs, dependency entries, and named participant-boundary assertions. K20.1,
 K20.2, and K20.3 now perform and assert separate relation, managed-identity, and
-approval-plus-consumer actions. The release form remains unresolved where a
-simple endpoint read has no reviewed interpretive achievement and while the
-participant delivery catalog is empty pending #226. It also rejects every
-current SDL evidence-owner declaration because each overlaps the component
-that accepted the action; an observed-state label alone is not independent
-evidence.
+approval-plus-consumer actions. The versioned participant delivery catalog has
+70 operations and the same 240 cards, with static scores and graduated hints.
+The release form remains unresolved where a simple endpoint read has no reviewed
+interpretive achievement. It also rejects every current SDL evidence-owner
+declaration because each overlaps the component that accepted the action; an
+observed-state label alone is not independent evidence.
 
 The #211 fourth-wall gate derives card IDs and normalized titles from that
 private registry, scans authored participant-facing runtime and image inputs,
