@@ -1,2 +1,3 @@
-# Template placement map. Flag placement has not been authored.
+# Retired template. Cinder uses range-owned automatic evidence validation
+# projected from challenges/challenges.yaml; this file is not authoritative.
 flags: []

@@ -120,26 +120,60 @@ class CardCoverageTests(unittest.TestCase):
                 self.assertTrue(deletion["removed_outcome"])
         self.assertEqual(self.report["summary"]["documented_deletion_test_count"], 240)
 
-    def test_empty_delivery_catalog_is_an_explicit_release_failure(self) -> None:
-        self.assertEqual(coverage.delivered_cards(), set())
-        finding = next(
-            item for item in self.report["findings"]
-            if item["kind"] == "delivery_catalog_mismatch"
-        )
-        self.assertEqual(finding["issue"], 226)
-        self.assertEqual(finding["missing_count"], 240)
-        self.assertEqual(finding["extra_count"], 0)
+    def test_delivery_catalog_has_exact_registry_coverage(self) -> None:
+        self.assertEqual(coverage.delivered_cards(), set(self.registry["cards"]))
+        self.assertFalse(any(
+            item["kind"] == "delivery_catalog_mismatch"
+            for item in self.report["findings"]
+        ))
+        self.assertEqual(self.report["summary"]["delivered_card_count"], 240)
+        self.assertEqual(self.report["summary"]["missing_delivery_card_count"], 0)
+        self.assertEqual(self.report["summary"]["extra_delivery_card_count"], 0)
         self.assertEqual(self.report["overall_status"], "unresolved")
 
-    def test_delivery_catalog_rejects_duplicate_and_invalid_flag_ids(self) -> None:
+    def test_delivery_catalog_rejects_duplicate_and_invalid_card_ids(self) -> None:
+        import yaml
+
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "challenges.yaml"
-            path.write_text("challenges:\n  - flag_id: K01.1\n    flag_id: K01.1\n")
-            with self.assertRaisesRegex(coverage.CoverageError, "duplicate"):
+            value = copy.deepcopy(coverage.delivery_catalog())
+            value["phases"]["training"]["operations"][0]["cards"].append(
+                copy.deepcopy(value["phases"]["training"]["operations"][0]["cards"][0])
+            )
+            path.write_text(yaml.safe_dump(value, sort_keys=False))
+            with self.assertRaisesRegex(coverage.CoverageError, "duplicate|allocation"):
                 coverage.delivered_cards(path)
-            path.write_text("challenges:\n  - flag_id: X01.1\n")
+            value = copy.deepcopy(coverage.delivery_catalog())
+            value["phases"]["training"]["operations"][0]["cards"][0]["id"] = "X01.1"
+            path.write_text(yaml.safe_dump(value, sort_keys=False))
             with self.assertRaisesRegex(coverage.CoverageError, "invalid"):
                 coverage.delivered_cards(path)
+
+    def test_score_hint_and_allocation_drift_is_rejected(self) -> None:
+        base = coverage.delivery_catalog()
+        mutations = []
+        changed = copy.deepcopy(base)
+        changed["phases"]["training"]["operations"][0]["cards"][0]["points"] += 1
+        mutations.append(changed)
+        changed = copy.deepcopy(base)
+        changed["scoring"]["hint_policy"]["penalty"] = 1
+        mutations.append(changed)
+        changed = copy.deepcopy(base)
+        changed["phases"]["training"]["operations"][0]["allocation"]["easy"] -= 1
+        mutations.append(changed)
+        for value in mutations:
+            with self.subTest(mutation=value):
+                with self.assertRaises(ValueError):
+                    coverage.catalog_module.validate_catalog(value)
+
+    def test_prerequisite_source_change_changes_catalog_revision(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "challenge-dependencies.json"
+            path.write_text('{"value": 1}\n')
+            before = coverage.catalog_module.source_revision([path])
+            path.write_text('{"value": 2}\n')
+            after = coverage.catalog_module.source_revision([path])
+        self.assertNotEqual(before, after)
 
     def test_missing_extra_or_changed_registry_entries_fail_validation(self) -> None:
         missing = copy.deepcopy(self.registry)
@@ -156,6 +190,11 @@ class CardCoverageTests(unittest.TestCase):
         drifted["cards"]["K20.3"]["sources"]["operation_sha256"] = "0" * 64
         with self.assertRaisesRegex(coverage.CoverageError, "contract changed"):
             coverage.validate_registry(drifted)
+
+        delivery_drift = copy.deepcopy(self.registry)
+        delivery_drift["delivery_catalog"]["sha256"] = "0" * 64
+        with self.assertRaisesRegex(coverage.CoverageError, "delivery catalog changed"):
+            coverage.validate_registry(delivery_drift)
 
     def test_registry_contains_references_not_request_values(self) -> None:
         prohibited = {"request_body", "response_body", "headers", "cookie", "bearer", "secret_value"}

@@ -6,9 +6,22 @@
   "additionalProperties": false,
   "required": ["schema_version", "authored_card_source", "delivery_catalog", "cards"],
   "properties": {
-    "schema_version": {"const": 1},
+    "schema_version": {"const": 2},
     "authored_card_source": {"type": "string"},
-    "delivery_catalog": {"type": "object"},
+    "delivery_catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "schema", "revision", "sha256", "operation_count", "card_count", "score_total"],
+      "properties": {
+        "path": {"const": "challenges/challenges.yaml"},
+        "schema": {"const": "cinder-typhoon.challenge-delivery/v2"},
+        "revision": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "operation_count": {"const": 70},
+        "card_count": {"const": 240},
+        "score_total": {"type": "integer", "minimum": 1}
+      }
+    },
     "cards": {"type": "object", "minProperties": 240, "maxProperties": 240}
   }
 }

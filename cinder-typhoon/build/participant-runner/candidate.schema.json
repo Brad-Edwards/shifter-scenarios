@@ -9,14 +9,29 @@
     "candidate_id",
     "immutable",
     "source_commit",
+    "challenge_delivery",
     "artifact_digests",
     "deployments"
   ],
   "properties": {
-    "schema_version": {"const": 1},
+    "schema_version": {"const": 2},
     "candidate_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+\\-]{0,159}$"},
     "immutable": {"const": true},
     "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "challenge_delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "schema", "revision", "sha256", "operation_count", "card_count", "score_total"],
+      "properties": {
+        "path": {"const": "challenges/challenges.yaml"},
+        "schema": {"const": "cinder-typhoon.challenge-delivery/v2"},
+        "revision": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "operation_count": {"const": 70},
+        "card_count": {"const": 240},
+        "score_total": {"type": "integer", "minimum": 1}
+      }
+    },
     "artifact_digests": {
       "type": "object",
       "minProperties": 1,

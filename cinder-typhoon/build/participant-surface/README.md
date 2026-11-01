@@ -60,9 +60,9 @@ An authored manifest contains:
 - `disclosures`: participant-visible discovery documents and the facts or route
   families they expose. This makes over-disclosure auditable without copying
   document contents into the manifest;
-- `delivery`: whether cards and hints are actually materialized on the observed
-  range surface. External event delivery remains unverified until its
-  authoritative snapshot is available.
+- `delivery`: a digest-bound reference to the canonical versioned catalog and
+  the phase's exact operation, card, and score totals. Card and hint lists are
+  not copied into these manifests; the catalog remains their sole authority.
 
 An observed manifest contains the same phase/state identity plus the measured
 identity, file entries, tools, DNS results, listener reachability, forbidden

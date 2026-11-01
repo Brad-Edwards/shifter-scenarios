@@ -20,7 +20,8 @@ Podman, `sudo`, namespace entry and container runtime commands.
 
 The JSON report contains:
 
-- immutable candidate identity, or an explicit mutable-development marker;
+- immutable candidate identity and exact challenge-catalog digest, or an
+  explicit mutable-development marker;
 - reset identity, selected operation and exact test methods;
 - participant identity and boundary controls;
 - request host, path SHA-256 and status, plus response size and SHA-256, without
