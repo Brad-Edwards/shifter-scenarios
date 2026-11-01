@@ -34,7 +34,7 @@ contain request and artifact hashes rather than response bodies or credentials.
 They do not substitute for the blind playtests tracked by issue #229.
 
 The operator-only card registry maps all 240 authored cards to participant
-work, prerequisites, completion evaluators, evidence owners, one named
+work, prerequisites, the independent completion evaluator, service evidence sources, one named
 participant-boundary assertion, and the deletion test:
 
 ```sh
@@ -42,13 +42,12 @@ python3 cinder-typhoon/build/card-coverage/coverage.py \
   --output /tmp/cinder-card-coverage.json
 ```
 
-`--require-complete` currently fails because the participant delivery catalog
-is empty pending #226 and because simple-read candidates remain unresolved
-until their work becomes substantive or their interpretive achievement is
-specifically reviewed. The SDL also names the accepting components as evidence
-owners for all 240 cards; those declarations do not pass the independent-owner
-check. Missing, extra, combined, duplicated, or assertion-free card coverage
-also fails this gate.
+`--require-complete` is the release form of this gate. It requires the exact
+versioned 240-card delivery catalog, one unique assertion per card, an explicit
+substantive-interpretation review for every syntax-simple read, and a
+revision-matched HTTPS binding to the range-owned completion evaluator.
+Missing, extra, combined, duplicated, assertion-free, or stale coverage fails.
+The immutable candidate runner invokes this complete form before acceptance.
 
 Run the static fourth-wall author check with:
 

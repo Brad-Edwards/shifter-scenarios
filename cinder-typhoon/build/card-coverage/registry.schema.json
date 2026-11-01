@@ -4,9 +4,9 @@
   "title": "Cinder Typhoon card coverage registry",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "authored_card_source", "delivery_catalog", "cards"],
+  "required": ["schema_version", "authored_card_source", "delivery_catalog", "read_only_review_source", "cards"],
   "properties": {
-    "schema_version": {"const": 2},
+    "schema_version": {"const": 3},
     "authored_card_source": {"type": "string"},
     "delivery_catalog": {
       "type": "object",
@@ -20,6 +20,15 @@
         "operation_count": {"const": 70},
         "card_count": {"const": 240},
         "score_total": {"type": "integer", "minimum": 1}
+      }
+    },
+    "read_only_review_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"const": "build/card-coverage/read-only-reviews.json"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
       }
     },
     "cards": {"type": "object", "minProperties": 240, "maxProperties": 240}

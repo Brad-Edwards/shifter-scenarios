@@ -180,7 +180,8 @@ class AuthoredManifestTests(unittest.TestCase):
         serialized = json.dumps(delivery_catalog.load_catalog()).lower()
         for value in (
             "technical design", "vulnerability and intended solution", "author checks",
-            "completion_evaluator", "accepting_components", "evidence_owners",
+            "completion_evaluator", "accepting_components", "evidence_owners", "evidence_sources",
+            "evidence_contract", "read_only_review",
             "prerequisite_sets", "request_body", "response_body",
         ):
             self.assertNotIn(value, serialized)

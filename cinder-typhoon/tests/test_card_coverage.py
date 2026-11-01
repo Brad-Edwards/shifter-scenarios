@@ -3,12 +3,12 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
-from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 COVERAGE_PATH = ROOT / "build" / "card-coverage" / "coverage.py"
@@ -78,38 +78,61 @@ class CardCoverageTests(unittest.TestCase):
             with self.subTest(card_id=card_id):
                 self.assertEqual(
                     entry["evidence_ownership_status"],
-                    "accepting_component_overlap",
+                    "independent_range_evaluator",
                 )
-                self.assertFalse(
-                    set(entry["accepting_components"]).isdisjoint(entry["evidence_owners"])
+                evaluator = entry["completion_evaluator"]
+                self.assertEqual(evaluator["owner"], coverage.SCORER_OWNER)
+                self.assertNotIn(evaluator["owner"], entry["accepting_components"])
+                self.assertEqual(
+                    evaluator["scorer_path"],
+                    f"/v1/objectives/{card_id.lower()}/verify",
                 )
-                self.assertTrue(entry["evidence_owners"])
-                self.assertTrue(entry["completion_evaluator"]["assertions"])
+                self.assertEqual(
+                    evaluator["catalog_revision"],
+                    self.registry["delivery_catalog"]["revision"],
+                )
+                self.assertTrue(entry["evidence_sources"])
+                self.assertTrue(evaluator["assertions"])
+                self.assertFalse(entry["evidence_contract"]["participant_can_mark_complete"])
+                self.assertFalse(entry["evidence_contract"]["accepting_component_can_mark_complete"])
                 expected_rule = f"fact-{card_id.lower().replace('.', '-')}"
-                self.assertEqual(entry["completion_evaluator"]["observation_rule"], expected_rule)
-        self.assertEqual(self.report["summary"]["independent_evidence_card_count"], 0)
+                self.assertEqual(evaluator["observation_rule"], expected_rule)
+        self.assertEqual(self.report["summary"]["independent_evidence_card_count"], 240)
+        self.assertGreater(self.report["summary"]["state_change_card_count"], 0)
+        self.assertEqual(
+            self.report["summary"]["state_change_card_count"],
+            self.report["summary"]["independently_evaluated_state_change_card_count"],
+        )
         findings = [
             item for item in self.report["findings"]
             if item["kind"] == "evidence_owner_not_independent"
         ]
-        self.assertEqual(len(findings), 240)
+        self.assertEqual(findings, [])
+        self.assertEqual(len(self.report["operations"]), 70)
+        self.assertTrue(all(row["status"] == "complete" for row in self.report["operations"]))
 
-    def test_simple_reads_fail_without_a_documented_interpretive_achievement(self) -> None:
+    def test_every_syntax_simple_read_has_a_reviewed_interpretive_achievement(self) -> None:
+        candidates = {
+            card_id for card_id, matches in coverage.subtest_inventory().items()
+            if len(matches) == 1 and matches[0]["simple_read_candidate"]
+        }
+        self.assertEqual(candidates, set(coverage.read_only_reviews()))
+        for card_id in candidates:
+            with self.subTest(card_id=card_id):
+                review = self.registry["cards"][card_id]["read_only_review"]
+                self.assertEqual(review["status"], "substantive_interpretation")
+                self.assertGreaterEqual(len(review["rationale"].split()), 12)
         self.assertEqual(
             self.registry["cards"]["T04.1"]["read_only_review"]["status"],
-            "substantive_interpretation",
-        )
-        self.assertEqual(
-            self.registry["cards"]["W03.1"]["read_only_review"]["status"],
-            "unresolved_simple_read",
+            "not_simple_read",
         )
         findings = {
             item["card_id"]
             for item in self.report["findings"]
             if item["kind"] == "simple_read_without_substantive_interpretation"
         }
-        self.assertIn("W03.1", findings)
-        self.assertNotIn("T04.1", findings)
+        self.assertEqual(findings, set())
+        self.assertEqual(self.report["summary"]["unresolved_simple_read_card_count"], 0)
 
     def test_every_card_documents_the_architecture_deletion_test(self) -> None:
         for card_id, entry in self.registry["cards"].items():
@@ -129,7 +152,7 @@ class CardCoverageTests(unittest.TestCase):
         self.assertEqual(self.report["summary"]["delivered_card_count"], 240)
         self.assertEqual(self.report["summary"]["missing_delivery_card_count"], 0)
         self.assertEqual(self.report["summary"]["extra_delivery_card_count"], 0)
-        self.assertEqual(self.report["overall_status"], "unresolved")
+        self.assertEqual(self.report["overall_status"], "complete")
 
     def test_delivery_catalog_rejects_duplicate_and_invalid_card_ids(self) -> None:
         import yaml
@@ -219,17 +242,63 @@ class CardCoverageTests(unittest.TestCase):
 
     def test_machine_readable_schemas_are_present(self) -> None:
         root = ROOT / "build" / "card-coverage"
-        for name in ("registry.schema.json", "report.schema.json"):
+        for name in (
+            "registry.schema.json", "report.schema.json", "read-only-reviews.schema.json",
+        ):
             value = json.loads((root / name).read_text())
             self.assertEqual(value["$schema"], "https://json-schema.org/draft/2020-12/schema")
             self.assertIn("$id", value)
 
-    def test_release_form_fails_while_design_gaps_are_open(self) -> None:
+    def test_release_form_passes_only_when_coverage_is_complete(self) -> None:
         completed = subprocess.run(
             [sys.executable, str(COVERAGE_PATH), "--require-complete"],
             text=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=False,
         )
-        self.assertEqual(completed.returncode, 1)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+
+    def test_every_authoritative_source_class_is_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            copied = Path(directory) / "cinder-typhoon"
+            shutil.copytree(ROOT, copied, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+            gate = copied / "build" / "card-coverage" / "coverage.py"
+            mutations = {
+                "sdl": copied / "sdl" / "modules" / "operations" / "t01.yaml",
+                "brief": copied / "docs" / "design" / "challenges" / "T01" / "T01.1.md",
+                "dependencies": copied / "docs" / "design" / "challenge-dependencies.json",
+                "known_solution": copied / "build" / "training" / "tests" / "test_known_solution_live.py",
+                "delivery_catalog": copied / "challenges" / "challenges.yaml",
+                "native_projection": copied / "ctfd" / "import_catalog.py",
+                "read_only_review": copied / "build" / "card-coverage" / "read-only-reviews.json",
+            }
+            for source_kind, path in mutations.items():
+                with self.subTest(source_kind=source_kind):
+                    original = path.read_text(encoding="utf-8")
+                    if source_kind == "known_solution":
+                        changed = original.replace('challenge="T01.1"', 'challenge="T01.9"', 1)
+                        self.assertNotEqual(changed, original)
+                    elif source_kind == "native_projection":
+                        changed = original.replace('"method": "POST"', '"method": "GET"', 1)
+                        self.assertNotEqual(changed, original)
+                    else:
+                        changed = original + "\n"
+                    path.write_text(changed, encoding="utf-8")
+                    try:
+                        completed = subprocess.run(
+                            [sys.executable, str(gate), "--require-complete"],
+                            cwd=copied, text=True, stdout=subprocess.DEVNULL,
+                            stderr=subprocess.PIPE, check=False,
+                        )
+                        self.assertNotEqual(completed.returncode, 0, source_kind)
+                    finally:
+                        path.write_text(original, encoding="utf-8")
+
+    def test_complete_gate_is_required_by_pack_and_candidate_checks(self) -> None:
+        compatibility = (ROOT / "pack.compatibility.yaml").read_text(encoding="utf-8")
+        self.assertIn("python3 build/card-coverage/coverage.py --require-complete", compatibility)
+        candidate = (ROOT / "build" / "participant-runner" / "check-candidate.sh").read_text(
+            encoding="utf-8",
+        )
+        self.assertIn("card-coverage/coverage.py --require-complete", candidate)
 
 
 if __name__ == "__main__":
