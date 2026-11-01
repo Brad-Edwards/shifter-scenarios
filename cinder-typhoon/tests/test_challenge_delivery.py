@@ -46,7 +46,8 @@ class CanonicalCatalogTests(unittest.TestCase):
         serialized = json.dumps(self.catalog).lower()
         for forbidden in (
             "technical design", "intended solution", "author checks", "request_body",
-            "response_body", "prerequisite_sets", "evidence_owners",
+            "response_body", "prerequisite_sets", "evidence_owners", "evidence_sources",
+            "evidence_contract", "read_only_review",
         ):
             self.assertNotIn(forbidden, serialized)
 
