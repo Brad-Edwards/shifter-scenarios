@@ -1129,6 +1129,16 @@
             "size": 353,
             "type": "file"
           },
+        {
+          "classification": "offline-reproducer",
+          "group": "rowan",
+          "mode": "0550",
+          "owner": "rowan",
+          "path": "work/reproducers/fieldkest-bundle-indexer",
+          "sha256": "066a646653a088c31cbe53d9ab4ff5a7f1fe9cec0c6def66ea9452cabcfb6852",
+          "size": 14312,
+          "type": "file"
+        },
           {
             "classification": "workplace-document",
             "group": "rowan",

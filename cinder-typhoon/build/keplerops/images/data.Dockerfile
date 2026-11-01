@@ -14,6 +14,7 @@ RUN apt-get update \
     && chmod 0700 /var/lib/postgresql/16/fieldkest-history
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest-data/http_support.py
+COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/platform_service.py /opt/fieldkest-data/platform_service.py
 COPY build/keplerops/runtime/data-entrypoint.sh /usr/local/bin/fieldkest-data-entrypoint
 RUN chmod 0755 /usr/local/bin/fieldkest-data-entrypoint

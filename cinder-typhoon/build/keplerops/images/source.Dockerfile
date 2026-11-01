@@ -10,6 +10,7 @@ RUN apt-get update \
     && useradd --system --gid git --home-dir /var/lib/gitea --shell /usr/sbin/nologin git
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
+COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/source.py /opt/fieldkest/source.py
 COPY build/keplerops/runtime/source-entrypoint.sh /usr/local/bin/fieldkest-source-entrypoint
 COPY build/keplerops/config/gitea-app.ini /etc/gitea/app.ini

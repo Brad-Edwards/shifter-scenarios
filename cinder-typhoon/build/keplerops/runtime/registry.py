@@ -33,9 +33,9 @@ from http_support import (
 
 STATE = Path("/var/lib/fieldkest-registry")
 AUDIT = STATE / "audit"
-CHANNEL_CREDENTIAL = STATE / "channel-credential.json"
 RESULTS = STATE / "results"
 PUBLISHED = STATE / "published"
+CHANNEL_CREDENTIAL = PUBLISHED / "delivery/channel-credential.json"
 CONFIG = json.loads((STATE / "config/foundation.json").read_text())
 K29_CONFIG = json.loads((STATE / "config/k29.json").read_text())
 USERNAME = CONFIG["developer"]["username"]
@@ -257,6 +257,7 @@ class RegistryHandler(KeplerHandler):
         if signed:
             channel_token = uuid.uuid4().hex
             credential = {"token": channel_token, "channel": record.get("channel", "arwc-stable"), "approved_version": version, "issued_at": utc_now()}
+            CHANNEL_CREDENTIAL.parent.mkdir(parents=True, exist_ok=True)
             record["approval"]["channel_token"] = channel_token
             CHANNEL_CREDENTIAL.write_text(json.dumps(credential, sort_keys=True, separators=(",", ":")) + "\n")
             response["channel_token"] = channel_token
@@ -285,6 +286,13 @@ class RegistryHandler(KeplerHandler):
             "published_customer_versions": [item["version"] for item in published],
             "interface": "fieldkest.connector/v3",
             "pending_release": CONFIG.get("pending_release", "7.4.3-cinder.rowan"),
+            "channels": {
+                "arwc-stable": {
+                    "current": "7.4.2",
+                    "rollback_candidates": ["7.4.2"],
+                    "rollback_slot": "future-state",
+                }
+            },
         }
         append_audit(AUDIT, "metadata", {"request_id": self.request_id, "principal": principal, "package": result["name"], "status": 200})
         self.send_json(200, result)

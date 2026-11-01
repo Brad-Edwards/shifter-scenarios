@@ -22,6 +22,7 @@ RUN apt-get update \
     && chmod 0750 /var/lib/fieldkest-preview \
     && chmod 0700 /var/lib/fieldkest-preview/browser-profiles
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
+COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/platform_service.py /opt/fieldkest/platform_service.py
 COPY build/keplerops/runtime/preview_worker.py /opt/fieldkest/preview_worker.py
 COPY build/keplerops/runtime/platform-entrypoint.sh /usr/local/bin/fieldkest-platform-entrypoint

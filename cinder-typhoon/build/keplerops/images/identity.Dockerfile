@@ -13,6 +13,7 @@ COPY build/keplerops/config/kdc.conf /etc/krb5kdc/kdc.conf
 COPY build/keplerops/config/kadm5.acl /etc/krb5kdc/kadm5.acl
 COPY build/keplerops/runtime/provision-kerberos.sh /usr/local/sbin/fieldkest-provision-kerberos
 COPY build/keplerops/runtime/http_support.py /opt/keplerops-identity/http_support.py
+COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/platform_service.py /opt/keplerops-identity/platform_service.py
 COPY build/keplerops/runtime/platform-entrypoint.sh /usr/local/bin/fieldkest-platform-entrypoint
 

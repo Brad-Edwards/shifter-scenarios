@@ -62,6 +62,24 @@ development run may use the existing standalone handover seed; an immutable
 ARWC candidate run may not. A single-stack KeplerOps development run may record
 the two cross-carrier assertions as skipped; candidate mode rejects every skip.
 
+For paired development checks on the approved GCP goldens, use the scripted
+launcher rather than starting either scenario locally or assembling individual
+remote commands:
+
+```sh
+bash cinder-typhoon/build/participant-runner/check-development-pair.sh \
+  delivery-package issue-264
+```
+
+The launcher resets both goldens, builds the synced KeplerOps source, requires
+complete input provenance and the exact KeplerOps participant surface, and runs
+the selected full KeplerOps carrier. It then verifies from the ARWC participant
+boundary that the matching non-seeded transition receipt was earned. Docker
+commands execute only on the named GCP instances. The separate ARWC W01-W35
+suite and campaign-wide surface, coverage, and fourth-wall gates remain in
+their own qualification lanes; they are not folded into an issue-scoped
+development run for a different remediation category.
+
 Live request entries include their current input-provenance sources and
 unresolved items. This does not conflate the QA layers: known-solution behavior,
 card coverage, fourth-wall leakage, and provenance retain separate statuses.

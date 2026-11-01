@@ -214,6 +214,8 @@ class PlatformHandler(KeplerHandler):
             return None
 
     def do_GET(self) -> None:
+        if self.send_client_document():
+            return
         try:
             getattr(self, f"get_{SERVICE.replace('-', '_')}")()
         except (ValueError, KeyError, TypeError, RuntimeError, subprocess.SubprocessError) as error:

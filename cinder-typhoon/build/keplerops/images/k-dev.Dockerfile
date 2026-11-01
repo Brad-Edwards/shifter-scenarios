@@ -1,3 +1,14 @@
+FROM debian:bookworm-slim AS indexer-reproducer
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y gcc libc6-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY build/keplerops/runtime/bundle_indexer.c /src/bundle_indexer.c
+RUN gcc -std=c11 -O0 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none -D_FORTIFY_SOURCE=2 \
+    -o /fieldkest-bundle-indexer /src/bundle_indexer.c \
+    && strip --strip-all /fieldkest-bundle-indexer
+
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
@@ -19,16 +30,18 @@ COPY build/keplerops/config/sshd_config /etc/ssh/sshd_config
 COPY build/keplerops/config/krb5.conf /etc/krb5.conf
 COPY assets/keplerops/opening/k-dev-home.tar /tmp/k-dev-home.tar
 COPY assets/keplerops/opening/k-dev-workbench.tar /tmp/k-dev-workbench.tar
-COPY assets/keplerops/registry/k-dev-registry.tar /opt/fieldkest-seeds/k-dev-registry.tar
-COPY assets/keplerops/policy-compiler/k-dev-k11-home.tar /opt/fieldkest-seeds/k-dev-k11-home.tar
-COPY assets/keplerops/connector-archive/k-dev-k28-home.tar /opt/fieldkest-seeds/k-dev-k28-home.tar
-COPY assets/keplerops/release-lineage/k-dev-k29-home.tar /opt/fieldkest-seeds/k-dev-k29-home.tar
+COPY assets/keplerops/registry/k-dev-registry.tar /var/lib/fieldkest-workbench/seeds/k-dev-registry.tar
+COPY assets/keplerops/policy-compiler/k-dev-k11-home.tar /var/lib/fieldkest-workbench/seeds/k-dev-k11-home.tar
+COPY assets/keplerops/connector-archive/k-dev-k28-home.tar /var/lib/fieldkest-workbench/seeds/k-dev-k28-home.tar
+COPY assets/keplerops/release-lineage/k-dev-k29-home.tar /var/lib/fieldkest-workbench/seeds/k-dev-k29-home.tar
+COPY --from=indexer-reproducer --chown=2000:2000 --chmod=0550 \
+    /fieldkest-bundle-indexer /home/rowan/work/reproducers/fieldkest-bundle-indexer
 
 RUN tar -xf /tmp/k-dev-home.tar -C /home/rowan \
-    && tar -xf /opt/fieldkest-seeds/k-dev-registry.tar -C /home/rowan \
-    && tar -xf /opt/fieldkest-seeds/k-dev-k11-home.tar -C /home/rowan \
-    && tar -xf /opt/fieldkest-seeds/k-dev-k28-home.tar -C /home/rowan \
-    && tar -xf /opt/fieldkest-seeds/k-dev-k29-home.tar -C /home/rowan \
+    && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-registry.tar -C /home/rowan \
+    && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-k11-home.tar -C /home/rowan \
+    && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-k28-home.tar -C /home/rowan \
+    && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-k29-home.tar -C /home/rowan \
     && mkdir -p /home/rowan/.local/share/keplerops \
     && touch /home/rowan/.local/share/keplerops/registry-foundation-2026-09-18 \
     && touch /home/rowan/.local/share/keplerops/policy-compiler-2026-09-18 \
@@ -50,7 +63,7 @@ RUN tar -xf /tmp/k-dev-home.tar -C /home/rowan \
     && chmod 0700 /var/lib/fieldkest-workbench \
     && chmod 0700 /home/rowan /home/rowan/.ssh /home/rowan/.config /home/rowan/.config/chromium /home/rowan/.config/chromium/Default /home/rowan/results \
     && chmod 0600 /home/rowan/.gitconfig /home/rowan/.config/git/credentials /home/rowan/.config/chromium/Default/* \
-    && chmod 0755 /usr/local/bin/fieldkest-k-dev-entrypoint
+    && chmod 0700 /usr/local/bin/fieldkest-k-dev-entrypoint
 
 EXPOSE 22
 ENTRYPOINT ["/usr/local/bin/fieldkest-k-dev-entrypoint"]

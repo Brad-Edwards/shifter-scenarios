@@ -28,6 +28,8 @@ class CloudAPIHandler(KeplerHandler):
         )
 
     def do_GET(self) -> None:
+        if self.send_client_document():
+            return
         path = urlsplit(self.path).path
         worker = self._worker()
         token = self.headers.get("Authorization", "").removeprefix("Bearer ")

@@ -25,7 +25,7 @@ PACKAGE = re.compile(r"/api/fieldlink/packages(?:/poll|/[^/]+/(?:activate|receip
 DIAGNOSTIC = re.compile(r"/api/fieldlink/diagnostics(?:/[^/]+/receipt)?$")
 ROLLBACK = "/api/fieldlink/rehearsals/rollback"
 PUBLISHED = Path("/var/lib/fieldkest-registry/published")
-CHANNEL_CREDENTIAL = Path("/var/lib/fieldkest-registry/channel-credential.json")
+CHANNEL_CREDENTIAL = PUBLISHED / "delivery/channel-credential.json"
 VERSION = re.compile(r"7\.4\.3-cinder\.[a-z0-9][a-z0-9-]{0,23}")
 
 

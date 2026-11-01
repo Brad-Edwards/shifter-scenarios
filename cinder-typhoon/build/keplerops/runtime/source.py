@@ -282,7 +282,10 @@ class SourceHandler(KeplerHandler):
             if principal != USERNAME:
                 self.send_json(403, {"error": "developer_scope_required"})
                 return
-            self.send_json(200, K11_CONFIG["opcode_model"])
+            self.send_json(200, {
+                "schema": "fieldkest.policy-opcode-model/v1",
+                **K11_CONFIG["opcode_model"],
+            })
             return
         if parsed.path == "/api/exercises/policy-compiler/nonce":
             if principal != USERNAME:

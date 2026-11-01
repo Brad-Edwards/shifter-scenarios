@@ -199,6 +199,8 @@ class CIHandler(KeplerHandler):
         return self.basic_or_bearer(USERNAME, TOKEN)
 
     def do_GET(self) -> None:
+        if self.send_client_document():
+            return
         path = urlsplit(self.path).path
         if path == "/api/runs/BLD-REL-742/artifacts/release-dossier.json":
             if self.headers.get("Authorization") != "Bearer release-reader-handle":

@@ -336,12 +336,13 @@ def operations(phase_name: str) -> dict[str, list[str]]:
     diagnostic = "test_k29a_diagnostic_delivery"
     package = "test_k29b_connector_delivery"
     before_delivery = [method for method in methods if method_order(phase_name, method)[0] < 29]
+    after_delivery = [method for method in methods if method_order(phase_name, method)[0] > 29]
     for method in before_delivery:
         index = before_delivery.index(method)
         result[f"k{method_order(phase_name, method)[0]:02d}"] = before_delivery[:index + 1]
     result["release-lineage"] = before_delivery + [release]
-    result["delivery-diagnostic"] = before_delivery + [diagnostic]
-    result["delivery-package"] = before_delivery + [release, package]
+    result["delivery-diagnostic"] = before_delivery + [diagnostic] + after_delivery
+    result["delivery-package"] = before_delivery + [release, package] + after_delivery
     for number in (30, 31):
         target = next(method for method in methods if method_order(phase_name, method)[0] == number)
         result[f"k{number}"] = methods[:methods.index(target) + 1]

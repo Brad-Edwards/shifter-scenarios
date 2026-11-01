@@ -12,34 +12,34 @@
           {
             "assertions": [
               {
-                "line": 220,
+                "line": 236,
                 "method": "assertIsNotNone"
               },
               {
-                "line": 224,
+                "line": 240,
                 "method": "assertIn"
               },
               {
-                "line": 227,
+                "line": 243,
                 "method": "assertEqual"
               },
               {
-                "line": 230,
+                "line": 246,
                 "method": "assertRegex"
               },
               {
-                "line": 231,
+                "line": 247,
                 "method": "assertIsInstance"
               },
               {
-                "line": 234,
+                "line": 250,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "K01.1"
             ],
-            "line": 216,
+            "line": 232,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K01.1 recover credential and read the handover",
@@ -98,22 +98,22 @@
           {
             "assertions": [
               {
-                "line": 246,
+                "line": 262,
                 "method": "assertIsNotNone"
               },
               {
-                "line": 253,
+                "line": 269,
                 "method": "assertTrue"
               },
               {
-                "line": 258,
+                "line": 274,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K01.2"
             ],
-            "line": 239,
+            "line": 255,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K01.2 recover the retained support conversation",
@@ -171,22 +171,22 @@
           {
             "assertions": [
               {
-                "line": 267,
+                "line": 283,
                 "method": "assertIsNotNone"
               },
               {
-                "line": 268,
+                "line": 284,
                 "method": "assertRegex"
               },
               {
-                "line": 271,
+                "line": 287,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "K01.3"
             ],
-            "line": 264,
+            "line": 280,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K01.3 recover the stale release-review export",
@@ -243,14 +243,14 @@
           {
             "assertions": [
               {
-                "line": 281,
+                "line": 297,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K01.4"
             ],
-            "line": 274,
+            "line": 290,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K01.4 produce an inspection summary with the local helper",
@@ -308,14 +308,14 @@
           {
             "assertions": [
               {
-                "line": 303,
+                "line": 319,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K02.1"
             ],
-            "line": 292,
+            "line": 308,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K02.1 recover the missing report fixture",
@@ -373,18 +373,18 @@
           {
             "assertions": [
               {
-                "line": 321,
+                "line": 337,
                 "method": "assertEqual"
               },
               {
-                "line": 322,
+                "line": 338,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K02.2"
             ],
-            "line": 309,
+            "line": 325,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K02.2 expose the withheld review note",
@@ -442,38 +442,38 @@
           {
             "assertions": [
               {
-                "line": 335,
+                "line": 351,
                 "method": "assertEqual"
               },
               {
-                "line": 336,
+                "line": 352,
                 "method": "assertIn"
               },
               {
-                "line": 357,
+                "line": 373,
                 "method": "assertEqual"
               },
               {
-                "line": 358,
+                "line": 374,
                 "method": "assertEqual"
               },
               {
-                "line": 364,
+                "line": 380,
                 "method": "assertEqual"
               },
               {
-                "line": 368,
+                "line": 384,
                 "method": "assertEqual"
               },
               {
-                "line": 369,
+                "line": 385,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K02.3"
             ],
-            "line": 331,
+            "line": 347,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K02.3 publish Cinder's report through a green job",
@@ -532,14 +532,14 @@
           {
             "assertions": [
               {
-                "line": 381,
+                "line": 397,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "K03.1"
             ],
-            "line": 373,
+            "line": 389,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K03.1 recover the staging artifact",
@@ -596,22 +596,22 @@
           {
             "assertions": [
               {
-                "line": 389,
+                "line": 405,
                 "method": "assertIn"
               },
               {
-                "line": 390,
+                "line": 406,
                 "method": "assertIn"
               },
               {
-                "line": 402,
+                "line": 418,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K03.2"
             ],
-            "line": 385,
+            "line": 401,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K03.2 reconstruct the staged script",
@@ -668,14 +668,14 @@
           {
             "assertions": [
               {
-                "line": 417,
+                "line": 433,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K03.3"
             ],
-            "line": 405,
+            "line": 421,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K03.3 recover the lost collection and ticket",
@@ -732,18 +732,22 @@
           {
             "assertions": [
               {
-                "line": 438,
+                "line": 466,
+                "method": "assertIsNotNone"
+              },
+              {
+                "line": 470,
                 "method": "assertEqual"
               },
               {
-                "line": 444,
+                "line": 476,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K04.1"
             ],
-            "line": 431,
+            "line": 447,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K04.1 controlled object-boundary corruption",
@@ -800,14 +804,14 @@
           {
             "assertions": [
               {
-                "line": 450,
+                "line": 482,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K04.2"
             ],
-            "line": 446,
+            "line": 478,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K04.2 disclose the protected runtime descriptor",
@@ -864,14 +868,14 @@
           {
             "assertions": [
               {
-                "line": 463,
+                "line": 495,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K04.3"
             ],
-            "line": 453,
+            "line": 485,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K04.3 scoped write under the integrity relation",
@@ -928,14 +932,14 @@
           {
             "assertions": [
               {
-                "line": 475,
+                "line": 507,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K04.4"
             ],
-            "line": 469,
+            "line": 501,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K04.4 execute the completion routine and recover the dossier",
@@ -992,14 +996,14 @@
           {
             "assertions": [
               {
-                "line": 493,
+                "line": 524,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K05.1"
             ],
-            "line": 485,
+            "line": 515,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K05.1 speak the consumer-check contract",
@@ -1056,18 +1060,18 @@
           {
             "assertions": [
               {
-                "line": 507,
+                "line": 542,
                 "method": "assertEqual"
               },
               {
-                "line": 508,
+                "line": 543,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "K05.2"
             ],
-            "line": 498,
+            "line": 530,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K05.2 recover the yanked release named in the ticket",
@@ -1124,14 +1128,14 @@
           {
             "assertions": [
               {
-                "line": 516,
+                "line": 552,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K05.3"
             ],
-            "line": 511,
+            "line": 546,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K05.3 reconcile the disagreeing manifests",
@@ -1188,18 +1192,18 @@
           {
             "assertions": [
               {
-                "line": 526,
+                "line": 563,
                 "method": "assertEqual"
               },
               {
-                "line": 527,
+                "line": 564,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K05.4"
             ],
-            "line": 518,
+            "line": 554,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K05.4 run the isolated resolver",
@@ -1256,22 +1260,22 @@
           {
             "assertions": [
               {
-                "line": 544,
+                "line": 580,
                 "method": "assertEqual"
               },
               {
-                "line": 545,
+                "line": 582,
                 "method": "assertEqual"
               },
               {
-                "line": 547,
+                "line": 584,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K06.1"
             ],
-            "line": 536,
+            "line": 571,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K06.1 recover the house publisher credential",
@@ -1328,14 +1332,14 @@
           {
             "assertions": [
               {
-                "line": 553,
+                "line": 594,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K06.2"
             ],
-            "line": 550,
+            "line": 588,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K06.2 read the private package view in bounds",
@@ -1393,26 +1397,26 @@
           {
             "assertions": [
               {
-                "line": 578,
+                "line": 625,
                 "method": "assertEqual"
               },
               {
-                "line": 582,
+                "line": 630,
                 "method": "assertEqual"
               },
               {
-                "line": 590,
+                "line": 639,
                 "method": "assertEqual"
               },
               {
-                "line": 591,
+                "line": 640,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K06.3"
             ],
-            "line": 557,
+            "line": 600,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K06.3 publish and run the rehearsal consumer",
@@ -1470,14 +1474,14 @@
           {
             "assertions": [
               {
-                "line": 608,
+                "line": 659,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K07.1"
             ],
-            "line": 600,
+            "line": 647,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K07.1 what the inspector forwards",
@@ -1534,18 +1538,18 @@
           {
             "assertions": [
               {
-                "line": 616,
+                "line": 668,
                 "method": "assertIn"
               },
               {
-                "line": 617,
+                "line": 669,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K07.2"
             ],
-            "line": 610,
+            "line": 661,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K07.2 one request becomes another",
@@ -1602,14 +1606,14 @@
           {
             "assertions": [
               {
-                "line": 622,
+                "line": 674,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K07.3"
             ],
-            "line": 620,
+            "line": 672,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K07.3 the protected inspection action",
@@ -1666,14 +1670,14 @@
           {
             "assertions": [
               {
-                "line": 640,
+                "line": 694,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K08.1"
             ],
-            "line": 637,
+            "line": 688,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K08.1 recover the protected entitlement record",
@@ -1730,14 +1734,14 @@
           {
             "assertions": [
               {
-                "line": 652,
+                "line": 707,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K08.2"
             ],
-            "line": 643,
+            "line": 697,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K08.2 supply the missing encryption context",
@@ -1794,18 +1798,18 @@
           {
             "assertions": [
               {
-                "line": 675,
+                "line": 730,
                 "method": "assertEqual"
               },
               {
-                "line": 679,
+                "line": 735,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K08.3"
             ],
-            "line": 655,
+            "line": 710,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K08.3 craft an entitlement of our choosing",
@@ -1862,14 +1866,14 @@
           {
             "assertions": [
               {
-                "line": 705,
+                "line": 765,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "K09.1"
             ],
-            "line": 703,
+            "line": 762,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K09.1 the runner log tells on itself",
@@ -1926,18 +1930,18 @@
           {
             "assertions": [
               {
-                "line": 716,
+                "line": 777,
                 "method": "assertNotIn"
               },
               {
-                "line": 718,
+                "line": 780,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K09.2"
             ],
-            "line": 713,
+            "line": 774,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K09.2 the artifact without a link",
@@ -1994,18 +1998,18 @@
           {
             "assertions": [
               {
-                "line": 725,
+                "line": 789,
                 "method": "assertEqual"
               },
               {
-                "line": 727,
+                "line": 791,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K09.3"
             ],
-            "line": 721,
+            "line": 783,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K09.3 a job input with reach",
@@ -2063,34 +2067,34 @@
           {
             "assertions": [
               {
-                "line": 750,
+                "line": 821,
                 "method": "assertEqual"
               },
               {
-                "line": 752,
+                "line": 823,
                 "method": "assertIn"
               },
               {
-                "line": 757,
+                "line": 828,
                 "method": "assertEqual"
               },
               {
-                "line": 759,
+                "line": 830,
                 "method": "assertEqual"
               },
               {
-                "line": 760,
+                "line": 831,
                 "method": "assertEqual"
               },
               {
-                "line": 766,
+                "line": 837,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "K09.4"
             ],
-            "line": 742,
+            "line": 813,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K09.4 run in the runner under the service identity",
@@ -2148,14 +2152,14 @@
           {
             "assertions": [
               {
-                "line": 865,
+                "line": 931,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K10.1"
             ],
-            "line": 856,
+            "line": 922,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K10.1 recover the restricted preview association",
@@ -2212,18 +2216,18 @@
           {
             "assertions": [
               {
-                "line": 874,
+                "line": 940,
                 "method": "assertNotEqual"
               },
               {
-                "line": 880,
+                "line": 947,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K10.2"
             ],
-            "line": 870,
+            "line": 936,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K10.2 two inputs, one identity",
@@ -2280,22 +2284,22 @@
           {
             "assertions": [
               {
-                "line": 887,
+                "line": 955,
                 "method": "assertTrue"
               },
               {
-                "line": 888,
+                "line": 956,
                 "method": "assertEqual"
               },
               {
-                "line": 889,
+                "line": 957,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K10.3"
             ],
-            "line": 882,
+            "line": 949,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K10.3 recover the other document's contents",
@@ -2352,18 +2356,18 @@
           {
             "assertions": [
               {
-                "line": 804,
+                "line": 871,
                 "method": "assertEqual"
               },
               {
-                "line": 806,
+                "line": 873,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K11.1"
             ],
-            "line": 798,
+            "line": 865,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K11.1 clone the retained compiler and recover its program",
@@ -2420,14 +2424,14 @@
           {
             "assertions": [
               {
-                "line": 818,
+                "line": 885,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K11.2"
             ],
-            "line": 812,
+            "line": 879,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K11.2 model the instruction set via a fragment",
@@ -2484,14 +2488,14 @@
           {
             "assertions": [
               {
-                "line": 828,
+                "line": 895,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K11.3"
             ],
-            "line": 820,
+            "line": 887,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K11.3 the rule behind the rule: the fixed corpus",
@@ -2548,14 +2552,14 @@
           {
             "assertions": [
               {
-                "line": 846,
+                "line": 913,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K11.4"
             ],
-            "line": 831,
+            "line": 898,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K11.4 an input the compiler believes",
@@ -2612,14 +2616,14 @@
           {
             "assertions": [
               {
-                "line": 905,
+                "line": 973,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K12.1"
             ],
-            "line": 899,
+            "line": 966,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K12.1 place our content in the reviewer workflow",
@@ -2676,14 +2680,14 @@
           {
             "assertions": [
               {
-                "line": 913,
+                "line": 982,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K12.2"
             ],
-            "line": 908,
+            "line": 976,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K12.2 recover and spend the protected action value",
@@ -2740,18 +2744,18 @@
           {
             "assertions": [
               {
-                "line": 926,
+                "line": 996,
                 "method": "assertEqual"
               },
               {
-                "line": 927,
+                "line": 997,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K12.3"
             ],
-            "line": 919,
+            "line": 989,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K12.3 the worker changes sides",
@@ -2808,22 +2812,22 @@
           {
             "assertions": [
               {
-                "line": 932,
+                "line": 1002,
                 "method": "assertEqual"
               },
               {
-                "line": 933,
+                "line": 1003,
                 "method": "assertEqual"
               },
               {
-                "line": 934,
+                "line": 1004,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "K12.4"
             ],
-            "line": 930,
+            "line": 1000,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K12.4 the preview is ours",
@@ -2880,14 +2884,14 @@
           {
             "assertions": [
               {
-                "line": 945,
+                "line": 1015,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K13.1"
             ],
-            "line": 942,
+            "line": 1012,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K13.1 the listing nobody closed",
@@ -2944,14 +2948,14 @@
           {
             "assertions": [
               {
-                "line": 952,
+                "line": 1022,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K13.2"
             ],
-            "line": 948,
+            "line": 1018,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K13.2 before the correction",
@@ -3008,14 +3012,14 @@
           {
             "assertions": [
               {
-                "line": 960,
+                "line": 1030,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K13.3"
             ],
-            "line": 955,
+            "line": 1025,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K13.3 the export next door",
@@ -3072,14 +3076,14 @@
           {
             "assertions": [
               {
-                "line": 966,
+                "line": 1036,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K13.4"
             ],
-            "line": 962,
+            "line": 1032,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K13.4 what the workload can do",
@@ -3136,14 +3140,14 @@
           {
             "assertions": [
               {
-                "line": 979,
+                "line": 1049,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K14.1"
             ],
-            "line": 975,
+            "line": 1045,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K14.1 the trust document",
@@ -3203,14 +3207,14 @@
           {
             "assertions": [
               {
-                "line": 986,
+                "line": 1056,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K14.2"
             ],
-            "line": 982,
+            "line": 1052,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K14.2 a role intended for someone else",
@@ -3267,14 +3271,14 @@
           {
             "assertions": [
               {
-                "line": 992,
+                "line": 1062,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K14.3"
             ],
-            "line": 988,
+            "line": 1058,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K14.3 the export's separate rule",
@@ -3331,18 +3335,18 @@
           {
             "assertions": [
               {
-                "line": 1004,
+                "line": 1074,
                 "method": "assertEqual"
               },
               {
-                "line": 1005,
+                "line": 1075,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K15.1"
             ],
-            "line": 1001,
+            "line": 1071,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K15.1 an export in progress",
@@ -3402,14 +3406,14 @@
           {
             "assertions": [
               {
-                "line": 1011,
+                "line": 1081,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K15.2"
             ],
-            "line": 1007,
+            "line": 1077,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K15.2 a job outside your account",
@@ -3466,14 +3470,14 @@
           {
             "assertions": [
               {
-                "line": 1018,
+                "line": 1088,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K15.3"
             ],
-            "line": 1013,
+            "line": 1083,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K15.3 change the handover point",
@@ -3530,14 +3534,14 @@
           {
             "assertions": [
               {
-                "line": 1026,
+                "line": 1096,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K15.4"
             ],
-            "line": 1020,
+            "line": 1090,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K15.4 the right customer's collection",
@@ -3595,18 +3599,18 @@
           {
             "assertions": [
               {
-                "line": 1043,
+                "line": 1113,
                 "method": "assertEqual"
               },
               {
-                "line": 1044,
+                "line": 1114,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K16.1"
             ],
-            "line": 1041,
+            "line": 1111,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K16.1 tomorrow's job",
@@ -3666,14 +3670,14 @@
           {
             "assertions": [
               {
-                "line": 1052,
+                "line": 1122,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K16.2"
             ],
-            "line": 1047,
+            "line": 1117,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K16.2 the next startup hook",
@@ -3731,18 +3735,18 @@
           {
             "assertions": [
               {
-                "line": 1056,
+                "line": 1126,
                 "method": "assertEqual"
               },
               {
-                "line": 1057,
+                "line": 1127,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K16.3"
             ],
-            "line": 1054,
+            "line": 1124,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K16.3 beyond the current session",
@@ -3800,14 +3804,14 @@
           {
             "assertions": [
               {
-                "line": 1067,
+                "line": 1137,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K16.4"
             ],
-            "line": 1059,
+            "line": 1129,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K16.4 still there after the handover",
@@ -3864,14 +3868,14 @@
           {
             "assertions": [
               {
-                "line": 1079,
+                "line": 1149,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K17.1"
             ],
-            "line": 1076,
+            "line": 1146,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K17.1 a support session left behind",
@@ -3928,18 +3932,18 @@
           {
             "assertions": [
               {
-                "line": 1087,
+                "line": 1157,
                 "method": "assertEqual"
               },
               {
-                "line": 1093,
+                "line": 1163,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K17.2"
             ],
-            "line": 1081,
+            "line": 1151,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K17.2 a different way to recover",
@@ -3996,14 +4000,14 @@
           {
             "assertions": [
               {
-                "line": 1101,
+                "line": 1171,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "K17.3"
             ],
-            "line": 1096,
+            "line": 1166,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K17.3 which customers belong here",
@@ -4060,14 +4064,14 @@
           {
             "assertions": [
               {
-                "line": 1109,
+                "line": 1179,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K17.4"
             ],
-            "line": 1103,
+            "line": 1173,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K17.4 a delegated support action",
@@ -4124,14 +4128,14 @@
           {
             "assertions": [
               {
-                "line": 1121,
+                "line": 1191,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K18.1"
             ],
-            "line": 1118,
+            "line": 1188,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K18.1 the note behind the preview",
@@ -4189,14 +4193,14 @@
           {
             "assertions": [
               {
-                "line": 1131,
+                "line": 1205,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K18.2"
             ],
-            "line": 1123,
+            "line": 1193,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K18.2 a note with someone else's authority",
@@ -4255,14 +4259,14 @@
           {
             "assertions": [
               {
-                "line": 1139,
+                "line": 1213,
                 "method": "assertGreater"
               }
             ],
             "combined_card_ids": [
               "K18.3"
             ],
-            "line": 1135,
+            "line": 1209,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K18.3 the provider trusts our change",
@@ -4320,14 +4324,14 @@
           {
             "assertions": [
               {
-                "line": 1159,
+                "line": 1234,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K18.4"
             ],
-            "line": 1141,
+            "line": 1215,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K18.4 the query behind the identity",
@@ -4385,14 +4389,14 @@
           {
             "assertions": [
               {
-                "line": 1170,
+                "line": 1245,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K19.1"
             ],
-            "line": 1167,
+            "line": 1242,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K19.1 who vouches for whom",
@@ -4454,14 +4458,14 @@
           {
             "assertions": [
               {
-                "line": 1183,
+                "line": 1258,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K19.2"
             ],
-            "line": 1179,
+            "line": 1254,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K19.2 borrowed colleague",
@@ -4520,14 +4524,14 @@
           {
             "assertions": [
               {
-                "line": 1191,
+                "line": 1266,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K19.3"
             ],
-            "line": 1186,
+            "line": 1261,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K19.3 the archive delegates",
@@ -4585,18 +4589,18 @@
           {
             "assertions": [
               {
-                "line": 1204,
+                "line": 1279,
                 "method": "assertEqual"
               },
               {
-                "line": 1205,
+                "line": 1280,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K20.1"
             ],
-            "line": 1194,
+            "line": 1269,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K20.1 a delegation that reaches further",
@@ -4653,26 +4657,26 @@
           {
             "assertions": [
               {
-                "line": 1210,
+                "line": 1285,
                 "method": "assertEqual"
               },
               {
-                "line": 1211,
+                "line": 1286,
                 "method": "assertEqual"
               },
               {
-                "line": 1213,
+                "line": 1288,
                 "method": "assertEqual"
               },
               {
-                "line": 1214,
+                "line": 1289,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K20.2"
             ],
-            "line": 1207,
+            "line": 1282,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K20.2 the managed identity",
@@ -4730,26 +4734,26 @@
           {
             "assertions": [
               {
-                "line": 1233,
+                "line": 1308,
                 "method": "assertEqual"
               },
               {
-                "line": 1234,
+                "line": 1309,
                 "method": "assertTrue"
               },
               {
-                "line": 1250,
+                "line": 1324,
                 "method": "assertEqual"
               },
               {
-                "line": 1251,
+                "line": 1325,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "K20.3"
             ],
-            "line": 1218,
+            "line": 1293,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K20.3 the service wears a person",
@@ -4807,18 +4811,18 @@
           {
             "assertions": [
               {
-                "line": 1259,
+                "line": 1333,
                 "method": "assertEqual"
               },
               {
-                "line": 1260,
+                "line": 1334,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "K21.1"
             ],
-            "line": 1257,
+            "line": 1331,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K21.1 the policy beside the prompt",
@@ -4861,7 +4865,7 @@
         "brief": "docs/design/challenges/K21/K21.1.md",
         "brief_sha256": "40504361b2f18e1c0d4e621497448d401a933c1fce904008c8d98dba7e9273e8",
         "operation": "sdl/modules/operations/k21.yaml",
-        "operation_sha256": "7d0f95a8aa82ced205fc1f518239ed904ca73ed99df141975d50df059d72aba8"
+        "operation_sha256": "0607d7e2548ed2077263dd6e6736da46b8ce2e8b6d55e465ce5924aeb582b25a"
       },
       "title": "K21.1: The policy beside the prompt"
     },
@@ -4875,14 +4879,14 @@
           {
             "assertions": [
               {
-                "line": 1272,
+                "line": 1346,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K21.2"
             ],
-            "line": 1269,
+            "line": 1343,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K21.2 a conversation kept too long",
@@ -4925,7 +4929,7 @@
         "brief": "docs/design/challenges/K21/K21.2.md",
         "brief_sha256": "c364e17cb5ff47c2763a769ef4bf9600cff522eb62796def098e66a022298eed",
         "operation": "sdl/modules/operations/k21.yaml",
-        "operation_sha256": "7d0f95a8aa82ced205fc1f518239ed904ca73ed99df141975d50df059d72aba8"
+        "operation_sha256": "0607d7e2548ed2077263dd6e6736da46b8ce2e8b6d55e465ce5924aeb582b25a"
       },
       "title": "K21.2: A conversation kept too long"
     },
@@ -4939,14 +4943,14 @@
           {
             "assertions": [
               {
-                "line": 1276,
+                "line": 1350,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K21.3"
             ],
-            "line": 1274,
+            "line": 1348,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K21.3 the answer it should withhold",
@@ -4989,7 +4993,7 @@
         "brief": "docs/design/challenges/K21/K21.3.md",
         "brief_sha256": "deb5a4f65c2de6d8cc839f20f6c50a5340f624b8691bc43303fd8bc879e62f26",
         "operation": "sdl/modules/operations/k21.yaml",
-        "operation_sha256": "7d0f95a8aa82ced205fc1f518239ed904ca73ed99df141975d50df059d72aba8"
+        "operation_sha256": "0607d7e2548ed2077263dd6e6736da46b8ce2e8b6d55e465ce5924aeb582b25a"
       },
       "title": "K21.3: The answer it should withhold"
     },
@@ -5003,18 +5007,18 @@
           {
             "assertions": [
               {
-                "line": 1281,
+                "line": 1355,
                 "method": "assertEqual"
               },
               {
-                "line": 1282,
+                "line": 1356,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "K22.1"
             ],
-            "line": 1278,
+            "line": 1352,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K22.1 what the assistant reads",
@@ -5071,14 +5075,14 @@
           {
             "assertions": [
               {
-                "line": 1287,
+                "line": 1361,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K22.2"
             ],
-            "line": 1285,
+            "line": 1359,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K22.2 instructions in the attachment",
@@ -5136,14 +5140,14 @@
           {
             "assertions": [
               {
-                "line": 1291,
+                "line": 1365,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K22.3"
             ],
-            "line": 1289,
+            "line": 1363,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K22.3 an answer becomes an action",
@@ -5201,14 +5205,14 @@
           {
             "assertions": [
               {
-                "line": 1266,
+                "line": 1340,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "K23.1"
             ],
-            "line": 1263,
+            "line": 1337,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K23.1 a context view left open",
@@ -5265,18 +5269,18 @@
           {
             "assertions": [
               {
-                "line": 1296,
+                "line": 1370,
                 "method": "assertEqual"
               },
               {
-                "line": 1297,
+                "line": 1371,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "K23.2"
             ],
-            "line": 1293,
+            "line": 1367,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K23.2 the conversation reference",
@@ -5333,18 +5337,18 @@
           {
             "assertions": [
               {
-                "line": 1309,
+                "line": 1383,
                 "method": "assertEqual"
               },
               {
-                "line": 1310,
+                "line": 1384,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K23.3"
             ],
-            "line": 1300,
+            "line": 1374,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K23.3 a missing tenant boundary",
@@ -5402,18 +5406,18 @@
           {
             "assertions": [
               {
-                "line": 1315,
+                "line": 1389,
                 "method": "assertEqual"
               },
               {
-                "line": 1316,
+                "line": 1390,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K24.1"
             ],
-            "line": 1312,
+            "line": 1386,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K24.1 complete the job",
@@ -5470,18 +5474,18 @@
           {
             "assertions": [
               {
-                "line": 1323,
+                "line": 1397,
                 "method": "assertEqual"
               },
               {
-                "line": 1324,
+                "line": 1398,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K24.2"
             ],
-            "line": 1319,
+            "line": 1393,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K24.2 context with a credential",
@@ -5538,22 +5542,22 @@
           {
             "assertions": [
               {
-                "line": 1331,
+                "line": 1405,
                 "method": "assertEqual"
               },
               {
-                "line": 1332,
+                "line": 1406,
                 "method": "assertEqual"
               },
               {
-                "line": 1333,
+                "line": 1407,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K24.3"
             ],
-            "line": 1327,
+            "line": 1401,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K24.3 the completion runs",
@@ -5610,14 +5614,14 @@
           {
             "assertions": [
               {
-                "line": 1348,
+                "line": 1422,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K25.1"
             ],
-            "line": 1344,
+            "line": 1418,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K25.1 a customer with a history",
@@ -5674,22 +5678,22 @@
           {
             "assertions": [
               {
-                "line": 1354,
+                "line": 1428,
                 "method": "assertEqual"
               },
               {
-                "line": 1356,
+                "line": 1430,
                 "method": "assertIn"
               },
               {
-                "line": 1363,
+                "line": 1437,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K25.2"
             ],
-            "line": 1351,
+            "line": 1425,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K25.2 which ARWC is current",
@@ -5746,14 +5750,14 @@
           {
             "assertions": [
               {
-                "line": 1598,
+                "line": 1705,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K26.1"
             ],
-            "line": 1596,
+            "line": 1700,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K26.1 ready for their channel",
@@ -5817,14 +5821,14 @@
           {
             "assertions": [
               {
-                "line": 1602,
+                "line": 1712,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K26.2"
             ],
-            "line": 1600,
+            "line": 1707,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K26.2 customer accepted",
@@ -5883,14 +5887,14 @@
           {
             "assertions": [
               {
-                "line": 1606,
+                "line": 1720,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K26.3"
             ],
-            "line": 1604,
+            "line": 1714,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K26.3 the release they can roll back to",
@@ -5948,18 +5952,18 @@
           {
             "assertions": [
               {
-                "line": 1415,
+                "line": 1489,
                 "method": "assertEqual"
               },
               {
-                "line": 1416,
+                "line": 1490,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K27.1"
             ],
-            "line": 1410,
+            "line": 1484,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K27.1 a job for that customer",
@@ -6018,14 +6022,14 @@
           {
             "assertions": [
               {
-                "line": 1425,
+                "line": 1499,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K27.2"
             ],
-            "line": 1418,
+            "line": 1492,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K27.2 our diagnostic, their interface",
@@ -6085,14 +6089,14 @@
           {
             "assertions": [
               {
-                "line": 1434,
+                "line": 1508,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K27.3"
             ],
-            "line": 1427,
+            "line": 1501,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K27.3 the other side of support",
@@ -6150,22 +6154,22 @@
           {
             "assertions": [
               {
-                "line": 1378,
+                "line": 1452,
                 "method": "assertEqual"
               },
               {
-                "line": 1381,
+                "line": 1455,
                 "method": "assertEqual"
               },
               {
-                "line": 1382,
+                "line": 1456,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K28.1"
             ],
-            "line": 1372,
+            "line": 1446,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K28.1 a connector with two faces",
@@ -6222,14 +6226,14 @@
           {
             "assertions": [
               {
-                "line": 1390,
+                "line": 1464,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K28.2"
             ],
-            "line": 1384,
+            "line": 1458,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K28.2 what the loader changes",
@@ -6286,18 +6290,18 @@
           {
             "assertions": [
               {
-                "line": 1401,
+                "line": 1475,
                 "method": "assertIn"
               },
               {
-                "line": 1402,
+                "line": 1476,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K28.3"
             ],
-            "line": 1399,
+            "line": 1473,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K28.3 the path that appears at runtime",
@@ -6355,14 +6359,14 @@
           {
             "assertions": [
               {
-                "line": 1522,
+                "line": 1601,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K29.1"
             ],
-            "line": 1520,
+            "line": 1599,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K29.1 the build record's principal",
@@ -6432,18 +6436,18 @@
           {
             "assertions": [
               {
-                "line": 1532,
+                "line": 1615,
                 "method": "assertEqual"
               },
               {
-                "line": 1534,
+                "line": 1617,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K29.2"
             ],
-            "line": 1527,
+            "line": 1610,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K29.2 the signer in the history",
@@ -6501,26 +6505,30 @@
           {
             "assertions": [
               {
-                "line": 1553,
+                "line": 1636,
                 "method": "assertEqual"
               },
               {
-                "line": 1571,
+                "line": 1655,
                 "method": "assertTrue"
               },
               {
-                "line": 1576,
+                "line": 1660,
                 "method": "assertTrue"
               },
               {
-                "line": 1579,
+                "line": 1662,
+                "method": "assertIn"
+              },
+              {
+                "line": 1669,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K29.3"
             ],
-            "line": 1537,
+            "line": 1620,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K29.3 signed, compatible, consumed",
@@ -6578,14 +6586,14 @@
           {
             "assertions": [
               {
-                "line": 1587,
+                "line": 1680,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K29.4"
             ],
-            "line": 1582,
+            "line": 1675,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K29.4 after the old key expires",
@@ -6643,14 +6651,14 @@
           {
             "assertions": [
               {
-                "line": 1445,
+                "line": 1519,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K30.1"
             ],
-            "line": 1438,
+            "line": 1512,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K30.1 authority over the backup",
@@ -6711,14 +6719,14 @@
           {
             "assertions": [
               {
-                "line": 1451,
+                "line": 1525,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K30.2"
             ],
-            "line": 1447,
+            "line": 1521,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K30.2 the database you cannot reach",
@@ -6775,14 +6783,14 @@
           {
             "assertions": [
               {
-                "line": 1461,
+                "line": 1535,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K30.3"
             ],
-            "line": 1453,
+            "line": 1527,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K30.3 before ARWC changed its name",
@@ -6840,14 +6848,14 @@
           {
             "assertions": [
               {
-                "line": 1473,
+                "line": 1547,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K31.1"
             ],
-            "line": 1467,
+            "line": 1541,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K31.1 whose maintenance job",
@@ -6907,18 +6915,18 @@
           {
             "assertions": [
               {
-                "line": 1482,
+                "line": 1556,
                 "method": "assertEqual"
               },
               {
-                "line": 1487,
+                "line": 1561,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K31.2"
             ],
-            "line": 1475,
+            "line": 1549,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "subtest": "K31.2 a different identity at runtime",
@@ -6976,18 +6984,18 @@
           {
             "assertions": [
               {
-                "line": 1496,
+                "line": 1570,
                 "method": "assertEqual"
               },
               {
-                "line": 1497,
+                "line": 1571,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K31.3"
             ],
-            "line": 1489,
+            "line": 1563,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "subtest": "K31.3 the maintenance label",
@@ -7045,30 +7053,30 @@
           {
             "assertions": [
               {
-                "line": 123,
+                "line": 156,
                 "method": "assertIsNotNone"
               },
               {
-                "line": 125,
+                "line": 158,
                 "method": "assertEqual"
               },
               {
-                "line": 126,
+                "line": 159,
                 "method": "assertTrue"
               },
               {
-                "line": 135,
+                "line": 168,
                 "method": "assertEqual"
               },
               {
-                "line": 136,
+                "line": 169,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "T01.1"
             ],
-            "line": 121,
+            "line": 154,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T01.1",
@@ -7125,14 +7133,14 @@
           {
             "assertions": [
               {
-                "line": 148,
+                "line": 182,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T01.2"
             ],
-            "line": 138,
+            "line": 171,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T01.2",
@@ -7189,18 +7197,22 @@
           {
             "assertions": [
               {
-                "line": 156,
+                "line": 193,
+                "method": "assertIsNotNone"
+              },
+              {
+                "line": 199,
                 "method": "assertEqual"
               },
               {
-                "line": 158,
+                "line": 201,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T01.3"
             ],
-            "line": 150,
+            "line": 184,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T01.3",
@@ -7257,18 +7269,22 @@
           {
             "assertions": [
               {
-                "line": 166,
+                "line": 209,
                 "method": "assertIn"
               },
               {
-                "line": 169,
+                "line": 213,
+                "method": "assertEqual"
+              },
+              {
+                "line": 218,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T01.4"
             ],
-            "line": 163,
+            "line": 206,
             "phase": "training",
             "simple_read_candidate": true,
             "subtest": "T01.4",
@@ -7325,18 +7341,18 @@
           {
             "assertions": [
               {
-                "line": 184,
+                "line": 238,
                 "method": "assertIsNotNone"
               },
               {
-                "line": 185,
+                "line": 239,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T02.1"
             ],
-            "line": 177,
+            "line": 229,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T02.1",
@@ -7393,18 +7409,18 @@
           {
             "assertions": [
               {
-                "line": 198,
+                "line": 252,
                 "method": "assertIsNotNone"
               },
               {
-                "line": 199,
+                "line": 253,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T02.2"
             ],
-            "line": 187,
+            "line": 241,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T02.2",
@@ -7461,26 +7477,26 @@
           {
             "assertions": [
               {
-                "line": 211,
+                "line": 265,
                 "method": "assertEqual"
               },
               {
-                "line": 213,
+                "line": 267,
                 "method": "assertIn"
               },
               {
-                "line": 216,
+                "line": 272,
                 "method": "assertEqual"
               },
               {
-                "line": 218,
+                "line": 274,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "T02.3"
             ],
-            "line": 201,
+            "line": 255,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T02.3",
@@ -7538,26 +7554,26 @@
           {
             "assertions": [
               {
-                "line": 224,
+                "line": 286,
                 "method": "assertEqual"
               },
               {
-                "line": 226,
+                "line": 288,
                 "method": "assertEqual"
               },
               {
-                "line": 227,
+                "line": 289,
                 "method": "assertNotEqual"
               },
               {
-                "line": 228,
+                "line": 290,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T02.4"
             ],
-            "line": 220,
+            "line": 276,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T02.4",
@@ -7614,22 +7630,22 @@
           {
             "assertions": [
               {
-                "line": 237,
+                "line": 302,
                 "method": "assertIn"
               },
               {
-                "line": 247,
+                "line": 312,
                 "method": "assertEqual"
               },
               {
-                "line": 248,
+                "line": 313,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T03.1"
             ],
-            "line": 235,
+            "line": 300,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T03.1",
@@ -7686,14 +7702,14 @@
           {
             "assertions": [
               {
-                "line": 259,
+                "line": 325,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T03.2"
             ],
-            "line": 250,
+            "line": 315,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T03.2",
@@ -7750,18 +7766,22 @@
           {
             "assertions": [
               {
-                "line": 271,
+                "line": 337,
                 "method": "assertEqual"
               },
               {
-                "line": 272,
+                "line": 339,
                 "method": "assertEqual"
+              },
+              {
+                "line": 343,
+                "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "T03.3"
             ],
-            "line": 262,
+            "line": 328,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T03.3",
@@ -7818,38 +7838,38 @@
           {
             "assertions": [
               {
-                "line": 278,
+                "line": 350,
                 "method": "assertEqual"
               },
               {
-                "line": 280,
+                "line": 352,
                 "method": "assertEqual"
               },
               {
-                "line": 304,
+                "line": 376,
                 "method": "assertEqual"
               },
               {
-                "line": 308,
+                "line": 381,
                 "method": "assertEqual"
               },
               {
-                "line": 310,
+                "line": 383,
                 "method": "assertEqual"
               },
               {
-                "line": 311,
+                "line": 384,
                 "method": "assertEqual"
               },
               {
-                "line": 312,
+                "line": 385,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T03.4"
             ],
-            "line": 274,
+            "line": 345,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T03.4",
@@ -7906,20 +7926,20 @@
           {
             "assertions": [
               {
-                "line": 321,
+                "line": 402,
                 "method": "assertEqual"
               },
               {
-                "line": 325,
+                "line": 406,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "T04.1"
             ],
-            "line": 319,
+            "line": 400,
             "phase": "training",
-            "simple_read_candidate": true,
+            "simple_read_candidate": false,
             "subtest": "T04.1",
             "suite": "build/training/tests/test_known_solution_live.py",
             "test_method": "test_04_trust_the_instrument"
@@ -7954,7 +7974,7 @@
       "primary_work": "Process",
       "read_only_review": {
         "rationale": "The achievement is the discrepancy analysis between requested and independently observed volume, including the unit and quality binding; merely fetching the capture is insufficient.",
-        "status": "substantive_interpretation"
+        "status": "not_simple_read"
       },
       "sources": {
         "brief": "docs/design/challenges/T04/T04.1.md",
@@ -7974,26 +7994,26 @@
           {
             "assertions": [
               {
-                "line": 329,
+                "line": 411,
                 "method": "assertEqual"
               },
               {
-                "line": 330,
+                "line": 412,
                 "method": "assertEqual"
               },
               {
-                "line": 331,
+                "line": 413,
                 "method": "assertIn"
               },
               {
-                "line": 332,
+                "line": 414,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T04.2"
             ],
-            "line": 327,
+            "line": 409,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T04.2",
@@ -8050,46 +8070,54 @@
           {
             "assertions": [
               {
-                "line": 338,
+                "line": 418,
                 "method": "assertEqual"
               },
               {
-                "line": 341,
+                "line": 420,
                 "method": "assertEqual"
               },
               {
-                "line": 347,
+                "line": 426,
                 "method": "assertEqual"
               },
               {
-                "line": 348,
+                "line": 433,
                 "method": "assertEqual"
               },
               {
-                "line": 355,
+                "line": 434,
                 "method": "assertEqual"
               },
               {
-                "line": 358,
+                "line": 441,
+                "method": "assertEqual"
+              },
+              {
+                "line": 445,
+                "method": "assertEqual"
+              },
+              {
+                "line": 450,
                 "method": "assertGreaterEqual"
               },
               {
-                "line": 359,
+                "line": 451,
                 "method": "assertEqual"
               },
               {
-                "line": 360,
+                "line": 455,
                 "method": "assertTrue"
               },
               {
-                "line": 361,
+                "line": 456,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T04.3"
             ],
-            "line": 334,
+            "line": 416,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T04.3",
@@ -8146,30 +8174,30 @@
           {
             "assertions": [
               {
-                "line": 371,
+                "line": 466,
                 "method": "assertEqual"
               },
               {
-                "line": 372,
+                "line": 467,
                 "method": "assertEqual"
               },
               {
-                "line": 373,
+                "line": 468,
                 "method": "assertEqual"
               },
               {
-                "line": 374,
+                "line": 469,
                 "method": "assertEqual"
               },
               {
-                "line": 375,
+                "line": 470,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "T04.4"
             ],
-            "line": 363,
+            "line": 458,
             "phase": "training",
             "simple_read_candidate": false,
             "subtest": "T04.4",
@@ -8226,18 +8254,18 @@
           {
             "assertions": [
               {
-                "line": 604,
+                "line": 629,
                 "method": "assertEqual"
               },
               {
-                "line": 605,
+                "line": 630,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W01.1"
             ],
-            "line": 600,
+            "line": 625,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W01.1 the customer's copy",
@@ -8294,14 +8322,14 @@
           {
             "assertions": [
               {
-                "line": 611,
+                "line": 636,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "W01.2"
             ],
-            "line": 608,
+            "line": 633,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W01.2 the planner's unfinished handover",
@@ -8358,18 +8386,18 @@
           {
             "assertions": [
               {
-                "line": 617,
+                "line": 642,
                 "method": "assertTrue"
               },
               {
-                "line": 618,
+                "line": 643,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W01.3"
             ],
-            "line": 614,
+            "line": 639,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W01.3 how the company buys time",
@@ -8426,22 +8454,22 @@
           {
             "assertions": [
               {
-                "line": 632,
+                "line": 657,
                 "method": "assertEqual"
               },
               {
-                "line": 633,
+                "line": 658,
                 "method": "assertEqual"
               },
               {
-                "line": 636,
+                "line": 661,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W01.4"
             ],
-            "line": 620,
+            "line": 645,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W01.4 change the corporate record",
@@ -8498,14 +8526,14 @@
           {
             "assertions": [
               {
-                "line": 644,
+                "line": 669,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "W02.1"
             ],
-            "line": 642,
+            "line": 667,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W02.1 the asset and the contractor",
@@ -8562,14 +8590,14 @@
           {
             "assertions": [
               {
-                "line": 650,
+                "line": 675,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "W02.2"
             ],
-            "line": 647,
+            "line": 672,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W02.2 three names for one job",
@@ -8626,18 +8654,18 @@
           {
             "assertions": [
               {
-                "line": 661,
+                "line": 686,
                 "method": "assertTrue"
               },
               {
-                "line": 666,
+                "line": 691,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W02.3"
             ],
-            "line": 653,
+            "line": 678,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W02.3 the record behind the wrong association",
@@ -8694,18 +8722,18 @@
           {
             "assertions": [
               {
-                "line": 675,
+                "line": 700,
                 "method": "assertRegex"
               },
               {
-                "line": 676,
+                "line": 701,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "W03.1"
             ],
-            "line": 672,
+            "line": 697,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W03.1 an annex left with the order",
@@ -8762,18 +8790,18 @@
           {
             "assertions": [
               {
-                "line": 686,
+                "line": 711,
                 "method": "assertEqual"
               },
               {
-                "line": 690,
+                "line": 715,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W03.2"
             ],
-            "line": 679,
+            "line": 704,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W03.2 a reference outside the order",
@@ -8830,14 +8858,14 @@
           {
             "assertions": [
               {
-                "line": 694,
+                "line": 719,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W03.3"
             ],
-            "line": 692,
+            "line": 717,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W03.3 the integration's read contract",
@@ -8894,22 +8922,22 @@
           {
             "assertions": [
               {
-                "line": 707,
+                "line": 732,
                 "method": "assertRegex"
               },
               {
-                "line": 708,
+                "line": 733,
                 "method": "assertEqual"
               },
               {
-                "line": 709,
+                "line": 734,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W04.1"
             ],
-            "line": 701,
+            "line": 726,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W04.1 the archive's missing contract",
@@ -8966,14 +8994,14 @@
           {
             "assertions": [
               {
-                "line": 723,
+                "line": 748,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W04.2"
             ],
-            "line": 711,
+            "line": 736,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W04.2 the query behind the identity",
@@ -9030,14 +9058,14 @@
           {
             "assertions": [
               {
-                "line": 731,
+                "line": 756,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W04.3"
             ],
-            "line": 725,
+            "line": 750,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W04.3 the archive helper acts",
@@ -9094,14 +9122,14 @@
           {
             "assertions": [
               {
-                "line": 743,
+                "line": 768,
                 "method": "assertIsNone"
               }
             ],
             "combined_card_ids": [
               "W05.1"
             ],
-            "line": 740,
+            "line": 765,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W05.1 a starter pack left open",
@@ -9158,14 +9186,14 @@
           {
             "assertions": [
               {
-                "line": 750,
+                "line": 775,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W05.2"
             ],
-            "line": 747,
+            "line": 772,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W05.2 the activation roster",
@@ -9222,22 +9250,22 @@
           {
             "assertions": [
               {
-                "line": 758,
+                "line": 783,
                 "method": "assertEqual"
               },
               {
-                "line": 763,
+                "line": 788,
                 "method": "assertEqual"
               },
               {
-                "line": 764,
+                "line": 789,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W05.3"
             ],
-            "line": 752,
+            "line": 777,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W05.3 temporary, with the wrong rights",
@@ -9295,14 +9323,14 @@
           {
             "assertions": [
               {
-                "line": 782,
+                "line": 807,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W06.1"
             ],
-            "line": 773,
+            "line": 798,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W06.1 the planner's login trail",
@@ -9362,14 +9390,14 @@
           {
             "assertions": [
               {
-                "line": 789,
+                "line": 814,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W06.2"
             ],
-            "line": 784,
+            "line": 809,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W06.2 a drawing in the wrong context",
@@ -9426,14 +9454,14 @@
           {
             "assertions": [
               {
-                "line": 795,
+                "line": 820,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W06.3"
             ],
-            "line": 791,
+            "line": 816,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W06.3 a planner session that works",
@@ -9490,18 +9518,18 @@
           {
             "assertions": [
               {
-                "line": 809,
+                "line": 834,
                 "method": "assertEqual"
               },
               {
-                "line": 810,
+                "line": 835,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W07.1"
             ],
-            "line": 804,
+            "line": 829,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W07.1 the query the planner keeps",
@@ -9558,18 +9586,18 @@
           {
             "assertions": [
               {
-                "line": 824,
+                "line": 849,
                 "method": "assertIn"
               },
               {
-                "line": 830,
+                "line": 855,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "W07.2"
             ],
-            "line": 812,
+            "line": 837,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W07.2 read beyond the allowed statement",
@@ -9626,18 +9654,18 @@
           {
             "assertions": [
               {
-                "line": 838,
+                "line": 863,
                 "method": "assertEqual"
               },
               {
-                "line": 839,
+                "line": 864,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W07.3"
             ],
-            "line": 832,
+            "line": 857,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W07.3 the database does more than read",
@@ -9694,14 +9722,14 @@
           {
             "assertions": [
               {
-                "line": 1808,
+                "line": 1853,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W08.1"
             ],
-            "line": 1805,
+            "line": 1850,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W08.1 something in the work bundle",
@@ -9761,30 +9789,30 @@
           {
             "assertions": [
               {
-                "line": 1813,
+                "line": 1858,
                 "method": "assertEqual"
               },
               {
-                "line": 1821,
+                "line": 1866,
                 "method": "assertEqual"
               },
               {
-                "line": 1826,
+                "line": 1871,
                 "method": "assertEqual"
               },
               {
-                "line": 1827,
+                "line": 1872,
                 "method": "assertEqual"
               },
               {
-                "line": 1830,
+                "line": 1875,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W08.2"
             ],
-            "line": 1811,
+            "line": 1856,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W08.2 reassemble the exchange",
@@ -9841,34 +9869,34 @@
           {
             "assertions": [
               {
-                "line": 1841,
+                "line": 1886,
                 "method": "assertEqual"
               },
               {
-                "line": 1842,
+                "line": 1887,
                 "method": "assertEqual"
               },
               {
-                "line": 1845,
+                "line": 1890,
                 "method": "assertEqual"
               },
               {
-                "line": 1848,
+                "line": 1893,
                 "method": "assertEqual"
               },
               {
-                "line": 1850,
+                "line": 1895,
                 "method": "assertEqual"
               },
               {
-                "line": 1854,
+                "line": 1899,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W08.3"
             ],
-            "line": 1836,
+            "line": 1881,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W08.3 the collector inside the handover",
@@ -9925,22 +9953,22 @@
           {
             "assertions": [
               {
-                "line": 1873,
+                "line": 1918,
                 "method": "assertEqual"
               },
               {
-                "line": 1875,
+                "line": 1920,
                 "method": "assertEqual"
               },
               {
-                "line": 1877,
+                "line": 1922,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W08.4"
             ],
-            "line": 1856,
+            "line": 1901,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W08.4 where the contractor put it",
@@ -9997,18 +10025,18 @@
           {
             "assertions": [
               {
-                "line": 853,
+                "line": 878,
                 "method": "assertRegex"
               },
               {
-                "line": 854,
+                "line": 879,
                 "method": "assertGreater"
               }
             ],
             "combined_card_ids": [
               "W09.1"
             ],
-            "line": 847,
+            "line": 872,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W09.1 water already promised",
@@ -10065,14 +10093,14 @@
           {
             "assertions": [
               {
-                "line": 860,
+                "line": 885,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "W09.2"
             ],
-            "line": 856,
+            "line": 881,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W09.2 the meter's own account",
@@ -10129,18 +10157,18 @@
           {
             "assertions": [
               {
-                "line": 869,
+                "line": 894,
                 "method": "assertEqual"
               },
               {
-                "line": 870,
+                "line": 895,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W09.3"
             ],
-            "line": 865,
+            "line": 890,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W09.3 the missing megalitre",
@@ -10198,26 +10226,26 @@
           {
             "assertions": [
               {
-                "line": 889,
+                "line": 914,
                 "method": "assertEqual"
               },
               {
-                "line": 893,
+                "line": 918,
                 "method": "assertEqual"
               },
               {
-                "line": 896,
+                "line": 921,
                 "method": "assertTrue"
               },
               {
-                "line": 897,
+                "line": 922,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W09.4"
             ],
-            "line": 875,
+            "line": 900,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W09.4 from the report to the live feed",
@@ -10275,22 +10303,22 @@
           {
             "assertions": [
               {
-                "line": 909,
+                "line": 934,
                 "method": "assertEqual"
               },
               {
-                "line": 910,
+                "line": 935,
                 "method": "assertGreaterEqual"
               },
               {
-                "line": 911,
+                "line": 936,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W10.1"
             ],
-            "line": 903,
+            "line": 928,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W10.1 the report's source list",
@@ -10347,22 +10375,22 @@
           {
             "assertions": [
               {
-                "line": 919,
+                "line": 944,
                 "method": "assertEqual"
               },
               {
-                "line": 921,
+                "line": 946,
                 "method": "assertEqual"
               },
               {
-                "line": 924,
+                "line": 949,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W10.2"
             ],
-            "line": 913,
+            "line": 938,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W10.2 another district in the results",
@@ -10419,18 +10447,18 @@
           {
             "assertions": [
               {
-                "line": 933,
+                "line": 958,
                 "method": "assertEqual"
               },
               {
-                "line": 937,
+                "line": 962,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W10.3"
             ],
-            "line": 929,
+            "line": 954,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W10.3 the document behind the answer",
@@ -10487,22 +10515,22 @@
           {
             "assertions": [
               {
-                "line": 951,
+                "line": 976,
                 "method": "assertEqual"
               },
               {
-                "line": 952,
+                "line": 977,
                 "method": "assertEqual"
               },
               {
-                "line": 953,
+                "line": 978,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W11.1"
             ],
-            "line": 945,
+            "line": 970,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W11.1 the relation service's language",
@@ -10562,18 +10590,18 @@
           {
             "assertions": [
               {
-                "line": 962,
+                "line": 987,
                 "method": "assertEqual"
               },
               {
-                "line": 964,
+                "line": 989,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "W11.2"
             ],
-            "line": 956,
+            "line": 981,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W11.2 an exchange the backend accepts",
@@ -10630,22 +10658,22 @@
           {
             "assertions": [
               {
-                "line": 978,
+                "line": 1003,
                 "method": "assertEqual"
               },
               {
-                "line": 979,
+                "line": 1004,
                 "method": "assertTrue"
               },
               {
-                "line": 980,
+                "line": 1005,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W11.3"
             ],
-            "line": 966,
+            "line": 991,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W11.3 the asset's true lineage",
@@ -10702,22 +10730,22 @@
           {
             "assertions": [
               {
-                "line": 1890,
+                "line": 1935,
                 "method": "assertEqual"
               },
               {
-                "line": 1891,
+                "line": 1936,
                 "method": "assertEqual"
               },
               {
-                "line": 1892,
+                "line": 1937,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W12.1"
             ],
-            "line": 1884,
+            "line": 1929,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W12.1 a collector in quarantine",
@@ -10777,34 +10805,34 @@
           {
             "assertions": [
               {
-                "line": 1896,
-                "method": "assertEqual"
-              },
-              {
-                "line": 1897,
-                "method": "assertEqual"
-              },
-              {
-                "line": 1901,
-                "method": "assertEqual"
-              },
-              {
-                "line": 1937,
-                "method": "assertEqual"
-              },
-              {
                 "line": 1941,
                 "method": "assertEqual"
               },
               {
-                "line": 1944,
+                "line": 1942,
+                "method": "assertEqual"
+              },
+              {
+                "line": 1946,
+                "method": "assertEqual"
+              },
+              {
+                "line": 1982,
+                "method": "assertEqual"
+              },
+              {
+                "line": 1986,
+                "method": "assertEqual"
+              },
+              {
+                "line": 1989,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W12.2"
             ],
-            "line": 1894,
+            "line": 1939,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W12.2 how the collection was protected",
@@ -10861,22 +10889,22 @@
           {
             "assertions": [
               {
-                "line": 1963,
+                "line": 2008,
                 "method": "assertEqual"
               },
               {
-                "line": 1968,
+                "line": 2013,
                 "method": "assertEqual"
               },
               {
-                "line": 1971,
+                "line": 2016,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W12.3"
             ],
-            "line": 1946,
+            "line": 1991,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W12.3 the cold archive opens",
@@ -10933,30 +10961,30 @@
           {
             "assertions": [
               {
-                "line": 1986,
+                "line": 2031,
                 "method": "assertEqual"
               },
               {
-                "line": 1993,
+                "line": 2038,
                 "method": "assertEqual"
               },
               {
-                "line": 1995,
+                "line": 2040,
                 "method": "assertEqual"
               },
               {
-                "line": 1998,
+                "line": 2043,
                 "method": "assertEqual"
               },
               {
-                "line": 2002,
+                "line": 2047,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W12.4"
             ],
-            "line": 1975,
+            "line": 2020,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W12.4 a collection path still alive",
@@ -11013,18 +11041,18 @@
           {
             "assertions": [
               {
-                "line": 993,
+                "line": 1018,
                 "method": "assertEqual"
               },
               {
-                "line": 994,
+                "line": 1019,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "W13.1"
             ],
-            "line": 986,
+            "line": 1011,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W13.1 window on Thursday",
@@ -11081,18 +11109,18 @@
           {
             "assertions": [
               {
-                "line": 1002,
+                "line": 1027,
                 "method": "assertEqual"
               },
               {
-                "line": 1003,
+                "line": 1028,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W13.2"
             ],
-            "line": 996,
+            "line": 1021,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W13.2 who is expected at the gate",
@@ -11149,18 +11177,18 @@
           {
             "assertions": [
               {
-                "line": 1016,
+                "line": 1041,
                 "method": "assertEqual"
               },
               {
-                "line": 1018,
+                "line": 1043,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W13.3"
             ],
-            "line": 1005,
+            "line": 1030,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W13.3 an appointment we do not own",
@@ -11218,18 +11246,18 @@
           {
             "assertions": [
               {
-                "line": 1023,
+                "line": 1048,
                 "method": "assertEqual"
               },
               {
-                "line": 1027,
+                "line": 1052,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W13.4"
             ],
-            "line": 1020,
+            "line": 1045,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W13.4 checked in as the contractor",
@@ -11286,14 +11314,14 @@
           {
             "assertions": [
               {
-                "line": 1039,
+                "line": 1064,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W14.1"
             ],
-            "line": 1036,
+            "line": 1061,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W14.1 the field bag",
@@ -11350,14 +11378,14 @@
           {
             "assertions": [
               {
-                "line": 1049,
+                "line": 1074,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W14.2"
             ],
-            "line": 1043,
+            "line": 1068,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W14.2 the service that replaced it",
@@ -11414,26 +11442,26 @@
           {
             "assertions": [
               {
-                "line": 1058,
+                "line": 1083,
                 "method": "assertEqual"
               },
               {
-                "line": 1062,
+                "line": 1087,
                 "method": "assertEqual"
               },
               {
-                "line": 1063,
+                "line": 1088,
                 "method": "assertTrue"
               },
               {
-                "line": 1066,
+                "line": 1091,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W14.3"
             ],
-            "line": 1051,
+            "line": 1076,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W14.3 a fresh reading from the field",
@@ -11490,14 +11518,14 @@
           {
             "assertions": [
               {
-                "line": 1079,
+                "line": 1104,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W15.1"
             ],
-            "line": 1076,
+            "line": 1101,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W15.1 which drawing did the cache keep",
@@ -11557,14 +11585,14 @@
           {
             "assertions": [
               {
-                "line": 1099,
+                "line": 1124,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W15.2"
             ],
-            "line": 1082,
+            "line": 1107,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W15.2 a drawing of our choosing",
@@ -11621,14 +11649,14 @@
           {
             "assertions": [
               {
-                "line": 1108,
+                "line": 1133,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W15.3"
             ],
-            "line": 1105,
+            "line": 1130,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W15.3 the reviewer trusts the drawing",
@@ -11685,22 +11713,22 @@
           {
             "assertions": [
               {
-                "line": 1114,
+                "line": 1139,
                 "method": "assertEqual"
               },
               {
-                "line": 1119,
+                "line": 1144,
                 "method": "assertEqual"
               },
               {
-                "line": 1132,
+                "line": 1157,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W15.4"
             ],
-            "line": 1111,
+            "line": 1136,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W15.4 approval beyond the token",
@@ -11757,14 +11785,14 @@
           {
             "assertions": [
               {
-                "line": 1152,
+                "line": 1177,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W16.1"
             ],
-            "line": 1148,
+            "line": 1173,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W16.1 the sequencer's vocabulary",
@@ -11821,22 +11849,22 @@
           {
             "assertions": [
               {
-                "line": 1178,
+                "line": 1203,
                 "method": "assertEqual"
               },
               {
-                "line": 1184,
+                "line": 1209,
                 "method": "assertEqual"
               },
               {
-                "line": 1185,
+                "line": 1210,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W16.2"
             ],
-            "line": 1173,
+            "line": 1198,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W16.2 an observation outside the window",
@@ -11893,14 +11921,14 @@
           {
             "assertions": [
               {
-                "line": 1200,
+                "line": 1225,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W16.3"
             ],
-            "line": 1188,
+            "line": 1213,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W16.3 an experiment with a signal",
@@ -11957,18 +11985,18 @@
           {
             "assertions": [
               {
-                "line": 1207,
+                "line": 1232,
                 "method": "assertEqual"
               },
               {
-                "line": 1212,
+                "line": 1237,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W16.4"
             ],
-            "line": 1202,
+            "line": 1227,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W16.4 what the instrument remembers",
@@ -12025,18 +12053,18 @@
           {
             "assertions": [
               {
-                "line": 1240,
+                "line": 1285,
                 "method": "assertEqual"
               },
               {
-                "line": 1243,
+                "line": 1288,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W17.1"
             ],
-            "line": 1238,
+            "line": 1283,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W17.1 the reservoir's present tense",
@@ -12093,14 +12121,14 @@
           {
             "assertions": [
               {
-                "line": 1249,
+                "line": 1294,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W17.2"
             ],
-            "line": 1246,
+            "line": 1291,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W17.2 the mode the plant is in",
@@ -12157,14 +12185,14 @@
           {
             "assertions": [
               {
-                "line": 1257,
+                "line": 1302,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "W17.3"
             ],
-            "line": 1254,
+            "line": 1299,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W17.3 the instrument in the note",
@@ -12222,18 +12250,18 @@
           {
             "assertions": [
               {
-                "line": 1263,
+                "line": 1308,
                 "method": "assertEqual"
               },
               {
-                "line": 1265,
+                "line": 1310,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W17.4"
             ],
-            "line": 1259,
+            "line": 1304,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W17.4 the first live trace",
@@ -12293,18 +12321,18 @@
           {
             "assertions": [
               {
-                "line": 1275,
+                "line": 1320,
                 "method": "assertEqual"
               },
               {
-                "line": 1276,
+                "line": 1321,
                 "method": "assertGreaterEqual"
               }
             ],
             "combined_card_ids": [
               "W18.1"
             ],
-            "line": 1272,
+            "line": 1317,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W18.1 the tag export",
@@ -12361,14 +12389,14 @@
           {
             "assertions": [
               {
-                "line": 1282,
+                "line": 1327,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "W18.2"
             ],
-            "line": 1279,
+            "line": 1324,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W18.2 the scale kept elsewhere",
@@ -12425,18 +12453,18 @@
           {
             "assertions": [
               {
-                "line": 1290,
+                "line": 1335,
                 "method": "assertEqual"
               },
               {
-                "line": 1292,
+                "line": 1337,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W18.3"
             ],
-            "line": 1286,
+            "line": 1331,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W18.3 when the units changed",
@@ -12495,18 +12523,18 @@
           {
             "assertions": [
               {
-                "line": 1298,
+                "line": 1343,
                 "method": "assertEqual"
               },
               {
-                "line": 1300,
+                "line": 1345,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W18.4"
             ],
-            "line": 1294,
+            "line": 1339,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W18.4 which outlet answers",
@@ -12565,26 +12593,26 @@
           {
             "assertions": [
               {
-                "line": 1372,
+                "line": 1417,
                 "method": "assertTrue"
               },
               {
-                "line": 1373,
+                "line": 1418,
                 "method": "assertEqual"
               },
               {
-                "line": 1380,
+                "line": 1425,
                 "method": "assertEqual"
               },
               {
-                "line": 1381,
+                "line": 1426,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W19.1"
             ],
-            "line": 1368,
+            "line": 1413,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W19.1 the diagnostic nobody retired",
@@ -12641,18 +12669,18 @@
           {
             "assertions": [
               {
-                "line": 1391,
+                "line": 1436,
                 "method": "assertEqual"
               },
               {
-                "line": 1393,
+                "line": 1438,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W19.2"
             ],
-            "line": 1385,
+            "line": 1430,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W19.2 a second interpretation",
@@ -12709,22 +12737,22 @@
           {
             "assertions": [
               {
-                "line": 1402,
+                "line": 1447,
                 "method": "assertEqual"
               },
               {
-                "line": 1404,
+                "line": 1449,
                 "method": "assertEqual"
               },
               {
-                "line": 1405,
+                "line": 1450,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W19.3"
             ],
-            "line": 1395,
+            "line": 1440,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W19.3 the hidden check",
@@ -12781,18 +12809,18 @@
           {
             "assertions": [
               {
-                "line": 1417,
+                "line": 1462,
                 "method": "assertEqual"
               },
               {
-                "line": 1419,
+                "line": 1464,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W19.4"
             ],
-            "line": 1407,
+            "line": 1452,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W19.4 a map from the old diagnostic",
@@ -12849,22 +12877,22 @@
           {
             "assertions": [
               {
-                "line": 1430,
+                "line": 1475,
                 "method": "assertEqual"
               },
               {
-                "line": 1432,
+                "line": 1477,
                 "method": "assertEqual"
               },
               {
-                "line": 1433,
+                "line": 1478,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W20.1"
             ],
-            "line": 1427,
+            "line": 1472,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W20.1 what the image kept",
@@ -12921,18 +12949,18 @@
           {
             "assertions": [
               {
-                "line": 1446,
+                "line": 1491,
                 "method": "assertEqual"
               },
               {
-                "line": 1448,
+                "line": 1493,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W20.2"
             ],
-            "line": 1443,
+            "line": 1488,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W20.2 a valid maintenance record",
@@ -12989,22 +13017,22 @@
           {
             "assertions": [
               {
-                "line": 1475,
+                "line": 1520,
                 "method": "assertEqual"
               },
               {
-                "line": 1477,
+                "line": 1522,
                 "method": "assertEqual"
               },
               {
-                "line": 1478,
+                "line": 1523,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W20.3"
             ],
-            "line": 1450,
+            "line": 1495,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W20.3 change one record, keep the rest",
@@ -13061,18 +13089,18 @@
           {
             "assertions": [
               {
-                "line": 1314,
+                "line": 1359,
                 "method": "assertTrue"
               },
               {
-                "line": 1315,
+                "line": 1360,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W21.1"
             ],
-            "line": 1309,
+            "line": 1354,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W21.1 the project and the note",
@@ -13130,22 +13158,22 @@
           {
             "assertions": [
               {
-                "line": 1325,
+                "line": 1370,
                 "method": "assertEqual"
               },
               {
-                "line": 1327,
+                "line": 1372,
                 "method": "assertEqual"
               },
               {
-                "line": 1328,
+                "line": 1373,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W21.2"
             ],
-            "line": 1317,
+            "line": 1362,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W21.2 which project is running",
@@ -13203,42 +13231,42 @@
           {
             "assertions": [
               {
-                "line": 1487,
+                "line": 1532,
                 "method": "assertEqual"
               },
               {
-                "line": 1493,
+                "line": 1538,
                 "method": "assertTrue"
               },
               {
-                "line": 1494,
+                "line": 1539,
                 "method": "assertEqual"
               },
               {
-                "line": 1495,
+                "line": 1540,
                 "method": "assertEqual"
               },
               {
-                "line": 1496,
+                "line": 1541,
                 "method": "assertEqual"
               },
               {
-                "line": 1500,
+                "line": 1545,
                 "method": "assertEqual"
               },
               {
-                "line": 1503,
+                "line": 1548,
                 "method": "assertEqual"
               },
               {
-                "line": 1504,
+                "line": 1549,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W22.1"
             ],
-            "line": 1485,
+            "line": 1530,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W22.1 the viewer in the delivery",
@@ -13295,18 +13323,18 @@
           {
             "assertions": [
               {
-                "line": 1512,
+                "line": 1557,
                 "method": "assertEqual"
               },
               {
-                "line": 1514,
+                "line": 1559,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W22.2"
             ],
-            "line": 1508,
+            "line": 1553,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W22.2 the machine inside the viewer",
@@ -13363,18 +13391,18 @@
           {
             "assertions": [
               {
-                "line": 1523,
+                "line": 1568,
                 "method": "assertEqual"
               },
               {
-                "line": 1526,
+                "line": 1571,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W22.3"
             ],
-            "line": 1516,
+            "line": 1561,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W22.3 the decision inside the sealed project",
@@ -13431,26 +13459,26 @@
           {
             "assertions": [
               {
-                "line": 1549,
+                "line": 1594,
                 "method": "assertEqual"
               },
               {
-                "line": 1552,
+                "line": 1597,
                 "method": "assertTrue"
               },
               {
-                "line": 1553,
+                "line": 1598,
                 "method": "assertFalse"
               },
               {
-                "line": 1554,
+                "line": 1599,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W22.4"
             ],
-            "line": 1540,
+            "line": 1585,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W22.4 the reviewer who was never listed",
@@ -13507,22 +13535,22 @@
           {
             "assertions": [
               {
-                "line": 1578,
+                "line": 1623,
                 "method": "assertEqual"
               },
               {
-                "line": 1580,
+                "line": 1625,
                 "method": "assertEqual"
               },
               {
-                "line": 1581,
+                "line": 1626,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W23.1"
             ],
-            "line": 1570,
+            "line": 1615,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W23.1 a measurement with side effects (exploit)",
@@ -13579,22 +13607,22 @@
           {
             "assertions": [
               {
-                "line": 1593,
+                "line": 1638,
                 "method": "assertEqual"
               },
               {
-                "line": 1596,
+                "line": 1641,
                 "method": "assertEqual"
               },
               {
-                "line": 1597,
+                "line": 1642,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W23.2"
             ],
-            "line": 1583,
+            "line": 1628,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W23.2 control beyond the measurement",
@@ -13651,22 +13679,22 @@
           {
             "assertions": [
               {
-                "line": 1605,
+                "line": 1650,
                 "method": "assertTrue"
               },
               {
-                "line": 1606,
+                "line": 1651,
                 "method": "assertFalse"
               },
               {
-                "line": 1607,
+                "line": 1652,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W23.3"
             ],
-            "line": 1599,
+            "line": 1644,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W23.3 a measurement that never existed",
@@ -13723,14 +13751,14 @@
           {
             "assertions": [
               {
-                "line": 1624,
+                "line": 1669,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W24.1"
             ],
-            "line": 1622,
+            "line": 1667,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W24.1 two kinds of answer",
@@ -13787,18 +13815,18 @@
           {
             "assertions": [
               {
-                "line": 1649,
+                "line": 1694,
                 "method": "assertEqual"
               },
               {
-                "line": 1651,
+                "line": 1696,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W24.2"
             ],
-            "line": 1629,
+            "line": 1674,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W24.2 which answer comes next",
@@ -13855,30 +13883,30 @@
           {
             "assertions": [
               {
-                "line": 1722,
+                "line": 1767,
                 "method": "assertEqual"
               },
               {
-                "line": 1724,
+                "line": 1769,
                 "method": "assertLessEqual"
               },
               {
-                "line": 1727,
+                "line": 1772,
                 "method": "assertEqual"
               },
               {
-                "line": 1729,
+                "line": 1774,
                 "method": "assertEqual"
               },
               {
-                "line": 1780,
+                "line": 1825,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W24.3"
             ],
-            "line": 1653,
+            "line": 1698,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W24.3 the diagnostic evidence bundle",
@@ -13935,22 +13963,22 @@
           {
             "assertions": [
               {
-                "line": 1792,
+                "line": 1837,
                 "method": "assertEqual"
               },
               {
-                "line": 1795,
+                "line": 1840,
                 "method": "assertFalse"
               },
               {
-                "line": 1796,
+                "line": 1841,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W24.4"
             ],
-            "line": 1790,
+            "line": 1835,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W24.4 signed by someone who never approved it",
@@ -14007,18 +14035,18 @@
           {
             "assertions": [
               {
-                "line": 1338,
+                "line": 1383,
                 "method": "assertEqual"
               },
               {
-                "line": 1339,
+                "line": 1384,
                 "method": "assertGreater"
               }
             ],
             "combined_card_ids": [
               "W25.1"
             ],
-            "line": 1335,
+            "line": 1380,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W25.1 the operating envelope",
@@ -14075,18 +14103,18 @@
           {
             "assertions": [
               {
-                "line": 1344,
+                "line": 1389,
                 "method": "assertFalse"
               },
               {
-                "line": 1345,
+                "line": 1390,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "W25.2"
             ],
-            "line": 1341,
+            "line": 1386,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W25.2 conditions before movement",
@@ -14143,22 +14171,22 @@
           {
             "assertions": [
               {
-                "line": 1350,
+                "line": 1395,
                 "method": "assertEqual"
               },
               {
-                "line": 1352,
+                "line": 1397,
                 "method": "assertTrue"
               },
               {
-                "line": 1353,
+                "line": 1398,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W25.3"
             ],
-            "line": 1347,
+            "line": 1392,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W25.3 accepted is not actuated",
@@ -14217,18 +14245,18 @@
           {
             "assertions": [
               {
-                "line": 1359,
+                "line": 1404,
                 "method": "assertEqual"
               },
               {
-                "line": 1361,
+                "line": 1406,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W25.4"
             ],
-            "line": 1355,
+            "line": 1400,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W25.4 a sequence the process can follow",
@@ -14287,18 +14315,18 @@
           {
             "assertions": [
               {
-                "line": 2016,
+                "line": 2061,
                 "method": "assertEqual"
               },
               {
-                "line": 2018,
+                "line": 2063,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W26.1"
             ],
-            "line": 2014,
+            "line": 2059,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W26.1 which renderer holds the approval",
@@ -14356,18 +14384,18 @@
           {
             "assertions": [
               {
-                "line": 2026,
+                "line": 2071,
                 "method": "assertEqual"
               },
               {
-                "line": 2028,
+                "line": 2073,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W26.2"
             ],
-            "line": 2020,
+            "line": 2065,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W26.2 authority behind the preview",
@@ -14424,18 +14452,18 @@
           {
             "assertions": [
               {
-                "line": 2035,
+                "line": 2080,
                 "method": "assertEqual"
               },
               {
-                "line": 2037,
+                "line": 2082,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W26.3"
             ],
-            "line": 2031,
+            "line": 2076,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W26.3 the preview executes",
@@ -14492,22 +14520,22 @@
           {
             "assertions": [
               {
-                "line": 2048,
+                "line": 2093,
                 "method": "assertEqual"
               },
               {
-                "line": 2053,
+                "line": 2098,
                 "method": "assertEqual"
               },
               {
-                "line": 2061,
+                "line": 2106,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W26.4"
             ],
-            "line": 2042,
+            "line": 2087,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W26.4 an approval becomes a control client",
@@ -14564,26 +14592,34 @@
           {
             "assertions": [
               {
-                "line": 2074,
+                "line": 2121,
                 "method": "assertEqual"
               },
               {
-                "line": 2079,
+                "line": 2122,
+                "method": "assertNotIn"
+              },
+              {
+                "line": 2125,
                 "method": "assertEqual"
               },
               {
-                "line": 2086,
+                "line": 2130,
                 "method": "assertEqual"
               },
               {
-                "line": 2088,
+                "line": 2137,
+                "method": "assertEqual"
+              },
+              {
+                "line": 2139,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W27.1"
             ],
-            "line": 2071,
+            "line": 2116,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W27.1 what counts as intact",
@@ -14624,9 +14660,9 @@
       },
       "sources": {
         "brief": "docs/design/challenges/W27/W27.1.md",
-        "brief_sha256": "397b0bce8d6123a488ea3f15aa53d53b666258f5dc50c67baf597ca794e4860a",
+        "brief_sha256": "08d5f222876997da8793a737ef38fc24cd0ebac9d8bc6d73e985772488934800",
         "operation": "sdl/modules/operations/w27.yaml",
-        "operation_sha256": "ce44c4d4228d35e1a14fe7a05bd58232e1ff1f93d81fa7629d60c9f3f184be8e"
+        "operation_sha256": "57ab9c40dd9aa1e5f1cdd4d5e2546c8f4c75f60a31dd550f2004df59e6412fb0"
       },
       "title": "This action: What counts as intact"
     },
@@ -14640,30 +14676,38 @@
           {
             "assertions": [
               {
-                "line": 2097,
+                "line": 2148,
                 "method": "assertEqual"
               },
               {
-                "line": 2100,
+                "line": 2151,
                 "method": "assertEqual"
               },
               {
-                "line": 2108,
+                "line": 2156,
                 "method": "assertEqual"
               },
               {
-                "line": 2112,
+                "line": 2157,
+                "method": "assertNotIn"
+              },
+              {
+                "line": 2165,
                 "method": "assertEqual"
               },
               {
-                "line": 2117,
+                "line": 2169,
+                "method": "assertEqual"
+              },
+              {
+                "line": 2174,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W27.2"
             ],
-            "line": 2092,
+            "line": 2143,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W27.2 the constraints of a valid-looking program",
@@ -14706,7 +14750,7 @@
         "brief": "docs/design/challenges/W27/W27.2.md",
         "brief_sha256": "716b81d7a328d7f1eff36d68ff6c9adfd14b911588a9aa56d2bc1241599d4569",
         "operation": "sdl/modules/operations/w27.yaml",
-        "operation_sha256": "ce44c4d4228d35e1a14fe7a05bd58232e1ff1f93d81fa7629d60c9f3f184be8e"
+        "operation_sha256": "57ab9c40dd9aa1e5f1cdd4d5e2546c8f4c75f60a31dd550f2004df59e6412fb0"
       },
       "title": "This action: The constraints of a valid-looking program"
     },
@@ -14720,22 +14764,22 @@
           {
             "assertions": [
               {
-                "line": 2130,
+                "line": 2187,
                 "method": "assertEqual"
               },
               {
-                "line": 2134,
+                "line": 2191,
                 "method": "assertEqual"
               },
               {
-                "line": 2135,
+                "line": 2192,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W27.3"
             ],
-            "line": 2121,
+            "line": 2178,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W27.3 a program the engineer would accept",
@@ -14778,7 +14822,7 @@
         "brief": "docs/design/challenges/W27/W27.3.md",
         "brief_sha256": "5fc98caadac7ab70fac457f143bd7826855e75b321aba225c9911ad14a1ca0e9",
         "operation": "sdl/modules/operations/w27.yaml",
-        "operation_sha256": "ce44c4d4228d35e1a14fe7a05bd58232e1ff1f93d81fa7629d60c9f3f184be8e"
+        "operation_sha256": "57ab9c40dd9aa1e5f1cdd4d5e2546c8f4c75f60a31dd550f2004df59e6412fb0"
       },
       "title": "This action: A program the engineer would accept"
     },
@@ -14792,22 +14836,22 @@
           {
             "assertions": [
               {
-                "line": 2172,
+                "line": 2229,
                 "method": "assertEqual"
               },
               {
-                "line": 2177,
+                "line": 2234,
                 "method": "assertEqual"
               },
               {
-                "line": 2178,
+                "line": 2235,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W28.1"
             ],
-            "line": 2169,
+            "line": 2226,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W28.1 the utility's small world",
@@ -14864,22 +14908,22 @@
           {
             "assertions": [
               {
-                "line": 2191,
+                "line": 2248,
                 "method": "assertEqual"
               },
               {
-                "line": 2193,
+                "line": 2250,
                 "method": "assertTrue"
               },
               {
-                "line": 2194,
+                "line": 2251,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W28.2"
             ],
-            "line": 2185,
+            "line": 2242,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W28.2 control with very little room",
@@ -14936,30 +14980,30 @@
           {
             "assertions": [
               {
-                "line": 2203,
+                "line": 2260,
                 "method": "assertEqual"
               },
               {
-                "line": 2206,
+                "line": 2263,
                 "method": "assertEqual"
               },
               {
-                "line": 2207,
+                "line": 2264,
                 "method": "assertEqual"
               },
               {
-                "line": 2213,
+                "line": 2270,
                 "method": "assertEqual"
               },
               {
-                "line": 2215,
+                "line": 2272,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W28.3"
             ],
-            "line": 2196,
+            "line": 2253,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W28.3 keep the authority you earned",
@@ -15016,14 +15060,14 @@
           {
             "assertions": [
               {
-                "line": 2230,
+                "line": 2287,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W29.1"
             ],
-            "line": 2228,
+            "line": 2285,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W29.1 the price of this planning window",
@@ -15066,7 +15110,7 @@
         "brief": "docs/design/challenges/W29/W29.1.md",
         "brief_sha256": "d4ecb4a4e841a3d33d0b2108b714eec197bf4ff11a060ef939e0f52e26f2849f",
         "operation": "sdl/modules/operations/w29.yaml",
-        "operation_sha256": "cfd3b880a804c0518b18e5188b8832d8226e719d399eea3e50af16064856d0db"
+        "operation_sha256": "4d47ad16a403cf874088e3030f0d96e85cf242189b1c31fac574997509233642"
       },
       "title": "This action: The price of this planning window"
     },
@@ -15081,14 +15125,14 @@
           {
             "assertions": [
               {
-                "line": 2243,
+                "line": 2300,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W29.2"
             ],
-            "line": 2236,
+            "line": 2293,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W29.2 what reserve remains uncommitted",
@@ -15132,7 +15176,7 @@
         "brief": "docs/design/challenges/W29/W29.2.md",
         "brief_sha256": "223b702849c06d745735bc8c0b37e900fe55925571c9650dcb139f3d877c3f65",
         "operation": "sdl/modules/operations/w29.yaml",
-        "operation_sha256": "cfd3b880a804c0518b18e5188b8832d8226e719d399eea3e50af16064856d0db"
+        "operation_sha256": "4d47ad16a403cf874088e3030f0d96e85cf242189b1c31fac574997509233642"
       },
       "title": "This action: What reserve remains uncommitted"
     },
@@ -15147,28 +15191,44 @@
           {
             "assertions": [
               {
-                "line": 2257,
+                "line": 2314,
                 "method": "assertEqual"
               },
               {
-                "line": 2260,
+                "line": 2315,
+                "method": "assertNotIn"
+              },
+              {
+                "line": 2320,
                 "method": "assertEqual"
               },
               {
-                "line": 2261,
+                "line": 2326,
+                "method": "assertEqual"
+              },
+              {
+                "line": 2327,
                 "method": "assertFalse"
               },
               {
-                "line": 2264,
+                "line": 2329,
+                "method": "assertEqual"
+              },
+              {
+                "line": 2330,
+                "method": "assertNotIn"
+              },
+              {
+                "line": 2333,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W29.3"
             ],
-            "line": 2248,
+            "line": 2305,
             "phase": "arwc",
-            "simple_read_candidate": true,
+            "simple_read_candidate": false,
             "subtest": "W29.3 paper truth",
             "suite": "build/arwc/tests/test_known_solution_live.py",
             "test_method": "test_w29_planning_window_economics"
@@ -15206,13 +15266,13 @@
       "primary_work": "Process",
       "read_only_review": {
         "rationale": null,
-        "status": "unresolved_simple_read"
+        "status": "not_simple_read"
       },
       "sources": {
         "brief": "docs/design/challenges/W29/W29.3.md",
-        "brief_sha256": "4704fed02f8a617d3a552c20ebe6a391afa26802583c17481f55c97a403b85c9",
+        "brief_sha256": "298219d69ce84b293de2a982636ec162c059131b2ab1a5281e7e2b858a1a6f2a",
         "operation": "sdl/modules/operations/w29.yaml",
-        "operation_sha256": "cfd3b880a804c0518b18e5188b8832d8226e719d399eea3e50af16064856d0db"
+        "operation_sha256": "4d47ad16a403cf874088e3030f0d96e85cf242189b1c31fac574997509233642"
       },
       "title": "This action: Paper truth"
     },
@@ -15227,26 +15287,26 @@
           {
             "assertions": [
               {
-                "line": 2290,
+                "line": 2359,
                 "method": "assertEqual"
               },
               {
-                "line": 2293,
+                "line": 2362,
                 "method": "assertEqual"
               },
               {
-                "line": 2296,
+                "line": 2365,
                 "method": "assertEqual"
               },
               {
-                "line": 2297,
+                "line": 2366,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W30.1"
             ],
-            "line": 2288,
+            "line": 2357,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W30.1 bind the plan to the plant",
@@ -15308,34 +15368,34 @@
           {
             "assertions": [
               {
-                "line": 2312,
+                "line": 2381,
                 "method": "assertEqual"
               },
               {
-                "line": 2315,
+                "line": 2384,
                 "method": "assertEqual"
               },
               {
-                "line": 2316,
+                "line": 2385,
                 "method": "assertFalse"
               },
               {
-                "line": 2317,
+                "line": 2386,
                 "method": "assertFalse"
               },
               {
-                "line": 2318,
+                "line": 2387,
                 "method": "assertFalse"
               },
               {
-                "line": 2321,
+                "line": 2390,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W30.2"
             ],
-            "line": 2300,
+            "line": 2369,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W30.2 open the gates",
@@ -15393,26 +15453,26 @@
           {
             "assertions": [
               {
-                "line": 2331,
+                "line": 2400,
                 "method": "assertEqual"
               },
               {
-                "line": 2335,
+                "line": 2404,
                 "method": "assertEqual"
               },
               {
-                "line": 2336,
+                "line": 2405,
                 "method": "assertEqual"
               },
               {
-                "line": 2337,
+                "line": 2406,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W31.1"
             ],
-            "line": 2329,
+            "line": 2398,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W31.1 the vault's misleading length",
@@ -15469,18 +15529,18 @@
           {
             "assertions": [
               {
-                "line": 2350,
+                "line": 2419,
                 "method": "assertEqual"
               },
               {
-                "line": 2352,
+                "line": 2421,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W31.2"
             ],
-            "line": 2344,
+            "line": 2413,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W31.2 past the parser's boundary",
@@ -15537,22 +15597,22 @@
           {
             "assertions": [
               {
-                "line": 2374,
+                "line": 2443,
                 "method": "assertEqual"
               },
               {
-                "line": 2378,
+                "line": 2447,
                 "method": "assertTrue"
               },
               {
-                "line": 2379,
+                "line": 2448,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W31.3"
             ],
-            "line": 2354,
+            "line": 2423,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W31.3 the state execution returns to",
@@ -15609,26 +15669,26 @@
           {
             "assertions": [
               {
-                "line": 2386,
+                "line": 2455,
                 "method": "assertEqual"
               },
               {
-                "line": 2388,
+                "line": 2457,
                 "method": "assertEqual"
               },
               {
-                "line": 2389,
+                "line": 2458,
                 "method": "assertFalse"
               },
               {
-                "line": 2390,
+                "line": 2459,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W31.4"
             ],
-            "line": 2382,
+            "line": 2451,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W31.4 the diagnostic service's authority",
@@ -15685,22 +15745,22 @@
           {
             "assertions": [
               {
-                "line": 2399,
+                "line": 2468,
                 "method": "assertEqual"
               },
               {
-                "line": 2403,
+                "line": 2472,
                 "method": "assertEqual"
               },
               {
-                "line": 2404,
+                "line": 2473,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W32.1"
             ],
-            "line": 2397,
+            "line": 2466,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W32.1 the replay's pieces",
@@ -15757,18 +15817,18 @@
           {
             "assertions": [
               {
-                "line": 2419,
+                "line": 2488,
                 "method": "assertEqual"
               },
               {
-                "line": 2421,
+                "line": 2490,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W32.2"
             ],
-            "line": 2414,
+            "line": 2483,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W32.2 the systems that update it",
@@ -15825,18 +15885,18 @@
           {
             "assertions": [
               {
-                "line": 2428,
+                "line": 2497,
                 "method": "assertEqual"
               },
               {
-                "line": 2430,
+                "line": 2499,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W32.3"
             ],
-            "line": 2423,
+            "line": 2492,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W32.3 the condition the old model used",
@@ -15893,26 +15953,26 @@
           {
             "assertions": [
               {
-                "line": 2437,
+                "line": 2506,
                 "method": "assertEqual"
               },
               {
-                "line": 2440,
+                "line": 2509,
                 "method": "assertEqual"
               },
               {
-                "line": 2441,
+                "line": 2510,
                 "method": "assertEqual"
               },
               {
-                "line": 2442,
+                "line": 2511,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W32.4"
             ],
-            "line": 2432,
+            "line": 2501,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W32.4 replay is not reality",
@@ -15970,18 +16030,18 @@
           {
             "assertions": [
               {
-                "line": 2462,
+                "line": 2535,
                 "method": "assertEqual"
               },
               {
-                "line": 2464,
+                "line": 2537,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W33.1"
             ],
-            "line": 2455,
+            "line": 2528,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W33.1 a forecast that matches the instrument",
@@ -16040,14 +16100,14 @@
           {
             "assertions": [
               {
-                "line": 2470,
+                "line": 2543,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W33.2"
             ],
-            "line": 2466,
+            "line": 2539,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W33.2 the expensive hour",
@@ -16108,18 +16168,18 @@
           {
             "assertions": [
               {
-                "line": 2484,
+                "line": 2557,
                 "method": "assertEqual"
               },
               {
-                "line": 2486,
+                "line": 2559,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W33.3"
             ],
-            "line": 2474,
+            "line": 2547,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W33.3 the schedule the service accepts",
@@ -16184,22 +16244,22 @@
           {
             "assertions": [
               {
-                "line": 2495,
+                "line": 2570,
                 "method": "assertEqual"
               },
               {
-                "line": 2498,
+                "line": 2573,
                 "method": "assertEqual"
               },
               {
-                "line": 2499,
+                "line": 2574,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W33.4"
             ],
-            "line": 2488,
+            "line": 2562,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W33.4 when the forecast moves",
@@ -16259,34 +16319,34 @@
           {
             "assertions": [
               {
-                "line": 2518,
+                "line": 2593,
                 "method": "assertEqual"
               },
               {
-                "line": 2520,
+                "line": 2595,
                 "method": "assertEqual"
               },
               {
-                "line": 2523,
+                "line": 2598,
                 "method": "assertEqual"
               },
               {
-                "line": 2524,
+                "line": 2599,
                 "method": "assertEqual"
               },
               {
-                "line": 2525,
+                "line": 2600,
                 "method": "assertFalse"
               },
               {
-                "line": 2527,
+                "line": 2602,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W34.1"
             ],
-            "line": 2511,
+            "line": 2586,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W34.1 which view the planner trusts",
@@ -16350,30 +16410,30 @@
           {
             "assertions": [
               {
-                "line": 2537,
+                "line": 2612,
                 "method": "assertEqual"
               },
               {
-                "line": 2540,
+                "line": 2615,
                 "method": "assertEqual"
               },
               {
-                "line": 2541,
+                "line": 2616,
                 "method": "assertEqual"
               },
               {
-                "line": 2542,
+                "line": 2617,
                 "method": "assertTrue"
               },
               {
-                "line": 2543,
+                "line": 2618,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W34.2"
             ],
-            "line": 2529,
+            "line": 2604,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W34.2 a reassuring decision",
@@ -16434,34 +16494,34 @@
           {
             "assertions": [
               {
-                "line": 2560,
+                "line": 2635,
                 "method": "assertEqual"
               },
               {
-                "line": 2563,
+                "line": 2638,
                 "method": "assertEqual"
               },
               {
-                "line": 2564,
+                "line": 2639,
                 "method": "assertEqual"
               },
               {
-                "line": 2565,
+                "line": 2640,
                 "method": "assertFalse"
               },
               {
-                "line": 2566,
+                "line": 2641,
                 "method": "assertFalse"
               },
               {
-                "line": 2568,
+                "line": 2643,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W34.3"
             ],
-            "line": 2546,
+            "line": 2621,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W34.3 still reassuring after the handover",
@@ -16524,14 +16584,14 @@
           {
             "assertions": [
               {
-                "line": 2576,
+                "line": 2651,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W35.1"
             ],
-            "line": 2574,
+            "line": 2649,
             "phase": "arwc",
             "simple_read_candidate": true,
             "subtest": "W35.1 what replacement water costs",
@@ -16588,14 +16648,14 @@
           {
             "assertions": [
               {
-                "line": 2590,
+                "line": 2665,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W35.2"
             ],
-            "line": 2583,
+            "line": 2658,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W35.2 a quote outside your district",
@@ -16652,30 +16712,30 @@
           {
             "assertions": [
               {
-                "line": 2607,
+                "line": 2682,
                 "method": "assertEqual"
               },
               {
-                "line": 2610,
+                "line": 2685,
                 "method": "assertEqual"
               },
               {
-                "line": 2611,
+                "line": 2686,
                 "method": "assertEqual"
               },
               {
-                "line": 2612,
+                "line": 2687,
                 "method": "assertEqual"
               },
               {
-                "line": 2614,
+                "line": 2689,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W35.3"
             ],
-            "line": 2599,
+            "line": 2674,
             "phase": "arwc",
             "simple_read_candidate": false,
             "subtest": "W35.3 the wrong bill",
@@ -16724,11 +16784,8 @@
     }
   },
   "delivery_catalog": {
-    "path": "challenges/challenges.yaml",
-    "schema": "cinder-typhoon.challenges/v1",
-    "status": "versioned-snapshot",
-    "total_cards": 240,
-    "total_operations": 70
+    "blocking_issue": 226,
+    "path": "challenges/challenges.yaml"
   },
   "schema_version": 1
 }
