@@ -209,15 +209,15 @@ def main() -> None:
     }
     config = {
         "schema": "fieldkest.registry-foundation/v1",
-        "developer": {"username": "rowan.ito", "token": "kpl_rowan_7X4mQ9vN2cL6"},
+        "developer": {"username": "rowan.ito", "token": "UNPROVISIONED"},
         "publisher": {
             "principal": "fieldlink-importer-publisher",
-            "token": "fkpub_arwc_stable_4Zt8Qm2Nc7",
+            "token": "UNPROVISIONED",
             "scope": "@keplerops/fieldlink-connector:arwc-stable",
         },
         "build_reader": {
             "principal": "svc-fieldlink-ci",
-            "token": "fkci_registry_reader_8Hd3Lp6Ws1",
+            "token": "UNPROVISIONED",
             "scope": "@keplerops/fieldlink-connector:read",
         },
         "versions": ["7.4.0", "7.4.1", "7.4.2"],

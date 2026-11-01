@@ -6,7 +6,33 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 OPERATOR_DIR=${KEPLEROPS_OPERATOR_DIR:-"$ROOT/.operator"}
 mkdir -p "$OPERATOR_DIR/tls"
 mkdir -p "$OPERATOR_DIR/integration"
-chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls" "$OPERATOR_DIR/integration"
+mkdir -p "$OPERATOR_DIR/range-seed"
+chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls" "$OPERATOR_DIR/integration" "$OPERATOR_DIR/range-seed"
+
+RANGE_SEED_DIR="$OPERATOR_DIR/range-seed"
+if [[ ! -s "$RANGE_SEED_DIR/metadata.json" ]]; then
+  if find "$RANGE_SEED_DIR" -mindepth 1 -print -quit | grep -q .; then
+    echo "incomplete range credential material; refusing to overwrite it" >&2
+    exit 1
+  fi
+  seed_file=$(mktemp "$OPERATOR_DIR/.range-seed.XXXXXX")
+  cleanup_seed() { rm -f -- "$seed_file"; }
+  trap cleanup_seed EXIT
+  openssl rand 32 >"$seed_file"
+  chmod 0600 "$seed_file"
+  python3 "$ROOT/provision-seed.py" --seed-file "$seed_file" --output-dir "$RANGE_SEED_DIR"
+  cleanup_seed
+  trap - EXIT
+fi
+
+for required in runtime-credentials.json metadata.json participant/git-credentials participant/chromium-Cookies; do
+  if [[ ! -s "$RANGE_SEED_DIR/$required" ]]; then
+    echo "missing range credential output: $required" >&2
+    exit 1
+  fi
+done
+chmod 0600 "$RANGE_SEED_DIR/metadata.json"
+chmod 0444 "$RANGE_SEED_DIR/runtime-credentials.json" "$RANGE_SEED_DIR/participant/git-credentials" "$RANGE_SEED_DIR/participant/chromium-Cookies"
 
 if [[ ! -s "$OPERATOR_DIR/rowan_ed25519" ]]; then
   ssh-keygen -q -t ed25519 -N '' -C 'rowan@keplerops' -f "$OPERATOR_DIR/rowan_ed25519"

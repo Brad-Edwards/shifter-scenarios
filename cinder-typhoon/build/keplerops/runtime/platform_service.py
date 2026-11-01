@@ -19,6 +19,7 @@ from urllib import parse as urlparse
 from urllib import request as urlrequest
 
 from http_support import KeplerHandler, append_audit, canonical_bytes, serve_tls, sha256_bytes, verify_rs256
+from credentials import credential
 
 
 SERVICE = os.environ["FIELDKEST_SERVICE"]
@@ -30,9 +31,39 @@ MODEL_LOCK = threading.RLock()
 ASSISTANT_MODEL = None
 ASSISTANT_TOKENIZER = None
 DEV_USER = "rowan.ito"
-DEV_TOKEN = "kpl_rowan_7X4mQ9vN2cL6"
-SUPPORT_SESSION = "ksess_rowan_2841_6Hs8Qp3V"
-SUPPORT_ALT_SESSION = "ksess_talia_review_9Kw4Pn7R"
+DEV_TOKEN = credential("developer_token")
+SUPPORT_SESSION = credential("support_rowan_session")
+SUPPORT_ALT_SESSION = credential("support_reviewer_session")
+STAFF_PREVIEW_TOKEN = credential("staff_preview_service")
+CERT_ENROLLMENT_TOKEN = credential("cert_enrollment_worker")
+SUPPORT_EXPORT_TOKEN = credential("cloud_support_export_role")
+WORKLOAD_SESSION = credential("cloud_workload_session")
+HISTORY_RECOVERY_TOKEN = credential("cloud_history_recovery_session")
+MAINTENANCE_WORKER_TOKEN = credential("ci_maintenance_worker")
+MAINTENANCE_RUNTIME_TOKEN = credential("cloud_maintenance_runtime")
+ASSISTANT_TOOL_TOKEN = credential("assistant_tool_session")
+SUPPORT_DELIVERY_TOKEN = credential("support_delivery_token")
+RELEASE_ADMIN_TOKEN = credential("registry_release_admin_token")
+INDEXER_WORKER_TOKEN = credential("indexer_worker_lease")
+CONNECTOR_PACKAGE_TOKEN = credential("connector_package_internal")
+CREDENTIAL_PRINCIPALS = {
+    DEV_TOKEN: DEV_USER,
+    STAFF_PREVIEW_TOKEN: "svc-staff-preview",
+    CERT_ENROLLMENT_TOKEN: "svc-cert-enrollment",
+    SUPPORT_EXPORT_TOKEN: "role/support-export-editor",
+    WORKLOAD_SESSION: "svc-fieldlink-workload",
+    HISTORY_RECOVERY_TOKEN: "svc-history-recovery",
+    MAINTENANCE_WORKER_TOKEN: "svc-fieldkest-runner",
+    MAINTENANCE_RUNTIME_TOKEN: "svc-fieldlink-maintenance",
+    SUPPORT_DELIVERY_TOKEN: "svc-keplerops-support-delivery",
+    CONNECTOR_PACKAGE_TOKEN: "svc-keplerops-registry-delivery",
+}
+
+
+def credential_principal(value: str | None) -> str:
+    if value is None:
+        return "anonymous"
+    return CREDENTIAL_PRINCIPALS.get(value, "unrecognized")
 
 
 def initial_state() -> dict[str, object]:
@@ -312,7 +343,7 @@ class PlatformHandler(KeplerHandler):
     def get_identity(self) -> None:
         path = urlparse.urlsplit(self.path).path; token = bearer(self); state = load_state()["identity"]
         if path == "/api/registrations/OIDC-FIELDKEST-SUPPORT":
-            if token != "staff-preview-service":
+            if token != STAFF_PREVIEW_TOKEN:
                 principal = self.spnego_principal()
                 if principal is None: return
                 if principal != "evan.calderoux@KEPLEROPS.TEST": return self.deny(403)
@@ -331,13 +362,13 @@ class PlatformHandler(KeplerHandler):
             value = {"service_id": "svc-release-admin", "managed_by": "release-platform", "release_owner": "evan.calderoux"}
             token = principal
         else: return self.deny(404, "not_found")
-        self.record("identity-read", path=path, principal=token); self.send_json(200, value)
+        self.record("identity-read", path=path, principal=credential_principal(token) if token != "evan.calderoux@KEPLEROPS.TEST" else token); self.send_json(200, value)
 
     def post_identity(self) -> None:
         path = urlparse.urlsplit(self.path).path
         data = self.body(); state = load_state(); identity = state["identity"]
         if path == "/api/registrations/OIDC-FIELDKEST-SUPPORT":
-            if bearer(self) != "staff-preview-service": return self.deny(403)
+            if bearer(self) != STAFF_PREVIEW_TOKEN: return self.deny(403)
             if data.get("add_provider") != "OIDC-CINDER-FIXTURE" or data.get("preserve_existing") is not True: raise ValueError("registration_patch_denied")
             if "OIDC-CINDER-FIXTURE" not in identity["providers"]: identity["providers"].append("OIDC-CINDER-FIXTURE")
             identity["registration_revision"] += 1; save_state(state)
@@ -360,7 +391,7 @@ class PlatformHandler(KeplerHandler):
 
     def get_staff(self) -> None:
         path = urlparse.urlsplit(self.path).path; token = bearer(self)
-        if path == "/api/service-directory" and token in {DEV_TOKEN, "cert-enrollment-worker"}:
+        if path == "/api/service-directory" and token in {DEV_TOKEN, CERT_ENROLLMENT_TOKEN}:
             value = {
                 "enrollment": "https://cert.keplerops.test/api/enrollment/StaffArchiveUser",
                 "archive": "https://staff.keplerops.test/api/archive/handovers/{subject}",
@@ -370,14 +401,14 @@ class PlatformHandler(KeplerHandler):
                 "support_registration": "OIDC-FIELDKEST-SUPPORT",
                 "staff_provider": "OIDC-FIELDKEST-STAFF",
                 "fixture_issuer": "https://support.keplerops.test/fixture-issuer",
-                "enrollment_worker": "cert-enrollment-worker",
+                "enrollment_worker": CERT_ENROLLMENT_TOKEN,
             }
         elif path == "/api/notes/NOTE-SUP-2841-7" and token == DEV_TOKEN:
             value = {"note_id": "NOTE-SUP-2841-7", "revision": 7, "consumer": "staff-note-preview", "status": "restricted-draft"}
         elif path == "/api/archive/handovers/evan.calderoux" and self.peer_common_name() == "evan.calderoux":
             value = {"subject": "evan.calderoux", "handover_id": "ARCH-EVC-204", "service_relation": "svc-release-admin"}
         else: return self.deny(403 if path.startswith("/api/") else 404)
-        self.record("staff-read", path=path, principal=token); self.send_json(200, value)
+        self.record("staff-read", path=path, principal=credential_principal(token)); self.send_json(200, value)
 
     def post_staff(self) -> None:
         path = urlparse.urlsplit(self.path).path; token = bearer(self)
@@ -388,7 +419,7 @@ class PlatformHandler(KeplerHandler):
             normalized = urlparse.unquote(source)
             if normalized != "/notes/../identity/api/registrations/OIDC-FIELDKEST-SUPPORT" or method not in {"GET", "PATCH"}: raise ValueError("preview_target_denied")
             url = "https://identity.keplerops.test/api/registrations/OIDC-FIELDKEST-SUPPORT"
-            result = get_json(url, "staff-preview-service") if method == "GET" else send_json(url, "PATCH", self.body() if False else {"add_provider": "OIDC-CINDER-FIXTURE", "preserve_existing": True}, "staff-preview-service")
+            result = get_json(url, STAFF_PREVIEW_TOKEN) if method == "GET" else send_json(url, "PATCH", self.body() if False else {"add_provider": "OIDC-CINDER-FIXTURE", "preserve_existing": True}, STAFF_PREVIEW_TOKEN)
             self.record("note-preview", principal=DEV_USER, source_path=source, method=method, destination_request=result.get("registration_id")); return self.send_json(200, result)
         if path == "/api/archive/delegation/probe":
             if self.peer_common_name() != "evan.calderoux": return self.deny(403)
@@ -418,7 +449,7 @@ class PlatformHandler(KeplerHandler):
             if match.group(1) != "svc-release-admin": return self.deny(404, "identity_not_found")
             value = {
                 "principal": "svc-release-admin",
-                "token": "release-admin-session-5m",
+                "token": RELEASE_ADMIN_TOKEN,
                 "audience": "registry-release-administration",
                 "administration": "https://packages.keplerops.test/api/release-administration/session",
                 "expires_in": 300,
@@ -427,12 +458,12 @@ class PlatformHandler(KeplerHandler):
         self.deny(404, "not_found")
 
     def get_cert(self) -> None:
-        if urlparse.urlsplit(self.path).path != "/api/enrollment/StaffArchiveUser" or bearer(self) not in {DEV_TOKEN, "cert-enrollment-worker"}: return self.deny(403)
+        if urlparse.urlsplit(self.path).path != "/api/enrollment/StaffArchiveUser" or bearer(self) not in {DEV_TOKEN, CERT_ENROLLMENT_TOKEN}: return self.deny(403)
         value = {"template": "StaffArchiveUser", "eku": ["1.3.6.1.5.5.7.3.2"], "subject": "enrollee-supplied-upn", "requester_roles": ["support", "runner"]}
         self.record("enrollment-record", principal=DEV_USER, template=value["template"]); self.send_json(200, value)
 
     def post_cert(self) -> None:
-        if urlparse.urlsplit(self.path).path != "/api/enrollment/StaffArchiveUser/requests" or bearer(self) != "cert-enrollment-worker": return self.deny(403)
+        if urlparse.urlsplit(self.path).path != "/api/enrollment/StaffArchiveUser/requests" or bearer(self) != CERT_ENROLLMENT_TOKEN: return self.deny(403)
         data = self.body(); upn = data.get("upn")
         if upn != "evan.calderoux@KEPLEROPS.TEST": raise ValueError("inactive_subject")
         certificate = Path("/tmp/evan.crt").read_text()
@@ -444,34 +475,34 @@ class PlatformHandler(KeplerHandler):
     def get_workload(self) -> None:
         path = urlparse.urlsplit(self.path).path; token = bearer(self); state = load_state()["workload"]
         if path == "/api/schedules/SCH-SUP-2841":
-            if token != "support-export-role": return self.deny(403)
+            if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
             value = {"schedule_id": "SCH-SUP-2841", "cadence": "02:15 daily", "profile": "support-export", "startup_hook": state["startup_hook"], "assignment": state["assignment"]}
         else:
             match = re.fullmatch(r"/api/workloads/([^/]+)/whoami", path)
-            if not match or token != "ci-maintenance-worker": return self.deny(403)
+            if not match or token != MAINTENANCE_WORKER_TOKEN: return self.deny(403)
             job = state["jobs"].get(match.group(1));
             if not job: return self.deny(404, "workload_not_found")
             value = {"workload_id": match.group(1), "runtime_identity": "svc-fieldlink-maintenance", "labels": job["labels"], "normal_output": {"interface": "fieldkest.maintenance/v1", "state": "healthy"}, "attestation": sha256_bytes(canonical_bytes(job["labels"]))}
-        self.record("workload-read", path=path, principal=token); self.send_json(200, value)
+        self.record("workload-read", path=path, principal=credential_principal(token)); self.send_json(200, value)
 
     def post_workload(self) -> None:
         path = urlparse.urlsplit(self.path).path; token = bearer(self); state = load_state(); workload = state["workload"]
         if path == "/api/schedules/SCH-SUP-2841":
-            if token != "support-export-role": return self.deny(403)
+            if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
             data = self.body(); allowed = {"startup_hook", "assignment"}
             if not data or set(data) - allowed: raise ValueError("schedule_field_denied")
             if "startup_hook" in data and data["startup_hook"] != ["/opt/fieldkest/hooks/support-marker", "--export", "EXP-2841"]: raise ValueError("startup_hook_denied")
             if "assignment" in data and data["assignment"] != "SHIFT-SEP17-B": raise ValueError("assignment_denied")
             workload.update(data); save_state(state); self.record("schedule-update", principal="role/support-export-editor", fields=sorted(data)); return self.send_json(200, {"schedule_id": "SCH-SUP-2841", **data})
         if path == "/api/schedules/SCH-SUP-2841/runs":
-            if token != "support-export-role": return self.deny(403)
+            if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
             run_id = "RUN-SUP-" + uuid.uuid4().hex[:10].upper(); marker = workload["startup_hook"] is not None
             execution = run_isolated_workload(run_id, "support-export", workload["assignment"], marker)
             result = {"run_id": run_id, "schedule_id": "SCH-SUP-2841", **execution, "output": {"schema": "fieldkest.support-export/v1", "export_id": "EXP-2841", "state": "complete"}}
             workload["runs"][run_id] = result; save_state(state); self.record("schedule-run", **{k: result[k] for k in ("run_id", "runtime_identity", "assignment")}, marker=marker); return self.send_json(201, result)
         match = re.fullmatch(r"/api/workloads/([^/]+)", path)
         if match:
-            if token != "ci-maintenance-worker": return self.deny(403)
+            if token != MAINTENANCE_WORKER_TOKEN: return self.deny(403)
             data = self.body();
             if set(data) - {"command", "labels"}: raise ValueError("workload_field_denied")
             job = workload["jobs"].setdefault(match.group(1), {"labels": {}, "command": ["maintenance-summary"]}); job.update(data); save_state(state)
@@ -492,49 +523,49 @@ class PlatformHandler(KeplerHandler):
             else: return self.deny(404, "object_not_found")
         elif path.startswith("/s3/fieldkest-exports/"):
             raw = path.removeprefix("/s3/fieldkest-exports/")
-            if token != "support-export-role" or raw != "exports%2fsupport%2fEXP-2841": return self.deny(403)
+            if token != SUPPORT_EXPORT_TOKEN or raw != "exports%2fsupport%2fEXP-2841": return self.deny(403)
             value = {"key": "exports/support/EXP-2841", "export_id": "EXP-2841", "tenant": "TEN-ARWC-047", "revision": 6}
         elif path == "/api/exports/EXP-2841":
-            if token not in {"workload-session", "support-export-role"}: return self.deny(403)
+            if token not in {WORKLOAD_SESSION, SUPPORT_EXPORT_TOKEN}: return self.deny(403)
             value = {"export_id": "EXP-2841", "case": "SUP-2841", "dataset": "support-case-history", "revision": state["destination_revision"], "state": "unpublished"}
         elif path == "/api/exports/EXP-2841/definition":
-            if token != "support-export-role": return self.deny(403)
+            if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
             value = {"export_id": "EXP-2841", "owner": "maya.ranscombe", "tenant": "TEN-ARWC-047", "partitions": ["current", "legacy"], "destination": state["destination"]}
         elif path == "/api/backups/BAK-2026-021":
-            if token != "history-recovery-session": return self.deny(403)
+            if token != HISTORY_RECOVERY_TOKEN: return self.deny(403)
             backup = json.loads((STATE_ROOT / "backups/BAK-2026-021.json").read_text())
             value = {"backup_id": backup["backup_id"], "principal": "svc-history-recovery", "schema": backup["schema"].split(".")[-1], "source_database": "denied", "restore": "allowed", "record_count": len(backup["records"])}
         else:
             match = re.fullmatch(r"/api/recovery/([^/]+)/customer-migration-history", path)
             if match:
-                if token != "history-recovery-session": return self.deny(403)
+                if token != HISTORY_RECOVERY_TOKEN: return self.deny(403)
                 restore = state["restores"].get(match.group(1));
                 if not restore: return self.deny(404, "namespace_not_found")
                 backup = json.loads((STATE_ROOT / "backups/BAK-2026-021.json").read_text())
                 value = {"namespace_id": match.group(1), "records": backup["records"]}
             elif path == "/api/field-archive/FIELD-CRR-2026-09":
-                if token != "maintenance-runtime": return self.deny(403)
+                if token != MAINTENANCE_RUNTIME_TOKEN: return self.deny(403)
                 if self.headers.get("X-Workload-Class") != "maintenance" or not self.headers.get("X-Scheduler-Attestation"): return self.deny(403, "attestation_denied")
                 value = {"archive_id": "FIELD-CRR-2026-09", "asset": "CRR-OG2", "calibration_revision": "CAL-2026-09-R4", "runtime_identity": "svc-fieldlink-maintenance"}
             else: return self.deny(404, "not_found")
-        self.record("data-read", path=path, principal=token or "anonymous", digest=sha256_bytes(canonical_bytes(value))); self.send_json(200, value)
+        self.record("data-read", path=path, principal=credential_principal(token), digest=sha256_bytes(canonical_bytes(value))); self.send_json(200, value)
 
     def post_data(self) -> None:
         path = urlparse.urlsplit(self.path).path; token = bearer(self); data = self.body(); state = load_state(); store = state["data"]
         if path == "/api/exports/EXP-2841/destination":
-            if token != "support-export-role": return self.deny(403)
+            if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
             if data.get("destination") != "rowan-support-sink": raise ValueError("destination_denied")
             store["destination"] = data["destination"]; store["destination_revision"] = 7; save_state(state)
             value = {"export_id": "EXP-2841", "destination": store["destination"], "revision": 7}
         elif path == "/api/exports/EXP-2841/runs":
-            if token not in {"support-export-role", "support-export-runtime"}: return self.deny(403)
+            if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
             if data.get("tenant") != "TEN-ARWC-047" or data.get("connector_revision") != "FLK-7.4.2" or data.get("partitions") != ["current"]: raise ValueError("incoherent_collection")
             run_id = "EXP-RUN-" + uuid.uuid4().hex[:10].upper(); value = {"run_id": run_id, "export_id": "EXP-2841", "tenant": "TEN-ARWC-047", "connector_revision": "FLK-7.4.2", "destination": store["destination"], "runtime_identity": "svc-support-export", "state": "delivered"}; store["exports"][run_id] = value; save_state(state)
         elif path == "/api/backups/BAK-2026-021/restores":
-            if token != "history-recovery-session": return self.deny(403)
+            if token != HISTORY_RECOVERY_TOKEN: return self.deny(403)
             namespace = "REC-" + uuid.uuid4().hex[:10].upper(); value = {"namespace_id": namespace, "backup_id": "BAK-2026-021", "owner": "svc-history-recovery", "state": "complete"}; store["restores"][namespace] = value; save_state(state)
         else: return self.deny(404, "not_found")
-        self.record("data-write", path=path, principal=token, result=value); self.send_json(201 if "run_id" in value or "namespace_id" in value else 200, value)
+        self.record("data-write", path=path, principal=credential_principal(token), result=value); self.send_json(201 if "run_id" in value or "namespace_id" in value else 200, value)
 
     # Assistant retrieval and bounded completion service.
     def get_assistant(self) -> None:
@@ -584,7 +615,7 @@ class PlatformHandler(KeplerHandler):
             if mode == "private-escalation" and data.get("case_reference") == "SUP-2841": value = {"answer": assistant_generate(mode), "sources": ["ESC-SUP-2841-R3"], "model": "Qwen2.5-3B-Instruct", "model_revision": "14d7620ba47cf51be0b176e14e27e38a34d4ff88"}
             elif mode == "compatibility-guidance" and data.get("selection_id") == "SEL-SUP-2841-12": value = {"answer": assistant_generate(mode), "sources": ["ATT-DIAG-698"], "recommendation_id": "assistant-obsolete-bundle", "model": "Qwen2.5-3B-Instruct", "model_revision": "14d7620ba47cf51be0b176e14e27e38a34d4ff88"}
             elif mode == "accept-duplicate" and data.get("review_id") == "DREV-2841-2":
-                value = send_json("https://support.keplerops.test/api/reviews/DREV-2841-2/duplicate-disposition", "PATCH", {"recommendation_id": "assistant-obsolete-bundle"}, "assistant-tool-session")
+                value = send_json("https://support.keplerops.test/api/reviews/DREV-2841-2/duplicate-disposition", "PATCH", {"recommendation_id": "assistant-obsolete-bundle"}, ASSISTANT_TOOL_TOKEN)
             else: raise ValueError("answer_request_denied")
             self.record("assistant-answer", principal="support-session", request=mode, sources=value.get("sources", [])); return self.send_json(200, value)
         if path == "/api/completions/context":
@@ -618,28 +649,28 @@ class PlatformHandler(KeplerHandler):
         path = urlparse.urlsplit(self.path).path; token = bearer(self); state = load_state()["connector"]
         match = re.fullmatch(r"/api/packages/([^/]+)/receipt", path)
         if match:
-            if token != "support-delivery": return self.deny(403)
+            if token != SUPPORT_DELIVERY_TOKEN: return self.deny(403)
             value = state["receipts"].get(match.group(1));
             if not value: return self.deny(404, "receipt_not_found")
         elif path == "/api/packages/poll":
-            if token != "registry-customer-channel": return self.deny(403)
+            if token != CONNECTOR_PACKAGE_TOKEN: return self.deny(403)
             value = {"tenant": "TEN-ARWC-047", "channel": "arwc-stable", "selected_version": "7.4.3-cinder.rowan", "interface": "fieldkest.connector/v3", "signed": True, "approved": True}
         else: return self.deny(404, "not_found")
-        self.record("connector-read", path=path, principal=token); self.send_json(200, value)
+        self.record("connector-read", path=path, principal=credential_principal(token)); self.send_json(200, value)
 
     def post_connector(self) -> None:
         path = urlparse.urlsplit(self.path).path; token = bearer(self); data = self.body(); state = load_state(); connector = state["connector"]
         if path == "/api/packages/activate":
-            if token != "registry-customer-channel" or data.get("version") != "7.4.3-cinder.rowan": return self.deny(403)
+            if token != CONNECTOR_PACKAGE_TOKEN or data.get("version") != "7.4.3-cinder.rowan": return self.deny(403)
             connector["active_version"] = data["version"]; receipt = "ACT-" + uuid.uuid4().hex[:10].upper(); value = {"receipt_id": receipt, "tenant": "TEN-ARWC-047", "version": data["version"], "diagnostic_summary": {"asset": "CRR-OG2", "interface": "fieldkest.connector/v3", "state": "ready"}}
         elif path == "/api/rollback-rehearsal":
-            if token != "registry-customer-channel" or data.get("version") != "7.4.2": return self.deny(403)
+            if token != CONNECTOR_PACKAGE_TOKEN or data.get("version") != "7.4.2": return self.deny(403)
             receipt = "RBK-" + uuid.uuid4().hex[:10].upper(); value = {"receipt_id": receipt, "selected_version": "7.4.2", "current_activation": connector["active_version"], "state": "accepted"}
         elif path == "/api/diagnostics/intake":
-            if token != "support-delivery" or data.get("tenant") != "TEN-ARWC-047" or data.get("interface") != "fieldkest.connector/v3": return self.deny(403)
+            if token != SUPPORT_DELIVERY_TOKEN or data.get("tenant") != "TEN-ARWC-047" or data.get("interface") != "fieldkest.connector/v3": return self.deny(403)
             receipt = "DIAG-RCPT-" + uuid.uuid4().hex[:10].upper(); value = {"receipt_id": receipt, "job_id": data.get("job_id"), "tenant": "TEN-ARWC-047", "runtime_identity": "svc-fieldlink-customer", "output": data.get("expected_output"), "state": "complete"}
         else: return self.deny(404, "not_found")
-        connector["receipts"][receipt] = value; save_state(state); self.record("connector-write", principal=token, **value); self.send_json(201, value)
+        connector["receipts"][receipt] = value; save_state(state); self.record("connector-write", principal=credential_principal(token), **value); self.send_json(201, value)
 
     def get_indexer(self) -> None:
         match = re.fullmatch(r"/api/indexes/([A-Z0-9-]+)", urlparse.urlsplit(self.path).path)
@@ -656,7 +687,7 @@ class PlatformHandler(KeplerHandler):
             if data.get("operation") == "runtime-descriptor":
                 if indexer["sentinel"] != "mutated" or data.get("sentinel") != "mutated": return self.deny(403, "descriptor_probe_denied")
                 indexer["disclosed"] = True; save_state(state)
-                value = {"process_generation": indexer["generation"], "protected_object_marker": "release-exception-state", "integrity_relation": "sha256(generation:state)", "worker_lease": "indexer-worker-lease", "record_id": "REL-EXC-2841", "ready_state": "queue-ready", "routine": "recover_exception_queue", "state_route": "/api/internal/release-exceptions/state", "completion_route": "/api/internal/release-exceptions/REL-EXC-2841/complete"}
+                value = {"process_generation": indexer["generation"], "protected_object_marker": "release-exception-state", "integrity_relation": "sha256(generation:state)", "worker_lease": INDEXER_WORKER_TOKEN, "record_id": "REL-EXC-2841", "ready_state": "queue-ready", "routine": "recover_exception_queue", "state_route": "/api/internal/release-exceptions/state", "completion_route": "/api/internal/release-exceptions/REL-EXC-2841/complete"}
                 self.record("runtime-disclosure", principal=DEV_USER, **value); return self.send_json(200, value)
             allocated = data.get("allocated_length"); body_hex = str(data.get("body_hex", "")); body = bytes.fromhex(body_hex)
             if not isinstance(allocated, int) or allocated < 1 or allocated > 4096 or len(body) < 1 or len(body) > 4096: raise ValueError("bundle_rejected")
@@ -670,13 +701,13 @@ class PlatformHandler(KeplerHandler):
             if native_result["sentinel"] == "mutated": indexer["sentinel"] = "mutated"
             indexer["indexes"][index_id] = result; save_state(state); self.record("bundle-index", principal=DEV_USER, **result); return self.send_json(201, result)
         if path == "/api/internal/release-exceptions/state":
-            if bearer(self) != "indexer-worker-lease" or not indexer["disclosed"]: return self.deny(403)
+            if bearer(self) != INDEXER_WORKER_TOKEN or not indexer["disclosed"]: return self.deny(403)
             data = self.body()
             if data.get("state") != "queue-ready" or data.get("integrity") != sha256_bytes(f"{indexer['generation']}:queue-ready".encode()): raise ValueError("integrity_rejected")
             indexer["write_ready"] = True; save_state(state); self.record("exception-state", principal="svc-fieldkest-indexer", state="queue-ready"); return self.send_json(200, {"state": "queue-ready", "integrity": data["integrity"]})
         match = re.fullmatch(r"/api/internal/release-exceptions/(REL-EXC-2841)/complete", path)
         if match:
-            if bearer(self) != "indexer-worker-lease" or not indexer["write_ready"]: return self.deny(403)
+            if bearer(self) != INDEXER_WORKER_TOKEN or not indexer["write_ready"]: return self.deny(403)
             data = self.body()
             if data.get("routine") != "recover_exception_queue" or data.get("generation") != indexer["generation"]: raise ValueError("routine_arguments_rejected")
             value = {"record_id": "REL-EXC-2841", "revision": 9, "service_identity": "svc-fieldkest-indexer", "dossier": "BLD-REL-742", "exceptions": ["signer rollover pending", "connector v2 compatibility retained"]}

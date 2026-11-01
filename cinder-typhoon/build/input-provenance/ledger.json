@@ -2370,8 +2370,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 29,
-      "inventory_sha256": "5d3cedeff5f99e83b13b1757e01a602c12b8c4fd253548c92d330125cb3f518d",
+      "comparison_count": 27,
+      "inventory_sha256": "8be3dbd757fe2b3de6f86f6f83057238a43cb783dcd36e26fc2d1112d2d8898a",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2386,8 +2386,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 20,
-      "inventory_sha256": "31bfee784a79bcf7f415cc46db7da3d8472edf0ea9547e3e1f6318a290ddfcf3",
+      "comparison_count": 13,
+      "inventory_sha256": "b8e76197392f351d2d91c3840e01e431be1adeeeacc5efa04231c808ef29ea6f",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2450,8 +2450,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 131,
-      "inventory_sha256": "eac930d80069bbc752c0cdf79ebd99e44000be177451e09a5c805e1ab3d861b1",
+      "comparison_count": 106,
+      "inventory_sha256": "8e8fe330bdf876373c0311a535a14cfa356f164087baebfebe5ad3a57b69fda9",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2482,8 +2482,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 45,
-      "inventory_sha256": "d7ab96ecb7fdb36457cd9eb5364a85a29f9b6c976f20002d77a5e8484eda84a2",
+      "comparison_count": 44,
+      "inventory_sha256": "60040098971ad532495f7b88f7d975f39aaa2ef8a26d4288d35a36223cc859a3",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2530,8 +2530,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 28,
-      "inventory_sha256": "e37c1e7428adbf09a0faf1ba55b8044cdb6e688800f516811a3489bbcce4f7a9",
+      "comparison_count": 27,
+      "inventory_sha256": "12dfdebdf10701eb3c87e6b9b58ea3781579b84f4f9e6ae85ebecc87e08e3d5a",
       "review_status": "complete",
       "unresolved": []
     },
@@ -3258,7 +3258,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "7d3fc2cd5faf8884c6fadb812fe215ce729d9ec489a6875c63264241b6aecebd",
+      "source_sha256": "e07f72439aa05d844e69d70f63249c09754306e56215cd72c3199be1d7b2c161",
       "unresolved": []
     },
     "build/keplerops/runtime/support-entrypoint.sh": {

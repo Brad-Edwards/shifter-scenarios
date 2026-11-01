@@ -59,9 +59,15 @@ tar -C "$pack_root" -czf "$verification_archive" \
   build/participant-surface \
   build/training/runtime \
   build/training/tests/test_known_solution_live.py \
+  build/keplerops/compose.yaml \
+  build/keplerops/generate-operator-material.sh \
+  build/keplerops/provision-seed.py \
+  build/keplerops/restore-pristine.sh \
   build/keplerops/images \
   build/keplerops/runtime \
-  build/keplerops/tests/test_known_solution_live.py \
+  build/keplerops/tests \
+  assets/keplerops/opening \
+  assets/keplerops/registry \
   build/arwc/runtime \
   build/arwc/tests/test_known_solution_live.py
 
@@ -79,7 +85,7 @@ done
 # the scenario stack on the operator workstation.
 stage=keplerops-build
 remote "$kepler_instance" \
-  "cd '$remote_root/build/keplerops' && sudo docker compose -f compose.yaml --profile build-only build >/var/tmp/cinder-build-keplerops-$label.log 2>&1"
+  "cd '$remote_root/build/keplerops' && sudo bash ./generate-operator-material.sh >/var/tmp/cinder-generate-keplerops-$label.log 2>&1 && sudo docker compose -f compose.yaml --profile build-only build >/var/tmp/cinder-build-keplerops-$label.log 2>&1"
 
 stage=arwc-reset
 remote "$arwc_instance" \

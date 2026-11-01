@@ -8,6 +8,7 @@ RUN apt-get update \
     && useradd --system --gid fieldkest-support --home-dir /var/lib/fieldkest-support --shell /usr/sbin/nologin fieldkest-support
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
+COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
 COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/support.py /opt/fieldkest/support.py
 COPY build/keplerops/runtime/support-entrypoint.sh /usr/local/bin/fieldkest-support-entrypoint

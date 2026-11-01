@@ -21,9 +21,7 @@ ARCHIVES: dict[str, dict[str, object]] = {
         "files": {
             "README.md": ("k-dev/HOME.md", 0o644),
             ".gitconfig": ("k-dev/gitconfig", 0o600),
-            ".config/git/credentials": ("k-dev/git-credentials", 0o600),
             ".config/chromium/Default/History": ("k-dev/chromium-History", 0o600),
-            ".config/chromium/Default/Cookies": ("k-dev/chromium-Cookies", 0o600),
             ".config/chromium/Default/Preferences": ("k-dev/chromium-Preferences", 0o600),
             "work/local-helper.md": ("k-dev/local-helper.md", 0o644),
             "work/service-notes.md": ("k-dev/service-notes.md", 0o644),

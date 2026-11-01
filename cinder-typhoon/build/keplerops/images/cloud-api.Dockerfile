@@ -7,6 +7,7 @@ RUN apt-get update \
     && useradd --system --gid fieldkest-cloud --home-dir /var/lib/fieldkest-cloud-api --shell /usr/sbin/nologin fieldkest-cloud
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
+COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
 COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/cloud_api.py /opt/fieldkest/cloud_api.py
 COPY build/keplerops/runtime/cloud-api-entrypoint.sh /usr/local/bin/fieldkest-cloud-api-entrypoint

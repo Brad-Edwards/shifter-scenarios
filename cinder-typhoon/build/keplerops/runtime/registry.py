@@ -29,6 +29,7 @@ from http_support import (
     KeplerHandler, append_audit, canonical_bytes, serve_tls, sha256_bytes, utc_now,
     validate_worker_token,
 )
+from credentials import credential
 
 
 STATE = Path("/var/lib/fieldkest-registry")
@@ -39,9 +40,10 @@ CHANNEL_CREDENTIAL = PUBLISHED / "delivery/channel-credential.json"
 CONFIG = json.loads((STATE / "config/foundation.json").read_text())
 K29_CONFIG = json.loads((STATE / "config/k29.json").read_text())
 USERNAME = CONFIG["developer"]["username"]
-TOKEN = CONFIG["developer"]["token"]
-PUBLISHER_TOKEN = CONFIG["publisher"]["token"]
-BUILD_READER_TOKEN = CONFIG["build_reader"]["token"]
+TOKEN = credential("developer_token")
+PUBLISHER_TOKEN = credential("registry_publisher_token")
+BUILD_READER_TOKEN = credential("ci_registry_reader")
+RELEASE_ADMIN_TOKEN = credential("registry_release_admin_token")
 LOCK = threading.RLock()
 WORKER_SECRET = Path("/tmp/worker-hmac.key").read_bytes()
 PACKAGE_PATHS = {
@@ -154,7 +156,7 @@ class RegistryHandler(KeplerHandler):
         path = urlsplit(self.path).path
         lower = path.lower()
         if path == "/api/release-administration/session":
-            if self.headers.get("Authorization", "") != "Bearer release-admin-session-5m":
+            if self.headers.get("Authorization", "") != f"Bearer {RELEASE_ADMIN_TOKEN}":
                 self.send_json(403, {"error": "release_administration_denied"})
                 return
             value = {
@@ -226,7 +228,7 @@ class RegistryHandler(KeplerHandler):
 
     def _approve_release(self, release_id: str) -> None:
         authorization = self.headers.get("Authorization", "")
-        if authorization not in {f"Bearer {PUBLISHER_TOKEN}", "Bearer release-admin-session-5m"}:
+        if authorization not in {f"Bearer {PUBLISHER_TOKEN}", f"Bearer {RELEASE_ADMIN_TOKEN}"}:
             return self.send_json(403, {"error": "approval_scope_denied"})
         try:
             request = self.read_json(131_072)
@@ -251,7 +253,7 @@ class RegistryHandler(KeplerHandler):
             except (ValueError, InvalidSignature, binascii.Error):
                 return self.send_json(422, {"error": "release_signature_denied"})
             signed = True
-        approval = {"release_id": release_id, "version": version, "approved": True, "approved_by": "evan.calderoux", "acting_principal": "svc-release-admin" if authorization.endswith("release-admin-session-5m") else CONFIG["publisher"]["principal"], "lineage": request["lineage"], "key_id": request["key_id"], "interfaces": request["interfaces"], "signed": signed}
+        approval = {"release_id": release_id, "version": version, "approved": True, "approved_by": "evan.calderoux", "acting_principal": "svc-release-admin" if authorization == f"Bearer {RELEASE_ADMIN_TOKEN}" else CONFIG["publisher"]["principal"], "lineage": request["lineage"], "key_id": request["key_id"], "interfaces": request["interfaces"], "signed": signed}
         record["approval"] = approval
         response = dict(approval)
         if signed:
