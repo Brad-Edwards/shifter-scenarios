@@ -44,9 +44,14 @@ class OperationTests(unittest.TestCase):
         self.assertIn("test_k29a_diagnostic_delivery", diagnostic)
         self.assertNotIn("test_k29b_connector_delivery", diagnostic)
         self.assertNotIn("test_k29_release_lineage", diagnostic)
+        self.assertIn("test_k30_backup_recovery", diagnostic)
+        self.assertIn("test_k31_maintenance", diagnostic)
         self.assertIn("test_k29_release_lineage", package)
         self.assertIn("test_k29b_connector_delivery", package)
         self.assertNotIn("test_k29a_diagnostic_delivery", package)
+        self.assertIn("test_k30_backup_recovery", package)
+        self.assertIn("test_k31_maintenance", package)
+        self.assertEqual(set(diagnostic) | set(package), set(values["all"]))
         self.assertIn("test_k29a_diagnostic_delivery", values["all"])
         self.assertIn("test_k29b_connector_delivery", values["all"])
 
@@ -82,6 +87,25 @@ class BoundaryTests(unittest.TestCase):
         self.assertIn("/var/lib/cinder-workbench", runner.PHASES["training"].forbidden_paths)
         self.assertIn("/var/lib/fieldkest-ci", runner.PHASES["keplerops"].forbidden_paths)
         self.assertIn("/var/lib/arwc-connector", runner.PHASES["arwc"].forbidden_paths)
+
+    def test_paired_development_launcher_builds_before_reset(self) -> None:
+        launcher = (
+            ROOT / "build/participant-runner/check-development-pair.sh"
+        ).read_text()
+        self.assertLess(
+            launcher.index("stage=keplerops-build"),
+            launcher.index("stage=keplerops-reset"),
+        )
+        self.assertLess(
+            launcher.index("stage=keplerops-acceptance"),
+            launcher.index("stage=arwc-transition"),
+        )
+        verifier = (
+            ROOT / "build/participant-runner/verify-arwc-transition.py"
+        ).read_text()
+        self.assertIn("delivery_route", verifier)
+        self.assertIn("delivery_receipt", verifier)
+        self.assertIn('"SEED"', verifier)
 
 
 class CandidateTests(unittest.TestCase):

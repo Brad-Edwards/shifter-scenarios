@@ -7,7 +7,7 @@
   "credentials": [
     {
       "principal": "rowan.ito",
-      "token": "kpl_rowan_7X4mQ9vN2cL6",
+      "token": "UNPROVISIONED",
       "role": "fieldkest-developer",
       "permissions": [
         "repositories/fieldkest/fieldlink-connector:read",

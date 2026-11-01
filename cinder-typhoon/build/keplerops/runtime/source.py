@@ -16,6 +16,7 @@ import time
 from urllib.parse import parse_qs, unquote, urlsplit
 
 from http_support import KeplerHandler, append_audit, canonical_bytes, serve_tls, validate_worker_token
+from credentials import credential
 
 
 STATE = Path("/var/lib/gitea")
@@ -30,7 +31,7 @@ REPOSITORIES = {
 CONFIG = json.loads((STATE / "config/opening.json").read_text())
 K11_CONFIG = json.loads((STATE / "config/k11.json").read_text())
 K28_CONFIG = json.loads((STATE / "config/k28.json").read_text())
-TOKEN = CONFIG["credentials"][0]["token"]
+TOKEN = credential("developer_token")
 USERNAME = CONFIG["credentials"][0]["principal"]
 HANDOVER = json.loads((STATE / "handovers/HND-FLK-2026-09.json").read_text())
 API_CONTENT = re.compile(r"^/api/v1/repos/fieldkest/(fieldlink-connector|policy-compiler|connector-archive|release-signer-history)/contents/(.+)$")
@@ -282,7 +283,10 @@ class SourceHandler(KeplerHandler):
             if principal != USERNAME:
                 self.send_json(403, {"error": "developer_scope_required"})
                 return
-            self.send_json(200, K11_CONFIG["opcode_model"])
+            self.send_json(200, {
+                "schema": "fieldkest.policy-opcode-model/v1",
+                **K11_CONFIG["opcode_model"],
+            })
             return
         if parsed.path == "/api/exercises/policy-compiler/nonce":
             if principal != USERNAME:

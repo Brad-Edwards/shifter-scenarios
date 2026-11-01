@@ -9,10 +9,12 @@ import subprocess
 import textwrap
 import unittest
 
+from runtime_credentials import basic
+
 
 CONTAINER = "cinder-keplerops-k-dev"
 CA = "/home/rowan/.local/share/keplerops/ca.crt"
-USER = "rowan.ito:kpl_rowan_7X4mQ9vN2cL6"
+USER = basic()
 
 
 def rowan(*arguments: str, input_text: str | None = None, check: bool = True) -> subprocess.CompletedProcess[str]:

@@ -1,5 +1,7 @@
 name: cinder-keplerops
 
+x-runtime-credentials: &runtime-credentials ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/runtime-credentials.json:/run/fieldkest-auth/runtime-credentials.json:ro
+
 x-service-security: &service-security
   restart: unless-stopped
   read_only: true
@@ -12,6 +14,7 @@ x-service-security: &service-security
   tmpfs:
     - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
   volumes:
+    - *runtime-credentials
     - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
     - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
     - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -40,6 +43,27 @@ services:
       jobs: {ipv4_address: 10.77.53.254}
       connector: {ipv4_address: 10.77.60.254}
 
+  k-dev-seed:
+    image: cinder-keplerops/k-dev:hand-build
+    container_name: cinder-keplerops-k-dev-seed
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        install -d -m 0700 -o rowan -g rowan /home/rowan/.config/git /home/rowan/.config/chromium/Default
+        install -m 0600 -o rowan -g rowan /run/participant-seed/git-credentials /home/rowan/.config/git/credentials
+        install -m 0600 -o rowan -g rowan /run/participant-seed/chromium-Cookies /home/rowan/.config/chromium/Default/Cookies
+    restart: "no"
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - k-dev-home:/home/rowan
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/git-credentials:/run/participant-seed/git-credentials:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/chromium-Cookies:/run/participant-seed/chromium-Cookies:ro
+    network_mode: none
+
   k-dev:
     build:
       context: ../..
@@ -54,7 +78,11 @@ services:
     cap_add: [NET_ADMIN, SETUID, SETGID, CHOWN, FOWNER, SYS_CHROOT, AUDIT_WRITE, DAC_OVERRIDE, DAC_READ_SEARCH]
     security_opt:
       - no-new-privileges:true
-    depends_on: [router]
+    depends_on:
+      router:
+        condition: service_started
+      k-dev-seed:
+        condition: service_completed_successfully
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
       - /run:rw,nosuid,nodev,size=16m,mode=0755
@@ -94,6 +122,7 @@ services:
     domainname: delivery.keplerops.test
     depends_on: [router]
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
@@ -117,6 +146,7 @@ services:
     depends_on: [router, runner]
     cap_add: [NET_ADMIN, SETUID, SETGID, DAC_READ_SEARCH, CHOWN, FOWNER, DAC_OVERRIDE]
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -142,6 +172,7 @@ services:
     domainname: delivery.keplerops.test
     depends_on: [router]
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
@@ -168,6 +199,7 @@ services:
     extra_hosts:
       - connector.arwc.test:10.77.60.20
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -239,6 +271,7 @@ services:
     domainname: cloud.keplerops.test
     depends_on: [router]
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
@@ -262,6 +295,7 @@ services:
       FIELDKEST_SERVICE: preview
       FIELDKEST_GATEWAY: 10.77.51.254
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -284,6 +318,7 @@ services:
       FIELDKEST_SERVICE: indexer
       FIELDKEST_GATEWAY: 10.77.51.254
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -312,6 +347,7 @@ services:
       KRB5RCACHEDIR: /tmp
     extra_hosts: [identity.keplerops.test:10.77.50.40]
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -340,6 +376,7 @@ services:
       KRB5_KTNAME: /opt/keplerops-identity/keytabs/identity.keytab
       KRB5RCACHEDIR: /tmp
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -364,6 +401,7 @@ services:
       FIELDKEST_GATEWAY: 10.77.50.254
       FIELDKEST_STATE_ROOT: /var/lib/keplerops-cert
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -389,6 +427,7 @@ services:
       FIELDKEST_GATEWAY: 10.77.52.254
       FIELDKEST_STATE_ROOT: /var/lib/fieldkest-workloads
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -411,6 +450,7 @@ services:
       FIELDKEST_SERVICE: data
       FIELDKEST_GATEWAY: 10.77.52.254
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -435,6 +475,7 @@ services:
       FIELDKEST_SERVICE_ROOT: /opt/fieldkest-assistant
     extra_hosts: [support.keplerops.test:10.77.51.60]
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
@@ -467,6 +508,7 @@ services:
     extra_hosts:
       - fieldlink.arwc.test:${ARWC_CARRIER_ADDRESS:-10.77.59.2}
     volumes:
+      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/integration/arwc-ca.crt:/run/customer-auth/arwc-ca.crt:ro

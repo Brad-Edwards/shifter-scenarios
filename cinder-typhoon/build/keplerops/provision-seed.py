@@ -1,100 +1,139 @@
 #!/usr/bin/env python3
-"""Generate per-range credential seeds for the KeplerOps phase.
+"""Create the operator-only, per-range KeplerOps credential material."""
 
-Derives all per-range values from a single seed string using HMAC-SHA256 so
-that each range is internally consistent but credentials captured from one
-range cannot be replayed on another.
-
-Usage:
-    python3 provision-seed.py --seed SEED_STRING [--output-dir DIR]
-
-The seed string must be unique per range. The recommended format is:
-    cinder-keplerops-RANGEID-YYYY-MM-DD
-
-Output files (written to --output-dir, default: the assets/opening/k-support/
-and assets/opening/k-dev/ directories relative to this script):
-    support-service.json    Updated with seed-derived session IDs
-    seed-manifest.json      Operator-only record of derived values (not shipped)
-
-Do not ship seed-manifest.json to participants.
-"""
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import hmac
 import json
-import pathlib
+import os
+from pathlib import Path
+import shutil
+import sqlite3
 import sys
 
-REPO = pathlib.Path(__file__).resolve().parents[3]
-DEFAULT_SUPPORT_CONFIG = REPO / "cinder-typhoon" / "assets" / "keplerops" / "opening" / "k-support" / "support-service.json"
-DEFAULT_OUTPUT = REPO / "cinder-typhoon" / "assets" / "keplerops" / "opening" / "k-support"
+
+ROOT = Path(__file__).resolve().parents[3]
+COOKIE_TEMPLATE = (
+    ROOT
+    / "cinder-typhoon"
+    / "assets"
+    / "keplerops"
+    / "opening"
+    / "k-dev"
+    / "chromium-Cookies"
+)
+SCHEMA = "fieldkest.runtime-credentials/v1"
+
+# Every accepted, replayable bearer, session, and service credential is
+# generated here. Dynamic one-time values (worker leases, assertions,
+# receipts, channel approvals, and completion leases) remain service-issued.
+PURPOSES = {
+    "assistant_tool_session": "assistant-tool",
+    "cert_enrollment_worker": "cert-enrollment",
+    "ci_maintenance_worker": "ci-maintenance",
+    "ci_registry_reader": "ci-registry-reader",
+    "cloud_history_recovery_session": "history-recovery",
+    "cloud_maintenance_runtime": "maintenance-runtime",
+    "cloud_support_export_role": "support-export",
+    "cloud_workload_fixture_token": "workload-fixture",
+    "cloud_workload_session": "workload-session",
+    "connector_package_internal": "connector-package",
+    "developer_token": "developer",
+    "indexer_worker_lease": "indexer-worker",
+    "registry_publisher_token": "registry-publisher",
+    "registry_release_admin_token": "registry-release-admin",
+    "release_reader_token": "release-reader",
+    "staff_preview_service": "staff-preview",
+    "support_delivery_token": "support-delivery",
+    "support_reviewer_session": "support-reviewer",
+    "support_rowan_session": "support-rowan",
+}
 
 
-def derive(seed: str, purpose: str, length: int = 8) -> str:
-    """Derive a short identifier from the seed for a named purpose."""
-    key = seed.encode()
-    msg = purpose.encode()
-    digest = hmac.new(key, msg, hashlib.sha256).hexdigest()
-    # Use URL-safe characters from the digest for session-style identifiers.
-    alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
-    result = []
-    for i in range(0, length * 2, 2):
-        result.append(alphabet[int(digest[i:i+2], 16) % len(alphabet)])
-    return "".join(result)
+def derive(seed: bytes, name: str) -> str:
+    """Return a range-bound credential with at least 192 bits of entropy."""
+    digest = hmac.new(seed, f"keplerops:{name}:v1".encode(), hashlib.sha256).digest()
+    encoded = base64.urlsafe_b64encode(digest[:24]).decode().rstrip("=")
+    return f"fk_{PURPOSES[name].replace('-', '_')}_{encoded}"
+
+
+def write_private(path: Path, data: bytes) -> None:
+    descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(descriptor, "wb") as output:
+        output.write(data)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--seed", required=True, help="Unique seed string for this range")
-    parser.add_argument("--output-dir", type=pathlib.Path, default=DEFAULT_OUTPUT,
-                        help="Directory to write updated support-service.json")
-    parser.add_argument("--support-config", type=pathlib.Path, default=DEFAULT_SUPPORT_CONFIG,
-                        help="Input support-service.json to update")
+    parser.add_argument(
+        "--seed-file", type=Path, required=True,
+        help="0600 file containing the range seed",
+    )
+    parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--cookie-template", type=Path, default=COOKIE_TEMPLATE)
     args = parser.parse_args()
 
-    if len(args.seed) < 8:
-        print("error: seed must be at least 8 characters", file=sys.stderr)
+    try:
+        seed_bytes = args.seed_file.read_bytes()
+    except OSError as error:
+        print(f"error: cannot read seed: {error}", file=sys.stderr)
         return 2
+    if len(seed_bytes) < 32:
+        print("error: seed must contain at least 32 bytes", file=sys.stderr)
+        return 2
+    if args.output_dir.exists() and any(args.output_dir.iterdir()):
+        print("error: output directory must be new or empty", file=sys.stderr)
+        return 2
+    args.output_dir.mkdir(parents=True, mode=0o700, exist_ok=True)
+    os.chmod(args.output_dir, 0o700)
 
-    # Derive per-range credential values.
-    rowan_suffix = derive(args.seed, "keplerops.support.rowan-session")
-    talia_suffix = derive(args.seed, "keplerops.support.talia-session")
-    git_secret = hmac.new(args.seed.encode(), b"keplerops.git.rowan-secret", hashlib.sha256).hexdigest()[:24]
+    credentials = {name: derive(seed_bytes, name) for name in sorted(PURPOSES)}
+    runtime = {"schema": SCHEMA, "credentials": credentials}
+    write_private(
+        args.output_dir / "runtime-credentials.json",
+        (json.dumps(runtime, sort_keys=True, separators=(",", ":")) + "\n").encode(),
+    )
 
-    rowan_session_id = f"ksess_rowan_2841_{rowan_suffix}"
-    talia_session_id = f"ksess_talia_review_{talia_suffix}"
+    participant = args.output_dir / "participant"
+    participant.mkdir(mode=0o700)
+    git_credential = (
+        f"https://rowan.ito:{credentials['developer_token']}@source.keplerops.test\n"
+    )
+    write_private(participant / "git-credentials", git_credential.encode())
+    cookie_path = participant / "chromium-Cookies"
+    shutil.copyfile(args.cookie_template, cookie_path)
+    os.chmod(cookie_path, 0o600)
+    with sqlite3.connect(cookie_path) as connection:
+        updated = connection.execute(
+            "UPDATE cookies SET value = ?, encrypted_value = X'' "
+            "WHERE host_key = ? AND name = ?",
+            (
+                credentials["support_rowan_session"],
+                "support.keplerops.test",
+                "fieldkest_support",
+            ),
+        ).rowcount
+        if updated != 1:
+            print("error: cookie template does not contain the expected session", file=sys.stderr)
+            return 2
 
-    # Update support-service.json.
-    config = json.loads(args.support_config.read_text())
-    config["reviewer_session_id"] = talia_session_id
-    if config.get("sessions"):
-        config["sessions"][0]["session_id"] = rowan_session_id
-    args.output_dir.mkdir(parents=True, exist_ok=True)
-    out_config = args.output_dir / "support-service.json"
-    out_config.write_text(json.dumps(config, indent=2, sort_keys=True) + "\n")
-
-    # Write operator-only seed manifest.
-    manifest = {
-        "schema": "fieldkest.seed-manifest/v1",
-        "seed": args.seed,
-        "derived": {
-            "support.rowan_session_id": rowan_session_id,
-            "support.talia_session_id": talia_session_id,
-            "git.rowan_secret": git_secret,
-        },
-        "note": "Operator-only. Do not ship to participants or embed in range images.",
+    generation_id = hmac.new(
+        seed_bytes, b"keplerops:generation-id:v1", hashlib.sha256
+    ).hexdigest()
+    metadata = {
+        "schema": "fieldkest.range-credential-metadata/v1",
+        "generation_id": generation_id,
+        "credential_classes": sorted(credentials),
+        "participant_artifacts": ["chromium-Cookies", "git-credentials"],
     }
-    manifest_path = args.output_dir / "seed-manifest.json"
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
-
-    print(f"Wrote {out_config}")
-    print(f"Wrote {manifest_path} (operator-only, do not ship)")
-    print(f"  support.rowan_session_id: {rowan_session_id}")
-    print(f"  support.talia_session_id: {talia_session_id}")
-    print(f"  git.rowan_secret: {git_secret[:8]}... (use to rebuild opening archive)")
-    print("Run build_archives.py after updating k-dev/git-credentials with the new secret.")
+    write_private(
+        args.output_dir / "metadata.json",
+        (json.dumps(metadata, indent=2, sort_keys=True) + "\n").encode(),
+    )
+    print("Generated per-range KeplerOps credential material (values withheld).")
     return 0
 
 

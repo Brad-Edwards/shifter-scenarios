@@ -10,11 +10,13 @@ import subprocess
 import time
 import unittest
 
+from runtime_credentials import basic
+
 
 CONTAINER = "cinder-keplerops-k-dev"
 CA = "/home/rowan/.local/share/keplerops/ca.crt"
 BASE = "https://source.keplerops.test"
-USER = "rowan.ito:kpl_rowan_7X4mQ9vN2cL6"
+USER = basic()
 EXPECTED_COMMIT = "51a28c70a1e09d43c44d1d7abf188ef88d3e5f40"
 EXPECTED_BINARY = "a1b311190b294e2f31773065454520db72136447f1d2b75c64aacca7e813de2c"
 EXPECTED_PROGRAM = "0b9a7fd08148ec1b6d3151dcd9c0499fb89f70585fb3705a44662e062242ef9c"

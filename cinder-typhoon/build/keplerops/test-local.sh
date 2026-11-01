@@ -15,8 +15,7 @@ start_fresh() {
   for attempt in $(seq 1 30); do
     if docker exec --user rowan cinder-keplerops-k-dev curl -sS --fail \
         --cacert /home/rowan/.local/share/keplerops/ca.crt \
-        -u rowan.ito:kpl_rowan_7X4mQ9vN2cL6 \
-        https://source.keplerops.test/api/fieldkest/handovers/current >/dev/null; then
+        https://source.keplerops.test/.well-known/fieldkest-client >/dev/null; then
       return
     fi
     if [[ $attempt -eq 30 ]]; then

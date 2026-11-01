@@ -25,6 +25,7 @@ from http_support import (
     KeplerHandler, append_audit, canonical_bytes, issue_worker_token, serve_tls,
     sha256_bytes, utc_now,
 )
+from credentials import credential
 
 
 STATE = Path("/var/lib/fieldkest-ci")
@@ -33,10 +34,11 @@ RESULTS = STATE / "results"
 HANDOVER = Path("/var/lib/fieldkest-handover/current.json")
 RUNNER_SOCKET = Path("/run/fieldkest-runner/runner.sock")
 CONFIG = json.loads((STATE / "config/opening.json").read_text())
-TOKEN = "kpl_rowan_7X4mQ9vN2cL6"
+TOKEN = credential("developer_token")
 USERNAME = "rowan.ito"
 LOCK = threading.RLock()
-REGISTRY_READER_TOKEN = "fkci_registry_reader_8Hd3Lp6Ws1"
+REGISTRY_READER_TOKEN = credential("ci_registry_reader")
+RELEASE_READER_TOKEN = credential("release_reader_token")
 K09_CONFIG = json.loads((STATE / "config/k09.json").read_text())
 K29_CONFIG = json.loads((STATE / "config/k29.json").read_text())
 WORKSPACE = STATE / "workspaces/rowan"
@@ -199,9 +201,11 @@ class CIHandler(KeplerHandler):
         return self.basic_or_bearer(USERNAME, TOKEN)
 
     def do_GET(self) -> None:
+        if self.send_client_document():
+            return
         path = urlsplit(self.path).path
         if path == "/api/runs/BLD-REL-742/artifacts/release-dossier.json":
-            if self.headers.get("Authorization") != "Bearer release-reader-handle":
+            if self.headers.get("Authorization") != f"Bearer {RELEASE_READER_TOKEN}":
                 return self.send_json(403, {"error": "release_reader_required"})
             value = json.loads((STATE / "records/release-dossier.json").read_text())
             append_audit(AUDIT, "release-dossier", {"request_id": self.request_id, "principal": "release-reader", "build_id": "BLD-REL-742", "digest": sha256_bytes(canonical_bytes(value)), "status": 200})
@@ -235,7 +239,7 @@ class CIHandler(KeplerHandler):
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
         if path == "/api/rehearsals/lineage-rollover":
-            if self.headers.get("Authorization") != "Bearer release-reader-handle":
+            if self.headers.get("Authorization") != f"Bearer {RELEASE_READER_TOKEN}":
                 return self.send_json(403, {"error": "release_reader_required"})
             try: request = self.read_json(131_072)
             except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError): return self.send_json(422, {"error": "invalid_rollover_rehearsal"})

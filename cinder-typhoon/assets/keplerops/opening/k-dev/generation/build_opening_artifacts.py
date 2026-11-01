@@ -165,7 +165,7 @@ def build_cookies() -> None:
                 "support.keplerops.test",
                 "https://keplerops.test",
                 "fieldkest_support",
-                "ksess_rowan_2841_6Hs8Qp3V",
+                "UNPROVISIONED",
                 b"",
                 "/",
                 expiry,

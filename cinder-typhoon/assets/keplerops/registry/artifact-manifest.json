@@ -6,8 +6,8 @@
         {
           "mode": "0600",
           "path": "config/foundation.json",
-          "sha256": "f34558bba3472b2f7f9d01993648a257e9edcc9055530b1221ffa98de7049225",
-          "size": 1085
+          "sha256": "2f7064781c5f1079278c3641203a386b7c11ac5906c9e83bdbc013f2e3501af5",
+          "size": 1043
         },
         {
           "mode": "0640",
@@ -58,7 +58,7 @@
           "size": 378
         }
       ],
-      "sha256": "10434f811ed1a8c967d39b9db63117f407ce6e5675211f08a4090d15082360cd",
+      "sha256": "0d6ca1e4ca843a9a3a1e8a0432d867a2d8c896c9a103705dd902ea177c7152f9",
       "size": 20480
     },
     {

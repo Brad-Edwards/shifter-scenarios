@@ -9,11 +9,13 @@ import subprocess
 import time
 import unittest
 
+from runtime_credentials import basic
+
 
 CONTAINER = "cinder-keplerops-k-dev"
 CA = "/home/rowan/.local/share/keplerops/ca.crt"
 BASE = "https://ci.keplerops.test"
-USER = "rowan.ito:kpl_rowan_7X4mQ9vN2cL6"
+USER = basic()
 STATUS_COMMAND = (
     '. /run/fieldlink-ci/connections.env; exec curl -q --silent --show-error --fail '
     '--config /run/fieldlink-ci/build-records.curl '

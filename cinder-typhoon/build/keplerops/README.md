@@ -200,7 +200,7 @@ demands it. A wave is not complete merely because its services start.
   while participant command output remains captured inside that proof. This
   preserves the declared job/result semantics without changing the SDL.
 - 2026-09-27: Direct runtime inventory found that the four isolated-job
-  authorities are brokered by Docker Engine 29.8.1/API 1.56 through
+  authorities are brokered by Docker Engine 29.x/API 1.56 through
   `/run/fieldkest-runner/runner.sock`, rather than the previously declared
   per-service containerd sockets. The SDL was reconciled first, then the
   implementation and direct engine/socket checks; the full pinned env-pack,

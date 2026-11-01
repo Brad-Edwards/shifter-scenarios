@@ -11,12 +11,14 @@ import time
 import unittest
 import uuid
 
+from runtime_credentials import basic
+
 
 CONTAINER = "cinder-keplerops-k-dev"
 CA = "/home/rowan/.local/share/keplerops/ca.crt"
 BASE = "https://packages.keplerops.test"
 CI_BASE = "https://ci.keplerops.test"
-USER = "rowan.ito:kpl_rowan_7X4mQ9vN2cL6"
+USER = basic()
 
 
 def rowan(*arguments: str, input_text: str | None = None, check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -62,6 +64,14 @@ class RegistryFoundationTest(unittest.TestCase):
         self.assertEqual(denied.stdout, "401")
         metadata = curl_json("/@keplerops%2ffieldlink-connector")
         self.assertEqual(metadata["versions"], ["7.4.0", "7.4.1", "7.4.2"])
+        self.assertEqual(
+            metadata["channels"]["arwc-stable"],
+            {
+                "current": metadata["dist_tags"]["latest"],
+                "rollback_candidates": [metadata["dist_tags"]["latest"]],
+                "rollback_slot": "future-state",
+            },
+        )
         request = rowan("cat", "work/registry/consumer-request.json").stdout
         result = curl_json("/api/consumer-checks", "-H", "Content-Type: application/json", "--data-binary", request, expected=201)
         self.assertEqual((result["package"], result["declared_range"], result["resolved_version"]), ("@keplerops/fieldlink-connector", "^7.4.0", "7.4.2"))
