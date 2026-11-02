@@ -20,7 +20,12 @@
         "max_score": {"const": 39200},
         "max_out": {"type": "string", "minLength": 1},
         "hint_policy": {
-          "const": {"release": "on_request", "levels": 3, "penalty": 0}
+          "const": {
+            "release": "facilitator_on_request",
+            "levels": 3,
+            "independent_levels": true,
+            "penalty": 0
+          }
         }
       }
     },
@@ -79,7 +84,7 @@
       "additionalProperties": false,
       "required": ["id", "title", "description", "difficulty", "points", "hints", "completion"],
       "properties": {
-        "id": {"type": "string", "pattern": "^[TKW][0-9]{2}\.[0-9]+$"},
+        "id": {"type": "string", "pattern": "^[TKW][0-9]{2}\\.[0-9]+$"},
         "title": {"type": "string", "minLength": 1},
         "description": {"type": "string", "minLength": 1},
         "difficulty": {"enum": ["easy", "medium", "hard", "expert", "elite"]},

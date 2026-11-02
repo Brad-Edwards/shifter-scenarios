@@ -12,7 +12,9 @@ worthwhile conclusions. Financial loss and water restrictions remain the
 story's consequences.
 
 Difficulty is conditional on the named prerequisites. All 120 cards have
-complete five-part technical designs; all three hint sections remain empty.
+complete five-part technical designs. Their brief-local hint sections remain
+empty; 360 reviewed participant hints are versioned in the separate ARWC hint
+catalog.
 
 ## Operations
 

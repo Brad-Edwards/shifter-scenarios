@@ -1,29 +1,26 @@
 from __future__ import annotations
 
 import copy
+import grp
 import hashlib
 import json
 import os
-from pathlib import Path
 import pwd
-import grp
-import re
 import sys
 import tempfile
 import unittest
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SURFACE = ROOT / "build" / "participant-surface"
 sys.path.insert(0, str(SURFACE))
 sys.path.insert(0, str(ROOT / "challenges"))
 
-from compare import compare  # noqa: E402
 import catalog as delivery_catalog  # noqa: E402
+from compare import compare  # noqa: E402
 from observe import observe  # noqa: E402
 from run import observation_plan  # noqa: E402
 from validate import ManifestError, load, validate  # noqa: E402
-
 
 PHASES = ("training", "keplerops", "arwc")
 
@@ -130,14 +127,31 @@ class AuthoredManifestTests(unittest.TestCase):
     def test_delivery_manifests_bind_to_the_canonical_catalog(self) -> None:
         catalog = delivery_catalog.load_catalog()
         metadata = delivery_catalog.catalog_metadata()
+        hint_manifest = delivery_catalog.load_hint_manifest()
+        hint_metadata = delivery_catalog.hint_manifest_metadata()
         for phase in PHASES:
             with self.subTest(phase=phase):
                 delivery = manifest(phase)["delivery"]
                 phase_value = catalog["phases"][phase]
                 self.assertEqual(delivery["cards"], {"status": "versioned"})
-                self.assertEqual(delivery["hints"], {
-                    "status": "versioned", "release": "on_request", "levels": 3, "penalty": 0,
-                })
+                hints = delivery["hints"]
+                self.assertEqual(hints["status"], "versioned")
+                self.assertEqual(hints["manifest"], hint_metadata)
+                self.assertEqual(
+                    hints["source"],
+                    next(source for source in hint_manifest["sources"] if source["phase"] == phase),
+                )
+                self.assertEqual(hints["release"], hint_manifest["release"])
+                self.assertEqual(hints["score_effect"], hint_manifest["score_effect"])
+                phase_items = [item for item in hint_manifest["items"] if item["phase"] == phase]
+                self.assertEqual(hints["items"], [
+                    {
+                        "card_id": item["card_id"],
+                        "levels": [level["level"] for level in item["levels"]],
+                        "content_revision": delivery_catalog._canonical_sha256(item["levels"]),
+                    }
+                    for item in phase_items
+                ])
                 self.assertEqual(delivery["catalog"], {
                     **metadata,
                     "phase": phase,

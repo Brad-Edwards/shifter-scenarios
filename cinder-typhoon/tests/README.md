@@ -166,6 +166,23 @@ operator tests. It also verifies that participant-mounted service state remains
 inaccessible. These checks establish the visible boundary only; they do not
 claim human discovery, challenge fairness, difficulty or duration.
 
+## Graduated hint delivery checks
+
+```sh
+python3 cinder-typhoon/build/hint-delivery/release.py verify
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s cinder-typhoon/tests -p test_hint_delivery.py -v
+```
+
+These checks require 720 substantive hint levels across all 240 cards; reject
+placeholders, generated filler, cross-operation generic duplication, exact
+unpublished routes, credential-shaped literals, payloads, title restatements
+and stale participant-boundary references; and verify one reviewed sample for
+every operation. They also test independent,
+idempotent facilitator release and prove the owner-only chained audit contains
+metadata and content digests but no hint text. The playtest observation schema
+requires hint use and participant understanding; actual observations remain a
+blind-playtest outcome and must not be fabricated.
+
 ## Training content and hand-build gate
 
 ```sh

@@ -7,11 +7,13 @@
   "required": ["schema_version", "phase", "hints"],
   "additionalProperties": false,
   "properties": {
-    "schema_version": {"const": 1},
+    "schema_version": {"const": 2},
     "phase": {"type": "string", "enum": ["training", "keplerops", "arwc"]},
     "hints": {
       "type": "object",
       "description": "Map from card ID to three-level hint object.",
+      "minProperties": 1,
+      "propertyNames": {"pattern": "^[TKW][0-9]{2}\\.[0-9]+$"},
       "additionalProperties": {
         "$ref": "#/$defs/card_hints"
       }
@@ -20,20 +22,41 @@
   "$defs": {
     "card_hints": {
       "type": "object",
-      "required": ["h1", "h2", "h3"],
+      "required": ["h1", "h2", "h3", "references"],
       "additionalProperties": false,
       "properties": {
         "h1": {
           "type": "string",
-          "description": "Orientation: points to the relevant system or evidence without naming the technique."
+          "description": "Orientation: points to the relevant system or evidence without naming the technique.",
+          "minLength": 40
         },
         "h2": {
           "type": "string",
-          "description": "Technique class: names the class of boundary or technique to investigate."
+          "description": "Technique class: names the class of boundary or technique to investigate.",
+          "minLength": 40
         },
         "h3": {
           "type": "string",
-          "description": "Concrete next step: a specific diagnostic action that still requires participant work."
+          "description": "Concrete next step: a specific diagnostic action that still requires participant work.",
+          "minLength": 40
+        },
+        "references": {
+          "type": "array",
+          "description": "Participant-boundary sources checked during authoring; not delivered as hint text.",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "id"],
+            "properties": {
+              "kind": {
+                "enum": ["client_route", "participant_artifact", "participant_service", "starting_material"]
+              },
+              "id": {"type": "string", "minLength": 1}
+            }
+          }
         }
       }
     }
