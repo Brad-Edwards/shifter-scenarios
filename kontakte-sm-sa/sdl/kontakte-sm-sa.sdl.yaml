@@ -1,0 +1,80 @@
+name: kontakte-sm-sa
+description: Emitted SM+SA range from proj-66266e (sanitized aliases).
+realization:
+  constraints:
+  - field_pointer: /nodes/workstation
+    concern: compute-substrate
+    posture: exact
+    domain:
+      kind: exact
+      value: virtual-machine
+  default: open
+variables:
+  foothold_credential:
+    type: string
+    required: true
+    default: PLACEHOLDER-REPLACED-PER-RUN
+    description: Foothold identity material for the participant, supplied per run.
+nodes:
+  lan:
+    type: switch
+    description: Participant workstation network.
+  workstation:
+    type: compute
+    os: linux
+    os_distribution: ubuntu
+    os_version: '22.04'
+    source:
+      name: ubuntu
+    resources:
+      ram: 2 gib
+      cpu: 1
+    services:
+    - port: 22
+      name: ssh
+infrastructure:
+  lan:
+    count: 1
+    properties:
+      cidr: 10.50.0.0/24
+      gateway: 10.50.0.1
+  workstation:
+    count: 1
+    links:
+    - lan
+    properties:
+    - lan: 10.50.0.10
+content:
+  foothold-key:
+    type: file
+    target: workstation
+    path: /home/analyst/.config/foothold/credential.json
+    text: ${foothold_credential}
+    sensitive: true
+entities:
+  participant:
+    description: Range participant.
+    role: red
+accounts:
+  workstation_login:
+    username: analyst
+    node: workstation
+    auth_method: key
+agents:
+  participant:
+    description: Participant with SSH to the workstation.
+    starting_accounts:
+    - workstation_login
+    interactive_access:
+      workstation_ssh:
+        target_ref: workstation
+        channel: ssh
+        account_ref: workstation_login
+    affiliations:
+    - participant
+relationships: {}
+imports:
+- source: local:modules/cloud.sdl.yaml
+  namespace: cloud
+  version: 0.1.0
+  digest: sha256:b9aed9acfa766fe1f2ee8c24a32a1f1f258e247869281533f69433cee48acdae

@@ -1,0 +1,177 @@
+{
+  "schema_version": "associated-artifact-manifest/v1",
+  "manifest_id": "kontakte-sm-sa-associated-artifacts",
+  "manifest_version": "0.1.0",
+  "canonicalization_profile": "associated-artifact-set/v1",
+  "scope": "scenario",
+  "parent_ref": {
+    "ref_kind": "scenario",
+    "ref_id": "kontakte-sm-sa",
+    "ref_version": null,
+    "ref_digest": null,
+    "ref_path": null
+  },
+  "artifacts": {
+    "artifact-0": {
+      "artifact_id": "artifact-0",
+      "role": "other",
+      "media_type": "application/json",
+      "uri": "raes-environment-pack:/docs/client-input.schema.json",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "a58688c9915021ff8eea5192bbf079fde8fd8e1a6587dc620899710f8483379d"
+      },
+      "size_bytes": 57371,
+      "created_at": "2026-11-02T00:00:00Z",
+      "source": "shifter-scenarios",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-1": {
+      "artifact_id": "artifact-1",
+      "role": "other",
+      "media_type": "application/json",
+      "uri": "raes-environment-pack:/docs/client-input.template.json",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "98361c8ec861f081fb64d498d2ca23382b9d2706bbb90dc4ba20516cbf44e93d"
+      },
+      "size_bytes": 8743,
+      "created_at": "2026-11-02T00:00:00Z",
+      "source": "shifter-scenarios",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-2": {
+      "artifact_id": "artifact-2",
+      "role": "other",
+      "media_type": "text/markdown",
+      "uri": "raes-environment-pack:/docs/client-inputs.md",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "6d3c7b1abfbc04d842cfd6ee0bf0de3a0684ab73068d6110932037ab80d598a7"
+      },
+      "size_bytes": 2957,
+      "created_at": "2026-11-02T00:00:00Z",
+      "source": "shifter-scenarios",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-3": {
+      "artifact_id": "artifact-3",
+      "role": "other",
+      "media_type": "text/markdown",
+      "uri": "raes-environment-pack:/docs/concepts.md",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "abaedbb3734d04e645597a579397784fdfbf0c259bba543953fcf8b5741ee587"
+      },
+      "size_bytes": 1110,
+      "created_at": "2026-11-02T00:00:00Z",
+      "source": "shifter-scenarios",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-4": {
+      "artifact_id": "artifact-4",
+      "role": "other",
+      "media_type": "application/yaml",
+      "uri": "raes-environment-pack:/docs/provenance-ledger.yaml",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "0106538b04d632b4d28e627510d5d25d745b6d6c8fd02e2da54a6137fd089a82"
+      },
+      "size_bytes": 1499,
+      "created_at": "2026-11-02T00:00:00Z",
+      "source": "shifter-scenarios",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-5": {
+      "artifact_id": "artifact-5",
+      "role": "other",
+      "media_type": "text/markdown",
+      "uri": "raes-environment-pack:/docs/realization.md",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "c530a6cdb231f1c29aeeb09e62bf96b991ea44ae50634b06b5c938e9bee9b62d"
+      },
+      "size_bytes": 3877,
+      "created_at": "2026-11-02T00:00:00Z",
+      "source": "shifter-scenarios",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-6": {
+      "artifact_id": "artifact-6",
+      "role": "other",
+      "media_type": "application/yaml",
+      "uri": "raes-environment-pack:/pack.yaml",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "605b1110705c8a1967303a18a35ab621f120d61584fc0c0954410e6f418f8c17"
+      },
+      "size_bytes": 572,
+      "created_at": "2026-11-02T00:00:00Z",
+      "source": "shifter-scenarios",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-7": {
+      "artifact_id": "artifact-7",
+      "role": "other",
+      "media_type": "application/yaml",
+      "uri": "raes-environment-pack:/sdl/kontakte-sm-sa.sdl.yaml",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "b0b5704680254f4838545616aefa443a7b774dde5f0ed3613e0023e4956b35b6"
+      },
+      "size_bytes": 1800,
+      "created_at": "2026-11-02T00:00:00Z",
+      "source": "shifter-scenarios",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-8": {
+      "artifact_id": "artifact-8",
+      "role": "other",
+      "media_type": "application/yaml",
+      "uri": "raes-environment-pack:/sdl/modules/cloud.sdl.yaml",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "b9aed9acfa766fe1f2ee8c24a32a1f1f258e247869281533f69433cee48acdae"
+      },
+      "size_bytes": 480873,
+      "created_at": "2026-11-02T00:00:00Z",
+      "source": "shifter-scenarios",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-9": {
+      "artifact_id": "artifact-9",
+      "role": "other",
+      "media_type": "application/json",
+      "uri": "raes-environment-pack:/sdl/raes.lock.json",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "5e6d16d0eecbdabfccecc10551a522c1861f3fbe2d5bb28fae7814587cfd1400"
+      },
+      "size_bytes": 567,
+      "created_at": "2026-11-02T00:00:00Z",
+      "source": "shifter-scenarios",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    }
+  },
+  "set_digest": "sha256:ee60005621a67a9490391efb18a6511eeb4c110334e9cc3c8202ac41cc447724"
+}

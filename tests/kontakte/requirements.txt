@@ -1,0 +1,3 @@
+raes==10.6.0
+raes-env-packs==7.2.2
+pytest==9.2.0
