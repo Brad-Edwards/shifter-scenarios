@@ -4,6 +4,8 @@ Prepare 50 packs: one winner coin plus one $10 Starbucks card.
 
 Tracking: [milestone #5](https://github.com/PaloAltoNetworks/shifter-scenarios/milestone/5). RAE SDL remains responsible only for per-participant objective/evidence truth. The operator-only prize policy is a separate sidecar; Shifter's native submissions, scoring, scheduler, communications, and claim state drive every award.
 
+Architecture: [event prize automation contract](cinder-typhoon/docs/design/event-prize-automation.md).
+
 ## RAE semantic findings
 
 - Authored RAE SDL deliberately excludes scores, rewards, leaderboards, and evaluation results; those belong to the experiment/evaluator plane.

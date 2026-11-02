@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/event-prize-policy-v1.schema.json",
+  "title": "Cinder Typhoon operator-only event prize policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "policy_id",
+    "catalog",
+    "inventory",
+    "stages",
+    "allocations",
+    "evaluation_order",
+    "runtime_parameters"
+  ],
+  "properties": {
+    "contract": {
+      "const": "cinder-typhoon.event-prize-policy/v1"
+    },
+    "policy_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,99}$"
+    },
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "revision", "content_bundle_contract", "content_bundle_digest"],
+      "properties": {
+        "schema": {
+          "const": "cinder-typhoon.challenge-delivery/v2"
+        },
+        "revision": {
+          "$ref": "#/$defs/sha256"
+        },
+        "content_bundle_contract": {
+          "const": "shifter-ctf-content/v1"
+        },
+        "content_bundle_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "inventory": {
+      "const": {
+        "total_slots": 50,
+        "pack_contents": {
+          "winner_coins": 1,
+          "starbucks_gift_card_usd": 10
+        }
+      }
+    },
+    "stages": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["training", "keplerops", "arwc"],
+      "properties": {
+        "training": {
+          "$ref": "#/$defs/stage",
+          "properties": {
+            "title": {"const": "Training"},
+            "close_parameter": {"const": "stage_close_at.training"}
+          }
+        },
+        "keplerops": {
+          "$ref": "#/$defs/stage",
+          "properties": {
+            "title": {"const": "KeplerOps"},
+            "close_parameter": {"const": "stage_close_at.keplerops"}
+          }
+        },
+        "arwc": {
+          "$ref": "#/$defs/stage",
+          "properties": {
+            "title": {"const": "Alterra Regional Water Company"},
+            "close_parameter": {"const": "stage_close_at.arwc"}
+          }
+        }
+      }
+    },
+    "allocations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "overall_leaders",
+        "stage_completion",
+        "bounties",
+        "stage_draws",
+        "passport_draw",
+        "good_citizen",
+        "final_solver_draw"
+      ],
+      "properties": {
+        "overall_leaders": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["slot_ids", "trigger", "selector", "order", "prior_winner", "shortfall"],
+          "properties": {
+            "slot_ids": {
+              "const": [
+                "overall-01", "overall-02", "overall-03", "overall-04", "overall-05",
+                "overall-06", "overall-07", "overall-08", "overall-09", "overall-10"
+              ]
+            },
+            "trigger": {"const": "event_closed"},
+            "selector": {"const": "overall_rank"},
+            "order": {
+              "const": ["score_desc", "last_solve_at_asc_nulls_last", "participant_id_asc"]
+            },
+            "prior_winner": {"const": "guarantee_satisfied_and_roll_slot_down"},
+            "shortfall": {"const": "final_solver_draw"}
+          }
+        },
+        "stage_completion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "trigger",
+            "selector",
+            "same_solve_priority",
+            "order",
+            "slot_ids",
+            "close_shortfall_selector",
+            "close_shortfall_order",
+            "minimum_stage_solves",
+            "shortfall"
+          ],
+          "properties": {
+            "trigger": {"const": "accepted_solve"},
+            "selector": {"const": "first_complete_stage"},
+            "same_solve_priority": {"const": "bounty_before_stage_completion"},
+            "order": {
+              "const": ["completed_at_asc", "completing_submission_id_asc", "participant_id_asc"]
+            },
+            "slot_ids": {
+              "const": {
+                "training": ["stage-complete-training-01", "stage-complete-training-02", "stage-complete-training-03"],
+                "keplerops": ["stage-complete-keplerops-01", "stage-complete-keplerops-02", "stage-complete-keplerops-03"],
+                "arwc": ["stage-complete-arwc-01", "stage-complete-arwc-02", "stage-complete-arwc-03"]
+              }
+            },
+            "close_shortfall_selector": {"const": "stage_score"},
+            "close_shortfall_order": {
+              "const": ["stage_score_desc", "stage_score_reached_at_asc", "participant_id_asc"]
+            },
+            "minimum_stage_solves": {"const": 1},
+            "shortfall": {"const": "final_solver_draw"}
+          }
+        },
+        "bounties": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["trigger", "selector", "order", "same_solve_priority", "awards", "shortfall"],
+          "properties": {
+            "trigger": {"const": "accepted_solve"},
+            "selector": {"const": "first_accepted_solve"},
+            "order": {
+              "const": ["submitted_at_asc", "submission_id_asc", "participant_id_asc"]
+            },
+            "same_solve_priority": {"const": "bounty_before_stage_completion"},
+            "awards": {
+              "const": [
+                {"slot_id": "bounty-t03.4", "stage": "training", "challenge_source_id": "t03.4"},
+                {"slot_id": "bounty-t04.4", "stage": "training", "challenge_source_id": "t04.4"},
+                {"slot_id": "bounty-k09.4", "stage": "keplerops", "challenge_source_id": "k09.4"},
+                {"slot_id": "bounty-k11.4", "stage": "keplerops", "challenge_source_id": "k11.4"},
+                {"slot_id": "bounty-w30.2", "stage": "arwc", "challenge_source_id": "w30.2"},
+                {"slot_id": "bounty-w35.3", "stage": "arwc", "challenge_source_id": "w35.3"}
+              ]
+            },
+            "shortfall": {"const": "final_solver_draw"}
+          }
+        },
+        "stage_draws": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["trigger", "selector", "minimum_stage_solves", "exclude_prior_winners", "slot_ids", "shortfall"],
+          "properties": {
+            "trigger": {"const": "stage_closed"},
+            "selector": {"const": "deterministic_hmac_draw"},
+            "minimum_stage_solves": {"const": 1},
+            "exclude_prior_winners": {"const": true},
+            "slot_ids": {
+              "const": {
+                "training": ["stage-draw-training-01", "stage-draw-training-02", "stage-draw-training-03", "stage-draw-training-04", "stage-draw-training-05"],
+                "keplerops": ["stage-draw-keplerops-01", "stage-draw-keplerops-02", "stage-draw-keplerops-03", "stage-draw-keplerops-04", "stage-draw-keplerops-05"],
+                "arwc": ["stage-draw-arwc-01", "stage-draw-arwc-02", "stage-draw-arwc-03", "stage-draw-arwc-04", "stage-draw-arwc-05"]
+              }
+            },
+            "shortfall": {"const": "final_solver_draw"}
+          }
+        },
+        "passport_draw": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["slot_ids", "trigger", "selector", "eligibility", "exclude_prior_winners", "shortfall"],
+          "properties": {
+            "slot_ids": {
+              "const": ["passport-01", "passport-02", "passport-03", "passport-04", "passport-05"]
+            },
+            "trigger": {"const": "event_closed"},
+            "selector": {"const": "deterministic_hmac_draw"},
+            "eligibility": {"const": "at_least_one_solve_in_every_stage"},
+            "exclude_prior_winners": {"const": true},
+            "shortfall": {"const": "final_solver_draw"}
+          }
+        },
+        "good_citizen": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["slot_ids", "trigger", "selector", "tiers", "exclude_prior_winners", "shortfall"],
+          "properties": {
+            "slot_ids": {
+              "const": ["good-citizen-01", "good-citizen-02", "good-citizen-03", "good-citizen-04", "good-citizen-05"]
+            },
+            "trigger": {"const": "nomination_closed"},
+            "selector": {"const": "deterministic_hmac_draw"},
+            "tiers": {
+              "const": ["at_least_two_distinct_nominations", "at_least_one_distinct_nomination"]
+            },
+            "exclude_prior_winners": {"const": true},
+            "shortfall": {"const": "final_solver_draw"}
+          }
+        },
+        "final_solver_draw": {
+          "const": {
+            "trigger": "finalization",
+            "selector": "deterministic_hmac_draw",
+            "fills": "unfilled_or_voided_slots_after_claim_deadline",
+            "eligibility": "at_least_one_accepted_solve",
+            "exclude_prior_winners": true,
+            "shortfall": "report_unallocated_slots"
+          }
+        }
+      }
+    },
+    "evaluation_order": {
+      "const": {
+        "accepted_solve": ["bounties", "stage_completion"],
+        "stage_closed": ["stage_completion_shortfall", "stage_draws"],
+        "nomination_closed": ["good_citizen"],
+        "event_closed": ["overall_leaders", "passport_draw"],
+        "finalization": ["final_solver_draw"]
+      }
+    },
+    "runtime_parameters": {
+      "const": {
+        "required": [
+          "stage_close_at.training",
+          "stage_close_at.keplerops",
+          "stage_close_at.arwc",
+          "nomination_open_at",
+          "nomination_close_at",
+          "claim_deadline_at",
+          "finalize_at",
+          "draw_seed_commitment"
+        ],
+        "time_source": "server_utc",
+        "cutoff_rule": "timestamp_strictly_before_cutoff",
+        "draw_algorithm": "hmac-sha256/v1",
+        "one_prize_per_participant": true
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^[tkw][0-9]{2}\\.[0-9]+$"
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "close_parameter", "challenge_source_ids"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "close_parameter": {
+          "type": "string",
+          "pattern": "^stage_close_at\\.(training|keplerops|arwc)$"
+        },
+        "challenge_source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/source_id"
+          }
+        }
+      }
+    }
+  }
+}
