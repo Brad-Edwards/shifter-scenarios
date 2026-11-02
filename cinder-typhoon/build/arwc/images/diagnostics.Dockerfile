@@ -5,6 +5,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 COPY build/arwc/runtime/estimator23.cpp /tmp/estimator23.cpp
 COPY build/arwc/runtime/signer24.c /tmp/signer24.c
+COPY build/arwc/runtime/selector24.c /tmp/selector24.c
 COPY build/arwc/runtime/vault31.c /tmp/vault31.c
 RUN g++ -std=c++20 -O2 -fno-omit-frame-pointer -static-libstdc++ -static-libgcc -Wl,--build-id=none \
       -o /tmp/estimator23 /tmp/estimator23.cpp \
@@ -13,6 +14,9 @@ RUN g++ -std=c++20 -O2 -fno-omit-frame-pointer -static-libstdc++ -static-libgcc 
     && gcc -O2 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none -o /tmp/dsign-crr-r3 /tmp/signer24.c -lsodium \
     && strip --strip-all /tmp/dsign-crr-r3 \
     && /tmp/dsign-crr-r3 --contract | grep -F 'CRR25519-S' \
+    && gcc -O2 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none -o /tmp/selector24 /tmp/selector24.c \
+    && strip --strip-all /tmp/selector24 \
+    && test "$(/tmp/selector24 2400000000000001 1770000041)" -gt 0 \
     && gcc -std=c11 -O1 -fno-omit-frame-pointer -fstack-protector-all -fPIE -pie \
       -Wl,-z,relro,-z,now,--build-id=none -rdynamic -o /tmp/dvl-worker-r5 /tmp/vault31.c -ldl \
     && /tmp/dvl-worker-r5 --metadata | grep -F 'DVL-WORKER-R5'
@@ -29,6 +33,7 @@ COPY --chown=arwc-diagnostics:arwc-diagnostics --chmod=0640 build/arwc/runtime/d
 COPY --chown=arwc-diagnostics:arwc-diagnostics --chmod=0640 build/arwc/runtime/dpg1.py /opt/diagnostic-services/dpg1.py
 COPY --from=native --chown=arwc-diagnostics:arwc-diagnostics --chmod=0750 /tmp/estimator23 /opt/diagnostic-services/artifacts/estimator23
 COPY --from=native --chown=arwc-diagnostics:arwc-diagnostics --chmod=0750 /tmp/dsign-crr-r3 /opt/diagnostic-services/artifacts/dsign-crr-r3
+COPY --from=native --chown=arwc-diagnostics:arwc-diagnostics --chmod=0750 /tmp/selector24 /opt/diagnostic-services/artifacts/selector24
 COPY --from=native --chown=arwc-diagnostics:arwc-diagnostics --chmod=0750 /tmp/dvl-worker-r5 /opt/diagnostic-services/artifacts/dvl-worker-r5
 COPY --chmod=0750 build/arwc/runtime/diagnostics-entrypoint.sh /usr/local/sbin/arwc-diagnostics-entrypoint
 EXPOSE 443

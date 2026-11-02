@@ -142,6 +142,10 @@ Planning queries, water allocation ledgers, and integration sessions.
 | `planning.relation-exchange` | POST | `.../api/relation-exchanges` | W11.2 |
 | `planning.asset-lineage` | GET | `.../api/asset-lineage/{asset_id}` | W11.3 |
 | `planning.integration-session` | POST | `.../api/integration-sessions` | W16.5 |
+| `planning.reporting-contract` | GET | `.../api/reporting-contracts/current` | W34.1-W34.3 |
+| `planning.reporting-view` | POST | `.../api/reporting-submissions/current/result` | W34.1 |
+| `planning.planning-bid` | POST | `.../api/planning-bids` | W34.2 |
+| `planning.planning-handover` | POST | `.../api/planning-bids/current` | W34.3 |
 
 Related: `archive.arwc.test/.well-known/arwc-client`,
 `process.arwc.test/.well-known/arwc-client`
@@ -353,13 +357,18 @@ binary artifact. Not served through the HTTP API.
 ## W33: forecast scheduling
 
 All W33 inputs (forecast, model, constraints, schema) are served from
-`process.forecast` and `process.schedule-window`. See #223 for full
-starting-material specification.
+`process.forecast` and `process.schedule-window`. The schedule-window response
+publishes the interval, demand, initial state, every operating and terminal
+bound, the volume objective, and the request schema. It does not publish a
+winning release or alternate-supply series.
 
 ## W34: reporting checkpoint
 
-The reporting checkpoint ID comes from the release plan confirmation (W30.3).
-The submission accepts a structured report derived from observable plant state.
+The checkpoint, freshness and variance thresholds, required request fields,
+and handover status come from `planning.reporting-contract`. The three writes
+use `planning.reporting-view`, `planning.planning-bid`, and
+`planning.planning-handover`. Their values are derived from accepted W23 or W27
+evidence, the selected W33 schedule, and earlier meter and allocation records.
 
 ---
 

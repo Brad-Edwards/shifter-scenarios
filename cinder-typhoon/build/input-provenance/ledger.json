@@ -906,11 +906,19 @@
           {
             "class": "normal_interface_or_artifact",
             "inputs": [
-              "demand_m3s",
-              "reference_release_m3s",
-              "reference_alternate_m3s",
               "checkpoint",
-              "policy_format"
+              "policy_format",
+              "interval_seconds",
+              "interval_count",
+              "demand_m3s",
+              "initial_buffer_m3",
+              "state_bounds_m3",
+              "terminal_bounds_m3",
+              "volume_objective_ml",
+              "ramp_bound_m3s",
+              "release_bounds_m3s",
+              "supply_bounds_m3s",
+              "request_schema"
             ],
             "locator": "GET process.schedule-window in test_w33_forecast_scheduling",
             "source": "process service /api/schedule-windows/current GET endpoint"
@@ -957,11 +965,25 @@
             ],
             "locator": "fields in test_w34_reporting_checkpoint derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
             "source": "prior accepted API responses in the known-solution sequence"
+          },
+          {
+            "class": "normal_interface_or_artifact",
+            "inputs": [
+              "checkpoint",
+              "refresh_interval_seconds",
+              "unit",
+              "freshness_seconds",
+              "variance_limit_ml",
+              "view and decision required field lists",
+              "handover status"
+            ],
+            "locator": "GET planning.reporting-contract in test_w34_reporting_checkpoint",
+            "source": "planning-data service /api/reporting-contracts/current GET endpoint"
           }
         ],
-        "inventory_sha256": "8bed845438bb8cef5bb880377166dbd54aa06cb18922b29139fbd77a09a709b3",
+        "inventory_sha256": "0bdcface54dfea0f71bc32cf29162ea88d3b86fc550ed274793170dd2529e894",
         "profile": "arwc",
-        "request_count": 1,
+        "request_count": 2,
         "review_status": "complete",
         "unresolved": []
       },
@@ -2290,8 +2312,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 90,
-      "inventory_sha256": "fbd330dd04c7f5d9444dfe91561f4c36c421bfb80481a420a8b3d879c065a5f8",
+      "comparison_count": 91,
+      "inventory_sha256": "067b1eb9becc9a68a5c71c6141b728de22b132d7bb5b3a00f3159f9527cc5491",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2904,7 +2926,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "538ce81140bff28be56914f3180a6c1ec90dad069fe45e5d1a122455994e67af",
+      "source_sha256": "06c7ce18a6ba0387bd971c0ba9462ce771d1e7dbbbd4804c8e5bfedd84872b89",
       "unresolved": []
     },
     "build/arwc/runtime/identity-entrypoint.sh": {
@@ -3033,6 +3055,21 @@
       ],
       "review_status": "complete",
       "source_sha256": "7708b7ed9a429b6871b9fa81c52080322dc3b22abb208201ed0418352cf5a74b",
+      "unresolved": []
+    },
+    "build/arwc/runtime/selector24.c": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed selector constants and shifts in runtime native source"
+          ],
+          "locator": "fixed values in build/arwc/runtime/selector24.c live inside the stripped selector artifact that the W24 service delivers; participants recover them by disassembly, so they are not author-only",
+          "source": "service runtime implementation"
+        }
+      ],
+      "review_status": "complete",
+      "source_sha256": "6b872a76606bc78f751db414f07d7fb2fc661033a04b77ab885ef82385949ace",
       "unresolved": []
     },
     "build/arwc/runtime/signer24.c": {

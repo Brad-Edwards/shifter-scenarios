@@ -131,6 +131,47 @@ and ramped closed over 20 seconds. Its 60 full-flow-equivalent seconds produce
 the observed 0.012 ML. It is historical evidence and cannot be replayed as
 authority.
 
+## Operator acceptance derivation boundary
+
+The operator-only known-solution suite must construct W22, W23, W24, W33, and
+W34 requests from the same artifacts and normal interfaces available at the
+participant boundary. It may carry accepted response evidence forward, but it
+must not contain a recovered reviewer, memory layout, selector constants,
+winning schedule, or final reporting payload as a fallback.
+
+```mermaid
+flowchart LR
+    Services[ARWC service interfaces] -->|signed records, schemas, cases| Connector[Participant connector]
+    Binaries[Delivered native artifacts] -->|hash-checked bytes| Connector
+    Connector --> Analysis[Executable analysis and constraint evaluation]
+    Analysis -->|derived request fields| Services
+    Services -->|accepted immutable evidence| Runner[Operator acceptance report]
+```
+
+The checkable invariants are:
+
+- W22 hashes and analyzes the delivered review helper; ambiguity is an error.
+- W23 executes the delivered estimator's ordinary and reproducer modes, then
+  derives the controlled word, allocation size, field offsets, case ID, and
+  unaffected values from the emitted bytes.
+- W24 hashes and disassembles the stripped selector artifact, selects one model
+  that satisfies independent published cases, and uses that model for both the
+  prediction request and oracle decoding.
+- W33 reads the complete schedule-window schema and bounds and computes at
+  least three distinct feasible schedules. The service never publishes a
+  winning release or alternate-supply series.
+- W34 reads the reporting contract, reuses accepted W23/W27 evidence and the
+  selected W33 schedule, and resolves every write route through the linked
+  client-reference graph.
+
+Artifact bytes are untrusted input until their advertised SHA-256 matches.
+Malformed output, missing schema fields, ambiguous models, non-finite numbers,
+and any bound violation stop acceptance with a derivation error. The suite
+does not read service storage, private runtime state, or repository source from
+inside the participant boundary. Credential values and artifact contents are
+excluded from the immutable report; only hashes, sizes, route hashes, statuses,
+and provenance classifications are retained.
+
 ## W33 scheduling rehearsal
 
 W33 uses checkpoint `REH-SCHED-33`, never the W30 live state. It models twelve

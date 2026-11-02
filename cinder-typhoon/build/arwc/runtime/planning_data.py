@@ -122,6 +122,28 @@ RELATION_RESPONSE = {
     "work_order": "WO-CRR-4417",
 }
 
+REPORTING_CONTRACT = {
+    "schema": "arwc.reporting-checkpoint/v1",
+    "checkpoint": "REH-REPORT-34",
+    "view": {
+        "refresh_interval_seconds": 300,
+        "required": [
+            "checkpoint", "consumer", "consumer_revision", "source",
+            "estimate", "refresh_interval_seconds", "raw_observations",
+        ],
+    },
+    "decision": {
+        "unit": "ML",
+        "freshness_seconds": 40,
+        "variance_limit_ml": 1.2,
+        "required": [
+            "view", "checkpoint", "unit", "freshness_seconds", "source_set",
+            "unaffected", "meter_reserve_ml", "variance_limit_ml",
+        ],
+    },
+    "handover": {"status": "consistent"},
+}
+
 LINEAGE = {
     "record_id": "LIN-AST-CRR-017-R8",
     "revision": 8,
@@ -662,6 +684,26 @@ class Handler(BaseHTTPRequestHandler):
                     "key": "planning.integration-session",
                     "method": "POST",
                     "template": "https://planning-data.arwc.test/api/integration-sessions"
+                },
+                {
+                    "key": "planning.reporting-contract",
+                    "method": "GET",
+                    "template": "https://planning-data.arwc.test/api/reporting-contracts/current"
+                },
+                {
+                    "key": "planning.reporting-view",
+                    "method": "POST",
+                    "template": "https://planning-data.arwc.test/api/reporting-submissions/current/result"
+                },
+                {
+                    "key": "planning.planning-bid",
+                    "method": "POST",
+                    "template": "https://planning-data.arwc.test/api/planning-bids"
+                },
+                {
+                    "key": "planning.planning-handover",
+                    "method": "POST",
+                    "template": "https://planning-data.arwc.test/api/planning-bids/current"
                 }
             ],
             "related": [
@@ -717,6 +759,9 @@ class Handler(BaseHTTPRequestHandler):
             state["relation_contract_observed"] = True
             save_state(state)
             self.accepted("the-relation-service-s-language", RELATION_CONTRACT)
+            return
+        if path == "/api/reporting-contracts/current":
+            self.send_json(200, REPORTING_CONTRACT)
             return
         if path != "/api/saved-queries/current":
             self.send_json(404, {"error": "record not found"})
