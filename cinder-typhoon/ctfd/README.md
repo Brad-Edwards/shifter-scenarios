@@ -38,7 +38,53 @@ artifacts. Publish and bind the pair together: the policy records the digest of
 the participant bundle generated in the same run. Changing the scorer origin or
 any participant content changes that digest and requires a new sidecar. Shifter
 must compare the pair before event activation and prize finalization; runtime
-enforcement is tracked in the platform issues in milestone 5.
+enforcement is tracked in the remaining milestone 5 issues in this repository.
+
+## Authoritative prize inputs
+
+[`prize_inputs.py`](prize_inputs.py) turns one organizer-authorized, event-scoped
+source projection into the closed
+[`cinder-typhoon.event-prize-input/v1` contract](../docs/design/event-prize-input.schema.json).
+The output contains only the facts needed by the prize evaluator:
+
+- the event, content, policy, cutoff, and draw-commitment bindings;
+- stable private participant IDs, public aliases, and the existing ranked-player
+  eligibility result;
+- accepted submission IDs, stable challenge source IDs, awarded points, and
+  server receipt times;
+- the authoritative overall score inputs in the complete stable order;
+- stage scores and exact-set completion derived from the policy source IDs; and
+- stable solve and scheduled-task occurrence IDs with scheduled and actual
+  execution times.
+
+The source must use `cinder-typhoon.authoritative-prize-source/v1` and contain
+the exact closed fields accepted by `build_prize_input`. Produce it inside an
+approved organizer-authorized integration from committed event records. The
+adapter intentionally has no network client, browser fallback, webhook trust,
+or database credentials. The caller remains responsible for the existing event
+authorization check.
+
+The general event-results export is not enough by itself because it does not
+carry the accepted submission UUID or stable challenge source ID. Do not recover
+either value from a challenge display name. An approved projection must provide
+the authoritative fields directly; otherwise this adapter fails closed.
+
+Build the owner-only evaluator input with:
+
+```sh
+python3 cinder-typhoon/ctfd/prize_inputs.py \
+  --policy /secure/event-prizes.json \
+  --source /secure/authoritative-prize-source.json \
+  --output /secure/event-prize-input.json
+```
+
+Identical submission or occurrence retries collapse to one fact. Conflicting
+identity reuse, cross-event rows, incomplete rankings, content or policy drift,
+unknown source IDs, invalid UTC cutoffs, and extra fields such as email fail the
+entire build. Rejected submissions and accepted rows outside the event snapshot
+window create no prize fact. Stage and event close occurrences retain both the
+scheduled cutoff and actual execution time. Rebuilding the same source snapshot
+and policy produces the same bytes and digest.
 
 The separately versioned `build/hint-delivery/manifest.json` pins the hint
 sources and facilitator release rules. Use `build/hint-delivery/release.py` to
