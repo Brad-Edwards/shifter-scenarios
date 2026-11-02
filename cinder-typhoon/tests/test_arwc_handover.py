@@ -156,9 +156,12 @@ class ArwcHandoverTests(unittest.TestCase):
 
     def test_restore_pristine_returns_while_health_gates_remain_active(self) -> None:
         restore = (ROOT / "build" / "arwc" / "restore-pristine.sh").read_text()
-        self.assertIn("nohup docker compose", restore)
-        self.assertIn('printf \'%s\\n\' "$compose_pid"', restore)
-        self.assertIn('kill -0 "$compose_pid"', restore)
+        self.assertIn("nohup docker compose -f compose.yaml up -d --force-recreate", restore)
+        self.assertNotIn("compose_pid", restore)
+        self.assertNotIn("kill -0", restore)
+        self.assertIn("ARWC pristine restore failed:", restore)
+        self.assertIn("pre-handoff services did not remain", restore)
+        self.assertIn("fieldlink edge did not publish", restore)
         self.assertIn("bash ./generate-operator-material.sh", restore)
         self.assertIn("handover_services_waiting()", restore)
         self.assertIn("&& handover_services_waiting", restore)

@@ -9,110 +9,118 @@ scenario is fictional, isolated, and bounded.
 
 Automated solution code can prove that an intended path works. It cannot prove
 that a fresh participant would discover that path, understand it, experience a
-particular difficulty, or need a particular amount of time. Those claims
-require blind human-plus-agent playtests.
+particular difficulty, or need a particular amount of time. Those claims need
+blind human-plus-agent playtests.
 
 ## Current release status
 
-**Not release qualified.** The machine-readable status is
-`cinder-typhoon/tests/qa-status.json`; validate and print it with:
+**Not release qualified.** The committed candidate is mutable, its image
+digests are placeholders, no versioned release manifest exists, and none of the
+four QA layers has a report from one immutable event candidate.
+
+The current repository checks report:
+
+| QA layer | Implemented | Candidate evidence |
+| --- | --- | --- |
+| Service contract | Complete: its required static/unit gate passes | Not run |
+| Participant-boundary known solution | Partial: card coverage, hint delivery, and route/discovery units pass; the ARWC artifact-derived analysis acceptance gate is still open | Not run |
+| Provenance and participant surface | Partial: provenance and authored-surface gates pass; the static fourth-wall gate still reports 17 KeplerOps and 456 ARWC findings | Not run |
+| Blind human-plus-agent playtest | Not started | Not run |
+
+These values are checked, not copied from prose. Run:
 
 ```sh
 python3 cinder-typhoon/tests/report_qa_status.py
 ```
 
-The four evidence layers are separate gates:
+The checker runs every command in
+`cinder-typhoon/tests/qa-gates.json`, derives open blockers from
+`cinder-typhoon/tests/readiness-issues.json`, and rejects a claimed
+implementation status that does not match those results. The SHA-256 bindings
+for both files are in `cinder-typhoon/tests/qa-status.json`, so editing a gate
+or blocker snapshot without updating the status fails.
 
-| Layer | What it establishes | Current candidate status |
-| --- | --- | --- |
-| Service contract tests | Normal, accepted, denied, persistence, isolation, and audit behavior | Implementation complete. Not run on an immutable event candidate (#232). |
-| Participant-boundary known-solution acceptance | The encoded solution sequence remains executable from the participant account and network | Implementation complete. Challenge delivery catalog not yet authoritative (#226). No immutable candidate run (#232). |
-| Provenance, participant-surface, and fourth-wall checks | Starting visibility, in-world presentation, and the origin of every solution-path input | Implementation complete, provenance overall_status: complete. No immutable candidate run (#232). |
-| Blind human-plus-agent playtests | Discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution | Not started (#229). |
+The registry identifies #271 as its own delivery issue and excludes only that
+one issue from readiness blockers. This keeps the merged checker valid when
+#271 is manually closed; every other open issue in milestone #4 must appear in
+the registry.
 
-`--require-release-qualified` returns nonzero until all four layers have passing
-evidence from the same immutable candidate:
+To compare the blocker snapshot with the GitHub milestone, use the repository
+token without putting it on the command line:
+
+```sh
+python3 cinder-typhoon/tests/report_qa_status.py --check-github-issues
+```
+
+`--require-release-qualified` fails until the current commit, candidate
+manifest, release manifest, and every required report are digest-bound to one
+immutable release:
 
 ```sh
 python3 cinder-typhoon/tests/report_qa_status.py --require-release-qualified
 ```
 
-## Remediation campaign status (2026-10-31)
+## Readiness words have separate meanings
 
-All issues through #224 are merged. The ARWC pre-handoff crash loop is fixed
-(#231 open). The open work is event-readiness (#225–#234).
-
-| Issue range | State |
+| Stage | Meaning |
 | --- | --- |
-| #206–#211 | Merged |
-| #212–#224 | Merged (PRs #241–#253) |
-| #225 per-range variation | Open |
-| #226 challenge/scoring delivery | Open |
-| #227 graduated hints | Open |
-| #228 defender-learning material | Open |
-| #229 blind playtests | Open, requires human participants |
-| #230 recalibrate from playtest data | Open, requires #229 |
-| #231 ARWC service stability | PR #254 open |
-| #232 release manifest | Open |
-| #233 300-range soak | Open, requires GCP infrastructure |
-| #234 reconcile docs | PR open |
+| Merged | The change is present in repository history. This is not acceptance evidence. |
+| Implemented | Every named implementation gate for that QA layer passes on the current tree. |
+| Statically verified | The current source has passed the named static and unit checks. No live range claim follows. |
+| Live verified | A report from the real participant boundary passes and is bound to the current source, immutable candidate manifest, and versioned release manifest. |
+| Playtested | Fresh participants and their supported agents completed the declared blind-test protocol on that same candidate. |
+| Soaked | The production-equivalent capacity, transition, and reset test passed on that same release. |
+| Release qualified | All required implementation, live, playtest, and soak evidence passes with no open release blocker, all bound to the same immutable release. |
 
-### Remaining milestone work
+Closing an issue follows the same rule. A merge is not enough. A closed entry in
+the readiness registry must name every required acceptance result, the exact
+command used to obtain it, the report path and digest, and the source commit.
+Static acceptance is labeled as such and cannot make a live claim. Release
+acceptance must also carry the candidate and release-manifest digests. The
+checker rejects a closed entry without the evidence required for its scope.
 
-After #212–#224 (PR stack #241–#253), the open milestone work is:
+## Evidence binding
 
-- #213–#218: ✅ KeplerOps interface migration complete (opcode model via API,
-  K18 dossier-derived subject, K26 earned bearer, K11/K18/K29 author-only values
-  removed, generic backend profiles classified)
-- #219–#224: ✅ ARWC domain redesign complete (design map, W01–W35 resource-
-  oriented routes, client reference graph, W33 real starting material, full
-  provenance review, overall_status: complete)
-- #225–#230: add safe per-range variation, authoritative challenge delivery and
-  scoring, graduated in-world hints, explicit defender-learning outcomes, blind
-  human-plus-agent playtests, and evidence-based duration/tier calibration; and
-- #231–#234: repair pre-handoff service health, bind goldens to an immutable
-  release manifest, run the production-equivalent 300-range soak/transition/
-  reset test, and reconcile every public readiness claim with measured evidence.
+`cinder-typhoon/tests/qa-status.json` is the readiness index. It binds:
 
-### Guidance for subsequent implementations
+- the implementation-gate catalog;
+- the checked GitHub issue snapshot;
+- `build/participant-runner/candidate.json` and its digest;
+- the expected versioned release-manifest path and digest; and
+- the five required release reports: service contract, known solution,
+  provenance/surface, blind playtest, and soak.
 
-- A known-solution test must prove the path a participant can derive. It must
-  not act as the source of routes, credentials, protocol values, or accepted
-  payloads.
-- Put ordinary first contacts in workstation material. Put the rest in the
-  systems that naturally own them: client references, application navigation,
-  package metadata, source history, browser history, build records, support
-  records, cloud policy, identity metadata, and earlier accepted responses.
-- Service documentation may describe normal methods and schemas. It must not
-  explain the challenge, name a card, prescribe an exploit, publish a flag, or
-  reveal a later privileged continuation.
-- Earned responses should carry the identifiers, authority, and next interfaces
-  needed later. This both models real attack chaining and gives tests a concrete
-  provenance trail.
-- Keep component contract tests and participant-boundary acceptance distinct.
-  Contract tests may inspect operator-owned evidence; participant acceptance may
-  use only the participant account, its network, its tools, and earned state.
-- Bounds in automated analysis are reliability controls, not reductions in the
-  attacker experience. Candidate values should come from supplied artifacts or
-  observed interfaces, and a missing derivation should fail clearly rather than
-  fall back to guessing or an author literal.
-- No automated pass supports claims about discovery, fairness, difficulty,
-  defender learning, or event duration. Preserve those claims for blind tests
-  with fresh people and their supported agents.
+The release-manifest status is currently `missing`, and candidate report lists
+are empty. That is deliberate: the repository does not claim live verification
+without immutable evidence. A report is accepted only when its own digest,
+source commit, candidate-manifest digest, and release-manifest digest all match
+the index. Missing, changed, stale, cross-commit, mutable-candidate, and
+cross-release reports fail closed.
 
-## Evidence definitions
+For an operator-only, credential-free record of the current static/unit gate
+run, write a report outside the repository:
 
-### 1. Service contract tests
+```sh
+python3 cinder-typhoon/tests/report_qa_status.py \
+  --output /tmp/cinder-typhoon-qa-status.json
+```
 
-These operator-only tests exercise service behavior directly. They must cover
-normal behavior, accepted actions, malformed and unauthorized requests,
-persistence, isolation, and independently owned audit evidence. They may use
-operator inspection and direct service setup unavailable to participants.
+The file is written mode `0600`. It records command arguments, pass/fail
+checks, and output hashes, not raw command output or credentials. It is not a
+substitute for an immutable live candidate report.
 
-### 2. Participant-boundary known-solution acceptance
+## The four QA layers
 
-The three operator-only suites encode known solution algorithms and expected
-assertions:
+### 1. Service contract
+
+Operator-only tests exercise normal behavior, accepted actions, malformed and
+unauthorized requests, persistence, isolation, and independently owned audit
+evidence. They may use service setup unavailable to participants. Their current
+implementation gate is green; the live candidate has not been run.
+
+### 2. Participant-boundary known solution
+
+The operator-only suites are:
 
 | Phase | Suite | Cards represented |
 | --- | --- | ---: |
@@ -120,75 +128,43 @@ assertions:
 | KeplerOps | `build/keplerops/tests/test_known_solution_live.py` | 104 |
 | ARWC | `build/arwc/tests/test_known_solution_live.py` | 120 |
 
-They start from the intended participant accounts, workstations, files, tools,
-DNS, CA material, and network positions. `build/participant-runner/run.py`
-streams each suite into that unprivileged account without mounting test or
-repository files. It verifies exact workstation networks and mounts, rejects
-operator control and readable private state, and writes a credential-free
-structured report containing request/response hashes, discovered artifact
-hashes, completion assertions, reset identity and elapsed time. A pass
+`build/participant-runner/run.py` streams a suite into the unprivileged
+participant account without mounting repository or test files. A passing run
 establishes known-path executability and expected completion evidence only. It
-is not evidence of independent discovery, fairness, understanding, difficulty,
+does not establish independent discovery, fairness, understanding, difficulty,
 or duration.
 
-The KeplerOps diagnostic and package deliveries are separate selectable
-operations. Release evidence must run each after its own pristine reset, then
-run the ARWC ending against the non-seeded transition earned by that route.
-Candidate mode refuses a KeplerOps delivery without paired-carrier mode and
-refuses an ARWC run without a declared, matching transition route.
+The implementation layer remains partial until the ARWC W22, W23, W24, W33,
+and W34 values are derived by executable artifact analysis and their named
+acceptance evidence passes. There is no immutable candidate run yet.
 
-### 3. Provenance and participant-surface checks
+### 3. Provenance and participant surface
 
-The participant-surface manifests define the intended pristine boundary and
-compare it with unprivileged observation. Current golden checks expose three
-release defects:
+This layer combines three distinct checks:
 
-- Training contains an older `TRAINING.md` than the authored source.
-- KeplerOps exposes readable build-time seed archives and its entrypoint.
-- ARWC permits the participant to list the private customer-handover directory.
+- participant-surface manifests define the intended pristine boundary;
+- input provenance accounts for every request input and fixed comparison; and
+- the fourth-wall scanner rejects card IDs, card titles, implementation
+  language, and unapproved domain interfaces in participant-visible content.
 
-The solution-input provenance gate is implemented by issue #209.
+Input provenance is complete and the authored participant-surface validation
+passes. The static fourth-wall implementation gate is not complete: Training
+has zero static findings, while KeplerOps and ARWC retain unresolved findings.
+No pre/post live observation from an immutable candidate exists.
 
-The #209 ledger and report now inventory every known-solution request callsite
-and ratchet every fixed literal comparison in phase runtime Python. They contain
-only locations, provenance classes, citations and SHA-256 fingerprints—not
-literal values, credentials, request bodies or responses. The release form is
-intentionally unresolved: K18's federated subject (#216), K26's fixed channel
-bearer (#217), W33's test-only scheduler inputs (#223), and the broader exact
-comparison audit (#224) must be remediated and cited before provenance can pass.
-
-The #210 card-coverage registry independently reconciles the 240 SDL contracts,
-briefs, dependency entries, and named participant-boundary assertions. K20.1,
-K20.2, and K20.3 now perform and assert separate relation, managed-identity, and
-approval-plus-consumer actions. The release form remains unresolved where a
-simple endpoint read has no reviewed interpretive achievement and while the
-participant delivery catalog is empty pending #226. It also rejects every
-current SDL evidence-owner declaration because each overlaps the component
-that accepted the action; an observed-state label alone is not independent
-evidence.
-
-The #211 fourth-wall gate derives card IDs and normalized titles from that
-private registry, scans authored participant-facing runtime and image inputs,
-then repeats the check against readable files and safe `GET` responses from the
-real unprivileged phase container before and after known-solution acceptance.
-It emits locations, rule matches, and hashes only. The current result remains
-failed: ARWC still uses card-title routes,
-KeplerOps retains challenge-derived build names, and the domain-interface
-reviews required by #212 and #219 are pending. Exact hash-bound allowlist
-entries are supported for credible in-world uses; the committed allowlist is
-empty.
-
-### 4. Blind human-plus-agent playtests
+### 4. Blind human-plus-agent playtest
 
 Fresh participants must use the event UI, supported agents, and normal support
 rules without repository source, runtime source, tests, operator documents, or
 prior solutions. Results must include failed hypotheses and abandonment as well
-as successes. This work is tracked by issue #229 and has not started.
+as successes. This layer has not started and no human-outcome claim is made.
 
-## Golden range access
+## Golden range boundary
 
-The current mutable goldens are inspection and remediation targets, not an
-immutable event candidate.
+The GCP goldens in project `prod-mgau4w` are mutable inspection and remediation
+targets. They are not an event candidate. Golden checks must be run by the
+repository scripts against disposable copies or the approved golden range; the
+scenario stack must not be started on a developer workstation.
 
 | Phase | Instance | Stack path |
 | --- | --- | --- |
@@ -196,50 +172,21 @@ immutable event candidate.
 | KeplerOps | `cinder-keplerops-golden` | `/opt/cinder-typhoon/build/keplerops` |
 | ARWC | `cinder-arwc-golden` | `/opt/cinder-typhoon/build/arwc` |
 
-They are in GCP project `prod-mgau4w`, zone `us-central1-a`, with operator access
-through IAP SSH. Golden identity and build inputs must be bound to the immutable
-release manifest required by issue #232 before candidate results can pass.
-
-## Running the automated layers
-
-Each phase runner starts from pristine state, runs the participant-surface gate,
-runs known-solution acceptance, resets consumed state, and then runs the
-service-contract suites:
-
-```sh
-cinder-typhoon/build/training/test-local.sh
-cinder-typhoon/build/keplerops/test-local.sh
-cinder-typhoon/build/arwc/test-local.sh
-```
-
-The KeplerOps-to-ARWC transition requires the paired carriers. A single-stack
-ARWC run may seed the ordinary handover for local contract and known-solution
-testing; that seed is not evidence that the real cross-carrier transition
-passed.
-
-The local phase scripts use `--development`, which is explicitly mutable and
-cannot qualify a release. Immutable-candidate invocation, report fields and the
-per-route reset contract are documented in
-`build/participant-runner/README.md`.
-
-Known-solution behavior, card coverage, fourth-wall leakage, and input
-provenance remain separate QA results. The candidate wrapper runs the
-fail-closed coverage, provenance, and live leakage gates before
-participant-surface and behavioral acceptance, so an incomplete card,
-unexplained input, or fourth-wall finding blocks overall qualification without
-misreporting what the behavioral suite established.
+Their identity and build inputs must be bound to the versioned release manifest
+before a live report can support qualification.
 
 ## Release qualification
 
-Release qualification requires all of the following on one immutable candidate:
+Release qualification requires all of the following on one immutable release:
 
 1. service-contract suites pass;
-2. unprivileged known-solution acceptance passes from the real participant
-   boundary, including both ordinary cross-carrier routes;
-3. card coverage, fourth-wall, participant-surface, and complete input-provenance checks pass;
-4. blind human-plus-agent playtests pass their cohort and specialist coverage;
+2. participant-boundary known-solution acceptance passes for every route;
+3. card coverage, fourth-wall, participant-surface, and input-provenance gates
+   pass before and after the participant run;
+4. blind human-plus-agent playtests pass their declared cohort and specialist
+   coverage;
 5. reset and restore reproduce the manifested pristine state; and
-6. the 300-range production-equivalent soak passes its declared thresholds.
+6. the production-equivalent 300-range soak passes its declared thresholds.
 
-No automated result may be reported as proof of human discovery, difficulty, or
-event duration.
+No automated result may be reported as proof of human discovery, fairness,
+difficulty, understanding, or event duration.

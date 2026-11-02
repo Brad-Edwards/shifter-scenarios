@@ -5,14 +5,8 @@
       "files": [
         {
           "mode": "0600",
-          "path": ".config/chromium/Default/Cookies",
-          "sha256": "a79c5747ee3836cf990c928842e212c13b93359e975cdd43284c880b5101516e",
-          "size": 20480
-        },
-        {
-          "mode": "0600",
           "path": ".config/chromium/Default/History",
-          "sha256": "4415fd5363aa5f4c043b3b01e27211f706509dbb08740dd5e9baf9f3be9c1297",
+          "sha256": "7a07e88fe3fa518038fb1666df797d9f6ee542c672a316ae4794e00c6e20a235",
           "size": 20480
         },
         {
@@ -20,12 +14,6 @@
           "path": ".config/chromium/Default/Preferences",
           "sha256": "6cd677fa4b0c3ca9c34e0b459a2699b06ad32891cbe747bb7975f2e98feec00f",
           "size": 202
-        },
-        {
-          "mode": "0600",
-          "path": ".config/git/credentials",
-          "sha256": "27f44b48be99c415cbec695651556ebbd5c9404684f1d6e9edbbd28eebf7f4d8",
-          "size": 64
         },
         {
           "mode": "0600",
@@ -84,8 +72,8 @@
       ],
       "group": "rowan",
       "owner": "rowan",
-      "sha256": "7d6365f6074078643d941b1e51ae9421ffbe755c9a09fae2abacab209073a238",
-      "size": 71680
+      "sha256": "492dc0ef0a74f6345c5edae50dd563f76452664941e2d86d41af254c61ba71db",
+      "size": 40960
     },
     {
       "archive": "k-dev-workbench.tar",
@@ -114,8 +102,8 @@
         {
           "mode": "0600",
           "path": "config/opening.json",
-          "sha256": "f5f758f7c6bf148151fd3ad0687cdbf1ed326c5c26e472f4090d3a22ad75ed2c",
-          "size": 588
+          "sha256": "78696b1134eaf2fc955be1eb2ca8d23fbd00b5d653ebb6fd14999e4b9721c787",
+          "size": 579
         },
         {
           "mode": "0640",
@@ -138,7 +126,7 @@
       ],
       "group": "git",
       "owner": "git",
-      "sha256": "3b1c34e08b575ab9ad15bde4e53d6de25330d9455f155c241760b0316c2a434b",
+      "sha256": "305109888279a01be326d81c82b12d85931c5391163bc5a1f3815330835b4dc5",
       "size": 10240
     },
     {
@@ -186,8 +174,8 @@
         {
           "mode": "0600",
           "path": "config/opening.json",
-          "sha256": "217a663bbe7cab0587a7fba2ddc9bdcb37c7cc347a665c0cdd75188e44bd60fc",
-          "size": 703
+          "sha256": "9331700b7642f0f4f3c8379672c2cae3bc0e4d11aac89d36e195ee45661f80b9",
+          "size": 733
         },
         {
           "mode": "0640",
@@ -198,13 +186,13 @@
         {
           "mode": "0600",
           "path": "sessions/rowan.json",
-          "sha256": "0139f2cfae7f598402921d84a20b32f07ffd09f3bea585b630e0a8531952f32d",
-          "size": 277
+          "sha256": "936eeb7c3e75ef309a19543e7c7865b61631ae9d100f88dbb9b324767e641b24",
+          "size": 265
         }
       ],
       "group": "fieldkest-support",
       "owner": "fieldkest-support",
-      "sha256": "275e26580c88db806ff5780776a4ff146f07c57533fca8ec87ca0dea74b45d80",
+      "sha256": "77de2e0ce67da1cbcb275540ba4518ede41142f369b5105b994a5d937aa8408d",
       "size": 10240
     }
   ],

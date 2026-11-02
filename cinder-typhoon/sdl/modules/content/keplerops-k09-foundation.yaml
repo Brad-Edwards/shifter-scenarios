@@ -25,7 +25,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/build-operations/k09-ci-state
           version: '2026-09-18'
-          digest: sha256:300bbbd0b8e86792ed2dd6165a3cf1bfdd05cb59a693b0950c0053d9d4e1de10
+          digest: sha256:566fd1b5ce45db7a93036d3433e8d98f58a0c3edb3774235770f1955af094342
           media_type: application/x-tar
         permitted_routes:
         - mechanism:
@@ -51,7 +51,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/build-operations/k09-cloud-api-state
           version: '2026-09-18'
-          digest: sha256:3317f9d28f2d60d95c19559c9128178eff6c808a587006a3db790e5b86d28ff8
+          digest: sha256:853b8049959288625b00927ae1e01cf06211d296918d51ca9fdc07948011fbf4
           media_type: application/x-tar
         permitted_routes:
         - mechanism:

@@ -13,7 +13,7 @@ corporate=pathlib.Path("/var/lib/fieldlink-connector/handover/corporate-session"
 planning=pathlib.Path("/var/lib/fieldlink-connector/receipts/planner-handover").read_text().strip()
 body=json.dumps({"oauth_transaction":"OAUTH-PLN-882","preview_origin":"https://preview-cinder.arwc.test"},separators=(",",":")).encode()
 request=urllib.request.Request(
- "https://corporate-identity.arwc.test/api/a-planner-session-that-works",
+ "https://corporate-identity.arwc.test/api/sessions",
  data=body,
  headers={"Authorization":"Bearer "+corporate,"X-ARWC-Tenant":"arwc",
           "X-ARWC-Planning-Access":planning,"Content-Type":"application/json"},

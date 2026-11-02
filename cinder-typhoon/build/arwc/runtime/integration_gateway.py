@@ -185,7 +185,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:
         if urlsplit(self.path).path in {"/internal/handover-estimates", "/internal/control-handovers"}:
-            if (self.headers.get("X-ARWC-Internal") != "planning-data-w34" or
+            if (self.headers.get("X-ARWC-Internal") != "planning-data-reporting" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
                     self.client_address[0] != "10.77.62.10"):
                 self.send_json(403, {"error": "planning service context required"}); return
@@ -200,7 +200,7 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 connection.request("POST", target_path, body=payload, headers={
                     "Content-Type": "application/json", "Content-Length": str(len(payload)),
-                    "X-ARWC-Internal": "data-bridge-w34", "X-ARWC-Tenant": "arwc",
+                    "X-ARWC-Internal": "data-bridge-reporting", "X-ARWC-Tenant": "arwc",
                 })
                 response = connection.getresponse(); result = json.loads(response.read())
             except (OSError, json.JSONDecodeError):
@@ -209,7 +209,7 @@ class Handler(BaseHTTPRequestHandler):
                 connection.close()
             self.send_json(response.status, result); return
         if urlsplit(self.path).path == "/internal/schedule-validations":
-            if (self.headers.get("X-ARWC-Internal") != "hmi-w33" or
+            if (self.headers.get("X-ARWC-Internal") != "hmi-scheduling" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
                     self.client_address[0] != "10.77.63.20"):
                 self.send_json(403, {"error": "supervisory service context required"}); return
@@ -221,7 +221,7 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 connection.request("POST", "/internal/schedule-validations", body=payload, headers={
                     "Content-Type": "application/json", "Content-Length": str(len(payload)),
-                    "X-ARWC-Internal": "data-bridge-w33", "X-ARWC-Tenant": "arwc",
+                    "X-ARWC-Internal": "data-bridge-scheduling", "X-ARWC-Tenant": "arwc",
                 })
                 response = connection.getresponse(); result = json.loads(response.read())
             except (OSError, json.JSONDecodeError):
@@ -232,7 +232,7 @@ class Handler(BaseHTTPRequestHandler):
         if urlsplit(self.path).path in {
             "/internal/reserve-observations", "/internal/release-plan-assessments",
         }:
-            if (self.headers.get("X-ARWC-Internal") != "planning-data-w29" or
+            if (self.headers.get("X-ARWC-Internal") != "planning-data-reserve" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
                     self.client_address[0] != "10.77.62.10"):
                 self.send_json(403, {"error": "planning service context required"})
@@ -246,7 +246,7 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 connection.request("POST", urlsplit(self.path).path, body=payload, headers={
                     "Content-Type": "application/json", "Content-Length": str(len(payload)),
-                    "X-ARWC-Internal": "data-bridge-w29", "X-ARWC-Tenant": "arwc",
+                    "X-ARWC-Internal": "data-bridge-reserve", "X-ARWC-Tenant": "arwc",
                     "Host": "process-historian.arwc.test",
                 })
                 response = connection.getresponse()

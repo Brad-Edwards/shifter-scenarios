@@ -11,12 +11,14 @@ import time
 import unittest
 import uuid
 
+from runtime_credentials import basic
+
 
 CONTAINER = "cinder-keplerops-k-dev"
 CA = "/home/rowan/.local/share/keplerops/ca.crt"
 BASE = "https://packages.keplerops.test"
 CI_BASE = "https://ci.keplerops.test"
-USER = "rowan.ito:kpl_rowan_7X4mQ9vN2cL6"
+USER = basic()
 
 
 def rowan(*arguments: str, input_text: str | None = None, check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -62,6 +64,14 @@ class RegistryFoundationTest(unittest.TestCase):
         self.assertEqual(denied.stdout, "401")
         metadata = curl_json("/@keplerops%2ffieldlink-connector")
         self.assertEqual(metadata["versions"], ["7.4.0", "7.4.1", "7.4.2"])
+        self.assertEqual(
+            metadata["channels"]["arwc-stable"],
+            {
+                "current": metadata["dist_tags"]["latest"],
+                "rollback_candidates": [metadata["dist_tags"]["latest"]],
+                "rollback_slot": "future-state",
+            },
+        )
         request = rowan("cat", "work/registry/consumer-request.json").stdout
         result = curl_json("/api/consumer-checks", "-H", "Content-Type: application/json", "--data-binary", request, expected=201)
         self.assertEqual((result["package"], result["declared_range"], result["resolved_version"]), ("@keplerops/fieldlink-connector", "^7.4.0", "7.4.2"))
@@ -159,7 +169,7 @@ pathlib.Path('/home/rowan/results/registry-publication.json').write_text(json.du
         trace = curl_json("/api/inspections/INSP-2047/trace")
         self.assertEqual((trace["normalized_request_id"], trace["assessor_correlation_id"]), ("release-742", "PAS-884"))
         result = curl_json("/api/inspections/envelope", "-H", "Content-Type: application/octet-stream", "--data-binary", "@work/registry/inspection-compat.fki")
-        self.assertEqual((result["front_end"]["request_id"], result["assessor"]["request_id"]), ("K", "k42"))
+        self.assertEqual((result["front_end"]["request_id"], result["assessor"]["request_id"]), ("K", "kqa"))
         self.assertEqual(result["assessor"]["action"], "inspect_support_package")
         wrong = curl_json("/api/inspections/envelope", "-H", "Content-Type: application/octet-stream", "--data-binary", "@work/registry/README.md", expected=422)
         self.assertIn(wrong["error"], {"invalid_inspection_envelope", "inspection_trace_binding_mismatch"})

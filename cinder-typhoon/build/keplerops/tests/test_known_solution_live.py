@@ -37,7 +37,7 @@ import unittest
 import uuid
 import zipfile
 import zlib
-from urllib.parse import urlsplit
+from urllib.parse import quote, urljoin, urlsplit
 
 
 CONTAINER = "cinder-keplerops-k-dev"
@@ -448,8 +448,11 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             # Derive the allocation boundary and trigger sentinel from the offline reproducer binary.
             reproducer_manifest = json.loads(read_home("work/reproducers/indexer-client.json"))
             binary = reproducer_manifest["offline_reproducer"]
-            strings_out = rowan("strings", binary).stdout
-            candidates = list(dict.fromkeys(re.findall(r"FIELDKEST-[A-Z]+", strings_out)))
+            binary_image = read_home_bytes(binary)
+            candidates = list(dict.fromkeys(
+                value.decode()
+                for value in re.findall(rb"FIELDKEST-[A-Z]+", binary_image)
+            ))
             allocation = marker = None
             for probe_size in (8, 16, 24, 32, 48, 64):
                 for candidate in candidates:
@@ -508,18 +511,18 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
     # ------------------------------------------------------------------ K05
     def test_k05_package_foundation(self) -> None:
         dev = self.evidence["dev"]
-        readme = read_home("work/registry/README.md")
-        packages = re.search(r"(https://packages\.keplerops\.test)", readme).group(1)
 
         with self.subTest(card="K05.1 speak the consumer-check contract"):
-            metadata = curl_json(f"{packages}/@keplerops%2ffieldlink-connector", creds=dev)
+            metadata = curl_json(self.discovered_route("packages.metadata"), creds=dev)
             latest = metadata["dist_tags"]["latest"]
             request = read_home("work/registry/consumer-request.json")
             write_tmp("/tmp/journey-consumer.json", request.encode())
             result = curl_json(
-                f"{packages}/api/consumer-checks", "-H", "Content-Type: application/json",
+                self.discovered_route("packages.consumer-check"),
+                "-H", "Content-Type: application/json",
                 "--data-binary", "@/tmp/journey-consumer.json", creds=dev, expected=201)
             self.assertEqual(result["resolved_version"], latest)
+            self.evidence["package_metadata"] = metadata
             self.evidence["declared_range"] = result["declared_range"]
             self.evidence["consumer_revision"] = result["consumer_revision"]
             self.evidence["tenant"] = result["request"]["tenant_id"]
@@ -528,27 +531,32 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             # The support ticket names the retained historical release record.
             cookie = f"fieldkest_support={self.evidence['support_cookie']}"
             support_conv = curl_json(
-                re.search(r"Conversation: `GET (https://\S+)/\{conversation_id\}`", self.service_notes).group(1)
-                + f"/{self.evidence['ticket']}", cookie=cookie)
+                self.discovered_route("support.conversation").replace(
+                    "{conversation_id}", self.evidence["ticket"]),
+                cookie=cookie)
             text = " ".join(m["text"] for m in support_conv["messages"])
             archive_id = re.search(r"(REL-FLK-[0-9.]+-ARCHIVE)", text).group(1)
-            archive = curl_json(f"{packages}/api/releases/{archive_id}", creds=dev)
+            archive = curl_json(
+                self.discovered_route("packages.release").replace("{release_id}", archive_id),
+                creds=dev)
             self.assertEqual(archive["status"], "yanked")
-            self.assertNotIn(archive["version"], metadata_versions := curl_json(f"{packages}/@keplerops%2ffieldlink-connector", creds=dev)["versions"])
+            self.assertNotIn(archive["version"], metadata["versions"])
             self.evidence["archive"] = archive
 
         with self.subTest(card="K05.3 reconcile the disagreeing manifests"):
             result = curl_json(
-                f"{packages}/api/reconcile/tenant-package", "-H", "Content-Type: application/json",
+                self.discovered_route("packages.reconcile"),
+                "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"tenant_record_id": self.evidence["tenant"], "release_id": self.evidence["release"]}),
                 creds=dev)
             self.assertIn("resolved_version", result["disagreements"])
 
         with self.subTest(card="K05.4 run the isolated resolver"):
             result = curl_json(
-                f"{packages}/api/resolver/runs", "-H", "Content-Type: application/json",
+                self.discovered_route("packages.resolver"),
+                "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({
-                    "package": "@keplerops/fieldlink-connector",
+                    "package": metadata["name"],
                     "range": self.evidence["declared_range"],
                     "consumer_revision": self.evidence["consumer_revision"]}),
                 creds=dev, expected=201)
@@ -558,39 +566,49 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
     # ------------------------------------------------------------------ K06
     def test_k06_house_credentials_and_rehearsal(self) -> None:
         dev = self.evidence["dev"]
-        readme = read_home("work/registry/README.md")
-        packages = re.search(r"(https://packages\.keplerops\.test)", readme).group(1)
-        ci = re.search(r"(https://ci\.keplerops\.test)", self.service_notes).group(1)
+        metadata = self.evidence["package_metadata"]
 
         with self.subTest(card="K06.1 recover the house publisher credential"):
             disclosed = curl_json(
-                f"{packages}/api/imports", "-H", "Content-Type: application/json",
+                self.discovered_route("packages.import"),
+                "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({
-                    "package": "@keplerops/fieldlink-connector", "version": "7.4.2",
+                    "package": metadata["name"], "version": metadata["dist_tags"]["latest"],
                     "registry_view": "customer-preview-unavailable"}),
                 creds=dev, expected=422)
             client = disclosed["resolved_registry_client"]
             self.assertEqual(client["principal"], "fieldlink-importer-publisher")
-            self.assertEqual(client["scope"], "@keplerops/fieldlink-connector:arwc-stable")
+            package_name, channel = client["scope"].rsplit(":", 1)
+            self.assertEqual(package_name, metadata["name"])
             token = client["token"]
             self.assertTrue(token)
             self.evidence["publisher_token"] = token
+            self.evidence["publisher_channel"] = channel
 
         with self.subTest(card="K06.2 read the private package view in bounds"):
             token = self.evidence["publisher_token"]
-            package = curl_json(f"{packages}/api/package-views/publisher/%40keplerops%2Fsupport-rehearsal", bearer=token)
+            view_route = self.discovered_route("packages.view").replace("{view}", "publisher")
+            package = curl_json(
+                view_route.replace("{package}", quote("@keplerops/support-rehearsal", safe="")),
+                bearer=token)
             self.assertEqual(package["name"], "@keplerops/support-rehearsal")
             # The publisher view does not reach the release-admin package.
-            curl_json(f"{packages}/api/package-views/publisher/%40keplerops%2Frelease-admin", bearer=token, expected=403)
+            curl_json(
+                view_route.replace("{package}", quote("@keplerops/release-admin", safe="")),
+                bearer=token, expected=403)
 
         with self.subTest(card="K06.3 publish and run the rehearsal consumer"):
             token = self.evidence["publisher_token"]
+            package_name = metadata["name"]
+            channel = self.evidence["publisher_channel"]
             version = "7.4.3-cinder." + uuid.uuid4().hex[:10]
             builder = (
                 "import base64, gzip, hashlib, io, json, pathlib, tarfile\n"
                 f"version = {version!r}\n"
+                f"package_name = {package_name!r}\n"
+                f"channel = {channel!r}\n"
                 "files = {\n"
-                " 'package/package.json': json.dumps({'name':'@keplerops/fieldlink-connector','version':version,'main':'index.js','engines':{'node':'>=22'},'fieldkest':{'interface':'fieldkest.connector/v3'}}, sort_keys=True).encode()+b'\\n',\n"
+                " 'package/package.json': json.dumps({'name':package_name,'version':version,'main':'index.js','engines':{'node':'>=22'},'fieldkest':{'interface':'fieldkest.connector/v3'}}, sort_keys=True).encode()+b'\\n',\n"
                 " 'package/index.js': b\"'use strict';\\nexports.consume = request => ({schema:'fieldkest.rehearsal-result/v1',tenant_id:request.tenant_id,asset_id:request.asset_id,assessment:'operator-confirmed-change'});\\n\",\n"
                 "}\n"
                 "raw=io.BytesIO()\n"
@@ -600,17 +618,19 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 "out=io.BytesIO()\n"
                 "with gzip.GzipFile(fileobj=out,mode='wb',mtime=0) as g: g.write(raw.getvalue())\n"
                 "data=out.getvalue()\n"
-                "request={'name':'@keplerops/fieldlink-connector','version':version,'channel':'arwc-stable','sha256':hashlib.sha256(data).hexdigest(),'tarball_base64':base64.b64encode(data).decode()}\n"
+                "request={'name':package_name,'version':version,'channel':channel,'sha256':hashlib.sha256(data).hexdigest(),'tarball_base64':base64.b64encode(data).decode()}\n"
                 "pathlib.Path('/tmp/journey-publication.json').write_text(json.dumps(request))\n"
             )
             build = rowan("python3", "-c", builder)
             self.assertEqual(build.returncode, 0, build.stderr)
             published = curl_json(
-                f"{packages}/@keplerops%2ffieldlink-connector", "-X", "PUT", "-H", "Content-Type: application/json",
+                self.discovered_route("packages.publish"),
+                "-X", "PUT", "-H", "Content-Type: application/json",
                 "--data-binary", "@/tmp/journey-publication.json", bearer=token, expected=201)
-            self.assertEqual((published["version"], published["channel"]), (version, "arwc-stable"))
+            self.assertEqual((published["version"], published["channel"]), (version, channel))
             result = curl_json(
-                f"{ci}/api/rehearsals/connector", "-H", "Content-Type: application/json",
+                self.discovered_route("ci.connector-rehearsal"),
+                "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({
                     "version": version, "consumer": "support-rehearsal-v3",
                     "input": {"schema": "fieldkest.connector/v3", "tenant_id": "TEN-SYNTH-REHEARSAL-01",
@@ -623,24 +643,27 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
     # ------------------------------------------------------------------ K07
     def test_k07_inspector_boundary(self) -> None:
         dev = self.evidence["dev"]
-        readme = read_home("work/registry/README.md")
-        packages = re.search(r"(https://packages\.keplerops\.test)", readme).group(1)
 
         with self.subTest(card="K07.1 what the inspector forwards"):
             normal = read_home("work/registry/inspection-normal.json")
             write_tmp("/tmp/journey-insp.json", normal.encode())
             submitted = curl_json(
-                f"{packages}/api/inspections", "-H", "Content-Type: application/json",
+                self.discovered_route("packages.inspections"),
+                "-H", "Content-Type: application/json",
                 "--data-binary", "@/tmp/journey-insp.json", creds=dev, expected=201)
             inspection_id = submitted["inspection_id"]
-            trace = curl_json(f"{packages}/api/inspections/{inspection_id}/trace", creds=dev)
+            trace = curl_json(
+                self.discovered_route("packages.inspection-trace").replace(
+                    "{inspection_id}", inspection_id),
+                creds=dev)
             self.assertIn("assessor_correlation_id", trace)
 
         with self.subTest(card="K07.2 one request becomes another"):
             fki = read_home_bytes("work/registry/inspection-compat.fki")
             write_tmp("/tmp/journey-insp.fki", fki)
             result = curl_json(
-                f"{packages}/api/inspections/envelope", "-H", "Content-Type: application/octet-stream",
+                self.discovered_route("packages.inspection-envelope"),
+                "-H", "Content-Type: application/octet-stream",
                 "--data-binary", "@/tmp/journey-insp.fki", creds=dev)
             self.assertIn("front_end", result)
             self.assertIn("assessor", result)
@@ -652,20 +675,22 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             # A non-envelope input is refused.
             write_tmp("/tmp/journey-insp-bad.bin", read_home_bytes("work/registry/README.md"))
             curl_json(
-                f"{packages}/api/inspections/envelope", "-H", "Content-Type: application/octet-stream",
+                self.discovered_route("packages.inspection-envelope"),
+                "-H", "Content-Type: application/octet-stream",
                 "--data-binary", "@/tmp/journey-insp-bad.bin", creds=dev, expected=422)
 
     # ------------------------------------------------------------------ K08
     def test_k08_legacy_entitlement(self) -> None:
         dev = self.evidence["dev"]
-        readme = read_home("work/registry/README.md")
-        packages = re.search(r"(https://packages\.keplerops\.test)", readme).group(1)
         archive = self.evidence["archive"]
         compat = archive["compatibility"]
 
         with self.subTest(card="K08.1 recover the protected entitlement record"):
             entitlement_id = compat["record_id"]
-            record = curl_json(f"{packages}/api/compatibility/entitlements/{entitlement_id}", creds=dev)
+            record = curl_json(
+                self.discovered_route("packages.entitlement").replace(
+                    "{entitlement_id}", entitlement_id),
+                creds=dev)
             self.assertEqual(record["record_id"], entitlement_id)
             self.evidence["entitlement"] = record
 
@@ -676,7 +701,8 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             request = json.dumps({"checker": "v1", "record": record, "context": context})
             write_tmp("/tmp/journey-ent.json", request.encode())
             baseline = curl_json(
-                f"{packages}/api/compatibility/entitlements/check", "-H", "Content-Type: application/json",
+                self.discovered_route("packages.entitlement-check"),
+                "-H", "Content-Type: application/json",
                 "--data-binary", "@/tmp/journey-ent.json", creds=dev)
             self.assertEqual(baseline["state"], "baseline-valid")
             self.evidence["entitlement_request"] = request
@@ -703,36 +729,42 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             built = rowan("python3", "-c", craft)
             self.assertEqual(built.returncode, 0, built.stderr)
             accepted = curl_json(
-                f"{packages}/api/compatibility/entitlements/check", "-H", "Content-Type: application/json",
+                self.discovered_route("packages.entitlement-check"),
+                "-H", "Content-Type: application/json",
                 "--data-binary", "@/tmp/journey-crafted.json", creds=dev)
             self.assertEqual((accepted["state"], accepted["revision"]), ("legacy-test-accepted", 5))
             # The current checker refuses the same crafted record.
             curl_json(
-                f"{packages}/api/compatibility/entitlements/check", "-H", "Content-Type: application/json",
+                self.discovered_route("packages.entitlement-check"),
+                "-H", "Content-Type: application/json",
                 "--data-binary", "@/tmp/journey-crafted-v2.json", creds=dev, expected=422)
 
     # ------------------------------------------------------------------ K09
     def test_k09_runner_execution(self) -> None:
         dev = self.evidence["dev"]
-        ci = re.search(r"(https://ci\.keplerops\.test)", self.service_notes).group(1)
         build_id = self.evidence["build_id"]
 
         def review_submit(body: dict, expected: int = 202) -> dict:
-            return post_json_route(f"{ci}/api/review-jobs", body, creds=dev, expected=expected)
+            return post_json_route(
+                self.discovered_route("ci.review-jobs"), body, creds=dev, expected=expected)
 
         def wait_review(run_id: str, timeout: float = 40) -> dict:
             deadline = time.monotonic() + timeout
             while time.monotonic() < deadline:
-                result = curl_json(f"{ci}/api/review-jobs/{run_id}", creds=dev)
+                result = curl_json(
+                    self.discovered_route("ci.review-job").replace("{run_id}", run_id),
+                    creds=dev)
                 if result["state"] != "queued":
                     return result
                 time.sleep(0.3)
             raise AssertionError(f"review job {run_id} did not finish")
 
         with self.subTest(card="K09.1 the runner log tells on itself"):
-            run = curl_json(f"{ci}/api/runs/{build_id}", creds=dev)
+            run = curl_json(
+                self.discovered_route("ci.run").replace("{run_id}", build_id), creds=dev)
             self.assertNotIn("BLD-REL-742", run["summary"])
-            _, log = curl(f"{ci}/api/runs/{build_id}/log", creds=dev)
+            _, log = curl(
+                self.discovered_route("ci.run-log").replace("{run_id}", build_id), creds=dev)
             dossier = re.search(r"release dossier: (BLD-REL-\d+)", log).group(1)
             recovery = re.search(r"recovery build record: (BLD-REC-\d+)", log).group(1)
             self.evidence["release_dossier"] = dossier
@@ -743,14 +775,17 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             run = self.evidence["run_record"]
             retained = run["retained_artifacts"][0]
             self.assertNotIn(retained["name"], run["result_page"]["artifacts"])
-            _, artifact_bytes = curl(f"{ci}{retained['url']}", creds=dev)
+            _, artifact_bytes = curl(
+                urljoin(self.discovered_route("ci.run"), retained["url"]), creds=dev)
             self.assertEqual(hashlib.sha256(artifact_bytes.encode()).hexdigest(), retained["sha256"])
             self.evidence["review_artifact"] = json.loads(artifact_bytes)
 
         with self.subTest(card="K09.3 a job input with reach"):
             artifact = self.evidence["review_artifact"]
             accepted = review_submit({"support_input": artifact, "diagnostic": {"profile": "render-review"}})
-            result = curl_json(f"{ci}{accepted['result']}", creds=dev)
+            result = curl_json(
+                urljoin(self.discovered_route("ci.review-jobs"), accepted["result"]),
+                creds=dev)
             self.assertEqual(result["state"], "success")
             guide = result["review"]["maintained_reference"]
             self.assertIn("runner-command", guide)
@@ -765,7 +800,14 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 "collection": artifact["collection"], "linked_support_ref": "support://reviews/ordinary-summary@1",
                 "classification": "support-review", "diagnostic_eligible": False,
             }
-            ordinary_retained = curl_json(f"{ci}{review_submit({'support_input': ordinary, 'diagnostic': {'profile': 'render-review'}})['result']}", creds=dev)["support_input"]
+            ordinary_result = review_submit({
+                    "support_input": ordinary,
+                    "diagnostic": {"profile": "render-review"},
+                })["result"]
+            ordinary_retained = curl_json(
+                urljoin(self.discovered_route("ci.review-jobs"), ordinary_result),
+                creds=dev,
+            )["support_input"]
             review_submit({"support_input": ordinary_retained, "diagnostic": {"profile": "runner-command", "argv": ["/bin/pwd"]}}, expected=403)
 
         with self.subTest(card="K09.4 run in the runner under the service identity"):
@@ -798,8 +840,8 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
     def test_k11_policy_compiler(self) -> None:
         dev = self.evidence["dev"]
         source = re.search(r"Repository remote: `(https://\S+?)/fieldkest", self.service_notes).group(1)
-        evaluate = f"{source}/api/exercises/policy-compiler/evaluate"
-        nonce_route = f"{source}/api/exercises/policy-compiler/nonce"
+        evaluate = self.discovered_route("source.policy-evaluate")
+        nonce_route = self.discovered_route("source.policy-nonce")
 
         # Fetch the opcode model from the source service client reference.
         opcode_model = curl_json(self.discovered_route("source.policy-opcode-model"), creds=dev)
@@ -875,7 +917,6 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
     # ------------------------------------------------------------------ K10
     def test_k10_preview_identity(self) -> None:
         dev = self.evidence["dev"]
-        preview = self.discovered_route("preview.association").rsplit("/api/", 1)[0]
         cookie = f"fieldkest_support={self.evidence['support_cookie']}"
 
         with self.subTest(card="K10.1 recover the restricted preview association"):
@@ -898,7 +939,8 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             twin = protected.casefold()
             self.assertNotEqual(twin, protected)
             uploaded = curl_json(
-                f"{preview}/api/documents", "-H", "Content-Type: application/json",
+                self.discovered_route("preview.documents"),
+                "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"source_id": twin, "content": "Cinder preview"}),
                 creds=dev, expected=201)
             self.evidence["preview_twin"] = twin
@@ -907,7 +949,8 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="K10.3 recover the other document's contents"):
             twin = self.evidence["preview_twin"]
             rendered = curl_json(
-                f"{preview}/api/documents/{twin}/render", "-H", "Content-Type: application/json",
+                self.discovered_route("preview.render").replace("{source_id}", twin),
+                "-H", "Content-Type: application/json",
                 "--data-binary", "{}", creds=dev, expected=202)
             self.assertTrue(rendered["collision"])
             self.assertEqual(rendered["content_source"], self.evidence["preview_doc"])
@@ -917,13 +960,13 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
     def test_k12_privileged_review(self) -> None:
         dev = self.evidence["dev"]
         review_render_tmpl = self.discovered_route("preview.review-render")
-        preview = review_render_tmpl.rsplit("/review/", 1)[0]
         review_id = self.evidence["preview_review"]
         twin = self.evidence["preview_twin"]
 
         with self.subTest(card="K12.1 place our content in the reviewer workflow"):
             loaded = curl_json(
-                f"{preview}/api/reviews/{review_id}/assignment", "-X", "PATCH",
+                self.discovered_route("preview.assignment").replace("{review_id}", review_id),
+                "-X", "PATCH",
                 "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"queue": "privileged-review", "source_id": twin}),
                 creds=dev)
@@ -933,12 +976,14 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="K12.2 recover and spend the protected action value"):
             nonce = self.evidence["review_nonce"]
             prepared = curl_json(
-                f"{preview}/api/reviews/{review_id}/actions/prepare", "-X", "POST",
+                self.discovered_route("preview.prepare").replace("{review_id}", review_id),
+                "-X", "POST",
                 "-H", "Content-Type: application/json", "--data-binary", "{}", bearer=nonce)
             self.assertTrue(prepared["prepared"])
             # The single-use action value cannot be replayed.
             curl_json(
-                f"{preview}/api/reviews/{review_id}/actions/prepare", "-X", "POST",
+                self.discovered_route("preview.prepare").replace("{review_id}", review_id),
+                "-X", "POST",
                 "-H", "Content-Type: application/json", "--data-binary", "{}", bearer=nonce, expected=403)
 
         with self.subTest(card="K12.3 the worker changes sides"):
@@ -1149,7 +1194,11 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             # The note preview resolves a source path outside the notes namespace,
             # acting with the preview service identity against the identity registration.
             registration = directory["support_registration"]
-            source = f"/notes/%2e%2e/identity/api/registrations/{registration}"
+            registration_path = urlsplit(
+                self.discovered_route("identity.registration").replace(
+                    "{registration_id}", registration)
+            ).path
+            source = "/notes/%2e%2e/identity" + registration_path
             before = curl_json(
                 self.discovered_route("staff.note-preview"), "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"source_path": source, "method": "GET"}), bearer=dev_secret)
@@ -1258,9 +1307,8 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             )
             self.assertEqual(approved["acting_principal"], administration["principal"])
             self.assertTrue(approved["approved"])
-            ci = re.search(r"(https://ci\.keplerops\.test)", self.service_notes).group(1)
             consumed = post_json_route(
-                f"{ci}/api/rehearsals/connector",
+                self.discovered_route("ci.connector-rehearsal"),
                 {
                     "version": version,
                     "consumer": administration["consumer"],
@@ -1393,7 +1441,7 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
     def test_k28_connector_archive(self) -> None:
         dev = self.evidence["dev"]
         source = re.search(r"Repository remote: `(https://\S+?)/fieldkest", self.service_notes).group(1)
-        run_route = f"{source}/api/exercises/connector-archive/run"
+        run_route = self.discovered_route("source.connector-run")
 
         with self.subTest(card="K28.1 a connector with two faces"):
             # A build-operations note names the retained archive repository.
@@ -1526,14 +1574,17 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
     def test_k29_release_lineage(self) -> None:
         dev = self.evidence["dev"]
         source = re.search(r"Repository remote: `(https://\S+?)/fieldkest", self.service_notes).group(1)
-        ci = re.search(r"(https://ci\.keplerops\.test)", self.service_notes).group(1)
-        packages = re.search(r"(https://packages\.keplerops\.test)", read_home("work/registry/README.md")).group(1)
         # The package metadata names the pending release version for this range.
         pkg_meta = curl_json(self.discovered_route("packages.metadata"), creds=dev)
         version = pkg_meta["pending_release"]
+        channel = self.evidence["publisher_channel"]
+        channel_history = pkg_meta["channels"][channel]
+        rollback_version = channel_history["rollback_candidates"][0]
+        self.assertIn(rollback_version, pkg_meta["versions"])
+        self.assertNotEqual(rollback_version, version)
 
         def build_package() -> bytes:
-            metadata = {"name": "@keplerops/fieldlink-connector", "version": version, "fieldkest": {"interface": "fieldkest.connector/v3", "compatible_interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"]}}
+            metadata = {"name": pkg_meta["name"], "version": version, "fieldkest": {"interface": pkg_meta["interface"], "compatible_interfaces": ["fieldkest.connector/v2", pkg_meta["interface"]]}}
             src = b"const run = input => ({schema:'fieldkest.rehearsal-result/v1',tenant_id:input.tenant_id,asset_id:input.asset_id,assessment:input.schema === 'fieldkest.connector/v2' ? 'reference-compatible' : 'calibration-review'}); exports.consume = run; exports.diagnostic_summary = run;\n"
             raw = io.BytesIO()
             with tarfile.open(fileobj=raw, mode="w", format=tarfile.USTAR_FORMAT) as archive:
@@ -1548,7 +1599,11 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="K29.1 the build record's principal"):
             build = curl_json(self.discovered_route("cloud.build-record").replace("{build_id}", self.evidence["release_dossier"]), creds=dev)
             self.assertEqual(build["release_principal"], "release-reader")
-            dossier = curl_json(f"{ci}/api/runs/{self.evidence['release_dossier']}/artifacts/release-dossier.json", bearer=build["exchange_handle"])
+            dossier = curl_json(
+                self.discovered_route("ci.run-artifact")
+                    .replace("{run_id}", self.evidence["release_dossier"])
+                    .replace("{artifact}", "release-dossier.json"),
+                bearer=build["exchange_handle"])
             self.evidence["release_exchange"] = build["exchange_handle"]
             self.evidence["signer_dossier"] = dossier
 
@@ -1571,16 +1626,17 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             # Publish the package with the recovered publisher credential.
             # The retained delivery test publishes the same version without signing it,
             # so the PUT may return 409 version_exists — that is fine if the sha256 matches.
-            pub_status, pub_body = curl(
-                f"{packages}/@keplerops%2ffieldlink-connector",
+            _, pub_body = curl(
+                self.discovered_route("packages.publish"),
                 "-X", "PUT", "-H", "Content-Type: application/json",
-                "--data-binary", json.dumps({"name": "@keplerops/fieldlink-connector", "version": version, "channel": "arwc-stable", "sha256": digest, "tarball_base64": base64.b64encode(archive).decode()}),
+                "--data-binary", json.dumps({"name": pkg_meta["name"], "version": version, "channel": channel, "sha256": digest, "tarball_base64": base64.b64encode(archive).decode()}),
                 bearer=self.evidence["publisher_token"],
                 expected=201)
             published = json.loads(pub_body)
             self.assertEqual(published["sha256"], digest)
             # Recover the signer and sign the release message inside the workstation.
-            message = json.dumps({"interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"], "name": "@keplerops/fieldlink-connector", "sha256": digest, "version": version}, sort_keys=True, separators=(",", ":")).encode()
+            interfaces = ["fieldkest.connector/v2", pkg_meta["interface"]]
+            message = json.dumps({"interfaces": interfaces, "name": pkg_meta["name"], "sha256": digest, "version": version}, sort_keys=True, separators=(",", ":")).encode()
             wrapped = rowan("git", "-C", "/home/rowan/work/release-signer-history", "show", f"{dossier['deleted_commit']}:secrets/release-signer.enc.json").stdout
             signer = (
                 "import base64,hashlib,json,sys\n"
@@ -1599,16 +1655,22 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             self.assertTrue(signature, signed_proc.stderr)
             approved = post_json_route(
                 self.discovered_route("packages.approval").replace("{release_id}", f"REL-FLK-{version}"),
-                {"version": version, "interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"], "lineage": history["lineage"], "key_id": history["key_id"], "signature_base64": signature},
+                {"version": version, "interfaces": interfaces, "lineage": history["lineage"], "key_id": history["key_id"], "signature_base64": signature},
                 bearer=self.evidence["release_admin_token"], expected=201)
             self.assertTrue(approved["signed"])
             # The approval returns a scoped channel token for delivery operations.
             self.assertIn("channel_token", approved)
             self.evidence["channel_token"] = approved["channel_token"]
             # Consumed: the dual rehearsal consumers accept the signed package.
-            arwc = post_json_route(f"{ci}/api/rehearsals/connector", {"version": version, "consumer": "arwc-release-v3", "input": {"schema": "fieldkest.connector/v3", "tenant_id": self.evidence["export_tenant"], "asset_id": "CRR-OG2", "operation": "diagnostic_summary"}}, creds=dev, expected=202)
+            arwc = post_json_route(
+                self.discovered_route("ci.connector-rehearsal"),
+                {"version": version, "consumer": "arwc-release-v3", "input": {"schema": pkg_meta["interface"], "tenant_id": self.evidence["export_tenant"], "asset_id": "CRR-OG2", "operation": "diagnostic_summary"}},
+                creds=dev, expected=202)
             self.assertEqual(arwc["output"]["assessment"], "calibration-review")
             self.evidence["signed_version"] = version
+            self.evidence["delivery_channel"] = published["channel"]
+            self.evidence["rollback_version"] = rollback_version
+            self.evidence["rollback_slot"] = channel_history["rollback_slot"]
 
         with self.subTest(card="K29.4 after the old key expires"):
             rollover = post_json_route(
@@ -1621,21 +1683,41 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
     def test_k29b_connector_delivery(self) -> None:
         if not CROSS_SEGMENT:
             self.skipTest("connector delivery requires the paired ARWC carrier")
-        version = self.evidence.get("signed_version", "7.4.3-cinder.rowan")
-        connector = self.discovered_route("connector.poll").rsplit("/api/", 1)[0]
-
+        required = {
+            "signed_version", "channel_token", "export_tenant", "delivery_channel",
+            "rollback_version", "rollback_slot",
+        }
+        missing = sorted(required.difference(self.evidence))
+        self.assertEqual(
+            missing, [],
+            "K26 requires the signed release, approval-issued channel token, customer "
+            "tenant, and package channel history from the accepted K29 sequence",
+        )
+        version = self.evidence["signed_version"]
         channel_token = self.evidence["channel_token"]
+        tenant = self.evidence["export_tenant"]
+        channel = self.evidence["delivery_channel"]
         with self.subTest(card="K26.1 ready for their channel"):
-            polled = post_json_route(self.discovered_route("connector.poll"), {"tenant": self.evidence["export_tenant"], "channel": "arwc-stable", "version": version}, bearer=channel_token)
+            polled = post_json_route(
+                self.discovered_route("connector.poll"),
+                {"tenant": tenant, "channel": channel, "version": version},
+                bearer=channel_token)
             self.assertEqual(polled["version"], version)
 
         with self.subTest(card="K26.2 customer accepted"):
-            activated = post_json_route(self.discovered_route("connector.activate").replace("{version}", version), {"tenant": self.evidence["export_tenant"], "channel": "arwc-stable"}, bearer=channel_token, expected=201)
+            activated = post_json_route(
+                self.discovered_route("connector.activate").replace("{version}", version),
+                {"tenant": tenant, "channel": channel},
+                bearer=channel_token, expected=201)
             self.assertEqual(activated["runtime_identity"], "svc-arwc-fieldlink")
 
         with self.subTest(card="K26.3 the release they can roll back to"):
-            rollback = post_json_route(self.discovered_route("connector.rollback"), {"tenant": self.evidence["export_tenant"], "version": "7.4.2", "slot": "future-state"}, bearer=channel_token, expected=201)
-            self.assertEqual(rollback["selected_version"], "7.4.2")
+            rollback_version = self.evidence["rollback_version"]
+            rollback = post_json_route(
+                self.discovered_route("connector.rollback"),
+                {"tenant": tenant, "version": rollback_version, "slot": self.evidence["rollback_slot"]},
+                bearer=channel_token, expected=201)
+            self.assertEqual(rollback["selected_version"], rollback_version)
 
 
 if __name__ == "__main__":

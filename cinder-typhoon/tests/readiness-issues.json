@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "repository": "PaloAltoNetworks/shifter-scenarios",
+  "milestone": {"number": 4, "title": "Cinder Typhoon enterprise campaign remediation"},
+  "delivery_issue": 271,
+  "captured_at": "2026-11-02T00:21:26Z",
+  "issues": {
+    "212": {
+      "title": "CT-100: Replace the exhaustive KeplerOps service catalog with an in-world discovery design",
+      "state": "open",
+      "updated_at": "2026-10-30T06:14:08Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/212",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["participant-boundary KeplerOps discovery report"], "evidence": []}
+    },
+    "213": {
+      "title": "CT-101: Rework K01–K12 onto normal developer, package, build, and preview interfaces",
+      "state": "open",
+      "updated_at": "2026-10-30T06:14:07Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/213",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["K01-K12 interface and discovery acceptance report"], "evidence": []}
+    },
+    "214": {
+      "title": "CT-102: Rework K13–K24 and K30–K31 onto normal cloud, support, identity, and assistant interfaces",
+      "state": "open",
+      "updated_at": "2026-10-30T06:14:06Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/214",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["K13-K24 and K30-K31 interface acceptance report"], "evidence": []}
+    },
+    "215": {
+      "title": "CT-103: Rework K25–K29 customer delivery around a believable release channel",
+      "state": "open",
+      "updated_at": "2026-10-30T06:14:05Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/215",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["K25-K29 release-channel acceptance report"], "evidence": []}
+    },
+    "216": {
+      "title": "CT-104: Make the K18 federated subject and assertion contract discoverable",
+      "state": "open",
+      "updated_at": "2026-10-30T06:14:04Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/216",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["K18 dossier-derived subject acceptance report"], "evidence": []}
+    },
+    "217": {
+      "title": "CT-105: Replace K26’s hard-coded customer-channel bearer with earned authority",
+      "state": "open",
+      "updated_at": "2026-10-30T06:14:03Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/217",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["K26 earned-authority acceptance report"], "evidence": []}
+    },
+    "218": {
+      "title": "CT-106: Audit and replace challenge-only uses of the generic equivalent-backend profile",
+      "state": "open",
+      "updated_at": "2026-10-30T06:14:02Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/218",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["equivalent-backend classification and acceptance report"], "evidence": []}
+    },
+    "219": {
+      "title": "CT-200: Define ARWC’s domain API and discovery map before rewriting routes",
+      "state": "open",
+      "updated_at": "2026-10-30T06:14:00Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/219",
+      "blocks": ["provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["approved ARWC domain-interface report"], "evidence": []}
+    },
+    "220": {
+      "title": "CT-201: Migrate W01–W15 from title routes to corporate and maintenance resources",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:59Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/220",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["W01-W15 resource-route acceptance report"], "evidence": []}
+    },
+    "221": {
+      "title": "CT-202: Migrate W16–W24 from title routes to engineering and observation workflows",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:58Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/221",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["W16-W24 workflow and artifact-analysis acceptance report"], "evidence": []}
+    },
+    "222": {
+      "title": "CT-203: Migrate W25–W35 to normal process, planning, scheduler, and control interfaces",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:57Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/222",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["W25-W35 process and control acceptance report"], "evidence": []}
+    },
+    "223": {
+      "title": "CT-204: Deliver W33’s forecast, model, constraints, and schema as real starting material",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:56Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/223",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["W33 schedule-window derivation acceptance report"], "evidence": []}
+    },
+    "224": {
+      "title": "CT-205: Audit all exact runtime comparisons for author-only values",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:55Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/224",
+      "blocks": ["known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["complete exact-comparison audit and live acceptance report"], "evidence": []}
+    },
+    "225": {
+      "title": "CT-300: Add safe per-range variation to defeat exact solution replay",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:54Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/225",
+      "blocks": ["service_contract", "known_solution_acceptance", "provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["three-seed immutable candidate reports", "cross-range replay denial report"], "evidence": []}
+    },
+    "226": {
+      "title": "CT-301: Make the participant challenge and scoring delivery authoritative and testable",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:53Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/226",
+      "blocks": ["known_solution_acceptance", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["challenge delivery gate", "immutable participant UI acceptance report"], "evidence": []}
+    },
+    "227": {
+      "title": "CT-302: Author and validate graduated in-world hints",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:52Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/227",
+      "blocks": ["blind_human_agent_playtest", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["hint delivery gate", "per-level blind-playtest observations"], "evidence": []}
+    },
+    "228": {
+      "title": "CT-303: Preserve the defender-learning purpose without adding blue-team challenges",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:51Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/228",
+      "blocks": ["blind_human_agent_playtest", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["facilitator material review", "post-play evaluation evidence"], "evidence": []}
+    },
+    "229": {
+      "title": "CT-400: Run blind human-plus-agent playtests on the event candidate",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:50Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/229",
+      "blocks": ["blind_human_agent_playtest", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["immutable blind-playtest cohort report"], "evidence": []}
+    },
+    "230": {
+      "title": "CT-401: Recalibrate tiers and the sixteen-hour content ceiling from observed play",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:49Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/230",
+      "blocks": ["blind_human_agent_playtest", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["playtest-derived calibration report"], "evidence": []}
+    },
+    "231": {
+      "title": "CT-500: Stop ARWC pre-handoff services from crash-looping",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:13Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/231",
+      "blocks": ["service_contract", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["24-hour immutable pre-handoff stability report", "handover transition and restore report"], "evidence": []}
+    },
+    "232": {
+      "title": "CT-501: Bind golden ranges to an immutable release manifest and eliminate drift",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:48Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/232",
+      "blocks": ["service_contract", "known_solution_acceptance", "provenance_and_surface", "blind_human_agent_playtest", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["immutable release manifest", "candidate drift and restore reports"], "evidence": []}
+    },
+    "233": {
+      "title": "CT-502: Run a production-equivalent 300-range soak, transition, and reset test",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:47Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/233",
+      "blocks": ["release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["production-equivalent 300-range soak report"], "evidence": []}
+    },
+    "234": {
+      "title": "CT-503: Reconcile documentation and readiness claims with measured evidence",
+      "state": "open",
+      "updated_at": "2026-10-30T06:13:46Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/234",
+      "blocks": ["release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["documentation/status consistency gate", "final immutable release evidence"], "evidence": []}
+    },
+    "265": {
+      "title": "CT-508: Replace ARWC author literals with executable artifact-derived analysis",
+      "state": "open",
+      "updated_at": "2026-10-31T19:14:13Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/265",
+      "blocks": ["known_solution_acceptance", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["ARWC derivation AST gate", "immutable W22/W23/W24/W33/W34 acceptance reports"], "evidence": []}
+    },
+    "266": {
+      "title": "CT-509: Make the fourth-wall release gate genuinely clean",
+      "state": "open",
+      "updated_at": "2026-10-31T19:14:15Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/266",
+      "blocks": ["provenance_and_surface", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["zero-finding static reports", "clean pre/post participant live reports"], "evidence": []}
+    },
+    "272": {
+      "title": "CT-515: Run one immutable post-remediation acceptance campaign before milestone closure",
+      "state": "open",
+      "updated_at": "2026-10-31T19:14:51Z",
+      "url": "https://github.com/PaloAltoNetworks/shifter-scenarios/issues/272",
+      "blocks": ["service_contract", "known_solution_acceptance", "provenance_and_surface", "blind_human_agent_playtest", "release_qualification"],
+      "acceptance": {"status": "pending", "required_evidence": ["complete immutable post-remediation evidence index"], "evidence": []}
+    }
+  }
+}

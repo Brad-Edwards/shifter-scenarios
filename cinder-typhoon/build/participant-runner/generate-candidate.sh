@@ -69,14 +69,16 @@ arwc_digest=$(get_digest cinder-arwc-golden "cinder-arwc/a-connector:hand-build"
 
 root=$(CDPATH='' cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 out="$root/candidate.json"
+catalog_metadata=$(python3 "$root/../../challenges/catalog.py" --metadata)
 
 python3 - <<PYEOF
 import json, sys
 manifest = {
-    "schema_version": 1,
+    "schema_version": 2,
     "candidate_id": "$candidate_id",
     "immutable": $immutable,
     "source_commit": "$source_commit",
+    "challenge_delivery": json.loads(r'''$catalog_metadata'''),
     "artifact_digests": {
         "cinder-training/workstation:hand-build": "$training_digest",
         "cinder-keplerops/k-dev:hand-build": "$keplerops_digest",

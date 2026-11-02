@@ -1,27 +1,26 @@
 from __future__ import annotations
 
 import copy
+import grp
 import hashlib
 import json
 import os
-from pathlib import Path
 import pwd
-import grp
-import re
 import sys
 import tempfile
 import unittest
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SURFACE = ROOT / "build" / "participant-surface"
 sys.path.insert(0, str(SURFACE))
+sys.path.insert(0, str(ROOT / "challenges"))
 
+import catalog as delivery_catalog  # noqa: E402
 from compare import compare  # noqa: E402
 from observe import observe  # noqa: E402
 from run import observation_plan  # noqa: E402
 from validate import ManifestError, load, validate  # noqa: E402
-
 
 PHASES = ("training", "keplerops", "arwc")
 
@@ -125,22 +124,41 @@ class AuthoredManifestTests(unittest.TestCase):
         self.assertEqual(exposed, all_route_keys,
                          "client-reference disclosures must expose exactly the routes in client_documents.json")
 
-    def test_external_cards_and_absent_hints_are_explicit(self) -> None:
-        prefixes = {"training": "T", "keplerops": "K", "arwc": "W"}
-        challenge_root = ROOT / "docs" / "design" / "challenges"
-        for phase, prefix in prefixes.items():
+    def test_delivery_manifests_bind_to_the_canonical_catalog(self) -> None:
+        catalog = delivery_catalog.load_catalog()
+        metadata = delivery_catalog.catalog_metadata()
+        hint_manifest = delivery_catalog.load_hint_manifest()
+        hint_metadata = delivery_catalog.hint_manifest_metadata()
+        for phase in PHASES:
             with self.subTest(phase=phase):
                 delivery = manifest(phase)["delivery"]
-                expected = {
-                    path.stem
-                    for path in challenge_root.glob(f"{prefix}*/*.md")
-                    if re.fullmatch(rf"{prefix}\d+\.\d+", path.stem)
-                }
-                self.assertIn(delivery["cards"]["status"], {"external_unverified", "versioned"})
-                self.assertEqual(set(delivery["cards"]["items"]), expected)
+                phase_value = catalog["phases"][phase]
+                self.assertEqual(delivery["cards"], {"status": "versioned"})
                 hints = delivery["hints"]
-                self.assertIn(hints["status"], {"not_materialized", "authored"},
-                              f"{phase} hints status must be not_materialized or authored")
+                self.assertEqual(hints["status"], "versioned")
+                self.assertEqual(hints["manifest"], hint_metadata)
+                self.assertEqual(
+                    hints["source"],
+                    next(source for source in hint_manifest["sources"] if source["phase"] == phase),
+                )
+                self.assertEqual(hints["release"], hint_manifest["release"])
+                self.assertEqual(hints["score_effect"], hint_manifest["score_effect"])
+                phase_items = [item for item in hint_manifest["items"] if item["phase"] == phase]
+                self.assertEqual(hints["items"], [
+                    {
+                        "card_id": item["card_id"],
+                        "levels": [level["level"] for level in item["levels"]],
+                        "content_revision": delivery_catalog._canonical_sha256(item["levels"]),
+                    }
+                    for item in phase_items
+                ])
+                self.assertEqual(delivery["catalog"], {
+                    **metadata,
+                    "phase": phase,
+                    "phase_operation_count": phase_value["operation_count"],
+                    "phase_card_count": phase_value["card_count"],
+                    "phase_score_total": phase_value["score_total"],
+                })
 
     def test_authored_hints_cover_all_cards_in_phase(self) -> None:
         import yaml
@@ -159,22 +177,28 @@ class AuthoredManifestTests(unittest.TestCase):
                     + ", ".join(sorted(missing)[:5]))
 
     def test_versioned_challenge_catalog_matches_card_registry(self) -> None:
-        import yaml
-        catalog_path = ROOT / "build" / "card-coverage" / "challenges" / "challenges.yaml"
+        catalog_path = ROOT / "challenges" / "challenges.yaml"
         registry_path = ROOT / "build" / "card-coverage" / "registry.json"
         self.assertTrue(catalog_path.exists(), "challenges/challenges.yaml must exist")
-        catalog = yaml.safe_load(catalog_path.read_text())
+        catalog = delivery_catalog.load_catalog()
         registry = json.loads(registry_path.read_text())
-        self.assertEqual(catalog.get("schema"), "cinder-typhoon.challenges/v1")
-        # Total card count in catalog must match registry.
-        total_in_catalog = sum(
-            sum(v for v in op["cards"].values())
-            for ph in catalog["phases"].values()
-            for op in ph["operations"]
-        )
-        total_in_registry = len(registry.get("cards", {}))
-        self.assertEqual(total_in_catalog, total_in_registry,
-                         "challenge catalog card count must match card registry")
+        cards = delivery_catalog.catalog_cards(catalog)
+        self.assertEqual(catalog["schema"], "cinder-typhoon.challenge-delivery/v2")
+        self.assertEqual(len(delivery_catalog.catalog_operations(catalog)), 70)
+        self.assertEqual(len(cards), 240)
+        self.assertEqual({card["id"] for card in cards}, set(registry["cards"]))
+        self.assertEqual(sum(card["points"] for card in cards), 39200)
+        self.assertEqual(registry["delivery_catalog"], delivery_catalog.catalog_metadata())
+
+    def test_participant_catalog_excludes_operator_design_and_solutions(self) -> None:
+        serialized = json.dumps(delivery_catalog.load_catalog()).lower()
+        for value in (
+            "technical design", "vulnerability and intended solution", "author checks",
+            "completion_evaluator", "accepting_components", "evidence_owners", "evidence_sources",
+            "evidence_contract", "read_only_review",
+            "prerequisite_sets", "request_body", "response_body",
+        ):
+            self.assertNotIn(value, serialized)
 
     def test_operator_surface_is_not_copied_by_any_image(self) -> None:
         for dockerfile in (ROOT / "build").glob("**/*.Dockerfile"):
@@ -276,10 +300,7 @@ class ObservationTests(unittest.TestCase):
             "tools": [{"name": "python3", "path": sys.executable}],
             "network": {"dns": [], "listeners": []},
             "disclosures": [],
-            "delivery": {
-                "cards": {"status": "versioned", "items": []},
-                "hints": {"status": "not_materialized", "items": []},
-            },
+            "delivery": copy.deepcopy(manifest("training")["delivery"]),
         }
 
     @unittest.skipIf(os.geteuid() == 0, "observer intentionally refuses root")

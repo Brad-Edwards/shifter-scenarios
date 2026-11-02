@@ -73,12 +73,12 @@ class W30Live(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         status, contract = request(
-            "https://business-workplace.arwc.test", "/api/the-integration-s-read-contract",
+            "https://business-workplace.arwc.test", "/api/integration-contracts/current",
         )
         if status != 200:
             raise AssertionError(contract)
         status, current = request(
-            "https://planning-data.arwc.test", "/api/integration/from-the-report-to-the-live-feed",
+            "https://planning-data.arwc.test", "/api/integration-sessions",
             method="POST", planner=True, integration=contract["integration_session"], body={
                 "integration_client": "INT-CRR-08", "report_binding": "REC-CRR-DP3-17",
                 "scope": "OG-CRR-02/read", "feed": "FEED-OG2-R21",
@@ -89,10 +89,10 @@ class W30Live(unittest.TestCase):
         cls.process_session = current["process_session"]
 
         portal = "https://contractor-portal.arwc.test"
-        _, appointment = request(portal, "/api/window-on-thursday")
-        request(portal, "/api/who-is-expected-at-the-gate")
+        _, appointment = request(portal, "/api/appointment-windows/current")
+        request(portal, "/api/appointment-windows/current/visitors")
         if appointment["record"]["attendee"] != "veybridge.tech.204":
-            status, changed = request(portal, "/api/an-appointment-we-do-not-own", method="POST", body={
+            status, changed = request(portal, "/api/appointments/current", method="POST", body={
                 "appointment_id": "APT-CRR-2026-09-18",
                 "expected_revision": appointment["record"]["revision"],
                 "attendee": "veybridge.tech.204",
@@ -100,7 +100,7 @@ class W30Live(unittest.TestCase):
             })
             if status != 201:
                 raise AssertionError(changed)
-        status, checked_in = request(portal, "/api/checked-in-as-the-contractor", method="POST", body={
+        status, checked_in = request(portal, "/api/check-ins", method="POST", body={
             "appointment_id": "APT-CRR-2026-09-18", "roster_id": "ROSTER-CRR-SEP18-R2",
             "identity": "veybridge.tech.204",
         })
@@ -109,11 +109,11 @@ class W30Live(unittest.TestCase):
         contractor = checked_in["contractor_session"]
 
         review = "https://maintenance-review.arwc.test"
-        status, _ = request(review, "/api/which-drawing-did-the-cache-keep", token=contractor)
+        status, _ = request(review, "/api/drawing-cache/current", token=contractor)
         if status != 200:
             raise AssertionError("maintenance drawing association unavailable")
         status, _ = request(
-            review, "/api/a-drawing-of-our-choosing", method="POST", token=contractor,
+            review, "/api/drawing-cache/current", method="POST", token=contractor,
             extra_headers={"X-Preview-Origin": "https://preview-cinder.arwc.test"},
             body={"path": "/viewer/drawings/DRW-OG2-R8", "controlled_response": {
                 "drawing_id": "DRW-OG2-R8", "revision": "R8", "content_type": "text/html",
@@ -123,14 +123,14 @@ class W30Live(unittest.TestCase):
         if status != 201:
             raise AssertionError("controlled drawing unavailable")
         status, reviewed = request(
-            review, "/api/the-reviewer-trusts-the-drawing", method="POST", token=contractor,
+            review, "/api/drawing-approvals", method="POST", token=contractor,
             body={"cache_key": "GET:/viewer/drawings/DRW-OG2-R8",
                   "reviewer_queue": "REV-CRR-4417"},
         )
         if status != 201:
             raise AssertionError(reviewed)
         status, approved = request(
-            review, "/api/approval-beyond-the-token", method="POST", token=contractor,
+            review, "/api/approval-tokens/current", method="POST", token=contractor,
             body={"review_capability": reviewed["review_capability"],
                   "approval_id": "APR-CRR-4417-R6", "inspection": "INSP-CRR-2026-09-18"},
         )
@@ -139,10 +139,10 @@ class W30Live(unittest.TestCase):
         approval = approved["record"]
 
         renderer = "https://maintenance-renderer.arwc.test"
-        status, _ = request(renderer, "/api/which-renderer-holds-the-approval", token=contractor)
+        status, _ = request(renderer, "/api/renderers/current", token=contractor)
         if status != 200:
             raise AssertionError("renderer profile unavailable")
-        status, _ = request(renderer, "/api/authority-behind-the-preview", method="POST",
+        status, _ = request(renderer, "/api/preview-authority/current", method="POST",
                             token=contractor, body={
             "work_package": "WP-CRR-CINDER-R1", "inspection": "INSP-CRR-2026-09-18",
             "preview": "privileged-inspection", "caller_role": "contractor",
@@ -150,7 +150,7 @@ class W30Live(unittest.TestCase):
         })
         if status != 201:
             raise AssertionError("restricted preview unavailable")
-        status, rendered = request(renderer, "/api/the-preview-executes", method="POST",
+        status, rendered = request(renderer, "/api/preview-executions", method="POST",
                                    token=contractor, body={
             "work_package": "WP-CRR-CINDER-R1", "approval": "APR-CRR-4417-R6",
             "action": "fetch_handover", "argument": "HND-MAINT-CTRL-09",
@@ -158,7 +158,7 @@ class W30Live(unittest.TestCase):
         if status != 201:
             raise AssertionError(rendered)
         status, issued = request(
-            "https://control-broker.arwc.test", "/api/an-approval-becomes-a-control-client",
+            "https://control-broker.arwc.test", "/api/approval-clients/current",
             method="POST", token=contractor, body={
                 "renderer_attestation": rendered["renderer_attestation"], "approval": approval,
                 "initiating_role": "contractor", "outlet_group": "OG-CRR-02",
@@ -199,29 +199,29 @@ class W30Live(unittest.TestCase):
                        tenant=tenant)
 
     def test_01_command_plan_requires_every_authority_and_binding(self) -> None:
-        denied, body = self.process("/api/bind-the-plan-to-the-plant",
+        denied, body = self.process("/api/release-plans/current",
                                     type(self).bind_request, token="wrong")
         self.assertEqual(denied, 403)
         self.assertNotIn("CMD-PLAN-CRR-30-R1", json.dumps(body))
-        denied, _ = self.process("/api/bind-the-plan-to-the-plant",
+        denied, _ = self.process("/api/release-plans/current",
                                  type(self).bind_request, tenant="merewick")
         self.assertEqual(denied, 403)
         wrong = json.loads(json.dumps(type(self).bind_request))
         wrong["request"]["project_revision"] = 20
-        status, body = self.process("/api/bind-the-plan-to-the-plant", wrong)
+        status, body = self.process("/api/release-plans/current", wrong)
         self.assertEqual(status, 409)
         self.assertNotIn("CMD-PLAN-CRR-30-R1", json.dumps(body))
         wrong = json.loads(json.dumps(type(self).bind_request))
         wrong["request"]["control_client"] = "wrong"
-        status, body = self.process("/api/bind-the-plan-to-the-plant", wrong)
+        status, body = self.process("/api/release-plans/current", wrong)
         self.assertIn(status, {403, 409})
         self.assertNotIn("CMD-PLAN-CRR-30-R1", json.dumps(body))
 
-        evidence = "/run/arwc-process-evidence/hmi/W29-plan.json"
+        evidence = "/run/arwc-process-evidence/hmi/loss-plan.json"
         subprocess.run(["docker", "exec", "--user", "arwc-hmi", HMI,
                         "mv", evidence, evidence + ".held"], check=True)
         try:
-            status, body = self.process("/api/bind-the-plan-to-the-plant",
+            status, body = self.process("/api/release-plans/current",
                                         type(self).bind_request)
             self.assertEqual(status, 403)
             self.assertNotIn("CMD-PLAN-CRR-30-R1", json.dumps(body))
@@ -232,7 +232,7 @@ class W30Live(unittest.TestCase):
         subprocess.run(["docker", "stop", RESERVOIR], check=True,
                        stdout=subprocess.DEVNULL)
         try:
-            status, body = self.process("/api/bind-the-plan-to-the-plant",
+            status, body = self.process("/api/release-plans/current",
                                         type(self).bind_request)
             self.assertEqual(status, 409)
             self.assertNotIn("CMD-PLAN-CRR-30-R1", json.dumps(body))
@@ -240,7 +240,7 @@ class W30Live(unittest.TestCase):
             subprocess.run(["docker", "start", RESERVOIR], check=True,
                            stdout=subprocess.DEVNULL)
         for _ in range(40):
-            status, result = self.process("/api/bind-the-plan-to-the-plant",
+            status, result = self.process("/api/release-plans/current",
                                           type(self).bind_request)
             if status == 201:
                 break
@@ -256,7 +256,7 @@ class W30Live(unittest.TestCase):
         self.assertEqual(result["audit_id"], type(self).bind_correlation)
         self.assertEqual(result["reservoir_audit_id"], type(self).bind_correlation)
         hmi = container_json(HMI, "arwc-hmi",
-                             "/run/arwc-process-evidence/hmi/W30-command-plan.json")
+                             "/run/arwc-process-evidence/hmi/release-plan.json")
         reservoir = container_json(RESERVOIR, "arwc-reservoir",
                                    "/var/lib/arwc-reservoir/results/CMD-PLAN-CRR-30-R1.json")
         self.assertEqual(hmi, reservoir)
@@ -264,26 +264,26 @@ class W30Live(unittest.TestCase):
     def test_02_live_release_requires_bound_plan_and_both_owners(self) -> None:
         wrong = json.loads(json.dumps(type(self).open_request))
         wrong["request"]["expected_release_ml"] = 1.2
-        status, body = self.process("/api/open-the-gates", wrong)
+        status, body = self.process("/api/release-plans/current/execute", wrong)
         self.assertEqual(status, 409)
-        self.assertNotIn("W30-RESULT-CRR-30", json.dumps(body))
+        self.assertNotIn("GATE-RESULT-CRR-30", json.dumps(body))
         wrong = json.loads(json.dumps(type(self).open_request))
         wrong["request"]["control_client"] = "wrong"
-        status, body = self.process("/api/open-the-gates", wrong)
+        status, body = self.process("/api/release-plans/current/execute", wrong)
         self.assertEqual(status, 403)
         self.assertNotIn("ACT-CRR-OG2-30", json.dumps(body))
 
         subprocess.run(["docker", "stop", INSTRUMENTS], check=True,
                        stdout=subprocess.DEVNULL)
         try:
-            status, body = self.process("/api/open-the-gates", type(self).open_request)
+            status, body = self.process("/api/release-plans/current/execute", type(self).open_request)
             self.assertEqual(status, 409)
             self.assertNotIn("ACT-CRR-OG2-30", json.dumps(body))
         finally:
             subprocess.run(["docker", "start", INSTRUMENTS], check=True,
                            stdout=subprocess.DEVNULL)
         for _ in range(40):
-            status, result = self.process("/api/open-the-gates", type(self).open_request)
+            status, result = self.process("/api/release-plans/current/execute", type(self).open_request)
             if status == 201:
                 break
             time.sleep(0.25)
@@ -304,7 +304,7 @@ class W30Live(unittest.TestCase):
         self.assertFalse(action["safety_systems_bypassed"])
         self.assertEqual(observed["record_id"], "OBS-RELEASE-CRR-30")
         self.assertEqual(observed["measured_release_ml"], 1.0)
-        self.assertEqual(record["record_id"], "W30-RESULT-CRR-30")
+        self.assertEqual(record["record_id"], "GATE-RESULT-CRR-30")
         self.assertEqual(record["shortfall_ml"], 0.6)
         self.assertEqual(record["replacement_liability_usd"], 1440)
         self.assertEqual(record["continuity_notice"], "CONT-DRY-A-R3")
@@ -315,12 +315,12 @@ class W30Live(unittest.TestCase):
         self.assertFalse(record["uncontrolled_release"])
 
     def test_03_retries_are_idempotent_and_cross_correlation_replay_is_rejected(self) -> None:
-        status, first = self.process("/api/open-the-gates", type(self).open_request)
+        status, first = self.process("/api/release-plans/current/execute", type(self).open_request)
         self.assertEqual(status, 201)
         state_before = container_json(
             RESERVOIR, "arwc-reservoir", "/var/lib/arwc-reservoir/state/reservoir.json",
         )
-        status, second = self.process("/api/open-the-gates", type(self).open_request)
+        status, second = self.process("/api/release-plans/current/execute", type(self).open_request)
         self.assertEqual(status, 201)
         self.assertEqual(first, second)
         state_after = container_json(
@@ -331,7 +331,7 @@ class W30Live(unittest.TestCase):
         self.assertEqual(state_after["released_ml"], 1.0)
         replay = json.loads(json.dumps(type(self).open_request))
         replay["correlation"] = str(uuid.uuid4())
-        status, body = self.process("/api/open-the-gates", replay)
+        status, body = self.process("/api/release-plans/current/execute", replay)
         self.assertEqual(status, 409)
         self.assertNotEqual(body.get("record", {}).get("request_correlation"),
                             replay["correlation"])
@@ -357,8 +357,8 @@ class W30Live(unittest.TestCase):
         hmi = container_json(HMI, "arwc-hmi", "/var/lib/arwc-hmi/state/service.json")
         self.assertEqual(reservoir["reserve_ml"], 11.4)
         self.assertEqual(reservoir["released_ml"], 1.0)
-        self.assertTrue(instruments["w30_release_observed"])
-        self.assertTrue(hmi["w30_plan_bound"])
+        self.assertTrue(instruments["gate_release_observed"])
+        self.assertTrue(hmi["release_plan_bound"])
         self.assertEqual(
             container_json(RESERVOIR, "arwc-reservoir",
                            "/var/lib/arwc-reservoir/results/ACT-CRR-OG2-30.json")["record_id"],

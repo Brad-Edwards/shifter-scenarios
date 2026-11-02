@@ -911,7 +911,7 @@ invoices:
   tax_cents: 0
   kind: project_acceptance
   authority: COM-2026-002
-  description: River contractor archive guide - customer accepted 2026-08-03, final half
+  description: River contractor archive guide - customer confirmed 2026-08-03, final half
   period: ''
   opening_paid_cents: 0
   document: ko-26-0055
@@ -950,7 +950,7 @@ invoices:
   tax_cents: 0
   kind: project_acceptance
   authority: COM-2026-012
-  description: Reservoir return catalogue - customer accepted 2026-08-03, final half
+  description: Reservoir return catalogue - customer confirmed 2026-08-03, final half
   period: ''
   opening_paid_cents: 0
   document: ko-26-0058
@@ -976,7 +976,7 @@ invoices:
   tax_cents: 0
   kind: project_acceptance
   authority: COM-2026-017
-  description: Two-district archive handover - customer accepted 2026-08-03, final half
+  description: Two-district archive handover - customer confirmed 2026-08-03, final half
   period: ''
   opening_paid_cents: 0
   document: ko-26-0060
@@ -1002,7 +1002,7 @@ invoices:
   tax_cents: 0
   kind: project_acceptance
   authority: COM-2026-022
-  description: Coastal inspection export guide - customer accepted 2026-08-03, final half
+  description: Coastal inspection export guide - customer confirmed 2026-08-03, final half
   period: ''
   opening_paid_cents: 0
   document: ko-26-0062
@@ -1041,7 +1041,7 @@ invoices:
   tax_cents: 0
   kind: project_acceptance
   authority: COM-2026-032
-  description: Regional comparison index - customer accepted 2026-08-03, final half
+  description: Regional comparison index - customer confirmed 2026-08-03, final half
   period: ''
   opening_paid_cents: 0
   document: ko-26-0065
@@ -1080,7 +1080,7 @@ invoices:
   tax_cents: 0
   kind: project_acceptance
   authority: COM-2026-042
-  description: Municipal export reconciliation - customer accepted 2026-08-03, final half
+  description: Municipal export reconciliation - customer confirmed 2026-08-03, final half
   period: ''
   opening_paid_cents: 0
   document: ko-26-0068

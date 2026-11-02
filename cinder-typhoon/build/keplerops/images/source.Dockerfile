@@ -10,20 +10,22 @@ RUN apt-get update \
     && useradd --system --gid git --home-dir /var/lib/gitea --shell /usr/sbin/nologin git
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
+COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
+COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/source.py /opt/fieldkest/source.py
 COPY build/keplerops/runtime/source-entrypoint.sh /usr/local/bin/fieldkest-source-entrypoint
 COPY build/keplerops/config/gitea-app.ini /etc/gitea/app.ini
 COPY assets/keplerops/opening/k-source-state.tar /tmp/k-source-state.tar
-COPY assets/keplerops/policy-compiler/k-source-k11-state.tar /tmp/k-source-k11-state.tar
-COPY assets/keplerops/connector-archive/k-source-k28-state.tar /tmp/k-source-k28-state.tar
-COPY assets/keplerops/release-lineage/k-source-k29-state.tar /tmp/k-source-k29-state.tar
+COPY assets/keplerops/policy-compiler/k-source-policy-compiler-state.tar /tmp/k-source-policy-compiler-state.tar
+COPY assets/keplerops/connector-archive/k-source-connector-archive-state.tar /tmp/k-source-connector-archive-state.tar
+COPY assets/keplerops/release-lineage/k-source-release-lineage-state.tar /tmp/k-source-release-lineage-state.tar
 
 RUN mkdir -p /var/lib/gitea \
     && tar -xf /tmp/k-source-state.tar -C /var/lib/gitea \
-    && tar -xf /tmp/k-source-k11-state.tar -C /var/lib/gitea \
-    && tar -xf /tmp/k-source-k28-state.tar -C /var/lib/gitea \
-    && tar -xf /tmp/k-source-k29-state.tar -C /var/lib/gitea \
-    && rm /tmp/k-source-state.tar /tmp/k-source-k11-state.tar /tmp/k-source-k28-state.tar /tmp/k-source-k29-state.tar \
+    && tar -xf /tmp/k-source-policy-compiler-state.tar -C /var/lib/gitea \
+    && tar -xf /tmp/k-source-connector-archive-state.tar -C /var/lib/gitea \
+    && tar -xf /tmp/k-source-release-lineage-state.tar -C /var/lib/gitea \
+    && rm /tmp/k-source-state.tar /tmp/k-source-policy-compiler-state.tar /tmp/k-source-connector-archive-state.tar /tmp/k-source-release-lineage-state.tar \
     && mkdir -p /var/lib/gitea/audit /var/lib/gitea/data /var/lib/gitea/repositories \
     && chown -R git:git /var/lib/gitea \
     && chmod 0750 /var/lib/gitea \

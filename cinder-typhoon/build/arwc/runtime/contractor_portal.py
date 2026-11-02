@@ -342,19 +342,19 @@ class Handler(BaseHTTPRequestHandler):
                 return
             state["field_bag_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("the-field-bag", "veybridge.tech.204", FIELD_BAG)
+            self.accepted("field-kit-read", "veybridge.tech.204", FIELD_BAG)
             return
         if not self.corporate_authorized():
             return
         if path == "/api/appointment-windows/current":
             state["appointment_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("window-on-thursday", "corporate-reader-principal", state["appointment"])
+            self.accepted("appointment-window-read", "corporate-reader-principal", state["appointment"])
             return
         if path == "/api/appointment-windows/current/visitors":
             state["roster_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("who-is-expected-at-the-gate", "corporate-reader-principal", ROSTER)
+            self.accepted("check-in-roster-read", "corporate-reader-principal", ROSTER)
             return
         self.send_json(404, {"error": "record not found"})
 
@@ -395,7 +395,7 @@ class Handler(BaseHTTPRequestHandler):
             appointment["attendee"] = ROSTER["identity"]
             state["appointment"] = appointment
             atomic_json(STATE, state)
-            self.accepted("an-appointment-we-do-not-own", ROSTER["identity"], appointment, 201)
+            self.accepted("appointment-created", ROSTER["identity"], appointment, 201)
             return
         if path == "/api/check-ins":
             appointment = state["appointment"]
@@ -427,7 +427,7 @@ class Handler(BaseHTTPRequestHandler):
                 os.chown(HANDOVER, -1, grp.getgrnam("arwc-field-session").gr_gid)
                 os.chmod(HANDOVER, 0o640)
             public = {key: value for key, value in session.items() if key != "token_sha256"}
-            self.accepted("checked-in-as-the-contractor", ROSTER["identity"], public, 201,
+            self.accepted("contractor-check-in-created", ROSTER["identity"], public, 201,
                           {"contractor_session": token})
             return
         self.send_json(404, {"error": "record not found"})

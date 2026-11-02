@@ -12,12 +12,12 @@
     },
     {
       "name": "chromium-History",
-      "sha256": "4415fd5363aa5f4c043b3b01e27211f706509dbb08740dd5e9baf9f3be9c1297",
+      "sha256": "7a07e88fe3fa518038fb1666df797d9f6ee542c672a316ae4794e00c6e20a235",
       "size": 20480
     },
     {
       "name": "chromium-Cookies",
-      "sha256": "a79c5747ee3836cf990c928842e212c13b93359e975cdd43284c880b5101516e",
+      "sha256": "aa79e67fd7303bfa56905530ae077b924694686e2840c306759be00d36fb5e1b",
       "size": 20480
     }
   ],

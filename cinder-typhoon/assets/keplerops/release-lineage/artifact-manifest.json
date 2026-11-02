@@ -1,22 +1,22 @@
 {
   "archives": [
     {
-      "archive": "k-source-k29-state.tar",
-      "sha256": "d7eeaad580feba4bb83d334b07632c2fbed2c6c2777d11d896ffe8aed0efc0ea",
+      "archive": "k-source-release-lineage-state.tar",
+      "sha256": "97514807d9eb56e8f46605b2cc0718148e462249732afea14079806bb2a7e992",
       "size": 10240
     },
     {
-      "archive": "k-registry-k29-state.tar",
-      "sha256": "c21bfae71800c51998e34de7c13311fd9f9cfd292dfd51e14a806ca37aeac62b",
+      "archive": "k-registry-release-lineage-state.tar",
+      "sha256": "1e2cfa826dda45f80a9d2e4bdc6ebc49fe118259475718d166557c04039488fe",
       "size": 10240
     },
     {
-      "archive": "k-ci-k29-state.tar",
-      "sha256": "768a06cfadfa4434927ca30538f67098e6e76b7a75a32589bc0ebe7f4b7d2819",
+      "archive": "k-ci-release-lineage-state.tar",
+      "sha256": "6a9b55151226ef527c2c7e2de2ef7dc40d9daba2a10a7b72687964b3108764d1",
       "size": 10240
     },
     {
-      "archive": "k-dev-k29-home.tar",
+      "archive": "k-dev-release-lineage-home.tar",
       "sha256": "3cb4160cf16699e04aaf818a32c7952f662045b3e30ae6313314192425238039",
       "size": 10240
     }

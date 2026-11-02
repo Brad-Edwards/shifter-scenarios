@@ -209,15 +209,15 @@ def main() -> None:
     }
     config = {
         "schema": "fieldkest.registry-foundation/v1",
-        "developer": {"username": "rowan.ito", "token": "kpl_rowan_7X4mQ9vN2cL6"},
+        "developer": {"username": "rowan.ito", "token": "UNPROVISIONED"},
         "publisher": {
             "principal": "fieldlink-importer-publisher",
-            "token": "fkpub_arwc_stable_4Zt8Qm2Nc7",
+            "token": "UNPROVISIONED",
             "scope": "@keplerops/fieldlink-connector:arwc-stable",
         },
         "build_reader": {
             "principal": "svc-fieldlink-ci",
-            "token": "fkci_registry_reader_8Hd3Lp6Ws1",
+            "token": "UNPROVISIONED",
             "scope": "@keplerops/fieldlink-connector:read",
         },
         "versions": ["7.4.0", "7.4.1", "7.4.2"],
@@ -273,13 +273,13 @@ derivation context for its retained entitlement.
         "packages/support-rehearsal-1.3.1.tgz": (support_package, 0o640),
         "examples/consumer-request.json": (json_bytes(consumer_request), 0o640),
         "examples/inspection-normal.json": (json_bytes(normal_inspection), 0o640),
-        "examples/inspection-compat.fki": (bytes.fromhex("464b493103e284aa3432000101"), 0o640),
+        "examples/inspection-compat.fki": (bytes.fromhex("464b493103e284aa7161000101"), 0o640),
     }
     workstation_files = {
         "work/registry/README.md": (guide, 0o644),
         "work/registry/consumer-request.json": (json_bytes(consumer_request), 0o640),
         "work/registry/inspection-normal.json": (json_bytes(normal_inspection), 0o640),
-        "work/registry/inspection-compat.fki": (bytes.fromhex("464b493103e284aa3432000101"), 0o640),
+        "work/registry/inspection-compat.fki": (bytes.fromhex("464b493103e284aa7161000101"), 0o640),
     }
     records = [
         make_archive(ROOT / "k-registry-state.tar", registry_files),

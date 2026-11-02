@@ -170,19 +170,97 @@
     "delivery": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["cards", "hints"],
+      "required": ["catalog", "cards", "hints"],
       "properties": {
-        "cards": {"$ref": "#/$defs/delivery_item"},
-        "hints": {"$ref": "#/$defs/delivery_item"}
+        "catalog": {"$ref": "#/$defs/delivery_catalog"},
+        "cards": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status"],
+          "properties": {"status": {"const": "versioned"}}
+        },
+        "hints": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "manifest", "source", "release", "score_effect", "items"],
+          "properties": {
+            "status": {"const": "versioned"},
+            "manifest": {"$ref": "#/$defs/hint_manifest_metadata"},
+            "source": {"$ref": "#/$defs/hint_source"},
+            "release": {
+              "const": {
+                "mode": "facilitator_on_request",
+                "levels": [1, 2, 3],
+                "independent_levels": true,
+                "audit": "append_only_metadata_without_hint_text"
+              }
+            },
+            "score_effect": {"const": {"penalty": 0, "maximum_score_unchanged": true}},
+            "items": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"$ref": "#/$defs/hint_item"}
+            }
+          }
+        }
       }
     },
-    "delivery_item": {
+    "hint_manifest_metadata": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status", "items"],
+      "required": ["path", "schema", "revision", "sha256", "operation_count", "card_count", "hint_count"],
       "properties": {
-        "status": {"enum": ["observed", "not_materialized", "external_unverified"]},
-        "items": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+        "path": {"const": "build/hint-delivery/manifest.json"},
+        "schema": {"const": "cinder-typhoon.hint-delivery/v1"},
+        "revision": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "operation_count": {"const": 70},
+        "card_count": {"const": 240},
+        "hint_count": {"const": 720}
+      }
+    },
+    "hint_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phase", "path", "sha256", "card_count", "hint_count"],
+      "properties": {
+        "phase": {"enum": ["training", "keplerops", "arwc"]},
+        "path": {"type": "string", "pattern": "^build/card-coverage/hints-(training|keplerops|arwc)\\.yaml$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "card_count": {"type": "integer", "minimum": 1},
+        "hint_count": {"type": "integer", "minimum": 3}
+      }
+    },
+    "hint_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["card_id", "levels", "content_revision"],
+      "properties": {
+        "card_id": {"type": "string", "pattern": "^[TKW][0-9]{2}\\.[0-9]+$"},
+        "levels": {"const": [1, 2, 3]},
+        "content_revision": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "delivery_catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path", "schema", "revision", "sha256", "operation_count", "card_count",
+        "score_total", "phase", "phase_operation_count", "phase_card_count",
+        "phase_score_total"
+      ],
+      "properties": {
+        "path": {"const": "challenges/challenges.yaml"},
+        "schema": {"const": "cinder-typhoon.challenge-delivery/v2"},
+        "revision": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "operation_count": {"const": 70},
+        "card_count": {"const": 240},
+        "score_total": {"type": "integer", "minimum": 1},
+        "phase": {"enum": ["training", "keplerops", "arwc"]},
+        "phase_operation_count": {"type": "integer", "minimum": 1},
+        "phase_card_count": {"type": "integer", "minimum": 1},
+        "phase_score_total": {"type": "integer", "minimum": 1}
       }
     }
   }

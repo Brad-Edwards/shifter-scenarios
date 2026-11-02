@@ -10,7 +10,7 @@ RUN python3 /usr/local/bin/extract-document \
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates curl jq nodejs openssl util-linux xz-utils \
+    && apt-get install --no-install-recommends -y binutils ca-certificates curl jq nodejs openssl util-linux xz-utils \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system fieldlink \
     && useradd --system --gid fieldlink --home-dir /var/lib/fieldlink-connector --shell /usr/sbin/nologin fieldlink \

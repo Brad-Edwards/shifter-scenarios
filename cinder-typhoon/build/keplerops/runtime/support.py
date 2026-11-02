@@ -12,6 +12,7 @@ from urllib import request as urlrequest
 from urllib.parse import urlsplit
 
 from http_support import KeplerHandler, append_audit, issue_rs256, serve_tls, verify_rs256
+from credentials import credential
 
 
 STATE = Path("/var/lib/fieldkest-support")
@@ -21,8 +22,10 @@ CONFIG = json.loads((STATE / "config/opening.json").read_text())
 SESSION = CONFIG["sessions"][0]
 CONVERSATION = json.loads((STATE / "conversations/SUP-2841.json").read_text())
 EXTENDED = AUDIT / "extended-state.json"
-ALT_SESSION = CONFIG.get("reviewer_session_id", "ksess_talia_review_9Kw4Pn7R")
-ASSISTANT_TOKEN = "assistant-tool-session"
+ROWAN_SESSION = credential("support_rowan_session")
+ALT_SESSION = credential("support_reviewer_session")
+ASSISTANT_TOKEN = credential("assistant_tool_session")
+SUPPORT_DELIVERY_TOKEN = credential("support_delivery_token")
 
 
 def extended() -> dict[str, object]:
@@ -58,7 +61,7 @@ class SupportHandler(KeplerHandler):
         return claims
 
     def _authorized(self) -> bool:
-        return self._cookies().get("fieldkest_support") in {SESSION["session_id"], ALT_SESSION} or self._federated_claims() is not None
+        return self._cookies().get("fieldkest_support") in {ROWAN_SESSION, ALT_SESSION} or self._federated_claims() is not None
 
     def do_GET(self) -> None:
         if self.send_client_document():
@@ -169,7 +172,7 @@ class SupportHandler(KeplerHandler):
         if match:
             state = extended(); job = state["diagnostics"].get(match.group(1))
             if not job or job.get("state") != "packaged": return self.send_json(409, {"error": "job_not_ready"})
-            request = urlrequest.Request("https://connector.arwc.test/api/fieldlink/diagnostics", data=json.dumps({"job_id": match.group(1), "tenant": job["tenant"], "connector_revision": job["connector_revision"], **job["package"]}, sort_keys=True, separators=(",", ":")).encode(), method="POST", headers={"Authorization": "Bearer support-delivery", "Content-Type": "application/json"})
+            request = urlrequest.Request("https://connector.arwc.test/api/fieldlink/diagnostics", data=json.dumps({"job_id": match.group(1), "tenant": job["tenant"], "connector_revision": job["connector_revision"], **job["package"]}, sort_keys=True, separators=(",", ":")).encode(), method="POST", headers={"Authorization": f"Bearer {SUPPORT_DELIVERY_TOKEN}", "Content-Type": "application/json"})
             context = ssl.create_default_context(cafile="/tmp/fieldkest-ca.crt")
             with urlrequest.urlopen(request, context=context, timeout=8) as response: value = json.loads(response.read())
             job.update({"state": "delivered", "receipt": value}); save_extended(state); append_audit(AUDIT, "diagnostic-delivery", {"request_id": self.request_id, "principal": SESSION["principal"], "job_id": match.group(1), "receipt_id": value["receipt_id"], "destination_audit_id": value["audit_id"], "status": 202}); return self.send_json(202, value)

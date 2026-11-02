@@ -133,7 +133,7 @@ class W08Live(unittest.TestCase):
             ("cinder-arwc-identity", paths["identity"]),
         ):
             subprocess.run(["docker", "exec", container, "mv", path, path + ".hold"], check=True)
-        denied, body = json_request("/api/something-in-the-work-bundle")
+        denied, body = json_request("/api/bundles/current")
         self.assertEqual(denied, 403)
         self.assertNotIn("collect-handover.ps1", json.dumps(body))
 
@@ -141,7 +141,7 @@ class W08Live(unittest.TestCase):
             "docker", "exec", "cinder-arwc-identity", "mv",
             paths["identity"] + ".hold", paths["identity"],
         ], check=True)
-        status, identity = json_request("/api/something-in-the-work-bundle")
+        status, identity = json_request("/api/bundles/current")
         self.assertEqual(status, 200)
         self.assertEqual(identity["record"]["record_id"], "BND-COLLECT-CRR-12")
 
@@ -153,7 +153,7 @@ class W08Live(unittest.TestCase):
             "docker", "exec", "cinder-arwc-business", "mv",
             paths["business"] + ".hold", paths["business"],
         ], check=True)
-        status, business = json_request("/api/something-in-the-work-bundle")
+        status, business = json_request("/api/bundles/current")
         self.assertEqual(status, 200)
         self.assertEqual(business["record"], identity["record"])
         subprocess.run([
@@ -190,14 +190,14 @@ class W08Live(unittest.TestCase):
 
     def test_03_only_the_correct_rs_reconstruction_is_accepted(self) -> None:
         wrong, body = json_request(
-            "/api/reassemble-the-exchange", method="POST",
+            "/api/replay-exchange/current", method="POST",
             body={"shard_7": base64.b64encode(bytes(96)).decode(),
                   "shard_11": base64.b64encode(bytes(96)).decode()},
         )
         self.assertEqual(wrong, 409)
         self.assertNotIn("COLLECT-CRR-12", json.dumps(body))
         status, response = json_request(
-            "/api/reassemble-the-exchange", method="POST",
+            "/api/replay-exchange/current", method="POST",
             body={"shard_7": base64.b64encode(type(self).shard_7).decode(),
                   "shard_11": base64.b64encode(type(self).shard_11).decode()},
         )
@@ -230,7 +230,7 @@ class W08Live(unittest.TestCase):
         self.assertEqual(description["build_id"], "COLLECT-CRR-12")
         self.assertEqual(description["key_method"], "HKDF-SHA256")
         status, response = json_request(
-            "/api/the-collector-inside-the-handover", method="POST",
+            "/api/collectors/handover", method="POST",
             body={"build_id": description["build_id"], "collector_sha256": digest},
         )
         self.assertEqual(status, 201)
@@ -258,12 +258,12 @@ print(AESGCM(key).decrypt(base64.b64decode(value["nonce"]), base64.b64decode(val
         self.assertIn("archive: ARC-COLD-CRR-2019", decrypted.stdout)
         self.assertIn("service: collect-archive/v3", decrypted.stdout)
         wrong, body = json_request(
-            "/api/where-the-contractor-put-it", method="POST", body={"plaintext": "wrong"},
+            "/api/collection-artifacts/current", method="POST", body={"plaintext": "wrong"},
         )
         self.assertEqual(wrong, 409)
         self.assertNotIn("ARC-COLD-CRR-2019", json.dumps(body))
         status, response = json_request(
-            "/api/where-the-contractor-put-it", method="POST",
+            "/api/collection-artifacts/current", method="POST",
             body={"plaintext": decrypted.stdout},
         )
         self.assertEqual(status, 201)
@@ -272,17 +272,17 @@ print(AESGCM(key).decrypt(base64.b64decode(value["nonce"]), base64.b64decode(val
         type(self).plaintext = decrypted.stdout
 
     def test_06_authorization_persistence_and_service_evidence(self) -> None:
-        status, body = json_request("/api/something-in-the-work-bundle", token="wrong")
+        status, body = json_request("/api/bundles/current", token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("BND-COLLECT-CRR-12", json.dumps(body))
-        status, body = json_request("/api/something-in-the-work-bundle", tenant="merewick")
+        status, body = json_request("/api/bundles/current", tenant="merewick")
         self.assertEqual(status, 403)
         self.assertNotIn("collect-handover.ps1", json.dumps(body))
         subprocess.run(["docker", "restart", SERVICE], check=True, stdout=subprocess.DEVNULL)
         for _ in range(30):
             try:
                 status, response = json_request(
-                    "/api/where-the-contractor-put-it", method="POST",
+                    "/api/collection-artifacts/current", method="POST",
                     body={"plaintext": type(self).plaintext},
                 )
                 if status == 201:
@@ -298,8 +298,8 @@ print(AESGCM(key).decrypt(base64.b64decode(value["nonce"]), base64.b64decode(val
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout
         for action in (
-            "something-in-the-work-bundle", "reassemble-the-exchange",
-            "the-collector-inside-the-handover", "where-the-contractor-put-it",
+            "work-bundle-read", "replay-exchange-read",
+            "collector-handover-read", "collection-artifact-read",
         ):
             self.assertIn(f'"action":"{action}"', audit)
         hidden = inside("sh", "-c", "test ! -r /var/lib/arwc-archive/state/archive.json")

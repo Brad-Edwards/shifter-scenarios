@@ -12,18 +12,20 @@ RUN apt-get update \
     && useradd --system --gid fieldkest-consumer --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-consumer
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
+COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
+COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/ci.py /opt/fieldkest/ci.py
 COPY build/keplerops/runtime/ci-entrypoint.sh /usr/local/bin/fieldkest-ci-entrypoint
 COPY assets/keplerops/opening/k-ci-state.tar /tmp/k-ci-state.tar
-COPY assets/keplerops/build-operations/k-ci-k09-state.tar /tmp/k-ci-k09-state.tar
-COPY assets/keplerops/release-lineage/k-ci-k29-state.tar /tmp/k-ci-k29-state.tar
+COPY assets/keplerops/build-operations/k-ci-runner-state.tar /tmp/k-ci-runner-state.tar
+COPY assets/keplerops/release-lineage/k-ci-release-lineage-state.tar /tmp/k-ci-release-lineage-state.tar
 COPY assets/keplerops/build-operations/diagnostic-request-reference.md /srv/fieldlink-ci/reviews/diagnostic-request-reference.md
 
 RUN mkdir -p /var/lib/fieldkest-ci \
     && tar -xf /tmp/k-ci-state.tar -C /var/lib/fieldkest-ci \
-    && tar -xf /tmp/k-ci-k09-state.tar -C /var/lib/fieldkest-ci \
-    && tar -xf /tmp/k-ci-k29-state.tar -C /var/lib/fieldkest-ci \
-    && rm /tmp/k-ci-state.tar /tmp/k-ci-k09-state.tar /tmp/k-ci-k29-state.tar \
+    && tar -xf /tmp/k-ci-runner-state.tar -C /var/lib/fieldkest-ci \
+    && tar -xf /tmp/k-ci-release-lineage-state.tar -C /var/lib/fieldkest-ci \
+    && rm /tmp/k-ci-state.tar /tmp/k-ci-runner-state.tar /tmp/k-ci-release-lineage-state.tar \
     && mkdir -p /var/lib/fieldkest-ci/audit /var/lib/fieldkest-ci/results /var/lib/fieldkest-ci/workspaces/rowan /var/lib/fieldkest-handover \
     && mkdir -p /var/lib/fieldkest-ci/consumer-state \
     && ln -s /opt/fieldkest /opt/fieldkest-ci \

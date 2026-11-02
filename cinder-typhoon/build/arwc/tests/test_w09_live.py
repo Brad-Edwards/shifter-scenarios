@@ -62,12 +62,12 @@ class W09Live(unittest.TestCase):
     integration = ""
 
     def test_01_reconciliation_requires_both_independent_sources(self) -> None:
-        status, body = request("https://planning-data.arwc.test", "/api/the-missing-megalitre")
+        status, body = request("https://planning-data.arwc.test", "/api/allocation-discrepancies/current")
         self.assertEqual(status, 403)
         self.assertNotIn("REC-CRR-DP3-17", json.dumps(body))
 
     def test_02_allocation_ledger_is_exact_and_database_backed(self) -> None:
-        status, response = request("https://planning-data.arwc.test", "/api/water-already-promised")
+        status, response = request("https://planning-data.arwc.test", "/api/allocation-ledgers/current")
         self.assertEqual(status, 200)
         self.assertEqual(response["record"], {
             "record_id": "ALLOC-2026-DP3-R9", "revision": 9, "district": "Cairn Reach",
@@ -82,7 +82,7 @@ class W09Live(unittest.TestCase):
         self.assertEqual(database.stdout.strip(), "ALLOC-2026-DP3-R9:12.00:ML")
 
     def test_03_meter_export_is_a_distinct_record(self) -> None:
-        status, response = request("https://planning-data.arwc.test", "/api/the-meter-s-own-account")
+        status, response = request("https://planning-data.arwc.test", "/api/meter-allocations/current")
         self.assertEqual(status, 200)
         self.assertEqual(response["record"]["record_id"], "MTR-CRR-DP3-R12")
         self.assertEqual(response["record"]["usable_reserve_ml"], 12.4)
@@ -91,7 +91,7 @@ class W09Live(unittest.TestCase):
         self.assertNotIn("ALLOC-2026-DP3-R9", json.dumps(response["record"]))
 
     def test_04_reconciliation_computes_both_declared_differences(self) -> None:
-        status, response = request("https://planning-data.arwc.test", "/api/the-missing-megalitre")
+        status, response = request("https://planning-data.arwc.test", "/api/allocation-discrepancies/current")
         self.assertEqual(status, 200)
         record = response["record"]
         self.assertEqual(record["record_id"], "REC-CRR-DP3-17")
@@ -107,7 +107,7 @@ class W09Live(unittest.TestCase):
 
     def test_05_gateway_requires_both_evidence_and_rejects_stale_feed(self) -> None:
         status, response = request(
-            "https://business-workplace.arwc.test", "/api/the-integration-s-read-contract", planner=None,
+            "https://business-workplace.arwc.test", "/api/integration-contracts/current", planner=None,
         )
         self.assertEqual(status, 200)
         self.assertEqual(response["record"]["integration_client"], "INT-CRR-08")
@@ -117,21 +117,21 @@ class W09Live(unittest.TestCase):
             "scope": "OG-CRR-02/read", "feed": "FEED-OG2-R21",
         }
         denied, body = request(
-            "https://planning-data.arwc.test", "/api/integration/from-the-report-to-the-live-feed",
+            "https://planning-data.arwc.test", "/api/integration-sessions",
             method="POST", body=binding,
         )
         self.assertEqual(denied, 403)
         self.assertNotIn("usable_reserve_ml", json.dumps(body))
         wrong = dict(binding, integration_client="INT-MER-01")
         status, body = request(
-            "https://planning-data.arwc.test", "/api/integration/from-the-report-to-the-live-feed",
+            "https://planning-data.arwc.test", "/api/integration-sessions",
             method="POST", body=wrong, integration=type(self).integration,
         )
         self.assertEqual(status, 409)
         self.assertNotIn("FIT-CRR-204A", json.dumps(body))
         stale = dict(binding, feed="FEED-OG2-R19")
         status, body = request(
-            "https://planning-data.arwc.test", "/api/integration/from-the-report-to-the-live-feed",
+            "https://planning-data.arwc.test", "/api/integration-sessions",
             method="POST", body=stale, integration=type(self).integration,
         )
         self.assertEqual(status, 409)
@@ -143,7 +143,7 @@ class W09Live(unittest.TestCase):
             "scope": "OG-CRR-02/read", "feed": "FEED-OG2-R21",
         }
         status, response = request(
-            "https://planning-data.arwc.test", "/api/integration/from-the-report-to-the-live-feed",
+            "https://planning-data.arwc.test", "/api/integration-sessions",
             method="POST", body=binding, integration=type(self).integration,
         )
         self.assertEqual(status, 201)
@@ -165,12 +165,12 @@ class W09Live(unittest.TestCase):
 
     def test_07_authorization_persistence_and_owned_audits(self) -> None:
         status, body = request(
-            "https://planning-data.arwc.test", "/api/water-already-promised", token="wrong",
+            "https://planning-data.arwc.test", "/api/allocation-ledgers/current", token="wrong",
         )
         self.assertEqual(status, 403)
         self.assertNotIn("ALLOC-2026-DP3-R9", json.dumps(body))
         status, body = request(
-            "https://planning-data.arwc.test", "/api/the-meter-s-own-account", tenant="merewick",
+            "https://planning-data.arwc.test", "/api/meter-allocations/current", tenant="merewick",
         )
         self.assertEqual(status, 403)
         self.assertNotIn("MTR-CRR-DP3-R12", json.dumps(body))
@@ -182,7 +182,7 @@ class W09Live(unittest.TestCase):
         for _ in range(30):
             try:
                 status, response = request(
-                    "https://planning-data.arwc.test", "/api/integration/from-the-report-to-the-live-feed",
+                    "https://planning-data.arwc.test", "/api/integration-sessions",
                     method="POST", body=binding, integration=type(self).integration,
                 )
                 if status == 201:
@@ -196,14 +196,14 @@ class W09Live(unittest.TestCase):
             ["docker", "exec", "--user", "arwc-data", DATA, "cat", "/var/lib/arwc-data/audit/events.jsonl"],
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout
-        for action in ("water-already-promised", "the-meter-s-own-account", "the-missing-megalitre"):
+        for action in ("allocation-ledger-read", "meter-allocation-read", "allocation-discrepancy-created"):
             self.assertIn(f'"action":"{action}"', data_audit)
         bridge_audit = subprocess.run(
             ["docker", "exec", "--user", "arwc-data-bridge", BRIDGE,
              "cat", "/var/lib/arwc-data-bridge/audit/events.jsonl"],
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout
-        self.assertIn('"action":"from-the-report-to-the-live-feed"', bridge_audit)
+        self.assertIn('"action":"process-session-integration"', bridge_audit)
         hidden = inside("sh", "-c", "test ! -r /var/lib/arwc-data-bridge/state/integration.json")
         self.assertEqual(hidden.returncode, 0)
 

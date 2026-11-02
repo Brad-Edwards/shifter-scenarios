@@ -1,14 +1,50 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/qa-status-v1.schema.json",
-  "title": "Cinder Typhoon four-layer QA status",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/qa-status-v2.schema.json",
+  "title": "Cinder Typhoon evidence-bound QA status",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "overall_status", "layers"],
+  "required": [
+    "schema_version",
+    "overall_status",
+    "gate_catalog",
+    "issue_registry",
+    "release_binding",
+    "layers"
+  ],
   "properties": {
-    "schema_version": {"const": 1},
-    "overall_status": {
-      "enum": ["not_release_qualified", "release_qualified"]
+    "schema_version": {"const": 2},
+    "overall_status": {"enum": ["not_release_qualified", "release_qualified"]},
+    "gate_catalog": {"$ref": "#/$defs/file_binding"},
+    "issue_registry": {"$ref": "#/$defs/file_binding"},
+    "release_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_manifest", "release_manifest", "required_release_reports", "release_reports"],
+      "properties": {
+        "candidate_manifest": {"$ref": "#/$defs/file_binding"},
+        "release_manifest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "status", "sha256"],
+          "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "status": {"enum": ["missing", "versioned"]},
+            "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        "required_release_reports": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "release_reports": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/candidate_report"}
+        }
+      }
     },
     "layers": {
       "type": "object",
@@ -28,6 +64,36 @@
     }
   },
   "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "file_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "candidate_report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "status",
+        "source_commit",
+        "candidate_manifest_sha256",
+        "release_manifest_sha256"
+      ],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/digest"},
+        "status": {"enum": ["passed", "failed"]},
+        "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "candidate_manifest_sha256": {"$ref": "#/$defs/digest"},
+        "release_manifest_sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
     "layer": {
       "type": "object",
       "additionalProperties": false,
@@ -36,21 +102,30 @@
         "purpose",
         "method",
         "implementation_status",
+        "implementation_gate_ids",
         "candidate_status",
+        "candidate_reports",
         "evidence_visibility",
         "evidence",
         "supports",
-        "does_not_support",
-        "blocking_issues"
+        "does_not_support"
       ],
       "properties": {
         "title": {"type": "string", "minLength": 1},
         "purpose": {"type": "string", "minLength": 1},
         "method": {"enum": ["automated", "human_plus_agent"]},
-        "implementation_status": {
-          "enum": ["complete", "partial", "not_started"]
+        "implementation_status": {"enum": ["complete", "partial", "not_started"]},
+        "implementation_gate_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
         },
         "candidate_status": {"enum": ["passed", "failed", "not_run"]},
+        "candidate_reports": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/candidate_report"}
+        },
         "evidence_visibility": {"const": "operator_only"},
         "evidence": {
           "type": "array",
@@ -67,11 +142,6 @@
           "type": "array",
           "minItems": 1,
           "items": {"type": "string", "minLength": 1},
-          "uniqueItems": true
-        },
-        "blocking_issues": {
-          "type": "array",
-          "items": {"type": "integer", "minimum": 1},
           "uniqueItems": true
         }
       }

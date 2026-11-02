@@ -1,0 +1,845 @@
+{
+  "operations": {
+    "K01": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K01.1 sample starts from developer workspace, service notes, and normal source clients, names retained client identity and authorization-scope analysis, and ends with an observed diagnostic action bound to .config/git/credentials. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K01.1",
+      "status": "reviewed"
+    },
+    "K02": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K02.1 sample starts from retained source history and the continuous-integration review workflow, names version-history recovery followed by importer-boundary and extension-point analysis, and ends with an observed diagnostic action bound to ci.keplerops.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K02.1",
+      "status": "reviewed"
+    },
+    "K03": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K03.1 sample starts from predecessor notes, staged attachments, and the workstation analysis helper, names layered payload reconstruction with integrity and callback correlation, and ends with an observed diagnostic action bound to ci.keplerops.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K03.1",
+      "status": "reviewed"
+    },
+    "K04": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K04.1 sample starts from offline indexer reproducer and its protected runtime service, names binary layout analysis followed by a tightly bounded memory-state change, and ends with an observed diagnostic action bound to work/reproducers/indexer-client.json. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K04.1",
+      "status": "reviewed"
+    },
+    "K05": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K05.1 sample starts from package registry metadata, retained release records, and consumer fixtures, names package-contract reconciliation across metadata, manifests, and isolated resolution, and ends with an observed diagnostic action bound to packages.consumer-check, packages.metadata. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K05.1",
+      "status": "reviewed"
+    },
+    "K06": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K06.1 sample starts from package import, publisher, and rehearsal-consumer services, names publisher credential scope and package publication without release-administration authority, and ends with an observed diagnostic action bound to packages.import. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K06.1",
+      "status": "reviewed"
+    },
+    "K07": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K07.1 sample starts from package inspection contract and its trace records, names message-envelope interpretation across a parser and a protected downstream action, and ends with an observed diagnostic action bound to packages.inspection-trace, packages.inspections. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K07.1",
+      "status": "reviewed"
+    },
+    "K08": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K08.1 sample starts from package entitlement records and versioned checking service, names cryptographic context binding and legacy-versus-current validation behavior, and ends with an observed diagnostic action bound to packages.entitlement. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K08.1",
+      "status": "reviewed"
+    },
+    "K09": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K09.1 sample starts from continuous-integration run records, artifacts, and worker handovers, names job-input trust and execution under a constrained service identity, and ends with an observed diagnostic action bound to ci.run, ci.run-log. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K09.1",
+      "status": "reviewed"
+    },
+    "K10": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K10.1 sample starts from preview queue associations and document-rendering services, names canonical-name collision across preview storage and rendering boundaries, and ends with an observed diagnostic action bound to preview.association. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K10.1",
+      "status": "reviewed"
+    },
+    "K11": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K11.1 sample starts from retained policy compiler repository and build-operations handover, names instruction-model recovery for an embedded policy virtual machine, and ends with an observed diagnostic action bound to work/build-operations/policy-compiler-handoff.md. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K11.1",
+      "status": "reviewed"
+    },
+    "K12": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K12.1 sample starts from preview assignment, privileged review, and worker-render services, names cross-action value handling and worker-scope confusion in a privileged preview, and ends with an observed diagnostic action bound to preview.assignment. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K12.1",
+      "status": "reviewed"
+    },
+    "K13": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K13.1 sample starts from workspace object history, support exports, and cloud identity exchange, names object-version recovery followed by workload-identity scope analysis, and ends with an observed diagnostic action bound to cloud-api.keplerops.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K13.1",
+      "status": "reviewed"
+    },
+    "K14": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K14.1 sample starts from cloud trust records, role exchange, and support-export policy, names audience confusion combined with a separate resource-policy boundary, and ends with an observed diagnostic action bound to cloud.trust-record. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K14.1",
+      "status": "reviewed"
+    },
+    "K15": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K15.1 sample starts from support export definitions, scheduled assignments, and handed-over runs, names cross-account export authorization with delegated destination rights, and ends with an observed diagnostic action bound to data.export. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K15.1",
+      "status": "reviewed"
+    },
+    "K16": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K16.1 sample starts from scheduled support workflow, startup configuration, and shift-transition records, names durable scheduled execution across session and assignment changes, and ends with an observed diagnostic action bound to workloads.keplerops.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K16.1",
+      "status": "reviewed"
+    },
+    "K17": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K17.1 sample starts from retained support browser state, recovery workflow, and assignment records, names session recovery, alternate identity proof, and bounded support delegation, and ends with an observed diagnostic action bound to support.keplerops.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K17.1",
+      "status": "reviewed"
+    },
+    "K18": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K18.1 sample starts from restricted staff-note preview and identity-provider registration, names privileged preview access followed by federation trust-boundary analysis, and ends with an observed diagnostic action bound to staff.note. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K18.1",
+      "status": "reviewed"
+    },
+    "K19": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K19.1 sample starts from staff directory, certificate enrollment, and archive handover, names certificate identity enrollment followed by delegated service authentication, and ends with an observed diagnostic action bound to cert.requests, cert.template. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K19.1",
+      "status": "reviewed"
+    },
+    "K20": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K20.1 sample starts from delegated service relation, managed session, and package approval, names multi-hop delegation across distinct authentication and release identities, and ends with an observed diagnostic action bound to identity.service-relation. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K20.1",
+      "status": "reviewed"
+    },
+    "K21": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K21.1 sample starts from support assistant configuration, retained context, and answer service, names exposed context selection and authorization failure over retained support data, and ends with an observed diagnostic action bound to assistant.config. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K21.1",
+      "status": "reviewed"
+    },
+    "K22": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K22.1 sample starts from assistant source selection, retained attachments, and action tools, names instruction injection through a trusted attachment into a constrained tool action, and ends with an observed diagnostic action bound to assistant.selection. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K22.1",
+      "status": "reviewed"
+    },
+    "K23": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K23.1 sample starts from assistant context inventory and retained conversation references, names cross-tenant context confusion across conversation and document retrieval, and ends with an observed diagnostic action bound to assistant.contexts. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K23.1",
+      "status": "reviewed"
+    },
+    "K24": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K24.1 sample starts from completion examples, context selection, and job execution service, names context traversal followed by execution under a separate completion identity, and ends with an observed diagnostic action bound to assistant.completion-example. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K24.1",
+      "status": "reviewed"
+    },
+    "K25": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K25.1 sample starts from customer support dossier and current integration records, names customer-history correlation and active-versus-obsolete tenant binding, and ends with an observed diagnostic action bound to support.keplerops.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K25.1",
+      "status": "reviewed"
+    },
+    "K26": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K26.1 sample starts from package release channel and active customer connector, names compatible package publication, customer-side selection, and retained rollback, and ends with an observed diagnostic action bound to connector.poll. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K26.1",
+      "status": "reviewed"
+    },
+    "K27": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K27.1 sample starts from support diagnostic jobs, package interface, and customer delivery, names customer-scope confusion while preserving the connector's expected package contract, and ends with an observed diagnostic action bound to support.diagnostics. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K27.1",
+      "status": "reviewed"
+    },
+    "K28": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K28.1 sample starts from retained connector archive and its signed diagnostic configuration, names static and dynamic loader analysis for behavior that appears only at runtime, and ends with an observed diagnostic action bound to work/build-operations/connector-archive-review.md. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K28.1",
+      "status": "reviewed"
+    },
+    "K29": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K29.1 sample starts from protected build dossier, signing lineage, and dual release consumers, names release-principal scope, historical signing authority, and credential rollover, and ends with an observed diagnostic action bound to ci.run-artifact, cloud.build-record. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K29.1",
+      "status": "reviewed"
+    },
+    "K30": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K30.1 sample starts from recovery build records, backup catalog, and migration history, names scoped backup authority without direct source-database access, and ends with an observed diagnostic action bound to cloud.build-record. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K30.1",
+      "status": "reviewed"
+    },
+    "K31": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The K31.1 sample starts from maintenance scheduler policy, workload identity, and field archive, names scheduler-versus-runtime identity separation and classification-bound archive access, and ends with an observed diagnostic action bound to cloud.maintenance, cloud.policy. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "K31.1",
+      "status": "reviewed"
+    },
+    "T01": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The T01.1 sample starts from the supplied training workspace and its published starting briefing, names the operation's stated boundary class, and ends with an observed diagnostic action bound to training-briefing. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "T01.1",
+      "status": "reviewed"
+    },
+    "T02": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The T02.1 sample starts from the supplied training workspace and its published starting briefing, names the operation's stated boundary class, and ends with an observed diagnostic action bound to training-briefing. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "T02.1",
+      "status": "reviewed"
+    },
+    "T03": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The T03.1 sample starts from the supplied training workspace and its published starting briefing, names the operation's stated boundary class, and ends with an observed diagnostic action bound to training-briefing. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "T03.1",
+      "status": "reviewed"
+    },
+    "T04": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The T04.1 sample starts from the supplied training workspace and its published starting briefing, names the operation's stated boundary class, and ends with an observed diagnostic action bound to training-briefing. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "T04.1",
+      "status": "reviewed"
+    },
+    "W01": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W01.1 sample starts from corporate handover, work-order, and continuity records, names record-version binding and minimal corporate handover updates, and ends with an observed diagnostic action bound to corporate.handover. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W01.1",
+      "status": "reviewed"
+    },
+    "W02": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W02.1 sample starts from business workplace asset, contractor, and association records, names entity reconciliation followed by association-bound authorization testing, and ends with an observed diagnostic action bound to business.asset-bundle. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W02.1",
+      "status": "reviewed"
+    },
+    "W03": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W03.1 sample starts from work-order annex, reference resolver, and integration contract, names reference normalization across an attachment namespace and protected export boundary, and ends with an observed diagnostic action bound to business.work-order-annex. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W03.1",
+      "status": "reviewed"
+    },
+    "W04": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W04.1 sample starts from retained archive contract, identity query, and helper operation, names identity-field injection followed by Unicode-aware archive path normalization, and ends with an observed diagnostic action bound to archive.contract. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W04.1",
+      "status": "reviewed"
+    },
+    "W05": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W05.1 sample starts from onboarding package, activation roster, and temporary identity service, names activation proof that is not correctly bound to the approved assignment, and ends with an observed diagnostic action bound to identity.provisioning-package. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W05.1",
+      "status": "reviewed"
+    },
+    "W06": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W06.1 sample starts from planning session audit, drawing context, and browser capability, names privileged browser context transfer into a separately scoped planner session, and ends with an observed diagnostic action bound to identity.session-audit. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W06.1",
+      "status": "reviewed"
+    },
+    "W07": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W07.1 sample starts from saved planning query and its database-backed execution service, names quoted-identifier escape and constrained database-side execution, and ends with an observed diagnostic action bound to planning.saved-query. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W07.1",
+      "status": "reviewed"
+    },
+    "W08": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W08.1 sample starts from retained contractor bundle, message shards, and archived collector, names erasure-coded message reconstruction followed by collector artifact analysis, and ends with an observed diagnostic action bound to archive.bundle. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W08.1",
+      "status": "reviewed"
+    },
+    "W09": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W09.1 sample starts from allocation ledger, independent meter export, and live planning feed, names unit-aware reconciliation across independent business and process sources, and ends with an observed diagnostic action bound to planning.allocation-ledger. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W09.1",
+      "status": "reviewed"
+    },
+    "W10": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W10.1 sample starts from report source selection, district excerpts, and linked documents, names district-scope failure across retrieval and linked-document authorization, and ends with an observed diagnostic action bound to business.report-sources. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W10.1",
+      "status": "reviewed"
+    },
+    "W11": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W11.1 sample starts from relation schema, backend exchange, and asset-lineage service, names protocol reconstruction followed by identity-field traversal at the relation boundary, and ends with an observed diagnostic action bound to planning.relation-schema. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W11.1",
+      "status": "reviewed"
+    },
+    "W12": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W12.1 sample starts from quarantined collector, collection policy, and cold archive, names collector cryptography reconstruction and archive-to-current collection correlation, and ends with an observed diagnostic action bound to retained-archive.arwc.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W12.1",
+      "status": "reviewed"
+    },
+    "W13": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W13.1 sample starts from inspection appointment, access roster, and contractor check-in, names appointment ownership confusion followed by a separately scoped check-in identity, and ends with an observed diagnostic action bound to contractors.appointment-window. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W13.1",
+      "status": "reviewed"
+    },
+    "W14": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W14.1 sample starts from contractor field kit and the current field-data interface, names protocol migration, structured binary requests, and replay-resistant observations, and ends with an observed diagnostic action bound to contractors.field-kit. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W14.1",
+      "status": "reviewed"
+    },
+    "W15": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W15.1 sample starts from drawing cache, review workflow, and maintenance approval, names cache-key normalization followed by reviewer and downstream authority checks, and ends with an observed diagnostic action bound to maintenance.drawing-cache. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W15.1",
+      "status": "reviewed"
+    },
+    "W16": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W16.1 sample starts from archive sequencer, constrained observations, and calibration history, names instruction-sequence reconstruction with bounded out-of-window observation analysis, and ends with an observed diagnostic action bound to archive.sequencer-spec, archive.signal-experiment. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W16.1",
+      "status": "reviewed"
+    },
+    "W17": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W17.1 sample starts from current process state, operating mode, and independent instrument records, names time-window and identity correlation across requested and measured process values, and ends with an observed diagnostic action bound to process.state. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W17.1",
+      "status": "reviewed"
+    },
+    "W18": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W18.1 sample starts from engineering tag export, separate scale table, and outlet instruments, names revision-aware unit conversion across independently owned engineering records, and ends with an observed diagnostic action bound to process.tag-export. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W18.1",
+      "status": "reviewed"
+    },
+    "W19": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W19.1 sample starts from retained engineering diagnostic and signed decision records, names binary behavior reconstruction and hidden validation-logic analysis, and ends with an observed diagnostic action bound to process.diagnostic-program. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W19.1",
+      "status": "reviewed"
+    },
+    "W20": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W20.1 sample starts from retained device image and maintenance-record interface, names firmware record parsing, integrity validation, and minimal state-preserving update, and ends with an observed diagnostic action bound to process.firmware-image. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W20.1",
+      "status": "reviewed"
+    },
+    "W21": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W21.1 sample starts from sealed engineering project and independently observed deployed revision, names claim-versus-deployment reconciliation across separate evidence owners, and ends with an observed diagnostic action bound to process.sealed-project. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W21.1",
+      "status": "reviewed"
+    },
+    "W22": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W22.1 sample starts from sealed viewer, project decision, and retained review context, names embedded-machine reconstruction followed by concealed reviewer-identity analysis, and ends with an observed diagnostic action bound to process.sealed-viewer. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W22.1",
+      "status": "reviewed"
+    },
+    "W23": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W23.1 sample starts from process estimator's measurement and planning-state interfaces, names controlled heap-state corruption while preserving the measurement service contract, and ends with an observed diagnostic action bound to process-view.arwc.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W23.1",
+      "status": "reviewed"
+    },
+    "W24": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W24.1 sample starts from legacy recovery oracle and project-bound diagnostic bundle, names response-class prediction followed by bounded cryptographic key recovery, and ends with an observed diagnostic action bound to process-view.arwc.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W24.1",
+      "status": "reviewed"
+    },
+    "W25": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W25.1 sample starts from operating envelope, movement conditions, and practice sequencer, names interlock-aware command sequencing within declared process safety bounds, and ends with an observed diagnostic action bound to process.operating-envelope. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W25.1",
+      "status": "reviewed"
+    },
+    "W26": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W26.1 sample starts from maintenance renderer, approved inspection, and control-client issuer, names confused preview authority followed by service-identity execution and scoped delegation, and ends with an observed diagnostic action bound to maintenance-renderer.arwc.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W26.1",
+      "status": "reviewed"
+    },
+    "W27": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W27.1 sample starts from legacy program verifier and planning diagnostic consumer, names signature-equivalence modeling under structural and unaffected-output constraints, and ends with an observed diagnostic action bound to process.signature-program-reproduction. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W27.1",
+      "status": "reviewed"
+    },
+    "W28": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W28.1 sample starts from constrained engineering utility and its control-authority exchange, names control-flow recovery within a deliberately small executable surface, and ends with an observed diagnostic action bound to process.collision-inputs. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W28.1",
+      "status": "reviewed"
+    },
+    "W29": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W29.1 sample starts from planning tariff, reserve commitments, and reporting checkpoint, names economic consequence modeling tied to independently measured reserve state, and ends with an observed diagnostic action bound to process-view.arwc.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W29.1",
+      "status": "reviewed"
+    },
+    "W30": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W30.1 sample starts from live command-plan binder and bounded release executor, names end-to-end binding of earned authority, engineering revisions, and idempotent actuation, and ends with an observed diagnostic action bound to process.release-plan. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W30.1",
+      "status": "reviewed"
+    },
+    "W31": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W31.1 sample starts from diagnostic vault record, parser worker, and approval-history export, names record-boundary analysis followed by protected saved-state control, and ends with an observed diagnostic action bound to process.vault-record. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W31.1",
+      "status": "reviewed"
+    },
+    "W32": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W32.1 sample starts from retained replay engine and current estimator observations, names state-machine reconstruction and old-model-versus-current-reality comparison, and ends with an observed diagnostic action bound to process.replay-session. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W32.1",
+      "status": "reviewed"
+    },
+    "W33": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W33.1 sample starts from forecast, schedule window, and feedback-policy services, names model calibration and constrained time-series scheduling under disclosed bounds, and ends with an observed diagnostic action bound to process.forecast. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W33.1",
+      "status": "reviewed"
+    },
+    "W34": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W34.1 sample starts from planning estimate consumer and reporting handover, names trusted-view manipulation while preserving raw-measurement integrity, and ends with an observed diagnostic action bound to planning-data.arwc.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W34.1",
+      "status": "reviewed"
+    },
+    "W35": {
+      "checks": [
+        "in_world_orientation",
+        "technique_boundary",
+        "diagnostic_next_step",
+        "no_sensitive_answer",
+        "references_current"
+      ],
+      "rationale": "The W35.1 sample starts from procurement catalog, district quote, and invoice workflow, names district authorization failure followed by budget-context confusion, and ends with an observed diagnostic action bound to business.procurement-quote. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "sample_card": "W35.1",
+      "status": "reviewed"
+    }
+  },
+  "schema_version": 1
+}

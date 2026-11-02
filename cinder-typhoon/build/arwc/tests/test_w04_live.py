@@ -81,7 +81,7 @@ with tempfile.TemporaryDirectory() as directory:
 
 def enroll(organizational_unit: str, token: str) -> tuple[str, str]:
     status, response = request(
-        "/api/the-query-behind-the-identity", method="POST",
+        "/api/archived-queries/current", method="POST",
         body={
             "operation": "enroll",
             "enrollment_token": token,
@@ -94,7 +94,7 @@ def enroll(organizational_unit: str, token: str) -> tuple[str, str]:
 
 
 def workflow_token() -> str:
-    status, response = request("/api/the-archive-s-missing-contract")
+    status, response = request("/api/archive-contracts/current")
     if status != 200:
         raise AssertionError(response)
     return response["record"]["enrollment_token"]
@@ -126,18 +126,18 @@ class W04Live(unittest.TestCase):
 
     def test_01_downstream_operations_require_predecessor_evidence(self) -> None:
         status, body = request(
-            "/api/the-query-behind-the-identity", method="POST", body={"operation": "query"},
+            "/api/archived-queries/current", method="POST", body={"operation": "query"},
         )
         self.assertEqual(status, 403)
         self.assertNotIn("AR-CRR-229", json.dumps(body))
         status, body = request(
-            "/api/the-archive-helper-acts", method="POST", body={"archive": "eA=="},
+            "/api/archive-operations", method="POST", body={"archive": "eA=="},
         )
         self.assertEqual(status, 403)
         self.assertNotIn("HND-PLANNER-06", json.dumps(body))
 
     def test_02_workflow_binds_exact_archive_contract(self) -> None:
-        status, response = request("/api/the-archive-s-missing-contract")
+        status, response = request("/api/archive-contracts/current")
         self.assertEqual(status, 200)
         record = response["record"]
         self.assertEqual(record["record_id"], "AWF-CRR-229-R4")
@@ -161,7 +161,7 @@ class W04Live(unittest.TestCase):
         self.assertIn("OU = MaintenanceArchive", details)
         self.assertIn("TLS Web Client Authentication", details)
         status, replay = request(
-            "/api/the-query-behind-the-identity", method="POST",
+            "/api/archived-queries/current", method="POST",
             body={
                 "operation": "enroll",
                 "enrollment_token": type(self).first_token,
@@ -173,7 +173,7 @@ class W04Live(unittest.TestCase):
 
     def test_04_ordinary_identity_returns_only_its_record(self) -> None:
         status, response = request(
-            "/api/the-query-behind-the-identity", method="POST", body={"operation": "query"},
+            "/api/archived-queries/current", method="POST", body={"operation": "query"},
             certificate=type(self).ordinary_certificate, private_key=type(self).ordinary_key,
         )
         self.assertEqual(status, 201)
@@ -190,7 +190,7 @@ class W04Live(unittest.TestCase):
             "MaintenanceArchive' OR r.id='AR-MER-100' OR 'a'='b", other_token,
         )
         status, response = request(
-            "/api/the-query-behind-the-identity", method="POST", body={"operation": "query"},
+            "/api/archived-queries/current", method="POST", body={"operation": "query"},
             certificate=other_cert, private_key=other_key,
         )
         self.assertEqual(status, 403)
@@ -199,7 +199,7 @@ class W04Live(unittest.TestCase):
         write_token = workflow_token()
         write_cert, write_key = enroll("MaintenanceArchive' SET r.open=true OR 'a'='b", write_token)
         status, response = request(
-            "/api/the-query-behind-the-identity", method="POST", body={"operation": "query"},
+            "/api/archived-queries/current", method="POST", body={"operation": "query"},
             certificate=write_cert, private_key=write_key,
         )
         self.assertEqual(status, 409)
@@ -213,7 +213,7 @@ class W04Live(unittest.TestCase):
         type(self).injected_certificate = certificate
         type(self).injected_key = key
         status, response = request(
-            "/api/the-query-behind-the-identity", method="POST", body={"operation": "query"},
+            "/api/archived-queries/current", method="POST", body={"operation": "query"},
             certificate=certificate, private_key=key,
         )
         self.assertEqual(status, 201)
@@ -229,21 +229,21 @@ class W04Live(unittest.TestCase):
     def test_07_helper_validates_raw_member_before_nfkc(self) -> None:
         slash_archive = make_archive("outside/copy_handover(HND-PLANNER-06)")
         status, response = request(
-            "/api/the-archive-helper-acts", method="POST", body={"archive": slash_archive},
+            "/api/archive-operations", method="POST", body={"archive": slash_archive},
         )
         self.assertEqual(status, 409)
         self.assertNotIn("HND-PLANNER-06", json.dumps(response))
 
         wrong_archive = make_archive("．．／copy_handover(HND-MER-01)")
         status, response = request(
-            "/api/the-archive-helper-acts", method="POST", body={"archive": wrong_archive},
+            "/api/archive-operations", method="POST", body={"archive": wrong_archive},
         )
         self.assertEqual(status, 409)
         self.assertNotIn("svc-archive-helper", json.dumps(response))
 
         crafted = make_archive("．．／copy_handover(HND-PLANNER-06)")
         status, response = request(
-            "/api/the-archive-helper-acts", method="POST", body={"archive": crafted},
+            "/api/archive-operations", method="POST", body={"archive": crafted},
         )
         self.assertEqual(status, 201)
         self.assertEqual(response["record"], {
@@ -263,10 +263,10 @@ class W04Live(unittest.TestCase):
         self.assertEqual(receipt.returncode, 0, receipt.stderr)
 
     def test_08_wrong_session_and_tenant_disclose_nothing(self) -> None:
-        status, body = request("/api/the-archive-s-missing-contract", token="wrong")
+        status, body = request("/api/archive-contracts/current", token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("AWF-CRR-229-R4", json.dumps(body))
-        status, body = request("/api/the-archive-s-missing-contract", tenant="merewick")
+        status, body = request("/api/archive-contracts/current", tenant="merewick")
         self.assertEqual(status, 403)
         self.assertNotIn("ArchiveSubmitter", json.dumps(body))
 
@@ -275,7 +275,7 @@ class W04Live(unittest.TestCase):
         for _ in range(30):
             try:
                 status, response = request(
-                    "/api/the-query-behind-the-identity", method="POST", body={"operation": "query"},
+                    "/api/archived-queries/current", method="POST", body={"operation": "query"},
                     certificate=type(self).injected_certificate, private_key=type(self).injected_key,
                 )
                 if status == 201:
@@ -292,8 +292,8 @@ class W04Live(unittest.TestCase):
              "cat", "/var/lib/arwc-archive/audit/events.jsonl"],
             text=True, stdout=subprocess.PIPE, check=True,
         )
-        self.assertIn('"action":"the-query-behind-the-identity/query"', audit.stdout)
-        self.assertIn('"action":"the-archive-helper-acts"', audit.stdout)
+        self.assertIn('"action":"archive-identity-query/query"', audit.stdout)
+        self.assertIn('"action":"archive-helper-executed"', audit.stdout)
         result = subprocess.run(
             ["docker", "exec", "--user", "arwc-archive", SERVICE,
              "cat", "/var/lib/arwc-archive/results/HND-PLANNER-06.json"],

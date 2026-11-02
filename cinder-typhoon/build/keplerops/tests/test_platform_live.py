@@ -9,11 +9,19 @@ import os
 import subprocess
 import unittest
 
+from runtime_credentials import basic, credential
+
 
 CONTAINER = "cinder-keplerops-k-dev"
 CA = "/home/rowan/.local/share/keplerops/ca.crt"
-DEV = "rowan.ito:kpl_rowan_7X4mQ9vN2cL6"
-COOKIE = "fieldkest_support=ksess_rowan_2841_6Hs8Qp3V"
+DEV = basic()
+DEV_TOKEN = credential("developer_token")
+COOKIE = f"fieldkest_support={credential('support_rowan_session')}"
+SUPPORT_EXPORT = credential("cloud_support_export_role")
+CERT_ENROLLMENT = credential("cert_enrollment_worker")
+WORKLOAD_SESSION = credential("cloud_workload_session")
+MAINTENANCE_WORKER = credential("ci_maintenance_worker")
+MAINTENANCE_RUNTIME = credential("cloud_maintenance_runtime")
 
 
 def rowan(*arguments: str) -> subprocess.CompletedProcess[str]:
@@ -92,14 +100,14 @@ class PlatformLiveTest(unittest.TestCase):
         self.assertEqual(stale["error"], "incoherent_collection")
 
     def test_03_schedule_runtime_and_shift_transition(self) -> None:
-        schedule = call("workloads.keplerops.test", "/api/schedules/SCH-SUP-2841", auth="support-export-role")
+        schedule = call("workloads.keplerops.test", "/api/schedules/SCH-SUP-2841", auth=SUPPORT_EXPORT)
         self.assertIn(schedule["assignment"], {"SHIFT-SEP16-A", "SHIFT-SEP17-B"})
-        call("workloads.keplerops.test", "/api/schedules/SCH-SUP-2841", method="PATCH", body={"startup_hook": ["/opt/fieldkest/hooks/support-marker", "--export", "EXP-2841"]}, auth="support-export-role")
-        run = call("workloads.keplerops.test", "/api/schedules/SCH-SUP-2841/runs", method="POST", body={}, auth="support-export-role", expected=201)
+        call("workloads.keplerops.test", "/api/schedules/SCH-SUP-2841", method="PATCH", body={"startup_hook": ["/opt/fieldkest/hooks/support-marker", "--export", "EXP-2841"]}, auth=SUPPORT_EXPORT)
+        run = call("workloads.keplerops.test", "/api/schedules/SCH-SUP-2841/runs", method="POST", body={}, auth=SUPPORT_EXPORT, expected=201)
         self.assertEqual((run["runtime_identity"], run["marker"]), ("svc-support-export", True))
         self.assertEqual((run["execution_backend"], run["container_network"]), ("isolated-container", "none"))
-        call("workloads.keplerops.test", "/api/schedules/SCH-SUP-2841", method="PATCH", body={"assignment": "SHIFT-SEP17-B"}, auth="support-export-role")
-        later = call("workloads.keplerops.test", "/api/schedules/SCH-SUP-2841/runs", method="POST", body={}, auth="support-export-role", expected=201)
+        call("workloads.keplerops.test", "/api/schedules/SCH-SUP-2841", method="PATCH", body={"assignment": "SHIFT-SEP17-B"}, auth=SUPPORT_EXPORT)
+        later = call("workloads.keplerops.test", "/api/schedules/SCH-SUP-2841/runs", method="POST", body={}, auth=SUPPORT_EXPORT, expected=201)
         self.assertEqual((later["assignment"], later["marker"]), ("SHIFT-SEP17-B", True))
 
     def test_04_support_recovery_federation_and_delegation(self) -> None:
@@ -109,19 +117,19 @@ class PlatformLiveTest(unittest.TestCase):
         self.assertNotIn("TEN-ARWC-047", assignment["customers"])
         copied = call("support.keplerops.test", "/api/cases/SUP-2841/copy-handover", method="POST", body={"reviewer": "talia.mornac-review"}, auth=None, cookie=COOKIE, expected=201)
         self.assertEqual(copied["owner"], "talia.mornac-review")
-        note = call("staff.keplerops.test", "/api/notes/NOTE-SUP-2841-7", auth="kpl_rowan_7X4mQ9vN2cL6")
+        note = call("staff.keplerops.test", "/api/notes/NOTE-SUP-2841-7", auth=DEV_TOKEN)
         self.assertEqual(note["consumer"], "staff-note-preview")
         source = "/notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT"
-        registration = call("staff.keplerops.test", "/api/note-preview", method="POST", body={"source_path": source, "method": "GET"}, auth="kpl_rowan_7X4mQ9vN2cL6")
-        changed = call("staff.keplerops.test", "/api/note-preview", method="POST", body={"source_path": source, "method": "PATCH"}, auth="kpl_rowan_7X4mQ9vN2cL6")
+        registration = call("staff.keplerops.test", "/api/note-preview", method="POST", body={"source_path": source, "method": "GET"}, auth=DEV_TOKEN)
+        changed = call("staff.keplerops.test", "/api/note-preview", method="POST", body={"source_path": source, "method": "PATCH"}, auth=DEV_TOKEN)
         self.assertGreater(changed["revision"], registration["revision"])
-        staff_login = call("identity.keplerops.test", "/api/federation/staff-login", method="POST", body={"username": "rowan.ito", "password": "kpl_rowan_7X4mQ9vN2cL6"}, expected=201)
+        staff_login = call("identity.keplerops.test", "/api/federation/staff-login", method="POST", body={"username": "rowan.ito", "password": DEV_TOKEN}, expected=201)
         self.assertEqual((staff_login["provider"], staff_login["login"]), ("OIDC-FIELDKEST-STAFF", "accepted"))
         assertion = call("support.keplerops.test", "/fixture-issuer/assertions", method="POST", body={"subject": "fixture-reviewer-047", "tenant": "TEN-ARWC-047"}, auth=None, expected=201)
         federated = call("identity.keplerops.test", "/api/federation/login", method="POST", body={"assertion": assertion["assertion"]}, expected=201)
         record = call("support.keplerops.test", "/api/customers/TEN-ARWC-047/dossiers/CUSTREC-047-R6", auth=None, cookie=federated["session_cookie"])
         self.assertEqual((record["record_id"], record["federated_subject"]), ("CUSTREC-047-R6", "fixture-reviewer-047"))
-        cert = call("cert.keplerops.test", "/api/enrollment/StaffArchiveUser/requests", method="POST", body={"upn": "evan.calderoux@KEPLEROPS.TEST"}, auth="cert-enrollment-worker", expected=201)
+        cert = call("cert.keplerops.test", "/api/enrollment/StaffArchiveUser/requests", method="POST", body={"upn": "evan.calderoux@KEPLEROPS.TEST"}, auth=CERT_ENROLLMENT, expected=201)
         for path, field in (("/tmp/evan.crt", "certificate_pem"), ("/tmp/evan.key", "private_key_pem")):
             installed = subprocess.run(["docker", "exec", "-i", "--user", "rowan", CONTAINER, "tee", path], input=cert[field], text=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=False)
             self.assertEqual(installed.returncode, 0, installed.stderr)
@@ -173,16 +181,16 @@ class PlatformLiveTest(unittest.TestCase):
         if os.environ.get("CINDER_CROSS_SEGMENT") == "1":
             delivery = call("support.keplerops.test", f"/api/diagnostics/{job['job_id']}/deliver", method="POST", body={}, auth=None, cookie=COOKIE, expected=202)
             self.assertEqual((delivery["runtime_identity"], delivery["output"]["assessment"]), ("svc-arwc-fieldlink", "calibration-review"))
-        recovery = call("cloud-api.keplerops.test", "/api/build-records/BLD-REC-021", auth="workload-session")
+        recovery = call("cloud-api.keplerops.test", "/api/build-records/BLD-REC-021", auth=WORKLOAD_SESSION)
         catalog = call("data.keplerops.test", "/api/backups/BAK-2026-021", auth=recovery["session"])
         restored = call("data.keplerops.test", "/api/backups/BAK-2026-021/restores", method="POST", body={}, auth=recovery["session"], expected=201)
         history = call("data.keplerops.test", f"/api/recovery/{restored['namespace_id']}/customer-migration-history", auth=recovery["session"])
         self.assertEqual((catalog["source_database"], history["records"][0]["current_tenant"]), ("denied", "TEN-ARWC-047"))
-        policy = call("cloud-api.keplerops.test", "/api/policies/fieldlink-maintenance", auth="ci-maintenance-worker")
-        spawned = call("workloads.keplerops.test", "/api/workloads/MAINT-FLK-01", method="PATCH", body={"command": ["maintenance-summary", "--archive", "FIELD-CRR-2026-09"], "labels": {"workload.class": "maintenance"}}, auth="ci-maintenance-worker")
+        policy = call("cloud-api.keplerops.test", "/api/policies/fieldlink-maintenance", auth=MAINTENANCE_WORKER)
+        spawned = call("workloads.keplerops.test", "/api/workloads/MAINT-FLK-01", method="PATCH", body={"command": ["maintenance-summary", "--archive", "FIELD-CRR-2026-09"], "labels": {"workload.class": "maintenance"}}, auth=MAINTENANCE_WORKER)
         self.assertEqual((spawned["last_execution"]["execution_backend"], spawned["last_execution"]["container_network"]), ("isolated-container", "none"))
-        whoami = call("workloads.keplerops.test", "/api/workloads/MAINT-FLK-01/whoami", auth="ci-maintenance-worker")
-        archive = call("data.keplerops.test", "/api/field-archive/FIELD-CRR-2026-09", auth="maintenance-runtime", headers={"X-Workload-Class": "maintenance", "X-Scheduler-Attestation": whoami["attestation"]})
+        whoami = call("workloads.keplerops.test", "/api/workloads/MAINT-FLK-01/whoami", auth=MAINTENANCE_WORKER)
+        archive = call("data.keplerops.test", "/api/field-archive/FIELD-CRR-2026-09", auth=MAINTENANCE_RUNTIME, headers={"X-Workload-Class": "maintenance", "X-Scheduler-Attestation": whoami["attestation"]})
         self.assertEqual((policy["runtime_identity"], whoami["runtime_identity"], archive["calibration_revision"]), ("svc-fieldlink-maintenance", "svc-fieldlink-maintenance", "CAL-2026-09-R4"))
 
 

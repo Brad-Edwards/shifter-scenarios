@@ -248,7 +248,7 @@ def initialize() -> None:
                 changed = True
         if changed:
             save_state(state)
-    descriptor = ARTIFACTS / "the-sequencer-s-vocabulary"
+    descriptor = ARTIFACTS / "sequencer-spec-read"
     if not descriptor.exists():
         atomic_json(descriptor, SEQUENCER)
     AUDIT.touch(mode=0o600, exist_ok=True)
@@ -637,7 +637,7 @@ class Handler(BaseHTTPRequestHandler):
             state["sequencer_descriptor_observed"] = True
             save_state(state)
             self.accepted(
-                "the-sequencer-s-vocabulary", SEQUENCER,
+                "sequencer-spec-read", SEQUENCER,
                 "corporate-reader-principal", 200,
                 {"descriptor_sha256": hashlib.sha256(
                     json.dumps(SEQUENCER, sort_keys=True, separators=(",", ":")).encode()
@@ -652,7 +652,7 @@ class Handler(BaseHTTPRequestHandler):
             state["work_bundle_observed"] = True
             save_state(state)
             self.accepted(
-                "something-in-the-work-bundle", WORK_BUNDLE, "corporate-reader-principal", 200,
+                "work-bundle-read", WORK_BUNDLE, "corporate-reader-principal", 200,
                 {"download": "/api/artifacts/BND-COLLECT-CRR-12.tar.gz"},
             )
             return
@@ -693,7 +693,7 @@ class Handler(BaseHTTPRequestHandler):
             state["quarantine_observed"] = True
             save_state(state)
             self.accepted(
-                "a-collector-in-quarantine", QUARANTINE, "corporate-reader-principal", 200,
+                "collection-quarantine-read", QUARANTINE, "corporate-reader-principal", 200,
                 {"download": "/api/artifacts/QTN-COL-2019-12.aqtn",
                  "samples": "/api/artifacts/AQTN1-samples.json"},
             )
@@ -718,7 +718,7 @@ class Handler(BaseHTTPRequestHandler):
             save_state(state)
         result = dict(WORKFLOW)
         result["enrollment_token"] = state["enrollment_token"]
-        self.accepted("the-archive-s-missing-contract", result, "corporate-reader-principal", 200)
+        self.accepted("archive-contract-read", result, "corporate-reader-principal", 200)
 
     def do_POST(self) -> None:
         if not self.authorized():
@@ -778,7 +778,7 @@ class Handler(BaseHTTPRequestHandler):
             **result,
         }
         self.accepted(
-            "an-observation-outside-the-window", record,
+            "observation-record-created", record,
             "corporate-reader-principal",
         )
 
@@ -808,7 +808,7 @@ class Handler(BaseHTTPRequestHandler):
                 "write_performed": False,
             }
             self.accepted(
-                "an-experiment-with-a-signal/measure", record,
+                "signal-experiment/measure", record,
                 "corporate-reader-principal",
             )
             return
@@ -837,7 +837,7 @@ class Handler(BaseHTTPRequestHandler):
             "interpretation": "lsb0",
         }
         self.accepted(
-            "an-experiment-with-a-signal/verify", record,
+            "signal-experiment/verify", record,
             "corporate-reader-principal",
         )
 
@@ -873,7 +873,7 @@ class Handler(BaseHTTPRequestHandler):
             "sha256": hashlib.sha256(recovered).hexdigest(),
         }
         self.accepted(
-            "what-the-instrument-remembers", record,
+            "instrument-history-read", record,
             "corporate-reader-principal",
         )
 
@@ -890,7 +890,7 @@ class Handler(BaseHTTPRequestHandler):
         state["protection_reconstructed"] = True
         save_state(state)
         self.accepted(
-            "how-the-collection-was-protected", PROTECTION, "corporate-reader-principal",
+            "collection-protection-read", PROTECTION, "corporate-reader-principal",
             extra={"archive_object": "/api/artifacts/QTN-COL-2019-12.aqtn"},
         )
 
@@ -930,7 +930,7 @@ class Handler(BaseHTTPRequestHandler):
             "wrapped_private_key": "AES-256-KW", "rollover": "IDREL-COL-R4",
         }
         self.accepted(
-            "the-cold-archive-opens", result, "corporate-reader-principal",
+            "archived-collection-read", result, "corporate-reader-principal",
             extra={"collection": collection},
         )
 
@@ -989,7 +989,7 @@ class Handler(BaseHTTPRequestHandler):
                 "expires_in_seconds": 600,
             }
             self.accepted(
-                "a-collection-path-still-alive/exchange", result, "svc-field-collection",
+                "collection-session/exchange", result, "svc-field-collection",
                 extra={"collection_session": token, "expires_at_epoch": expires},
             )
             return
@@ -1014,7 +1014,7 @@ class Handler(BaseHTTPRequestHandler):
         }
         state["current_data_observed"] = True
         save_state(state)
-        self.accepted("a-collection-path-still-alive/read", result, "svc-field-collection")
+        self.accepted("collection-session/read", result, "svc-field-collection")
 
     def reassemble_exchange(self, request: dict[str, object]) -> None:
         state = load_state()
@@ -1067,7 +1067,7 @@ class Handler(BaseHTTPRequestHandler):
         result = dict(COLLECTOR)
         result["sha256"] = manifest["collector_sha256"]
         self.accepted(
-            "the-collector-inside-the-handover", result, "corporate-reader-principal",
+            "collector-handover-read", result, "corporate-reader-principal",
             extra={"configuration": "/api/artifacts/collector/config"},
         )
 
@@ -1120,7 +1120,7 @@ class Handler(BaseHTTPRequestHandler):
                 "extended_key_usage": "clientAuth",
             }
             self.accepted(
-                "the-query-behind-the-identity/enroll", result,
+                "archive-identity-query/enroll", result,
                 "corporate-reader-principal", extra={"certificate": certificate, "private_key": private_key},
             )
             return
@@ -1139,7 +1139,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "archive backend is read only"})
             return
         if organizational_unit == "MaintenanceArchive":
-            self.accepted("the-query-behind-the-identity/query", CALLER_RECORD,
+            self.accepted("archive-identity-query/query", CALLER_RECORD,
                           "corporate-reader-principal", extra={"backend_query": query})
             return
         protected = re.search(
@@ -1153,7 +1153,7 @@ class Handler(BaseHTTPRequestHandler):
         state = load_state()
         state["protected_record_observed"] = True
         save_state(state)
-        self.accepted("the-query-behind-the-identity/query", PROTECTED_RECORD,
+        self.accepted("archive-identity-query/query", PROTECTED_RECORD,
                       "corporate-reader-principal", extra={"backend_query": query})
 
     def helper(self, request: dict[str, object]) -> None:
@@ -1192,7 +1192,7 @@ class Handler(BaseHTTPRequestHandler):
         state["helper_handover_copied"] = True
         save_state(state)
         self.accepted(
-            "the-archive-helper-acts", HANDOVER, "svc-archive-helper",
+            "archive-helper-executed", HANDOVER, "svc-archive-helper",
             extra={"planner_handover": token},
         )
 

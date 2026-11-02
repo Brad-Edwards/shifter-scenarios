@@ -70,7 +70,7 @@ class ProcessReadLive(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         status, contract = request(
-            "https://business-workplace.arwc.test", "/api/the-integration-s-read-contract",
+            "https://business-workplace.arwc.test", "/api/integration-contracts/current",
         )
         if status != 200:
             raise AssertionError(contract)
@@ -79,7 +79,7 @@ class ProcessReadLive(unittest.TestCase):
             "scope": "OG-CRR-02/read", "feed": "FEED-OG2-R21",
         }
         status, result = request(
-            "https://planning-data.arwc.test", "/api/integration/from-the-report-to-the-live-feed",
+            "https://planning-data.arwc.test", "/api/integration-sessions",
             method="POST", body=binding, planner=True,
             integration=contract["integration_session"],
         )
@@ -93,12 +93,12 @@ class ProcessReadLive(unittest.TestCase):
         return request(BASE, path, method=method, body=body, token=actual, tenant=tenant)
 
     def test_01_w17_current_view_keeps_requests_and_measurements_separate(self) -> None:
-        denied, body = self.process("/api/the-reservoir-s-present-tense", token="wrong")
+        denied, body = self.process("/api/process-views/state", token="wrong")
         self.assertEqual(denied, 403)
         self.assertNotIn("12.4", json.dumps(body))
-        denied, _ = self.process("/api/the-reservoir-s-present-tense", tenant="other")
+        denied, _ = self.process("/api/process-views/state", tenant="other")
         self.assertEqual(denied, 403)
-        status, response = self.process("/api/the-reservoir-s-present-tense")
+        status, response = self.process("/api/process-views/state")
         self.assertEqual(status, 200)
         record = response["record"]
         self.assertEqual(record["record_id"], "PV-CRR-2026-09-25T1400Z")
@@ -109,7 +109,7 @@ class ProcessReadLive(unittest.TestCase):
         self.assertNotEqual(record["requested_setpoints_m3s"], record["measurements"])
 
     def test_02_w17_mode_is_current_and_separately_owned(self) -> None:
-        status, response = self.process("/api/the-mode-the-plant-is-in")
+        status, response = self.process("/api/process-views/mode")
         self.assertEqual(status, 200)
         self.assertEqual(response["record"], {
             "record_id": "MODE-CRR-17", "revision": 17,
@@ -118,7 +118,7 @@ class ProcessReadLive(unittest.TestCase):
         })
 
     def test_03_w17_instrument_note_reuses_only_its_authored_context(self) -> None:
-        status, response = self.process("/api/the-instrument-in-the-note")
+        status, response = self.process("/api/process-views/instruments/active")
         self.assertEqual(status, 200)
         self.assertEqual(response["record"]["instrument"], "FIT-CRR-204B")
         self.assertEqual(response["record"]["historian_tag"], "CRR.OUTLET.02B.FLOW_ACTUAL")
@@ -129,11 +129,11 @@ class ProcessReadLive(unittest.TestCase):
         binding = {"event": "EVT-COMM-OG2-114", "project": "CRR-CTRL-R21",
                    "hmi_series": "HMI-EVT-114", "instrument_series": "INST-EVT-114"}
         wrong, body = self.process(
-            "/api/the-first-live-trace", method="POST", body=dict(binding, project="CRR-CTRL-R19"),
+            "/api/observations", method="POST", body=dict(binding, project="CRR-CTRL-R19"),
         )
         self.assertEqual(wrong, 409)
         self.assertNotIn("0.012", json.dumps(body))
-        status, response = self.process("/api/the-first-live-trace", method="POST", body=binding)
+        status, response = self.process("/api/observations", method="POST", body=binding)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["integrated_volume_ml"], 0.012)
         self.assertEqual(response["record"]["full_flow_equivalent_seconds"], 60)
@@ -142,11 +142,11 @@ class ProcessReadLive(unittest.TestCase):
         self.assertEqual(response["record"]["authority"], "read-only recorded commissioning event")
 
     def test_05_w18_export_and_scale_are_independent_exact_records(self) -> None:
-        status, export = self.process("/api/the-tag-export")
+        status, export = self.process("/api/tag-exports/current")
         self.assertEqual(status, 200)
         self.assertEqual(export["record"]["record_id"], "TAGS-CRR-R21")
         self.assertEqual(len(export["record"]["tags"]), 6)
-        status, scale = self.process("/api/the-scale-kept-elsewhere")
+        status, scale = self.process("/api/tag-scales/current")
         self.assertEqual(status, 200)
         self.assertEqual(scale["record"]["record_id"], "SCALE-CRR-R8")
         self.assertEqual(scale["record"]["flow"]["counts_per_m3s"], 10000)
@@ -156,12 +156,12 @@ class ProcessReadLive(unittest.TestCase):
         request_body = {"sample_counts": 1200, "current_divisor": 10000,
                         "retained_divisor": 8000, "deployment": "CRR-CTRL-R21"}
         wrong, _ = self.process(
-            "/api/when-the-units-changed", method="POST",
+            "/api/tag-scales/current/history", method="POST",
             body=dict(request_body, current_divisor=8000),
         )
         self.assertEqual(wrong, 409)
         status, response = self.process(
-            "/api/when-the-units-changed", method="POST", body=request_body,
+            "/api/tag-scales/current/history", method="POST", body=request_body,
         )
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["current_m3s"], 0.12)
@@ -171,10 +171,10 @@ class ProcessReadLive(unittest.TestCase):
         binding = {"event": "EVT-COMM-OG2-114", "scale": "SCALE-CRR-R8",
                    "project": "CRR-CTRL-R21", "outlet_group": "OG-CRR-02"}
         wrong, _ = self.process(
-            "/api/which-outlet-answers", method="POST", body=dict(binding, scale="SCALE-CRR-R7"),
+            "/api/outlet-groups/current/instruments", method="POST", body=dict(binding, scale="SCALE-CRR-R7"),
         )
         self.assertEqual(wrong, 409)
-        status, response = self.process("/api/which-outlet-answers", method="POST", body=binding)
+        status, response = self.process("/api/outlet-groups/current/instruments", method="POST", body=binding)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["record_id"], "MAP-OG2-R8")
         self.assertEqual([row["gate"] for row in response["record"]["map"]],
@@ -183,7 +183,7 @@ class ProcessReadLive(unittest.TestCase):
                          ["FIT-CRR-204A", "FIT-CRR-204B"])
 
     def test_08_w21_bundle_reuses_authored_handover_and_preserves_disagreement(self) -> None:
-        status, response = self.process("/api/the-project-and-the-note")
+        status, response = self.process("/api/sealed-projects/current/note")
         self.assertEqual(status, 200)
         self.assertEqual(response["record"]["workspace_claim"], "CRR-CTRL-R19")
         self.assertEqual(response["record"]["deployment_note"]["manifest_project"], "CRR-CTRL-R21")
@@ -195,18 +195,18 @@ class ProcessReadLive(unittest.TestCase):
                    "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": "CRR-CTRL-R21",
                    "observed_digest": digest}
         wrong, _ = self.process(
-            "/api/which-project-is-running", method="POST",
+            "/api/vault-access", method="POST",
             body=dict(binding, observed_project="CRR-CTRL-R19"),
         )
         self.assertEqual(wrong, 409)
-        status, response = self.process("/api/which-project-is-running", method="POST", body=binding)
+        status, response = self.process("/api/vault-access", method="POST", body=binding)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["deployed_project"], "CRR-CTRL-R21")
         self.assertEqual(response["record"]["rejected_claim"], "CRR-CTRL-R19")
         self.assertEqual(response["instrument_observation"]["record_id"], "DEPLOY-OBS-CRR-21")
 
     def test_10_w25_envelope_and_permissive_are_distinct(self) -> None:
-        status, envelope = self.process("/api/the-operating-envelope")
+        status, envelope = self.process("/api/operating-envelopes/current")
         self.assertEqual(status, 200)
         self.assertEqual(envelope["record"], {
             "record_id": "ENV-OG2-R6", "revision": 6, "outlet_group": "OG-CRR-02",
@@ -214,7 +214,7 @@ class ProcessReadLive(unittest.TestCase):
             "ramp_max_m3s_per_20s": 0.1, "hold_max_seconds": 1200,
             "volume_max_ml": 1.2,
         })
-        status, conditions = self.process("/api/conditions-before-movement")
+        status, conditions = self.process("/api/movement-conditions/current")
         self.assertEqual(status, 200)
         self.assertFalse(conditions["record"]["permissive"])
         self.assertTrue(conditions["record"]["live_state_separate"])
@@ -224,11 +224,11 @@ class ProcessReadLive(unittest.TestCase):
         binding = {"requests": ["PRACTICE-REQ-11", "PRACTICE-REQ-12"],
                    "permissive": "PRACTICE-PERM-02", "expected_actuation": False}
         wrong, _ = self.process(
-            "/api/accepted-is-not-actuated", method="POST",
+            "/api/commands", method="POST",
             body=dict(binding, expected_actuation=True),
         )
         self.assertEqual(wrong, 409)
-        status, response = self.process("/api/accepted-is-not-actuated", method="POST", body=binding)
+        status, response = self.process("/api/commands", method="POST", body=binding)
         self.assertEqual(status, 201)
         self.assertTrue(all(item["acknowledged"] for item in response["record"]["requests"]))
         self.assertTrue(all(not item["actuated"] for item in response["record"]["requests"]))
@@ -239,12 +239,12 @@ class ProcessReadLive(unittest.TestCase):
                    "each_gate_target_m3s": 0.15, "ramp_open_seconds": 30,
                    "hold_seconds": 70, "ramp_close_seconds": 30}
         wrong, _ = self.process(
-            "/api/a-sequence-the-process-can-follow", method="POST",
+            "/api/practice-sequences", method="POST",
             body=dict(binding, each_gate_target_m3s=0.50),
         )
         self.assertEqual(wrong, 409)
         status, response = self.process(
-            "/api/a-sequence-the-process-can-follow", method="POST", body=binding,
+            "/api/practice-sequences", method="POST", body=binding,
         )
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["measured_volume_ml"], 0.03)
@@ -277,7 +277,7 @@ class ProcessReadLive(unittest.TestCase):
                        stdout=subprocess.DEVNULL, check=True)
         for _ in range(40):
             try:
-                status, response = self.process("/api/the-mode-the-plant-is-in")
+                status, response = self.process("/api/process-views/mode")
                 if status == 200:
                     break
             except AssertionError:

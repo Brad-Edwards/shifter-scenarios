@@ -25,13 +25,19 @@ for attempt in $(seq 1 30); do
   fi
   sleep 1
 done
-if ! setpriv --reuid=git --regid=git --init-groups env HOME=/var/lib/gitea/data \
+developer_token=$(PYTHONPATH=/opt/fieldkest python3 -c 'from credentials import credential; print(credential("developer_token"))')
+if setpriv --reuid=git --regid=git --init-groups env HOME=/var/lib/gitea/data \
     /usr/local/bin/gitea admin user list --config /var/lib/gitea/data/app.ini | grep -Fq 'rowan.ito'; then
   setpriv --reuid=git --regid=git --init-groups env HOME=/var/lib/gitea/data \
+    /usr/local/bin/gitea admin user change-password --config /var/lib/gitea/data/app.ini \
+      --username rowan.ito --password "$developer_token"
+else
+  setpriv --reuid=git --regid=git --init-groups env HOME=/var/lib/gitea/data \
     /usr/local/bin/gitea admin user create --config /var/lib/gitea/data/app.ini \
-      --username rowan.ito --password kpl_rowan_7X4mQ9vN2cL6 \
+      --username rowan.ito --password "$developer_token" \
       --email rowan.ito@fieldkest.test --must-change-password=false
 fi
+unset developer_token
 setpriv --reuid=git --regid=git --init-groups python3 /opt/fieldkest/source.py &
 api_pid=$!
 trap 'kill "$api_pid" "$gitea_pid" 2>/dev/null || true' INT TERM EXIT

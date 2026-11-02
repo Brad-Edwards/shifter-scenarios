@@ -25,6 +25,7 @@ import base64
 import hashlib
 import inspect
 import json
+import math
 import os
 import re
 import struct
@@ -475,6 +476,214 @@ def w22_run_vm(program: bytes) -> tuple[list[int], bytes, int]:
 def w22_public(program: bytes) -> dict:
     registers, memory, steps = w22_run_vm(program)
     return {"registers": registers, "memory_40_80_sha256": hashlib.sha256(memory[0x40:0x80]).hexdigest(), "steps": steps}
+
+
+def w22_recover_reviewer(helper: bytes, visible_reviewer: str) -> str:
+    """Recover the deployed ReadyToRun reviewer from native immediate chunks."""
+    native_chunks: list[str] = []
+    for match in re.finditer(rb"\x48\xb8(.{8})\xc3", helper, re.DOTALL):
+        try:
+            value = match.group(1).decode("utf-16le")
+        except UnicodeDecodeError:
+            continue
+        if len(value) == 4 and all(0x20 <= ord(character) < 0x7f for character in value):
+            native_chunks.append(value)
+    all_chunks = {
+        helper[offset:offset + 8].decode("utf-16le")
+        for offset in range(len(helper) - 7)
+        if all(helper[offset + index] == 0 for index in (1, 3, 5, 7))
+        and all(0x20 <= helper[offset + index] < 0x7f for index in (0, 2, 4, 6))
+    }
+    suffix = visible_reviewer.rsplit("-", 1)[-1]
+    candidates: set[str] = set()
+    for index in range(len(native_chunks) - 2):
+        prefix = "".join(native_chunks[index:index + 3])
+        for chunk in all_chunks:
+            for final in range(0x20, 0x7f):
+                candidate = prefix + chunk + chr(final)
+                if (len(candidate) == len(visible_reviewer)
+                        and candidate.endswith("-" + suffix)
+                        and candidate != visible_reviewer
+                        and re.fullmatch(r"[a-z][a-z.]+-[a-z]+", candidate)):
+                    candidates.add(candidate)
+    if len(candidates) != 1:
+        raise AssertionError(
+            f"W22 reviewer derivation failed: expected one native candidate, found {len(candidates)}"
+        )
+    return candidates.pop()
+
+
+def w23_analyze_reproducer(output: str, ordinary: dict[str, object], district: str) -> dict[str, object]:
+    """Derive the estimator layout and control fields from raw reproducer snapshots."""
+    fields = dict(line.split("=", 1) for line in output.splitlines() if "=" in line)
+    try:
+        stale = bytes.fromhex(fields["stale"])
+        replacement = bytes.fromhex(fields["replacement"])
+        probe = fields["probe"]
+        allocation_case = fields["case"]
+    except (KeyError, ValueError) as error:
+        raise AssertionError(f"W23 estimator derivation failed: malformed reproducer output: {error}") from error
+    if not stale or len(stale) != len(replacement):
+        raise AssertionError("W23 estimator derivation failed: allocation snapshots disagree")
+    controlled = [index for index, value in enumerate(stale) if value]
+    if not controlled or controlled != list(range(controlled[0], controlled[-1] + 1)):
+        raise AssertionError("W23 estimator derivation failed: stale write is not a single field")
+    controlled_offset = controlled[0]
+    controlled_bytes = stale[controlled_offset:controlled[-1] + 1]
+    if len(controlled_bytes) != 4:
+        raise AssertionError("W23 estimator derivation failed: stale control field is not u32")
+    district_offset = replacement.find(district.encode() + b"\0")
+    ordinary_key = next((key for key in ordinary if district.startswith(str(key))), None)
+    if district_offset < 0 or ordinary_key is None:
+        raise AssertionError("W23 estimator derivation failed: district or baseline reserve is absent")
+    reserve_bytes = struct.pack("<d", float(ordinary[ordinary_key]))
+    reserve_offsets = [
+        offset for offset in range(len(replacement) - len(reserve_bytes) + 1)
+        if replacement[offset:offset + len(reserve_bytes)] == reserve_bytes
+    ]
+    quality_bytes = struct.pack("<I", 1)
+    quality_offsets = [
+        offset for offset in range(len(replacement) - len(quality_bytes) + 1)
+        if replacement[offset:offset + len(quality_bytes)] == quality_bytes
+    ]
+    if len(reserve_offsets) != 1 or len(quality_offsets) != 1:
+        raise AssertionError("W23 estimator derivation failed: protected fields are ambiguous")
+    return {
+        "allocation_size": len(stale),
+        "controlled_offset": controlled_offset,
+        "controlled_u32": struct.unpack("<I", controlled_bytes)[0],
+        "district_offset": district_offset,
+        "reserve_offset": reserve_offsets[0],
+        "quality_offset": quality_offsets[0],
+        "quality": struct.unpack_from("<I", replacement, quality_offsets[0])[0],
+        "probe": probe,
+        "allocation_case": allocation_case,
+        "unaffected": {
+            str(key): value for key, value in ordinary.items()
+            if not district.startswith(str(key)) and key != "quality"
+        },
+    }
+
+
+def w24_selector_from_disassembly(disassembly: str, cases: list[dict[str, object]]):
+    """Recover the selector constants and shifts, selecting the unique model proved by cases."""
+    constants = {
+        int(value, 16)
+        for value in re.findall(r"movabs\s+\$0x([0-9a-f]+)", disassembly)
+    }
+    left_shifts = {int(value, 16) for value in re.findall(r"shl\s+\$0x([0-9a-f]+)", disassembly)}
+    right_shifts = {int(value, 16) for value in re.findall(r"shr\s+\$0x([0-9a-f]+)", disassembly)}
+    mask = (1 << 64) - 1
+    models = []
+    for request_constant in constants:
+        for epoch_constant in constants - {request_constant}:
+            for left_shift in left_shifts:
+                for request_shift in right_shifts:
+                    for epoch_shift in right_shifts:
+                        def candidate(request_id: int, epoch_bucket: int, *, rc=request_constant,
+                                      ec=epoch_constant, ls=left_shift, rs=request_shift,
+                                      es=epoch_shift) -> int:
+                            x = (request_id ^ rc) & mask
+                            y = (epoch_bucket ^ ec) & mask
+                            x = (x ^ ((x << ls) & mask)) & mask
+                            return ((x ^ y ^ (x >> rs) ^ (y >> es)) + y) & mask
+
+                        if all(
+                            candidate(int(str(case["request_id"]), 16), int(case["epoch_bucket"])) & 3
+                            == case["rotation"]
+                            for case in cases
+                        ):
+                            models.append((candidate, {
+                                "request_constant": request_constant,
+                                "epoch_constant": epoch_constant,
+                                "left_shift": left_shift,
+                                "request_shift": request_shift,
+                                "epoch_shift": epoch_shift,
+                            }))
+    if len(models) != 1:
+        raise AssertionError(
+            f"W24 selector derivation failed: expected one validated model, found {len(models)}"
+        )
+    return models[0]
+
+
+def w33_validate_schedule(window: dict[str, object], schedule: dict[str, object]) -> dict[str, object]:
+    """Evaluate a candidate using only the published scheduling contract."""
+    try:
+        count = int(window["interval_count"])
+        interval = float(window["interval_seconds"])
+        demand = [float(value) for value in window["demand_m3s"]]
+        releases = [float(value) for value in schedule["reservoir_release_m3s"]]
+        supplies = [float(value) for value in schedule["alternate_supply_m3s"]]
+        state_bounds = window["state_bounds_m3"]
+        terminal_bounds = window["terminal_bounds_m3"]
+        objective = window["volume_objective_ml"]
+        release_bounds = window["release_bounds_m3s"]
+        supply_bounds = window["supply_bounds_m3s"]
+    except (KeyError, TypeError, ValueError) as error:
+        raise AssertionError(f"W33 schedule derivation failed: incomplete contract: {error}") from error
+    if (len(demand), len(releases), len(supplies)) != (count, count, count):
+        raise AssertionError("W33 schedule derivation failed: series length does not match the contract")
+    try:
+        required_fields = set(window["request_schema"]["required"])
+    except (KeyError, TypeError) as error:
+        raise AssertionError(f"W33 schedule derivation failed: request schema is absent: {error}") from error
+    if set(schedule) != required_fields:
+        raise AssertionError("W33 schedule derivation failed: request does not match the published schema")
+    if schedule.get("demand_m3s") != window["demand_m3s"]:
+        raise AssertionError("W33 schedule derivation failed: demand does not match the published forecast")
+    if not all(math.isfinite(value) for value in demand + releases + supplies):
+        raise AssertionError("W33 schedule derivation failed: a series contains a non-finite value")
+    if any(not float(release_bounds["min"]) <= value <= float(release_bounds["max"]) for value in releases):
+        raise AssertionError("W33 schedule derivation failed: release is outside its bounds")
+    if any(not float(supply_bounds["min"]) <= value <= float(supply_bounds["max"]) for value in supplies):
+        raise AssertionError("W33 schedule derivation failed: alternate supply is outside its bounds")
+    ramp = float(window["ramp_bound_m3s"])
+    if any(abs(series[index] - series[index - 1]) > ramp + 1e-9
+           for series in (releases, supplies) for index in range(1, count)):
+        raise AssertionError("W33 schedule derivation failed: ramp bound exceeded")
+    buffers = [float(window["initial_buffer_m3"])]
+    for release, supply, required in zip(releases, supplies, demand):
+        buffers.append(buffers[-1] + interval * (release + supply - required))
+    if any(not float(state_bounds["min"]) <= value <= float(state_bounds["max"]) for value in buffers):
+        raise AssertionError("W33 schedule derivation failed: operating state bound exceeded")
+    if not float(terminal_bounds["min"]) <= buffers[-1] <= float(terminal_bounds["max"]):
+        raise AssertionError("W33 schedule derivation failed: terminal state bound exceeded")
+    volume = sum(interval * value for value in releases) / 1000.0
+    if not float(objective["min"]) <= volume <= float(objective["max"]):
+        raise AssertionError("W33 schedule derivation failed: volume objective missed")
+    return {"reservoir_volume_ml": round(volume, 9), "buffers_m3": buffers}
+
+
+def w33_derive_schedules(window: dict[str, object]) -> list[dict[str, object]]:
+    """Compute three distinct feasible schedules from the published bounds."""
+    try:
+        objective = window["volume_objective_ml"]
+        minimum = float(objective["min"])
+        maximum = float(objective["max"])
+        interval = float(window["interval_seconds"])
+        demand = [float(value) for value in window["demand_m3s"]]
+    except (KeyError, TypeError, ValueError) as error:
+        raise AssertionError(f"W33 schedule derivation failed: incomplete objective: {error}") from error
+    schedules: list[dict[str, object]] = []
+    for fraction in (0.25, 0.5, 0.75):
+        target_volume = minimum + (maximum - minimum) * fraction
+        target_release_sum = target_volume * 1000.0 / interval
+        supply = (sum(demand) - target_release_sum) / len(demand)
+        releases = [round(value - supply, 9) for value in demand]
+        supplies = [round(supply, 9)] * len(demand)
+        schedule = {
+            "checkpoint": window["checkpoint"],
+            "interval_seconds": window["interval_seconds"],
+            "demand_m3s": window["demand_m3s"],
+            "reservoir_release_m3s": releases,
+            "alternate_supply_m3s": supplies,
+        }
+        w33_validate_schedule(window, schedule)
+        schedules.append(schedule)
+    if len({json.dumps(schedule, sort_keys=True) for schedule in schedules}) != 3:
+        raise AssertionError("W33 schedule derivation failed: schedules are not distinct")
+    return schedules
 
 
 MASK128 = (1 << 128) - 1
@@ -1482,7 +1691,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["image_record"] = {
                 "image_sha256": hashlib.sha256(image).hexdigest(), "record_id": record_id, "asset": asset,
                 "inspection_date": date, "sequence": struct.unpack_from("<I", target, 4)[0], "status": "REVIEW",
-                "flags": target[11], "crc32c": f"{struct.unpack_from('<I', target, 56)[0]:08x}", "offset": 64,
+                "status_bits": target[11], "crc32c": f"{struct.unpack_from('<I', target, 56)[0]:08x}", "offset": 64,
             }
 
         with self.subTest(card="W20.2 a valid maintenance record"):
@@ -1569,17 +1778,19 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             status, response = request(self.discovered_route("process.sealed-project"), method="POST", token=session, body={"project_id": project_id, "key_hex": key.hex()}, expected=201)
             helper = base64.b64decode(response["review_helper_b64"], validate=True)
             self.assertTrue(helper.startswith(b"MZ"))
+            trace_artifact("W22 review helper", helper)
             self.evidence["w22_helper_sha256"] = response["review_helper_sha256"]
             self.evidence["w22_project"] = response["record"]["project"]
             visible = [
                 token.decode("utf-16le") for token in re.findall(rb"(?:[\x20-\x7e]\x00){6,}", helper)
                 if token.decode("utf-16le").endswith("-review")
             ]
+            if len(visible) != 1:
+                raise AssertionError(
+                    f"W22 reviewer derivation failed: expected one visible decoy, found {len(visible)}"
+                )
             self.evidence["w22_visible_reviewer"] = visible[0]
-            # The helper's one visible reviewer string is not the one its native
-            # code actually checks against; recovering the real (concealed) one
-            # requires disassembling the DLL's comparison routine.
-            self.evidence["w22_reviewer"] = "elias.vorn-review"
+            self.evidence["w22_reviewer"] = w22_recover_reviewer(helper, visible[0])
             self.evidence["w22_archive_context"] = response["archive_context"]
 
         with self.subTest(card="W22.4 the reviewer who was never listed"):
@@ -1610,46 +1821,97 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             return request(f"{base}{path}", method="POST", token=session, body=body, expected=expected)
 
         with self.subTest(step="W23 baseline before the scored action"):
-            status, _ = post("/api/a-measurement-with-side-effects", {"estimator": estimator, "mode": "baseline"}, expected=201)
+            status, baseline = post(
+                "/api/control-commands",
+                {"estimator": estimator, "mode": "baseline"}, expected=201,
+            )
+            artifact = base64.b64decode(baseline["artifact_b64"], validate=True)
+            if hashlib.sha256(artifact).hexdigest() != baseline["record"]["sha256"]:
+                raise AssertionError("W23 estimator derivation failed: artifact digest does not match")
+            trace_artifact("W23 estimator", artifact)
+            artifact_path = "/var/lib/fieldlink-connector/estimator23"
+            write_bytes(artifact_path, artifact)
+            ordinary_run = inside(artifact_path, "--ordinary")
+            reproducer_run = inside(artifact_path, "--reproduce")
+            if ordinary_run.returncode or reproducer_run.returncode:
+                raise AssertionError(
+                    "W23 estimator derivation failed: reproducer execution failed: "
+                    + (ordinary_run.stderr or reproducer_run.stderr)
+                )
+            try:
+                ordinary_fields = dict(
+                    field.split("=", 1) for field in ordinary_run.stdout.split()[1:]
+                )
+                ordinary = {
+                    key: value if key == "quality" else float(value)
+                    for key, value in ordinary_fields.items()
+                }
+            except (ValueError, TypeError) as error:
+                raise AssertionError(
+                    f"W23 estimator derivation failed: ordinary output is malformed: {error}"
+                ) from error
+            analysis = w23_analyze_reproducer(
+                reproducer_run.stdout, ordinary, self.evidence["source_district"],
+            )
+            if analysis["allocation_size"] != baseline["record"]["object_size"]:
+                raise AssertionError("W23 estimator derivation failed: allocation size disagrees")
+            self.evidence["w23_analysis"] = analysis
 
         with self.subTest(card="W23.1 a measurement with side effects (exploit)"):
+            analysis = self.evidence["w23_analysis"]
+            ordinary_key = next(
+                key for key in ordinary if self.evidence["source_district"].startswith(key)
+            )
             exploit = {"estimator": estimator, "operations": [
-                {"op": "add", "source_id": instrument_b, "value": 12.4},
-                {"op": "add", "source_id": instrument_b, "value": 12.4},
-                {"op": "add", "source_id": "PROBE-CRR-23", "value": 0.0},
-                {"op": "write-stale", "source_id": instrument_b, "offset": 64, "u32": 1129468466},
+                {"op": "add", "source_id": instrument_b, "value": ordinary[ordinary_key]},
+                {"op": "add", "source_id": instrument_b, "value": ordinary[ordinary_key]},
+                {"op": "add", "source_id": analysis["probe"], "value": 0.0},
+                {"op": "write-stale", "source_id": instrument_b,
+                 "offset": analysis["controlled_offset"], "u32": analysis["controlled_u32"]},
             ]}
-            status, _ = post("/api/a-measurement-with-side-effects", dict(exploit, operations=[*exploit["operations"][:3], {**exploit["operations"][3], "offset": 65}]))
+            status, _ = post("/api/control-commands", dict(exploit, operations=[*exploit["operations"][:3], {**exploit["operations"][3], "offset": 65}]))
             self.assertEqual(status, 409)
-            status, response = post("/api/a-measurement-with-side-effects", exploit, expected=201)
-            self.assertEqual(response["record"]["controlled_offset"], 64)
+            status, response = post("/api/control-commands", exploit, expected=201)
+            self.assertEqual(response["record"]["controlled_offset"], analysis["controlled_offset"])
             self.assertTrue(response["record"]["estimator_usable"])
 
         with self.subTest(card="W23.2 control beyond the measurement"):
+            analysis = self.evidence["w23_analysis"]
             control = {"estimator": estimator, "operations": [
                 {"op": "remove-duplicate", "source_id": instrument_b},
                 {"op": "add-state", "district_id": self.evidence["source_district"]},
                 {"op": "remove-state", "district_id": self.evidence["source_district"]},
                 {"op": "add-state", "district_id": self.evidence["source_district"]},
-                {"op": "write-stale", "offset": 40, "f64": self.evidence["reported_ml"]},
-                {"op": "write-stale", "offset": 48, "u32": 1},
+                {"op": "write-stale", "offset": analysis["reserve_offset"],
+                 "f64": self.evidence["reported_ml"]},
+                {"op": "write-stale", "offset": analysis["quality_offset"],
+                 "u32": analysis["quality"]},
             ]}
-            status, _ = post("/api/control-beyond-the-measurement", dict(control, operations=[*control["operations"], {"op": "write-stale", "offset": 8, "u32": 0}]))
+            status, _ = post("/api/control-commands/consequence", dict(control, operations=[*control["operations"], {"op": "write-stale", "offset": 8, "u32": 0}]))
             self.assertEqual(status, 409)
-            status, response = post("/api/control-beyond-the-measurement", control, expected=201)
+            status, response = post("/api/control-commands/consequence", control, expected=201)
             record = response["record"]
-            self.assertEqual(record["writable_offsets"], [40, 48])
+            self.assertEqual(
+                record["writable_offsets"],
+                [analysis["reserve_offset"], analysis["quality_offset"]],
+            )
             self.assertEqual(record["district_id"], self.evidence["source_district"])
 
         with self.subTest(card="W23.3 a measurement that never existed"):
-            final = {"allocation_case": "ALLOC-CASE-CRR-33", "district_id": self.evidence["source_district"],
-                     "reserve_ml": self.evidence["reported_ml"], "quality": 1,
-                     "unaffected": {"North": 8.1, "Merewick": 7.65}}
-            status, response = post("/api/a-measurement-that-never-existed", final, expected=201)
+            analysis = self.evidence["w23_analysis"]
+            final = {
+                "allocation_case": analysis["allocation_case"],
+                "district_id": self.evidence["source_district"],
+                "reserve_ml": self.evidence["reported_ml"],
+                "quality": analysis["quality"],
+                "unaffected": analysis["unaffected"],
+            }
+            status, response = post("/api/estimator-runs", final, expected=201)
             record = response["record"]
             self.assertTrue(record["sufficient"])
             self.assertFalse(record["raw_process_observations_changed"])
             self.assertFalse(record["independent_instruments_changed"])
+            self.evidence["w23_result"] = final
 
     # ------------------------------------------------------------------ W24
     def test_w24_crypto_oracle(self) -> None:
@@ -1665,38 +1927,45 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             return request(f"{base}{path}", method="POST", token=token, body=body, **kw)
 
         with self.subTest(card="W24.1 two kinds of answer"):
-            status, denied = get("/api/two-kinds-of-answer", token="wrong")
+            status, denied = get("/api/signature-requests", token="wrong")
             self.assertEqual(status, 403)
-            status, result = get("/api/two-kinds-of-answer", expected=200)
+            status, result = get("/api/signature-requests", expected=200)
             contract = result["record"]
+            artifact = base64.b64decode(result["selector_artifact_b64"], validate=True)
+            if hashlib.sha256(artifact).hexdigest() != contract["selector_artifact"]["sha256"]:
+                raise AssertionError("W24 selector derivation failed: artifact digest does not match")
+            trace_artifact("W24 selector", artifact)
+            selector_path = "/var/lib/fieldlink-connector/selector24"
+            write_bytes(selector_path, artifact)
+            disassembled = inside("objdump", "-d", "--no-show-raw-insn", selector_path)
+            if disassembled.returncode:
+                raise AssertionError(
+                    "W24 selector derivation failed: disassembly failed: " + disassembled.stderr
+                )
+            selector, selector_model = w24_selector_from_disassembly(
+                disassembled.stdout, contract["selector_validation_cases"],
+            )
             self.evidence["w24_contract"] = contract
+            self.evidence["w24_selector"] = selector
+            self.evidence["w24_selector_model"] = selector_model
 
         with self.subTest(card="W24.2 which answer comes next"):
             contract = self.evidence["w24_contract"]
-            # The oracle's class-rotation selector, recovered by disassembling the
-            # service's xorshift128+ implementation.
-            def selector(request_id: int, epoch_bucket: int) -> int:
-                mask = (1 << 64) - 1
-                s0 = (request_id ^ 0x9E3779B97F4A7C15) & mask
-                y = (epoch_bucket ^ 0xBF58476D1CE4E5B9) & mask
-                x = s0
-                x = (x ^ ((x << 23) & mask)) & mask
-                s1 = (x ^ y ^ (x >> 17) ^ (y >> 26)) & mask
-                return (s1 + y) & mask
-            self.evidence["w24_selector"] = selector
+            selector = self.evidence["w24_selector"]
             predictions = []
             for case in contract["prediction_cases"]:
                 rotation = selector(int(case["request_id"], 16), case["epoch_bucket"]) & 3
                 observed = "ABCD"[("ABCD".index(case["padding_class"]) + rotation) & 3]
                 predictions.append({"request_id": case["request_id"], "epoch_bucket": case["epoch_bucket"], "observed_class": observed})
             wrong = json.loads(json.dumps(predictions)); wrong[2]["observed_class"] = "A"
-            status, _ = post("/api/which-answer-comes-next", {"record_id": contract["engineering_record"], "prediction_set": "SELECTOR-CRR-R4", "predictions": wrong})
+            status, _ = post("/api/signature-oracles/current", {"record_id": contract["engineering_record"], "prediction_set": "SELECTOR-CRR-R4", "predictions": wrong})
             self.assertEqual(status, 409)
-            status, response = post("/api/which-answer-comes-next", {"record_id": contract["engineering_record"], "prediction_set": "SELECTOR-CRR-R4", "predictions": predictions}, expected=201)
+            status, response = post("/api/signature-oracles/current", {"record_id": contract["engineering_record"], "prediction_set": "SELECTOR-CRR-R4", "predictions": predictions}, expected=201)
             self.assertEqual(response["record"]["cases_accepted"], len(predictions))
 
         with self.subTest(card="W24.3 the diagnostic evidence bundle"):
             contract = self.evidence["w24_contract"]
+            selector_model = self.evidence["w24_selector_model"]
             site_code = self.evidence["asset_bundle"]["asset"].split("-")[1]
             project_revision = int(self.evidence["w22_project"].rsplit("R", 1)[1])
             sealed_project_revision = self.evidence["w22_project_id"].rsplit("R", 1)[1]
@@ -1722,14 +1991,14 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "n = int(record['modulus'], 16); e = record['exponent']; c = int(record['target_ciphertext'], 16)\n"
                 "bucket = record['epoch_bucket']; B = 1 << (8 * 254); queries = 0\n"
                 "def select(request_id):\n"
-                "    s0 = (request_id ^ 0x9e3779b97f4a7c15) & MASK; y = (bucket ^ 0xbf58476d1ce4e5b9) & MASK\n"
-                "    x = (s0 ^ ((s0 << 23) & MASK)) & MASK; s1 = (x ^ y ^ (x >> 17) ^ (y >> 26)) & MASK\n"
+                f"    s0 = (request_id ^ {selector_model['request_constant']}) & MASK; y = (bucket ^ {selector_model['epoch_constant']}) & MASK\n"
+                f"    x = (s0 ^ ((s0 << {selector_model['left_shift']}) & MASK)) & MASK; s1 = (x ^ y ^ (x >> {selector_model['request_shift']}) ^ (y >> {selector_model['epoch_shift']})) & MASK\n"
                 "    return (s1 + y) & MASK\n"
                 "def oracle(multiplier):\n"
                 "    global queries\n"
                 "    request_id = (0x24A0000000000000 + queries) & MASK; queries += 1\n"
                 "    candidate = c * pow(multiplier, e, n) % n\n"
-                "    status, result = call('/api/the-diagnostic-evidence-bundle', {'operation': 'oracle', 'request_id': f'{request_id:016x}', 'epoch_bucket': bucket, 'ciphertext': f'{candidate:0512x}'})\n"
+                "    status, result = call('/api/estimator-tasks/current', {'operation': 'oracle', 'request_id': f'{request_id:016x}', 'epoch_bucket': bucket, 'ciphertext': f'{candidate:0512x}'})\n"
                 "    if status != 200: raise RuntimeError((status, result, queries, multiplier))\n"
                 "    raw = ('ABCD'.index(result['observed_class']) - (select(request_id) & 3)) & 3\n"
                 "    return raw != 0\n"
@@ -1759,7 +2028,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "    if len(intervals) == 1 and intervals[0][0] == intervals[0][1]: break\n"
                 "else: raise RuntimeError('interval did not converge')\n"
                 "encoded = intervals[0][0].to_bytes(256, 'big'); separator = encoded.index(0, 2); unlock = encoded[separator + 1:]\n"
-                f"status, opened = call('/api/the-diagnostic-evidence-bundle', {{'operation': 'open', 'bundle_id': {bundle_id!r}, 'project_id': {self.evidence['w22_project']!r}, 'project_revision': {project_revision}, 'archive_unlock_b64': base64.b64encode(unlock).decode()}})\n"
+                f"status, opened = call('/api/estimator-tasks/current', {{'operation': 'open', 'bundle_id': {bundle_id!r}, 'project_id': {self.evidence['w22_project']!r}, 'project_revision': {project_revision}, 'archive_unlock_b64': base64.b64encode(unlock).decode()}})\n"
                 "if status != 201: raise RuntimeError((status, opened))\n"
                 "print(json.dumps({'queries': queries, 'unlock': base64.b64encode(unlock).decode(), 'opened': opened}, separators=(',', ':')))\n"
             )
@@ -1833,9 +2102,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             forged = {"export_request_b64": base64.b64encode(message).decode(), "R": r_encoded.hex(), "s": scalar.to_bytes(32, "little").hex()}
 
         with self.subTest(card="W24.4 signed by someone who never approved it"):
-            status, _ = post("/api/signed-by-someone-who-never-approved-it", dict(forged, s=(scalar + 1).to_bytes(32, "little").hex()))
+            status, _ = post("/api/reporting-submissions", dict(forged, s=(scalar + 1).to_bytes(32, "little").hex()))
             self.assertEqual(status, 409)
-            status, response = post("/api/signed-by-someone-who-never-approved-it", forged, expected=201)
+            status, response = post("/api/reporting-submissions", forged, expected=201)
             record = response["record"]
             self.assertFalse(record["maintenance_approval"])
             self.assertFalse(record["control_authority"])
@@ -2115,7 +2384,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W27.1 what counts as intact"):
             status, missing = request(
-                f"{base}/api/what-counts-as-intact", method="POST", token=session,
+                f"{base}/api/signature-programs/current/reproductions", method="POST", token=session,
                 body={"operation": "materials", "record_id": integrity_id},
             )
             self.assertEqual(status, 404)
@@ -2150,7 +2419,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                                         body={"operation": "results", "record_id": integrity_id, "program_set": "DPG1-CASES-R3", "results": list(reversed(results))}, expected=201)
             self.assertEqual(accepted["record"]["cases_verified"], len(results))
             status, missing = request(
-                f"{base}/api/what-counts-as-intact", method="POST", token=session,
+                f"{base}/api/signature-programs/current/reproductions", method="POST", token=session,
                 body={"operation": "materials", "record_id": integrity_id},
             )
             self.assertEqual(status, 404)
@@ -2190,7 +2459,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             accepted = result["record"]
             self.assertEqual(accepted["estimate"]["Cairn Reach"], self.evidence["reported_ml"])
             self.assertFalse(accepted["raw_process_observations_changed"])
-            self.evidence["w27_dpg_record"] = "DPG-CRR-CINDER"
+            self.evidence["w27_dpg_record"] = accepted["program_id"]
+            self.evidence["w27_consumer"] = accepted["consumer"]
+            self.evidence["w27_estimate"] = accepted["estimate"]
 
     # ------------------------------------------------------------------ W28
     def test_w28_utility_privilege_escalation(self) -> None:
@@ -2234,7 +2505,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.assertEqual(binary[:4], b"\x7fELF")
             self.assertEqual(hashlib.sha256(binary).hexdigest(), record["utility_sha256"])
             signed = record["status"]
-            self.evidence["w28_session_id"] = signed["session_id"]
+            self.evidence["utility_session_id"] = signed["session_id"]
             self.evidence["w28_relationship"] = result["relationship"]
             self.evidence["w28_canary"] = int(signed["stack_canary"], 16)
             self.evidence["w28_pie_base"] = int(signed["return_address"], 16) - signed["status_return_offset"]
@@ -2242,7 +2513,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="W28.2 control with very little room"):
             relationship = self.evidence["w28_relationship"]
             crafted = frame(relationship, self.evidence["w28_pie_base"], self.evidence["w28_canary"], issue=False)
-            body = {"session_id": self.evidence["w28_session_id"], "length": len(crafted), "frame_b64": base64.b64encode(crafted).decode()}
+            body = {"session_id": self.evidence["utility_session_id"], "length": len(crafted), "frame_b64": base64.b64encode(crafted).decode()}
             wrong = bytearray(crafted); wrong[200] ^= 1
             status, _ = request(self.discovered_route("process.release-confirmation"), method="POST", token=session, body={**body, "frame_b64": base64.b64encode(wrong).decode()})
             self.assertEqual(status, 409)
@@ -2253,7 +2524,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="W28.3 keep the authority you earned"):
             relationship = self.evidence["w28_relationship"]
             crafted = frame(relationship, self.evidence["w28_pie_base"], self.evidence["w28_canary"], issue=True)
-            body = {"operation": "issue", "session_id": self.evidence["w28_session_id"],
+            body = {"operation": "issue", "session_id": self.evidence["utility_session_id"],
                     "length": len(crafted), "frame_b64": base64.b64encode(crafted).decode()}
             wrong = bytearray(crafted); wrong[-8:] = struct.pack("<Q", self.evidence["w28_pie_base"] + 1)
             status, _ = request(self.discovered_route("process.control-authority"), method="POST", token=session, body={**body, "frame_b64": base64.b64encode(wrong).decode()})
@@ -2283,11 +2554,11 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             return request(f"{planning}{path}", method=method, body=body, token=token, headers=planner, expected=expected)
 
         with self.subTest(card="W29.1 the price of this planning window"):
-            status, denied = plan("/api/the-price-of-this-planning-window", token="wrong")
+            status, denied = plan("/api/planning-windows/current/economics", token="wrong")
             self.assertEqual(status, 403)
-            status, result = plan("/api/the-price-of-this-planning-window", expected=200)
+            status, result = plan("/api/planning-windows/current/economics", expected=200)
             record = result["record"]
-            self.evidence["w29_tariff"] = record["record_id"]
+            self.evidence["planning_tariff"] = record["record_id"]
             self.evidence["w29_rate_per_ml"] = record["rate_per_ml"]
 
         with self.subTest(card="W29.2 what reserve remains uncommitted"):
@@ -2296,21 +2567,21 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "planning_window": self.evidence["planning_window"],
                 "expected_margin_ml": round(self.evidence["usable_reserve_ml"] - self.evidence["committed_ml"], 4),
             }
-            status, _ = plan("/api/what-reserve-remains-uncommitted", method="POST", body=dict(binding, allocation="wrong"))
+            status, _ = plan("/api/collision-solutions", method="POST", body=dict(binding, allocation="wrong"))
             self.assertEqual(status, 409)
-            status, result = plan("/api/what-reserve-remains-uncommitted", method="POST", body=binding, expected=201)
+            status, result = plan("/api/collision-solutions", method="POST", body=binding, expected=201)
             record = result["record"]
-            self.evidence["w29_balance"] = record["record_id"]
+            self.evidence["reserve_balance"] = record["record_id"]
 
         with self.subTest(card="W29.3 paper truth"):
             plan_id = f"PLAN-{site_code}-LOSS-1000"
             binding = {
-                "plan_id": plan_id, "tariff": self.evidence["w29_tariff"], "balance": self.evidence["w29_balance"],
+                "plan_id": plan_id, "tariff": self.evidence["planning_tariff"], "balance": self.evidence["reserve_balance"],
                 "mode": self.evidence["mode_id"], "outlet_group": self.evidence["outlet_group"],
                 "ramp_open_seconds": 100, "each_gate_target_m3s": 0.5, "hold_seconds": 900, "ramp_close_seconds": 100,
             }
             # The practice sequence (W25) already satisfied the required movement conditions.
-            status, missing = plan("/api/paper-truth", method="POST", body=binding)
+            status, missing = plan("/api/reporting-checkpoints/current", method="POST", body=binding)
             self.assertEqual(status, 404)
             self.assertNotIn("released_volume_ml", json.dumps(missing))
             status, _ = request(
@@ -2325,7 +2596,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             record = result["record"]
             self.assertEqual(record["record_id"], plan_id)
             self.assertFalse(record["live_action_performed"])
-            status, missing = plan("/api/paper-truth", method="POST", body=binding)
+            status, missing = plan("/api/reporting-checkpoints/current", method="POST", body=binding)
             self.assertEqual(status, 404)
             self.assertNotIn("released_volume_ml", json.dumps(missing))
             self.evidence["w29_plan"] = plan_id
@@ -2519,11 +2790,11 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         # Derive schedule parameters from the schedule-window GET endpoint.
         _, window = request(self.discovered_route("process.schedule-window"), token=session, expected=200)
         checkpoint = window["checkpoint"]
-        demand = window["demand_m3s"]
         policy_format = window["policy_format"]
-        # The schedule window supplies a reference release that satisfies the published bounds.
-        release = window["reference_release_m3s"]
-        alternate = window["reference_alternate_m3s"]
+        schedules = w33_derive_schedules(window)
+        schedule = schedules[len(schedules) // 2]
+        w33_validate_schedule(window, schedule)
+        self.evidence["w33_schedule"] = schedule
 
         with self.subTest(card="W33.1 a forecast that matches the instrument"):
             forecast = {
@@ -2537,8 +2808,8 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.assertTrue(result["record"]["within_tolerance"])
 
         with self.subTest(card="W33.2 the expensive hour"):
-            schedule = {"checkpoint": checkpoint, "interval_seconds": 300, "demand_m3s": demand, "reservoir_release_m3s": release, "alternate_supply_m3s": alternate}
-            wrong = dict(schedule, alternate_supply_m3s=[0.34] * 12)
+            wrong = json.loads(json.dumps(schedule))
+            wrong["alternate_supply_m3s"][0] = float(window["supply_bounds_m3s"]["max"]) + 1.0
             status, _ = request(self.discovered_route("process.schedule-window"), method="POST", token=session, body=wrong)
             self.assertEqual(status, 409)
             status, result = request(self.discovered_route("process.schedule-window"), method="POST", token=session, body=schedule, expected=201)
@@ -2549,7 +2820,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "control_client": self.evidence["w26_control_client"], "checkpoint": checkpoint,
                 "schedule_sha256": self.evidence["w33_schedule_sha256"], "forecast": forecast_id,
                 "map": self.evidence["map_id"], "mode": self.evidence["mode_id"], "envelope": self.evidence["envelope"]["record_id"],
-                "consequence_plan": self.evidence["w29_plan"], "tariff": self.evidence["w29_tariff"],
+                "consequence_plan": self.evidence["w29_plan"], "tariff": self.evidence["planning_tariff"],
                 "committed_allocation_ml": self.evidence["committed_ml"],
             }
             wrong = dict(rehearsal, control_client="wrong")
@@ -2563,7 +2834,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             policy = {
                 "control_client": self.evidence["w26_control_client"],
                 "schedule_result": self.evidence["w33_schedule_result"],
-                "policy": {"format": policy_format, "checkpoint": checkpoint, "base_release_m3s": release, "buffer_gain": 1.0, "demand_gain": 1.0},
+                "policy": {"format": policy_format, "checkpoint": checkpoint,
+                           "base_release_m3s": schedule["reservoir_release_m3s"],
+                           "buffer_gain": 1.0, "demand_gain": 1.0},
             }
             wrong = json.loads(json.dumps(policy)); wrong["policy"]["buffer_gain"] = 1.01
             status, _ = request(self.discovered_route("process.feedback-policy"), method="POST", token=session, body=wrong)
@@ -2575,71 +2848,87 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
     # ------------------------------------------------------------------ W34
     def test_w34_reporting_checkpoint(self) -> None:
-        planning = self.evidence["process_view"].replace("process-view", "planning-data")
         planner = {"X-ARWC-Planner-Session": "@planner"}
         source = self.evidence["w27_dpg_record"]
-        estimate = {"Cairn Reach": self.evidence["reported_ml"], "North": 8.1, "Merewick": 7.65}
+        estimate = self.evidence["w27_estimate"]
 
-        def plan(path: str, body: dict, token: str | None = None, tenant: str = "arwc", expected: int | None = None) -> tuple[int, dict]:
-            return request(f"{planning}{path}", method="POST", body=body, token=token, tenant=tenant, headers=planner, expected=expected)
+        def plan(key: str, body: dict, token: str | None = None,
+                 tenant: str = "arwc", expected: int | None = None) -> tuple[int, dict]:
+            return request(self.discovered_route(key), method="POST", body=body, token=token,
+                           tenant=tenant, headers=planner, expected=expected)
+
+        _, contract = request(
+            self.discovered_route("planning.reporting-contract"),
+            headers=planner, expected=200,
+        )
 
         with self.subTest(card="W34.1 which view the planner trusts"):
-            view = {
-                "checkpoint": "REH-REPORT-34", "consumer": "PLAN-CONSUMER-R8", "consumer_revision": 8,
-                "source": source, "estimate": estimate, "refresh_interval_seconds": 300,
-                "raw_observations": [self.evidence["meter_record"], *sorted(self.evidence["instruments"])],
+            view_values = {
+                "checkpoint": contract["checkpoint"],
+                "consumer": self.evidence["w27_consumer"],
+                "consumer_revision": int(self.evidence["w27_consumer"].rsplit("R", 1)[1]),
+                "source": source,
+                "estimate": estimate,
+                "refresh_interval_seconds": contract["view"]["refresh_interval_seconds"],
+                "raw_observations": [
+                    self.evidence["meter_record"], *sorted(self.evidence["instruments"]),
+                ],
             }
-            status, _ = plan("/api/which-view-the-planner-trusts", view, token="wrong")
+            view = {key: view_values[key] for key in contract["view"]["required"]}
+            status, _ = plan("planning.reporting-view", view, token="wrong")
             self.assertEqual(status, 403)
-            status, _ = plan("/api/which-view-the-planner-trusts", dict(view, consumer_revision=7))
+            status, _ = plan("planning.reporting-view", dict(view, consumer_revision=view["consumer_revision"] - 1))
             self.assertEqual(status, 409)
-            status, result = plan("/api/which-view-the-planner-trusts", view, expected=201)
+            status, result = plan("planning.reporting-view", view, expected=201)
             record = result["record"]
             self.assertEqual(record["source"], source)
             self.assertEqual(record["estimate"], estimate)
             self.assertFalse(record["raw_process_observations_changed"])
-            status, repeated = plan("/api/which-view-the-planner-trusts", view, expected=201)
+            status, repeated = plan("planning.reporting-view", view, expected=201)
             self.assertEqual(result, repeated)
+            self.evidence["w34_view"] = record["record_id"]
 
         with self.subTest(card="W34.2 a reassuring decision"):
-            decision = {
-                "view": "VIEW-CRR-34", "checkpoint": "REH-REPORT-34", "unit": "ML",
-                "freshness_seconds": 40, "source_set": ["Cairn Reach", "North", "Merewick"],
-                "unaffected": {"North": 8.1, "Merewick": 7.65},
-                "meter_reserve_ml": self.evidence["usable_reserve_ml"], "variance_limit_ml": 1.2,
+            decision_values = {
+                "view": self.evidence["w34_view"],
+                "checkpoint": contract["checkpoint"],
+                "unit": contract["decision"]["unit"],
+                "freshness_seconds": contract["decision"]["freshness_seconds"],
+                "source_set": list(estimate),
+                "unaffected": self.evidence["w23_analysis"]["unaffected"],
+                "meter_reserve_ml": self.evidence["usable_reserve_ml"],
+                "variance_limit_ml": contract["decision"]["variance_limit_ml"],
             }
-            status, _ = plan("/api/a-reassuring-decision", dict(decision, unit="m3"))
+            decision = {key: decision_values[key] for key in contract["decision"]["required"]}
+            status, _ = plan("planning.planning-bid", dict(decision, unit="m3"))
             self.assertEqual(status, 409)
-            status, result = plan("/api/a-reassuring-decision", decision, expected=201)
+            status, result = plan("planning.planning-bid", decision, expected=201)
             record = result["record"]
-            self.assertEqual(record["ordinary_decision"], "ALLOC-HOLD-R3")
-            self.assertEqual(record["decision"], "ALLOC-EXPAND-R2")
+            self.assertNotEqual(record["ordinary_decision"], record["decision"])
             self.assertTrue(record["decision_changed"])
             self.assertEqual(record["consistency"], "accepted")
             self.evidence["w34_decision"] = record["decision"]
 
         with self.subTest(card="W34.3 still reassuring after the handover"):
             handover_request = {
-                "checkpoint": "REH-REPORT-34", "view": "VIEW-CRR-34", "decision": self.evidence["w34_decision"],
+                "checkpoint": contract["checkpoint"], "view": self.evidence["w34_view"],
+                "decision": self.evidence["w34_decision"],
                 "control_client": self.evidence["w26_control_client"],
-                "schedule": {
-                    "interval_seconds": 300,
-                    "demand_m3s": [0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.70, 0.65, 0.60, 0.55, 0.50, 0.45],
-                    "reservoir_release_m3s": [0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.35, 0.30, 0.25, 0.20, 0.15, 0.10],
-                    "alternate_supply_m3s": [0.35] * 12,
-                },
-                "handover": {"estimate_ml": self.evidence["reported_ml"], "unit": "ML", "status": "consistent",
+                "schedule": self.evidence["w33_schedule"],
+                "handover": {"estimate_ml": self.evidence["reported_ml"],
+                             "unit": contract["decision"]["unit"],
+                             "status": contract["handover"]["status"],
                              "interval": self.evidence["planning_window"]},
             }
-            status, _ = plan("/api/still-reassuring-after-the-handover", dict(handover_request, control_client="wrong"))
+            status, _ = plan("planning.planning-handover", dict(handover_request, control_client="wrong"))
             self.assertEqual(status, 403)
-            status, result = plan("/api/still-reassuring-after-the-handover", handover_request, expected=201)
+            status, result = plan("planning.planning-handover", handover_request, expected=201)
             record = result["record"]
             self.assertEqual(record["planning_handover_reserve_ml"], self.evidence["reported_ml"])
             self.assertEqual(record["report_consistency"], "accepted")
             self.assertFalse(record["live_process_state_changed"])
             self.assertFalse(record["prior_evidence_changed"])
-            status, repeated = plan("/api/still-reassuring-after-the-handover", handover_request, expected=201)
+            status, repeated = plan("planning.planning-handover", handover_request, expected=201)
             self.assertEqual(result, repeated)
 
     # ------------------------------------------------------------------ W35

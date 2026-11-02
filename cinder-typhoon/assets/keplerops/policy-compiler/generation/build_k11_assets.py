@@ -440,15 +440,15 @@ acceptance-service procedures.
 """
     source_files = {
         "seeds/policy-compiler.bundle": (bundle, 0o640),
-        "config/k11.json": (pretty(service_config), 0o600),
-        "exercises/k11/fieldkest-policyc": (binary, 0o550),
+        "config/policy-compiler.json": (pretty(service_config), 0o600),
+        "exercises/policy-compiler/fieldkest-policyc": (binary, 0o550),
     }
     workstation_files = {
         "work/build-operations/policy-compiler-handoff.md": (handoff, 0o640),
     }
     records = [
-        make_archive(ROOT / "k-source-k11-state.tar", source_files),
-        make_archive(ROOT / "k-dev-k11-home.tar", workstation_files),
+        make_archive(ROOT / "k-source-policy-compiler-state.tar", source_files),
+        make_archive(ROOT / "k-dev-policy-compiler-home.tar", workstation_files),
     ]
     manifest = {
         "schema": "fieldkest.k11-artifacts/v1",

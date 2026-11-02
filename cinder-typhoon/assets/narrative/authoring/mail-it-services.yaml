@@ -164,7 +164,7 @@ messages:
   to:
   - awm174
   subject: 'Re: Customer account book: ARWC-IT-26-0004'
-  body: 'I can open the bill now. I will answer the customer''s copy request.
+  body: 'I can open the bill now. I will answer the requested copy.
 
 
     Tariq
@@ -2548,7 +2548,7 @@ messages:
   to:
   - awm173
   subject: 'Re: Customer account book: ARWC-IT-26-0059'
-  body: 'I can open the bill now. I will answer the customer''s copy request.
+  body: 'I can open the bill now. I will answer the requested copy.
 
 
     Vera
@@ -4932,7 +4932,7 @@ messages:
   to:
   - awm172
   subject: 'Re: Customer account book: ARWC-IT-26-0114'
-  body: 'I can open the bill now. I will answer the customer''s copy request.
+  body: 'I can open the bill now. I will answer the requested copy.
 
 
     Alix
@@ -7310,7 +7310,7 @@ messages:
   to:
   - awm171
   subject: 'Re: Customer account book: ARWC-IT-26-0169'
-  body: 'I can open the bill now. I will answer the customer''s copy request.
+  body: 'I can open the bill now. I will answer the requested copy.
 
 
     Ben
@@ -9695,7 +9695,7 @@ messages:
   to:
   - awm174
   subject: 'Re: Customer account book: ARWC-IT-26-0224'
-  body: 'I can open the bill now. I will answer the customer''s copy request.
+  body: 'I can open the bill now. I will answer the requested copy.
 
 
     Cian
@@ -12076,7 +12076,7 @@ messages:
   to:
   - awm173
   subject: 'Re: Customer account book: ARWC-IT-26-0279'
-  body: 'I can open the bill now. I will answer the customer''s copy request.
+  body: 'I can open the bill now. I will answer the requested copy.
 
 
     Edda

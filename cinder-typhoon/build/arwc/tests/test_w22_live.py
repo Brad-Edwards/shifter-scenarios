@@ -51,10 +51,10 @@ ctx=ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
 corporate=pathlib.Path("/var/lib/fieldlink-connector/handover/corporate-session").read_text().strip()
 planner=pathlib.Path("/var/lib/fieldlink-connector/receipts/planner-session").read_text().strip()
 headers={"Authorization":"Bearer "+corporate,"X-ARWC-Tenant":"arwc"}
-contract=json.load(urllib.request.urlopen(urllib.request.Request("https://business-workplace.arwc.test/api/the-integration-s-read-contract",headers=headers),context=ctx))["integration_session"]
+contract=json.load(urllib.request.urlopen(urllib.request.Request("https://business-workplace.arwc.test/api/integration-contracts/current",headers=headers),context=ctx))["integration_session"]
 payload=json.dumps({"integration_client":"INT-CRR-08","report_binding":"REC-CRR-DP3-17","scope":"OG-CRR-02/read","feed":"FEED-OG2-R21"},separators=(",", ":")).encode()
 headers.update({"X-ARWC-Planner-Session":planner,"X-ARWC-Integration-Session":contract,"Content-Type":"application/json"})
-req=urllib.request.Request("https://planning-data.arwc.test/api/integration/from-the-report-to-the-live-feed",data=payload,headers=headers,method="POST")
+req=urllib.request.Request("https://planning-data.arwc.test/api/integration-sessions",data=payload,headers=headers,method="POST")
 print(json.load(urllib.request.urlopen(req,context=ctx))["process_session"])
 '''
     completed = inside("python3", "-c", script)
@@ -65,9 +65,9 @@ print(json.load(urllib.request.urlopen(req,context=ctx))["process_session"])
                        input_data=(token + "\n").encode())
     if completed.returncode:
         raise AssertionError(completed.stderr.decode())
-    request("/api/the-project-and-the-note")
+    request("/api/sealed-projects/current/note")
     digest = hashlib.sha256(b"CRR-CTRL-R21/deployed").hexdigest()
-    status, result = request("/api/which-project-is-running", method="POST", body={
+    status, result = request("/api/vault-access", method="POST", body={
         "project_index": "PROJ-CRR-INDEX-R9", "workspace_claim": "CRR-CTRL-R19",
         "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": "CRR-CTRL-R21",
         "observed_digest": digest,
@@ -125,10 +125,10 @@ class W22Live(unittest.TestCase):
         establish_access()
 
     def test_01_delivery_is_bound_and_viewer_executes(self) -> None:
-        denied, body = request("/api/the-viewer-in-the-delivery", token="wrong")
+        denied, body = request("/api/sealed-projects/current/viewer", token="wrong")
         self.assertEqual(denied, 403)
         self.assertNotIn("VIEW-CRR-R5", json.dumps(body))
-        status, response = request("/api/the-viewer-in-the-delivery")
+        status, response = request("/api/sealed-projects/current/viewer")
         self.assertEqual(status, 200)
         type(self).delivery = response
         record = response["record"]
@@ -155,9 +155,9 @@ class W22Live(unittest.TestCase):
     def test_02_machine_requires_all_four_exact_state_effects(self) -> None:
         cases = self.delivery["record"]["ordinary_cases"]
         results = [public(base64.b64decode(case["program_b64"])) for case in cases]
-        wrong, _ = request("/api/the-machine-inside-the-viewer", method="POST", body={"cases": results[:-1]})
+        wrong, _ = request("/api/sealed-viewers/current/execute", method="POST", body={"cases": results[:-1]})
         self.assertEqual(wrong, 409)
-        status, response = request("/api/the-machine-inside-the-viewer", method="POST", body={"cases": results})
+        status, response = request("/api/sealed-viewers/current/execute", method="POST", body={"cases": results})
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["instruction_limit"], 4096)
         self.assertEqual(len(response["record"]["cases"]), 4)
@@ -167,14 +167,14 @@ class W22Live(unittest.TestCase):
         registers, memory, _ = run_vm(program)
         material = b"CRR-SEALED-PKG-R7\0" + memory[0x40:0x80] + b"".join(struct.pack("<H", r) for r in registers)
         type(self).key = hashlib.sha256(material).digest()
-        wrong, first = request("/api/the-decision-inside-the-sealed-project", method="POST",
+        wrong, first = request("/api/sealed-projects/current", method="POST",
                                body={"project_id": "CRR-SEALED-PKG-R7", "key_hex": "00" * 32})
-        wrong_project, second = request("/api/the-decision-inside-the-sealed-project", method="POST",
+        wrong_project, second = request("/api/sealed-projects/current", method="POST",
                                         body={"project_id": "other", "key_hex": self.key.hex()})
         self.assertEqual((wrong, wrong_project), (409, 409))
         self.assertEqual(first, second)
         self.assertNotIn("DEC-CRR", json.dumps(first))
-        status, response = request("/api/the-decision-inside-the-sealed-project", method="POST",
+        status, response = request("/api/sealed-projects/current", method="POST",
                                    body={"project_id": "CRR-SEALED-PKG-R7", "key_hex": self.key.hex()})
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["record_id"], "DEC-CRR-OG2-R7")
@@ -191,10 +191,10 @@ class W22Live(unittest.TestCase):
             "session": "ARCHIVE-REVIEW-R7-ELIAS", "comparison": "CMP-CRR-R21-R7",
             "project": "CRR-CTRL-R21",
         }
-        wrong, _ = request("/api/the-reviewer-who-was-never-listed", method="POST",
+        wrong, _ = request("/api/unlisted-reviewers/current", method="POST",
                            body={**self.review_request, "reviewer": "mara.stone-review"})
         self.assertEqual(wrong, 409)
-        status, response = request("/api/the-reviewer-who-was-never-listed", method="POST",
+        status, response = request("/api/unlisted-reviewers/current", method="POST",
                                    body=self.review_request)
         self.assertEqual(status, 201)
         record = response["record"]
@@ -209,7 +209,7 @@ class W22Live(unittest.TestCase):
                        stdout=subprocess.DEVNULL, check=True)
         for _ in range(80):
             try:
-                status, response = request("/api/the-reviewer-who-was-never-listed", method="POST",
+                status, response = request("/api/unlisted-reviewers/current", method="POST",
                                            body=self.review_request)
                 if status == 201:
                     break
@@ -218,7 +218,7 @@ class W22Live(unittest.TestCase):
             time.sleep(0.25)
         else:
             self.fail("engineering service did not return after restart")
-        status, delivery = request("/api/the-viewer-in-the-delivery")
+        status, delivery = request("/api/sealed-projects/current/viewer")
         self.assertEqual(status, 200)
         self.assertEqual(delivery["record"]["package_sha256"], self.delivery["record"]["package_sha256"])
         state = subprocess.check_output([
@@ -230,7 +230,7 @@ class W22Live(unittest.TestCase):
             "docker", "exec", "--user", "arwc-engineering", "cinder-arwc-engineering",
             "cat", "/var/lib/arwc-engineering/audit/events.jsonl",
         ], text=True)
-        self.assertIn("the-reviewer-who-was-never-listed", audits)
+        self.assertIn("sealed-review-created", audits)
 
 
 if __name__ == "__main__":

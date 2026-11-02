@@ -67,7 +67,7 @@ def request_inventory() -> dict[str, dict[str, dict[str, Any]]]:
             for method in (
                 node for node in class_node.body
                 if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
-                and node.name.startswith("test_")
+                and (node.name.startswith("test_") or node.name == "setUpClass")
             ):
                 calls = sorted(
                     (
@@ -78,6 +78,7 @@ def request_inventory() -> dict[str, dict[str, dict[str, Any]]]:
                 )
                 if not calls:
                     continue
+                method_name = "setup" if method.name == "setUpClass" else method.name
                 call_records = [
                     {
                         "function": call_name(call),
@@ -93,7 +94,7 @@ def request_inventory() -> dict[str, dict[str, dict[str, Any]]]:
                     ],
                     sort_keys=True, separators=(",", ":"),
                 )
-                methods[method.name] = {
+                methods[method_name] = {
                     "inventory_sha256": digest(canonical),
                     "request_count": len(call_records),
                     "functions": dict(sorted(Counter(

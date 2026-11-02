@@ -2,8 +2,12 @@
 
 Reviewed 2026-09-18. Scope: all 240 individual briefs, their 70 operation
 allocations, phase indexes, capability definitions, and campaign summaries.
-This is a review of the challenge architecture and writing. Technical design
-and all 720 hints remain empty.
+This is a review of the challenge architecture and writing. At the time of
+that review, technical design and all 720 hints were empty.
+
+Updated 2026-11-01: all 240 technical designs and 720 separately authored,
+versioned participant hints now exist. The hint-delivery review samples one
+card from every operation and keeps hint text outside these operator briefs.
 
 Updated 2026-09-19 for discovery evidence, AI attempt feedback, and selected
 story conclusions. The earlier dependency and scoring corrections below remain

@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import importlib.util
 import json
-from pathlib import Path
-import sys
 import subprocess
+import sys
 import tempfile
 import unittest
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNNER_PATH = ROOT / "build" / "participant-runner" / "run.py"
@@ -44,9 +43,14 @@ class OperationTests(unittest.TestCase):
         self.assertIn("test_k29a_diagnostic_delivery", diagnostic)
         self.assertNotIn("test_k29b_connector_delivery", diagnostic)
         self.assertNotIn("test_k29_release_lineage", diagnostic)
+        self.assertIn("test_k30_backup_recovery", diagnostic)
+        self.assertIn("test_k31_maintenance", diagnostic)
         self.assertIn("test_k29_release_lineage", package)
         self.assertIn("test_k29b_connector_delivery", package)
         self.assertNotIn("test_k29a_diagnostic_delivery", package)
+        self.assertIn("test_k30_backup_recovery", package)
+        self.assertIn("test_k31_maintenance", package)
+        self.assertEqual(set(diagnostic) | set(package), set(values["all"]))
         self.assertIn("test_k29a_diagnostic_delivery", values["all"])
         self.assertIn("test_k29b_connector_delivery", values["all"])
 
@@ -83,14 +87,35 @@ class BoundaryTests(unittest.TestCase):
         self.assertIn("/var/lib/fieldkest-ci", runner.PHASES["keplerops"].forbidden_paths)
         self.assertIn("/var/lib/arwc-connector", runner.PHASES["arwc"].forbidden_paths)
 
+    def test_paired_development_launcher_builds_before_reset(self) -> None:
+        launcher = (
+            ROOT / "build/participant-runner/check-development-pair.sh"
+        ).read_text()
+        self.assertLess(
+            launcher.index("stage=keplerops-build"),
+            launcher.index("stage=keplerops-reset"),
+        )
+        self.assertLess(
+            launcher.index("stage=keplerops-acceptance"),
+            launcher.index("stage=arwc-transition"),
+        )
+        verifier = (
+            ROOT / "build/participant-runner/verify-arwc-transition.py"
+        ).read_text()
+        self.assertIn("delivery_route", verifier)
+        self.assertIn("delivery_receipt", verifier)
+        self.assertIn('"SEED"', verifier)
+
 
 class CandidateTests(unittest.TestCase):
     def candidate(self) -> dict:
         return {
-            "schema_version": 1,
+            "schema_version": 2,
             "candidate_id": "event-2026.10.30-01",
             "immutable": True,
             "source_commit": "a" * 40,
+            "challenge_delivery": runner.delivery_catalog.catalog_metadata(),
+            "hint_delivery": runner.delivery_catalog.hint_manifest_metadata(),
             "artifact_digests": {"training-image": "sha256:" + "b" * 64},
             "deployments": {
                 "training": {"project": "project-1", "zone": "zone-1", "instance": "training-1", "participant_image_digest": "sha256:" + "b" * 64},
@@ -112,12 +137,16 @@ class CandidateTests(unittest.TestCase):
         self.assertTrue(result["immutable"])
         self.assertRegex(result["manifest_sha256"], r"^[0-9a-f]{64}$")
         self.assertEqual(set(result["deployments"]), {"training", "keplerops", "arwc"})
+        self.assertEqual(result["challenge_delivery"], runner.delivery_catalog.catalog_metadata())
+        self.assertEqual(result["hint_delivery"], runner.delivery_catalog.hint_manifest_metadata())
 
     def test_candidate_rejects_mutability_missing_digest_and_extra_fields(self) -> None:
         mutations = []
         mutable = self.candidate(); mutable["immutable"] = False; mutations.append(mutable)
         no_digest = self.candidate(); no_digest["artifact_digests"] = {}; mutations.append(no_digest)
         extra = self.candidate(); extra["operator_token"] = "not-allowed"; mutations.append(extra)
+        stale = self.candidate(); stale["challenge_delivery"]["sha256"] = "0" * 64; mutations.append(stale)
+        stale_hints = self.candidate(); stale_hints["hint_delivery"]["sha256"] = "0" * 64; mutations.append(stale_hints)
         for value in mutations:
             with self.subTest(value=value):
                 with tempfile.TemporaryDirectory() as directory:
@@ -149,14 +178,17 @@ class CommittedCandidateTests(unittest.TestCase):
     def test_committed_candidate_has_required_fields(self) -> None:
         doc = json.loads(self.CANDIDATE_PATH.read_text())
         for field in ("schema_version", "candidate_id", "immutable",
-                      "source_commit", "artifact_digests", "deployments"):
+                      "source_commit", "challenge_delivery", "hint_delivery",
+                      "artifact_digests", "deployments"):
             self.assertIn(field, doc, f"candidate.json missing required field: {field}")
-        self.assertEqual(doc["schema_version"], 1)
+        self.assertEqual(doc["schema_version"], 2)
         self.assertIsInstance(doc["candidate_id"], str)
         self.assertIsInstance(doc["immutable"], bool)
         self.assertRegex(doc["source_commit"], r"^[0-9a-f]{40}$")
         self.assertIsInstance(doc["artifact_digests"], dict)
         self.assertTrue(doc["artifact_digests"])
+        self.assertEqual(doc["challenge_delivery"], runner.delivery_catalog.catalog_metadata())
+        self.assertEqual(doc["hint_delivery"], runner.delivery_catalog.hint_manifest_metadata())
         for phase in ("training", "keplerops", "arwc"):
             self.assertIn(phase, doc["deployments"],
                           f"candidate.json missing deployment: {phase}")
@@ -233,12 +265,14 @@ class EvidenceTests(unittest.TestCase):
         source = (
             ROOT / "build" / "participant-runner" / "check-candidate.sh"
         ).read_text()
+        hints = source.index("hint-delivery/release.py verify")
         coverage = source.index("card-coverage/coverage.py")
         provenance = source.index("input-provenance/provenance.py")
         fourth_wall = source.index("fourth-wall/run.py")
         fourth_wall_after = source.rindex("fourth-wall/run.py")
         surface = source.index("participant-surface/run.py")
         acceptance = source.index("participant-runner/run.py")
+        self.assertLess(hints, coverage)
         self.assertLess(coverage, provenance)
         self.assertLess(provenance, fourth_wall)
         self.assertLess(fourth_wall, surface)

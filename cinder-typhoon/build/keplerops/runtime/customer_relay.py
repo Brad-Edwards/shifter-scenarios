@@ -16,16 +16,17 @@ from urllib.parse import urlsplit
 
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
+from credentials import credential
 
 
 UPSTREAM = os.environ.get("FIELDKEST_CUSTOMER_UPSTREAM", "https://connector.arwc.test")
-INTERNAL_PACKAGE_TOKEN = "registry-customer-channel"
-DIAGNOSTIC_TOKEN = "support-delivery"
+INTERNAL_PACKAGE_TOKEN = credential("connector_package_internal")
+DIAGNOSTIC_TOKEN = credential("support_delivery_token")
 PACKAGE = re.compile(r"/api/fieldlink/packages(?:/poll|/[^/]+/(?:activate|receipt))$")
 DIAGNOSTIC = re.compile(r"/api/fieldlink/diagnostics(?:/[^/]+/receipt)?$")
 ROLLBACK = "/api/fieldlink/rehearsals/rollback"
 PUBLISHED = Path("/var/lib/fieldkest-registry/published")
-CHANNEL_CREDENTIAL = Path("/var/lib/fieldkest-registry/channel-credential.json")
+CHANNEL_CREDENTIAL = PUBLISHED / "delivery/channel-credential.json"
 VERSION = re.compile(r"7\.4\.3-cinder\.[a-z0-9][a-z0-9-]{0,23}")
 
 

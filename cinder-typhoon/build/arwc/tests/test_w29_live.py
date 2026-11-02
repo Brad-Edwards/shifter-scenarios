@@ -283,7 +283,7 @@ class W29Live(unittest.TestCase):
             "each_gate_target_m3s": 0.5, "hold_seconds": 900,
             "ramp_close_seconds": 100,
         }
-        missing, body = self.planning("/api/paper-truth", method="POST", body=binding)
+        missing, body = self.planning("/api/reporting-checkpoints/current", method="POST", body=binding)
         self.assertEqual(missing, 404)
         self.assertNotIn("released_volume_ml", json.dumps(body))
         denied, body = self.planning(
@@ -329,7 +329,7 @@ class W29Live(unittest.TestCase):
         self.assertEqual(response["audit_id"], response["supervisory_audit_id"])
         self.assertEqual(response["audit_id"], record["request_correlation"])
         type(self).plan_audit = response["audit_id"]
-        missing, body = self.planning("/api/paper-truth", method="POST", body=binding)
+        missing, body = self.planning("/api/reporting-checkpoints/current", method="POST", body=binding)
         self.assertEqual(missing, 404)
         self.assertNotIn("released_volume_ml", json.dumps(body))
         status, present = self.process("/api/process-views/state")
@@ -356,10 +356,10 @@ class W29Live(unittest.TestCase):
         data_state = json.loads(container_file(
             DATA, "arwc-data", "/var/lib/arwc-data/state/planning.json",
         ))
-        self.assertTrue(data_state["w29_tariff_observed"])
-        self.assertTrue(data_state["w29_balance_observed"])
-        self.assertTrue(data_state["w29_plan_observed"])
-        self.assertEqual(data_state["w29_balance"]["record_id"], "BAL-CRR-DP3-R29")
+        self.assertTrue(data_state["planning_tariff_observed"])
+        self.assertTrue(data_state["reserve_balance_observed"])
+        self.assertTrue(data_state["loss_plan_observed"])
+        self.assertEqual(data_state["reserve_balance"]["record_id"], "BAL-CRR-DP3-R29")
         plan = json.loads(container_file(
             DATA, "arwc-data", "/var/lib/arwc-data/results/PLAN-CRR-LOSS-1000.json",
         ))

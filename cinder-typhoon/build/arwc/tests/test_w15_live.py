@@ -56,7 +56,7 @@ class W15Live(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         status, response = request(
-            "https://contractor-portal.arwc.test", "/api/checked-in-as-the-contractor",
+            "https://contractor-portal.arwc.test", "/api/check-ins",
             method="POST", body={"appointment_id": "APT-CRR-2026-09-18",
                                   "roster_id": "ROSTER-CRR-SEP18-R2",
                                   "identity": "veybridge.tech.204"},
@@ -66,10 +66,10 @@ class W15Live(unittest.TestCase):
         cls.contractor = response["contractor_session"]
 
     def test_01_both_declared_authority_branches_reach_exact_association(self) -> None:
-        status, body = request(BASE, "/api/which-drawing-did-the-cache-keep", token="wrong")
+        status, body = request(BASE, "/api/drawing-cache/current", token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("CACHE-DRW-OG2-R8", json.dumps(body))
-        status, response = request(BASE, "/api/which-drawing-did-the-cache-keep",
+        status, response = request(BASE, "/api/drawing-cache/current",
                                    token=type(self).contractor)
         self.assertEqual(status, 200)
         self.assertEqual(response["record"], {
@@ -79,10 +79,10 @@ class W15Live(unittest.TestCase):
             "cache_key_path": "/viewer/drawings/DRW-OG2-R8", "cache_method": "GET",
         })
         status, integration = request(
-            "https://business-workplace.arwc.test", "/api/the-integration-s-read-contract",
+            "https://business-workplace.arwc.test", "/api/integration-contracts/current",
         )
         self.assertEqual(status, 200)
-        status, response = request(BASE, "/api/which-drawing-did-the-cache-keep",
+        status, response = request(BASE, "/api/drawing-cache/current",
                                    token=integration["integration_session"])
         self.assertEqual(status, 200)
         self.assertEqual(response["record"]["record_id"], "CACHE-DRW-OG2-R8")
@@ -96,7 +96,7 @@ class W15Live(unittest.TestCase):
             },
         }
         status, denied = request(
-            BASE, "/api/a-drawing-of-our-choosing", method="POST", body=body,
+            BASE, "/api/drawing-cache/current", method="POST", body=body,
             token=type(self).contractor,
             extra_headers={"X-Preview-Origin": "https://unlisted-preview.arwc.test"},
         )
@@ -105,13 +105,13 @@ class W15Live(unittest.TestCase):
         bad = json.loads(json.dumps(body))
         bad["controlled_response"]["body"] += "\r\nX-Injected: yes"
         status, denied = request(
-            BASE, "/api/a-drawing-of-our-choosing", method="POST", body=bad,
+            BASE, "/api/drawing-cache/current", method="POST", body=bad,
             token=type(self).contractor,
             extra_headers={"X-Preview-Origin": "https://preview-cinder.arwc.test"},
         )
         self.assertEqual(status, 409)
         status, response = request(
-            BASE, "/api/a-drawing-of-our-choosing", method="POST", body=body,
+            BASE, "/api/drawing-cache/current", method="POST", body=body,
             token=type(self).contractor,
             extra_headers={"X-Preview-Origin": "https://preview-cinder.arwc.test",
                            "X-Drawing-Revision": "R7"},
@@ -122,7 +122,7 @@ class W15Live(unittest.TestCase):
 
     def test_03_chromium_executes_source_mismatched_signed_postmessage(self) -> None:
         status, response = request(
-            BASE, "/api/the-reviewer-trusts-the-drawing", method="POST",
+            BASE, "/api/drawing-approvals", method="POST",
             token=type(self).contractor,
             body={"cache_key": "GET:/viewer/drawings/DRW-OG2-R8",
                   "reviewer_queue": "REV-CRR-4417"},
@@ -138,14 +138,14 @@ class W15Live(unittest.TestCase):
 
     def test_04_subject_mismatch_still_discloses_valid_signed_approval(self) -> None:
         status, denied = request(
-            BASE, "/api/approval-beyond-the-token", method="POST", token=type(self).contractor,
+            BASE, "/api/approval-tokens/current", method="POST", token=type(self).contractor,
             body={"review_capability": "wrong", "approval_id": "APR-CRR-4417-R6",
                   "inspection": "INSP-CRR-2026-09-18"},
         )
         self.assertEqual(status, 403)
         self.assertNotIn("signing_public_key", denied)
         status, response = request(
-            BASE, "/api/approval-beyond-the-token", method="POST", token=type(self).contractor,
+            BASE, "/api/approval-tokens/current", method="POST", token=type(self).contractor,
             body={"review_capability": type(self).review_capability,
                   "approval_id": "APR-CRR-4417-R6", "inspection": "INSP-CRR-2026-09-18"},
         )
@@ -173,7 +173,7 @@ Ed25519PublicKey.from_public_bytes(base64.b64decode(sys.argv[1])).verify(base64.
         subprocess.run(["docker", "restart", SERVICE], check=True, stdout=subprocess.DEVNULL)
         for _ in range(30):
             try:
-                status, _ = request(BASE, "/api/which-drawing-did-the-cache-keep",
+                status, _ = request(BASE, "/api/drawing-cache/current",
                                     token=type(self).contractor)
                 if status == 200:
                     break
@@ -192,8 +192,8 @@ Ed25519PublicKey.from_public_bytes(base64.b64decode(sys.argv[1])).verify(base64.
              "cat", "/var/lib/arwc-approval/audit/events.jsonl"],
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout
-        for action in ("which-drawing-did-the-cache-keep", "a-drawing-of-our-choosing",
-                       "the-reviewer-trusts-the-drawing", "approval-beyond-the-token"):
+        for action in ("drawing-cache-read", "drawing-context-created",
+                       "drawing-approved", "approval-token-exchanged"):
             self.assertIn(f'"action":"{action}"', audit)
 
 

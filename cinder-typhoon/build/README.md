@@ -12,3 +12,8 @@ triangle layer in `pack.yaml` remains disabled.
 unprivileged boundary without mounting test or repository files, and records a
 credential-free structured acceptance report. Neither directory is participant
 content or copied into scenario images.
+
+`hint-delivery/` binds the three participant hint catalogs to one versioned
+manifest and provides the facilitator release command. Release audits contain
+only card/level metadata and content digests; unreleased hint text remains on
+the operator surface.

@@ -5,14 +5,13 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 import re
+from pathlib import Path
 from typing import Any
-
 
 PHASES = {"training", "keplerops", "arwc"}
 ENTRY_TYPES = {"directory", "file", "symlink"}
-DELIVERY_STATES = {"observed", "not_materialized", "external_unverified", "versioned", "authored"}
+DELIVERY_STATES = {"versioned"}
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 MODE = re.compile(r"^[0-7]{4}$")
 
@@ -119,15 +118,96 @@ def validate_authored(value: dict[str, Any]) -> None:
         require(len(item["exposes"]) == len(set(item["exposes"])), f"disclosures[{index}]: duplicate exposure")
         disclosure_ids.add(item["id"])
     delivery = value["delivery"]
-    exact_keys(delivery, {"cards", "hints"}, set(), "delivery")
-    for name, item in delivery.items():
-        # hints authored in this repo may include path and levels fields
-        if name == "hints" and item.get("status") == "authored":
-            exact_keys(item, {"status", "items", "path", "levels"}, set(), f"delivery.{name}")
-        else:
-            exact_keys(item, {"status", "items"}, set(), f"delivery.{name}")
-        require(item["status"] in DELIVERY_STATES, f"delivery.{name}: invalid status")
-        require(len(item["items"]) == len(set(item["items"])), f"delivery.{name}: duplicate items")
+    exact_keys(delivery, {"catalog", "cards", "hints"}, set(), "delivery")
+    catalog = delivery["catalog"]
+    exact_keys(catalog, {
+        "path", "schema", "revision", "sha256", "operation_count", "card_count",
+        "score_total", "phase", "phase_operation_count", "phase_card_count",
+        "phase_score_total",
+    }, set(), "delivery.catalog")
+    require(catalog["path"] == "challenges/challenges.yaml", "delivery.catalog: invalid path")
+    require(catalog["schema"] == "cinder-typhoon.challenge-delivery/v2", "delivery.catalog: invalid schema")
+    require(bool(SHA256.fullmatch(catalog["revision"])), "delivery.catalog: invalid revision")
+    require(bool(SHA256.fullmatch(catalog["sha256"])), "delivery.catalog: invalid digest")
+    require(catalog["operation_count"] == 70 and catalog["card_count"] == 240, "delivery.catalog: invalid totals")
+    require(catalog["score_total"] > 0, "delivery.catalog: score total is required")
+    require(catalog["phase"] == value["phase"], "delivery.catalog: phase mismatch")
+    require(catalog["phase_operation_count"] > 0 and catalog["phase_card_count"] > 0, "delivery.catalog: phase counts are required")
+    require(catalog["phase_score_total"] > 0, "delivery.catalog: phase score is required")
+    exact_keys(delivery["cards"], {"status"}, set(), "delivery.cards")
+    require(delivery["cards"]["status"] in DELIVERY_STATES, "delivery.cards: invalid status")
+    hints = delivery["hints"]
+    exact_keys(
+        hints,
+        {"status", "manifest", "source", "release", "score_effect", "items"},
+        set(),
+        "delivery.hints",
+    )
+    require(hints["status"] == "versioned", "delivery.hints: invalid status")
+    hint_manifest = hints["manifest"]
+    exact_keys(hint_manifest, {
+        "path", "schema", "revision", "sha256", "operation_count", "card_count", "hint_count",
+    }, set(), "delivery.hints.manifest")
+    require(
+        hint_manifest["path"] == "build/hint-delivery/manifest.json"
+        and hint_manifest["schema"] == "cinder-typhoon.hint-delivery/v1",
+        "delivery.hints.manifest: invalid identity",
+    )
+    require(
+        bool(SHA256.fullmatch(hint_manifest["revision"]))
+        and bool(SHA256.fullmatch(hint_manifest["sha256"])),
+        "delivery.hints.manifest: invalid digest",
+    )
+    require(
+        hint_manifest["operation_count"] == 70
+        and hint_manifest["card_count"] == 240
+        and hint_manifest["hint_count"] == 720,
+        "delivery.hints.manifest: invalid totals",
+    )
+    source = hints["source"]
+    exact_keys(source, {"phase", "path", "sha256", "card_count", "hint_count"}, set(), "delivery.hints.source")
+    require(source["phase"] == value["phase"], "delivery.hints.source: phase mismatch")
+    require(
+        source["path"] == f"build/card-coverage/hints-{value['phase']}.yaml"
+        and bool(SHA256.fullmatch(source["sha256"])),
+        "delivery.hints.source: invalid source binding",
+    )
+    require(
+        source["card_count"] == catalog["phase_card_count"]
+        and source["hint_count"] == 3 * source["card_count"],
+        "delivery.hints.source: invalid totals",
+    )
+    require(hints["release"] == {
+        "mode": "facilitator_on_request",
+        "levels": [1, 2, 3],
+        "independent_levels": True,
+        "audit": "append_only_metadata_without_hint_text",
+    }, "delivery.hints.release: invalid rule")
+    require(hints["score_effect"] == {
+        "penalty": 0, "maximum_score_unchanged": True,
+    }, "delivery.hints.score_effect: invalid rule")
+    items = hints["items"]
+    require(
+        isinstance(items, list) and len(items) == source["card_count"],
+        "delivery.hints.items: phase coverage mismatch",
+    )
+    prefix = {"training": "T", "keplerops": "K", "arwc": "W"}[value["phase"]]
+    card_ids: set[str] = set()
+    for index, item in enumerate(items):
+        context = f"delivery.hints.items[{index}]"
+        exact_keys(item, {"card_id", "levels", "content_revision"}, set(), context)
+        require(
+            isinstance(item["card_id"], str)
+            and item["card_id"].startswith(prefix)
+            and item["card_id"] not in card_ids,
+            f"{context}: invalid or duplicate card",
+        )
+        require(item["levels"] == [1, 2, 3], f"{context}: invalid levels")
+        require(
+            bool(SHA256.fullmatch(item["content_revision"])),
+            f"{context}: invalid content revision",
+        )
+        card_ids.add(item["card_id"])
 
 
 def validate_observed(value: dict[str, Any]) -> None:

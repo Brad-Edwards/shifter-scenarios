@@ -50,20 +50,20 @@ print(response.status); print(response.read().decode())
 class W35Live(unittest.TestCase):
     def test_01_quote_and_order_require_owned_predecessor_evidence(self) -> None:
         status, body = request(
-            "/api/a-quote-outside-your-district", method="POST",
+            "/api/procurement-quotes/external", method="POST",
             body={"procurement_reference": "PRC-REGIONAL-17", "catalog_revision": 5,
                   "role": "corporate-reader", "district": "Cairn Reach"},
         )
         self.assertEqual(status, 403)
         self.assertNotIn("QUOTE-MER-884", json.dumps(body))
         status, body = request(
-            "/api/the-wrong-bill", method="POST", body={"quote_id": "QUOTE-MER-884"},
+            "/api/invoices/current", method="POST", body={"quote_id": "QUOTE-MER-884"},
         )
         self.assertEqual(status, 403)
         self.assertNotIn("PO-MER-884-C", json.dumps(body))
 
     def test_02_catalog_is_distinct_and_reuses_exact_authored_context(self) -> None:
-        status, response = request("/api/what-replacement-water-costs")
+        status, response = request("/api/procurement-quotes/current")
         self.assertEqual(status, 200)
         record = response["record"]
         self.assertEqual(record["record_id"], "CAT-REPL-WATER-R5")
@@ -88,11 +88,11 @@ class W35Live(unittest.TestCase):
             (dict(baseline, catalog_revision=4), 409),
             (dict(baseline, role="field-reader"), 403),
         ):
-            status, body = request("/api/a-quote-outside-your-district", method="POST", body=changed)
+            status, body = request("/api/procurement-quotes/external", method="POST", body=changed)
             self.assertEqual(status, expected)
             self.assertNotIn("QUOTE-MER-884", json.dumps(body))
         status, response = request(
-            "/api/a-quote-outside-your-district", method="POST", body=baseline,
+            "/api/procurement-quotes/external", method="POST", body=baseline,
         )
         self.assertEqual(status, 201)
         self.assertEqual(response["record"], {
@@ -116,10 +116,10 @@ class W35Live(unittest.TestCase):
             dict(baseline, planning_window="ALLOC-2026-DP4"),
             dict(baseline, budget="BUD-MER-DP3"),
         ):
-            status, body = request("/api/the-wrong-bill", method="POST", body=changed)
+            status, body = request("/api/invoices/current", method="POST", body=changed)
             self.assertEqual(status, 409)
             self.assertNotIn("PO-MER-884-C", json.dumps(body))
-        status, response = request("/api/the-wrong-bill", method="POST", body=baseline)
+        status, response = request("/api/invoices/current", method="POST", body=baseline)
         self.assertEqual(status, 201)
         order = response["record"]
         self.assertEqual(order["record_id"], "PO-MER-884-C")
@@ -130,10 +130,10 @@ class W35Live(unittest.TestCase):
         self.assertEqual(order["quantity_ml"], 0.75)
 
     def test_05_authorization_and_idempotent_order_are_enforced(self) -> None:
-        status, body = request("/api/what-replacement-water-costs", token="wrong")
+        status, body = request("/api/procurement-quotes/current", token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("CAT-REPL-WATER-R5", json.dumps(body))
-        status, body = request("/api/what-replacement-water-costs", tenant="merewick")
+        status, body = request("/api/procurement-quotes/current", tenant="merewick")
         self.assertEqual(status, 403)
         baseline = {
             "quote_id": "QUOTE-MER-884", "expected_revision": 4,
@@ -141,8 +141,8 @@ class W35Live(unittest.TestCase):
             "planning_window": "ALLOC-2026-DP3", "charge_district": "Cairn Reach",
             "budget": "BUD-CRR-DP3",
         }
-        first = request("/api/the-wrong-bill", method="POST", body=baseline)[1]["record"]
-        second = request("/api/the-wrong-bill", method="POST", body=baseline)[1]["record"]
+        first = request("/api/invoices/current", method="POST", body=baseline)[1]["record"]
+        second = request("/api/invoices/current", method="POST", body=baseline)[1]["record"]
         self.assertEqual(first, second)
 
     def test_06_order_and_audits_persist_across_restart(self) -> None:
@@ -155,7 +155,7 @@ class W35Live(unittest.TestCase):
         }
         for _ in range(30):
             try:
-                status, response = request("/api/the-wrong-bill", method="POST", body=baseline)
+                status, response = request("/api/invoices/current", method="POST", body=baseline)
                 if status == 201: break
             except AssertionError: pass
         else:
@@ -166,7 +166,7 @@ class W35Live(unittest.TestCase):
              "cat", "/var/lib/arwc-business/audit/events.jsonl"],
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout
-        for action in ("what-replacement-water-costs", "a-quote-outside-your-district", "the-wrong-bill"):
+        for action in ("replacement-water-catalog-read", "procurement-quote-read", "invoice-order-created"):
             self.assertIn(f'"action":"{action}"', audit)
         self.assertEqual(inside("sh", "-c", "test ! -r /var/lib/arwc-business/state/discoveries.json").returncode, 0)
 

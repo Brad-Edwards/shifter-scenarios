@@ -9,8 +9,8 @@ operation causes fictional financial loss and water restrictions.
 This directory follows the [OpenRAE/env-packs template](https://github.com/OpenRAE/env-packs/tree/679356d762971600f22e6ff3228f4c2b48376eee/src/raes_env_packs/resources/template).
 It contains the preserved design material, a modular in-world SDL draft, and
 authored workplace correspondence and documents.
-[pack.yaml](pack.yaml) records `status: draft`; its optional content layers
-remain disabled until populated. The SDL covers the logical world, participant,
+[pack.yaml](pack.yaml) records `status: draft`. Its challenge-delivery layer is
+versioned; the remaining optional layers stay disabled until populated. The SDL covers the logical world, participant,
 challenge objectives, dependencies, scoped routes, required records, and consequences.
 
 | Location | Purpose and current contents |
@@ -23,16 +23,18 @@ challenge objectives, dependencies, scoped routes, required records, and consequ
 | [docs/attack-path.md](docs/attack-path.md) | Route-document entry point. |
 | [docs/lineage.md](docs/lineage.md) | Template source and folder mapping. |
 | [assets/](assets/README.md) | Workplace emails, documents, contacts, calendars, and source artifacts bound into SDL. |
-| [flags/placement.yaml](flags/placement.yaml) | Empty template placement map. |
-| [challenges/challenges.yaml](challenges/challenges.yaml) | Empty template delivery catalog; authoring briefs are under `docs/design/challenges/`. |
-| [ctfd/](ctfd/README.md) | Reserved for the reference challenge loader. |
+| [flags/placement.yaml](flags/placement.yaml) | Retired static-flag template; Cinder scoring uses range-owned evidence validators. |
+| [challenges/challenges.yaml](challenges/challenges.yaml) | Generated participant delivery: 240 cards, scores, descriptions, and graduated hints across 70 operations. |
+| [ctfd/](ctfd/README.md) | Native Shifter event-content projection from the canonical delivery catalog. |
 | [tests/](tests/README.md) | Native SDL validation and independent design/graph agreement checks. |
 | [build/](build/README.md) | Deterministic workplace asset renderer; no target provisioning. |
 | [docs/walkthroughs/](docs/walkthroughs/README.md) | Reserved for reference walkthroughs. |
 | [runtime-adapter/](runtime-adapter/README.md) | Reserved for the eventual adapter. |
 
-The existing challenge cards include 50 technical drafts; the remaining 190
-are briefs. All hint sections remain blank. Start at the
+All 240 challenge cards have technical drafts. Their embedded operator-only
+hint headings remain blank by design; the reviewed participant hints live in
+the three versioned catalogs under `build/card-coverage/` and are bound to the
+facilitator release manifest under `build/hint-delivery/`. Start at the
 [design index](docs/design/README.md) for the retained work.
 
 Existing design checks, run from the repository root:
@@ -52,3 +54,20 @@ business and retail correspondents, and 1,510 calendar occurrences.
 Eight native SDL content declarations bind the source artifacts to existing
 workplace systems.
 The runtime adapter, hosting layout, and consumer delivery bundle remain pending.
+
+## Readiness
+
+This pack is **not release qualified**. The current static/unit status is:
+
+- service-contract implementation complete;
+- participant-boundary known-solution implementation partial;
+- provenance and participant-surface implementation partial;
+- blind human-plus-agent playtesting not started; and
+- no immutable candidate, versioned release manifest, live acceptance report,
+  or soak report.
+
+Run `python3 tests/report_qa_status.py` from this directory for the checked
+result. The evidence-bound status, gate catalog, and milestone snapshot are in
+[`tests/`](tests/README.md). Readiness terms and the release requirements are
+defined in [`../TASK.md`](../TASK.md). Repository merge state is not acceptance
+or release evidence.

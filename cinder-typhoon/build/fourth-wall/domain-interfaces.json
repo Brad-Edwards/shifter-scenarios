@@ -7,9 +7,16 @@
       "approved_route_patterns": []
     },
     "keplerops": {
-      "status": "pending_review",
-      "blocking_issue": 212,
-      "approved_route_patterns": []
+      "status": "approved",
+      "blocking_issue": null,
+      "approved_route_patterns": [
+        "/api/(?:runs|review-jobs|review-workspace|jobs|rehearsals|reviews)(?:/.*)?",
+        "/api/(?:workspaces|build-records|trust-records|roles|maintenance|policies|token-exchange)(?:/.*)?",
+        "/api/(?:fieldkest|fieldlink|diagnostics|session|conversations|handovers|assignments|customers|cases)(?:/.*)?",
+        "/api/(?:attachments|renders|documents|registrations|delegation|service-relations|federation|service-directory|enrollment|archive|note-preview|notes|managed-identities|release-administration|schedules|workloads|exports|backups|recovery|field-archive|config|contexts|selections|completions|answers|packages|rollback-rehearsal|indexes|internal)(?:/.*)?",
+        "/api/(?:releases|package-views|inspections|compatibility|consumer-checks|reconcile|resolver|imports|v1|exercises)(?:/.*)?",
+        "/api/?"
+      ]
     },
     "arwc": {
       "status": "approved",
@@ -17,7 +24,7 @@
       "approved_route_patterns": [
         "/api/(?:activations|approval-clients|approval-tokens|appointment-windows|appointments|check-ins|continuity-plans|contractor-artifacts|drawing-approvals|drawing-cache|drawing-contexts|field-kits|handovers|instruments|preview-authority|preview-executions|provisioning-packages|readings|renderers|sessions|temporary-credentials)(?:/.*)?",
         "/api/(?:allocation-discrepancies|allocation-ledgers|asset-bundles|asset-lineage|association-records|integration-contracts|integration-sessions|invoices|live-feeds|meter-allocations|planning-bids|planning-windows|procurement-quotes|query-runs|relation-exchanges|relation-schemas|reports|saved-queries|work-order-attachments|work-orders)(?:/.*)?",
-        "/api/(?:collision-inputs|collision-solutions|commands|control-authority|control-commands|diagnostic-programs|diagnostic-runs|estimator-results|estimator-runs|estimator-tasks|feedback-policies|firmware-images|forecasts|integration|maintenance-records|movement-conditions|observations|operating-envelopes|outlet-groups|practice-sequences|process-views|release-plans|replay-sessions|reporting-checkpoints|reporting-submissions|schedule-windows|schedules|sealed-projects|sealed-viewers|signature-oracles|signature-programs|signature-records|signature-requests|tag-exports|tag-scales|unlisted-reviewers|vault-access|vault-records)(?:/.*)?",
+        "/api/(?:collision-inputs|collision-solutions|commands|control-authority|control-commands|diagnostic-programs|diagnostic-runs|estimator-results|estimator-runs|estimator-tasks|feedback-policies|firmware-images|forecasts|integration|maintenance-records|movement-conditions|observations|operating-envelopes|outlet-groups|practice-sequences|process-views|release-plans|replay-sessions|reporting-checkpoints|reporting-contracts|reporting-submissions|schedule-windows|schedules|sealed-projects|sealed-viewers|signature-oracles|signature-programs|signature-records|signature-requests|tag-exports|tag-scales|unlisted-reviewers|vault-access|vault-records)(?:/.*)?",
         "/api/(?:archive-contracts|archive-jobs|archive-operations|archived-queries|artifacts|bundles|collection-artifacts|collection-paths|collectors|fieldlink|instrument-history|replay-exchange|sequencer-specs|signal-experiments)(?:/.*)?",
         "/internal/(?:control-handovers|diagnostic-estimate|feedback-policy-validations|forecast-updates|handover-estimates|release-executions|release-plan-assessments|release-plan-bindings|reserve-observations|schedule-validations)"
       ]
