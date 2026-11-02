@@ -175,7 +175,7 @@ def utility_response(request: dict[str, object], peer_uid: int) -> tuple[int, di
         atomic_json(STATE, state)
         return 201, {
             "audit_id": append_audit(
-                "keep-the-authority-you-earned/readback", "CTRL-CLIENT-CRR-28", record,
+                "authority-client/readback", "CTRL-CLIENT-CRR-28", record,
             ),
             "record": record,
         }
@@ -220,7 +220,7 @@ def utility_response(request: dict[str, object], peer_uid: int) -> tuple[int, di
               if key not in {"token_sha256", "bearer_token"}}
     return 201, {
         "audit_id": append_audit(
-            "keep-the-authority-you-earned/issue", "svc-utility-issuer@control.arwc.test", public,
+            "authority-client/issue", "svc-utility-issuer@control.arwc.test", public,
         ),
         "record": public, "control_client": raw,
     }
@@ -352,7 +352,7 @@ class Handler(BaseHTTPRequestHandler):
             }
             state["authority_demonstrated"] = True
             atomic_json(STATE, state)
-            self.accepted("an-approval-becomes-a-control-client/readback", "CTRL-CLIENT-CRR-26", record)
+            self.accepted("approval-client/readback", "CTRL-CLIENT-CRR-26", record)
             return
 
         if not isinstance(supplied, str) or not token_matches(supplied, load_json(CONTRACTOR_SESSION)):
@@ -402,7 +402,7 @@ class Handler(BaseHTTPRequestHandler):
         publish_authority(current)
         public = {key: value for key, value in current.items()
                   if key not in {"token_sha256", "bearer_token"}}
-        self.accepted("an-approval-becomes-a-control-client/issue", "veybridge.tech.204", public,
+        self.accepted("approval-client/issue", "veybridge.tech.204", public,
                       extra={"control_client": raw})
 
 

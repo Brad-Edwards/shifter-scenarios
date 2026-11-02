@@ -652,10 +652,10 @@ def check_k09_foundation_assets(scenario):
     require(manifest["schema"] == "fieldkest.k09-foundation-artifacts/v1",
             "Unknown K09 foundation archive manifest")
     expected = {
-        "k-ci-k09-state.tar": (
+        "k-ci-runner-state.tar": (
             "keplerops-k09-foundation.k09-ci-state", "k-delivery.k-ci", "/var/lib/fieldkest-ci"
         ),
-        "k-cloud-api-k09-state.tar": (
+        "k-cloud-api-runner-state.tar": (
             "keplerops-k09-foundation.k09-cloud-api-state", "k-cloud.k-cloud-api",
             "/var/lib/fieldkest-cloud-api",
         ),
@@ -690,7 +690,7 @@ def check_k09_foundation_assets(scenario):
                         and f"{member.mode:04o}" == declaration["mode"],
                         f"K09 archive member drift: {archive_name}/{member_name}")
 
-    ci_files = {item["path"]: item for item in records["k-ci-k09-state.tar"]["files"]}
+    ci_files = {item["path"]: item for item in records["k-ci-runner-state.tar"]["files"]}
     require(ci_files["artifacts/BLD-1842/integration-review-input-v3.json"]["sha256"] ==
             "b631b38ea24ef0e847b9fb9419d32fe83c67d96a8290c62453db9dfe76fd72d4",
             "K09 omitted-artifact digest drift")
@@ -710,11 +710,11 @@ def check_k11_foundation_assets(scenario):
     require(manifest["schema"] == "fieldkest.k11-artifacts/v1",
             "Unknown K11 foundation archive manifest")
     expected = {
-        "k-source-k11-state.tar": (
+        "k-source-policy-compiler-state.tar": (
             "keplerops-k11-foundation.k11-source-state", "k-delivery.k-source",
             "/var/lib/gitea",
         ),
-        "k-dev-k11-home.tar": (
+        "k-dev-policy-compiler-home.tar": (
             "keplerops-k11-foundation.k11-workstation-state", "k-corporate.k-dev",
             "/home/rowan",
         ),
@@ -789,11 +789,11 @@ def check_k28_foundation_assets(scenario):
     require(manifest["schema"] == "fieldkest.k28-artifacts/v1",
             "Unknown K28 foundation archive manifest")
     expected = {
-        "k-source-k28-state.tar": (
+        "k-source-connector-archive-state.tar": (
             "keplerops-k28-foundation.k28-source-state", "k-delivery.k-source",
             "/var/lib/gitea",
         ),
-        "k-dev-k28-home.tar": (
+        "k-dev-connector-archive-home.tar": (
             "keplerops-k28-foundation.k28-workstation-state", "k-corporate.k-dev",
             "/home/rowan",
         ),
@@ -853,10 +853,10 @@ def check_k29_foundation_assets(scenario):
     manifest = json.loads((K29_ASSETS / "artifact-manifest.json").read_text())
     require(manifest["schema"] == "fieldkest.k29-artifacts/v1", "Unknown K29 foundation archive manifest")
     expected = {
-        "k-source-k29-state.tar": ("keplerops-k29-foundation.k29-source-state", "k-delivery.k-source", "/var/lib/gitea"),
-        "k-registry-k29-state.tar": ("keplerops-k29-foundation.k29-registry-state", "k-delivery.k-registry", "/var/lib/fieldkest-registry"),
-        "k-ci-k29-state.tar": ("keplerops-k29-foundation.k29-ci-state", "k-delivery.k-ci", "/var/lib/fieldkest-ci"),
-        "k-dev-k29-home.tar": ("keplerops-k29-foundation.k29-workstation-state", "k-corporate.k-dev", "/home/rowan"),
+        "k-source-release-lineage-state.tar": ("keplerops-k29-foundation.k29-source-state", "k-delivery.k-source", "/var/lib/gitea"),
+        "k-registry-release-lineage-state.tar": ("keplerops-k29-foundation.k29-registry-state", "k-delivery.k-registry", "/var/lib/fieldkest-registry"),
+        "k-ci-release-lineage-state.tar": ("keplerops-k29-foundation.k29-ci-state", "k-delivery.k-ci", "/var/lib/fieldkest-ci"),
+        "k-dev-release-lineage-home.tar": ("keplerops-k29-foundation.k29-workstation-state", "k-corporate.k-dev", "/home/rowan"),
     }
     records = {item["archive"]: item for item in manifest["archives"]}
     require(set(records) == set(expected), "K29 foundation archive inventory drift")

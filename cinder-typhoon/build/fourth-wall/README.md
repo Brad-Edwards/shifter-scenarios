@@ -43,11 +43,27 @@ Candidate qualification observes the pristine participant surface before the
 known-solution run and repeats the observation afterward. The second pass
 covers generated files and the resulting read-only service state.
 
-The current gate remains unresolved for non-route findings. KeplerOps domain
-interface review is pending under #212. The ARWC domain interface is approved
-as explicit resource families: every `/api/` and `/internal/` route must match
-one of those reviewed patterns, so an arbitrary title or card-ID alias cannot
-satisfy the check.
+## Clean-state design
+
+Challenge identifiers, card titles, scoring language, and implementation
+language are operator data. They must not cross into runtime source, copied
+assets, filenames, service responses, audit labels, generated documents, or
+participant-readable mounts. A finding is fixed at its authoritative source;
+derived assets are then regenerated. Operator mappings stay outside all image
+build contexts and participant mounts.
+
+Training has no domain API. KeplerOps and ARWC expose only reviewed resource
+families: every `/api/` and `/internal/` route must match a narrow approved
+pattern, and no catch-all pattern is accepted. This keeps the route registry a
+checkable model of the participant-facing service boundary rather than an
+exception list for challenge-derived names.
+
+A release is clean only when all three static reports have no unresolved
+findings and the empty allowlist remains empty. Candidate qualification must
+also produce complete clean observations from the unprivileged participant
+account before and after known-solution acceptance. The observer remains
+credential-free, read-only, origin-bound, and size/count bounded; any skipped
+file, truncation, request error, or exhausted limit fails closed.
 
 ## Allowlist
 

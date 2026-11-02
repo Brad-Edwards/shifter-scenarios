@@ -47,7 +47,7 @@ class W33Live(unittest.TestCase):
                            "test_w05_w06_live.py", "test_w07_live.py", "test_w08_live.py",
                            "test_w09_live.py"):
                 subprocess.run(["python3", str(pathlib.Path(__file__).with_name(script))], check=True)
-        if not exists(HMI, "arwc-hmi", "/run/arwc-process-evidence/hmi/W29-plan.json"):
+        if not exists(HMI, "arwc-hmi", "/run/arwc-process-evidence/hmi/loss-plan.json"):
             w29.W29Live.setUpClass()
             for name in ("test_01_tariff_requires_ot_read_and_reuses_the_authored_method",
                          "test_02_balance_joins_current_data_and_independent_instruments",
@@ -94,33 +94,33 @@ class W33Live(unittest.TestCase):
                            "base_release_m3s": RELEASE, "buffer_gain": 1.0, "demand_gain": 1.0}}
 
     def test_01_forecast_joins_historian_and_supervisory_observation(self) -> None:
-        denied, body = self.process("/api/a-forecast-that-matches-the-instrument", self.forecast(), token="wrong")
+        denied, body = self.process("/api/forecasts/current", self.forecast(), token="wrong")
         self.assertEqual(denied, 403); self.assertNotIn("FCST-CRR-33", json.dumps(body))
-        denied, _ = self.process("/api/a-forecast-that-matches-the-instrument", self.forecast(), tenant="other")
+        denied, _ = self.process("/api/forecasts/current", self.forecast(), tenant="other")
         self.assertEqual(denied, 403)
         wrong = self.forecast(); wrong["publication_delay_seconds"] = 20
-        status, _ = self.process("/api/a-forecast-that-matches-the-instrument", wrong)
+        status, _ = self.process("/api/forecasts/current", wrong)
         self.assertEqual(status, 409)
-        status, result = self.process("/api/a-forecast-that-matches-the-instrument", self.forecast())
+        status, result = self.process("/api/forecasts/current", self.forecast())
         self.assertEqual(status, 201, result); record = result["record"]
         self.assertEqual(record["record_id"], "FCST-CRR-33"); self.assertEqual(record["absolute_error_ml"], 0.0)
         self.assertTrue(record["within_tolerance"]); self.assertEqual(result["audit_id"], result["historian_audit_id"])
         self.assertEqual(result["meter_context"], w29.authored("service-meter-guide"))
         self.assertIn(result["audit_id"], w29.container_file(HMI, "arwc-hmi", "/var/lib/arwc-hmi/audit/events.jsonl"))
         self.assertIn(result["audit_id"], w29.container_file(HISTORIAN, "arwc-historian", "/var/lib/arwc-historian/audit/events.jsonl"))
-        status, repeated = self.process("/api/a-forecast-that-matches-the-instrument", self.forecast())
+        status, repeated = self.process("/api/forecasts/current", self.forecast())
         self.assertEqual(status, 201); self.assertEqual(result, repeated)
 
     def test_02_exact_schedule_is_independently_accepted_and_persistent(self) -> None:
         wrong = self.schedule(); wrong["alternate_supply_m3s"] = [0.34] * 12
-        status, _ = self.process("/api/the-expensive-hour", wrong); self.assertEqual(status, 409)
-        status, result = self.process("/api/the-expensive-hour", self.schedule())
+        status, _ = self.process("/api/schedule-windows/current", wrong); self.assertEqual(status, 409)
+        status, result = self.process("/api/schedule-windows/current", self.schedule())
         self.assertEqual(status, 201, result); record = result["record"]
         self.assertEqual(record["reservoir_volume_ml"], 0.81); self.assertEqual(record["final_buffer_m3"], 180.0)
         self.assertEqual(record["minimum_buffer_m3"], 180.0); self.assertEqual(record["maximum_buffer_m3"], 180.0)
         self.assertEqual(result["audit_id"], result["planning_audit_id"])
         type(self).schedule_sha256 = record["schedule_sha256"]
-        status, repeated = self.process("/api/the-expensive-hour", self.schedule())
+        status, repeated = self.process("/api/schedule-windows/current", self.schedule())
         self.assertEqual(status, 201); self.assertEqual(result, repeated)
         persisted = cjson(DATA, "arwc-data", "/var/lib/arwc-data/results/PLAN-SCHED-CRR-33.json")
         self.assertEqual(persisted["schedule_sha256"], type(self).schedule_sha256)
@@ -128,9 +128,9 @@ class W33Live(unittest.TestCase):
     def test_03_rehearsal_requires_authority_and_preserves_live_state(self) -> None:
         before = cjson(RESERVOIR, "arwc-reservoir", "/var/lib/arwc-reservoir/state/reservoir.json")
         wrong = self.rehearsal(); wrong["control_client"] = "wrong"
-        status, body = self.process("/api/the-schedule-the-service-accepts", wrong)
+        status, body = self.process("/api/schedules", wrong)
         self.assertEqual(status, 403); self.assertNotIn("REH-RESULT-CRR-33", json.dumps(body))
-        status, result = self.process("/api/the-schedule-the-service-accepts", self.rehearsal())
+        status, result = self.process("/api/schedules", self.rehearsal())
         self.assertEqual(status, 201, result); record = result["record"]
         self.assertEqual((record["reservoir_volume_ml"], record["buffer_final_m3"]), (0.81, 180.0))
         self.assertEqual((record["reserve_before_ml"], record["reserve_after_ml"]), (12.4, 11.59))
@@ -141,15 +141,15 @@ class W33Live(unittest.TestCase):
                                               "distribution_audit_id", "hmi_audit_id")}, {correlation})
         after = cjson(RESERVOIR, "arwc-reservoir", "/var/lib/arwc-reservoir/state/reservoir.json")
         self.assertEqual((before["reserve_ml"], before["released_ml"]), (after["reserve_ml"], after["released_ml"]))
-        status, repeated = self.process("/api/the-schedule-the-service-accepts", self.rehearsal())
+        status, repeated = self.process("/api/schedules", self.rehearsal())
         self.assertEqual(status, 201); self.assertEqual(result, repeated)
 
     def test_04_policy_evaluates_every_cartesian_case_under_each_owner(self) -> None:
         wrong = self.policy(); wrong["policy"]["buffer_gain"] = 1.01
-        status, _ = self.process("/api/when-the-forecast-moves", wrong); self.assertEqual(status, 409)
+        status, _ = self.process("/api/feedback-policies", wrong); self.assertEqual(status, 409)
         wrong = self.policy(); wrong["policy"]["extra"] = 1
-        status, _ = self.process("/api/when-the-forecast-moves", wrong); self.assertEqual(status, 409)
-        status, result = self.process("/api/when-the-forecast-moves", self.policy())
+        status, _ = self.process("/api/feedback-policies", wrong); self.assertEqual(status, 409)
+        status, result = self.process("/api/feedback-policies", self.policy())
         self.assertEqual(status, 201, result); record = result["record"]
         self.assertEqual((record["case_count"], record["scenario_steps"]), (27, 324))
         self.assertEqual(record["demand_offsets_m3s"], [-0.05, 0.0, 0.05])
@@ -159,7 +159,7 @@ class W33Live(unittest.TestCase):
         correlation = result["audit_id"]
         self.assertEqual({result[k] for k in ("audit_id", "instrument_audit_id", "reservoir_audit_id",
                                               "distribution_audit_id", "hmi_audit_id")}, {correlation})
-        status, repeated = self.process("/api/when-the-forecast-moves", self.policy())
+        status, repeated = self.process("/api/feedback-policies", self.policy())
         self.assertEqual(status, 201); self.assertEqual(result, repeated)
 
     def test_05_exact_address_security_persistence_and_isolation(self) -> None:

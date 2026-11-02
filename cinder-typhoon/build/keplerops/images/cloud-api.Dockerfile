@@ -11,11 +11,11 @@ COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
 COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/cloud_api.py /opt/fieldkest/cloud_api.py
 COPY build/keplerops/runtime/cloud-api-entrypoint.sh /usr/local/bin/fieldkest-cloud-api-entrypoint
-COPY assets/keplerops/build-operations/k-cloud-api-k09-state.tar /tmp/k-cloud-api-k09-state.tar
+COPY assets/keplerops/build-operations/k-cloud-api-runner-state.tar /tmp/k-cloud-api-runner-state.tar
 
 RUN mkdir -p /var/lib/fieldkest-cloud-api \
-    && tar -xf /tmp/k-cloud-api-k09-state.tar -C /var/lib/fieldkest-cloud-api \
-    && rm /tmp/k-cloud-api-k09-state.tar \
+    && tar -xf /tmp/k-cloud-api-runner-state.tar -C /var/lib/fieldkest-cloud-api \
+    && rm /tmp/k-cloud-api-runner-state.tar \
     && mkdir -p /var/lib/fieldkest-cloud-api/audit \
     && ln -s /opt/fieldkest /opt/fieldkest-cloud-api \
     && chown -R fieldkest-cloud:fieldkest-cloud /var/lib/fieldkest-cloud-api \

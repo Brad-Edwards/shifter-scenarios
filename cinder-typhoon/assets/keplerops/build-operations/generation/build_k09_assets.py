@@ -112,12 +112,12 @@ def build_sources() -> None:
             "BLD-REC-021": {"classification": "recovery", "status": "retained"},
         },
     }
-    write(SOURCE / "k-ci/config/k09.json", encoded(k09))
+    write(SOURCE / "k-ci/config/runner-foundation.json", encoded(k09))
     write(SOURCE / "k-ci/runs/BLD-1842.json", encoded(run))
     write(SOURCE / "k-ci/runs/BLD-1842.log", log)
     write(SOURCE / "k-ci/artifacts/BLD-1842/integration-review-input-v3.json", integration_payload)
     write(SOURCE / "k-ci/artifacts/BLD-1842/ordinary-support-input-v1.json", ordinary_payload)
-    write(SOURCE / "k-cloud-api/config/k09.json", encoded(cloud))
+    write(SOURCE / "k-cloud-api/config/runner-foundation.json", encoded(cloud))
 
 
 def archive(name: str, source: Path) -> dict[str, object]:
@@ -153,8 +153,8 @@ def main() -> None:
         "schema": "fieldkest.k09-foundation-artifacts/v1",
         "generated_at": GENERATED_AT,
         "archives": [
-            archive("k-ci-k09-state.tar", SOURCE / "k-ci"),
-            archive("k-cloud-api-k09-state.tar", SOURCE / "k-cloud-api"),
+            archive("k-ci-runner-state.tar", SOURCE / "k-ci"),
+            archive("k-cloud-api-runner-state.tar", SOURCE / "k-cloud-api"),
         ],
     }
     write(ROOT / "artifact-manifest.json", encoded(manifest))

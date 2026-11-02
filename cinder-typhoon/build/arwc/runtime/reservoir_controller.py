@@ -55,8 +55,8 @@ def initialize() -> None:
         atomic_json(STATE, {
             "bound_plan": None, "reserve_ml": 12.4, "released_ml": 0.0,
             "bind_response": None, "release_response": None,
-            "w33_rehearsal_response": None, "w33_policy_response": None,
-            "w34_handover_response": None,
+            "schedule_rehearsal_response": None, "forecast_policy_response": None,
+            "reporting_handover_response": None,
         })
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
@@ -114,11 +114,11 @@ def control_authority(raw: object) -> dict[str, object] | None:
 
 def process_context() -> dict[str, dict[str, object]] | None:
     records = {
-        "mapping": load_json(PROCESS_EVIDENCE / "historian" / "W18-map.json"),
-        "revision": load_json(PROCESS_EVIDENCE / "engineering" / "W21-revision.json"),
-        "envelope": load_json(PROCESS_EVIDENCE / "hmi" / "W25-envelope.json"),
-        "mode": load_json(PROCESS_EVIDENCE / "hmi" / "W25-practice.json"),
-        "plan": load_json(PROCESS_EVIDENCE / "hmi" / "W29-plan.json"),
+        "mapping": load_json(PROCESS_EVIDENCE / "historian" / "outlet-map.json"),
+        "revision": load_json(PROCESS_EVIDENCE / "engineering" / "deployment-revision.json"),
+        "envelope": load_json(PROCESS_EVIDENCE / "hmi" / "operating-envelope.json"),
+        "mode": load_json(PROCESS_EVIDENCE / "hmi" / "practice-sequence.json"),
+        "plan": load_json(PROCESS_EVIDENCE / "hmi" / "loss-plan.json"),
     }
     if any(value is None for value in records.values()):
         return None
@@ -184,7 +184,7 @@ class Handler(BaseHTTPRequestHandler):
             return None
 
     def authorized(self) -> bool:
-        if (self.headers.get("X-ARWC-Internal") not in {"instruments-w30", "instruments-w33", "instruments-w34"} or
+        if (self.headers.get("X-ARWC-Internal") not in {"instruments-release", "instruments-scheduling", "instruments-reporting"} or
                 self.headers.get("X-ARWC-Tenant") != "arwc" or
                 self.client_address[0] != "10.77.64.40"):
             self.send_json(403, {"error": "independent instrument service context required"})
@@ -263,7 +263,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         state["bound_plan"] = record
         response = {
-            "audit_id": append_audit("bind-the-plan-to-the-plant", record, str(correlation)),
+            "audit_id": append_audit("release-plan-bound", record, str(correlation)),
             "record": record,
         }
         state["bind_response"] = response
@@ -327,7 +327,7 @@ class Handler(BaseHTTPRequestHandler):
         }
         state["reserve_ml"] = 11.4
         state["released_ml"] = 1.0
-        audit_id = append_audit("open-the-gates", record, str(correlation))
+        audit_id = append_audit("gate-release-executed", record, str(correlation))
         response = {"audit_id": audit_id, "record": record}
         state["release_response"] = response
         atomic_json(STATE, state)
@@ -351,7 +351,7 @@ class Handler(BaseHTTPRequestHandler):
                 binding.get("schedule_sha256") != evaluated.get("schedule_sha256") or
                 binding.get("mode") != "MODE-CRR-17" or binding.get("consequence_plan") != "PLAN-CRR-LOSS-1000"):
             self.send_json(409, {"error": "current rehearsal bindings do not agree"}); return
-        state = load_state(); existing = state.get("w33_rehearsal_response")
+        state = load_state(); existing = state.get("schedule_rehearsal_response")
         if isinstance(existing, dict):
             if existing.get("audit_id") == correlation: self.send_json(201, existing)
             else: self.send_json(409, {"error": "rehearsal already recorded under another correlation"})
@@ -363,9 +363,9 @@ class Handler(BaseHTTPRequestHandler):
                   "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
                   "live_reserve_ml": state["reserve_ml"], "live_released_ml": state["released_ml"],
                   "live_state_changed": False}
-        response = {"audit_id": append_audit("the-schedule-the-service-accepts", record, str(correlation)),
+        response = {"audit_id": append_audit("schedule-evaluation-created", record, str(correlation)),
                     "record": record}
-        state["w33_rehearsal_response"] = response; atomic_json(STATE, state)
+        state["schedule_rehearsal_response"] = response; atomic_json(STATE, state)
         atomic_json(ROOT / "results" / "RES-REH-CRR-33.json", record)
         self.send_json(201, response)
 
@@ -379,10 +379,10 @@ class Handler(BaseHTTPRequestHandler):
         state = load_state()
         if authority is None:
             self.send_json(403, {"error": "current scoped control authority required"}); return
-        if (not isinstance(state.get("w33_rehearsal_response"), dict) or evaluated is None or
+        if (not isinstance(state.get("schedule_rehearsal_response"), dict) or evaluated is None or
                 supplied != evaluated or binding.get("schedule_result") != "REH-RESULT-CRR-33"):
             self.send_json(409, {"error": "accepted rehearsal and valid policy required"}); return
-        existing = state.get("w33_policy_response")
+        existing = state.get("forecast_policy_response")
         if isinstance(existing, dict):
             if existing.get("audit_id") == correlation: self.send_json(201, existing)
             else: self.send_json(409, {"error": "policy already recorded under another correlation"})
@@ -394,9 +394,9 @@ class Handler(BaseHTTPRequestHandler):
                   "maximum_reservoir_volume_ml": evaluated["maximum_reservoir_volume_ml"],
                   "live_reserve_ml": state["reserve_ml"], "live_released_ml": state["released_ml"],
                   "live_state_changed": False}
-        response = {"audit_id": append_audit("when-the-forecast-moves", record, str(correlation)),
+        response = {"audit_id": append_audit("forecast-policy-created", record, str(correlation)),
                     "record": record}
-        state["w33_policy_response"] = response; atomic_json(STATE, state)
+        state["forecast_policy_response"] = response; atomic_json(STATE, state)
         atomic_json(ROOT / "results" / "RES-POL-CRR-33.json", record)
         self.send_json(201, response)
 
@@ -415,7 +415,7 @@ class Handler(BaseHTTPRequestHandler):
                 binding.get("decision") != "ALLOC-EXPAND-R2" or binding.get("view") != "VIEW-CRR-34" or
                 evaluated.get("reservoir_volume_ml") != 0.81 or evaluated.get("final_buffer_m3") != 180.0):
             self.send_json(409, {"error": "current reporting checkpoint bindings do not agree"}); return
-        state = load_state(); existing = state.get("w34_handover_response")
+        state = load_state(); existing = state.get("reporting_handover_response")
         if isinstance(existing, dict):
             if existing.get("audit_id") == correlation: self.send_json(201, existing)
             else: self.send_json(409, {"error": "reporting handover already recorded under another correlation"})
@@ -426,9 +426,9 @@ class Handler(BaseHTTPRequestHandler):
                   "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
                   "live_reserve_ml": state["reserve_ml"], "live_released_ml": state["released_ml"],
                   "live_state_changed": False}
-        response = {"audit_id": append_audit("still-reassuring-after-the-handover", record, str(correlation)),
+        response = {"audit_id": append_audit("reporting-handover-created", record, str(correlation)),
                     "record": record}
-        state["w34_handover_response"] = response; atomic_json(STATE, state)
+        state["reporting_handover_response"] = response; atomic_json(STATE, state)
         atomic_json(ROOT / "results" / "RES-REPORT-CRR-34.json", record); self.send_json(201, response)
 
 

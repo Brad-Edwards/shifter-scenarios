@@ -224,7 +224,16 @@ class AllowlistTests(unittest.TestCase):
         self.assertEqual(scan.load_allowlist(), {"schema_version": 1, "entries": []})
 
     def test_structural_gates_cannot_be_allowlisted(self) -> None:
-        item = scan.domain_interface_findings("keplerops")[0]
+        value = json.loads((FOURTH_WALL / "domain-interfaces.json").read_text())
+        value["phases"]["keplerops"] = {
+            "status": "pending_review",
+            "blocking_issue": 266,
+            "approved_route_patterns": [],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "domain-interfaces.json"
+            path.write_text(json.dumps(value))
+            item = scan.domain_interface_findings("keplerops", path)[0]
         entry = {
             "id": "invalid-structural-exception",
             "source_kind": item["source_kind"],
@@ -242,21 +251,27 @@ class AllowlistTests(unittest.TestCase):
 
 
 class DomainInterfaceTests(unittest.TestCase):
+    def test_keplerops_domain_interface_is_approved_and_clean(self) -> None:
+        findings = scan.domain_interface_findings("keplerops")
+        self.assertEqual(findings, [])
+
     def test_arwc_domain_interface_is_approved_and_clean(self) -> None:
         findings = scan.domain_interface_findings("arwc")
         self.assertEqual(findings, [])
 
-    def test_arwc_domain_interface_names_reviewed_resource_families(self) -> None:
+    def test_domain_interfaces_name_reviewed_resource_families(self) -> None:
         value = scan.load_domain_interfaces()
-        patterns = value["phases"]["arwc"]["approved_route_patterns"]
-        self.assertGreaterEqual(len(patterns), 2)
-        self.assertFalse({
-            r"/api/.*", r"/internal/.*", r"/(?:api|internal)/.*",
-        }.intersection(patterns))
-        self.assertTrue(all(
-            pattern.startswith((r"/api/(?:", r"/internal/(?:"))
-            for pattern in patterns
-        ))
+        for phase in ("keplerops", "arwc"):
+            with self.subTest(phase=phase):
+                patterns = value["phases"][phase]["approved_route_patterns"]
+                self.assertGreaterEqual(len(patterns), 2)
+                self.assertFalse({
+                    r"/api/.*", r"/internal/.*", r"/(?:api|internal)/.*",
+                }.intersection(patterns))
+                self.assertTrue(all(
+                    pattern.startswith((r"/api/(?:", r"/internal/(?:", r"/api/?"))
+                    for pattern in patterns
+                ))
 
     def test_an_approved_map_rejects_arbitrary_unreviewed_aliases(self) -> None:
         value = json.loads((FOURTH_WALL / "domain-interfaces.json").read_text())
@@ -283,15 +298,20 @@ class StaticAndLiveContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.policy = policy_module.build_policy()
-        cls.arwc = scan.build_static_report("arwc")
+        cls.static_reports = {
+            phase: scan.build_static_report(phase)
+            for phase in ("training", "keplerops", "arwc")
+        }
+        cls.arwc = cls.static_reports["arwc"]
 
-    def test_current_arwc_title_routes_fail_closed(self) -> None:
-        self.assertEqual(self.arwc["overall_status"], "unresolved")
-        self.assertTrue(any(
-            item["rule_id"] == "card-title-alias"
-            and item.get("card_id") == "W33.2"
-            for item in self.arwc["findings"]
-        ))
+    def test_current_static_reports_are_clean_without_exceptions(self) -> None:
+        for phase, report in self.static_reports.items():
+            with self.subTest(phase=phase):
+                self.assertEqual(report["overall_status"], "clean")
+                self.assertEqual(report["summary"]["finding_count"], 0)
+                self.assertEqual(report["summary"]["allowlisted_count"], 0)
+                self.assertEqual(report["findings"], [])
+                self.assertEqual(report["allowlisted"], [])
 
     def test_arwc_runtime_routes_have_no_card_derived_names(self) -> None:
         findings = [
@@ -333,13 +353,10 @@ class StaticAndLiveContractTests(unittest.TestCase):
             client_documents,
         )
 
-    def test_non_python_runtime_sources_are_scanned(self) -> None:
-        findings = scan.static_findings(self.policy, "keplerops")
-        self.assertTrue(any(
-            item["location"].endswith("build/keplerops/runtime/k-dev-entrypoint.sh")
-            and item["rule_id"] == "card-id-alias"
-            for item in findings
-        ))
+    def test_non_python_runtime_sources_are_scanned_and_clean(self) -> None:
+        path = ROOT / "build" / "keplerops" / "runtime" / "k-dev-entrypoint.sh"
+        findings = scan.scan_asset(self.policy, path, scan_names=False)
+        self.assertEqual(findings, [])
 
     def test_observation_plan_is_bounded_and_contains_no_allowlist_rationales(self) -> None:
         plan = runner.observation_plan("keplerops", self.policy)

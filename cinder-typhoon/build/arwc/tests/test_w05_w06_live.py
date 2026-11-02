@@ -65,14 +65,14 @@ class W05W06Live(unittest.TestCase):
         self.assertEqual(handover.returncode, 0, handover.stderr)
         type(self).handover = handover.stdout.strip()
         status, response = request(
-            "/api/the-planner-s-login-trail", planning_access=type(self).handover,
+            "/api/sessions/current/audit", planning_access=type(self).handover,
         )
         self.assertEqual(status, 200)
         self.assertEqual(response["record"]["record_id"], "RENDER-CRR-882")
         self.assertEqual(response["record"]["drawing"], "DRW-OG2-R8")
 
     def test_02_onboarding_records_are_distinct_and_exact(self) -> None:
-        status, starter = request("/api/a-starter-pack-left-open")
+        status, starter = request("/api/provisioning-packages/current")
         self.assertEqual(status, 200)
         self.assertEqual(starter["record"], {
             "record_id": "START-MIRA-2026",
@@ -83,7 +83,7 @@ class W05W06Live(unittest.TestCase):
             "portal_identity": "mira.vale.temp",
             "activation_secret": None,
         })
-        status, roster = request("/api/the-activation-roster")
+        status, roster = request("/api/activations/current")
         self.assertEqual(status, 200)
         self.assertEqual(roster["record"]["record_id"], "ACT-SEP26-R3")
         self.assertEqual(roster["record"]["activation_code"], "731944")
@@ -92,7 +92,7 @@ class W05W06Live(unittest.TestCase):
 
     def test_03_activation_omits_only_the_assignment_binding(self) -> None:
         wrong, _ = request(
-            "/api/temporary-with-the-wrong-rights", method="POST",
+            "/api/temporary-credentials/current", method="POST",
             body={
                 "employee_number": "TMP-4821", "activation_code": "000000",
                 "requested_assignment": "PLAN-RELIEF-7",
@@ -100,7 +100,7 @@ class W05W06Live(unittest.TestCase):
         )
         self.assertEqual(wrong, 409)
         unavailable, _ = request(
-            "/api/temporary-with-the-wrong-rights", method="POST",
+            "/api/temporary-credentials/current", method="POST",
             body={
                 "employee_number": "TMP-4821", "activation_code": "731944",
                 "requested_assignment": "PLAN-ADMIN-1",
@@ -108,7 +108,7 @@ class W05W06Live(unittest.TestCase):
         )
         self.assertEqual(unavailable, 409)
         status, response = request(
-            "/api/temporary-with-the-wrong-rights", method="POST",
+            "/api/temporary-credentials/current", method="POST",
             body={
                 "employee_number": "TMP-4821", "activation_code": "731944",
                 "requested_assignment": "PLAN-RELIEF-7",
@@ -121,11 +121,11 @@ class W05W06Live(unittest.TestCase):
         type(self).limited = response["limited_session"]
 
     def test_04_rendering_record_requires_working_planning_access(self) -> None:
-        denied, body = request("/api/the-planner-s-login-trail", planning_access="wrong")
+        denied, body = request("/api/sessions/current/audit", planning_access="wrong")
         self.assertEqual(denied, 403)
         self.assertNotIn("OAUTH-PLN-882", json.dumps(body))
         status, response = request(
-            "/api/the-planner-s-login-trail", planning_access=type(self).limited,
+            "/api/sessions/current/audit", planning_access=type(self).limited,
         )
         self.assertEqual(status, 200)
         record = response["record"]
@@ -137,7 +137,7 @@ class W05W06Live(unittest.TestCase):
 
     def test_05_state_is_checked_before_preview_origin_is_replaced(self) -> None:
         wrong_state, _ = request(
-            "/api/a-drawing-in-the-wrong-context", method="POST",
+            "/api/drawing-contexts/current", method="POST",
             planning_access=type(self).limited,
             body={
                 "oauth_state": "wrong", "drawing": "DRW-OG2-R8",
@@ -146,7 +146,7 @@ class W05W06Live(unittest.TestCase):
         )
         self.assertEqual(wrong_state, 409)
         wrong_drawing, _ = request(
-            "/api/a-drawing-in-the-wrong-context", method="POST",
+            "/api/drawing-contexts/current", method="POST",
             planning_access=type(self).limited,
             body={
                 "oauth_state": type(self).oauth_state, "drawing": "DRW-MER-1",
@@ -155,7 +155,7 @@ class W05W06Live(unittest.TestCase):
         )
         self.assertEqual(wrong_drawing, 409)
         status, response = request(
-            "/api/a-drawing-in-the-wrong-context", method="POST",
+            "/api/drawing-contexts/current", method="POST",
             planning_access=type(self).limited,
             body={
                 "oauth_state": type(self).oauth_state, "drawing": "DRW-OG2-R8",
@@ -168,7 +168,7 @@ class W05W06Live(unittest.TestCase):
 
     def test_06_privileged_browser_posts_a_bounded_planner_session(self) -> None:
         wrong, _ = request(
-            "/api/a-planner-session-that-works", method="POST",
+            "/api/sessions", method="POST",
             planning_access=type(self).limited,
             body={
                 "oauth_transaction": "OAUTH-PLN-882",
@@ -177,7 +177,7 @@ class W05W06Live(unittest.TestCase):
         )
         self.assertEqual(wrong, 409)
         status, response = request(
-            "/api/a-planner-session-that-works", method="POST",
+            "/api/sessions", method="POST",
             planning_access=type(self).limited,
             body={
                 "oauth_transaction": "OAUTH-PLN-882",
@@ -199,10 +199,10 @@ class W05W06Live(unittest.TestCase):
         self.assertEqual(saved.returncode, 0, saved.stderr)
 
     def test_07_wrong_corporate_session_and_tenant_disclose_nothing(self) -> None:
-        status, body = request("/api/a-starter-pack-left-open", token="wrong")
+        status, body = request("/api/provisioning-packages/current", token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("TMP-4821", json.dumps(body))
-        status, body = request("/api/the-activation-roster", tenant="merewick")
+        status, body = request("/api/activations/current", tenant="merewick")
         self.assertEqual(status, 403)
         self.assertNotIn("731944", json.dumps(body))
 
@@ -211,7 +211,7 @@ class W05W06Live(unittest.TestCase):
         for _ in range(30):
             try:
                 status, response = request(
-                    "/api/the-planner-s-login-trail", planning_access=type(self).limited,
+                    "/api/sessions/current/audit", planning_access=type(self).limited,
                 )
                 if status == 200:
                     break
@@ -227,9 +227,9 @@ class W05W06Live(unittest.TestCase):
              "cat", "/var/lib/arwc-identity/audit/events.jsonl"],
             text=True, stdout=subprocess.PIPE, check=True,
         )
-        self.assertIn('"action":"temporary-with-the-wrong-rights"', audit.stdout)
-        self.assertIn('"action":"a-drawing-in-the-wrong-context"', audit.stdout)
-        self.assertIn('"action":"a-planner-session-that-works"', audit.stdout)
+        self.assertIn('"action":"temporary-session-issued"', audit.stdout)
+        self.assertIn('"action":"drawing-context-created"', audit.stdout)
+        self.assertIn('"action":"planner-session-issued"', audit.stdout)
 
 
 if __name__ == "__main__":

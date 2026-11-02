@@ -51,14 +51,14 @@ print(response.read().decode())
 class W02W03Live(unittest.TestCase):
     def test_01_protected_association_requires_source_table(self) -> None:
         status, body = request(
-            "/api/the-record-behind-the-wrong-association", method="POST",
+            "/api/work-order-attachments/current", method="POST",
             body={"association_id": "ASC-CRR-4417-ALT", "expected_revision": 6},
         )
         self.assertEqual(status, 403)
         self.assertNotIn("MR-CRR-4417-R6", json.dumps(body))
 
     def test_02_asset_contractor_bundle_is_one_record(self) -> None:
-        status, response = request("/api/the-asset-and-the-contractor")
+        status, response = request("/api/asset-bundles/current")
         self.assertEqual(status, 200)
         self.assertEqual(response["record"], {
             "record_id": "BND-CRR-OUTLET-17",
@@ -69,7 +69,7 @@ class W02W03Live(unittest.TestCase):
         })
 
     def test_03_association_authorization_uses_supplied_row(self) -> None:
-        status, table = request("/api/three-names-for-one-job")
+        status, table = request("/api/association-records/current")
         self.assertEqual(status, 200)
         sources = table["record"]["sources"]
         self.assertEqual(sources["work_order"]["id"], "WO-CRR-4417")
@@ -78,12 +78,12 @@ class W02W03Live(unittest.TestCase):
         self.assertEqual(sources["inspection"]["id"], "INSP-CRR-2026-09-18")
 
         wrong, _ = request(
-            "/api/the-record-behind-the-wrong-association", method="POST",
+            "/api/work-order-attachments/current", method="POST",
             body={"association_id": "ASC-MER-1000", "expected_revision": 6},
         )
         self.assertEqual(wrong, 409)
         status, result = request(
-            "/api/the-record-behind-the-wrong-association", method="POST",
+            "/api/work-order-attachments/current", method="POST",
             body={"association_id": "ASC-CRR-4417-ALT", "expected_revision": 6},
         )
         self.assertEqual(status, 201)
@@ -91,7 +91,7 @@ class W02W03Live(unittest.TestCase):
         self.assertEqual(result["record"]["revision"], 6)
 
     def test_04_annex_names_the_real_handover_and_importer(self) -> None:
-        status, response = request("/api/an-annex-left-with-the-order")
+        status, response = request("/api/work-order-attachments/annex")
         self.assertEqual(status, 200)
         record = response["record"]
         self.assertEqual(record["record_id"], "ANN-4417-R2")
@@ -100,18 +100,18 @@ class W02W03Live(unittest.TestCase):
         self.assertEqual(record["importer"], "annex-import/2")
 
     def test_05_read_contract_requires_restricted_handover(self) -> None:
-        status, body = request("/api/the-integration-s-read-contract")
+        status, body = request("/api/integration-contracts/current")
         self.assertEqual(status, 403)
         self.assertNotIn("INT-CRR-08", json.dumps(body))
 
     def test_06_validate_before_decode_reaches_restricted_handover(self) -> None:
         plain, _ = request(
-            "/api/a-reference-outside-the-order", method="POST",
+            "/api/work-orders/current/references", method="POST",
             body={"reference": "restricted/PDH-CRR-READ-08"},
         )
         self.assertEqual(plain, 409)
         status, imported = request(
-            "/api/a-reference-outside-the-order", method="POST",
+            "/api/work-orders/current/references", method="POST",
             body={"reference": "attachments/%2e%2e%2frestricted%2fPDH-CRR-READ-08"},
         )
         self.assertEqual(status, 201)
@@ -119,7 +119,7 @@ class W02W03Live(unittest.TestCase):
         self.assertEqual(imported["record"]["work_order"], "WO-CRR-4417")
         self.assertEqual(imported["record"]["service_identity"], "svc-annex")
 
-        status, contract = request("/api/the-integration-s-read-contract")
+        status, contract = request("/api/integration-contracts/current")
         self.assertEqual(status, 200)
         self.assertEqual(contract["record"], {
             "record_id": "PDH-CRR-READ-08",
@@ -131,10 +131,10 @@ class W02W03Live(unittest.TestCase):
         })
 
     def test_07_wrong_session_and_tenant_disclose_nothing(self) -> None:
-        status, body = request("/api/three-names-for-one-job", token="wrong")
+        status, body = request("/api/association-records/current", token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("WO-CRR-4417", json.dumps(body))
-        status, body = request("/api/an-annex-left-with-the-order", tenant="merewick")
+        status, body = request("/api/work-order-attachments/annex", tenant="merewick")
         self.assertEqual(status, 403)
         self.assertNotIn("PDH-CRR-READ-08", json.dumps(body))
 
@@ -142,7 +142,7 @@ class W02W03Live(unittest.TestCase):
         subprocess.run(["docker", "restart", SERVICE], check=True, stdout=subprocess.DEVNULL)
         for _ in range(30):
             try:
-                status, contract = request("/api/the-integration-s-read-contract")
+                status, contract = request("/api/integration-contracts/current")
                 if status == 200:
                     break
             except AssertionError:
@@ -157,8 +157,8 @@ class W02W03Live(unittest.TestCase):
              "cat", "/var/lib/arwc-business/audit/events.jsonl"],
             text=True, stdout=subprocess.PIPE, check=True,
         )
-        self.assertIn('"action":"the-record-behind-the-wrong-association"', audit.stdout)
-        self.assertIn('"action":"a-reference-outside-the-order"', audit.stdout)
+        self.assertIn('"action":"maintenance-record-read"', audit.stdout)
+        self.assertIn('"action":"restricted-handover-read"', audit.stdout)
 
 
 if __name__ == "__main__":

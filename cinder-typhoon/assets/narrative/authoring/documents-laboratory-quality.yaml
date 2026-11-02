@@ -305,13 +305,13 @@ documents:
 - id: lq-weekly-report-01
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W02
+  title: ARWC laboratory summary 2026 week 02
   path: lq-weekly-report-01.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-01-09T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W02
+  text: '# ARWC laboratory summary 2026 week 02
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -398,13 +398,13 @@ documents:
 - id: lq-weekly-report-02
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W03
+  title: ARWC laboratory summary 2026 week 03
   path: lq-weekly-report-02.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-01-16T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W03
+  text: '# ARWC laboratory summary 2026 week 03
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -491,13 +491,13 @@ documents:
 - id: lq-weekly-report-03
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W04
+  title: ARWC laboratory summary 2026 week 04
   path: lq-weekly-report-03.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-01-23T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W04
+  text: '# ARWC laboratory summary 2026 week 04
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -584,13 +584,13 @@ documents:
 - id: lq-weekly-report-04
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W05
+  title: ARWC laboratory summary 2026 week 05
   path: lq-weekly-report-04.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-01-30T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W05
+  text: '# ARWC laboratory summary 2026 week 05
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -677,13 +677,13 @@ documents:
 - id: lq-weekly-report-05
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W06
+  title: ARWC laboratory summary 2026 week 06
   path: lq-weekly-report-05.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-02-06T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W06
+  text: '# ARWC laboratory summary 2026 week 06
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -770,13 +770,13 @@ documents:
 - id: lq-weekly-report-06
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W07
+  title: ARWC laboratory summary 2026 week 07
   path: lq-weekly-report-06.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-02-13T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W07
+  text: '# ARWC laboratory summary 2026 week 07
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -863,13 +863,13 @@ documents:
 - id: lq-weekly-report-07
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W08
+  title: ARWC laboratory summary 2026 week 08
   path: lq-weekly-report-07.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-02-20T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W08
+  text: '# ARWC laboratory summary 2026 week 08
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -956,13 +956,13 @@ documents:
 - id: lq-weekly-report-08
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W09
+  title: ARWC laboratory summary 2026 week 09
   path: lq-weekly-report-08.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-02-27T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W09
+  text: '# ARWC laboratory summary 2026 week 09
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1049,13 +1049,13 @@ documents:
 - id: lq-weekly-report-09
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W10
+  title: ARWC laboratory summary 2026 week 10
   path: lq-weekly-report-09.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-03-06T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W10
+  text: '# ARWC laboratory summary 2026 week 10
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1142,13 +1142,13 @@ documents:
 - id: lq-weekly-report-10
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W11
+  title: ARWC laboratory summary 2026 week 11
   path: lq-weekly-report-10.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-03-13T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W11
+  text: '# ARWC laboratory summary 2026 week 11
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1235,13 +1235,13 @@ documents:
 - id: lq-weekly-report-11
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W12
+  title: ARWC laboratory summary 2026 week 12
   path: lq-weekly-report-11.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-03-20T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W12
+  text: '# ARWC laboratory summary 2026 week 12
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1328,13 +1328,13 @@ documents:
 - id: lq-weekly-report-12
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W13
+  title: ARWC laboratory summary 2026 week 13
   path: lq-weekly-report-12.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-03-27T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W13
+  text: '# ARWC laboratory summary 2026 week 13
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1421,13 +1421,13 @@ documents:
 - id: lq-weekly-report-13
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W14
+  title: ARWC laboratory summary 2026 week 14
   path: lq-weekly-report-13.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-04-03T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W14
+  text: '# ARWC laboratory summary 2026 week 14
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1514,13 +1514,13 @@ documents:
 - id: lq-weekly-report-14
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W15
+  title: ARWC laboratory summary 2026 week 15
   path: lq-weekly-report-14.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-04-10T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W15
+  text: '# ARWC laboratory summary 2026 week 15
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1607,13 +1607,13 @@ documents:
 - id: lq-weekly-report-15
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W16
+  title: ARWC laboratory summary 2026 week 16
   path: lq-weekly-report-15.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-04-17T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W16
+  text: '# ARWC laboratory summary 2026 week 16
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1700,13 +1700,13 @@ documents:
 - id: lq-weekly-report-16
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W17
+  title: ARWC laboratory summary 2026 week 17
   path: lq-weekly-report-16.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-04-24T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W17
+  text: '# ARWC laboratory summary 2026 week 17
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1793,13 +1793,13 @@ documents:
 - id: lq-weekly-report-17
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W18
+  title: ARWC laboratory summary 2026 week 18
   path: lq-weekly-report-17.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-05-01T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W18
+  text: '# ARWC laboratory summary 2026 week 18
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1886,13 +1886,13 @@ documents:
 - id: lq-weekly-report-18
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W19
+  title: ARWC laboratory summary 2026 week 19
   path: lq-weekly-report-18.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-05-08T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W19
+  text: '# ARWC laboratory summary 2026 week 19
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -1979,13 +1979,13 @@ documents:
 - id: lq-weekly-report-19
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W20
+  title: ARWC laboratory summary 2026 week 20
   path: lq-weekly-report-19.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-05-15T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W20
+  text: '# ARWC laboratory summary 2026 week 20
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -2072,13 +2072,13 @@ documents:
 - id: lq-weekly-report-20
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W21
+  title: ARWC laboratory summary 2026 week 21
   path: lq-weekly-report-20.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-05-22T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W21
+  text: '# ARWC laboratory summary 2026 week 21
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -2165,13 +2165,13 @@ documents:
 - id: lq-weekly-report-21
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W22
+  title: ARWC laboratory summary 2026 week 22
   path: lq-weekly-report-21.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-05-29T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W22
+  text: '# ARWC laboratory summary 2026 week 22
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -2258,13 +2258,13 @@ documents:
 - id: lq-weekly-report-22
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W23
+  title: ARWC laboratory summary 2026 week 23
   path: lq-weekly-report-22.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-06-05T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W23
+  text: '# ARWC laboratory summary 2026 week 23
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -2351,13 +2351,13 @@ documents:
 - id: lq-weekly-report-23
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W24
+  title: ARWC laboratory summary 2026 week 24
   path: lq-weekly-report-23.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-06-12T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W24
+  text: '# ARWC laboratory summary 2026 week 24
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -2444,13 +2444,13 @@ documents:
 - id: lq-weekly-report-24
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W25
+  title: ARWC laboratory summary 2026 week 25
   path: lq-weekly-report-24.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-06-19T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W25
+  text: '# ARWC laboratory summary 2026 week 25
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -2537,13 +2537,13 @@ documents:
 - id: lq-weekly-report-25
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W26
+  title: ARWC laboratory summary 2026 week 26
   path: lq-weekly-report-25.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-06-26T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W26
+  text: '# ARWC laboratory summary 2026 week 26
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -2630,13 +2630,13 @@ documents:
 - id: lq-weekly-report-26
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W27
+  title: ARWC laboratory summary 2026 week 27
   path: lq-weekly-report-26.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-07-03T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W27
+  text: '# ARWC laboratory summary 2026 week 27
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -2723,13 +2723,13 @@ documents:
 - id: lq-weekly-report-27
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W28
+  title: ARWC laboratory summary 2026 week 28
   path: lq-weekly-report-27.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-07-10T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W28
+  text: '# ARWC laboratory summary 2026 week 28
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -2816,13 +2816,13 @@ documents:
 - id: lq-weekly-report-28
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W29
+  title: ARWC laboratory summary 2026 week 29
   path: lq-weekly-report-28.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-07-17T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W29
+  text: '# ARWC laboratory summary 2026 week 29
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -2909,13 +2909,13 @@ documents:
 - id: lq-weekly-report-29
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W30
+  title: ARWC laboratory summary 2026 week 30
   path: lq-weekly-report-29.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-07-24T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W30
+  text: '# ARWC laboratory summary 2026 week 30
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -3002,13 +3002,13 @@ documents:
 - id: lq-weekly-report-30
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W31
+  title: ARWC laboratory summary 2026 week 31
   path: lq-weekly-report-30.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-07-31T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W31
+  text: '# ARWC laboratory summary 2026 week 31
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -3095,13 +3095,13 @@ documents:
 - id: lq-weekly-report-31
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W32
+  title: ARWC laboratory summary 2026 week 32
   path: lq-weekly-report-31.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-08-07T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W32
+  text: '# ARWC laboratory summary 2026 week 32
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -3148,13 +3148,13 @@ documents:
 - id: lq-weekly-report-32
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W33
+  title: ARWC laboratory summary 2026 week 33
   path: lq-weekly-report-32.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-08-14T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W33
+  text: '# ARWC laboratory summary 2026 week 33
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -3201,13 +3201,13 @@ documents:
 - id: lq-weekly-report-33
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W34
+  title: ARWC laboratory summary 2026 week 34
   path: lq-weekly-report-33.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-08-21T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W34
+  text: '# ARWC laboratory summary 2026 week 34
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -3254,13 +3254,13 @@ documents:
 - id: lq-weekly-report-34
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W35
+  title: ARWC laboratory summary 2026 week 35
   path: lq-weekly-report-34.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-08-28T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W35
+  text: '# ARWC laboratory summary 2026 week 35
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -3307,13 +3307,13 @@ documents:
 - id: lq-weekly-report-35
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W36
+  title: ARWC laboratory summary 2026 week 36
   path: lq-weekly-report-35.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-09-04T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W36
+  text: '# ARWC laboratory summary 2026 week 36
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
@@ -3360,13 +3360,13 @@ documents:
 - id: lq-weekly-report-36
   story: laboratory-quality
   employer: arwc
-  title: ARWC laboratory summary 2026-W37
+  title: ARWC laboratory summary 2026 week 37
   path: lq-weekly-report-36.md
   audience: restricted
   reader_keys: *id001
   published_at: '2026-09-11T16:30:00-04:00'
   media_type: text/markdown
-  text: '# ARWC laboratory summary 2026-W37
+  text: '# ARWC laboratory summary 2026 week 37
 
 
     Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.

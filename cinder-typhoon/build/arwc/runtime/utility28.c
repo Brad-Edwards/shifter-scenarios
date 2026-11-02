@@ -157,7 +157,7 @@ int issue_client(const char *issuer, const char *correlation) {
 
 static int use_client(void) {
     static const char socket_path[] = "/run/arwc/control-issuer.sock";
-    const char *token = getenv("ARWC_W28_CONTROL_CLIENT");
+    const char *token = getenv("ARWC_UTILITY_CONTROL_CLIENT");
     char request[768];
     char response[4096];
     struct sockaddr_un address;
@@ -222,14 +222,14 @@ static int frame_valid(const unsigned char *frame, size_t length, int issue,
 static int control_mode(int issue) {
     unsigned char frame[FRAME_MAX];
     uint64_t canary, base;
-    const char *correlation = getenv("ARWC_W28_CORRELATION");
-    const char *length_text = getenv("ARWC_W28_LENGTH");
+    const char *correlation = getenv("ARWC_UTILITY_CORRELATION");
+    const char *length_text = getenv("ARWC_UTILITY_LENGTH");
     char *end = NULL;
     unsigned long requested;
     size_t consumed = 0;
 
-    if (parse_u64("ARWC_W28_CANARY", &canary) != 0 ||
-            parse_u64("ARWC_W28_PIE_BASE", &base) != 0 ||
+    if (parse_u64("ARWC_UTILITY_CANARY", &canary) != 0 ||
+            parse_u64("ARWC_UTILITY_PIE_BASE", &base) != 0 ||
             length_text == NULL) return 64;
     errno = 0;
     requested = strtoul(length_text, &end, 10);

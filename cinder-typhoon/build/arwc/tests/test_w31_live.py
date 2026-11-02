@@ -97,11 +97,11 @@ class W31Live(unittest.TestCase):
                        token=type(self).process_session if token is None else token, tenant=tenant)
 
     def test_01_exact_vault_contract_and_real_hardened_worker(self) -> None:
-        status, denied = self.process("/api/the-vault-s-misleading-length", method="GET", token="wrong")
+        status, denied = self.process("/api/vault-records/current", method="GET", token="wrong")
         self.assertEqual(status, 403); self.assertNotIn("worker_b64", denied)
-        status, denied = self.process("/api/the-vault-s-misleading-length", method="GET", tenant="other")
+        status, denied = self.process("/api/vault-records/current", method="GET", tenant="other")
         self.assertEqual(status, 403); self.assertNotIn("worker_b64", denied)
-        status, result = self.process("/api/the-vault-s-misleading-length", method="GET")
+        status, result = self.process("/api/vault-records/current", method="GET")
         self.assertEqual(status, 200, result)
         record = result["record"]; worker = base64.b64decode(result["worker_b64"], validate=True)
         self.assertEqual(record["record_id"], "VAULT-CRR-R5")
@@ -122,14 +122,14 @@ class W31Live(unittest.TestCase):
         body = {"case_id": "DV-CRR-4417", "build_id": "DVL-WORKER-R5",
                 "record_b64": base64.b64encode(record).decode()}
         wrong_crc = bytearray(record); wrong_crc[8] ^= 1
-        status, _ = self.process("/api/past-the-parser-s-boundary", body={**body, "record_b64": base64.b64encode(wrong_crc).decode()})
+        status, _ = self.process("/api/signature-records/current", body={**body, "record_b64": base64.b64encode(wrong_crc).decode()})
         self.assertEqual(status, 409)
         zero = dvl1(payload, declared=0, header=0x01F8)
-        status, _ = self.process("/api/past-the-parser-s-boundary", body={**body, "record_b64": base64.b64encode(zero).decode()})
+        status, _ = self.process("/api/signature-records/current", body={**body, "record_b64": base64.b64encode(zero).decode()})
         self.assertEqual(status, 409)
-        status, _ = self.process("/api/past-the-parser-s-boundary", body={**body, "record_b64": base64.b64encode(record + b"X").decode()})
+        status, _ = self.process("/api/signature-records/current", body={**body, "record_b64": base64.b64encode(record + b"X").decode()})
         self.assertEqual(status, 409)
-        status, result = self.process("/api/past-the-parser-s-boundary", body=body)
+        status, result = self.process("/api/signature-records/current", body=body)
         self.assertEqual(status, 201, result)
         self.assertEqual(result["record"]["wrapped_sum"], 0)
         self.assertEqual(result["record"]["copied_bytes"], 504)
@@ -151,17 +151,17 @@ class W31Live(unittest.TestCase):
 
     def test_03_preserved_canary_and_build_bound_return_control(self) -> None:
         common = {"case_id": "DV-CRR-4417", "build_id": "DVL-WORKER-R5"}
-        status, _ = self.process("/api/the-state-execution-returns-to", body={
+        status, _ = self.process("/api/replay-sessions/current/divergence", body={
             **common, "record_b64": base64.b64encode(self.exploit_record(canary_delta=1)).decode()})
         self.assertEqual(status, 409)
-        status, _ = self.process("/api/the-state-execution-returns-to", body={
+        status, _ = self.process("/api/replay-sessions/current/divergence", body={
             **common, "record_b64": base64.b64encode(self.exploit_record(return_delta=1)).decode()})
         self.assertEqual(status, 409)
-        status, _ = self.process("/api/the-state-execution-returns-to", body={
+        status, _ = self.process("/api/replay-sessions/current/divergence", body={
             "case_id": "DV-CRR-4417", "build_id": "DVL-WORKER-R4",
             "record_b64": base64.b64encode(self.exploit_record()).decode()})
         self.assertEqual(status, 409)
-        status, result = self.process("/api/the-state-execution-returns-to", body={
+        status, result = self.process("/api/replay-sessions/current/divergence", body={
             **common, "record_b64": base64.b64encode(self.exploit_record()).decode()})
         self.assertEqual(status, 201, result)
         self.assertEqual(result["audit_id"], result["record"]["correlation"])
@@ -174,21 +174,21 @@ class W31Live(unittest.TestCase):
     def test_04_service_authority_exports_only_the_bound_history(self) -> None:
         execution = type(self).execution
         body = {key: execution[key] for key in ("execution_id", "correlation", "history_id", "history_digest")}
-        status, _ = self.process("/api/the-diagnostic-service-s-authority", body={**body, "history_id": "HIST-APR-CRR-10"})
+        status, _ = self.process("/api/diagnostic-programs/authority", body={**body, "history_id": "HIST-APR-CRR-10"})
         self.assertEqual(status, 409)
-        status, _ = self.process("/api/the-diagnostic-service-s-authority", body={**body, "correlation": "00000000-0000-4000-8000-000000000000"})
+        status, _ = self.process("/api/diagnostic-programs/authority", body={**body, "correlation": "00000000-0000-4000-8000-000000000000"})
         self.assertEqual(status, 409)
         approval_before = subprocess.check_output(["docker", "exec", "--user", "arwc-approval",
             "cinder-arwc-approval", "cat", "/var/lib/arwc-approval/state/maintenance-review.json"])
         broker_before = subprocess.check_output(["docker", "exec", "--user", "arwc-control-broker",
             "cinder-arwc-control-broker", "cat", "/var/lib/arwc-control-broker/state/control-broker.json"])
-        status, result = self.process("/api/the-diagnostic-service-s-authority", body=body)
+        status, result = self.process("/api/diagnostic-programs/authority", body=body)
         self.assertEqual(status, 201, result)
         self.assertEqual(result["history"]["record_id"], "HIST-APR-CRR-09")
         self.assertFalse(result["record"]["current_approval"]); self.assertFalse(result["record"]["control_authority"])
         self.assertEqual(hashlib.sha256(json.dumps(result["history"], sort_keys=True, separators=(",", ":")).encode()).hexdigest(),
                          result["record"]["history_digest"])
-        status, repeated = self.process("/api/the-diagnostic-service-s-authority", body=body)
+        status, repeated = self.process("/api/diagnostic-programs/authority", body=body)
         self.assertEqual(status, 201); self.assertEqual(result, repeated)
         self.assertEqual(approval_before, subprocess.check_output(["docker", "exec", "--user", "arwc-approval",
             "cinder-arwc-approval", "cat", "/var/lib/arwc-approval/state/maintenance-review.json"]))
@@ -217,12 +217,12 @@ class W31Live(unittest.TestCase):
         subprocess.run(["docker", "stop", "cinder-arwc-diagnostics"], stdout=subprocess.DEVNULL, check=True)
         execution = type(self).execution
         body = {key: execution[key] for key in ("execution_id", "correlation", "history_id", "history_digest")}
-        status, _ = self.process("/api/the-diagnostic-service-s-authority", body=body)
+        status, _ = self.process("/api/diagnostic-programs/authority", body=body)
         self.assertEqual(status, 409)
         subprocess.run(["docker", "start", "cinder-arwc-diagnostics"], stdout=subprocess.DEVNULL, check=True)
         for _ in range(80):
             try:
-                status, _ = self.process("/api/the-vault-s-misleading-length", method="GET")
+                status, _ = self.process("/api/vault-records/current", method="GET")
                 if status == 200: break
             except AssertionError: pass
             time.sleep(0.25)
@@ -232,9 +232,9 @@ class W31Live(unittest.TestCase):
         self.assertTrue(after["vault_saved_state_controlled"]); self.assertEqual(after["vault_history_response"], before["vault_history_response"])
         audit = subprocess.check_output(["docker", "exec", "--user", "arwc-diagnostics",
             "cinder-arwc-diagnostics", "cat", "/var/lib/arwc-diagnostics/audit/events.jsonl"], text=True)
-        self.assertIn("the-state-execution-returns-to", audit); self.assertIn("the-diagnostic-service-s-authority", audit)
+        self.assertIn("vault-state-observed", audit); self.assertIn("diagnostic-authority-issued", audit)
         artifact = json.loads(subprocess.check_output(["docker", "exec", "--user", "arwc-diagnostics",
-            "cinder-arwc-diagnostics", "cat", "/var/lib/arwc-diagnostics/artifacts/the-diagnostic-service-s-authority/result.json"], text=True))
+            "cinder-arwc-diagnostics", "cat", "/var/lib/arwc-diagnostics/artifacts/diagnostic-authority-issued/result.json"], text=True))
         self.assertEqual(artifact["record_id"], "HIST-APR-CRR-09")
 
 

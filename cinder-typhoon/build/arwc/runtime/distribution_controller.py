@@ -85,7 +85,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "invalid distribution request"}); return None
 
     def do_POST(self) -> None:
-        if (self.headers.get("X-ARWC-Internal") != "instruments-w33" or
+        if (self.headers.get("X-ARWC-Internal") != "instruments-scheduling" or
                 self.headers.get("X-ARWC-Tenant") != "arwc" or self.client_address[0] != "10.77.64.40"):
             self.send_json(403, {"error": "independent instrument service context required"}); return
         request = self.body()
@@ -115,7 +115,7 @@ class Handler(BaseHTTPRequestHandler):
                   "minimum_buffer_m3": evaluated["minimum_buffer_m3"],
                   "maximum_buffer_m3": evaluated["maximum_buffer_m3"],
                   "distribution_state_changed": False}
-        response = {"audit_id": append_audit("the-schedule-the-service-accepts", record, str(correlation)),
+        response = {"audit_id": append_audit("schedule-evaluation-created", record, str(correlation)),
                     "record": record}
         state["rehearsal_response"] = response; atomic_json(STATE, state)
         atomic_json(ROOT / "results" / "DIST-REH-CRR-33.json", record); self.send_json(201, response)
@@ -138,7 +138,7 @@ class Handler(BaseHTTPRequestHandler):
                   "minimum_buffer_m3": evaluated["minimum_buffer_m3"],
                   "maximum_buffer_m3": evaluated["maximum_buffer_m3"],
                   "distribution_state_changed": False}
-        response = {"audit_id": append_audit("when-the-forecast-moves", record, str(correlation)), "record": record}
+        response = {"audit_id": append_audit("forecast-policy-created", record, str(correlation)), "record": record}
         state["policy_response"] = response; atomic_json(STATE, state)
         atomic_json(ROOT / "results" / "DIST-POL-CRR-33.json", record); self.send_json(201, response)
 

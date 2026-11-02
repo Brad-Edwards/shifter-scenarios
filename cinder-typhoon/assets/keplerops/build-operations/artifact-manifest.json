@@ -1,7 +1,7 @@
 {
   "archives": [
     {
-      "archive": "k-ci-k09-state.tar",
+      "archive": "k-ci-runner-state.tar",
       "files": [
         {
           "mode": "0640",
@@ -17,7 +17,7 @@
         },
         {
           "mode": "0600",
-          "path": "config/k09.json",
+          "path": "config/runner-foundation.json",
           "sha256": "ba2be94fd6d4283215550f84177a03209f3078abe718cbf9e373ad88ce624d50",
           "size": 649
         },
@@ -34,20 +34,20 @@
           "size": 642
         }
       ],
-      "sha256": "300bbbd0b8e86792ed2dd6165a3cf1bfdd05cb59a693b0950c0053d9d4e1de10",
+      "sha256": "566fd1b5ce45db7a93036d3433e8d98f58a0c3edb3774235770f1955af094342",
       "size": 10240
     },
     {
-      "archive": "k-cloud-api-k09-state.tar",
+      "archive": "k-cloud-api-runner-state.tar",
       "files": [
         {
           "mode": "0600",
-          "path": "config/k09.json",
+          "path": "config/runner-foundation.json",
           "sha256": "574c89b8152bec370bd9952ea372f61af5efe24ac99c2c3b78900753eb64b518",
           "size": 437
         }
       ],
-      "sha256": "3317f9d28f2d60d95c19559c9128178eff6c808a587006a3db790e5b86d28ff8",
+      "sha256": "853b8049959288625b00927ae1e01cf06211d296918d51ca9fdc07948011fbf4",
       "size": 10240
     }
   ],

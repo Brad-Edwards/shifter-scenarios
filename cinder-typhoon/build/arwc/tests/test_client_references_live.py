@@ -102,8 +102,8 @@ class ClientReferenceGraphLive(unittest.TestCase):
             },
         )
         templates = {route["template"] for route in routes.values()}
-        self.assertNotIn("https://process-view.arwc.test/api/what-counts-as-intact", templates)
-        self.assertNotIn("https://planning-data.arwc.test/api/paper-truth", templates)
+        self.assertNotIn("https://process-view.arwc.test/api/integrity-verifier", templates)
+        self.assertNotIn("https://planning-data.arwc.test/api/reporting-checkpoints/current", templates)
 
 
 if __name__ == "__main__":

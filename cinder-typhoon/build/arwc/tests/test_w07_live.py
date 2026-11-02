@@ -69,15 +69,15 @@ print(response.read().decode())
 
 class W07Live(unittest.TestCase):
     def test_01_planning_data_requires_the_live_planner_session(self) -> None:
-        status, body = request("/api/the-query-the-planner-keeps", planner="wrong")
+        status, body = request("/api/saved-queries/current", planner="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("QRY-RESERVE-R7", json.dumps(body))
-        status, body = request("/api/the-query-the-planner-keeps", tenant="merewick")
+        status, body = request("/api/saved-queries/current", tenant="merewick")
         self.assertEqual(status, 403)
         self.assertNotIn("reserve_report_current", json.dumps(body))
 
     def test_02_report_definition_freezes_postgresql_and_policy(self) -> None:
-        status, response = request("/api/the-query-the-planner-keeps")
+        status, response = request("/api/saved-queries/current")
         self.assertEqual(status, 200)
         self.assertEqual(response["record"], {
             "record_id": "QRY-RESERVE-R7",
@@ -92,7 +92,7 @@ class W07Live(unittest.TestCase):
 
     def test_03_ordinary_quoted_identifier_returns_only_the_allowed_view(self) -> None:
         status, response = request(
-            "/api/read-beyond-the-allowed-statement", method="POST",
+            "/api/query-runs", method="POST",
             body={"report_name": "reserve_report_current"},
         )
         self.assertEqual(status, 201)
@@ -109,7 +109,7 @@ class W07Live(unittest.TestCase):
             "district_allocation_adjustment",
         ):
             status, body = request(
-                "/api/read-beyond-the-allowed-statement", method="POST",
+                "/api/query-runs", method="POST",
                 body={"report_name": supplied},
             )
             self.assertIn(status, {403, 409})
@@ -117,7 +117,7 @@ class W07Live(unittest.TestCase):
 
     def test_05_closing_quote_and_union_reach_the_protected_view(self) -> None:
         status, response = request(
-            "/api/read-beyond-the-allowed-statement", method="POST",
+            "/api/query-runs", method="POST",
             body={"report_name": INJECTION},
         )
         self.assertEqual(status, 201)
@@ -133,13 +133,13 @@ class W07Live(unittest.TestCase):
 
     def test_06_security_definer_is_bounded_to_the_reconciliation(self) -> None:
         wrong, body = request(
-            "/api/the-database-does-more-than-read", method="POST",
+            "/api/query-runs", method="POST",
             body={"function": "arwc_reconcile_copy", "record_id": "REC-MER-DP3-1"},
         )
         self.assertEqual(wrong, 409)
         self.assertNotIn("REC-CRR-DP3-17-COPY", json.dumps(body))
         status, response = request(
-            "/api/the-database-does-more-than-read", method="POST",
+            "/api/query-runs", method="POST",
             body={"function": "arwc_reconcile_copy", "record_id": "REC-CRR-DP3-17"},
         )
         self.assertEqual(status, 201)
@@ -161,7 +161,7 @@ class W07Live(unittest.TestCase):
         for _ in range(40):
             try:
                 status, response = request(
-                    "/api/the-database-does-more-than-read", method="POST",
+                    "/api/query-runs", method="POST",
                     body={"function": "arwc_reconcile_copy", "record_id": "REC-CRR-DP3-17"},
                 )
                 if status == 201:
@@ -184,8 +184,8 @@ class W07Live(unittest.TestCase):
              "cat", "/var/lib/arwc-data/audit/events.jsonl"],
             text=True, stdout=subprocess.PIPE, check=True,
         )
-        self.assertIn('"action":"read-beyond-the-allowed-statement"', audit.stdout)
-        self.assertIn('"action":"the-database-does-more-than-read"', audit.stdout)
+        self.assertIn('"action":"archived-query-created"', audit.stdout)
+        self.assertIn('"action":"archived-write-created"', audit.stdout)
 
 
 if __name__ == "__main__":

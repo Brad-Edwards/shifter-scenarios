@@ -1525,7 +1525,7 @@ messages:
   date: '2026-08-04T11:00:00-04:00'
   subject: Invoice KO-26-0055 / K-C-001
   body: |
-    River contractor archive guide - customer accepted 2026-08-03, final half. The invoice is USD 1,200.00, due 2026-09-03. Please retain COM-2026-002 with the invoice.
+    River contractor archive guide - customer confirmed 2026-08-03, final half. The invoice is USD 1,200.00, due 2026-09-03. Please retain COM-2026-002 with the invoice.
   attachments:
   - ko-26-0055
 - id: fn-0146
@@ -1588,7 +1588,7 @@ messages:
   date: '2026-08-04T11:00:00-04:00'
   subject: Invoice KO-26-0058 / K-C-003
   body: |
-    Reservoir return catalogue - customer accepted 2026-08-03, final half. The invoice is USD 1,800.00, due 2026-09-03. Please retain COM-2026-012 with the invoice.
+    Reservoir return catalogue - customer confirmed 2026-08-03, final half. The invoice is USD 1,800.00, due 2026-09-03. Please retain COM-2026-012 with the invoice.
   attachments:
   - ko-26-0058
 - id: fn-0152
@@ -1630,7 +1630,7 @@ messages:
   date: '2026-08-04T11:00:00-04:00'
   subject: Invoice KO-26-0060 / K-C-004
   body: |
-    Two-district archive handover - customer accepted 2026-08-03, final half. The invoice is USD 1,200.00, due 2026-09-03. Please retain COM-2026-017 with the invoice.
+    Two-district archive handover - customer confirmed 2026-08-03, final half. The invoice is USD 1,200.00, due 2026-09-03. Please retain COM-2026-017 with the invoice.
   attachments:
   - ko-26-0060
 - id: fn-0156
@@ -1672,7 +1672,7 @@ messages:
   date: '2026-08-04T11:00:00-04:00'
   subject: Invoice KO-26-0062 / K-C-005
   body: |
-    Coastal inspection export guide - customer accepted 2026-08-03, final half. The invoice is USD 1,800.00, due 2026-09-03. Please retain COM-2026-022 with the invoice.
+    Coastal inspection export guide - customer confirmed 2026-08-03, final half. The invoice is USD 1,800.00, due 2026-09-03. Please retain COM-2026-022 with the invoice.
   attachments:
   - ko-26-0062
 - id: fn-0160
@@ -1735,7 +1735,7 @@ messages:
   date: '2026-08-04T11:00:00-04:00'
   subject: Invoice KO-26-0065 / K-C-007
   body: |
-    Regional comparison index - customer accepted 2026-08-03, final half. The invoice is USD 1,800.00, due 2026-09-03. Please retain COM-2026-032 with the invoice.
+    Regional comparison index - customer confirmed 2026-08-03, final half. The invoice is USD 1,800.00, due 2026-09-03. Please retain COM-2026-032 with the invoice.
   attachments:
   - ko-26-0065
 - id: fn-0166
@@ -1798,7 +1798,7 @@ messages:
   date: '2026-08-04T11:00:00-04:00'
   subject: Invoice KO-26-0068 / K-C-009
   body: |
-    Municipal export reconciliation - customer accepted 2026-08-03, final half. The invoice is USD 1,800.00, due 2026-09-03. Please retain COM-2026-042 with the invoice.
+    Municipal export reconciliation - customer confirmed 2026-08-03, final half. The invoice is USD 1,800.00, due 2026-09-03. Please retain COM-2026-042 with the invoice.
   attachments:
   - ko-26-0068
 - id: fn-0172

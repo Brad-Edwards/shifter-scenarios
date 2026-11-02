@@ -169,7 +169,7 @@ pathlib.Path('/home/rowan/results/registry-publication.json').write_text(json.du
         trace = curl_json("/api/inspections/INSP-2047/trace")
         self.assertEqual((trace["normalized_request_id"], trace["assessor_correlation_id"]), ("release-742", "PAS-884"))
         result = curl_json("/api/inspections/envelope", "-H", "Content-Type: application/octet-stream", "--data-binary", "@work/registry/inspection-compat.fki")
-        self.assertEqual((result["front_end"]["request_id"], result["assessor"]["request_id"]), ("K", "k42"))
+        self.assertEqual((result["front_end"]["request_id"], result["assessor"]["request_id"]), ("K", "kqa"))
         self.assertEqual(result["assessor"]["action"], "inspect_support_package")
         wrong = curl_json("/api/inspections/envelope", "-H", "Content-Type: application/octet-stream", "--data-binary", "@work/registry/README.md", expected=422)
         self.assertIn(wrong["error"], {"invalid_inspection_envelope", "inspection_trace_binding_mismatch"})

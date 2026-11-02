@@ -30,11 +30,11 @@ class W32Live(unittest.TestCase):
                            token=type(self).process_session if token is None else token, tenant=tenant)
 
     def test_01_real_ecs_artifact_and_exact_component_binding(self) -> None:
-        status, denied = self.process("/api/the-replay-s-pieces", method="GET", token="wrong")
+        status, denied = self.process("/api/replay-sessions/current", method="GET", token="wrong")
         self.assertEqual(status, 403); self.assertNotIn("replay_b64", denied)
-        status, denied = self.process("/api/the-replay-s-pieces", method="GET", tenant="other")
+        status, denied = self.process("/api/replay-sessions/current", method="GET", tenant="other")
         self.assertEqual(status, 403); self.assertNotIn("replay_b64", denied)
-        status, result = self.process("/api/the-replay-s-pieces", method="GET")
+        status, result = self.process("/api/replay-sessions/current", method="GET")
         self.assertEqual(status, 200, result)
         record = result["record"]; binary = base64.b64decode(result["replay_b64"], validate=True)
         self.assertEqual(binary[:4], b"\x7fELF"); self.assertEqual(hashlib.sha256(binary).hexdigest(), record["sha256"])
@@ -61,9 +61,9 @@ class W32Live(unittest.TestCase):
         body = {"record_id": "REPLAY-CRR-R19", "revision": 19,
                 "transitions": type(self).transitions}
         wrong = json.loads(json.dumps(body)); wrong["transitions"][2]["reserve_ml"] = 13.4
-        status, _ = self.process("/api/the-systems-that-update-it", body=wrong)
+        status, _ = self.process("/api/estimator-tasks/current/inputs", body=wrong)
         self.assertEqual(status, 409)
-        status, result = self.process("/api/the-systems-that-update-it", body=body)
+        status, result = self.process("/api/estimator-tasks/current/inputs", body=body)
         self.assertEqual(status, 201, result)
         self.assertEqual(result["record"]["cases_reproduced"], 4)
         self.assertEqual(result["record"]["system_order"],
@@ -77,9 +77,9 @@ class W32Live(unittest.TestCase):
         body = {"replay": "REPLAY-CRR-R19", "trace": "TRACE-R19-DISPUTED",
                 "condition": type(self).condition}
         wrong = json.loads(json.dumps(body)); wrong["condition"]["read_binding"] = "post-ReserveUpdate Reserve"
-        status, _ = self.process("/api/the-condition-the-old-model-used", body=wrong)
+        status, _ = self.process("/api/estimator-results/current", body=wrong)
         self.assertEqual(status, 409)
-        status, result = self.process("/api/the-condition-the-old-model-used", body=body)
+        status, result = self.process("/api/estimator-results/current", body=body)
         self.assertEqual(status, 201, result)
         record = result["record"]
         self.assertEqual(record["read_binding"], "pre-ReserveUpdate cached Reserve")
@@ -90,9 +90,9 @@ class W32Live(unittest.TestCase):
         body = {"replay": "REPLAY-CRR-R19", "trace": "TRACE-R19-DISPUTED",
                 "witness": type(self).witness}
         wrong = json.loads(json.dumps(body)); wrong["witness"]["current_model"]["post_update_reserve_ml"] = 12.4
-        status, _ = self.process("/api/replay-is-not-reality", body=wrong)
+        status, _ = self.process("/api/replay-sessions/current/execute", body=wrong)
         self.assertEqual(status, 409)
-        status, result = self.process("/api/replay-is-not-reality", body=body)
+        status, result = self.process("/api/replay-sessions/current/execute", body=body)
         self.assertEqual(status, 201, result)
         record = result["record"]
         self.assertEqual(record["retained_replay"]["decision"], "accepted")
@@ -100,7 +100,7 @@ class W32Live(unittest.TestCase):
         self.assertEqual(record["current_model"]["decision"], "rejected")
         self.assertEqual(record["current_model"]["post_update_reserve_ml"], 11.4)
         self.assertFalse(record["live_authority"]); self.assertFalse(record["replaces_current_observation"])
-        status, repeated = self.process("/api/replay-is-not-reality", body=body)
+        status, repeated = self.process("/api/replay-sessions/current/execute", body=body)
         self.assertEqual(status, 201); self.assertEqual(result, repeated)
 
     def test_05_owned_evidence_persists_without_process_side_effect(self) -> None:
@@ -111,20 +111,20 @@ class W32Live(unittest.TestCase):
         subprocess.run(["docker", "restart", "cinder-arwc-engineering"], stdout=subprocess.DEVNULL, check=True)
         for _ in range(80):
             try:
-                status, _ = self.process("/api/the-replay-s-pieces", method="GET")
+                status, _ = self.process("/api/replay-sessions/current", method="GET")
                 if status == 200: break
             except AssertionError: pass
             time.sleep(0.25)
         else: self.fail("engineering workbench did not return after restart")
         state = json.loads(subprocess.check_output(["docker", "exec", "--user", "arwc-engineering",
             "cinder-arwc-engineering", "cat", "/var/lib/arwc-engineering/state/service.json"], text=True))
-        self.assertTrue(state["w32_structure_recovered"]); self.assertTrue(state["w32_transitions_reproduced"])
-        self.assertTrue(state["w32_condition_recovered"]); self.assertIsNotNone(state["w32_witness_response"])
+        self.assertTrue(state["replay_structure_recovered"]); self.assertTrue(state["replay_transitions_reproduced"])
+        self.assertTrue(state["replay_condition_recovered"]); self.assertIsNotNone(state["replay_witness_response"])
         audit = subprocess.check_output(["docker", "exec", "--user", "arwc-engineering",
             "cinder-arwc-engineering", "cat", "/var/lib/arwc-engineering/audit/events.jsonl"], text=True)
-        self.assertIn("the-systems-that-update-it", audit); self.assertIn("replay-is-not-reality", audit)
+        self.assertIn("replay-transitions-created", audit); self.assertIn("replay-witness-created", audit)
         artifact = json.loads(subprocess.check_output(["docker", "exec", "--user", "arwc-engineering",
-            "cinder-arwc-engineering", "cat", "/var/lib/arwc-engineering/artifacts/replay-is-not-reality/result.json"], text=True))
+            "cinder-arwc-engineering", "cat", "/var/lib/arwc-engineering/artifacts/replay-witness-created/result.json"], text=True))
         self.assertEqual(artifact["record_id"], "TRACE-R19-DISPUTED")
         self.assertEqual(instrument_before, subprocess.check_output(["docker", "exec", "--user", "arwc-instruments",
             "cinder-arwc-instruments", "cat", "/var/lib/arwc-instruments/state/service.json"]))

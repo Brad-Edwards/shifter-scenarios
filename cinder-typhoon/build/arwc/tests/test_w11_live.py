@@ -149,17 +149,17 @@ class W11Live(unittest.TestCase):
 
         subprocess.run(["docker", "exec", BUSINESS, "mv", evidence, evidence + ".hold"], check=True)
         set_reserve(False)
-        status, body = request("/api/the-relation-service-s-language")
+        status, body = request("/api/relation-schemas/current")
         self.assertEqual(status, 403)
         self.assertNotIn("RELPROTO-CRR-R3", json.dumps(body))
 
         subprocess.run(["docker", "exec", BUSINESS, "mv", evidence + ".hold", evidence], check=True)
-        status, business_branch = request("/api/the-relation-service-s-language")
+        status, business_branch = request("/api/relation-schemas/current")
         self.assertEqual(status, 200)
 
         subprocess.run(["docker", "exec", BUSINESS, "mv", evidence, evidence + ".hold"], check=True)
         set_reserve(True)
-        status, data_branch = request("/api/the-relation-service-s-language")
+        status, data_branch = request("/api/relation-schemas/current")
         self.assertEqual(status, 200)
         self.assertEqual(data_branch["record"], business_branch["record"])
 
@@ -188,13 +188,13 @@ class W11Live(unittest.TestCase):
         )
         for candidate in invalid:
             status, body = request(
-                "/api/an-exchange-the-backend-accepts", method="POST",
+                "/api/relation-exchanges", method="POST",
                 body={"exchange": candidate},
             )
             self.assertEqual(status, 409)
             self.assertNotIn("REL-ASC-CRR-4417-R3", json.dumps(body))
         status, response = request(
-            "/api/an-exchange-the-backend-accepts", method="POST",
+            "/api/relation-exchanges", method="POST",
             body={"exchange": exchange()},
         )
         self.assertEqual(status, 201)
@@ -207,7 +207,7 @@ class W11Live(unittest.TestCase):
 
     def test_03_initial_exchange_does_not_contain_lineage(self) -> None:
         status, response = request(
-            "/api/an-exchange-the-backend-accepts", method="POST",
+            "/api/relation-exchanges", method="POST",
             body={"exchange": exchange()},
         )
         self.assertEqual(status, 201)
@@ -222,13 +222,13 @@ class W11Live(unittest.TestCase):
             exchange(ou=LINEAGE_OU + " DELETE a"),
         ):
             status, body = request(
-                "/api/the-asset-s-true-lineage", method="POST",
+                "/api/asset-lineage/current", method="POST",
                 body={"exchange": candidate},
             )
             self.assertEqual(status, 409)
             self.assertNotIn("LIN-AST-CRR-017-R8", json.dumps(body))
         status, response = request(
-            "/api/the-asset-s-true-lineage", method="POST",
+            "/api/asset-lineage/current", method="POST",
             body={"exchange": exchange(ou=LINEAGE_OU)},
         )
         self.assertEqual(status, 201)
@@ -240,13 +240,13 @@ class W11Live(unittest.TestCase):
         self.assertEqual(response_signatures(response["bolt_response"]), [0x70, 0x70, 0x71, 0x70])
 
     def test_05_authorization_and_tenant_are_enforced(self) -> None:
-        status, body = request("/api/the-relation-service-s-language", token="wrong")
+        status, body = request("/api/relation-schemas/current", token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("RELPROTO-CRR-R3", json.dumps(body))
-        status, body = request("/api/the-relation-service-s-language", tenant="merewick")
+        status, body = request("/api/relation-schemas/current", tenant="merewick")
         self.assertEqual(status, 403)
         self.assertNotIn("ASSET_WORK", json.dumps(body))
-        status, body = request("/api/the-relation-service-s-language", planner=None)
+        status, body = request("/api/relation-schemas/current", planner=None)
         self.assertEqual(status, 403)
         self.assertNotIn("ASC-CRR-4417", json.dumps(body))
 
@@ -255,7 +255,7 @@ class W11Live(unittest.TestCase):
         for _ in range(30):
             try:
                 status, response = request(
-                    "/api/the-asset-s-true-lineage", method="POST",
+                    "/api/asset-lineage/current", method="POST",
                     body={"exchange": exchange(ou=LINEAGE_OU)},
                 )
                 if status == 201:
@@ -271,8 +271,8 @@ class W11Live(unittest.TestCase):
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout
         for action in (
-            "the-relation-service-s-language", "an-exchange-the-backend-accepts",
-            "the-asset-s-true-lineage",
+            "relation-contract-read", "relation-exchange-created",
+            "asset-lineage-created",
         ):
             self.assertIn(f'"action":"{action}"', audit)
         hidden = inside("sh", "-c", "test ! -r /var/lib/arwc-data/state/planning.json")
