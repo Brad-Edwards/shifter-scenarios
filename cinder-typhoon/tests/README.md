@@ -14,7 +14,10 @@ or duration.
 | Blind human-plus-agent playtests | Fresh participants using event agents and support rules | Measured discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution. |
 
 The machine-readable current status and schema are `qa-status.json` and
-`qa-status.schema.json`. Print and validate the status with:
+`qa-status.schema.json`. `qa-gates.json` names the commands that determine
+implementation status. `readiness-issues.json` records the checked GitHub
+milestone snapshot from which blocker lists are derived. The status file binds
+both inputs by SHA-256. Print and validate the status with:
 
 ```sh
 python3 cinder-typhoon/tests/report_qa_status.py
@@ -26,6 +29,20 @@ evidence from the same immutable candidate:
 ```sh
 python3 cinder-typhoon/tests/report_qa_status.py --require-release-qualified
 ```
+
+The status checker distinguishes merged, implemented, statically verified,
+live verified, playtested, soaked, and release qualified. A merge establishes
+only repository history. A live or release claim needs a report bound to the
+current commit, immutable candidate-manifest digest, and versioned
+release-manifest digest. Missing, changed, stale, or cross-release reports fail
+closed. A closed milestone issue must additionally name its acceptance command
+and digest-bound evidence; merge state alone is not accepted.
+
+Use `--check-github-issues` to compare the committed blocker snapshot with the
+live milestone. It reads `SHIFTER_GITHUB_PERSONAL_ACCESS_TOKEN` from the
+environment and never includes it in output. `--output PATH` writes an
+operator-only mode-`0600` report containing result hashes rather than raw test
+output.
 
 The known-solution suites contain solution algorithms and expected assertions.
 They are operator-only, are not copied into participant images, and are streamed
@@ -60,9 +77,10 @@ The release form omits `--static-only`; it scans readable files, binary browser
 state, generated artifacts, and bounded read-only service responses from the
 actual unprivileged participant context. The candidate runner performs this
 check before and after known-solution acceptance. Reports contain only rule
-matches, locations, and content hashes. The current gate fails on
-challenge-derived routes and the pending KeplerOps and ARWC domain-interface
-reviews.
+matches, locations, and content hashes. The current authored-source result is
+zero Training findings, 17 unresolved KeplerOps findings, and 456 unresolved
+ARWC findings. Live pre/post observations have not been run on an immutable
+candidate.
 
 Generate the value-free static provenance report with:
 
@@ -71,12 +89,13 @@ python3 cinder-typhoon/build/input-provenance/provenance.py \
   --output /tmp/cinder-provenance-report.json
 ```
 
-`--require-complete` currently exits nonzero for the explicit K18, K26 and W33
-gaps and the pending exact-comparison audit. Candidate known-solution runs also
-include those unresolved entries, while preserving a separate behavioral
-result. The candidate wrapper runs the card-coverage gate, provenance gate,
-and fourth-wall gate before the remaining participant-surface checks, so the
-overall candidate still fails without conflating the separate QA results.
+`--require-complete` currently passes: all 398 request callsites and 1,138
+fixed runtime comparisons are reviewed with no unresolved entries. This is a
+static provenance result, not proof that the known solution works on a live
+candidate. The candidate wrapper runs the card-coverage gate, provenance gate,
+and fourth-wall gate before the remaining participant-surface checks, so a
+fourth-wall finding still blocks qualification without changing the separate
+provenance result.
 
 ## SDL validation
 

@@ -54,3 +54,20 @@ business and retail correspondents, and 1,510 calendar occurrences.
 Eight native SDL content declarations bind the source artifacts to existing
 workplace systems.
 The runtime adapter, hosting layout, and consumer delivery bundle remain pending.
+
+## Readiness
+
+This pack is **not release qualified**. The current static/unit status is:
+
+- service-contract implementation complete;
+- participant-boundary known-solution implementation partial;
+- provenance and participant-surface implementation partial;
+- blind human-plus-agent playtesting not started; and
+- no immutable candidate, versioned release manifest, live acceptance report,
+  or soak report.
+
+Run `python3 tests/report_qa_status.py` from this directory for the checked
+result. The evidence-bound status, gate catalog, and milestone snapshot are in
+[`tests/`](tests/README.md). Readiness terms and the release requirements are
+defined in [`../TASK.md`](../TASK.md). Repository merge state is not acceptance
+or release evidence.

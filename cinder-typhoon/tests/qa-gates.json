@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "gates": {
+    "service-contract-unit": {
+      "layer": "service_contract",
+      "kind": "command",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests/test_arwc_handover.py",
+        "tests/test_per_range_variation.py"
+      ],
+      "expect": {"exit_code": 0}
+    },
+    "card-coverage-complete": {
+      "layer": "known_solution_acceptance",
+      "kind": "command",
+      "argv": ["python3", "build/card-coverage/coverage.py", "--require-complete"],
+      "expect": {"exit_code": 0, "json": {"overall_status": "complete"}}
+    },
+    "hint-delivery-complete": {
+      "layer": "known_solution_acceptance",
+      "kind": "command",
+      "argv": ["python3", "build/hint-delivery/release.py", "verify"],
+      "expect": {"exit_code": 0, "json": {"card_count": 240, "hint_count": 720}}
+    },
+    "known-solution-static-unit": {
+      "layer": "known_solution_acceptance",
+      "kind": "command",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests/test_training_route_discovery.py",
+        "tests/test_keplerops_route_discovery.py",
+        "tests/test_challenge_delivery.py",
+        "tests/test_hint_delivery.py"
+      ],
+      "expect": {"exit_code": 0}
+    },
+    "arwc-artifact-derived-analysis": {
+      "layer": "known_solution_acceptance",
+      "kind": "issue",
+      "issue": 265,
+      "expect": {"state": "closed", "acceptance_status": "verified"}
+    },
+    "input-provenance-complete": {
+      "layer": "provenance_and_surface",
+      "kind": "command",
+      "argv": ["python3", "build/input-provenance/provenance.py", "--require-complete"],
+      "expect": {"exit_code": 0, "json": {"overall_status": "complete"}}
+    },
+    "participant-surface-authored": {
+      "layer": "provenance_and_surface",
+      "kind": "command",
+      "argv": [
+        "python3",
+        "build/participant-surface/validate.py",
+        "build/participant-surface/manifests/training.json",
+        "build/participant-surface/manifests/keplerops.json",
+        "build/participant-surface/manifests/arwc.json"
+      ],
+      "expect": {"exit_code": 0}
+    },
+    "fourth-wall-training-static": {
+      "layer": "provenance_and_surface",
+      "kind": "command",
+      "argv": ["python3", "build/fourth-wall/run.py", "--phase", "training", "--static-only"],
+      "expect": {
+        "exit_code": 0,
+        "json": {"summary.static_finding_count": 0, "summary.unresolved_finding_count": 0}
+      }
+    },
+    "fourth-wall-keplerops-static": {
+      "layer": "provenance_and_surface",
+      "kind": "command",
+      "argv": ["python3", "build/fourth-wall/run.py", "--phase", "keplerops", "--static-only"],
+      "expect": {
+        "exit_code": 0,
+        "json": {"summary.static_finding_count": 0, "summary.unresolved_finding_count": 0}
+      }
+    },
+    "fourth-wall-arwc-static": {
+      "layer": "provenance_and_surface",
+      "kind": "command",
+      "argv": ["python3", "build/fourth-wall/run.py", "--phase", "arwc", "--static-only"],
+      "expect": {
+        "exit_code": 0,
+        "json": {"summary.static_finding_count": 0, "summary.unresolved_finding_count": 0}
+      }
+    }
+  }
+}
