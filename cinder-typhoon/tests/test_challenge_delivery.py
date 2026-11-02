@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 import importlib.util
 import json
 from pathlib import Path
@@ -95,6 +96,14 @@ class EventImportTests(unittest.TestCase):
             self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o600)
             self.assertEqual(json.loads(path.read_text()), self.bundle)
 
+    def test_participant_bundle_rejects_operator_prize_policy(self) -> None:
+        changed = deepcopy(self.bundle)
+        changed["prize_policy"] = {}
+        with self.assertRaisesRegex(
+            event_importer.CatalogImportError, "top-level fields"
+        ):
+            event_importer.validate_projection(self.catalog, changed)
+
     def test_plain_http_scorer_is_rejected_outside_explicit_loopback_test(self) -> None:
         with self.assertRaises(event_importer.CatalogImportError):
             event_importer.build_event_bundle(
@@ -107,6 +116,128 @@ class EventImportTests(unittest.TestCase):
             allow_loopback_http=True,
         )
         self.assertEqual(len(loopback["challenges"]), 240)
+
+
+class PrizePolicyTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.catalog = catalog.load_catalog()
+        cls.bundle = event_importer.build_event_bundle(
+            cls.catalog,
+            scorer_origin="https://cinder-scorer.example.test",
+        )
+        cls.bundle_digest = event_importer.artifact_digest(cls.bundle)
+        cls.policy = event_importer.prize_policy_module.build_policy(
+            cls.catalog,
+            cls.bundle_digest,
+        )
+
+    def test_policy_binds_exact_bundle_and_all_catalog_cards(self) -> None:
+        event_importer.prize_policy_module.validate_policy(
+            self.catalog,
+            self.policy,
+            self.bundle_digest,
+        )
+        self.assertEqual(self.policy["catalog"]["revision"], self.catalog["revision"])
+        self.assertEqual(
+            self.policy["catalog"]["content_bundle_digest"], self.bundle_digest
+        )
+        stage_ids = {
+            stage: value["challenge_source_ids"]
+            for stage, value in self.policy["stages"].items()
+        }
+        self.assertEqual(
+            {stage: len(ids) for stage, ids in stage_ids.items()},
+            {
+                "training": 16,
+                "keplerops": 104,
+                "arwc": 120,
+            },
+        )
+        all_ids = [source_id for ids in stage_ids.values() for source_id in ids]
+        self.assertEqual(len(all_ids), 240)
+        self.assertEqual(len(set(all_ids)), 240)
+
+    def test_policy_is_deterministic_and_written_owner_only(self) -> None:
+        rebuilt = event_importer.prize_policy_module.build_policy(
+            self.catalog,
+            self.bundle_digest,
+        )
+        self.assertEqual(
+            event_importer.canonical_json_bytes(rebuilt),
+            event_importer.canonical_json_bytes(self.policy),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "event-prizes.json"
+            event_importer.write_private_json(path, self.policy)
+            self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o600)
+            self.assertEqual(
+                path.read_bytes(), event_importer.canonical_json_bytes(self.policy)
+            )
+
+    def test_policy_has_50_unique_slots_and_six_reviewed_bounties(self) -> None:
+        allocations = self.policy["allocations"]
+        slot_ids = event_importer.prize_policy_module.policy_slot_ids(allocations)
+        self.assertEqual(len(slot_ids), 50)
+        self.assertEqual(len(set(slot_ids)), 50)
+        self.assertEqual(
+            [item["challenge_source_id"] for item in allocations["bounties"]["awards"]],
+            ["t03.4", "t04.4", "k09.4", "k11.4", "w30.2", "w35.3"],
+        )
+        serialized = json.dumps(self.policy)
+        for forbidden_key in (
+            '"draw_seed"',
+            '"winner_state"',
+            '"claim_state"',
+            '"participant_id"',
+        ):
+            self.assertNotIn(forbidden_key, serialized)
+
+    def test_policy_rejects_malformed_or_participant_visible_changes(self) -> None:
+        mutations = []
+
+        unknown_card = deepcopy(self.policy)
+        unknown_card["stages"]["training"]["challenge_source_ids"].append("t99.9")
+        mutations.append(unknown_card)
+
+        duplicate_slot = deepcopy(self.policy)
+        duplicate_slot["allocations"]["overall_leaders"]["slot_ids"][1] = "overall-01"
+        mutations.append(duplicate_slot)
+
+        missing_slot = deepcopy(self.policy)
+        missing_slot["allocations"]["overall_leaders"]["slot_ids"].pop()
+        mutations.append(missing_slot)
+
+        changed_precedence = deepcopy(self.policy)
+        changed_precedence["evaluation_order"]["accepted_solve"].reverse()
+        mutations.append(changed_precedence)
+
+        participant_visible_state = deepcopy(self.policy)
+        participant_visible_state["winner_state"] = []
+        mutations.append(participant_visible_state)
+
+        for changed in mutations:
+            with self.subTest(changed=changed):
+                with self.assertRaises(
+                    event_importer.prize_policy_module.PrizePolicyError
+                ):
+                    event_importer.prize_policy_module.validate_policy(
+                        self.catalog,
+                        changed,
+                        self.bundle_digest,
+                    )
+
+    def test_policy_rejects_a_different_content_bundle_digest(self) -> None:
+        other_digest = "sha256:" + ("0" * 64)
+        with self.assertRaisesRegex(
+            event_importer.prize_policy_module.PrizePolicyError,
+            "content binding",
+        ):
+            event_importer.prize_policy_module.validate_policy(
+                self.catalog,
+                self.policy,
+                other_digest,
+            )
 
 
 if __name__ == "__main__":

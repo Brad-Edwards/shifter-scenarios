@@ -21,11 +21,24 @@ Build a private import artifact with:
 ```sh
 python3 cinder-typhoon/ctfd/import_catalog.py \
   --scorer-origin https://SCORER.example.test \
-  --output /tmp/cinder-typhoon-event-content.json
+  --output /tmp/cinder-typhoon-event-content.json \
+  --prize-policy-output /tmp/cinder-typhoon-event-prizes.json
 ```
 
-The output is written atomically with owner-only permissions. It contains no
-answers, credentials, solution text, or operator-only design data.
+Each output is written atomically with owner-only permissions. The participant
+content contains no answers, credentials, solution text, or operator-only prize
+data. The separate prize sidecar validates against the committed
+[`cinder-typhoon.event-prize-policy/v1` schema](../docs/design/event-prize-policy.schema.json)
+and contains the exact 240-card stage membership, 50 slot identities, triggers,
+tie-breaks, and rollover rules. It contains no draw seed, event timestamps,
+winner identity, nomination, claim, or inventory state.
+
+The command prints the catalog revision and SHA-256 digests of both exact JSON
+artifacts. Publish and bind the pair together: the policy records the digest of
+the participant bundle generated in the same run. Changing the scorer origin or
+any participant content changes that digest and requires a new sidecar. Shifter
+must compare the pair before event activation and prize finalization; runtime
+enforcement is tracked in the platform issues in milestone 5.
 
 The separately versioned `build/hint-delivery/manifest.json` pins the hint
 sources and facilitator release rules. Use `build/hint-delivery/release.py` to
