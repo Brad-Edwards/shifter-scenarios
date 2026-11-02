@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
 import json
 import os
@@ -20,6 +21,15 @@ if SPEC is None or SPEC.loader is None:
     raise RuntimeError("cannot load challenge catalog module")
 catalog_module = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(catalog_module)
+
+PRIZE_POLICY_MODULE_PATH = ROOT / "ctfd" / "prize_policy.py"
+PRIZE_POLICY_SPEC = importlib.util.spec_from_file_location(
+    "cinder_prize_policy", PRIZE_POLICY_MODULE_PATH
+)
+if PRIZE_POLICY_SPEC is None or PRIZE_POLICY_SPEC.loader is None:
+    raise RuntimeError("cannot load prize policy module")
+prize_policy_module = importlib.util.module_from_spec(PRIZE_POLICY_SPEC)
+PRIZE_POLICY_SPEC.loader.exec_module(prize_policy_module)
 
 NATIVE_CONTRACT = "shifter-ctf-content/v1"
 PLATFORM_DIFFICULTY = {
@@ -146,16 +156,27 @@ def validate_projection(catalog: dict[str, Any], bundle: dict[str, Any]) -> None
             raise CatalogImportError(f"{card['id']}: UI visibility contract changed")
 
 
+def canonical_json_bytes(value: dict[str, Any]) -> bytes:
+    """Encode an artifact deterministically for digest binding and publication."""
+
+    return (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8")
+
+
+def artifact_digest(value: dict[str, Any]) -> str:
+    """Return the digest identifier for the exact published JSON bytes."""
+
+    return f"sha256:{hashlib.sha256(canonical_json_bytes(value)).hexdigest()}"
+
+
 def write_private_json(path: Path, value: dict[str, Any]) -> None:
-    """Atomically write the event projection with owner-only permissions."""
+    """Atomically write one JSON artifact with owner-only permissions."""
 
     path.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
     try:
         os.fchmod(descriptor, 0o600)
-        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-            json.dump(value, handle, indent=2, sort_keys=True)
-            handle.write("\n")
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(canonical_json_bytes(value))
         os.replace(temporary_name, path)
     except BaseException:
         try:
@@ -174,8 +195,14 @@ def main() -> int:
     parser.add_argument("--catalog", type=Path, default=catalog_module.CATALOG_PATH)
     parser.add_argument("--scorer-origin", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--prize-policy-output", type=Path)
     parser.add_argument("--allow-loopback-http", action="store_true")
     arguments = parser.parse_args()
+    if (
+        arguments.prize_policy_output is not None
+        and arguments.prize_policy_output.resolve() == arguments.output.resolve()
+    ):
+        parser.error("content and prize-policy outputs must be different paths")
     catalog = catalog_module.load_catalog(arguments.catalog)
     bundle = build_event_bundle(
         catalog,
@@ -183,14 +210,22 @@ def main() -> int:
         allow_loopback_http=arguments.allow_loopback_http,
     )
     validate_projection(catalog, bundle)
+    bundle_digest = artifact_digest(bundle)
+    policy = None
+    if arguments.prize_policy_output is not None:
+        policy = prize_policy_module.build_policy(catalog, bundle_digest)
     write_private_json(arguments.output, bundle)
-    print(
-        json.dumps({
-            "catalog_revision": catalog["revision"],
-            "challenge_count": len(bundle["challenges"]),
-            "score_total": sum(row["points"] for row in bundle["challenges"]),
-        }, sort_keys=True)
-    )
+    if arguments.prize_policy_output is not None and policy is not None:
+        write_private_json(arguments.prize_policy_output, policy)
+    result = {
+        "catalog_revision": catalog["revision"],
+        "challenge_count": len(bundle["challenges"]),
+        "content_bundle_digest": bundle_digest,
+        "score_total": sum(row["points"] for row in bundle["challenges"]),
+    }
+    if policy is not None:
+        result["prize_policy_digest"] = artifact_digest(policy)
+    print(json.dumps(result, sort_keys=True))
     return 0
 
 
