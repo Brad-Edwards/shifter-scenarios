@@ -31,17 +31,17 @@ COPY build/keplerops/config/krb5.conf /etc/krb5.conf
 COPY assets/keplerops/opening/k-dev-home.tar /tmp/k-dev-home.tar
 COPY assets/keplerops/opening/k-dev-workbench.tar /tmp/k-dev-workbench.tar
 COPY assets/keplerops/registry/k-dev-registry.tar /var/lib/fieldkest-workbench/seeds/k-dev-registry.tar
-COPY assets/keplerops/policy-compiler/k-dev-k11-home.tar /var/lib/fieldkest-workbench/seeds/k-dev-k11-home.tar
-COPY assets/keplerops/connector-archive/k-dev-k28-home.tar /var/lib/fieldkest-workbench/seeds/k-dev-k28-home.tar
-COPY assets/keplerops/release-lineage/k-dev-k29-home.tar /var/lib/fieldkest-workbench/seeds/k-dev-k29-home.tar
+COPY assets/keplerops/policy-compiler/k-dev-policy-compiler-home.tar /var/lib/fieldkest-workbench/seeds/k-dev-policy-compiler-home.tar
+COPY assets/keplerops/connector-archive/k-dev-connector-archive-home.tar /var/lib/fieldkest-workbench/seeds/k-dev-connector-archive-home.tar
+COPY assets/keplerops/release-lineage/k-dev-release-lineage-home.tar /var/lib/fieldkest-workbench/seeds/k-dev-release-lineage-home.tar
 COPY --from=indexer-reproducer --chown=2000:2000 --chmod=0550 \
     /fieldkest-bundle-indexer /home/rowan/work/reproducers/fieldkest-bundle-indexer
 
 RUN tar -xf /tmp/k-dev-home.tar -C /home/rowan \
     && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-registry.tar -C /home/rowan \
-    && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-k11-home.tar -C /home/rowan \
-    && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-k28-home.tar -C /home/rowan \
-    && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-k29-home.tar -C /home/rowan \
+    && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-policy-compiler-home.tar -C /home/rowan \
+    && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-connector-archive-home.tar -C /home/rowan \
+    && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-release-lineage-home.tar -C /home/rowan \
     && mkdir -p /home/rowan/.local/share/keplerops \
     && touch /home/rowan/.local/share/keplerops/registry-foundation-2026-09-18 \
     && touch /home/rowan/.local/share/keplerops/policy-compiler-2026-09-18 \

@@ -56,10 +56,10 @@ base="https://business-workplace.arwc.test"
 corporate=pathlib.Path("/var/lib/fieldlink-connector/handover/corporate-session").read_text().strip()
 planner=pathlib.Path("/var/lib/fieldlink-connector/receipts/planner-session").read_text().strip()
 ctx=ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
-req=urllib.request.Request(base+"/api/the-integration-s-read-contract",headers={"Authorization":"Bearer "+corporate,"X-ARWC-Tenant":"arwc"})
+req=urllib.request.Request(base+"/api/integration-contracts/current",headers={"Authorization":"Bearer "+corporate,"X-ARWC-Tenant":"arwc"})
 contract=json.load(urllib.request.urlopen(req,context=ctx))["integration_session"]
 body=json.dumps({"integration_client":"INT-CRR-08","report_binding":"REC-CRR-DP3-17","scope":"OG-CRR-02/read","feed":"FEED-OG2-R21"},separators=(",", ":")).encode()
-req=urllib.request.Request("https://planning-data.arwc.test/api/integration/from-the-report-to-the-live-feed",data=body,headers={"Authorization":"Bearer "+corporate,"X-ARWC-Tenant":"arwc","X-ARWC-Planner-Session":planner,"X-ARWC-Integration-Session":contract,"Content-Type":"application/json"},method="POST")
+req=urllib.request.Request("https://planning-data.arwc.test/api/integration-sessions",data=body,headers={"Authorization":"Bearer "+corporate,"X-ARWC-Tenant":"arwc","X-ARWC-Planner-Session":planner,"X-ARWC-Integration-Session":contract,"Content-Type":"application/json"},method="POST")
 print(json.load(urllib.request.urlopen(req,context=ctx))["process_session"])
 '''
     completed = inside("python3", "-c", script)
@@ -109,10 +109,10 @@ class W19W20Live(unittest.TestCase):
         issue_process_session()
 
     def test_01_w19_package_is_a_real_bound_stripped_elf(self) -> None:
-        denied, body = request("/api/the-diagnostic-nobody-retired", token="wrong")
+        denied, body = request("/api/diagnostic-programs/current", token="wrong")
         self.assertEqual(denied, 403)
         self.assertNotIn("ELF", json.dumps(body))
-        status, response = request("/api/the-diagnostic-nobody-retired")
+        status, response = request("/api/diagnostic-programs/current")
         self.assertEqual(status, 200)
         record = response["record"]
         artifact = base64.b64decode(response["artifact_b64"], validate=True)
@@ -133,10 +133,10 @@ class W19W20Live(unittest.TestCase):
 
     def test_02_w19_compatibility_result_requires_32_bit_wrap(self) -> None:
         body = {"record": "WRAP-FFFFFFFF-OG2", "rolling32": f"{rolling('WRAP-FFFFFFFF-OG2'):08x}"}
-        wrong, _ = request("/api/a-second-interpretation", method="POST",
+        wrong, _ = request("/api/signature-records/current/interpretation", method="POST",
                            body={**body, "rolling32": "00000000"})
         self.assertEqual(wrong, 409)
-        status, response = request("/api/a-second-interpretation", method="POST", body=body)
+        status, response = request("/api/signature-records/current/interpretation", method="POST", body=body)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["execution"], "i386-compatibility")
 
@@ -144,9 +144,9 @@ class W19W20Live(unittest.TestCase):
         records = ["OUTLET_A:800", "OUTLET_B:1200", "LEGACY:4294967295", "CRR:204", "MIG-OG2-R19-R21"]
         decisions = [{"record": item, "rolling32": f"{rolling(item):08x}",
                       "verifier64": f"{verifier(item):016x}"} for item in records]
-        wrong, _ = request("/api/the-hidden-check", method="POST", body={"decisions": decisions[:-1]})
+        wrong, _ = request("/api/signature-programs/current", method="POST", body={"decisions": decisions[:-1]})
         self.assertEqual(wrong, 409)
-        status, response = request("/api/the-hidden-check", method="POST", body={"decisions": decisions})
+        status, response = request("/api/signature-programs/current", method="POST", body={"decisions": decisions})
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["record_id"], "MIG-OG2-R19-R21")
         self.assertEqual(response["record"]["decision"], "valid")
@@ -160,17 +160,17 @@ class W19W20Live(unittest.TestCase):
         digest = hashlib.sha256(json.dumps(mapping, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         type(self).map_request = {"migration_record": "MIG-OG2-R19-R21",
                                   "comparison_digest": digest, "observation": "EVT-COMM-OG2-114"}
-        wrong, _ = request("/api/a-map-from-the-old-diagnostic", method="POST",
+        wrong, _ = request("/api/diagnostic-programs/legacy", method="POST",
                            body={**self.map_request, "observation": "other"})
         self.assertEqual(wrong, 409)
-        status, response = request("/api/a-map-from-the-old-diagnostic", method="POST", body=self.map_request)
+        status, response = request("/api/diagnostic-programs/legacy", method="POST", body=self.map_request)
         self.assertEqual(status, 201)
         self.assertTrue(response["record"]["historical"])
         self.assertNotIn("deployed", response["record"])
         self.assertEqual(response["record"]["legacy_identifiers"]["OUTLET_B"], "OG-CRR-02/GT-CRR-02B")
 
     def test_05_w20_image_has_exact_nor_records_and_integrity(self) -> None:
-        status, response = request("/api/what-the-image-kept")
+        status, response = request("/api/firmware-images/current")
         self.assertEqual(status, 200)
         type(self).image = base64.b64decode(response["image_b64"], validate=True)
         self.assertEqual(len(self.image), 8192)
@@ -185,15 +185,15 @@ class W19W20Live(unittest.TestCase):
         type(self).image_record = {
             "image_sha256": hashlib.sha256(self.image).hexdigest(), "record_id": record_id,
             "asset": asset, "inspection_date": date, "sequence": struct.unpack_from("<I", target, 4)[0],
-            "status": "REVIEW", "flags": target[11],
+            "status": "REVIEW", "status_bits": target[11],
             "crc32c": f"{struct.unpack_from('<I', target, 56)[0]:08x}", "offset": 64,
         }
 
     def test_06_w20_last_record_requires_full_integrity_interpretation(self) -> None:
-        wrong, _ = request("/api/a-valid-maintenance-record", method="POST",
+        wrong, _ = request("/api/maintenance-records/current", method="POST",
                            body={**self.image_record, "status": "ACCEPTED"})
         self.assertEqual(wrong, 409)
-        status, response = request("/api/a-valid-maintenance-record", method="POST", body=self.image_record)
+        status, response = request("/api/maintenance-records/current", method="POST", body=self.image_record)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["record_id"], "INSP-FIT-204-118")
         self.assertEqual(response["record"]["status"], "REVIEW")
@@ -220,11 +220,11 @@ class W19W20Live(unittest.TestCase):
         ]
         type(self).rewrite_request = {"operations": operations,
                                       "image_b64": base64.b64encode(candidate).decode()}
-        wrong, _ = request("/api/change-one-record-keep-the-rest", method="POST",
+        wrong, _ = request("/api/maintenance-records/current", method="POST",
                            body={"operations": list(reversed(operations)),
                                  "image_b64": self.rewrite_request["image_b64"]})
         self.assertEqual(wrong, 409)
-        status, response = request("/api/change-one-record-keep-the-rest", method="POST",
+        status, response = request("/api/maintenance-records/current", method="POST",
                                    body=self.rewrite_request)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["sequence"], 119)
@@ -237,7 +237,7 @@ class W19W20Live(unittest.TestCase):
                        stdout=subprocess.DEVNULL, check=True)
         for _ in range(60):
             try:
-                status, response = request("/api/a-map-from-the-old-diagnostic", method="POST", body=self.map_request)
+                status, response = request("/api/diagnostic-programs/legacy", method="POST", body=self.map_request)
                 if status == 201:
                     break
             except AssertionError:
@@ -247,14 +247,14 @@ class W19W20Live(unittest.TestCase):
             self.fail("engineering service did not return after restart")
         for _ in range(60):
             status, response = request(
-                "/api/change-one-record-keep-the-rest", method="POST", body=self.rewrite_request,
+                "/api/maintenance-records/current", method="POST", body=self.rewrite_request,
             )
             if status == 201:
                 break
             time.sleep(0.25)
         else:
             self.fail(f"instrument service did not return after restart: {response}")
-        status, image = request("/api/what-the-image-kept")
+        status, image = request("/api/firmware-images/current")
         self.assertEqual(status, 200)
         self.assertEqual(hashlib.sha256(base64.b64decode(image["image_b64"])).hexdigest(),
                          self.image_record["image_sha256"])

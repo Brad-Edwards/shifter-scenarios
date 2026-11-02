@@ -7,9 +7,16 @@
       "approved_route_patterns": []
     },
     "keplerops": {
-      "status": "pending_review",
-      "blocking_issue": 212,
-      "approved_route_patterns": []
+      "status": "approved",
+      "blocking_issue": null,
+      "approved_route_patterns": [
+        "/api/(?:runs|review-jobs|review-workspace|jobs|rehearsals|reviews)(?:/.*)?",
+        "/api/(?:workspaces|build-records|trust-records|roles|maintenance|policies|token-exchange)(?:/.*)?",
+        "/api/(?:fieldkest|fieldlink|diagnostics|session|conversations|handovers|assignments|customers|cases)(?:/.*)?",
+        "/api/(?:attachments|renders|documents|registrations|delegation|service-relations|federation|service-directory|enrollment|archive|note-preview|notes|managed-identities|release-administration|schedules|workloads|exports|backups|recovery|field-archive|config|contexts|selections|completions|answers|packages|rollback-rehearsal|indexes|internal)(?:/.*)?",
+        "/api/(?:releases|package-views|inspections|compatibility|consumer-checks|reconcile|resolver|imports|v1|exercises)(?:/.*)?",
+        "/api/?"
+      ]
     },
     "arwc": {
       "status": "approved",

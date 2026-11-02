@@ -16,12 +16,12 @@ COPY build/keplerops/runtime/registry.py /opt/fieldkest-registry/registry.py
 COPY build/keplerops/runtime/registry-entrypoint.sh /usr/local/bin/fieldkest-registry-entrypoint
 COPY build/keplerops/config/verdaccio.yaml /etc/verdaccio/config.yaml
 COPY assets/keplerops/registry/k-registry-state.tar /tmp/k-registry-state.tar
-COPY assets/keplerops/release-lineage/k-registry-k29-state.tar /tmp/k-registry-k29-state.tar
+COPY assets/keplerops/release-lineage/k-registry-release-lineage-state.tar /tmp/k-registry-release-lineage-state.tar
 
 RUN mkdir -p /var/lib/fieldkest-registry /var/lib/verdaccio/storage \
     && tar -xf /tmp/k-registry-state.tar -C /var/lib/fieldkest-registry \
-    && tar -xf /tmp/k-registry-k29-state.tar -C /var/lib/fieldkest-registry \
-    && rm /tmp/k-registry-state.tar /tmp/k-registry-k29-state.tar \
+    && tar -xf /tmp/k-registry-release-lineage-state.tar -C /var/lib/fieldkest-registry \
+    && rm /tmp/k-registry-state.tar /tmp/k-registry-release-lineage-state.tar \
     && mkdir -p /var/lib/fieldkest-registry/audit /var/lib/fieldkest-registry/results /var/lib/fieldkest-registry/published \
     && touch /var/lib/verdaccio/htpasswd \
     && chown -R fieldkest-registry:fieldkest-registry /var/lib/fieldkest-registry \

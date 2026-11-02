@@ -12,7 +12,7 @@ from credentials import credential
 
 STATE = Path("/var/lib/fieldkest-cloud-api")
 AUDIT = STATE / "audit"
-CONFIG = json.loads((STATE / "config/k09.json").read_text())
+CONFIG = json.loads((STATE / "config/runner-foundation.json").read_text())
 WORKER_SECRET = Path("/tmp/worker-hmac.key").read_bytes()
 DEV_USER = "rowan.ito"
 DEV_TOKEN = credential("developer_token")

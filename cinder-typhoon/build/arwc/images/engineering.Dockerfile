@@ -8,17 +8,17 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y binutils g++ gcc libc6-dev python3 \
     && rm -rf /var/lib/apt/lists/*
 COPY build/arwc/runtime/mixed-diagnostic.S /tmp/mixed-diagnostic.S
-COPY build/arwc/runtime/dpg1.py build/arwc/runtime/generate_dpg1.py build/arwc/runtime/rot128_verifier.c /tmp/w27-src/
+COPY build/arwc/runtime/dpg1.py build/arwc/runtime/generate_dpg1.py build/arwc/runtime/rot128_verifier.c /tmp/integrity-src/
 COPY build/arwc/runtime/replay32.cpp /tmp/replay32.cpp
 RUN gcc -nostdlib -static -no-pie -Wl,--build-id=none \
       -o /tmp/diag-crr-mixed-19 /tmp/mixed-diagnostic.S \
     && strip --strip-all /tmp/diag-crr-mixed-19 \
-    && cd /tmp/w27-src \
-    && python3 generate_dpg1.py /tmp/w27 \
+    && cd /tmp/integrity-src \
+    && python3 generate_dpg1.py /tmp/integrity \
     && gcc -O2 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none \
-      -I/tmp/w27 -o /tmp/w27/rot128-verifier rot128_verifier.c \
-    && strip --strip-all /tmp/w27/rot128-verifier \
-    && /tmp/w27/rot128-verifier /tmp/w27/base.dpg | grep -F '"decision":"accepted"' \
+      -I/tmp/integrity -o /tmp/integrity/rot128-verifier rot128_verifier.c \
+    && strip --strip-all /tmp/integrity/rot128-verifier \
+    && /tmp/integrity/rot128-verifier /tmp/integrity/base.dpg | grep -F '"decision":"accepted"' \
     && g++ -std=c++20 -O2 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none \
       -o /tmp/replay-crr-r19 /tmp/replay32.cpp \
     && strip --strip-all /tmp/replay-crr-r19 \
@@ -29,12 +29,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get install --no-install-recommends -y binutils clang-18 libc6-dev python3 \
     && rm -rf /var/lib/apt/lists/* \
-    && install -d /tmp/w28 /opt/process-service/w28/lib /opt/process-service/w28/lib64
-COPY build/arwc/runtime/utility28.c build/arwc/runtime/build_w28_native.py /tmp/w28-src/
-RUN cp /lib/x86_64-linux-gnu/libc.so.6 /opt/process-service/w28/lib/libc.so.6 \
-    && cp /lib64/ld-linux-x86-64.so.2 /opt/process-service/w28/lib64/ld-linux-x86-64.so.2 \
-    && python3 /tmp/w28-src/build_w28_native.py /tmp/w28-src/utility28.c /tmp/w28/utility \
-    && /tmp/w28/utility ordinary relation | grep -F '"status":"complete"'
+    && install -d /tmp/utility /opt/process-service/utility/lib /opt/process-service/utility/lib64
+COPY build/arwc/runtime/utility28.c build/arwc/runtime/build_w28_native.py /tmp/utility-src/
+RUN cp /lib/x86_64-linux-gnu/libc.so.6 /opt/process-service/utility/lib/libc.so.6 \
+    && cp /lib64/ld-linux-x86-64.so.2 /opt/process-service/utility/lib64/ld-linux-x86-64.so.2 \
+    && python3 /tmp/utility-src/build_w28_native.py /tmp/utility-src/utility28.c /tmp/utility/utility \
+    && /tmp/utility/utility ordinary relation | grep -F '"status":"complete"'
 
 FROM nimlang/nim:2.0.8 AS viewer
 COPY build/arwc/runtime/sealed_viewer.nim /tmp/sealed_viewer.nim
@@ -76,13 +76,13 @@ COPY --from=native --chown=arwc-engineering:arwc-engineering --chmod=0750 /tmp/d
 COPY --from=viewer --chown=arwc-engineering:arwc-engineering --chmod=0750 /tmp/sealed-viewer /opt/process-service/artifacts/sealed-viewer
 COPY --from=sealed --chown=arwc-engineering:arwc-engineering --chmod=0640 /tmp/sealed/ /opt/process-service/artifacts/
 COPY --from=review --chown=arwc-engineering:arwc-engineering --chmod=0640 /tmp/review-out/ReviewHelper.dll /opt/process-service/artifacts/ReviewHelper.dll
-COPY --from=native --chown=arwc-engineering:arwc-engineering /tmp/w27/ /opt/process-service/artifacts/w27/
+COPY --from=native --chown=arwc-engineering:arwc-engineering /tmp/integrity/ /opt/process-service/artifacts/integrity/
 COPY --from=native --chown=arwc-engineering:arwc-engineering --chmod=0750 /tmp/replay-crr-r19 /opt/process-service/artifacts/replay-crr-r19
-COPY --from=utility28 --chown=arwc-engineering:arwc-engineering /tmp/w28/ /opt/process-service/artifacts/w28/
-COPY --from=utility28 /opt/process-service/w28/ /opt/process-service/w28/
-RUN chmod 0750 /opt/process-service/artifacts/w28/utility \
-    && setcap cap_setuid=ep /opt/process-service/artifacts/w28/utility \
-    && test "$(getcap /opt/process-service/artifacts/w28/utility)" = '/opt/process-service/artifacts/w28/utility cap_setuid=ep'
+COPY --from=utility-builder --chown=arwc-engineering:arwc-engineering /tmp/utility/ /opt/process-service/artifacts/utility/
+COPY --from=utility-builder /opt/process-service/utility/ /opt/process-service/utility/
+RUN chmod 0750 /opt/process-service/artifacts/utility/utility \
+    && setcap cap_setuid=ep /opt/process-service/artifacts/utility/utility \
+    && test "$(getcap /opt/process-service/artifacts/utility/utility)" = '/opt/process-service/artifacts/utility/utility cap_setuid=ep'
 COPY --chmod=0750 build/arwc/runtime/process-service-entrypoint.sh /usr/local/sbin/arwc-process-entrypoint
 EXPOSE 443
 ENTRYPOINT ["/usr/local/sbin/arwc-process-entrypoint"]

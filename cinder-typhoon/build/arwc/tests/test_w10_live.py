@@ -53,21 +53,21 @@ print(response.read().decode())
 class W10Live(unittest.TestCase):
     def test_01_dependent_reads_require_fresh_owned_evidence(self) -> None:
         status, body = request(
-            "/api/another-district-in-the-results", method="POST",
+            "/api/reports/current/rows/external", method="POST",
             body={"source_set": "SEL-CRR-DP3-7", "expected_revision": 7,
                   "role": "planning-reader", "district": "Cairn Reach"},
         )
         self.assertEqual(status, 403)
         self.assertNotIn("EXC-MER-DP3-4", json.dumps(body))
         status, body = request(
-            "/api/the-document-behind-the-answer", method="POST",
+            "/api/reports/current/document", method="POST",
             body={"excerpt_id": "EXC-MER-DP3-4", "expected_revision": 4},
         )
         self.assertEqual(status, 403)
         self.assertNotIn("PLN-MER-DP3-R6", json.dumps(body))
 
     def test_02_source_selection_is_the_exact_current_record(self) -> None:
-        status, response = request("/api/the-report-s-source-list")
+        status, response = request("/api/reports/current/sources")
         self.assertEqual(status, 200)
         record = response["record"]
         self.assertEqual(record["record_id"], "SEL-CRR-DP3-7")
@@ -87,17 +87,17 @@ class W10Live(unittest.TestCase):
             dict(baseline, source_set="SEL-MER-DP3-1"),
             dict(baseline, expected_revision=6),
         ):
-            status, body = request("/api/another-district-in-the-results", method="POST", body=changed)
+            status, body = request("/api/reports/current/rows/external", method="POST", body=changed)
             self.assertEqual(status, 409)
             self.assertNotIn("EXC-MER-DP3-4", json.dumps(body))
         denied, body = request(
-            "/api/another-district-in-the-results", method="POST",
+            "/api/reports/current/rows/external", method="POST",
             body=dict(baseline, role="customer-service"),
         )
         self.assertEqual(denied, 403)
         self.assertNotIn("EXC-MER-DP3-4", json.dumps(body))
         status, response = request(
-            "/api/another-district-in-the-results", method="POST", body=baseline,
+            "/api/reports/current/rows/external", method="POST", body=baseline,
         )
         self.assertEqual(status, 201)
         record = response["record"]
@@ -112,11 +112,11 @@ class W10Live(unittest.TestCase):
             {"excerpt_id": "EXC-CRR-DP3-4", "expected_revision": 4},
             {"excerpt_id": "EXC-MER-DP3-4", "expected_revision": 3},
         ):
-            status, response = request("/api/the-document-behind-the-answer", method="POST", body=body)
+            status, response = request("/api/reports/current/document", method="POST", body=body)
             self.assertEqual(status, 409)
             self.assertNotIn("PLN-MER-DP3-R6", json.dumps(response))
         status, response = request(
-            "/api/the-document-behind-the-answer", method="POST",
+            "/api/reports/current/document", method="POST",
             body={"excerpt_id": "EXC-MER-DP3-4", "expected_revision": 4,
                   "district": "Cairn Reach"},
         )
@@ -128,10 +128,10 @@ class W10Live(unittest.TestCase):
         self.assertEqual(record["linked_excerpt"], "EXC-MER-DP3-4")
 
     def test_05_wrong_authority_and_tenant_disclose_nothing(self) -> None:
-        status, body = request("/api/the-report-s-source-list", token="wrong")
+        status, body = request("/api/reports/current/sources", token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("SEL-CRR-DP3-7", json.dumps(body))
-        status, body = request("/api/the-report-s-source-list", tenant="merewick")
+        status, body = request("/api/reports/current/sources", tenant="merewick")
         self.assertEqual(status, 403)
         self.assertNotIn("RPT-CRR-DP3-R7", json.dumps(body))
 
@@ -140,7 +140,7 @@ class W10Live(unittest.TestCase):
         for _ in range(30):
             try:
                 status, response = request(
-                    "/api/the-document-behind-the-answer", method="POST",
+                    "/api/reports/current/document", method="POST",
                     body={"excerpt_id": "EXC-MER-DP3-4", "expected_revision": 4},
                 )
                 if status == 201:
@@ -156,8 +156,8 @@ class W10Live(unittest.TestCase):
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout
         for action in (
-            "the-report-s-source-list", "another-district-in-the-results",
-            "the-document-behind-the-answer",
+            "report-source-selection-read", "district-query-result-read",
+            "district-plan-read",
         ):
             self.assertIn(f'"action":"{action}"', audit)
         hidden = inside("sh", "-c", "test ! -r /var/lib/arwc-business/state/discoveries.json")

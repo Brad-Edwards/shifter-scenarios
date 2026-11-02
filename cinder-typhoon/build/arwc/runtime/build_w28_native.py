@@ -20,8 +20,8 @@ def compile_utility(pad: int) -> None:
         CLANG, "-std=gnu17", "-O2", "-fstack-protector-strong", "-fPIE", "-pie",
         "-fcf-protection=none", f"-DTEXT_PAD_BYTES={pad}",
         "-Wl,-z,relro,-z,now,--build-id=none,--export-dynamic",
-        "-Wl,--dynamic-linker=/opt/process-service/w28/lib64/ld-linux-x86-64.so.2",
-        "-Wl,-rpath,/opt/process-service/w28/lib", "-o", str(OUTPUT), str(SOURCE),
+        "-Wl,--dynamic-linker=/opt/process-service/utility/lib64/ld-linux-x86-64.so.2",
+        "-Wl,-rpath,/opt/process-service/utility/lib", "-o", str(OUTPUT), str(SOURCE),
     ]
     subprocess.run(command, check=True)
 

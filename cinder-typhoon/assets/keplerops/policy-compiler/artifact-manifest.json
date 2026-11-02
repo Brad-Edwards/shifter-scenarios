@@ -1,17 +1,17 @@
 {
   "archives": [
     {
-      "archive": "k-source-k11-state.tar",
+      "archive": "k-source-policy-compiler-state.tar",
       "files": [
         {
           "mode": "0600",
-          "path": "config/k11.json",
+          "path": "config/policy-compiler.json",
           "sha256": "e20dab426576d4a20cac3329fa3705b641e39f6b020d2c9cfe4dbb845bc0ffde",
           "size": 10505
         },
         {
           "mode": "0550",
-          "path": "exercises/k11/fieldkest-policyc",
+          "path": "exercises/policy-compiler/fieldkest-policyc",
           "sha256": "a1b311190b294e2f31773065454520db72136447f1d2b75c64aacca7e813de2c",
           "size": 2520312
         },
@@ -22,11 +22,11 @@
           "size": 1139299
         }
       ],
-      "sha256": "8a42cc0798b1d1780b193c4de7f888721c3b05fbf34378d4f97a6dbf323d8091",
+      "sha256": "498b298ac8534f1f7cfdf181f30ff2686e03f86d95f4073b650b48e9d8bf7427",
       "size": 3676160
     },
     {
-      "archive": "k-dev-k11-home.tar",
+      "archive": "k-dev-policy-compiler-home.tar",
       "files": [
         {
           "mode": "0640",
@@ -58,5 +58,5 @@
     },
     "repository": "fieldkest/policy-compiler"
   },
-  "schema": "fieldkest.k11-artifacts/v1"
+  "schema": "fieldkest.policy-compiler-artifacts/v1"
 }

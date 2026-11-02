@@ -6,7 +6,7 @@
         {
           "mode": "0600",
           "path": ".config/chromium/Default/History",
-          "sha256": "ccb5025bfedb8b0c17ec9bb9276bc9262e15cb2b7d5fac757c6ce1ee17ee24b3",
+          "sha256": "7a07e88fe3fa518038fb1666df797d9f6ee542c672a316ae4794e00c6e20a235",
           "size": 20480
         },
         {
@@ -72,7 +72,7 @@
       ],
       "group": "rowan",
       "owner": "rowan",
-      "sha256": "b2de75c2d71b941da0479ea96e6bfcba0fe175b1f16b887af1baddc5152069ee",
+      "sha256": "492dc0ef0a74f6345c5edae50dd563f76452664941e2d86d41af254c61ba71db",
       "size": 40960
     },
     {

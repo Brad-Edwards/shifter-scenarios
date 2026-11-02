@@ -25,7 +25,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/policy-compiler/source-state
           version: '2026-09-18'
-          digest: sha256:8a42cc0798b1d1780b193c4de7f888721c3b05fbf34378d4f97a6dbf323d8091
+          digest: sha256:498b298ac8534f1f7cfdf181f30ff2686e03f86d95f4073b650b48e9d8bf7427
           media_type: application/x-tar
         permitted_routes:
         - mechanism:

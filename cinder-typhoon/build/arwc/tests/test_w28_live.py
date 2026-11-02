@@ -66,7 +66,7 @@ import json,ssl,sys,urllib.error,urllib.request
 token=sys.argv[1]; data=sys.stdin.buffer.read()
 headers={"Authorization":"Bearer "+token,"X-ARWC-Tenant":"arwc","Content-Type":"application/cbor"}
 context=ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
-try: response=urllib.request.urlopen(urllib.request.Request("https://field-gateway.arwc.test/api/a-fresh-reading-from-the-field",data=data,headers=headers,method="POST"),context=context)
+try: response=urllib.request.urlopen(urllib.request.Request("https://field-gateway.arwc.test/api/readings/current",data=data,headers=headers,method="POST"),context=context)
 except urllib.error.HTTPError as error: response=error
 print(response.status); print(response.read().decode())
 '''
@@ -92,10 +92,10 @@ class W28Live(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         portal = "https://contractor-portal.arwc.test"
-        _, appointment = request(portal, "/api/window-on-thursday")
-        request(portal, "/api/who-is-expected-at-the-gate")
+        _, appointment = request(portal, "/api/appointment-windows/current")
+        request(portal, "/api/appointment-windows/current/visitors")
         if appointment["record"]["attendee"] != "veybridge.tech.204":
-            status, result = request(portal, "/api/an-appointment-we-do-not-own", method="POST", body={
+            status, result = request(portal, "/api/appointments/current", method="POST", body={
                 "appointment_id": "APT-CRR-2026-09-18",
                 "expected_revision": appointment["record"]["revision"],
                 "attendee": "veybridge.tech.204",
@@ -103,17 +103,17 @@ class W28Live(unittest.TestCase):
             })
             if status != 201:
                 raise AssertionError(result)
-        status, result = request(portal, "/api/checked-in-as-the-contractor", method="POST", body={
+        status, result = request(portal, "/api/check-ins", method="POST", body={
             "appointment_id": "APT-CRR-2026-09-18", "roster_id": "ROSTER-CRR-SEP18-R2",
             "identity": "veybridge.tech.204",
         })
         if status != 201:
             raise AssertionError(result)
         contractor = result["contractor_session"]
-        status, result = request(portal, "/api/the-field-bag", token=contractor)
+        status, result = request(portal, "/api/field-kits/current", token=contractor)
         if status != 200:
             raise AssertionError(result)
-        status, result = request("https://field-gateway.arwc.test", "/api/the-service-that-replaced-it",
+        status, result = request("https://field-gateway.arwc.test", "/api/instruments/current",
                                  token=contractor)
         if status != 200:
             raise AssertionError(result)
@@ -125,10 +125,10 @@ class W28Live(unittest.TestCase):
         if status != 201:
             raise AssertionError(result)
         cls.process_session = result["process_session"]
-        status, result = request(PROCESS, "/api/the-project-and-the-note", token=cls.process_session)
+        status, result = request(PROCESS, "/api/sealed-projects/current/note", token=cls.process_session)
         if status != 200:
             raise AssertionError(result)
-        status, result = request(PROCESS, "/api/which-project-is-running", method="POST",
+        status, result = request(PROCESS, "/api/vault-access", method="POST",
                                  token=cls.process_session, body={
             "project_index": "PROJ-CRR-INDEX-R9", "workspace_claim": "CRR-CTRL-R19",
             "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": "CRR-CTRL-R21",
@@ -170,17 +170,17 @@ class W28Live(unittest.TestCase):
 
     def test_01_exact_native_contract_and_signed_status(self) -> None:
         body = {"operation": "materials", "revision": "CMP-CRR-R21"}
-        status, denied = self.process("/api/the-utility-s-small-world", body, token="wrong")
+        status, denied = self.process("/api/collision-inputs/current", body, token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("utility_b64", denied)
-        status, denied = self.process("/api/the-utility-s-small-world", body, tenant="merewick")
+        status, denied = self.process("/api/collision-inputs/current", body, tenant="merewick")
         self.assertEqual(status, 403)
         self.assertNotIn("utility_b64", denied)
-        status, denied = self.process("/api/the-utility-s-small-world", {
+        status, denied = self.process("/api/collision-inputs/current", {
             "operation": "materials", "revision": "CMP-CRR-R19",
         })
         self.assertEqual(status, 409)
-        status, result = self.process("/api/the-utility-s-small-world", body)
+        status, result = self.process("/api/collision-inputs/current", body)
         self.assertEqual(status, 201, result)
         record = result["record"]
         binary = base64.b64decode(result["utility_b64"])
@@ -213,15 +213,15 @@ class W28Live(unittest.TestCase):
             "frame_b64": base64.b64encode(frame).decode(),
         }
         wrong = bytearray(frame); wrong[200] ^= 1
-        status, _ = self.process("/api/control-with-very-little-room", {
+        status, _ = self.process("/api/release-plans/current/confirmation", {
             **body, "frame_b64": base64.b64encode(wrong).decode(),
         })
         self.assertEqual(status, 409)
-        status, _ = self.process("/api/control-with-very-little-room", {**body, "length": len(frame) - 1})
+        status, _ = self.process("/api/release-plans/current/confirmation", {**body, "length": len(frame) - 1})
         self.assertEqual(status, 409)
-        status, _ = self.process("/api/control-with-very-little-room", {**body, "session_id": str(__import__('uuid').uuid4())})
+        status, _ = self.process("/api/release-plans/current/confirmation", {**body, "session_id": str(__import__('uuid').uuid4())})
         self.assertEqual(status, 409)
-        status, result = self.process("/api/control-with-very-little-room", body)
+        status, result = self.process("/api/release-plans/current/confirmation", body)
         self.assertEqual(status, 201, result)
         self.assertEqual(result["record"]["frame_length"], 240)
         self.assertTrue(result["record"]["canary_preserved"])
@@ -247,15 +247,15 @@ print(s.recv(4096).decode())
             "length": len(frame), "frame_b64": base64.b64encode(frame).decode(),
         }
         wrong = bytearray(frame); wrong[-8:] = struct.pack("<Q", self.pie_base + 1)
-        status, denied = self.process("/api/keep-the-authority-you-earned", {
+        status, denied = self.process("/api/control-authority", {
             **body, "frame_b64": base64.b64encode(wrong).decode(),
         })
         self.assertEqual(status, 409)
         self.assertNotIn("control_client", denied)
-        status, denied = self.process("/api/keep-the-authority-you-earned", {**body, "shell": "/bin/sh"})
+        status, denied = self.process("/api/control-authority", {**body, "shell": "/bin/sh"})
         self.assertEqual(status, 409)
         self.assertNotIn("control_client", denied)
-        status, result = self.process("/api/keep-the-authority-you-earned", body)
+        status, result = self.process("/api/control-authority", body)
         self.assertEqual(status, 201, result)
         record = result["record"]
         self.assertEqual(record["record_id"], "CTRL-CLIENT-CRR-28")
@@ -272,11 +272,11 @@ print(s.recv(4096).decode())
             "operation": "readback", "control_client": type(self).control_client,
             "outlet_group": "OG-CRR-02", "project": "CRR-CTRL-R21", "action": "readback",
         }
-        status, _ = self.process("/api/keep-the-authority-you-earned", {**correct, "action": "release"})
+        status, _ = self.process("/api/control-authority", {**correct, "action": "release"})
         self.assertEqual(status, 409)
-        status, _ = self.process("/api/keep-the-authority-you-earned", {**correct, "control_client": "wrong"})
+        status, _ = self.process("/api/control-authority", {**correct, "control_client": "wrong"})
         self.assertEqual(status, 403)
-        status, result = self.process("/api/keep-the-authority-you-earned", correct)
+        status, result = self.process("/api/control-authority", correct)
         self.assertEqual(status, 201, result)
         self.assertEqual(result["record"], {
             "record_id": "CTRL-READBACK-CRR-28", "revision": 4,
@@ -293,7 +293,7 @@ print(s.recv(4096).decode())
         }
         for _ in range(80):
             try:
-                status, result = self.process("/api/keep-the-authority-you-earned", correct)
+                status, result = self.process("/api/control-authority", correct)
                 if status == 201:
                     break
             except AssertionError:
@@ -306,7 +306,7 @@ print(s.recv(4096).decode())
              "cat", "/var/lib/arwc-engineering/state/service.json"],
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout)
-        self.assertTrue(state["w28_contract_recovered"] and state["w28_controlled_flow"])
+        self.assertTrue(state["utility_contract_recovered"] and state["utility_flow_controlled"])
         broker = json.loads(subprocess.run(
             ["docker", "exec", "--user", "arwc-control-broker", BROKER,
              "cat", "/var/lib/arwc-control-broker/state/control-broker.json"],
@@ -315,10 +315,10 @@ print(s.recv(4096).decode())
         self.assertTrue(broker["utility_authority_demonstrated"])
         self.assertEqual(broker["utility_control_client"]["record_id"], "CTRL-CLIENT-CRR-28")
         capability = subprocess.run(
-            ["docker", "exec", ENGINEERING, "getcap", "/opt/process-service/artifacts/w28/utility"],
+            ["docker", "exec", ENGINEERING, "getcap", "/opt/process-service/artifacts/utility/utility"],
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout.strip()
-        self.assertEqual(capability, "/opt/process-service/artifacts/w28/utility cap_setuid=ep")
+        self.assertEqual(capability, "/opt/process-service/artifacts/utility/utility cap_setuid=ep")
         for service, address, nnp in ((ENGINEERING, "10.77.63.40", False),
                                       (BROKER, "10.77.62.40", True)):
             inspected = subprocess.run(

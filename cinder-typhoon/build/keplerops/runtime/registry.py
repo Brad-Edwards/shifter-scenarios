@@ -38,7 +38,7 @@ RESULTS = STATE / "results"
 PUBLISHED = STATE / "published"
 CHANNEL_CREDENTIAL = PUBLISHED / "delivery/channel-credential.json"
 CONFIG = json.loads((STATE / "config/foundation.json").read_text())
-K29_CONFIG = json.loads((STATE / "config/k29.json").read_text())
+K29_CONFIG = json.loads((STATE / "config/release-lineage.json").read_text())
 USERNAME = CONFIG["developer"]["username"]
 TOKEN = credential("developer_token")
 PUBLISHER_TOKEN = credential("registry_publisher_token")
@@ -513,7 +513,7 @@ class RegistryHandler(KeplerHandler):
         if not trace_path.is_file() or sha256_bytes(data) != json.loads(trace_path.read_text())["compatibility_envelope_sha256"]:
             self.send_json(422, {"error": "inspection_trace_binding_mismatch"})
             return
-        if assessor_name != "k42" or payload_length != 1 or payload != b"\x01":
+        if assessor_name != "kqa" or payload_length != 1 or payload != b"\x01":
             self.send_json(422, {"error": "assessor_frame_denied"})
             return
         state = {"assessment_id": "PAS-884", "sentinel": "support-package-reviewed", "updated_at": utc_now()}

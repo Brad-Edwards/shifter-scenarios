@@ -1691,7 +1691,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["image_record"] = {
                 "image_sha256": hashlib.sha256(image).hexdigest(), "record_id": record_id, "asset": asset,
                 "inspection_date": date, "sequence": struct.unpack_from("<I", target, 4)[0], "status": "REVIEW",
-                "flags": target[11], "crc32c": f"{struct.unpack_from('<I', target, 56)[0]:08x}", "offset": 64,
+                "status_bits": target[11], "crc32c": f"{struct.unpack_from('<I', target, 56)[0]:08x}", "offset": 64,
             }
 
         with self.subTest(card="W20.2 a valid maintenance record"):
@@ -1822,7 +1822,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(step="W23 baseline before the scored action"):
             status, baseline = post(
-                "/api/a-measurement-with-side-effects",
+                "/api/control-commands",
                 {"estimator": estimator, "mode": "baseline"}, expected=201,
             )
             artifact = base64.b64decode(baseline["artifact_b64"], validate=True)
@@ -1869,9 +1869,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 {"op": "write-stale", "source_id": instrument_b,
                  "offset": analysis["controlled_offset"], "u32": analysis["controlled_u32"]},
             ]}
-            status, _ = post("/api/a-measurement-with-side-effects", dict(exploit, operations=[*exploit["operations"][:3], {**exploit["operations"][3], "offset": 65}]))
+            status, _ = post("/api/control-commands", dict(exploit, operations=[*exploit["operations"][:3], {**exploit["operations"][3], "offset": 65}]))
             self.assertEqual(status, 409)
-            status, response = post("/api/a-measurement-with-side-effects", exploit, expected=201)
+            status, response = post("/api/control-commands", exploit, expected=201)
             self.assertEqual(response["record"]["controlled_offset"], analysis["controlled_offset"])
             self.assertTrue(response["record"]["estimator_usable"])
 
@@ -1887,9 +1887,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 {"op": "write-stale", "offset": analysis["quality_offset"],
                  "u32": analysis["quality"]},
             ]}
-            status, _ = post("/api/control-beyond-the-measurement", dict(control, operations=[*control["operations"], {"op": "write-stale", "offset": 8, "u32": 0}]))
+            status, _ = post("/api/control-commands/consequence", dict(control, operations=[*control["operations"], {"op": "write-stale", "offset": 8, "u32": 0}]))
             self.assertEqual(status, 409)
-            status, response = post("/api/control-beyond-the-measurement", control, expected=201)
+            status, response = post("/api/control-commands/consequence", control, expected=201)
             record = response["record"]
             self.assertEqual(
                 record["writable_offsets"],
@@ -1906,7 +1906,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "quality": analysis["quality"],
                 "unaffected": analysis["unaffected"],
             }
-            status, response = post("/api/a-measurement-that-never-existed", final, expected=201)
+            status, response = post("/api/estimator-runs", final, expected=201)
             record = response["record"]
             self.assertTrue(record["sufficient"])
             self.assertFalse(record["raw_process_observations_changed"])
@@ -1927,9 +1927,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             return request(f"{base}{path}", method="POST", token=token, body=body, **kw)
 
         with self.subTest(card="W24.1 two kinds of answer"):
-            status, denied = get("/api/two-kinds-of-answer", token="wrong")
+            status, denied = get("/api/signature-requests", token="wrong")
             self.assertEqual(status, 403)
-            status, result = get("/api/two-kinds-of-answer", expected=200)
+            status, result = get("/api/signature-requests", expected=200)
             contract = result["record"]
             artifact = base64.b64decode(result["selector_artifact_b64"], validate=True)
             if hashlib.sha256(artifact).hexdigest() != contract["selector_artifact"]["sha256"]:
@@ -1958,9 +1958,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 observed = "ABCD"[("ABCD".index(case["padding_class"]) + rotation) & 3]
                 predictions.append({"request_id": case["request_id"], "epoch_bucket": case["epoch_bucket"], "observed_class": observed})
             wrong = json.loads(json.dumps(predictions)); wrong[2]["observed_class"] = "A"
-            status, _ = post("/api/which-answer-comes-next", {"record_id": contract["engineering_record"], "prediction_set": "SELECTOR-CRR-R4", "predictions": wrong})
+            status, _ = post("/api/signature-oracles/current", {"record_id": contract["engineering_record"], "prediction_set": "SELECTOR-CRR-R4", "predictions": wrong})
             self.assertEqual(status, 409)
-            status, response = post("/api/which-answer-comes-next", {"record_id": contract["engineering_record"], "prediction_set": "SELECTOR-CRR-R4", "predictions": predictions}, expected=201)
+            status, response = post("/api/signature-oracles/current", {"record_id": contract["engineering_record"], "prediction_set": "SELECTOR-CRR-R4", "predictions": predictions}, expected=201)
             self.assertEqual(response["record"]["cases_accepted"], len(predictions))
 
         with self.subTest(card="W24.3 the diagnostic evidence bundle"):
@@ -1998,7 +1998,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "    global queries\n"
                 "    request_id = (0x24A0000000000000 + queries) & MASK; queries += 1\n"
                 "    candidate = c * pow(multiplier, e, n) % n\n"
-                "    status, result = call('/api/the-diagnostic-evidence-bundle', {'operation': 'oracle', 'request_id': f'{request_id:016x}', 'epoch_bucket': bucket, 'ciphertext': f'{candidate:0512x}'})\n"
+                "    status, result = call('/api/estimator-tasks/current', {'operation': 'oracle', 'request_id': f'{request_id:016x}', 'epoch_bucket': bucket, 'ciphertext': f'{candidate:0512x}'})\n"
                 "    if status != 200: raise RuntimeError((status, result, queries, multiplier))\n"
                 "    raw = ('ABCD'.index(result['observed_class']) - (select(request_id) & 3)) & 3\n"
                 "    return raw != 0\n"
@@ -2028,7 +2028,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "    if len(intervals) == 1 and intervals[0][0] == intervals[0][1]: break\n"
                 "else: raise RuntimeError('interval did not converge')\n"
                 "encoded = intervals[0][0].to_bytes(256, 'big'); separator = encoded.index(0, 2); unlock = encoded[separator + 1:]\n"
-                f"status, opened = call('/api/the-diagnostic-evidence-bundle', {{'operation': 'open', 'bundle_id': {bundle_id!r}, 'project_id': {self.evidence['w22_project']!r}, 'project_revision': {project_revision}, 'archive_unlock_b64': base64.b64encode(unlock).decode()}})\n"
+                f"status, opened = call('/api/estimator-tasks/current', {{'operation': 'open', 'bundle_id': {bundle_id!r}, 'project_id': {self.evidence['w22_project']!r}, 'project_revision': {project_revision}, 'archive_unlock_b64': base64.b64encode(unlock).decode()}})\n"
                 "if status != 201: raise RuntimeError((status, opened))\n"
                 "print(json.dumps({'queries': queries, 'unlock': base64.b64encode(unlock).decode(), 'opened': opened}, separators=(',', ':')))\n"
             )
@@ -2102,9 +2102,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             forged = {"export_request_b64": base64.b64encode(message).decode(), "R": r_encoded.hex(), "s": scalar.to_bytes(32, "little").hex()}
 
         with self.subTest(card="W24.4 signed by someone who never approved it"):
-            status, _ = post("/api/signed-by-someone-who-never-approved-it", dict(forged, s=(scalar + 1).to_bytes(32, "little").hex()))
+            status, _ = post("/api/reporting-submissions", dict(forged, s=(scalar + 1).to_bytes(32, "little").hex()))
             self.assertEqual(status, 409)
-            status, response = post("/api/signed-by-someone-who-never-approved-it", forged, expected=201)
+            status, response = post("/api/reporting-submissions", forged, expected=201)
             record = response["record"]
             self.assertFalse(record["maintenance_approval"])
             self.assertFalse(record["control_authority"])
@@ -2384,7 +2384,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W27.1 what counts as intact"):
             status, missing = request(
-                f"{base}/api/what-counts-as-intact", method="POST", token=session,
+                f"{base}/api/signature-programs/current/reproductions", method="POST", token=session,
                 body={"operation": "materials", "record_id": integrity_id},
             )
             self.assertEqual(status, 404)
@@ -2419,7 +2419,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                                         body={"operation": "results", "record_id": integrity_id, "program_set": "DPG1-CASES-R3", "results": list(reversed(results))}, expected=201)
             self.assertEqual(accepted["record"]["cases_verified"], len(results))
             status, missing = request(
-                f"{base}/api/what-counts-as-intact", method="POST", token=session,
+                f"{base}/api/signature-programs/current/reproductions", method="POST", token=session,
                 body={"operation": "materials", "record_id": integrity_id},
             )
             self.assertEqual(status, 404)
@@ -2505,7 +2505,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.assertEqual(binary[:4], b"\x7fELF")
             self.assertEqual(hashlib.sha256(binary).hexdigest(), record["utility_sha256"])
             signed = record["status"]
-            self.evidence["w28_session_id"] = signed["session_id"]
+            self.evidence["utility_session_id"] = signed["session_id"]
             self.evidence["w28_relationship"] = result["relationship"]
             self.evidence["w28_canary"] = int(signed["stack_canary"], 16)
             self.evidence["w28_pie_base"] = int(signed["return_address"], 16) - signed["status_return_offset"]
@@ -2513,7 +2513,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="W28.2 control with very little room"):
             relationship = self.evidence["w28_relationship"]
             crafted = frame(relationship, self.evidence["w28_pie_base"], self.evidence["w28_canary"], issue=False)
-            body = {"session_id": self.evidence["w28_session_id"], "length": len(crafted), "frame_b64": base64.b64encode(crafted).decode()}
+            body = {"session_id": self.evidence["utility_session_id"], "length": len(crafted), "frame_b64": base64.b64encode(crafted).decode()}
             wrong = bytearray(crafted); wrong[200] ^= 1
             status, _ = request(self.discovered_route("process.release-confirmation"), method="POST", token=session, body={**body, "frame_b64": base64.b64encode(wrong).decode()})
             self.assertEqual(status, 409)
@@ -2524,7 +2524,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="W28.3 keep the authority you earned"):
             relationship = self.evidence["w28_relationship"]
             crafted = frame(relationship, self.evidence["w28_pie_base"], self.evidence["w28_canary"], issue=True)
-            body = {"operation": "issue", "session_id": self.evidence["w28_session_id"],
+            body = {"operation": "issue", "session_id": self.evidence["utility_session_id"],
                     "length": len(crafted), "frame_b64": base64.b64encode(crafted).decode()}
             wrong = bytearray(crafted); wrong[-8:] = struct.pack("<Q", self.evidence["w28_pie_base"] + 1)
             status, _ = request(self.discovered_route("process.control-authority"), method="POST", token=session, body={**body, "frame_b64": base64.b64encode(wrong).decode()})
@@ -2554,11 +2554,11 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             return request(f"{planning}{path}", method=method, body=body, token=token, headers=planner, expected=expected)
 
         with self.subTest(card="W29.1 the price of this planning window"):
-            status, denied = plan("/api/the-price-of-this-planning-window", token="wrong")
+            status, denied = plan("/api/planning-windows/current/economics", token="wrong")
             self.assertEqual(status, 403)
-            status, result = plan("/api/the-price-of-this-planning-window", expected=200)
+            status, result = plan("/api/planning-windows/current/economics", expected=200)
             record = result["record"]
-            self.evidence["w29_tariff"] = record["record_id"]
+            self.evidence["planning_tariff"] = record["record_id"]
             self.evidence["w29_rate_per_ml"] = record["rate_per_ml"]
 
         with self.subTest(card="W29.2 what reserve remains uncommitted"):
@@ -2567,21 +2567,21 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "planning_window": self.evidence["planning_window"],
                 "expected_margin_ml": round(self.evidence["usable_reserve_ml"] - self.evidence["committed_ml"], 4),
             }
-            status, _ = plan("/api/what-reserve-remains-uncommitted", method="POST", body=dict(binding, allocation="wrong"))
+            status, _ = plan("/api/collision-solutions", method="POST", body=dict(binding, allocation="wrong"))
             self.assertEqual(status, 409)
-            status, result = plan("/api/what-reserve-remains-uncommitted", method="POST", body=binding, expected=201)
+            status, result = plan("/api/collision-solutions", method="POST", body=binding, expected=201)
             record = result["record"]
-            self.evidence["w29_balance"] = record["record_id"]
+            self.evidence["reserve_balance"] = record["record_id"]
 
         with self.subTest(card="W29.3 paper truth"):
             plan_id = f"PLAN-{site_code}-LOSS-1000"
             binding = {
-                "plan_id": plan_id, "tariff": self.evidence["w29_tariff"], "balance": self.evidence["w29_balance"],
+                "plan_id": plan_id, "tariff": self.evidence["planning_tariff"], "balance": self.evidence["reserve_balance"],
                 "mode": self.evidence["mode_id"], "outlet_group": self.evidence["outlet_group"],
                 "ramp_open_seconds": 100, "each_gate_target_m3s": 0.5, "hold_seconds": 900, "ramp_close_seconds": 100,
             }
             # The practice sequence (W25) already satisfied the required movement conditions.
-            status, missing = plan("/api/paper-truth", method="POST", body=binding)
+            status, missing = plan("/api/reporting-checkpoints/current", method="POST", body=binding)
             self.assertEqual(status, 404)
             self.assertNotIn("released_volume_ml", json.dumps(missing))
             status, _ = request(
@@ -2596,7 +2596,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             record = result["record"]
             self.assertEqual(record["record_id"], plan_id)
             self.assertFalse(record["live_action_performed"])
-            status, missing = plan("/api/paper-truth", method="POST", body=binding)
+            status, missing = plan("/api/reporting-checkpoints/current", method="POST", body=binding)
             self.assertEqual(status, 404)
             self.assertNotIn("released_volume_ml", json.dumps(missing))
             self.evidence["w29_plan"] = plan_id
@@ -2820,7 +2820,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "control_client": self.evidence["w26_control_client"], "checkpoint": checkpoint,
                 "schedule_sha256": self.evidence["w33_schedule_sha256"], "forecast": forecast_id,
                 "map": self.evidence["map_id"], "mode": self.evidence["mode_id"], "envelope": self.evidence["envelope"]["record_id"],
-                "consequence_plan": self.evidence["w29_plan"], "tariff": self.evidence["w29_tariff"],
+                "consequence_plan": self.evidence["w29_plan"], "tariff": self.evidence["planning_tariff"],
                 "committed_allocation_ml": self.evidence["committed_ml"],
             }
             wrong = dict(rehearsal, control_client="wrong")

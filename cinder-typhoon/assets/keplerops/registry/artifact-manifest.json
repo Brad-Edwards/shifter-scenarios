@@ -18,7 +18,7 @@
         {
           "mode": "0640",
           "path": "examples/inspection-compat.fki",
-          "sha256": "47430e0cf68733cda0bcb7515e5fefa4f263801761e8b4c1f899e8306ceec098",
+          "sha256": "543a002d5bf57a8184f6aead0cc74f04e74f8070d750332ef01bcba1f7bbf198",
           "size": 13
         },
         {
@@ -58,7 +58,7 @@
           "size": 378
         }
       ],
-      "sha256": "0d6ca1e4ca843a9a3a1e8a0432d867a2d8c896c9a103705dd902ea177c7152f9",
+      "sha256": "eead74269c18454769e9d078d7247b6b701d3cd93571fce5e7f0e04123ad56b1",
       "size": 20480
     },
     {
@@ -79,7 +79,7 @@
         {
           "mode": "0640",
           "path": "work/registry/inspection-compat.fki",
-          "sha256": "47430e0cf68733cda0bcb7515e5fefa4f263801761e8b4c1f899e8306ceec098",
+          "sha256": "543a002d5bf57a8184f6aead0cc74f04e74f8070d750332ef01bcba1f7bbf198",
           "size": 13
         },
         {
@@ -89,7 +89,7 @@
           "size": 181
         }
       ],
-      "sha256": "f9f9fc8dee5830064be685f3c4af75b434a91bdad090a44d9aa1d6829b1e1992",
+      "sha256": "9fa7c79c417e3d8b2543ab0da84e74c9c21b0590bb9b1ae4a3b6747bd817b536",
       "size": 10240
     }
   ],

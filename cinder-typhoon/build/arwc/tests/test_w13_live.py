@@ -46,12 +46,12 @@ class W13Live(unittest.TestCase):
     session = ""
 
     def test_01_records_are_authorized_and_independently_exact(self) -> None:
-        for path, identifier in (("/api/window-on-thursday", "APT-CRR-2026-09-18"),
-                                 ("/api/who-is-expected-at-the-gate", "ROSTER-CRR-SEP18-R2")):
+        for path, identifier in (("/api/appointment-windows/current", "APT-CRR-2026-09-18"),
+                                 ("/api/appointment-windows/current/visitors", "ROSTER-CRR-SEP18-R2")):
             status, body = request(path, token="wrong")
             self.assertEqual(status, 403)
             self.assertNotIn(identifier, json.dumps(body))
-        status, appointment = request("/api/window-on-thursday")
+        status, appointment = request("/api/appointment-windows/current")
         self.assertEqual(status, 200)
         self.assertEqual(appointment["record"], {
             "record_id": "APT-CRR-2026-09-18", "revision": 1,
@@ -60,7 +60,7 @@ class W13Live(unittest.TestCase):
             "owner_organization": "Northbank Civil Inspections",
             "attendee": "northbank.inspector.117",
         })
-        status, roster = request("/api/who-is-expected-at-the-gate")
+        status, roster = request("/api/appointment-windows/current/visitors")
         self.assertEqual(status, 200)
         self.assertEqual(roster["record"]["identity"], "veybridge.tech.204")
         self.assertEqual(roster["record"]["assignment"], "CTR-VEY-204")
@@ -81,10 +81,10 @@ class W13Live(unittest.TestCase):
             (dict(baseline, inspection="INSP-MER-2026-09-18"), 409),
             (dict(baseline, window={"day": "Friday", "starts": "09:00", "ends": "11:00"}), 409),
         ):
-            status, body = request("/api/an-appointment-we-do-not-own", method="POST", body=changed)
+            status, body = request("/api/appointments/current", method="POST", body=changed)
             self.assertEqual(status, expected)
             self.assertNotIn('"revision":2', json.dumps(body))
-        status, response = request("/api/an-appointment-we-do-not-own", method="POST", body=baseline)
+        status, response = request("/api/appointments/current", method="POST", body=baseline)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["attendee"], "veybridge.tech.204")
         self.assertEqual(response["record"]["revision"], 2)
@@ -96,11 +96,11 @@ class W13Live(unittest.TestCase):
             "roster_id": "ROSTER-CRR-SEP18-R2",
             "identity": "veybridge.tech.204",
         }
-        status, body = request("/api/checked-in-as-the-contractor", method="POST",
+        status, body = request("/api/check-ins", method="POST",
                                body=dict(baseline, roster_id="ROSTER-CRR-SEP18-R1"))
         self.assertEqual(status, 403)
         self.assertNotIn("SCOPE-INSP-CRR-4417", json.dumps(body))
-        status, response = request("/api/checked-in-as-the-contractor", method="POST", body=baseline)
+        status, response = request("/api/check-ins", method="POST", body=baseline)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"], {
             "record_id": "SCOPE-INSP-CRR-4417", "inspection": "INSP-CRR-2026-09-18",
@@ -114,7 +114,7 @@ class W13Live(unittest.TestCase):
         subprocess.run(["docker", "restart", SERVICE], check=True, stdout=subprocess.DEVNULL)
         for _ in range(30):
             try:
-                status, response = request("/api/the-field-bag", token=type(self).session)
+                status, response = request("/api/field-kits/current", token=type(self).session)
                 if status == 200:
                     break
             except AssertionError:
@@ -127,8 +127,8 @@ class W13Live(unittest.TestCase):
              "cat", "/var/lib/arwc-contractors/audit/events.jsonl"],
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout
-        for action in ("window-on-thursday", "who-is-expected-at-the-gate",
-                       "an-appointment-we-do-not-own", "checked-in-as-the-contractor"):
+        for action in ("appointment-window-read", "check-in-roster-read",
+                       "appointment-created", "contractor-check-in-created"):
             self.assertIn(f'"action":"{action}"', audit)
 
 

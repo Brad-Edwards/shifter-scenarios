@@ -65,7 +65,7 @@ print(response.read().decode())
 
 class W01Live(unittest.TestCase):
     def test_01_customer_copy_is_bound_to_active_delivery(self) -> None:
-        status, response = request("/api/the-customer-s-copy")
+        status, response = request("/api/handovers/current")
         self.assertEqual(status, 200)
         self.assertEqual(
             response["record"],
@@ -81,7 +81,7 @@ class W01Live(unittest.TestCase):
         self.assertRegex(response["audit_id"], r"^[0-9a-f-]{36}$")
 
     def test_02_planner_handover_is_a_separate_record(self) -> None:
-        status, response = request("/api/the-planner-s-unfinished-handover")
+        status, response = request("/api/work-orders/current")
         self.assertEqual(status, 200)
         record = response["record"]
         self.assertEqual(record["record_id"], "PLN-HO-CRR-17")
@@ -90,7 +90,7 @@ class W01Live(unittest.TestCase):
         self.assertNotIn("customer_receipt", record)
 
     def test_03_exact_authored_planning_context_is_reused(self) -> None:
-        status, response = request("/api/how-the-company-buys-time")
+        status, response = request("/api/continuity-plans/current")
         self.assertEqual(status, 200)
         record = response["record"]
         self.assertEqual(record["record_id"], "CONT-DRY-A-R3")
@@ -111,7 +111,7 @@ class W01Live(unittest.TestCase):
         )
 
     def test_04_attachment_change_preserves_immutable_bindings(self) -> None:
-        before_status, before = request("/api/the-planner-s-unfinished-handover")
+        before_status, before = request("/api/work-orders/current")
         self.assertEqual(before_status, 200)
         original = before["record"]
         content = "# Cinder inspection summary\n\nOutlet inspection remains scheduled for 18 September.\n"
@@ -122,31 +122,31 @@ class W01Live(unittest.TestCase):
             "assignee": original["assignee"],
             "attachment": {"filename": "cinder-inspection-summary.md", "content": content},
         }
-        status, changed = request("/api/change-the-corporate-record", method="POST", body=body)
+        status, changed = request("/api/work-orders/PLN-HO-CRR-17", method="POST", body=body)
         self.assertEqual(status, 201)
         self.assertEqual(changed["inspection"], original["inspection"])
         self.assertEqual(changed["assignee"], original["assignee"])
         self.assertEqual(changed["attachment_sha256"], hashlib.sha256(content.encode()).hexdigest())
-        after_status, after = request("/api/the-planner-s-unfinished-handover")
+        after_status, after = request("/api/work-orders/current")
         self.assertEqual(after_status, 200)
         self.assertEqual(after["record"]["revision"], original["revision"] + 1)
         self.assertEqual(after["record"]["attachment"]["owner"], "nadia.corvane")
 
-        stale_status, _ = request("/api/change-the-corporate-record", method="POST", body=body)
+        stale_status, _ = request("/api/work-orders/PLN-HO-CRR-17", method="POST", body=body)
         self.assertEqual(stale_status, 409)
 
     def test_05_wrong_authority_tenant_and_binding_are_denied(self) -> None:
-        status, body = request("/api/the-customer-s-copy", token="not-a-session")
+        status, body = request("/api/handovers/current", token="not-a-session")
         self.assertEqual(status, 403)
         self.assertNotIn("HND-ARWC-047", json.dumps(body))
-        status, body = request("/api/the-customer-s-copy", tenant="merewick")
+        status, body = request("/api/handovers/current", tenant="merewick")
         self.assertEqual(status, 403)
         self.assertNotIn("HND-ARWC-047", json.dumps(body))
 
-        current_status, current = request("/api/the-planner-s-unfinished-handover")
+        current_status, current = request("/api/work-orders/current")
         self.assertEqual(current_status, 200)
         status, _ = request(
-            "/api/change-the-corporate-record",
+            "/api/work-orders/PLN-HO-CRR-17",
             method="POST",
             body={
                 "record_id": "PLN-HO-CRR-17",
@@ -159,13 +159,13 @@ class W01Live(unittest.TestCase):
         self.assertEqual(status, 409)
 
     def test_06_state_and_protected_audit_persist(self) -> None:
-        _, before = request("/api/the-planner-s-unfinished-handover")
+        _, before = request("/api/work-orders/current")
         subprocess.run(["docker", "restart", CONTAINER], check=True, stdout=subprocess.DEVNULL)
         for _ in range(30):
             completed = inside("sh", "-c", "test -r /tmp/arwc-ca.crt")
             if completed.returncode == 0:
                 try:
-                    status, after = request("/api/the-planner-s-unfinished-handover")
+                    status, after = request("/api/work-orders/current")
                     if status == 200:
                         break
                 except AssertionError:

@@ -50,7 +50,7 @@ class W34Live(unittest.TestCase):
                            "test_w05_w06_live.py", "test_w07_live.py", "test_w08_live.py",
                            "test_w09_live.py"):
                 subprocess.run(["python3", str(pathlib.Path(__file__).with_name(script))], check=True)
-        if not exists(HMI, "arwc-hmi", "/run/arwc-process-evidence/hmi/W29-plan.json"):
+        if not exists(HMI, "arwc-hmi", "/run/arwc-process-evidence/hmi/loss-plan.json"):
             w29.W29Live.setUpClass()
             for name in ("test_01_tariff_requires_ot_read_and_reuses_the_authored_method",
                          "test_02_balance_joins_current_data_and_independent_instruments",
@@ -110,37 +110,37 @@ class W34Live(unittest.TestCase):
                              "interval": "ALLOC-2026-DP3"}}
 
     def test_01_controlled_estimate_reaches_the_bound_consumer(self) -> None:
-        status, body = self.planning("/api/which-view-the-planner-trusts", self.view(), token="wrong")
+        status, body = self.planning("/api/reporting-submissions/current/result", self.view(), token="wrong")
         self.assertEqual(status, 403); self.assertNotIn("VIEW-CRR-34", json.dumps(body))
-        status, _ = self.planning("/api/which-view-the-planner-trusts", self.view(), tenant="other")
+        status, _ = self.planning("/api/reporting-submissions/current/result", self.view(), tenant="other")
         self.assertEqual(status, 403)
         wrong = self.view(); wrong["consumer_revision"] = 7
-        status, _ = self.planning("/api/which-view-the-planner-trusts", wrong); self.assertEqual(status, 409)
+        status, _ = self.planning("/api/reporting-submissions/current/result", wrong); self.assertEqual(status, 409)
         evidence = "/run/arwc-process-evidence/historian/W18-map.json"
         subprocess.run(["docker", "exec", "--user", "arwc-historian", "cinder-arwc-historian",
                         "mv", evidence, evidence + ".held"], check=True)
         try:
-            status, _ = self.planning("/api/which-view-the-planner-trusts", self.view())
+            status, _ = self.planning("/api/reporting-submissions/current/result", self.view())
             self.assertEqual(status, 403)
         finally:
             subprocess.run(["docker", "exec", "--user", "arwc-historian", "cinder-arwc-historian",
                             "mv", evidence + ".held", evidence], check=True)
-        status, result = self.planning("/api/which-view-the-planner-trusts", self.view())
+        status, result = self.planning("/api/reporting-submissions/current/result", self.view())
         self.assertEqual(status, 201, result); record = result["record"]
         self.assertEqual(record["source"], type(self).source)
         self.assertEqual(record["estimate"], {"Cairn Reach": 13.4, "North": 8.1, "Merewick": 7.65})
         self.assertEqual(record["refresh_interval_seconds"], 300)
         self.assertFalse(record["raw_process_observations_changed"])
-        status, repeated = self.planning("/api/which-view-the-planner-trusts", self.view())
+        status, repeated = self.planning("/api/reporting-submissions/current/result", self.view())
         self.assertEqual(status, 201); self.assertEqual(result, repeated)
 
     def test_02_consistency_checks_change_the_allocation_decision(self) -> None:
         for field, value in (("unit", "m3"), ("freshness_seconds", 61),
                              ("variance_limit_ml", 1.0)):
             wrong = self.decision(); wrong[field] = value
-            status, body = self.planning("/api/a-reassuring-decision", wrong)
+            status, body = self.planning("/api/planning-bids", wrong)
             self.assertEqual(status, 409); self.assertNotIn("ALLOC-EXPAND-R2", json.dumps(body))
-        status, result = self.planning("/api/a-reassuring-decision", self.decision())
+        status, result = self.planning("/api/planning-bids", self.decision())
         self.assertEqual(status, 201, result); record = result["record"]
         self.assertEqual(record["ordinary_decision"], "ALLOC-HOLD-R3")
         self.assertEqual(record["decision"], "ALLOC-EXPAND-R2"); self.assertTrue(record["decision_changed"])
@@ -151,11 +151,11 @@ class W34Live(unittest.TestCase):
     def test_03_handover_requires_live_authority_and_every_independent_owner(self) -> None:
         before = cjson(RESERVOIR, "arwc-reservoir", "/var/lib/arwc-reservoir/state/reservoir.json")
         wrong = self.handover(); wrong["control_client"] = "wrong"
-        status, body = self.planning("/api/still-reassuring-after-the-handover", wrong)
+        status, body = self.planning("/api/planning-bids/current", wrong)
         self.assertEqual(status, 403); self.assertNotIn("REPORT-CRR-34", json.dumps(body))
         subprocess.run(["docker", "stop", RESERVOIR], check=True, stdout=subprocess.DEVNULL)
         try:
-            status, body = self.planning("/api/still-reassuring-after-the-handover", self.handover())
+            status, body = self.planning("/api/planning-bids/current", self.handover())
             self.assertEqual(status, 409); self.assertNotIn("REPORT-CRR-34", json.dumps(body))
         finally:
             subprocess.run(["docker", "start", RESERVOIR], check=True, stdout=subprocess.DEVNULL)
@@ -163,7 +163,7 @@ class W34Live(unittest.TestCase):
             if exists(RESERVOIR, "arwc-reservoir", "/var/lib/arwc-reservoir/state/reservoir.json"): break
             time.sleep(0.25)
         for _ in range(30):
-            status, result = self.planning("/api/still-reassuring-after-the-handover", self.handover())
+            status, result = self.planning("/api/planning-bids/current", self.handover())
             if status == 201: break
             time.sleep(0.25)
         self.assertEqual(status, 201, result); record = result["record"]
@@ -179,13 +179,13 @@ class W34Live(unittest.TestCase):
         self.assertEqual((before["reserve_ml"], before["released_ml"]), (after["reserve_ml"], after["released_ml"]))
 
     def test_04_retry_persistence_and_prior_state_separation(self) -> None:
-        status, first = self.planning("/api/still-reassuring-after-the-handover", self.handover())
+        status, first = self.planning("/api/planning-bids/current", self.handover())
         self.assertEqual(status, 201)
         subprocess.run(["docker", "restart", DATA, INSTRUMENTS, RESERVOIR], check=True,
                        stdout=subprocess.DEVNULL)
         for _ in range(60):
             try:
-                status, repeated = self.planning("/api/still-reassuring-after-the-handover", self.handover())
+                status, repeated = self.planning("/api/planning-bids/current", self.handover())
                 if status == 201: break
             except AssertionError:
                 pass
@@ -215,7 +215,7 @@ class W34Live(unittest.TestCase):
                                       (INSTRUMENTS, "arwc-instruments", "/var/lib/arwc-instruments/audit/events.jsonl"),
                                       (RESERVOIR, "arwc-reservoir", "/var/lib/arwc-reservoir/audit/events.jsonl")):
             audit = subprocess.check_output(["docker", "exec", "--user", user, container, "cat", path], text=True)
-            self.assertIn('"action":"still-reassuring-after-the-handover"', audit)
+            self.assertIn('"action":"reporting-handover-created"', audit)
 
 
 if __name__ == "__main__": unittest.main(verbosity=2)

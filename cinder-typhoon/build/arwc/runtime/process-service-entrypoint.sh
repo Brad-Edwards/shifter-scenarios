@@ -12,23 +12,23 @@ install -d -o "$user" -g "$user" -m 0700 "$root/audit" "$root/state"
 if [ "$role" = engineering ]; then
   install -d -o "$user" -g "$user" -m 0700 \
     "$root/artifacts" \
-    "$root/artifacts/what-counts-as-intact" \
-    "$root/artifacts/the-constraints-of-a-valid-looking-program" \
-    "$root/artifacts/the-utility-s-small-world" \
-    "$root/artifacts/control-with-very-little-room"
+    "$root/artifacts/integrity-verifier" \
+    "$root/artifacts/collision-model" \
+    "$root/artifacts/utility-contract" \
+    "$root/artifacts/controlled-flow"
   install -d -o "$user" -g "$user" -m 0700 \
-    "$root/artifacts/the-replay-s-pieces" \
-    "$root/artifacts/the-systems-that-update-it" \
-    "$root/artifacts/the-condition-the-old-model-used" \
-    "$root/artifacts/replay-is-not-reality"
-  if [ ! -e "$root/artifacts/what-counts-as-intact/base.dpg" ]; then
-    cp /opt/process-service/artifacts/w27/base.dpg \
-      /opt/process-service/artifacts/w27/case-*.dpg \
-      /opt/process-service/artifacts/w27/rot128-verifier \
-      "$root/artifacts/what-counts-as-intact/"
-    chown "$user:$user" "$root/artifacts/what-counts-as-intact/"*
-    chmod 0400 "$root/artifacts/what-counts-as-intact/"*.dpg
-    chmod 0500 "$root/artifacts/what-counts-as-intact/rot128-verifier"
+    "$root/artifacts/replay-model-created" \
+    "$root/artifacts/replay-transitions-created" \
+    "$root/artifacts/replay-condition-created" \
+    "$root/artifacts/replay-witness-created"
+  if [ ! -e "$root/artifacts/integrity-verifier/base.dpg" ]; then
+    cp /opt/process-service/artifacts/integrity/base.dpg \
+      /opt/process-service/artifacts/integrity/case-*.dpg \
+      /opt/process-service/artifacts/integrity/rot128-verifier \
+      "$root/artifacts/integrity-verifier/"
+    chown "$user:$user" "$root/artifacts/integrity-verifier/"*
+    chmod 0400 "$root/artifacts/integrity-verifier/"*.dpg
+    chmod 0500 "$root/artifacts/integrity-verifier/rot128-verifier"
   fi
 fi
 install -d -o root -g arwc-process-evidence -m 0750 /run/arwc-process-evidence

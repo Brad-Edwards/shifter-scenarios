@@ -86,7 +86,7 @@ class W14Live(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         status, response = json_request(
-            "https://contractor-portal.arwc.test", "/api/checked-in-as-the-contractor",
+            "https://contractor-portal.arwc.test", "/api/check-ins",
             method="POST", body={"appointment_id": "APT-CRR-2026-09-18",
                                   "roster_id": "ROSTER-CRR-SEP18-R2",
                                   "identity": "veybridge.tech.204"},
@@ -96,10 +96,10 @@ class W14Live(unittest.TestCase):
         cls.session = response["contractor_session"]
 
     def test_01_field_bag_requires_scoped_session_and_is_exact(self) -> None:
-        status, body = json_request("https://contractor-portal.arwc.test", "/api/the-field-bag", token="wrong")
+        status, body = json_request("https://contractor-portal.arwc.test", "/api/field-kits/current", token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("FIELD-BAG-CRR-4417-R3", json.dumps(body))
-        status, response = json_request("https://contractor-portal.arwc.test", "/api/the-field-bag",
+        status, response = json_request("https://contractor-portal.arwc.test", "/api/field-kits/current",
                                         token=type(self).session)
         self.assertEqual(status, 200)
         record = response["record"]
@@ -110,11 +110,11 @@ class W14Live(unittest.TestCase):
         self.assertEqual(record["retained_client"]["encoding"], "application/json")
 
     def test_02_manifest_distinguishes_retired_and_current_services(self) -> None:
-        status, body = json_request("https://field-gateway.arwc.test", "/api/the-service-that-replaced-it",
+        status, body = json_request("https://field-gateway.arwc.test", "/api/instruments/current",
                                     token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("process-read/v2", json.dumps(body))
-        status, response = json_request("https://field-gateway.arwc.test", "/api/the-service-that-replaced-it",
+        status, response = json_request("https://field-gateway.arwc.test", "/api/instruments/current",
                                         token=type(self).session)
         self.assertEqual(status, 200)
         self.assertEqual(response["record"]["revision"], 21)
@@ -126,7 +126,7 @@ class W14Live(unittest.TestCase):
 
     def test_03_v1_json_and_wrong_scope_are_rejected(self) -> None:
         status, body = json_request(
-            "https://field-gateway.arwc.test", "/api/a-fresh-reading-from-the-field", method="POST",
+            "https://field-gateway.arwc.test", "/api/readings/current", method="POST",
             token=type(self).session,
             body={"asset_id": "AST-CRR-017", "outlet_group": "OG-CRR-02", "sample_time": "now"},
         )
@@ -135,7 +135,7 @@ class W14Live(unittest.TestCase):
         request = {"asset": "AST-CRR-017", "group": "OG-MER-04",
                    "observed_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                    "nonce": "scope-denial-1"}
-        status, body = cbor_request("/api/a-fresh-reading-from-the-field", cbor_map(request), type(self).session)
+        status, body = cbor_request("/api/readings/current", cbor_map(request), type(self).session)
         self.assertEqual(status, 409)
         self.assertNotIn("FIT-CRR-204A", json.dumps(body))
 
@@ -143,7 +143,7 @@ class W14Live(unittest.TestCase):
         observed = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         request = {"asset": "AST-CRR-017", "group": "OG-CRR-02", "observed_at": observed,
                    "nonce": "accepted-reading-1"}
-        status, response = cbor_request("/api/a-fresh-reading-from-the-field", cbor_map(request),
+        status, response = cbor_request("/api/readings/current", cbor_map(request),
                                         type(self).session)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"], {
@@ -153,7 +153,7 @@ class W14Live(unittest.TestCase):
             "observations": [{"instrument": "FIT-CRR-204A", "flow_lps": 0.0},
                              {"instrument": "FIT-CRR-204B", "flow_lps": 0.0}],
         })
-        status, replay = cbor_request("/api/a-fresh-reading-from-the-field", cbor_map(request),
+        status, replay = cbor_request("/api/readings/current", cbor_map(request),
                                       type(self).session)
         self.assertEqual(status, 409)
         self.assertNotIn("observations", replay)
@@ -162,7 +162,7 @@ class W14Live(unittest.TestCase):
         subprocess.run(["docker", "restart", BRIDGE], check=True, stdout=subprocess.DEVNULL)
         for _ in range(30):
             try:
-                status, _ = json_request("https://field-gateway.arwc.test", "/api/the-service-that-replaced-it",
+                status, _ = json_request("https://field-gateway.arwc.test", "/api/instruments/current",
                                          token=type(self).session)
                 if status == 200:
                     break

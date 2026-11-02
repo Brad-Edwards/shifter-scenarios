@@ -92,15 +92,15 @@ class W12Live(unittest.TestCase):
 
         subprocess.run(["docker", "exec", DATA, "mv", evidence, evidence + ".hold"], check=True)
         set_collector(False)
-        status, body = json_request("/api/a-collector-in-quarantine")
+        status, body = json_request("/api/collectors/quarantine")
         self.assertEqual(status, 403)
         self.assertNotIn("QTN-COL-2019-12", json.dumps(body))
         subprocess.run(["docker", "exec", DATA, "mv", evidence + ".hold", evidence], check=True)
-        status, lineage_branch = json_request("/api/a-collector-in-quarantine")
+        status, lineage_branch = json_request("/api/collectors/quarantine")
         self.assertEqual(status, 200)
         subprocess.run(["docker", "exec", DATA, "mv", evidence, evidence + ".hold"], check=True)
         set_collector(True)
-        status, collector_branch = json_request("/api/a-collector-in-quarantine")
+        status, collector_branch = json_request("/api/collectors/quarantine")
         self.assertEqual(status, 200)
         self.assertEqual(collector_branch["record"], lineage_branch["record"])
         subprocess.run(["docker", "exec", DATA, "mv", evidence + ".hold", evidence], check=True)
@@ -168,13 +168,13 @@ print(json.dumps(out,sort_keys=True,separators=(",",":")))
         self.assertEqual(computed.returncode, 0, computed.stderr)
         results = json.loads(computed.stdout)
         wrong, body = json_request(
-            "/api/how-the-collection-was-protected", method="POST",
+            "/api/bundles/current/collection-policy", method="POST",
             body={"sample_results": dict(results, **{"AQTN1-AUTH-03": "accepted"})},
         )
         self.assertEqual(wrong, 409)
         self.assertNotIn("AQTN1-KEYS-R1", json.dumps(body))
         status, response = json_request(
-            "/api/how-the-collection-was-protected", method="POST",
+            "/api/bundles/current/collection-policy", method="POST",
             body={"sample_results": results},
         )
         self.assertEqual(status, 201)
@@ -203,13 +203,13 @@ print(json.dumps({"plaintext":base64.b64encode(plaintext).decode(),"pkcs8":base6
         values = json.loads(opened.stdout)
         plaintext, key = base64.b64decode(values["plaintext"]), base64.b64decode(values["pkcs8"])
         wrong, body = json_request(
-            "/api/the-cold-archive-opens", method="POST",
+            "/api/archive-jobs", method="POST",
             body={"plaintext": values["plaintext"], "unwrapped_pkcs8": base64.b64encode(bytes(len(key))).decode()},
         )
         self.assertEqual(wrong, 409)
         self.assertNotIn("IDREL-COL-R4", json.dumps(body))
         status, response = json_request(
-            "/api/the-cold-archive-opens", method="POST",
+            "/api/archive-jobs", method="POST",
             body={"plaintext": values["plaintext"], "unwrapped_pkcs8": values["pkcs8"]},
         )
         self.assertEqual(status, 201)
@@ -240,16 +240,16 @@ print(base64.b64encode(key.sign(message)).decode())
             "proof": signed.stdout.strip(),
         }
         denied, response = json_request(
-            "/api/a-collection-path-still-alive", method="POST",
+            "/api/collection-paths/current", method="POST",
             body=dict(body, proof=base64.b64encode(b"wrong").decode()),
         )
         self.assertEqual(denied, 409)
-        status, response = json_request("/api/a-collection-path-still-alive", method="POST", body=body)
+        status, response = json_request("/api/collection-paths/current", method="POST", body=body)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["scope"], "CUR-COL-CRR-R11/read")
         self.assertEqual(response["record"]["expires_in_seconds"], 600)
         type(self).session = response["collection_session"]
-        replay, _ = json_request("/api/a-collection-path-still-alive", method="POST", body=body)
+        replay, _ = json_request("/api/collection-paths/current", method="POST", body=body)
         self.assertEqual(replay, 409)
 
     def test_06_only_current_bound_dataset_is_returned(self) -> None:
@@ -260,10 +260,10 @@ print(base64.b64encode(key.sign(message)).decode())
             (dict(baseline, dataset="ARC-COLD-CRR-2019"), 409),
             (dict(baseline, revision=10), 409),
         ):
-            status, body = json_request("/api/a-collection-path-still-alive", method="POST", body=changed)
+            status, body = json_request("/api/collection-paths/current", method="POST", body=changed)
             self.assertEqual(status, expected)
             self.assertNotIn('"current":true', json.dumps(body))
-        status, response = json_request("/api/a-collection-path-still-alive", method="POST", body=baseline)
+        status, response = json_request("/api/collection-paths/current", method="POST", body=baseline)
         self.assertEqual(status, 201)
         self.assertEqual(response["record"], {
             "record_id": "CUR-COL-CRR-R11", "revision": 11, "current": True,
@@ -272,10 +272,10 @@ print(base64.b64encode(key.sign(message)).decode())
         })
 
     def test_07_authorization_persistence_and_owned_audits(self) -> None:
-        status, body = json_request("/api/a-collector-in-quarantine", token="wrong")
+        status, body = json_request("/api/collectors/quarantine", token="wrong")
         self.assertEqual(status, 403)
         self.assertNotIn("QTN-COL-2019-12", json.dumps(body))
-        status, body = json_request("/api/a-collector-in-quarantine", tenant="merewick")
+        status, body = json_request("/api/collectors/quarantine", tenant="merewick")
         self.assertEqual(status, 403)
         subprocess.run(["docker", "restart", ARCHIVE], check=True, stdout=subprocess.DEVNULL)
         baseline = {"operation": "read", "collection_session": type(self).session,
@@ -283,7 +283,7 @@ print(base64.b64encode(key.sign(message)).decode())
         for _ in range(30):
             try:
                 status, response = json_request(
-                    "/api/a-collection-path-still-alive", method="POST", body=baseline,
+                    "/api/collection-paths/current", method="POST", body=baseline,
                 )
                 if status == 201:
                     break
@@ -298,9 +298,9 @@ print(base64.b64encode(key.sign(message)).decode())
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout
         for action in (
-            "a-collector-in-quarantine", "how-the-collection-was-protected",
-            "the-cold-archive-opens", "a-collection-path-still-alive/exchange",
-            "a-collection-path-still-alive/read",
+            "collection-quarantine-read", "collection-protection-read",
+            "archived-collection-read", "collection-session/exchange",
+            "collection-session/read",
         ):
             self.assertIn(f'"action":"{action}"', audit)
         hidden = inside("sh", "-c", "test ! -r /var/lib/arwc-archive/artifacts/cold-archive.plaintext")

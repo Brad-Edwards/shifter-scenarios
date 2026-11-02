@@ -86,7 +86,7 @@ class W16Live(unittest.TestCase):
                 for _ in range(8)
             ] + [(7, 0, 0, 0)]
             status, body = json_request(
-                "/api/an-experiment-with-a-signal", method="POST",
+                "/api/signal-experiments", method="POST",
                 body=self.binding(operation="measure", program=program(*instructions)),
             )
             self.assertEqual(status, 201, body)
@@ -100,14 +100,14 @@ class W16Live(unittest.TestCase):
         return value
 
     def test_01_descriptor_and_baseline_are_exact_and_authorized(self) -> None:
-        denied, body = json_request("/api/the-sequencer-s-vocabulary", token="wrong")
+        denied, body = json_request("/api/sequencer-specs/current", token="wrong")
         self.assertEqual(denied, 403)
         self.assertNotIn("SEQ-BASE-17", json.dumps(body))
-        denied, body = json_request("/api/the-sequencer-s-vocabulary", tenant="other")
+        denied, body = json_request("/api/sequencer-specs/current", tenant="other")
         self.assertEqual(denied, 403)
         self.assertNotIn("SEQ-CRR-4", json.dumps(body))
 
-        status, response = json_request("/api/the-sequencer-s-vocabulary")
+        status, response = json_request("/api/sequencer-specs/current")
         self.assertEqual(status, 200)
         record = response["record"]
         self.assertEqual(record["sample_slots"], 256)
@@ -129,14 +129,14 @@ class W16Live(unittest.TestCase):
 
     def test_02_late_authorization_preserves_cycles_but_never_writes(self) -> None:
         before, body = json_request(
-            "/api/an-experiment-with-a-signal", method="POST",
+            "/api/signal-experiments", method="POST",
             body=self.binding(operation="measure", program=program((5, 4, 0, 0), (7, 0, 0, 0))),
         )
         self.assertEqual(before, 403)
 
         baseline = self.binding(program=program((1, 4, 0, 0), (7, 0, 0, 0)))
         status, response = json_request(
-            "/api/an-observation-outside-the-window", method="POST", body=baseline,
+            "/api/observations", method="POST", body=baseline,
         )
         self.assertEqual(status, 201)
         self.assertEqual(response["record"]["cycles"], 228)
@@ -144,7 +144,7 @@ class W16Live(unittest.TestCase):
 
         crossing = self.binding(program=program((1, 160, 0, 0), (7, 0, 0, 0)))
         status, response = json_request(
-            "/api/an-observation-outside-the-window", method="POST", body=crossing,
+            "/api/observations", method="POST", body=crossing,
         )
         self.assertEqual(status, 201)
         record = response["record"]
@@ -155,7 +155,7 @@ class W16Live(unittest.TestCase):
         self.assertGreater(record["cycles"], 220)
 
         replay, _ = json_request(
-            "/api/an-observation-outside-the-window", method="POST", body=crossing,
+            "/api/observations", method="POST", body=crossing,
         )
         self.assertEqual(replay, 409)
         for changed in (
@@ -165,7 +165,7 @@ class W16Live(unittest.TestCase):
             self.binding(program=program((1, 160, 0, 0))),
         ):
             denied, _ = json_request(
-                "/api/an-observation-outside-the-window", method="POST", body=changed,
+                "/api/observations", method="POST", body=changed,
             )
             self.assertEqual(denied, 409)
 
@@ -175,7 +175,7 @@ class W16Live(unittest.TestCase):
         self.assertEqual(references, {"4": 0, "5": 1, "6": 255})
         self.assertEqual(target, 0xA5)
         wrong, body = json_request(
-            "/api/an-experiment-with-a-signal", method="POST",
+            "/api/signal-experiments", method="POST",
             body=self.binding(
                 operation="verify", reference_values=references, target_slot=159,
                 recovered_byte=target ^ 1, repetitions=8, bit_order="lsb0",
@@ -184,7 +184,7 @@ class W16Live(unittest.TestCase):
         self.assertEqual(wrong, 409)
         self.assertNotIn("SEQ-DISCRIM-CRR-4", json.dumps(body))
         status, response = json_request(
-            "/api/an-experiment-with-a-signal", method="POST",
+            "/api/signal-experiments", method="POST",
             body=self.binding(
                 operation="verify", reference_values=references, target_slot=159,
                 recovered_byte=target, repetitions=8, bit_order="lsb0",
@@ -208,12 +208,12 @@ class W16Live(unittest.TestCase):
         wrong = dict(request, request_id="wrong-" + uuid.uuid4().hex,
                      calibration=base64.b64encode(recovered[:-1] + b"\x00").decode())
         status, body = json_request(
-            "/api/what-the-instrument-remembers", method="POST", body=wrong,
+            "/api/instrument-history/current", method="POST", body=wrong,
         )
         self.assertEqual(status, 409)
         self.assertNotIn("CAL-CRR-OG2-R8", json.dumps(body))
         status, response = json_request(
-            "/api/what-the-instrument-remembers", method="POST", body=request,
+            "/api/instrument-history/current", method="POST", body=request,
         )
         self.assertEqual(status, 201)
         record = response["record"]
@@ -240,9 +240,9 @@ class W16Live(unittest.TestCase):
             text=True, stdout=subprocess.PIPE, check=True,
         ).stdout
         actions = [json.loads(line)["action"] for line in audit.splitlines()]
-        self.assertIn("an-observation-outside-the-window", actions)
-        self.assertIn("an-experiment-with-a-signal/verify", actions)
-        self.assertIn("what-the-instrument-remembers", actions)
+        self.assertIn("observation-record-created", actions)
+        self.assertIn("signal-experiment/verify", actions)
+        self.assertIn("instrument-history-read", actions)
 
         subprocess.run(["docker", "restart", ARCHIVE], stdout=subprocess.DEVNULL, check=True)
         for _ in range(30):
@@ -256,7 +256,7 @@ class W16Live(unittest.TestCase):
             self.fail("sequencer state did not persist across restart")
         for _ in range(30):
             try:
-                status, descriptor = json_request("/api/the-sequencer-s-vocabulary")
+                status, descriptor = json_request("/api/sequencer-specs/current")
                 break
             except AssertionError:
                 time.sleep(0.25)

@@ -183,7 +183,7 @@ class W27Live(unittest.TestCase):
                        token=type(self).process_session if token is None else token, tenant=tenant)
 
     def test_01_native_verifier_and_six_programs_freeze_rot128(self) -> None:
-        status, missing = self.process("/api/what-counts-as-intact", {
+        status, missing = self.process("/api/integrity-verifier", {
             "operation": "materials", "record_id": "VER-ROT128-R3",
         })
         self.assertEqual(status, 404)
@@ -242,7 +242,7 @@ for item in value['programs']: (root/item['filename']).write_bytes(base64.b64dec
         })
         self.assertEqual(status, 201)
         self.assertEqual(accepted["record"]["cases_verified"], 6)
-        status, missing = self.process("/api/what-counts-as-intact", {
+        status, missing = self.process("/api/integrity-verifier", {
             "operation": "materials", "record_id": "VER-ROT128-R3",
         })
         self.assertEqual(status, 404)
@@ -341,7 +341,7 @@ for item in value['programs']: (root/item['filename']).write_bytes(base64.b64dec
             ["docker", "exec", "--user", "arwc-diagnostics", "cinder-arwc-diagnostics", "cat",
              "/var/lib/arwc-diagnostics/state/service.json"], text=True, stdout=subprocess.PIPE, check=True,
         ).stdout)
-        self.assertTrue(engineering["w27_verifier_reproduced"] and engineering["w27_collision_modeled"])
+        self.assertTrue(engineering["integrity_verifier_reproduced"] and engineering["collision_model_created"])
         self.assertTrue(diagnostics["colliding_program_accepted"])
 
     def test_05_service_posture_and_network_boundaries_remain_exact(self) -> None:
@@ -395,11 +395,11 @@ print(response.status)
                 self.assertNotEqual(probe.returncode, 0, f"{service} unexpectedly reached {target}")
         utility_capability = subprocess.check_output([
             "docker", "exec", "cinder-arwc-engineering", "getcap",
-            "/opt/process-service/artifacts/w28/utility",
+            "/opt/process-service/artifacts/utility/utility",
         ], text=True).strip()
         self.assertEqual(
             utility_capability,
-            "/opt/process-service/artifacts/w28/utility cap_setuid=ep",
+            "/opt/process-service/artifacts/utility/utility cap_setuid=ep",
         )
         for address in ("10.77.63.40", "10.77.63.50", "10.77.62.20"):
             probe = inside("python3", "-c", f"import socket; socket.create_connection(('{address}',443),1)")

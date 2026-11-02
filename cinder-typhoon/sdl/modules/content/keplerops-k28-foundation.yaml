@@ -25,7 +25,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/connector-archive/source-state
           version: '2026-09-18'
-          digest: sha256:f608a4d3080c5b5479e6911c2468672371d32ec4f1a75ce70908cd72d61afd81
+          digest: sha256:8b6fbf8ba8afc635b68d29f45165638086289a05e647c8fc9bd3e7a88a754d2c
           media_type: application/x-tar
         permitted_routes:
         - mechanism:

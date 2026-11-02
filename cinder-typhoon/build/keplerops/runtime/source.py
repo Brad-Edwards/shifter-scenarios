@@ -29,18 +29,18 @@ REPOSITORIES = {
     "release-signer-history": REPOSITORY_ROOT / "fieldkest" / "release-signer-history.git",
 }
 CONFIG = json.loads((STATE / "config/opening.json").read_text())
-K11_CONFIG = json.loads((STATE / "config/k11.json").read_text())
-K28_CONFIG = json.loads((STATE / "config/k28.json").read_text())
+K11_CONFIG = json.loads((STATE / "config/policy-compiler.json").read_text())
+K28_CONFIG = json.loads((STATE / "config/connector-archive.json").read_text())
 TOKEN = credential("developer_token")
 USERNAME = CONFIG["credentials"][0]["principal"]
 HANDOVER = json.loads((STATE / "handovers/HND-FLK-2026-09.json").read_text())
 API_CONTENT = re.compile(r"^/api/v1/repos/fieldkest/(fieldlink-connector|policy-compiler|connector-archive|release-signer-history)/contents/(.+)$")
 GIT_ROUTE = re.compile(r"^/fieldkest/(fieldlink-connector|policy-compiler|connector-archive|release-signer-history)\.git/(info/refs|git-upload-pack)$")
 WORKER_SECRET = Path("/tmp/worker-hmac.key").read_bytes()
-POLICY_BINARY = STATE / "exercises/k11/fieldkest-policyc"
+POLICY_BINARY = STATE / "exercises/policy-compiler/fieldkest-policyc"
 POLICY_STATE = AUDIT / "policy-state"
 POLICY_LOCK = threading.RLock()
-CONNECTOR_BINARY = STATE / "exercises/k28/fieldlink-connector"
+CONNECTOR_BINARY = STATE / "exercises/connector-archive/fieldlink-connector"
 CONNECTOR_RESULTS = AUDIT / "connector-archive-results"
 
 

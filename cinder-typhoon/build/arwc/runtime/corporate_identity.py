@@ -248,18 +248,18 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/provisioning-packages/current":
             state["starter_observed"] = True
             save_state(state)
-            self.accepted("a-starter-pack-left-open", STARTER, "fieldlink")
+            self.accepted("starter-pack-read", STARTER, "fieldlink")
         elif path == "/api/activations/current":
             state["roster_observed"] = True
             save_state(state)
-            self.accepted("the-activation-roster", ROSTER, "fieldlink")
+            self.accepted("activation-roster-read", ROSTER, "fieldlink")
         elif path == "/api/sessions/current/audit":
             if not self.planning_authorized():
                 return
             result = dict(RENDERING)
             result["oauth_state"] = state["oauth_state"]
             result["pending_preview_origin"] = state["preview_origin"]
-            self.accepted("the-planner-s-login-trail", result, "planning-consumer")
+            self.accepted("login-trail-read", result, "planning-consumer")
         else:
             self.send_json(404, {"error": "record not found"})
 
@@ -310,7 +310,7 @@ class Handler(BaseHTTPRequestHandler):
             "roles": ["temporary-planning-review"],
             "administrative": False,
         }
-        self.accepted("temporary-with-the-wrong-rights", result, "mira.vale.temp", 201,
+        self.accepted("temporary-session-issued", result, "mira.vale.temp", 201,
                       {"limited_session": token})
 
     def attach_preview(self, request: dict[str, object]) -> None:
@@ -329,7 +329,7 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         result = dict(RENDERING)
         result.update({"revision": 9, "preview_origin": request["preview_origin"]})
-        self.accepted("a-drawing-in-the-wrong-context", result, "planning-consumer", 201)
+        self.accepted("drawing-context-created", result, "planning-consumer", 201)
 
     def bootstrap(self, request: dict[str, object]) -> None:
         state = load_state()
@@ -363,7 +363,7 @@ class Handler(BaseHTTPRequestHandler):
             "protected_record": "RENDER-CRR-882",
             "expires_at_epoch": expires,
         }
-        self.accepted("a-planner-session-that-works", result, "nadia.corvane", 201,
+        self.accepted("planner-session-issued", result, "nadia.corvane", 201,
                       {"planner_session": token})
 
 

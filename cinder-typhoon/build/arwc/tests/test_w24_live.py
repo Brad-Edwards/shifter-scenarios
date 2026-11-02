@@ -31,10 +31,10 @@ ctx=ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
 corporate=pathlib.Path("/var/lib/fieldlink-connector/handover/corporate-session").read_text().strip()
 planner=pathlib.Path("/var/lib/fieldlink-connector/receipts/planner-session").read_text().strip()
 headers={"Authorization":"Bearer "+corporate,"X-ARWC-Tenant":"arwc"}
-contract=json.load(urllib.request.urlopen(urllib.request.Request("https://business-workplace.arwc.test/api/the-integration-s-read-contract",headers=headers),context=ctx))["integration_session"]
+contract=json.load(urllib.request.urlopen(urllib.request.Request("https://business-workplace.arwc.test/api/integration-contracts/current",headers=headers),context=ctx))["integration_session"]
 payload=json.dumps({"integration_client":"INT-CRR-08","report_binding":"REC-CRR-DP3-17","scope":"OG-CRR-02/read","feed":"FEED-OG2-R21"},separators=(",", ":")).encode()
 headers.update({"X-ARWC-Planner-Session":planner,"X-ARWC-Integration-Session":contract,"Content-Type":"application/json"})
-req=urllib.request.Request("https://planning-data.arwc.test/api/integration/from-the-report-to-the-live-feed",data=payload,headers=headers,method="POST")
+req=urllib.request.Request("https://planning-data.arwc.test/api/integration-sessions",data=payload,headers=headers,method="POST")
 print(json.load(urllib.request.urlopen(req,context=ctx))["process_session"])
 '''
     completed = inside("python3", "-c", script)
@@ -115,11 +115,11 @@ class W24Live(unittest.TestCase):
         issue_process_session()
 
     def test_01_contract_is_real_bound_and_authorized(self) -> None:
-        status, denied = request("/api/two-kinds-of-answer", token="wrong")
+        status, denied = request("/api/signature-requests", token="wrong")
         self.assertEqual(status, 403); self.assertNotIn("target_ciphertext", json.dumps(denied))
-        status, denied = request("/api/two-kinds-of-answer", tenant="merewick")
+        status, denied = request("/api/signature-requests", tenant="merewick")
         self.assertEqual(status, 403); self.assertNotIn("target_ciphertext", json.dumps(denied))
-        status, result = request("/api/two-kinds-of-answer")
+        status, result = request("/api/signature-requests")
         self.assertEqual(status, 200); record = result["record"]; type(self).contract = record
         self.assertEqual(record["record_id"], "RECOVERY-ORACLE-R4")
         self.assertEqual(record["engineering_record"], "ENG-REC-24")
@@ -137,29 +137,29 @@ class W24Live(unittest.TestCase):
             rotation = selector(int(case["request_id"], 16), case["epoch_bucket"]) & 3
             predictions.append({**case, "observed_class": "ABCD"[("ABCD".index(case["padding_class"]) + rotation) & 3]})
         wrong = json.loads(json.dumps(predictions)); wrong[2]["observed_class"] = "A"
-        status, _ = request("/api/which-answer-comes-next", method="POST", body={
+        status, _ = request("/api/signature-oracles/current", method="POST", body={
             "record_id": "ENG-REC-24", "prediction_set": "SELECTOR-CRR-R4", "predictions": wrong})
         self.assertEqual(status, 409)
         body = {"record_id": "ENG-REC-24", "prediction_set": "SELECTOR-CRR-R4",
                 "predictions": [{"request_id": item["request_id"], "epoch_bucket": item["epoch_bucket"],
                                  "observed_class": item["observed_class"]} for item in predictions]}
-        status, result = request("/api/which-answer-comes-next", method="POST", body=body)
+        status, result = request("/api/signature-oracles/current", method="POST", body=body)
         self.assertEqual(status, 201); self.assertEqual(result["record"]["cases_accepted"], 4)
-        self.assertEqual(request("/api/which-answer-comes-next", method="POST", body=body)[0], 409)
+        self.assertEqual(request("/api/signature-oracles/current", method="POST", body=body)[0], 409)
 
     def test_03_oracle_classes_rotation_repeats_and_range(self) -> None:
         bucket = type(self).contract["epoch_bucket"]
         example = type(self).contract["labeled_examples"][0]
         body = {"operation": "oracle", "request_id": "2400000000002001",
                 "epoch_bucket": bucket, "ciphertext": example["ciphertext"]}
-        status, result = request("/api/the-diagnostic-evidence-bundle", method="POST", body=body)
+        status, result = request("/api/estimator-tasks/current", method="POST", body=body)
         self.assertEqual(status, 200)
         rotation = selector(int(body["request_id"], 16), bucket) & 3
         raw = "ABCD"[("ABCD".index(result["observed_class"]) - rotation) & 3]
         self.assertEqual(raw, "A")
-        self.assertEqual(request("/api/the-diagnostic-evidence-bundle", method="POST", body=body)[0], 409)
+        self.assertEqual(request("/api/estimator-tasks/current", method="POST", body=body)[0], 409)
         out_of_range = dict(body, request_id="2400000000002002", ciphertext=f"{int(type(self).contract['modulus'], 16):0512x}")
-        status, denied = request("/api/the-diagnostic-evidence-bundle", method="POST", body=out_of_range)
+        status, denied = request("/api/estimator-tasks/current", method="POST", body=out_of_range)
         self.assertEqual(status, 409); self.assertNotIn("observed_class", denied)
 
     def test_04_bounded_bleichenbacher_recovery_opens_bundle(self) -> None:
@@ -175,7 +175,7 @@ def call(path,body=None,method="POST"):
  try:r=urllib.request.urlopen(req,context=ctx)
  except urllib.error.HTTPError as e:r=e
  return r.status,json.loads(r.read())
-status,answer=call("/api/two-kinds-of-answer",None,"GET")
+status,answer=call("/api/signature-requests",None,"GET")
 record=answer["record"];n=int(record["modulus"],16);e=record["exponent"];c=int(record["target_ciphertext"],16)
 bucket=record["epoch_bucket"];B=1<<(8*254);queries=0
 def select(request_id):
@@ -186,7 +186,7 @@ def oracle(multiplier):
  global queries
  request_id=(0x24A0000000000000+queries)&MASK;queries+=1
  candidate=c*pow(multiplier,e,n)%n
- status,result=call("/api/the-diagnostic-evidence-bundle",{"operation":"oracle","request_id":f"{request_id:016x}","epoch_bucket":bucket,"ciphertext":f"{candidate:0512x}"})
+ status,result=call("/api/estimator-tasks/current",{"operation":"oracle","request_id":f"{request_id:016x}","epoch_bucket":bucket,"ciphertext":f"{candidate:0512x}"})
  if status!=200:raise RuntimeError((status,result,queries,multiplier))
  raw=("ABCD".index(result["observed_class"])-(select(request_id)&3))&3
  return raw!=0
@@ -216,7 +216,7 @@ for iteration in range(1,2050):
  if len(intervals)==1 and intervals[0][0]==intervals[0][1]:break
 else:raise RuntimeError("interval did not converge")
 encoded=intervals[0][0].to_bytes(256,"big");separator=encoded.index(0,2);unlock=encoded[separator+1:]
-status,opened=call("/api/the-diagnostic-evidence-bundle",{"operation":"open","bundle_id":"DIAG-EVID-CRR-R7","project_id":"CRR-CTRL-R21","project_revision":21,"archive_unlock_b64":base64.b64encode(unlock).decode()})
+status,opened=call("/api/estimator-tasks/current",{"operation":"open","bundle_id":"DIAG-EVID-CRR-R7","project_id":"CRR-CTRL-R21","project_revision":21,"archive_unlock_b64":base64.b64encode(unlock).decode()})
 if status!=201:raise RuntimeError((status,opened))
 print(json.dumps({"queries":queries,"unlock":base64.b64encode(unlock).decode(),"opened":opened},separators=(",", ":")))
 '''
@@ -252,15 +252,15 @@ print(json.dumps({"queries":queries,"unlock":base64.b64encode(unlock).decode(),"
         forged = {"export_request_b64": base64.b64encode(message).decode(), "R": r_encoded.hex(),
                   "s": scalar.to_bytes(32, "little").hex()}; type(self).forged = forged
         wrong = dict(forged, s=(scalar + 1).to_bytes(32, "little").hex())
-        self.assertEqual(request("/api/signed-by-someone-who-never-approved-it", method="POST", body=wrong)[0], 409)
+        self.assertEqual(request("/api/reporting-submissions", method="POST", body=wrong)[0], 409)
         archived = dict(forged, export_request_b64=first["canonical_b64"], R=first["R"], s=first["s"])
-        self.assertEqual(request("/api/signed-by-someone-who-never-approved-it", method="POST", body=archived)[0], 409)
-        status, result = request("/api/signed-by-someone-who-never-approved-it", method="POST", body=forged)
+        self.assertEqual(request("/api/reporting-submissions", method="POST", body=archived)[0], 409)
+        status, result = request("/api/reporting-submissions", method="POST", body=forged)
         self.assertEqual(status, 201); record = result["record"]
         self.assertEqual(record["export_request"], "EXP-CAL-CRR-25")
         self.assertEqual(record["scope"], "calibration-exceptions/read")
         self.assertFalse(record["maintenance_approval"]); self.assertFalse(record["control_authority"])
-        self.assertEqual(request("/api/signed-by-someone-who-never-approved-it", method="POST", body=forged)[0], 409)
+        self.assertEqual(request("/api/reporting-submissions", method="POST", body=forged)[0], 409)
 
     def test_06_crypto_artifact_state_and_audit_persist(self) -> None:
         for record in type(self).bundle["records"]:
@@ -273,7 +273,7 @@ print(json.dumps({"queries":queries,"unlock":base64.b64encode(unlock).decode(),"
         subprocess.run(["docker", "restart", "cinder-arwc-diagnostics"], check=True, stdout=subprocess.DEVNULL)
         for _ in range(80):
             try:
-                status, _ = request("/api/signed-by-someone-who-never-approved-it", method="POST", body=type(self).forged)
+                status, _ = request("/api/reporting-submissions", method="POST", body=type(self).forged)
                 if status == 409: break
             except AssertionError: pass
             time.sleep(0.25)
@@ -285,8 +285,8 @@ print(json.dumps({"queries":queries,"unlock":base64.b64encode(unlock).decode(),"
         self.assertGreater(state["oracle_queries"], 3000); self.assertLessEqual(state["oracle_queries"], 4096)
         audit = subprocess.check_output(["docker", "exec", "--user", "arwc-diagnostics",
             "cinder-arwc-diagnostics", "cat", "/var/lib/arwc-diagnostics/audit/events.jsonl"], text=True)
-        for action in ("two-kinds-of-answer", "which-answer-comes-next",
-                       "the-diagnostic-evidence-bundle", "signed-by-someone-who-never-approved-it"):
+        for action in ("diagnostic-answer-set-read", "signature-oracle-read",
+                       "diagnostic-bundle-created", "signature-record-created"):
             self.assertIn(f'"action":"{action}"', audit)
 
 

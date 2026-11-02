@@ -90,7 +90,6 @@ def build_history() -> None:
                 transition INTEGER DEFAULT 0 NOT NULL,
                 segment_id INTEGER,
                 visit_duration INTEGER DEFAULT 0 NOT NULL,
-                incremented_omnibox_typed_score BOOLEAN DEFAULT FALSE NOT NULL,
                 opener_visit INTEGER
             );
             """
@@ -111,8 +110,8 @@ def build_history() -> None:
             ),
         )
         database.execute(
-            "INSERT INTO visits VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (1, 1, chromium_time, 0, 805306368, 0, 284000000, 0, 0),
+            "INSERT INTO visits VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (1, 1, chromium_time, 0, 805306368, 0, 284000000, 0),
         )
         database.commit()
         database.execute("VACUUM")
