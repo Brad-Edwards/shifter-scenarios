@@ -1,0 +1,41 @@
+schema_version: environment-pack-provenance/v3
+pack:
+  name: kontakte-sm-sa
+sources:
+  - source_id: source-bundle
+    name: KONTAKTE sanitized range bundle
+    license: proprietary
+    usage: adapted
+    attribution_required: false
+    used: Exact cloud declarations from the source Terraform and the source workstation pack.
+  - source_id: pack-documentation
+    name: Pack composition and documentation
+    license: proprietary
+    usage: reused
+    attribution_required: false
+    used: Portable reference IDs, pinned local module structure, client input schema, and documentation.
+artifacts:
+  - artifact_id: sdl
+    path: sdl/
+    classification: internal-only
+    sources: [source-bundle, pack-documentation]
+    description: Source-equivalent cloud declarations and the source workstation.
+  - artifact_id: docs
+    path: docs/
+    classification: internal-only
+    sources: [source-bundle, pack-documentation]
+    description: Source mapping, client input contract, prerequisites, and readiness limits.
+content_safety:
+  no_real_malware: true
+  no_real_third_party_targets: true
+  no_real_credentials: true
+  no_sensitive_data: true
+  offensive_tooling_boundary: true
+  notes: Source identifiers are sanitizer aliases. No client values or issued keys are included.
+review:
+  status: pending
+  gates:
+    - {gate_id: licensing, status: pending}
+    - {gate_id: attribution, status: pending}
+    - {gate_id: sensitive-data, status: pending}
+    - {gate_id: offensive-tooling, status: pending}

@@ -1,0 +1,17 @@
+{
+  "imports": [
+    {
+      "content_digest": "sha256:b9aed9acfa766fe1f2ee8c24a32a1f1f258e247869281533f69433cee48acdae",
+      "export_hash": "067c7f18ed4537d5354742a4b65e0be8f44afd5fbb13be71046441c1edeef03d",
+      "manifest_digest": "",
+      "module_id": "shifter-scenarios/kontakte-sm-sa-cloud",
+      "module_version": "0.1.0",
+      "namespace": "cloud",
+      "requested_version": "0.1.0",
+      "resolved_source": "modules/cloud.sdl.yaml",
+      "signer_id": "",
+      "source": "local:modules/cloud.sdl.yaml"
+    }
+  ],
+  "schema_version": "raes-lock/v1"
+}

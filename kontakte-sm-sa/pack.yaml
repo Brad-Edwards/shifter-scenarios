@@ -1,0 +1,16 @@
+name: kontakte-sm-sa
+title: 'KONTAKTE: Secret Manager and service accounts'
+version: 0.1.0
+status: draft
+description: The source workstation and exact cloud IAM, audit, and Secret Manager declarations, with client-supplied
+  outside identities and payloads.
+authors:
+- Palo Alto Networks, Inc.
+license: Copyright (c) 2026, Palo Alto Networks Inc. All rights reserved.
+requirement: null
+contents:
+  flag_layer: false
+  reference_triangle: false
+  profile_bundles: false
+provenance_ledger: docs/provenance-ledger.yaml
+associated_artifact_manifest: associated-artifacts.json

@@ -1,0 +1,1608 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One JSON tfvars-style file. This is a private adapter input, not an SDL extension or an authorization to install an adapter.",
+  "properties": {
+    "foothold_service_account": {
+      "description": "The account_id of one account already created by the source. The adapter issues and removes a key for it; it must not add an account or grant.",
+      "enum": [
+        "r-0487b5d7af80",
+        "r-111f3a769780",
+        "r-1187f78b143c",
+        "r-11ced73c482c",
+        "r-121410a17b39",
+        "r-2d31c747d766",
+        "r-34f3086fbb23",
+        "r-358102551374",
+        "r-370af052197b",
+        "r-47869ba83f34",
+        "r-48c06f821dae",
+        "r-4eb16513318e",
+        "r-5092b8fe6ff6",
+        "r-58e7de2b593b",
+        "r-59ac2ee6848e",
+        "r-6467b604bc84",
+        "r-6c02b2dd52a4",
+        "r-775958894a43",
+        "r-82829af0bbe8",
+        "r-868a0c172448",
+        "r-87f92c8401d3",
+        "r-886f2381d5f7",
+        "r-88ab8e59c7bd",
+        "r-8e6c1094485a",
+        "r-9aa0ef7b5642",
+        "r-9c44b3093a58",
+        "r-9f631ddcb0bf",
+        "r-a4ff3725ac19",
+        "r-a64dee4bb5d2",
+        "r-b2dd5b9a125e",
+        "r-be0ddaaffb99",
+        "r-be355fe75608",
+        "r-c1bc0a518302",
+        "r-cb742167f0b8",
+        "r-cf0f20571765",
+        "r-d6e7739a76b8",
+        "r-df5ba1c1acc0",
+        "r-eb1ebf428928",
+        "r-eec4791c82db",
+        "r-ef55af3d9f39",
+        "r-f2ba4da9d705",
+        "r-f7e3e0f29b04",
+        "r-f9cdffdec21c",
+        "r-fd0e89d01e46"
+      ],
+      "type": "string"
+    },
+    "principal_map": {
+      "additionalProperties": false,
+      "description": "All outside placeholders are required. Values must also be pairwise distinct; the adapter must enforce that invariant before effects.",
+      "properties": {
+        "group:id-5e3ce7@d503ac.example.com": {
+          "pattern": "^group:[^\\s@:]+@[^\\s@:]+$",
+          "type": "string"
+        },
+        "principal://iam.googleapis.com/projects/968245344099/locations/global/workloadIdentityPools/t44791-t6be6e-pool/subject/id-7ba819@d503ac.example.com": {
+          "pattern": "^principal://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/subject/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/924938892917/locations/global/workloadIdentityPools/tbaa2f-t58f45/*": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/935032872584/locations/global/workloadIdentityPools/tbaa2f-t58f45-t42308/*": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/935032872584/locations/global/workloadIdentityPools/tbaa2f-t58f45/*": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/968245344099/locations/global/workloadIdentityPools/t44791-t6be6e-pool/attribute.t60538/id-7ba819@d503ac.example.com": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/9803121512425/locations/global/workloadIdentityPools/t590a9-prod/attribute.t3eb17_role/t3cb86:t3eb17:iam::910429326029:role/svc-ai-agent-role": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/9803121512425/locations/global/workloadIdentityPools/t590a9-prod/attribute.t3eb17_sub_t5f27a/t66d51-role": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/-tbaa2f-t58f45/*": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/iam-policy-limit-pool/attribute.project_path/t644b4-t8cb0c/iam-policy-limit-teb235": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/pa-t5ea92-t028ac-t3eb17-pool/*": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/shared-t3eb17/attribute.t3eb17_role/t3cb86:t3eb17:iam::913794266619:role/fw-health-gcp": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/shared-t3eb17/attribute.t3eb17_role/t3cb86:t3eb17:t62d22::913794266619:t66d51-role/fw-health-readonly": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/t028ac-dc-pa-t6be6e-pool/*": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/t039d2-t6be6e-pool/attribute.project_path/t644b4-t8cb0c/pa-t039d2": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/t5ea92-prod-t2a086-tbaa2f/attribute.project_path/t644b4-t8cb0c/pa-tb265c-t3fedd": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/tbaa2f-tc4d1c-t3eb17/*": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/tbaa2f-te6d74-t58f45/attribute.project_id/24048": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/tbaa2f-te6d74-t58f45/attribute.project_id/32819": {
+          "pattern": "^principalSet://iam\\.googleapis\\.com/projects/[0-9]+/locations/global/workloadIdentityPools/[^/\\s]+/\\S+$",
+          "type": "string"
+        },
+        "serviceAccount:cf-tc3eb9@proj-4f6bca.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:cf-tc50e1-ta751a@proj-4f6bca.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:pa-td36b8-bot@proj-557746.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:pa-te2b9f-store@proj-4f6bca.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:proj-17139e@proj-17139e.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:proj-4dab20.svc.id.goog[pa-t5ea92--t9e5b3/default]": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+\\.svc\\.id\\.goog\\[[^/\\s\\[\\]]+/[^/\\s\\[\\]]+\\]$",
+          "type": "string"
+        },
+        "serviceAccount:proj-66266e.svc.id.goog[external-secrets/external-secrets]": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+\\.svc\\.id\\.goog\\[[^/\\s\\[\\]]+/[^/\\s\\[\\]]+\\]$",
+          "type": "string"
+        },
+        "serviceAccount:proj-66266e.svc.id.goog[external-secrets/taf8ea-wi-sa]": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+\\.svc\\.id\\.goog\\[[^/\\s\\[\\]]+/[^/\\s\\[\\]]+\\]$",
+          "type": "string"
+        },
+        "serviceAccount:proj-66266e.svc.id.goog[t1486d-apps/t6fc3d-sa]": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+\\.svc\\.id\\.goog\\[[^/\\s\\[\\]]+/[^/\\s\\[\\]]+\\]$",
+          "type": "string"
+        },
+        "serviceAccount:proj-66266e.svc.id.goog[t644b4-t80443/app-t6d699]": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+\\.svc\\.id\\.goog\\[[^/\\s\\[\\]]+/[^/\\s\\[\\]]+\\]$",
+          "type": "string"
+        },
+        "serviceAccount:proj-66266e.svc.id.goog[tcc340/ta0ff2-tcb762]": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+\\.svc\\.id\\.goog\\[[^/\\s\\[\\]]+/[^/\\s\\[\\]]+\\]$",
+          "type": "string"
+        },
+        "serviceAccount:proj-f6831d.svc.id.goog[t1486d-apps/t6fc3d-sa]": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+\\.svc\\.id\\.goog\\[[^/\\s\\[\\]]+/[^/\\s\\[\\]]+\\]$",
+          "type": "string"
+        },
+        "serviceAccount:proj-f6831d.svc.id.goog[t1486d-apps/t75a39]": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+\\.svc\\.id\\.goog\\[[^/\\s\\[\\]]+/[^/\\s\\[\\]]+\\]$",
+          "type": "string"
+        },
+        "serviceAccount:pubsub-t3f339-t21488@proj-41bbd9.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:t5ea92-metrics-te842b-t65962@proj-41bbd9.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:t644b4-t8cb0c-t524f2-t50bb1@proj-41bbd9.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:t6e4fe-t5e913-function-sa@proj-41bbd9.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:t7193d-tcb762-i-t3f8c9@proj-bce3ab.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:ta51c2@proj-90ed7a.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:td8250-td530b-service@proj-2bbfa6.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:td8250-td530b-service@proj-56d13c.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:td8250-td530b-service@proj-5e48c5.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:te590a-t124e8-backend@proj-4f6bca.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf1b75-t16c8b-api@proj-41bbd9.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf1b75-t16c8b-sa@proj-41bbd9.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-04547d.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-08dca9.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-09dd37.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-0b3185.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-124bc7.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-17139e.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-20e0cc.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-25e17e.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-2b9be7.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-3741be.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-4531e2.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-49c07a.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-4bbc82.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-522dd8.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-72fd66.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-97bd26.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-9a1d78.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-a7031e.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-ae5503.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-b86a55.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-c78655.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "serviceAccount:tf6769-service@proj-e961ab.iam.gserviceaccount.com": {
+          "pattern": "^serviceAccount:[^\\s@:\\[\\]]+@[^\\s@:\\[\\]]+\\.gserviceaccount\\.com$",
+          "type": "string"
+        },
+        "user:id-266805@d503ac.example.com": {
+          "pattern": "^user:[^\\s@:]+@[^\\s@:]+$",
+          "type": "string"
+        },
+        "user:id-7ba819@d503ac.example.com": {
+          "pattern": "^user:[^\\s@:]+@[^\\s@:]+$",
+          "type": "string"
+        },
+        "user:id-cce7a6@d503ac.example.com": {
+          "pattern": "^user:[^\\s@:]+@[^\\s@:]+$",
+          "type": "string"
+        },
+        "user:id-ec15f1@d503ac.example.com": {
+          "pattern": "^user:[^\\s@:]+@[^\\s@:]+$",
+          "type": "string"
+        },
+        "user:id-ef5fdc@d503ac.example.com": {
+          "pattern": "^user:[^\\s@:]+@[^\\s@:]+$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "group:id-5e3ce7@d503ac.example.com",
+        "principal://iam.googleapis.com/projects/968245344099/locations/global/workloadIdentityPools/t44791-t6be6e-pool/subject/id-7ba819@d503ac.example.com",
+        "principalSet://iam.googleapis.com/projects/924938892917/locations/global/workloadIdentityPools/tbaa2f-t58f45/*",
+        "principalSet://iam.googleapis.com/projects/935032872584/locations/global/workloadIdentityPools/tbaa2f-t58f45-t42308/*",
+        "principalSet://iam.googleapis.com/projects/935032872584/locations/global/workloadIdentityPools/tbaa2f-t58f45/*",
+        "principalSet://iam.googleapis.com/projects/968245344099/locations/global/workloadIdentityPools/t44791-t6be6e-pool/attribute.t60538/id-7ba819@d503ac.example.com",
+        "principalSet://iam.googleapis.com/projects/9803121512425/locations/global/workloadIdentityPools/t590a9-prod/attribute.t3eb17_role/t3cb86:t3eb17:iam::910429326029:role/svc-ai-agent-role",
+        "principalSet://iam.googleapis.com/projects/9803121512425/locations/global/workloadIdentityPools/t590a9-prod/attribute.t3eb17_sub_t5f27a/t66d51-role",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/-tbaa2f-t58f45/*",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/iam-policy-limit-pool/attribute.project_path/t644b4-t8cb0c/iam-policy-limit-teb235",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/pa-t5ea92-t028ac-t3eb17-pool/*",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/shared-t3eb17/attribute.t3eb17_role/t3cb86:t3eb17:iam::913794266619:role/fw-health-gcp",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/shared-t3eb17/attribute.t3eb17_role/t3cb86:t3eb17:t62d22::913794266619:t66d51-role/fw-health-readonly",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/t028ac-dc-pa-t6be6e-pool/*",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/t039d2-t6be6e-pool/attribute.project_path/t644b4-t8cb0c/pa-t039d2",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/t5ea92-prod-t2a086-tbaa2f/attribute.project_path/t644b4-t8cb0c/pa-tb265c-t3fedd",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/tbaa2f-tc4d1c-t3eb17/*",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/tbaa2f-te6d74-t58f45/attribute.project_id/24048",
+        "principalSet://iam.googleapis.com/projects/980507710828/locations/global/workloadIdentityPools/tbaa2f-te6d74-t58f45/attribute.project_id/32819",
+        "serviceAccount:cf-tc3eb9@proj-4f6bca.iam.gserviceaccount.com",
+        "serviceAccount:cf-tc50e1-ta751a@proj-4f6bca.iam.gserviceaccount.com",
+        "serviceAccount:pa-td36b8-bot@proj-557746.iam.gserviceaccount.com",
+        "serviceAccount:pa-te2b9f-store@proj-4f6bca.iam.gserviceaccount.com",
+        "serviceAccount:proj-17139e@proj-17139e.iam.gserviceaccount.com",
+        "serviceAccount:proj-4dab20.svc.id.goog[pa-t5ea92--t9e5b3/default]",
+        "serviceAccount:proj-66266e.svc.id.goog[external-secrets/external-secrets]",
+        "serviceAccount:proj-66266e.svc.id.goog[external-secrets/taf8ea-wi-sa]",
+        "serviceAccount:proj-66266e.svc.id.goog[t1486d-apps/t6fc3d-sa]",
+        "serviceAccount:proj-66266e.svc.id.goog[t644b4-t80443/app-t6d699]",
+        "serviceAccount:proj-66266e.svc.id.goog[tcc340/ta0ff2-tcb762]",
+        "serviceAccount:proj-f6831d.svc.id.goog[t1486d-apps/t6fc3d-sa]",
+        "serviceAccount:proj-f6831d.svc.id.goog[t1486d-apps/t75a39]",
+        "serviceAccount:pubsub-t3f339-t21488@proj-41bbd9.iam.gserviceaccount.com",
+        "serviceAccount:t5ea92-metrics-te842b-t65962@proj-41bbd9.iam.gserviceaccount.com",
+        "serviceAccount:t644b4-t8cb0c-t524f2-t50bb1@proj-41bbd9.iam.gserviceaccount.com",
+        "serviceAccount:t6e4fe-t5e913-function-sa@proj-41bbd9.iam.gserviceaccount.com",
+        "serviceAccount:t7193d-tcb762-i-t3f8c9@proj-bce3ab.iam.gserviceaccount.com",
+        "serviceAccount:ta51c2@proj-90ed7a.iam.gserviceaccount.com",
+        "serviceAccount:td8250-td530b-service@proj-2bbfa6.iam.gserviceaccount.com",
+        "serviceAccount:td8250-td530b-service@proj-56d13c.iam.gserviceaccount.com",
+        "serviceAccount:td8250-td530b-service@proj-5e48c5.iam.gserviceaccount.com",
+        "serviceAccount:te590a-t124e8-backend@proj-4f6bca.iam.gserviceaccount.com",
+        "serviceAccount:tf1b75-t16c8b-api@proj-41bbd9.iam.gserviceaccount.com",
+        "serviceAccount:tf1b75-t16c8b-sa@proj-41bbd9.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-04547d.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-08dca9.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-09dd37.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-0b3185.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-124bc7.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-17139e.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-20e0cc.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-25e17e.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-2b9be7.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-3741be.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-4531e2.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-49c07a.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-4bbc82.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-522dd8.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-72fd66.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-97bd26.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-9a1d78.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-a7031e.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-ae5503.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-b86a55.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-c78655.iam.gserviceaccount.com",
+        "serviceAccount:tf6769-service@proj-e961ab.iam.gserviceaccount.com",
+        "user:id-266805@d503ac.example.com",
+        "user:id-7ba819@d503ac.example.com",
+        "user:id-cce7a6@d503ac.example.com",
+        "user:id-ec15f1@d503ac.example.com",
+        "user:id-ef5fdc@d503ac.example.com"
+      ],
+      "type": "object"
+    },
+    "secret_values": {
+      "additionalProperties": false,
+      "default": {},
+      "description": "Keys are exact native secret IDs. An absent key uses synthetic-range-secret, as in the Terraform lookup. No client values belong in the repository.",
+      "properties": {
+        "PA_tcc22f_bot_user": {
+          "type": "string"
+        },
+        "T3EB17_API_GW_CERT_DEV": {
+          "type": "string"
+        },
+        "T3EB17_API_GW_KEY_DEV": {
+          "type": "string"
+        },
+        "T7726F_T78982_API_KEY_DEV": {
+          "type": "string"
+        },
+        "T7726F_T78982_API_KEY_PROD": {
+          "type": "string"
+        },
+        "TEAA5E_T5FD1B_T54B0B_KEY": {
+          "type": "string"
+        },
+        "TEAA5E_T5FD1B_TCC22F_TOKEN": {
+          "type": "string"
+        },
+        "api_gateway_api_key": {
+          "type": "string"
+        },
+        "api_gateway_t9f4e1": {
+          "type": "string"
+        },
+        "auth-proxy-t58478-te4e94": {
+          "type": "string"
+        },
+        "database-url": {
+          "type": "string"
+        },
+        "demo_td428b_te977d_iam_secret_key_hj": {
+          "type": "string"
+        },
+        "demo_td428b_te977d_iam_t8cb0c_key_hj": {
+          "type": "string"
+        },
+        "gcp_t66db0_pass_qa": {
+          "type": "string"
+        },
+        "iam_policy_limit_api_key": {
+          "type": "string"
+        },
+        "iam_policy_limit_oauth": {
+          "type": "string"
+        },
+        "iam_policy_limit_token": {
+          "type": "string"
+        },
+        "iam_tcf3a1_test_secret_key_hj": {
+          "type": "string"
+        },
+        "iam_tcf3a1_test_t8cb0c_key_hj": {
+          "type": "string"
+        },
+        "log_location": {
+          "type": "string"
+        },
+        "monitoring_db_password": {
+          "type": "string"
+        },
+        "pa_t539b0_internal_t644b4-t5ea92_t4888e_cert": {
+          "type": "string"
+        },
+        "pa_t539b0_internal_t644b4-t5ea92_t4888e_key": {
+          "type": "string"
+        },
+        "pa_t539b0_internal_t644b4-t5ea92_t6650b_cert": {
+          "type": "string"
+        },
+        "pa_t539b0_internal_t644b4-t5ea92_t6650b_key": {
+          "type": "string"
+        },
+        "prod_t29373_t6be31_password": {
+          "type": "string"
+        },
+        "prod_t29373_t6be31_server": {
+          "type": "string"
+        },
+        "prod_t29373_t6be31_username": {
+          "type": "string"
+        },
+        "prod_t3fd4c_password": {
+          "type": "string"
+        },
+        "prod_t3fd4c_username": {
+          "type": "string"
+        },
+        "proj-66266e-t16d20": {
+          "type": "string"
+        },
+        "proj-66266e-t26e14": {
+          "type": "string"
+        },
+        "proj-66266e-t5bf1f": {
+          "type": "string"
+        },
+        "proj-66266e-t96e25": {
+          "type": "string"
+        },
+        "proj-f6831d-tca7fe": {
+          "type": "string"
+        },
+        "ps-t5ea92-t028ac-old-t6979a": {
+          "type": "string"
+        },
+        "ssh_t4c74e_t08086_t0ae26_t8cb0c": {
+          "type": "string"
+        },
+        "svc-t81c77-t49806": {
+          "type": "string"
+        },
+        "svc-tf1b75-t53d98-prod": {
+          "type": "string"
+        },
+        "svc_test_user_secret_key_hj": {
+          "type": "string"
+        },
+        "svc_test_user_t8cb0c_key_hj": {
+          "type": "string"
+        },
+        "svc_test_user_tb51dd_tca7fe_hj": {
+          "type": "string"
+        },
+        "t028ac_t276f8_api_token": {
+          "type": "string"
+        },
+        "t028ac_t276f8_tb9e79_t071e1_agent_token": {
+          "type": "string"
+        },
+        "t028ac_t276f8_tb9e79_t9f74b_token": {
+          "type": "string"
+        },
+        "t028ac_t276f8_tb9e79_tb7b37_token": {
+          "type": "string"
+        },
+        "t028ac_t276f8_username": {
+          "type": "string"
+        },
+        "t028ac_t6e4fe_api": {
+          "type": "string"
+        },
+        "t028ac_t9e90d_api_token": {
+          "type": "string"
+        },
+        "t028ac_t9e90d_t18ab5_deployment_token": {
+          "type": "string"
+        },
+        "t028ac_t9e90d_username": {
+          "type": "string"
+        },
+        "t039d2-t44e4a-token": {
+          "type": "string"
+        },
+        "t039d2-t90ee6-secret": {
+          "type": "string"
+        },
+        "t039d2-tfe40c-role-t3cb86": {
+          "type": "string"
+        },
+        "t06db1_prod_cert": {
+          "type": "string"
+        },
+        "t06db1_prod_key": {
+          "type": "string"
+        },
+        "t06db1_qa_cert": {
+          "type": "string"
+        },
+        "t06db1_qa_key": {
+          "type": "string"
+        },
+        "t13395-tbaa2f-t3f339-secret": {
+          "type": "string"
+        },
+        "t13395-tbaa2f-token": {
+          "type": "string"
+        },
+        "t1db5c_ai_tcc22f_agent_t4cf3d_svc_token": {
+          "type": "string"
+        },
+        "t1db5c_ai_tcc22f_app_token": {
+          "type": "string"
+        },
+        "t1db5c_ai_tcc22f_app_token_staging": {
+          "type": "string"
+        },
+        "t1db5c_ai_tcc22f_app_token_tc4d1c": {
+          "type": "string"
+        },
+        "t1db5c_ai_tcc22f_bot_t22804_t33dec_key": {
+          "type": "string"
+        },
+        "t1db5c_ai_tcc22f_bot_token": {
+          "type": "string"
+        },
+        "t1db5c_ai_tcc22f_bot_token_staging": {
+          "type": "string"
+        },
+        "t1db5c_ai_tcc22f_bot_token_tc4d1c": {
+          "type": "string"
+        },
+        "t276af-tf2129": {
+          "type": "string"
+        },
+        "t2a086-t644b4-t5ea92-cert": {
+          "type": "string"
+        },
+        "t2a086-t644b4-t5ea92-key": {
+          "type": "string"
+        },
+        "t3503e_t42634": {
+          "type": "string"
+        },
+        "t3537f-t90ee6-secret": {
+          "type": "string"
+        },
+        "t3eb17_api_gw_cert_dev": {
+          "type": "string"
+        },
+        "t3eb17_api_gw_cert_prod": {
+          "type": "string"
+        },
+        "t3eb17_api_gw_key_dev": {
+          "type": "string"
+        },
+        "t3eb17_api_gw_key_prod": {
+          "type": "string"
+        },
+        "t3eb17_fw_ssh_key": {
+          "type": "string"
+        },
+        "t3eb17_fw_ssh_key_dev-cn": {
+          "type": "string"
+        },
+        "t3eb17_fw_ssh_key_prod-cn": {
+          "type": "string"
+        },
+        "t3eb17_fw_ssh_key_qa": {
+          "type": "string"
+        },
+        "t3eb17_fw_ssh_key_qa-cn": {
+          "type": "string"
+        },
+        "t3eb17_fw_ssh_key_t561df": {
+          "type": "string"
+        },
+        "t3eb17_fw_ssh_key_te977d": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_dev-cn": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_pa-tce51a-t29f15-t3eb17-prod": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_pa-tce51a-t29f15-t3eb17-qa": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_prod": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_prod-cn": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_prod-cn-common": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_qa": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_qa-cn": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_sb-prod": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_staging": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t00c49": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t02a3a": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t07eba": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t08f0f": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t14cb6": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t18216": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t18216-1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t2316e": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t2450c": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t36893": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t36893-2": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t39897": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t39897-1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t39c90": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t39db6": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t3a57a": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t3a57a-1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t3b7a3": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t3b7a3-1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t3ec04": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t41809": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t41809-1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t4210e": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t4210e-1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t45b0a": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t4e937": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t519a8": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t561df": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t5673b": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t5bc27": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t5bc27-1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t5faf8": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t5faf8-dp": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t6161c": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t66f57": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t687b5": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t6d8ec": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t7c0ab": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t8a9de": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t93cf1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t95885": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t97945": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_t9f4e1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_ta8ce4": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_taa757": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_tab708": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_tab708-dp": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_tba6db": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_tbe9de": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_tc179b": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_tc179b-1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_tc3c15-prod": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_tcb0c5": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_tdefc4": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_te1373-prod-t3d79f": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_te1373-tad152-t3d79f": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_te977d": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_teb6bb": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_teceaf": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_teceaf-dp": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_ted31d": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_ted31d-1": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_test": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_test_key_t50bb1_hj": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_key_tfb811": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_pa-tce51a-t29f15-t3eb17-prod": {
+          "type": "string"
+        },
+        "t3eb17_secret_t8cb0c_pa-tce51a-t29f15-t3eb17-qa": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_dev-cn": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_prod": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_prod-cn": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_qa": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_qa-cn": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_t00c49": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_t2316e": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_t2450c": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_t2c506": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_t561df": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_t5673b": {
+          "type": "string"
+        },
+        "t3eb17_t66db0_ssh_key_te977d": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_dev-cn": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_pa-tce51a-t29f15-t3eb17-prod": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_pa-tce51a-t29f15-t3eb17-qa": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_prod": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_prod-cn": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_prod-cn-common": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_qa": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_qa-cn": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_sb-prod": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_staging": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t00c49": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t02a3a": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t07eba": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t08f0f": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t14cb6": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t18216": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t18216-1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t2316e": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t2450c": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t2c506": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t36893": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t36893-2": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t39897": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t39897-1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t39c90": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t39db6": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t3a57a": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t3a57a-1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t3b7a3": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t3b7a3-1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t3ec04": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t41809": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t41809-1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t4210e": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t4210e-1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t45b0a": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t4e937": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t519a8": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t561df": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t5673b": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t5bc27": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t5bc27-1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t5faf8": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t5faf8-dp": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t6161c": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t66f57": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t687b5": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t6d8ec": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t7c0ab": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t8a9de": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t93cf1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t95885": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t97945": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_t9f4e1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_ta8ce4": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_taa757": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_tab708": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_tab708-dp": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_tba6db": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_tbe9de": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_tc179b": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_tc179b-1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_tc3c15-prod": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_tcb0c5": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_tdefc4": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_te1373-prod-t3d79f": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_te1373-tad152-t3d79f": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_te977d": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_teb6bb": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_teceaf": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_teceaf-dp": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_ted31d": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_ted31d-1": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_test": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_test_key_t50bb1_hj": {
+          "type": "string"
+        },
+        "t3eb17_t8cb0c_key_id_tfb811": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_prod_secret_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_prod_t8cb0c_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_t08f0f_secret_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_t08f0f_t8cb0c_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_t519a8_secret_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_t519a8_t8cb0c_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_t687b5_secret_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_t687b5_t8cb0c_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_t6d8ec_secret_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_t6d8ec_t8cb0c_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_t9f4e1_secret_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_t9f4e1_t8cb0c_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_tdefc4_secret_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_tdefc4_t8cb0c_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_te977d_secret_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_te977d_t8cb0c_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_teb6bb_secret_key": {
+          "type": "string"
+        },
+        "t3eb17_taf6ad_teb6bb_t8cb0c_key": {
+          "type": "string"
+        },
+        "t45227-prod-svc-taf6ad-t9b642": {
+          "type": "string"
+        },
+        "t4cf3d_api_key_prod": {
+          "type": "string"
+        },
+        "t4cf3d_api_key_t08f0f": {
+          "type": "string"
+        },
+        "t4cf3d_api_key_teb6bb": {
+          "type": "string"
+        },
+        "t4cf3d_api_token": {
+          "type": "string"
+        },
+        "t4d834-ta7b2b-t0209f-proj-66266e": {
+          "type": "string"
+        },
+        "t53658-test-cert": {
+          "type": "string"
+        },
+        "t54b0b_key": {
+          "type": "string"
+        },
+        "t5a521_t5d200_id": {
+          "type": "string"
+        },
+        "t5a521_t5d200_ta23b0": {
+          "type": "string"
+        },
+        "t5ea92-monitoring-ted6a5": {
+          "type": "string"
+        },
+        "t5ea92-prod-t2a086-db-password": {
+          "type": "string"
+        },
+        "t5ea92_bot_tcc22f_api_token": {
+          "type": "string"
+        },
+        "t5ea92_bot_tcc22f_app_token": {
+          "type": "string"
+        },
+        "t5ea92_db_teb3a8": {
+          "type": "string"
+        },
+        "t5ea92_gcp_prod_ssh_key": {
+          "type": "string"
+        },
+        "t5ea92_gcp_qa_ssh_key": {
+          "type": "string"
+        },
+        "t5ea92_gcp_t561df_ssh_key": {
+          "type": "string"
+        },
+        "t5ea92_t13159": {
+          "type": "string"
+        },
+        "t5ea92_t5332e_api_key": {
+          "type": "string"
+        },
+        "t5ea92_tc50e1_ta751a_admin_api_key_dev": {
+          "type": "string"
+        },
+        "t5ea92_tc50e1_ta751a_admin_api_key_prod": {
+          "type": "string"
+        },
+        "t5ea92_tc50e1_ta751a_t2caf1_t4cf3d_token": {
+          "type": "string"
+        },
+        "t5ea92_tc50e1_ta751a_t2caf1_tcc22f_t85060_t3f339_dev": {
+          "type": "string"
+        },
+        "t5ea92_tc50e1_ta751a_t2caf1_tcc22f_t85060_t3f339_prod": {
+          "type": "string"
+        },
+        "t5ea92_tc50e1_ta751a_t5dac2_api_key_dev": {
+          "type": "string"
+        },
+        "t5ea92_tc50e1_ta751a_t5dac2_api_key_prod": {
+          "type": "string"
+        },
+        "t5ea92_tdf2d5_tcc22f_t3f339": {
+          "type": "string"
+        },
+        "t644b4-t80443-gateway-cert": {
+          "type": "string"
+        },
+        "t644b4-t80443-gateway-key": {
+          "type": "string"
+        },
+        "t644b4-t80443-gateway-t9e90d-cert": {
+          "type": "string"
+        },
+        "t644b4-t80443-gateway-t9e90d-key": {
+          "type": "string"
+        },
+        "t644b4-t80443-t641f8-pg-db-password": {
+          "type": "string"
+        },
+        "t644b4-t80443-t641f8-pg-db-tb9543": {
+          "type": "string"
+        },
+        "t644b4-t80443-t641f8-t2d6c7-db-password": {
+          "type": "string"
+        },
+        "t644b4-t80443-t641f8-t2d6c7-db-tb9543": {
+          "type": "string"
+        },
+        "t6be31_password_prod": {
+          "type": "string"
+        },
+        "t6be31_password_t687b5": {
+          "type": "string"
+        },
+        "t6be31_password_t6d8ec": {
+          "type": "string"
+        },
+        "t6be31_password_t9f4e1": {
+          "type": "string"
+        },
+        "t6be31_password_tdefc4": {
+          "type": "string"
+        },
+        "t6be31_password_teb6bb": {
+          "type": "string"
+        },
+        "t6be31_server_prod": {
+          "type": "string"
+        },
+        "t6be31_server_t687b5": {
+          "type": "string"
+        },
+        "t6be31_server_t6d8ec": {
+          "type": "string"
+        },
+        "t6be31_server_t9f4e1": {
+          "type": "string"
+        },
+        "t6be31_server_tdefc4": {
+          "type": "string"
+        },
+        "t6be31_server_teb6bb": {
+          "type": "string"
+        },
+        "t6be31_username": {
+          "type": "string"
+        },
+        "t6be31_username_prod": {
+          "type": "string"
+        },
+        "t6be31_username_t687b5": {
+          "type": "string"
+        },
+        "t6be31_username_t6d8ec": {
+          "type": "string"
+        },
+        "t6be31_username_t9f4e1": {
+          "type": "string"
+        },
+        "t6be31_username_tdefc4": {
+          "type": "string"
+        },
+        "t6be31_username_teb6bb": {
+          "type": "string"
+        },
+        "t80443-t95d6a-t7d745-secret": {
+          "type": "string"
+        },
+        "t80443-t95d6a-t90ee6-secret": {
+          "type": "string"
+        },
+        "t822fe_password": {
+          "type": "string"
+        },
+        "t9f152": {
+          "type": "string"
+        },
+        "t9fa8d-proj-66266e-proj-66266e": {
+          "type": "string"
+        },
+        "ta9f93_id_tee8b7": {
+          "type": "string"
+        },
+        "tbaa2f-token": {
+          "type": "string"
+        },
+        "tbaa2f_project_t17430_t4f58d_t47dc3_pipeline_ta256e_token": {
+          "type": "string"
+        },
+        "tbaa2f_project_t17430_t4f58d_t47dc3_project_t8cb0c_token": {
+          "type": "string"
+        },
+        "tbbef6_key_tee8b7": {
+          "type": "string"
+        },
+        "tbdb89_ssh_key": {
+          "type": "string"
+        },
+        "tc2266-tbaa2f-t644b4-t8cb0c-te5b69": {
+          "type": "string"
+        },
+        "tc2266_tab0d2_oauth_client_id": {
+          "type": "string"
+        },
+        "tc2266_tab0d2_oauth_client_secret": {
+          "type": "string"
+        },
+        "tcc22f-t3f339-t0477a-td530b-service": {
+          "type": "string"
+        },
+        "tcc22f-t3f339-t0477a-td59f2": {
+          "type": "string"
+        },
+        "tcc22f_t35838_t3f339_url": {
+          "type": "string"
+        },
+        "tcc22f_t35838_t3f339_url_tc4d1c": {
+          "type": "string"
+        },
+        "tcc340-admin-key": {
+          "type": "string"
+        },
+        "tcc340-fw-health-api-key": {
+          "type": "string"
+        },
+        "tcc340-iam-roles-tc4623-cert": {
+          "type": "string"
+        },
+        "tcc340-iam-roles-tc4623-key": {
+          "type": "string"
+        },
+        "tcc340-t2d6c7-app-password": {
+          "type": "string"
+        },
+        "tcc340-t2d6c7-t243c2-password": {
+          "type": "string"
+        },
+        "tcc340-t33dec-api-key": {
+          "type": "string"
+        },
+        "tcc340-t360ba-token": {
+          "type": "string"
+        },
+        "tcc340-t78982-t2d6c7-password": {
+          "type": "string"
+        },
+        "tcc340-t90ee6-secret": {
+          "type": "string"
+        },
+        "tcc340-tcc22f-t84476-t3f339": {
+          "type": "string"
+        },
+        "tcc340-te9399-postgres-password": {
+          "type": "string"
+        },
+        "tcc340-te9399-t641f8-password": {
+          "type": "string"
+        },
+        "tcc340-tee8b7-token": {
+          "type": "string"
+        },
+        "tcfea1-t23214-token-main-t23214": {
+          "type": "string"
+        },
+        "tcfea1-t23214-token-tce51a-t477f9-t23214": {
+          "type": "string"
+        },
+        "td428b_te977d_iam_tcf3a1_secret_key_hj": {
+          "type": "string"
+        },
+        "td428b_te977d_iam_tcf3a1_svc_iam_tcf3a1_test_secret_key": {
+          "type": "string"
+        },
+        "td428b_te977d_iam_tcf3a1_svc_iam_tcf3a1_test_t8cb0c_key": {
+          "type": "string"
+        },
+        "td428b_te977d_iam_tcf3a1_t8cb0c_key_hj": {
+          "type": "string"
+        },
+        "td8250_tf615c_secret": {
+          "type": "string"
+        },
+        "te2185_taf6ad_password": {
+          "type": "string"
+        },
+        "te2185_taf6ad_username": {
+          "type": "string"
+        },
+        "te2583_pass": {
+          "type": "string"
+        },
+        "te2583_user": {
+          "type": "string"
+        },
+        "te6d74_fw_ssh_key": {
+          "type": "string"
+        },
+        "te6d74_key_file": {
+          "type": "string"
+        },
+        "te6d74_prod_ip_svc": {
+          "type": "string"
+        },
+        "te6d74_region": {
+          "type": "string"
+        },
+        "te6d74_t1ecb8": {
+          "type": "string"
+        },
+        "te6d74_t3bb6c": {
+          "type": "string"
+        },
+        "te6d74_t66db0_ssh_key": {
+          "type": "string"
+        },
+        "te6d74_td7fdb_prod_ip_svc": {
+          "type": "string"
+        },
+        "te6d74_user": {
+          "type": "string"
+        },
+        "teb53e-t5ea92-prod-service-account-tca7fe-key": {
+          "type": "string"
+        },
+        "tebcc4_t0d2e7_api_key": {
+          "type": "string"
+        },
+        "tee8b7_api_key": {
+          "type": "string"
+        },
+        "tee8b7_api_token": {
+          "type": "string"
+        },
+        "tee8b7_key": {
+          "type": "string"
+        },
+        "teebdc-internal-ca-tf1854": {
+          "type": "string"
+        },
+        "test_ai_tcc22f_app_token": {
+          "type": "string"
+        },
+        "test_ai_tcc22f_bot_token": {
+          "type": "string"
+        },
+        "tf1b75_t5ea92_api_sa_token": {
+          "type": "string"
+        },
+        "tf1b75_t5ea92_api_sa_token_dev": {
+          "type": "string"
+        },
+        "tf1b75_t62ec3_t4cf3d_token": {
+          "type": "string"
+        },
+        "tf1b75_t62ec3_tbaa2f_api_token": {
+          "type": "string"
+        },
+        "tfe874-database-url": {
+          "type": "string"
+        },
+        "tfe874-tfb20c-cert-T644b4-T5EA92-client": {
+          "type": "string"
+        },
+        "tfe874-tfb20c-cert-T644b4-T5EA92-client-2": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "required": [
+    "principal_map",
+    "foothold_service_account"
+  ],
+  "title": "KONTAKTE client inputs (design contract)",
+  "type": "object"
+}
