@@ -304,6 +304,41 @@ slot generations, participant selections, eligibility digests, draw ranks, and
 result digests. Public or participant-facing views remain downstream work: this
 operator state contains private UUIDs and must never be served directly.
 
+## Good Citizen nomination component
+
+Issue #290 implements `ctfd/prize_nominations.py` as a scenario-owned
+server-side component. It is a domain adapter for the approved authenticated
+participant integration, not a standalone identity provider or newly hosted
+service. The integration supplies an authenticated participant UUID, opaque
+session ID, canonical request origin, and authoritative checked-in participant
+set. Browser headers or submitted participant IDs never establish identity.
+
+The component returns only public aliases and session-bound opaque candidate
+tokens. It never returns another participant's private UUID. Submission requires
+an exact-origin check, an HMAC CSRF token bound to the event, participant,
+session, origin, and configuration digest, a true no-sharing attestation, and a
+fresh UUID request identity. The payload is closed and contains no free-text
+field. CSRF and candidate-token keys are supplied from approved secret storage
+and are never persisted; only an event-bound key commitment is stored so a
+restart cannot silently change token authority.
+
+An owner-only SQLite file holds the immutable event/configuration binding,
+checked-in aliases, one ballot per nominator, bounded rate-attempt facts, a
+private append-only audit log, and the single scheduled close occurrence.
+`BEGIN IMMEDIATE` plus unique constraints serialize simultaneous ballots. A
+byte-identical request retry returns its recorded result; identity reuse with a
+different request fails. Five attempts per participant per rolling minute are
+allowed so malformed or abusive submissions cannot bypass the one-ballot rule.
+
+The published window is half-open. Server time must be greater than or equal to
+the nomination open and strictly less than the close. The scheduled
+`nomination_closed` occurrence closes the store idempotently even when execution
+is delayed. Its operator-only export is exactly
+`cinder-typhoon.prize-nominations/v1`, the input already consumed by the
+evaluator. It contains ballot UUIDs, private nominator and nominee UUIDs, server
+timestamps, and the fixed attestation only; aliases, sessions, CSRF material,
+rate attempts, and audit details stay out of the export.
+
 ## Threat model
 
 | Threat | Control and failure behavior |
