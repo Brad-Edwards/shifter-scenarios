@@ -173,6 +173,14 @@ live 50-slot operator view and `credential_free_summary` for the alias-only
 post-event record. Do not expose the database, notification recipient IDs,
 claim-token digests, or audit rows on participant or public routes.
 
+[`prize_ui.py`](prize_ui.py) is the framework-neutral rendered adapter for those
+same service methods. The approved integration supplies authenticated contexts,
+an integration-validated CSRF token, and a request UUID. The adapter escapes
+participant aliases and every other rendered value; it does not host routes,
+establish identity, or add persistence. The complete pinned 320-participant
+rehearsal and day-of handover procedure are documented under
+[`build/prize-qualification/`](../build/prize-qualification/README.md).
+
 The separately versioned `build/hint-delivery/manifest.json` pins the hint
 sources and facilitator release rules. Use `build/hint-delivery/release.py` to
 release one level and create the content-free audit record; do not disclose the

@@ -160,6 +160,21 @@ The earlier standard-library authoring checks remain beside their inputs in
 [docs/design/](../docs/design/README.md). None of these checks establishes runtime
 exploitability, isolation, evidence-adapter correctness, or event capacity.
 
+## Event prize lifecycle qualification
+
+```sh
+python3 cinder-typhoon/build/prize-qualification/qualify.py \
+  --verify-summary cinder-typhoon/build/prize-qualification/summary.json
+python3 -m unittest cinder-typhoon/tests/test_prize_qualification.py -v
+```
+
+The rehearsal validates the pinned prize candidate with 320 participant
+histories, all 50 slots and numbered packs, the rendered participant and staff
+claim surfaces, final rollover, concurrent retries, recovery, privacy, and
+fail-closed variants. The committed summary is aggregate and credential-free.
+It is prize-lifecycle evidence only; it does not replace the campaign's
+participant-boundary, capacity, or blind-playtest release gates.
+
 ## Participant-surface manifest checks
 
 The operator-only participant-surface manifests inventory the exact pristine
