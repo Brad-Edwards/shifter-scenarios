@@ -1,4 +1,5 @@
 #include <array>
+#include <iomanip>
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -22,9 +23,32 @@ static_assert(sizeof(PlanningState) == 0x90);
 static_assert(offsetof(PlanningState, reserve_ml) == 0x28);
 static_assert(offsetof(PlanningState, quality) == 0x30);
 
+static constexpr char ProbeSource[] = "PROBE-CRR-23";
+static constexpr char AllocationCase[] = "ALLOC-CASE-CRR-33";
+
+static void print_hex(const char *name, const void *value, std::size_t size) {
+  const auto *bytes = static_cast<const unsigned char *>(value);
+  std::cout << name << '=' << std::hex << std::setfill('0');
+  for (std::size_t index = 0; index < size; ++index) {
+    std::cout << std::setw(2) << static_cast<unsigned int>(bytes[index]);
+  }
+  std::cout << '\n';
+}
+
 int main(int argc, char **argv) {
   if (argc == 2 && std::string(argv[1]) == "--ordinary") {
     std::cout << "EST-CRR-23 Cairn=12.40 North=8.10 Merewick=7.65 quality=valid\n";
+    return 0;
+  }
+  if (argc == 2 && std::string(argv[1]) == "--reproduce") {
+    Measurement stale{};
+    PlanningState replacement{0x4553544352523233ULL, "Cairn Reach", 12.40, 1, {}};
+    const std::uint32_t control = static_cast<std::uint32_t>(replacement.vtable >> 8);
+    std::memcpy(stale.bytes.data() + 0x40, &control, sizeof control);
+    print_hex("stale", &stale, sizeof stale);
+    print_hex("replacement", &replacement, sizeof replacement);
+    std::cout << "probe=" << ProbeSource << '\n';
+    std::cout << "case=" << AllocationCase << '\n';
     return 0;
   }
   std::vector<Measurement *> measurements;

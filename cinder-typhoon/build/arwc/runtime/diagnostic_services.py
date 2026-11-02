@@ -28,6 +28,7 @@ OT_SESSIONS = pathlib.Path("/run/arwc-ot-read")
 ENGINEERING_STATE = pathlib.Path("/run/arwc-engineering/state/service.json")
 ARTIFACT = pathlib.Path("/opt/diagnostic-services/artifacts/estimator23")
 SIGNER = pathlib.Path("/opt/diagnostic-services/artifacts/dsign-crr-r3")
+SELECTOR_ARTIFACT = pathlib.Path("/opt/diagnostic-services/artifacts/selector24")
 VAULT_WORKER = pathlib.Path("/opt/diagnostic-services/artifacts/dvl-worker-r5")
 VAULT_BASE = 0x555550000000
 INITIAL = {"side_effect_observed": False, "protected_state_controlled": False,
@@ -197,6 +198,18 @@ PREDICTION_CASES = [
     for request_id, bucket, klass in [
         (0x2400000000000001, EPOCH_BUCKET - 1, "A"), (0x2400000000001021, EPOCH_BUCKET, "B"),
         (0x2400000000ABCDEF, EPOCH_BUCKET, "C"), (0x24FFFFFFFFFFFFFE, EPOCH_BUCKET + 1, "D")]
+]
+
+SELECTOR_VALIDATION_CASES = [
+    {"request_id": f"{request_id:016x}", "epoch_bucket": bucket,
+     "rotation": selector(request_id, bucket) & 3}
+    for request_id, bucket in [
+        (0x2400000000000001, 0),
+        (0x2400000000000042, EPOCH_BUCKET - 2),
+        (0x2400000012345678, EPOCH_BUCKET - 1),
+        (0x2400ABCDEF000001, EPOCH_BUCKET + 1),
+        (0x24FEDCBA98765432, EPOCH_BUCKET + 2),
+    ]
 ]
 
 
@@ -407,8 +420,17 @@ class Handler(BaseHTTPRequestHandler):
                               "ciphertext_b64": base64.b64encode(ciphertext).decode()},
             "prediction_cases": [{key: value for key, value in case.items() if key != "observed_class"}
                                  for case in PREDICTION_CASES],
+            "selector_artifact": {
+                "format": "ELF64-x86-64-stripped",
+                "sha256": hashlib.sha256(SELECTOR_ARTIFACT.read_bytes()).hexdigest(),
+            },
+            "selector_validation_cases": SELECTOR_VALIDATION_CASES,
         }
-        self.send_json(200, {"audit_id": append_audit("two-kinds-of-answer", record), "record": record})
+        self.send_json(200, {
+            "audit_id": append_audit("two-kinds-of-answer", record),
+            "record": record,
+            "selector_artifact_b64": base64.b64encode(SELECTOR_ARTIFACT.read_bytes()).decode(),
+        })
 
     def do_POST(self) -> None:
         if urlsplit(self.path).path == "/internal/handover-estimates":

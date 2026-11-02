@@ -9694,18 +9694,18 @@
           {
             "assertions": [
               {
-                "line": 629,
+                "line": 838,
                 "method": "assertEqual"
               },
               {
-                "line": 630,
+                "line": 839,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W01.1"
             ],
-            "line": 625,
+            "line": 834,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -9774,14 +9774,14 @@
           {
             "assertions": [
               {
-                "line": 636,
+                "line": 845,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "W01.2"
             ],
-            "line": 633,
+            "line": 842,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -9850,18 +9850,18 @@
           {
             "assertions": [
               {
-                "line": 642,
+                "line": 851,
                 "method": "assertTrue"
               },
               {
-                "line": 643,
+                "line": 852,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W01.3"
             ],
-            "line": 639,
+            "line": 848,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -9930,22 +9930,22 @@
           {
             "assertions": [
               {
-                "line": 657,
+                "line": 866,
                 "method": "assertEqual"
               },
               {
-                "line": 658,
+                "line": 867,
                 "method": "assertEqual"
               },
               {
-                "line": 661,
+                "line": 870,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W01.4"
             ],
-            "line": 645,
+            "line": 854,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -10014,14 +10014,14 @@
           {
             "assertions": [
               {
-                "line": 669,
+                "line": 878,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "W02.1"
             ],
-            "line": 667,
+            "line": 876,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -10090,14 +10090,14 @@
           {
             "assertions": [
               {
-                "line": 675,
+                "line": 884,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "W02.2"
             ],
-            "line": 672,
+            "line": 881,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -10166,18 +10166,18 @@
           {
             "assertions": [
               {
-                "line": 686,
+                "line": 895,
                 "method": "assertTrue"
               },
               {
-                "line": 691,
+                "line": 900,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W02.3"
             ],
-            "line": 678,
+            "line": 887,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -10246,18 +10246,18 @@
           {
             "assertions": [
               {
-                "line": 700,
+                "line": 909,
                 "method": "assertRegex"
               },
               {
-                "line": 701,
+                "line": 910,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "W03.1"
             ],
-            "line": 697,
+            "line": 906,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -10326,18 +10326,18 @@
           {
             "assertions": [
               {
-                "line": 711,
+                "line": 920,
                 "method": "assertEqual"
               },
               {
-                "line": 715,
+                "line": 924,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W03.2"
             ],
-            "line": 704,
+            "line": 913,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -10406,14 +10406,14 @@
           {
             "assertions": [
               {
-                "line": 719,
+                "line": 928,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W03.3"
             ],
-            "line": 717,
+            "line": 926,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -10482,22 +10482,22 @@
           {
             "assertions": [
               {
-                "line": 732,
+                "line": 941,
                 "method": "assertRegex"
               },
               {
-                "line": 733,
+                "line": 942,
                 "method": "assertEqual"
               },
               {
-                "line": 734,
+                "line": 943,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W04.1"
             ],
-            "line": 726,
+            "line": 935,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -10566,14 +10566,14 @@
           {
             "assertions": [
               {
-                "line": 748,
+                "line": 957,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W04.2"
             ],
-            "line": 736,
+            "line": 945,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -10642,14 +10642,14 @@
           {
             "assertions": [
               {
-                "line": 756,
+                "line": 965,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W04.3"
             ],
-            "line": 750,
+            "line": 959,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -10718,14 +10718,14 @@
           {
             "assertions": [
               {
-                "line": 768,
+                "line": 977,
                 "method": "assertIsNone"
               }
             ],
             "combined_card_ids": [
               "W05.1"
             ],
-            "line": 765,
+            "line": 974,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -10794,14 +10794,14 @@
           {
             "assertions": [
               {
-                "line": 775,
+                "line": 984,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W05.2"
             ],
-            "line": 772,
+            "line": 981,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -10870,22 +10870,22 @@
           {
             "assertions": [
               {
-                "line": 783,
+                "line": 992,
                 "method": "assertEqual"
               },
               {
-                "line": 788,
+                "line": 997,
                 "method": "assertEqual"
               },
               {
-                "line": 789,
+                "line": 998,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W05.3"
             ],
-            "line": 777,
+            "line": 986,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -10955,14 +10955,14 @@
           {
             "assertions": [
               {
-                "line": 807,
+                "line": 1016,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W06.1"
             ],
-            "line": 798,
+            "line": 1007,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -11034,14 +11034,14 @@
           {
             "assertions": [
               {
-                "line": 814,
+                "line": 1023,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W06.2"
             ],
-            "line": 809,
+            "line": 1018,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -11110,14 +11110,14 @@
           {
             "assertions": [
               {
-                "line": 820,
+                "line": 1029,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W06.3"
             ],
-            "line": 816,
+            "line": 1025,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -11186,18 +11186,18 @@
           {
             "assertions": [
               {
-                "line": 834,
+                "line": 1043,
                 "method": "assertEqual"
               },
               {
-                "line": 835,
+                "line": 1044,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W07.1"
             ],
-            "line": 829,
+            "line": 1038,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -11266,18 +11266,18 @@
           {
             "assertions": [
               {
-                "line": 849,
+                "line": 1058,
                 "method": "assertIn"
               },
               {
-                "line": 855,
+                "line": 1064,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "W07.2"
             ],
-            "line": 837,
+            "line": 1046,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -11346,18 +11346,18 @@
           {
             "assertions": [
               {
-                "line": 863,
+                "line": 1072,
                 "method": "assertEqual"
               },
               {
-                "line": 864,
+                "line": 1073,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W07.3"
             ],
-            "line": 857,
+            "line": 1066,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -11426,14 +11426,14 @@
           {
             "assertions": [
               {
-                "line": 1853,
+                "line": 2122,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W08.1"
             ],
-            "line": 1850,
+            "line": 2119,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -11505,30 +11505,30 @@
           {
             "assertions": [
               {
-                "line": 1858,
+                "line": 2127,
                 "method": "assertEqual"
               },
               {
-                "line": 1866,
+                "line": 2135,
                 "method": "assertEqual"
               },
               {
-                "line": 1871,
+                "line": 2140,
                 "method": "assertEqual"
               },
               {
-                "line": 1872,
+                "line": 2141,
                 "method": "assertEqual"
               },
               {
-                "line": 1875,
+                "line": 2144,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W08.2"
             ],
-            "line": 1856,
+            "line": 2125,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -11597,34 +11597,34 @@
           {
             "assertions": [
               {
-                "line": 1886,
+                "line": 2155,
                 "method": "assertEqual"
               },
               {
-                "line": 1887,
+                "line": 2156,
                 "method": "assertEqual"
               },
               {
-                "line": 1890,
+                "line": 2159,
                 "method": "assertEqual"
               },
               {
-                "line": 1893,
+                "line": 2162,
                 "method": "assertEqual"
               },
               {
-                "line": 1895,
+                "line": 2164,
                 "method": "assertEqual"
               },
               {
-                "line": 1899,
+                "line": 2168,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W08.3"
             ],
-            "line": 1881,
+            "line": 2150,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -11693,22 +11693,22 @@
           {
             "assertions": [
               {
-                "line": 1918,
+                "line": 2187,
                 "method": "assertEqual"
               },
               {
-                "line": 1920,
+                "line": 2189,
                 "method": "assertEqual"
               },
               {
-                "line": 1922,
+                "line": 2191,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W08.4"
             ],
-            "line": 1901,
+            "line": 2170,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -11777,18 +11777,18 @@
           {
             "assertions": [
               {
-                "line": 878,
+                "line": 1087,
                 "method": "assertRegex"
               },
               {
-                "line": 879,
+                "line": 1088,
                 "method": "assertGreater"
               }
             ],
             "combined_card_ids": [
               "W09.1"
             ],
-            "line": 872,
+            "line": 1081,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -11857,14 +11857,14 @@
           {
             "assertions": [
               {
-                "line": 885,
+                "line": 1094,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "W09.2"
             ],
-            "line": 881,
+            "line": 1090,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -11933,18 +11933,18 @@
           {
             "assertions": [
               {
-                "line": 894,
+                "line": 1103,
                 "method": "assertEqual"
               },
               {
-                "line": 895,
+                "line": 1104,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W09.3"
             ],
-            "line": 890,
+            "line": 1099,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -12014,26 +12014,26 @@
           {
             "assertions": [
               {
-                "line": 914,
+                "line": 1123,
                 "method": "assertEqual"
               },
               {
-                "line": 918,
+                "line": 1127,
                 "method": "assertEqual"
               },
               {
-                "line": 921,
+                "line": 1130,
                 "method": "assertTrue"
               },
               {
-                "line": 922,
+                "line": 1131,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W09.4"
             ],
-            "line": 900,
+            "line": 1109,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -12103,22 +12103,22 @@
           {
             "assertions": [
               {
-                "line": 934,
+                "line": 1143,
                 "method": "assertEqual"
               },
               {
-                "line": 935,
+                "line": 1144,
                 "method": "assertGreaterEqual"
               },
               {
-                "line": 936,
+                "line": 1145,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W10.1"
             ],
-            "line": 928,
+            "line": 1137,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -12187,22 +12187,22 @@
           {
             "assertions": [
               {
-                "line": 944,
+                "line": 1153,
                 "method": "assertEqual"
               },
               {
-                "line": 946,
+                "line": 1155,
                 "method": "assertEqual"
               },
               {
-                "line": 949,
+                "line": 1158,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W10.2"
             ],
-            "line": 938,
+            "line": 1147,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -12271,18 +12271,18 @@
           {
             "assertions": [
               {
-                "line": 958,
+                "line": 1167,
                 "method": "assertEqual"
               },
               {
-                "line": 962,
+                "line": 1171,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W10.3"
             ],
-            "line": 954,
+            "line": 1163,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -12351,22 +12351,22 @@
           {
             "assertions": [
               {
-                "line": 976,
+                "line": 1185,
                 "method": "assertEqual"
               },
               {
-                "line": 977,
+                "line": 1186,
                 "method": "assertEqual"
               },
               {
-                "line": 978,
+                "line": 1187,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W11.1"
             ],
-            "line": 970,
+            "line": 1179,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -12438,18 +12438,18 @@
           {
             "assertions": [
               {
-                "line": 987,
+                "line": 1196,
                 "method": "assertEqual"
               },
               {
-                "line": 989,
+                "line": 1198,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "W11.2"
             ],
-            "line": 981,
+            "line": 1190,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -12518,22 +12518,22 @@
           {
             "assertions": [
               {
-                "line": 1003,
+                "line": 1212,
                 "method": "assertEqual"
               },
               {
-                "line": 1004,
+                "line": 1213,
                 "method": "assertTrue"
               },
               {
-                "line": 1005,
+                "line": 1214,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W11.3"
             ],
-            "line": 991,
+            "line": 1200,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -12602,22 +12602,22 @@
           {
             "assertions": [
               {
-                "line": 1935,
+                "line": 2204,
                 "method": "assertEqual"
               },
               {
-                "line": 1936,
+                "line": 2205,
                 "method": "assertEqual"
               },
               {
-                "line": 1937,
+                "line": 2206,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W12.1"
             ],
-            "line": 1929,
+            "line": 2198,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -12689,34 +12689,34 @@
           {
             "assertions": [
               {
-                "line": 1941,
+                "line": 2210,
                 "method": "assertEqual"
               },
               {
-                "line": 1942,
+                "line": 2211,
                 "method": "assertEqual"
               },
               {
-                "line": 1946,
+                "line": 2215,
                 "method": "assertEqual"
               },
               {
-                "line": 1982,
+                "line": 2251,
                 "method": "assertEqual"
               },
               {
-                "line": 1986,
+                "line": 2255,
                 "method": "assertEqual"
               },
               {
-                "line": 1989,
+                "line": 2258,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W12.2"
             ],
-            "line": 1939,
+            "line": 2208,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -12785,22 +12785,22 @@
           {
             "assertions": [
               {
-                "line": 2008,
+                "line": 2277,
                 "method": "assertEqual"
               },
               {
-                "line": 2013,
+                "line": 2282,
                 "method": "assertEqual"
               },
               {
-                "line": 2016,
+                "line": 2285,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W12.3"
             ],
-            "line": 1991,
+            "line": 2260,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -12869,30 +12869,30 @@
           {
             "assertions": [
               {
-                "line": 2031,
+                "line": 2300,
                 "method": "assertEqual"
               },
               {
-                "line": 2038,
+                "line": 2307,
                 "method": "assertEqual"
               },
               {
-                "line": 2040,
+                "line": 2309,
                 "method": "assertEqual"
               },
               {
-                "line": 2043,
+                "line": 2312,
                 "method": "assertEqual"
               },
               {
-                "line": 2047,
+                "line": 2316,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W12.4"
             ],
-            "line": 2020,
+            "line": 2289,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -12961,18 +12961,18 @@
           {
             "assertions": [
               {
-                "line": 1018,
+                "line": 1227,
                 "method": "assertEqual"
               },
               {
-                "line": 1019,
+                "line": 1228,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "W13.1"
             ],
-            "line": 1011,
+            "line": 1220,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -13041,18 +13041,18 @@
           {
             "assertions": [
               {
-                "line": 1027,
+                "line": 1236,
                 "method": "assertEqual"
               },
               {
-                "line": 1028,
+                "line": 1237,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W13.2"
             ],
-            "line": 1021,
+            "line": 1230,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -13121,18 +13121,18 @@
           {
             "assertions": [
               {
-                "line": 1041,
+                "line": 1250,
                 "method": "assertEqual"
               },
               {
-                "line": 1043,
+                "line": 1252,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W13.3"
             ],
-            "line": 1030,
+            "line": 1239,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -13202,18 +13202,18 @@
           {
             "assertions": [
               {
-                "line": 1048,
+                "line": 1257,
                 "method": "assertEqual"
               },
               {
-                "line": 1052,
+                "line": 1261,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W13.4"
             ],
-            "line": 1045,
+            "line": 1254,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -13282,14 +13282,14 @@
           {
             "assertions": [
               {
-                "line": 1064,
+                "line": 1273,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W14.1"
             ],
-            "line": 1061,
+            "line": 1270,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -13358,14 +13358,14 @@
           {
             "assertions": [
               {
-                "line": 1074,
+                "line": 1283,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W14.2"
             ],
-            "line": 1068,
+            "line": 1277,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -13434,26 +13434,26 @@
           {
             "assertions": [
               {
-                "line": 1083,
+                "line": 1292,
                 "method": "assertEqual"
               },
               {
-                "line": 1087,
+                "line": 1296,
                 "method": "assertEqual"
               },
               {
-                "line": 1088,
+                "line": 1297,
                 "method": "assertTrue"
               },
               {
-                "line": 1091,
+                "line": 1300,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W14.3"
             ],
-            "line": 1076,
+            "line": 1285,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -13522,14 +13522,14 @@
           {
             "assertions": [
               {
-                "line": 1104,
+                "line": 1313,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W15.1"
             ],
-            "line": 1101,
+            "line": 1310,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -13601,14 +13601,14 @@
           {
             "assertions": [
               {
-                "line": 1124,
+                "line": 1333,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W15.2"
             ],
-            "line": 1107,
+            "line": 1316,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -13677,14 +13677,14 @@
           {
             "assertions": [
               {
-                "line": 1133,
+                "line": 1342,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W15.3"
             ],
-            "line": 1130,
+            "line": 1339,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -13753,22 +13753,22 @@
           {
             "assertions": [
               {
-                "line": 1139,
+                "line": 1348,
                 "method": "assertEqual"
               },
               {
-                "line": 1144,
+                "line": 1353,
                 "method": "assertEqual"
               },
               {
-                "line": 1157,
+                "line": 1366,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W15.4"
             ],
-            "line": 1136,
+            "line": 1345,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -13837,14 +13837,14 @@
           {
             "assertions": [
               {
-                "line": 1177,
+                "line": 1386,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W16.1"
             ],
-            "line": 1173,
+            "line": 1382,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -13913,22 +13913,22 @@
           {
             "assertions": [
               {
-                "line": 1203,
+                "line": 1412,
                 "method": "assertEqual"
               },
               {
-                "line": 1209,
+                "line": 1418,
                 "method": "assertEqual"
               },
               {
-                "line": 1210,
+                "line": 1419,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W16.2"
             ],
-            "line": 1198,
+            "line": 1407,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -13997,14 +13997,14 @@
           {
             "assertions": [
               {
-                "line": 1225,
+                "line": 1434,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W16.3"
             ],
-            "line": 1213,
+            "line": 1422,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -14073,18 +14073,18 @@
           {
             "assertions": [
               {
-                "line": 1232,
+                "line": 1441,
                 "method": "assertEqual"
               },
               {
-                "line": 1237,
+                "line": 1446,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W16.4"
             ],
-            "line": 1227,
+            "line": 1436,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -14153,18 +14153,18 @@
           {
             "assertions": [
               {
-                "line": 1285,
+                "line": 1494,
                 "method": "assertEqual"
               },
               {
-                "line": 1288,
+                "line": 1497,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W17.1"
             ],
-            "line": 1283,
+            "line": 1492,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -14233,14 +14233,14 @@
           {
             "assertions": [
               {
-                "line": 1294,
+                "line": 1503,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W17.2"
             ],
-            "line": 1291,
+            "line": 1500,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -14309,14 +14309,14 @@
           {
             "assertions": [
               {
-                "line": 1302,
+                "line": 1511,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "W17.3"
             ],
-            "line": 1299,
+            "line": 1508,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -14386,18 +14386,18 @@
           {
             "assertions": [
               {
-                "line": 1308,
+                "line": 1517,
                 "method": "assertEqual"
               },
               {
-                "line": 1310,
+                "line": 1519,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W17.4"
             ],
-            "line": 1304,
+            "line": 1513,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -14469,18 +14469,18 @@
           {
             "assertions": [
               {
-                "line": 1320,
+                "line": 1529,
                 "method": "assertEqual"
               },
               {
-                "line": 1321,
+                "line": 1530,
                 "method": "assertGreaterEqual"
               }
             ],
             "combined_card_ids": [
               "W18.1"
             ],
-            "line": 1317,
+            "line": 1526,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -14549,14 +14549,14 @@
           {
             "assertions": [
               {
-                "line": 1327,
+                "line": 1536,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "W18.2"
             ],
-            "line": 1324,
+            "line": 1533,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -14625,18 +14625,18 @@
           {
             "assertions": [
               {
-                "line": 1335,
+                "line": 1544,
                 "method": "assertEqual"
               },
               {
-                "line": 1337,
+                "line": 1546,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W18.3"
             ],
-            "line": 1331,
+            "line": 1540,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -14707,18 +14707,18 @@
           {
             "assertions": [
               {
-                "line": 1343,
+                "line": 1552,
                 "method": "assertEqual"
               },
               {
-                "line": 1345,
+                "line": 1554,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W18.4"
             ],
-            "line": 1339,
+            "line": 1548,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -14789,26 +14789,26 @@
           {
             "assertions": [
               {
-                "line": 1417,
+                "line": 1626,
                 "method": "assertTrue"
               },
               {
-                "line": 1418,
+                "line": 1627,
                 "method": "assertEqual"
               },
               {
-                "line": 1425,
+                "line": 1634,
                 "method": "assertEqual"
               },
               {
-                "line": 1426,
+                "line": 1635,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W19.1"
             ],
-            "line": 1413,
+            "line": 1622,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -14877,18 +14877,18 @@
           {
             "assertions": [
               {
-                "line": 1436,
+                "line": 1645,
                 "method": "assertEqual"
               },
               {
-                "line": 1438,
+                "line": 1647,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W19.2"
             ],
-            "line": 1430,
+            "line": 1639,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -14957,22 +14957,22 @@
           {
             "assertions": [
               {
-                "line": 1447,
+                "line": 1656,
                 "method": "assertEqual"
               },
               {
-                "line": 1449,
+                "line": 1658,
                 "method": "assertEqual"
               },
               {
-                "line": 1450,
+                "line": 1659,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W19.3"
             ],
-            "line": 1440,
+            "line": 1649,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -15041,18 +15041,18 @@
           {
             "assertions": [
               {
-                "line": 1462,
+                "line": 1671,
                 "method": "assertEqual"
               },
               {
-                "line": 1464,
+                "line": 1673,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W19.4"
             ],
-            "line": 1452,
+            "line": 1661,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -15121,22 +15121,22 @@
           {
             "assertions": [
               {
-                "line": 1475,
+                "line": 1684,
                 "method": "assertEqual"
               },
               {
-                "line": 1477,
+                "line": 1686,
                 "method": "assertEqual"
               },
               {
-                "line": 1478,
+                "line": 1687,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W20.1"
             ],
-            "line": 1472,
+            "line": 1681,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -15205,18 +15205,18 @@
           {
             "assertions": [
               {
-                "line": 1491,
+                "line": 1700,
                 "method": "assertEqual"
               },
               {
-                "line": 1493,
+                "line": 1702,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W20.2"
             ],
-            "line": 1488,
+            "line": 1697,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -15285,22 +15285,22 @@
           {
             "assertions": [
               {
-                "line": 1520,
+                "line": 1729,
                 "method": "assertEqual"
               },
               {
-                "line": 1522,
+                "line": 1731,
                 "method": "assertEqual"
               },
               {
-                "line": 1523,
+                "line": 1732,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W20.3"
             ],
-            "line": 1495,
+            "line": 1704,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -15369,18 +15369,18 @@
           {
             "assertions": [
               {
-                "line": 1359,
+                "line": 1568,
                 "method": "assertTrue"
               },
               {
-                "line": 1360,
+                "line": 1569,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "W21.1"
             ],
-            "line": 1354,
+            "line": 1563,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -15450,22 +15450,22 @@
           {
             "assertions": [
               {
-                "line": 1370,
+                "line": 1579,
                 "method": "assertEqual"
               },
               {
-                "line": 1372,
+                "line": 1581,
                 "method": "assertEqual"
               },
               {
-                "line": 1373,
+                "line": 1582,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W21.2"
             ],
-            "line": 1362,
+            "line": 1571,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -15535,42 +15535,42 @@
           {
             "assertions": [
               {
-                "line": 1532,
+                "line": 1741,
                 "method": "assertEqual"
               },
               {
-                "line": 1538,
+                "line": 1747,
                 "method": "assertTrue"
               },
               {
-                "line": 1539,
+                "line": 1748,
                 "method": "assertEqual"
               },
               {
-                "line": 1540,
+                "line": 1749,
                 "method": "assertEqual"
               },
               {
-                "line": 1541,
+                "line": 1750,
                 "method": "assertEqual"
               },
               {
-                "line": 1545,
+                "line": 1754,
                 "method": "assertEqual"
               },
               {
-                "line": 1548,
+                "line": 1757,
                 "method": "assertEqual"
               },
               {
-                "line": 1549,
+                "line": 1758,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W22.1"
             ],
-            "line": 1530,
+            "line": 1739,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -15639,18 +15639,18 @@
           {
             "assertions": [
               {
-                "line": 1557,
+                "line": 1766,
                 "method": "assertEqual"
               },
               {
-                "line": 1559,
+                "line": 1768,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W22.2"
             ],
-            "line": 1553,
+            "line": 1762,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -15719,18 +15719,18 @@
           {
             "assertions": [
               {
-                "line": 1568,
+                "line": 1777,
                 "method": "assertEqual"
               },
               {
-                "line": 1571,
+                "line": 1780,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W22.3"
             ],
-            "line": 1561,
+            "line": 1770,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -15799,26 +15799,26 @@
           {
             "assertions": [
               {
-                "line": 1594,
+                "line": 1805,
                 "method": "assertEqual"
               },
               {
-                "line": 1597,
+                "line": 1808,
                 "method": "assertTrue"
               },
               {
-                "line": 1598,
+                "line": 1809,
                 "method": "assertFalse"
               },
               {
-                "line": 1599,
+                "line": 1810,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W22.4"
             ],
-            "line": 1585,
+            "line": 1796,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -15887,22 +15887,22 @@
           {
             "assertions": [
               {
-                "line": 1623,
+                "line": 1873,
                 "method": "assertEqual"
               },
               {
-                "line": 1625,
+                "line": 1875,
                 "method": "assertEqual"
               },
               {
-                "line": 1626,
+                "line": 1876,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W23.1"
             ],
-            "line": 1615,
+            "line": 1860,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -15971,22 +15971,22 @@
           {
             "assertions": [
               {
-                "line": 1638,
+                "line": 1891,
                 "method": "assertEqual"
               },
               {
-                "line": 1641,
+                "line": 1894,
                 "method": "assertEqual"
               },
               {
-                "line": 1642,
+                "line": 1898,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W23.2"
             ],
-            "line": 1628,
+            "line": 1878,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -16055,22 +16055,22 @@
           {
             "assertions": [
               {
-                "line": 1650,
+                "line": 1911,
                 "method": "assertTrue"
               },
               {
-                "line": 1651,
+                "line": 1912,
                 "method": "assertFalse"
               },
               {
-                "line": 1652,
+                "line": 1913,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W23.3"
             ],
-            "line": 1644,
+            "line": 1900,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -16139,14 +16139,14 @@
           {
             "assertions": [
               {
-                "line": 1669,
+                "line": 1931,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W24.1"
             ],
-            "line": 1667,
+            "line": 1929,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -16215,18 +16215,18 @@
           {
             "assertions": [
               {
-                "line": 1694,
+                "line": 1962,
                 "method": "assertEqual"
               },
               {
-                "line": 1696,
+                "line": 1964,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W24.2"
             ],
-            "line": 1674,
+            "line": 1952,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -16295,30 +16295,30 @@
           {
             "assertions": [
               {
-                "line": 1767,
+                "line": 2036,
                 "method": "assertEqual"
               },
               {
-                "line": 1769,
+                "line": 2038,
                 "method": "assertLessEqual"
               },
               {
-                "line": 1772,
+                "line": 2041,
                 "method": "assertEqual"
               },
               {
-                "line": 1774,
+                "line": 2043,
                 "method": "assertEqual"
               },
               {
-                "line": 1825,
+                "line": 2094,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W24.3"
             ],
-            "line": 1698,
+            "line": 1966,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -16387,22 +16387,22 @@
           {
             "assertions": [
               {
-                "line": 1837,
+                "line": 2106,
                 "method": "assertEqual"
               },
               {
-                "line": 1840,
+                "line": 2109,
                 "method": "assertFalse"
               },
               {
-                "line": 1841,
+                "line": 2110,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W24.4"
             ],
-            "line": 1835,
+            "line": 2104,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -16471,18 +16471,18 @@
           {
             "assertions": [
               {
-                "line": 1383,
+                "line": 1592,
                 "method": "assertEqual"
               },
               {
-                "line": 1384,
+                "line": 1593,
                 "method": "assertGreater"
               }
             ],
             "combined_card_ids": [
               "W25.1"
             ],
-            "line": 1380,
+            "line": 1589,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -16551,18 +16551,18 @@
           {
             "assertions": [
               {
-                "line": 1389,
+                "line": 1598,
                 "method": "assertFalse"
               },
               {
-                "line": 1390,
+                "line": 1599,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "W25.2"
             ],
-            "line": 1386,
+            "line": 1595,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -16631,22 +16631,22 @@
           {
             "assertions": [
               {
-                "line": 1395,
+                "line": 1604,
                 "method": "assertEqual"
               },
               {
-                "line": 1397,
+                "line": 1606,
                 "method": "assertTrue"
               },
               {
-                "line": 1398,
+                "line": 1607,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W25.3"
             ],
-            "line": 1392,
+            "line": 1601,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -16717,18 +16717,18 @@
           {
             "assertions": [
               {
-                "line": 1404,
+                "line": 1613,
                 "method": "assertEqual"
               },
               {
-                "line": 1406,
+                "line": 1615,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W25.4"
             ],
-            "line": 1400,
+            "line": 1609,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -16799,18 +16799,18 @@
           {
             "assertions": [
               {
-                "line": 2061,
+                "line": 2330,
                 "method": "assertEqual"
               },
               {
-                "line": 2063,
+                "line": 2332,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W26.1"
             ],
-            "line": 2059,
+            "line": 2328,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -16880,18 +16880,18 @@
           {
             "assertions": [
               {
-                "line": 2071,
+                "line": 2340,
                 "method": "assertEqual"
               },
               {
-                "line": 2073,
+                "line": 2342,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W26.2"
             ],
-            "line": 2065,
+            "line": 2334,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -16960,18 +16960,18 @@
           {
             "assertions": [
               {
-                "line": 2080,
+                "line": 2349,
                 "method": "assertEqual"
               },
               {
-                "line": 2082,
+                "line": 2351,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W26.3"
             ],
-            "line": 2076,
+            "line": 2345,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -17040,22 +17040,22 @@
           {
             "assertions": [
               {
-                "line": 2093,
+                "line": 2362,
                 "method": "assertEqual"
               },
               {
-                "line": 2098,
+                "line": 2367,
                 "method": "assertEqual"
               },
               {
-                "line": 2106,
+                "line": 2375,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W26.4"
             ],
-            "line": 2087,
+            "line": 2356,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -17124,34 +17124,34 @@
           {
             "assertions": [
               {
-                "line": 2121,
+                "line": 2390,
                 "method": "assertEqual"
               },
               {
-                "line": 2122,
+                "line": 2391,
                 "method": "assertNotIn"
               },
               {
-                "line": 2125,
+                "line": 2394,
                 "method": "assertEqual"
               },
               {
-                "line": 2130,
+                "line": 2399,
                 "method": "assertEqual"
               },
               {
-                "line": 2137,
+                "line": 2406,
                 "method": "assertEqual"
               },
               {
-                "line": 2139,
+                "line": 2408,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W27.1"
             ],
-            "line": 2116,
+            "line": 2385,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -17220,38 +17220,38 @@
           {
             "assertions": [
               {
-                "line": 2148,
+                "line": 2417,
                 "method": "assertEqual"
               },
               {
-                "line": 2151,
+                "line": 2420,
                 "method": "assertEqual"
               },
               {
-                "line": 2156,
+                "line": 2425,
                 "method": "assertEqual"
               },
               {
-                "line": 2157,
+                "line": 2426,
                 "method": "assertNotIn"
               },
               {
-                "line": 2165,
+                "line": 2434,
                 "method": "assertEqual"
               },
               {
-                "line": 2169,
+                "line": 2438,
                 "method": "assertEqual"
               },
               {
-                "line": 2174,
+                "line": 2443,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W27.2"
             ],
-            "line": 2143,
+            "line": 2412,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -17320,22 +17320,22 @@
           {
             "assertions": [
               {
-                "line": 2187,
+                "line": 2456,
                 "method": "assertEqual"
               },
               {
-                "line": 2191,
+                "line": 2460,
                 "method": "assertEqual"
               },
               {
-                "line": 2192,
+                "line": 2461,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W27.3"
             ],
-            "line": 2178,
+            "line": 2447,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -17404,22 +17404,22 @@
           {
             "assertions": [
               {
-                "line": 2229,
+                "line": 2500,
                 "method": "assertEqual"
               },
               {
-                "line": 2234,
+                "line": 2505,
                 "method": "assertEqual"
               },
               {
-                "line": 2235,
+                "line": 2506,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W28.1"
             ],
-            "line": 2226,
+            "line": 2497,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -17488,22 +17488,22 @@
           {
             "assertions": [
               {
-                "line": 2248,
+                "line": 2519,
                 "method": "assertEqual"
               },
               {
-                "line": 2250,
+                "line": 2521,
                 "method": "assertTrue"
               },
               {
-                "line": 2251,
+                "line": 2522,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W28.2"
             ],
-            "line": 2242,
+            "line": 2513,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -17572,30 +17572,30 @@
           {
             "assertions": [
               {
-                "line": 2260,
+                "line": 2531,
                 "method": "assertEqual"
               },
               {
-                "line": 2263,
+                "line": 2534,
                 "method": "assertEqual"
               },
               {
-                "line": 2264,
+                "line": 2535,
                 "method": "assertEqual"
               },
               {
-                "line": 2270,
+                "line": 2541,
                 "method": "assertEqual"
               },
               {
-                "line": 2272,
+                "line": 2543,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W28.3"
             ],
-            "line": 2253,
+            "line": 2524,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -17664,14 +17664,14 @@
           {
             "assertions": [
               {
-                "line": 2287,
+                "line": 2558,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W29.1"
             ],
-            "line": 2285,
+            "line": 2556,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -17741,14 +17741,14 @@
           {
             "assertions": [
               {
-                "line": 2300,
+                "line": 2571,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W29.2"
             ],
-            "line": 2293,
+            "line": 2564,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -17819,42 +17819,42 @@
           {
             "assertions": [
               {
-                "line": 2314,
+                "line": 2585,
                 "method": "assertEqual"
               },
               {
-                "line": 2315,
+                "line": 2586,
                 "method": "assertNotIn"
               },
               {
-                "line": 2320,
+                "line": 2591,
                 "method": "assertEqual"
               },
               {
-                "line": 2326,
+                "line": 2597,
                 "method": "assertEqual"
               },
               {
-                "line": 2327,
+                "line": 2598,
                 "method": "assertFalse"
               },
               {
-                "line": 2329,
+                "line": 2600,
                 "method": "assertEqual"
               },
               {
-                "line": 2330,
+                "line": 2601,
                 "method": "assertNotIn"
               },
               {
-                "line": 2333,
+                "line": 2604,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W29.3"
             ],
-            "line": 2305,
+            "line": 2576,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -17927,26 +17927,26 @@
           {
             "assertions": [
               {
-                "line": 2359,
+                "line": 2630,
                 "method": "assertEqual"
               },
               {
-                "line": 2362,
+                "line": 2633,
                 "method": "assertEqual"
               },
               {
-                "line": 2365,
+                "line": 2636,
                 "method": "assertEqual"
               },
               {
-                "line": 2366,
+                "line": 2637,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W30.1"
             ],
-            "line": 2357,
+            "line": 2628,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -18020,34 +18020,34 @@
           {
             "assertions": [
               {
-                "line": 2381,
+                "line": 2652,
                 "method": "assertEqual"
               },
               {
-                "line": 2384,
+                "line": 2655,
                 "method": "assertEqual"
               },
               {
-                "line": 2385,
+                "line": 2656,
                 "method": "assertFalse"
               },
               {
-                "line": 2386,
+                "line": 2657,
                 "method": "assertFalse"
               },
               {
-                "line": 2387,
+                "line": 2658,
                 "method": "assertFalse"
               },
               {
-                "line": 2390,
+                "line": 2661,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W30.2"
             ],
-            "line": 2369,
+            "line": 2640,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -18117,26 +18117,26 @@
           {
             "assertions": [
               {
-                "line": 2400,
+                "line": 2671,
                 "method": "assertEqual"
               },
               {
-                "line": 2404,
+                "line": 2675,
                 "method": "assertEqual"
               },
               {
-                "line": 2405,
+                "line": 2676,
                 "method": "assertEqual"
               },
               {
-                "line": 2406,
+                "line": 2677,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W31.1"
             ],
-            "line": 2398,
+            "line": 2669,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -18205,18 +18205,18 @@
           {
             "assertions": [
               {
-                "line": 2419,
+                "line": 2690,
                 "method": "assertEqual"
               },
               {
-                "line": 2421,
+                "line": 2692,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W31.2"
             ],
-            "line": 2413,
+            "line": 2684,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -18285,22 +18285,22 @@
           {
             "assertions": [
               {
-                "line": 2443,
+                "line": 2714,
                 "method": "assertEqual"
               },
               {
-                "line": 2447,
+                "line": 2718,
                 "method": "assertTrue"
               },
               {
-                "line": 2448,
+                "line": 2719,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W31.3"
             ],
-            "line": 2423,
+            "line": 2694,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -18369,26 +18369,26 @@
           {
             "assertions": [
               {
-                "line": 2455,
+                "line": 2726,
                 "method": "assertEqual"
               },
               {
-                "line": 2457,
+                "line": 2728,
                 "method": "assertEqual"
               },
               {
-                "line": 2458,
+                "line": 2729,
                 "method": "assertFalse"
               },
               {
-                "line": 2459,
+                "line": 2730,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W31.4"
             ],
-            "line": 2451,
+            "line": 2722,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -18457,22 +18457,22 @@
           {
             "assertions": [
               {
-                "line": 2468,
+                "line": 2739,
                 "method": "assertEqual"
               },
               {
-                "line": 2472,
+                "line": 2743,
                 "method": "assertEqual"
               },
               {
-                "line": 2473,
+                "line": 2744,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W32.1"
             ],
-            "line": 2466,
+            "line": 2737,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -18541,18 +18541,18 @@
           {
             "assertions": [
               {
-                "line": 2488,
+                "line": 2759,
                 "method": "assertEqual"
               },
               {
-                "line": 2490,
+                "line": 2761,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W32.2"
             ],
-            "line": 2483,
+            "line": 2754,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -18621,18 +18621,18 @@
           {
             "assertions": [
               {
-                "line": 2497,
+                "line": 2768,
                 "method": "assertEqual"
               },
               {
-                "line": 2499,
+                "line": 2770,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W32.3"
             ],
-            "line": 2492,
+            "line": 2763,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -18701,26 +18701,26 @@
           {
             "assertions": [
               {
-                "line": 2506,
+                "line": 2777,
                 "method": "assertEqual"
               },
               {
-                "line": 2509,
+                "line": 2780,
                 "method": "assertEqual"
               },
               {
-                "line": 2510,
+                "line": 2781,
                 "method": "assertEqual"
               },
               {
-                "line": 2511,
+                "line": 2782,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W32.4"
             ],
-            "line": 2501,
+            "line": 2772,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -18790,18 +18790,18 @@
           {
             "assertions": [
               {
-                "line": 2535,
+                "line": 2806,
                 "method": "assertEqual"
               },
               {
-                "line": 2537,
+                "line": 2808,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W33.1"
             ],
-            "line": 2528,
+            "line": 2799,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -18872,14 +18872,14 @@
           {
             "assertions": [
               {
-                "line": 2543,
+                "line": 2814,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W33.2"
             ],
-            "line": 2539,
+            "line": 2810,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -18952,18 +18952,18 @@
           {
             "assertions": [
               {
-                "line": 2557,
+                "line": 2828,
                 "method": "assertEqual"
               },
               {
-                "line": 2559,
+                "line": 2830,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "W33.3"
             ],
-            "line": 2547,
+            "line": 2818,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -19040,22 +19040,22 @@
           {
             "assertions": [
               {
-                "line": 2570,
+                "line": 2843,
                 "method": "assertEqual"
               },
               {
-                "line": 2573,
+                "line": 2846,
                 "method": "assertEqual"
               },
               {
-                "line": 2574,
+                "line": 2847,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "W33.4"
             ],
-            "line": 2562,
+            "line": 2833,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -19127,34 +19127,34 @@
           {
             "assertions": [
               {
-                "line": 2593,
+                "line": 2879,
                 "method": "assertEqual"
               },
               {
-                "line": 2595,
+                "line": 2881,
                 "method": "assertEqual"
               },
               {
-                "line": 2598,
+                "line": 2884,
                 "method": "assertEqual"
               },
               {
-                "line": 2599,
+                "line": 2885,
                 "method": "assertEqual"
               },
               {
-                "line": 2600,
+                "line": 2886,
                 "method": "assertFalse"
               },
               {
-                "line": 2602,
+                "line": 2888,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W34.1"
             ],
-            "line": 2586,
+            "line": 2865,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -19230,30 +19230,26 @@
           {
             "assertions": [
               {
-                "line": 2612,
+                "line": 2904,
                 "method": "assertEqual"
               },
               {
-                "line": 2615,
-                "method": "assertEqual"
+                "line": 2907,
+                "method": "assertNotEqual"
               },
               {
-                "line": 2616,
-                "method": "assertEqual"
-              },
-              {
-                "line": 2617,
+                "line": 2908,
                 "method": "assertTrue"
               },
               {
-                "line": 2618,
+                "line": 2909,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W34.2"
             ],
-            "line": 2604,
+            "line": 2891,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -19326,34 +19322,34 @@
           {
             "assertions": [
               {
-                "line": 2635,
+                "line": 2924,
                 "method": "assertEqual"
               },
               {
-                "line": 2638,
+                "line": 2927,
                 "method": "assertEqual"
               },
               {
-                "line": 2639,
+                "line": 2928,
                 "method": "assertEqual"
               },
               {
-                "line": 2640,
+                "line": 2929,
                 "method": "assertFalse"
               },
               {
-                "line": 2641,
+                "line": 2930,
                 "method": "assertFalse"
               },
               {
-                "line": 2643,
+                "line": 2932,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W34.3"
             ],
-            "line": 2621,
+            "line": 2912,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -19428,14 +19424,14 @@
           {
             "assertions": [
               {
-                "line": 2651,
+                "line": 2940,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W35.1"
             ],
-            "line": 2649,
+            "line": 2938,
             "phase": "arwc",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -19504,14 +19500,14 @@
           {
             "assertions": [
               {
-                "line": 2665,
+                "line": 2954,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W35.2"
             ],
-            "line": 2658,
+            "line": 2947,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -19580,30 +19576,30 @@
           {
             "assertions": [
               {
-                "line": 2682,
+                "line": 2971,
                 "method": "assertEqual"
               },
               {
-                "line": 2685,
+                "line": 2974,
                 "method": "assertEqual"
               },
               {
-                "line": 2686,
+                "line": 2975,
                 "method": "assertEqual"
               },
               {
-                "line": 2687,
+                "line": 2976,
                 "method": "assertEqual"
               },
               {
-                "line": 2689,
+                "line": 2978,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "W35.3"
             ],
-            "line": 2674,
+            "line": 2963,
             "phase": "arwc",
             "simple_read_candidate": false,
             "state_change_candidate": true,

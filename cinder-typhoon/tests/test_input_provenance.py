@@ -32,7 +32,7 @@ class ProvenanceInventoryTests(unittest.TestCase):
             for methods in inventory.values()
             for method in methods.values()
         )
-        self.assertEqual(expected, 398)
+        self.assertEqual(expected, 399)
         self.assertEqual(self.report["summary"]["request_count"], expected)
         self.assertEqual(len(self.report["requests"]), expected)
         self.assertEqual(
@@ -42,15 +42,15 @@ class ProvenanceInventoryTests(unittest.TestCase):
     def test_every_fixed_runtime_comparison_is_in_the_ratcheted_inventory(self) -> None:
         inventory = provenance.runtime_comparison_inventory()
         expected = sum(item["comparison_count"] for item in inventory.values())
-        self.assertEqual(expected, 1174)
+        self.assertEqual(expected, 1139)
         self.assertEqual(self.report["summary"]["runtime_comparison_count"], expected)
         self.assertEqual(len(self.report["runtime_comparisons"]), expected)
 
     def test_non_python_runtime_sources_are_ratcheted_too(self) -> None:
         inventory = provenance.runtime_source_inventory()
-        self.assertEqual(len(inventory), 38)
-        self.assertEqual(self.report["summary"]["runtime_source_count"], 38)
-        self.assertEqual(len(self.report["runtime_sources"]), 38)
+        self.assertEqual(len(inventory), 39)
+        self.assertEqual(self.report["summary"]["runtime_source_count"], 39)
+        self.assertEqual(len(self.report["runtime_sources"]), 39)
 
     def test_new_or_changed_request_inputs_fail_ledger_validation(self) -> None:
         changed = copy.deepcopy(self.ledger)

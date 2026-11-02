@@ -1105,6 +1105,7 @@ class Handler(BaseHTTPRequestHandler):
         if ROLE == "hmi":
             if path == "/api/schedule-windows/current":
                 self.send_json(200, {
+                    "schema": "arwc.schedule-window/v1",
                     "checkpoint": schedule33.CHECKPOINT,
                     "interval_seconds": 300,
                     "interval_count": 12,
@@ -1117,8 +1118,14 @@ class Handler(BaseHTTPRequestHandler):
                     "release_bounds_m3s": {"min": 0.0, "max": 0.8},
                     "supply_bounds_m3s": {"min": 0.0, "max": 0.5},
                     "policy_format": "ARWC-POL1",
-                    "reference_release_m3s": schedule33.REFERENCE_RELEASE,
-                    "reference_alternate_m3s": schedule33.REFERENCE_ALTERNATE,
+                    "request_schema": {
+                        "required": [
+                            "checkpoint", "interval_seconds", "demand_m3s",
+                            "reservoir_release_m3s", "alternate_supply_m3s",
+                        ],
+                        "series_length": 12,
+                        "number_type": "finite-real",
+                    },
                 })
                 return
             records = {

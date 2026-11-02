@@ -8,10 +8,6 @@ from typing import Any
 CHECKPOINT = "REH-SCHED-33"
 DEMAND = [0.45, 0.50, 0.55, 0.60, 0.65, 0.70,
           0.70, 0.65, 0.60, 0.55, 0.50, 0.45]
-REFERENCE_RELEASE = [0.10, 0.15, 0.20, 0.25, 0.30, 0.35,
-                     0.35, 0.30, 0.25, 0.20, 0.15, 0.10]
-REFERENCE_ALTERNATE = [round(demand - release, 2)
-                       for demand, release in zip(DEMAND, REFERENCE_RELEASE)]
 
 
 def canonical(value: object) -> bytes:
