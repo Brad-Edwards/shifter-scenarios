@@ -339,6 +339,46 @@ evaluator. It contains ballot UUIDs, private nominator and nominee UUIDs, server
 timestamps, and the fixed attestation only; aliases, sessions, CSRF material,
 rate attempts, and audit details stay out of the export.
 
+## Notification, inventory, and claim component
+
+Issue #288 implements `ctfd/prize_claims.py` over the evaluator's owner-only
+SQLite state. It adds claim-domain tables to the same event binding rather than
+copying allocations into another ledger. The component is called behind the
+approved participant and event-staff authentication integrations; browser
+headers, claim payloads, and QR content never establish participant or staff
+identity.
+
+Every live allocation creates one communication intent keyed by event, slot,
+and allocation generation. Retries use the same idempotency key and never change
+the winner. A supplied communication adapter receives only the recipient's
+private integration ID, public award name, claim-ready state, and participant
+path. It receives no challenge state, rank details, nominations, draw proof, or
+other participant identity. Delivery exceptions retain the intent for recovery
+and store only a bounded error class, not message text.
+
+The participant claim view returns their own public award name and status. It
+can mint an opaque random claim code and QR payload bound to the event through
+an HMAC digest; only the digest is stored. Codes expire after ten minutes,
+reissue revokes the prior code, and pre-finalization codes never outlive the
+published claim deadline. Final-rollover winners receive the same bounded
+ten-minute claim window after their selection.
+
+The inventory projection is exactly 50 numbered packs. A staff claim uses one
+`BEGIN IMMEDIATE` transaction to verify the authenticated staff capability,
+token digest and expiry, live allocation, participant one-prize rule, unused
+pack, and stable request identity. Unique constraints cover the allocation,
+participant, and pack. An identical retry returns the stored receipt; identity
+reuse with changed input fails.
+
+The claim-deadline occurrence voids unclaimed pre-finalization attempts without
+deleting their allocation generations or notification history, allowing the
+evaluator's final rollover to fill the opened slots. A claimed allocation cannot
+be voided. Event administrators may record a reasoned custody correction and,
+when necessary, atomically move current custody to a still-unused pack; the
+original claim and old pack history remain visible. Operator dashboards and
+credential-free summaries use public aliases, while private UUIDs, token
+digests, staff IDs, and audit details stay on authorized surfaces.
+
 ## Threat model
 
 | Threat | Control and failure behavior |
