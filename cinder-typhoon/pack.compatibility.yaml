@@ -47,7 +47,11 @@ validation:
     - python3 challenges/catalog.py --check
     - python3 build/hint-delivery/release.py verify
     - python3 build/card-coverage/coverage.py --require-complete
+    - python3 tests/report_qa_status.py
+    - python3 -m unittest tests/test_qa_layers.py
   gates:
     - challenge-delivery-current
     - hint-delivery-current
     - card-coverage-exact
+    - qa-status-consistent
+    - qa-documentation-consistent

@@ -1,18 +1,49 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "overall_status": "not_release_qualified",
+  "gate_catalog": {
+    "path": "tests/qa-gates.json",
+    "sha256": "2fff26451e973dd0af821043e1d22a2a6213ec6d50c4a07d216112825ddeef00"
+  },
+  "issue_registry": {
+    "path": "tests/readiness-issues.json",
+    "sha256": "9ceb29665cff0932e7f3316e2ce190b0d55af0ee3c582373447209747b4eb216"
+  },
+  "release_binding": {
+    "candidate_manifest": {
+      "path": "build/participant-runner/candidate.json",
+      "sha256": "bcaf88938e331059c50f854f1b8ab09d89c2f0c3327cac99b207e0b2470b1e09"
+    },
+    "release_manifest": {
+      "path": "build/release/manifest.json",
+      "status": "missing",
+      "sha256": null
+    },
+    "required_release_reports": [
+      "build/release/reports/service-contract.json",
+      "build/release/reports/known-solution.json",
+      "build/release/reports/provenance-and-surface.json",
+      "build/release/reports/blind-playtest.json",
+      "build/release/reports/soak.json"
+    ],
+    "release_reports": []
+  },
   "layers": {
     "service_contract": {
       "title": "Service contract tests",
       "purpose": "Verify normal, accepted, denied, persistence, isolation, and audit behavior at service boundaries.",
       "method": "automated",
       "implementation_status": "complete",
+      "implementation_gate_ids": ["service-contract-unit"],
       "candidate_status": "not_run",
+      "candidate_reports": [],
       "evidence_visibility": "operator_only",
       "evidence": [
         "build/training/tests",
         "build/keplerops/tests",
-        "build/arwc/tests"
+        "build/arwc/tests",
+        "tests/test_arwc_handover.py",
+        "tests/test_per_range_variation.py"
       ],
       "supports": [
         "service behavior",
@@ -26,19 +57,26 @@
         "participant understanding",
         "difficulty",
         "duration"
-      ],
-      "blocking_issues": [232]
+      ]
     },
     "known_solution_acceptance": {
       "title": "Participant-boundary known-solution acceptance",
       "purpose": "Verify that an authored solution sequence is executable from the participant account and network boundary.",
       "method": "automated",
-      "implementation_status": "complete",
+      "implementation_status": "partial",
+      "implementation_gate_ids": [
+        "card-coverage-complete",
+        "hint-delivery-complete",
+        "known-solution-static-unit",
+        "arwc-artifact-derived-analysis"
+      ],
       "candidate_status": "not_run",
+      "candidate_reports": [],
       "evidence_visibility": "operator_only",
       "evidence": [
         "build/participant-runner/run.py",
         "build/card-coverage/registry.json",
+        "build/hint-delivery/manifest.json",
         "build/training/tests/test_known_solution_live.py",
         "build/keplerops/tests/test_known_solution_live.py",
         "build/arwc/tests/test_known_solution_live.py"
@@ -54,15 +92,22 @@
         "participant understanding",
         "difficulty",
         "duration"
-      ],
-      "blocking_issues": [226, 232]
+      ]
     },
     "provenance_and_surface": {
       "title": "Input provenance, participant-surface, and fourth-wall checks",
       "purpose": "Verify what is visible at the participant boundary, where every solution-path input originates, and that observed content stays in world.",
       "method": "automated",
-      "implementation_status": "complete",
+      "implementation_status": "partial",
+      "implementation_gate_ids": [
+        "input-provenance-complete",
+        "participant-surface-authored",
+        "fourth-wall-training-static",
+        "fourth-wall-keplerops-static",
+        "fourth-wall-arwc-static"
+      ],
       "candidate_status": "not_run",
+      "candidate_reports": [],
       "evidence_visibility": "operator_only",
       "evidence": [
         "build/participant-surface/manifests/training.json",
@@ -84,15 +129,16 @@
         "participant understanding",
         "difficulty",
         "duration"
-      ],
-      "blocking_issues": [232]
+      ]
     },
     "blind_human_agent_playtest": {
       "title": "Blind human-plus-agent playtests",
       "purpose": "Measure discovery, fairness, understanding, difficulty, duration, abandonment, and agent contribution with fresh participants.",
       "method": "human_plus_agent",
       "implementation_status": "not_started",
+      "implementation_gate_ids": [],
       "candidate_status": "not_run",
+      "candidate_reports": [],
       "evidence_visibility": "operator_only",
       "evidence": [],
       "supports": [
@@ -105,8 +151,7 @@
       "does_not_support": [
         "service-contract completeness",
         "immutable build identity"
-      ],
-      "blocking_issues": [229]
+      ]
     }
   }
 }
