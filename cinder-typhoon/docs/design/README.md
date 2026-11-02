@@ -28,6 +28,10 @@ and [service/artifact ownership ledger](keplerops-artifact-ownership.md) record
 the legal RAE representation and one authoritative home for every KeplerOps
 challenge input and result.
 
+The [event prize automation contract](event-prize-automation.md) records the
+RAE/Shifter boundary, exact 50-slot selection order, data flow, state machine,
+threat model, and machine-readable operator-policy contract for the event.
+
 The [ARWC native-semantic ledger](arwc-native-semantics.md),
 [bounded process model](arwc-process-model.md), and
 [service/artifact ownership ledger](arwc-artifact-ownership.md) record the legal
