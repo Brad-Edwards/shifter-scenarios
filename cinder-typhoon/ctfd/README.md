@@ -86,6 +86,41 @@ window create no prize fact. Stage and event close occurrences retain both the
 scheduled cutoff and actual execution time. Rebuilding the same source snapshot
 and policy produces the same bytes and digest.
 
+## Prize evaluation
+
+[`prize_evaluator.py`](prize_evaluator.py) reconciles the validated input into
+an owner-only SQLite state file. It orders accepted solves and scheduled closes
+by authoritative semantic time, applies every selector in the policy order, and
+records only bindings, 50 slots, occurrence proofs, and allocation attempts.
+The database contains no submission ledger, public aliases, nomination ballots,
+or draw seed.
+
+Create a dedicated 32-byte random seed before the event, calculate its
+commitment with `seed_commitment(event_id, seed)`, and bind that commitment in
+the authoritative input. Keep the seed in the approved encrypted secret store;
+when evaluation runs, materialize it as exactly 64 hexadecimal characters in an
+owner-only file. The evaluator does not invent a second encryption or key
+management scheme. Evaluate or reconcile with:
+
+```sh
+python3 cinder-typhoon/ctfd/prize_evaluator.py \
+  --policy /secure/event-prizes.json \
+  --input /secure/event-prize-input.json \
+  --state /secure/event-prize-state.sqlite3 \
+  --seed-file /secure/event-prize-seed.hex \
+  --nominations /secure/event-prize-nominations.json
+```
+
+The optional nominations file uses
+`cinder-typhoon.prize-nominations/v1`; issue #290 owns its participant-facing
+collection surface. Reconciliation fails if a close is missing any earlier
+accepted-solve occurrence. An identical occurrence retry returns its recorded
+result, while changed inputs, policy/content drift, a different committed seed,
+or a changed slot projection stop the transaction. SQLite partial unique indexes
+enforce one live allocation per participant and slot. A void retains the prior
+generation and proof; finalization can fill the next generation without deleting
+history. The operator state is private and must not be served to participants.
+
 The separately versioned `build/hint-delivery/manifest.json` pins the hint
 sources and facilitator release rules. Use `build/hint-delivery/release.py` to
 release one level and create the content-free audit record; do not disclose the

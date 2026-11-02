@@ -263,6 +263,47 @@ nomination, event, claim-deadline, and finalization occurrences; no second
 scheduler is introduced. A post-commit coalesced evaluation may improve bounty
 latency, but scheduled reconciliation must recover a lost callback.
 
+## Scenario-owned evaluator implementation
+
+Issue #286 implements the evaluator in `ctfd/prize_evaluator.py`. It consumes a
+validated `cinder-typhoon.event-prize-input/v1` snapshot and the separately
+bound policy. It does not call a participant API, accept browser events, or
+persist submission rows. A single reconciliation pass orders every pending
+occurrence by its authoritative semantic time and stable IDs before selection;
+this makes callback arrival order irrelevant.
+
+The durable state is one owner-only SQLite file. SQLite is used here as the
+standard-library transactional store, not as a second scoring system. Its
+closed schema contains only:
+
+| Table | Stored facts | Enforced invariant |
+|---|---|---|
+| Event binding | Event, policy, content, and draw-commitment digests | One immutable binding per event |
+| Prize slots | The 50 policy slot IDs, families, scopes, and order | Exact unique policy projection |
+| Evaluation occurrences | Trigger identity and input, eligibility, and result digests | One result per stable occurrence ID |
+| Allocation attempts | Slot generation, private participant ID, selector proof, and status | One live allocation per slot and participant |
+
+Partial unique indexes enforce the live slot and participant constraints inside
+the same `BEGIN IMMEDIATE` transaction that records an occurrence. An identical
+retry returns the recorded result. Conflicting event, policy, content, seed
+commitment, trigger identity, or slot projection stops evaluation. Voids retain
+the prior generation and a required reason; finalization can allocate the next
+generation without rewriting history.
+
+The 256-bit draw seed is supplied at evaluation time through an owner-controlled
+file or process boundary. It is never written to the state database or result.
+Its commitment is SHA-256 over a versioned domain, the event UUID, and the seed.
+Eligibility-set and HMAC messages use length-prefixed fields so concatenation is
+unambiguous. The draw domain includes the selector key in addition to the event,
+policy digest, occurrence UUID, eligibility-set digest, and participant UUID;
+this separates the nomination tiers and every other draw made by one occurrence.
+
+Rebuild creates a new state file and replays the same bound snapshot,
+nominations, close occurrences, and audited voids. It must produce identical
+slot generations, participant selections, eligibility digests, draw ranks, and
+result digests. Public or participant-facing views remain downstream work: this
+operator state contains private UUIDs and must never be served directly.
+
 ## Threat model
 
 | Threat | Control and failure behavior |
