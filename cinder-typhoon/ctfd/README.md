@@ -146,6 +146,33 @@ IDs are not stored. `NominationService.close` consumes the authoritative
 `cinder-typhoon.prize-nominations/v1` envelope expected by the evaluator. Do not
 serve that export or the audit stream to participants.
 
+## Winner notification and prize claims
+
+[`prize_claims.py`](prize_claims.py) adds notification intents, exactly 50
+numbered packs, short-lived claim codes, and audited custody actions to the same
+owner-only SQLite database used by the evaluator. Build its immutable config
+from the validated policy and snapshot with `build_claim_config`, and supply a
+dedicated 32-byte HMAC key from the approved secret store. The key and raw claim
+codes are never stored.
+
+Call `PrizeClaimService.release_notifications` with the approved event
+communication adapter. The adapter receives one minimal message with a stable
+event/slot/generation idempotency key; provider failures retain the same intent
+for retry without storing provider error text. Participant routes must construct
+`AuthenticatedParticipant` from the existing authenticated event session.
+Event-staff routes must construct `AuthenticatedEventStaff` from the approved
+staff integration; request headers, QR content, and submitted IDs are not
+identity evidence.
+
+At the claim deadline, invoke `expire_unclaimed` once with the scheduled
+occurrence UUID and authoritative execution time, then run the evaluator's
+finalization occurrence to fill the opened slots. Staff claims, manual voids,
+and custody corrections are transactional and idempotent. Manual voids and
+corrections require an event administrator and a reason. Use `dashboard` for the
+live 50-slot operator view and `credential_free_summary` for the alias-only
+post-event record. Do not expose the database, notification recipient IDs,
+claim-token digests, or audit rows on participant or public routes.
+
 The separately versioned `build/hint-delivery/manifest.json` pins the hint
 sources and facilitator release rules. Use `build/hint-delivery/release.py` to
 release one level and create the content-free audit record; do not disclose the
