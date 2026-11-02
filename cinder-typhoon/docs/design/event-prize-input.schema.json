@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/event-prize-input-v1.schema.json",
+  "title": "Cinder Typhoon authoritative event-prize input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "event",
+    "participants",
+    "accepted_solves",
+    "overall_ranking",
+    "stage_results",
+    "occurrences"
+  ],
+  "properties": {
+    "contract": {
+      "const": "cinder-typhoon.event-prize-input/v1"
+    },
+    "event": {
+      "$ref": "#/$defs/event"
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/participant"
+      }
+    },
+    "accepted_solves": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/accepted_solve"
+      }
+    },
+    "overall_ranking": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ranking"
+      }
+    },
+    "stage_results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["training", "keplerops", "arwc"],
+      "properties": {
+        "training": {
+          "$ref": "#/$defs/stage_results"
+        },
+        "keplerops": {
+          "$ref": "#/$defs/stage_results"
+        },
+        "arwc": {
+          "$ref": "#/$defs/stage_results"
+        }
+      }
+    },
+    "occurrences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/occurrence"
+      }
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "nullable_utc": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/utc"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^[tkw][0-9]{2}\\.[0-9]+$"
+    },
+    "stage_name": {
+      "enum": ["training", "keplerops", "arwc"]
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "status",
+        "event_start",
+        "event_end",
+        "snapshot_at",
+        "content_bundle_digest",
+        "policy_digest",
+        "catalog_revision",
+        "boundaries"
+      ],
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "event_start": {
+          "$ref": "#/$defs/utc"
+        },
+        "event_end": {
+          "$ref": "#/$defs/utc"
+        },
+        "snapshot_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "content_bundle_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "policy_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "catalog_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "boundaries": {
+          "$ref": "#/$defs/boundaries"
+        }
+      }
+    },
+    "boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stage_close_at",
+        "nomination_open_at",
+        "nomination_close_at",
+        "claim_deadline_at",
+        "finalize_at",
+        "draw_seed_commitment"
+      ],
+      "properties": {
+        "stage_close_at": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["training", "keplerops", "arwc"],
+          "properties": {
+            "training": {
+              "$ref": "#/$defs/utc"
+            },
+            "keplerops": {
+              "$ref": "#/$defs/utc"
+            },
+            "arwc": {
+              "$ref": "#/$defs/utc"
+            }
+          }
+        },
+        "nomination_open_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "nomination_close_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "claim_deadline_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "finalize_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "draw_seed_commitment": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "participant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["participant_id", "public_alias", "prize_eligible"],
+      "properties": {
+        "participant_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "public_alias": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "prize_eligible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "accepted_solve": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "submission_id",
+        "participant_id",
+        "challenge_source_id",
+        "points",
+        "accepted_at"
+      ],
+      "properties": {
+        "submission_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "participant_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "challenge_source_id": {
+          "$ref": "#/$defs/source_id"
+        },
+        "points": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "accepted_at": {
+          "$ref": "#/$defs/utc"
+        }
+      }
+    },
+    "ranking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "participant_id",
+        "score",
+        "solve_count",
+        "last_solve_at",
+        "position"
+      ],
+      "properties": {
+        "participant_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "score": {
+          "type": "integer"
+        },
+        "solve_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_solve_at": {
+          "$ref": "#/$defs/nullable_utc"
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "stage_results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/stage_result"
+      }
+    },
+    "stage_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "participant_id",
+        "score",
+        "solve_count",
+        "score_reached_at",
+        "completed_at",
+        "completing_submission_id"
+      ],
+      "properties": {
+        "participant_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "solve_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "score_reached_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "completed_at": {
+          "$ref": "#/$defs/nullable_utc"
+        },
+        "completing_submission_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "occurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "occurrence_id",
+        "trigger",
+        "stage",
+        "submission_id",
+        "scheduled_for",
+        "executed_at"
+      ],
+      "properties": {
+        "occurrence_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "trigger": {
+          "enum": [
+            "accepted_solve",
+            "stage_closed",
+            "nomination_closed",
+            "event_closed",
+            "finalization"
+          ]
+        },
+        "stage": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/stage_name"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "submission_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scheduled_for": {
+          "$ref": "#/$defs/nullable_utc"
+        },
+        "executed_at": {
+          "$ref": "#/$defs/utc"
+        }
+      }
+    }
+  }
+}

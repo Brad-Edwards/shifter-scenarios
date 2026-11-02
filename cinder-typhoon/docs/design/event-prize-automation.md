@@ -320,8 +320,11 @@ serialization. Surviving mutations in these rules block release.
 
 - #287 owns generation and validation of the Cinder policy instance without
   changing `shifter-ctf-content/v1`.
-- #285 owns the least-privilege projections and durable occurrences over
-  existing Shifter facts; it must not copy the solve ledger.
+- #285 owns the least-privilege projection and durable occurrence contract over
+  existing Shifter facts. The implementation is
+  `ctfd/prize_inputs.py` plus `event-prize-input.schema.json`; it consumes a
+  closed organizer-authorized projection, derives stage facts, and does not copy
+  or replace the solve ledger.
 - #286 owns the evaluator, persistence, ordering, drawings, and rollover.
 - #290 owns peer nominations.
 - #288 owns communication integration, numbered inventory, and claims.
