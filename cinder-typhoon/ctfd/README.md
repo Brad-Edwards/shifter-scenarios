@@ -121,6 +121,31 @@ enforce one live allocation per participant and slot. A void retains the prior
 generation and proof; finalization can fill the next generation without deleting
 history. The operator state is private and must not be served to participants.
 
+## Good Citizen nominations
+
+[`prize_nominations.py`](prize_nominations.py) provides the server-side Good
+Citizen nomination component. It is called behind the approved authenticated
+participant integration; it does not accept identity from browser headers or
+run a separate identity service. Build its immutable configuration from the
+validated prize snapshot, the authoritative checked-in participant IDs, and the
+canonical HTTPS event origin with `build_nomination_config`.
+
+The integration passes `AuthenticatedParticipant` context to
+`NominationService`. The form response contains public aliases, session-bound
+opaque candidate tokens, and an origin-bound HMAC CSRF token. It contains no
+other participant UUID. Submission accepts only a request UUID, CSRF token,
+candidate token, and the required no-sharing attestation; there is no free-text
+field. The component enforces five attempts per rolling minute, one ballot per
+nominator, half-open server-time cutoffs, and transactional concurrency.
+
+The owner-only SQLite state stores the immutable event and token-key
+commitments, checked-in aliases, private ballots, bounded rate facts, structured
+audit rows, and one scheduled close. The key itself and authenticated session
+IDs are not stored. `NominationService.close` consumes the authoritative
+`nomination_closed` occurrence and idempotently returns the private
+`cinder-typhoon.prize-nominations/v1` envelope expected by the evaluator. Do not
+serve that export or the audit stream to participants.
+
 The separately versioned `build/hint-delivery/manifest.json` pins the hint
 sources and facilitator release rules. Use `build/hint-delivery/release.py` to
 release one level and create the content-free audit record; do not disclose the
