@@ -89,7 +89,7 @@ python3 cinder-typhoon/build/input-provenance/provenance.py \
   --output /tmp/cinder-provenance-report.json
 ```
 
-`--require-complete` currently passes: all 399 request callsites and 1,133
+`--require-complete` currently passes: all 399 request callsites and 1,135
 fixed runtime comparisons are reviewed with no unresolved entries. This is a
 static provenance result, not proof that the known solution works on a live
 candidate. The candidate wrapper runs the card-coverage gate, provenance gate,

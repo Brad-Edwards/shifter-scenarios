@@ -46,6 +46,12 @@ the control-only `a-distribution` service without altering live process state.
 - Mutable service state and immutable audit records are volume-backed. A
   destructive acceptance pass is followed by volume recreation from authored
   initial state.
+- The five corporate handoff gates separate container liveness from application
+  readiness. Docker health accepts the exact `waiting` state so Compose can
+  start the complete dependency graph before delivery; after authenticated
+  handoff it also requires the local client-document interface to answer.
+  Missing, rejected, or unknown state is unhealthy. The state file and the
+  stricter `ready` probe remain the authoritative readiness evidence.
 
 ## Realization architecture
 
@@ -597,3 +603,10 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   and directly verified the exact authored service states, empty audits and
   result stores, absent earned credentials/evidence, initial 12.40 ML reserve,
   and unchanged immutable inputs before reporting the restore successful.
+- 2026-11-03: The #231 live regression rebuilt the five handoff-gated images on
+  `cinder-arwc-golden`. All 19 Compose services started before delivery; the
+  five gates remained healthy in exact `waiting` state with zero restarts.
+  Delayed authenticated handoff made every gated interface ready without a
+  restart, restarting all five preserved the accepted handoff, and a second
+  destructive restore returned the complete graph to the verified waiting
+  state with no participant transition material.
