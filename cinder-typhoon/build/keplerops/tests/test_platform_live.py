@@ -150,8 +150,9 @@ class PlatformLiveTest(unittest.TestCase):
         assertion = call("support.keplerops.test", assertion_path, method="POST", body=assertion_body, auth=None, expected=201)
         login_path = urlparse.urlsplit(provider["assertion_submission_endpoint"]).path
         customer_record_path = f"/api/customers/{tenant}/dossiers/{history['customer_record']}"
+        # A signed assertion is not a support session until identity consumes it.
         bypass = call("support.keplerops.test", customer_record_path, auth=None, cookie="fieldkest_federated=" + assertion["assertion"], expected=403)
-        self.assertEqual(bypass["error"], "federated_session_required")
+        self.assertEqual(bypass["error"], "session_denied")
         federated = call("identity.keplerops.test", login_path, method="POST", body={"assertion": assertion["assertion"]}, expected=201)
         replayed = call("identity.keplerops.test", login_path, method="POST", body={"assertion": assertion["assertion"]}, expected=409)
         self.assertEqual(replayed["error"], "assertion_replayed")

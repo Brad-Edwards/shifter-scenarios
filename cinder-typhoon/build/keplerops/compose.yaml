@@ -198,6 +198,7 @@ services:
     depends_on: [router]
     extra_hosts:
       - connector.arwc.test:10.77.60.20
+      - identity.keplerops.test:10.77.50.40
     volumes:
       - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
