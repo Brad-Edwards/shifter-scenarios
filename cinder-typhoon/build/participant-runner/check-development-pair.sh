@@ -4,7 +4,7 @@ set -euo pipefail
 stage=initialization
 report_failure() {
   local status=$?
-  rm -f -- "$verification_archive"
+  rm -f -- "$verification_archive" "$sync_file_list"
   if ((status != 0)); then
     echo "FAIL: paired development check stopped during $stage" >&2
   fi
@@ -36,7 +36,36 @@ remote_root=${CINDER_REMOTE_ROOT:-/opt/cinder-typhoon}
 kepler_report="$remote_root/build/keplerops/.operator/known-solution-$label.json"
 pack_root=$(CDPATH='' cd -- "$(dirname -- "$0")/../.." && pwd)
 verification_archive=$(mktemp /tmp/cinder-verification.XXXXXX.tar.gz)
+sync_file_list=$(mktemp /tmp/cinder-verification-files.XXXXXX)
+sync_manifest="$pack_root/build/participant-runner/development-pair-sync-paths.txt"
 trap report_failure EXIT
+
+mapfile -t sync_roots < "$sync_manifest"
+if ((${#sync_roots[@]} == 0)); then
+  echo "development-pair sync manifest is empty" >&2
+  exit 2
+fi
+declare -A seen_sync_roots=()
+for sync_root in "${sync_roots[@]}"; do
+  if [[ ! $sync_root =~ ^[A-Za-z0-9][A-Za-z0-9._/-]*$ \
+      || "/$sync_root/" == *"//"* \
+      || "/$sync_root/" == *"/./"* \
+      || "/$sync_root/" == *"/../"* ]]; then
+    echo "unsafe development-pair sync path: $sync_root" >&2
+    exit 2
+  fi
+  if [[ -n ${seen_sync_roots[$sync_root]+present} ]]; then
+    echo "duplicate development-pair sync path: $sync_root" >&2
+    exit 2
+  fi
+  seen_sync_roots[$sync_root]=1
+  if [[ -z $(git -C "$pack_root" ls-files -- "$sync_root") ]]; then
+    echo "development-pair sync path has no tracked files: $sync_root" >&2
+    exit 2
+  fi
+done
+
+git -C "$pack_root" ls-files -z -- "${sync_roots[@]}" > "$sync_file_list"
 
 remote() {
   local instance=$1
@@ -53,23 +82,7 @@ remote() {
 # reusing a cached participant or service image from an earlier revision.
 stage=verification-source-sync
 tar -C "$pack_root" -czf "$verification_archive" \
-  --exclude='*/__pycache__' \
-  build/input-provenance \
-  build/participant-runner \
-  build/participant-surface \
-  build/training/runtime \
-  build/training/tests/test_known_solution_live.py \
-  build/keplerops/compose.yaml \
-  build/keplerops/generate-operator-material.sh \
-  build/keplerops/provision-seed.py \
-  build/keplerops/restore-pristine.sh \
-  build/keplerops/images \
-  build/keplerops/runtime \
-  build/keplerops/tests \
-  assets/keplerops/opening \
-  assets/keplerops/registry \
-  build/arwc/runtime \
-  build/arwc/tests/test_known_solution_live.py
+  --null --files-from="$sync_file_list"
 
 for instance in "$kepler_instance" "$arwc_instance"; do
   remote_archive="/tmp/cinder-verification-$label.tar.gz"

@@ -81,6 +81,12 @@ suite and campaign-wide surface, coverage, and fourth-wall gates remain in
 their own qualification lanes; they are not folded into an issue-scoped
 development run for a different remediation category.
 
+The transferred source set is declared in
+`development-pair-sync-paths.txt`. The launcher accepts only safe relative
+entries that resolve to tracked files and archives the tracked files beneath
+those entries. Untracked reports, caches, generated operator material and
+participant-private state therefore cannot enter the verification archive.
+
 Live request entries include their current input-provenance sources and
 unresolved items. This does not conflate the QA layers: known-solution behavior,
 card coverage, fourth-wall leakage, and provenance retain separate statuses.
