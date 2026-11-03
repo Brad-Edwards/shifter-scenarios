@@ -32,7 +32,7 @@ content:
       surface_bindings:
       - k-delivery.k-source/gitea/repository-content
       starting_state: Retained fieldkest-policyc 2.6.4 Linux x86-64 ELF, unstripped map,
-        examples and accepted-input endpoint; embedded program offset/table.
+        examples and evaluation collection; embedded opcode symbols and program offset/table.
       mechanic_profile:
         implementation: fieldkest-policyc 2.6.4, Linux x86_64 ELF, symbols and map retained
         build:
@@ -48,8 +48,8 @@ content:
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
         input: Retained fieldkest-policyc 2.6.4 Linux x86-64 ELF, unstripped map, examples
-          and accepted-input endpoint; embedded program offset/table.
-        success: Extracted program entry, byte digest and input-record binding.
+          and evaluation collection; embedded opcode symbols and program offset/table.
+        success: Extracted opcode model, program entry, byte digest and input-record binding.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -61,7 +61,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Extracted program entry, byte digest and input-record binding.
+      transition_contract: Extracted opcode model, program entry, byte digest and input-record
+        binding.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -83,7 +84,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 0061ac88f8e0139c5cd65c1303d6d064628e212d4a6c258cdaf70ee0f408eb69
+        digest: 06a38a9929ccbd8a2282364d0e96e739f1a007cedb198de8af27164b816905c5
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -103,11 +104,11 @@ content:
       record_key: learn-its-instructions
       owner:
         node: k-source
-        authority: Policy compiler exercise service
+        authority: Policy compiler migration service
       surface_bindings:
-      - k-delivery.k-source/gitea/policy-compiler-exercise
-      starting_state: Eight-opcode stack VM specification recoverable from binary and four
-        distinguishing fragments.
+      - k-delivery.k-source/gitea/policy-compiler-evaluations
+      starting_state: Eight-opcode stack VM specification recoverable from the supplied
+        binary and four distinguishing fragments.
       mechanic_profile:
         instruction_width: 4
         opcodes:
@@ -125,8 +126,8 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Eight-opcode stack VM specification recoverable from binary and four distinguishing
-          fragments.
+        input: Eight-opcode stack VM specification recoverable from the supplied binary
+          and four distinguishing fragments.
         success: Submitted instruction model matches output plus state writes for every
           fragment.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
@@ -163,7 +164,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 68de8523cc1caa634681d80c3deb87aa32469daed5f7b9d236cbd96948e96b1d
+        digest: 23bb52f3f874c1d72e441ef8826c7d75d6b107506c11283f2ac0f7211aaf6fb1
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -183,9 +184,9 @@ content:
       record_key: the-rule-behind-the-rule
       owner:
         node: k-source
-        authority: Policy compiler exercise service
+        authority: Policy compiler migration service
       surface_bindings:
-      - k-delivery.k-source/gitea/policy-compiler-exercise
+      - k-delivery.k-source/gitea/policy-compiler-evaluations
       starting_state: Hidden complete program plus public distinguishing corpus covering
         channel, API version, tenant class, signer lineage and compatibility bit.
       mechanic_profile:
@@ -253,7 +254,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 7ec0998653965a810fa5c7d8564f33790b0759c6f7df4c7d68669800b608c61a
+        digest: 83e36188e7ef305afafe9fe0e8c6e656dad426a9d4ffa230b0ec5f2763bb44e0
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -275,8 +276,8 @@ content:
         node: k-source
         authority: Policy acceptance service
       surface_bindings:
-      - k-delivery.k-source/gitea/policy-compiler-nonce
-      - k-delivery.k-source/gitea/policy-compiler-exercise
+      - k-delivery.k-source/gitea/policy-compiler-nonces
+      - k-delivery.k-source/gitea/policy-compiler-evaluations
       starting_state: Fresh nonce-bound policy input; required meaning is active tenant,
         connector v3, accepted lineage, compatibility exception.
       mechanic_profile:
@@ -331,7 +332,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 9d92f48c2d476ca225920c5fc650f67dcc929e38ab6dd39f491d30b0e6212a96
+        digest: dad94ae2060813a73b3b158b228248129fe725259f60c9f09c255ad4655cd621
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

@@ -1296,7 +1296,7 @@
             "inputs": [
               "HTTP request route templates"
             ],
-            "locator": "route keys resolved by the setUpClass crawler: source.policy-evaluate, source.policy-nonce, source.policy-opcode-model",
+            "locator": "route keys resolved by the setUpClass crawler: source.policy-evaluate, source.policy-nonce",
             "source": "linked client-reference documents crawled from the Client reference URL in /home/rowan/work/service-notes.md"
           },
           {
@@ -1307,13 +1307,13 @@
               "nonce",
               "compiler request fields"
             ],
-            "source": "accepted source.policy-opcode-model, source.policy-evaluate, and source.policy-nonce responses",
-            "locator": "opcode names and operands are read from the published opcode-model response; programs are assembled from that model; nonce and program_model are returned by the normal policy endpoints before reuse"
+            "source": "retained fieldkest/policy-compiler repository artifacts plus accepted source.policy-evaluate and source.policy-nonce responses",
+            "locator": "opcode names and byte values are parsed from exported fieldkest_opcode_* symbols in bin/fieldkest-policyc; the complete program is parsed from its FKPC table; the accepted input comes from examples/accepted.env; the corpus digest and nonce come from accepted resource responses"
           }
         ],
-        "inventory_sha256": "b25beba7db17cbdfcb2fcec54b0a5c61a1a7cee6a693bcbaa21e3e0a4272f654",
+        "inventory_sha256": "d843435265f5d138853ebf7645b31ea93361921bc8c8f6cde207d6da4b729c2b",
         "profile": "keplerops",
-        "request_count": 6,
+        "request_count": 5,
         "review_status": "complete",
         "unresolved": []
       },
@@ -2536,8 +2536,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 44,
-      "inventory_sha256": "0efda20bcfa1e3f8cc113d5ada8697cad21b7d138f7bc3ec8826cc18b6128bf5",
+      "comparison_count": 43,
+      "inventory_sha256": "aba20a5785aabed5fd0d57823687ba6e7a03151361120a844967f1c2d7a1ae85",
       "review_status": "complete",
       "unresolved": []
     },

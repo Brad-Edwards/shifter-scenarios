@@ -15,7 +15,7 @@ content:
     type: directory
     target: k-delivery.k-source
     destination: /var/lib/gitea
-    description: Exact retained policy-compiler repository, deterministic Linux x86-64 compiler, private acceptance-service configuration, and immutable corpus for K11.
+    description: Exact retained policy-compiler repository, deterministic Linux x86-64 compiler, private migration-service configuration, and immutable corpus for K11.
     source:
       name: cinder-typhoon/keplerops/policy-compiler/source-state
       version: '2026-09-18'
@@ -25,7 +25,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/policy-compiler/source-state
           version: '2026-09-18'
-          digest: sha256:498b298ac8534f1f7cfdf181f30ff2686e03f86d95f4073b650b48e9d8bf7427
+          digest: sha256:b430abd885a2aa4a4ea5203f3dcde3ca113a178de3de104b15b6298ea5550aa7
           media_type: application/x-tar
         permitted_routes:
         - mechanism:

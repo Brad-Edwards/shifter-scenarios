@@ -37,7 +37,7 @@ HANDOVER = json.loads((STATE / "handovers/HND-FLK-2026-09.json").read_text())
 API_CONTENT = re.compile(r"^/api/v1/repos/fieldkest/(fieldlink-connector|policy-compiler|connector-archive|release-signer-history)/contents/(.+)$")
 GIT_ROUTE = re.compile(r"^/fieldkest/(fieldlink-connector|policy-compiler|connector-archive|release-signer-history)\.git/(info/refs|git-upload-pack)$")
 WORKER_SECRET = Path("/tmp/worker-hmac.key").read_bytes()
-POLICY_BINARY = STATE / "exercises/policy-compiler/fieldkest-policyc"
+POLICY_BINARY = STATE / "toolchains/policy-compilers/fieldkest-policyc"
 POLICY_STATE = AUDIT / "policy-state"
 POLICY_LOCK = threading.RLock()
 CONNECTOR_BINARY = STATE / "exercises/connector-archive/fieldlink-connector"
@@ -193,7 +193,7 @@ def issue_policy_nonce(principal: str, request_id: str) -> dict[str, object]:
         (nonce_dir / f"{nonce}.json").write_text(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
     append_audit(AUDIT, "policy-compiler", {
         "request_id": request_id, "principal": principal, "operation": "issue-nonce",
-        "nonce_sha256": sha256(nonce.encode()), "expires_at_epoch": record["expires_at_epoch"], "status": 200,
+        "nonce_sha256": sha256(nonce.encode()), "expires_at_epoch": record["expires_at_epoch"], "status": 201,
     })
     return {"nonce": nonce, "expires_at_epoch": record["expires_at_epoch"]}
 
@@ -279,21 +279,6 @@ class SourceHandler(KeplerHandler):
             append_audit(AUDIT, "handover", {"request_id": self.request_id, "principal": principal, "handover_id": HANDOVER["handover_id"], "revision": HANDOVER["revision"], "status": 200})
             self.send_json(200, HANDOVER)
             return
-        if parsed.path == "/api/exercises/policy-compiler/opcode-model":
-            if principal != USERNAME:
-                self.send_json(403, {"error": "developer_scope_required"})
-                return
-            self.send_json(200, {
-                "schema": "fieldkest.policy-opcode-model/v1",
-                **K11_CONFIG["opcode_model"],
-            })
-            return
-        if parsed.path == "/api/exercises/policy-compiler/nonce":
-            if principal != USERNAME:
-                self.send_json(403, {"error": "developer_scope_required"})
-                return
-            self.send_json(200, issue_policy_nonce(principal, self.request_id))
-            return
         match = API_CONTENT.fullmatch(parsed.path)
         if match:
             self._repository_content(
@@ -307,11 +292,16 @@ class SourceHandler(KeplerHandler):
         parsed = urlsplit(self.path)
         if GIT_ROUTE.fullmatch(parsed.path) and parsed.path.endswith("/git-upload-pack"):
             self._git_backend(parsed)
-        elif parsed.path == "/api/exercises/policy-compiler/evaluate":
+        elif parsed.path == "/api/policy-compilers/fieldkest-policyc/evaluations":
             if not self._developer():
                 self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
                 return
             self._policy_compiler_evaluate()
+        elif parsed.path == "/api/policy-compilers/fieldkest-policyc/nonces":
+            if not self._developer():
+                self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
+                return
+            self._policy_compiler_nonce()
         elif parsed.path == "/api/exercises/connector-archive/run":
             if not self._developer():
                 self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
@@ -379,6 +369,19 @@ class SourceHandler(KeplerHandler):
         ).strip()
         append_audit(AUDIT, "repository", {"request_id": self.request_id, "principal": principal, "repository": f"fieldkest/{repository_name}", "revision": revision, "path": path, "object_id": object_id, "status": 200})
         self.send_json(200, {"name": candidate.name, "path": path, "sha": object_id, "type": "file", "encoding": "base64", "content": base64.b64encode(result.stdout).decode()})
+
+    def _policy_compiler_nonce(self) -> None:
+        try:
+            if self.read_json(1024) != {}:
+                raise ValueError("nonce_request_must_be_empty")
+        except (ValueError, TypeError, json.JSONDecodeError, OverflowError) as error:
+            append_audit(AUDIT, "policy-compiler", {
+                "request_id": self.request_id, "principal": USERNAME,
+                "operation": "issue-nonce", "outcome": str(error), "status": 422,
+            })
+            self.send_json(422, {"error": str(error)})
+            return
+        self.send_json(201, issue_policy_nonce(USERNAME, self.request_id))
 
     def _policy_compiler_evaluate(self) -> None:
         try:

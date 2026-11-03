@@ -149,11 +149,11 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
     "K10.2": [route("k-preview", "preview-service", "render-document")],
     "K10.3": [route("k-preview", "preview-service", "source-upload"), route("k-preview", "preview-service", "render-result")],
     "K11.1": [route("k-source", "gitea", "repository-content")],
-    "K11.2": [route("k-source", "gitea", "policy-compiler-exercise")],
-    "K11.3": [route("k-source", "gitea", "policy-compiler-exercise")],
+    "K11.2": [route("k-source", "gitea", "policy-compiler-evaluations")],
+    "K11.3": [route("k-source", "gitea", "policy-compiler-evaluations")],
     "K11.4": [
-        route("k-source", "gitea", "policy-compiler-nonce"),
-        route("k-source", "gitea", "policy-compiler-exercise"),
+        route("k-source", "gitea", "policy-compiler-nonces"),
+        route("k-source", "gitea", "policy-compiler-evaluations"),
     ],
     "K12.1": [route("k-preview", "preview-service", "review-reassign")],
     "K12.2": [route("k-preview", "preview-service", "review-action")],
@@ -1360,6 +1360,18 @@ def preserve_reviewed_design(card: str, design: str, row: dict[str, str]) -> str
     design = design.replace("reset generation", "workspace generation")
     design = design.replace("reset generations", "workspace generations")
     design = design.replace("### Boundaries and reset", "### Boundaries and persistence")
+    design = design.replace("the expected test-only effect", "the expected compatibility-assessment effect")
+    design = design.replace("its bounded exercise interface", "its bounded compatibility interface")
+    design = design.replace(
+        "Retained fieldkest-policyc 2.6.4 Linux x86-64 ELF, unstripped map, examples and "
+        "accepted-input endpoint; embedded program offset/table",
+        "Retained fieldkest-policyc 2.6.4 Linux x86-64 ELF, unstripped map, examples and "
+        "evaluation collection; embedded opcode symbols and program offset/table",
+    )
+    design = design.replace(
+        "Extracted program entry, byte digest and input-record binding",
+        "Extracted opcode model, program entry, byte digest and input-record binding",
+    )
     if card == "K09.4":
         design = re.sub(
             r"(?ms)\nAn explicit K09 operation reset cancels.*?A simple job retry is not\n"
@@ -1420,6 +1432,8 @@ def remove_fourth_wall_prose(text: str) -> str:
         "completion flag": "local status marker",
         "announces an unlock": "announces an access transition",
         "numbered challenge": "numbered task",
+        "bounded exercise interface": "bounded compatibility interface",
+        "acceptance interface": "migration evaluation interface",
         "produced by the challenge": "produced by the service task",
         "outside this challenge": "outside this task",
         "advanced identity challenge": "advanced identity task",

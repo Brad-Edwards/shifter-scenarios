@@ -843,10 +843,23 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         evaluate = self.discovered_route("source.policy-evaluate")
         nonce_route = self.discovered_route("source.policy-nonce")
 
-        # Fetch the opcode model from the source service client reference.
-        opcode_model = curl_json(self.discovered_route("source.policy-opcode-model"), creds=dev)
+        def recover_opcode_model(binary: bytes) -> dict:
+            # The retained binary is deliberately unstripped. Its exported
+            # handler symbols bind each byte value to the migration vocabulary.
+            recovered = {
+                f"0x{int(value, 16):02x}": name.decode()
+                for value, name in re.findall(
+                    rb"fieldkest_opcode_([0-9a-f]{2})_([A-Z_]+)\x00", binary
+                )
+            }
+            self.assertEqual(len(recovered), 8, "retained opcode symbols are incomplete")
+            return {
+                "schema": "fieldkest.policy-opcode-model/v1",
+                "instruction_width": 4,
+                "opcodes": recovered,
+            }
 
-        def recover_program(raw: bytes, program_id: str) -> dict:
+        def recover_program(raw: bytes, program_id: str, opcode_model: dict) -> dict:
             start = raw.find(b"FKPC")
             self.assertGreaterEqual(start, 0, "retained program table absent")
             # The README documents the little-endian FKPC header layout.
@@ -872,15 +885,19 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             readme = rowan("cat", "/tmp/journey-pc/README.md").stdout
             self.assertIn("FKPC", readme)
             binary = rowan_bytes("cat", "/tmp/journey-pc/bin/fieldkest-policyc")
-            program_model = recover_program(binary, "FKPC-POLICY-2026-09-R4")
+            opcode_model = recover_opcode_model(binary)
+            program_model = recover_program(binary, "FKPC-POLICY-2026-09-R4", opcode_model)
             self.evidence["pc_program"] = program_model
+            self.evidence["pc_opcode_model"] = opcode_model
             self.evidence["pc_readme"] = readme
 
         with self.subTest(card="K11.2 model the instruction set via a fragment"):
             name = "tenant-state"
             raw = rowan_bytes("cat", f"/tmp/journey-pc/fragments/{name}.fkpc")
             request_value = json.loads(rowan("cat", f"/tmp/journey-pc/api/fragment-{name}.json").stdout)
-            request_value["program_model"] = recover_program(raw, f"FKPC-FRAGMENT-{name.upper()}")
+            request_value["program_model"] = recover_program(
+                raw, f"FKPC-FRAGMENT-{name.upper()}", self.evidence["pc_opcode_model"]
+            )
             result = post_json_route(evaluate, request_value, creds=dev)
             self.assertEqual(result["fragment_id"], name)
 
@@ -899,7 +916,7 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             # The accepted-input example is supplied in the repository.
             env = rowan("cat", "/tmp/journey-pc/examples/accepted.env").stdout
             fields = dict(line.split("=", 1) for line in env.splitlines() if "=" in line)
-            nonce = curl_json(nonce_route, creds=dev)["nonce"]
+            nonce = post_json_route(nonce_route, {}, creds=dev, expected=201)["nonce"]
             value = {
                 "operation": "accept", "program_model": self.evidence["pc_program"],
                 "policy_input": {

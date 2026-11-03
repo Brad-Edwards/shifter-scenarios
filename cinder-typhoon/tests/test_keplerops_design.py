@@ -1,8 +1,9 @@
 """Focused negative tests for the static KeplerOps design gate."""
-from copy import deepcopy
-from pathlib import Path
+import json
 import sys
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 from raes.parser import parse_sdl_file
 
@@ -12,7 +13,9 @@ sys.path.insert(0, str(PACK / "docs/design"))
 from validate_challenges import DesignError  # noqa: E402
 from validate_keplerops import (  # noqa: E402
     FORBIDDEN_IN_WORLD, check_actions_and_evidence, check_client_reference_graph,
-    check_fixture_contracts, check_keplerops, check_native_semantics, check_world, matrix_rows,
+    check_fixture_contracts, check_keplerops, check_native_semantics,
+    check_opening_interface_contract, check_world, matrix_rows,
+    validate_opening_interface_contract,
 )
 
 
@@ -109,9 +112,49 @@ class KeplerOpsDesignTests(unittest.TestCase):
     def test_client_reference_graph_passes(self):
         check_client_reference_graph(self.scenario)
 
+    def test_opening_interface_contract_passes(self):
+        check_opening_interface_contract()
+
+    def test_opening_interface_contract_rejects_an_exercise_route(self):
+        design = PACK / "docs/design"
+        contract = json.loads((design / "keplerops-k01-k12-interfaces.json").read_text())
+        inventory = json.loads(
+            (PACK / "build/keplerops/authoring/client_documents.json").read_text()
+        )
+        known_solution = (
+            PACK / "build/keplerops/tests/test_known_solution_live.py"
+        ).read_text()
+        source = deepcopy(inventory)
+        route = next(
+            route
+            for route in source["documents"]["source.keplerops.test"]["routes"]
+            if route["key"] == "source.policy-evaluate"
+        )
+        route["template"] = "https://source.keplerops.test/api/exercises/policy-compiler/evaluate"
+        with self.assertRaisesRegex(DesignError, "challenge-only route"):
+            validate_opening_interface_contract(contract, source, known_solution)
+
+    def test_opening_interface_contract_rejects_unpromised_reproducer(self):
+        design = PACK / "docs/design"
+        contract = json.loads((design / "keplerops-k01-k12-interfaces.json").read_text())
+        inventory = json.loads(
+            (PACK / "build/keplerops/authoring/client_documents.json").read_text()
+        )
+        known_solution = (
+            PACK / "build/keplerops/tests/test_known_solution_live.py"
+        ).read_text()
+        mutant = deepcopy(contract)
+        operation = next(item for item in mutant["operations"] if item["operation"] == "K08")
+        operation["supplied_source_or_reproducer"] = {
+            "kind": "source",
+            "path": "answers/checker.py",
+            "design_promise": "not promised",
+        }
+        with self.assertRaisesRegex(DesignError, "interface invariants drift"):
+            validate_opening_interface_contract(mutant, inventory, known_solution)
+
     def test_service_catalog_absent_from_opening_assets_raises(self):
         from validate_keplerops import OPENING_ASSETS
-        import json
         manifest_path = OPENING_ASSETS / "archive-manifest.json"
         manifest = json.loads(manifest_path.read_text())
         for archive_record in manifest["archives"]:

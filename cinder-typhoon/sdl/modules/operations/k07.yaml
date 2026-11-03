@@ -77,7 +77,7 @@ evidence_requirements:
     description: |-
       Produce a fresh, reproducible downstream action inconsistent with the front-end request interpretation. A malformed response or rejected request is insufficient.
 
-      Required technical proof: Both component audit records, with their distinct interpreted request IDs and the expected test-only effect, form completion evidence.
+      Required technical proof: Both component audit records, with their distinct interpreted request IDs and the expected compatibility-assessment effect, form completion evidence.
     source_refs:
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
@@ -448,7 +448,7 @@ action_contracts:
       - evidence_requirements.k07.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Both component audit records, with their distinct interpreted request IDs and the expected test-only
+      description: Both component audit records, with their distinct interpreted request IDs and the expected compatibility-assessment
         effect, form completion evidence.
       target_refs:
       - features.k-delivery.k-registry

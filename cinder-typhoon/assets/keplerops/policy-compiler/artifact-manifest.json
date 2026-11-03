@@ -6,24 +6,24 @@
         {
           "mode": "0600",
           "path": "config/policy-compiler.json",
-          "sha256": "e20dab426576d4a20cac3329fa3705b641e39f6b020d2c9cfe4dbb845bc0ffde",
+          "sha256": "bbda24916cded0d2f51d96351ef7dc53031c59cdccbf55ffdf5c841d43abf263",
           "size": 10505
-        },
-        {
-          "mode": "0550",
-          "path": "exercises/policy-compiler/fieldkest-policyc",
-          "sha256": "a1b311190b294e2f31773065454520db72136447f1d2b75c64aacca7e813de2c",
-          "size": 2520312
         },
         {
           "mode": "0640",
           "path": "seeds/policy-compiler.bundle",
-          "sha256": "54f13b7ea21d38a2c2a0d0c6e61e48ab8b78e1e824327670b5642e600d5f85d9",
-          "size": 1139299
+          "sha256": "23c72a63f7866659b65d316928ccb243a6885a135a2e60f390368eff9a32b7d2",
+          "size": 1098546
+        },
+        {
+          "mode": "0550",
+          "path": "toolchains/policy-compilers/fieldkest-policyc",
+          "sha256": "0430d3a1b648f1ee67d51bfe6012f001f2025b896f1c84358922d99b272e8b1e",
+          "size": 2433688
         }
       ],
-      "sha256": "498b298ac8534f1f7cfdf181f30ff2686e03f86d95f4073b650b48e9d8bf7427",
-      "size": 3676160
+      "sha256": "b430abd885a2aa4a4ea5203f3dcde3ca113a178de3de104b15b6298ea5550aa7",
+      "size": 3553280
     },
     {
       "archive": "k-dev-policy-compiler-home.tar",
@@ -41,22 +41,22 @@
   ],
   "compiler": {
     "architecture": "linux-x86_64-static-elf",
-    "binary_sha256": "a1b311190b294e2f31773065454520db72136447f1d2b75c64aacca7e813de2c",
+    "binary_sha256": "0430d3a1b648f1ee67d51bfe6012f001f2025b896f1c84358922d99b272e8b1e",
     "condition_set_sha256": "e3a8ced4d68bfa6f4b94386b5ff040596bff56e243adbb5aebc98df1b21896a9",
     "corpus_result_sha256": "cf60e746abf133754466b724318419da127e1c7cb3ee74f48ae432cfd74e601a",
-    "link_map_sha256": "8006c9266984566862409501d0ab19454890ef1398eb1a51fc7f8224fa042f49",
+    "link_map_sha256": "2154d84f97555e8cc51963da030106a1045b0860a891b4ef1445b54813e16541",
     "program_sha256": "0b9a7fd08148ec1b6d3151dcd9c0499fb89f70585fb3705a44662e062242ef9c",
     "version": "2.6.4"
   },
   "repository": {
-    "bundle_sha256": "54f13b7ea21d38a2c2a0d0c6e61e48ab8b78e1e824327670b5642e600d5f85d9",
-    "commit": "51a28c70a1e09d43c44d1d7abf188ef88d3e5f40",
+    "bundle_sha256": "23c72a63f7866659b65d316928ccb243a6885a135a2e60f390368eff9a32b7d2",
+    "commit": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58",
     "refs": {
-      "main": "51a28c70a1e09d43c44d1d7abf188ef88d3e5f40",
-      "policyc-2.6.4": "51a28c70a1e09d43c44d1d7abf188ef88d3e5f40",
-      "retained/policyc-2.6": "51a28c70a1e09d43c44d1d7abf188ef88d3e5f40"
+      "main": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58",
+      "policyc-2.6.4": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58",
+      "retained/policyc-2.6": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58"
     },
     "repository": "fieldkest/policy-compiler"
   },
-  "schema": "fieldkest.policy-compiler-artifacts/v1"
+  "schema": "fieldkest.k11-artifacts/v1"
 }

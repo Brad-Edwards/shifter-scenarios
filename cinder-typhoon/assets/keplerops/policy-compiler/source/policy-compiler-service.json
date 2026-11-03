@@ -1,5 +1,5 @@
 {
-  "binary_sha256": "a1b311190b294e2f31773065454520db72136447f1d2b75c64aacca7e813de2c",
+  "binary_sha256": "0430d3a1b648f1ee67d51bfe6012f001f2025b896f1c84358922d99b272e8b1e",
   "condition_set": {
     "all": [
       {
@@ -354,7 +354,7 @@
       "program_sha256": "4c727f88147cc6b5cde2e8355ca74af9a988fca300629619c4822b778edce18c"
     }
   },
-  "link_map_sha256": "8006c9266984566862409501d0ab19454890ef1398eb1a51fc7f8224fa042f49",
+  "link_map_sha256": "2154d84f97555e8cc51963da030106a1045b0860a891b4ef1445b54813e16541",
   "nonce_lifetime_seconds": 300,
   "opcode_model": {
     "instruction_width": 4,
@@ -373,12 +373,12 @@
   "program_id": "FKPC-POLICY-2026-09-R4",
   "program_sha256": "0b9a7fd08148ec1b6d3151dcd9c0499fb89f70585fb3705a44662e062242ef9c",
   "repository": {
-    "bundle_sha256": "54f13b7ea21d38a2c2a0d0c6e61e48ab8b78e1e824327670b5642e600d5f85d9",
-    "commit": "51a28c70a1e09d43c44d1d7abf188ef88d3e5f40",
+    "bundle_sha256": "23c72a63f7866659b65d316928ccb243a6885a135a2e60f390368eff9a32b7d2",
+    "commit": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58",
     "refs": {
-      "main": "51a28c70a1e09d43c44d1d7abf188ef88d3e5f40",
-      "policyc-2.6.4": "51a28c70a1e09d43c44d1d7abf188ef88d3e5f40",
-      "retained/policyc-2.6": "51a28c70a1e09d43c44d1d7abf188ef88d3e5f40"
+      "main": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58",
+      "policyc-2.6.4": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58",
+      "retained/policyc-2.6": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58"
     },
     "repository": "fieldkest/policy-compiler"
   },

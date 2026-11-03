@@ -169,6 +169,11 @@ def build_binary(destination: Path, map_path: Path, condition_digest: str) -> No
         "g++", "-static", "-Wl,--build-id=sha1", f"-Wl,-Map={map_path.name}",
         "-o", destination.name, object_path.name,
     ], cwd=destination.parent, environment=environment)
+    # GNU ld pads map columns with spaces. Normalize line endings so the
+    # reviewed text artifact does not create whitespace-only source diffs.
+    map_path.write_text(
+        "\n".join(line.rstrip() for line in map_path.read_text().splitlines()) + "\n"
+    )
     source.unlink()
     object_path.unlink()
 
@@ -220,11 +225,11 @@ policy conditions in this revision; an accepted result must show which fields
 the compiler actually evaluated.
 
 The source service accepts migration checks at
-`POST https://source.keplerops.test/api/exercises/policy-compiler/evaluate`.
+`POST https://source.keplerops.test/api/policy-compilers/fieldkest-policyc/evaluations`.
 Use the saved developer credential and workstation CA. The request shapes are
 in `api/`. Fragment imports use operation `fragment-check`; the complete model
-uses `corpus-check`. Obtain a fresh one-use acceptance nonce from
-`GET /api/exercises/policy-compiler/nonce` before operation `accept`.
+uses `corpus-check`. Create a fresh one-use acceptance nonce with
+`POST /api/policy-compilers/fieldkest-policyc/nonces` before operation `accept`.
 
 Each response includes a request ID and a service-owned receipt. An acceptance
 request must include the fixed corpus result digest, `{corpus_digest}`, and a
@@ -441,7 +446,7 @@ acceptance-service procedures.
     source_files = {
         "seeds/policy-compiler.bundle": (bundle, 0o640),
         "config/policy-compiler.json": (pretty(service_config), 0o600),
-        "exercises/policy-compiler/fieldkest-policyc": (binary, 0o550),
+        "toolchains/policy-compilers/fieldkest-policyc": (binary, 0o550),
     }
     workstation_files = {
         "work/build-operations/policy-compiler-handoff.md": (handoff, 0o640),
