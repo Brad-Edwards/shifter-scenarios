@@ -36,31 +36,39 @@ def exec_output(container: str, *command: str) -> str:
     ).strip()
 
 
-def wait_for_health(container: str, timeout: float = 180) -> None:
+def wait_for_ready(container: str, timeout: float = 180) -> None:
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
-        health = inspect(
-            container, "{{if .State.Health}}{{.State.Health.Status}}{{end}}"
+        completed = subprocess.run(
+            [
+                "docker", "exec", container, "python3",
+                "/usr/local/libexec/arwc-handover.py", "ready",
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
         )
-        if health == "healthy":
+        if completed.returncode == 0:
             return
         time.sleep(1)
-    raise RuntimeError(f"{container} did not become healthy")
+    raise RuntimeError(f"{container} did not become ready")
 
 
 def main() -> int:
     running_before: dict[str, str] = {}
     for container in SERVICES:
         status = inspect(container, "{{.State.Status}}")
-        if status == "running":
-            running_before[container] = inspect(container, "{{.RestartCount}}")
-            state = exec_output(container, "cat", "/run/arwc-status/state")
-            if state != "waiting":
-                raise RuntimeError(f"{container} is {state!r} before handover")
-        elif status not in {"created", "missing"}:
-            raise RuntimeError(
-                f"{container} entered unexpected pre-handoff state {status!r}"
-            )
+        if status != "running":
+            raise RuntimeError(f"{container} is not running before handover: {status}")
+        health = inspect(
+            container, "{{if .State.Health}}{{.State.Health.Status}}{{end}}"
+        )
+        if health != "healthy":
+            raise RuntimeError(f"{container} is not healthy while waiting: {health}")
+        running_before[container] = inspect(container, "{{.RestartCount}}")
+        state = exec_output(container, "cat", "/run/arwc-status/state")
+        if state != "waiting":
+            raise RuntimeError(f"{container} is {state!r} before handover")
 
     # Exercise multiple gate polls. The long-duration guarantee comes from the
     # unbounded wait; this live test checks that it does not exit or crash-loop.
@@ -81,7 +89,7 @@ def main() -> int:
         check=True,
     )
     for container in SERVICES:
-        wait_for_health(container)
+        wait_for_ready(container)
         if inspect(container, "{{.RestartCount}}") != "0":
             raise RuntimeError(f"{container} auto-restarted during delayed handover")
         if exec_output(container, "readlink", "/bin/sh") != "dash":
@@ -97,7 +105,7 @@ def main() -> int:
         stdout=subprocess.DEVNULL,
     )
     for container, path in SERVICES.items():
-        wait_for_health(container)
+        wait_for_ready(container)
         if exec_output(container, "cat", path) != accepted[container]:
             raise RuntimeError(
                 f"{container} did not preserve its accepted handover on restart"

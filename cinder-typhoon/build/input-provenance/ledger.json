@@ -1994,14 +1994,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed accepted request structures in service runtime"
+            "authenticated handoff lifecycle and local service health states"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/arwc_handover.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
-          "source": "service runtime protocol implementation"
+          "locator": "wait_for_handover writes exact waiting, rejected, and accepted states; healthcheck admits waiting for container liveness and requires the local client-document probe after accepted handoff",
+          "source": "shared ARWC handover gate and /run/arwc-status/state service contract"
         }
       ],
-      "comparison_count": 7,
-      "inventory_sha256": "4b795d57f69053aa18e5d2966f76b35f0fc118b9b970ce551f88f5eb967b09b5",
+      "comparison_count": 9,
+      "inventory_sha256": "ef6703eab3c2dfa959f03c7e0b5adcacd8721c52764658a18a912f85948ff6e8",
       "review_status": "complete",
       "unresolved": []
     },

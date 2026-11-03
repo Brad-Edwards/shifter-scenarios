@@ -242,10 +242,8 @@ def wait_for_handover(args: argparse.Namespace) -> int:
         return 0
 
 
-def healthcheck(args: argparse.Namespace) -> int:
+def client_ready(args: argparse.Namespace) -> int:
     try:
-        if Path(args.state).read_text(encoding="ascii") != "accepted\n":
-            return 1
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         context.check_hostname = False
         context.verify_mode = ssl.CERT_NONE  # The probe is local process readiness.
@@ -277,6 +275,27 @@ def healthcheck(args: argparse.Namespace) -> int:
         return 1
 
 
+def readiness(args: argparse.Namespace) -> int:
+    try:
+        if Path(args.state).read_text(encoding="ascii") != "accepted\n":
+            return 1
+    except OSError:
+        return 1
+    return client_ready(args)
+
+
+def healthcheck(args: argparse.Namespace) -> int:
+    try:
+        state = Path(args.state).read_text(encoding="ascii")
+    except OSError:
+        return 1
+    if state == "waiting\n":
+        return 0
+    if state != "accepted\n":
+        return 1
+    return client_ready(args)
+
+
 def parser() -> argparse.ArgumentParser:
     command = argparse.ArgumentParser()
     subcommands = command.add_subparsers(dest="command", required=True)
@@ -291,11 +310,14 @@ def parser() -> argparse.ArgumentParser:
     wait.add_argument("--state", default=str(STATE))
     wait.set_defaults(handler=wait_for_handover)
 
-    health = subcommands.add_parser("health")
-    health.add_argument("--state", default=str(STATE))
-    health.add_argument("--url", default="https://127.0.0.1/.well-known/arwc-client")
-    health.add_argument("--timeout", type=float, default=3.0)
-    health.set_defaults(handler=healthcheck)
+    for name, handler in (("health", healthcheck), ("ready", readiness)):
+        probe = subcommands.add_parser(name)
+        probe.add_argument("--state", default=str(STATE))
+        probe.add_argument(
+            "--url", default="https://127.0.0.1/.well-known/arwc-client"
+        )
+        probe.add_argument("--timeout", type=float, default=3.0)
+        probe.set_defaults(handler=handler)
     return command
 
 

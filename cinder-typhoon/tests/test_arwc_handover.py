@@ -154,18 +154,59 @@ class ArwcHandoverTests(unittest.TestCase):
                     else handler.index("self.authorized()"),
                 )
 
-    def test_restore_pristine_returns_while_health_gates_remain_active(self) -> None:
+    def test_restore_pristine_requires_the_complete_waiting_service_graph(self) -> None:
         restore = (ROOT / "build" / "arwc" / "restore-pristine.sh").read_text()
-        self.assertIn("nohup docker compose -f compose.yaml up -d --force-recreate", restore)
+        self.assertIn("if ! docker compose -f compose.yaml up -d --force-recreate", restore)
+        self.assertNotIn("nohup docker compose", restore)
         self.assertNotIn("compose_pid", restore)
         self.assertNotIn("kill -0", restore)
         self.assertIn("ARWC pristine restore failed:", restore)
         self.assertIn("pre-handoff services did not remain", restore)
+        self.assertIn("service_graph_stable()", restore)
+        self.assertIn("docker compose -f compose.yaml config --services", restore)
+        self.assertIn("docker compose -f compose.yaml ps -a -q", restore)
+        self.assertIn("complete service graph did not remain running", restore)
         self.assertIn("fieldlink edge did not publish", restore)
         self.assertIn("bash ./generate-operator-material.sh", restore)
         self.assertIn("handover_services_waiting()", restore)
         self.assertIn("&& handover_services_waiting", restore)
         self.assertIn("grep -qx waiting /run/arwc-status/state", restore)
+        for service in SERVICES:
+            self.assertIn(f"cinder-arwc-{service}", restore)
+
+        live = (
+            ROOT / "build" / "arwc" / "tests" / "test_handover_stability_live.py"
+        ).read_text()
+        self.assertIn('if status != "running"', live)
+        self.assertNotIn('{"created", "missing"}', live)
+        self.assertIn("wait_for_ready(container)", live)
+
+    def test_health_and_readiness_keep_waiting_rejected_and_ready_distinct(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state = Path(temporary) / "state"
+
+            def probe(command: str) -> int:
+                arguments = handover.parser().parse_args([
+                    command,
+                    "--state", str(state),
+                    "--url", "https://127.0.0.1:1/.well-known/arwc-client",
+                    "--timeout", "0.01",
+                ])
+                return arguments.handler(arguments)
+
+            state.write_text("waiting\n")
+            self.assertEqual(probe("health"), 0)
+            self.assertEqual(probe("ready"), 1)
+
+            for value in ("rejected\n", "unknown\n", "", "accepted\n"):
+                with self.subTest(state=value.strip() or "empty"):
+                    state.write_text(value)
+                    self.assertEqual(probe("health"), 1)
+                    self.assertEqual(probe("ready"), 1)
+
+            state.unlink()
+            self.assertEqual(probe("health"), 1)
+            self.assertEqual(probe("ready"), 1)
 
     def test_no_handover_waits_without_exit_or_repeated_errors(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
