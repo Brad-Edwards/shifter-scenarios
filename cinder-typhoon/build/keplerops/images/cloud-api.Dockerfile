@@ -8,7 +8,7 @@ RUN apt-get update \
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
 COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
-COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
+COPY build/keplerops/runtime/client-references/cloud-api.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/cloud_api.py /opt/fieldkest/cloud_api.py
 COPY build/keplerops/runtime/cloud-api-entrypoint.sh /usr/local/bin/fieldkest-cloud-api-entrypoint
 COPY assets/keplerops/build-operations/k-cloud-api-runner-state.tar /tmp/k-cloud-api-runner-state.tar

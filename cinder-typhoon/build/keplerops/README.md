@@ -90,6 +90,20 @@ open where the contract explicitly permits equivalent behavior.
 - Keep tests on the carrier/operator side. Test execution uses one-shot clients
   with read-only mounts; no test source is copied into `k-dev` or a target.
 
+## Client-reference generation
+
+`authoring/client_documents.json` is the author-only discovery map. After editing
+it, regenerate the image-scoped public references before building images:
+
+```sh
+python3 build/keplerops/generate_client_references.py
+python3 build/keplerops/generate_client_references.py --check
+```
+
+Each service image copies only its generated file from
+`runtime/client-references/`. The complete map must never be copied into a
+participant or service image.
+
 ## Build waves
 
 | Wave | Scope | Exit condition |
@@ -217,7 +231,7 @@ demands it. A wave is not complete merely because its services start.
   addressing, internal-only networks, no host-published participant ports,
   denied Internet/metadata/Training access, networkless short-lived workers,
   native Gitea 1.25.2, Verdaccio 6.1.6, PostgreSQL 16.4, Kerberos, Chromium
-  140.0.7339.207, Docker API 1.56, and persistence across service restarts.
+  `140.0.7339.207`, Docker API 1.56, and persistence across service restarts.
 - 2026-09-27: Participant-visible authored and deployed state contains no
   fourth-wall terminology. Operator tests and this implementation ledger are
   kept only on the carrier control surface and are absent from `k-dev` and the

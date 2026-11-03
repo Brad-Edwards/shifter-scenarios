@@ -98,7 +98,9 @@ class AuthoredManifestTests(unittest.TestCase):
         self.assertEqual(disclosure["path"], "/home/cinder/TRAINING.md")
 
     def test_keplerops_client_reference_graph_is_present(self) -> None:
-        client_documents = ROOT / "build" / "keplerops" / "runtime" / "client_documents.json"
+        client_documents = (
+            ROOT / "build" / "keplerops" / "authoring" / "client_documents.json"
+        )
         inventory = json.loads(client_documents.read_text())
         all_route_keys = {
             route["key"]

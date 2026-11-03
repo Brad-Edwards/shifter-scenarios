@@ -1,0 +1,43 @@
+{
+  "documents": {
+    "staff.keplerops.test": {
+      "purpose": "Directory, note, archive, delegation, and managed-identity operations.",
+      "related": [],
+      "routes": [
+        {
+          "key": "staff.directory",
+          "method": "GET",
+          "template": "https://staff.keplerops.test/api/service-directory"
+        },
+        {
+          "key": "staff.note",
+          "method": "GET",
+          "template": "https://staff.keplerops.test/api/notes/{note_id}"
+        },
+        {
+          "key": "staff.note-preview",
+          "method": "POST",
+          "template": "https://staff.keplerops.test/api/note-preview"
+        },
+        {
+          "key": "staff.archive",
+          "method": "GET",
+          "template": "https://staff.keplerops.test/api/archive/handovers/{subject}"
+        },
+        {
+          "key": "staff.delegation",
+          "method": "POST",
+          "template": "https://staff.keplerops.test/api/archive/delegation/probe"
+        },
+        {
+          "key": "staff.managed-session",
+          "method": "POST",
+          "template": "https://staff.keplerops.test/api/managed-identities/{service_id}/session"
+        }
+      ],
+      "title": "Staff service client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

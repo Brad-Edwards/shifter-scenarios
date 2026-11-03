@@ -1,0 +1,23 @@
+{
+  "documents": {
+    "cert.keplerops.test": {
+      "purpose": "Certificate template and enrollment request operations.",
+      "related": [],
+      "routes": [
+        {
+          "key": "cert.template",
+          "method": "GET",
+          "template": "https://cert.keplerops.test/api/enrollment/{template}"
+        },
+        {
+          "key": "cert.requests",
+          "method": "POST",
+          "template": "https://cert.keplerops.test/api/enrollment/{template}/requests"
+        }
+      ],
+      "title": "Certificate enrollment client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

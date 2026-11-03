@@ -1,0 +1,68 @@
+{
+  "documents": {
+    "ci.keplerops.test": {
+      "purpose": "Run, review, workspace, and release-rehearsal operations.",
+      "related": [],
+      "routes": [
+        {
+          "key": "ci.run",
+          "method": "GET",
+          "template": "https://ci.keplerops.test/api/runs/{run_id}"
+        },
+        {
+          "key": "ci.run-log",
+          "method": "GET",
+          "template": "https://ci.keplerops.test/api/runs/{run_id}/log"
+        },
+        {
+          "key": "ci.run-artifact",
+          "method": "GET",
+          "template": "https://ci.keplerops.test/api/runs/{run_id}/artifacts/{artifact}"
+        },
+        {
+          "key": "ci.review-import",
+          "method": "POST",
+          "template": "https://ci.keplerops.test/api/reviews/import"
+        },
+        {
+          "key": "ci.report-jobs",
+          "method": "POST",
+          "template": "https://ci.keplerops.test/api/jobs"
+        },
+        {
+          "key": "ci.report-job",
+          "method": "GET",
+          "template": "https://ci.keplerops.test/api/jobs/{job_id}"
+        },
+        {
+          "key": "ci.review-jobs",
+          "method": "POST",
+          "template": "https://ci.keplerops.test/api/review-jobs"
+        },
+        {
+          "key": "ci.review-job",
+          "method": "GET",
+          "template": "https://ci.keplerops.test/api/review-jobs/{run_id}"
+        },
+        {
+          "key": "ci.workspace-file",
+          "method": "GET",
+          "template": "https://ci.keplerops.test/api/review-workspace/files/{path}"
+        },
+        {
+          "key": "ci.connector-rehearsal",
+          "method": "POST",
+          "template": "https://ci.keplerops.test/api/rehearsals/connector"
+        },
+        {
+          "key": "ci.lineage-rollover",
+          "method": "POST",
+          "template": "https://ci.keplerops.test/api/rehearsals/lineage-rollover"
+        }
+      ],
+      "title": "CI client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

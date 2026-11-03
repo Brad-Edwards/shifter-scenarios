@@ -1,0 +1,68 @@
+{
+  "documents": {
+    "assistant.keplerops.test": {
+      "purpose": "Browser application, conversation, answer, and completion operations.",
+      "related": [],
+      "routes": [
+        {
+          "key": "assistant.app",
+          "method": "GET",
+          "template": "https://assistant.keplerops.test/static/app.js"
+        },
+        {
+          "key": "assistant.config",
+          "method": "GET",
+          "template": "https://assistant.keplerops.test/api/config"
+        },
+        {
+          "key": "assistant.contexts",
+          "method": "GET",
+          "template": "https://assistant.keplerops.test/api/contexts"
+        },
+        {
+          "key": "assistant.conversation",
+          "method": "GET",
+          "template": "https://assistant.keplerops.test/api/conversations/{conversation_id}"
+        },
+        {
+          "key": "assistant.selection",
+          "method": "GET",
+          "template": "https://assistant.keplerops.test/api/selections/{selection_id}"
+        },
+        {
+          "key": "assistant.document",
+          "method": "GET",
+          "template": "https://assistant.keplerops.test/api/contexts/{context_id}/conversations/{conversation_id}/documents/{document_id}"
+        },
+        {
+          "key": "assistant.answers",
+          "method": "POST",
+          "template": "https://assistant.keplerops.test/api/answers"
+        },
+        {
+          "key": "assistant.completion-example",
+          "method": "GET",
+          "template": "https://assistant.keplerops.test/api/completions/examples/{example_id}"
+        },
+        {
+          "key": "assistant.completion-context",
+          "method": "POST",
+          "template": "https://assistant.keplerops.test/api/completions/context"
+        },
+        {
+          "key": "assistant.completion-jobs",
+          "method": "POST",
+          "template": "https://assistant.keplerops.test/api/completions/jobs"
+        },
+        {
+          "key": "assistant.completion-job",
+          "method": "GET",
+          "template": "https://assistant.keplerops.test/api/completions/jobs/{job_id}"
+        }
+      ],
+      "title": "Assistant client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

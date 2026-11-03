@@ -533,13 +533,20 @@ def check_opening_assets(scenario):
 
 def check_client_reference_graph(scenario):
     runtime_dir = PACK / "build" / "keplerops" / "runtime"
-    inventory_path = runtime_dir / "client_documents.json"
+    inventory_path = PACK / "build" / "keplerops" / "authoring" / "client_documents.json"
     require(inventory_path.exists(), "client_documents.json not found in keplerops runtime")
     inventory = json.loads(inventory_path.read_text())
     require(inventory.get("schema") == "fieldkest.client-documents/v1",
             "client_documents.json has unexpected schema")
+    require(inventory.get("audience") == "author",
+            "client_documents.json must remain author-only")
     documents = inventory.get("documents", {})
     require(documents, "client_documents.json has no service documents")
+    images = inventory.get("images", {})
+    require(images and len(images) == len(documents),
+            "client_documents.json must assign one image per service document")
+    require(set(images.values()) == set(documents),
+            "client_documents.json image assignments do not cover each service document once")
     # Every route key and template must be present and well-formed.
     all_keys: set[str] = set()
     for host, doc in documents.items():
@@ -566,6 +573,28 @@ def check_client_reference_graph(scenario):
                 queue.append(linked_host)
     require(visited == set(documents),
             f"Client reference graph is not fully connected: unreachable={set(documents) - visited}")
+    # Build output contains only one service-owned document per image. The
+    # complete author map must never be copied into a range image.
+    fragments = runtime_dir / "client-references"
+    require(
+        {path.name for path in fragments.glob("*.json")}
+        == {f"{image}.json" for image in images},
+        "Generated client-reference fragment set drift",
+    )
+    for image, host in images.items():
+        fragment = json.loads((fragments / f"{image}.json").read_text())
+        require(
+            fragment == {
+                "schema": inventory["schema"],
+                "path": inventory["path"],
+                "documents": {host: documents[host]},
+            },
+            f"Client-reference fragment drift for image {image}",
+        )
+    for dockerfile in (PACK / "build" / "keplerops" / "images").glob("*.Dockerfile"):
+        source = dockerfile.read_text()
+        require("authoring/client_documents.json" not in source,
+                f"Complete author route map copied by {dockerfile.name}")
     # No fourth-wall wording in the client reference inventory.
     inventory_text = inventory_path.read_text()
     require(not FORBIDDEN_IN_WORLD.search(inventory_text),

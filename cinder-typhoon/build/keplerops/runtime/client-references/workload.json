@@ -1,0 +1,38 @@
+{
+  "documents": {
+    "workloads.keplerops.test": {
+      "purpose": "Scheduled export and managed-workload operations.",
+      "related": [],
+      "routes": [
+        {
+          "key": "workloads.schedule",
+          "method": "GET",
+          "template": "https://workloads.keplerops.test/api/schedules/{schedule_id}"
+        },
+        {
+          "key": "workloads.schedule-update",
+          "method": "PATCH",
+          "template": "https://workloads.keplerops.test/api/schedules/{schedule_id}"
+        },
+        {
+          "key": "workloads.schedule-runs",
+          "method": "POST",
+          "template": "https://workloads.keplerops.test/api/schedules/{schedule_id}/runs"
+        },
+        {
+          "key": "workloads.workload",
+          "method": "PATCH",
+          "template": "https://workloads.keplerops.test/api/workloads/{workload_id}"
+        },
+        {
+          "key": "workloads.whoami",
+          "method": "GET",
+          "template": "https://workloads.keplerops.test/api/workloads/{workload_id}/whoami"
+        }
+      ],
+      "title": "Workload scheduler client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

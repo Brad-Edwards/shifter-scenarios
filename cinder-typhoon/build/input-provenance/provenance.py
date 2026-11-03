@@ -357,15 +357,35 @@ def new_unresolved_ledger() -> dict[str, Any]:
             "sources": [
                 {
                     "class": "supplied_starting_surface",
-                    "inputs": ["route", "hostname", "CA", "starting credential"],
-                    "source": "/home/rowan/README.md, work/service-notes.md, work/service-catalog.md and .config/git/credentials",
-                    "locator": "named route, CA, repository and credential entries consumed by the method",
+                    "inputs": [
+                        "first client-reference URL", "service notes", "CA",
+                        "starting credential", "browser session",
+                    ],
+                    "source": (
+                        "/home/rowan/README.md, /home/rowan/work/service-notes.md, "
+                        "/home/rowan/.config/git/credentials, and "
+                        "/home/rowan/.config/chromium/Default/Cookies"
+                    ),
+                    "locator": (
+                        "Client reference and current source, CI, and support entries; "
+                        "workstation CA path; stored HTTPS credential; support cookie"
+                    ),
                 },
                 {
                     "class": "normal_interface_or_artifact",
-                    "inputs": ["artifact", "schema", "protocol constant"],
-                    "source": "FieldKest normal service responses and workstation artifacts",
-                    "locator": "artifact path or response field cited by the method review",
+                    "inputs": [
+                        "HTTP route templates", "request schemas",
+                        "response identifiers and credentials",
+                    ],
+                    "source": (
+                        "linked /.well-known/fieldkest-client documents and the "
+                        "accepted service responses named by each KeplerOps method"
+                    ),
+                    "locator": (
+                        "routes[] and related[] fields crawled from the documented "
+                        "Client reference URL; exact artifact paths and response fields "
+                        "are listed in each method citation"
+                    ),
                 },
             ],
         },
