@@ -55,7 +55,7 @@
         "assertions": [
           "k01.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k01.c1",
         "observation_rule": "fact-k01-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -141,7 +141,7 @@
         "assertions": [
           "k01.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k01.c2",
         "observation_rule": "fact-k01-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -226,7 +226,7 @@
         "assertions": [
           "k01.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k01.c3",
         "observation_rule": "fact-k01-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -302,7 +302,7 @@
         "assertions": [
           "k01.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k01.c4",
         "observation_rule": "fact-k01-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -379,7 +379,7 @@
         "assertions": [
           "k02.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k02.c1",
         "observation_rule": "fact-k02-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -460,7 +460,7 @@
         "assertions": [
           "k02.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k02.c2",
         "observation_rule": "fact-k02-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -561,7 +561,7 @@
         "assertions": [
           "k02.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k02.c3",
         "observation_rule": "fact-k02-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -639,7 +639,7 @@
         "assertions": [
           "k03.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k03.c1",
         "observation_rule": "fact-k03-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -723,7 +723,7 @@
         "assertions": [
           "k03.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k03.c2",
         "observation_rule": "fact-k03-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -799,7 +799,7 @@
         "assertions": [
           "k03.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k03.c3",
         "observation_rule": "fact-k03-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -883,7 +883,7 @@
         "assertions": [
           "k04.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k04.c1",
         "observation_rule": "fact-k04-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -959,7 +959,7 @@
         "assertions": [
           "k04.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k04.c2",
         "observation_rule": "fact-k04-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1035,7 +1035,7 @@
         "assertions": [
           "k04.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k04.c3",
         "observation_rule": "fact-k04-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1111,7 +1111,7 @@
         "assertions": [
           "k04.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k04.c4",
         "observation_rule": "fact-k04-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1187,7 +1187,7 @@
         "assertions": [
           "k05.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k05.c1",
         "observation_rule": "fact-k05-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1267,7 +1267,7 @@
         "assertions": [
           "k05.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k05.c2",
         "observation_rule": "fact-k05-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1343,7 +1343,7 @@
         "assertions": [
           "k05.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k05.c3",
         "observation_rule": "fact-k05-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1423,7 +1423,7 @@
         "assertions": [
           "k05.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k05.c4",
         "observation_rule": "fact-k05-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1507,7 +1507,7 @@
         "assertions": [
           "k06.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k06.c1",
         "observation_rule": "fact-k06-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1583,7 +1583,7 @@
         "assertions": [
           "k06.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k06.c2",
         "observation_rule": "fact-k06-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1672,7 +1672,7 @@
         "assertions": [
           "k06.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k06.c3",
         "observation_rule": "fact-k06-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1749,7 +1749,7 @@
         "assertions": [
           "k07.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k07.c1",
         "observation_rule": "fact-k07-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1788,7 +1788,7 @@
         "brief": "docs/design/challenges/K07/K07.1.md",
         "brief_sha256": "accb942a0b879b1cf1556a436ac16442d1babf9932e2eddad73777289352e65b",
         "operation": "sdl/modules/operations/k07.yaml",
-        "operation_sha256": "aeaf88f2aa80d424ece4ad69a86ceab60c99cebd1e0f3841bed0e06ce41718e2"
+        "operation_sha256": "62778a7cb967537d39949172c0ada050a0a14ed0eb6f43baec2aacef45eeea87"
       },
       "title": "K07.1: What the inspector forwards"
     },
@@ -1829,7 +1829,7 @@
         "assertions": [
           "k07.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k07.c2",
         "observation_rule": "fact-k07-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1866,9 +1866,9 @@
       },
       "sources": {
         "brief": "docs/design/challenges/K07/K07.2.md",
-        "brief_sha256": "82748dc60a6f712a91fa3a66bc0214404a49cb64962a988387967faa845fd458",
+        "brief_sha256": "85d9c7bda45c5deccc585272491b973adc7de185b1b0d0d3eca8a03f9906b133",
         "operation": "sdl/modules/operations/k07.yaml",
-        "operation_sha256": "aeaf88f2aa80d424ece4ad69a86ceab60c99cebd1e0f3841bed0e06ce41718e2"
+        "operation_sha256": "62778a7cb967537d39949172c0ada050a0a14ed0eb6f43baec2aacef45eeea87"
       },
       "title": "K07.2: One request becomes another"
     },
@@ -1905,7 +1905,7 @@
         "assertions": [
           "k07.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k07.c3",
         "observation_rule": "fact-k07-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -1944,7 +1944,7 @@
         "brief": "docs/design/challenges/K07/K07.3.md",
         "brief_sha256": "1d3aa68acc1ebc49ae398dcfe715119d03fe9c0a927326d9feae77a49300d36d",
         "operation": "sdl/modules/operations/k07.yaml",
-        "operation_sha256": "aeaf88f2aa80d424ece4ad69a86ceab60c99cebd1e0f3841bed0e06ce41718e2"
+        "operation_sha256": "62778a7cb967537d39949172c0ada050a0a14ed0eb6f43baec2aacef45eeea87"
       },
       "title": "K07.3: The protected inspection"
     },
@@ -1981,7 +1981,7 @@
         "assertions": [
           "k08.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k08.c1",
         "observation_rule": "fact-k08-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2018,7 +2018,7 @@
       },
       "sources": {
         "brief": "docs/design/challenges/K08/K08.1.md",
-        "brief_sha256": "5a0d9e5b9b632464825a5d483e911d4d307c9d4cdbb0820330e9b376292442e8",
+        "brief_sha256": "38b6bbad4c4f07fb6ea582a97891b59ddaedc8a862d9628f218325f5b55303a2",
         "operation": "sdl/modules/operations/k08.yaml",
         "operation_sha256": "bbf56e0ccf1f37d776344557cb53dd47f4edca06f8b060c2f416aae78b15c060"
       },
@@ -2057,7 +2057,7 @@
         "assertions": [
           "k08.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k08.c2",
         "observation_rule": "fact-k08-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2094,7 +2094,7 @@
       },
       "sources": {
         "brief": "docs/design/challenges/K08/K08.2.md",
-        "brief_sha256": "08931f3fe2d4afebe083a9c6c89703ea6392c9aa1d3dd666d9bfecf098849568",
+        "brief_sha256": "a4fc1d457c7abd698ec530cfdd04ba7e94e7027c4762c17931f76caef55d5c2a",
         "operation": "sdl/modules/operations/k08.yaml",
         "operation_sha256": "bbf56e0ccf1f37d776344557cb53dd47f4edca06f8b060c2f416aae78b15c060"
       },
@@ -2137,7 +2137,7 @@
         "assertions": [
           "k08.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k08.c3",
         "observation_rule": "fact-k08-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2174,7 +2174,7 @@
       },
       "sources": {
         "brief": "docs/design/challenges/K08/K08.3.md",
-        "brief_sha256": "b73d929ebf98b35fb2ac7e6d20dde2a01191ed5250e1900dbc39a777a4db0322",
+        "brief_sha256": "5c75bc7b135a9da2ac3d36e79eb8cd49c127fd97231f5a5cd1d06f1570c1b0ce",
         "operation": "sdl/modules/operations/k08.yaml",
         "operation_sha256": "bbf56e0ccf1f37d776344557cb53dd47f4edca06f8b060c2f416aae78b15c060"
       },
@@ -2213,7 +2213,7 @@
         "assertions": [
           "k09.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k09.c1",
         "observation_rule": "fact-k09-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2293,7 +2293,7 @@
         "assertions": [
           "k09.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k09.c2",
         "observation_rule": "fact-k09-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2373,7 +2373,7 @@
         "assertions": [
           "k09.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k09.c3",
         "observation_rule": "fact-k09-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2470,7 +2470,7 @@
         "assertions": [
           "k09.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k09.c4",
         "observation_rule": "fact-k09-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2524,14 +2524,14 @@
           {
             "assertions": [
               {
-                "line": 931,
+                "line": 948,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K10.1"
             ],
-            "line": 922,
+            "line": 939,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -2547,7 +2547,7 @@
         "assertions": [
           "k10.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k10.c1",
         "observation_rule": "fact-k10-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2600,18 +2600,18 @@
           {
             "assertions": [
               {
-                "line": 940,
+                "line": 957,
                 "method": "assertNotEqual"
               },
               {
-                "line": 947,
+                "line": 964,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K10.2"
             ],
-            "line": 936,
+            "line": 953,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -2627,7 +2627,7 @@
         "assertions": [
           "k10.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k10.c2",
         "observation_rule": "fact-k10-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2680,22 +2680,22 @@
           {
             "assertions": [
               {
-                "line": 955,
+                "line": 972,
                 "method": "assertTrue"
               },
               {
-                "line": 956,
+                "line": 973,
                 "method": "assertEqual"
               },
               {
-                "line": 957,
+                "line": 974,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K10.3"
             ],
-            "line": 949,
+            "line": 966,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -2711,7 +2711,7 @@
         "assertions": [
           "k10.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k10.c3",
         "observation_rule": "fact-k10-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2764,18 +2764,18 @@
           {
             "assertions": [
               {
-                "line": 871,
+                "line": 884,
                 "method": "assertEqual"
               },
               {
-                "line": 873,
+                "line": 886,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K11.1"
             ],
-            "line": 865,
+            "line": 878,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -2791,7 +2791,7 @@
         "assertions": [
           "k11.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k11.c1",
         "observation_rule": "fact-k11-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2828,9 +2828,9 @@
       },
       "sources": {
         "brief": "docs/design/challenges/K11/K11.1.md",
-        "brief_sha256": "2c6646c16d2fcb702193c82273d624647b5c9ca3a4c949f930db9c2936bef277",
+        "brief_sha256": "8a3e0506fb3c80542edb9f2e4639637490c2c8edae7a7b1e6352a7db02a0b127",
         "operation": "sdl/modules/operations/k11.yaml",
-        "operation_sha256": "84baa313fe36967bb776f22a23438abde576d360de7cd15736cf51f307d7bc71"
+        "operation_sha256": "e6025a0707118dc86a8a76a5a28207c92b8362231102defbf5b13e32e144d89f"
       },
       "title": "K11.1: Where the policy begins"
     },
@@ -2844,14 +2844,14 @@
           {
             "assertions": [
               {
-                "line": 885,
+                "line": 902,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K11.2"
             ],
-            "line": 879,
+            "line": 894,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -2867,7 +2867,7 @@
         "assertions": [
           "k11.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k11.c2",
         "observation_rule": "fact-k11-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2904,9 +2904,9 @@
       },
       "sources": {
         "brief": "docs/design/challenges/K11/K11.2.md",
-        "brief_sha256": "3c4f190e25142f7f39bd625d109b10ff0adee60aa85ae45b08389eb6aa4a82f7",
+        "brief_sha256": "3d43e0a7081e1e02445ec81771232f0ffcfce48d86bf32672f50687dd25d9649",
         "operation": "sdl/modules/operations/k11.yaml",
-        "operation_sha256": "84baa313fe36967bb776f22a23438abde576d360de7cd15736cf51f307d7bc71"
+        "operation_sha256": "e6025a0707118dc86a8a76a5a28207c92b8362231102defbf5b13e32e144d89f"
       },
       "title": "K11.2: Learn its instructions"
     },
@@ -2920,14 +2920,14 @@
           {
             "assertions": [
               {
-                "line": 895,
+                "line": 912,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K11.3"
             ],
-            "line": 887,
+            "line": 904,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -2943,7 +2943,7 @@
         "assertions": [
           "k11.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k11.c3",
         "observation_rule": "fact-k11-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -2980,9 +2980,9 @@
       },
       "sources": {
         "brief": "docs/design/challenges/K11/K11.3.md",
-        "brief_sha256": "b9b2b0c9fdeb88d398f8b2cfd3491f26c41da76969270ef350f495e30c49a043",
+        "brief_sha256": "7f1128cc65d37bfdf2e281e1bff0f1bb911c986f5d67285b1335bc0ef00fa66a",
         "operation": "sdl/modules/operations/k11.yaml",
-        "operation_sha256": "84baa313fe36967bb776f22a23438abde576d360de7cd15736cf51f307d7bc71"
+        "operation_sha256": "e6025a0707118dc86a8a76a5a28207c92b8362231102defbf5b13e32e144d89f"
       },
       "title": "K11.3: The rule behind the rule"
     },
@@ -2996,14 +2996,14 @@
           {
             "assertions": [
               {
-                "line": 913,
+                "line": 930,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K11.4"
             ],
-            "line": 898,
+            "line": 915,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -3019,7 +3019,7 @@
         "assertions": [
           "k11.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k11.c4",
         "observation_rule": "fact-k11-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3056,9 +3056,9 @@
       },
       "sources": {
         "brief": "docs/design/challenges/K11/K11.4.md",
-        "brief_sha256": "1aaf176ae2410151869bd6efefa852dd8cf2a294652df666366d3b5cc524c611",
+        "brief_sha256": "d3c49766f875253b461d8c629e199510a9559d14061d856cc6c58d6704b23ffa",
         "operation": "sdl/modules/operations/k11.yaml",
-        "operation_sha256": "84baa313fe36967bb776f22a23438abde576d360de7cd15736cf51f307d7bc71"
+        "operation_sha256": "e6025a0707118dc86a8a76a5a28207c92b8362231102defbf5b13e32e144d89f"
       },
       "title": "K11.4: An input the compiler believes"
     },
@@ -3072,14 +3072,14 @@
           {
             "assertions": [
               {
-                "line": 973,
+                "line": 990,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K12.1"
             ],
-            "line": 966,
+            "line": 983,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -3095,7 +3095,7 @@
         "assertions": [
           "k12.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k12.c1",
         "observation_rule": "fact-k12-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3148,14 +3148,14 @@
           {
             "assertions": [
               {
-                "line": 982,
+                "line": 999,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K12.2"
             ],
-            "line": 976,
+            "line": 993,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -3171,7 +3171,7 @@
         "assertions": [
           "k12.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k12.c2",
         "observation_rule": "fact-k12-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3224,18 +3224,18 @@
           {
             "assertions": [
               {
-                "line": 996,
+                "line": 1013,
                 "method": "assertEqual"
               },
               {
-                "line": 997,
+                "line": 1014,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K12.3"
             ],
-            "line": 989,
+            "line": 1006,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -3251,7 +3251,7 @@
         "assertions": [
           "k12.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k12.c3",
         "observation_rule": "fact-k12-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3304,22 +3304,22 @@
           {
             "assertions": [
               {
-                "line": 1002,
+                "line": 1019,
                 "method": "assertEqual"
               },
               {
-                "line": 1003,
+                "line": 1020,
                 "method": "assertEqual"
               },
               {
-                "line": 1004,
+                "line": 1021,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "K12.4"
             ],
-            "line": 1000,
+            "line": 1017,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -3335,7 +3335,7 @@
         "assertions": [
           "k12.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k12.c4",
         "observation_rule": "fact-k12-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3388,14 +3388,14 @@
           {
             "assertions": [
               {
-                "line": 1015,
+                "line": 1032,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K13.1"
             ],
-            "line": 1012,
+            "line": 1029,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -3411,7 +3411,7 @@
         "assertions": [
           "k13.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k13.c1",
         "observation_rule": "fact-k13-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3464,14 +3464,14 @@
           {
             "assertions": [
               {
-                "line": 1022,
+                "line": 1039,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K13.2"
             ],
-            "line": 1018,
+            "line": 1035,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -3487,7 +3487,7 @@
         "assertions": [
           "k13.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k13.c2",
         "observation_rule": "fact-k13-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3540,14 +3540,14 @@
           {
             "assertions": [
               {
-                "line": 1030,
+                "line": 1047,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K13.3"
             ],
-            "line": 1025,
+            "line": 1042,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -3563,7 +3563,7 @@
         "assertions": [
           "k13.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k13.c3",
         "observation_rule": "fact-k13-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3616,14 +3616,14 @@
           {
             "assertions": [
               {
-                "line": 1036,
+                "line": 1053,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K13.4"
             ],
-            "line": 1032,
+            "line": 1049,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -3639,7 +3639,7 @@
         "assertions": [
           "k13.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k13.c4",
         "observation_rule": "fact-k13-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3692,14 +3692,14 @@
           {
             "assertions": [
               {
-                "line": 1049,
+                "line": 1066,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K14.1"
             ],
-            "line": 1045,
+            "line": 1062,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -3715,7 +3715,7 @@
         "assertions": [
           "k14.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k14.c1",
         "observation_rule": "fact-k14-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3771,14 +3771,14 @@
           {
             "assertions": [
               {
-                "line": 1056,
+                "line": 1073,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K14.2"
             ],
-            "line": 1052,
+            "line": 1069,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -3794,7 +3794,7 @@
         "assertions": [
           "k14.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k14.c2",
         "observation_rule": "fact-k14-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3847,14 +3847,14 @@
           {
             "assertions": [
               {
-                "line": 1062,
+                "line": 1079,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K14.3"
             ],
-            "line": 1058,
+            "line": 1075,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -3870,7 +3870,7 @@
         "assertions": [
           "k14.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k14.c3",
         "observation_rule": "fact-k14-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -3923,18 +3923,18 @@
           {
             "assertions": [
               {
-                "line": 1074,
+                "line": 1091,
                 "method": "assertEqual"
               },
               {
-                "line": 1075,
+                "line": 1092,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K15.1"
             ],
-            "line": 1071,
+            "line": 1088,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -3950,7 +3950,7 @@
         "assertions": [
           "k15.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k15.c1",
         "observation_rule": "fact-k15-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4006,14 +4006,14 @@
           {
             "assertions": [
               {
-                "line": 1081,
+                "line": 1098,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K15.2"
             ],
-            "line": 1077,
+            "line": 1094,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -4029,7 +4029,7 @@
         "assertions": [
           "k15.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k15.c2",
         "observation_rule": "fact-k15-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4082,14 +4082,14 @@
           {
             "assertions": [
               {
-                "line": 1088,
+                "line": 1105,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K15.3"
             ],
-            "line": 1083,
+            "line": 1100,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -4105,7 +4105,7 @@
         "assertions": [
           "k15.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k15.c3",
         "observation_rule": "fact-k15-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4158,14 +4158,14 @@
           {
             "assertions": [
               {
-                "line": 1096,
+                "line": 1113,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K15.4"
             ],
-            "line": 1090,
+            "line": 1107,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -4181,7 +4181,7 @@
         "assertions": [
           "k15.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k15.c4",
         "observation_rule": "fact-k15-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4235,18 +4235,18 @@
           {
             "assertions": [
               {
-                "line": 1113,
+                "line": 1130,
                 "method": "assertEqual"
               },
               {
-                "line": 1114,
+                "line": 1131,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K16.1"
             ],
-            "line": 1111,
+            "line": 1128,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -4262,7 +4262,7 @@
         "assertions": [
           "k16.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k16.c1",
         "observation_rule": "fact-k16-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4318,14 +4318,14 @@
           {
             "assertions": [
               {
-                "line": 1122,
+                "line": 1139,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K16.2"
             ],
-            "line": 1117,
+            "line": 1134,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -4341,7 +4341,7 @@
         "assertions": [
           "k16.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k16.c2",
         "observation_rule": "fact-k16-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4395,18 +4395,18 @@
           {
             "assertions": [
               {
-                "line": 1126,
+                "line": 1143,
                 "method": "assertEqual"
               },
               {
-                "line": 1127,
+                "line": 1144,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K16.3"
             ],
-            "line": 1124,
+            "line": 1141,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -4422,7 +4422,7 @@
         "assertions": [
           "k16.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k16.c3",
         "observation_rule": "fact-k16-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4476,14 +4476,14 @@
           {
             "assertions": [
               {
-                "line": 1137,
+                "line": 1154,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K16.4"
             ],
-            "line": 1129,
+            "line": 1146,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -4499,7 +4499,7 @@
         "assertions": [
           "k16.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k16.c4",
         "observation_rule": "fact-k16-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4552,14 +4552,14 @@
           {
             "assertions": [
               {
-                "line": 1149,
+                "line": 1166,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K17.1"
             ],
-            "line": 1146,
+            "line": 1163,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -4575,7 +4575,7 @@
         "assertions": [
           "k17.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k17.c1",
         "observation_rule": "fact-k17-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4628,18 +4628,18 @@
           {
             "assertions": [
               {
-                "line": 1157,
+                "line": 1174,
                 "method": "assertEqual"
               },
               {
-                "line": 1163,
+                "line": 1180,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K17.2"
             ],
-            "line": 1151,
+            "line": 1168,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -4655,7 +4655,7 @@
         "assertions": [
           "k17.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k17.c2",
         "observation_rule": "fact-k17-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4708,14 +4708,14 @@
           {
             "assertions": [
               {
-                "line": 1171,
+                "line": 1188,
                 "method": "assertNotIn"
               }
             ],
             "combined_card_ids": [
               "K17.3"
             ],
-            "line": 1166,
+            "line": 1183,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -4731,7 +4731,7 @@
         "assertions": [
           "k17.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k17.c3",
         "observation_rule": "fact-k17-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4784,14 +4784,14 @@
           {
             "assertions": [
               {
-                "line": 1179,
+                "line": 1196,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K17.4"
             ],
-            "line": 1173,
+            "line": 1190,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -4807,7 +4807,7 @@
         "assertions": [
           "k17.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k17.c4",
         "observation_rule": "fact-k17-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4860,14 +4860,14 @@
           {
             "assertions": [
               {
-                "line": 1191,
+                "line": 1208,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K18.1"
             ],
-            "line": 1188,
+            "line": 1205,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -4883,7 +4883,7 @@
         "assertions": [
           "k18.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k18.c1",
         "observation_rule": "fact-k18-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -4922,7 +4922,7 @@
         "brief": "docs/design/challenges/K18/K18.1.md",
         "brief_sha256": "6fcf3bafe3627fb828f72c947dc868f677cbdb4c924c2eee2c61dabcc0f9bb76",
         "operation": "sdl/modules/operations/k18.yaml",
-        "operation_sha256": "11f7b2862ac4f8f99cdba68ea327f17599baed71deed13d01ae66143f0f01eab"
+        "operation_sha256": "79e327e72da2d52f5864971095e4b0783662ee1d7425ca960e58bb3e6bca3abe"
       },
       "title": "K18.1: The note behind the preview"
     },
@@ -4937,14 +4937,14 @@
           {
             "assertions": [
               {
-                "line": 1205,
+                "line": 1222,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K18.2"
             ],
-            "line": 1193,
+            "line": 1210,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -4960,7 +4960,7 @@
         "assertions": [
           "k18.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k18.c2",
         "observation_rule": "fact-k18-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5000,7 +5000,7 @@
         "brief": "docs/design/challenges/K18/K18.2.md",
         "brief_sha256": "910b0fd8c176c7ccb16e4657f8fbf792ad76e7cb9d61d21e46d3a711700a28c6",
         "operation": "sdl/modules/operations/k18.yaml",
-        "operation_sha256": "11f7b2862ac4f8f99cdba68ea327f17599baed71deed13d01ae66143f0f01eab"
+        "operation_sha256": "79e327e72da2d52f5864971095e4b0783662ee1d7425ca960e58bb3e6bca3abe"
       },
       "title": "K18.2: A note with someone else's authority"
     },
@@ -5015,14 +5015,34 @@
           {
             "assertions": [
               {
-                "line": 1213,
+                "line": 1230,
                 "method": "assertGreater"
+              },
+              {
+                "line": 1232,
+                "method": "assertEqual"
+              },
+              {
+                "line": 1233,
+                "method": "assertEqual"
+              },
+              {
+                "line": 1238,
+                "method": "assertEqual"
+              },
+              {
+                "line": 1239,
+                "method": "assertTrue"
+              },
+              {
+                "line": 1240,
+                "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K18.3"
             ],
-            "line": 1209,
+            "line": 1226,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -5038,7 +5058,7 @@
         "assertions": [
           "k18.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k18.c3",
         "observation_rule": "fact-k18-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5076,9 +5096,9 @@
       },
       "sources": {
         "brief": "docs/design/challenges/K18/K18.3.md",
-        "brief_sha256": "3e2cdfa27a379a63f6a4b4037d087e4e66dfbb498634a0303501f7e3d27b32f4",
+        "brief_sha256": "41cff34970c2f3ef55aa5f01c5f50c31ac3417f9937c0d93a88adc379eda3c69",
         "operation": "sdl/modules/operations/k18.yaml",
-        "operation_sha256": "11f7b2862ac4f8f99cdba68ea327f17599baed71deed13d01ae66143f0f01eab"
+        "operation_sha256": "79e327e72da2d52f5864971095e4b0783662ee1d7425ca960e58bb3e6bca3abe"
       },
       "title": "K18.3: The provider trusts our change"
     },
@@ -5092,14 +5112,22 @@
           {
             "assertions": [
               {
-                "line": 1234,
+                "line": 1259,
+                "method": "assertEqual"
+              },
+              {
+                "line": 1262,
+                "method": "assertTrue"
+              },
+              {
+                "line": 1275,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K18.4"
             ],
-            "line": 1215,
+            "line": 1247,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -5115,7 +5143,7 @@
         "assertions": [
           "k18.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k18.c4",
         "observation_rule": "fact-k18-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5152,9 +5180,9 @@
       },
       "sources": {
         "brief": "docs/design/challenges/K18/K18.4.md",
-        "brief_sha256": "1a92091bba37d933a50a3e3c4722010bf5b6c121ea529633516cbae5bed710ad",
+        "brief_sha256": "b277936fc9d7b2dcf30f4e87bee8f6a902ee710370dad34b53b0e68c1ffeb52e",
         "operation": "sdl/modules/operations/k18.yaml",
-        "operation_sha256": "11f7b2862ac4f8f99cdba68ea327f17599baed71deed13d01ae66143f0f01eab"
+        "operation_sha256": "79e327e72da2d52f5864971095e4b0783662ee1d7425ca960e58bb3e6bca3abe"
       },
       "title": "K18.4: The query behind the identity"
     },
@@ -5169,14 +5197,14 @@
           {
             "assertions": [
               {
-                "line": 1245,
+                "line": 1286,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K19.1"
             ],
-            "line": 1242,
+            "line": 1283,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -5192,7 +5220,7 @@
         "assertions": [
           "k19.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k19.c1",
         "observation_rule": "fact-k19-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5250,14 +5278,14 @@
           {
             "assertions": [
               {
-                "line": 1258,
+                "line": 1299,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K19.2"
             ],
-            "line": 1254,
+            "line": 1295,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -5273,7 +5301,7 @@
         "assertions": [
           "k19.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k19.c2",
         "observation_rule": "fact-k19-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5328,14 +5356,14 @@
           {
             "assertions": [
               {
-                "line": 1266,
+                "line": 1307,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K19.3"
             ],
-            "line": 1261,
+            "line": 1302,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -5351,7 +5379,7 @@
         "assertions": [
           "k19.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k19.c3",
         "observation_rule": "fact-k19-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5405,18 +5433,18 @@
           {
             "assertions": [
               {
-                "line": 1279,
+                "line": 1320,
                 "method": "assertEqual"
               },
               {
-                "line": 1280,
+                "line": 1321,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K20.1"
             ],
-            "line": 1269,
+            "line": 1310,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -5432,7 +5460,7 @@
         "assertions": [
           "k20.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k20.c1",
         "observation_rule": "fact-k20-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5485,26 +5513,26 @@
           {
             "assertions": [
               {
-                "line": 1285,
+                "line": 1326,
                 "method": "assertEqual"
               },
               {
-                "line": 1286,
+                "line": 1327,
                 "method": "assertEqual"
               },
               {
-                "line": 1288,
+                "line": 1329,
                 "method": "assertEqual"
               },
               {
-                "line": 1289,
+                "line": 1330,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K20.2"
             ],
-            "line": 1282,
+            "line": 1323,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -5520,7 +5548,7 @@
         "assertions": [
           "k20.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k20.c2",
         "observation_rule": "fact-k20-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5574,26 +5602,26 @@
           {
             "assertions": [
               {
-                "line": 1308,
+                "line": 1349,
                 "method": "assertEqual"
               },
               {
-                "line": 1309,
+                "line": 1350,
                 "method": "assertTrue"
               },
               {
-                "line": 1324,
+                "line": 1365,
                 "method": "assertEqual"
               },
               {
-                "line": 1325,
+                "line": 1366,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "K20.3"
             ],
-            "line": 1293,
+            "line": 1334,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -5609,7 +5637,7 @@
         "assertions": [
           "k20.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k20.c3",
         "observation_rule": "fact-k20-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5663,18 +5691,18 @@
           {
             "assertions": [
               {
-                "line": 1333,
+                "line": 1374,
                 "method": "assertEqual"
               },
               {
-                "line": 1334,
+                "line": 1375,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "K21.1"
             ],
-            "line": 1331,
+            "line": 1372,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -5690,7 +5718,7 @@
         "assertions": [
           "k21.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k21.c1",
         "observation_rule": "fact-k21-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5743,14 +5771,14 @@
           {
             "assertions": [
               {
-                "line": 1346,
+                "line": 1387,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K21.2"
             ],
-            "line": 1343,
+            "line": 1384,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -5766,7 +5794,7 @@
         "assertions": [
           "k21.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k21.c2",
         "observation_rule": "fact-k21-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5819,14 +5847,14 @@
           {
             "assertions": [
               {
-                "line": 1350,
+                "line": 1391,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K21.3"
             ],
-            "line": 1348,
+            "line": 1389,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -5842,7 +5870,7 @@
         "assertions": [
           "k21.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k21.c3",
         "observation_rule": "fact-k21-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5895,18 +5923,18 @@
           {
             "assertions": [
               {
-                "line": 1355,
+                "line": 1396,
                 "method": "assertEqual"
               },
               {
-                "line": 1356,
+                "line": 1397,
                 "method": "assertRegex"
               }
             ],
             "combined_card_ids": [
               "K22.1"
             ],
-            "line": 1352,
+            "line": 1393,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -5922,7 +5950,7 @@
         "assertions": [
           "k22.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k22.c1",
         "observation_rule": "fact-k22-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -5975,14 +6003,14 @@
           {
             "assertions": [
               {
-                "line": 1361,
+                "line": 1402,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K22.2"
             ],
-            "line": 1359,
+            "line": 1400,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -5998,7 +6026,7 @@
         "assertions": [
           "k22.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k22.c2",
         "observation_rule": "fact-k22-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6052,14 +6080,14 @@
           {
             "assertions": [
               {
-                "line": 1365,
+                "line": 1406,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K22.3"
             ],
-            "line": 1363,
+            "line": 1404,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -6075,7 +6103,7 @@
         "assertions": [
           "k22.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k22.c3",
         "observation_rule": "fact-k22-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6129,14 +6157,14 @@
           {
             "assertions": [
               {
-                "line": 1340,
+                "line": 1381,
                 "method": "assertFalse"
               }
             ],
             "combined_card_ids": [
               "K23.1"
             ],
-            "line": 1337,
+            "line": 1378,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -6152,7 +6180,7 @@
         "assertions": [
           "k23.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k23.c1",
         "observation_rule": "fact-k23-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6205,18 +6233,18 @@
           {
             "assertions": [
               {
-                "line": 1370,
+                "line": 1411,
                 "method": "assertEqual"
               },
               {
-                "line": 1371,
+                "line": 1412,
                 "method": "assertNotEqual"
               }
             ],
             "combined_card_ids": [
               "K23.2"
             ],
-            "line": 1367,
+            "line": 1408,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -6232,7 +6260,7 @@
         "assertions": [
           "k23.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k23.c2",
         "observation_rule": "fact-k23-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6285,18 +6313,18 @@
           {
             "assertions": [
               {
-                "line": 1383,
+                "line": 1424,
                 "method": "assertEqual"
               },
               {
-                "line": 1384,
+                "line": 1425,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K23.3"
             ],
-            "line": 1374,
+            "line": 1415,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -6312,7 +6340,7 @@
         "assertions": [
           "k23.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k23.c3",
         "observation_rule": "fact-k23-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6366,18 +6394,18 @@
           {
             "assertions": [
               {
-                "line": 1389,
+                "line": 1430,
                 "method": "assertEqual"
               },
               {
-                "line": 1390,
+                "line": 1431,
                 "method": "assertIn"
               }
             ],
             "combined_card_ids": [
               "K24.1"
             ],
-            "line": 1386,
+            "line": 1427,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -6393,7 +6421,7 @@
         "assertions": [
           "k24.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k24.c1",
         "observation_rule": "fact-k24-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6446,18 +6474,18 @@
           {
             "assertions": [
               {
-                "line": 1397,
+                "line": 1438,
                 "method": "assertEqual"
               },
               {
-                "line": 1398,
+                "line": 1439,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K24.2"
             ],
-            "line": 1393,
+            "line": 1434,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -6473,7 +6501,7 @@
         "assertions": [
           "k24.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k24.c2",
         "observation_rule": "fact-k24-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6526,22 +6554,22 @@
           {
             "assertions": [
               {
-                "line": 1405,
+                "line": 1446,
                 "method": "assertEqual"
               },
               {
-                "line": 1406,
+                "line": 1447,
                 "method": "assertEqual"
               },
               {
-                "line": 1407,
+                "line": 1448,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K24.3"
             ],
-            "line": 1401,
+            "line": 1442,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -6557,7 +6585,7 @@
         "assertions": [
           "k24.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k24.c3",
         "observation_rule": "fact-k24-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6610,14 +6638,14 @@
           {
             "assertions": [
               {
-                "line": 1422,
+                "line": 1463,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K25.1"
             ],
-            "line": 1418,
+            "line": 1459,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -6633,7 +6661,7 @@
         "assertions": [
           "k25.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k25.c1",
         "observation_rule": "fact-k25-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6686,22 +6714,22 @@
           {
             "assertions": [
               {
-                "line": 1428,
+                "line": 1469,
                 "method": "assertEqual"
               },
               {
-                "line": 1430,
+                "line": 1471,
                 "method": "assertIn"
               },
               {
-                "line": 1437,
+                "line": 1478,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K25.2"
             ],
-            "line": 1425,
+            "line": 1466,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -6717,7 +6745,7 @@
         "assertions": [
           "k25.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k25.c2",
         "observation_rule": "fact-k25-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6770,14 +6798,14 @@
           {
             "assertions": [
               {
-                "line": 1705,
+                "line": 1746,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K26.1"
             ],
-            "line": 1700,
+            "line": 1741,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -6793,7 +6821,7 @@
         "assertions": [
           "k26.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k26.c1",
         "observation_rule": "fact-k26-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6853,14 +6881,14 @@
           {
             "assertions": [
               {
-                "line": 1712,
+                "line": 1753,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K26.2"
             ],
-            "line": 1707,
+            "line": 1748,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -6876,7 +6904,7 @@
         "assertions": [
           "k26.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k26.c2",
         "observation_rule": "fact-k26-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -6931,14 +6959,14 @@
           {
             "assertions": [
               {
-                "line": 1720,
+                "line": 1761,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K26.3"
             ],
-            "line": 1714,
+            "line": 1755,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -6954,7 +6982,7 @@
         "assertions": [
           "k26.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k26.c3",
         "observation_rule": "fact-k26-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7008,18 +7036,18 @@
           {
             "assertions": [
               {
-                "line": 1489,
+                "line": 1530,
                 "method": "assertEqual"
               },
               {
-                "line": 1490,
+                "line": 1531,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K27.1"
             ],
-            "line": 1484,
+            "line": 1525,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -7035,7 +7063,7 @@
         "assertions": [
           "k27.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k27.c1",
         "observation_rule": "fact-k27-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7090,14 +7118,14 @@
           {
             "assertions": [
               {
-                "line": 1499,
+                "line": 1540,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K27.2"
             ],
-            "line": 1492,
+            "line": 1533,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -7113,7 +7141,7 @@
         "assertions": [
           "k27.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k27.c2",
         "observation_rule": "fact-k27-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7169,14 +7197,14 @@
           {
             "assertions": [
               {
-                "line": 1508,
+                "line": 1549,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K27.3"
             ],
-            "line": 1501,
+            "line": 1542,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -7192,7 +7220,7 @@
         "assertions": [
           "k27.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k27.c3",
         "observation_rule": "fact-k27-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7246,22 +7274,22 @@
           {
             "assertions": [
               {
-                "line": 1452,
+                "line": 1493,
                 "method": "assertEqual"
               },
               {
-                "line": 1455,
+                "line": 1496,
                 "method": "assertEqual"
               },
               {
-                "line": 1456,
+                "line": 1497,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K28.1"
             ],
-            "line": 1446,
+            "line": 1487,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -7277,7 +7305,7 @@
         "assertions": [
           "k28.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k28.c1",
         "observation_rule": "fact-k28-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7330,14 +7358,14 @@
           {
             "assertions": [
               {
-                "line": 1464,
+                "line": 1505,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K28.2"
             ],
-            "line": 1458,
+            "line": 1499,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -7353,7 +7381,7 @@
         "assertions": [
           "k28.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k28.c2",
         "observation_rule": "fact-k28-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7406,18 +7434,18 @@
           {
             "assertions": [
               {
-                "line": 1475,
+                "line": 1516,
                 "method": "assertIn"
               },
               {
-                "line": 1476,
+                "line": 1517,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K28.3"
             ],
-            "line": 1473,
+            "line": 1514,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -7433,7 +7461,7 @@
         "assertions": [
           "k28.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k28.c3",
         "observation_rule": "fact-k28-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7487,14 +7515,14 @@
           {
             "assertions": [
               {
-                "line": 1601,
+                "line": 1642,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K29.1"
             ],
-            "line": 1599,
+            "line": 1640,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -7510,7 +7538,7 @@
         "assertions": [
           "k29.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k29.c1",
         "observation_rule": "fact-k29-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7576,18 +7604,18 @@
           {
             "assertions": [
               {
-                "line": 1615,
+                "line": 1656,
                 "method": "assertEqual"
               },
               {
-                "line": 1617,
+                "line": 1658,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K29.2"
             ],
-            "line": 1610,
+            "line": 1651,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": false,
@@ -7603,7 +7631,7 @@
         "assertions": [
           "k29.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k29.c2",
         "observation_rule": "fact-k29-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7657,30 +7685,30 @@
           {
             "assertions": [
               {
-                "line": 1636,
+                "line": 1677,
                 "method": "assertEqual"
               },
               {
-                "line": 1655,
+                "line": 1696,
                 "method": "assertTrue"
               },
               {
-                "line": 1660,
+                "line": 1701,
                 "method": "assertTrue"
               },
               {
-                "line": 1662,
+                "line": 1703,
                 "method": "assertIn"
               },
               {
-                "line": 1669,
+                "line": 1710,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K29.3"
             ],
-            "line": 1620,
+            "line": 1661,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -7696,7 +7724,7 @@
         "assertions": [
           "k29.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k29.c3",
         "observation_rule": "fact-k29-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7750,14 +7778,14 @@
           {
             "assertions": [
               {
-                "line": 1680,
+                "line": 1721,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K29.4"
             ],
-            "line": 1675,
+            "line": 1716,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -7773,7 +7801,7 @@
         "assertions": [
           "k29.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k29.c4",
         "observation_rule": "fact-k29-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7827,14 +7855,14 @@
           {
             "assertions": [
               {
-                "line": 1519,
+                "line": 1560,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K30.1"
             ],
-            "line": 1512,
+            "line": 1553,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -7850,7 +7878,7 @@
         "assertions": [
           "k30.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k30.c1",
         "observation_rule": "fact-k30-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7907,14 +7935,14 @@
           {
             "assertions": [
               {
-                "line": 1525,
+                "line": 1566,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K30.2"
             ],
-            "line": 1521,
+            "line": 1562,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -7930,7 +7958,7 @@
         "assertions": [
           "k30.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k30.c2",
         "observation_rule": "fact-k30-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -7983,14 +8011,14 @@
           {
             "assertions": [
               {
-                "line": 1535,
+                "line": 1576,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K30.3"
             ],
-            "line": 1527,
+            "line": 1568,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -8006,7 +8034,7 @@
         "assertions": [
           "k30.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k30.c3",
         "observation_rule": "fact-k30-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8060,14 +8088,14 @@
           {
             "assertions": [
               {
-                "line": 1547,
+                "line": 1588,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K31.1"
             ],
-            "line": 1541,
+            "line": 1582,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -8083,7 +8111,7 @@
         "assertions": [
           "k31.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k31.c1",
         "observation_rule": "fact-k31-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8139,18 +8167,18 @@
           {
             "assertions": [
               {
-                "line": 1556,
+                "line": 1597,
                 "method": "assertEqual"
               },
               {
-                "line": 1561,
+                "line": 1602,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K31.2"
             ],
-            "line": 1549,
+            "line": 1590,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -8166,7 +8194,7 @@
         "assertions": [
           "k31.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k31.c2",
         "observation_rule": "fact-k31-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8220,18 +8248,18 @@
           {
             "assertions": [
               {
-                "line": 1570,
+                "line": 1611,
                 "method": "assertEqual"
               },
               {
-                "line": 1571,
+                "line": 1612,
                 "method": "assertTrue"
               }
             ],
             "combined_card_ids": [
               "K31.3"
             ],
-            "line": 1563,
+            "line": 1604,
             "phase": "keplerops",
             "simple_read_candidate": true,
             "state_change_candidate": false,
@@ -8247,7 +8275,7 @@
         "assertions": [
           "k31.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "k31.c3",
         "observation_rule": "fact-k31-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8340,7 +8368,7 @@
         "assertions": [
           "t01.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t01.c1",
         "observation_rule": "fact-t01-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8416,7 +8444,7 @@
         "assertions": [
           "t01.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t01.c2",
         "observation_rule": "fact-t01-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8500,7 +8528,7 @@
         "assertions": [
           "t01.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t01.c3",
         "observation_rule": "fact-t01-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8584,7 +8612,7 @@
         "assertions": [
           "t01.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t01.c4",
         "observation_rule": "fact-t01-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8664,7 +8692,7 @@
         "assertions": [
           "t02.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t02.c1",
         "observation_rule": "fact-t02-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8744,7 +8772,7 @@
         "assertions": [
           "t02.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t02.c2",
         "observation_rule": "fact-t02-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8832,7 +8860,7 @@
         "assertions": [
           "t02.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t02.c3",
         "observation_rule": "fact-t02-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -8921,7 +8949,7 @@
         "assertions": [
           "t02.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t02.c4",
         "observation_rule": "fact-t02-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9005,7 +9033,7 @@
         "assertions": [
           "t03.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t03.c1",
         "observation_rule": "fact-t03-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9081,7 +9109,7 @@
         "assertions": [
           "t03.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t03.c2",
         "observation_rule": "fact-t03-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9165,7 +9193,7 @@
         "assertions": [
           "t03.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t03.c3",
         "observation_rule": "fact-t03-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9265,7 +9293,7 @@
         "assertions": [
           "t03.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t03.c4",
         "observation_rule": "fact-t03-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9345,7 +9373,7 @@
         "assertions": [
           "t04.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t04.c1",
         "observation_rule": "fact-t04-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9433,7 +9461,7 @@
         "assertions": [
           "t04.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t04.c2",
         "observation_rule": "fact-t04-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9549,7 +9577,7 @@
         "assertions": [
           "t04.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t04.c3",
         "observation_rule": "fact-t04-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9641,7 +9669,7 @@
         "assertions": [
           "t04.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "t04.c4",
         "observation_rule": "fact-t04-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9721,7 +9749,7 @@
         "assertions": [
           "w01.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w01.c1",
         "observation_rule": "fact-w01-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9797,7 +9825,7 @@
         "assertions": [
           "w01.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w01.c2",
         "observation_rule": "fact-w01-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9877,7 +9905,7 @@
         "assertions": [
           "w01.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w01.c3",
         "observation_rule": "fact-w01-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -9961,7 +9989,7 @@
         "assertions": [
           "w01.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w01.c4",
         "observation_rule": "fact-w01-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10037,7 +10065,7 @@
         "assertions": [
           "w02.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w02.c1",
         "observation_rule": "fact-w02-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10113,7 +10141,7 @@
         "assertions": [
           "w02.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w02.c2",
         "observation_rule": "fact-w02-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10193,7 +10221,7 @@
         "assertions": [
           "w02.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w02.c3",
         "observation_rule": "fact-w02-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10273,7 +10301,7 @@
         "assertions": [
           "w03.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w03.c1",
         "observation_rule": "fact-w03-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10353,7 +10381,7 @@
         "assertions": [
           "w03.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w03.c2",
         "observation_rule": "fact-w03-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10429,7 +10457,7 @@
         "assertions": [
           "w03.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w03.c3",
         "observation_rule": "fact-w03-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10513,7 +10541,7 @@
         "assertions": [
           "w04.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w04.c1",
         "observation_rule": "fact-w04-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10589,7 +10617,7 @@
         "assertions": [
           "w04.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w04.c2",
         "observation_rule": "fact-w04-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10665,7 +10693,7 @@
         "assertions": [
           "w04.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w04.c3",
         "observation_rule": "fact-w04-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10741,7 +10769,7 @@
         "assertions": [
           "w05.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w05.c1",
         "observation_rule": "fact-w05-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10817,7 +10845,7 @@
         "assertions": [
           "w05.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w05.c2",
         "observation_rule": "fact-w05-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10901,7 +10929,7 @@
         "assertions": [
           "w05.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w05.c3",
         "observation_rule": "fact-w05-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -10978,7 +11006,7 @@
         "assertions": [
           "w06.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w06.c1",
         "observation_rule": "fact-w06-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11057,7 +11085,7 @@
         "assertions": [
           "w06.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w06.c2",
         "observation_rule": "fact-w06-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11133,7 +11161,7 @@
         "assertions": [
           "w06.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w06.c3",
         "observation_rule": "fact-w06-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11213,7 +11241,7 @@
         "assertions": [
           "w07.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w07.c1",
         "observation_rule": "fact-w07-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11293,7 +11321,7 @@
         "assertions": [
           "w07.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w07.c2",
         "observation_rule": "fact-w07-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11373,7 +11401,7 @@
         "assertions": [
           "w07.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w07.c3",
         "observation_rule": "fact-w07-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11449,7 +11477,7 @@
         "assertions": [
           "w08.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w08.c1",
         "observation_rule": "fact-w08-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11544,7 +11572,7 @@
         "assertions": [
           "w08.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w08.c2",
         "observation_rule": "fact-w08-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11640,7 +11668,7 @@
         "assertions": [
           "w08.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w08.c3",
         "observation_rule": "fact-w08-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11724,7 +11752,7 @@
         "assertions": [
           "w08.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w08.c4",
         "observation_rule": "fact-w08-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11804,7 +11832,7 @@
         "assertions": [
           "w09.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w09.c1",
         "observation_rule": "fact-w09-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11880,7 +11908,7 @@
         "assertions": [
           "w09.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w09.c2",
         "observation_rule": "fact-w09-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -11960,7 +11988,7 @@
         "assertions": [
           "w09.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w09.c3",
         "observation_rule": "fact-w09-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12049,7 +12077,7 @@
         "assertions": [
           "w09.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w09.c4",
         "observation_rule": "fact-w09-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12134,7 +12162,7 @@
         "assertions": [
           "w10.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w10.c1",
         "observation_rule": "fact-w10-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12218,7 +12246,7 @@
         "assertions": [
           "w10.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w10.c2",
         "observation_rule": "fact-w10-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12298,7 +12326,7 @@
         "assertions": [
           "w10.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w10.c3",
         "observation_rule": "fact-w10-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12382,7 +12410,7 @@
         "assertions": [
           "w11.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w11.c1",
         "observation_rule": "fact-w11-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12465,7 +12493,7 @@
         "assertions": [
           "w11.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w11.c2",
         "observation_rule": "fact-w11-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12549,7 +12577,7 @@
         "assertions": [
           "w11.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w11.c3",
         "observation_rule": "fact-w11-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12633,7 +12661,7 @@
         "assertions": [
           "w12.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w12.c1",
         "observation_rule": "fact-w12-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12732,7 +12760,7 @@
         "assertions": [
           "w12.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w12.c2",
         "observation_rule": "fact-w12-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12816,7 +12844,7 @@
         "assertions": [
           "w12.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w12.c3",
         "observation_rule": "fact-w12-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12908,7 +12936,7 @@
         "assertions": [
           "w12.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w12.c4",
         "observation_rule": "fact-w12-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -12988,7 +13016,7 @@
         "assertions": [
           "w13.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w13.c1",
         "observation_rule": "fact-w13-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13068,7 +13096,7 @@
         "assertions": [
           "w13.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w13.c2",
         "observation_rule": "fact-w13-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13148,7 +13176,7 @@
         "assertions": [
           "w13.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w13.c3",
         "observation_rule": "fact-w13-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13229,7 +13257,7 @@
         "assertions": [
           "w13.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w13.c4",
         "observation_rule": "fact-w13-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13305,7 +13333,7 @@
         "assertions": [
           "w14.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w14.c1",
         "observation_rule": "fact-w14-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13381,7 +13409,7 @@
         "assertions": [
           "w14.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w14.c2",
         "observation_rule": "fact-w14-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13469,7 +13497,7 @@
         "assertions": [
           "w14.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w14.c3",
         "observation_rule": "fact-w14-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13545,7 +13573,7 @@
         "assertions": [
           "w15.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w15.c1",
         "observation_rule": "fact-w15-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13624,7 +13652,7 @@
         "assertions": [
           "w15.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w15.c2",
         "observation_rule": "fact-w15-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13700,7 +13728,7 @@
         "assertions": [
           "w15.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w15.c3",
         "observation_rule": "fact-w15-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13784,7 +13812,7 @@
         "assertions": [
           "w15.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w15.c4",
         "observation_rule": "fact-w15-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13860,7 +13888,7 @@
         "assertions": [
           "w16.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w16.c1",
         "observation_rule": "fact-w16-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -13944,7 +13972,7 @@
         "assertions": [
           "w16.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w16.c2",
         "observation_rule": "fact-w16-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14020,7 +14048,7 @@
         "assertions": [
           "w16.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w16.c3",
         "observation_rule": "fact-w16-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14100,7 +14128,7 @@
         "assertions": [
           "w16.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w16.c4",
         "observation_rule": "fact-w16-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14180,7 +14208,7 @@
         "assertions": [
           "w17.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w17.c1",
         "observation_rule": "fact-w17-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14256,7 +14284,7 @@
         "assertions": [
           "w17.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w17.c2",
         "observation_rule": "fact-w17-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14332,7 +14360,7 @@
         "assertions": [
           "w17.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w17.c3",
         "observation_rule": "fact-w17-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14413,7 +14441,7 @@
         "assertions": [
           "w17.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w17.c4",
         "observation_rule": "fact-w17-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14496,7 +14524,7 @@
         "assertions": [
           "w18.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w18.c1",
         "observation_rule": "fact-w18-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14572,7 +14600,7 @@
         "assertions": [
           "w18.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w18.c2",
         "observation_rule": "fact-w18-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14652,7 +14680,7 @@
         "assertions": [
           "w18.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w18.c3",
         "observation_rule": "fact-w18-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14734,7 +14762,7 @@
         "assertions": [
           "w18.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w18.c4",
         "observation_rule": "fact-w18-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14824,7 +14852,7 @@
         "assertions": [
           "w19.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w19.c1",
         "observation_rule": "fact-w19-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14904,7 +14932,7 @@
         "assertions": [
           "w19.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w19.c2",
         "observation_rule": "fact-w19-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -14988,7 +15016,7 @@
         "assertions": [
           "w19.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w19.c3",
         "observation_rule": "fact-w19-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15068,7 +15096,7 @@
         "assertions": [
           "w19.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w19.c4",
         "observation_rule": "fact-w19-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15152,7 +15180,7 @@
         "assertions": [
           "w20.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w20.c1",
         "observation_rule": "fact-w20-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15232,7 +15260,7 @@
         "assertions": [
           "w20.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w20.c2",
         "observation_rule": "fact-w20-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15316,7 +15344,7 @@
         "assertions": [
           "w20.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w20.c3",
         "observation_rule": "fact-w20-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15396,7 +15424,7 @@
         "assertions": [
           "w21.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w21.c1",
         "observation_rule": "fact-w21-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15481,7 +15509,7 @@
         "assertions": [
           "w21.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w21.c2",
         "observation_rule": "fact-w21-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15586,7 +15614,7 @@
         "assertions": [
           "w22.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w22.c1",
         "observation_rule": "fact-w22-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15666,7 +15694,7 @@
         "assertions": [
           "w22.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w22.c2",
         "observation_rule": "fact-w22-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15746,7 +15774,7 @@
         "assertions": [
           "w22.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w22.c3",
         "observation_rule": "fact-w22-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15834,7 +15862,7 @@
         "assertions": [
           "w22.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w22.c4",
         "observation_rule": "fact-w22-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -15918,7 +15946,7 @@
         "assertions": [
           "w23.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w23.c1",
         "observation_rule": "fact-w23-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16002,7 +16030,7 @@
         "assertions": [
           "w23.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w23.c2",
         "observation_rule": "fact-w23-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16086,7 +16114,7 @@
         "assertions": [
           "w23.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w23.c3",
         "observation_rule": "fact-w23-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16162,7 +16190,7 @@
         "assertions": [
           "w24.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w24.c1",
         "observation_rule": "fact-w24-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16242,7 +16270,7 @@
         "assertions": [
           "w24.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w24.c2",
         "observation_rule": "fact-w24-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16334,7 +16362,7 @@
         "assertions": [
           "w24.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w24.c3",
         "observation_rule": "fact-w24-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16418,7 +16446,7 @@
         "assertions": [
           "w24.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w24.c4",
         "observation_rule": "fact-w24-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16498,7 +16526,7 @@
         "assertions": [
           "w25.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w25.c1",
         "observation_rule": "fact-w25-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16578,7 +16606,7 @@
         "assertions": [
           "w25.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w25.c2",
         "observation_rule": "fact-w25-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16662,7 +16690,7 @@
         "assertions": [
           "w25.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w25.c3",
         "observation_rule": "fact-w25-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16744,7 +16772,7 @@
         "assertions": [
           "w25.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w25.c4",
         "observation_rule": "fact-w25-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16826,7 +16854,7 @@
         "assertions": [
           "w26.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w26.c1",
         "observation_rule": "fact-w26-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16907,7 +16935,7 @@
         "assertions": [
           "w26.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w26.c2",
         "observation_rule": "fact-w26-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -16987,7 +17015,7 @@
         "assertions": [
           "w26.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w26.c3",
         "observation_rule": "fact-w26-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17071,7 +17099,7 @@
         "assertions": [
           "w26.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w26.c4",
         "observation_rule": "fact-w26-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17167,7 +17195,7 @@
         "assertions": [
           "w27.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w27.c1",
         "observation_rule": "fact-w27-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17267,7 +17295,7 @@
         "assertions": [
           "w27.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w27.c2",
         "observation_rule": "fact-w27-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17351,7 +17379,7 @@
         "assertions": [
           "w27.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w27.c3",
         "observation_rule": "fact-w27-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17435,7 +17463,7 @@
         "assertions": [
           "w28.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w28.c1",
         "observation_rule": "fact-w28-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17519,7 +17547,7 @@
         "assertions": [
           "w28.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w28.c2",
         "observation_rule": "fact-w28-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17611,7 +17639,7 @@
         "assertions": [
           "w28.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w28.c3",
         "observation_rule": "fact-w28-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17687,7 +17715,7 @@
         "assertions": [
           "w29.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w29.c1",
         "observation_rule": "fact-w29-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17764,7 +17792,7 @@
         "assertions": [
           "w29.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w29.c2",
         "observation_rule": "fact-w29-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17870,7 +17898,7 @@
         "assertions": [
           "w29.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w29.c3",
         "observation_rule": "fact-w29-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -17962,7 +17990,7 @@
         "assertions": [
           "w30.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w30.c1",
         "observation_rule": "fact-w30-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18063,7 +18091,7 @@
         "assertions": [
           "w30.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w30.c2",
         "observation_rule": "fact-w30-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18152,7 +18180,7 @@
         "assertions": [
           "w31.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w31.c1",
         "observation_rule": "fact-w31-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18232,7 +18260,7 @@
         "assertions": [
           "w31.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w31.c2",
         "observation_rule": "fact-w31-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18316,7 +18344,7 @@
         "assertions": [
           "w31.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w31.c3",
         "observation_rule": "fact-w31-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18404,7 +18432,7 @@
         "assertions": [
           "w31.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w31.c4",
         "observation_rule": "fact-w31-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18488,7 +18516,7 @@
         "assertions": [
           "w32.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w32.c1",
         "observation_rule": "fact-w32-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18568,7 +18596,7 @@
         "assertions": [
           "w32.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w32.c2",
         "observation_rule": "fact-w32-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18648,7 +18676,7 @@
         "assertions": [
           "w32.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w32.c3",
         "observation_rule": "fact-w32-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18736,7 +18764,7 @@
         "assertions": [
           "w32.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w32.c4",
         "observation_rule": "fact-w32-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18817,7 +18845,7 @@
         "assertions": [
           "w33.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w33.c1",
         "observation_rule": "fact-w33-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18895,7 +18923,7 @@
         "assertions": [
           "w33.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w33.c2",
         "observation_rule": "fact-w33-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -18979,7 +19007,7 @@
         "assertions": [
           "w33.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w33.c3",
         "observation_rule": "fact-w33-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19071,7 +19099,7 @@
         "assertions": [
           "w33.c4-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w33.c4",
         "observation_rule": "fact-w33-4",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19170,7 +19198,7 @@
         "assertions": [
           "w34.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w34.c1",
         "observation_rule": "fact-w34-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19265,7 +19293,7 @@
         "assertions": [
           "w34.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w34.c2",
         "observation_rule": "fact-w34-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19365,7 +19393,7 @@
         "assertions": [
           "w34.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w34.c3",
         "observation_rule": "fact-w34-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19447,7 +19475,7 @@
         "assertions": [
           "w35.c1-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w35.c1",
         "observation_rule": "fact-w35-1",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19523,7 +19551,7 @@
         "assertions": [
           "w35.c2-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w35.c2",
         "observation_rule": "fact-w35-2",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19615,7 +19643,7 @@
         "assertions": [
           "w35.c3-done"
         ],
-        "catalog_revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+        "catalog_revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
         "evidence_requirement": "w35.c3",
         "observation_rule": "fact-w35-3",
         "owner": "shifter.range-owned.cinder-scorer",
@@ -19663,10 +19691,10 @@
     "card_count": 240,
     "operation_count": 70,
     "path": "challenges/challenges.yaml",
-    "revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+    "revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
     "schema": "cinder-typhoon.challenge-delivery/v2",
     "score_total": 39200,
-    "sha256": "7d3c1a77a51184ee90f2b343de5d575cb2a25d361dc02899aff1fade6bbc7f9c"
+    "sha256": "c0a5246d18e35522389d1592cb639233c7644085f727c11a8fd5c486c17a0413"
   },
   "read_only_review_source": {
     "path": "build/card-coverage/read-only-reviews.json",

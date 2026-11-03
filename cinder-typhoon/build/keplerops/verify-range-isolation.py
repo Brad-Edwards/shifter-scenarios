@@ -294,10 +294,10 @@ def verify_assertion_replay(current: dict[str, str], foreign_path: Path) -> None
     enabled = status(
         "identity.keplerops.test", "/api/registrations/OIDC-FIELDKEST-SUPPORT",
         token=current["staff_preview_service"], method="POST",
-        body={"add_provider": "OIDC-CINDER-FIXTURE", "preserve_existing": True},
+        body={"add_provider": "OIDC-FIELDKEST-RETAINED-SUPPORT", "preserve_existing": True},
     )
     if enabled != 200:
-        raise AssertionError(f"target fixture provider enablement returned HTTP {enabled}")
+        raise AssertionError(f"target retained-support provider enablement returned HTTP {enabled}")
     foreign_status = status(
         "identity.keplerops.test", "/api/federation/login", method="POST",
         body={"assertion": assertion},
@@ -305,8 +305,12 @@ def verify_assertion_replay(current: dict[str, str], foreign_path: Path) -> None
     if foreign_status != 403:
         raise AssertionError(f"foreign assertion returned HTTP {foreign_status}")
     issued_status, issued = json_request(
-        "support.keplerops.test", "/fixture-issuer/assertions", method="POST",
-        body={"subject": "fixture-reviewer-047", "tenant": "TEN-ARWC-047"},
+        "support.keplerops.test", "/federation/retained-support/assertions", method="POST",
+        body={
+            "audience": "fieldkest-support",
+            "subject": "urn:fieldkest:pairwise:7c0e4f2a-2e62-4d80-a279-1fdb4f02b6c7",
+            "tenant": "TEN-ARWC-047",
+        },
     )
     if issued_status != 201 or not isinstance(issued.get("assertion"), str):
         raise AssertionError("target assertion issuer did not issue an assertion")

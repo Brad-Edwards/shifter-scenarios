@@ -83,7 +83,7 @@ EXPECTED_INTEGRATIONS = {
     "source-build", "runner-source", "runner-registry", "registry-rehearsal",
     "preview-render", "package-delivery", "diagnostic-delivery", "staff-identity-admin",
     "scheduled-output", "maintenance-archive", "backup-source", "completion-handover",
-    "assistant-review",
+    "assistant-review", "support-federation-introspection",
 }
 TECHNICAL_SECTIONS = (
     "Surface and normal behavior", "Vulnerability and intended solution",
@@ -118,7 +118,7 @@ COMPLEX_PROFILE_TERMS = {
     "K14.2": ("fieldkest-build-records", "fieldkest-cloud-policy", "audience"),
     "K14.3": ("exports%2fsupport%2fEXP-2841", "decodes", "double encoding"),
     "K18.2": ("%2e%2e%2fidentity", "percent-decode", "svc-staff-preview"),
-    "K18.3": ("PATCH", "OIDC-CINDER-FIXTURE", "fixture-reviewer-047"),
+    "K18.3": ("PATCH", "OIDC-FIELDKEST-RETAINED-SUPPORT", "retained-support"),
     "K19.2": ("requested_upn", "evan.calderoux", "clientAuth"),
     "K19.3": ("HTTP/identity.keplerops.test", "service class", "hostname"),
     "K20.2": ("svc-release-admin", "five-minute", "requested managed identity"),

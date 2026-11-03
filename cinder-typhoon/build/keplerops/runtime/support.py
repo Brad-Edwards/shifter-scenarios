@@ -9,9 +9,27 @@ import ssl
 import time
 import uuid
 from urllib import request as urlrequest
+from urllib import error as urlerror
 from urllib.parse import urlsplit
 
-from http_support import KeplerHandler, append_audit, issue_rs256, serve_tls, verify_rs256
+from http_support import (
+    KeplerHandler,
+    RETAINED_SUPPORT_ASSERTION_ENDPOINT,
+    RETAINED_SUPPORT_AUDIENCE,
+    RETAINED_SUPPORT_ISSUER,
+    RETAINED_SUPPORT_INTROSPECTION_ENDPOINT,
+    RETAINED_SUPPORT_KEY_ID,
+    RETAINED_SUPPORT_LOGIN_ENDPOINT,
+    RETAINED_SUPPORT_METADATA,
+    RETAINED_SUPPORT_PROVIDER,
+    RETAINED_SUPPORT_ROLE,
+    RETAINED_SUPPORT_SUBJECT,
+    RETAINED_SUPPORT_TENANT,
+    append_audit,
+    issue_rs256,
+    serve_tls,
+    verify_retained_support_assertion,
+)
 from credentials import credential
 
 
@@ -55,8 +73,25 @@ class SupportHandler(KeplerHandler):
         token = self._cookies().get("fieldkest_federated")
         if not token:
             return None
-        claims = verify_rs256(Path("/tmp/fixture-issuer.pub"), token, issuer="https://support.keplerops.test/fixture-issuer", audience="fieldkest-support")
-        if not claims or claims.get("sub") != "fixture-reviewer-047" or "support-reviewer" not in claims.get("roles", []):
+        claims = verify_retained_support_assertion(Path("/tmp/fixture-issuer.pub"), token)
+        if claims is None:
+            return None
+        request = urlrequest.Request(
+            RETAINED_SUPPORT_INTROSPECTION_ENDPOINT,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        context = ssl.create_default_context(cafile="/tmp/fieldkest-ca.crt")
+        try:
+            with urlrequest.urlopen(request, context=context, timeout=5) as response:
+                session = json.loads(response.read())
+        except (urlerror.URLError, TimeoutError, json.JSONDecodeError):
+            return None
+        if session != {
+            "active": True,
+            "jti": claims["jti"],
+            "subject": claims["sub"],
+            "tenant": claims["tenant"],
+        }:
             return None
         return claims
 
@@ -67,6 +102,17 @@ class SupportHandler(KeplerHandler):
         if self.send_client_document():
             return
         path = urlsplit(self.path).path
+        if path == urlsplit(RETAINED_SUPPORT_METADATA).path:
+            return self.send_json(200, {
+                "issuer": RETAINED_SUPPORT_ISSUER,
+                "assertion_endpoint": RETAINED_SUPPORT_ASSERTION_ENDPOINT,
+                "assertion_audiences_supported": [RETAINED_SUPPORT_AUDIENCE],
+                "assertion_signing_alg_values_supported": ["RS256"],
+                "claims_supported": ["sub", "tenant", "roles", "iat", "exp", "jti"],
+                "subject_types_supported": ["pairwise"],
+                "subject_syntax": "urn:fieldkest:pairwise:<uuid>",
+                "assertion_ttl_seconds": 300,
+            })
         if not self._authorized():
             self.send_json(403, {"error": "session_denied"})
             return
@@ -95,14 +141,23 @@ class SupportHandler(KeplerHandler):
             append_audit(AUDIT, "assignment", {"request_id": self.request_id, "principal": SESSION["principal"], "assignment_id": "B01", "status": 200})
             self.send_json(200, value)
         elif path == "/api/customers/TEN-ARWC-047/dossiers/DOS-ARWC-HIST-01":
-            value = {"dossier_id": "DOS-ARWC-HIST-01", "tenant": "TEN-ARWC-047", "account": "K-C-001", "recurring_case": "SUP-2841", "attachment": "arwc-fieldlink-history.json", "customer_record": "CUSTREC-047-R6", "reviewer_subject": "fixture-reviewer-047"}
+            value = {
+                "dossier_id": "DOS-ARWC-HIST-01", "tenant": RETAINED_SUPPORT_TENANT,
+                "account": "K-C-001", "recurring_case": "SUP-2841",
+                "attachment": "arwc-fieldlink-history.json", "customer_record": "CUSTREC-047-R6",
+                "reviewer_federation": {
+                    "provider": RETAINED_SUPPORT_PROVIDER,
+                    "subject": RETAINED_SUPPORT_SUBJECT,
+                    "tenant": RETAINED_SUPPORT_TENANT,
+                },
+            }
             append_audit(AUDIT, "customer-dossier", {"request_id": self.request_id, "principal": SESSION["principal"], "dossier_id": value["dossier_id"], "status": 200})
             self.send_json(200, value)
         elif path == "/api/customers/TEN-ARWC-047/dossiers/CUSTREC-047-R6":
             claims = self._federated_claims()
             if claims is None:
                 return self.send_json(403, {"error": "federated_session_required"})
-            value = {"record_id": "CUSTREC-047-R6", "tenant": "TEN-ARWC-047", "revision": 6, "federated_subject": "fixture-reviewer-047"}
+            value = {"record_id": "CUSTREC-047-R6", "tenant": RETAINED_SUPPORT_TENANT, "revision": 6, "federated_subject": RETAINED_SUPPORT_SUBJECT}
             append_audit(AUDIT, "customer-dossier", {"request_id": self.request_id, "principal": claims["sub"], "assertion_jti": claims["jti"], "asserted_tenant": claims["tenant"], "record_id": value["record_id"], "status": 200})
             self.send_json(200, value)
         elif path == "/api/customers/TEN-ARWC-047/integrations/fieldlink":
@@ -114,15 +169,25 @@ class SupportHandler(KeplerHandler):
 
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
-        if path == "/fixture-issuer/assertions":
+        if path == urlsplit(RETAINED_SUPPORT_ASSERTION_ENDPOINT).path:
             data = self.read_json()
-            if data != {"subject": "fixture-reviewer-047", "tenant": "TEN-ARWC-047"}:
-                return self.send_json(422, {"error": "fixture_subject_denied"})
+            expected = {
+                "audience": RETAINED_SUPPORT_AUDIENCE,
+                "subject": RETAINED_SUPPORT_SUBJECT,
+                "tenant": RETAINED_SUPPORT_TENANT,
+            }
+            if data != expected:
+                return self.send_json(422, {"error": "federation_claims_denied"})
             now = int(time.time())
-            claims = {"iss": "https://support.keplerops.test/fixture-issuer", "aud": "fieldkest-support", "sub": data["subject"], "tenant": data["tenant"], "roles": ["support-reviewer"], "iat": now, "exp": now + 300, "jti": str(uuid.uuid4())}
-            assertion = issue_rs256(Path("/tmp/fixture-issuer.key"), claims, key_id="fixture-2026")
-            append_audit(AUDIT, "fixture-assertion", {"request_id": self.request_id, "subject": claims["sub"], "tenant": claims["tenant"], "jti": claims["jti"], "status": 201})
-            return self.send_json(201, {"assertion": assertion, "issuer": claims["iss"], "expires_in": 300})
+            claims = {
+                "iss": RETAINED_SUPPORT_ISSUER, "aud": data["audience"],
+                "sub": data["subject"], "tenant": data["tenant"],
+                "roles": [RETAINED_SUPPORT_ROLE], "iat": now, "exp": now + 300,
+                "jti": str(uuid.uuid4()),
+            }
+            assertion = issue_rs256(Path("/tmp/fixture-issuer.key"), claims, key_id=RETAINED_SUPPORT_KEY_ID)
+            append_audit(AUDIT, "federation-assertion", {"request_id": self.request_id, "subject": claims["sub"], "tenant": claims["tenant"], "audience": claims["aud"], "jti": claims["jti"], "status": 201})
+            return self.send_json(201, {"assertion": assertion, "issuer": claims["iss"], "audience": claims["aud"], "expires_in": 300, "submission_endpoint": RETAINED_SUPPORT_LOGIN_ENDPOINT})
         if path == "/api/recovery/lookup":
             data = self.read_json()
             if data != {"account": "talia.mornac-review"}:

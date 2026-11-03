@@ -1479,23 +1479,23 @@
             "inputs": [
               "HTTP request route templates"
             ],
-            "locator": "route keys resolved by the setUpClass crawler: staff.directory, staff.note, staff.note-preview, identity.registration, identity.staff-login, support.session, support.dossier, support.fixture-assertion, identity.login",
+            "locator": "route keys resolved by the setUpClass crawler: staff.directory, staff.note, staff.note-preview, identity.registration, identity.staff-login, support.session, support.dossier, support.federation-metadata, identity.login",
             "source": "linked client-reference documents crawled from the Client reference URL in /home/rowan/work/service-notes.md"
           },
           {
             "class": "earlier_accepted_response",
             "inputs": [
-              "staff identity",
-              "registration source path",
-              "tenant, dossier, federated subject, assertion, and session values"
+              "staff identity and registration source path",
+              "provider, issuer, discovery, and assertion submission routes",
+              "audience, claim contract, subject syntax, tenant, dossier, pairwise subject, assertion, and session values"
             ],
-            "source": "accepted staff.directory, identity.registration, support.session, support.dossier, support.fixture-assertion, and identity.login responses",
-            "locator": "directory supplies note and staff fields; registration route path is parsed from the discovered identity.registration template; session supplies tenant and dossier ID; dossier supplies reviewer_subject verbatim; fixture assertion and login responses supply the assertion and federated session"
+            "source": "accepted staff.directory, identity.registration, retained-support metadata, support.session, support.dossier, retained-support assertion, and identity.login responses",
+            "locator": "directory supplies note and staff fields; the changed registration supplies provider, issuer, metadata URI, and assertion submission URI; provider metadata supplies audience, claims, pairwise subject syntax, assertion endpoint, signing algorithm, and lifetime; session supplies the tenant and dossier ID; dossier supplies the exact provider, tenant, pairwise subject, and protected record; assertion and login responses supply the signed assertion and federated session"
           }
         ],
-        "inventory_sha256": "1398bc84517ccb3d2f7b58ee7ff829444c13bb1eb21443acbb198648646e7353",
+        "inventory_sha256": "2db65b8ce7c5cffd13cdec455087800edaf793e7afc3eced11d3676ea6eebd8f",
         "profile": "keplerops",
-        "request_count": 10,
+        "request_count": 11,
         "review_status": "complete",
         "unresolved": []
       },
@@ -2456,8 +2456,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 7,
-      "inventory_sha256": "2e244ecc41b5619af9586fc3fd4311c61caad23aabb88ea3f6ad2cf987743f91",
+      "comparison_count": 8,
+      "inventory_sha256": "d6148b97cacd6e1f0c6d2d6c0ac8ef0f158a9d2df6d8b65c3a17f91865628eb8",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2472,8 +2472,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 106,
-      "inventory_sha256": "8e8fe330bdf876373c0311a535a14cfa356f164087baebfebe5ad3a57b69fda9",
+      "comparison_count": 101,
+      "inventory_sha256": "ea8af42fedb53940626304e5dadd49675dc854648a2030e40e52308f38c4efe6",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2552,8 +2552,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 27,
-      "inventory_sha256": "12dfdebdf10701eb3c87e6b9b58ea3781579b84f4f9e6ae85ebecc87e08e3d5a",
+      "comparison_count": 24,
+      "inventory_sha256": "d2801aaea2ba6e24408b1e785962b6bbf00c9f46d31eb712ed7bba689441862a",
       "review_status": "complete",
       "unresolved": []
     },
@@ -3265,7 +3265,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "4cd25c25661f38c21f0271cad93c446a8078272b02f33eed67d98d29070f4f88",
+      "source_sha256": "68c6380455429edd675d6aeed19a8beb6cab2ad5610730cb9750a5159ddce8ce",
       "unresolved": []
     },
     "build/keplerops/runtime/service-entrypoint.sh": {

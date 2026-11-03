@@ -406,12 +406,14 @@ content:
         authority: Support federation + customer records
       surface_bindings:
       - k-delivery.k-support/support-service/customer-dossier
-      starting_state: Locally hosted fixture issuer on k-support issues a signed assertion
-        for the designated test subject; backend role check omits tenant predicate on one
-        query.
+      starting_state: The retained-support provider on k-support publishes issuer, audience
+        and claim metadata, then issues a signed assertion for the dossier's pairwise reviewer
+        subject and tenant. Identity consumes each assertion once; the backend role check
+        omits the session-tenant predicate on one query.
       mechanic_profile:
-        assertion: 'RS256 fixture assertion: iss=https://support.keplerops.test/fixture-issuer,
-          aud=fieldkest-support, sub=fixture-reviewer-047, tenant=TEN-ARWC-047'
+        assertion: 'RS256 retained-support assertion: issuer and audience from provider
+          metadata; pairwise subject and tenant from DOS-ARWC-HIST-01; single-use jti and
+          300-second lifetime'
         defect: customer-record query requires the support-reviewer role but omits session-tenant
           equality
         record: CUSTREC-047-R6
@@ -419,9 +421,10 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Locally hosted fixture issuer on k-support issues a signed assertion for
-          the designated test subject; backend role check omits tenant predicate on one
-          query.
+        input: The retained-support provider on k-support publishes issuer, audience and
+          claim metadata, then issues a signed assertion for the dossier's pairwise reviewer
+          subject and tenant. Identity consumes each assertion once; the backend role check
+          omits the session-tenant predicate on one query.
         success: Federated session and read of protected record CUSTREC-047-R6.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
@@ -456,7 +459,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 91d3df4db7204c923bdaa881786bcdd54d55fac849772907c176b52f5233f137
+        digest: 3ffb7991d25edc5d4ea5c745cb5054d3a636a5d73eae5d17866e3f678be66544
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

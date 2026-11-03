@@ -682,9 +682,9 @@ nodes:
           name: OIDC-FIELDKEST-SUPPORT
           enabled: true
           origin: provisioned
-        - subject_id: fixture-provider
+        - subject_id: retained-support-provider
           kind: application
-          name: OIDC-CINDER-FIXTURE
+          name: OIDC-FIELDKEST-RETAINED-SUPPORT
           enabled: false
           origin: runtime_created
         policies:
@@ -699,7 +699,7 @@ nodes:
             - keplerops-identity
             value_classification: plain
             origin: operator
-          - name: fixture-provider-initially-enabled
+          - name: retained-support-provider-initially-enabled
             values:
             - 'false'
             value_classification: plain
@@ -724,7 +724,7 @@ nodes:
         - relationship_id: support-federation
           relationship_type: federates_with
           source_ref: support-application
-          target_ref: fixture-provider
+          target_ref: retained-support-provider
           description: Initially disabled optional provider; K18.3 can enable it without removing the existing provider.
         - relationship_id: staff-preview-delegation
           relationship_type: delegated_admin

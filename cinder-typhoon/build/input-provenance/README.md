@@ -47,12 +47,9 @@ unresolved:
 python3 cinder-typhoon/build/input-provenance/provenance.py --require-complete
 ```
 
-The current ledger deliberately fails that release form. In particular, it
-records the K18 federated subject (#216), K26 customer-channel bearer (#217),
-and W33 checkpoint, model vectors and policy contract (#223) as author-only.
-The broader exact-comparison audit remains assigned to #224. Updating an
-inventory hash merely acknowledges a code change; completion also requires
-specific citations and removal of the corresponding unresolved entry.
+The current ledger passes that release form. Updating an inventory hash merely
+acknowledges a code change; a remediation is complete only when every changed
+input also has a specific participant-visible citation and no unresolved entry.
 
 For a new scenario only, `--new-unresolved-ledger PATH` creates a fail-closed
 review skeleton and refuses to overwrite an existing file. It marks every

@@ -176,25 +176,27 @@ content:
       - k-corporate.k-staff/staff-workplace/note-preview
       - k-corporate.k-identity/identity-admin/support-registration
       starting_state: Preview metadata forwards an allowed method field; encoded traversal
-        plus PATCH can add one fixture provider while preserving existing provider.
+        plus PATCH can add the retained-support provider while preserving the existing provider.
+        The registration identifies its discovery metadata and assertion submission endpoint.
       mechanic_profile:
         source_path: /notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT
         forwarded_method: PATCH
         patch:
-          add_provider: OIDC-CINDER-FIXTURE
+          add_provider: OIDC-FIELDKEST-RETAINED-SUPPORT
           preserve_existing: true
-        fixture_provider:
-          issuer: https://support.keplerops.test/fixture-issuer
-          audience: fieldkest-support
-          subject: fixture-reviewer-047
+        retained_support_provider:
+          issuer: https://support.keplerops.test/federation/retained-support
+          metadata: https://support.keplerops.test/federation/retained-support/.well-known/openid-configuration
+          assertion_submission: https://identity.keplerops.test/api/federation/login
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
         input: Preview metadata forwards an allowed method field; encoded traversal plus
-          PATCH can add one fixture provider while preserving existing provider.
-        success: Registration revision with fixture issuer and successful ordinary staff-login
-          audit.
+          PATCH can add the retained-support provider while preserving the existing provider.
+          The registration identifies its discovery metadata and assertion submission endpoint.
+        success: Registration revision with retained-support issuer and successful ordinary
+          staff-login audit.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -206,8 +208,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Registration revision with fixture issuer and successful ordinary
-        staff-login audit.
+      transition_contract: Registration revision with retained-support issuer and successful
+        ordinary staff-login audit.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -229,7 +231,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: b5ddc3c32db12fcfa7edb0b00cd371205a14b5debe991d9c8626566b05d6e089
+        digest: 40c996303f6eb7fc020ca3d2480ee2d77502fb0291d5ea81d9ae11252d7554f3
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

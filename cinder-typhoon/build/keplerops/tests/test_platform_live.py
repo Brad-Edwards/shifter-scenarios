@@ -8,6 +8,7 @@ import json
 import os
 import subprocess
 import unittest
+from urllib import parse as urlparse
 
 from runtime_credentials import basic, credential
 
@@ -125,10 +126,28 @@ class PlatformLiveTest(unittest.TestCase):
         self.assertGreater(changed["revision"], registration["revision"])
         staff_login = call("identity.keplerops.test", "/api/federation/staff-login", method="POST", body={"username": "rowan.ito", "password": DEV_TOKEN}, expected=201)
         self.assertEqual((staff_login["provider"], staff_login["login"]), ("OIDC-FIELDKEST-STAFF", "accepted"))
-        assertion = call("support.keplerops.test", "/fixture-issuer/assertions", method="POST", body={"subject": "fixture-reviewer-047", "tenant": "TEN-ARWC-047"}, auth=None, expected=201)
-        federated = call("identity.keplerops.test", "/api/federation/login", method="POST", body={"assertion": assertion["assertion"]}, expected=201)
+        provider = changed["provider_configuration"]
+        metadata_url = urlparse.urlsplit(provider["metadata_uri"])
+        metadata = call(metadata_url.hostname, metadata_url.path, auth=None)
+        session = call("support.keplerops.test", "/api/session", auth=None, cookie=COOKIE)
+        history = call("support.keplerops.test", "/api/customers/TEN-ARWC-047/dossiers/" + session["customer"]["history_dossier"], auth=None, cookie=COOKIE)
+        federation = history["reviewer_federation"]
+        audience = metadata["assertion_audiences_supported"][0]
+        assertion_path = urlparse.urlsplit(metadata["assertion_endpoint"]).path
+        assertion_body = {"audience": audience, "subject": federation["subject"], "tenant": federation["tenant"]}
+        for field, wrong in (("subject", "urn:fieldkest:pairwise:00000000-0000-0000-0000-000000000000"), ("tenant", "TEN-RILL-022"), ("audience", "unrelated-service")):
+            denied_body = {**assertion_body, field: wrong}
+            denied = call("support.keplerops.test", assertion_path, method="POST", body=denied_body, auth=None, expected=422)
+            self.assertEqual(denied["error"], "federation_claims_denied")
+        assertion = call("support.keplerops.test", assertion_path, method="POST", body=assertion_body, auth=None, expected=201)
+        login_path = urlparse.urlsplit(provider["assertion_submission_endpoint"]).path
+        bypass = call("support.keplerops.test", "/api/customers/TEN-ARWC-047/dossiers/CUSTREC-047-R6", auth=None, cookie="fieldkest_federated=" + assertion["assertion"], expected=403)
+        self.assertEqual(bypass["error"], "federated_session_required")
+        federated = call("identity.keplerops.test", login_path, method="POST", body={"assertion": assertion["assertion"]}, expected=201)
+        replayed = call("identity.keplerops.test", login_path, method="POST", body={"assertion": assertion["assertion"]}, expected=409)
+        self.assertEqual(replayed["error"], "assertion_replayed")
         record = call("support.keplerops.test", "/api/customers/TEN-ARWC-047/dossiers/CUSTREC-047-R6", auth=None, cookie=federated["session_cookie"])
-        self.assertEqual((record["record_id"], record["federated_subject"]), ("CUSTREC-047-R6", "fixture-reviewer-047"))
+        self.assertEqual((record["record_id"], record["federated_subject"]), ("CUSTREC-047-R6", federation["subject"]))
         cert = call("cert.keplerops.test", "/api/enrollment/StaffArchiveUser/requests", method="POST", body={"upn": "evan.calderoux@KEPLEROPS.TEST"}, auth=CERT_ENROLLMENT, expected=201)
         for path, field in (("/tmp/evan.crt", "certificate_pem"), ("/tmp/evan.key", "private_key_pem")):
             installed = subprocess.run(["docker", "exec", "-i", "--user", "rowan", CONTAINER, "tee", path], input=cert[field], text=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=False)

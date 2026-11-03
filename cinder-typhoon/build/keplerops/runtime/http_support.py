@@ -24,6 +24,18 @@ import uuid
 AUDIT_LOCK = threading.RLock()
 CLIENT_DOCUMENTS = Path("/opt/fieldkest/client_documents.json")
 
+RETAINED_SUPPORT_PROVIDER = "OIDC-FIELDKEST-RETAINED-SUPPORT"
+RETAINED_SUPPORT_ISSUER = "https://support.keplerops.test/federation/retained-support"
+RETAINED_SUPPORT_METADATA = RETAINED_SUPPORT_ISSUER + "/.well-known/openid-configuration"
+RETAINED_SUPPORT_ASSERTION_ENDPOINT = RETAINED_SUPPORT_ISSUER + "/assertions"
+RETAINED_SUPPORT_LOGIN_ENDPOINT = "https://identity.keplerops.test/api/federation/login"
+RETAINED_SUPPORT_INTROSPECTION_ENDPOINT = "https://identity.keplerops.test/api/federation/session"
+RETAINED_SUPPORT_AUDIENCE = "fieldkest-support"
+RETAINED_SUPPORT_SUBJECT = "urn:fieldkest:pairwise:7c0e4f2a-2e62-4d80-a279-1fdb4f02b6c7"
+RETAINED_SUPPORT_TENANT = "TEN-ARWC-047"
+RETAINED_SUPPORT_ROLE = "support-reviewer"
+RETAINED_SUPPORT_KEY_ID = "fieldkest-retained-support-2026"
+
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
@@ -53,7 +65,14 @@ def issue_rs256(private_key_path: Path, claims: dict[str, Any], *, key_id: str) 
     return header + "." + payload + "." + _b64url(signature)
 
 
-def verify_rs256(public_key_path: Path, token: str, *, issuer: str, audience: str) -> dict[str, Any] | None:
+def verify_rs256(
+    public_key_path: Path,
+    token: str,
+    *,
+    issuer: str,
+    audience: str,
+    key_id: str,
+) -> dict[str, Any] | None:
     from cryptography.exceptions import InvalidSignature
     from cryptography.hazmat.primitives import hashes, serialization
     from cryptography.hazmat.primitives.asymmetric import padding
@@ -63,20 +82,49 @@ def verify_rs256(public_key_path: Path, token: str, *, issuer: str, audience: st
         header = json.loads(base64.urlsafe_b64decode(header_b64 + "=" * (-len(header_b64) % 4)))
         claims = json.loads(base64.urlsafe_b64decode(payload_b64 + "=" * (-len(payload_b64) % 4)))
         signature = base64.urlsafe_b64decode(signature_b64 + "=" * (-len(signature_b64) % 4))
-        if header != {"alg": "RS256", "kid": "fixture-2026", "typ": "JWT"}:
+        if not isinstance(claims, dict):
+            return None
+        if header != {"alg": "RS256", "kid": key_id, "typ": "JWT"}:
             return None
         public_key = serialization.load_pem_public_key(public_key_path.read_bytes())
         public_key.verify(signature, (header_b64 + "." + payload_b64).encode(), padding.PKCS1v15(), hashes.SHA256())
         now = int(time.time())
         if claims.get("iss") != issuer or claims.get("aud") != audience:
             return None
-        if not isinstance(claims.get("iat"), int) or not isinstance(claims.get("exp"), int):
+        if type(claims.get("iat")) is not int or type(claims.get("exp")) is not int:
             return None
-        if claims["iat"] > now + 5 or claims["exp"] < now or claims["exp"] - claims["iat"] > 300:
+        if claims["iat"] > now + 5 or claims["exp"] <= now or claims["exp"] - claims["iat"] > 300:
             return None
         return claims
     except (ValueError, TypeError, json.JSONDecodeError, InvalidSignature):
         return None
+
+
+def verify_retained_support_assertion(public_key_path: Path, token: str) -> dict[str, Any] | None:
+    """Verify the complete retained-support federation contract."""
+    claims = verify_rs256(
+        public_key_path,
+        token,
+        issuer=RETAINED_SUPPORT_ISSUER,
+        audience=RETAINED_SUPPORT_AUDIENCE,
+        key_id=RETAINED_SUPPORT_KEY_ID,
+    )
+    if claims is None or set(claims) != {
+        "aud", "exp", "iat", "iss", "jti", "roles", "sub", "tenant",
+    }:
+        return None
+    if (
+        claims["sub"] != RETAINED_SUPPORT_SUBJECT
+        or claims["tenant"] != RETAINED_SUPPORT_TENANT
+        or claims["roles"] != [RETAINED_SUPPORT_ROLE]
+        or not isinstance(claims["jti"], str)
+    ):
+        return None
+    try:
+        uuid.UUID(claims["jti"])
+    except (ValueError, TypeError, AttributeError):
+        return None
+    return claims
 
 
 def issue_worker_token(
