@@ -6,6 +6,7 @@ materializes a service, repository, package, binary, model, image or range.
 """
 from __future__ import annotations
 
+import ast
 from collections import Counter
 import hashlib
 import json
@@ -43,6 +44,9 @@ K09_ASSETS = ASSETS / "build-operations"
 K11_ASSETS = ASSETS / "policy-compiler"
 K28_ASSETS = ASSETS / "connector-archive"
 K29_ASSETS = ASSETS / "release-lineage"
+OPENING_INTERFACE_CONTRACT = BASE / "keplerops-k01-k12-interfaces.json"
+OPENING_INTERFACE_REPORT = BASE / "keplerops-k01-k12-interfaces.md"
+KNOWN_SOLUTION = PACK / "build/keplerops/tests/test_known_solution_live.py"
 EXPECTED_PORTFOLIO_SHA256 = "d5e4456ab827252525459680b0ee0e238252de502f91298eeed503ad08be710f"
 EXPECTED_TIERS = Counter({"Medium": 45, "Easy": 25, "Hard": 21, "Expert": 9, "Elite": 4})
 EXPECTED_IPS = {
@@ -601,6 +605,156 @@ def check_client_reference_graph(scenario):
             "Fourth-wall wording in client_documents.json")
 
 
+def known_solution_route_keys(source: str) -> dict[str, set[str]]:
+    """Return client-reference keys used by each opening operation."""
+    result = {f"K{number:02d}": set() for number in range(1, 13)}
+    for node in ast.walk(ast.parse(source)):
+        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        match = re.fullmatch(r"test_(k(?:0[1-9]|1[0-2]))(?:_.+)?", node.name)
+        if not match:
+            continue
+        operation = match.group(1).upper()
+        result[operation].update(
+            call.args[0].value
+            for call in ast.walk(node)
+            if isinstance(call, ast.Call)
+            and isinstance(call.func, ast.Attribute)
+            and call.func.attr == "discovered_route"
+            and call.args
+            and isinstance(call.args[0], ast.Constant)
+            and isinstance(call.args[0].value, str)
+        )
+    return result
+
+
+def validate_opening_interface_contract(
+    contract: dict[str, object], inventory: dict[str, object], known_solution: str,
+) -> None:
+    """Validate the author-only K01-K12 interface and discovery contract."""
+    expected_operations = [f"K{number:02d}" for number in range(1, 13)]
+    require(
+        set(contract) == {"schema", "scope", "operations", "invariants"}
+        and contract["schema"] == "fieldkest.k01-k12-interface-contract/v1"
+        and contract["scope"] == expected_operations,
+        "K01-K12 interface contract schema or scope drift",
+    )
+    operations = contract["operations"]
+    require(isinstance(operations, list), "K01-K12 interface operations must be a list")
+    by_id = {
+        operation.get("operation"): operation
+        for operation in operations
+        if isinstance(operation, dict)
+    }
+    require(
+        list(by_id) == expected_operations and len(by_id) == len(operations),
+        "K01-K12 interface operation inventory drift",
+    )
+
+    route_inventory: dict[str, dict[str, str]] = {}
+    for document in inventory.get("documents", {}).values():
+        for route in document.get("routes", []):
+            route_inventory[route["key"]] = route
+    observed_routes = known_solution_route_keys(known_solution)
+    supplied_operations = set()
+    forbidden = contract["invariants"]["forbidden_route_terms"]
+    for operation_id, operation in by_id.items():
+        require(
+            set(operation) == {
+                "operation", "intended_user", "baseline_workflow", "discovery",
+                "route_keys", "local_interfaces", "supplied_source_or_reproducer",
+            },
+            f"{operation_id} interface contract fields drift",
+        )
+        for field in ("intended_user", "baseline_workflow", "discovery"):
+            require(
+                isinstance(operation[field], str) and operation[field].strip(),
+                f"{operation_id} lacks {field}",
+            )
+        route_keys = operation["route_keys"]
+        require(
+            isinstance(route_keys, list)
+            and len(route_keys) == len(set(route_keys))
+            and set(route_keys) <= set(route_inventory),
+            f"{operation_id} has missing or duplicate client-reference route keys",
+        )
+        require(
+            observed_routes[operation_id] <= set(route_keys),
+            f"{operation_id} known solution uses an undeclared route key",
+        )
+        for key in route_keys:
+            template = route_inventory[key]["template"].lower()
+            require(
+                not any(term.lower() in template for term in forbidden),
+                f"{operation_id} uses a challenge-only route: {template}",
+            )
+        local_interfaces = operation["local_interfaces"]
+        require(
+            isinstance(local_interfaces, list)
+            and all(isinstance(value, str) and value for value in local_interfaces),
+            f"{operation_id} local interface inventory is invalid",
+        )
+        supplied = operation["supplied_source_or_reproducer"]
+        if supplied is not None:
+            supplied_operations.add(operation_id)
+            require(
+                isinstance(supplied, dict)
+                and set(supplied) == {"kind", "path", "design_promise"}
+                and all(isinstance(value, str) and value for value in supplied.values()),
+                f"{operation_id} supplied-artifact justification is invalid",
+            )
+
+    invariants = contract["invariants"]
+    require(
+        set(invariants) == {
+            "forbidden_route_terms", "source_or_reproducer_operations", "blind_playtest_issue",
+        }
+        and invariants["source_or_reproducer_operations"] == ["K04", "K11"]
+        and supplied_operations == {"K04", "K11"}
+        and invariants["blind_playtest_issue"] == 229,
+        "K01-K12 interface invariants drift",
+    )
+    require(
+        by_id["K11"]["route_keys"] == ["source.policy-evaluate", "source.policy-nonce"],
+        "K11 must use only policy evaluation and nonce resources",
+    )
+    expected_k11_routes = {
+        "source.policy-evaluate": (
+            "POST", "https://source.keplerops.test/api/policy-compilers/fieldkest-policyc/evaluations",
+        ),
+        "source.policy-nonce": (
+            "POST", "https://source.keplerops.test/api/policy-compilers/fieldkest-policyc/nonces",
+        ),
+    }
+    require(
+        {
+            key: (route_inventory[key]["method"], route_inventory[key]["template"])
+            for key in expected_k11_routes
+        } == expected_k11_routes,
+        "K11 policy-compiler resources drift",
+    )
+    require(
+        "source.policy-opcode-model" not in route_inventory
+        and "source.policy-opcode-model" not in known_solution
+        and "fieldkest_opcode_" in known_solution,
+        "K11 opcode semantics must be recovered from the supplied binary",
+    )
+
+
+def check_opening_interface_contract(scenario=None) -> None:
+    contract = json.loads(OPENING_INTERFACE_CONTRACT.read_text())
+    inventory = json.loads(
+        (PACK / "build/keplerops/authoring/client_documents.json").read_text()
+    )
+    validate_opening_interface_contract(contract, inventory, KNOWN_SOLUTION.read_text())
+    report = OPENING_INTERFACE_REPORT.read_text()
+    require(
+        all(f"| K{number:02d} |" in report for number in range(1, 13))
+        and "issue #229" in report,
+        "K01-K12 interface acceptance report drift",
+    )
+
+
 def check_registry_assets(scenario):
     manifest = json.loads((REGISTRY_ASSETS / "artifact-manifest.json").read_text())
     require(manifest["schema"] == "fieldkest.registry-foundation-artifacts/v1",
@@ -791,6 +945,16 @@ def check_k11_foundation_assets(scenario):
     require(hashlib.sha256(binary).hexdigest() == compiler["binary_sha256"]
             and hashlib.sha256(link_map).hexdigest() == compiler["link_map_sha256"],
             "K11 compiler or retained map digest drift")
+    opcode_symbols = {
+        int(value, 16): name
+        for value, name in re.findall(
+            rb"fieldkest_opcode_([0-9a-f]{2})_([A-Z_]+)\x00", binary
+        )
+    }
+    require(
+        set(opcode_symbols) == set(range(8)) and len(set(opcode_symbols.values())) == 8,
+        "K11 retained binary lacks a complete, unambiguous opcode symbol model",
+    )
     require(b"/tmp/cc" not in link_map and str(PACK).encode() not in link_map,
             "K11 retained map contains a nondeterministic build path")
     config = json.loads((K11_ASSETS / "source/policy-compiler-service.json").read_text())
@@ -809,7 +973,10 @@ def check_k11_foundation_assets(scenario):
             text = path.read_text(errors="strict")
         except UnicodeDecodeError:
             continue
-        require(not FORBIDDEN_IN_WORLD.search(text),
+        # GNU libc names a standard linker input ``elision-unlock.o``. It is
+        # ordinary toolchain vocabulary, not an in-world access transition.
+        reviewed_text = text.replace("elision-unlock.o", "elision-lock-release.o")
+        require(not FORBIDDEN_IN_WORLD.search(reviewed_text),
                 f"Fourth-wall wording in K11 foundation asset: {path.relative_to(PACK)}")
 
 
@@ -923,6 +1090,7 @@ def hand_build_gaps(scenario) -> list[str]:
         ("native semantics", lambda current, rows: check_native_semantics(current)),
         ("opening assets", lambda current, rows: check_opening_assets(current)),
         ("client reference graph", lambda current, rows: check_client_reference_graph(current)),
+        ("K01-K12 interface contract", lambda current, rows: check_opening_interface_contract()),
         ("registry assets", lambda current, rows: check_registry_assets(current)),
         ("K09 foundation assets", lambda current, rows: check_k09_foundation_assets(current)),
         ("K11 foundation assets", lambda current, rows: check_k11_foundation_assets(current)),

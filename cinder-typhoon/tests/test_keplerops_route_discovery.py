@@ -6,6 +6,7 @@ import ast
 import copy
 import importlib.util
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -57,6 +58,7 @@ K04_EMPLOYEE_DISCLOSURES = {
     "/api/internal/release-exceptions/REL-EXC-2841/complete",
     "recover_exception_queue",
 }
+K11_BINARY = ROOT / "assets/keplerops/policy-compiler/source/fieldkest-policyc"
 GENERATOR = KEPLEROPS / "generate_client_references.py"
 SPEC = importlib.util.spec_from_file_location("keplerops_client_references", GENERATOR)
 assert SPEC and SPEC.loader
@@ -152,17 +154,28 @@ class KeplerOpsRouteDiscoveryTests(unittest.TestCase):
         }
         self.assertTrue(FORBIDDEN_ACCEPTED_VALUES.isdisjoint(constants))
 
-    def test_k11_uses_all_published_policy_routes(self) -> None:
+    def test_k11_recovers_policy_semantics_and_uses_published_resources(self) -> None:
         source = SUITE.read_text(encoding="utf-8")
         for key in (
             "source.policy-evaluate",
             "source.policy-nonce",
-            "source.policy-opcode-model",
         ):
             self.assertIn(f'self.discovered_route("{key}")', source)
+        self.assertNotIn("source.policy-opcode-model", source)
+        self.assertIn("fieldkest_opcode_", source)
 
         source_service = (RUNTIME / "source.py").read_text(encoding="utf-8")
-        self.assertIn('"schema": "fieldkest.policy-opcode-model/v1"', source_service)
+        self.assertIn('"fieldkest.policy-opcode-model/v1"', source_service)
+
+        symbols = {
+            int(value, 16): name
+            for value, name in re.findall(
+                rb"fieldkest_opcode_([0-9a-f]{2})_([A-Z_]+)\x00",
+                K11_BINARY.read_bytes(),
+            )
+        }
+        self.assertEqual(set(symbols), set(range(8)))
+        self.assertEqual(len(set(symbols.values())), 8)
 
     def test_k04_offline_reproducer_is_delivered_to_the_participant(self) -> None:
         dockerfile = (IMAGES / "k-dev.Dockerfile").read_text(encoding="utf-8")

@@ -1027,7 +1027,6 @@
         "source.handover",
         "source.policy-evaluate",
         "source.policy-nonce",
-        "source.policy-opcode-model",
         "source.connector-run"
       ],
       "id": "keplerops-client-ref-source",

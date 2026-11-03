@@ -1,0 +1,127 @@
+{
+  "schema": "fieldkest.k01-k12-interface-contract/v1",
+  "scope": ["K01", "K02", "K03", "K04", "K05", "K06", "K07", "K08", "K09", "K10", "K11", "K12"],
+  "operations": [
+    {
+      "operation": "K01",
+      "intended_user": "FieldKest connector developer resuming an interrupted investigation",
+      "baseline_workflow": "Resume the checked-out repository, current handover, retained support conversation, review export, and local inspection helper from the assigned workstation.",
+      "discovery": "The stored Git credential, browser history, review-export pointer, and local-helper notes provide the ordinary starting links.",
+      "route_keys": ["source.handover", "support.conversation"],
+      "local_interfaces": ["developer home", "browser profile", "checked-out repository", "local inspection helper"],
+      "supplied_source_or_reproducer": null
+    },
+    {
+      "operation": "K02",
+      "intended_user": "FieldKest developer investigating and repairing a failed connector report build",
+      "baseline_workflow": "Follow the handover to the CI run, recover the removed fixture from repository history, import the review record, and submit the replacement report provider through the isolated CI job interface.",
+      "discovery": "The current handover and developer service notes name the CI run, import, job, result, and support handover interfaces.",
+      "route_keys": ["ci.run", "ci.review-import", "ci.report-jobs", "ci.report-job", "support.handover"],
+      "local_interfaces": ["checked-out repository history"],
+      "supplied_source_or_reproducer": null
+    },
+    {
+      "operation": "K03",
+      "intended_user": "FieldKest developer reconstructing a predecessor's interrupted diagnostic collection",
+      "baseline_workflow": "Extract the staged attachment from the predecessor's field notes, apply the documented decoder, submit it to the local reconstruction helper, and deliver the returned callback to the documented collection path.",
+      "discovery": "The predecessor document, decoder, and local-helper notes are present in the developer work directory.",
+      "route_keys": [],
+      "local_interfaces": ["developer work directory", "local reconstruction helper", "local callback collector"],
+      "supplied_source_or_reproducer": null
+    },
+    {
+      "operation": "K04",
+      "intended_user": "FieldKest developer reproducing a native bundle-indexer defect before requesting an exception",
+      "baseline_workflow": "Analyse and probe the supplied offline indexer reproducer, then submit the resulting bundle through the same index request interface used for ordinary bundle indexing.",
+      "discovery": "The developer work directory contains a reproducer manifest that names the supplied binary; the public client reference names only the normal index resource.",
+      "route_keys": ["indexer.indexes"],
+      "local_interfaces": ["offline native reproducer"],
+      "supplied_source_or_reproducer": {
+        "kind": "offline binary reproducer",
+        "path": "/home/rowan/work/reproducers/fieldkest-bundle-indexer",
+        "design_promise": "K04 explicitly requires binary analysis and probing; no employee document supplies the allocation boundary, sentinel, or follow-up payload."
+      }
+    },
+    {
+      "operation": "K05",
+      "intended_user": "FieldKest package maintainer reconciling a connector consumer with retained releases",
+      "baseline_workflow": "Inspect current package metadata, run the consumer check, read the linked archived release, reconcile tenant state, and run the normal resolver.",
+      "discovery": "The package client reference and response links provide each package and release resource.",
+      "route_keys": ["packages.metadata", "packages.consumer-check", "support.conversation", "packages.release", "packages.reconcile", "packages.resolver"],
+      "local_interfaces": [],
+      "supplied_source_or_reproducer": null
+    },
+    {
+      "operation": "K06",
+      "intended_user": "FieldKest package maintainer importing, reviewing, publishing, and rehearsing a connector package",
+      "baseline_workflow": "Import the retained package, inspect its publisher view, publish through the package resource, and submit it to the CI connector rehearsal.",
+      "discovery": "The package and CI client references publish the import, view, package, and rehearsal resources.",
+      "route_keys": ["packages.import", "packages.view", "packages.publish", "ci.connector-rehearsal"],
+      "local_interfaces": [],
+      "supplied_source_or_reproducer": null
+    },
+    {
+      "operation": "K07",
+      "intended_user": "FieldKest package assessor investigating inconsistent inspector interpretations",
+      "baseline_workflow": "Submit a normal inspection, read its restricted trace, and compare front-end and assessor handling through the shared inspection-envelope interface.",
+      "discovery": "The package client reference publishes inspection collection, trace, and envelope resources.",
+      "route_keys": ["packages.inspections", "packages.inspection-trace", "packages.inspection-envelope"],
+      "local_interfaces": [],
+      "supplied_source_or_reproducer": null
+    },
+    {
+      "operation": "K08",
+      "intended_user": "FieldKest release maintainer validating a retained customer entitlement for compatibility support",
+      "baseline_workflow": "Read the designated compatibility entitlement, reconstruct its archived validation context, and submit it to the same compatibility checker used for normal retained-entitlement decisions.",
+      "discovery": "The package client reference and entitlement record identify the compatibility record and checker resources.",
+      "route_keys": ["packages.entitlement", "packages.entitlement-check"],
+      "local_interfaces": [],
+      "supplied_source_or_reproducer": null
+    },
+    {
+      "operation": "K09",
+      "intended_user": "FieldKest build engineer investigating retained CI review output",
+      "baseline_workflow": "Inspect the build run and log, follow its retained artifact link, submit it to the review-job resource, and use only the resulting isolated runner workspace and service identity.",
+      "discovery": "The CI client reference publishes run and review-job resources; normal responses provide artifact and result links.",
+      "route_keys": ["ci.run", "ci.run-log", "ci.review-jobs", "ci.review-job"],
+      "local_interfaces": ["isolated CI review workspace"],
+      "supplied_source_or_reproducer": null
+    },
+    {
+      "operation": "K10",
+      "intended_user": "FieldKest support developer reproducing an attachment-preview identity collision",
+      "baseline_workflow": "Resolve the support attachment's preview association, create a document through the ordinary document resource, and request a normal render.",
+      "discovery": "The retained support conversation supplies the attachment identifier; the preview client reference publishes association, document, and render resources.",
+      "route_keys": ["preview.association", "preview.documents", "preview.render"],
+      "local_interfaces": [],
+      "supplied_source_or_reproducer": null
+    },
+    {
+      "operation": "K11",
+      "intended_user": "FieldKest release engineer migrating a retained policy compiler",
+      "baseline_workflow": "Clone the retained compiler repository, recover the opcode semantics and embedded constraint program from the supplied unstripped binary, validate fragments and the fixed corpus through the compiler evaluation collection, then create and spend a one-use nonce for acceptance.",
+      "discovery": "The build-operations handoff names the repository; its README and templates document the binary layout and normal migration API shapes.",
+      "route_keys": ["source.policy-evaluate", "source.policy-nonce"],
+      "local_interfaces": ["retained policy-compiler Git repository"],
+      "supplied_source_or_reproducer": {
+        "kind": "retained migration artifact",
+        "path": "fieldkest/policy-compiler:bin/fieldkest-policyc",
+        "design_promise": "K11 explicitly supplies the retained binary, link map, fragments, corpus, examples, and request templates; the solution must derive opcode semantics and the constraint program from those artifacts."
+      }
+    },
+    {
+      "operation": "K12",
+      "intended_user": "FieldKest preview operator preparing and rendering an assigned privileged review",
+      "baseline_workflow": "Reassign the existing review to the prepared document, create the one-use review action, and invoke the normal reviewer render resource under the worker scope.",
+      "discovery": "The K10 association response supplies the review identifier; the preview client reference publishes assignment, action, and reviewer-render resources.",
+      "route_keys": ["preview.assignment", "preview.prepare", "preview.review-render"],
+      "local_interfaces": [],
+      "supplied_source_or_reproducer": null
+    }
+  ],
+  "invariants": {
+    "forbidden_route_terms": ["/api/exercises/", "challenge", "completion"],
+    "source_or_reproducer_operations": ["K04", "K11"],
+    "blind_playtest_issue": 229
+  }
+}

@@ -21,17 +21,12 @@
         {
           "key": "source.policy-evaluate",
           "method": "POST",
-          "template": "https://source.keplerops.test/api/exercises/policy-compiler/evaluate"
+          "template": "https://source.keplerops.test/api/policy-compilers/fieldkest-policyc/evaluations"
         },
         {
           "key": "source.policy-nonce",
-          "method": "GET",
-          "template": "https://source.keplerops.test/api/exercises/policy-compiler/nonce"
-        },
-        {
-          "key": "source.policy-opcode-model",
-          "method": "GET",
-          "template": "https://source.keplerops.test/api/exercises/policy-compiler/opcode-model"
+          "method": "POST",
+          "template": "https://source.keplerops.test/api/policy-compilers/fieldkest-policyc/nonces"
         },
         {
           "key": "source.connector-run",

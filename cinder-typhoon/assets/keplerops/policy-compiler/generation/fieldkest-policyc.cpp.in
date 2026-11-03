@@ -9,6 +9,20 @@
 #include <string>
 #include <vector>
 
+// Retained, unstripped handler symbols are part of the migration artifact.
+// Release engineers use them to recover the bytecode vocabulary without a
+// separately published opcode answer.
+extern "C" {
+__attribute__((used, noinline)) void fieldkest_opcode_00_PUSH_FIELD() {}
+__attribute__((used, noinline)) void fieldkest_opcode_01_PUSH_CONST() {}
+__attribute__((used, noinline)) void fieldkest_opcode_02_EQ() {}
+__attribute__((used, noinline)) void fieldkest_opcode_03_SEMVER_GTE() {}
+__attribute__((used, noinline)) void fieldkest_opcode_04_IN_SET() {}
+__attribute__((used, noinline)) void fieldkest_opcode_05_AND() {}
+__attribute__((used, noinline)) void fieldkest_opcode_06_OR() {}
+__attribute__((used, noinline)) void fieldkest_opcode_07_RETURN() {}
+}
+
 namespace {
 
 enum Opcode : std::uint8_t {
