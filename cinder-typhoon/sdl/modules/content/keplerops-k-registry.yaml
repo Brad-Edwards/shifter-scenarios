@@ -1012,19 +1012,18 @@ content:
         authority.
       mechanic_profile:
         classification: service-native
-        surface: connector.arwc.test customer-relay via earned channel_token
+        surface: connector.arwc.test customer relay via approval-issued poll grant
         normal_case: authorized channel agent polls for the selected package version
-        defect: the channel_token earned from the package approval (K29.3) grants poll authority
-          over the ARWC customer channel
-        bounds: only the signed and approved version matching the relay's version pattern
-          is returned
+        defect: the poll grant earned from package approval (K29.3) admits the signed release
+          to the ARWC customer channel
+        bounds: the grant is range-, tenant-, channel-, operation-, version-, and expiry-bound
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
         input: G03 interface contract; G02 channel arwc-stable; A01 or K20 approval authority.
-        success: Compatible changed package 7.4.3-cinder.<operator> and publication/approval
-          audit.
+        success: Compatible changed package 7.4.3-cinder.<operator>, publication/approval
+          audit, and range/tenant/channel/version/expiry-bound operation grants.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -1036,8 +1035,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Compatible changed package 7.4.3-cinder.<operator> and publication/approval
-        audit.
+      transition_contract: Compatible changed package 7.4.3-cinder.<operator>, publication/approval
+        audit, and range/tenant/channel/version/expiry-bound operation grants.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -1059,7 +1058,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: a53fcf04de1ca401becd7adcf5fa3e1e1d43702b1ac0572ed2ab2e824b385a7e
+        digest: 84923fcf71161c15f6827eb674fc6342fd54a0ecd78de5d5d04f438113862812
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

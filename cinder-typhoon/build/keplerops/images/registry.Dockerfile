@@ -11,6 +11,7 @@ RUN apt-get update \
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest-registry/http_support.py
 COPY build/keplerops/runtime/credentials.py /opt/fieldkest-registry/credentials.py
+COPY build/keplerops/runtime/channel_credentials.py /opt/fieldkest-registry/channel_credentials.py
 COPY build/keplerops/runtime/client-references/registry.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/registry.py /opt/fieldkest-registry/registry.py
 COPY build/keplerops/runtime/registry-entrypoint.sh /usr/local/bin/fieldkest-registry-entrypoint

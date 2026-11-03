@@ -15,6 +15,7 @@ import subprocess
 import sys
 import tarfile
 import threading
+import tempfile
 import unicodedata
 from urllib.parse import unquote, urlsplit
 import uuid
@@ -30,6 +31,7 @@ from http_support import (
     validate_worker_token,
 )
 from credentials import credential
+from channel_credentials import issue as issue_channel_credentials
 
 
 STATE = Path("/var/lib/fieldkest-registry")
@@ -45,6 +47,7 @@ PUBLISHER_TOKEN = credential("registry_publisher_token")
 BUILD_READER_TOKEN = credential("ci_registry_reader")
 RELEASE_ADMIN_TOKEN = credential("registry_release_admin_token")
 LOCK = threading.RLock()
+RANGE_SECRET = credential("connector_package_internal")
 WORKER_SECRET = Path("/tmp/worker-hmac.key").read_bytes()
 PACKAGE_PATHS = {
     "@keplerops/fieldlink-connector": "fieldlink-connector",
@@ -127,6 +130,24 @@ def derive_key(context: dict[str, object], info: bytes) -> bytes:
     if len(ikm) != 32 or salt.hex() != "6669656c646b6573742d656e7469746c656d656e742d7631":
         raise ValueError("invalid_context")
     return HKDF(algorithm=hashes.SHA256(), length=32, salt=salt, info=info).derive(ikm)
+
+
+def write_channel_credentials(value: dict[str, object]) -> None:
+    CHANNEL_CREDENTIAL.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary = tempfile.mkstemp(
+        dir=CHANNEL_CREDENTIAL.parent, prefix=".channel-credential."
+    )
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            json.dump(value, handle, sort_keys=True, separators=(",", ":"))
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.chmod(temporary, 0o644)
+        os.replace(temporary, CHANNEL_CREDENTIAL)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
 
 
 class RegistryHandler(KeplerHandler):
@@ -268,12 +289,11 @@ class RegistryHandler(KeplerHandler):
         record["approval"] = approval
         response = dict(approval)
         if signed:
-            channel_token = uuid.uuid4().hex
-            credential = {"token": channel_token, "channel": record.get("channel", "arwc-stable"), "approved_version": version, "issued_at": utc_now()}
-            CHANNEL_CREDENTIAL.parent.mkdir(parents=True, exist_ok=True)
-            record["approval"]["channel_token"] = channel_token
-            CHANNEL_CREDENTIAL.write_text(json.dumps(credential, sort_keys=True, separators=(",", ":")) + "\n")
-            response["channel_token"] = channel_token
+            credentials = issue_channel_credentials(version, RANGE_SECRET)
+            write_channel_credentials(credentials)
+            response["channel_credentials"] = credentials
+            approval["channel_credential_id"] = credentials["credential_id"]
+            approval["channel_credential_expires_at_epoch"] = credentials["expires_at_epoch"]
         record_path.write_text(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "release-approvals", {"request_id": self.request_id, **approval, "status": 201})
         self.send_json(201, response)

@@ -424,13 +424,6 @@ def new_unresolved_ledger() -> dict[str, Any]:
                     "reason": "The accepted subject prefix is author-only",
                     "issue": 216,
                 })
-            if phase == "keplerops" and method == "test_k29b_connector_delivery":
-                unresolved.append({
-                    "input": "customer-channel bearer",
-                    "fingerprint": "399e846d148764b5f6b2becc2957365363cb8033ea9521114019f435dbd0d13c",
-                    "reason": "The relay bearer is a fixed image-wide literal",
-                    "issue": 217,
-                })
             if phase == "arwc" and method == "test_w33_forecast_scheduling":
                 unresolved.extend([
                     {

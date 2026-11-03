@@ -1621,10 +1621,10 @@
               "package, interface, channel and rollback metadata",
               "release dossier",
               "signing material",
-              "approval token"
+              "approval-issued channel credentials"
             ],
             "source": "accepted packages.metadata, cloud.build-record, ci.run-artifact, packages.publish, packages.approval, and K19 managed-administration responses",
-            "locator": "metadata supplies pending_release, package name, interface, channel history, rollback candidate and slot; build artifact supplies release dossier and signer history; K19 supplies publisher/release credentials; approval response supplies channel_token"
+            "locator": "metadata supplies pending_release, package name, interface, channel history, rollback candidate and slot; build artifact supplies release dossier and signer history; K19 supplies publisher/release credentials; approval response supplies the operation-scoped channel credentials"
           }
         ],
         "inventory_sha256": "1cb1a66a54ef01bc89aaf95d7379320db49c434d87bbb27ea39202720fb1679f",
@@ -1674,14 +1674,14 @@
               "tenant",
               "signed version",
               "delivery channel",
-              "channel token",
+              "operation-scoped channel grants",
               "rollback version and slot"
             ],
             "source": "accepted K15 export and K29 packages.metadata/packages.approval responses",
-            "locator": "export response supplies tenant; signed publication supplies version and channel; approval supplies channel_token; package channel history supplies rollback candidate and rollback_slot; the test fails before polling if any field is absent"
+            "locator": "export response supplies tenant; signed publication supplies version and channel; approval supplies poll, activation, receipt and rollback grants; package channel history supplies rollback candidate and rollback_slot; the test fails before polling if any field is absent"
           }
         ],
-        "inventory_sha256": "ff32989348b4a32d9a7ae1ab4d9b7124a76b761f1e8673637b33bb8937ef1205",
+        "inventory_sha256": "9d1630a2f922ef692e947b30ac49d9c57aae1d4586b78914bc8a1a59dbb517da",
         "profile": "keplerops",
         "request_count": 3,
         "review_status": "complete",
@@ -2381,6 +2381,22 @@
       "review_status": "complete",
       "unresolved": []
     },
+    "build/keplerops/runtime/channel_credentials.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "customer-channel credential schema, bindings, operations, and lifetime"
+          ],
+          "locator": "keplerops-customer-channel-credentials.json defines the exact range, tenant, channel, operation, version, and expiry contract enforced by the runtime",
+          "source": "docs/design/keplerops-customer-channel-credentials.json"
+        }
+      ],
+      "comparison_count": 2,
+      "inventory_sha256": "63eec6f9e613938f13a0940031c244363006ff71f14cbfc6f66412f402901556",
+      "review_status": "complete",
+      "unresolved": []
+    },
     "build/keplerops/runtime/ci.py": {
       "citations": [
         {
@@ -2440,8 +2456,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 7,
-      "inventory_sha256": "206a9fed8113cb006b0fe0aed4bcb7caf448fb3f9135c7c97e89c8d9047030a2",
+      "comparison_count": 19,
+      "inventory_sha256": "bf801bf3a465faa7c0339d741c7466965676870f99fc80c4e329cac293974398",
       "review_status": "complete",
       "unresolved": []
     },

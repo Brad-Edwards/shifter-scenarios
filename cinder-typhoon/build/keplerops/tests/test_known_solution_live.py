@@ -1736,9 +1736,11 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 {"version": version, "interfaces": interfaces, "lineage": history["lineage"], "key_id": history["key_id"], "signature_base64": signature},
                 bearer=self.evidence["release_admin_token"], expected=201)
             self.assertTrue(approved["signed"])
-            # The approval returns a scoped channel token for delivery operations.
-            self.assertIn("channel_token", approved)
-            self.evidence["channel_token"] = approved["channel_token"]
+            # The approval returns distinct, scoped channel grants for delivery operations.
+            self.assertEqual(set(approved["channel_credentials"]["grants"]), {
+                "poll", "activate", "receipt", "rollback",
+            })
+            self.evidence["channel_credentials"] = approved["channel_credentials"]
             # Consumed: the dual rehearsal consumers accept the signed package.
             arwc = post_json_route(
                 self.discovered_route("ci.connector-rehearsal"),
@@ -1762,31 +1764,31 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         if not CROSS_SEGMENT:
             self.skipTest("connector delivery requires the paired ARWC carrier")
         required = {
-            "signed_version", "channel_token", "export_tenant", "delivery_channel",
+            "signed_version", "channel_credentials", "export_tenant", "delivery_channel",
             "rollback_version", "rollback_slot",
         }
         missing = sorted(required.difference(self.evidence))
         self.assertEqual(
             missing, [],
-            "K26 requires the signed release, approval-issued channel token, customer "
+            "K26 requires the signed release, approval-issued channel grants, customer "
             "tenant, and package channel history from the accepted K29 sequence",
         )
         version = self.evidence["signed_version"]
-        channel_token = self.evidence["channel_token"]
+        channel_grants = self.evidence["channel_credentials"]["grants"]
         tenant = self.evidence["export_tenant"]
         channel = self.evidence["delivery_channel"]
         with self.subTest(card="K26.1 ready for their channel"):
             polled = post_json_route(
                 self.discovered_route("connector.poll"),
                 {"tenant": tenant, "channel": channel, "version": version},
-                bearer=channel_token)
+                bearer=channel_grants["poll"]["token"])
             self.assertEqual(polled["version"], version)
 
         with self.subTest(card="K26.2 customer accepted"):
             activated = post_json_route(
                 self.discovered_route("connector.activate").replace("{version}", version),
                 {"tenant": tenant, "channel": channel},
-                bearer=channel_token, expected=201)
+                bearer=channel_grants["activate"]["token"], expected=201)
             self.assertEqual(activated["runtime_identity"], "svc-arwc-fieldlink")
 
         with self.subTest(card="K26.3 the release they can roll back to"):
@@ -1794,7 +1796,7 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             rollback = post_json_route(
                 self.discovered_route("connector.rollback"),
                 {"tenant": tenant, "version": rollback_version, "slot": self.evidence["rollback_slot"]},
-                bearer=channel_token, expected=201)
+                bearer=channel_grants["rollback"]["token"], expected=201)
             self.assertEqual(rollback["selected_version"], rollback_version)
 
 

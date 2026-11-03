@@ -11,6 +11,8 @@ COPY --chown=fieldkest-relay:fieldkest-relay --chmod=0550 \
   build/keplerops/runtime/customer_relay.py /opt/fieldkest/customer_relay.py
 COPY --chown=fieldkest-relay:fieldkest-relay --chmod=0444 \
   build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
+COPY --chown=fieldkest-relay:fieldkest-relay --chmod=0444 \
+  build/keplerops/runtime/channel_credentials.py /opt/fieldkest/channel_credentials.py
 COPY --chmod=0550 build/keplerops/runtime/customer-relay-entrypoint.sh /usr/local/sbin/customer-relay-entrypoint
 
 EXPOSE 443
