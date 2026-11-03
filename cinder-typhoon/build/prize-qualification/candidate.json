@@ -1,0 +1,85 @@
+{
+  "automation": [
+    {
+      "path": "challenges/challenges.yaml",
+      "sha256": "7d3c1a77a51184ee90f2b343de5d575cb2a25d361dc02899aff1fade6bbc7f9c"
+    },
+    {
+      "path": "challenges/catalog.py",
+      "sha256": "d2b3d2b4cc2b183e537cf19f45b452794ede09163ffadd485304c163d41fcb91"
+    },
+    {
+      "path": "ctfd/import_catalog.py",
+      "sha256": "de775857dce8a37f2c1e8eb54055a524b668c573c5cb377627bc71309019253f"
+    },
+    {
+      "path": "ctfd/prize_policy.py",
+      "sha256": "a268d6c68f3967f14ddd088db931ccd9c17104aa73dd6666fb0febd559daf247"
+    },
+    {
+      "path": "ctfd/prize_inputs.py",
+      "sha256": "0459bfda6721213db6c254c2d66ac84b5122bc6557b625a453d1e2f7eef017ca"
+    },
+    {
+      "path": "ctfd/prize_evaluator.py",
+      "sha256": "d40e441865a019624dfb87ca4f755c9d957b8723f0f3e36cbe98fe80cf3c9d30"
+    },
+    {
+      "path": "ctfd/prize_nominations.py",
+      "sha256": "5849ab21390c769d304f4db58b45003e060d4e7bb6c68d08a87acab43619e61a"
+    },
+    {
+      "path": "ctfd/prize_claims.py",
+      "sha256": "06dd3ef00052b5d292a7c23bcbcc547ffe163aad371ed1f7d666a71c7704dfb7"
+    },
+    {
+      "path": "ctfd/prize_ui.py",
+      "sha256": "14049e894581e4a5cb29db96b00954537c4673bc2a8f33b526e168dcb10c33ac"
+    },
+    {
+      "path": "docs/design/event-prize-input.schema.json",
+      "sha256": "80551e756d66dcf377ae0fe01fb5e16e7f577fc5535cd55c263394e2c3913172"
+    },
+    {
+      "path": "docs/design/event-prize-policy.schema.json",
+      "sha256": "7bf51df622814339c24197a4bdd94b78083bc4ca1501aca44ce6e340354e9bbb"
+    },
+    {
+      "path": "build/participant-surface/manifests/training.json",
+      "sha256": "d6895c9bb9baf042393858a639c465ac770a073168caf17860d602226c5129d8"
+    },
+    {
+      "path": "build/participant-surface/manifests/keplerops.json",
+      "sha256": "555c2ecd4d4109a194d350a4239e0742f9048cd4ed85ea1c208ee17b5e132e17"
+    },
+    {
+      "path": "build/participant-surface/manifests/arwc.json",
+      "sha256": "fa41926233cb1ef3e21cfdc408da63a8e81000ca8a5053f8a6b258ce0da1c193"
+    },
+    {
+      "path": "tests/test_prize_evaluator.py",
+      "sha256": "14b0f60695f9933f1e143ae5d217528b855517f6d34a8367f46b7c37a1e71903"
+    },
+    {
+      "path": "build/prize-qualification/qualify.py",
+      "sha256": "bbc8eebf19a3c0673a666e886b997420fc797e51d0b2c79ab1643328894a29b1"
+    }
+  ],
+  "candidate_id": "cinder-prize-staging-v1",
+  "catalog": {
+    "content_bundle_digest": "sha256:27b5fa30b9106e3f41df228567308772968d7b32fe39ef401296cb9df4eedd89",
+    "policy_digest": "sha256:cd0faa12e2c9b8d2dec89ae5be912d54aa88206d1ff980202af6db341e8df894",
+    "revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7"
+  },
+  "contract": "cinder-typhoon.prize-qualification-candidate/v1",
+  "lifecycle": {
+    "final_claim_count": 25,
+    "initial_claim_count": 25,
+    "numbered_inventory": [
+      1,
+      50
+    ],
+    "slot_count": 50
+  },
+  "participant_history_count": 320
+}

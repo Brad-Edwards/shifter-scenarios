@@ -379,6 +379,57 @@ original claim and old pack history remain visible. Operator dashboards and
 credential-free summaries use public aliases, while private UUIDs, token
 digests, staff IDs, and audit details stay on authorized surfaces.
 
+## Qualification candidate and rendered surfaces
+
+Issue #289 adds a framework-neutral renderer in `ctfd/prize_ui.py` and an
+operator-only rehearsal in `build/prize-qualification/qualify.py`. The renderer
+does not introduce identity, persistence, routing, or hosting. The approved
+participant and event-staff integrations construct the authenticated contexts;
+the renderer calls the existing `PrizeClaimService` methods and escapes every
+value before producing participant or staff HTML. Claim submission remains one
+atomic service call. HTTP session, capability, origin, and cross-site request
+forgery enforcement remain at the approved integration boundary.
+
+The staging rehearsal builds the real catalog projection and policy, then
+passes an organizer-authorized fixture of at least 300 participant histories
+through `prize_inputs.py`, `prize_evaluator.py`, `prize_claims.py`, and the
+rendered surfaces. It deliberately includes equal timestamps and scores, late
+submissions, missing stage completions, insufficient nominations, delayed
+scheduled occurrences, provider failure, concurrent retries, duplicate claims,
+claim expiry, final rollover, restart, and fresh-state rebuild. Twenty-five
+initial winners claim packs; the other twenty-five expire; finalization selects
+twenty-five prior-non-winners, who claim the remaining numbered packs. This
+keeps the top-ten guarantee active while exercising every initial allocation
+family and the final fallback.
+
+```mermaid
+flowchart LR
+  Histories[320 authoritative participant histories] --> Projection[Prize input projection]
+  Sidecar[Digest-bound operator sidecar] --> Projection
+  Projection --> Evaluator[Transactional evaluator]
+  Evaluator --> Claim[Notification and claim service]
+  Claim --> ParticipantUI[Authenticated participant HTML]
+  Claim --> StaffUI[Authorized 50-slot staff HTML]
+  Claim --> Summary[Credential-free aggregate summary]
+  Candidate[Pinned automation-file digests] --> Summary
+  ParticipantUI -. no private policy or peer data .-> Summary
+  StaffUI -. aggregate assertions only .-> Summary
+```
+
+The committed qualification candidate pins the participant-content revision,
+content-bundle digest, policy digest, and SHA-256 of every automation and schema
+file used by the rehearsal. The credential-free summary contains counts,
+pass/fail assertions, and digests only. It contains no UUID, alias, claim code,
+token digest, delivery recipient, seed, nomination, staff identity, or database
+row. A changed source file, policy/content mismatch, missing authoritative
+occurrence, surviving mutation, short inventory, duplicate participant or pack,
+or participant-visible private marker fails qualification.
+
+The day-of runbook is limited to checking the pinned candidate, monitoring the
+50-slot dashboard and notification failures, scanning a claim code, handing
+over the displayed numbered pack, and using the documented reasoned recovery
+actions. It contains no export, formula, winner selection, or manual draw.
+
 ## Threat model
 
 | Threat | Control and failure behavior |
