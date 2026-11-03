@@ -324,7 +324,9 @@ def verify_assertion_replay(current: dict[str, str], foreign_path: Path) -> None
 
 def verify_channel_replay(foreign_path: Path) -> None:
     foreign = json.loads(foreign_path.read_text())
-    foreign_token = foreign.get("token") if isinstance(foreign, dict) else None
+    foreign_grants = foreign.get("grants") if isinstance(foreign, dict) else None
+    foreign_poll = foreign_grants.get("poll") if isinstance(foreign_grants, dict) else None
+    foreign_token = foreign_poll.get("token") if isinstance(foreign_poll, dict) else None
     version = foreign.get("approved_version") if isinstance(foreign, dict) else None
     if not isinstance(foreign_token, str) or not isinstance(version, str):
         raise ValueError("foreign channel credential is invalid")
@@ -336,8 +338,11 @@ def verify_channel_replay(foreign_path: Path) -> None:
         capture_output=True, text=True, check=True,
     ).stdout
     current = json.loads(current_raw)
-    if current.get("token") == foreign_token:
+    current_token = current["grants"]["poll"]["token"]
+    if current_token == foreign_token:
         raise AssertionError("channel token did not vary across ranges")
+    if current.get("range_binding") == foreign.get("range_binding"):
+        raise AssertionError("channel credential range binding did not vary across ranges")
     body = {"tenant": "TEN-ARWC-047", "channel": "arwc-stable", "version": version}
     foreign_status = status(
         "connector.arwc.test", "/api/fieldlink/packages/poll",
@@ -347,7 +352,7 @@ def verify_channel_replay(foreign_path: Path) -> None:
         raise AssertionError(f"foreign channel token returned HTTP {foreign_status}")
     local_status = status(
         "connector.arwc.test", "/api/fieldlink/packages/poll",
-        token=current["token"], method="POST", body=body,
+        token=current_token, method="POST", body=body,
     )
     if local_status != 200:
         raise AssertionError(f"target channel token returned HTTP {local_status}")

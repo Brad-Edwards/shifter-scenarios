@@ -247,8 +247,8 @@ assertion mint; the protected customer record read.
 ### K26–K29: Release channel authority and connector delivery
 
 **Attacker actions:**
-- Earns a scoped channel token through the package approval flow
-- Polls, activates, and rehearses rollback on the customer connector channel
+- Earns separate, short-lived channel grants through the package approval flow
+- Uses the poll, activation, receipt, and rollback grants only for their bound customer connector actions
 - Compiles and signs a connector package using keys from the signer history
 - Delivers a diagnostic package to the customer's ARWC runtime
 
@@ -261,11 +261,11 @@ approval documentation.
 
 **Defender lesson:** A signed package that passes the approval flow but is not
 the package the approver reviewed is a supply chain integrity failure. Approval
-should bind to a package digest, not just a version string. A channel token
-that grants broad delivery authority should be scoped to the specific delivery
-operation, tenant, and version.
+should bind to a package digest, not just a version string. Customer-channel
+authority is therefore separated by operation and bound to the range, tenant,
+channel, version, and expiry window.
 
-**Evidenced by:** The approval receipt; the channel token; the activation receipt;
+**Evidenced by:** The approval receipt; the scoped channel grants; the activation receipt;
 the diagnostic delivery receipt.
 
 ---

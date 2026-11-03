@@ -17,12 +17,14 @@ from urllib.parse import urlsplit
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from credentials import credential
+from channel_credentials import CHANNEL, TENANT, authorize
 
 
 UPSTREAM = os.environ.get("FIELDKEST_CUSTOMER_UPSTREAM", "https://connector.arwc.test")
-INTERNAL_PACKAGE_TOKEN = credential("connector_package_internal")
+RANGE_SECRET = credential("connector_package_internal")
 DIAGNOSTIC_TOKEN = credential("support_delivery_token")
-PACKAGE = re.compile(r"/api/fieldlink/packages(?:/poll|/[^/]+/(?:activate|receipt))$")
+ACTIVATE = re.compile(r"/api/fieldlink/packages/([^/]+)/activate$")
+RECEIPT = re.compile(r"/api/fieldlink/packages/([^/]+)/receipt$")
 DIAGNOSTIC = re.compile(r"/api/fieldlink/diagnostics(?:/[^/]+/receipt)?$")
 ROLLBACK = "/api/fieldlink/rehearsals/rollback"
 PUBLISHED = Path("/var/lib/fieldkest-registry/published")
@@ -30,20 +32,34 @@ CHANNEL_CREDENTIAL = PUBLISHED / "delivery/channel-credential.json"
 VERSION = re.compile(r"7\.4\.3-cinder\.[a-z0-9][a-z0-9-]{0,23}")
 
 
-def _channel_token() -> str | None:
+def _channel_credentials() -> object:
     try:
-        cred = json.loads(CHANNEL_CREDENTIAL.read_text())
-        return cred.get("token") if isinstance(cred, dict) else None
+        return json.loads(CHANNEL_CREDENTIAL.read_text())
     except (OSError, json.JSONDecodeError):
         return None
 
 
-def identity(path: str) -> tuple[str, str, str] | None:
-    if PACKAGE.fullmatch(path) or path == ROLLBACK:
-        return INTERNAL_PACKAGE_TOKEN, "/tmp/customer-auth/package.crt", "/tmp/customer-auth/package.key"
-    if DIAGNOSTIC.fullmatch(path):
-        return DIAGNOSTIC_TOKEN, "/tmp/customer-auth/diagnostic.crt", "/tmp/customer-auth/diagnostic.key"
+def identity(method: str, path: str) -> tuple[str, str, str] | None:
+    if method == "POST" and path == "/api/fieldlink/packages/poll":
+        return "poll", "/tmp/customer-auth/package.crt", "/tmp/customer-auth/package.key"
+    if method == "POST" and ACTIVATE.fullmatch(path):
+        return "activate", "/tmp/customer-auth/package.crt", "/tmp/customer-auth/package.key"
+    if method == "GET" and RECEIPT.fullmatch(path):
+        return "receipt", "/tmp/customer-auth/package.crt", "/tmp/customer-auth/package.key"
+    if method == "POST" and path == ROLLBACK:
+        return "rollback", "/tmp/customer-auth/package.crt", "/tmp/customer-auth/package.key"
+    if method == "POST" and path == "/api/fieldlink/diagnostics":
+        return "diagnostic", "/tmp/customer-auth/diagnostic.crt", "/tmp/customer-auth/diagnostic.key"
+    if method == "GET" and DIAGNOSTIC.fullmatch(path):
+        return "diagnostic", "/tmp/customer-auth/diagnostic.crt", "/tmp/customer-auth/diagnostic.key"
     return None
+
+
+def bearer_token(header: str) -> str:
+    scheme, separator, token = header.partition(" ")
+    if scheme != "Bearer" or not separator or not token or " " in token:
+        return ""
+    return token
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -65,33 +81,48 @@ class Handler(BaseHTTPRequestHandler):
 
     def relay(self) -> None:
         path = urlsplit(self.path).path
-        selected = identity(path)
+        selected = identity(self.command, path)
         if selected is None:
             return self.send_payload(404, b'{"error":"route_not_found"}\n', "application/json")
-        internal_token, certificate, key_path = selected
-        presented = self.headers.get("Authorization", "")
-        if internal_token == INTERNAL_PACKAGE_TOKEN:
-            channel_token = _channel_token()
-            if channel_token is None or presented != f"Bearer {channel_token}":
-                return self.send_payload(403, b'{"error":"channel_identity_denied"}\n', "application/json")
-        elif presented != f"Bearer {internal_token}":
-            return self.send_payload(403, b'{"error":"channel_identity_denied"}\n', "application/json")
+        grant_name, certificate, key_path = selected
         raw = b""
+        parsed: dict[str, object] = {}
         if self.command == "POST":
             length = self.headers.get("Content-Length", "")
             if not length.isdigit() or int(length) > 1_500_000:
                 return self.send_payload(422, b'{"error":"invalid_request"}\n', "application/json")
             raw = self.rfile.read(int(length))
             try:
-                if not isinstance(json.loads(raw), dict):
+                parsed = json.loads(raw)
+                if not isinstance(parsed, dict):
                     raise ValueError
             except (ValueError, json.JSONDecodeError):
                 return self.send_payload(422, b'{"error":"invalid_request"}\n', "application/json")
+        presented = bearer_token(self.headers.get("Authorization", ""))
+        if grant_name == "diagnostic":
+            if presented != DIAGNOSTIC_TOKEN:
+                return self.send_payload(403, b'{"error":"channel_identity_denied"}\n', "application/json")
+        else:
+            if grant_name == "poll":
+                tenant, channel, version = parsed.get("tenant"), parsed.get("channel"), parsed.get("version")
+            elif grant_name == "activate":
+                match = ACTIVATE.fullmatch(path)
+                tenant, channel, version = parsed.get("tenant"), parsed.get("channel"), match.group(1) if match else ""
+            elif grant_name == "receipt":
+                match = RECEIPT.fullmatch(path)
+                tenant, channel, version = TENANT, CHANNEL, match.group(1) if match else ""
+            else:
+                tenant, channel, version = parsed.get("tenant"), CHANNEL, parsed.get("version")
+            if not authorize(
+                _channel_credentials(), presented, grant_name,
+                tenant=tenant, channel=channel, version=version, range_secret=RANGE_SECRET,
+            ):
+                return self.send_payload(403, b'{"error":"channel_identity_denied"}\n', "application/json")
         if path == "/api/fieldlink/packages/poll":
-            requested = json.loads(raw)
+            requested = parsed
             version = requested.get("version")
-            if (requested.get("tenant") != "TEN-ARWC-047"
-                    or requested.get("channel") != "arwc-stable"
+            if (requested.get("tenant") != TENANT
+                    or requested.get("channel") != CHANNEL
                     or not isinstance(version, str) or not VERSION.fullmatch(version)):
                 return self.send_payload(422, b'{"error":"customer_channel_denied"}\n', "application/json")
             record_path = PUBLISHED / f"{version}.json"

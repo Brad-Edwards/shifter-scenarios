@@ -32,6 +32,10 @@ The [event prize automation contract](event-prize-automation.md) records the
 RAE/Shifter boundary, exact 50-slot selection order, data flow, state machine,
 threat model, and machine-readable operator-policy contract for the event.
 
+The [KeplerOps customer-channel credential contract](keplerops-customer-channel-credentials.md)
+defines the earned, per-range, operation-scoped authority used for K26 package
+poll, activation, receipt, and rollback delivery.
+
 The [ARWC native-semantic ledger](arwc-native-semantics.md),
 [bounded process model](arwc-process-model.md), and
 [service/artifact ownership ledger](arwc-artifact-ownership.md) record the legal

@@ -513,27 +513,27 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
         "defect": "the integration names both the current and an obsolete tenant binding, enabling cross-tenant reconciliation",
         "bounds": "only the integration record for the session's active customer is accessible",
     },
-    # K26 — customer channel delivery (earned bearer)
+    # K26 — customer channel delivery (earned operation-scoped grants)
     "K26.1": {
         "classification": "service-native",
-        "surface": "connector.arwc.test customer-relay via earned channel_token",
+        "surface": "connector.arwc.test customer relay via approval-issued poll grant",
         "normal_case": "authorized channel agent polls for the selected package version",
-        "defect": "the channel_token earned from the package approval (K29.3) grants poll authority over the ARWC customer channel",
-        "bounds": "only the signed and approved version matching the relay's version pattern is returned",
+        "defect": "the poll grant earned from package approval (K29.3) admits the signed release to the ARWC customer channel",
+        "bounds": "the grant is range-, tenant-, channel-, operation-, version-, and expiry-bound",
     },
     "K26.2": {
         "classification": "service-native",
         "surface": "connector.arwc.test customer-relay activate endpoint",
         "normal_case": "authorized channel agent activates the selected package version for the ARWC customer",
-        "defect": "the channel_token allows activating a new connector version without explicit ARWC administrator approval",
-        "bounds": "activation is scoped to the one approved version and tenant; any other combination is denied",
+        "defect": "the separate activation grant allows activating the approved connector version without explicit ARWC administrator approval",
+        "bounds": "activation is scoped to the one approved version, tenant, channel, range, and expiry window",
     },
     "K26.3": {
         "classification": "service-native",
         "surface": "connector.arwc.test customer-relay rollback-rehearsal endpoint",
         "normal_case": "authorized channel agent rehearses a rollback to an older version",
-        "defect": "the channel_token allows scheduling a rollback to version 7.4.2 using a retained fallback slot",
-        "bounds": "only the declared rollback version is accepted; arbitrary version selection is denied",
+        "defect": "the separate rollback grant allows rehearsing version 7.4.2 through the retained fallback slot",
+        "bounds": "only the declared rollback version is accepted; the poll, activation, and receipt grants are denied",
     },
     # K27 — diagnostic delivery
     "K27.1": {
