@@ -8,6 +8,9 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
+
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNNER_PATH = ROOT / "build" / "participant-runner" / "run.py"
@@ -57,6 +60,71 @@ class OperationTests(unittest.TestCase):
 
 
 class BoundaryTests(unittest.TestCase):
+    AUTHENTICATION_KEY = "/run/arwc-handover/authentication.key"
+    APPROVED_ARWC_MOUNTS = frozenset({
+        "/var/lib/fieldlink-connector",
+        "/var/lib/arwc-connector",
+        "/run/arwc-tls/server.crt",
+        "/run/arwc-tls/server.key",
+        "/run/arwc-tls/ca.crt",
+        "/run/arwc-peer/keplerops-ca.crt",
+        AUTHENTICATION_KEY,
+    })
+
+    def arwc_compose_mounts(self) -> frozenset[str]:
+        compose = yaml.safe_load((ROOT / "build/arwc/compose.yaml").read_text())
+        volumes = compose["services"]["a-connector"]["volumes"]
+        destinations = set()
+        for volume in volumes:
+            self.assertIsInstance(volume, str)
+            parts = volume.rsplit(":", 2)
+            destination = parts[-2] if parts[-1] in {"ro", "rw"} else parts[-1]
+            self.assertTrue(destination.startswith("/"))
+            destinations.add(destination)
+        return frozenset(destinations)
+
+    def assert_arwc_mount_contract(
+        self, runner_mounts: frozenset[str], compose_mounts: frozenset[str],
+    ) -> None:
+        self.assertEqual(self.APPROVED_ARWC_MOUNTS, runner_mounts)
+        self.assertEqual(self.APPROVED_ARWC_MOUNTS, compose_mounts)
+
+    def arwc_inspect_responses(
+        self, *, extra_mount: str | None = None,
+    ) -> list[subprocess.CompletedProcess[str]]:
+        mounts = [
+            {
+                "Destination": destination,
+                "Type": "volume" if destination.startswith("/var/lib/") else "bind",
+                "RW": destination.startswith("/var/lib/"),
+                "Source": (
+                    "/operator/private/handover.key"
+                    if destination == self.AUTHENTICATION_KEY
+                    else f"/source{destination}"
+                ),
+                "KeyBytes": "SENSITIVE-AUTHENTICATION-KEY",
+                "KeySHA256": "f" * 64,
+            }
+            for destination in self.APPROVED_ARWC_MOUNTS
+        ]
+        if extra_mount:
+            mounts.append({
+                "Destination": extra_mount, "Type": "bind", "RW": False,
+                "Source": "/operator/private/unapproved",
+            })
+        values = [
+            {
+                "cinder-arwc-corporate": {},
+                "cinder-arwc-maintenance": {},
+            },
+            mounts,
+            "sha256:" + "a" * 64,
+        ]
+        return [
+            subprocess.CompletedProcess([], 0, stdout=json.dumps(value), stderr="")
+            for value in values
+        ]
+
     def test_launcher_adds_no_mount_or_operator_path(self) -> None:
         for phase in runner.PHASES:
             with self.subTest(phase=phase):
@@ -87,6 +155,57 @@ class BoundaryTests(unittest.TestCase):
         self.assertIn("/var/lib/cinder-workbench", runner.PHASES["training"].forbidden_paths)
         self.assertIn("/var/lib/fieldkest-ci", runner.PHASES["keplerops"].forbidden_paths)
         self.assertIn("/var/lib/arwc-connector", runner.PHASES["arwc"].forbidden_paths)
+        self.assertIn(self.AUTHENTICATION_KEY, runner.PHASES["arwc"].forbidden_paths)
+        self.assertIn("/tmp/arwc-handover.key", runner.PHASES["arwc"].forbidden_paths)
+
+    def test_arwc_runner_and_compose_share_the_approved_mount_contract(self) -> None:
+        runner_mounts = runner.PHASES["arwc"].allowed_mounts
+        compose_mounts = self.arwc_compose_mounts()
+        self.assert_arwc_mount_contract(runner_mounts, compose_mounts)
+
+        mutations = (
+            (runner_mounts - {self.AUTHENTICATION_KEY}, compose_mounts),
+            (runner_mounts, compose_mounts - {self.AUTHENTICATION_KEY}),
+            (
+                runner_mounts | {"/run/arwc-unapproved/material"},
+                compose_mounts | {"/run/arwc-unapproved/material"},
+            ),
+        )
+        for mutated_runner, mutated_compose in mutations:
+            with self.subTest(
+                runner_mounts=mutated_runner, compose_mounts=mutated_compose,
+            ):
+                with self.assertRaises(AssertionError):
+                    self.assert_arwc_mount_contract(mutated_runner, mutated_compose)
+
+    def test_arwc_mount_inspection_is_fail_closed_and_sanitized(self) -> None:
+        phase = runner.PHASES["arwc"]
+        with mock.patch.object(
+            runner.subprocess, "run", side_effect=self.arwc_inspect_responses(),
+        ):
+            result = runner.inspect_container(phase)
+
+        serialized = json.dumps(result, sort_keys=True)
+        self.assertNotIn("/operator/private", serialized)
+        self.assertNotIn("SENSITIVE-AUTHENTICATION-KEY", serialized)
+        self.assertNotIn("f" * 64, serialized)
+        authentication_mount = next(
+            mount for mount in result["mounts"]
+            if mount["destination"] == self.AUTHENTICATION_KEY
+        )
+        self.assertEqual(
+            {"destination", "type", "read_write"}, set(authentication_mount),
+        )
+        self.assertFalse(authentication_mount["read_write"])
+
+        with mock.patch.object(
+            runner.subprocess, "run",
+            side_effect=self.arwc_inspect_responses(
+                extra_mount="/run/arwc-unapproved/material",
+            ),
+        ):
+            with self.assertRaisesRegex(runner.RunnerError, "participant mount destinations"):
+                runner.inspect_container(phase)
 
     def test_paired_development_launcher_builds_before_reset(self) -> None:
         launcher = (

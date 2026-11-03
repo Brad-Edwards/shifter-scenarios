@@ -18,6 +18,13 @@ operator environment names, visible operator paths, readable private runtime
 or service state, and Docker control. Its subprocess guard also rejects Docker,
 Podman, `sudo`, namespace entry and container runtime commands.
 
+The ARWC mount contract includes the read-only handover authentication-key
+destination because the connector service needs it during startup. Presence is
+not participant access: the preflight requires both the bind-mounted key and
+its private runtime copy to be unreadable by `fieldlink`. Reported mount
+evidence contains only destination, type and read/write state; host source
+paths, key bytes and key digests are never recorded.
+
 The JSON report contains:
 
 - immutable candidate identity and exact challenge-catalog digest, or an
