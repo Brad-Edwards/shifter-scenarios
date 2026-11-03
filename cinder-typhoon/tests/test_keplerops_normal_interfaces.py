@@ -8,6 +8,8 @@ import re
 import unittest
 from urllib.parse import urlsplit
 
+import yaml
+
 
 ROOT = Path(__file__).resolve().parents[1]
 KNOWN_SOLUTION = ROOT / "build" / "keplerops" / "tests" / "test_known_solution_live.py"
@@ -20,6 +22,8 @@ OWNERSHIP = ROOT / "docs" / "design" / "keplerops-artifact-ownership.md"
 CATALOG_PATH = ROOT / "challenges" / "catalog.py"
 COVERAGE_PATH = ROOT / "build" / "card-coverage" / "coverage.py"
 CHALLENGE_VALIDATOR = ROOT / "docs" / "design" / "validate_challenges.py"
+COMPOSE = ROOT / "build" / "keplerops" / "compose.yaml"
+ROUTER = ROOT / "build" / "keplerops" / "runtime" / "router.sh"
 
 
 def literal_assignments(path: Path) -> dict[str, object]:
@@ -114,6 +118,19 @@ class KeplerOpsNormalInterfaceTests(unittest.TestCase):
         registry = REGISTRY.read_text(encoding="utf-8")
         self.assertIn('"approval_request"', registry)
         self.assertIn('"rehearsal_input"', registry)
+
+    def test_support_can_resolve_only_the_allowlisted_identity_introspection_peer(self) -> None:
+        compose = yaml.safe_load(COMPOSE.read_text(encoding="utf-8"))
+        self.assertIn(
+            "identity.keplerops.test:10.77.50.40",
+            compose["services"]["k-support"]["extra_hosts"],
+        )
+        router = ROUTER.read_text(encoding="utf-8")
+        self.assertIn(
+            "iptables -A FORWARD -s 10.77.51.60 -d 10.77.50.40 "
+            "-p tcp --dport 443 -j ACCEPT",
+            router,
+        )
 
     def test_participant_boundary_requests_do_not_reintroduce_author_values(self) -> None:
         forbidden = {
