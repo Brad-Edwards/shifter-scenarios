@@ -713,7 +713,7 @@ hints:
     - kind: client_route
       id: support.dossier
     - kind: client_route
-      id: support.fixture-assertion
+      id: support.federation-metadata
     - kind: client_route
       id: support.session
   K19.1:

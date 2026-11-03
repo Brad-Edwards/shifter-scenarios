@@ -11,10 +11,10 @@
       "phase_card_count": 104,
       "phase_operation_count": 31,
       "phase_score_total": 16750,
-      "revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+      "revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
       "schema": "cinder-typhoon.challenge-delivery/v2",
       "score_total": 39200,
-      "sha256": "7d3c1a77a51184ee90f2b343de5d575cb2a25d361dc02899aff1fade6bbc7f9c"
+      "sha256": "c0a5246d18e35522389d1592cb639233c7644085f727c11a8fd5c486c17a0413"
     },
     "hints": {
       "items": [
@@ -960,9 +960,9 @@
         "hint_count": 720,
         "operation_count": 70,
         "path": "build/hint-delivery/manifest.json",
-        "revision": "907dab15d49a4658ad2624d622ff304c3c5f6ab2f2c3a8217558249975f67d61",
+        "revision": "b6ee168d80db4797575d20be0e4830a38e878ca8ff6ff57b353ce659acf5459d",
         "schema": "cinder-typhoon.hint-delivery/v1",
-        "sha256": "d91f4734a8b10aa3ce3155d62e2175463f6429379f38b3440adb23f4f98c02f3"
+        "sha256": "34176cf6c2653c99cc32c7905ce8bd8e20587e1e9a1b39e9612ff6badaca156a"
       },
       "release": {
         "audit": "append_only_metadata_without_hint_text",
@@ -983,7 +983,7 @@
         "hint_count": 312,
         "path": "build/card-coverage/hints-keplerops.yaml",
         "phase": "keplerops",
-        "sha256": "d11ed96779246988a772898b83f9dbe6b85ee3f5ef70a269c71929c4849aaa5b"
+        "sha256": "88a858b52b1e3498854880bfcbf73c66bf8cc9e9fe08360c634c3d8473f39bf6"
       },
       "status": "versioned"
     }
@@ -1156,7 +1156,7 @@
         "support.diagnostics",
         "support.diagnostic-package",
         "support.diagnostic-deliver",
-        "support.fixture-assertion"
+        "support.federation-metadata"
       ],
       "id": "keplerops-client-ref-support",
       "kind": "client-reference",

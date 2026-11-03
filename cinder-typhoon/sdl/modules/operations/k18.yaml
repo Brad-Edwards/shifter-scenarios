@@ -587,7 +587,8 @@ action_contracts:
     behavioral_granularity: aggregate
     procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
       or state described above. The participant must exercise that real condition through the declared service interface
-      and produce this result: Registration revision with fixture issuer and successful ordinary staff-login audit.
+      and produce this result: Registration revision with retained-support issuer metadata and successful ordinary
+      staff-login audit.
       Merely describing the condition, editing a local copy, or presenting a value obtained from another surface
       does not satisfy the contract.'
     realization_profile: backend-declared
@@ -606,8 +607,9 @@ action_contracts:
     - precondition_id: normal-surface
       precondition_class: target
       description: '`k-staff` owns this part of the operation. Its starting state is exact: Preview metadata forwards
-        an allowed method field; encoded traversal plus PATCH can add one fixture provider while preserving existing
-        provider. The owning service uses the listener, route, identity, authorization, storage, and audit contract
+        an allowed method field; encoded traversal plus PATCH can add the retained-support provider while preserving
+        the existing provider. The changed registration identifies its discovery metadata and assertion submission
+        endpoint. The owning service uses the listener, route, identity, authorization, storage, and audit contract
         declared in the corresponding world module. Records that are not explicitly mutable remain immutable. The
         private service-loader contract `content.keplerops-k-staff.k18-3-the-provider-trusts-our-change` freezes
         the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
@@ -664,11 +666,12 @@ action_contracts:
       - features.k-delivery.k-support--customer-records
     - precondition_id: normal-surface
       precondition_class: target
-      description: '`k-support` owns this part of the operation. Its starting state is exact: Locally hosted fixture
-        issuer on k-support issues a signed assertion for the designated test subject; backend role check omits
-        tenant predicate on one query. The owning service uses the listener, route, identity, authorization, storage,
-        and audit contract declared in the corresponding world module. Records that are not explicitly mutable remain
-        immutable. The private service-loader contract `content.keplerops-k-support.k18-4-the-query-behind-the-identity`
+      description: '`k-support` owns this part of the operation. Its starting state is exact: The retained-support
+        federation provider publishes normal discovery metadata and issues a bounded signed assertion for the pairwise
+        reviewer subject and tenant recorded in DOS-ARWC-HIST-01. Identity consumes each assertion once; the backend
+        role check omits the session-tenant predicate on one query. The owning service uses the listener, route, identity,
+        authorization, storage, and audit contract declared in the corresponding world module. Records that are not
+        explicitly mutable remain immutable. The private service-loader contract `content.keplerops-k-support.k18-4-the-query-behind-the-identity`
         freezes the request, denial, state-transition, evidence, and any exploit-critical implementation details.'
       support_refs:
       - features.k-delivery.k-support

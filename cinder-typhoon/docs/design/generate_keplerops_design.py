@@ -815,11 +815,15 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
     "K18.3": {
         "source_path": "/notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT",
         "forwarded_method": "PATCH",
-        "patch": {"add_provider": "OIDC-CINDER-FIXTURE", "preserve_existing": True},
-        "fixture_provider": {"issuer": "https://support.keplerops.test/fixture-issuer", "audience": "fieldkest-support", "subject": "fixture-reviewer-047"},
+        "patch": {"add_provider": "OIDC-FIELDKEST-RETAINED-SUPPORT", "preserve_existing": True},
+        "retained_support_provider": {
+            "issuer": "https://support.keplerops.test/federation/retained-support",
+            "metadata": "https://support.keplerops.test/federation/retained-support/.well-known/openid-configuration",
+            "assertion_submission": "https://identity.keplerops.test/api/federation/login",
+        },
     },
     "K18.4": {
-        "assertion": "RS256 fixture assertion: iss=https://support.keplerops.test/fixture-issuer, aud=fieldkest-support, sub=fixture-reviewer-047, tenant=TEN-ARWC-047",
+        "assertion": "RS256 retained-support assertion: issuer and audience from provider metadata; pairwise subject and tenant from DOS-ARWC-HIST-01; single-use jti and 300-second lifetime",
         "defect": "customer-record query requires the support-reviewer role but omits session-tenant equality",
         "record": "CUSTREC-047-R6",
     },
@@ -1287,6 +1291,14 @@ def migrate_private_routes() -> None:
             "type": "connects_to", "source": "features.k-corporate.k-staff--delegated-client",
             "target": "features.k-corporate.k-identity--delegation",
             "description": "The staff preview and delegation brokers call the declared identity-admin routes as their service principals.",
+        },
+        "support-federation-introspection": {
+            "type": "connects_to", "source": "features.k-delivery.k-support",
+            "target": "features.k-corporate.k-identity--support-federation",
+            "description": (
+                "The support service accepts a federated customer session only after the identity service confirms "
+                "that the exact signed assertion was consumed by the enabled retained-support provider."
+            ),
         },
         "scheduled-output": {
             "type": "connects_to", "source": "features.k-cloud.k-workload--task",

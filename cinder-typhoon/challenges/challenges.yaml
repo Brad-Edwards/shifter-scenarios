@@ -1,5 +1,5 @@
 schema: cinder-typhoon.challenge-delivery/v2
-revision: 00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7
+revision: 1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b
 scoring:
   model: static
   tier_points:

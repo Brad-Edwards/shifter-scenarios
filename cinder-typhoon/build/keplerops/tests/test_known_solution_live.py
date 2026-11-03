@@ -1228,10 +1228,25 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 self.discovered_route("staff.note-preview"), "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"source_path": self.evidence["ssrf_source"], "method": "PATCH"}), bearer=dev_secret)
             self.assertGreater(changed["revision"], self.evidence["registration_revision"])
+            provider = changed["provider_configuration"]
+            self.assertEqual(provider["status"], "enabled")
+            self.assertEqual(
+                provider["metadata_uri"],
+                self.discovered_route("support.federation-metadata"),
+            )
+            metadata = curl_json(provider["metadata_uri"])
+            self.assertEqual(metadata["issuer"], provider["issuer"])
+            self.assertTrue({"sub", "tenant", "roles", "iat", "exp", "jti"}.issubset(metadata["claims_supported"]))
+            self.assertEqual(
+                provider["assertion_submission_endpoint"],
+                self.discovered_route("identity.login"),
+            )
+            self.evidence["support_provider"] = provider
+            self.evidence["support_provider_metadata"] = metadata
 
         with self.subTest(card="K18.4 the query behind the identity"):
-            # The existing staff login still works; a fixture assertion mints a
-            # federated reviewer session that reads the protected customer record.
+            # The existing staff login still works; the retained-support provider
+            # mints a bounded reviewer assertion for the protected customer record.
             curl_json(
                 self.discovered_route("identity.staff-login"), "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"username": self.evidence["dev"][0], "password": dev_secret}), expected=201)
@@ -1240,12 +1255,21 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             tenant = session["customer"]["tenant"]
             dossier_tmpl = self.discovered_route("support.dossier")
             hist = curl_json(dossier_tmpl.replace("{tenant}", tenant).replace("{dossier_id}", session["customer"]["history_dossier"]), cookie=cookie)
-            subject = hist["reviewer_subject"]
+            federation = hist["reviewer_federation"]
+            self.assertEqual((federation["provider"], federation["tenant"]), (self.evidence["support_provider"]["provider"], tenant))
+            subject = federation["subject"]
+            subject_prefix = self.evidence["support_provider_metadata"]["subject_syntax"].partition("<")[0]
+            self.assertTrue(subject.startswith(subject_prefix))
+            uuid.UUID(subject.removeprefix(subject_prefix))
+            audience = self.evidence["support_provider_metadata"]["assertion_audiences_supported"][0]
             assertion = curl_json(
-                self.discovered_route("support.fixture-assertion"), "-H", "Content-Type: application/json",
-                "--data-binary", json.dumps({"subject": subject, "tenant": tenant}), bearer=None, expected=201)
+                self.evidence["support_provider_metadata"]["assertion_endpoint"],
+                "-H", "Content-Type: application/json",
+                "--data-binary", json.dumps({"audience": audience, "subject": subject, "tenant": tenant}),
+                bearer=None, expected=201)
             federated = curl_json(
-                self.discovered_route("identity.login"), "-H", "Content-Type: application/json",
+                self.evidence["support_provider"]["assertion_submission_endpoint"],
+                "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"assertion": assertion["assertion"]}), expected=201)
             record = curl_json(dossier_tmpl.replace("{tenant}", tenant).replace("{dossier_id}", hist["customer_record"]), cookie=federated["session_cookie"])
             self.assertEqual(record["federated_subject"], subject)

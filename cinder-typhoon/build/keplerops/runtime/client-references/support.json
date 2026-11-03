@@ -75,9 +75,9 @@
           "template": "https://support.keplerops.test/api/diagnostics/{job_id}/deliver"
         },
         {
-          "key": "support.fixture-assertion",
-          "method": "POST",
-          "template": "https://support.keplerops.test/fixture-issuer/assertions"
+          "key": "support.federation-metadata",
+          "method": "GET",
+          "template": "https://support.keplerops.test/federation/retained-support/.well-known/openid-configuration"
         }
       ],
       "title": "Support desk client reference"

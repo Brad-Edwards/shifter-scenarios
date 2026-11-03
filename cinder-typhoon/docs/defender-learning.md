@@ -239,8 +239,8 @@ fields and the assertion endpoint documentation.
 can be used as a SSRF proxy if the destination is caller-controlled. The note-preview
 service should not make identity-service requests on behalf of a developer credential.
 
-**Evidenced by:** The registration read; the registration patch; the fixture assertion
-mint; the protected customer record read.
+**Evidenced by:** The registration read; the registration patch; the retained-support
+assertion mint; the protected customer record read.
 
 ---
 
@@ -260,7 +260,7 @@ approval authority relationship required reading the signer history and the
 approval documentation.
 
 **Defender lesson:** A signed package that passes the approval flow but is not
-the package the approver reviewed is a supply-chain integrity failure. Approval
+the package the approver reviewed is a supply chain integrity failure. Approval
 should bind to a package digest, not just a version string. A channel token
 that grants broad delivery authority should be scoped to the specific delivery
 operation, tenant, and version.

@@ -18,7 +18,18 @@ import uuid
 from urllib import parse as urlparse
 from urllib import request as urlrequest
 
-from http_support import KeplerHandler, append_audit, canonical_bytes, serve_tls, sha256_bytes, verify_rs256
+from http_support import (
+    KeplerHandler,
+    RETAINED_SUPPORT_LOGIN_ENDPOINT,
+    RETAINED_SUPPORT_INTROSPECTION_ENDPOINT,
+    RETAINED_SUPPORT_METADATA,
+    RETAINED_SUPPORT_PROVIDER,
+    append_audit,
+    canonical_bytes,
+    serve_tls,
+    sha256_bytes,
+    verify_retained_support_assertion,
+)
 from credentials import credential
 
 
@@ -342,13 +353,37 @@ class PlatformHandler(KeplerHandler):
     # Corporate identity, certificate and staff workplace services.
     def get_identity(self) -> None:
         path = urlparse.urlsplit(self.path).path; token = bearer(self); state = load_state()["identity"]
+        if path == urlparse.urlsplit(RETAINED_SUPPORT_INTROSPECTION_ENDPOINT).path:
+            claims = verify_retained_support_assertion(
+                Path("/tmp/fixture-issuer.pub"), token if isinstance(token, str) else "",
+            )
+            session = state["federated_sessions"].get(claims["jti"]) if claims else None
+            if (
+                claims is None
+                or not isinstance(session, dict)
+                or session.get("assertion_sha256") != sha256_bytes(token.encode())
+            ):
+                return self.deny(403, "federated_session_denied")
+            value = {"active": True, "jti": claims["jti"], "subject": claims["sub"], "tenant": claims["tenant"]}
+            self.record("federated-session", principal=claims["sub"], tenant=claims["tenant"], assertion_jti=claims["jti"])
+            return self.send_json(200, value)
         if path == "/api/registrations/OIDC-FIELDKEST-SUPPORT":
             if token != STAFF_PREVIEW_TOKEN:
                 principal = self.spnego_principal()
                 if principal is None: return
                 if principal != "evan.calderoux@KEPLEROPS.TEST": return self.deny(403)
                 token = principal
-            value = {"registration_id": "OIDC-FIELDKEST-SUPPORT", "revision": state["registration_revision"], "providers": state["providers"], "ordinary_login": "available", "fixture_issuer": "https://support.keplerops.test/fixture-issuer"}
+            value = {
+                "registration_id": "OIDC-FIELDKEST-SUPPORT", "revision": state["registration_revision"],
+                "providers": state["providers"], "ordinary_login": "available",
+                "provider_configuration": {
+                    "provider": RETAINED_SUPPORT_PROVIDER,
+                    "status": "enabled" if RETAINED_SUPPORT_PROVIDER in state["providers"] else "available",
+                    "issuer": RETAINED_SUPPORT_METADATA.removesuffix("/.well-known/openid-configuration"),
+                    "metadata_uri": RETAINED_SUPPORT_METADATA,
+                    "assertion_submission_endpoint": RETAINED_SUPPORT_LOGIN_ENDPOINT,
+                },
+            }
         elif path == "/api/delegation/admin-probe":
             principal = self.spnego_principal()
             if principal is None: return
@@ -369,10 +404,19 @@ class PlatformHandler(KeplerHandler):
         data = self.body(); state = load_state(); identity = state["identity"]
         if path == "/api/registrations/OIDC-FIELDKEST-SUPPORT":
             if bearer(self) != STAFF_PREVIEW_TOKEN: return self.deny(403)
-            if data.get("add_provider") != "OIDC-CINDER-FIXTURE" or data.get("preserve_existing") is not True: raise ValueError("registration_patch_denied")
-            if "OIDC-CINDER-FIXTURE" not in identity["providers"]: identity["providers"].append("OIDC-CINDER-FIXTURE")
+            if data.get("add_provider") != RETAINED_SUPPORT_PROVIDER or data.get("preserve_existing") is not True: raise ValueError("registration_patch_denied")
+            if RETAINED_SUPPORT_PROVIDER not in identity["providers"]: identity["providers"].append(RETAINED_SUPPORT_PROVIDER)
             identity["registration_revision"] += 1; save_state(state)
-            value = {"registration_id": "OIDC-FIELDKEST-SUPPORT", "revision": identity["registration_revision"], "providers": identity["providers"], "ordinary_login": "available", "fixture_issuer": "https://support.keplerops.test/fixture-issuer"}
+            value = {
+                "registration_id": "OIDC-FIELDKEST-SUPPORT", "revision": identity["registration_revision"],
+                "providers": identity["providers"], "ordinary_login": "available",
+                "provider_configuration": {
+                    "provider": RETAINED_SUPPORT_PROVIDER, "status": "enabled",
+                    "issuer": RETAINED_SUPPORT_METADATA.removesuffix("/.well-known/openid-configuration"),
+                    "metadata_uri": RETAINED_SUPPORT_METADATA,
+                    "assertion_submission_endpoint": RETAINED_SUPPORT_LOGIN_ENDPOINT,
+                },
+            }
             self.record("registration-update", principal="svc-staff-preview", revision=identity["registration_revision"], providers=identity["providers"]); return self.send_json(200, value)
         if path == "/api/federation/staff-login":
             if data != {"username": DEV_USER, "password": DEV_TOKEN} or "OIDC-FIELDKEST-STAFF" not in identity["providers"]: return self.deny(403, "staff_login_denied")
@@ -380,12 +424,20 @@ class PlatformHandler(KeplerHandler):
             value = {"principal": DEV_USER, "provider": "OIDC-FIELDKEST-STAFF", "login": "accepted", "registration_revision": identity["registration_revision"]}
             self.record("existing-staff-login", **value); return self.send_json(201, value)
         if path == "/api/federation/login":
-            if "OIDC-CINDER-FIXTURE" not in identity["providers"]: return self.deny(403, "provider_not_enabled")
             assertion = data.get("assertion")
-            claims = verify_rs256(Path("/tmp/fixture-issuer.pub"), assertion if isinstance(assertion, str) else "", issuer="https://support.keplerops.test/fixture-issuer", audience="fieldkest-support")
-            if not claims or claims.get("sub") != "fixture-reviewer-047" or claims.get("tenant") != "TEN-ARWC-047": return self.deny(403, "assertion_denied")
-            identity["federated_sessions"][claims["jti"]] = {"subject": claims["sub"], "tenant": claims["tenant"], "registration_revision": identity["registration_revision"]}; save_state(state)
-            value = {"principal": claims["sub"], "provider": "OIDC-CINDER-FIXTURE", "tenant": claims["tenant"], "session_cookie": "fieldkest_federated=" + assertion}
+            claims = verify_retained_support_assertion(Path("/tmp/fixture-issuer.pub"), assertion if isinstance(assertion, str) else "")
+            if claims is None: return self.deny(403, "assertion_denied")
+            with LOCK:
+                state = load_state(); identity = state["identity"]
+                if RETAINED_SUPPORT_PROVIDER not in identity["providers"]: return self.deny(403, "provider_not_enabled")
+                if claims["jti"] in identity["federated_sessions"]: return self.deny(409, "assertion_replayed")
+                identity["federated_sessions"][claims["jti"]] = {
+                    "subject": claims["sub"], "tenant": claims["tenant"],
+                    "registration_revision": identity["registration_revision"],
+                    "assertion_sha256": sha256_bytes(assertion.encode()),
+                }
+                save_state(state)
+            value = {"principal": claims["sub"], "provider": RETAINED_SUPPORT_PROVIDER, "tenant": claims["tenant"], "session_cookie": "fieldkest_federated=" + assertion}
             self.record("federated-login", principal=claims["sub"], tenant=claims["tenant"], assertion_jti=claims["jti"], registration_revision=identity["registration_revision"]); return self.send_json(201, value)
         self.deny(404, "not_found")
 
@@ -400,7 +452,7 @@ class PlatformHandler(KeplerHandler):
                 "note_preview": "https://staff.keplerops.test/api/note-preview",
                 "support_registration": "OIDC-FIELDKEST-SUPPORT",
                 "staff_provider": "OIDC-FIELDKEST-STAFF",
-                "fixture_issuer": "https://support.keplerops.test/fixture-issuer",
+                "federation_metadata": RETAINED_SUPPORT_METADATA,
                 "enrollment_worker": CERT_ENROLLMENT_TOKEN,
             }
         elif path == "/api/notes/NOTE-SUP-2841-7" and token == DEV_TOKEN:
@@ -419,7 +471,7 @@ class PlatformHandler(KeplerHandler):
             normalized = urlparse.unquote(source)
             if normalized != "/notes/../identity/api/registrations/OIDC-FIELDKEST-SUPPORT" or method not in {"GET", "PATCH"}: raise ValueError("preview_target_denied")
             url = "https://identity.keplerops.test/api/registrations/OIDC-FIELDKEST-SUPPORT"
-            result = get_json(url, STAFF_PREVIEW_TOKEN) if method == "GET" else send_json(url, "PATCH", self.body() if False else {"add_provider": "OIDC-CINDER-FIXTURE", "preserve_existing": True}, STAFF_PREVIEW_TOKEN)
+            result = get_json(url, STAFF_PREVIEW_TOKEN) if method == "GET" else send_json(url, "PATCH", {"add_provider": RETAINED_SUPPORT_PROVIDER, "preserve_existing": True}, STAFF_PREVIEW_TOKEN)
             self.record("note-preview", principal=DEV_USER, source_path=source, method=method, destination_request=result.get("registration_id")); return self.send_json(200, result)
         if path == "/api/archive/delegation/probe":
             if self.peer_common_name() != "evan.calderoux": return self.deny(403)

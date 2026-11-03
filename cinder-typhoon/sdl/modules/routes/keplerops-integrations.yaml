@@ -14,6 +14,7 @@ module:
     - package-delivery
     - diagnostic-delivery
     - staff-identity-admin
+    - support-federation-introspection
     - scheduled-output
     - maintenance-archive
     - backup-source
@@ -63,6 +64,12 @@ relationships:
     target: features.k-corporate.k-identity--delegation
     description: The staff preview and delegation brokers call the declared identity-admin routes as their service
       principals.
+  support-federation-introspection:
+    type: connects_to
+    source: features.k-delivery.k-support
+    target: features.k-corporate.k-identity--support-federation
+    description: The support service accepts a federated customer session only after the identity service confirms
+      that the exact signed assertion was consumed by the enabled retained-support provider.
   scheduled-output:
     type: connects_to
     source: features.k-cloud.k-workload--task

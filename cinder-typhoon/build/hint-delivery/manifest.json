@@ -1,6 +1,6 @@
 {
   "catalog": {
-    "revision": "00df2d686a4d1e1ec4c61aafd3f46b944ac8af492bdbbde39ba2e0eefedcf6f7",
+    "revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
     "schema": "cinder-typhoon.challenge-delivery/v2"
   },
   "items": [
@@ -2242,7 +2242,7 @@
           "kind": "client_route"
         },
         {
-          "id": "support.fixture-assertion",
+          "id": "support.federation-metadata",
           "kind": "client_route"
         },
         {
@@ -6149,7 +6149,7 @@
     "path": "build/hint-delivery/operation-reviews.json",
     "sha256": "b6758f518cabba179165877677714d20d66d6c15185008142934be89ab2d5cd2"
   },
-  "revision": "907dab15d49a4658ad2624d622ff304c3c5f6ab2f2c3a8217558249975f67d61",
+  "revision": "b6ee168d80db4797575d20be0e4830a38e878ca8ff6ff57b353ce659acf5459d",
   "schema": "cinder-typhoon.hint-delivery/v1",
   "score_effect": {
     "maximum_score_unchanged": true,
@@ -6168,7 +6168,7 @@
       "hint_count": 312,
       "path": "build/card-coverage/hints-keplerops.yaml",
       "phase": "keplerops",
-      "sha256": "d11ed96779246988a772898b83f9dbe6b85ee3f5ef70a269c71929c4849aaa5b"
+      "sha256": "88a858b52b1e3498854880bfcbf73c66bf8cc9e9fe08360c634c3d8473f39bf6"
     },
     {
       "card_count": 120,

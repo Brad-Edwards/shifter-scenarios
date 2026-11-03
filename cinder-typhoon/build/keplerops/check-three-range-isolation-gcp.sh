@@ -181,7 +181,7 @@ for source_index in 0 1 2; do
       "sudo cat '$remote_root/build/keplerops/.operator/range-seed/runtime-credentials.json'" \
       | remote "$target_kepler" "umask 077; cat > '$foreign_credentials'"
     remote "$source_kepler" \
-      "sudo docker exec --user rowan cinder-keplerops-k-dev curl -sS --cacert /home/rowan/.local/share/keplerops/ca.crt -H 'Content-Type: application/json' --data-binary '{\"subject\":\"fixture-reviewer-047\",\"tenant\":\"TEN-ARWC-047\"}' https://support.keplerops.test/fixture-issuer/assertions" \
+      "sudo docker exec --user rowan cinder-keplerops-k-dev curl -sS --cacert /home/rowan/.local/share/keplerops/ca.crt -H 'Content-Type: application/json' --data-binary '{\"audience\":\"fieldkest-support\",\"subject\":\"urn:fieldkest:pairwise:7c0e4f2a-2e62-4d80-a279-1fdb4f02b6c7\",\"tenant\":\"TEN-ARWC-047\"}' https://support.keplerops.test/federation/retained-support/assertions" \
       | remote "$target_kepler" "umask 077; cat > '$foreign_assertion'"
     remote "$target_kepler" \
       "cd '$remote_root/build/keplerops'; sudo python3 ./verify-range-isolation.py '$foreign_credentials' --foreign-assertion '$foreign_assertion'; rm -f '$foreign_credentials' '$foreign_assertion'" \
