@@ -397,7 +397,8 @@ content:
       surface_bindings:
       - k-cloud.k-data/fieldkest-data-api/export-definition
       starting_state: Protected definition with source partitions, owner maya.ranscombe,
-        tenant and destination; detail route checks tenant visibility but omits job ownership.
+        tenant, destination registry and current partition binding; detail route checks
+        tenant visibility but omits job ownership.
       mechanic_profile:
         classification: service-native
         surface: workloads.keplerops.test schedule API
@@ -409,8 +410,9 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Protected definition with source partitions, owner maya.ranscombe, tenant
-          and destination; detail route checks tenant visibility but omits job ownership.
+        input: Protected definition with source partitions, owner maya.ranscombe, tenant,
+          destination registry and current partition binding; detail route checks tenant
+          visibility but omits job ownership.
         success: Definition read audit.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
@@ -445,7 +447,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 7d2c12ddb653037366ac11a6fcf995cfbcac32be9681964406b6e95745d2cebd
+        digest: 4aa11a814ca59d9eb850c400cf5c649fa010aeb896a79dd500a0bb25d4a834e8
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -475,6 +477,8 @@ content:
         classification: service-native
         surface: data.keplerops.test export-destination PATCH API
         normal_case: authorized exporter updates the export destination
+        discovery: the export definition returns the destination registry and identifies
+          the operator-owned support sink
         defect: the role token permits updating the destination to a support-owned sink
           in a different account
         bounds: only the destination field is writable; no export deletion or tenant-scope
@@ -519,7 +523,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: d56645935d5f21f762748892c5a7d6401a0b7483e66bb19da562ef16ebfcf81e
+        digest: a5b787d975564f8883a624b78b3dcf10476e3f07dc685c9a75e414f97c10f9f2
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -847,6 +851,9 @@ content:
         archive: FIELD-CRR-2026-09
         policy: require runtime principal svc-fieldlink-maintenance and signed scheduler
           attestation workload.class=maintenance
+        request_headers:
+          workload_class: X-Workload-Class
+          scheduler_attestation: X-Scheduler-Attestation
         defect: scheduler copies operator-editable job label workload.class into the signed
           attestation without constraining it to the job template
         proof: join job patch audit, scheduler attestation digest, runtime whoami, and archive
@@ -894,7 +901,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: abd9d92e8530066afe1514101e7c8e29b44761db56e29ea5763abbf6f0b9da94
+        digest: d5d2b039c627c20631427d04c188bb82629401916ff099fdbb01d7b2148d3796
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

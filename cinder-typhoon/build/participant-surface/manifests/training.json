@@ -11,10 +11,10 @@
       "phase_card_count": 16,
       "phase_operation_count": 4,
       "phase_score_total": 1000,
-      "revision": "1e7b1f13d7265887fe8d723ef98e555f8ea898e3e08b190776a85f6e9428af0b",
+      "revision": "8fab6a28f1b6f5b9cdbe362dd227a0a27ea0c4612a172c223f7dc5279b648c66",
       "schema": "cinder-typhoon.challenge-delivery/v2",
       "score_total": 39200,
-      "sha256": "c0a5246d18e35522389d1592cb639233c7644085f727c11a8fd5c486c17a0413"
+      "sha256": "b8d059dc9d3f2964f0cd00c5cd34f1ff2c6b84787cb4e3af1c0aa85a1a9b332b"
     },
     "hints": {
       "items": [
@@ -168,9 +168,9 @@
         "hint_count": 720,
         "operation_count": 70,
         "path": "build/hint-delivery/manifest.json",
-        "revision": "b6ee168d80db4797575d20be0e4830a38e878ca8ff6ff57b353ce659acf5459d",
+        "revision": "32884bb5276db3b36d4fde6d937cbec0d111fc783488379bc9935c7f79b29187",
         "schema": "cinder-typhoon.hint-delivery/v1",
-        "sha256": "34176cf6c2653c99cc32c7905ce8bd8e20587e1e9a1b39e9612ff6badaca156a"
+        "sha256": "af2554477fe5a0dd3f92a76c4796125fa4c8d3b655e6a612e5ad2053d6214afa"
       },
       "release": {
         "audit": "append_only_metadata_without_hint_text",

@@ -165,6 +165,17 @@ class RegistryHandler(KeplerHandler):
                 "approval_route": "/api/releases/{release_id}/approval",
                 "consumer": "support-rehearsal-v3",
                 "consumer_interface": "fieldkest.connector/v3",
+                "approval_request": {
+                    "interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"],
+                    "lineage": K29_CONFIG["lineage"],
+                    "key_id": K29_CONFIG["old_key_id"],
+                },
+                "rehearsal_input": {
+                    "schema": "fieldkest.connector/v3",
+                    "tenant_id": "TEN-SYNTH-REHEARSAL-01",
+                    "asset_id": "SYNTH-PUMP-07",
+                    "operation": "support_review",
+                },
             }
             append_audit(AUDIT, "release-administration", {
                 "request_id": self.request_id,

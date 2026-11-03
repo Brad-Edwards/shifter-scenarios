@@ -26,20 +26,24 @@ content:
       surface_bindings:
       - k-corporate.k-cert/staff-enrollment/enrollment-record
       - k-corporate.k-staff/staff-workplace/service-directory
-      starting_state: 'Enrollment service record and StaffArchiveUser template: client-auth
-        EKU, enrollee-supplied subject, support/runner enrollment grant.'
+      starting_state: Directory supplies the enrollment record URI and archive subject;
+        StaffArchiveUser supplies client-auth EKU, enrollee-supplied UPN format and suffix,
+        and support/runner enrollment grant.
       mechanic_profile:
         template: StaffArchiveUser
         eku:
         - 1.3.6.1.5.5.7.3.2 clientAuth
         subject_rule: enrollee supplies UPN SAN; requester must have support or runner enrollment
           role
+        discovery: the staff directory returns the enrollment record URI and archive subject;
+          the template returns the UPN suffix
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: 'Enrollment service record and StaffArchiveUser template: client-auth EKU,
-          enrollee-supplied subject, support/runner enrollment grant.'
+        input: Directory supplies the enrollment record URI and archive subject; StaffArchiveUser
+          supplies client-auth EKU, enrollee-supplied UPN format and suffix, and support/runner
+          enrollment grant.
         success: Protected template/trust read.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
@@ -74,7 +78,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: f44c33474b523d8395aaff2370eae32b198f40b84efc2cb1114ed643e2cdac6a
+        digest: 3d0d7ec656858a28fbe21645e860417cf1128bc32f894de5bf8cdb8d47559954
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

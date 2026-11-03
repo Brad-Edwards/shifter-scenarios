@@ -28,6 +28,12 @@ CREDENTIAL_PRINCIPALS = {
     SUPPORT_EXPORT_ROLE: "role/support-export-editor",
     MAINTENANCE_WORKER: "svc-fieldkest-runner",
 }
+MAINTENANCE_COMMAND = ["maintenance-summary", "--archive", "FIELD-CRR-2026-09"]
+MAINTENANCE_LABEL = {"workload.class": "maintenance"}
+MAINTENANCE_ARCHIVE_HEADERS = {
+    "workload_class": "X-Workload-Class",
+    "scheduler_attestation": "X-Scheduler-Attestation",
+}
 
 
 def credential_principal(value: str) -> str:
@@ -90,7 +96,13 @@ class CloudAPIHandler(KeplerHandler):
             append_audit(AUDIT, "maintenance-index", {"request_id": self.request_id, "principal": credential_principal(token), "status": 200})
             return self.send_json(200, value)
         if path == "/api/policies/fieldlink-maintenance" and (token in {SUPPORT_EXPORT_ROLE, MAINTENANCE_WORKER} or worker is not None):
-            value = {"policy_id": "fieldlink-maintenance", "management_caller": "svc-fieldkest-runner", "scheduler": "fieldkest-scheduler", "runtime_identity": "svc-fieldlink-maintenance", "required_label": {"workload.class": "maintenance"}, "whoami": "svc-fieldkest-runner"}
+            value = {
+                "policy_id": "fieldlink-maintenance", "management_caller": "svc-fieldkest-runner",
+                "scheduler": "fieldkest-scheduler", "runtime_identity": "svc-fieldlink-maintenance",
+                "command": MAINTENANCE_COMMAND, "required_label": MAINTENANCE_LABEL,
+                "archive_request": {"headers": MAINTENANCE_ARCHIVE_HEADERS},
+                "whoami": "svc-fieldkest-runner",
+            }
             append_audit(AUDIT, "maintenance-policy", {"request_id": self.request_id, "principal": credential_principal(token) if token else worker["principal"], "status": 200})
             return self.send_json(200, value)
         if worker is None:

@@ -1405,13 +1405,13 @@
           {
             "class": "earlier_accepted_response",
             "inputs": [
-              "export, schedule, tenant, revision, destination, and role token values"
+              "export, schedule, tenant, revision, destination registry, partition bindings, and role token values"
             ],
-            "source": "accepted K14 export definition, K05 handover, and data.export/workloads.schedule responses",
-            "locator": "export_id and role token come from K14; schedule_id and tenant come from export response; connector revision comes from accepted handover; destination and run payloads reuse those returned identifiers"
+            "source": "accepted K14 export definition and data.export/workloads.schedule responses",
+            "locator": "export_id and role token come from K14; the export definition supplies tenant, participant-owned destination, and current/stale partition-to-revision bindings; later request payloads reuse those returned values"
           }
         ],
-        "inventory_sha256": "b5b8670f667fbb0b72433bc8b7008a0369dc1580a67cc64cb3714257ff3f7e10",
+        "inventory_sha256": "cbeeaa027bdf4122d39357e47b2abf6296615d48a19b2a67f2604d27bc98b08e",
         "profile": "keplerops",
         "request_count": 5,
         "review_status": "complete",
@@ -1512,16 +1512,16 @@
           {
             "class": "earlier_accepted_response",
             "inputs": [
-              "certificate subject and worker",
-              "delegated identity",
+              "certificate enrollment URI, subject format, and worker",
+              "delegated service principal and identity relation",
               "managed session",
-              "approval route and release values"
+              "approval contract and rehearsal input"
             ],
             "source": "accepted K18 staff.directory plus cert.requests, staff.delegation, staff.managed-session, identity.service-relation, and managed administration responses",
-            "locator": "directory supplies archive subject and enrollment worker; certificate request supplies certificate material; delegation and managed-session responses supply managed identity and token; administration supplies approval URL, version, interface, and consumer"
+            "locator": "directory supplies enrollment URI, archive subject, and worker; certificate template supplies subject format and request endpoint; archive supplies delegated SPN and service relation; managed administration supplies approval interfaces, lineage, key ID, consumer, and synthetic rehearsal input"
           }
         ],
-        "inventory_sha256": "b851cdb6928f89174d79c544f77f737707e667e7d395a9a888e1b035c731a66c",
+        "inventory_sha256": "472a0ca3772d990252850c32a9db3e0ea5234d75a4400fc30d6c30893ed14deb",
         "profile": "keplerops",
         "request_count": 7,
         "review_status": "complete",
@@ -1540,13 +1540,13 @@
           {
             "class": "earlier_accepted_response",
             "inputs": [
-              "assistant context, conversation, selection, document, completion example, lease, handover, and job values"
+              "assistant request modes and reference fields, context, conversation, selection, document, completion example, credential reference, script, lease, handover, and job values"
             ],
             "source": "accepted assistant.config, assistant.contexts, assistant.answers, assistant.selection, assistant.document, assistant.completion-example, assistant.completion-context, and assistant.completion-jobs responses",
-            "locator": "each later request uses the conversation_id, selection_id, document route, example_id, context field, completion lease, handover_id, or job_id returned by the immediately preceding published endpoint"
+            "locator": "config supplies answer modes and reference fields; context records supply conversation, selection, document, review, and example IDs; the completion example supplies context root, credential namespace and object key, assigned handover, and allowed script; issued responses supply the lease and job ID"
           }
         ],
-        "inventory_sha256": "3d9c44debfcddf658b93a335ad8a7c1cfcd4f6cb9d45980cb363884f6be9ab4b",
+        "inventory_sha256": "6af3638886843e22fb944c6ecab38c87e5a072b22a81e22bef7736baf508520c",
         "profile": "keplerops",
         "request_count": 14,
         "review_status": "complete",
@@ -1725,13 +1725,13 @@
           {
             "class": "earlier_accepted_response",
             "inputs": [
-              "maintenance index, policy, workload, archive, credentials, class, and attestation values"
+              "maintenance index, policy command, workload, archive, credentials, required label, archive headers, runtime identity, and attestation values"
             ],
             "source": "accepted cloud.maintenance, cloud.policy, workloads.workload, workloads.whoami, and K16 schedule-run responses",
-            "locator": "maintenance index supplies policy_id, workload_id, archive_id, class, and worker credential; policy and workload responses confirm inputs; whoami supplies runtime identity; K16 supplies scheduler attestation"
+            "locator": "maintenance index supplies policy_id, workload_id, archive_id, and credentials; policy supplies the command, required label, archive header names, and expected runtime identity; whoami supplies the scheduler attestation"
           }
         ],
-        "inventory_sha256": "dd2f361b24b9245f98a03db6c305cffab4403350de2fefb77a0f32a210bb294b",
+        "inventory_sha256": "ad58743ff3e3d87b1d8979ae7e35757e82534e8509e58005012fd8d90ac31875",
         "profile": "keplerops",
         "request_count": 5,
         "review_status": "complete",
@@ -2472,8 +2472,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 101,
-      "inventory_sha256": "ea8af42fedb53940626304e5dadd49675dc854648a2030e40e52308f38c4efe6",
+      "comparison_count": 89,
+      "inventory_sha256": "c784819e3b15bb589e87b65c6590311604b1d67e6bd7e8d3fd20f71db9ff77c4",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2505,7 +2505,7 @@
         }
       ],
       "comparison_count": 44,
-      "inventory_sha256": "60040098971ad532495f7b88f7d975f39aaa2ef8a26d4288d35a36223cc859a3",
+      "inventory_sha256": "9e925baa600327a375134bf10f3b51117349a83cb1d3399066577ac45ab48548",
       "review_status": "complete",
       "unresolved": []
     },

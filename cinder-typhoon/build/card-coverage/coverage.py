@@ -323,8 +323,13 @@ def subtest_inventory() -> dict[str, list[dict[str, Any]]]:
 
 
 def heading_section(source: str, heading: str) -> str:
+    if " — " in heading:
+        before, after = heading.split(" — ", 1)
+        heading_pattern = rf"{re.escape(before)}\s*—\s*{re.escape(after)}"
+    else:
+        heading_pattern = re.escape(heading)
     match = re.search(
-        rf"(?ms)^## {re.escape(heading)}\s*\n(.*?)(?=^## |\Z)", source,
+        rf"(?ms)^## {heading_pattern}\s*\n(.*?)(?=^## |\Z)", source,
     )
     if not match:
         raise CoverageError(f"brief is missing section: {heading}")
