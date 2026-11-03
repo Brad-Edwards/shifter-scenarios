@@ -742,15 +742,23 @@
             "source": "accepted response chain in test_w27_integrity_collision"
           },
           {
-            "class": "earlier_accepted_response",
+            "class": "normal_interface_or_artifact",
             "inputs": [
-              "exact request field values from prior API responses and protocol schema"
+              "request route, method, and protocol field names"
             ],
-            "locator": "fields in test_w27_integrity_collision derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
-            "source": "prior accepted API responses in the known-solution sequence"
+            "locator": "process.signature-program-reproduction in the process client reference supplies the POST template used by both the discovered request and the direct missing-route check",
+            "source": "participant-visible process client reference and SDL signature-program-reproduction route"
+          },
+          {
+            "class": "deterministic_transformation",
+            "inputs": [
+              "reproduced digests and collision-program request payloads"
+            ],
+            "locator": "test_w27_integrity_collision computes each submitted digest and candidate from the verifier, programs, base program, distinguishing cases, and reservoir bits returned by the accepted W27 interfaces",
+            "source": "participant-received W27 artifacts and deterministic ROT128/GF(2) computation"
           }
         ],
-        "inventory_sha256": "4c35c94bfa7e4787c524d643e0b7f2ce6c711c1bfc61cef9c52dfb62edfca9b7",
+        "inventory_sha256": "3d974b1df336a4b609dfef41a3df00c153f4489b7e0d36175a166f45ffcf9bca",
         "profile": "arwc",
         "request_count": 11,
         "review_status": "complete",
@@ -2098,14 +2106,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed accepted request structures in service runtime"
+            "fixed request contracts, including the reporting data-bridge identity"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/diagnostic_services.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
-          "source": "service runtime protocol implementation"
+          "locator": "integration_gateway.py sends data-bridge-reporting and diagnostic_services.py validates the same identity on /internal/handover-estimates",
+          "source": "paired integration-gateway sender and diagnostic-service receiver"
         }
       ],
       "comparison_count": 47,
-      "inventory_sha256": "9dfb1e241360cdf70fe5c4bdbc33d347cd9c162a6508242520b8352b70e0bae8",
+      "inventory_sha256": "84f6af6b8e2056b6e6324680319232745b24f6391540dcb36f257d462fedbc0c",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2114,14 +2122,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed accepted request structures in service runtime"
+            "fixed request contracts, including the scheduling instrument identity"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/distribution_controller.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
-          "source": "service runtime protocol implementation"
+          "locator": "process_services.py w33_control_call sends instruments-scheduling and distribution_controller.py validates the same identity",
+          "source": "paired process-service sender and distribution-controller receiver"
         }
       ],
       "comparison_count": 9,
-      "inventory_sha256": "538987c2389325a42ee7af8b007d1e4809656a4a254e4b8ccc55e15decdb94e0",
+      "inventory_sha256": "3d98d510002ed08f2b6196163b99b6147d07e3cd24a44d601f6c1c0d79b6307e",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2242,14 +2250,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed accepted request structures in service runtime"
+            "fixed request contracts, including reporting, scheduling, and reserve caller identities"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/integration_gateway.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
-          "source": "service runtime protocol implementation"
+          "locator": "planning_data.py sends planning-data-reporting and planning-data-reserve; process_services.py sends hmi-scheduling; integration_gateway.py validates those same identities",
+          "source": "paired planning/process senders and integration-gateway receivers"
         }
       ],
       "comparison_count": 29,
-      "inventory_sha256": "06d41259aa8eb6ffb6e705ba600515deed36a1ffc308600f521060616673d41e",
+      "inventory_sha256": "1ed6c50eb3f0ab6cebc18eee5c7f72b37150ddb310b78bf6705d0cd877cce1e6",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2306,14 +2314,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed accepted request structures in service runtime"
+            "fixed request contracts, including the scheduling data-bridge identity"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/planning_data.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
-          "source": "service runtime protocol implementation"
+          "locator": "integration_gateway.py sends data-bridge-scheduling and planning_data.py validates the same identity on /internal/schedule-validations",
+          "source": "paired integration-gateway sender and planning-data receiver"
         }
       ],
       "comparison_count": 91,
-      "inventory_sha256": "067b1eb9becc9a68a5c71c6141b728de22b132d7bb5b3a00f3159f9527cc5491",
+      "inventory_sha256": "b6b6349e6150abaf3011874b83398f27a2381f94075b29cc54db00324a6fb2a2",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2322,14 +2330,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed accepted request structures in service runtime"
+            "fixed request contracts, including reporting and reserve data-bridge identities"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/process_services.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
-          "source": "service runtime protocol implementation"
+          "locator": "integration_gateway.py sends data-bridge-reporting and data-bridge-reserve; process_services.py validates the same identities on its internal handover and reserve routes",
+          "source": "paired integration-gateway senders and process-service receivers"
         }
       ],
       "comparison_count": 241,
-      "inventory_sha256": "497881fac18ac82b5d9f361769e9ab67ec894643d4bae1c56c03131ef44138fd",
+      "inventory_sha256": "356b2bbf127e536b1dfba74a95c65bcb8fe4cf1846dee3ba14102d257394219b",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2338,14 +2346,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed accepted request structures in service runtime"
+            "fixed request contracts, including release, scheduling, and reporting instrument identities"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/reservoir_controller.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
-          "source": "service runtime protocol implementation"
+          "locator": "process_services.py sends instruments-release, instruments-scheduling, and instruments-reporting; reservoir_controller.py validates the same identity set",
+          "source": "paired process-service senders and reservoir-controller receiver"
         }
       ],
       "comparison_count": 37,
-      "inventory_sha256": "3d2e4b5a93a063cfd0e03fb4680d426dffa9340d854ad7b9644adef45a4a86a3",
+      "inventory_sha256": "321f667987d841b2b6e6ab81c8303e4073199a201b5811264b0209d3cbfef8f4",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2905,14 +2913,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed comparison values in runtime Python source"
+            "diagnostic artifact directory names"
           ],
-          "locator": "fixed values in build/arwc/runtime/diagnostics-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
-          "source": "service runtime implementation"
+          "locator": "diagnostics-entrypoint.sh creates integrity-program-created and diagnostic-authority-issued; diagnostic_services.py writes the matching artifacts and audit records",
+          "source": "paired diagnostic entrypoint and service artifact paths"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "963010b40046882b208b1ddceee125d14c3af3ec79757be41a5da56b37d905e7",
+      "source_sha256": "38de9c1fd4b76a139e122772563cfd0bb2616413be41fe92b7b24f383ab093d5",
       "unresolved": []
     },
     "build/arwc/runtime/distribution-entrypoint.sh": {
@@ -2988,14 +2996,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed comparison values in runtime Python source"
+            "process artifact and integrity-seed paths"
           ],
-          "locator": "fixed values in build/arwc/runtime/process-service-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
-          "source": "service runtime implementation"
+          "locator": "process-service-entrypoint.sh creates the artifact paths used by process_services.py and copies the integrity payload installed at /opt/process-service/artifacts/integrity by engineering.Dockerfile",
+          "source": "process service state paths and engineering image payload"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "d06cb38de5181ae28010eab2c48effd1bb6387ef62b4b00c086456264851c09c",
+      "source_sha256": "6265d783800ca76a1b36cc87626ae29e8419384de7e2c4dfe72cc968ab290ebe",
       "unresolved": []
     },
     "build/arwc/runtime/renderer-entrypoint.sh": {
@@ -3108,14 +3116,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed comparison values in runtime Python source"
+            "utility subprocess environment contract"
           ],
-          "locator": "fixed values in build/arwc/runtime/utility28.c are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
-          "source": "service runtime implementation"
+          "locator": "process_services.py supplies ARWC_UTILITY_CANARY, ARWC_UTILITY_PIE_BASE, ARWC_UTILITY_LENGTH, ARWC_UTILITY_CORRELATION, and ARWC_UTILITY_CONTROL_CLIENT; utility28.c consumes those exact names",
+          "source": "paired process-service launcher and native utility"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "c7124ab510e48712fc2ad6a1ca115097b0808ccdf83c872e6c7739b4af6516fb",
+      "source_sha256": "f92e71500b14cac4821cd99a21b63c5d025d2c0dd9f525d642ee05f9b1716c1d",
       "unresolved": []
     },
     "build/arwc/runtime/vault31.c": {
@@ -3214,14 +3222,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed comparison values in runtime Python source"
+            "developer-workstation seed archive names"
           ],
-          "locator": "fixed values in build/keplerops/runtime/k-dev-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
-          "source": "service runtime implementation"
+          "locator": "k-dev-entrypoint.sh extracts the policy-compiler, connector-archive, and release-lineage tar files named by their artifact manifests and copied into the image by k-dev.Dockerfile",
+          "source": "KeplerOps generated artifact manifests and developer image"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "2ff2cf45a06bce3e78d9732aa5d3b7ae47522a994ce31dbf814752cda83a404b",
+      "source_sha256": "10dc5e180461db7d521f65821e14f12538be8af00057305a4955bc53a1d75cfe",
       "unresolved": []
     },
     "build/keplerops/runtime/platform-entrypoint.sh": {

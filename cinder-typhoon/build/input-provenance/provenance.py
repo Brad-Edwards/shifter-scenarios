@@ -162,6 +162,91 @@ def runtime_source_inventory() -> dict[str, dict[str, Any]]:
     return result
 
 
+def inventory_drift(
+    value: dict[str, Any],
+    observed_requests: dict[str, dict[str, dict[str, Any]]],
+    observed_comparisons: dict[str, dict[str, Any]],
+    observed_sources: dict[str, dict[str, Any]],
+) -> list[str]:
+    """Return every source-inventory change that needs ledger review."""
+    drift: list[str] = []
+
+    methods = value.get("methods")
+    if not isinstance(methods, dict):
+        drift.append("request method ledger is not an object")
+    else:
+        missing_phases = sorted(set(PHASES) - set(methods))
+        extra_phases = sorted(set(methods) - set(PHASES))
+        if missing_phases or extra_phases:
+            drift.append(
+                "request phases changed; "
+                f"missing={missing_phases}, extra={extra_phases}"
+            )
+        for phase in PHASES:
+            entries = methods.get(phase)
+            if not isinstance(entries, dict):
+                if phase in methods:
+                    drift.append(f"{phase}: request method ledger is not an object")
+                continue
+            observed_methods = observed_requests[phase]
+            missing = sorted(set(observed_methods) - set(entries))
+            extra = sorted(set(entries) - set(observed_methods))
+            if missing or extra:
+                drift.append(
+                    f"{phase}: request methods changed; missing={missing}, extra={extra}"
+                )
+            for method in sorted(set(entries) & set(observed_methods)):
+                entry = entries[method]
+                if not isinstance(entry, dict):
+                    continue
+                observed = observed_methods[method]
+                if entry.get("inventory_sha256") != observed["inventory_sha256"]:
+                    drift.append(f"{phase}.{method}: request inputs changed")
+                if entry.get("request_count") != observed["request_count"]:
+                    drift.append(f"{phase}.{method}: request count changed")
+
+    comparisons = value.get("runtime_comparisons")
+    if not isinstance(comparisons, dict):
+        drift.append("fixed runtime comparison ledger is not an object")
+    else:
+        missing = sorted(set(observed_comparisons) - set(comparisons))
+        extra = sorted(set(comparisons) - set(observed_comparisons))
+        if missing or extra:
+            drift.append(
+                "fixed runtime comparison files changed; "
+                f"missing={missing}, extra={extra}"
+            )
+        for path in sorted(set(comparisons) & set(observed_comparisons)):
+            entry = comparisons[path]
+            if not isinstance(entry, dict):
+                continue
+            observed = observed_comparisons[path]
+            if entry.get("inventory_sha256") != observed["inventory_sha256"]:
+                drift.append(f"{path}: fixed runtime comparisons changed")
+            if entry.get("comparison_count") != observed["comparison_count"]:
+                drift.append(f"{path}: fixed runtime comparison count changed")
+
+    sources = value.get("runtime_sources")
+    if not isinstance(sources, dict):
+        drift.append("non-Python runtime source ledger is not an object")
+    else:
+        missing = sorted(set(observed_sources) - set(sources))
+        extra = sorted(set(sources) - set(observed_sources))
+        if missing or extra:
+            drift.append(
+                "non-Python runtime sources changed; "
+                f"missing={missing}, extra={extra}"
+            )
+        for path in sorted(set(sources) & set(observed_sources)):
+            entry = sources[path]
+            if not isinstance(entry, dict):
+                continue
+            if entry.get("source_sha256") != observed_sources[path]["source_sha256"]:
+                drift.append(f"{path}: runtime source changed")
+
+    return drift
+
+
 def load_ledger(path: Path = LEDGER_PATH) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -222,6 +307,17 @@ def validate_ledger(value: Any) -> None:
         validate_sources(profile["sources"], f"profile {phase}")
 
     observed_requests = request_inventory()
+    observed_comparisons = runtime_comparison_inventory()
+    observed_sources = runtime_source_inventory()
+    drift = inventory_drift(
+        value, observed_requests, observed_comparisons, observed_sources,
+    )
+    if drift:
+        raise ProvenanceError(
+            "provenance inventories changed without ledger review:\n- "
+            + "\n- ".join(drift)
+        )
+
     methods = value["methods"]
     if not isinstance(methods, dict) or set(methods) != set(PHASES):
         raise ProvenanceError("method ledger must cover all phases")
@@ -250,7 +346,6 @@ def validate_ledger(value: Any) -> None:
             if entry["review_status"] != expected_status:
                 raise ProvenanceError(f"{phase}.{method}: review_status disagrees with unresolved inputs")
 
-    observed_comparisons = runtime_comparison_inventory()
     comparisons = value["runtime_comparisons"]
     if not isinstance(comparisons, dict) or set(comparisons) != set(observed_comparisons):
         raise ProvenanceError("fixed runtime comparison files changed without ledger review")
@@ -275,7 +370,6 @@ def validate_ledger(value: Any) -> None:
         if entry["review_status"] != expected_status:
             raise ProvenanceError(f"{path}: review_status disagrees with unresolved comparisons")
 
-    observed_sources = runtime_source_inventory()
     sources = value["runtime_sources"]
     if not isinstance(sources, dict) or set(sources) != set(observed_sources):
         raise ProvenanceError("non-Python runtime sources changed without ledger review")

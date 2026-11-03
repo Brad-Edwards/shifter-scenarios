@@ -17,7 +17,9 @@ values, request bodies, credentials, cookies, certificates, bearer tokens or
 response contents. The participant-boundary runner adds the applicable entry
 to each live request event by test method. A request from an unlisted method, a
 new callsite, a changed input expression or a changed fixed runtime comparison
-fails validation.
+fails validation. Validation reports the complete request, Python-comparison,
+and non-Python-source drift set in one run so reviewers do not have to repair
+one ratchet merely to discover the next.
 
 Permitted provenance classes are:
 
