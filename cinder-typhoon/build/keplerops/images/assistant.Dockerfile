@@ -19,7 +19,7 @@ RUN python3 -c "from huggingface_hub import snapshot_download; snapshot_download
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest-assistant/http_support.py
 COPY build/keplerops/runtime/credentials.py /opt/fieldkest-assistant/credentials.py
-COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
+COPY build/keplerops/runtime/client-references/assistant.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/platform_service.py /opt/fieldkest-assistant/platform_service.py
 COPY build/keplerops/runtime/platform-entrypoint.sh /usr/local/bin/fieldkest-platform-entrypoint
 COPY build/keplerops/config/completion-handover.json /var/lib/fieldkest-assistant/handovers/HANDOVER-COMP-2841.json

@@ -1,0 +1,51 @@
+{
+  "documents": {
+    "cloud-api.keplerops.test": {
+      "purpose": "Workspace identity, build records, trust records, and maintenance policy operations.",
+      "related": [
+        "https://data.keplerops.test/.well-known/fieldkest-client",
+        "https://workloads.keplerops.test/.well-known/fieldkest-client"
+      ],
+      "routes": [
+        {
+          "key": "cloud.workspace-exchange",
+          "method": "GET",
+          "template": "https://cloud-api.keplerops.test/api/workspaces/current/token-exchange"
+        },
+        {
+          "key": "cloud.workspace-token",
+          "method": "POST",
+          "template": "https://cloud-api.keplerops.test/api/workspaces/current/token-exchange"
+        },
+        {
+          "key": "cloud.build-record",
+          "method": "GET",
+          "template": "https://cloud-api.keplerops.test/api/build-records/{build_id}"
+        },
+        {
+          "key": "cloud.trust-record",
+          "method": "GET",
+          "template": "https://cloud-api.keplerops.test/api/trust-records/{trust_id}"
+        },
+        {
+          "key": "cloud.role-exchange",
+          "method": "POST",
+          "template": "https://cloud-api.keplerops.test/api/token-exchange/{role}"
+        },
+        {
+          "key": "cloud.maintenance",
+          "method": "GET",
+          "template": "https://cloud-api.keplerops.test/api/maintenance"
+        },
+        {
+          "key": "cloud.policy",
+          "method": "GET",
+          "template": "https://cloud-api.keplerops.test/api/policies/{policy_id}"
+        }
+      ],
+      "title": "Cloud workspace client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

@@ -1,0 +1,88 @@
+{
+  "documents": {
+    "support.keplerops.test": {
+      "purpose": "Conversation, recovery, assignment, customer integration, and diagnostic operations.",
+      "related": [
+        "https://staff.keplerops.test/.well-known/fieldkest-client",
+        "https://identity.keplerops.test/.well-known/fieldkest-client",
+        "https://cert.keplerops.test/.well-known/fieldkest-client",
+        "https://assistant.keplerops.test/.well-known/fieldkest-client"
+      ],
+      "routes": [
+        {
+          "key": "support.conversation",
+          "method": "GET",
+          "template": "https://support.keplerops.test/api/conversations/{conversation_id}"
+        },
+        {
+          "key": "support.session",
+          "method": "GET",
+          "template": "https://support.keplerops.test/api/session"
+        },
+        {
+          "key": "support.handover",
+          "method": "GET",
+          "template": "https://support.keplerops.test/api/handovers/current"
+        },
+        {
+          "key": "support.recovery-lookup",
+          "method": "POST",
+          "template": "https://support.keplerops.test/api/recovery/lookup"
+        },
+        {
+          "key": "support.recovery-redeem",
+          "method": "POST",
+          "template": "https://support.keplerops.test/api/recovery/redeem"
+        },
+        {
+          "key": "support.assignment",
+          "method": "GET",
+          "template": "https://support.keplerops.test/api/assignments/{assignment_id}"
+        },
+        {
+          "key": "support.copy-handover",
+          "method": "POST",
+          "template": "https://support.keplerops.test/api/cases/{case_id}/copy-handover"
+        },
+        {
+          "key": "support.dossier",
+          "method": "GET",
+          "template": "https://support.keplerops.test/api/customers/{tenant}/dossiers/{dossier_id}"
+        },
+        {
+          "key": "support.integration",
+          "method": "GET",
+          "template": "https://support.keplerops.test/api/customers/{tenant}/integrations/fieldlink"
+        },
+        {
+          "key": "support.reconcile",
+          "method": "POST",
+          "template": "https://support.keplerops.test/api/customers/{tenant}/integrations/fieldlink/reconcile"
+        },
+        {
+          "key": "support.diagnostics",
+          "method": "POST",
+          "template": "https://support.keplerops.test/api/customers/{tenant}/diagnostics"
+        },
+        {
+          "key": "support.diagnostic-package",
+          "method": "PUT",
+          "template": "https://support.keplerops.test/api/diagnostics/{job_id}/package"
+        },
+        {
+          "key": "support.diagnostic-deliver",
+          "method": "POST",
+          "template": "https://support.keplerops.test/api/diagnostics/{job_id}/deliver"
+        },
+        {
+          "key": "support.fixture-assertion",
+          "method": "POST",
+          "template": "https://support.keplerops.test/fixture-issuer/assertions"
+        }
+      ],
+      "title": "Support desk client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

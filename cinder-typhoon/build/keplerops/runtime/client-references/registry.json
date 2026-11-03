@@ -1,0 +1,107 @@
+{
+  "documents": {
+    "packages.keplerops.test": {
+      "purpose": "Package lifecycle, inspection, entitlement, approval, and customer delivery operations.",
+      "related": [
+        "https://preview.keplerops.test/.well-known/fieldkest-client",
+        "https://indexer.keplerops.test/.well-known/fieldkest-client",
+        "https://cloud-api.keplerops.test/.well-known/fieldkest-client"
+      ],
+      "routes": [
+        {
+          "key": "packages.metadata",
+          "method": "GET",
+          "template": "https://packages.keplerops.test/@keplerops%2ffieldlink-connector"
+        },
+        {
+          "key": "packages.consumer-check",
+          "method": "POST",
+          "template": "https://packages.keplerops.test/api/consumer-checks"
+        },
+        {
+          "key": "packages.release",
+          "method": "GET",
+          "template": "https://packages.keplerops.test/api/releases/{release_id}"
+        },
+        {
+          "key": "packages.reconcile",
+          "method": "POST",
+          "template": "https://packages.keplerops.test/api/reconcile/tenant-package"
+        },
+        {
+          "key": "packages.resolver",
+          "method": "POST",
+          "template": "https://packages.keplerops.test/api/resolver/runs"
+        },
+        {
+          "key": "packages.import",
+          "method": "POST",
+          "template": "https://packages.keplerops.test/api/imports"
+        },
+        {
+          "key": "packages.publish",
+          "method": "PUT",
+          "template": "https://packages.keplerops.test/@keplerops%2ffieldlink-connector"
+        },
+        {
+          "key": "packages.view",
+          "method": "GET",
+          "template": "https://packages.keplerops.test/api/package-views/{view}/{package}"
+        },
+        {
+          "key": "packages.inspections",
+          "method": "POST",
+          "template": "https://packages.keplerops.test/api/inspections"
+        },
+        {
+          "key": "packages.inspection-trace",
+          "method": "GET",
+          "template": "https://packages.keplerops.test/api/inspections/{inspection_id}/trace"
+        },
+        {
+          "key": "packages.inspection-envelope",
+          "method": "POST",
+          "template": "https://packages.keplerops.test/api/inspections/envelope"
+        },
+        {
+          "key": "packages.entitlement",
+          "method": "GET",
+          "template": "https://packages.keplerops.test/api/compatibility/entitlements/{entitlement_id}"
+        },
+        {
+          "key": "packages.entitlement-check",
+          "method": "POST",
+          "template": "https://packages.keplerops.test/api/compatibility/entitlements/check"
+        },
+        {
+          "key": "packages.approval",
+          "method": "POST",
+          "template": "https://packages.keplerops.test/api/releases/{release_id}/approval"
+        },
+        {
+          "key": "connector.poll",
+          "method": "POST",
+          "template": "https://connector.arwc.test/api/fieldlink/packages/poll"
+        },
+        {
+          "key": "connector.activate",
+          "method": "POST",
+          "template": "https://connector.arwc.test/api/fieldlink/packages/{version}/activate"
+        },
+        {
+          "key": "connector.receipt",
+          "method": "GET",
+          "template": "https://connector.arwc.test/api/fieldlink/packages/{version}/receipt"
+        },
+        {
+          "key": "connector.rollback",
+          "method": "POST",
+          "template": "https://connector.arwc.test/api/fieldlink/rehearsals/rollback"
+        }
+      ],
+      "title": "Package and delivery client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

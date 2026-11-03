@@ -9,7 +9,7 @@ RUN apt-get update \
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
 COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
-COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
+COPY build/keplerops/runtime/client-references/support.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/support.py /opt/fieldkest/support.py
 COPY build/keplerops/runtime/support-entrypoint.sh /usr/local/bin/fieldkest-support-entrypoint
 COPY assets/keplerops/opening/k-support-state.tar /tmp/k-support-state.tar

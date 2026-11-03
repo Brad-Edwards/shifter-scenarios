@@ -1,0 +1,43 @@
+{
+  "documents": {
+    "preview.keplerops.test": {
+      "purpose": "Attachment, document rendering, and assigned-review operations.",
+      "related": [],
+      "routes": [
+        {
+          "key": "preview.association",
+          "method": "GET",
+          "template": "https://preview.keplerops.test/api/attachments/{attachment}/preview-association"
+        },
+        {
+          "key": "preview.documents",
+          "method": "POST",
+          "template": "https://preview.keplerops.test/api/documents"
+        },
+        {
+          "key": "preview.render",
+          "method": "POST",
+          "template": "https://preview.keplerops.test/api/documents/{source_id}/render"
+        },
+        {
+          "key": "preview.assignment",
+          "method": "PATCH",
+          "template": "https://preview.keplerops.test/api/reviews/{review_id}/assignment"
+        },
+        {
+          "key": "preview.prepare",
+          "method": "POST",
+          "template": "https://preview.keplerops.test/api/reviews/{review_id}/actions/prepare"
+        },
+        {
+          "key": "preview.review-render",
+          "method": "POST",
+          "template": "https://preview.keplerops.test/review/{review_id}/render"
+        }
+      ],
+      "title": "Preview client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

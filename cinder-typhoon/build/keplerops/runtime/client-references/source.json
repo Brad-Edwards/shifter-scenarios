@@ -1,0 +1,47 @@
+{
+  "documents": {
+    "source.keplerops.test": {
+      "purpose": "Repository, handover, and source-side engineering operations.",
+      "related": [
+        "https://ci.keplerops.test/.well-known/fieldkest-client",
+        "https://packages.keplerops.test/.well-known/fieldkest-client",
+        "https://support.keplerops.test/.well-known/fieldkest-client"
+      ],
+      "routes": [
+        {
+          "key": "source.repos",
+          "method": "GET",
+          "template": "https://source.keplerops.test/api/v1/user/repos"
+        },
+        {
+          "key": "source.handover",
+          "method": "GET",
+          "template": "https://source.keplerops.test/api/fieldkest/handovers/current"
+        },
+        {
+          "key": "source.policy-evaluate",
+          "method": "POST",
+          "template": "https://source.keplerops.test/api/exercises/policy-compiler/evaluate"
+        },
+        {
+          "key": "source.policy-nonce",
+          "method": "GET",
+          "template": "https://source.keplerops.test/api/exercises/policy-compiler/nonce"
+        },
+        {
+          "key": "source.policy-opcode-model",
+          "method": "GET",
+          "template": "https://source.keplerops.test/api/exercises/policy-compiler/opcode-model"
+        },
+        {
+          "key": "source.connector-run",
+          "method": "POST",
+          "template": "https://source.keplerops.test/api/exercises/connector-archive/run"
+        }
+      ],
+      "title": "Source client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

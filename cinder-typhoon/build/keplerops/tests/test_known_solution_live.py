@@ -8,8 +8,8 @@ the tools and files supplied with the foothold.
 
 Boundary rules this suite enforces:
 - It starts from the workstation material a participant is handed: `HOME.md`,
-  `work/service-notes.md`, `work/service-catalog.md`, the browser profile, the
-  saved git credential, the connector checkout, and the local helper.
+  `work/service-notes.md`, the browser profile, the saved git credential, the
+  connector checkout, and the local helper.
 - It derives every route, identifier, credential and answer from that material
   or from an earlier response. It never embeds a value known only to the author.
 - It carries response evidence forward across cards and operations.

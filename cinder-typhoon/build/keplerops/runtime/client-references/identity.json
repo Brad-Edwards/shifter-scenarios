@@ -1,0 +1,33 @@
+{
+  "documents": {
+    "identity.keplerops.test": {
+      "purpose": "Registration, federation, and service-relation operations.",
+      "related": [],
+      "routes": [
+        {
+          "key": "identity.registration",
+          "method": "GET",
+          "template": "https://identity.keplerops.test/api/registrations/{registration_id}"
+        },
+        {
+          "key": "identity.staff-login",
+          "method": "POST",
+          "template": "https://identity.keplerops.test/api/federation/staff-login"
+        },
+        {
+          "key": "identity.login",
+          "method": "POST",
+          "template": "https://identity.keplerops.test/api/federation/login"
+        },
+        {
+          "key": "identity.service-relation",
+          "method": "GET",
+          "template": "https://identity.keplerops.test/api/service-relations/{service_id}"
+        }
+      ],
+      "title": "Identity client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

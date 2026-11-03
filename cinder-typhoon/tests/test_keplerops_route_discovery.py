@@ -3,16 +3,23 @@
 from __future__ import annotations
 
 import ast
+import copy
+import importlib.util
 import json
-from pathlib import Path
+import tempfile
 import unittest
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+KEPLEROPS = ROOT / "build" / "keplerops"
 SUITE = ROOT / "build" / "keplerops" / "tests" / "test_known_solution_live.py"
 LEDGER = ROOT / "build" / "input-provenance" / "ledger.json"
-IMAGES = ROOT / "build" / "keplerops" / "images"
-RUNTIME = ROOT / "build" / "keplerops" / "runtime"
+PROVENANCE = ROOT / "build" / "input-provenance" / "provenance.py"
+IMAGES = KEPLEROPS / "images"
+RUNTIME = KEPLEROPS / "runtime"
+AUTHOR_MAP = KEPLEROPS / "authoring" / "client_documents.json"
+FRAGMENTS = RUNTIME / "client-references"
+OPENING = ROOT / "assets" / "keplerops" / "opening" / "k-dev"
 REQUEST_FUNCTIONS = {"curl", "curl_json", "post_json_route"}
 CLASSIFIED_API_LITERALS = {
     # Parsed from participant-supplied local-helper.md, never used as an
@@ -30,6 +37,31 @@ GENERIC_PROVENANCE_PHRASES = {
     "normal service responses",
     "service-catalog.md",
 }
+STATIC_IMAGE_REFERENCES = {
+    "assistant.Dockerfile": "assistant.json",
+    "ci.Dockerfile": "ci.json",
+    "cloud-api.Dockerfile": "cloud-api.json",
+    "data.Dockerfile": "data.json",
+    "identity.Dockerfile": "identity.json",
+    "indexer.Dockerfile": "indexer.json",
+    "preview.Dockerfile": "preview.json",
+    "registry.Dockerfile": "registry.json",
+    "source.Dockerfile": "source.json",
+    "staff.Dockerfile": "staff.json",
+    "support.Dockerfile": "support.json",
+}
+K04_EMPLOYEE_DISCLOSURES = {
+    "FIELDKEST-SENTNL",
+    "uint8_t body[32]",
+    "/api/internal/release-exceptions/state",
+    "/api/internal/release-exceptions/REL-EXC-2841/complete",
+    "recover_exception_queue",
+}
+GENERATOR = KEPLEROPS / "generate_client_references.py"
+SPEC = importlib.util.spec_from_file_location("keplerops_client_references", GENERATOR)
+assert SPEC and SPEC.loader
+client_references = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(client_references)
 
 
 def function_name(call: ast.Call) -> str | None:
@@ -65,7 +97,8 @@ def accepted_value_fallbacks(source: str) -> list[tuple[int, str]]:
         )
         if is_evidence and (
             call.func.attr == "setdefault"
-            or call.func.attr == "get" and (len(call.args) > 1 or call.keywords)
+            or call.func.attr == "get"
+            and (len(call.args) > 1 or call.keywords)
         ):
             findings.append((call.lineno, ast.unparse(call)))
     return findings
@@ -75,7 +108,8 @@ def method_route_keys(source: str) -> dict[str, set[str]]:
     tree = ast.parse(source)
     result: dict[str, set[str]] = {}
     for method in (
-        node for node in ast.walk(tree)
+        node
+        for node in ast.walk(tree)
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
         and node.name.startswith("test_k")
     ):
@@ -153,24 +187,123 @@ class KeplerOpsRouteDiscoveryTests(unittest.TestCase):
         self.assertNotIn("seed-manifest", source)
         self.assertNotIn("operator-manifest", source)
 
-    def test_service_images_publish_the_client_reference_graph(self) -> None:
-        copy = (
-            "COPY build/keplerops/runtime/client_documents.json "
-            "/opt/fieldkest/client_documents.json"
-        )
-        service_images = []
+    def test_generated_client_references_are_current_and_image_scoped(self) -> None:
+        author_map = json.loads(AUTHOR_MAP.read_text(encoding="utf-8"))
+        expected = client_references.validate_and_render(author_map)
+        actual = {path.name for path in FRAGMENTS.glob("*.json")}
+        self.assertEqual(actual, set(expected))
+        for name, payload in expected.items():
+            with self.subTest(fragment=name):
+                self.assertEqual((FRAGMENTS / name).read_bytes(), payload)
+                fragment = json.loads(payload)
+                self.assertEqual(
+                    list(fragment["documents"]),
+                    [author_map["images"][name.removesuffix(".json")]],
+                )
+                self.assertNotIn("images", fragment)
+
+    def test_service_images_never_copy_the_complete_author_map(self) -> None:
+        copied_fragments = set()
         for dockerfile in sorted(IMAGES.glob("*.Dockerfile")):
             source = dockerfile.read_text(encoding="utf-8")
-            if "runtime/http_support.py" in source and dockerfile.name != "k-dev.Dockerfile":
-                service_images.append(dockerfile.name)
-                with self.subTest(image=dockerfile.name):
-                    self.assertIn(copy, source)
-        self.assertTrue(service_images)
-        self.assertNotIn(
-            "runtime/client_documents.json",
-            (IMAGES / "k-dev.Dockerfile").read_text(encoding="utf-8"),
-            "the participant image must not contain the complete service document inventory",
+            with self.subTest(image=dockerfile.name):
+                self.assertNotIn("authoring/client_documents.json", source)
+            if "/opt/fieldkest/client_documents.json" in source:
+                self.assertIn("runtime/client-references/", source)
+                copied_fragments.add(dockerfile.name)
+        self.assertEqual(
+            copied_fragments,
+            {*STATIC_IMAGE_REFERENCES, "platform.Dockerfile", "service.Dockerfile"},
         )
+        for dockerfile, fragment in STATIC_IMAGE_REFERENCES.items():
+            self.assertIn(
+                f"runtime/client-references/{fragment}",
+                (IMAGES / dockerfile).read_text(encoding="utf-8"),
+            )
+        for dockerfile in ("platform.Dockerfile", "service.Dockerfile"):
+            self.assertIn(
+                "runtime/client-references/${SERVICE}.json",
+                (IMAGES / dockerfile).read_text(encoding="utf-8"),
+            )
+
+    def test_discovery_map_rejects_graph_and_route_mutants(self) -> None:
+        author_map = json.loads(AUTHOR_MAP.read_text(encoding="utf-8"))
+        unreachable = copy.deepcopy(author_map)
+        unreachable["documents"]["source.keplerops.test"]["related"] = []
+        with self.assertRaisesRegex(
+            client_references.DiscoveryMapError, "unreachable service documents"
+        ):
+            client_references.validate_and_render(unreachable)
+
+        duplicate = copy.deepcopy(author_map)
+        routes = duplicate["documents"]["source.keplerops.test"]["routes"]
+        routes[1]["key"] = routes[0]["key"]
+        with self.assertRaisesRegex(
+            client_references.DiscoveryMapError, "duplicate route key"
+        ):
+            client_references.validate_and_render(duplicate)
+
+        wrong_audience = copy.deepcopy(author_map)
+        wrong_audience["audience"] = "participant"
+        with self.assertRaisesRegex(
+            client_references.DiscoveryMapError, "schema or path is invalid"
+        ):
+            client_references.validate_and_render(wrong_audience)
+
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            fragments = client_references.validate_and_render(author_map)
+            client_references.write_output(output, fragments)
+            source_fragment = output / "source.json"
+            source_fragment.write_bytes(source_fragment.read_bytes() + b" ")
+            with self.assertRaisesRegex(
+                client_references.DiscoveryMapError, "generated fragment drift"
+            ):
+                client_references.check_output(output, fragments)
+
+    def test_employee_material_is_non_exhaustive_and_does_not_disclose_k04(
+        self,
+    ) -> None:
+        employee_material = "\n".join(
+            (OPENING / name).read_text(encoding="utf-8")
+            for name in ("HOME.md", "service-notes.md", "local-helper.md")
+        )
+        author_map = json.loads(AUTHOR_MAP.read_text(encoding="utf-8"))
+        route_templates = {
+            route["template"]
+            for document in author_map["documents"].values()
+            for route in document["routes"]
+        }
+        mentioned = {route for route in route_templates if route in employee_material}
+        self.assertLess(len(mentioned), len(route_templates))
+        published_references = AUTHOR_MAP.read_text(encoding="utf-8")
+        review_surface = employee_material + published_references
+        self.assertEqual(
+            sorted(
+                value for value in K04_EMPLOYEE_DISCLOSURES if value in review_surface
+            ),
+            [],
+        )
+
+    def test_both_arwc_delivery_carriers_are_reached_from_ordinary_references(
+        self,
+    ) -> None:
+        author_map = json.loads(AUTHOR_MAP.read_text(encoding="utf-8"))
+        documents = author_map["documents"]
+        package_keys = {
+            route["key"] for route in documents["packages.keplerops.test"]["routes"]
+        }
+        support_keys = {
+            route["key"] for route in documents["support.keplerops.test"]["routes"]
+        }
+        self.assertTrue({"connector.poll", "connector.activate"} <= package_keys)
+        self.assertIn("support.diagnostic-deliver", support_keys)
+
+    def test_removed_service_catalog_does_not_survive_in_acceptance_sources(
+        self,
+    ) -> None:
+        self.assertNotIn("service-catalog.md", SUITE.read_text(encoding="utf-8"))
+        self.assertNotIn("service-catalog.md", PROVENANCE.read_text(encoding="utf-8"))
 
     def test_client_reference_is_served_before_route_authentication(self) -> None:
         for name in ("ci.py", "cloud_api.py", "platform_service.py"):

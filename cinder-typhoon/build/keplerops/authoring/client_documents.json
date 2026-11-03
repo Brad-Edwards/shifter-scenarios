@@ -1,6 +1,22 @@
 {
   "schema": "fieldkest.client-documents/v1",
+  "audience": "author",
   "path": "/.well-known/fieldkest-client",
+  "images": {
+    "assistant": "assistant.keplerops.test",
+    "cert": "cert.keplerops.test",
+    "ci": "ci.keplerops.test",
+    "cloud-api": "cloud-api.keplerops.test",
+    "data": "data.keplerops.test",
+    "identity": "identity.keplerops.test",
+    "indexer": "indexer.keplerops.test",
+    "preview": "preview.keplerops.test",
+    "registry": "packages.keplerops.test",
+    "source": "source.keplerops.test",
+    "staff": "staff.keplerops.test",
+    "support": "support.keplerops.test",
+    "workload": "workloads.keplerops.test"
+  },
   "documents": {
     "source.keplerops.test": {
       "title": "Source client reference",

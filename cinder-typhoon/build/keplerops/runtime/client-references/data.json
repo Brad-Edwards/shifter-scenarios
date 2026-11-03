@@ -1,0 +1,68 @@
+{
+  "documents": {
+    "data.keplerops.test": {
+      "purpose": "Workspace objects, exports, backups, recovery records, and field archives.",
+      "related": [],
+      "routes": [
+        {
+          "key": "data.workspace-list",
+          "method": "GET",
+          "template": "https://data.keplerops.test/s3/fieldkest-workspaces"
+        },
+        {
+          "key": "data.workspace-object",
+          "method": "GET",
+          "template": "https://data.keplerops.test/s3/fieldkest-workspaces/{key}"
+        },
+        {
+          "key": "data.export-object",
+          "method": "GET",
+          "template": "https://data.keplerops.test/s3/fieldkest-exports/{key}"
+        },
+        {
+          "key": "data.export",
+          "method": "GET",
+          "template": "https://data.keplerops.test/api/exports/{export_id}"
+        },
+        {
+          "key": "data.export-definition",
+          "method": "GET",
+          "template": "https://data.keplerops.test/api/exports/{export_id}/definition"
+        },
+        {
+          "key": "data.export-destination",
+          "method": "PATCH",
+          "template": "https://data.keplerops.test/api/exports/{export_id}/destination"
+        },
+        {
+          "key": "data.export-runs",
+          "method": "POST",
+          "template": "https://data.keplerops.test/api/exports/{export_id}/runs"
+        },
+        {
+          "key": "data.backup",
+          "method": "GET",
+          "template": "https://data.keplerops.test/api/backups/{backup_id}"
+        },
+        {
+          "key": "data.restore",
+          "method": "POST",
+          "template": "https://data.keplerops.test/api/backups/{backup_id}/restores"
+        },
+        {
+          "key": "data.recovery-history",
+          "method": "GET",
+          "template": "https://data.keplerops.test/api/recovery/{namespace_id}/customer-migration-history"
+        },
+        {
+          "key": "data.field-archive",
+          "method": "GET",
+          "template": "https://data.keplerops.test/api/field-archive/{archive_id}"
+        }
+      ],
+      "title": "Data service client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

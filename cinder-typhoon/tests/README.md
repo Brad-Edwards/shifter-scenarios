@@ -187,10 +187,11 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s cinder-typhoon/tests -
 ```
 
 The focused suite validates the authored manifests and schemas, checks source
-hashes for the authored Training briefing and KeplerOps service catalog,
-requires the catalog to enumerate every route and its exploit-specific K04
-disclosures, proves the observer emits hashes rather than content, and verifies
-that missing, additional or forbidden participant files fail comparison.
+hashes for the authored Training briefing and KeplerOps opening material,
+requires the distributed client-reference graph to expose the reviewed routes
+without an exhaustive workstation catalog or K04 solution facts, proves the
+observer emits hashes rather than content, and verifies that missing,
+additional or forbidden participant files fail comparison.
 
 The live phase runners call
 `build/participant-surface/run.py` after pristine startup. Golden candidates use

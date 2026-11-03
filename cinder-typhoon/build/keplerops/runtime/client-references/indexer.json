@@ -1,0 +1,18 @@
+{
+  "documents": {
+    "indexer.keplerops.test": {
+      "purpose": "Submit native bundle index requests.",
+      "related": [],
+      "routes": [
+        {
+          "key": "indexer.indexes",
+          "method": "POST",
+          "template": "https://indexer.keplerops.test/api/indexes"
+        }
+      ],
+      "title": "Bundle index client reference"
+    }
+  },
+  "path": "/.well-known/fieldkest-client",
+  "schema": "fieldkest.client-documents/v1"
+}

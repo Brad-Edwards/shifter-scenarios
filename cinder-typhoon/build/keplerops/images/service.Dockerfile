@@ -9,7 +9,7 @@ RUN apt-get update \
     && useradd --system --gid "fieldkest-$SERVICE" --home-dir /nonexistent --shell /usr/sbin/nologin "fieldkest-$SERVICE"
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
-COPY build/keplerops/runtime/client_documents.json /opt/fieldkest/client_documents.json
+COPY build/keplerops/runtime/client-references/${SERVICE}.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/${SERVICE}.py /opt/fieldkest/service.py
 COPY build/keplerops/runtime/service-entrypoint.sh /usr/local/bin/fieldkest-service-entrypoint
 
