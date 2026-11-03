@@ -331,7 +331,8 @@ content:
       surface_bindings:
       - k-cloud.k-cloud-api/fieldkest-cloud-api/maintenance-policy
       starting_state: Policy distinguishes management caller, scheduler, runtime service
-        account and resource label; worker may manage own bounded job.
+        account, command, required resource label and archive header contract; worker may
+        manage its bounded job.
       mechanic_profile:
         classification: service-native
         surface: cloud-api.keplerops.test maintenance and policy APIs
@@ -344,8 +345,9 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Policy distinguishes management caller, scheduler, runtime service account
-          and resource label; worker may manage own bounded job.
+        input: Policy distinguishes management caller, scheduler, runtime service account,
+          command, required resource label and archive header contract; worker may manage
+          its bounded job.
         success: Protected policy read plus whoami result for management operation.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
@@ -380,7 +382,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 6c18331b8a8af55945015a3bc10d992f3bd876762f8d5e12f42fb9aedebb8932
+        digest: 16e4b77ec74b8328ee1b871caca5b119d9107c4046892e99d2a63d4518a26915
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

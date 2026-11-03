@@ -69,6 +69,32 @@ CREDENTIAL_PRINCIPALS = {
     SUPPORT_DELIVERY_TOKEN: "svc-keplerops-support-delivery",
     CONNECTOR_PACKAGE_TOKEN: "svc-keplerops-registry-delivery",
 }
+EXPORT_DESTINATIONS = (
+    {"name": "support-primary", "owner": "maya.ranscombe"},
+    {"name": "rowan-support-sink", "owner": "rowan.ito"},
+)
+EXPORT_PARTITION_BINDINGS = (
+    {"partition": "current", "tenant": "TEN-ARWC-047", "connector_revision": "FLK-7.4.2"},
+    {"partition": "legacy", "tenant": "TEN-ARWC-019", "connector_revision": "FLK-6.9.8"},
+)
+SCHEDULE_STARTUP_HOOK = ["/opt/fieldkest/hooks/support-marker", "--export", "EXP-2841"]
+SCHEDULE_NEXT_ASSIGNMENT = "SHIFT-SEP17-B"
+CERTIFICATE_SUBJECT_FORMAT = "{subject}@KEPLEROPS.TEST"
+ARCHIVE_DELEGATION_SPN = "HTTP/identity.keplerops.test@KEPLEROPS.TEST"
+ASSISTANT_ANSWER_REQUESTS = {
+    "private_escalation": {"request": "private-escalation", "reference_field": "case_reference"},
+    "attachment_guidance": {"request": "compatibility-guidance", "reference_field": "selection_id"},
+    "duplicate_review": {"request": "accept-duplicate", "reference_field": "review_id"},
+}
+COMPLETION_EXAMPLE = {
+    "example_id": "COMP-JOB-17",
+    "context": "support-examples",
+    "credential_namespace": "../credentials",
+    "credential_reference": "cred-completion-handover",
+    "handover_id": "HANDOVER-COMP-2841",
+    "script": "read_assigned_handover",
+    "note": "Completion jobs may read their assigned internal handover.",
+}
 
 
 def credential_principal(value: str | None) -> str:
@@ -388,7 +414,7 @@ class PlatformHandler(KeplerHandler):
             principal = self.spnego_principal()
             if principal is None: return
             if principal != "evan.calderoux@KEPLEROPS.TEST": return self.deny(403)
-            value = {"principal": "evan.calderoux", "spn": "HTTP/identity.keplerops.test@KEPLEROPS.TEST", "probe": "accepted", "authentication": "SPNEGO"}
+            value = {"principal": "evan.calderoux", "spn": ARCHIVE_DELEGATION_SPN, "probe": "accepted", "authentication": "SPNEGO"}
             token = principal
         elif path == "/api/service-relations/svc-release-admin":
             principal = self.spnego_principal()
@@ -458,7 +484,10 @@ class PlatformHandler(KeplerHandler):
         elif path == "/api/notes/NOTE-SUP-2841-7" and token == DEV_TOKEN:
             value = {"note_id": "NOTE-SUP-2841-7", "revision": 7, "consumer": "staff-note-preview", "status": "restricted-draft"}
         elif path == "/api/archive/handovers/evan.calderoux" and self.peer_common_name() == "evan.calderoux":
-            value = {"subject": "evan.calderoux", "handover_id": "ARCH-EVC-204", "service_relation": "svc-release-admin"}
+            value = {
+                "subject": "evan.calderoux", "handover_id": "ARCH-EVC-204",
+                "service_relation": "svc-release-admin", "delegation_spn": ARCHIVE_DELEGATION_SPN,
+            }
         else: return self.deny(403 if path.startswith("/api/") else 404)
         self.record("staff-read", path=path, principal=credential_principal(token)); self.send_json(200, value)
 
@@ -511,13 +540,18 @@ class PlatformHandler(KeplerHandler):
 
     def get_cert(self) -> None:
         if urlparse.urlsplit(self.path).path != "/api/enrollment/StaffArchiveUser" or bearer(self) not in {DEV_TOKEN, CERT_ENROLLMENT_TOKEN}: return self.deny(403)
-        value = {"template": "StaffArchiveUser", "eku": ["1.3.6.1.5.5.7.3.2"], "subject": "enrollee-supplied-upn", "requester_roles": ["support", "runner"]}
+        value = {
+            "template": "StaffArchiveUser", "eku": ["1.3.6.1.5.5.7.3.2"],
+            "subject": "enrollee-supplied-upn", "subject_format": CERTIFICATE_SUBJECT_FORMAT,
+            "requests_endpoint": "https://cert.keplerops.test/api/enrollment/StaffArchiveUser/requests",
+            "requester_roles": ["support", "runner"],
+        }
         self.record("enrollment-record", principal=DEV_USER, template=value["template"]); self.send_json(200, value)
 
     def post_cert(self) -> None:
         if urlparse.urlsplit(self.path).path != "/api/enrollment/StaffArchiveUser/requests" or bearer(self) != CERT_ENROLLMENT_TOKEN: return self.deny(403)
         data = self.body(); upn = data.get("upn")
-        if upn != "evan.calderoux@KEPLEROPS.TEST": raise ValueError("inactive_subject")
+        if upn != CERTIFICATE_SUBJECT_FORMAT.format(subject="evan.calderoux"): raise ValueError("inactive_subject")
         certificate = Path("/tmp/evan.crt").read_text()
         private_key = Path("/tmp/evan.key").read_text()
         value = {"request_id": "CERT-" + uuid.uuid4().hex[:10].upper(), "upn": upn, "eku": "clientAuth", "certificate_pem": certificate, "private_key_pem": private_key}
@@ -528,7 +562,12 @@ class PlatformHandler(KeplerHandler):
         path = urlparse.urlsplit(self.path).path; token = bearer(self); state = load_state()["workload"]
         if path == "/api/schedules/SCH-SUP-2841":
             if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
-            value = {"schedule_id": "SCH-SUP-2841", "cadence": "02:15 daily", "profile": "support-export", "startup_hook": state["startup_hook"], "assignment": state["assignment"]}
+            value = {
+                "schedule_id": "SCH-SUP-2841", "cadence": "02:15 daily",
+                "profile": "support-export", "startup_hook": state["startup_hook"],
+                "allowed_startup_hooks": [{"name": "support-export-marker", "argv": SCHEDULE_STARTUP_HOOK}],
+                "assignment": state["assignment"], "next_assignment": SCHEDULE_NEXT_ASSIGNMENT,
+            }
         else:
             match = re.fullmatch(r"/api/workloads/([^/]+)/whoami", path)
             if not match or token != MAINTENANCE_WORKER_TOKEN: return self.deny(403)
@@ -543,8 +582,8 @@ class PlatformHandler(KeplerHandler):
             if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
             data = self.body(); allowed = {"startup_hook", "assignment"}
             if not data or set(data) - allowed: raise ValueError("schedule_field_denied")
-            if "startup_hook" in data and data["startup_hook"] != ["/opt/fieldkest/hooks/support-marker", "--export", "EXP-2841"]: raise ValueError("startup_hook_denied")
-            if "assignment" in data and data["assignment"] != "SHIFT-SEP17-B": raise ValueError("assignment_denied")
+            if "startup_hook" in data and data["startup_hook"] != SCHEDULE_STARTUP_HOOK: raise ValueError("startup_hook_denied")
+            if "assignment" in data and data["assignment"] != SCHEDULE_NEXT_ASSIGNMENT: raise ValueError("assignment_denied")
             workload.update(data); save_state(state); self.record("schedule-update", principal="role/support-export-editor", fields=sorted(data)); return self.send_json(200, {"schedule_id": "SCH-SUP-2841", **data})
         if path == "/api/schedules/SCH-SUP-2841/runs":
             if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
@@ -582,7 +621,12 @@ class PlatformHandler(KeplerHandler):
             value = {"export_id": "EXP-2841", "case": "SUP-2841", "dataset": "support-case-history", "revision": state["destination_revision"], "state": "unpublished"}
         elif path == "/api/exports/EXP-2841/definition":
             if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
-            value = {"export_id": "EXP-2841", "owner": "maya.ranscombe", "tenant": "TEN-ARWC-047", "partitions": ["current", "legacy"], "destination": state["destination"]}
+            value = {
+                "export_id": "EXP-2841", "owner": "maya.ranscombe", "tenant": "TEN-ARWC-047",
+                "partitions": [binding["partition"] for binding in EXPORT_PARTITION_BINDINGS],
+                "partition_bindings": list(EXPORT_PARTITION_BINDINGS),
+                "destination": state["destination"], "destinations": list(EXPORT_DESTINATIONS),
+            }
         elif path == "/api/backups/BAK-2026-021":
             if token != HISTORY_RECOVERY_TOKEN: return self.deny(403)
             backup = json.loads((STATE_ROOT / "backups/BAK-2026-021.json").read_text())
@@ -606,12 +650,17 @@ class PlatformHandler(KeplerHandler):
         path = urlparse.urlsplit(self.path).path; token = bearer(self); data = self.body(); state = load_state(); store = state["data"]
         if path == "/api/exports/EXP-2841/destination":
             if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
-            if data.get("destination") != "rowan-support-sink": raise ValueError("destination_denied")
+            participant_sink = next(item["name"] for item in EXPORT_DESTINATIONS if item["owner"] == DEV_USER)
+            if data.get("destination") != participant_sink: raise ValueError("destination_denied")
             store["destination"] = data["destination"]; store["destination_revision"] = 7; save_state(state)
             value = {"export_id": "EXP-2841", "destination": store["destination"], "revision": 7}
         elif path == "/api/exports/EXP-2841/runs":
             if token != SUPPORT_EXPORT_TOKEN: return self.deny(403)
-            if data.get("tenant") != "TEN-ARWC-047" or data.get("connector_revision") != "FLK-7.4.2" or data.get("partitions") != ["current"]: raise ValueError("incoherent_collection")
+            current = EXPORT_PARTITION_BINDINGS[0]
+            if (data.get("tenant") != current["tenant"]
+                    or data.get("connector_revision") != current["connector_revision"]
+                    or data.get("partitions") != [current["partition"]]):
+                raise ValueError("incoherent_collection")
             run_id = "EXP-RUN-" + uuid.uuid4().hex[:10].upper(); value = {"run_id": run_id, "export_id": "EXP-2841", "tenant": "TEN-ARWC-047", "connector_revision": "FLK-7.4.2", "destination": store["destination"], "runtime_identity": "svc-support-export", "state": "delivered"}; store["exports"][run_id] = value; save_state(state)
         elif path == "/api/backups/BAK-2026-021/restores":
             if token != HISTORY_RECOVERY_TOKEN: return self.deny(403)
@@ -624,7 +673,11 @@ class PlatformHandler(KeplerHandler):
         parsed = urlparse.urlsplit(self.path); path = parsed.path
         if path == "/static/app.js":
             return self.send_bytes(200, Path("/opt/fieldkest-assistant/web/app.js").read_bytes(), "application/javascript")
-        if path == "/api/config": value = {"context": "ctx-support-private-v4", "collection": "support-private", "policy_version": "retrieval-2026.09"}
+        if path == "/api/config":
+            value = {
+                "context": "ctx-support-private-v4", "collection": "support-private",
+                "policy_version": "retrieval-2026.09", "answer_requests": ASSISTANT_ANSWER_REQUESTS,
+            }
         elif path == "/api/contexts":
             # The unpublished context view leaks the items it retains (K23.1).
             value = {"contexts": [{
@@ -650,7 +703,7 @@ class PlatformHandler(KeplerHandler):
             value = {"document_id": "RILL-PRIVATE-442", "tenant": "TEN-RILL-022", "content": "Rillhaven pump telemetry retention exception"}
         elif path == "/api/completions/examples/COMP-JOB-17":
             if not self.support_auth(): return self.deny(403)
-            value = {"example_id": "COMP-JOB-17", "context": "support-examples", "note": "Completion jobs may read their assigned internal handover."}
+            value = COMPLETION_EXAMPLE
         else:
             match = re.fullmatch(r"/api/completions/jobs/([A-Z0-9-]+)", path)
             state = load_state(); lease = state["assistant"].setdefault("leases", {}).get(bearer(self))
@@ -664,27 +717,34 @@ class PlatformHandler(KeplerHandler):
         if path == "/api/answers":
             if not self.support_auth(): return self.deny(403)
             data = self.body(); mode = data.get("request")
-            if mode == "private-escalation" and data.get("case_reference") == "SUP-2841": value = {"answer": assistant_generate(mode), "sources": ["ESC-SUP-2841-R3"], "model": "Qwen2.5-3B-Instruct", "model_revision": "14d7620ba47cf51be0b176e14e27e38a34d4ff88"}
-            elif mode == "compatibility-guidance" and data.get("selection_id") == "SEL-SUP-2841-12": value = {"answer": assistant_generate(mode), "sources": ["ATT-DIAG-698"], "recommendation_id": "assistant-obsolete-bundle", "model": "Qwen2.5-3B-Instruct", "model_revision": "14d7620ba47cf51be0b176e14e27e38a34d4ff88"}
-            elif mode == "accept-duplicate" and data.get("review_id") == "DREV-2841-2":
+            private_request = ASSISTANT_ANSWER_REQUESTS["private_escalation"]
+            guidance_request = ASSISTANT_ANSWER_REQUESTS["attachment_guidance"]
+            duplicate_request = ASSISTANT_ANSWER_REQUESTS["duplicate_review"]
+            if mode == private_request["request"] and data.get(private_request["reference_field"]) == "SUP-2841": value = {"answer": assistant_generate(mode), "sources": ["ESC-SUP-2841-R3"], "model": "Qwen2.5-3B-Instruct", "model_revision": "14d7620ba47cf51be0b176e14e27e38a34d4ff88"}
+            elif mode == guidance_request["request"] and data.get(guidance_request["reference_field"]) == "SEL-SUP-2841-12": value = {"answer": assistant_generate(mode), "sources": ["ATT-DIAG-698"], "recommendation_id": "assistant-obsolete-bundle", "model": "Qwen2.5-3B-Instruct", "model_revision": "14d7620ba47cf51be0b176e14e27e38a34d4ff88"}
+            elif mode == duplicate_request["request"] and data.get(duplicate_request["reference_field"]) == "DREV-2841-2":
                 value = send_json("https://support.keplerops.test/api/reviews/DREV-2841-2/duplicate-disposition", "PATCH", {"recommendation_id": "assistant-obsolete-bundle"}, ASSISTANT_TOOL_TOKEN)
             else: raise ValueError("answer_request_denied")
             self.record("assistant-answer", principal="support-session", request=mode, sources=value.get("sources", [])); return self.send_json(200, value)
         if path == "/api/completions/context":
             if not self.support_auth(): return self.deny(403)
             data = self.body()
-            if data.get("context") != "support-examples/../credentials/cred-completion-handover": raise ValueError("context_denied")
+            expected_context = "/".join((
+                COMPLETION_EXAMPLE["context"], COMPLETION_EXAMPLE["credential_namespace"],
+                COMPLETION_EXAMPLE["credential_reference"],
+            ))
+            if data.get("context") != expected_context: raise ValueError("context_denied")
             state = load_state(); lease = "completion-" + uuid.uuid4().hex
             state["assistant"].setdefault("leases", {})[lease] = {"issued_at": time.time(), "used": False, "job_id": None}
             save_state(state)
-            value = {"credential": "cred-completion-handover", "lease": lease, "audience": "completion-handover", "scope_probe": "accepted", "expires_in": 300}
+            value = {"credential": COMPLETION_EXAMPLE["credential_reference"], "lease": lease, "audience": "completion-handover", "scope_probe": "accepted", "expires_in": 300}
             self.record("completion-context", principal="support-session", credential=value["credential"]); return self.send_json(201, value)
         if path == "/api/completions/jobs":
             state = load_state(); lease_id = bearer(self); lease = state["assistant"].setdefault("leases", {}).get(lease_id)
             if not lease or lease.get("used") or time.time() - float(lease.get("issued_at", 0)) > 300: return self.deny(403, "completion_lease_denied")
             data = self.body()
-            if data.get("handover_id") != "HANDOVER-COMP-2841" or set(data) - {"handover_id", "script"}: raise ValueError("job_denied")
-            if data.get("script") != "read_assigned_handover": raise ValueError("script_denied")
+            if data.get("handover_id") != COMPLETION_EXAMPLE["handover_id"] or set(data) - {"handover_id", "script"}: raise ValueError("job_denied")
+            if data.get("script") != COMPLETION_EXAMPLE["script"]: raise ValueError("script_denied")
             job_id = "COMP-" + uuid.uuid4().hex[:10].upper(); correlation = str(uuid.uuid4())
             lease.update({"used": True, "job_id": job_id})
             save_state(state)

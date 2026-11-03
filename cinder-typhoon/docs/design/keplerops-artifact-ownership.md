@@ -29,6 +29,49 @@ below require exact authored content or deterministic generation inputs in the
 KeplerOps content modules. Unrelated `keplerops-ai`, Training, and ARWC assets
 are not reused.
 
+## Participant-derived interface flow
+
+The participant follows service-owned records rather than a campaign-wide route
+or value catalog. Each response below may describe only the next operation that
+the responding system normally owns. It may not copy a protected record from a
+different service or disclose the weakness that makes the operation useful.
+
+```mermaid
+flowchart LR
+    W[Rowan workstation] -->|linked client references| C[Cloud and data records]
+    C -->|trust, export, and schedule contracts| X[Workload execution]
+    W -->|support session and staff directory| I[Identity and certificate records]
+    I -->|delegated relation| R[Release administration]
+    W -->|assistant application configuration| A[Retrieval and completion records]
+    C -->|backup and maintenance policy| M[Recovery and maintenance runtime]
+    X --> E[Service-owned evidence]
+    R --> E
+    A --> E
+    M --> E
+```
+
+| Cards | Normal owner response | Values the known solution may consume |
+| --- | --- | --- |
+| K13–K16 | Workspace object, trust record, export definition, and schedule policy | Object/version IDs, role, export/schedule IDs, destination, partition binding, startup-hook template, and next assignment |
+| K17–K20 | Support session, staff directory, enrollment template, archive relation, and release-administration session | Account/customer scope, subject and UPN suffix, certificate template, delegated SPN, managed identity, approval contract, and rehearsal input |
+| K21–K24 | Assistant application configuration, context inventory, selection, and completion example | Request modes and reference fields, conversation/selection/document IDs, credential reference, handover ID, and allowed completion script |
+| K30–K31 | Build record, backup catalog, maintenance policy, workload result, and archive contract | Recovery principal/session, backup/namespace IDs, command, required labels, archive headers, runtime identity, and scheduler attestation |
+
+Security invariants:
+
+- Client references describe routes and field shapes, not challenge answers,
+  credentials, protected identifiers, or exploit recipes.
+- Credentials, sessions, leases, job IDs, and attestations are issued by their
+  owning service, expire or are consumed as declared, and are never seeded as
+  successful evidence.
+- A caller-provided identifier never becomes authoritative merely because an
+  upstream service returned it. The destination service validates scope,
+  tenant, resource, lifetime, and replay state and writes its own audit.
+- Wrong subjects, roles, service principals, object keys, identity relations,
+  labels, commands, and cross-tenant bindings fail without mutating state.
+- Participant-derived input is range-local. No response, credential, or audit
+  can be replayed in another participant world.
+
 ## Ownership matrix
 
 `Initial` means immutable starting state. `Mutable` means ordinary service state
@@ -87,10 +130,10 @@ audit/evidence state; it must not be writable by the participant path it proves.
 | K14.2 | Cloud token exchange | Policy validates issuer/subject but omits audience; supplied workload token has wrong intended audience but matching subject | Role session `role/support-export-editor` and protected role-record read | Scoped-role output for K16/K31 | Identity policy/relationship, token service route, app role/grant, session and audit |
 | K14.3 | Export object policy on `k-data` | Role is ordinarily denied support export; resource rule decodes `%2f` after prefix comparison, allowing one fixed `exports/support/EXP-2841` object | Protected export read under scoped role | Distinct data-policy result | Datastore access policy, exact key normalization behavior and audit |
 | K15.1 | Export service on `k-data` | `SUP-2841` references unpublished job `EXP-2841`, dataset `support-case-history`, revision 6 | Job-summary read | Lead only | Application/data records, routes and evidence |
-| K15.2 | Export service | Protected definition with source partitions, owner `maya.ranscombe`, tenant and destination; detail route checks tenant visibility but omits job ownership | Definition read audit | Required for destination change | App RBAC, route authorization rule, exact record and audit |
+| K15.2 | Export service | Protected definition with source partitions, owner `maya.ranscombe`, tenant, destination registry and current partition binding; detail route checks tenant visibility but omits job ownership | Definition read audit | Required for destination change | App RBAC, route authorization rule, exact record and audit |
 | K15.3 | Export service | Destination registry includes participant-owned sink; PATCH preserves server-owned dataset/partitions but checks generic editor grant rather than job ownership | Accepted destination revision 7 and audit | Produces handed-over export | Application route/fields, app grant, mutable record and evidence |
 | K15.4 | Export service + sink on `k-data` | Export manifest with current and stale tenant partitions; `G02` identifies `TEN-ARWC-047`/`FLK-7.4.2` | Coherent current-customer collection and delivery receipt; mixed/stale selections fail | ARWC intelligence, not entry | Datastore content, delivery route, persistent volume and joined evidence |
-| K16.1 | Scheduler on `k-workload` | Schedule `SCH-SUP-2841`, systemd-timer-equivalent cadence, profile and startup-config reference | Schedule/config read | Input to K16.2 | Native scheduled job, content and route |
+| K16.1 | Scheduler on `k-workload` | Schedule `SCH-SUP-2841`, systemd-timer-equivalent cadence, profile, editable startup-hook template, current assignment and next assignment | Schedule/config read | Input to K16.2 | Native scheduled job, content and route |
 | K16.2 | Scheduler | Editor can update `startup_hook` for owned destination but service omits schedule-owner check; hook has fixed argv schema and output contract | Next rehearsal emits marker and valid support output | Input to K16.3 | Scheduled job, bounded action route, mutable config and run evidence |
 | K16.3 | Scheduled task identity | Task runs as `svc-support-export`, distinct from caller, with one protected handover-write grant | On-demand run performs protected action; destination audit names task principal | Persistent execution position | Local/runtime identity, scheduled process, app principal/grant and independent audit |
 | K16.4 | Scheduler + support handover | Shift transition changes assignment from `SHIFT-SEP16-A` to `SHIFT-SEP17-B` without replacing schedule | Post-transition scheduled run retains marker, valid output and new assignment binding | Optional persistence conclusion | Scheduled job persistence, mutable assignment content and evidence |
@@ -102,13 +145,13 @@ audit/evidence state; it must not be writable by the participant path it proves.
 | K18.2 | Staff preview proxy + identity admin | Preview path validates encoded `/notes/` prefix before decoding; encoded traversal reaches read-only identity-admin registration `OIDC-FIELDKEST-SUPPORT` under reviewer service identity | Registration response and both proxy/destination audits | Access, not mutation | Proxy upstream relationship, routes, service principal/grant and joined evidence |
 | K18.3 | Same proxy + identity admin | Preview metadata forwards an allowed method field; encoded traversal plus `PATCH` can add the retained-support provider while preserving the existing provider. The registration identifies its discovery metadata and assertion submission endpoint. | Registration revision with retained-support issuer and successful ordinary staff-login audit | Controlled federation trust | Proxy/application parameters, identity federation relationship/policy, mutable config and evidence |
 | K18.4 | Support federation + customer records | The retained-support provider on `k-support` publishes issuer, audience and claim metadata, then issues a signed assertion for the dossier's pairwise reviewer subject and tenant. Identity consumes each assertion once; the backend role check omits the session-tenant predicate on one query. | Federated session and read of protected record `CUSTREC-047-R6` | Specialist data result | Identity authority/federation, support session, app RBAC, database read and audit |
-| K19.1 | Staff directory + certificate authority on `k-cert` | Enrollment service record and `StaffArchiveUser` template: client-auth EKU, enrollee-supplied subject, support/runner enrollment grant | Protected template/trust read | Input to K19.2 | Identity authority, certificate service, subjects/policies and exact client protocol record |
+| K19.1 | Staff directory + certificate authority on `k-cert` | Directory supplies the enrollment record URI and archive subject; `StaffArchiveUser` supplies client-auth EKU, enrollee-supplied UPN format and suffix, and support/runner enrollment grant | Protected template/trust read | Input to K19.2 | Identity authority, certificate service, subjects/policies and exact client protocol record |
 | K19.2 | Certificate service + staff archive | Enrollment permits requested UPN for active staff without comparing it to requester; target `evan.calderoux` has protected archive handover | Issued client certificate/private key and successful mTLS handover read as Evan | Usable colleague identity | Certificate enrollment, generated artifact, account mapping, app auth/grant and audit |
-| K19.3 | Archive delegation broker on `k-staff` | Archive service may delegate authenticated users to supplier-admin probe; target allowlist compares service class but omits host | Kerberos/SPNEGO delegated service ticket and successful identity admin probe | Input to K20 | Identity relationships, federation/delegation policy, generated ticket and destination audit |
+| K19.3 | Archive delegation broker on `k-staff` | Archive relation names its delegated HTTP service principal; target allowlist compares service class but omits host | Kerberos/SPNEGO delegated service ticket and successful identity admin probe | Input to K20 | Identity relationships, federation/delegation policy, generated ticket and destination audit |
 | K20.1 | Identity delegation service | Delegated context can invoke `service-relations/read` for `svc-release-admin`; host-omission from K19 permits this adjacent SPN | Authenticated action and protected relation record | Input to K20.2 | Identity service route, delegated subject/policy and evidence |
 | K20.2 | Staff managed-identity service | Relation points to managed service account; object ACL checks delegated actor's service relation but not requested managed identity | Issued bounded `svc-release-admin` service session and protected admin-resource read | Input to K20.3 | Managed account/subject, app roles/grants, session and audit |
-| K20.3 | Registry approval + private rehearsal consumer | Approval API maps managed service session through release-owner impersonation relationship to `evan.calderoux`; mapping lacks required human-presence claim | Privileged approval, publication audit and rehearsal consumer acceptance for one package | Alternative K26 publication authority only | Identity relationship, app principal/grants, publication route, isolated consumer and joined evidence |
-| K21.1 | Assistant app on `k-assistant` | Public static bundle references exposed `/api/config`; config names context `ctx-support-private-v4`, retrieval collection and policy version | Config/context-reference read | Lead to K24 | Application static assets/route/disclosure and content |
+| K20.3 | Registry approval + private rehearsal consumer | Release-administration session returns its scoped approval request contract and synthetic rehearsal input; approval maps the managed service session through release-owner impersonation to `evan.calderoux` but lacks required human presence | Privileged approval, publication audit and rehearsal consumer acceptance for one package | Alternative K26 publication authority only | Identity relationship, app principal/grants, publication route, isolated consumer and joined evidence |
+| K21.1 | Assistant app on `k-assistant` | Public static bundle references exposed `/api/config`; config names the context, retrieval collection, policy version, and supported answer request shapes | Config/context-reference read | Lead to K24 | Application static assets/route/disclosure and content |
 | K21.2 | Assistant retention store | Conversation `CONV-SUP-2841-19` remains addressable after UI deletion; immutable case detail | Retained-conversation read | Separate from config | Datastore content/version, route and audit |
 | K21.3 | Assistant + retrieval store | `ctx-support-private-v4` route accepts case reference before applying support-role document filters; exact `Qwen2.5-3B-Instruct` artifact, deterministic decoding (`temperature=0`, fixed template/seed) receives private escalation source | Response cites and discloses source `ESC-SUP-2841-R3`; retrieval/source audit proves grounding | Assistant conclusion only | Exact software/model component and parameters, retrieval route, content, generated artifact and evidence |
 | K22.1 | Assistant retrieval service | Source-selection record `SEL-SUP-2841-12` binds case to attachment `ATT-DIAG-698` | Selection-record read | Input to K22.2 | Datastore content/route and evidence |
@@ -117,7 +160,7 @@ audit/evidence state; it must not be writable by the participant path it proves.
 | K23.1 | Assistant context API | Context inventory accidentally public; entry for unpublished support source collection | Inventory-entry read | Input to K23.3 | Application route/content and audit |
 | K23.2 | Assistant retention artifact | Separate artifact names conversation `CONV-RILL-442-8` and tenant `TEN-RILL-022` | Reference read | Input to K23.3 | Exact content/route/evidence |
 | K23.3 | Retrieval API + document store | Fetch route authorizes support role but does not compare requested tenant to session tenant when context ID and conversation ID agree | Restricted Rillhaven document read under original ARWC support identity | No model required | App RBAC/tenant records, database/datastore access and destination audit |
-| K24.1 | Completion app on `k-assistant` | Retained example `COMP-JOB-17` and private note describing internal handover use | Example/note read | Input to K24.2 | Application content/routes and evidence |
+| K24.1 | Completion app on `k-assistant` | Retained example `COMP-JOB-17` supplies its context root, credential reference, assigned handover, and allowed completion script | Example/note read | Input to K24.2 | Application content/routes and evidence |
 | K24.2 | Completion context store | Context selector checks job ownership after resolving credential object; crafted allowed context alias resolves credential `cred-completion-handover` outside intended selection | Credential lease and successful scope probe | Input to K24.3 | App authorization, generated secret fixture/session, route and audit |
 | K24.3 | Completion runner + handover store | Generated script runs in bounded completion job as `svc-assistant-completion`; job identity has internal handover read grant not exposed by normal response | Actual job retrieves `HANDOVER-COMP-2841`; execution and destination read audits agree | Assistant execution conclusion | Orchestration template/child, local/app identity, file/datastore grant, generated output and joined evidence |
 | K25.1 | Support dossier archive | Dossier `DOS-ARWC-HIST-01` and retained attachment, cross-referenced to narrative account `K-C-001` and recurring `SUP-2841` | Dossier/attachment read | Reuses exact K-C-001 background; optional history | Existing narrative content plus support record/route/evidence |
@@ -138,7 +181,7 @@ audit/evidence state; it must not be writable by the participant path it proves.
 | K30.1 | Build-record app + backup service on `k-data` | Authenticated build record names `svc-history-recovery`, backup `BAK-2026-021` and allowed restore operation; source DB explicitly denies principal | Backup session and catalog probe succeed while direct source query is denied and audited | Input to K30.2 | Identity subject/session, backup app grant, database negative access and evidence |
 | K30.2 | Backup recovery service | Immutable backup contains `customer_migration_history`; API allows restore into caller-owned recovery namespace and read of completed restore | Protected record set restored and read; source DB remains unreachable | Input to K30.3 | Database/datastore service and access relationships, restore route, generated dataset and audits |
 | K30.3 | Recovered dataset | Migration record links old ARWC name, `TEN-ARWC-019` and `FLK-6.9.8` to current `TEN-ARWC-047`/`FLK-7.4.2` with effective date | Exact current-linked migration record read | Historical provenance only | Dataset content, query route and evidence |
-| K31.1 | Maintenance policy on `k-cloud-api` | Policy distinguishes management caller, scheduler, runtime service account and resource label; worker may manage own bounded job | Protected policy read plus `whoami` result for management operation | Input to K31.2 | Orchestration authority/policy, identities, routes and evidence |
+| K31.1 | Maintenance policy on `k-cloud-api` | Policy distinguishes management caller, scheduler, runtime service account, command, required resource label and archive header contract; worker may manage its bounded job | Protected policy read plus `whoami` result for management operation | Input to K31.2 | Orchestration authority/policy, identities, routes and evidence |
 | K31.2 | Workload manager on `k-workload` | Allowed patch fields include command and labels for fixed image; spawned job runs as `svc-fieldlink-maintenance`, not submitting worker | Runtime `whoami` and protected runtime-only probe succeed while normal job output stays valid | Runtime capability | Orchestration spawn template/child/lifecycle, process identity, app grant and audit |
 | K31.3 | Field archive on `k-data` | Archive policy grants runtime principal only when request carries scheduler-attested `workload.class=maintenance`; attestation incorrectly copies participant-editable job label | Actual archive `FIELD-CRR-2026-09` read under runtime identity with maintenance label | Optional cloud conclusion | Datastore access policy, workload metadata, exact content and destination audit |
 

@@ -104,8 +104,13 @@ def source_revision(paths: Iterable[Path] | None = None) -> str:
 
 
 def _section(source: str, heading: str) -> str:
+    if " — " in heading:
+        before, after = heading.split(" — ", 1)
+        heading_pattern = rf"{re.escape(before)}\s*—\s*{re.escape(after)}"
+    else:
+        heading_pattern = re.escape(heading)
     match = re.search(
-        rf"(?ms)^## {re.escape(heading)}\s*\n(.*?)(?=^## |\Z)",
+        rf"(?ms)^## {heading_pattern}\s*\n(.*?)(?=^## |\Z)",
         source,
     )
     if not match or not match.group(1).strip():

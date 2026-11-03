@@ -37,7 +37,8 @@ content:
       - k-cloud.k-assistant/fieldkest-assistant/web-bundle
       - k-cloud.k-assistant/fieldkest-assistant/public-config
       starting_state: Public static bundle references exposed /api/config; config names
-        context ctx-support-private-v4, retrieval collection and policy version.
+        the context, retrieval collection, policy version, and supported answer request
+        shapes.
       mechanic_profile:
         classification: service-native
         surface: assistant.keplerops.test contexts and app APIs
@@ -48,8 +49,8 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Public static bundle references exposed /api/config; config names context
-          ctx-support-private-v4, retrieval collection and policy version.
+        input: Public static bundle references exposed /api/config; config names the context,
+          retrieval collection, policy version, and supported answer request shapes.
         success: Config/context-reference read.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
@@ -84,7 +85,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: ca958efa316aec84c02d8395763089589049d69f12dd35da9f0d8eb2b8b9eff2
+        digest: 61b28b26deeb19dc0498cb910c5bdd7d43bfd2806be676a0bd587fded58b2853
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -196,6 +197,8 @@ content:
         retrieval_defect: the route accepts case_reference before applying support-role
           document filters
         required_source: ESC-SUP-2841-R3
+        discovery: assistant config returns the request mode and reference field; the support
+          session supplies the reference value
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -239,7 +242,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 60856dbd63a80f6a6899e985c7c642a3594a20e38a06c76fd06c3429c546e052
+        digest: 41d0858971a18eea20a636c30a1af1a449a3613efd94eb914a71251e2a3aeb9e
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -342,6 +345,8 @@ content:
         control: a fixed system instruction says current signed guidance is authoritative
           but does not mark retrieved attachment text as untrusted data
         decoding: same pinned model, template, and deterministic parameters as K21.3
+        discovery: assistant config returns the compatibility request mode and selection
+          reference field
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -383,7 +388,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: e0dcb86233815962dc335a83b570622ed8629cb138b791e776d155e3c693694b
+        digest: 768aaa12587df077d13f64b0daba36594f682d6c826889f1ee5f4fa71c0c763c
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -420,6 +425,8 @@ content:
           role and confirmation checks
         proof: support service audit, not assistant transcript, must show the resulting
           accepted revision and assistant tool principal
+        discovery: assistant config returns the tool request mode and review reference field;
+          context inventory supplies the review identifier
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -462,7 +469,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 2ace8be7ac0968d29ad48b81ef10216860eee009022e4d9184a4e188c622fa45
+        digest: eaa9c7dbd3937b39996fec3bb11c5aebc8748595e893318272c26a7e331fc746
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -701,8 +708,8 @@ content:
         authority: Completion app on k-assistant
       surface_bindings:
       - k-cloud.k-assistant/fieldkest-assistant/completion-example
-      starting_state: Retained example COMP-JOB-17 and private note describing internal
-        handover use.
+      starting_state: Retained example COMP-JOB-17 supplies its context root, credential
+        reference, assigned handover, and allowed completion script.
       mechanic_profile:
         classification: service-native
         surface: assistant.keplerops.test completion-example API
@@ -714,8 +721,8 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Retained example COMP-JOB-17 and private note describing internal handover
-          use.
+        input: Retained example COMP-JOB-17 supplies its context root, credential reference,
+          assigned handover, and allowed completion script.
         success: Example/note read.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
@@ -750,7 +757,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 2ac102e385701bb1a29025ea68405a58d6c31958460928976016b31948300f9f
+        digest: e701b4aaf99c7df1a425e5363dc18d304ffb45b5626f915091715a2a67701b61
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -779,6 +786,8 @@ content:
       mechanic_profile:
         allowed_alias: support-examples/../credentials/cred-completion-handover
         canonical_credential: cred-completion-handover
+        discovery: the completion example returns its context root and credential reference;
+          the caller composes the alias
         defect: credential alias is normalized and resolved before the job-ownership check
           is applied to the original allowed context selector
         lease: single completion job, five minutes, audience completion-handover
@@ -823,7 +832,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 0d71fc82d9104a4107318dfdde5bbfd762b3704e16fb31ca969510fb272e8db9
+        digest: 9e1c1bb9b207b79aa756586a21375d6f424803104ae841191e243ba46d819868
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -854,6 +863,8 @@ content:
           script only
         runtime_identity: svc-assistant-completion
         allowed_read: HANDOVER-COMP-2841
+        discovery: the completion example and context inventory return the allowed script
+          and assigned handover
         exclusions: no caller-selected image, mount, service account, network destination,
           or second handover ID
       request_contract:
@@ -898,7 +909,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: d66936fccafa9050de54fa7c749dd0b54b983423736a0d220fd8ec19348d5237
+        digest: d35f73850996589bf549631d1e8728a10edea7f080052a0618d20de1cc983ecc
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

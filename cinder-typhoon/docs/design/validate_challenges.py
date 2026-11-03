@@ -50,6 +50,14 @@ def canonical(groups):
     return tuple(sorted(tuple(sorted(g)) for g in groups))
 
 
+def heading_expression(heading):
+    """Accept Vale's compact em dash without weakening any other heading text."""
+    if ' — ' in heading:
+        before, after = heading.split(' — ', 1)
+        return re.escape(before) + r'\s*—\s*' + re.escape(after)
+    return re.escape(heading)
+
+
 def parse_requirements(text):
     """Parse the briefs' small AND/OR grammar, including grouped alternatives."""
     expression = text.strip().removesuffix('.')
@@ -148,7 +156,8 @@ def load_briefs():
         for section in ('Challenge description — player-facing', 'Story purpose',
                         'Prerequisites and starting position', 'Completion and downstream use',
                         'Difficulty and inspiration'):
-            match = re.search(r'^## ' + re.escape(section) + r'\n(.*?)(?=^## |\Z)', text, re.M | re.S)
+            match = re.search(r'^## ' + heading_expression(section) + r'\n(.*?)(?=^## |\Z)',
+                              text, re.M | re.S)
             require(match and match[1].strip(), f'Missing/empty section: {ident}/{section}')
         check_design_sections(text, fields.get('Design status'), ident)
         match = re.search(r'^\*\*Required access or evidence:\*\* (.+)$', text, re.M)

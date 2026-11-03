@@ -28,8 +28,8 @@ content:
         authority: Scheduler on k-workload
       surface_bindings:
       - k-cloud.k-workload/workload-service/schedule-detail
-      starting_state: Schedule SCH-SUP-2841, systemd-timer-equivalent cadence, profile and
-        startup-config reference.
+      starting_state: Schedule SCH-SUP-2841, systemd-timer-equivalent cadence, profile,
+        editable startup-hook template, current assignment and next assignment.
       mechanic_profile:
         classification: service-native
         surface: workloads.keplerops.test schedule API
@@ -41,8 +41,8 @@ content:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Schedule SCH-SUP-2841, systemd-timer-equivalent cadence, profile and startup-config
-          reference.
+        input: Schedule SCH-SUP-2841, systemd-timer-equivalent cadence, profile, editable
+          startup-hook template, current assignment and next assignment.
         success: Schedule/config read.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
@@ -77,7 +77,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 788cc77dd8e23fe2d4017fbf94bc717555a32f92100e32cc65df3e81c1f56970
+        digest: 101b652b5eddaab5ac0cd86517396054159569c3e6dce97982baf4ece5b327c2
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -110,6 +110,8 @@ content:
         - /opt/fieldkest/hooks/support-marker
         - --export
         - EXP-2841
+        discovery: the schedule resource returns the editable startup-hook template and
+          the next assignment
         defect: editor grant is checked for the owned destination but schedule owner is
           not compared
         output: hook marker is additive; the ordinary support export schema and digest remain
@@ -154,7 +156,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: b408814cd02db23b7b9ac06595b58b0e174683bb7bba9ccfe23f634cc96f14f1
+        digest: df4671abf7753b42b79426991c9b879408b3f73119351b3c5ccd9979514ec9ea
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -335,6 +337,11 @@ content:
         - labels
         label:
           workload.class: maintenance
+        command:
+        - maintenance-summary
+        - --archive
+        - FIELD-CRR-2026-09
+        discovery: the maintenance policy returns the fixed command and required label
         runtime_identity: svc-fieldlink-maintenance
         exclusions: image, mounts, namespace, service account, host access and network policy
           are immutable
@@ -380,7 +387,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 113b53577b02dd0d60a9c3d178cbfdfc27026dcf765d27b94739f8a5ab904468
+        digest: a71efb9b710f4eeabefb34253b146ad43087d95eb38b2749d309e6667ea0eec3
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

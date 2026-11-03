@@ -203,7 +203,8 @@ def check_portfolio(scenario, rows):
             require(len(matches) == 1 and matches[0].strip(),
                     f"Missing or empty KeplerOps technical section: {card}/{section}")
         player = re.search(
-            r"^## Challenge description — player-facing\n(.*?)(?=^## |\Z)", text, re.M | re.S
+            r"^## Challenge description\s*—\s*player-facing\n(.*?)(?=^## |\Z)",
+            text, re.M | re.S,
         )
         completion = re.search(
             r"^## Completion and downstream use\n(.*?)(?=^## |\Z)", text, re.M | re.S
