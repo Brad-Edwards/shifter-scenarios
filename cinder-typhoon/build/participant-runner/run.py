@@ -98,7 +98,7 @@ PHASES = {
         allowed_mounts=frozenset({
             "/var/lib/fieldlink-connector", "/var/lib/arwc-connector",
             "/run/arwc-tls/server.crt", "/run/arwc-tls/server.key", "/run/arwc-tls/ca.crt",
-            "/run/arwc-peer/keplerops-ca.crt",
+            "/run/arwc-peer/keplerops-ca.crt", "/run/arwc-handover/authentication.key",
         }),
         forbidden_paths=COMMON_ABSENT + (
             "/usr/local/sbin/arwc-connector-entrypoint", "/opt/customer-handover",
@@ -107,6 +107,7 @@ PHASES = {
             "/opt/fieldlink-connector/fieldlink_consumer.py", "/var/lib/arwc-connector",
             "/var/lib/arwc-business", "/var/lib/arwc-data", "/var/lib/arwc-archive",
             "/var/lib/arwc-identity", "/run/arwc-tls/server.key", "/tmp/arwc-server.key",
+            "/run/arwc-handover/authentication.key", "/tmp/arwc-handover.key",
         ),
         absent_paths=COMMON_ABSENT,
     ),
