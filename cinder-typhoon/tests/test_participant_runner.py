@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -105,6 +106,91 @@ class BoundaryTests(unittest.TestCase):
         self.assertIn("delivery_route", verifier)
         self.assertIn("delivery_receipt", verifier)
         self.assertIn('"SEED"', verifier)
+
+
+class DevelopmentPairSyncTests(unittest.TestCase):
+    MANIFEST = ROOT / "build/participant-runner/development-pair-sync-paths.txt"
+
+    def sync_roots(self) -> tuple[Path, ...]:
+        return tuple(Path(line) for line in self.MANIFEST.read_text().splitlines())
+
+    def catalog_inputs(self) -> set[Path]:
+        catalog = runner.delivery_catalog
+        return {
+            Path(catalog.__file__),
+            catalog.CATALOG_PATH,
+            catalog.HINT_MANIFEST,
+            catalog.HINT_REVIEWS,
+            catalog.HINT_PLAYTEST_SCHEMA,
+            *catalog.source_paths(),
+        }
+
+    def uncovered_catalog_inputs(self, roots: tuple[Path, ...]) -> set[Path]:
+        missing = set()
+        for source in self.catalog_inputs():
+            relative = source.relative_to(ROOT)
+            if not any(relative == root or root in relative.parents for root in roots):
+                missing.add(relative)
+        return missing
+
+    def test_manifest_is_safe_complete_and_consumed_by_launcher(self) -> None:
+        raw_lines = self.MANIFEST.read_text().splitlines()
+        roots = self.sync_roots()
+        self.assertTrue(raw_lines)
+        self.assertEqual(len(raw_lines), len(set(raw_lines)))
+        for raw, root in zip(raw_lines, roots):
+            with self.subTest(root=raw):
+                self.assertEqual(raw, root.as_posix())
+                self.assertFalse(root.is_absolute())
+                self.assertNotIn(".", root.parts)
+                self.assertNotIn("..", root.parts)
+                self.assertTrue((ROOT / root).exists())
+        self.assertEqual(set(), self.uncovered_catalog_inputs(roots))
+
+        launcher = (
+            ROOT / "build/participant-runner/check-development-pair.sh"
+        ).read_text()
+        self.assertIn("development-pair-sync-paths.txt", launcher)
+        self.assertIn('git -C "$pack_root" ls-files -z -- "${sync_roots[@]}"', launcher)
+        self.assertIn('--null --files-from="$sync_file_list"', launcher)
+
+    def test_catalog_metadata_validates_from_only_declared_inputs(self) -> None:
+        roots = self.sync_roots()
+        inputs = self.catalog_inputs()
+        self.assertEqual(set(), self.uncovered_catalog_inputs(roots))
+        with tempfile.TemporaryDirectory() as directory:
+            isolated_root = Path(directory)
+            for source in inputs:
+                destination = isolated_root / source.relative_to(ROOT)
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, destination)
+            isolated_catalog_path = isolated_root / "challenges/catalog.py"
+            spec = importlib.util.spec_from_file_location(
+                "isolated_cinder_delivery_catalog", isolated_catalog_path,
+            )
+            assert spec and spec.loader
+            isolated_catalog = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(isolated_catalog)
+            self.assertEqual(
+                runner.delivery_catalog.catalog_metadata(),
+                isolated_catalog.catalog_metadata(),
+            )
+            self.assertEqual(
+                runner.delivery_catalog.hint_manifest_metadata(),
+                isolated_catalog.hint_manifest_metadata(),
+            )
+
+    def test_required_catalog_inputs_fail_closed_under_manifest_mutations(self) -> None:
+        roots = self.sync_roots()
+        for removed in (
+            Path("challenges/catalog.py"),
+            Path("docs/design/challenges"),
+        ):
+            with self.subTest(removed=removed):
+                mutated = tuple(root for root in roots if root != removed)
+                self.assertNotEqual(roots, mutated)
+                with self.assertRaises(AssertionError):
+                    self.assertEqual(set(), self.uncovered_catalog_inputs(mutated))
 
 
 class CandidateTests(unittest.TestCase):
