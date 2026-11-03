@@ -73,6 +73,24 @@ class ProvenanceInventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(provenance.ProvenanceError, "runtime source changed"):
             provenance.validate_ledger(changed)
 
+    def test_all_inventory_drift_is_reported_in_one_validation(self) -> None:
+        changed = copy.deepcopy(self.ledger)
+        changed["methods"]["arwc"]["test_w27_integrity_collision"][
+            "inventory_sha256"
+        ] = "0" * 64
+        comparison = "build/arwc/runtime/diagnostic_services.py"
+        changed["runtime_comparisons"][comparison]["inventory_sha256"] = "0" * 64
+        source = "build/keplerops/runtime/k-dev-entrypoint.sh"
+        changed["runtime_sources"][source]["source_sha256"] = "0" * 64
+
+        with self.assertRaises(provenance.ProvenanceError) as raised:
+            provenance.validate_ledger(changed)
+
+        message = str(raised.exception)
+        self.assertIn("arwc.test_w27_integrity_collision", message)
+        self.assertIn(comparison, message)
+        self.assertIn(source, message)
+
     def test_known_author_only_inputs_are_explicit_failures(self) -> None:
         cases = {
         }
