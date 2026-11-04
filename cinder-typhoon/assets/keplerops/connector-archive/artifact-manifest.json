@@ -22,6 +22,8 @@
           "size": 651119
         }
       ],
+      "group": "fieldkest",
+      "owner": "fieldkest",
       "sha256": "8b6fbf8ba8afc635b68d29f45165638086289a05e647c8fc9bd3e7a88a754d2c",
       "size": 2242560
     },
@@ -35,6 +37,8 @@
           "size": 272
         }
       ],
+      "group": "fieldkest",
+      "owner": "fieldkest",
       "sha256": "c23b84a3cd05c810701bc48d29b995f4bf6ab23f12470f4fcc0c3faddbf3f865",
       "size": 10240
     }

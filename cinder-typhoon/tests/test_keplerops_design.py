@@ -1,6 +1,10 @@
 """Focused negative tests for the static KeplerOps design gate."""
+import hashlib
+import io
 import json
 import sys
+import tarfile
+import tempfile
 import unittest
 from copy import deepcopy
 from pathlib import Path
@@ -14,9 +18,36 @@ from validate_challenges import DesignError  # noqa: E402
 from validate_keplerops import (  # noqa: E402
     FORBIDDEN_IN_WORLD, check_actions_and_evidence, check_client_reference_graph,
     check_fixture_contracts, check_keplerops, check_native_semantics,
-    check_opening_interface_contract, check_world, matrix_rows,
-    validate_opening_interface_contract,
+    check_opening_assets, check_opening_interface_contract, check_world, matrix_rows,
+    validate_exact_archive, validate_k28_manifest, validate_opening_interface_contract,
 )
+
+
+def write_exact_archive(path, payload=b"reviewed artifact", mode=0o640,
+                        owner="fieldkest", group="fieldkest"):
+    with tarfile.open(path, "w", format=tarfile.USTAR_FORMAT) as archive:
+        member = tarfile.TarInfo("state/reviewed.bin")
+        member.size = len(payload)
+        member.mode = mode
+        member.mtime = 1789729200
+        member.uid = member.gid = 1000
+        member.uname = owner
+        member.gname = group
+        archive.addfile(member, io.BytesIO(payload))
+    archive_bytes = path.read_bytes()
+    return {
+        "archive": path.name,
+        "sha256": hashlib.sha256(archive_bytes).hexdigest(),
+        "size": len(archive_bytes),
+        "owner": owner,
+        "group": group,
+        "files": [{
+            "path": "state/reviewed.bin",
+            "mode": f"{mode:04o}",
+            "sha256": hashlib.sha256(payload).hexdigest(),
+            "size": len(payload),
+        }],
+    }
 
 
 class KeplerOpsDesignTests(unittest.TestCase):
@@ -33,6 +64,61 @@ class KeplerOpsDesignTests(unittest.TestCase):
 
     def test_authored_hand_build_gate(self):
         self.assertEqual(check_keplerops(self.scenario), 104)
+
+    def test_exact_archive_mutations_are_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = root / "baseline.tar"
+
+            baseline = write_exact_archive(path)
+            validate_exact_archive(root, baseline, "Test")
+
+            cases = []
+            path = root / "member.tar"
+            baseline = write_exact_archive(path)
+            mutated = write_exact_archive(path, payload=b"tampered artifact")
+            record = deepcopy(baseline)
+            record.update({key: mutated[key] for key in ("sha256", "size")})
+            cases.append(("member bytes", record, "member drift"))
+
+            path = root / "mode.tar"
+            baseline = write_exact_archive(path)
+            mutated = write_exact_archive(path, mode=0o600)
+            record = deepcopy(baseline)
+            record.update({key: mutated[key] for key in ("sha256", "size")})
+            cases.append(("member mode", record, "member drift"))
+
+            path = root / "digest.tar"
+            baseline = write_exact_archive(path)
+            record = deepcopy(baseline)
+            record["files"][0]["sha256"] = "0" * 64
+            cases.append(("member digest", record, "member drift"))
+
+            path = root / "ownership.tar"
+            baseline = write_exact_archive(path)
+            mutated = write_exact_archive(path, owner="other")
+            record = deepcopy(baseline)
+            record.update({key: mutated[key] for key in ("sha256", "size")})
+            cases.append(("member ownership", record, "ownership drift"))
+
+            for name, record, error in cases:
+                with self.subTest(name=name), self.assertRaisesRegex(DesignError, error):
+                    validate_exact_archive(root, record, "Test")
+
+    def test_exact_archive_source_revision_mutation_is_rejected(self):
+        scenario = self.scenario.model_copy(deep=True)
+        content = scenario.content["keplerops-opening-k-dev.opening-k-dev-home"]
+        content.source.artifact_requirement.exact_artifact.version = "2026-09-19"
+        with self.assertRaisesRegex(DesignError, "source revision drift"):
+            check_opening_assets(scenario)
+
+    def test_k28_manifest_required_field_mutation_is_rejected(self):
+        manifest = json.loads(
+            (PACK / "assets/keplerops/connector-archive/artifact-manifest.json").read_text()
+        )
+        manifest.pop("binary")
+        with self.assertRaisesRegex(DesignError, "required fields drift"):
+            validate_k28_manifest(manifest)
 
     def test_missing_fixture_is_rejected(self):
         scenario = self.scenario.model_copy(deep=True)

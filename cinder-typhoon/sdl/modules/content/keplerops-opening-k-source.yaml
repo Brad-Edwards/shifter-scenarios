@@ -24,7 +24,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/opening/k-source-state
           version: '2026-09-18'
-          digest: sha256:3b1c34e08b575ab9ad15bde4e53d6de25330d9455f155c241760b0316c2a434b
+          digest: sha256:305109888279a01be326d81c82b12d85931c5391163bc5a1f3815330835b4dc5
           media_type: application/x-tar
         permitted_routes:
         - mechanism:

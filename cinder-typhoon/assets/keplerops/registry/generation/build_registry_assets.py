@@ -117,6 +117,8 @@ def make_archive(path: Path, files: dict[str, tuple[bytes, int]]) -> dict[str, o
         "archive": path.name,
         "sha256": sha(path.read_bytes()),
         "size": path.stat().st_size,
+        "owner": "fieldkest",
+        "group": "fieldkest",
         "files": [
             {"path": name, "mode": f"{mode:04o}", "sha256": sha(data), "size": len(data)}
             for name, (data, mode) in sorted(files.items())

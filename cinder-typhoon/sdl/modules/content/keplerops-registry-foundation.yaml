@@ -25,7 +25,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/registry/foundation-state
           version: '2026-09-18'
-          digest: sha256:10434f811ed1a8c967d39b9db63117f407ce6e5675211f08a4090d15082360cd
+          digest: sha256:eead74269c18454769e9d078d7247b6b701d3cd93571fce5e7f0e04123ad56b1
           media_type: application/x-tar
         permitted_routes:
         - mechanism:
@@ -51,7 +51,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/registry/workstation
           version: '2026-09-18'
-          digest: sha256:f9f9fc8dee5830064be685f3c4af75b434a91bdad090a44d9aa1d6829b1e1992
+          digest: sha256:9fa7c79c417e3d8b2543ab0da84e74c9c21b0590bb9b1ae4a3b6747bd817b536
           media_type: application/x-tar
         permitted_routes:
         - mechanism:
