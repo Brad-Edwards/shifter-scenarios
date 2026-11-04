@@ -15,6 +15,21 @@ Validate the complete content and all participant-boundary references:
 python3 cinder-typhoon/build/hint-delivery/release.py verify
 ```
 
+Complete-repository verification also regenerates the content-free published
+client-route contract and rejects drift. A phase deployment uses the committed
+contract because it intentionally does not contain another phase's runtime:
+
+```sh
+python3 build/hint-delivery/release.py verify --phase training
+```
+
+After a reviewed client-reference change, regenerate the contract from the
+complete repository:
+
+```sh
+python3 cinder-typhoon/build/hint-delivery/release.py write-route-contract
+```
+
 Release one level to a participant and record the action:
 
 ```sh

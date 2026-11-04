@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/published-client-routes.schema.json",
+  "title": "Cinder Typhoon published client-route contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "routes"],
+  "properties": {
+    "schema": {"const": "cinder-typhoon.published-client-routes/v1"},
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*\\.[a-z][a-z0-9-]*$"
+      }
+    }
+  }
+}

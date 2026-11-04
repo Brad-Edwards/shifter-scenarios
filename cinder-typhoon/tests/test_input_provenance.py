@@ -4,10 +4,12 @@ import copy
 import importlib.util
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,9 +50,9 @@ class ProvenanceInventoryTests(unittest.TestCase):
 
     def test_non_python_runtime_sources_are_ratcheted_too(self) -> None:
         inventory = provenance.runtime_source_inventory()
-        self.assertEqual(len(inventory), 39)
-        self.assertEqual(self.report["summary"]["runtime_source_count"], 39)
-        self.assertEqual(len(self.report["runtime_sources"]), 39)
+        self.assertEqual(len(inventory), 40)
+        self.assertEqual(self.report["summary"]["runtime_source_count"], 40)
+        self.assertEqual(len(self.report["runtime_sources"]), 40)
 
     def test_new_or_changed_request_inputs_fail_ledger_validation(self) -> None:
         changed = copy.deepcopy(self.ledger)
@@ -138,6 +140,66 @@ class ProvenanceInventoryTests(unittest.TestCase):
         self.assertEqual(status["status"], "complete")
         self.assertEqual(events[0]["provenance"]["status"], "complete")
         self.assertTrue(events[0]["provenance"]["sources"])
+
+    def test_runtime_attachment_validates_only_the_selected_phase(self) -> None:
+        event = {
+            "kind": "http", "test_method": "test_01_first_contact",
+            "method": "GET", "host": "workbench.training", "path_sha256": "b" * 64,
+            "status": 200, "response_bytes": 10,
+            "response_sha256": "a" * 64, "elapsed_ms": 1,
+        }
+        with mock.patch.object(
+            provenance, "load_ledger", return_value=self.ledger,
+        ) as load:
+            provenance.attach_runtime_provenance(
+                "training", [event], ["test_01_first_contact"],
+            )
+        load.assert_called_once_with(phases=("training",))
+
+    def test_phase_deployment_needs_only_its_suite_and_runtime(self) -> None:
+        for phase in provenance.PHASES:
+            with self.subTest(phase=phase), tempfile.TemporaryDirectory() as directory:
+                isolated_root = Path(directory)
+                shutil.copytree(
+                    ROOT / "build/input-provenance",
+                    isolated_root / "build/input-provenance",
+                )
+                suite = provenance.SUITES[phase].relative_to(ROOT)
+                (isolated_root / suite).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / suite, isolated_root / suite)
+                shutil.copytree(
+                    ROOT / "build" / phase / "runtime",
+                    isolated_root / "build" / phase / "runtime",
+                )
+                report = isolated_root / "report.json"
+                completed = subprocess.run(
+                    [
+                        sys.executable,
+                        str(isolated_root / "build/input-provenance/provenance.py"),
+                        "--phase", phase, "--require-complete", "--output", str(report),
+                    ],
+                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                    check=False,
+                )
+                self.assertEqual(completed.returncode, 0, completed.stderr)
+                value = json.loads(report.read_text())
+                self.assertEqual({entry["phase"] for entry in value["requests"]}, {phase})
+
+    def test_phase_validation_detects_selected_mutation_without_other_phases(self) -> None:
+        selected = copy.deepcopy(self.ledger)
+        selected["methods"]["training"]["test_01_first_contact"][
+            "inventory_sha256"
+        ] = "0" * 64
+        with self.assertRaisesRegex(provenance.ProvenanceError, "request inputs changed"):
+            provenance.validate_ledger(selected, ("training",))
+
+        absent = copy.deepcopy(self.ledger)
+        absent["methods"]["arwc"]["test_w01_customer_copy"][
+            "inventory_sha256"
+        ] = "0" * 64
+        provenance.validate_ledger(absent, ("training",))
+        with self.assertRaisesRegex(provenance.ProvenanceError, "request inputs changed"):
+            provenance.validate_ledger(absent)
 
     def test_machine_readable_schemas_are_present(self) -> None:
         root = ROOT / "build" / "input-provenance"

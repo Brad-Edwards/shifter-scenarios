@@ -508,6 +508,9 @@ class EvidenceTests(unittest.TestCase):
         self.assertLess(surface, release)
         self.assertLess(release, acceptance)
         self.assertIn("--release-manifest", source)
+        self.assertIn("hint-delivery/release.py verify --phase '$phase'", source)
+        self.assertIn("card-coverage/coverage.py --phase '$phase'", source)
+        self.assertIn("input-provenance/provenance.py --phase '$phase'", source)
         self.assertLess(acceptance, fourth_wall_after)
         self.assertEqual(source.count("fourth-wall/run.py"), 2)
 
@@ -532,6 +535,56 @@ class EvidenceTests(unittest.TestCase):
         self.assertNotIn("must-not-be-logged", serialized)
         self.assertNotIn("stdout_raw", serialized)
         self.assertNotIn("stderr_raw", serialized)
+
+    def test_enrichment_failure_preserves_the_participant_result(self) -> None:
+        boundary = {
+            "status": "passed",
+            "identity": {
+                "user": "cinder", "uid": 2000, "gid": 2000,
+                "groups": ["cinder"], "home": "/home/cinder", "workdir": "/home/cinder",
+            },
+            "controls": {
+                "effective_capabilities": 0, "no_new_privileges": True,
+                "docker_socket_visible": False, "docker_socket_readable": False,
+                "operator_paths_visible": [], "private_paths_readable": [],
+                "suspicious_environment_names": [],
+            },
+            "transition": None, "violations": [], "tests_run": 1,
+            "failures": 0, "errors": 0, "skipped": 0,
+            "skips_allowed": False,
+            "completion_evidence": {
+                "passed_subtests": [], "failed_subtests": [], "skipped_assertions": [],
+            },
+        }
+        completed = subprocess.CompletedProcess(
+            [], 0,
+            stdout=runner.RESULT_PREFIX + json.dumps(boundary) + "\n",
+            stderr="",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "report.json"
+            arguments = [
+                "run.py", "--phase", "training", "--operation", "t01",
+                "--development", "--reset-identity", "test-reset-002",
+                "--report", str(report),
+            ]
+            with (
+                mock.patch.object(sys, "argv", arguments),
+                mock.patch.object(runner, "inspect_container", return_value={}),
+                mock.patch.object(runner.subprocess, "run", return_value=completed),
+                mock.patch.object(
+                    runner, "attach_runtime_provenance",
+                    side_effect=runner.ProvenanceError("selected-phase enrichment failed"),
+                ),
+            ):
+                exit_code = runner.main()
+            value = json.loads(report.read_text())
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(value["result"], "failed")
+        self.assertEqual(value["boundary"], boundary)
+        self.assertEqual(value["evidence"]["event_count"], 0)
+        self.assertNotIn("provenance", value["evidence"])
+        self.assertEqual(value["failure"], "selected-phase enrichment failed")
 
 
 if __name__ == "__main__":

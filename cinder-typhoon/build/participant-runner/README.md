@@ -97,6 +97,10 @@ participant-private state therefore cannot enter the verification archive.
 Live request entries include their current input-provenance sources and
 unresolved items. This does not conflate the QA layers: known-solution behavior,
 card coverage, fourth-wall leakage, and provenance retain separate statuses.
+The runner records the validated participant result and content-free stream
+hashes before provenance enrichment. If enrichment fails, the overall report
+fails but retains that participant result and base evidence instead of replacing
+it with a missing boundary.
 The candidate wrapper runs the fail-closed card-coverage, provenance, and live
 fourth-wall gates before participant-surface and behavioral acceptance, so
 incomplete coverage, unexplained input, or participant-facing implementation

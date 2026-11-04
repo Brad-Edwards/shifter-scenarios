@@ -59,18 +59,18 @@ checkable model of the participant-facing service boundary rather than an
 exception list for challenge-derived names.
 
 A release is clean only when all three static reports have no unresolved
-findings and the empty allowlist remains empty. Candidate qualification must
-also produce complete clean observations from the unprivileged participant
-account before and after known-solution acceptance. The observer remains
+findings and every allowed finding matches a reviewed exact-content entry.
+Candidate qualification must also produce complete clean observations from the
+unprivileged participant account before and after known-solution acceptance. The observer remains
 credential-free, read-only, origin-bound, and size/count bounded; any skipped
 file, truncation, request error, or exhausted limit fails closed.
 
 ## Allowlist
 
-`allowlist.json` begins empty. An in-world use may be allowed only by an exact
-entry binding source kind, location, rule, match, and content SHA-256 to a
-specific rationale. A broad path, regular expression, or term-only exception
-is not supported. Changed content stops matching the exception.
+An in-world use may be allowed only by an exact entry binding source kind,
+location, rule, match, and content SHA-256 to a specific rationale. A broad
+path, regular expression, or term-only exception is not supported. Changed
+content stops matching the exception.
 Domain-interface approval and incomplete live observation are structural gates
 and cannot be allowlisted at all.
 

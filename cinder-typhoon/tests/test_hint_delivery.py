@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import shutil
 import stat
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -23,6 +25,15 @@ assert RELEASE_SPEC and RELEASE_SPEC.loader
 release = importlib.util.module_from_spec(RELEASE_SPEC)
 sys.modules[RELEASE_SPEC.name] = release
 RELEASE_SPEC.loader.exec_module(release)
+
+MANIFEST_PATH = ROOT / "build" / "release" / "manifest.py"
+MANIFEST_SPEC = importlib.util.spec_from_file_location(
+    "hint_test_release_manifest", MANIFEST_PATH,
+)
+assert MANIFEST_SPEC and MANIFEST_SPEC.loader
+release_manifest = importlib.util.module_from_spec(MANIFEST_SPEC)
+sys.modules[MANIFEST_SPEC.name] = release_manifest
+MANIFEST_SPEC.loader.exec_module(release_manifest)
 
 
 class HintContentTests(unittest.TestCase):
@@ -89,12 +100,43 @@ class HintContentTests(unittest.TestCase):
         ):
             release.validate_authored_hints()
 
+    def test_published_client_route_contract_is_current_and_content_free(self) -> None:
+        contract = release.load_client_route_contract()
+        self.assertEqual(contract, release.build_client_route_contract())
+        self.assertEqual(len(contract["routes"]), 209)
+        self.assertIn("corporate.handover", contract["routes"])
+        serialized = json.dumps(contract)
+        self.assertNotIn("https://", serialized)
+        self.assertNotIn("/api/", serialized)
+
+    def test_phase_deployments_validate_without_unrelated_runtime_source(self) -> None:
+        for phase in ("training", "keplerops"):
+            with self.subTest(phase=phase), tempfile.TemporaryDirectory() as directory:
+                isolated_root = Path(directory)
+                for relative in release_manifest.phase_files(phase):
+                    source = ROOT / relative
+                    destination = isolated_root / relative
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(source, destination)
+                self.assertFalse((isolated_root / "build/arwc/runtime").exists())
+                completed = subprocess.run(
+                    [
+                        sys.executable,
+                        str(isolated_root / "build/hint-delivery/release.py"),
+                        "verify", "--phase", phase,
+                    ],
+                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                    check=False,
+                )
+                self.assertEqual(completed.returncode, 0, completed.stderr)
+
     def test_hint_schemas_are_machine_readable_and_match_committed_versions(self) -> None:
         schema_paths = (
             ROOT / "build/card-coverage/hints.schema.json",
             ROOT / "build/hint-delivery/manifest.schema.json",
             ROOT / "build/hint-delivery/operation-reviews.schema.json",
             ROOT / "build/hint-delivery/playtest-observation.schema.json",
+            ROOT / "build/hint-delivery/published-client-routes.schema.json",
         )
         for path in schema_paths:
             with self.subTest(path=path.name):
