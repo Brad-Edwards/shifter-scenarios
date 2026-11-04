@@ -101,9 +101,10 @@ class ArwcHandoverTests(unittest.TestCase):
         dockerfile = (IMAGES / "connector.Dockerfile").read_text()
         entrypoint = (RUNTIME / "connector-entrypoint.sh").read_text()
         consumer = (RUNTIME / "fieldlink_consumer.py").read_text()
-        self.assertIn(
-            "/opt/customer-handover /opt/customer-handover/assets", dockerfile
-        )
+        self.assertIn("-m 0711", dockerfile)
+        self.assertIn("/opt/customer-handover", dockerfile)
+        self.assertIn("-m 0750", dockerfile)
+        self.assertIn("/opt/customer-handover/assets", dockerfile)
         self.assertNotIn("/tmp/arwc-handover.key", entrypoint)
         self.assertNotIn("/tmp/arwc-handover.key", consumer)
         private_key = "/var/lib/arwc-connector/auth/handover.key"

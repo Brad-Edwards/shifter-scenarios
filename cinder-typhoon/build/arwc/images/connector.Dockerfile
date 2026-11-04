@@ -17,9 +17,10 @@ RUN apt-get update \
     && groupadd --system arwc-connector \
     && useradd --system --gid arwc-connector --home-dir /var/lib/arwc-connector --shell /usr/sbin/nologin arwc-connector \
     && usermod --append --groups fieldlink arwc-connector \
+    && install -d -o arwc-connector -g arwc-connector -m 0711 \
+         /opt/customer-handover \
     && install -d -o arwc-connector -g arwc-connector -m 0750 \
-         /opt/customer-handover /opt/customer-handover/assets \
-         /opt/fieldlink-connector
+         /opt/customer-handover/assets /opt/fieldlink-connector
 
 RUN pip install --no-cache-dir cryptography==50.0.2
 
