@@ -97,6 +97,19 @@ class ArwcHandoverTests(unittest.TestCase):
         self.assertIn("grep -Eq '^[1-9][0-9]*$'", diagnostics)
         self.assertNotIn('test "$(/tmp/selector24', diagnostics)
 
+    def test_connector_private_material_stays_out_of_participant_paths(self) -> None:
+        dockerfile = (IMAGES / "connector.Dockerfile").read_text()
+        entrypoint = (RUNTIME / "connector-entrypoint.sh").read_text()
+        consumer = (RUNTIME / "fieldlink_consumer.py").read_text()
+        self.assertIn(
+            "/opt/customer-handover /opt/customer-handover/assets", dockerfile
+        )
+        self.assertNotIn("/tmp/arwc-handover.key", entrypoint)
+        self.assertNotIn("/tmp/arwc-handover.key", consumer)
+        private_key = "/var/lib/arwc-connector/auth/handover.key"
+        self.assertIn(private_key, entrypoint)
+        self.assertIn(private_key, consumer)
+
     token = "a1" * 32
     certificate = b"range-a-certificate\n"
     key = ("ab" * 32 + "\n").encode()

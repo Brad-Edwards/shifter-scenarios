@@ -31,7 +31,8 @@ install -o arwc-connector -g arwc-connector -m 0400 \
 install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.key /tmp/arwc-server.key
 install -o arwc-connector -g arwc-connector -m 0400 \
-  /run/arwc-handover/authentication.key /tmp/arwc-handover.key
+  /run/arwc-handover/authentication.key \
+  /var/lib/arwc-connector/auth/handover.key
 install -o fieldlink -g fieldlink -m 0444 \
   /run/arwc-tls/ca.crt /tmp/arwc-ca.crt
 install -o arwc-connector -g arwc-connector -m 0400 \
