@@ -55,6 +55,41 @@ placeholders are not accepted evidence of readiness.
 - Participant-visible content stays in-world: no flags, hints, scores, CTF
   language, solution commentary, or fourth-wall instructions.
 
+## Ending contract
+
+The participant ending follows one data path: the transition note leads to the
+distributed client-reference graph, the discovered routes carry participant
+requests through the process-view historian, and the historian delegates each
+request to its existing owner. The ending does not add authority or bypass an
+owner.
+
+- Every route key consumed by the ending is published exactly once with the
+  method and path that the participant actually uses. Template parameters are
+  resolved from records already returned to the participant.
+- When one canonical resource path accepts more than one operation, the owner
+  dispatches by the request body and prerequisites, not by duplicate path
+  branches.
+- Native artifacts that the participant executes in the fieldlink connector
+  must run on that connector's runtime. The W23 estimator is therefore linked
+  as a self-contained executable while retaining its authored build contract.
+- The public process view exposes the W33 schedule-window read through the
+  historian proxy. Writes continue through the same owner and authorization
+  boundary.
+- The W29 reporting-checkpoint write enters through the public process-view
+  route, validates the scoped process-read session in planning data, joins the
+  retained tariff and reserve balance there, and sends that complete envelope
+  through the private data-bridge/historian path to the supervisory owner.
+- W34 treats the reported district `source_set` as a set: every expected
+  district must appear exactly once, but JSON object serialization order does
+  not change the planning decision.
+- The fieldlink service on port 443 remains mutually authenticated. Participant
+  surface checks still verify TCP reachability, while the credential-free
+  fourth-wall observer probes only listeners declared safe for an unauthenticated
+  `GET`; it must not weaken or misreport the mTLS boundary.
+- The client-reference acceptance test checks the ending's complete route
+  contract, including methods and templates, so route drift fails before an
+  event run.
+
 ## Validation log
 
 - The composed scenario passes structural and semantic validation with pinned

@@ -385,6 +385,26 @@ class StaticAndLiveContractTests(unittest.TestCase):
             url.startswith(("http://", "https://")) for url in plan["base_urls"]
         ))
 
+    def test_arwc_observer_does_not_weaken_or_probe_the_mtls_listener(self) -> None:
+        plan = runner.observation_plan("arwc", self.policy)
+        self.assertNotIn("https://customer-handover.arwc.test", plan["base_urls"])
+        self.assertNotIn("https://fieldlink.arwc.test", plan["base_urls"])
+        self.assertIn("https://customer-handover.arwc.test:8443", plan["base_urls"])
+        self.assertIn("https://fieldlink.arwc.test:8443", plan["base_urls"])
+
+        authored = json.loads(
+            (ROOT / "build/participant-surface/manifests/arwc.json").read_text()
+        )
+        mtls = [
+            item for item in authored["network"]["listeners"]
+            if item["port"] == 443 and item["host"] in {
+                "customer-handover.arwc.test", "fieldlink.arwc.test",
+            }
+        ]
+        self.assertEqual(len(mtls), 2)
+        self.assertTrue(all(item["reachable"] for item in mtls))
+        self.assertTrue(all(item["credential_free_get"] is False for item in mtls))
+
     def test_valid_live_observation_is_required_for_a_clean_release_form(self) -> None:
         authored = json.loads(
             (ROOT / "build" / "participant-surface" / "manifests" / "training.json").read_text()

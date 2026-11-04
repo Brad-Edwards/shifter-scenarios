@@ -46,7 +46,8 @@ def observation_plan(phase: str, policy: dict[str, Any]) -> dict[str, Any]:
     phase_config = PHASES[phase]
     base_urls = []
     for listener in authored["network"]["listeners"]:
-        if not listener["reachable"] or listener["port"] in {22, 88}:
+        if (not listener["reachable"] or listener["port"] in {22, 88} or
+                not listener.get("credential_free_get", True)):
             continue
         scheme = "https" if listener["port"] in {443, 8443} else "http"
         port = "" if listener["port"] in {80, 443} else f":{listener['port']}"

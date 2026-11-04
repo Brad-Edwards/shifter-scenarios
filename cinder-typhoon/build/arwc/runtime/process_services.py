@@ -601,23 +601,38 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/diagnostic-runs"
     },
     {
+        "key": "process.diagnostic-program-legacy",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/diagnostic-programs/legacy"
+    },
+    {
+        "key": "process.diagnostic-authority",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/diagnostic-programs/authority"
+    },
+    {
         "key": "process.firmware-image",
         "method": "GET",
         "template": "PROCESS_VIEW_BASE/api/firmware-images/current"
     },
     {
         "key": "process.maintenance-record",
-        "method": "GET",
+        "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/maintenance-records/current"
     },
     {
         "key": "process.maintenance-record-update",
-        "method": "PATCH",
+        "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/maintenance-records/current"
     },
     {
         "key": "process.sealed-project",
         "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/sealed-projects/current/note"
+    },
+    {
+        "key": "process.sealed-project-open",
+        "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/sealed-projects/current"
     },
     {
@@ -636,18 +651,28 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/estimator-tasks/current"
     },
     {
+        "key": "process.estimator-inputs",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/estimator-tasks/current/inputs"
+    },
+    {
         "key": "process.estimator-run",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-runs"
     },
     {
         "key": "process.signature-record",
-        "method": "GET",
+        "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/signature-records/current"
     },
     {
-        "key": "process.signature-request",
+        "key": "process.signature-record-interpretation",
         "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/signature-records/current/interpretation"
+    },
+    {
+        "key": "process.signature-request",
+        "method": "GET",
         "template": "PROCESS_VIEW_BASE/api/signature-requests"
     },
     {
@@ -727,17 +752,22 @@ class Handler(BaseHTTPRequestHandler):
     },
     {
         "key": "process.replay-divergence",
-        "method": "GET",
+        "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/replay-sessions/current/divergence"
     },
     {
         "key": "process.forecast",
-        "method": "GET",
+        "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/forecasts/current"
     },
     {
         "key": "process.schedule-window",
         "method": "GET",
+        "template": "PROCESS_VIEW_BASE/api/schedule-windows/current"
+    },
+    {
+        "key": "process.schedule-window-submit",
+        "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/schedule-windows/current"
     },
     {
@@ -794,6 +824,16 @@ class Handler(BaseHTTPRequestHandler):
         "key": "process.reporting-result",
         "method": "GET",
         "template": "PROCESS_VIEW_BASE/api/reporting-submissions/current/result"
+    },
+    {
+        "key": "process.approval-client",
+        "method": "POST",
+        "template": "https://control-broker.arwc.test/api/approval-clients/current"
+    },
+    {
+        "key": "process.estimator-result",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/estimator-results/current"
     }
 ]
         for r in routes:
@@ -825,6 +865,7 @@ class Handler(BaseHTTPRequestHandler):
                 "/api/signature-requests",
                 "/api/vault-records/current",
                 "/api/replay-sessions/current",
+                "/api/schedule-windows/current",
             }:
                 self.historian_proxy("GET", path, None)
             else:
@@ -1227,9 +1268,7 @@ class Handler(BaseHTTPRequestHandler):
         }:
             self.w32_post(path, request, state)
             return
-        if ROLE == "instruments" and path in {
-            "/api/maintenance-records/current", "/api/maintenance-records/current",
-        }:
+        if ROLE == "instruments" and path == "/api/maintenance-records/current":
             self.w20_post(path, request, state)
             return
         if ROLE == "hmi" and path == "/api/observations":
@@ -2375,7 +2414,9 @@ class Handler(BaseHTTPRequestHandler):
         original = (ARTIFACTS / "IMG-FIT-204-R6.bin").read_bytes()
         original_records = parse_flash(original)
         target = logical_flash(original_records)["INSP-FIT-204-118"]
-        if path == "/api/maintenance-records/current":
+        if path == "/api/maintenance-records/current" and not {
+                "operations", "image_b64"
+        }.intersection(request):
             expected = {"image_sha256": hashlib.sha256(original).hexdigest(), **target}
             if request != expected:
                 self.send_json(409, {"error": "maintenance-record interpretation does not match"})
