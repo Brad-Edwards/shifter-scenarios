@@ -149,6 +149,8 @@ class ArwcHandoverTests(unittest.TestCase):
         dispatch = planning[reporting_dispatch:generic_proxy]
         self.assertIn("self.process_authorized()", dispatch)
         self.assertIn("self.w29_plan(request)", dispatch)
+        self.assertIn('set(source_set) != set(expected["source_set"])', planning)
+        self.assertIn('len(source_set) != len(expected["source_set"])', planning)
 
         process = (RUNTIME / "process_services.py").read_text(encoding="utf-8")
         self.assertIn('and not {\n                "operations", "image_b64"', process)

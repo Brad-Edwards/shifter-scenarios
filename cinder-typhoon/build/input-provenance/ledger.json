@@ -2320,8 +2320,8 @@
           "source": "paired integration-gateway/planning-data contract and existing process-service authorization contract"
         }
       ],
-      "comparison_count": 94,
-      "inventory_sha256": "8e3d7079bab7067fe55c04e7b44ef641b56517bcd0837d74d3db607e51c058c3",
+      "comparison_count": 95,
+      "inventory_sha256": "7619f31a449b9113333b834e0ce3fcaa4d6f8cf35f680f74b94cf860c9179aa2",
       "review_status": "complete",
       "unresolved": []
     },

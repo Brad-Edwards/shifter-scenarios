@@ -949,7 +949,14 @@ class Handler(BaseHTTPRequestHandler):
         state = load_state(); view_response = state.get("reporting_view_response")
         if not isinstance(view_response, dict):
             self.send_json(403, {"error": "refreshed planning view required"}); return
-        if request != expected:
+        source_set = request.get("source_set")
+        if (set(request) != set(expected) or
+                any(request.get(key) != value for key, value in expected.items()
+                    if key != "source_set") or
+                not isinstance(source_set, list) or
+                len(source_set) != len(expected["source_set"]) or
+                not all(isinstance(item, str) for item in source_set) or
+                set(source_set) != set(expected["source_set"])):
             self.send_json(409, {"error": "planning consistency binding rejected"}); return
         existing = state.get("reporting_decision_response")
         if isinstance(existing, dict): self.send_json(201, existing); return

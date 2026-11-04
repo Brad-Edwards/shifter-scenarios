@@ -79,6 +79,9 @@ owner.
   route, validates the scoped process-read session in planning data, joins the
   retained tariff and reserve balance there, and sends that complete envelope
   through the private data-bridge/historian path to the supervisory owner.
+- W34 treats the reported district `source_set` as a set: every expected
+  district must appear exactly once, but JSON object serialization order does
+  not change the planning decision.
 - The client-reference acceptance test checks the ending's complete route
   contract, including methods and templates, so route drift fails before an
   event run.
