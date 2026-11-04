@@ -191,39 +191,45 @@ class ArwcHandoverTests(unittest.TestCase):
         health = RUNTIME / "connector-health.sh"
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            run = root / "run"
+            proc = root / "proc"
             customer = root / "customer"
             fieldlink = root / "fieldlink"
-            run.mkdir()
+            proc.mkdir()
             (customer / "audit").mkdir(parents=True)
             (fieldlink / "consumer/candidates").mkdir(parents=True)
             (customer / "audit/events.jsonl").touch()
             (customer / "audit/fieldlink-consumer.jsonl").touch()
-            children = [subprocess.Popen(["sleep", "30"]) for _ in range(2)]
-            try:
-                (run / "customer-handover.pid").write_text(f"{children[0].pid}\n")
-                (run / "fieldlink-consumer.pid").write_text(f"{children[1].pid}\n")
-                environment = {
-                    **os.environ,
-                    "ARWC_CONNECTOR_RUN_DIR": str(run),
-                    "ARWC_CONNECTOR_CUSTOMER_ROOT": str(customer),
-                    "ARWC_CONNECTOR_FIELDLINK_ROOT": str(fieldlink),
-                }
-                healthy = subprocess.run(
-                    ["dash", str(health)], env=environment, check=False,
+            commands = (
+                "/opt/customer-handover/customer_handover.py",
+                "/opt/fieldlink-connector/fieldlink_consumer.py",
+            )
+            for pid, command in enumerate(commands, start=20):
+                process = proc / str(pid)
+                process.mkdir()
+                (process / "status").write_text("PPid:\t1\nUid:\t987\t987\t987\t987\n")
+                (process / "cmdline").write_bytes(
+                    b"python3\0" + command.encode() + b"\0"
                 )
-                self.assertEqual(healthy.returncode, 0)
-                children[1].terminate()
-                children[1].wait(timeout=3)
-                unhealthy = subprocess.run(
-                    ["dash", str(health)], env=environment, check=False,
-                )
-                self.assertNotEqual(unhealthy.returncode, 0)
-            finally:
-                for child in children:
-                    if child.poll() is None:
-                        child.terminate()
-                        child.wait(timeout=3)
+            environment = {
+                **os.environ,
+                "ARWC_CONNECTOR_PROC_ROOT": str(proc),
+                "ARWC_CONNECTOR_UID": "987",
+                "ARWC_CONNECTOR_CUSTOMER_ROOT": str(customer),
+                "ARWC_CONNECTOR_FIELDLINK_ROOT": str(fieldlink),
+            }
+            healthy = subprocess.run(
+                ["dash", str(health)], env=environment, check=False,
+            )
+            self.assertEqual(healthy.returncode, 0)
+            shutil.rmtree(proc / "21")
+            unhealthy = subprocess.run(
+                ["dash", str(health)], env=environment, check=False,
+            )
+            self.assertNotEqual(unhealthy.returncode, 0)
+
+        source = health.read_text()
+        self.assertNotIn(".pid", source)
+        self.assertIn("/proc", source)
 
         live = (
             ROOT / "build" / "arwc" / "tests" / "test_handover_stability_live.py"

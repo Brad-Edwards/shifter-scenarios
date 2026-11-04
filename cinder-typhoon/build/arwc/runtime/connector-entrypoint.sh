@@ -26,8 +26,6 @@ install -d -o arwc-connector -g arwc-connector -m 0700 \
   /var/lib/arwc-connector/audit \
   /var/lib/arwc-connector/auth \
   /var/lib/arwc-connector/state
-install -d -o root -g root -m 0755 /run/arwc-connector
-
 install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.crt /tmp/arwc-server.crt
 install -o arwc-connector -g arwc-connector -m 0400 \
@@ -42,15 +40,12 @@ install -o arwc-connector -g arwc-connector -m 0400 \
 setpriv --reuid=arwc-connector --regid=arwc-connector --init-groups \
   python3 /opt/customer-handover/customer_handover.py &
 handover_pid=$!
-printf '%s\n' "$handover_pid" > /run/arwc-connector/customer-handover.pid
 
 setpriv --reuid=arwc-connector --regid=arwc-connector --init-groups \
   python3 /opt/fieldlink-connector/fieldlink_consumer.py &
 consumer_pid=$!
-printf '%s\n' "$consumer_pid" > /run/arwc-connector/fieldlink-consumer.pid
 
 cleanup() {
-  rm -f /run/arwc-connector/customer-handover.pid /run/arwc-connector/fieldlink-consumer.pid
   kill "$handover_pid" "$consumer_pid" 2>/dev/null || true
   wait || true
 }
