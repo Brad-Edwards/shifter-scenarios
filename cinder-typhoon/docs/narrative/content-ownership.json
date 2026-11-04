@@ -27,11 +27,11 @@
   },
   "source_versions": {
     "cinder-typhoon/narrative/keplerops-mail": "sha256-4a787031a275cf32d78f4152edf2c86beccefef767909ceae1f1edba0aea0bb5",
-    "cinder-typhoon/narrative/keplerops-documents": "sha256-3061f09b7452259f8967fbd8751e5ed44a33bca1b12af80ee028dc17562e6405",
+    "cinder-typhoon/narrative/keplerops-documents": "sha256-7427aaa117efc5bd83cf7750fb2b0cff9afa3c89be501757fb038f61d020b22d",
     "cinder-typhoon/narrative/keplerops-directory": "sha256-3b1778055939e09640ad3cb51459c97dbccabf0854b1eb1a2d832a4cd68ac931",
     "cinder-typhoon/narrative/keplerops-employment": "sha256-bdc70503e02e848a8ff4793a69b51e376e21b99c65e11030fbf9896685e2dac0",
-    "cinder-typhoon/narrative/arwc-mail": "sha256-1d35a910055c7cb43c5547ed794d47e5155fd4f0cee563b8ec16d39c2afbc098",
-    "cinder-typhoon/narrative/arwc-documents": "sha256-e2f3f0adb4ad93de1564771dd2492d9c7defc51c7392daeb54cb219c70a9c961",
+    "cinder-typhoon/narrative/arwc-mail": "sha256-2506c5cdbfe9f2e71a6367c4fae9cdfb28e82d3cd192cf6db7e6ffae8c885d17",
+    "cinder-typhoon/narrative/arwc-documents": "sha256-9884945085d87f8db81471fd105c37b9efd903587b3d688c90849f89442eabfb",
     "cinder-typhoon/narrative/arwc-directory": "sha256-24bc2731547d37d09eba8f9765437dce0ba85504a7d143c003db91518c43752f",
     "cinder-typhoon/narrative/arwc-employment": "sha256-6c449324c9b4c46af82b99f0ad18eeea95f68ba019f073ff0d186d902fcaab90"
   },

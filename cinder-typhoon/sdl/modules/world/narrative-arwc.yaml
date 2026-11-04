@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/arwc-mail
-      version: sha256-fc26c7dcb3857c41bfefc6eda20cd42694dd3031caa727875276388d2ddc7213
+      version: sha256-2506c5cdbfe9f2e71a6367c4fae9cdfb28e82d3cd192cf6db7e6ffae8c885d17
     description: arwc workplace mail. Require an individual staff identity; Exact mailbox membership. Preserve
       authored readers and opening state. Source package is the complete item inventory.
     sensitive: true
@@ -66,7 +66,7 @@ content:
     format: cinder-document-library/v4
     source:
       name: cinder-typhoon/narrative/arwc-documents
-      version: sha256-a425cc2a959c58bf7009c29da2e20e34a0a40496d3b0f44b1d58f96a2b9e52c9
+      version: sha256-9884945085d87f8db81471fd105c37b9efd903587b3d688c90849f89442eabfb
     description: arwc workplace documents. Authenticate exact named readers, including appointed board identities.
       Only explicit access=public items permit anonymous reading; enforce the same access on bytes, search
       and metadata. Preserve document states and publication approvals; no collection-wide bypass. Source package

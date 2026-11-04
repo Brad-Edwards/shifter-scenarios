@@ -165,6 +165,11 @@ def check_finance(root, identity, roster, mail, docs, manifest=None):
         d = fd[inv['document']]
         require(all(v in normalized(d['text']) for v in (inv['id'], inv['authority'], inv['issued'], inv['due'],
                     'TOTAL DUE USD ' + usd(inv['amount_cents']))), 'invoice PDF/ledger mismatch')
+        require('Description: ' + inv['description'] in d['text'].splitlines(),
+                'invoice description/PDF mismatch')
+        attached = [m for m in fm.values() if inv['document'] in m.get('attachments', [])]
+        require(len(attached) == 1 and inv['description'] in attached[0]['body'],
+                'invoice description/mail mismatch')
         expected_readers[d['id']] = FIN | {o['commercial_owner']}
         external_readers[d['id']] = {o['key']}
         if o['key'] == 'arwc': expected_readers[d['id'] + '-arwc'] = {'priya', 'theo'}
