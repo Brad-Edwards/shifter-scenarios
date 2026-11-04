@@ -92,6 +92,11 @@ class ArwcHandoverTests(unittest.TestCase):
         self.assertIn("FROM ubuntu:24.04 AS utility-builder", engineering)
         self.assertEqual(engineering.count("COPY --from=utility-builder"), 2)
 
+    def test_diagnostics_build_accepts_unsigned_64_bit_selector_output(self) -> None:
+        diagnostics = (IMAGES / "diagnostics.Dockerfile").read_text()
+        self.assertIn("grep -Eq '^[1-9][0-9]*$'", diagnostics)
+        self.assertNotIn('test "$(/tmp/selector24', diagnostics)
+
     token = "a1" * 32
     certificate = b"range-a-certificate\n"
     key = ("ab" * 32 + "\n").encode()

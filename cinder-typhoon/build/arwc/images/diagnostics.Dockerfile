@@ -16,7 +16,7 @@ RUN g++ -std=c++20 -O2 -fno-omit-frame-pointer -static-libstdc++ -static-libgcc 
     && /tmp/dsign-crr-r3 --contract | grep -F 'CRR25519-S' \
     && gcc -O2 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none -o /tmp/selector24 /tmp/selector24.c \
     && strip --strip-all /tmp/selector24 \
-    && test "$(/tmp/selector24 2400000000000001 1770000041)" -gt 0 \
+    && /tmp/selector24 2400000000000001 1770000041 | grep -Eq '^[1-9][0-9]*$' \
     && gcc -std=c11 -O1 -fno-omit-frame-pointer -fstack-protector-all -fPIE -pie \
       -Wl,-z,relro,-z,now,--build-id=none -rdynamic -o /tmp/dvl-worker-r5 /tmp/vault31.c -ldl \
     && /tmp/dvl-worker-r5 --metadata | grep -F 'DVL-WORKER-R5'
