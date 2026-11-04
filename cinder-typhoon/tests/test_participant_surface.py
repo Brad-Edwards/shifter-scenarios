@@ -126,6 +126,34 @@ class AuthoredManifestTests(unittest.TestCase):
         self.assertEqual(exposed, all_route_keys,
                          "client-reference disclosures must expose exactly the routes in client_documents.json")
 
+    def test_keplerops_hashed_files_track_the_authored_build_inputs(self) -> None:
+        entries = {
+            entry["path"]: entry
+            for root in manifest("keplerops")["filesystem"]["roots"]
+            for entry in root["entries"]
+        }
+        history = (
+            ROOT / "assets" / "keplerops" / "opening" / "k-dev" / "chromium-History"
+        ).read_bytes()
+        self.assertEqual(
+            entries[".config/chromium/Default/History"]["sha256"],
+            hashlib.sha256(history).hexdigest(),
+        )
+        registry = json.loads((
+            ROOT / "assets" / "keplerops" / "registry" / "artifact-manifest.json"
+        ).read_text())
+        registry_fixture = next(
+            item
+            for archive in registry["archives"]
+            if archive["archive"] == "k-dev-registry.tar"
+            for item in archive["files"]
+            if item["path"] == "work/registry/inspection-compat.fki"
+        )
+        self.assertEqual(
+            entries["work/registry/inspection-compat.fki"]["sha256"],
+            registry_fixture["sha256"],
+        )
+
     def test_delivery_manifests_bind_to_the_canonical_catalog(self) -> None:
         catalog = delivery_catalog.load_catalog()
         metadata = delivery_catalog.catalog_metadata()
