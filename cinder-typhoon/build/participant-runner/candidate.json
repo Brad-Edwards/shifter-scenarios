@@ -1,8 +1,8 @@
 {
   "artifact_digests": {
-    "cinder-arwc/a-connector:hand-build": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
-    "cinder-keplerops/k-dev:hand-build": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
-    "cinder-training/workstation:hand-build": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    "arwc/a-connector": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "keplerops/k-dev": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "training/participant": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
   },
   "candidate_id": "mutable-dev-20261031",
   "challenge_delivery": {
@@ -16,20 +16,32 @@
   },
   "deployments": {
     "arwc": {
+      "images": {
+        "a-connector": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      },
       "instance": "cinder-arwc-golden",
       "participant_image_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "participant_service": "a-connector",
       "project": "prod-mgau4w",
       "zone": "us-central1-a"
     },
     "keplerops": {
+      "images": {
+        "k-dev": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      },
       "instance": "cinder-keplerops-golden",
       "participant_image_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "participant_service": "k-dev",
       "project": "prod-mgau4w",
       "zone": "us-central1-a"
     },
     "training": {
+      "images": {
+        "participant": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      },
       "instance": "cinder-training-golden",
       "participant_image_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "participant_service": "participant",
       "project": "prod-mgau4w",
       "zone": "us-central1-a"
     }
@@ -44,6 +56,6 @@
     "sha256": "af2554477fe5a0dd3f92a76c4796125fa4c8d3b655e6a612e5ad2053d6214afa"
   },
   "immutable": false,
-  "schema_version": 2,
+  "schema_version": 3,
   "source_commit": "d810f1d275c6369252a717b310cf4e53e9e99a8a"
 }

@@ -48,12 +48,18 @@ service_graph_stable() {
   done
 }
 
+connector_children_healthy() {
+  [[ $(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{end}}' \
+      cinder-arwc-connector) == healthy ]]
+}
+
 for attempt in $(seq 1 60); do
   if docker exec --user arwc-connector cinder-arwc-connector \
       test -s /var/lib/arwc-connector/state/planner-handover.json 2>/dev/null \
     && docker exec --user arwc-connector cinder-arwc-connector \
       test -e /var/lib/arwc-connector/audit/fieldlink-consumer.jsonl 2>/dev/null \
     && handover_services_waiting \
+    && connector_children_healthy \
     && service_graph_stable; then
     break
   fi
@@ -65,6 +71,8 @@ done
 
 handover_services_waiting \
   || fail "pre-handoff services did not remain in the waiting state with zero restarts"
+connector_children_healthy \
+  || fail "connector child processes did not remain healthy"
 service_graph_stable \
   || fail "complete service graph did not remain running with zero restarts"
 

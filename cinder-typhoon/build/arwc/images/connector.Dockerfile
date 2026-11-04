@@ -36,6 +36,7 @@ COPY --chown=arwc-connector:arwc-connector --chmod=0640 \
 COPY --from=narrative --chown=arwc-connector:arwc-connector --chmod=0640 \
   /tmp/pl-arwc-plan-method-01-method.md /opt/customer-handover/assets/pl-arwc-plan-method-01-method.md
 COPY --chmod=0750 build/arwc/runtime/connector-entrypoint.sh /usr/local/sbin/arwc-connector-entrypoint
+COPY --chmod=0755 build/arwc/runtime/connector-health.sh /usr/local/sbin/arwc-connector-health
 
 EXPOSE 443 8443
 ENTRYPOINT ["/usr/local/sbin/arwc-connector-entrypoint"]

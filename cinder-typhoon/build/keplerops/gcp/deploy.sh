@@ -37,7 +37,18 @@ tar -C "$PACK_ROOT" -czf "$ARCHIVE" \
   assets/keplerops/build-operations \
   assets/keplerops/policy-compiler \
   assets/keplerops/connector-archive \
-  assets/keplerops/release-lineage
+  assets/keplerops/release-lineage \
+  build/card-coverage \
+  build/fourth-wall \
+  build/hint-delivery \
+  build/input-provenance \
+  build/participant-runner \
+  build/participant-surface \
+  build/release \
+  challenges \
+  docs/design/challenge-dependencies.json \
+  docs/design/challenges \
+  docs/design/portfolio.csv
 
 ready_attempt=0
 until gcloud compute ssh "$INSTANCE" --project "$PROJECT_ID" --zone "$ZONE" \

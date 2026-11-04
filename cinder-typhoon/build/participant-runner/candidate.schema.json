@@ -15,7 +15,7 @@
     "deployments"
   ],
   "properties": {
-    "schema_version": {"const": 2},
+    "schema_version": {"const": 3},
     "candidate_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+\\-]{0,159}$"},
     "immutable": {"const": true},
     "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
@@ -55,7 +55,7 @@
     },
     "deployments": {
       "type": "object",
-      "minProperties": 1,
+      "required": ["training", "keplerops", "arwc"],
       "additionalProperties": false,
       "properties": {
         "training": {"$ref": "#/$defs/deployment"},
@@ -68,12 +68,25 @@
     "deployment": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["project", "zone", "instance", "participant_image_digest"],
+      "required": [
+        "project",
+        "zone",
+        "instance",
+        "participant_service",
+        "participant_image_digest",
+        "images"
+      ],
       "properties": {
         "project": {"type": "string"},
         "zone": {"type": "string"},
         "instance": {"type": "string"},
-        "participant_image_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+        "participant_service": {"type": "string"},
+        "participant_image_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "images": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+        }
       }
     }
   }

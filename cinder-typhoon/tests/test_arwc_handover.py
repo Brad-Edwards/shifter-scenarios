@@ -170,9 +170,50 @@ class ArwcHandoverTests(unittest.TestCase):
         self.assertIn("bash ./generate-operator-material.sh", restore)
         self.assertIn("handover_services_waiting()", restore)
         self.assertIn("&& handover_services_waiting", restore)
+        self.assertIn("connector_children_healthy()", restore)
+        self.assertIn("&& connector_children_healthy", restore)
+        self.assertIn("connector child processes did not remain healthy", restore)
         self.assertIn("grep -qx waiting /run/arwc-status/state", restore)
         for service in SERVICES:
             self.assertIn(f"cinder-arwc-{service}", restore)
+
+    def test_connector_health_fails_when_either_child_exits(self) -> None:
+        health = RUNTIME / "connector-health.sh"
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            run = root / "run"
+            customer = root / "customer"
+            fieldlink = root / "fieldlink"
+            run.mkdir()
+            (customer / "audit").mkdir(parents=True)
+            (fieldlink / "consumer/candidates").mkdir(parents=True)
+            (customer / "audit/events.jsonl").touch()
+            (customer / "audit/fieldlink-consumer.jsonl").touch()
+            children = [subprocess.Popen(["sleep", "30"]) for _ in range(2)]
+            try:
+                (run / "customer-handover.pid").write_text(f"{children[0].pid}\n")
+                (run / "fieldlink-consumer.pid").write_text(f"{children[1].pid}\n")
+                environment = {
+                    **os.environ,
+                    "ARWC_CONNECTOR_RUN_DIR": str(run),
+                    "ARWC_CONNECTOR_CUSTOMER_ROOT": str(customer),
+                    "ARWC_CONNECTOR_FIELDLINK_ROOT": str(fieldlink),
+                }
+                healthy = subprocess.run(
+                    ["dash", str(health)], env=environment, check=False,
+                )
+                self.assertEqual(healthy.returncode, 0)
+                children[1].terminate()
+                children[1].wait(timeout=3)
+                unhealthy = subprocess.run(
+                    ["dash", str(health)], env=environment, check=False,
+                )
+                self.assertNotEqual(unhealthy.returncode, 0)
+            finally:
+                for child in children:
+                    if child.poll() is None:
+                        child.terminate()
+                        child.wait(timeout=3)
 
         live = (
             ROOT / "build" / "arwc" / "tests" / "test_handover_stability_live.py"
