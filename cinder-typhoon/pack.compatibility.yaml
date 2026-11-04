@@ -14,7 +14,7 @@ pack:
 artifact_boundaries:
   participant_visible:
     - path: challenges/challenges.yaml
-      export: participant
+      export: commercial
       description: Generated versioned card, score, description, and hint delivery catalog.
   operator_only:
     - path: README.md
@@ -44,14 +44,44 @@ assets: []
 operator_surfaces: []
 validation:
   commands:
-    - python3 challenges/catalog.py --check
-    - python3 build/hint-delivery/release.py verify
-    - python3 build/card-coverage/coverage.py --require-complete
-    - python3 tests/report_qa_status.py
-    - python3 -m unittest tests/test_qa_layers.py
+    - id: challenge-delivery-current
+      command: python3 challenges/catalog.py --check
+      validates: [challenge-delivery-current]
+    - id: hint-delivery-current
+      command: python3 build/hint-delivery/release.py verify
+      validates: [hint-delivery-current]
+    - id: card-coverage-exact
+      command: python3 build/card-coverage/coverage.py --require-complete
+      validates: [card-coverage-exact]
+    - id: qa-status-consistent
+      command: python3 tests/report_qa_status.py
+      validates: [qa-status-consistent]
+    - id: qa-documentation-consistent
+      command: python3 -m unittest tests/test_qa_layers.py
+      validates: [qa-documentation-consistent]
   gates:
-    - challenge-delivery-current
-    - hint-delivery-current
-    - card-coverage-exact
-    - qa-status-consistent
-    - qa-documentation-consistent
+    - id: challenge-delivery-current
+      kind: unit-test
+      paths:
+        - path: challenges/catalog.py
+        - path: challenges/challenges.yaml
+    - id: hint-delivery-current
+      kind: unit-test
+      paths:
+        - path: build/hint-delivery/release.py
+        - path: build/hint-delivery/manifest.json
+    - id: card-coverage-exact
+      kind: unit-test
+      paths:
+        - path: build/card-coverage/coverage.py
+        - path: build/card-coverage/registry.json
+    - id: qa-status-consistent
+      kind: unit-test
+      paths:
+        - path: tests/report_qa_status.py
+        - path: tests/qa-status.json
+    - id: qa-documentation-consistent
+      kind: unit-test
+      paths:
+        - path: tests/test_qa_layers.py
+        - path: tests/README.md

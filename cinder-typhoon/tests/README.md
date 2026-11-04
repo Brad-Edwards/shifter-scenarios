@@ -151,6 +151,20 @@ these checks (the focused suites are invoked by their commands below):
 delivery bundle or flattened ingest artifact is claimed. A future packaging
 step must use the appropriate upstream author-to-consumer handoff.
 
+The compatibility projection keeps participant visibility separate from export
+classification. The participant challenge catalog is commercial event content;
+it is not a public export. Each declared validation command names one typed gate
+and that gate names the authoritative validator and catalog or status input. Run
+the focused schema, binding, path, and mutation check with:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 /tmp/cinder-sdl-check/bin/python -m unittest \
+  cinder-typhoon/tests/test_pack_compatibility.py -v
+```
+
+This test reads the schema shipped by the pinned `raes-env-packs` package. It
+does not maintain a second local copy of the compatibility schema.
+
 The full native check is CPU intensive at this campaign size and can take
 several minutes. The focused suites use structural composition for speed. None
 of these checks starts targets, contacts a cloud, or creates assets.
