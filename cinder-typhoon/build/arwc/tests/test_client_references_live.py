@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import ast
 import json
+from pathlib import Path
 import subprocess
 import unittest
 
@@ -20,6 +22,56 @@ EXPECTED_REFERENCES = {
     "https://maintenance-review.arwc.test/.well-known/arwc-client",
     "https://process-view.arwc.test/.well-known/arwc-client",
 }
+REQUIRED_ROUTES = {
+    "archive.collection-path": ("POST", "https://retained-archive.arwc.test/api/collection-paths/current"),
+    "archive.handover-collector": ("POST", "https://retained-archive.arwc.test/api/collectors/handover"),
+    "archive.quarantine-collector": ("GET", "https://retained-archive.arwc.test/api/collectors/quarantine"),
+    "archive.reassemble": ("POST", "https://retained-archive.arwc.test/api/replay-exchange/current"),
+    "maintenance.preview-authority": ("POST", "https://maintenance-renderer.arwc.test/api/preview-authority/current"),
+    "maintenance.preview-execute": ("POST", "https://maintenance-renderer.arwc.test/api/preview-executions"),
+    "maintenance.renderer": ("GET", "https://maintenance-renderer.arwc.test/api/renderers/current"),
+    "maintenance.unlisted-reviewer": ("POST", "https://process-view.arwc.test/api/unlisted-reviewers/current"),
+    "process.approval-client": ("POST", "https://control-broker.arwc.test/api/approval-clients/current"),
+    "process.diagnostic-authority": ("POST", "https://process-view.arwc.test/api/diagnostic-programs/authority"),
+    "process.diagnostic-program-legacy": ("POST", "https://process-view.arwc.test/api/diagnostic-programs/legacy"),
+    "process.estimator-result": ("POST", "https://process-view.arwc.test/api/estimator-results/current"),
+    "process.forecast": ("POST", "https://process-view.arwc.test/api/forecasts/current"),
+    "process.maintenance-record": ("POST", "https://process-view.arwc.test/api/maintenance-records/current"),
+    "process.maintenance-record-update": ("POST", "https://process-view.arwc.test/api/maintenance-records/current"),
+    "process.replay-divergence": ("POST", "https://process-view.arwc.test/api/replay-sessions/current/divergence"),
+    "process.schedule-window": ("GET", "https://process-view.arwc.test/api/schedule-windows/current"),
+    "process.schedule-window-submit": ("POST", "https://process-view.arwc.test/api/schedule-windows/current"),
+    "process.sealed-project": ("GET", "https://process-view.arwc.test/api/sealed-projects/current/note"),
+    "process.sealed-project-open": ("POST", "https://process-view.arwc.test/api/sealed-projects/current"),
+    "process.signature-record": ("POST", "https://process-view.arwc.test/api/signature-records/current"),
+    "process.signature-record-interpretation": ("POST", "https://process-view.arwc.test/api/signature-records/current/interpretation"),
+    "process.signature-request": ("GET", "https://process-view.arwc.test/api/signature-requests"),
+}
+
+
+def ending_route_keys() -> set[str]:
+    suite = Path(__file__).with_name("test_known_solution_live.py")
+    tree = ast.parse(suite.read_text(encoding="utf-8"), filename=str(suite))
+    return {
+        call.args[0].value
+        for call in ast.walk(tree)
+        if isinstance(call, ast.Call)
+        and isinstance(call.func, ast.Attribute)
+        and call.func.attr == "discovered_route"
+        and call.args
+        and isinstance(call.args[0], ast.Constant)
+        and isinstance(call.args[0].value, str)
+    }
+
+
+def validate_ending_routes(routes: dict[str, dict[str, str]]) -> None:
+    missing = ending_route_keys() - routes.keys()
+    if missing:
+        raise AssertionError(f"ending route keys are not published: {sorted(missing)}")
+    for key, (method, template) in REQUIRED_ROUTES.items():
+        expected = {"key": key, "method": method, "template": template}
+        if routes.get(key) != expected:
+            raise AssertionError(f"ending route contract drifted for {key}")
 
 
 def inside(*arguments: str) -> subprocess.CompletedProcess[str]:
@@ -85,6 +137,7 @@ class ClientReferenceGraphLive(unittest.TestCase):
             visited.add(url)
 
         self.assertEqual(visited, EXPECTED_REFERENCES)
+        validate_ending_routes(routes)
         self.assertEqual(
             routes["process.signature-program-reproduction"],
             {

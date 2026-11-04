@@ -7,9 +7,10 @@ COPY build/arwc/runtime/estimator23.cpp /tmp/estimator23.cpp
 COPY build/arwc/runtime/signer24.c /tmp/signer24.c
 COPY build/arwc/runtime/selector24.c /tmp/selector24.c
 COPY build/arwc/runtime/vault31.c /tmp/vault31.c
-RUN g++ -std=c++20 -O2 -fno-omit-frame-pointer -static-libstdc++ -static-libgcc -Wl,--build-id=none \
+RUN g++ -std=c++20 -O2 -fno-omit-frame-pointer -static -Wl,--build-id=none \
       -o /tmp/estimator23 /tmp/estimator23.cpp \
     && strip --strip-all /tmp/estimator23 \
+    && ! readelf -l /tmp/estimator23 | grep -q INTERP \
     && /tmp/estimator23 --ordinary | grep -F 'Cairn=12.40' \
     && gcc -O2 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none -o /tmp/dsign-crr-r3 /tmp/signer24.c -lsodium \
     && strip --strip-all /tmp/dsign-crr-r3 \

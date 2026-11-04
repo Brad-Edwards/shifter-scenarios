@@ -587,6 +587,26 @@ class Handler(BaseHTTPRequestHandler):
                     "template": "https://retained-archive.arwc.test/api/bundles/current"
                 },
                 {
+                    "key": "archive.reassemble",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/replay-exchange/current"
+                },
+                {
+                    "key": "archive.handover-collector",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/collectors/handover"
+                },
+                {
+                    "key": "archive.quarantine-collector",
+                    "method": "GET",
+                    "template": "https://retained-archive.arwc.test/api/collectors/quarantine"
+                },
+                {
+                    "key": "archive.collection-path",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/collection-paths/current"
+                },
+                {
                     "key": "archive.bundle-collection-policy",
                     "method": "GET",
                     "template": "https://retained-archive.arwc.test/api/bundles/current/collection-policy"

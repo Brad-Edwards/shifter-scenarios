@@ -840,7 +840,10 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["customer_record"] = record
 
         with self.subTest(card="W01.2 the planner's unfinished handover"):
-            status, response = request(self.discovered_route("corporate.work-order"), expected=200)
+            status, response = request(
+                self.discovered_route("corporate.work-order").replace("{wo_id}", "current"),
+                expected=200,
+            )
             record = response["record"]
             self.assertNotIn("customer_receipt", record)
             self.evidence["planner_handover"] = record
@@ -1641,9 +1644,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             og_tag = self.evidence["feed_id"].split("-")[1]
             name = f"WRAP-FFFFFFFF-{og_tag}"
             body = {"record": name, "rolling32": f"{w19_rolling(name):08x}"}
-            status, _ = request(self.discovered_route("process.signature-record"), method="POST", token=session, body={**body, "rolling32": "00000000"})
+            status, _ = request(self.discovered_route("process.signature-record-interpretation"), method="POST", token=session, body={**body, "rolling32": "00000000"})
             self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.signature-record"), method="POST", token=session, body=body, expected=201)
+            status, response = request(self.discovered_route("process.signature-record-interpretation"), method="POST", token=session, body=body, expected=201)
             self.assertEqual(response["record"]["execution"], "i386-compatibility")
 
         with self.subTest(card="W19.3 the hidden check"):
@@ -1667,9 +1670,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             }
             digest = hashlib.sha256(json.dumps(mapping, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
             map_request = {"migration_record": self.evidence["migration_record"], "comparison_digest": digest, "observation": "EVT-COMM-OG2-114"}
-            status, _ = request(self.discovered_route("process.diagnostic-program"), method="POST", token=session, body={**map_request, "observation": "other"})
+            status, _ = request(self.discovered_route("process.diagnostic-program-legacy"), method="POST", token=session, body={**map_request, "observation": "other"})
             self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.diagnostic-program"), method="POST", token=session, body=map_request, expected=201)
+            status, response = request(self.discovered_route("process.diagnostic-program-legacy"), method="POST", token=session, body=map_request, expected=201)
             self.assertTrue(response["record"]["historical"])
             self.evidence["w19_map_request"] = map_request
 
@@ -1773,9 +1776,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             project_id = self.evidence["w22_project_id"]
             material = project_id.encode() + b"\0" + memory[0x40:0x80] + b"".join(struct.pack("<H", r) for r in registers)
             key = hashlib.sha256(material).digest()
-            status, _ = request(self.discovered_route("process.sealed-project"), method="POST", token=session, body={"project_id": project_id, "key_hex": "00" * 32})
+            status, _ = request(self.discovered_route("process.sealed-project-open"), method="POST", token=session, body={"project_id": project_id, "key_hex": "00" * 32})
             self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.sealed-project"), method="POST", token=session, body={"project_id": project_id, "key_hex": key.hex()}, expected=201)
+            status, response = request(self.discovered_route("process.sealed-project-open"), method="POST", token=session, body={"project_id": project_id, "key_hex": key.hex()}, expected=201)
             helper = base64.b64decode(response["review_helper_b64"], validate=True)
             self.assertTrue(helper.startswith(b"MZ"))
             trace_artifact("W22 review helper", helper)
@@ -2384,7 +2387,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W27.1 what counts as intact"):
             status, missing = request(
-                f"{base}/api/signature-programs/current/reproductions", method="POST", token=session,
+                f"{base}/api/integrity-verifier", method="POST", token=session,
                 body={"operation": "materials", "record_id": integrity_id},
             )
             self.assertEqual(status, 404)
@@ -2419,7 +2422,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                                         body={"operation": "results", "record_id": integrity_id, "program_set": "DPG1-CASES-R3", "results": list(reversed(results))}, expected=201)
             self.assertEqual(accepted["record"]["cases_verified"], len(results))
             status, missing = request(
-                f"{base}/api/signature-programs/current/reproductions", method="POST", token=session,
+                f"{base}/api/integrity-verifier", method="POST", token=session,
                 body={"operation": "materials", "record_id": integrity_id},
             )
             self.assertEqual(status, 404)
@@ -2722,9 +2725,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="W31.4 the diagnostic service's authority"):
             execution = self.evidence["w31_execution"]
             body = {key: execution[key] for key in ("execution_id", "correlation", "history_id", "history_digest")}
-            status, _ = request(self.discovered_route("process.diagnostic-program"), method="POST", token=session, body={**body, "history_id": "wrong"})
+            status, _ = request(self.discovered_route("process.diagnostic-authority"), method="POST", token=session, body={**body, "history_id": "wrong"})
             self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.diagnostic-program"), method="POST", token=session, body=body, expected=201)
+            status, result = request(self.discovered_route("process.diagnostic-authority"), method="POST", token=session, body=body, expected=201)
             self.assertEqual(result["history"]["record_id"], execution["history_id"])
             self.assertFalse(result["record"]["current_approval"])
             self.assertFalse(result["record"]["control_authority"])
@@ -2810,9 +2813,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="W33.2 the expensive hour"):
             wrong = json.loads(json.dumps(schedule))
             wrong["alternate_supply_m3s"][0] = float(window["supply_bounds_m3s"]["max"]) + 1.0
-            status, _ = request(self.discovered_route("process.schedule-window"), method="POST", token=session, body=wrong)
+            status, _ = request(self.discovered_route("process.schedule-window-submit"), method="POST", token=session, body=wrong)
             self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.schedule-window"), method="POST", token=session, body=schedule, expected=201)
+            status, result = request(self.discovered_route("process.schedule-window-submit"), method="POST", token=session, body=schedule, expected=201)
             self.evidence["w33_schedule_sha256"] = result["record"]["schedule_sha256"]
 
         with self.subTest(card="W33.3 the schedule the service accepts"):

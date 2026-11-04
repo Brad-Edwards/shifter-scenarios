@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import hashlib
 import importlib.util
 import json
@@ -19,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT / "build" / "arwc" / "runtime"
 IMAGES = ROOT / "build" / "arwc" / "images"
 GATE = RUNTIME / "arwc_handover.py"
+CLIENT_REFERENCE_TEST = ROOT / "build" / "arwc" / "tests" / "test_client_references_live.py"
 SERVICES = ("data", "identity", "archive", "business", "contractors")
 
 
@@ -31,6 +33,39 @@ def load_gate():
 
 
 handover = load_gate()
+
+
+def load_client_reference_test():
+    spec = importlib.util.spec_from_file_location("arwc_client_reference_test", CLIENT_REFERENCE_TEST)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+client_references = load_client_reference_test()
+
+
+def published_routes() -> dict[str, dict[str, str]]:
+    routes: dict[str, dict[str, str]] = {}
+    for path in RUNTIME.glob("*.py"):
+        source = path.read_text(encoding="utf-8")
+        tree = ast.parse(source, filename=path.name)
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Dict):
+                continue
+            try:
+                value = ast.literal_eval(node)
+            except (TypeError, ValueError):
+                continue
+            if not isinstance(value, dict) or set(value) != {"key", "method", "template"}:
+                continue
+            route = {key: str(item) for key, item in value.items()}
+            route["template"] = route["template"].replace(
+                "PROCESS_VIEW_BASE", "https://process-view.arwc.test"
+            )
+            routes[route["key"]] = route
+    return routes
 
 
 def write_material(root: Path, token: str, certificate: bytes, key: bytes) -> None:
@@ -87,6 +122,41 @@ class GateProcess:
 
 
 class ArwcHandoverTests(unittest.TestCase):
+    def test_ending_route_contract_is_complete_and_rejects_drift(self) -> None:
+        routes = published_routes()
+        client_references.validate_ending_routes(routes)
+
+        mutant = json.loads(json.dumps(routes))
+        mutant["process.sealed-project"]["template"] = (
+            "https://process-view.arwc.test/api/sealed-projects/current"
+        )
+        with self.assertRaisesRegex(AssertionError, "process.sealed-project"):
+            client_references.validate_ending_routes(mutant)
+
+    def test_ending_shared_paths_dispatch_by_request_shape(self) -> None:
+        planning = (RUNTIME / "planning_data.py").read_text(encoding="utf-8")
+        self.assertEqual(planning.count('path == "/api/query-runs"'), 1)
+        self.assertIn('if "function" in request:', planning)
+
+        process = (RUNTIME / "process_services.py").read_text(encoding="utf-8")
+        self.assertIn('and not {\n                "operations", "image_b64"', process)
+        self.assertNotIn(
+            '"/api/maintenance-records/current", "/api/maintenance-records/current"',
+            process,
+        )
+
+    def test_participant_estimator_is_self_contained(self) -> None:
+        diagnostics = (IMAGES / "diagnostics.Dockerfile").read_text(encoding="utf-8")
+        self.assertIn("g++ -std=c++20 -O2 -fno-omit-frame-pointer -static ", diagnostics)
+        self.assertIn("! readelf -l /tmp/estimator23 | grep -q INTERP", diagnostics)
+
+    def test_ending_uses_current_work_order_and_real_absent_alias(self) -> None:
+        ending = (ROOT / "build" / "arwc" / "tests" / "test_known_solution_live.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('.replace("{wo_id}", "current")', ending)
+        self.assertEqual(ending.count('f"{base}/api/integrity-verifier"'), 2)
+
     def test_engineering_utility_is_built_from_the_declared_local_stage(self) -> None:
         engineering = (IMAGES / "engineering.Dockerfile").read_text()
         self.assertIn("FROM ubuntu:24.04 AS utility-builder", engineering)

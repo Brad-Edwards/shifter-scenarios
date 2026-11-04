@@ -852,9 +852,10 @@ class Handler(BaseHTTPRequestHandler):
         if request is None:
             return
         if path == "/api/query-runs":
-            self.query_report(request)
-        elif path == "/api/query-runs":
-            self.reconcile(request)
+            if "function" in request:
+                self.reconcile(request)
+            else:
+                self.query_report(request)
         elif path == "/api/integration-sessions":
             self.integration(request)
         elif path == "/api/relation-exchanges":

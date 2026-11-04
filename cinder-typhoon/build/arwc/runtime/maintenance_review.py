@@ -262,6 +262,26 @@ class Handler(BaseHTTPRequestHandler):
                     "key": "maintenance.approval-token",
                     "method": "GET",
                     "template": "https://maintenance-review.arwc.test/api/approval-tokens/current"
+                },
+                {
+                    "key": "maintenance.renderer",
+                    "method": "GET",
+                    "template": "https://maintenance-renderer.arwc.test/api/renderers/current"
+                },
+                {
+                    "key": "maintenance.preview-authority",
+                    "method": "POST",
+                    "template": "https://maintenance-renderer.arwc.test/api/preview-authority/current"
+                },
+                {
+                    "key": "maintenance.preview-execute",
+                    "method": "POST",
+                    "template": "https://maintenance-renderer.arwc.test/api/preview-executions"
+                },
+                {
+                    "key": "maintenance.unlisted-reviewer",
+                    "method": "POST",
+                    "template": "https://process-view.arwc.test/api/unlisted-reviewers/current"
                 }
             ],
             "related": ["https://corporate-identity.arwc.test/.well-known/arwc-client"],
