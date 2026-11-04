@@ -314,8 +314,8 @@ class Handler(BaseHTTPRequestHandler):
                 },
                 {
                     "key": "contractors.artifact",
-                    "method": "GET",
-                    "template": "https://contractor-portal.arwc.test/api/contractor-artifacts/current"
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/collection-artifacts/current"
                 }
             ],
             "related": [

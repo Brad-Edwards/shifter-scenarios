@@ -48,7 +48,7 @@
             "source": "prior accepted API responses in the known-solution sequence"
           }
         ],
-        "inventory_sha256": "3d5d52b8f1c8cff99021528460db6a2775d34c68e2ea4f5deb9c494efa1f2bf8",
+        "inventory_sha256": "6fef7932c1c559dc821814cb3a33beae1f63f1e53a87eea33991790e4ff75f53",
         "profile": "arwc",
         "request_count": 5,
         "review_status": "complete",
@@ -534,7 +534,7 @@
             "source": "prior accepted API responses in the known-solution sequence"
           }
         ],
-        "inventory_sha256": "82ad1a89ae3c32719849a8523b94c13534de48dad3e7b8340657239cfe3ac59b",
+        "inventory_sha256": "887ca82e85bf9ed6121321c0ff406efc1ae212225aae54981d5205940ba7d264",
         "profile": "arwc",
         "request_count": 7,
         "review_status": "complete",
@@ -615,7 +615,7 @@
             "source": "prior accepted API responses in the known-solution sequence"
           }
         ],
-        "inventory_sha256": "0bba0ef302cd156efbbf9ab22f8bf0d97ea93114a7148a4bc2a72c93dac95db6",
+        "inventory_sha256": "b47e4bab2c0b63bdca4e6dd5db7d4ca60e9265c7266d116d0a72cb19d24eb90f",
         "profile": "arwc",
         "request_count": 8,
         "review_status": "complete",
@@ -758,7 +758,7 @@
             "source": "participant-received W27 artifacts and deterministic ROT128/GF(2) computation"
           }
         ],
-        "inventory_sha256": "3d974b1df336a4b609dfef41a3df00c153f4489b7e0d36175a166f45ffcf9bca",
+        "inventory_sha256": "953217b4fa9efdb2112faa4a17ef0fecd828e92039d906c27d5087bb0187d81f",
         "profile": "arwc",
         "request_count": 11,
         "review_status": "complete",
@@ -866,7 +866,7 @@
             "source": "prior accepted API responses in the known-solution sequence"
           }
         ],
-        "inventory_sha256": "e3da73aa06f7a8bfb0a9d798a104890e9737ebd532027e1cc48206328f985d03",
+        "inventory_sha256": "4f424c4b15445eeec818be3e6715aff76848d5f79b8c357500a2fcdba93399aa",
         "profile": "arwc",
         "request_count": 8,
         "review_status": "complete",
@@ -893,7 +893,7 @@
             "source": "prior accepted API responses in the known-solution sequence"
           }
         ],
-        "inventory_sha256": "b4f075c35ddb912be3e292d89091d175af79a84b9822f840208e0a186578caaf",
+        "inventory_sha256": "5398a6c008760abf1b70b291da9c1ee5478d719d912d9dd006b7b1eb07faab46",
         "profile": "arwc",
         "request_count": 8,
         "review_status": "complete",
@@ -948,7 +948,7 @@
             "source": "prior accepted API responses in the known-solution sequence"
           }
         ],
-        "inventory_sha256": "43eac4d28b59f2dab6f61654d794a021310b03dbca1d6afcb063dffa3ba7a353",
+        "inventory_sha256": "394143476be2b1502f9988fb508904249cee478a4a2acd4e8b7cfe90adb30ab8",
         "profile": "arwc",
         "request_count": 9,
         "review_status": "complete",
@@ -2321,7 +2321,7 @@
         }
       ],
       "comparison_count": 91,
-      "inventory_sha256": "b6b6349e6150abaf3011874b83398f27a2381f94075b29cc54db00324a6fb2a2",
+      "inventory_sha256": "5be378fbd1639afe08cd327884e662c4cccbf6b188366948ceb098a3594dce84",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2337,7 +2337,7 @@
         }
       ],
       "comparison_count": 241,
-      "inventory_sha256": "356b2bbf127e536b1dfba74a95c65bcb8fe4cf1846dee3ba14102d257394219b",
+      "inventory_sha256": "dfa21e321b3727c5c68c62f23795cdf0810affc4060cd70c9fcab1dcfcb63b2a",
       "review_status": "complete",
       "unresolved": []
     },

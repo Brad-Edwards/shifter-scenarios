@@ -2584,7 +2584,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 "ramp_open_seconds": 100, "each_gate_target_m3s": 0.5, "hold_seconds": 900, "ramp_close_seconds": 100,
             }
             # The practice sequence (W25) already satisfied the required movement conditions.
-            status, missing = plan("/api/reporting-checkpoints/current", method="POST", body=binding)
+            status, missing = plan("/api/release-plans/current", method="POST", body=binding)
             self.assertEqual(status, 404)
             self.assertNotIn("released_volume_ml", json.dumps(missing))
             status, _ = request(
@@ -2599,7 +2599,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             record = result["record"]
             self.assertEqual(record["record_id"], plan_id)
             self.assertFalse(record["live_action_performed"])
-            status, missing = plan("/api/reporting-checkpoints/current", method="POST", body=binding)
+            status, missing = plan("/api/release-plans/current", method="POST", body=binding)
             self.assertEqual(status, 404)
             self.assertNotIn("released_volume_ml", json.dumps(missing))
             self.evidence["w29_plan"] = plan_id
@@ -2758,9 +2758,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             record = self.evidence["w32_contract"]
             body = {"record_id": record["record_id"], "revision": record.get("revision", 19), "transitions": self.evidence["w32_transitions"]}
             wrong = json.loads(json.dumps(body)); wrong["transitions"][2]["reserve_ml"] = 13.4
-            status, _ = request(self.discovered_route("process.estimator-task"), method="POST", token=session, body=wrong)
+            status, _ = request(self.discovered_route("process.estimator-inputs"), method="POST", token=session, body=wrong)
             self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.estimator-task"), method="POST", token=session, body=body, expected=201)
+            status, result = request(self.discovered_route("process.estimator-inputs"), method="POST", token=session, body=body, expected=201)
             self.assertEqual(result["record"]["cases_reproduced"], len(self.evidence["w32_transitions"]))
 
         with self.subTest(card="W32.3 the condition the old model used"):

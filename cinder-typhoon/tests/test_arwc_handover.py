@@ -156,6 +156,8 @@ class ArwcHandoverTests(unittest.TestCase):
         )
         self.assertIn('.replace("{wo_id}", "current")', ending)
         self.assertEqual(ending.count('f"{base}/api/integrity-verifier"'), 2)
+        self.assertEqual(ending.count('plan("/api/release-plans/current"'), 2)
+        self.assertNotIn('plan("/api/reporting-checkpoints/current"', ending)
 
     def test_engineering_utility_is_built_from_the_declared_local_stage(self) -> None:
         engineering = (IMAGES / "engineering.Dockerfile").read_text()

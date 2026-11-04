@@ -651,6 +651,11 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/estimator-tasks/current"
     },
     {
+        "key": "process.estimator-inputs",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/estimator-tasks/current/inputs"
+    },
+    {
         "key": "process.estimator-run",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-runs"
