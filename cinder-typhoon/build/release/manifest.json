@@ -20,7 +20,7 @@
         "build/arwc",
         "assets/narrative/generated/packages/arwc-documents.json"
       ],
-      "sha256": "bbafdffb8f478ffe75d3f8c59db2f0cc327da4fa8e1402c499fce5f3fad0599d"
+      "sha256": "2f25dbd1971face2371bca828d1dcf0e22bad5da70e393b875670d3df4cf9908"
     },
     "keplerops": {
       "file_count": 567,
@@ -47,7 +47,7 @@
         "assets/keplerops/connector-archive",
         "assets/keplerops/release-lineage"
       ],
-      "sha256": "335abe3b04e1d91765cda8ac91d8826fddbfaf6b726f1722fb0baea7c4c79f99"
+      "sha256": "12df7dae3cc2db1fc877a5865556bfd88fcb99d95d83514877a647aa089ba99a"
     },
     "training": {
       "file_count": 457,
@@ -69,13 +69,13 @@
         "build/training",
         "assets/training"
       ],
-      "sha256": "1f3b8f89d17ffd86ca359ed529e0fe62360e7fe224555022a0c3c4ab580ee64a"
+      "sha256": "c248da99d31873ef72d5eeb966c0701b89cf9986c55ad6b7e81f170194da755c"
     }
   },
   "candidate": {
-    "candidate_id": "event-2026.11.04-03",
+    "candidate_id": "event-2026.11.04-04",
     "path": "build/participant-runner/candidate.json",
-    "sha256": "0e4c3dbfa82c57743ed7d5bf4eeeb73ac958ba9f10f3a0054ce544dbb47b1bd9"
+    "sha256": "2c5b516d511e2e59ca3e361b0818ed74400fed8fe7f96d24baef589ae68c2c3a"
   },
   "challenge_delivery": {
     "card_count": 240,
@@ -283,7 +283,7 @@
     "schema": "cinder-typhoon.hint-delivery/v1",
     "sha256": "af2554477fe5a0dd3f92a76c4796125fa4c8d3b655e6a612e5ad2053d6214afa"
   },
-  "release_id": "event-2026.11.04-03",
+  "release_id": "event-2026.11.04-04",
   "schema_version": 1,
-  "source_commit": "0d2a0c05c68821900616d1c2104cb0c6a9ee7cb4"
+  "source_commit": "0a28cf00506396fbb0676e0530ec0a550f559995"
 }
