@@ -1,4 +1,23 @@
 {
   "schema_version": 1,
-  "entries": []
+  "entries": [
+    {
+      "id": "arwc-invoice-customer-acceptance",
+      "source_kind": "participant_file",
+      "location": "assets/narrative/generated/packages/arwc-documents.json#json/documents/2723/text",
+      "rule_id": "card-title-alias",
+      "match": "customer-accepted",
+      "content_sha256": "08b9e9a3d1af72e65e595781c6fd2cdd42a0569296a6829d5e3485c6189f5726",
+      "rationale": "A reviewed ordinary invoice milestone says the customer accepted a contractor archive guide; it does not identify a card or completion condition."
+    },
+    {
+      "id": "training-kali-login-shell-comment",
+      "source_kind": "participant_file",
+      "location": "/home/cinder/.zprofile",
+      "rule_id": "meta-flag",
+      "match": "flag",
+      "content_sha256": "54ccdd24f52857bb92e90881e81218b4020f578d0e92db92a8fa1a97ae718d79",
+      "rationale": "The pinned Kali base profile describes the standard shell -l flag; this is login-shell documentation, not event terminology."
+    }
+  ]
 }

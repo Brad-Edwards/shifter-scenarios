@@ -220,8 +220,16 @@ class AllowlistTests(unittest.TestCase):
         self.assertEqual(unresolved, [changed])
         self.assertFalse(allowed)
 
-    def test_committed_allowlist_is_empty_and_strict(self) -> None:
-        self.assertEqual(scan.load_allowlist(), {"schema_version": 1, "entries": []})
+    def test_committed_allowlist_is_exact_and_strict(self) -> None:
+        value = scan.load_allowlist()
+        self.assertEqual(value["schema_version"], 1)
+        self.assertEqual(
+            {entry["id"] for entry in value["entries"]},
+            {
+                "arwc-invoice-customer-acceptance",
+                "training-kali-login-shell-comment",
+            },
+        )
 
     def test_structural_gates_cannot_be_allowlisted(self) -> None:
         value = json.loads((FOURTH_WALL / "domain-interfaces.json").read_text())
@@ -305,13 +313,19 @@ class StaticAndLiveContractTests(unittest.TestCase):
         cls.arwc = cls.static_reports["arwc"]
 
     def test_current_static_reports_are_clean_without_exceptions(self) -> None:
+        expected_allowlisted = {"training": 0, "keplerops": 0, "arwc": 1}
         for phase, report in self.static_reports.items():
             with self.subTest(phase=phase):
                 self.assertEqual(report["overall_status"], "clean")
                 self.assertEqual(report["summary"]["finding_count"], 0)
-                self.assertEqual(report["summary"]["allowlisted_count"], 0)
+                self.assertEqual(
+                    report["summary"]["allowlisted_count"],
+                    expected_allowlisted[phase],
+                )
                 self.assertEqual(report["findings"], [])
-                self.assertEqual(report["allowlisted"], [])
+                self.assertEqual(
+                    len(report["allowlisted"]), expected_allowlisted[phase],
+                )
 
     def test_arwc_runtime_routes_have_no_card_derived_names(self) -> None:
         findings = [

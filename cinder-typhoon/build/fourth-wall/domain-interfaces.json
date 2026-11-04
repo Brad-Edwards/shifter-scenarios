@@ -14,6 +14,7 @@
         "/api/(?:workspaces|build-records|trust-records|roles|maintenance|policies|token-exchange)(?:/.*)?",
         "/api/(?:fieldkest|fieldlink|diagnostics|session|conversations|handovers|assignments|customers|cases)(?:/.*)?",
         "/api/(?:attachments|renders|documents|registrations|delegation|service-relations|federation|service-directory|enrollment|archive|note-preview|notes|managed-identities|release-administration|schedules|workloads|exports|backups|recovery|field-archive|config|contexts|selections|completions|answers|packages|rollback-rehearsal|indexes|internal)(?:/.*)?",
+        "/api/(?:policy-compilers)/fieldkest-policyc(?:/.*)?",
         "/api/(?:releases|package-views|inspections|compatibility|consumer-checks|reconcile|resolver|imports|v1|exercises)(?:/.*)?",
         "/api/?"
       ]
