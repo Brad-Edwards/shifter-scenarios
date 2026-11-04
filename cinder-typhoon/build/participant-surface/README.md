@@ -56,7 +56,10 @@ An authored manifest contains:
 - `tools`: commands deliberately supplied to the participant;
 - `network.dns`: names and expected IPv4 results;
 - `network.listeners`: non-mutating TCP-connect probes from the participant
-  network. The set is an explicit reviewed probe universe, not a port scan;
+  network. The set is an explicit reviewed probe universe, not a port scan.
+  A reachable listener may set `credential_free_get` to `false` when it
+  requires client authentication; the fourth-wall observer then preserves the
+  TCP reachability check without attempting an unauthenticated HTTP request;
 - `disclosures`: participant-visible discovery documents and the facts or route
   families they expose. This makes over-disclosure auditable without copying
   document contents into the manifest;

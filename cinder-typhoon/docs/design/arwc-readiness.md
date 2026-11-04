@@ -82,6 +82,10 @@ owner.
 - W34 treats the reported district `source_set` as a set: every expected
   district must appear exactly once, but JSON object serialization order does
   not change the planning decision.
+- The fieldlink service on port 443 remains mutually authenticated. Participant
+  surface checks still verify TCP reachability, while the credential-free
+  fourth-wall observer probes only listeners declared safe for an unauthenticated
+  `GET`; it must not weaken or misreport the mTLS boundary.
 - The client-reference acceptance test checks the ending's complete route
   contract, including methods and templates, so route drift fails before an
   event run.

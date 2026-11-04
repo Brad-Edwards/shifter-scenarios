@@ -149,7 +149,8 @@
       "properties": {
         "host": {"type": "string", "minLength": 1},
         "port": {"type": "integer", "minimum": 1, "maximum": 65535},
-        "reachable": {"type": "boolean"}
+        "reachable": {"type": "boolean"},
+        "credential_free_get": {"type": "boolean"}
       }
     },
     "disclosure": {

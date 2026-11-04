@@ -101,10 +101,17 @@ def validate_authored(value: dict[str, Any]) -> None:
         dns_names.add(item["name"])
     listeners: set[tuple[str, int]] = set()
     for index, item in enumerate(network["listeners"]):
-        exact_keys(item, {"host", "port", "reachable"}, set(), f"network.listeners[{index}]")
+        exact_keys(
+            item, {"host", "port", "reachable"}, {"credential_free_get"},
+            f"network.listeners[{index}]",
+        )
         key = (item["host"], item["port"])
         require(key not in listeners, f"network.listeners[{index}]: duplicate probe")
         require(1 <= item["port"] <= 65535 and isinstance(item["reachable"], bool), f"network.listeners[{index}]: invalid probe")
+        require(
+            isinstance(item.get("credential_free_get", True), bool),
+            f"network.listeners[{index}]: credential_free_get must be boolean",
+        )
         listeners.add(key)
 
     disclosure_ids: set[str] = set()

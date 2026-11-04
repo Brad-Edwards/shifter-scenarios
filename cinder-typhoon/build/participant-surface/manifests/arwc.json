@@ -1410,6 +1410,7 @@
         "reachable": false
       },
       {
+        "credential_free_get": false,
         "host": "customer-handover.arwc.test",
         "port": 443,
         "reachable": true
@@ -1430,6 +1431,7 @@
         "reachable": false
       },
       {
+        "credential_free_get": false,
         "host": "fieldlink.arwc.test",
         "port": 443,
         "reachable": true
