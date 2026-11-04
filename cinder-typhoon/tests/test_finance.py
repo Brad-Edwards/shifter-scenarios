@@ -61,7 +61,14 @@ class FinanceTests(unittest.TestCase):
         def journal_missing(f, m, d): f['journals'].pop()
         def false_opening(f, m, d): f['opening_balances_cents']['Deferred service'] += 1
         def statement(f, m, d): doc(d, 'statement-arwc')['text'] = 'Balance zero.\n'
-        def pdf_text(f, m, d): doc(d, 'ko-26-0001')['text'] += 'Wrong extra line\n'
+        def invoice_description(f, m, d):
+            invoice(f, 'project_acceptance')['description'] = 'Ledger wording drift'
+        def invoice_mail(f, m, d):
+            message = next(item for item in m if 'ko-26-0055' in item.get('attachments', []))
+            message['body'] = message['body'].replace('customer accepted', 'customer confirmed')
+        def pdf_text(f, m, d):
+            item = doc(d, 'ko-26-0055')
+            item['text'] = item['text'].replace('customer accepted', 'customer confirmed')
         def pdf_hash(f, m, d): doc(d, 'ko-26-0001')['binary_sha256'] = '0' * 64
         def formula_manifest(f, m, d):
             formulas = f['workbook_formulae']['finance-accounts-budget']
@@ -70,7 +77,7 @@ class FinanceTests(unittest.TestCase):
                  wrong_account, cash_early, cash_excess, purchase_early, partial_paid, purchase_total,
                  self_approval, receipt_math, claim_early, payroll_tax, payroll_future, payroll_reader,
                  payroll_attachment, internal_ancestry, journal_missing, false_opening, statement,
-                 pdf_text, pdf_hash, formula_manifest]
+                 invoice_description, invoice_mail, pdf_text, pdf_hash, formula_manifest]
         for mutate in cases:
             with self.subTest(mutation=mutate.__name__):
                 f, m, d = copy.deepcopy((self.manifest, self.mail, self.docs))

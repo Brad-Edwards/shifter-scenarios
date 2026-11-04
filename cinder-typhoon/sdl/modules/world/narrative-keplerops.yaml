@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/keplerops-mail
-      version: sha256-53647f4ba410fa4adf21362c0f45aae296c6d2e7f53290af39b6801ed2fed464
+      version: sha256-4a787031a275cf32d78f4152edf2c86beccefef767909ceae1f1edba0aea0bb5
     description: keplerops workplace mail. Require an individual staff identity; Exact mailbox membership.
       Preserve authored readers and opening state. Source package is the complete item inventory.
     sensitive: true
@@ -66,7 +66,7 @@ content:
     format: cinder-document-library/v2
     source:
       name: cinder-typhoon/narrative/keplerops-documents
-      version: sha256-08f3ab8811182f0a13ff94470683b6beca7792af5abc6e65ae1b6329dea8d677
+      version: sha256-7427aaa117efc5bd83cf7750fb2b0cff9afa3c89be501757fb038f61d020b22d
     description: keplerops workplace documents. Require an individual staff identity; Exact document readers.
       Preserve authored readers and opening state.
     items:
