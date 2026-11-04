@@ -32,7 +32,18 @@ tar -C "$PACK_ROOT" -czf "$ARCHIVE" \
   --exclude='build/arwc/gcp/.terraform' \
   --exclude='*/__pycache__' \
   build/arwc \
-  assets/narrative/generated/packages/arwc-documents.json
+  assets/narrative/generated/packages/arwc-documents.json \
+  build/card-coverage \
+  build/fourth-wall \
+  build/hint-delivery \
+  build/input-provenance \
+  build/participant-runner \
+  build/participant-surface \
+  build/release \
+  challenges \
+  docs/design/challenge-dependencies.json \
+  docs/design/challenges \
+  docs/design/portfolio.csv
 
 ready_attempt=0
 until gcloud compute ssh "$INSTANCE" --project "$PROJECT_ID" --zone "$ZONE" \

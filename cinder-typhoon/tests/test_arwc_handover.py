@@ -87,6 +87,30 @@ class GateProcess:
 
 
 class ArwcHandoverTests(unittest.TestCase):
+    def test_engineering_utility_is_built_from_the_declared_local_stage(self) -> None:
+        engineering = (IMAGES / "engineering.Dockerfile").read_text()
+        self.assertIn("FROM ubuntu:24.04 AS utility-builder", engineering)
+        self.assertEqual(engineering.count("COPY --from=utility-builder"), 2)
+
+    def test_diagnostics_build_accepts_unsigned_64_bit_selector_output(self) -> None:
+        diagnostics = (IMAGES / "diagnostics.Dockerfile").read_text()
+        self.assertIn("grep -Eq '^[1-9][0-9]*$'", diagnostics)
+        self.assertNotIn('test "$(/tmp/selector24', diagnostics)
+
+    def test_connector_private_material_stays_out_of_participant_paths(self) -> None:
+        dockerfile = (IMAGES / "connector.Dockerfile").read_text()
+        entrypoint = (RUNTIME / "connector-entrypoint.sh").read_text()
+        consumer = (RUNTIME / "fieldlink_consumer.py").read_text()
+        self.assertIn("-m 0711", dockerfile)
+        self.assertIn("/opt/customer-handover", dockerfile)
+        self.assertIn("-m 0750", dockerfile)
+        self.assertIn("/opt/customer-handover/assets", dockerfile)
+        self.assertNotIn("/tmp/arwc-handover.key", entrypoint)
+        self.assertNotIn("/tmp/arwc-handover.key", consumer)
+        private_key = "/var/lib/arwc-connector/auth/handover.key"
+        self.assertIn(private_key, entrypoint)
+        self.assertIn(private_key, consumer)
+
     token = "a1" * 32
     certificate = b"range-a-certificate\n"
     key = ("ab" * 32 + "\n").encode()
@@ -170,9 +194,56 @@ class ArwcHandoverTests(unittest.TestCase):
         self.assertIn("bash ./generate-operator-material.sh", restore)
         self.assertIn("handover_services_waiting()", restore)
         self.assertIn("&& handover_services_waiting", restore)
+        self.assertIn("connector_children_healthy()", restore)
+        self.assertIn("&& connector_children_healthy", restore)
+        self.assertIn("connector child processes did not remain healthy", restore)
         self.assertIn("grep -qx waiting /run/arwc-status/state", restore)
         for service in SERVICES:
             self.assertIn(f"cinder-arwc-{service}", restore)
+
+    def test_connector_health_fails_when_either_child_exits(self) -> None:
+        health = RUNTIME / "connector-health.sh"
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            proc = root / "proc"
+            customer = root / "customer"
+            fieldlink = root / "fieldlink"
+            proc.mkdir()
+            (customer / "audit").mkdir(parents=True)
+            (fieldlink / "consumer/candidates").mkdir(parents=True)
+            (customer / "audit/events.jsonl").touch()
+            (customer / "audit/fieldlink-consumer.jsonl").touch()
+            commands = (
+                "/opt/customer-handover/customer_handover.py",
+                "/opt/fieldlink-connector/fieldlink_consumer.py",
+            )
+            for pid, command in enumerate(commands, start=20):
+                process = proc / str(pid)
+                process.mkdir()
+                (process / "status").write_text("PPid:\t1\nUid:\t987\t987\t987\t987\n")
+                (process / "cmdline").write_bytes(
+                    b"python3\0" + command.encode() + b"\0"
+                )
+            environment = {
+                **os.environ,
+                "ARWC_CONNECTOR_PROC_ROOT": str(proc),
+                "ARWC_CONNECTOR_UID": "987",
+                "ARWC_CONNECTOR_CUSTOMER_ROOT": str(customer),
+                "ARWC_CONNECTOR_FIELDLINK_ROOT": str(fieldlink),
+            }
+            healthy = subprocess.run(
+                ["dash", str(health)], env=environment, check=False,
+            )
+            self.assertEqual(healthy.returncode, 0)
+            shutil.rmtree(proc / "21")
+            unhealthy = subprocess.run(
+                ["dash", str(health)], env=environment, check=False,
+            )
+            self.assertNotEqual(unhealthy.returncode, 0)
+
+        source = health.read_text()
+        self.assertNotIn(".pid", source)
+        self.assertIn("/proc", source)
 
         live = (
             ROOT / "build" / "arwc" / "tests" / "test_handover_stability_live.py"

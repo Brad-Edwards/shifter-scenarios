@@ -1372,7 +1372,7 @@
             "mode": "0600",
             "owner": "rowan",
             "path": ".config/chromium/Default/History",
-            "sha256": "ccb5025bfedb8b0c17ec9bb9276bc9262e15cb2b7d5fac757c6ce1ee17ee24b3",
+            "sha256": "7a07e88fe3fa518038fb1666df797d9f6ee542c672a316ae4794e00c6e20a235",
             "size": 20480,
             "type": "file"
           },
@@ -1932,7 +1932,7 @@
             "mode": "0640",
             "owner": "rowan",
             "path": "work/registry/inspection-compat.fki",
-            "sha256": "47430e0cf68733cda0bcb7515e5fefa4f263801761e8b4c1f899e8306ceec098",
+            "sha256": "543a002d5bf57a8184f6aead0cc74f04e74f8070d750332ef01bcba1f7bbf198",
             "size": 13,
             "type": "file"
           },

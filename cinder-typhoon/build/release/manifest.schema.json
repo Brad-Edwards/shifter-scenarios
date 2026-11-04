@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/release/manifest.schema.json",
+  "title": "Cinder Typhoon immutable release manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release_id",
+    "source_commit",
+    "candidate",
+    "challenge_delivery",
+    "hint_delivery",
+    "build_inputs",
+    "file_bindings",
+    "deployments"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "release_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+\\-]{0,159}$"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "candidate_id", "sha256"],
+      "properties": {
+        "path": {"const": "build/participant-runner/candidate.json"},
+        "candidate_id": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "challenge_delivery": {"type": "object"},
+    "hint_delivery": {"type": "object"},
+    "build_inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["training", "keplerops", "arwc"],
+      "properties": {
+        "training": {"$ref": "#/$defs/build_input"},
+        "keplerops": {"$ref": "#/$defs/build_input"},
+        "arwc": {"$ref": "#/$defs/build_input"}
+      }
+    },
+    "file_bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["training", "keplerops", "arwc"],
+      "properties": {
+        "training": {"type": "object"},
+        "keplerops": {"type": "object"},
+        "arwc": {"type": "object"}
+      }
+    },
+    "deployments": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["training", "keplerops", "arwc"],
+      "properties": {
+        "training": {"$ref": "#/$defs/deployment"},
+        "keplerops": {"$ref": "#/$defs/deployment"},
+        "arwc": {"$ref": "#/$defs/deployment"}
+      }
+    }
+  },
+  "$defs": {
+    "build_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["roots", "file_count", "sha256"],
+      "properties": {
+        "roots": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "file_count": {"type": "integer", "minimum": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project", "zone", "instance", "participant_service", "participant_image_digest", "images"],
+      "properties": {
+        "project": {"type": "string"},
+        "zone": {"type": "string"},
+        "instance": {"type": "string"},
+        "participant_service": {"type": "string"},
+        "participant_image_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "images": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+        }
+      }
+    }
+  }
+}

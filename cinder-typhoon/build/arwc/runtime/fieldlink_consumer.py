@@ -182,7 +182,7 @@ def earn_corporate(route: str, receipt_id: str, version: str) -> None:
         attestation = build_attestation(
             token.encode(),
             Path("/tmp/arwc-server.crt").read_bytes(),
-            Path("/tmp/arwc-handover.key").read_bytes(),
+            Path("/var/lib/arwc-connector/auth/handover.key").read_bytes(),
             handover_id,
             now(),
         )

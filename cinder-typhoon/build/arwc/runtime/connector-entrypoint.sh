@@ -26,13 +26,13 @@ install -d -o arwc-connector -g arwc-connector -m 0700 \
   /var/lib/arwc-connector/audit \
   /var/lib/arwc-connector/auth \
   /var/lib/arwc-connector/state
-
 install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.crt /tmp/arwc-server.crt
 install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.key /tmp/arwc-server.key
 install -o arwc-connector -g arwc-connector -m 0400 \
-  /run/arwc-handover/authentication.key /tmp/arwc-handover.key
+  /run/arwc-handover/authentication.key \
+  /var/lib/arwc-connector/auth/handover.key
 install -o fieldlink -g fieldlink -m 0444 \
   /run/arwc-tls/ca.crt /tmp/arwc-ca.crt
 install -o arwc-connector -g arwc-connector -m 0400 \
@@ -46,7 +46,11 @@ setpriv --reuid=arwc-connector --regid=arwc-connector --init-groups \
   python3 /opt/fieldlink-connector/fieldlink_consumer.py &
 consumer_pid=$!
 
-trap 'kill "$handover_pid" "$consumer_pid" 2>/dev/null || true; wait || true' TERM INT EXIT
+cleanup() {
+  kill "$handover_pid" "$consumer_pid" 2>/dev/null || true
+  wait || true
+}
+trap cleanup TERM INT EXIT
 while kill -0 "$handover_pid" "$consumer_pid" 2>/dev/null; do
   sleep 1
 done

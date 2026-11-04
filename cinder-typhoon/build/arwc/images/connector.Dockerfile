@@ -17,6 +17,8 @@ RUN apt-get update \
     && groupadd --system arwc-connector \
     && useradd --system --gid arwc-connector --home-dir /var/lib/arwc-connector --shell /usr/sbin/nologin arwc-connector \
     && usermod --append --groups fieldlink arwc-connector \
+    && install -d -o arwc-connector -g arwc-connector -m 0711 \
+         /opt/customer-handover \
     && install -d -o arwc-connector -g arwc-connector -m 0750 \
          /opt/customer-handover/assets /opt/fieldlink-connector
 
@@ -36,6 +38,7 @@ COPY --chown=arwc-connector:arwc-connector --chmod=0640 \
 COPY --from=narrative --chown=arwc-connector:arwc-connector --chmod=0640 \
   /tmp/pl-arwc-plan-method-01-method.md /opt/customer-handover/assets/pl-arwc-plan-method-01-method.md
 COPY --chmod=0750 build/arwc/runtime/connector-entrypoint.sh /usr/local/sbin/arwc-connector-entrypoint
+COPY --chmod=0755 build/arwc/runtime/connector-health.sh /usr/local/sbin/arwc-connector-health
 
 EXPOSE 443 8443
 ENTRYPOINT ["/usr/local/sbin/arwc-connector-entrypoint"]

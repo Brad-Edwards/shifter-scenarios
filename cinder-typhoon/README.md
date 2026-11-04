@@ -62,9 +62,10 @@ This pack is **not release qualified**. The current static/unit status is:
 - service-contract implementation complete;
 - participant-boundary known-solution implementation partial;
 - provenance and participant-surface implementation partial;
-- blind human-plus-agent playtesting not started; and
-- no immutable candidate, versioned release manifest, live acceptance report,
-  or soak report.
+- blind human-plus-agent playtesting not started;
+- immutable candidate and versioned release manifest created; and
+- no complete live acceptance report, blind human-plus-agent playtest, or soak
+  report.
 
 Run `python3 tests/report_qa_status.py` from this directory for the checked
 result. The evidence-bound status, gate catalog, and milestone snapshot are in

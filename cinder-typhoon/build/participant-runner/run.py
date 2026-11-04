@@ -26,14 +26,17 @@ from urllib.request import ProxyHandler, Request, build_opener
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "build" / "input-provenance"))
+sys.path.insert(0, str(ROOT / "build" / "release"))
 sys.path.insert(0, str(ROOT / "challenges"))
 
 import catalog as delivery_catalog  # noqa: E402
+import manifest as release_manifest  # noqa: E402
 from provenance import ProvenanceError, attach_runtime_provenance  # noqa: E402
 
 EVENT_PREFIX = "CINDER_ACCEPTANCE_EVENT "
 RESULT_PREFIX = "CINDER_BOUNDARY_RESULT "
 SHA256 = re.compile(r"^sha256:[0-9a-f]{64}$")
+ZERO_DIGEST = "sha256:" + "0" * 64
 SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,159}$")
 
 
@@ -361,8 +364,8 @@ def validate_candidate(path: Path, phase_name: str, cross_segment: bool) -> dict
     }
     if not isinstance(value, dict) or set(value) != required:
         raise RunnerError(f"candidate manifest fields must be exactly {sorted(required)}")
-    if value["schema_version"] != 2 or value["immutable"] is not True:
-        raise RunnerError("candidate manifest must declare schema_version 2 and immutable true")
+    if value["schema_version"] != 3 or value["immutable"] is not True:
+        raise RunnerError("candidate manifest must declare schema_version 3 and immutable true")
     if not isinstance(value["candidate_id"], str) or not SAFE_ID.fullmatch(value["candidate_id"]):
         raise RunnerError("candidate_id is invalid")
     if not isinstance(value["source_commit"], str) or not re.fullmatch(r"[0-9a-f]{40}", value["source_commit"]):
@@ -383,15 +386,20 @@ def validate_candidate(path: Path, phase_name: str, cross_segment: bool) -> dict
     if not isinstance(digests, dict) or not digests:
         raise RunnerError("artifact_digests must be a non-empty object")
     for name, digest in digests.items():
-        if not isinstance(name, str) or not SAFE_ID.fullmatch(name) or not isinstance(digest, str) or not SHA256.fullmatch(digest):
+        if (
+            not isinstance(name, str) or not SAFE_ID.fullmatch(name)
+            or not isinstance(digest, str) or not SHA256.fullmatch(digest)
+            or digest == ZERO_DIGEST
+        ):
             raise RunnerError("artifact_digests contains an invalid name or digest")
     deployments = value["deployments"]
-    required_phases = {phase_name} | ({"arwc"} if phase_name == "keplerops" and cross_segment else set())
-    if not isinstance(deployments, dict) or not required_phases.issubset(deployments):
-        raise RunnerError(f"candidate deployments must include {sorted(required_phases)}")
+    required_phases = set(PHASES)
+    if not isinstance(deployments, dict) or set(deployments) != required_phases:
+        raise RunnerError(f"candidate deployments must be exactly {sorted(required_phases)}")
     for name, deployment in deployments.items():
         if name not in PHASES or not isinstance(deployment, dict) or set(deployment) != {
-            "project", "zone", "instance", "participant_image_digest",
+            "project", "zone", "instance", "participant_service",
+            "participant_image_digest", "images",
         }:
             raise RunnerError("candidate deployment is invalid")
         if not all(
@@ -403,8 +411,26 @@ def validate_candidate(path: Path, phase_name: str, cross_segment: bool) -> dict
             deployment["participant_image_digest"]
         ):
             raise RunnerError("candidate participant image digest is invalid")
+        images = deployment["images"]
+        if (
+            not isinstance(images, dict) or not images
+            or not isinstance(deployment["participant_service"], str)
+            or deployment["participant_service"] not in images
+            or any(
+                not isinstance(service, str) or not SAFE_ID.fullmatch(service)
+                or not isinstance(digest, str) or not SHA256.fullmatch(digest)
+                or digest == ZERO_DIGEST
+                for service, digest in images.items()
+            )
+            or images.get(deployment["participant_service"])
+            != deployment["participant_image_digest"]
+        ):
+            raise RunnerError("candidate deployment image inventory is invalid")
         if deployment["participant_image_digest"] not in digests.values():
             raise RunnerError("candidate participant image digest is absent from artifact_digests")
+        for service, digest in images.items():
+            if digests.get(f"{name}/{service}") != digest:
+                raise RunnerError("candidate deployment image is absent from artifact_digests")
     raw = path.read_bytes()
     return {
         "candidate_id": value["candidate_id"], "immutable": True,
@@ -674,6 +700,7 @@ def main() -> int:
     candidate = parser.add_mutually_exclusive_group()
     candidate.add_argument("--candidate", type=Path)
     candidate.add_argument("--development", action="store_true")
+    parser.add_argument("--release-manifest", type=Path)
     parser.add_argument("--cross-segment", action="store_true")
     parser.add_argument(
         "--expected-transition", choices=("diagnostic-execution", "package-activation"),
@@ -694,6 +721,8 @@ def main() -> int:
         parser.error("--report is required")
     if not arguments.candidate and not arguments.development:
         parser.error("one of --candidate or --development is required")
+    if arguments.development and arguments.release_manifest:
+        parser.error("--release-manifest applies only to candidate mode")
     if arguments.phase != "keplerops" and arguments.cross_segment:
         parser.error("--cross-segment applies only to KeplerOps")
     if arguments.phase != "arwc" and arguments.expected_transition:
@@ -729,6 +758,17 @@ def main() -> int:
             "hint_delivery": None,
             "artifact_digests": {}, "deployments": {},
         }
+    release_error = "candidate mode requires --release-manifest" if (
+        arguments.candidate and not arguments.release_manifest
+    ) else None
+    release_evidence = None
+    if arguments.release_manifest and arguments.candidate:
+        try:
+            release_evidence = release_manifest.validate_release(
+                arguments.release_manifest, arguments.candidate, arguments.phase,
+            )
+        except release_manifest.ManifestError as error:
+            release_error = str(error)
     report: dict[str, Any] = {
         "schema_version": 1,
         "report_kind": "participant-boundary-known-solution",
@@ -737,6 +777,7 @@ def main() -> int:
         "selected_assertions": selected,
         "reset_identity": arguments.reset_identity,
         "candidate": candidate_evidence,
+        "release": release_evidence,
         "started_at": started_wall.isoformat(),
         "cross_segment": arguments.cross_segment,
         "expected_transition": arguments.expected_transition,
@@ -745,6 +786,8 @@ def main() -> int:
     try:
         if candidate_error:
             raise RunnerError(candidate_error)
+        if release_error:
+            raise RunnerError(release_error)
         report["container_boundary"] = inspect_container(PHASES[arguments.phase])
         if arguments.candidate:
             report["host_identity"] = gce_identity()
@@ -752,6 +795,11 @@ def main() -> int:
                 candidate_evidence, arguments.phase,
                 report["host_identity"], report["container_boundary"],
             )
+            release_evidence = release_manifest.validate_release(
+                arguments.release_manifest, arguments.candidate, arguments.phase,
+                verify_images=True,
+            )
+            report["release"] = release_evidence
         source = PHASES[arguments.phase].suite.read_text(encoding="utf-8")
         completed = subprocess.run(
             launch_command(

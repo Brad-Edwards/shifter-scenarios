@@ -314,18 +314,35 @@ class DevelopmentPairSyncTests(unittest.TestCase):
 
 class CandidateTests(unittest.TestCase):
     def candidate(self) -> dict:
+        digest = "sha256:" + "b" * 64
         return {
-            "schema_version": 2,
+            "schema_version": 3,
             "candidate_id": "event-2026.10.30-01",
             "immutable": True,
             "source_commit": "a" * 40,
             "challenge_delivery": runner.delivery_catalog.catalog_metadata(),
             "hint_delivery": runner.delivery_catalog.hint_manifest_metadata(),
-            "artifact_digests": {"training-image": "sha256:" + "b" * 64},
+            "artifact_digests": {
+                "training/participant": digest,
+                "keplerops/k-dev": digest,
+                "arwc/a-connector": digest,
+            },
             "deployments": {
-                "training": {"project": "project-1", "zone": "zone-1", "instance": "training-1", "participant_image_digest": "sha256:" + "b" * 64},
-                "keplerops": {"project": "project-1", "zone": "zone-1", "instance": "kepler-1", "participant_image_digest": "sha256:" + "b" * 64},
-                "arwc": {"project": "project-1", "zone": "zone-1", "instance": "arwc-1", "participant_image_digest": "sha256:" + "b" * 64},
+                "training": {
+                    "project": "project-1", "zone": "zone-1", "instance": "training-1",
+                    "participant_service": "participant", "participant_image_digest": digest,
+                    "images": {"participant": digest},
+                },
+                "keplerops": {
+                    "project": "project-1", "zone": "zone-1", "instance": "kepler-1",
+                    "participant_service": "k-dev", "participant_image_digest": digest,
+                    "images": {"k-dev": digest},
+                },
+                "arwc": {
+                    "project": "project-1", "zone": "zone-1", "instance": "arwc-1",
+                    "participant_service": "a-connector", "participant_image_digest": digest,
+                    "images": {"a-connector": digest},
+                },
             },
         }
 
@@ -352,6 +369,9 @@ class CandidateTests(unittest.TestCase):
         extra = self.candidate(); extra["operator_token"] = "not-allowed"; mutations.append(extra)
         stale = self.candidate(); stale["challenge_delivery"]["sha256"] = "0" * 64; mutations.append(stale)
         stale_hints = self.candidate(); stale_hints["hint_delivery"]["sha256"] = "0" * 64; mutations.append(stale_hints)
+        zero = self.candidate(); zero["artifact_digests"]["training/participant"] = "sha256:" + "0" * 64; mutations.append(zero)
+        missing_phase = self.candidate(); del missing_phase["deployments"]["arwc"]; mutations.append(missing_phase)
+        missing_image = self.candidate(); missing_image["deployments"]["arwc"]["images"] = {}; mutations.append(missing_image)
         for value in mutations:
             with self.subTest(value=value):
                 with tempfile.TemporaryDirectory() as directory:
@@ -386,7 +406,7 @@ class CommittedCandidateTests(unittest.TestCase):
                       "source_commit", "challenge_delivery", "hint_delivery",
                       "artifact_digests", "deployments"):
             self.assertIn(field, doc, f"candidate.json missing required field: {field}")
-        self.assertEqual(doc["schema_version"], 2)
+        self.assertEqual(doc["schema_version"], 3)
         self.assertIsInstance(doc["candidate_id"], str)
         self.assertIsInstance(doc["immutable"], bool)
         self.assertRegex(doc["source_commit"], r"^[0-9a-f]{40}$")
@@ -465,6 +485,9 @@ class EvidenceTests(unittest.TestCase):
             value = json.loads((schema_root / name).read_text())
             self.assertEqual(value["$schema"], "https://json-schema.org/draft/2020-12/schema")
             self.assertIn("$id", value)
+        release = json.loads((ROOT / "build/release/manifest.schema.json").read_text())
+        self.assertEqual(release["$schema"], "https://json-schema.org/draft/2020-12/schema")
+        self.assertIn("$id", release)
 
     def test_candidate_wrapper_requires_coverage_and_provenance_before_acceptance(self) -> None:
         source = (
@@ -476,12 +499,15 @@ class EvidenceTests(unittest.TestCase):
         fourth_wall = source.index("fourth-wall/run.py")
         fourth_wall_after = source.rindex("fourth-wall/run.py")
         surface = source.index("participant-surface/run.py")
+        release = source.index("build/release/manifest.py verify")
         acceptance = source.index("participant-runner/run.py")
         self.assertLess(hints, coverage)
         self.assertLess(coverage, provenance)
         self.assertLess(provenance, fourth_wall)
         self.assertLess(fourth_wall, surface)
-        self.assertLess(surface, acceptance)
+        self.assertLess(surface, release)
+        self.assertLess(release, acceptance)
+        self.assertIn("--release-manifest", source)
         self.assertLess(acceptance, fourth_wall_after)
         self.assertEqual(source.count("fourth-wall/run.py"), 2)
 

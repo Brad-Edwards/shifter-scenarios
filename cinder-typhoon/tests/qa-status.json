@@ -12,12 +12,12 @@
   "release_binding": {
     "candidate_manifest": {
       "path": "build/participant-runner/candidate.json",
-      "sha256": "bcaf88938e331059c50f854f1b8ab09d89c2f0c3327cac99b207e0b2470b1e09"
+      "sha256": "76ce54eaf585b87ef2bfcf7dbc7ac80bb381546901068ff4cc5e71874d7bf86d"
     },
     "release_manifest": {
       "path": "build/release/manifest.json",
-      "status": "missing",
-      "sha256": null
+      "status": "versioned",
+      "sha256": "f9471ec26718b2f059d091bd27f4044ef3db059bcdf178ce113ec040361dc15e"
     },
     "required_release_reports": [
       "build/release/reports/service-contract.json",
