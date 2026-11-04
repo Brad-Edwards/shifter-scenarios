@@ -118,7 +118,7 @@ def archive(path: Path, files: dict[str, tuple[bytes, int]]) -> dict[str, object
             info = tarfile.TarInfo(name + "/"); info.type = tarfile.DIRTYPE; info.mode = 0o750; info.mtime = FIXED_MTIME; info.uid = info.gid = 1000; info.uname = info.gname = "fieldkest"; output.addfile(info)
         for name, (payload, mode) in sorted(files.items()):
             info = tarfile.TarInfo(name); info.size = len(payload); info.mode = mode; info.mtime = FIXED_MTIME; info.uid = info.gid = 1000; info.uname = info.gname = "fieldkest"; output.addfile(info, io.BytesIO(payload))
-    return {"archive": path.name, "sha256": sha(path.read_bytes()), "size": path.stat().st_size, "files": [{"path": name, "mode": f"{mode:04o}", "sha256": sha(payload), "size": len(payload)} for name, (payload, mode) in sorted(files.items())]}
+    return {"archive": path.name, "sha256": sha(path.read_bytes()), "size": path.stat().st_size, "owner": "fieldkest", "group": "fieldkest", "files": [{"path": name, "mode": f"{mode:04o}", "sha256": sha(payload), "size": len(payload)} for name, (payload, mode) in sorted(files.items())]}
 
 
 def main() -> None:
@@ -130,7 +130,7 @@ def main() -> None:
     for name, payload in (("fieldlink-connector", binary), ("fieldlink-connector-6.9.8.map", link_map), ("connector-archive.bundle", bundle), ("connector-archive-service.json", pretty(service))): (SOURCE / name).write_bytes(payload)
     handoff = b"# Connector archive review\n\nThe retained `fieldkest/connector-archive` repository is available from FieldKest Source with the saved developer credential. Compare the ordinary and signed diagnostic examples; the repository note describes the authenticated embedded module.\n"
     records = [archive(ROOT / "k-source-connector-archive-state.tar", {"seeds/connector-archive.bundle": (bundle, 0o640), "config/connector-archive.json": (pretty(service), 0o600), "exercises/connector-archive/fieldlink-connector": (binary, 0o550)}), archive(ROOT / "k-dev-connector-archive-home.tar", {"work/build-operations/connector-archive-review.md": (handoff, 0o640)})]
-    manifest = {"schema": "fieldkest.k28-artifacts/v1", "binary": {"version": "6.9.8", "architecture": "linux-x86_64-elf", "build_id": BUILD_ID.hex(), "sha256": sha(binary), "link_map_sha256": sha(link_map)}, "repository": {"repository": "fieldkest/connector-archive", "commit": commit, "bundle_sha256": sha(bundle)}, "archives": records}
+    manifest = {"schema": "fieldkest.connector-archive-artifacts/v1", "binary": {"version": "6.9.8", "architecture": "linux-x86_64-elf", "build_id": BUILD_ID.hex(), "sha256": sha(binary), "link_map_sha256": sha(link_map)}, "repository": {"repository": "fieldkest/connector-archive", "commit": commit, "bundle_sha256": sha(bundle)}, "archives": records}
     (ROOT / "artifact-manifest.json").write_bytes(pretty(manifest))
 
 

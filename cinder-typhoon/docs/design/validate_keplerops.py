@@ -12,6 +12,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import subprocess
 import sys
 import tarfile
 
@@ -440,6 +441,83 @@ def check_prose_and_assets(scenario):
     check_k09_assets(scenario)
 
 
+def validate_exact_archive(asset_root, record, label):
+    """Validate one committed tar against its complete manifest record."""
+    require(
+        isinstance(record, dict)
+        and set(record) == {"archive", "sha256", "size", "owner", "group", "files"},
+        f"{label} archive record fields drift",
+    )
+    require(
+        isinstance(record["owner"], str) and record["owner"]
+        and isinstance(record["group"], str) and record["group"],
+        f"{label} archive ownership declaration drift",
+    )
+    archive_path = asset_root / record["archive"]
+    archive_bytes = archive_path.read_bytes()
+    require(
+        hashlib.sha256(archive_bytes).hexdigest() == record["sha256"]
+        and len(archive_bytes) == record["size"],
+        f"{label} archive digest drift: {record['archive']}",
+    )
+    require(isinstance(record["files"], list), f"{label} archive file declaration drift")
+    declared_files = {item["path"]: item for item in record["files"]}
+    require(
+        len(declared_files) == len(record["files"]),
+        f"{label} archive file declaration drift: {record['archive']}",
+    )
+    with tarfile.open(archive_path, "r") as archive:
+        all_members = archive.getmembers()
+        require(
+            all(item.isfile() or item.isdir() for item in all_members),
+            f"{label} archive contains an unsupported member: {record['archive']}",
+        )
+        require(
+            all(
+                item.uid == 1000 and item.gid == 1000
+                and item.uname == record["owner"] and item.gname == record["group"]
+                for item in all_members
+            ),
+            f"{label} archive ownership drift: {record['archive']}",
+        )
+        file_members = [item for item in all_members if item.isfile()]
+        members = {item.name: item for item in file_members}
+        require(
+            len(members) == len(file_members) and set(members) == set(declared_files),
+            f"{label} archive member inventory drift: {record['archive']}",
+        )
+        for member_name, member in members.items():
+            member_payload = archive.extractfile(member).read()
+            declaration = declared_files[member_name]
+            require(
+                isinstance(declaration, dict)
+                and set(declaration) == {"path", "mode", "sha256", "size"}
+                and hashlib.sha256(member_payload).hexdigest() == declaration["sha256"]
+                and len(member_payload) == declaration["size"]
+                and f"{member.mode:04o}" == declaration["mode"],
+                f"{label} archive member drift: {record['archive']}/{member_name}",
+            )
+
+
+def validate_exact_content_binding(content, record, target, destination, label):
+    """Bind an exact tar record to its native RAE content declaration."""
+    source = content.source
+    requirement = source.artifact_requirement if source else None
+    exact = requirement.exact_artifact if requirement else None
+    require(
+        enum(content.type) == "directory" and content.target == target
+        and content.destination == destination and requirement is not None
+        and enum(requirement.explicitness) == "exact" and exact is not None
+        and exact.digest == "sha256:" + record["sha256"]
+        and exact.media_type == "application/x-tar",
+        f"{label} archive is not exact native RAE content: {record['archive']}",
+    )
+    require(
+        source.name == exact.artifact_id and source.version == exact.version,
+        f"{label} archive source revision drift: {record['archive']}",
+    )
+
+
 def check_opening_assets(scenario):
     manifest = json.loads((OPENING_ASSETS / "archive-manifest.json").read_text())
     require(manifest["schema"] == "fieldkest.opening-archives/v1",
@@ -474,32 +552,10 @@ def check_opening_assets(scenario):
     records = {item["archive"]: item for item in manifest["archives"]}
     require(set(records) == set(expected), "KeplerOps opening archive inventory drift")
     for archive_name, (content_ref, target, destination) in expected.items():
-        archive_path = OPENING_ASSETS / archive_name
         record = records[archive_name]
-        archive_bytes = archive_path.read_bytes()
-        require(hashlib.sha256(archive_bytes).hexdigest() == record["sha256"]
-                and len(archive_bytes) == record["size"],
-                f"Opening archive digest drift: {archive_name}")
         content = scenario.content[content_ref]
-        requirement = content.source.artifact_requirement if content.source else None
-        require(enum(content.type) == "directory" and content.target == target
-                and content.destination == destination and requirement is not None
-                and enum(requirement.explicitness) == "exact"
-                and requirement.exact_artifact is not None
-                and requirement.exact_artifact.digest == "sha256:" + record["sha256"],
-                f"Opening archive is not exact native RAE content: {archive_name}")
-        declared_files = {item["path"]: item for item in record["files"]}
-        with tarfile.open(archive_path, "r") as archive:
-            members = {item.name: item for item in archive.getmembers() if item.isfile()}
-            require(set(members) == set(declared_files),
-                    f"Opening archive member inventory drift: {archive_name}")
-            for member_name, member in members.items():
-                payload = archive.extractfile(member).read()
-                declaration = declared_files[member_name]
-                require(hashlib.sha256(payload).hexdigest() == declaration["sha256"]
-                        and len(payload) == declaration["size"]
-                        and f"{member.mode:04o}" == declaration["mode"],
-                        f"Opening archive member drift: {archive_name}/{member_name}")
+        validate_exact_archive(OPENING_ASSETS, record, "Opening")
+        validate_exact_content_binding(content, record, target, destination, "Opening")
 
     generated = json.loads(
         (OPENING_ASSETS / "k-dev/generated-artifacts.json").read_text()
@@ -775,32 +831,10 @@ def check_registry_assets(scenario):
     records = {item["archive"]: item for item in manifest["archives"]}
     require(set(records) == set(expected), "KeplerOps registry archive inventory drift")
     for archive_name, (content_ref, target, destination) in expected.items():
-        archive_path = REGISTRY_ASSETS / archive_name
         record = records[archive_name]
-        archive_bytes = archive_path.read_bytes()
-        require(hashlib.sha256(archive_bytes).hexdigest() == record["sha256"]
-                and len(archive_bytes) == record["size"],
-                f"Registry archive digest drift: {archive_name}")
         content = scenario.content[content_ref]
-        requirement = content.source.artifact_requirement if content.source else None
-        require(enum(content.type) == "directory" and content.target == target
-                and content.destination == destination and requirement is not None
-                and enum(requirement.explicitness) == "exact"
-                and requirement.exact_artifact is not None
-                and requirement.exact_artifact.digest == "sha256:" + record["sha256"],
-                f"Registry archive is not exact native RAE content: {archive_name}")
-        declared_files = {item["path"]: item for item in record["files"]}
-        with tarfile.open(archive_path, "r") as archive:
-            members = {item.name: item for item in archive.getmembers() if item.isfile()}
-            require(set(members) == set(declared_files),
-                    f"Registry archive member inventory drift: {archive_name}")
-            for member_name, member in members.items():
-                payload = archive.extractfile(member).read()
-                declaration = declared_files[member_name]
-                require(hashlib.sha256(payload).hexdigest() == declaration["sha256"]
-                        and len(payload) == declaration["size"]
-                        and f"{member.mode:04o}" == declaration["mode"],
-                        f"Registry archive member drift: {archive_name}/{member_name}")
+        validate_exact_archive(REGISTRY_ASSETS, record, "Registry")
+        validate_exact_content_binding(content, record, target, destination, "Registry")
 
     state_files = records["k-registry-state.tar"]["files"]
     state_by_path = {item["path"]: item for item in state_files}
@@ -815,7 +849,7 @@ def check_registry_assets(scenario):
     require(manifest["entitlement"]["record_sha256"] == entitlement["sha256"],
             "Entitlement record identity drift")
     require(inspector["sha256"] ==
-            "47430e0cf68733cda0bcb7515e5fefa4f263801761e8b4c1f899e8306ceec098"
+            "543a002d5bf57a8184f6aead0cc74f04e74f8070d750332ef01bcba1f7bbf198"
             and inspector["size"] == 13,
             "Compatibility inspector fixture drift")
 
@@ -981,10 +1015,29 @@ def check_k11_foundation_assets(scenario):
                 f"Fourth-wall wording in K11 foundation asset: {path.relative_to(PACK)}")
 
 
+def validate_k28_manifest(manifest):
+    """Reject incomplete or differently shaped K28 artifact manifests."""
+    require(
+        isinstance(manifest, dict)
+        and manifest.get("schema") == "fieldkest.connector-archive-artifacts/v1",
+        "Unknown K28 foundation archive manifest",
+    )
+    require(
+        set(manifest) == {"schema", "binary", "repository", "archives"}
+        and isinstance(manifest["binary"], dict)
+        and set(manifest["binary"]) == {
+            "version", "architecture", "build_id", "sha256", "link_map_sha256",
+        }
+        and isinstance(manifest["repository"], dict)
+        and set(manifest["repository"]) == {"repository", "commit", "bundle_sha256"}
+        and isinstance(manifest["archives"], list),
+        "K28 foundation manifest required fields drift",
+    )
+
+
 def check_k28_foundation_assets(scenario):
     manifest = json.loads((K28_ASSETS / "artifact-manifest.json").read_text())
-    require(manifest["schema"] == "fieldkest.k28-artifacts/v1",
-            "Unknown K28 foundation archive manifest")
+    validate_k28_manifest(manifest)
     expected = {
         "k-source-connector-archive-state.tar": (
             "keplerops-k28-foundation.k28-source-state", "k-delivery.k-source",
@@ -999,40 +1052,61 @@ def check_k28_foundation_assets(scenario):
     require(set(records) == set(expected), "K28 foundation archive inventory drift")
     for archive_name, (content_ref, target, destination) in expected.items():
         record = records[archive_name]
-        archive_path = K28_ASSETS / archive_name
-        payload = archive_path.read_bytes()
-        require(hashlib.sha256(payload).hexdigest() == record["sha256"]
-                and len(payload) == record["size"], f"K28 archive digest drift: {archive_name}")
         content = scenario.content[content_ref]
-        requirement = content.source.artifact_requirement if content.source else None
-        require(enum(content.type) == "directory" and content.target == target
-                and content.destination == destination and requirement is not None
-                and enum(requirement.explicitness) == "exact"
-                and requirement.exact_artifact is not None
-                and requirement.exact_artifact.digest == "sha256:" + record["sha256"],
-                f"K28 archive is not exact native RAE content: {archive_name}")
-        declared = {item["path"]: item for item in record["files"]}
-        with tarfile.open(archive_path, "r") as archive:
-            members = {item.name: item for item in archive.getmembers() if item.isfile()}
-            require(set(members) == set(declared), f"K28 archive member inventory drift: {archive_name}")
-            for member_name, member in members.items():
-                member_payload = archive.extractfile(member).read()
-                item = declared[member_name]
-                require(hashlib.sha256(member_payload).hexdigest() == item["sha256"]
-                        and len(member_payload) == item["size"] and f"{member.mode:04o}" == item["mode"],
-                        f"K28 archive member drift: {archive_name}/{member_name}")
+        validate_exact_archive(K28_ASSETS, record, "K28")
+        validate_exact_content_binding(content, record, target, destination, "K28")
     binary = (K28_ASSETS / "source/fieldlink-connector").read_bytes()
     link_map = (K28_ASSETS / "source/fieldlink-connector-6.9.8.map").read_bytes()
+    bundle_path = K28_ASSETS / "source/connector-archive.bundle"
+    bundle = bundle_path.read_bytes()
+    config_bytes = (K28_ASSETS / "source/connector-archive-service.json").read_bytes()
     require(manifest["binary"] == {
         "version": "6.9.8", "architecture": "linux-x86_64-elf",
         "build_id": "698d42c6a1776e9fc002b91ef68431ad775e0c28",
         "sha256": hashlib.sha256(binary).hexdigest(),
         "link_map_sha256": hashlib.sha256(link_map).hexdigest(),
     }, "K28 binary identity drift")
+    repository = manifest["repository"]
+    bundle_heads = subprocess.run(
+        ["git", "bundle", "list-heads", str(bundle_path)],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False,
+    )
+    require(
+        repository["repository"] == "fieldkest/connector-archive"
+        and re.fullmatch(r"[0-9a-f]{40}", repository["commit"])
+        and repository["bundle_sha256"] == hashlib.sha256(bundle).hexdigest()
+        and bundle_heads.returncode == 0
+        and repository["commit"] in {
+            line.split(maxsplit=1)[0]
+            for line in bundle_heads.stdout.splitlines()
+            if line.strip()
+        },
+        "K28 repository identity drift",
+    )
+    source_record = records["k-source-connector-archive-state.tar"]
+    source_files = {item["path"]: item for item in source_record["files"]}
+    for member_name, payload in {
+        "config/connector-archive.json": config_bytes,
+        "exercises/connector-archive/fieldlink-connector": binary,
+        "seeds/connector-archive.bundle": bundle,
+    }.items():
+        require(
+            source_files[member_name]["sha256"] == hashlib.sha256(payload).hexdigest()
+            and source_files[member_name]["size"] == len(payload),
+            f"K28 generated source binding drift: {member_name}",
+        )
     require(b"FKDG" in binary and b"/tmp/" not in link_map and str(PACK).encode() not in link_map,
             "K28 binary container or deterministic map drift")
-    config = json.loads((K28_ASSETS / "source/connector-archive-service.json").read_text())
-    require(config["route"] == "/internal/fieldlink/legacy-diagnostics/CRR-OG2"
+    config = json.loads(config_bytes)
+    require(set(config) == {
+        "schema", "version", "build_id", "binary_sha256", "repository_commit",
+        "route", "note_id", "corpus",
+    } and config["schema"] == "fieldkest.connector-archive-service/v1"
+            and config["version"] == manifest["binary"]["version"]
+            and config["build_id"] == manifest["binary"]["build_id"]
+            and config["binary_sha256"] == manifest["binary"]["sha256"]
+            and config["repository_commit"] == manifest["repository"]["commit"]
+            and config["route"] == "/internal/fieldlink/legacy-diagnostics/CRR-OG2"
             and config["note_id"] == "ENG-FLK-LEGACY-42" and len(config["corpus"]) == 3,
             "K28 runtime contract drift")
     for path in (K28_ASSETS / "source").rglob("*"):

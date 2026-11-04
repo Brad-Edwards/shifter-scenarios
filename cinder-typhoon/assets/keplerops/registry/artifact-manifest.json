@@ -58,6 +58,8 @@
           "size": 378
         }
       ],
+      "group": "fieldkest",
+      "owner": "fieldkest",
       "sha256": "eead74269c18454769e9d078d7247b6b701d3cd93571fce5e7f0e04123ad56b1",
       "size": 20480
     },
@@ -89,6 +91,8 @@
           "size": 181
         }
       ],
+      "group": "fieldkest",
+      "owner": "fieldkest",
       "sha256": "9fa7c79c417e3d8b2543ab0da84e74c9c21b0590bb9b1ae4a3b6747bd817b536",
       "size": 10240
     }
