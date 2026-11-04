@@ -137,6 +137,18 @@ class ArwcHandoverTests(unittest.TestCase):
         planning = (RUNTIME / "planning_data.py").read_text(encoding="utf-8")
         self.assertEqual(planning.count('path == "/api/query-runs"'), 1)
         self.assertIn('if "function" in request:', planning)
+        process_host = planning.index(
+            'self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test"',
+            planning.index("    def do_POST(self) -> None:"),
+        )
+        reporting_dispatch = planning.index(
+            'if path == "/api/reporting-checkpoints/current":', process_host,
+        )
+        generic_proxy = planning.index("if path in PROCESS_PATHS:", reporting_dispatch)
+        self.assertLess(reporting_dispatch, generic_proxy)
+        dispatch = planning[reporting_dispatch:generic_proxy]
+        self.assertIn("self.process_authorized()", dispatch)
+        self.assertIn("self.w29_plan(request)", dispatch)
 
         process = (RUNTIME / "process_services.py").read_text(encoding="utf-8")
         self.assertIn('and not {\n                "operations", "image_b64"', process)

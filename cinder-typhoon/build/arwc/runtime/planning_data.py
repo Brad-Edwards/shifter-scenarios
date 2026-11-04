@@ -532,6 +532,23 @@ class Handler(BaseHTTPRequestHandler):
             return False
         return True
 
+    def process_authorized(self) -> bool:
+        if self.headers.get("X-ARWC-Tenant", "arwc") != "arwc":
+            self.send_json(403, {"error": "session is not valid for this tenant"})
+            return False
+        supplied = self.headers.get("Authorization", "")
+        if not supplied.startswith("Bearer "):
+            self.send_json(403, {"error": "scoped process-read session required"})
+            return False
+        digest = hashlib.sha256(supplied[7:].encode()).hexdigest()
+        for name in ("corporate.json", "contractor.json"):
+            evidence = load_evidence(OT_READ_EVIDENCE / name)
+            if (evidence is not None and evidence.get("scope") == "OG-CRR-02/read" and
+                    hmac.compare_digest(digest, str(evidence.get("token_sha256", "")))):
+                return True
+        self.send_json(403, {"error": "scoped process-read session required"})
+        return False
+
     def body(self) -> dict[str, object] | None:
         try:
             length = int(self.headers.get("Content-Length", "0"))
@@ -841,6 +858,13 @@ class Handler(BaseHTTPRequestHandler):
             return
         path = urlsplit(self.path).path
         if self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test":
+            if path == "/api/reporting-checkpoints/current":
+                if not self.process_authorized():
+                    return
+                request = self.body()
+                if request is not None:
+                    self.w29_plan(request)
+                return
             if path in PROCESS_PATHS:
                 self.process_proxy()
             else:

@@ -75,6 +75,10 @@ owner.
 - The public process view exposes the W33 schedule-window read through the
   historian proxy. Writes continue through the same owner and authorization
   boundary.
+- The W29 reporting-checkpoint write enters through the public process-view
+  route, validates the scoped process-read session in planning data, joins the
+  retained tariff and reserve balance there, and sends that complete envelope
+  through the private data-bridge/historian path to the supervisory owner.
 - The client-reference acceptance test checks the ending's complete route
   contract, including methods and templates, so route drift fails before an
   event run.

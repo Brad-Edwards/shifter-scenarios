@@ -2314,14 +2314,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed request contracts, including the scheduling data-bridge identity"
+            "fixed request contracts, including the scheduling data-bridge identity and scoped process-read authorization"
           ],
-          "locator": "integration_gateway.py sends data-bridge-scheduling and planning_data.py validates the same identity on /internal/schedule-validations",
-          "source": "paired integration-gateway sender and planning-data receiver"
+          "locator": "integration_gateway.py sends data-bridge-scheduling and planning_data.py validates it on /internal/schedule-validations; process_services.py and planning_data.py both validate the corporate or contractor OT-read evidence for public process-view requests",
+          "source": "paired integration-gateway/planning-data contract and existing process-service authorization contract"
         }
       ],
-      "comparison_count": 91,
-      "inventory_sha256": "5be378fbd1639afe08cd327884e662c4cccbf6b188366948ceb098a3594dce84",
+      "comparison_count": 94,
+      "inventory_sha256": "8e3d7079bab7067fe55c04e7b44ef641b56517bcd0837d74d3db607e51c058c3",
       "review_status": "complete",
       "unresolved": []
     },
