@@ -49,6 +49,19 @@ unresolved:
 python3 cinder-typhoon/build/input-provenance/provenance.py --require-complete
 ```
 
+That complete-repository command recomputes all three phase inventories. A
+phase deployment contains only its own suite and runtime, so its gate selects
+that exact phase while retaining the same fail-closed checks:
+
+```sh
+python3 build/input-provenance/provenance.py \
+  --phase keplerops --require-complete
+```
+
+The phase report contains only selected-phase requests, comparisons and
+non-Python sources. It does not approve or report entries from absent phases;
+the complete-repository gate remains authoritative for those entries.
+
 The current ledger passes that release form. Updating an inventory hash merely
 acknowledges a code change; a remediation is complete only when every changed
 input also has a specific participant-visible citation and no unresolved entry.

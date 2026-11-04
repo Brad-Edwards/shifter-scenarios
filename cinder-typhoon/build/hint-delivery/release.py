@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import fcntl
 import hashlib
 import importlib.util
@@ -26,7 +27,7 @@ CATALOG_SPEC.loader.exec_module(catalog_module)
 PHASES = ("training", "keplerops", "arwc")
 PHASE_PREFIX = {"T": "training", "K": "keplerops", "W": "arwc"}
 MANIFEST_ROOT = ROOT / "build" / "participant-surface" / "manifests"
-ARWC_RUNTIME = ROOT / "build" / "arwc" / "runtime"
+CLIENT_ROUTE_CONTRACT = ROOT / "build" / "hint-delivery" / "published-client-routes.json"
 PLACEHOLDER = re.compile(
     r"(?i)\[(?:hint|todo|tbd)|hint\s+[123]\s+for|placeholder|lorem ipsum|"
     r"generated filler|the immediate evidence concerns|keep the analysis focused|"
@@ -89,18 +90,75 @@ def _participant_surfaces() -> dict[str, dict[str, Any]]:
     }
 
 
-def _published_references() -> dict[str, set[str]]:
-    manifests = _participant_surfaces()
-    client_routes = {
+def build_client_route_contract(root: Path = ROOT) -> dict[str, Any]:
+    """Build the phase-independent client-route inventory from reviewed source."""
+
+    manifest_root = root / "build" / "participant-surface" / "manifests"
+    keplerops = json.loads(
+        (manifest_root / "keplerops.json").read_text(encoding="utf-8")
+    )
+    routes = {
         route
-        for disclosure in manifests["keplerops"]["disclosures"]
+        for disclosure in keplerops["disclosures"]
         if disclosure.get("kind") == "client-reference"
         for route in disclosure["exposes"]
     }
-    for path in ARWC_RUNTIME.glob("*.py"):
-        client_routes.update(
-            re.findall(r'"key"\s*:\s*"([^"]+)"', path.read_text(encoding="utf-8"))
-        )
+    runtime_root = root / "build" / "arwc" / "runtime"
+    if not runtime_root.is_dir():
+        raise HintDeliveryError("ARWC runtime source is required to build the route contract")
+    for path in sorted(runtime_root.glob("*.py")):
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Dict):
+                continue
+            fields = {
+                key.value: value
+                for key, value in zip(node.keys, node.values)
+                if isinstance(key, ast.Constant) and isinstance(key.value, str)
+            }
+            if "key" not in fields or "template" not in fields:
+                continue
+            route = fields["key"]
+            if not isinstance(route, ast.Constant) or not isinstance(route.value, str):
+                raise HintDeliveryError(f"{path}: client route key must be a string literal")
+            routes.add(route.value)
+    return {
+        "schema": "cinder-typhoon.published-client-routes/v1",
+        "routes": sorted(routes),
+    }
+
+
+def load_client_route_contract(path: Path = CLIENT_ROUTE_CONTRACT) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise HintDeliveryError(f"client-route contract cannot be read: {error}") from error
+    if not isinstance(value, dict) or set(value) != {"schema", "routes"}:
+        raise HintDeliveryError("client-route contract fields are invalid")
+    routes = value["routes"]
+    if (
+        value["schema"] != "cinder-typhoon.published-client-routes/v1"
+        or not isinstance(routes, list)
+        or routes != sorted(set(routes))
+        or not routes
+        or not all(isinstance(route, str) and route for route in routes)
+    ):
+        raise HintDeliveryError("client-route contract is invalid")
+    return value
+
+
+def write_client_route_contract(path: Path = CLIENT_ROUTE_CONTRACT) -> dict[str, Any]:
+    value = build_client_route_contract()
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return value
+
+
+def _published_references(*, check_route_contract: bool = True) -> dict[str, set[str]]:
+    manifests = _participant_surfaces()
+    contract = load_client_route_contract()
+    if check_route_contract and contract != build_client_route_contract():
+        raise HintDeliveryError("client-route contract is stale")
+    client_routes = set(contract["routes"])
     artifacts: set[str] = set()
     services: set[str] = set()
     starting_material: set[str] = set()
@@ -151,13 +209,13 @@ def _validate_text(
         raise HintDeliveryError(f"{card_id} h3: no diagnostic next action")
 
 
-def validate_authored_hints() -> dict[str, int]:
+def validate_authored_hints(*, check_route_contract: bool = True) -> dict[str, int]:
     """Fail closed on incomplete, unsafe, stale, or non-graduated hint content."""
 
     catalog = catalog_module.load_catalog()
     documents = catalog_module._hint_documents()
     expected = {card["id"]: card for card in catalog_module.catalog_cards(catalog)}
-    references = _published_references()
+    references = _published_references(check_route_contract=check_route_contract)
     seen_cards: set[str] = set()
     seen_text: dict[tuple[str, str], list[str]] = {}
     seen_level_sets: dict[tuple[str, str, str], str] = {}
@@ -287,7 +345,9 @@ def release_hint(
 ) -> dict[str, Any]:
     """Release exactly one level and append metadata only to the chained audit."""
 
-    validate_authored_hints()
+    # Event-time release consumes the immutable contract. Complete-repository
+    # authoring validation is responsible for regenerating and checking it.
+    validate_authored_hints(check_route_contract=False)
     if not actor.strip() or len(actor) > 128 or "\n" in actor:
         raise HintDeliveryError("facilitator actor is invalid")
     text = _hint_text(card_id, level)
@@ -358,7 +418,9 @@ def release_status(audit_path: Path) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
-    subparsers.add_parser("verify")
+    verify = subparsers.add_parser("verify")
+    verify.add_argument("--phase", choices=PHASES)
+    subparsers.add_parser("write-route-contract")
     release = subparsers.add_parser("release")
     release.add_argument("--audit", type=Path, required=True)
     release.add_argument("--card", required=True)
@@ -368,7 +430,10 @@ def main() -> int:
     status.add_argument("--audit", type=Path, required=True)
     arguments = parser.parse_args()
     if arguments.command == "verify":
-        result = validate_authored_hints()
+        result = validate_authored_hints(check_route_contract=arguments.phase is None)
+    elif arguments.command == "write-route-contract":
+        contract = write_client_route_contract()
+        result = {"route_count": len(contract["routes"]), "schema": contract["schema"]}
     elif arguments.command == "release":
         result = release_hint(
             arguments.audit,

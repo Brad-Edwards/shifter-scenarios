@@ -2807,14 +2807,29 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed comparison values in runtime Python source"
+            "connector child commands and private handover-key destination"
           ],
-          "locator": "fixed values in build/arwc/runtime/connector-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
-          "source": "service runtime implementation"
+          "locator": "connector-entrypoint.sh starts the customer-handover and FieldLink-consumer programs installed by connector.Dockerfile and copies the mounted handover key to the private connector auth directory required by fieldlink_consumer.py",
+          "source": "ARWC connector image, entrypoint, and handover consumer contract"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "0db5a0dd6f2a446e28f00764b69fb42c9ccde9a354855219eb135bf6fcd6d893",
+      "source_sha256": "feabe63c9fc01161c73adcb0c4dff4e20f1c29d358db936f5e4e0d39e7fd9192",
+      "unresolved": []
+    },
+    "build/arwc/runtime/connector-health.sh": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "connector child command, parent, service UID, and audit-state liveness bindings"
+          ],
+          "locator": "connector-health.sh verifies the two exact child commands started by connector-entrypoint.sh under the connector service UID and requires the customer and FieldLink audit/state files produced by those children",
+          "source": "ARWC connector entrypoint, child programs, and Docker health contract"
+        }
+      ],
+      "review_status": "complete",
+      "source_sha256": "1bbd2945c902968cc7102ff46f244675e068d3c9a0b2973ab5d5f9328928a8cf",
       "unresolved": []
     },
     "build/arwc/runtime/contractor-bridge-entrypoint.sh": {

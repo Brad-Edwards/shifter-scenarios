@@ -58,9 +58,12 @@ def normalized(node: ast.AST) -> str:
     return ast.dump(node, annotate_fields=True, include_attributes=False)
 
 
-def request_inventory() -> dict[str, dict[str, dict[str, Any]]]:
+def request_inventory(
+    phases: tuple[str, ...] = PHASES,
+) -> dict[str, dict[str, dict[str, Any]]]:
     result: dict[str, dict[str, dict[str, Any]]] = {}
-    for phase, path in SUITES.items():
+    for phase in phases:
+        path = SUITES[phase]
         tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
         methods: dict[str, dict[str, Any]] = {}
         for class_node in (node for node in tree.body if isinstance(node, ast.ClassDef)):
@@ -117,9 +120,11 @@ def has_fixed_literal(compare: ast.Compare) -> bool:
     )
 
 
-def runtime_comparison_inventory() -> dict[str, dict[str, Any]]:
+def runtime_comparison_inventory(
+    phases: tuple[str, ...] = PHASES,
+) -> dict[str, dict[str, Any]]:
     result: dict[str, dict[str, Any]] = {}
-    for phase in PHASES:
+    for phase in phases:
         for path in sorted((ROOT / "build" / phase / "runtime").rglob("*.py")):
             tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
             comparisons = sorted(
@@ -146,11 +151,13 @@ def runtime_comparison_inventory() -> dict[str, dict[str, Any]]:
     return result
 
 
-def runtime_source_inventory() -> dict[str, dict[str, Any]]:
+def runtime_source_inventory(
+    phases: tuple[str, ...] = PHASES,
+) -> dict[str, dict[str, Any]]:
     """Ratcheted full-source hashes cover comparisons in non-Python runtimes."""
     extensions = {".sh", ".c", ".cpp", ".cs", ".go", ".nim", ".S"}
     result: dict[str, dict[str, Any]] = {}
-    for phase in PHASES:
+    for phase in phases:
         for path in sorted((ROOT / "build" / phase / "runtime").rglob("*")):
             if not path.is_file() or path.suffix not in extensions:
                 continue
@@ -167,6 +174,7 @@ def inventory_drift(
     observed_requests: dict[str, dict[str, dict[str, Any]]],
     observed_comparisons: dict[str, dict[str, Any]],
     observed_sources: dict[str, dict[str, Any]],
+    phases: tuple[str, ...] = PHASES,
 ) -> list[str]:
     """Return every source-inventory change that needs ledger review."""
     drift: list[str] = []
@@ -182,7 +190,7 @@ def inventory_drift(
                 "request phases changed; "
                 f"missing={missing_phases}, extra={extra_phases}"
             )
-        for phase in PHASES:
+        for phase in phases:
             entries = methods.get(phase)
             if not isinstance(entries, dict):
                 if phase in methods:
@@ -209,15 +217,16 @@ def inventory_drift(
     if not isinstance(comparisons, dict):
         drift.append("fixed runtime comparison ledger is not an object")
     else:
-        missing = sorted(set(observed_comparisons) - set(comparisons))
-        extra = sorted(set(comparisons) - set(observed_comparisons))
+        selected_comparisons = _selected_runtime_entries(comparisons, phases)
+        missing = sorted(set(observed_comparisons) - set(selected_comparisons))
+        extra = sorted(set(selected_comparisons) - set(observed_comparisons))
         if missing or extra:
             drift.append(
                 "fixed runtime comparison files changed; "
                 f"missing={missing}, extra={extra}"
             )
-        for path in sorted(set(comparisons) & set(observed_comparisons)):
-            entry = comparisons[path]
+        for path in sorted(set(selected_comparisons) & set(observed_comparisons)):
+            entry = selected_comparisons[path]
             if not isinstance(entry, dict):
                 continue
             observed = observed_comparisons[path]
@@ -230,15 +239,16 @@ def inventory_drift(
     if not isinstance(sources, dict):
         drift.append("non-Python runtime source ledger is not an object")
     else:
-        missing = sorted(set(observed_sources) - set(sources))
-        extra = sorted(set(sources) - set(observed_sources))
+        selected_sources = _selected_runtime_entries(sources, phases)
+        missing = sorted(set(observed_sources) - set(selected_sources))
+        extra = sorted(set(selected_sources) - set(observed_sources))
         if missing or extra:
             drift.append(
                 "non-Python runtime sources changed; "
                 f"missing={missing}, extra={extra}"
             )
-        for path in sorted(set(sources) & set(observed_sources)):
-            entry = sources[path]
+        for path in sorted(set(selected_sources) & set(observed_sources)):
+            entry = selected_sources[path]
             if not isinstance(entry, dict):
                 continue
             if entry.get("source_sha256") != observed_sources[path]["source_sha256"]:
@@ -247,12 +257,29 @@ def inventory_drift(
     return drift
 
 
-def load_ledger(path: Path = LEDGER_PATH) -> dict[str, Any]:
+def _selected_runtime_entries(
+    entries: dict[str, Any], phases: tuple[str, ...],
+) -> dict[str, Any]:
+    if set(phases) == set(PHASES):
+        return entries
+    prefixes = tuple(f"build/{phase}/runtime/" for phase in phases)
+    return {path: entry for path, entry in entries.items() if path.startswith(prefixes)}
+
+
+def _validated_phases(phases: tuple[str, ...]) -> tuple[str, ...]:
+    if not phases or len(phases) != len(set(phases)) or not set(phases) <= set(PHASES):
+        raise ProvenanceError("provenance phases are invalid")
+    return phases
+
+
+def load_ledger(
+    path: Path = LEDGER_PATH, phases: tuple[str, ...] = PHASES,
+) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
         raise ProvenanceError(f"provenance ledger cannot be read: {error}") from error
-    validate_ledger(value)
+    validate_ledger(value, phases)
     return value
 
 
@@ -290,7 +317,8 @@ def validate_unresolved(items: Any, context: str) -> None:
             raise ProvenanceError(f"{context}: invalid unresolved issue")
 
 
-def validate_ledger(value: Any) -> None:
+def validate_ledger(value: Any, phases: tuple[str, ...] = PHASES) -> None:
+    phases = _validated_phases(phases)
     if not isinstance(value, dict) or set(value) != {
         "schema_version", "profiles", "methods", "runtime_comparisons", "runtime_sources",
     }:
@@ -306,11 +334,11 @@ def validate_ledger(value: Any) -> None:
             raise ProvenanceError(f"profile {phase}: title is required")
         validate_sources(profile["sources"], f"profile {phase}")
 
-    observed_requests = request_inventory()
-    observed_comparisons = runtime_comparison_inventory()
-    observed_sources = runtime_source_inventory()
+    observed_requests = request_inventory(phases)
+    observed_comparisons = runtime_comparison_inventory(phases)
+    observed_sources = runtime_source_inventory(phases)
     drift = inventory_drift(
-        value, observed_requests, observed_comparisons, observed_sources,
+        value, observed_requests, observed_comparisons, observed_sources, phases,
     )
     if drift:
         raise ProvenanceError(
@@ -321,7 +349,7 @@ def validate_ledger(value: Any) -> None:
     methods = value["methods"]
     if not isinstance(methods, dict) or set(methods) != set(PHASES):
         raise ProvenanceError("method ledger must cover all phases")
-    for phase in PHASES:
+    for phase in phases:
         if not isinstance(methods[phase], dict) or set(methods[phase]) != set(observed_requests[phase]):
             missing = sorted(set(observed_requests[phase]) - set(methods[phase])) if isinstance(methods[phase], dict) else []
             extra = sorted(set(methods[phase]) - set(observed_requests[phase])) if isinstance(methods[phase], dict) else []
@@ -347,10 +375,14 @@ def validate_ledger(value: Any) -> None:
                 raise ProvenanceError(f"{phase}.{method}: review_status disagrees with unresolved inputs")
 
     comparisons = value["runtime_comparisons"]
-    if not isinstance(comparisons, dict) or set(comparisons) != set(observed_comparisons):
+    selected_comparisons = (
+        _selected_runtime_entries(comparisons, phases)
+        if isinstance(comparisons, dict) else {}
+    )
+    if not isinstance(comparisons, dict) or set(selected_comparisons) != set(observed_comparisons):
         raise ProvenanceError("fixed runtime comparison files changed without ledger review")
     for path, observed in observed_comparisons.items():
-        entry = comparisons[path]
+        entry = selected_comparisons[path]
         required = {
             "inventory_sha256", "comparison_count", "review_status",
             "citations", "unresolved",
@@ -371,10 +403,14 @@ def validate_ledger(value: Any) -> None:
             raise ProvenanceError(f"{path}: review_status disagrees with unresolved comparisons")
 
     sources = value["runtime_sources"]
-    if not isinstance(sources, dict) or set(sources) != set(observed_sources):
+    selected_sources = (
+        _selected_runtime_entries(sources, phases)
+        if isinstance(sources, dict) else {}
+    )
+    if not isinstance(sources, dict) or set(selected_sources) != set(observed_sources):
         raise ProvenanceError("non-Python runtime sources changed without ledger review")
     for path, observed in observed_sources.items():
-        entry = sources[path]
+        entry = selected_sources[path]
         required = {"source_sha256", "review_status", "citations", "unresolved"}
         if not isinstance(entry, dict) or set(entry) != required:
             raise ProvenanceError(f"{path}: invalid runtime source ledger fields")
@@ -407,7 +443,7 @@ def attach_runtime_provenance(
     phase: str, events: list[dict[str, Any]], selected_methods: list[str],
     ledger: dict[str, Any] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    value = load_ledger() if ledger is None else ledger
+    value = load_ledger(phases=(phase,)) if ledger is None else ledger
     unresolved: list[dict[str, Any]] = []
     for method in selected_methods:
         provenance = entry_provenance(value, phase, method)
@@ -590,12 +626,15 @@ def new_unresolved_ledger() -> dict[str, Any]:
     }
 
 
-def build_report(ledger: dict[str, Any]) -> dict[str, Any]:
-    requests = request_inventory()
-    comparisons = runtime_comparison_inventory()
-    sources = runtime_source_inventory()
+def build_report(
+    ledger: dict[str, Any], phases: tuple[str, ...] = PHASES,
+) -> dict[str, Any]:
+    phases = _validated_phases(phases)
+    requests = request_inventory(phases)
+    comparisons = runtime_comparison_inventory(phases)
+    sources = runtime_source_inventory(phases)
     request_entries: list[dict[str, Any]] = []
-    for phase in PHASES:
+    for phase in phases:
         for method, observed in requests[phase].items():
             provenance = entry_provenance(ledger, phase, method)
             for index, call in enumerate(observed["calls"], start=1):
@@ -661,6 +700,7 @@ def main() -> int:
     parser.add_argument("--ledger", type=Path, default=LEDGER_PATH)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--require-complete", action="store_true")
+    parser.add_argument("--phase", choices=PHASES)
     parser.add_argument(
         "--new-unresolved-ledger", type=Path,
         help="create, but never overwrite, a fail-closed ledger for first review",
@@ -674,8 +714,9 @@ def main() -> int:
         except FileExistsError as error:
             raise ProvenanceError("refusing to overwrite an existing ledger") from error
         return 0
-    ledger = load_ledger(arguments.ledger)
-    report = build_report(ledger)
+    phases = (arguments.phase,) if arguments.phase else PHASES
+    ledger = load_ledger(arguments.ledger, phases)
+    report = build_report(ledger, phases)
     serialized = json.dumps(report, indent=2, sort_keys=True) + "\n"
     if arguments.output:
         arguments.output.parent.mkdir(parents=True, exist_ok=True)

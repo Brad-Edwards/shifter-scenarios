@@ -813,19 +813,20 @@ def main() -> int:
             input=source, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
         )
         events, boundary = parse_output(completed.stdout)
-        events, provenance = attach_runtime_provenance(
-            arguments.phase, events, selected,
-        )
         report["boundary"] = boundary
         report["evidence"] = {
             "events": events,
             "event_count": len(events),
-            "provenance": provenance,
             "stdout_bytes": len(completed.stdout.encode()),
             "stdout_sha256": hashlib.sha256(completed.stdout.encode()).hexdigest(),
             "stderr_bytes": len(completed.stderr.encode()),
             "stderr_sha256": hashlib.sha256(completed.stderr.encode()).hexdigest(),
         }
+        events, provenance = attach_runtime_provenance(
+            arguments.phase, events, selected,
+        )
+        report["evidence"]["events"] = events
+        report["evidence"]["provenance"] = provenance
         passed = (
             completed.returncode == 0 and boundary is not None
             and boundary.get("status") == "passed"
