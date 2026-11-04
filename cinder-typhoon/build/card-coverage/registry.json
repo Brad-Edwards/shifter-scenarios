@@ -6798,14 +6798,14 @@
           {
             "assertions": [
               {
-                "line": 1783,
+                "line": 1785,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K26.1"
             ],
-            "line": 1778,
+            "line": 1780,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -6881,14 +6881,14 @@
           {
             "assertions": [
               {
-                "line": 1790,
+                "line": 1792,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K26.2"
             ],
-            "line": 1785,
+            "line": 1787,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -6959,14 +6959,14 @@
           {
             "assertions": [
               {
-                "line": 1798,
+                "line": 1800,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K26.3"
             ],
-            "line": 1792,
+            "line": 1794,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
@@ -7698,10 +7698,10 @@
               },
               {
                 "line": 1740,
-                "method": "assertIn"
+                "method": "assertEqual"
               },
               {
-                "line": 1747,
+                "line": 1749,
                 "method": "assertEqual"
               }
             ],
@@ -7778,14 +7778,14 @@
           {
             "assertions": [
               {
-                "line": 1758,
+                "line": 1760,
                 "method": "assertEqual"
               }
             ],
             "combined_card_ids": [
               "K29.4"
             ],
-            "line": 1753,
+            "line": 1755,
             "phase": "keplerops",
             "simple_read_candidate": false,
             "state_change_candidate": true,
