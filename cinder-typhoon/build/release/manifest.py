@@ -32,9 +32,12 @@ COMMON_ROOTS = (
     "build/participant-surface",
     "build/release",
     "challenges",
+    "ctfd/import_catalog.py",
+    "ctfd/prize_policy.py",
     "docs/design/challenge-dependencies.json",
     "docs/design/challenges",
     "docs/design/portfolio.csv",
+    "sdl/modules/operations",
 )
 PHASES = {
     "training": {

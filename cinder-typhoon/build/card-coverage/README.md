@@ -28,6 +28,14 @@ service that accepts an action is never renamed as its independent evaluator.
 The range scorer alone can mark a card complete, using the card's required
 fresh, integrity-protected service observations.
 
+Complete-repository validation remains the authoring and promotion gate. On a
+phase deployment, add `--phase training`, `--phase keplerops`, or `--phase
+arwc`. The phase gate recomputes only that phase's SDL, brief, dependency, and
+known-solution bindings and reports only that phase. It still uses the complete
+committed registry, delivery catalog, native scorer projection, and reviewed
+read-only ledger. The phase archive therefore needs no other phase's test suite
+or runtime tree.
+
 Regenerate the participant snapshot and its manifest bindings after reviewing
 an intentional delivery-input change, then regenerate the operator registry:
 

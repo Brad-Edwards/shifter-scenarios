@@ -509,6 +509,7 @@ class EvidenceTests(unittest.TestCase):
         self.assertLess(release, acceptance)
         self.assertIn("--release-manifest", source)
         self.assertIn("hint-delivery/release.py verify --phase '$phase'", source)
+        self.assertIn("card-coverage/coverage.py --phase '$phase'", source)
         self.assertIn("input-provenance/provenance.py --phase '$phase'", source)
         self.assertLess(acceptance, fourth_wall_after)
         self.assertEqual(source.count("fourth-wall/run.py"), 2)

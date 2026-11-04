@@ -25,6 +25,7 @@ READ_ONLY_REVIEWS_PATH = HERE / "read-only-reviews.json"
 OPERATIONS = ROOT / "sdl" / "modules" / "operations"
 BRIEFS = ROOT / "docs" / "design" / "challenges"
 PHASES = {"T": "training", "K": "keplerops", "W": "arwc"}
+ALL_PHASES = tuple(PHASES.values())
 SUITES = {
     phase: ROOT / "build" / phase / "tests" / "test_known_solution_live.py"
     for phase in PHASES.values()
@@ -60,6 +61,20 @@ class CoverageError(ValueError):
     """The registry or one of its authoritative sources is inconsistent."""
 
 
+def validated_phases(phases: tuple[str, ...]) -> tuple[str, ...]:
+    if (
+        not phases
+        or len(phases) != len(set(phases))
+        or not set(phases) <= set(ALL_PHASES)
+    ):
+        raise CoverageError("card coverage phases are invalid")
+    return phases
+
+
+def selected_card(card_id: str, phases: tuple[str, ...]) -> bool:
+    return bool(CARD.fullmatch(card_id)) and PHASES[card_id[0]] in phases
+
+
 def relative(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
 
@@ -68,34 +83,51 @@ def file_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def authored_sdl_cards() -> dict[str, Path]:
+def authored_sdl_cards(
+    phases: tuple[str, ...] = ALL_PHASES,
+) -> dict[str, Path]:
+    phases = validated_phases(phases)
     cards: dict[str, Path] = {}
     for path in sorted(OPERATIONS.glob("*.yaml")):
         for card_id in SEMANTIC_CARD.findall(path.read_text(encoding="utf-8")):
+            if not selected_card(card_id, phases):
+                continue
             if card_id in cards:
                 raise CoverageError(f"duplicate SDL semantic card: {card_id}")
             cards[card_id] = path
     return cards
 
 
-def authored_brief_cards() -> dict[str, Path]:
+def authored_brief_cards(
+    phases: tuple[str, ...] = ALL_PHASES,
+) -> dict[str, Path]:
+    phases = validated_phases(phases)
     cards: dict[str, Path] = {}
     for path in sorted(BRIEFS.glob("[TKW][0-9][0-9]/[TKW][0-9][0-9].[0-9].md")):
         card_id = path.stem
+        if not selected_card(card_id, phases):
+            continue
         if card_id in cards:
             raise CoverageError(f"duplicate challenge brief: {card_id}")
         cards[card_id] = path
     return cards
 
 
-def dependency_cards() -> dict[str, list[list[str]]]:
+def dependency_cards(
+    phases: tuple[str, ...] = ALL_PHASES,
+) -> dict[str, list[list[str]]]:
+    phases = validated_phases(phases)
     value = json.loads(DEPENDENCIES.read_text(encoding="utf-8"))
     if value.get("schema_version") != 1 or not isinstance(value.get("challenges"), dict):
         raise CoverageError("challenge dependency ledger is invalid")
     result: dict[str, list[list[str]]] = {}
     for card_id, entry in value["challenges"].items():
+        if not CARD.fullmatch(card_id):
+            raise CoverageError(f"invalid dependency entry: {card_id}")
+        if not selected_card(card_id, phases):
+            continue
         alternatives = entry.get("requires_any") if isinstance(entry, dict) else None
-        if not CARD.fullmatch(card_id) or not isinstance(alternatives, list) or not alternatives:
+        if not isinstance(alternatives, list) or not alternatives:
             raise CoverageError(f"invalid dependency entry: {card_id}")
         if not all(
             isinstance(option, list) and option
@@ -258,9 +290,13 @@ def simple_read_candidate(block: ast.With) -> bool:
     )
 
 
-def subtest_inventory() -> dict[str, list[dict[str, Any]]]:
+def subtest_inventory(
+    phases: tuple[str, ...] = ALL_PHASES,
+) -> dict[str, list[dict[str, Any]]]:
+    phases = validated_phases(phases)
     result: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for phase, path in SUITES.items():
+    for phase in phases:
+        path = SUITES[phase]
         tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
         for method in (
             node for node in ast.walk(tree)
@@ -365,19 +401,26 @@ def black_box_entry(card_id: str, inventory: dict[str, list[dict[str, Any]]]) ->
     }
 
 
-def build_registry() -> dict[str, Any]:
+def build_registry(
+    phases: tuple[str, ...] = ALL_PHASES,
+) -> dict[str, Any]:
+    phases = validated_phases(phases)
     try:
         import yaml
     except ImportError as error:
         raise CoverageError("PyYAML is required only to regenerate the registry") from error
 
-    sdl_cards = authored_sdl_cards()
-    briefs = authored_brief_cards()
-    dependencies = dependency_cards()
+    sdl_cards = authored_sdl_cards(phases)
+    briefs = authored_brief_cards(phases)
+    dependencies = dependency_cards(phases)
     if set(sdl_cards) != set(briefs) or set(sdl_cards) != set(dependencies):
         raise CoverageError("SDL, brief and dependency card sets disagree")
-    tests = subtest_inventory()
-    reviews = read_only_reviews()
+    tests = subtest_inventory(phases)
+    reviews = {
+        card_id: rationale
+        for card_id, rationale in read_only_reviews().items()
+        if selected_card(card_id, phases)
+    }
     simple_reads = {
         card_id for card_id, matches in tests.items()
         if len(matches) == 1 and matches[0]["simple_read_candidate"]
@@ -499,16 +542,21 @@ def build_registry() -> dict[str, Any]:
     }
 
 
-def load_registry(path: Path = REGISTRY_PATH) -> dict[str, Any]:
+def load_registry(
+    path: Path = REGISTRY_PATH, phases: tuple[str, ...] = ALL_PHASES,
+) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
         raise CoverageError(f"card registry cannot be read: {error}") from error
-    validate_registry(value)
+    validate_registry(value, phases)
     return value
 
 
-def validate_registry(value: Any) -> None:
+def validate_registry(
+    value: Any, phases: tuple[str, ...] = ALL_PHASES,
+) -> None:
+    phases = validated_phases(phases)
     if not isinstance(value, dict) or set(value) != {
         "schema_version", "authored_card_source", "delivery_catalog",
         "read_only_review_source", "cards",
@@ -527,18 +575,34 @@ def validate_registry(value: Any) -> None:
     cards = value["cards"]
     if not isinstance(cards, dict):
         raise CoverageError("card registry cards must be an object")
-    sdl_cards = authored_sdl_cards()
-    briefs = authored_brief_cards()
-    dependencies = dependency_cards()
+    delivered = delivered_cards()
+    if set(cards) != delivered:
+        missing = sorted(delivered - set(cards))
+        extra = sorted(set(cards) - delivered)
+        raise CoverageError(
+            f"registry card IDs changed; missing={missing}, extra={extra}"
+        )
+    selected_cards = {
+        card_id: entry
+        for card_id, entry in cards.items()
+        if selected_card(card_id, phases)
+    }
+    sdl_cards = authored_sdl_cards(phases)
+    briefs = authored_brief_cards(phases)
+    dependencies = dependency_cards(phases)
     expected = set(sdl_cards)
     if expected != set(briefs) or expected != set(dependencies):
         raise CoverageError("authoritative authored card sources disagree")
-    if set(cards) != expected:
-        missing = sorted(expected - set(cards))
-        extra = sorted(set(cards) - expected)
+    if set(selected_cards) != expected:
+        missing = sorted(expected - set(selected_cards))
+        extra = sorted(set(selected_cards) - expected)
         raise CoverageError(f"registry card IDs changed; missing={missing}, extra={extra}")
-    tests = subtest_inventory()
-    reviews = read_only_reviews()
+    tests = subtest_inventory(phases)
+    reviews = {
+        card_id: rationale
+        for card_id, rationale in read_only_reviews().items()
+        if selected_card(card_id, phases)
+    }
     simple_reads = {
         card_id for card_id, matches in tests.items()
         if len(matches) == 1 and matches[0]["simple_read_candidate"]
@@ -550,7 +614,7 @@ def validate_registry(value: Any) -> None:
             f"extra={sorted(set(reviews) - simple_reads)}"
         )
     bindings = scorer_bindings()
-    for card_id, entry in cards.items():
+    for card_id, entry in selected_cards.items():
         required = {
             "phase", "completion_class", "title", "primary_work", "participant_work", "completion_outcome",
             "completion_evaluator", "accepting_components", "evidence_sources", "evidence_contract",
@@ -638,13 +702,22 @@ def validate_registry(value: Any) -> None:
             raise CoverageError(f"{card_id}: source path changed")
         if sources["operation_sha256"] != file_sha256(expected_paths[0]) or sources["brief_sha256"] != file_sha256(expected_paths[1]):
             raise CoverageError(f"{card_id}: authored contract changed without registry review")
-    if value != build_registry():
+    if selected_cards != build_registry(phases)["cards"]:
         raise CoverageError("registry changed from its reviewed generated form")
 
 
-def build_report(registry: dict[str, Any]) -> dict[str, Any]:
-    delivery = delivered_cards()
-    cards = registry["cards"]
+def build_report(
+    registry: dict[str, Any], phases: tuple[str, ...] = ALL_PHASES,
+) -> dict[str, Any]:
+    phases = validated_phases(phases)
+    delivery = {
+        card_id for card_id in delivered_cards() if selected_card(card_id, phases)
+    }
+    cards = {
+        card_id: entry
+        for card_id, entry in registry["cards"].items()
+        if selected_card(card_id, phases)
+    }
     expected = set(cards)
     findings: list[dict[str, Any]] = []
     missing_delivery = sorted(expected - delivery)
@@ -768,15 +841,19 @@ def main() -> int:
     parser.add_argument("--output", type=Path)
     parser.add_argument("--write-registry", action="store_true")
     parser.add_argument("--require-complete", action="store_true")
+    parser.add_argument("--phase", choices=ALL_PHASES)
     arguments = parser.parse_args()
+    phases = (arguments.phase,) if arguments.phase else ALL_PHASES
     if arguments.write_registry:
+        if arguments.phase:
+            parser.error("--write-registry requires complete-repository validation")
         value = build_registry()
         arguments.registry.parent.mkdir(parents=True, exist_ok=True)
         arguments.registry.write_text(
             json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8",
         )
-    registry = load_registry(arguments.registry)
-    report = build_report(registry)
+    registry = load_registry(arguments.registry, phases)
+    report = build_report(registry, phases)
     serialized = json.dumps(report, indent=2, sort_keys=True) + "\n"
     if arguments.output:
         arguments.output.parent.mkdir(parents=True, exist_ok=True)

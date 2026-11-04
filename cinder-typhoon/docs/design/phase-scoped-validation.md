@@ -10,6 +10,7 @@ a golden and does not weaken the complete repository release gates.
 complete reviewed repository
   |-- ARWC client-reference source ----> generated client-route contract
   |-- KeplerOps surface manifest -------^
+  |-- SDL, briefs, catalog and suites --> complete card-coverage validation
   |-- all three suites and runtimes ----> complete provenance validation
   |
   +---- phase deploy archive --------------------------+
@@ -19,7 +20,7 @@ complete reviewed repository
                                                   |-- selected suite
                                                   |-- selected runtime
                                                   v
-                                       phase-local hint/provenance gates
+                                  phase-local hint/coverage/provenance gates
                                                   |
                                                   v
                                        participant-boundary execution
@@ -62,6 +63,20 @@ Entries for phases that are not deployed are neither trusted nor reported by
 that golden; complete mode validates them in the repository and promotion
 workflow.
 
+## Card-coverage modes
+
+Complete mode recomputes all 240 registry entries from the three known-solution
+suites and the reviewed SDL, brief, dependency, catalog, scorer projection, and
+simple-read review sources. Phase mode recomputes and reports only the selected
+phase's entries. The SDL operation contracts and two scorer-projection modules
+are immutable release inputs shared by all phase archives; test suites and
+runtime trees remain phase-specific.
+
+The committed registry retains all 240 entries on every phase. Phase validation
+checks selected entries against fresh selected-phase source and ignores other
+entries. Complete-repository validation remains responsible for detecting a
+change in any other phase.
+
 ## Report ordering and failure behavior
 
 The runner validates and records the participant boundary result, sanitized
@@ -84,3 +99,4 @@ failure without allowing either one to pass.
 6. Provenance enrichment cannot change a failed participant result into a pass.
 7. Provenance enrichment failure cannot erase a completed participant result.
 8. Reports remain content-free and credential-free.
+9. Card coverage on a phase deployment needs no other phase's suite or runtime.

@@ -41,9 +41,12 @@ tar -C "$PACK_ROOT" -czf "$ARCHIVE" \
   build/participant-surface \
   build/release \
   challenges \
+  ctfd/import_catalog.py \
+  ctfd/prize_policy.py \
   docs/design/challenge-dependencies.json \
   docs/design/challenges \
-  docs/design/portfolio.csv
+  docs/design/portfolio.csv \
+  sdl/modules/operations
 
 ready_attempt=0
 until gcloud compute ssh "$INSTANCE" --project "$PROJECT_ID" --zone "$ZONE" \

@@ -18,6 +18,15 @@ coverage = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = coverage
 SPEC.loader.exec_module(coverage)
 
+RELEASE_PATH = ROOT / "build" / "release" / "manifest.py"
+RELEASE_SPEC = importlib.util.spec_from_file_location(
+    "coverage_test_release_manifest", RELEASE_PATH,
+)
+assert RELEASE_SPEC and RELEASE_SPEC.loader
+release_manifest = importlib.util.module_from_spec(RELEASE_SPEC)
+sys.modules[RELEASE_SPEC.name] = release_manifest
+RELEASE_SPEC.loader.exec_module(release_manifest)
+
 
 class CardCoverageTests(unittest.TestCase):
     @classmethod
@@ -256,6 +265,43 @@ class CardCoverageTests(unittest.TestCase):
         )
         self.assertEqual(completed.returncode, 0, completed.stderr)
 
+    def test_phase_deployment_file_sets_pass_selected_coverage(self) -> None:
+        for phase in coverage.ALL_PHASES:
+            with self.subTest(phase=phase), tempfile.TemporaryDirectory() as directory:
+                isolated_root = Path(directory)
+                for relative in release_manifest.phase_files(phase):
+                    source = ROOT / relative
+                    destination = isolated_root / relative
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(source, destination)
+                for absent in set(coverage.ALL_PHASES) - {phase}:
+                    self.assertFalse((isolated_root / "build" / absent / "runtime").exists())
+                report = isolated_root / "coverage.json"
+                completed = subprocess.run(
+                    [
+                        sys.executable,
+                        str(isolated_root / "build/card-coverage/coverage.py"),
+                        "--phase", phase, "--require-complete", "--output", str(report),
+                    ],
+                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                    check=False,
+                )
+                self.assertEqual(completed.returncode, 0, completed.stderr)
+                value = json.loads(report.read_text())
+                self.assertEqual({card["phase"] for card in value["cards"]}, {phase})
+
+    def test_phase_validation_detects_selected_mutation_only(self) -> None:
+        selected = copy.deepcopy(self.registry)
+        selected["cards"]["T01.1"]["title"] += " changed"
+        with self.assertRaisesRegex(coverage.CoverageError, "reviewed generated form"):
+            coverage.validate_registry(selected, ("training",))
+
+        absent = copy.deepcopy(self.registry)
+        absent["cards"]["W01.1"]["title"] += " changed"
+        coverage.validate_registry(absent, ("training",))
+        with self.assertRaisesRegex(coverage.CoverageError, "reviewed generated form"):
+            coverage.validate_registry(absent)
+
     def test_every_authoritative_source_class_is_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             copied = Path(directory) / "cinder-typhoon"
@@ -298,7 +344,10 @@ class CardCoverageTests(unittest.TestCase):
         candidate = (ROOT / "build" / "participant-runner" / "check-candidate.sh").read_text(
             encoding="utf-8",
         )
-        self.assertIn("card-coverage/coverage.py --require-complete", candidate)
+        self.assertIn(
+            "card-coverage/coverage.py --phase '$phase' --require-complete",
+            candidate,
+        )
 
 
 if __name__ == "__main__":
