@@ -24,7 +24,7 @@ RUN gcc -nostdlib -static -no-pie -Wl,--build-id=none \
     && strip --strip-all /tmp/replay-crr-r19 \
     && /tmp/replay-crr-r19 witness | grep -F 'TRACE-R19-DISPUTED'
 
-FROM ubuntu:24.04 AS utility28
+FROM ubuntu:24.04 AS utility-builder
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get install --no-install-recommends -y binutils clang-18 libc6-dev python3 \

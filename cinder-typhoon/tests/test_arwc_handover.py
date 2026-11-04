@@ -87,6 +87,11 @@ class GateProcess:
 
 
 class ArwcHandoverTests(unittest.TestCase):
+    def test_engineering_utility_is_built_from_the_declared_local_stage(self) -> None:
+        engineering = (IMAGES / "engineering.Dockerfile").read_text()
+        self.assertIn("FROM ubuntu:24.04 AS utility-builder", engineering)
+        self.assertEqual(engineering.count("COPY --from=utility-builder"), 2)
+
     token = "a1" * 32
     certificate = b"range-a-certificate\n"
     key = ("ab" * 32 + "\n").encode()
