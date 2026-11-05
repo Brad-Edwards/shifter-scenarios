@@ -241,7 +241,7 @@ objectives:
       Recover the inspection's field export from the contractor workspace.
 
       Provides engineering material after the identity pivot.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w14.c1
     targets:
@@ -259,7 +259,7 @@ objectives:
       Distinguish the obsolete field-service reference from the active process-data service and identify the current read contract.
 
       Makes the operator resolve product history before relying on an endpoint.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w14.c2
     targets:
@@ -277,7 +277,7 @@ objectives:
       Adapt the contractor's retained field client to the current read interface. Recover fresh outlet observations under the inspection's correct asset scope.
 
       Completes the second ordinary route to OT visibility.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w14.c3
     targets:

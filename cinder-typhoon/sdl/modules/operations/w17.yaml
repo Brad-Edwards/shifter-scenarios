@@ -315,7 +315,7 @@ objectives:
       Recover the reservoir's current measured state for the specified observation interval. Distinguish measured values from requested settings.
 
       Provides an approachable first result after the OT visibility pivot.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w17.c1
     targets:
@@ -333,7 +333,7 @@ objectives:
       Recover the current operating-mode record and identify what the process presently permits.
 
       Establishes that available commands depend on operating state.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w17.c2
     targets:
@@ -351,7 +351,7 @@ objectives:
       Find the instrument described in the controls engineer's note and recover its correct observation identifier.
 
       Connects engineering prose to a usable observation.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w17.c3
     targets:
@@ -369,7 +369,7 @@ objectives:
       Correlate the routine commissioning reference event with independent process observations and establish which changes belong to that event.
 
       Makes a documented event visibly correspond to the process.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w17.c4
     targets:

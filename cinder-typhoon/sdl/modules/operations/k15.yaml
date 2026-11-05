@@ -299,7 +299,7 @@ objectives:
       Recover the export job that support started for its unresolved customer case. Identify the actual dataset and job revision.
 
       Gives cloud collection a legitimate business workflow and a specific target.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k15.c1
     targets:
@@ -317,7 +317,7 @@ objectives:
       Obtain the restricted export definition for the customer's job even though your identity does not own it.
 
       Establishes a distinct authorization breach in export administration.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k15.c2
     targets:
@@ -335,7 +335,7 @@ objectives:
       Use the available delegated job rights to redirect the export handover while keeping the customer's job valid.
 
       Changes a business workflow's data destination.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k15.c3
     targets:
@@ -353,7 +353,7 @@ objectives:
       Recover the ARWC collection from the handed-over export material. Resolve its partition and revision records so the result belongs to the current customer binding.
 
       Produces useful customer intelligence, not merely a downloaded archive.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k15.c4
     targets:

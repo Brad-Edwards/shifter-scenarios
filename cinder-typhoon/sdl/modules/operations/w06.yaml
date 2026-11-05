@@ -241,7 +241,7 @@ objectives:
       Recover the protected login/rendering record for the planning application and bind it to the drawing under review.
 
       Establishes the actual application relationship behind the next browser task.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w06.c1
     targets:
@@ -259,7 +259,7 @@ objectives:
       Make the planner's privileged browser attach Cinder's controlled preview to the inspection's private drawing review.
 
       Creates a useful browser capability across the intended login boundary.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w06.c2
     targets:
@@ -277,7 +277,7 @@ objectives:
       Convert the browser capability into usable planner authority over the protected application record.
 
       Gives the browser chain a durable application result.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w06.c3
     targets:

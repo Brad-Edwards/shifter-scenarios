@@ -228,7 +228,7 @@ objectives:
       The importer can retrieve material the developer cannot read directly. Recover usable authority over the release channel consumed by FieldKest customers.
 
       Creates the ordinary package-delivery route's publication capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k06.c1
     targets:
@@ -246,7 +246,7 @@ objectives:
       Your publication identity still cannot read the private support package. Cross the package-view boundary and recover its protected contents.
 
       Adds a separate registry data compromise after publication access.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k06.c2
     targets:
@@ -264,7 +264,7 @@ objectives:
       Make the isolated test consumer run your compatible package behavior and return its protected rehearsal result.
 
       Completes a local supplier-side execution episode before customer delivery.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k06.c3
     targets:

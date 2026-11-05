@@ -240,7 +240,7 @@ objectives:
       Recover the staff certificate relationship and the enrollment record relevant to the archive handover.
 
       Makes the organization's identity trust legible through actual records.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k19.c1
     targets:
@@ -259,7 +259,7 @@ objectives:
       Establish a usable colleague identity across the staff certificate boundary and retrieve the colleague's protected archive handover.
 
       Gives a substantive identity-compromise result.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k19.c2
     targets:
@@ -278,7 +278,7 @@ objectives:
       Use the colleague's archive workflow to establish the delegated authentication context needed by supplier administration.
 
       Connects the colleague identity to a second trust boundary.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k19.c3
     targets:

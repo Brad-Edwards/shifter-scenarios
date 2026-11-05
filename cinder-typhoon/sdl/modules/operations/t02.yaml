@@ -328,7 +328,7 @@ objectives:
 
 
       Provides a useful identity lead without password guessing.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t02.c1
     targets:
@@ -347,7 +347,7 @@ objectives:
 
 
       Adds an independent data disclosure to the identity story.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t02.c2
     targets:
@@ -366,7 +366,7 @@ objectives:
 
 
       Makes the identity trail produce actual account access.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t02.c3
     targets:
@@ -385,7 +385,7 @@ objectives:
 
 
       Introduces authorization beyond successful authentication.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t02.c4
     targets:

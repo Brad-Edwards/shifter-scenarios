@@ -240,7 +240,7 @@ objectives:
       Recover the protected relation-service contract and identify how the supplied maintenance association is represented.
 
       Introduces the backend as the keeper of useful asset relationships.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w11.c1
     targets:
@@ -258,7 +258,7 @@ objectives:
       Construct an accepted exchange with the protected backend and recover the designated restricted response through the relation service.
 
       Develops a substantive protocol capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w11.c2
     targets:
@@ -276,7 +276,7 @@ objectives:
       Use the earned exchange capability to recover the current asset lineage behind the backend's separate relation boundary.
 
       Provides authoritative history useful to the maintenance investigation.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w11.c3
     targets:

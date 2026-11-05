@@ -318,7 +318,7 @@ objectives:
 
 
       Gives a new player a quick evidence-recovery success with a recognizable purpose.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t01.c1
     targets:
@@ -337,7 +337,7 @@ objectives:
 
 
       Introduces a separate web discovery with useful information.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t01.c2
     targets:
@@ -356,7 +356,7 @@ objectives:
 
 
       Turns recovered access into a scoped information result.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t01.c3
     targets:
@@ -375,7 +375,7 @@ objectives:
 
 
       Provides an early application-exploitation payoff.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t01.c4
     targets:

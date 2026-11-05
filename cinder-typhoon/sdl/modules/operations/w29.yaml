@@ -246,7 +246,7 @@ objectives:
       Recover the settlement tariff that applies to replacement supply in the current allocation window.
 
       Gives the final consequence a current financial basis.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w29.c1
     targets:
@@ -264,7 +264,7 @@ objectives:
       Reconcile the current usable reserve with the company's allocation commitments and establish what the release plan must account for.
 
       Connects present process state to the business obligations discovered earlier.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w29.c2
     targets:
@@ -283,7 +283,7 @@ objectives:
       Construct a release plan that reduces usable reserve within the operating envelope and explains the resulting replacement cost and restrictions.
 
       Defines the intended non-catastrophic consequence before live action.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w29.c3
     targets:

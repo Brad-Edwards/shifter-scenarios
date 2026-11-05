@@ -312,7 +312,7 @@ objectives:
       Recover the historical collector associated with the archive lead and restore it as a usable analysis artifact.
 
       Continues the intelligence trail from contractor or lineage evidence.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w12.c1
     targets:
@@ -330,7 +330,7 @@ objectives:
       Reconstruct the collector's cryptographic behavior well enough to reproduce its handling of the supplied archive samples.
 
       Establishes understanding before recovering the protected collection.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w12.c2
     targets:
@@ -348,7 +348,7 @@ objectives:
       Recover the protected archive and the maintenance history it contains.
 
       Gives the reconstruction an actual data-recovery payoff.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w12.c3
     targets:
@@ -366,7 +366,7 @@ objectives:
       Reconstruct the surviving collection relationship and obtain the current protected data associated with the archived maintenance identity.
 
       Makes old intelligence useful without substituting it for current plant observations.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w12.c4
     targets:

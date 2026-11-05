@@ -299,7 +299,7 @@ objectives:
       Recover the policy program embedded in the retained rules compiler and identify the input it actually evaluates.
 
       Makes the compiler's hidden policy an inspectable campaign artifact.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k11.c1
     targets:
@@ -317,7 +317,7 @@ objectives:
       Reconstruct enough of the compiler's internal instruction behavior to reproduce the supplied policy fragments.
 
       Establishes a reusable understanding of the policy language.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k11.c2
     targets:
@@ -335,7 +335,7 @@ objectives:
       Recover the complete acceptance conditions enforced by the embedded policy program. Account for the constraints the ordinary documentation omits.
 
       Reveals what the package gate actually demands.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k11.c3
     targets:
@@ -353,7 +353,7 @@ objectives:
       Construct a package-policy input that satisfies the recovered program while authorizing Cinder's requested compatibility case.
 
       Ends the compiler branch with an accepted, purposeful artifact.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k11.c4
     targets:

@@ -241,7 +241,7 @@ objectives:
       Recover the private reserve-report definition and determine which report operations the planner's query interface actually permits. Resolve the disagreement between its 'read-only' label and the supplied ordinary request results.
 
       Introduces the backend's actual data scope.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w07.c1
     targets:
@@ -259,7 +259,7 @@ objectives:
       Recover the restricted district-allocation adjustment ledger through the planner's query interface, despite the rules that exclude it from ordinary reserve reports.
 
       Establishes a useful data primitive beyond normal planning queries.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w07.c2
     targets:
@@ -277,7 +277,7 @@ objectives:
       Make the database service execute a job that produces a copy of its protected reconciliation log under the service's own execution identity.
 
       Completes the application-to-backend chain with a concrete effect.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w07.c3
     targets:

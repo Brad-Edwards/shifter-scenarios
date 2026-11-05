@@ -311,7 +311,7 @@ objectives:
       Recover the contractor's hidden script from the retained work material and identify the collection it was intended to retrieve.
 
       Starts an intelligence-recovery branch from ordinary corporate work.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w08.c1
     targets:
@@ -329,7 +329,7 @@ objectives:
       Reconstruct the script's retained message exchange and recover the missing instructions that belong to this collection.
 
       Makes messaging evidence useful without involving an external service.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w08.c2
     targets:
@@ -347,7 +347,7 @@ objectives:
       Recover the compiled collector carried by the reconstructed exchange and establish its usable analysis artifact.
 
       Adds a distinct compiled-code recovery task.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w08.c3
     targets:
@@ -365,7 +365,7 @@ objectives:
       Recover the collector's protected configuration and the historical archive reference it was using.
 
       Gives the analysis branch a useful collection destination.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w08.c4
     targets:

@@ -304,7 +304,7 @@ objectives:
       Place your controlled preview content in the privileged reviewer's effective workflow despite the account and review-state boundaries.
 
       Establishes a useful browser position rather than merely submitting an attachment.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k12.c1
     targets:
@@ -322,7 +322,7 @@ objectives:
       Recover the protected browser value required for a privileged preview action and make that separate action accept it.
 
       Turns browser access into a new application capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k12.c2
     targets:
@@ -340,7 +340,7 @@ objectives:
       Take control of the preview worker's contribution to the support review while preserving the expected review interface.
 
       Adds control of an active processing component.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k12.c3
     targets:
@@ -358,7 +358,7 @@ objectives:
       Complete the chain into the constrained renderer and make the support engineer's release preview reflect Cinder's chosen result.
 
       Delivers a memorable local conclusion to the long browser investigation.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k12.c4
     targets:

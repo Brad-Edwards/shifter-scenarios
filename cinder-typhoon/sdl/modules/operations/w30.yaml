@@ -178,7 +178,7 @@ objectives:
       Turn the bounded release plan into a correctly bound live command plan using the client and authority you earned.
 
       Joins the operating context's separately earned knowledge and control capabilities.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w30.c1
     targets:
@@ -197,7 +197,7 @@ objectives:
       Execute the bounded opening and establish its actual effect on usable reserve. Show the replacement cost and restrictions that follow from the lost water.
 
       Completes the main story with gates moving and a credible financial consequence.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w30.c2
     targets:

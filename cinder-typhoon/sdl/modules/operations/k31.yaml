@@ -234,7 +234,7 @@ objectives:
       Recover the scheduler's maintenance policy and establish which identity its different operations actually evaluate.
 
       Separates job ownership from the identity of a running workload.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k31.c1
     targets:
@@ -252,7 +252,7 @@ objectives:
       Obtain the workload's separate runtime capability through a change you are permitted to make, while preserving its ordinary job interface.
 
       Creates a new cloud execution capability under meaningful constraints.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k31.c2
     targets:
@@ -270,7 +270,7 @@ objectives:
       Use the earned runtime capability and maintenance classification relationship to recover the protected field archive.
 
       Reveals a calibration change missing from the business export.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k31.c3
     targets:

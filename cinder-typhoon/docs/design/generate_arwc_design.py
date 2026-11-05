@@ -107,6 +107,14 @@ APPLICATION = {
     "a-reservoir": "reservoir-controller", "a-distribution": "distribution-rehearsal",
     "a-instruments": "independent-instruments",
 }
+ROUTE_ID_OVERRIDES = {
+    "W27.1": "signature-program-reproduction",
+    "W29.3": "reporting-checkpoint-submit",
+}
+ROUTE_PATH_OVERRIDES = {
+    "W27.1": "/api/signature-programs/current/reproductions",
+    "W29.3": "/api/reporting-checkpoints/current",
+}
 SERVICE = {node: application for node, application in APPLICATION.items()}
 SERVICE["a-business"] = "workplace"
 
@@ -650,7 +658,8 @@ def feature_ref(node: str) -> str:
 
 def route_binding(node: str, card: str) -> str:
     title, _ = title_and_path(card)
-    return f"{node_ref(node)}/{APPLICATION[node]}/{slug(title)}"
+    route_id = ROUTE_ID_OVERRIDES.get(card, slug(title))
+    return f"{node_ref(node)}/{APPLICATION[node]}/{route_id}"
 
 
 @cache
@@ -935,9 +944,10 @@ def application_routes(node: str) -> list[dict[str, object]]:
     for card in sorted(cards, key=lambda item: (int(item[1:3]), int(item.split(".")[1]))):
         title, _ = title_and_path(card)
         mutating = card in MUTATING
+        route_id = ROUTE_ID_OVERRIDES.get(card, slug(title))
         routes.append({
-            "route_id": slug(title),
-            "path": f"/api/{slug(title)}",
+            "route_id": route_id,
+            "path": ROUTE_PATH_OVERRIDES.get(card, f"/api/{route_id}"),
             "methods": ["POST"] if mutating else ["GET"],
             "auth_required": True,
             "auth_scheme": AUTH[node][0],

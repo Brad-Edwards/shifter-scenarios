@@ -235,7 +235,7 @@ objectives:
       Extend the earned delegated context across the service's next authentication boundary and recover its protected service record.
 
       Turns delegation into a new service capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k20.c1
     targets:
@@ -253,7 +253,7 @@ objectives:
       Obtain the managed service capability needed by release administration despite the service's separate access boundary.
 
       Creates a substantive new identity capability before final impersonation.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k20.c2
     targets:
@@ -271,7 +271,7 @@ objectives:
       Make release administration accept a publication-approval action as its privileged release identity. Preserve the rehearsal consumer identified in the administration dossier.
 
       Concludes the identity branch with useful supplier release authority.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k20.c3
     targets:

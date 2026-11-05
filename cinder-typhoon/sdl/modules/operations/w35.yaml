@@ -242,7 +242,7 @@ objectives:
       Recover ARWC's exposed replacement-supply price catalog and the district procurement reference it includes.
 
       Introduces a corporate financial objective tied to the water story.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w35.c1
     targets:
@@ -260,7 +260,7 @@ objectives:
       Recover the restricted district quote that your corporate context is not authorized to view.
 
       Adds a concrete procurement-data boundary.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w35.c2
     targets:
@@ -278,7 +278,7 @@ objectives:
       Make the replacement-supply workflow issue the recovered quote's order against the wrong district budget while retaining the quoted supplier, amount, and delivery period.
 
       Provides a complete local financial ending for a operator who stays in corporate ARWC.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w35.c3
     targets:

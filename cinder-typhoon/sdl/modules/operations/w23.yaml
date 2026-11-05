@@ -241,7 +241,7 @@ objectives:
       Construct a measurement interaction that causes a controlled change outside its intended estimator state.
 
       Begins a deep attack on a real planning component.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w23.c1
     targets:
@@ -259,7 +259,7 @@ objectives:
       Develop the useful memory capability needed to influence the estimator's protected planning state under its operating constraints.
 
       Establishes a new exploitation capability beyond the original fault.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w23.c2
     targets:
@@ -277,7 +277,7 @@ objectives:
       Make the planning estimator report the reserve as sufficient for the supplied allocation case while preserving its normal output interface and the unaffected district estimates.
 
       Completes the elite branch with a capability that matters to the water story.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w23.c3
     targets:

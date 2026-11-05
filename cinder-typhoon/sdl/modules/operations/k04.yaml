@@ -292,7 +292,7 @@ objectives:
       The support indexer treats uploaded bundles as routine work. Construct a bundle that causes a controlled change beyond the object it should be allowed to affect.
 
       Begins an optional deep investigation from the initial workstation.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k04.c1
     targets:
@@ -310,7 +310,7 @@ objectives:
       Use the compromised indexing behavior to recover protected runtime information that an ordinary bundle cannot see.
 
       Turns a narrow fault into a new information capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k04.c2
     targets:
@@ -328,7 +328,7 @@ objectives:
       The indexer still restricts what your corrupted object can influence. Establish a controlled write capability under those restrictions and demonstrate it against the designated protected state.
 
       Provides a substantive elite milestone before final execution.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k04.c3
     targets:
@@ -346,7 +346,7 @@ objectives:
       Turn the indexer compromise into execution under its service identity. Recover the release-exception queue the support engineer has been trying to clear.
 
       Completes the native branch with useful release intelligence.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k04.c4
     targets:

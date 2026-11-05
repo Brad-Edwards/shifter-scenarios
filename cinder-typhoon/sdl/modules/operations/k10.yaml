@@ -225,7 +225,7 @@ objectives:
       Recover the restricted preview association for the supplied support attachment. Establish which document identity the viewer believes it is presenting.
 
       Gives the preview investigation a concrete identity question.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k10.c1
     targets:
@@ -243,7 +243,7 @@ objectives:
       Find distinct preview inputs that the viewer treats as the same protected document identity. Demonstrate the ambiguity with the supplied rehearsal documents.
 
       Develops an input-binding capability before the final isolation crossing.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k10.c2
     targets:
@@ -261,7 +261,7 @@ objectives:
       Deliver a crafted support document that crosses the viewer's intended isolation boundary and recovers the protected preview content.
 
       Completes an application-exploitation branch with actual restricted information.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k10.c3
     targets:

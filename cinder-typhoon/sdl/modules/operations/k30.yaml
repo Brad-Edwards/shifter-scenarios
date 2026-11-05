@@ -234,7 +234,7 @@ objectives:
       Recover the scoped backup principal from the build records and establish its allowed operation while direct access to the source database remains denied.
 
       Introduces a separate control-plane capability over protected history.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k30.c1
     targets:
@@ -253,7 +253,7 @@ objectives:
       Recover the protected historical records using the authority you have over their backup, without gaining direct access to the source database.
 
       Completes a substantive cloud-data compromise through a different trust boundary.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k30.c2
     targets:
@@ -271,7 +271,7 @@ objectives:
       Identify ARWC's correct migration record within the recovered history and connect its older identifiers to the active customer integration.
 
       Explains why supplier and plant records describe the same installation differently.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k30.c3
     targets:

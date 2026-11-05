@@ -1,6 +1,6 @@
-# Python 3.12 or newer. Author validation intentionally uses matching upstream releases.
-raes==5.0.0
-raes-env-packs==6.1.0
+# Python 3.14. Author validation intentionally uses matching upstream releases.
+raes==10.8.0
+raes-env-packs==7.2.2
 
 # Genuine finance PDFs are parsed during ordinary narrative checks.
 pypdf==6.21.2

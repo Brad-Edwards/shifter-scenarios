@@ -704,7 +704,7 @@ content:
         isolation: no cross-tenant, cross-district, cross-checkpoint, or undeclared service effect
       generation_input:
         algorithm: sha256
-        digest: 7052ad15b5a4170bf3fecdadd30ea25611546249fdfa90b1b16eda151eaf1c97
+        digest: 76ab3cad7415935ddca6bc70479dc441652e6aedbf08a9b8c14af8fd662e63e9
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding generation_input
     sensitive: true
     tags:

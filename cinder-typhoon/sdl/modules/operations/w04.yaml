@@ -240,7 +240,7 @@ objectives:
       Recover the restricted archive-workflow record and the identity relationship its attachment processing relies on.
 
       Introduces the archive as a working business service.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w04.c1
     targets:
@@ -258,7 +258,7 @@ objectives:
       Cross the archive's identity-to-query boundary and recover the protected archive record withheld from the ordinary attachment view.
 
       Creates a useful data capability before archive execution.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w04.c2
     targets:
@@ -276,7 +276,7 @@ objectives:
       Compose the earned archive access into execution under the archive helper's actual authority and recover its protected handover.
 
       Completes an alternate corporate exploitation branch.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w04.c3
     targets:

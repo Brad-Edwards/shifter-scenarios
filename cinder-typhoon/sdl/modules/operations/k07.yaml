@@ -225,7 +225,7 @@ objectives:
       Recover the inspector's restricted transaction record and determine how a normal package request reaches its downstream component.
 
       Establishes concrete evidence for investigating the inspection boundary.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k07.c1
     targets:
@@ -243,7 +243,7 @@ objectives:
       Construct input that causes the inspection components to disagree about the request they are processing. Demonstrate the disagreement with a controlled downstream effect.
 
       Turns boundary analysis into an exploitable request capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k07.c2
     targets:
@@ -261,7 +261,7 @@ objectives:
       Use the framing capability to perform the inspector's protected package action and recover its restricted assessment.
 
       Gives the request exploit a useful package-intelligence conclusion.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k07.c3
     targets:

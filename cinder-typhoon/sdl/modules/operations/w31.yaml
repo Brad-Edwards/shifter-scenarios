@@ -312,7 +312,7 @@ objectives:
       Recover the diagnostic vault's actual record-boundary behavior and the protected diagnostic reference associated with the supplied case.
 
       Establishes useful evidence about the service's input contract.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w31.c1
     targets:
@@ -330,7 +330,7 @@ objectives:
       Combine the observed record behavior into a controlled access beyond the parser's intended boundary.
 
       Creates a substantive native capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w31.c2
     targets:
@@ -348,7 +348,7 @@ objectives:
       Establish controlled influence over the saved execution state under the vault's remaining constraints.
 
       Advances from data access to a distinct execution primitive.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w31.c3
     targets:
@@ -366,7 +366,7 @@ objectives:
       Complete the diagnostic-vault compromise and recover the restricted maintenance approval history under the diagnostic service's execution identity.
 
       Provides a complete local ending for the alternate native branch.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w31.c4
     targets:

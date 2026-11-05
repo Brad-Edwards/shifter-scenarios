@@ -292,7 +292,7 @@ objectives:
       Find the package interface used by the ARWC connector and make its documented example produce a valid result.
 
       Establishes the package contract needed by either ordinary delivery route.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k05.c1
     targets:
@@ -310,7 +310,7 @@ objectives:
       The visible package listing skips an older release mentioned in the support ticket. Recover the retained version record and its maintenance note.
 
       Adds product history with its own information payoff.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k05.c2
     targets:
@@ -328,7 +328,7 @@ objectives:
       The release manifest and the customer's recorded selection do not describe the same dependency. Reconcile the two and recover the exact discrepancy.
 
       Turns release metadata into an operationally useful finding.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k05.c3
     targets:
@@ -346,7 +346,7 @@ objectives:
       Demonstrate which dependency the check consumer really chooses from the available candidates. The answer must come from consumed behavior, not the release label.
 
       Distinguishes publisher intention from consumer behavior.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k05.c4
     targets:

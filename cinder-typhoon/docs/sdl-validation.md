@@ -6,13 +6,13 @@ golden range.
 
 ## Checked state
 
-Recorded on **2026-09-25** with pinned `raes==5.0.0` and
-`raes-env-packs==6.1.0`:
+Recorded on **2026-11-05** with pinned `raes==10.8.0` and
+`raes-env-packs==7.2.2`:
 
 | Check | Result |
 | --- | --- |
-| Native RAE parse, composition, and semantic validation | Pass; 127 imported modules |
-| Native instantiation and whole-scenario compilation | Pass; 3,460 realization requirements |
+| Native RAE parse, composition, and semantic validation | Pass; 136 imported modules |
+| Native instantiation and whole-scenario compilation | Pass; 3,494 realization requirements |
 | Explicit compiled observation sources | Pass; 281 observations |
 | Training hand-build design gate | Pass; 16 cards and 47 exact files |
 | KeplerOps hand-build design gate | Pass; 104 cards and 104 deterministic service contracts |
@@ -20,13 +20,13 @@ Recorded on **2026-09-25** with pinned `raes==5.0.0` and
 | Portfolio and dependency design | Pass; all 240 cards are Technical drafts with the 60/94/52/27/7 tier distribution preserved |
 | Native relationship semantics | Pass; no meaning-bearing private relationship properties, challenge-surface edges, contexts, relays, or private decoder remain |
 | In-world content boundary | Pass; Training assets and KeplerOps/ARWC service configurations contain no CTF, flag, hint, score, player, challenge, difficulty, hand-build, or fictional-world commentary |
-| Focused regression suites | Pass; 15 Training, 13 KeplerOps, 17 K09 handoff, and 16 ARWC tests; four type-valid narrative SDL mutations rejected |
+| Focused regression suites | Pass; 16 Training, 21 KeplerOps, 17 K09 handoff, and 16 ARWC tests; four type-valid narrative SDL mutations rejected |
 | Design validators | Pass; 240 cards, full AND/OR closures, both ordinary entry routes, all 16 finale route combinations, and 27 deliberately broken graphs rejected |
 | KeplerOps and ARWC authoring generators | Idempotent when run in sequence |
 
-The `sdl/` tree contains 128 YAML documents: one entry point and 127 imported
+The `sdl/` tree contains 137 YAML documents: one entry point and 136 imported
 modules. Their aggregate SHA-256 is
-`3e20302db98aa5ba0fe1fc682246915f0a5413f14f282336fdaf2298d09c98fc`.
+`d43191da645dbe2e44b4452b6c6432e23ac7d9ef8d8dda88dddfd86c477a0b49`.
 The digest processes YAML paths relative to `sdl/` in sorted order, appending
 each path, a NUL byte, its exact file bytes, and another NUL byte.
 
@@ -107,6 +107,7 @@ From the repository root, use the environment and command in
 ```sh
 PYTHONDONTWRITEBYTECODE=1 /tmp/cinder-sdl-check/bin/python \
   cinder-typhoon/tests/validate_sdl.py \
+  --self-test \
   --pack-check --pack-max-members 2048 \
   --training-hand-build-gate \
   --keplerops-hand-build-gate \

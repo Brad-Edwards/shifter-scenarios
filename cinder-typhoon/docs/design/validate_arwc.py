@@ -19,7 +19,7 @@ sys.path.insert(0, str(DESIGN))
 from generate_arwc_design import (  # noqa: E402
     ADDRESS, APPLICATION, AUTH, BASE_PATH, INITIAL, MATRIX, MECHANIC_KIND,
     NAMESPACE, NARRATIVE_REUSE, NODE_FOR_CARD, PROCESS_REFS, WORLD_NODES,
-    card_targets, content_ref, difficulty, fixture_text, node_ref,
+    application_routes, card_targets, content_ref, difficulty, fixture_text, node_ref,
     surface_bindings, target_nodes, title_and_path,
 )
 from validate_challenges import DesignError, Graph, canonical, load_briefs, read_json, require  # noqa: E402
@@ -192,8 +192,8 @@ def check_world(scenario) -> None:
         require(APPLICATION[node] in apps and apps[APPLICATION[node]].routes,
                 f"Missing ARWC application routes: {ref}")
         routes = apps[APPLICATION[node]].routes
-        require(len({route.path for route in routes}) == len(routes)
-                and all(route.path == f"/api/{route.route_id}" for route in routes),
+        expected_routes = {route["route_id"]: route["path"] for route in application_routes(node)}
+        require({route.route_id: route.path for route in routes} == expected_routes,
                 f"ARWC route binding drift: {ref}")
         require(all(route.responses and route.auth_required and route.session_required
                     for route in routes), f"Incomplete ARWC route contract: {ref}")

@@ -239,7 +239,7 @@ objectives:
       Recover the temporary employee's exposed starter pack and the corporate assignment it names.
 
       Introduces a believable new-starter workflow.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w05.c1
     targets:
@@ -257,7 +257,7 @@ objectives:
       Recover the separate activation roster that the onboarding portal should keep internal.
 
       Provides a second independent identity artifact.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w05.c2
     targets:
@@ -275,7 +275,7 @@ objectives:
       Establish the temporary employee's usable corporate identity with the restricted assignment the onboarding workflow should deny.
 
       Turns onboarding data into a meaningful identity compromise.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w05.c3
     targets:

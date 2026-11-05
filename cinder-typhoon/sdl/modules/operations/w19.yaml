@@ -314,7 +314,7 @@ objectives:
       Recover the retained engineering diagnostic associated with the outlet records and identify its actual project family.
 
       Opens an optional reverse-engineering route through product history.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w19.c1
     targets:
@@ -332,7 +332,7 @@ objectives:
       Reconstruct the diagnostic behavior that its initial analysis view does not explain and reproduce the supplied distinguishing result.
 
       Reveals that the apparent program is incomplete.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w19.c2
     targets:
@@ -350,7 +350,7 @@ objectives:
       Recover the diagnostic's hidden validation logic well enough to reproduce its decisions on the specified engineering records.
 
       Builds a substantive model of the diagnostic's actual checks.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w19.c3
     targets:
@@ -368,7 +368,7 @@ objectives:
       Use the reconstructed diagnostic to recover a valid mapping of the current outlet group from the supplied observations.
 
       Provides an advanced alternative to the ordinary mapping work.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w19.c4
     targets:

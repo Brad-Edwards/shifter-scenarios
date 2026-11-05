@@ -124,7 +124,8 @@ assertions:
     polarity: positive
 agents:
   operator:
-    entity: cinder
+    affiliations:
+    - cinder
     actions:
     - k01.c1
     - k01.c2

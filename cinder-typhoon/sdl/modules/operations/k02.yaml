@@ -235,7 +235,7 @@ objectives:
       The report test has been failing since its reference fixture disappeared. Recover the fixture from the development artifacts so the intended report is visible again.
 
       Exposes the legitimate baseline behind a report Cinder will change.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k02.c1
     targets:
@@ -254,7 +254,7 @@ objectives:
       The test importer is supposed to accept only job inputs. Make it expose the separate review note that the ordinary test view withholds.
 
       Introduces a small application boundary through an everyday developer workflow.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k02.c2
     targets:
@@ -272,7 +272,7 @@ objectives:
       Change the report produced by the test job while keeping the interface its caller expects. The support engineer should receive Cinder's version with a successful job result.
 
       Completes an early supply-chain episode in which a real support workflow accepts the operator's altered work as a successful report. A newcomer can see someone else's business process consuming their change.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k02.c3
     targets:

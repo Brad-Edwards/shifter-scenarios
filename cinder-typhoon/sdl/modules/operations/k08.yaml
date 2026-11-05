@@ -225,7 +225,7 @@ objectives:
       FieldKest still recognizes an old entitlement format. Recover its protected compatibility record and determine what the checker considers an entitlement.
 
       Introduces a legacy product boundary with a concrete protected record.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k08.c1
     targets:
@@ -243,7 +243,7 @@ objectives:
       Recover the cryptographic context needed to reproduce the legacy entitlement check for the supplied record.
 
       Builds a substantive cryptographic capability before entitlement abuse.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k08.c2
     targets:
@@ -261,7 +261,7 @@ objectives:
       Create an alternative entitlement the legacy checker accepts while preserving the required customer and feature binding.
 
       Completes the legacy-license branch with an unauthorized accepted entitlement.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k08.c3
     targets:

@@ -328,7 +328,7 @@ objectives:
 
 
       Establishes the difference between intention and observation.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t04.c1
     targets:
@@ -347,7 +347,7 @@ objectives:
 
 
       Connects a compact representation to a meaningful operating condition.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t04.c2
     targets:
@@ -366,7 +366,7 @@ objectives:
 
 
       Connects commands and operating conditions to actual effect.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t04.c3
     targets:
@@ -385,7 +385,7 @@ objectives:
 
 
       Ends training with a compact investigation into conflicting process claims.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t04.c4
     targets:
