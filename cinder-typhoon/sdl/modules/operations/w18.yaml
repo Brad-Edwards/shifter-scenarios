@@ -316,7 +316,7 @@ objectives:
       Recover the engineering tag export used for the reservoir outlet group.
 
       Supplies one half of the mapping evidence.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w18.c1
     targets:
@@ -334,7 +334,7 @@ objectives:
       Recover the separate scale table referenced by the outlet instrumentation records.
 
       Adds independent interpretation evidence.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w18.c2
     targets:
@@ -352,7 +352,7 @@ objectives:
       Reconcile the tag export and scale table so the outlet readings have the correct units and revision context.
 
       Resolves a discoverable engineering-data mismatch.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w18.c3
     targets:
@@ -370,7 +370,7 @@ objectives:
       Use the interpreted engineering evidence and reference trace to identify the actual reservoir outlet group.
 
       Completes the ordinary process-mapping route.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w18.c4
     targets:

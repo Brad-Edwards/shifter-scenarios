@@ -312,7 +312,7 @@ objectives:
       Recover ARWC's retained integration handover from the corporate connector. Find what the customer recorded about the maintenance package before Cinder arrived.
 
       Makes the supplier-to-customer transition concrete through new evidence.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w01.c1
     targets:
@@ -330,7 +330,7 @@ objectives:
       Recover the exposed maintenance-planning handover and the outstanding inspection it describes.
 
       Introduces the planner's legitimate concern and a new internal lead.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w01.c2
     targets:
@@ -348,7 +348,7 @@ objectives:
       Find ARWC's internal continuity note explaining how it handles a shortfall in usable reserve.
 
       Establishes replacement supply and restrictions as the story's bounded consequences.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w01.c3
     targets:
@@ -366,7 +366,7 @@ objectives:
       Make the corporate handover service replace the planner's inspection-summary attachment with Cinder's copy while preserving the original inspection and assignee.
 
       Gives arrival a small action payoff before the next pivot.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w01.c4
     targets:

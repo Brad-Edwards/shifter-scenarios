@@ -241,7 +241,7 @@ objectives:
       Recover the unpublished work-order annex and identify the process-data handover mentioned in it.
 
       Offers an approachable lead toward OT visibility.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w03.c1
     targets:
@@ -259,7 +259,7 @@ objectives:
       Make the annex workflow recover the restricted handover file that the ordinary work-order view cannot read.
 
       Crosses a separate file-reference boundary.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w03.c2
     targets:
@@ -277,7 +277,7 @@ objectives:
       Recover the protected read-integration configuration behind the annex service's separate export boundary.
 
       Establishes the administrative half of the ordinary integration route.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w03.c3
     targets:

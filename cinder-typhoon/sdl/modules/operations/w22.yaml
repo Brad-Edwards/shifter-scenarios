@@ -316,7 +316,7 @@ objectives:
       Recover the usable protected viewer from the retained engineering delivery and bind it to the sealed project.
 
       Opens an optional engineering-analysis branch.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w22.c1
     targets:
@@ -334,7 +334,7 @@ objectives:
       Reconstruct the viewer's embedded instruction behavior and reproduce the designated program fragments.
 
       Builds a substantive model of the viewer's internal machine.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w22.c2
     targets:
@@ -352,7 +352,7 @@ objectives:
       Open the sealed engineering project and recover the commissioning decision omitted from the business report. Establish which project revision the decision concerns.
 
       Completes the protected-project investigation with the engineering finding that explains the missing warning in the business report.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w22.c3
     targets:
@@ -370,7 +370,7 @@ objectives:
       The opened project includes a commissioning review helper whose recorded archive access does not match its apparent behavior or the listed reviewers. Recover the concealed review identity and use its access in the retained review context to obtain the withheld commissioning comparison.
 
       Gives Cinder a usable route into the retained review archive and the comparison that the official handover omitted. The project decision is already earned in W22.3; this task exposes who could read beyond that handover.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w22.c4
     targets:

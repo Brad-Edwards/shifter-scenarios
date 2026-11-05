@@ -99,18 +99,19 @@ provenance result.
 
 ## SDL validation
 
-From the repository root, create an isolated Python 3.12+ environment and install
+From the repository root, create an isolated Python 3.14 environment and install
 the matching upstream releases:
 
 ```sh
 export PYTHONDONTWRITEBYTECODE=1
-python3.12 -m venv /tmp/cinder-sdl-check
+python3.14 -m venv /tmp/cinder-sdl-check
 /tmp/cinder-sdl-check/bin/python -m pip install -r cinder-typhoon/tests/requirements-sdl.txt
-/tmp/cinder-sdl-check/bin/python cinder-typhoon/tests/validate_sdl.py --pack-check --pack-max-members 2048 --training-hand-build-gate --keplerops-hand-build-gate --arwc-hand-build-gate
+/tmp/cinder-sdl-check/bin/python cinder-typhoon/tests/validate_sdl.py --self-test --pack-check --pack-max-members 2048 --training-hand-build-gate --keplerops-hand-build-gate --arwc-hand-build-gate
 ```
 
-Use a clean checkout or move any existing `__pycache__` directories outside the
-pack before the pack check. The default member limit counts local cache files
+Use a clean checkout or move generated directories such as `__pycache__` and
+`build/*/.operator` outside the pack before the pack check. The validator
+rejects unsafe symlinks and the default member limit counts local cache files
 and directories too. Keep bytecode writing disabled for the checks below; do
 not raise the member limit to accommodate development caches.
 
@@ -145,7 +146,7 @@ these checks (the focused suites are invoked by their commands below):
    placement, supplied developer access and the customer boundary.
 5. `--pack-check` runs env-packs' author validation with local module resolution.
 
-`raes-env-packs==6.1.0` intentionally denies imports through its public
+`raes-env-packs==7.2.2` intentionally denies imports through its public
 `validate_pack` untrusted-ingest API. This authoring check therefore uses its
 `_validate_pack_for_author_ci` entry point, pinned to that release. No runtime
 delivery bundle or flattened ingest artifact is claimed. A future packaging

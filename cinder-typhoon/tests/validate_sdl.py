@@ -14,7 +14,6 @@ import sys
 
 import yaml
 from raes._errors import SDLParseError
-from raes.explicitness import ExplicitnessClass
 from raes.instantiate import instantiate_scenario
 from raes.parser import parse_sdl, parse_sdl_file
 from raes.realization_designation import AuthorRealizationPosture
@@ -80,32 +79,32 @@ def check_compiled_open(instantiated, runtime) -> int:
         substrate = f"nodes.{key}.realization.compute-substrate"
         require(
             substrate in requirements
-            and requirements[substrate].explicitness is ExplicitnessClass.OPEN,
+            and enum(requirements[substrate].explicitness) == "open",
             f"Unspecified realization is not open after compilation: {substrate}",
         )
         for suffix in ("architecture", "os_version"):
             path = f"nodes.{key}.{suffix}"
             authored = getattr(node, suffix)
-            expected = ExplicitnessClass.EXACT if authored not in (None, "") else ExplicitnessClass.OPEN
+            expected = "exact" if authored not in (None, "") else "open"
             require(
-                path in requirements and requirements[path].explicitness is expected,
+                path in requirements and enum(requirements[path].explicitness) == expected,
                 f"Node {suffix} explicitness drift after compilation: {path}",
             )
         os_path = f"nodes.{key}.os"
         if node.os is not None:
             require(
-                requirements[os_path].explicitness is ExplicitnessClass.EXACT,
+                enum(requirements[os_path].explicitness) == "exact",
                 f"Explicit node OS was weakened: {key}",
             )
         elif key != KALI:
             require(
-                requirements[os_path].explicitness is ExplicitnessClass.OPEN,
+                enum(requirements[os_path].explicitness) == "open",
                 f"Unspecified OS closed: {key}",
             )
     for suffix in ("os", "os_distribution"):
         requirement = requirements[f"nodes.{KALI}.{suffix}"]
         require(
-            requirement.explicitness is ExplicitnessClass.EXACT,
+            enum(requirement.explicitness) == "exact",
             f"Explicit Kali {suffix} was weakened by default open",
         )
     return len(requirements)
@@ -193,11 +192,11 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    require(version("raes") == "5.0.0", "Use pinned raes==5.0.0 for reproducible validation")
+    require(version("raes") == "10.7.3", "Use pinned raes==10.7.3 for reproducible validation")
     entry = PACK / "sdl/cinder-typhoon.sdl.yaml"
     module_count = check_authored_open(entry)
     if args.pack_check:
-        require(version("raes-env-packs") == "6.1.0", "Use pinned raes-env-packs==6.1.0")
+        require(version("raes-env-packs") == "7.2.2", "Use pinned raes-env-packs==7.2.2")
         from raes_env_packs.validation import PackValidationLimits, _validate_pack_for_author_ci
 
         require(args.pack_max_members > 0, "Pack member budget must be positive")
@@ -209,13 +208,13 @@ def main() -> None:
         require(len(scenarios) == 1, "Expected exactly one pack scenario entry point")
         scenario = scenarios[0]
         print(
-            "PASS: env-packs 6.1.0 author validation "
+            "PASS: env-packs 7.2.2 author validation "
             f"(local imports enabled; member budget {args.pack_max_members})",
             flush=True,
         )
     else:
         scenario = parse_sdl_file(entry)
-    print(f"PASS: RAE 5.0.0 parsed and composed {module_count} modules", flush=True)
+    print(f"PASS: RAE 10.7.3 parsed and composed {module_count} modules", flush=True)
 
     check_narrative_sdl(scenario)
     instantiated = instantiate_scenario(scenario)

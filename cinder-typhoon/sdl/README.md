@@ -2,8 +2,8 @@
 
 [cinder-typhoon.sdl.yaml](cinder-typhoon.sdl.yaml) is the sole scenario entry
 point. It uses native local module imports, explicit exports, and namespaces
-from **OpenRAE/rae 5.0.0**. All documents select
-`raes-progressive-semantics/v1`. The 127 imported modules describe one individual
+from **OpenRAE/rae 10.7.3**. All documents select
+`raes-progressive-semantics/v1`. The 136 imported modules describe one individual
 participant's world; participant replication belongs to the eventual backend.
 
 Training, KeplerOps, and ARWC have completed their design-only hand-build gates.
@@ -95,8 +95,8 @@ select the named result artifacts, with both `source_refs` and explicit
 `/features` collection scope avoids overlapping policy partitions; the component
 selectors supply the exact owner restriction, including joined evidence.
 The validator checks the normalized runtime bindings after compilation. Using
-the native explicit observation-demand carrier also avoids
-RAE 5.0.0's legacy scope conversion splitting composed identifiers at dots.
+the native explicit observation-demand carrier also prevents scope conversion
+from splitting composed identifiers at dots.
 Concrete evidence production/evaluation belongs to the eventual adapter.
 
 Action targets, proof owners, and starting records have separate meanings.

@@ -332,7 +332,7 @@ objectives:
       Reconcile calibration and observation delay with the supplied trace so the planning model reproduces the relevant forecast.
 
       Grounds the advanced process branch in observable engineering evidence.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w33.c1
     targets:
@@ -351,7 +351,7 @@ objectives:
       Construct a time-varying release schedule that meets the practice objective while respecting the declared operating constraints.
 
       Makes timing and economic context substantive parts of the task.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w33.c2
     targets:
@@ -370,7 +370,7 @@ objectives:
       Carry the planned release across the scheduler's authorization boundary and demonstrate its bounded economic effect in the live rehearsal.
 
       Adds a real application/control problem after offline planning.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w33.c3
     targets:
@@ -390,7 +390,7 @@ objectives:
       Run a feedback policy through your earned scheduler capability so the bounded objective is met across the disclosed demand and calibration conditions.
 
       Extends a one-case result into a robust process-control achievement.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w33.c4
     targets:

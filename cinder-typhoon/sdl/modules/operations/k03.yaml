@@ -225,7 +225,7 @@ objectives:
       Someone from Cinder worked this lead before you. Recover the staging artifact buried in their retained document and identify the collection it belongs to.
 
       Connects the current operation to an earlier unfinished attempt.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k03.c1
     targets:
@@ -243,7 +243,7 @@ objectives:
       The recovered staging material conceals another stage. Reconstruct the usable script and recover the instructions needed to understand what the earlier operator collected.
 
       Rewards sustained analysis with a specific operational lead.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k03.c2
     targets:
@@ -261,7 +261,7 @@ objectives:
       Reconstruct the earlier operation's callback configuration and recover its lost collection. Find out what it learned about the unresolved ARWC maintenance ticket.
 
       Pays off the old Cinder thread without making it a compulsory customer-entry gate.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k03.c3
     targets:

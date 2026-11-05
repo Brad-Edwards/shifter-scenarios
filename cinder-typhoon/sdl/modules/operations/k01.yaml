@@ -298,7 +298,7 @@ objectives:
       The workstation is yours, but the FieldKest repositories still expect an identity. Recover the developer's usable repository access and retrieve the current project handover.
 
       Establishes a useful first foothold beyond the borrowed desktop.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k01.c1
     targets:
@@ -317,7 +317,7 @@ objectives:
       The developer closed the support portal before leaving. Recover the unfinished ARWC conversation retained by the browser.
 
       Introduces the recurring support engineer and the customer ticket.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k01.c2
     targets:
@@ -336,7 +336,7 @@ objectives:
       A release review refers to a work file missing from the checkout. Find the developer's exposed copy and recover the unresolved review comments.
 
       Makes the workstation feel like a working environment with unfinished decisions.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k01.c3
     targets:
@@ -354,7 +354,7 @@ objectives:
       The local FieldKest helper has an unfinished support-report job. Make it produce a fresh inspection summary from the developer's supplied sample, with that sample's asset and revision correctly represented.
 
       Gives a newcomer a visible application result before a larger compromise.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k01.c4
     targets:

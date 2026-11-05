@@ -330,7 +330,7 @@ objectives:
 
 
       Introduces development history as useful evidence.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t03.c1
     targets:
@@ -349,7 +349,7 @@ objectives:
 
 
       Establishes a limited release capability with a concrete result.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t03.c2
     targets:
@@ -368,7 +368,7 @@ objectives:
 
 
       Foreshadows the fictional supply-chain compromise behind the campaign.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t03.c3
     targets:
@@ -387,7 +387,7 @@ objectives:
 
 
       Completes a miniature supplier-to-consumer episode.'
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - t03.c4
     targets:

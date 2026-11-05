@@ -349,7 +349,7 @@ objectives:
       The failed build's public summary omits its useful details. Recover the retained runner log and the release-dossier reference it exposes.
 
       Makes routine build output a useful cloud and release lead.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k09.c1
     targets:
@@ -367,7 +367,7 @@ objectives:
       A completed job recorded an artifact that the current results page does not list. Recover that omitted artifact and its build revision.
 
       Provides a distinct build artifact rather than another string from the log.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k09.c2
     targets:
@@ -385,7 +385,7 @@ objectives:
       Make the test job consume a support input outside the collection its ordinary form allows. Recover the restricted review output it produces.
 
       Crosses a build-input boundary before attempting execution.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k09.c3
     targets:
@@ -403,7 +403,7 @@ objectives:
       Use the review job to retrieve Build Operations' private runner note and verify the build-record connection it describes.
 
       Turns build access into a useful scoped execution foothold.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k09.c4
     targets:

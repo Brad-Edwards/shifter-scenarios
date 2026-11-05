@@ -313,7 +313,7 @@ objectives:
       Recover the restricted cache association for the maintenance drawing and identify the version the review workflow will serve.
 
       Grounds the cache investigation in an actual maintenance record.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w15.c1
     targets:
@@ -331,7 +331,7 @@ objectives:
       Make the maintenance viewer serve your controlled response for the designated cached drawing while preserving its expected identity.
 
       Establishes a meaningful cache-control capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w15.c2
     targets:
@@ -349,7 +349,7 @@ objectives:
       Use the controlled drawing delivery to obtain the reviewer's private maintenance-review submission capability.
 
       Connects cache control to an actual browser/application effect.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w15.c3
     targets:
@@ -367,7 +367,7 @@ objectives:
       Recover the protected maintenance approval through the downstream authority check that still restricts the review capability.
 
       Completes an advanced path to a useful approval artifact.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w15.c4
     targets:

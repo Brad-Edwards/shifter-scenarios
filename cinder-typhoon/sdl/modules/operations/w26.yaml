@@ -313,7 +313,7 @@ objectives:
       Recover the protected maintenance-renderer profile and bind it to the approved inspection.
 
       Identifies the actual consumer of the earned approval.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w26.c1
     targets:
@@ -331,7 +331,7 @@ objectives:
       Make the maintenance renderer accept a contractor-submitted work package for the privileged inspection preview it normally reserves for the maintenance reviewer.
 
       Crosses an application privilege boundary before execution.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w26.c2
     targets:
@@ -349,7 +349,7 @@ objectives:
       Make the renderer recover its internal maintenance handover through an action executed under its service identity, while still producing the expected inspection preview.
 
       Adds an execution capability under real application constraints.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w26.c3
     targets:
@@ -367,7 +367,7 @@ objectives:
       Cross the remaining render-to-action boundary and establish a live control client bound to the earned contractor identity and maintenance approval.
 
       Completes the advanced maintenance route to control authority.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w26.c4
     targets:

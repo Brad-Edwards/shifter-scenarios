@@ -240,7 +240,7 @@ objectives:
       Recover the retained asset-and-contractor bundle for the upcoming outlet inspection.
 
       Supplies the names and records behind a real maintenance task.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w02.c1
     targets:
@@ -258,7 +258,7 @@ objectives:
       Reconcile the contractor, asset, and inspection identifiers so the maintenance record can be tied to the correct physical assignment.
 
       Turns inconsistent business data into useful operational evidence.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w02.c2
     targets:
@@ -276,7 +276,7 @@ objectives:
       Use the maintenance service to recover the protected record outside your ordinary assignment, bound to the asset you identified.
 
       Adds an actual data-access boundary after the reconciliation.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w02.c3
     targets:

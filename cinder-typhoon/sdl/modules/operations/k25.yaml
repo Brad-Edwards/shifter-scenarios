@@ -162,7 +162,7 @@ objectives:
       Recover the ARWC support dossier and its retained attachment. Find out why the same maintenance ticket keeps returning to the developer.
 
       Introduces the customer and recurring support dispute through a complete document recovery.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k25.c1
     targets:
@@ -180,7 +180,7 @@ objectives:
       KeplerOps retains more than one ARWC integration record. Establish the active tenant and the connector revision that actually belongs to the current customer.
 
       Provides the shared customer binding for both ordinary entry routes.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k25.c2
     targets:

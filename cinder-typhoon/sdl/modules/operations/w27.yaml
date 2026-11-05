@@ -241,7 +241,7 @@ objectives:
       Recover the integrity behavior used by the legacy engineering verifier and reproduce its decisions on the supplied programs.
 
       Establishes the actual acceptance mechanism protecting diagnostic code.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w27.c1
     targets:
@@ -259,7 +259,7 @@ objectives:
       Construct a model of the verifier's collision constraints that also accounts for the engineering program's required form.
 
       Connects integrity analysis to the semantics a usable program must preserve.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w27.c2
     targets:
@@ -277,7 +277,7 @@ objectives:
       Create a valid-looking diagnostic program that makes the planning consumer report sufficient reserve for Cinder's allocation case while preserving its required diagnostics and unaffected district outputs.
 
       Completes the elite integrity branch with a useful planning-view capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w27.c3
     targets:

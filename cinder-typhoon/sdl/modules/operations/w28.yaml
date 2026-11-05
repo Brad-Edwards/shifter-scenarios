@@ -240,7 +240,7 @@ objectives:
       Recover the utility's actual execution contract and the protected engineering relationship it serves.
 
       Gives the native investigation a concrete control-related purpose.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w28.c1
     targets:
@@ -258,7 +258,7 @@ objectives:
       Gain controlled execution flow in the engineering utility despite its restricted executable surface.
 
       Develops the substantive exploit capability for the control route.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w28.c2
     targets:
@@ -276,7 +276,7 @@ objectives:
       Complete the utility compromise while retaining the privilege needed to establish the scoped live control capability.
 
       Makes the hard exploit useful to the reservoir objective.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w28.c3
     targets:

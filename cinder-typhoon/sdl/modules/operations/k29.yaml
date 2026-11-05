@@ -308,7 +308,7 @@ objectives:
       Recover the limited release principal behind the protected build dossier and establish what it can actually access.
 
       Starts the durable-delivery branch with a scoped cloud capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k29.c1
     targets:
@@ -327,7 +327,7 @@ objectives:
       Recover usable signing authority for the accepted release lineage from the protected source history and release records.
 
       Connects cloud access to historical source and signing trust.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k29.c2
     targets:
@@ -345,7 +345,7 @@ objectives:
       Deliver one signed support release that carries Cinder's change for ARWC while preserving the unrelated reference customer's behavior. Both the current and retained supported connector interfaces must continue to accept the release.
 
       Demonstrates a complete trusted-delivery compromise.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k29.c3
     targets:
@@ -364,7 +364,7 @@ objectives:
       Carry your delivery capability through the disclosed release-credential rollover. Make the replacement release work after the old credential stops being accepted.
 
       Closes the support ticket on a release Cinder can reproduce.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k29.c4
     targets:

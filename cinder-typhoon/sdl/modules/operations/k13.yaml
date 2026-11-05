@@ -301,7 +301,7 @@ objectives:
       Recover the exposed cloud-object listing and the deployment notebook it points to.
 
       Opens cloud exploration with a useful release and workload lead.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k13.c1
     targets:
@@ -319,7 +319,7 @@ objectives:
       The current cloud notebook has had its useful customer note removed. Recover the previous object version that still contains it.
 
       Shows that changing the current object does not remove its history.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k13.c2
     targets:
@@ -337,7 +337,7 @@ objectives:
       Find the separate support export mentioned in the workspace notes and recover its retained handover.
 
       Provides a second cloud data surface with a support-workflow purpose.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k13.c3
     targets:
@@ -355,7 +355,7 @@ objectives:
       Establish the limited workload identity available from this workspace and recover the protected record within its actual scope.
 
       Makes cloud identity a demonstrated capability rather than a found label.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k13.c4
     targets:

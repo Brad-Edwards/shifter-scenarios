@@ -307,7 +307,7 @@ objectives:
       Recover the restricted support-note draft and establish which identity workflow consumes its preview.
 
       Introduces a note with an operationally useful consumer.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k18.c1
     targets:
@@ -325,7 +325,7 @@ objectives:
       Make the privileged note reviewer open the identity-provider administration view and recover its restricted support-application registration record.
 
       Turns a support-content foothold into a different application's authority.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k18.c2
     targets:
@@ -344,7 +344,7 @@ objectives:
       Change the federation policy for the support application's identity-provider registration so your controlled provider is accepted, while preserving the existing staff login relationship.
 
       Makes an identity trust relationship an attacker-controlled input.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k18.c3
     targets:
@@ -363,7 +363,7 @@ objectives:
       Use the changed trust relationship to recover the backend customer record withheld from ordinary support identities.
 
       Ends the chain with protected supplier data.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k18.c4
     targets:

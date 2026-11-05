@@ -7,7 +7,7 @@ The template notice is retained in [template-license.txt](template-license.txt).
 
 The initial SDL name-only starter followed that revision's minimal-scaffold
 behavior. It has now been expanded into an original modular SDL draft using
-the pinned `raes==5.0.0` grammar and semantics. See the
+the pinned `raes==10.7.3` grammar and semantics. See the
 [SDL guide](../sdl/README.md) and [validation record](sdl-validation.md).
 
 Existing authoring material was relocated as follows, retaining its content

@@ -312,7 +312,7 @@ objectives:
       Recover the instrument's restricted sequence descriptor and reproduce the designated ordinary diagnostic observation.
 
       Gives the experimental branch a usable interface and baseline.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w16.c1
     targets:
@@ -330,7 +330,7 @@ objectives:
       Demonstrate a controlled observation beyond the instrument's intended data window without abandoning its diagnostic interface.
 
       Establishes the first substantive observation capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w16.c2
     targets:
@@ -348,7 +348,7 @@ objectives:
       Construct a sequencer experiment that distinguishes the specified protected conditions through its measurements. Establish an interpretation that holds across the supplied reference cases.
 
       Turns a narrow observation flaw into a usable experimental capability.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w16.c3
     targets:
@@ -366,7 +366,7 @@ objectives:
       Recover the protected calibration record through the constrained instrument interface and bind it to the retained field revision.
 
       Concludes the research branch with a meaningful engineering discovery.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w16.c4
     targets:

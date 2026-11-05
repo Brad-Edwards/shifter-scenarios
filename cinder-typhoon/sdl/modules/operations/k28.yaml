@@ -231,7 +231,7 @@ objectives:
       Determine when the archived connector behaves differently from its ordinary interface and recover the diagnostic evidence for that difference.
 
       Introduces a product-history mystery tied to the later engineering material.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k28.c1
     targets:
@@ -249,7 +249,7 @@ objectives:
       Reconstruct the connector's hidden loaded behavior well enough to reproduce its diagnostic transformation.
 
       Establishes understanding beyond the connector's visible entry path.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k28.c2
     targets:
@@ -267,7 +267,7 @@ objectives:
       Recover the hidden diagnostic path and the retained engineering note reachable through it.
 
       Pays off the supplier mystery with a later ARWC lead.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k28.c3
     targets:

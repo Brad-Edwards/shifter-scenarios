@@ -301,7 +301,7 @@ objectives:
       Recover usable access to the support application and retrieve the session's protected handover.
 
       Gives the operator a second approachable supplier identity.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k17.c1
     targets:
@@ -319,7 +319,7 @@ objectives:
       The support account's recovery process exposes a separate opportunity. Establish the alternate support identity and recover its private recovery note.
 
       Adds a distinct identity compromise beyond the retained session.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k17.c2
     targets:
@@ -337,7 +337,7 @@ objectives:
       Recover the support identity's private customer-assignment record and the unresolved case actually assigned to it.
 
       Makes support access useful through customer context.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k17.c3
     targets:
@@ -355,7 +355,7 @@ objectives:
       The ARWC case is assigned to the support engineer. Make the delegation workflow route a copy of its restricted diagnostic handover to the alternate reviewer named in Cinder's case note.
 
       Demonstrates an action boundary beyond reading assigned cases.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k17.c4
     targets:

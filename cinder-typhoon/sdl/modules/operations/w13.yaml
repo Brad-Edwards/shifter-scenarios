@@ -312,7 +312,7 @@ objectives:
       Recover the upcoming outlet-inspection appointment and its maintenance reference.
 
       Gives the planner's inspection a concrete schedule and purpose.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w13.c1
     targets:
@@ -330,7 +330,7 @@ objectives:
       Recover the separate access roster for the inspection crew and identify the relevant contractor assignment.
 
       Adds independent identity evidence for the appointment.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w13.c2
     targets:
@@ -348,7 +348,7 @@ objectives:
       Replace the registered attendee on the outlet-inspection appointment with the contractor identity in Cinder's assignment, despite lacking the appointment owner's rights.
 
       Crosses an administrative boundary before credential issuance.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w13.c3
     targets:
@@ -366,7 +366,7 @@ objectives:
       Cross the check-in service's separate identity boundary and establish the contractor session for the correct inspection scope.
 
       Completes the alternative contractor route's identity stage.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w13.c4
     targets:

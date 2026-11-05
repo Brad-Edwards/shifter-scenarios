@@ -232,7 +232,7 @@ objectives:
       Recover the support assistant's exposed configuration and identify the restricted support context attached to it.
 
       Introduces the in-story assistant as an ordinary application with data boundaries.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k21.c1
     targets:
@@ -250,7 +250,7 @@ objectives:
       Recover the separately retained support conversation and the unpublished case detail it contains.
 
       Provides a distinct privacy failure with a useful case clue.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k21.c2
     targets:
@@ -268,7 +268,7 @@ objectives:
       Recover the support engineer's private escalation note about ARWC from the assistant's case context, although the assistant's ordinary support role should withhold it.
 
       Produces a bounded information result from an assistant trust failure.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k21.c3
     targets:

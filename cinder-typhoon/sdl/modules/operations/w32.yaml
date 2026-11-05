@@ -312,7 +312,7 @@ objectives:
       Recover the replay program's relevant entity and component structure for the outlet example.
 
       Introduces the replay as an engineered model with inspectable behavior.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w32.c1
     targets:
@@ -330,7 +330,7 @@ objectives:
       Reconstruct the update behavior needed to reproduce the outlet example's state changes.
 
       Builds a useful model of the replay program.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w32.c2
     targets:
@@ -348,7 +348,7 @@ objectives:
       Recover the hidden state condition that makes the old replay approve the disputed schedule.
 
       Explains a specific engineering decision rather than merely reversing arbitrary code.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w32.c3
     targets:
@@ -366,7 +366,7 @@ objectives:
       Construct a replay trace that exposes why the old project's accepted schedule disagrees with the current process observations.
 
       Completes the history thread with an engineering explanation useful to W33.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w32.c4
     targets:

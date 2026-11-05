@@ -170,7 +170,7 @@ objectives:
       Recover the engineering project and its commissioning note for the outlet group.
 
       Gives the controls engineer's records a concrete place in the operating context.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w21.c1
     targets:
@@ -188,7 +188,7 @@ objectives:
       Compare the recovered project claims with the independently observed deployed revision. Establish which version is actually in use.
 
       Supplies current engineering context for control and the final consequence.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w21.c2
     targets:

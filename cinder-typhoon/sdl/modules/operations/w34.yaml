@@ -257,7 +257,7 @@ objectives:
       Establish which planning consumer receives your controlled estimate and demonstrate a harmless change reaching it without altering raw measurements.
 
       Connects the optional elite capability to a real business decision.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w34.c1
     targets:
@@ -276,7 +276,7 @@ objectives:
       Construct a plausible false planning view that makes the planner select a different allocation while satisfying the declared consistency checks.
 
       Makes reporting deception consequential rather than cosmetic.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w34.c2
     targets:
@@ -295,7 +295,7 @@ objectives:
       Couple the false planning view to the bounded release through the disclosed reporting handover. Preserve the convincing report while establishing the actual reserve loss.
 
       Creates an optional deeper ending that pays off the controls engineer's warning.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w34.c3
     targets:

@@ -317,7 +317,7 @@ objectives:
       Recover the outlet's current operating envelope: the limits within which a release can occur.
 
       Establishes the bounded physical conditions for the water story.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w25.c1
     targets:
@@ -335,7 +335,7 @@ objectives:
       Recover the control-permissive record and identify the condition withholding movement in the supplied practice state.
 
       Adds control-condition evidence beyond W17's general mode record.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w25.c2
     targets:
@@ -353,7 +353,7 @@ objectives:
       Resolve why the supplied practice requests receive acknowledgements without producing the expected outlet movement.
 
       Makes command feedback accountable to process observations.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w25.c3
     targets:
@@ -371,7 +371,7 @@ objectives:
       Construct a valid practice sequence that respects the operating envelope and produces the specified bounded movement.
 
       Completes the knowledge needed to distinguish a valid command plan from an unsafe guess.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w25.c4
     targets:

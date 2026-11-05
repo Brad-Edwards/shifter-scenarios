@@ -241,7 +241,7 @@ objectives:
       Build an altered FieldKest package that preserves the customer's expected interface and publish it to the release channel the active ARWC integration consumes.
 
       Turns supplier authority into a customer-compatible delivery artifact.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k26.c1
     targets:
@@ -259,7 +259,7 @@ objectives:
       Make the active ARWC connector select and run your published package. Demonstrate the changed behavior from the customer's side.
 
       Pays off the organization transition with the same ticket under new letterhead.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k26.c2
     targets:
@@ -278,7 +278,7 @@ objectives:
       Establish a separate retained delivery option through the customer's rollback workflow, even when the current release selection has moved on.
 
       Adds an optional supplier persistence conclusion after initial delivery.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k26.c3
     targets:

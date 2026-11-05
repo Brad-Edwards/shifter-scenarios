@@ -240,7 +240,7 @@ objectives:
       Recover the report assistant's actual source-selection record for the current district.
 
       Makes a generated-looking report traceable to its business records.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w10.c1
     targets:
@@ -258,7 +258,7 @@ objectives:
       Recover the restricted planning excerpt from another district through the report assistant's retrieval interface.
 
       Demonstrates a cross-district information boundary.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w10.c2
     targets:
@@ -276,7 +276,7 @@ objectives:
       Cross the linked-document service's separate access boundary and recover the full restricted planning record behind that excerpt.
 
       Turns partial disclosure into a complete protected planning artifact.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w10.c3
     targets:

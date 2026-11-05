@@ -231,7 +231,7 @@ objectives:
       Recover the workload's current trust document and the service relationship it describes.
 
       Makes the next identity boundary explicit in the organization's own material.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k14.c1
     targets:
@@ -249,7 +249,7 @@ objectives:
       Use the workload trust relationship to establish the scoped role intended for another audience and retrieve its protected role record.
 
       Expands identity scope through a meaningful trust mistake.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k14.c2
     targets:
@@ -267,7 +267,7 @@ objectives:
       The new role is still denied the support export. Cross the export's own resource boundary and recover the specified support data.
 
       Shows that identity trust and resource authorization are separate problems.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - k14.c3
     targets:

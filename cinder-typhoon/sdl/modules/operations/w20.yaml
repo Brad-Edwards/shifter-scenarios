@@ -239,7 +239,7 @@ objectives:
       Recover the retained maintenance record set through the supplied device interface and bind it to the inspection image.
 
       Establishes a usable artifact beyond a raw image filename.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w20.c1
     targets:
@@ -257,7 +257,7 @@ objectives:
       Recover the last recorded outlet inspection from the retained maintenance image and establish whether its entry is valid under the image's record rules.
 
       Gives storage analysis an actual record payoff.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w20.c2
     targets:
@@ -275,7 +275,7 @@ objectives:
       Change the retained image so the outlet's last inspection is recorded as completed, preserving its asset identity, every unrelated record, and the image's required consistency.
 
       Completes a precise data-tampering episode.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w20.c3
     targets:

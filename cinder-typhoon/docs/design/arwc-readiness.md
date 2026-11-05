@@ -93,9 +93,9 @@ owner.
 ## Validation log
 
 - The composed scenario passes structural and semantic validation with pinned
-  `raes==5.0.0`; 127 imported modules instantiate and compile to 3,460
+  `raes==10.7.3`; 136 imported modules instantiate and compile to 3,494
   realization requirements and 281 source-bound observations.
-- The `raes-env-packs==6.1.0` author check passes with the explicit 2,048-member
+- The `raes-env-packs==7.2.2` author check passes with the explicit 2,048-member
   source-pack budget.
 - The Training, KeplerOps, and ARWC native hand-build gates pass together. The
   ARWC gate resolves all 120 deterministic contracts to their owned routes and

@@ -314,7 +314,7 @@ objectives:
       Recover the current allocation ledger and identify the commitments ARWC has made for the approaching dry period.
 
       Makes water availability a business constraint rather than an abstract number.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w09.c1
     targets:
@@ -332,7 +332,7 @@ objectives:
       Recover the separate meter export for the same planning period, including the identifiers and units needed to interpret it.
 
       Provides independent evidence against the business report.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w09.c2
     targets:
@@ -350,7 +350,7 @@ objectives:
       Reconcile the allocation ledger and meter export. Establish the actual reserve discrepancy hidden by the reassuring business report.
 
       Reveals why Cinder's target is financially vulnerable: the company has committed water that its reassuring report misrepresents. The investigation changes the operator's understanding of the target before it changes the plant.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w09.c3
     targets:
@@ -368,7 +368,7 @@ objectives:
       Combine the customer data you understand with the recovered read-integration contract. Reach the matching current process feed and recover a fresh observation.
 
       Completes the corporate-integration route to OT visibility.
-    agent: participant.operator
+    assigned_participant: participant.operator
     actions:
     - w09.c4
     targets:
