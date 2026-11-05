@@ -2,7 +2,7 @@
 
 [cinder-typhoon.sdl.yaml](cinder-typhoon.sdl.yaml) is the sole scenario entry
 point. It uses native local module imports, explicit exports, and namespaces
-from **OpenRAE/rae 10.7.3**. All documents select
+from **OpenRAE/rae 10.8.0**. All documents select
 `raes-progressive-semantics/v1`. The 136 imported modules describe one individual
 participant's world; participant replication belongs to the eventual backend.
 

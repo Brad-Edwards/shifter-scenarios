@@ -6,7 +6,7 @@ golden range.
 
 ## Checked state
 
-Recorded on **2026-11-05** with pinned `raes==10.7.3` and
+Recorded on **2026-11-05** with pinned `raes==10.8.0` and
 `raes-env-packs==7.2.2`:
 
 | Check | Result |

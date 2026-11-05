@@ -192,7 +192,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    require(version("raes") == "10.7.3", "Use pinned raes==10.7.3 for reproducible validation")
+    require(version("raes") == "10.8.0", "Use pinned raes==10.8.0 for reproducible validation")
     entry = PACK / "sdl/cinder-typhoon.sdl.yaml"
     module_count = check_authored_open(entry)
     if args.pack_check:
@@ -214,7 +214,7 @@ def main() -> None:
         )
     else:
         scenario = parse_sdl_file(entry)
-    print(f"PASS: RAE 10.7.3 parsed and composed {module_count} modules", flush=True)
+    print(f"PASS: RAE 10.8.0 parsed and composed {module_count} modules", flush=True)
 
     check_narrative_sdl(scenario)
     instantiated = instantiate_scenario(scenario)

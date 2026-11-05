@@ -93,7 +93,7 @@ owner.
 ## Validation log
 
 - The composed scenario passes structural and semantic validation with pinned
-  `raes==10.7.3`; 136 imported modules instantiate and compile to 3,494
+  `raes==10.8.0`; 136 imported modules instantiate and compile to 3,494
   realization requirements and 281 source-bound observations.
 - The `raes-env-packs==7.2.2` author check passes with the explicit 2,048-member
   source-pack budget.
