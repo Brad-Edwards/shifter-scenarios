@@ -124,6 +124,12 @@ class ReleaseManifestTests(unittest.TestCase):
         self.assertEqual(evidence["release_id"], "event-test-01")
         self.assertRegex(evidence["manifest_sha256"], r"^[0-9a-f]{64}$")
 
+    def test_arwc_transition_surface_contract_is_an_immutable_input(self) -> None:
+        relative = Path("build/participant-surface/manifests/arwc-transitions.json")
+        for phase in release.PHASES:
+            with self.subTest(phase=phase):
+                self.assertIn(relative, release.phase_files(phase, ROOT))
+
     def test_release_rejects_mutated_inputs_files_candidate_and_deployment(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = self.synthetic_root(directory)

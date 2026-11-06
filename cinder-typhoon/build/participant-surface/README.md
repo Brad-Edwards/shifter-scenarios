@@ -77,6 +77,31 @@ SHA-256.
 machine-readable JSON Schemas. `validate.py` performs dependency-free strict
 validation used by the unit and live checks.
 
+## Earned ARWC transition states
+
+The pristine ARWC manifest remains the base surface. An immutable ARWC ending
+starts only after KeplerOps earns one supported cross-segment transition, so
+`manifests/arwc-transitions.json` defines the exact allowed delta for
+`diagnostic-execution` and `package-activation`.
+
+Each overlay adds only its authored handover and receipt entries and changes
+only the six corporate HTTPS listener probes that the earned session unlocks.
+Dynamic receipt names use a fixed prefix, uppercase-hex alphabet, exact length,
+and JSON suffix. Exactly one matching receipt must exist. Missing, duplicate,
+wrong-route, or unrelated entries still fail the normal exact-tree comparison.
+The overlay contains metadata only; it does not contain session values, file
+contents, or credential hashes. The release build-input digest binds the base
+manifest, the overlay contract, and the code that applies it.
+
+The immutable candidate wrapper supplies the same selected transition to the
+surface gate and the participant-boundary acceptance runner:
+
+```sh
+python3 cinder-typhoon/build/participant-surface/run.py \
+  --phase arwc \
+  --expected-transition diagnostic-execution
+```
+
 ## Local checks
 
 Start the phase in pristine state, then run:

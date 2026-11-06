@@ -511,6 +511,9 @@ class EvidenceTests(unittest.TestCase):
         self.assertIn("hint-delivery/release.py verify --phase '$phase'", source)
         self.assertIn("card-coverage/coverage.py --phase '$phase'", source)
         self.assertIn("input-provenance/provenance.py --phase '$phase'", source)
+        self.assertIn("surface_extra=", source)
+        self.assertIn("--expected-transition '$expected_transition'", source)
+        self.assertIn("participant-surface/run.py --phase '$phase'$surface_extra", source)
         self.assertLess(acceptance, fourth_wall_after)
         self.assertEqual(source.count("fourth-wall/run.py"), 2)
 

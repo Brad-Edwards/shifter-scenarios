@@ -20,6 +20,7 @@ import catalog as delivery_catalog  # noqa: E402
 from compare import compare  # noqa: E402
 from observe import observe  # noqa: E402
 from run import observation_plan  # noqa: E402
+from transition_surface import TransitionSurfaceError, apply_transition_surface  # noqa: E402
 from validate import ManifestError, load, validate  # noqa: E402
 
 PHASES = ("training", "keplerops", "arwc")
@@ -27,6 +28,10 @@ PHASES = ("training", "keplerops", "arwc")
 
 def manifest(phase: str) -> dict:
     return load(SURFACE / "manifests" / f"{phase}.json")
+
+
+def transition_contract() -> dict:
+    return load(SURFACE / "manifests" / "arwc-transitions.json")
 
 
 class AuthoredManifestTests(unittest.TestCase):
@@ -285,6 +290,114 @@ class AuthoredManifestTests(unittest.TestCase):
         broken["participant"]["operator"] = True
         with self.assertRaises(ManifestError):
             validate(broken)
+
+    def test_arwc_transition_contract_is_strict_and_complete(self) -> None:
+        contract = transition_contract()
+        self.assertEqual(
+            set(contract["transitions"]),
+            {"diagnostic-execution", "package-activation"},
+        )
+        broken = copy.deepcopy(contract)
+        dynamic = next(
+            item["dynamic_path"]
+            for item in broken["transitions"]["diagnostic-execution"]["additional_entries"]
+            if "dynamic_path" in item
+        )
+        dynamic["alphabet"] = "any-text"
+        with self.assertRaises(ManifestError):
+            validate(broken)
+
+    def test_diagnostic_transition_materializes_one_exact_receipt(self) -> None:
+        observed = {
+            "filesystem": {"roots": [{
+                "path": "/var/lib/fieldlink-connector",
+                "entries": [{"path": "receipts/DIAG-ARWC-1A2B3C4D.json"}],
+            }]},
+        }
+        expected = apply_transition_surface(
+            manifest("arwc"), transition_contract(), "diagnostic-execution", observed,
+        )
+        self.assertEqual(expected["state"], "earned-diagnostic-execution")
+        entries = {
+            item["path"]
+            for root in expected["filesystem"]["roots"]
+            for item in root["entries"]
+        }
+        self.assertIn("handover/customer-transition.json", entries)
+        self.assertIn("receipts/DIAG-ARWC-1A2B3C4D.json", entries)
+        unlocked = {
+            item["host"]
+            for item in expected["network"]["listeners"]
+            if item["port"] == 443 and item["reachable"]
+        }
+        self.assertTrue({
+            "business-workplace.arwc.test",
+            "planning-data.arwc.test",
+            "process-view.arwc.test",
+            "retained-archive.arwc.test",
+            "corporate-identity.arwc.test",
+            "contractor-portal.arwc.test",
+        }.issubset(unlocked))
+
+    def test_transition_rejects_missing_duplicate_wrong_or_mutated_receipt(self) -> None:
+        base = manifest("arwc")
+        contract = transition_contract()
+
+        def observed(paths: list[str]) -> dict:
+            return {
+                "filesystem": {"roots": [{
+                    "path": "/var/lib/fieldlink-connector",
+                    "entries": [{"path": path} for path in paths],
+                }]},
+            }
+
+        mutations = (
+            [],
+            ["receipts/7.4.3-cinder.rowan.json"],
+            [
+                "receipts/DIAG-ARWC-1A2B3C4D.json",
+                "receipts/DIAG-ARWC-5E6F7A8B.json",
+            ],
+        )
+        for paths in mutations:
+            with self.subTest(paths=paths), self.assertRaises(TransitionSurfaceError):
+                apply_transition_surface(
+                    base, contract, "diagnostic-execution", observed(paths),
+                )
+
+        changed_length = copy.deepcopy(contract)
+        dynamic = next(
+            item["dynamic_path"]
+            for item in changed_length["transitions"]["diagnostic-execution"]["additional_entries"]
+            if "dynamic_path" in item
+        )
+        dynamic["length"] = 9
+        with self.assertRaises(TransitionSurfaceError):
+            apply_transition_surface(
+                base,
+                changed_length,
+                "diagnostic-execution",
+                observed(["receipts/DIAG-ARWC-1A2B3C4D.json"]),
+            )
+
+    def test_package_transition_requires_authored_package_and_rollback_entries(self) -> None:
+        observed = {
+            "filesystem": {"roots": [{
+                "path": "/var/lib/fieldlink-connector",
+                "entries": [{"path": "receipts/rollback-RBK-1A2B3C4D5E6F.json"}],
+            }]},
+        }
+        expected = apply_transition_surface(
+            manifest("arwc"), transition_contract(), "package-activation", observed,
+        )
+        entries = {
+            item["path"]
+            for root in expected["filesystem"]["roots"]
+            for item in root["entries"]
+        }
+        self.assertIn("consumer/candidates/7.4.3-cinder.rowan.json", entries)
+        self.assertIn("receipts/7.4.3-cinder.rowan.json", entries)
+        self.assertIn("receipts/rollback-RBK-1A2B3C4D5E6F.json", entries)
 
 
 class ObservationTests(unittest.TestCase):

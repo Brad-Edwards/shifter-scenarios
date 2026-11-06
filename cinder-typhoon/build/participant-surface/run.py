@@ -10,6 +10,7 @@ import subprocess
 import sys
 
 from compare import compare
+from transition_surface import TransitionSurfaceError, apply_transition_surface
 from validate import load, validate
 
 
@@ -51,12 +52,25 @@ def observation_plan(authored: dict) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--phase", required=True, choices=sorted(PHASES))
+    parser.add_argument(
+        "--expected-transition",
+        choices=("diagnostic-execution", "package-activation"),
+    )
     parser.add_argument("--observed-output", type=Path)
     parser.add_argument("--snapshot", action="store_true", help="emit observation without comparison")
     arguments = parser.parse_args()
+    if arguments.expected_transition and arguments.phase != "arwc":
+        parser.error("--expected-transition applies only to ARWC")
 
     manifest_path = ROOT / "manifests" / f"{arguments.phase}.json"
-    authored = load(manifest_path)
+    pristine = load(manifest_path)
+    transition_contract = None
+    authored = pristine
+    if arguments.expected_transition:
+        transition_contract = load(ROOT / "manifests" / "arwc-transitions.json")
+        authored = apply_transition_surface(
+            pristine, transition_contract, arguments.expected_transition,
+        )
     container, user, workdir = PHASES[arguments.phase]
     observer = (ROOT / "observe.py").read_text()
     command = [
@@ -76,6 +90,18 @@ def main() -> int:
         return result.returncode
     observed = json.loads(result.stdout)
     validate(observed)
+    if arguments.expected_transition:
+        try:
+            authored = apply_transition_surface(
+                pristine,
+                transition_contract,
+                arguments.expected_transition,
+                observed,
+            )
+        except TransitionSurfaceError as error:
+            print(f"FAIL: {error}")
+            return 1
+        validate(authored)
     if arguments.observed_output:
         arguments.observed_output.write_text(json.dumps(observed, indent=2, sort_keys=True) + "\n")
     elif arguments.snapshot:

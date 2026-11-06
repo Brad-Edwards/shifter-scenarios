@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 PHASES = {"training", "keplerops", "arwc"}
+TRANSITIONS = {"diagnostic-execution", "package-activation"}
 ENTRY_TYPES = {"directory", "file", "symlink"}
 DELIVERY_STATES = {"versioned"}
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -217,6 +218,116 @@ def validate_authored(value: dict[str, Any]) -> None:
         card_ids.add(item["card_id"])
 
 
+def validate_transition_overlays(value: dict[str, Any]) -> None:
+    exact_keys(
+        value,
+        {"schema_version", "manifest_kind", "phase", "transitions"},
+        set(),
+        "transition overlays",
+    )
+    require(value["schema_version"] == 1, "transition overlays: schema version must be 1")
+    require(value["manifest_kind"] == "transition-overlays", "transition overlays: invalid kind")
+    require(value["phase"] == "arwc", "transition overlays: phase must be ARWC")
+    transitions = value["transitions"]
+    require(isinstance(transitions, dict), "transition overlays: transitions must be an object")
+    require(set(transitions) == TRANSITIONS, "transition overlays: both supported routes are required")
+    for route, overlay in transitions.items():
+        context = f"transition overlays.{route}"
+        require(isinstance(overlay, dict), f"{context}: object required")
+        exact_keys(overlay, {"state", "additional_entries", "listener_overrides"}, set(), context)
+        require(
+            isinstance(overlay["state"], str) and overlay["state"].startswith("earned-"),
+            f"{context}: earned state required",
+        )
+        entries = overlay["additional_entries"]
+        require(isinstance(entries, list) and entries, f"{context}: additional entries required")
+        identities: set[tuple[str, str]] = set()
+        for index, entry in enumerate(entries):
+            entry_context = f"{context}.additional_entries[{index}]"
+            require(isinstance(entry, dict), f"{entry_context}: object required")
+            exact_keys(
+                entry,
+                {"root", "type", "mode", "owner", "group", "classification"},
+                {"path", "dynamic_path"},
+                entry_context,
+            )
+            require(
+                isinstance(entry["root"], str) and entry["root"].startswith("/"),
+                f"{entry_context}: absolute root required",
+            )
+            require(entry["type"] in ENTRY_TYPES, f"{entry_context}: invalid type")
+            require(bool(MODE.fullmatch(entry["mode"])), f"{entry_context}: invalid mode")
+            require(
+                all(isinstance(entry[field], str) and entry[field] for field in ("owner", "group", "classification")),
+                f"{entry_context}: ownership and classification are required",
+            )
+            has_path = "path" in entry
+            has_dynamic = "dynamic_path" in entry
+            require(has_path != has_dynamic, f"{entry_context}: exactly one path form is required")
+            if has_path:
+                path = entry["path"]
+                require(
+                    isinstance(path, str)
+                    and path
+                    and not path.startswith("/")
+                    and ".." not in Path(path).parts,
+                    f"{entry_context}: safe relative path required",
+                )
+                identity = (entry["root"], path)
+            else:
+                dynamic = entry["dynamic_path"]
+                require(isinstance(dynamic, dict), f"{entry_context}.dynamic_path: object required")
+                exact_keys(
+                    dynamic,
+                    {"prefix", "alphabet", "length", "suffix"},
+                    set(),
+                    f"{entry_context}.dynamic_path",
+                )
+                require(
+                    isinstance(dynamic["prefix"], str)
+                    and dynamic["prefix"]
+                    and not dynamic["prefix"].startswith("/")
+                    and ".." not in Path(dynamic["prefix"]).parts,
+                    f"{entry_context}.dynamic_path: safe prefix required",
+                )
+                require(
+                    dynamic["alphabet"] == "uppercase-hex",
+                    f"{entry_context}.dynamic_path: unsupported alphabet",
+                )
+                require(
+                    isinstance(dynamic["length"], int)
+                    and not isinstance(dynamic["length"], bool)
+                    and 1 <= dynamic["length"] <= 64,
+                    f"{entry_context}.dynamic_path: invalid length",
+                )
+                require(
+                    isinstance(dynamic["suffix"], str) and dynamic["suffix"] == ".json",
+                    f"{entry_context}.dynamic_path: JSON suffix required",
+                )
+                identity = (entry["root"], json.dumps(dynamic, sort_keys=True))
+            require(identity not in identities, f"{entry_context}: duplicate entry")
+            identities.add(identity)
+
+        overrides = overlay["listener_overrides"]
+        require(isinstance(overrides, list) and overrides, f"{context}: listener overrides required")
+        listener_keys: set[tuple[str, int]] = set()
+        for index, item in enumerate(overrides):
+            item_context = f"{context}.listener_overrides[{index}]"
+            require(isinstance(item, dict), f"{item_context}: object required")
+            exact_keys(item, {"host", "port", "reachable"}, set(), item_context)
+            require(isinstance(item["host"], str) and item["host"], f"{item_context}: host required")
+            require(
+                isinstance(item["port"], int)
+                and not isinstance(item["port"], bool)
+                and 1 <= item["port"] <= 65535,
+                f"{item_context}: invalid port",
+            )
+            require(isinstance(item["reachable"], bool), f"{item_context}: reachable must be boolean")
+            key = (item["host"], item["port"])
+            require(key not in listener_keys, f"{item_context}: duplicate listener")
+            listener_keys.add(key)
+
+
 def validate_observed(value: dict[str, Any]) -> None:
     exact_keys(value, {
         "schema_version", "manifest_kind", "phase", "state", "participant",
@@ -342,8 +453,10 @@ def validate(value: dict[str, Any]) -> None:
         validate_authored(value)
     elif kind == "observed":
         validate_observed(value)
+    elif kind == "transition-overlays":
+        validate_transition_overlays(value)
     else:
-        raise ManifestError("manifest_kind must be authored or observed")
+        raise ManifestError("manifest_kind is unsupported")
 
 
 def load(path: Path) -> dict[str, Any]:
