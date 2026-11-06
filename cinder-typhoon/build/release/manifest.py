@@ -235,6 +235,30 @@ def clean_source_commit() -> str:
     return commit
 
 
+def require_complete_card_coverage(root: Path = ROOT) -> None:
+    """Stop promotion before GCP access when reviewed card bindings are stale."""
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(root / "build/card-coverage/coverage.py"),
+            "--require-complete",
+            "--output",
+            os.devnull,
+        ],
+        cwd=root,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if completed.returncode:
+        detail = completed.stderr.strip() or completed.stdout.strip()
+        raise ManifestError(
+            "complete card-coverage gate failed"
+            + (f": {detail}" if detail else "")
+        )
+
+
 def _load_catalog_module():
     sys.path.insert(0, str(ROOT / "challenges"))
     import catalog  # type: ignore
@@ -274,6 +298,7 @@ def generate(candidate_id: str, project: str, zone: str) -> tuple[dict[str, Any]
     if not SAFE_ID.fullmatch(candidate_id):
         raise ManifestError("candidate ID is invalid")
     source_commit = clean_source_commit()
+    require_complete_card_coverage()
     catalog = _load_catalog_module()
     local = {phase: observe_phase(phase) for phase in PHASES}
     remote = {}

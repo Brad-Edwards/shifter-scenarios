@@ -198,6 +198,26 @@ class ReleaseManifestTests(unittest.TestCase):
             with self.assertRaisesRegex(release.ManifestError, "dirty"):
                 release.clean_source_commit()
 
+    def test_generation_stops_before_gcp_when_card_coverage_is_stale(self) -> None:
+        with (
+            mock.patch.object(release, "clean_source_commit", return_value="a" * 40),
+            mock.patch.object(
+                release,
+                "require_complete_card_coverage",
+                side_effect=release.ManifestError("complete card-coverage gate failed"),
+            ),
+            mock.patch.object(release, "_remote_observation") as remote_observation,
+        ):
+            with self.assertRaisesRegex(release.ManifestError, "card-coverage"):
+                release.generate("event-test-01", "prod-mgau4w", "us-central1-a")
+        remote_observation.assert_not_called()
+
+    def test_card_coverage_preflight_reports_gate_failure(self) -> None:
+        failed = subprocess.CompletedProcess([], 1, stdout="", stderr="stale registry")
+        with mock.patch.object(release.subprocess, "run", return_value=failed):
+            with self.assertRaisesRegex(release.ManifestError, "stale registry"):
+                release.require_complete_card_coverage()
+
 
 if __name__ == "__main__":
     unittest.main()
