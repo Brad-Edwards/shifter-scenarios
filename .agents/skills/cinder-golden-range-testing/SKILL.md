@@ -50,6 +50,18 @@ starts its Compose stack. This is a deployment, not a harmless test command.
 Do not deploy unrelated working-tree content. The scripts exclude operator
 state, but the source archive is not limited to committed files.
 
+Deploying KeplerOps or ARWC regenerates that phase's certificate authority.
+Synchronize the two public peer certificates after either deployment and
+before a cross-segment check or immutable candidate generation:
+
+```sh
+bash cinder-typhoon/build/kepler-arwc/deploy.sh "$CINDER_GCP_PROJECT"
+```
+
+This wrapper exchanges only the public certificate-authority certificates and
+recreates the two connector services. Candidate generation rejects missing or
+stale peer trust.
+
 ### Test a current KeplerOps-to-ARWC development change
 
 ```sh

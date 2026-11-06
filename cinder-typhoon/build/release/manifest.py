@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import subprocess
 import sys
 from typing import Any
@@ -21,6 +22,7 @@ MANIFEST_PATH = ROOT / "build/release/manifest.json"
 ZERO_DIGEST = "sha256:" + "0" * 64
 HEX_40 = re.compile(r"^[0-9a-f]{40}$")
 SHA256 = re.compile(r"^sha256:[0-9a-f]{64}$")
+HEX_64 = re.compile(r"^[0-9a-f]{64}$")
 SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/+\-]{0,159}$")
 
 COMMON_ROOTS = (
@@ -76,6 +78,21 @@ PHASES = {
         "instance": "cinder-arwc-golden",
     },
 }
+CROSS_SEGMENT_TRUST = (
+    (
+        "cinder-keplerops-golden",
+        "/opt/cinder-typhoon/build/keplerops/.operator/tls/ca.crt",
+        "cinder-arwc-golden",
+        "/opt/cinder-typhoon/build/arwc/.operator/integration/keplerops-ca.crt",
+    ),
+    (
+        "cinder-arwc-golden",
+        "/opt/cinder-typhoon/build/arwc/.operator/tls/ca.crt",
+        "cinder-keplerops-golden",
+        "/opt/cinder-typhoon/build/keplerops/.operator/integration/arwc-ca.crt",
+    ),
+)
+TRUST_SYNC_COMMAND = "bash cinder-typhoon/build/kepler-arwc/deploy.sh <GCP_PROJECT_ID>"
 EXCLUDED_PATHS = {
     "build/participant-runner/candidate.json",
     "build/release/manifest.json",
@@ -259,6 +276,41 @@ def require_complete_card_coverage(root: Path = ROOT) -> None:
         )
 
 
+def _remote_public_file_digest(
+    instance: str, project: str, zone: str, path: str,
+) -> str:
+    completed = subprocess.run(
+        [
+            "gcloud", "compute", "ssh", instance,
+            "--project", project, "--zone", zone, "--tunnel-through-iap",
+            "--command", f"sudo sha256sum -- {shlex.quote(path)}",
+        ],
+        text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
+    )
+    fields = completed.stdout.split()
+    if completed.returncode or not fields or HEX_64.fullmatch(fields[0]) is None:
+        raise ManifestError(
+            "cross-segment public trust cannot be verified; "
+            f"run '{TRUST_SYNC_COMMAND}'"
+        )
+    return fields[0]
+
+
+def require_cross_segment_trust(project: str, zone: str) -> None:
+    for source_instance, source_path, peer_instance, peer_path in CROSS_SEGMENT_TRUST:
+        source_digest = _remote_public_file_digest(
+            source_instance, project, zone, source_path,
+        )
+        peer_digest = _remote_public_file_digest(
+            peer_instance, project, zone, peer_path,
+        )
+        if source_digest != peer_digest:
+            raise ManifestError(
+                "cross-segment public trust is not synchronized; "
+                f"run '{TRUST_SYNC_COMMAND}'"
+            )
+
+
 def _load_catalog_module():
     sys.path.insert(0, str(ROOT / "challenges"))
     import catalog  # type: ignore
@@ -299,6 +351,7 @@ def generate(candidate_id: str, project: str, zone: str) -> tuple[dict[str, Any]
         raise ManifestError("candidate ID is invalid")
     source_commit = clean_source_commit()
     require_complete_card_coverage()
+    require_cross_segment_trust(project, zone)
     catalog = _load_catalog_module()
     local = {phase: observe_phase(phase) for phase in PHASES}
     remote = {}
