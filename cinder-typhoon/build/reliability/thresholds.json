@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "defined_at": "2026-11-06T08:47:03Z",
+  "candidate_id": "event-2026.11.06-05",
+  "limits": {
+    "max_container_restarts": 0,
+    "max_failed_system_units": 0,
+    "max_host_recovery_seconds": 300,
+    "max_load_1_per_vcpu": 2.0,
+    "max_oom_events": 0,
+    "max_pristine_startup_seconds": 180,
+    "max_service_recovery_seconds": 180,
+    "min_memory_available_mib": 256,
+    "min_root_disk_available_mib": 2048
+  }
+}

@@ -1,7 +1,7 @@
 {
   "build_inputs": {
     "arwc": {
-      "file_count": 499,
+      "file_count": 501,
       "roots": [
         "build/card-coverage",
         "build/fourth-wall",
@@ -20,10 +20,10 @@
         "build/arwc",
         "assets/narrative/generated/packages/arwc-documents.json"
       ],
-      "sha256": "53f360078b26092bc72522070150cfabbfc1c3194386af77cf2986eab3cbb888"
+      "sha256": "b8f23508e69389788c3c4371736995bd55302e4cf66620516d579acb9cac8abc"
     },
     "keplerops": {
-      "file_count": 567,
+      "file_count": 569,
       "roots": [
         "build/card-coverage",
         "build/fourth-wall",
@@ -47,10 +47,10 @@
         "assets/keplerops/connector-archive",
         "assets/keplerops/release-lineage"
       ],
-      "sha256": "0368dbf3caa37bf238249f7a45baf7fa743bb03e09bbec882c4a1bde8247b42c"
+      "sha256": "6ad6a0d8deae2bfe1fc7b3fd9452e7bb8193f166cd60d1a9aaec46bbec8f3623"
     },
     "training": {
-      "file_count": 457,
+      "file_count": 459,
       "roots": [
         "build/card-coverage",
         "build/fourth-wall",
@@ -69,13 +69,13 @@
         "build/training",
         "assets/training"
       ],
-      "sha256": "8215d62838258dc2f0982e61215345b8623994efacd9f9e6ff9477c460700fa4"
+      "sha256": "f15adc5dcb24013514ba2b77c0a812734ecdda14cd538fcd5c8758381f8d743c"
     }
   },
   "candidate": {
-    "candidate_id": "event-2026.11.05-01",
+    "candidate_id": "event-2026.11.06-05",
     "path": "build/participant-runner/candidate.json",
-    "sha256": "614eda06ea607d6afe6e1baef02c132b9fc60fcfc44d1dbe4b17113c1fbacce9"
+    "sha256": "ca53e35386bbb7cbb29a3369e78d3177624a9198c5f0f30908d45f578a7c76cb"
   },
   "challenge_delivery": {
     "card_count": 240,
@@ -89,73 +89,73 @@
   "deployments": {
     "arwc": {
       "images": {
-        "a-approval": "sha256:fc1b792e27bf4d66d8b3733973f400580a4729bf577321a32f20f70223346b41",
-        "a-archive": "sha256:79f61430aa97b7fd70e3b285ec6a925f5b0f5bfcbab2b0c5474d999dfc5c2a96",
-        "a-business": "sha256:573154ae3f0767c5f1f45ed0cd1e33f28b45e463891b5e68eaedaa469960b6f3",
-        "a-connector": "sha256:4d0802d9824f56732f0a425060103c1fa534a4aaf443428fe24cb6875e56939e",
-        "a-contractor-bridge": "sha256:6b2b3b966166e975ab1fb17a0ee4ab5aca194abff3df6b9ae64833882878dca1",
-        "a-contractors": "sha256:44054b3be9e54bcc1251894881cbd7d91f0a00e7f6629e008ec548e669517581",
-        "a-control-broker": "sha256:75c965532aeea9759fbc09fd72efc71433a1f47a86fad94a4e0c434d82b36cd1",
-        "a-data": "sha256:1221748a813a275b687685eeb6d6279f1e200d7edc53e2cc414a411ff1f35ba1",
-        "a-data-bridge": "sha256:ccd92af8b69cebfd44f283b843e99b27e97b61e49cbd94c13e24b97ac3cc95ed",
-        "a-diagnostics": "sha256:2f03baf9580d8d6a9247313fca1c9a9f35bdefc9f9d3e60f9486adf82724d18f",
-        "a-distribution": "sha256:66fa3a9e0662b78ace19b48ff9ab8d7443cd145220ba5003c478602fee60d77c",
-        "a-engineering": "sha256:ffa4c90a45f489c0c8f5e07bb23ac476a88aa7076c121fc682b4753396800d89",
-        "a-historian": "sha256:8e02e489563d527a7d3069b5a535e116847413f01a1ea867be585f532413e7e1",
-        "a-hmi": "sha256:bcf2159e0619155f1a32bcce6a449b4f1b6d1f4b1542c82e9bd1db59b0d0219e",
-        "a-identity": "sha256:4a16c220ac497502f69ea1086be9895e0a9873862ec32ac90acad5ef3f28f1e5",
-        "a-instruments": "sha256:4d9a7f47548465b92faf872deb6d9103c0e2af3ef2997504c07b769855f8518b",
-        "a-renderer": "sha256:28ccbeb27bb0456edb2042af14e1cfc3adf26094826d19ceb236b67b624c8f26",
-        "a-reservoir": "sha256:c8f0fbfb2b5e6b3ec4dc15b6087903b9473f053b73dc564592da1b5d6cc469d2",
-        "fieldlink-edge": "sha256:58b4b85b55de25893ce981d669c53031a43035c58088802c0451250f6b26ba7d"
+        "a-approval": "sha256:6ad304a262c25bc49d919e9c6d1c9fe1844638d2610d0e378e6c579198d2908c",
+        "a-archive": "sha256:f90682c033fb34557ce40c7d0a53cc95dd00b1ebb1d83b3959a931fca902c1c7",
+        "a-business": "sha256:197f267650824df5d8a45b00b5501dd790b3d5c2c0e928c59749e6fee98ad431",
+        "a-connector": "sha256:fb53923abdb4abbc6ec0d51c4ae957ce5e9c1d4865dd03a26c65d2ee9d06a61a",
+        "a-contractor-bridge": "sha256:12d3ffa1d6990925aa8b2d5ed5c653f0880a5762c6f65260089bfef9b1e10e4b",
+        "a-contractors": "sha256:bc32ea8fb7e379e22314fd81cd240c38620ad99261f56633db8101d89edc8b2d",
+        "a-control-broker": "sha256:76174e4a4a65d29a092725991dc883988676e27b1055635143c7afabea2f8096",
+        "a-data": "sha256:ef0f8e10c9a9aba68dd9dbc2127e3bc5cb572c9d25ce22df1f25eda25159ad82",
+        "a-data-bridge": "sha256:4ff61da13a24c46f8b15011b68dfffbc613e7fed9ce6cd5ae16ab80b2c0601ff",
+        "a-diagnostics": "sha256:b932e900414d797700d7311811ee622ae8f1cbda8a625dbf641d6646d5c0811c",
+        "a-distribution": "sha256:96e12a88d8551c457df6b2826151ed1f49759d498bb10ae44540e73100da8cc7",
+        "a-engineering": "sha256:5dc757c574871a82700b7e3e604e61bf877f21933688e6b782644587267a0126",
+        "a-historian": "sha256:5e40a76c96871aca12e789092671b5725bcf02097e3f2906cb1f239b844d9489",
+        "a-hmi": "sha256:8321caf120f01009a238a5dce3cb50986f3fa1c7b96cb23996c7c9f9a3adcf8b",
+        "a-identity": "sha256:8bf44ce6561691d7250331c055822b432e74b302f48cdd49e3a2d6d6142e6d12",
+        "a-instruments": "sha256:26b271d588bbe77f80c53e1570e22029d5b854e52a7b18fa4651da9f8310f408",
+        "a-renderer": "sha256:236becadc44e99fe9f342f389519407c3cc8d82e7522d57886c7b17358d95534",
+        "a-reservoir": "sha256:8c46876e0b948c676c7afc253eb84e8383c2a5cd1d149754a65ae7088301a3ee",
+        "fieldlink-edge": "sha256:8e5993a0a16ab083741fc73710d530a267b369a95bdd62750af8693ff60488a2"
       },
       "instance": "cinder-arwc-golden",
-      "participant_image_digest": "sha256:4d0802d9824f56732f0a425060103c1fa534a4aaf443428fe24cb6875e56939e",
+      "participant_image_digest": "sha256:fb53923abdb4abbc6ec0d51c4ae957ce5e9c1d4865dd03a26c65d2ee9d06a61a",
       "participant_service": "a-connector",
       "project": "prod-mgau4w",
       "zone": "us-central1-a"
     },
     "keplerops": {
       "images": {
-        "a-connector": "sha256:47395c44f5aa59b207a205edb94a7bb4675d04ab03a3cc973fadccd9cf4746a2",
-        "command-worker": "sha256:ed29fe3ddc73bbdcf9d2a6601cf8759beaca0dd4d475064fb6e3a06c47b2f8f5",
-        "k-assistant": "sha256:1fd04538575b989ba58bea304d3c202fa8e4859728bc7381bd9ee8b456b74484",
-        "k-cert": "sha256:493b5a36bbebeca6398f4d9e8f7196b82b9d071f5e23f7d88db4f91b152ee8fe",
-        "k-ci": "sha256:794e09ed8c85a6e9c75f54eed97e42747476bdd743bfeecbae983dbd2ffd1c0b",
-        "k-cloud-api": "sha256:384b4376283cef563a31a83e7cf157789ebe16f5d215f5a08910ff0ed354e52c",
-        "k-data": "sha256:5dbfad6ae55a55a2450aded5124eba88e89ab7573c3265123f2333dfda6ce9eb",
-        "k-dev": "sha256:c3075906a82e1f22755fd928c6c2cd3cc2b67924a395ddb77414b232d035394d",
-        "k-dev-seed": "sha256:c3075906a82e1f22755fd928c6c2cd3cc2b67924a395ddb77414b232d035394d",
-        "k-identity": "sha256:edc2f2d2ba0d8ca1e82da08337decace86f6cecb9becfbaa983472d93beb45f0",
-        "k-indexer": "sha256:7ee1566bb66f7dba59971ad5be67a3c11694c5e9718da3277f577341d94cd206",
-        "k-preview": "sha256:9329ee259fc809ef7ce14f9bde5434dd070c97d71510a4385752cc4cde7b5dc2",
-        "k-registry": "sha256:496c5306fe3cb370b38ebc48dcd8ae45ac6a19196771e97c1c4933a7d6a36910",
-        "k-source": "sha256:8e1bfd1b6df61dd0dd824df35d3a6ad2c68780811df6002201498ba0eb9069f0",
-        "k-staff": "sha256:2c8f870487b5e65e191c3412a88cf6e3f2f6934af8c46e8d91d3aa6d77cbb789",
-        "k-support": "sha256:bcddf847ed4e0082fe10b1c2f8f9bc18ff59a0773b5d3755119be28f175c5e27",
-        "k-workload": "sha256:80cac93b4e6351415c195f9aac4db68812e67b436f712ae0504954ffbc7e7709",
-        "node-worker": "sha256:4649a42f844e39e8847a554bf223484815248461ff460c785ab4742bfb4f5a8d",
-        "report-worker": "sha256:5c8d7eed11b8e827dbe22ddd26b321beca76574da60201b9fcf6c41b00b5cda5",
-        "router": "sha256:bee96ccd16b1662fa8c2ed22c7dd1645f77736a867023da640f18641a6001e19",
-        "runner": "sha256:30fe7cf2b46f403f1595e92e3748cb7f82faec54f49a26f1f0dbb793733ff7b3"
+        "a-connector": "sha256:86353387276655a3e6512cc4b12f8648e99a7d763fb5f98a7d1be41099fdf203",
+        "command-worker": "sha256:d7887ef917400982d0276d489573799a911ba72d0bfab1d55a60e7e5970d49f1",
+        "k-assistant": "sha256:1120171ee942c8a0074b2bfb14e4b87ed6d62cf171d0e7fb663265da2081b28a",
+        "k-cert": "sha256:260c76123830351bf247b9a03c97e9fafa36ad3b6997a513bfc452413fb55422",
+        "k-ci": "sha256:91e220f5dec33685fbddb15603cbc6b78cd374852598882ddd351ed243545703",
+        "k-cloud-api": "sha256:8130f020aea06f378521f29119a1a8650bbfabd157727e895dd9db4b45681c80",
+        "k-data": "sha256:35b7aaaa450e2cca162659b4ae52d4fb2a5e44ed204f2a1d602c4b53d610305a",
+        "k-dev": "sha256:4ee5b9fdf7fe979cf888c810f095cb2043dffaf4f3dc116fa3a23675b4bbdb26",
+        "k-dev-seed": "sha256:4ee5b9fdf7fe979cf888c810f095cb2043dffaf4f3dc116fa3a23675b4bbdb26",
+        "k-identity": "sha256:2fa9d0b6a9f1142c02dfd294744dbe75bd2d234982dfe8d5c755f004ff8883eb",
+        "k-indexer": "sha256:7553245411a48577f147405c5f18734711403e0b12e48bd5dcb357ba3c8b3932",
+        "k-preview": "sha256:64336f4b4749cecc64269d9647ec5d2b51ea1f593068c677f81077f522e7bbc8",
+        "k-registry": "sha256:577910cc954ab1a8116aacd5eebc48baa5767010c7d20f1d59fc62ec3a2c3ff1",
+        "k-source": "sha256:f5a3559c8c0ae46f97c822b8bc21367655b4264a8e91c71e589ad8a3ca5ca9f8",
+        "k-staff": "sha256:37ae5238ae4080df1920c6489ad1a214a05d517432375577bd1101853473f1e2",
+        "k-support": "sha256:24875ac70eeb0b3b8bd55511944fca9707abc9b5db6980865a1fc836c1149d68",
+        "k-workload": "sha256:00e54ceb40ef9c3f0520fc073f93137e27dd1a54f57943b8798addcae9beac8c",
+        "node-worker": "sha256:2dcee010e5f1ac32a1e27e9b27fde9e6e227549cc018827128b2643ced3aab20",
+        "report-worker": "sha256:469c38536a79b5c496a9cad6374599361c39d1e875118a37523161ff767f8a31",
+        "router": "sha256:7bed732c84f157c321ac50180af6cb37ed3e426499b57b2e87e712efaa961a7a",
+        "runner": "sha256:4e3dcc92c2444aab0687ce071fb42031d8b0d53faa308736d0832677303afb0c"
       },
       "instance": "cinder-keplerops-golden",
-      "participant_image_digest": "sha256:c3075906a82e1f22755fd928c6c2cd3cc2b67924a395ddb77414b232d035394d",
+      "participant_image_digest": "sha256:4ee5b9fdf7fe979cf888c810f095cb2043dffaf4f3dc116fa3a23675b4bbdb26",
       "participant_service": "k-dev",
       "project": "prod-mgau4w",
       "zone": "us-central1-a"
     },
     "training": {
       "images": {
-        "accounts": "sha256:138677df8330a283ab633df5039e289b06fcee0009b9945f40277e529042c1d5",
-        "developer": "sha256:5044b77b1953891924fd667d125e2642deba3d2f28b56dc33ab8275718056d8d",
-        "participant": "sha256:1931dd9778659a97fa633ba347beb62ddf2a6594c7ab64dd18d5091793bd37d7",
-        "runner": "sha256:047e9cf9bfbdd218c4ecbb504c280e562939f57abe97513af050bb413d8b5bff",
-        "state": "sha256:0a2800d479c745073b0c79831ad507365685d086f310e8649072e9af3cac7270",
-        "workbench": "sha256:13501786bee05c22e81256b90fa7063cc438a4b768496c30ee0b81af154816ee"
+        "accounts": "sha256:73f698e71a998c1d5349096461c0a1209af92f53e59451a1290b055a9ae8cc9c",
+        "developer": "sha256:0ac0721d5b2bbd2ec873cc3559d9b2f02fef10ec8797339f431426996ff70ac0",
+        "participant": "sha256:6aaccff478392620cb3d32a802a3d698f7996b13fceaf3a784027cb97f7f11b8",
+        "runner": "sha256:5102a84a2afe85b6b2107992ba235c996413d0249400c411440bab7df38e5180",
+        "state": "sha256:474949e6010fa1030243fbed79baa08b992f595522ba7a905ae4be664f29b421",
+        "workbench": "sha256:81ed97c7957d17312de26c01edf66ed2bae76fb8492ff6ccee2472967fada4bb"
       },
       "instance": "cinder-training-golden",
-      "participant_image_digest": "sha256:1931dd9778659a97fa633ba347beb62ddf2a6594c7ab64dd18d5091793bd37d7",
+      "participant_image_digest": "sha256:6aaccff478392620cb3d32a802a3d698f7996b13fceaf3a784027cb97f7f11b8",
       "participant_service": "participant",
       "project": "prod-mgau4w",
       "zone": "us-central1-a"
@@ -283,7 +283,7 @@
     "schema": "cinder-typhoon.hint-delivery/v1",
     "sha256": "af2554477fe5a0dd3f92a76c4796125fa4c8d3b655e6a612e5ad2053d6214afa"
   },
-  "release_id": "event-2026.11.05-01",
+  "release_id": "event-2026.11.06-05",
   "schema_version": 1,
-  "source_commit": "986fa02c593423b84487b49f4bae9b600f14669c"
+  "source_commit": "b129e20fb109df901c37ce1187bed3f9957ab563"
 }

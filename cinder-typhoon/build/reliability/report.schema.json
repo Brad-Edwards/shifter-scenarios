@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shifter.paloaltonetworks.com/cinder-typhoon/reliability/report.schema.json",
+  "title": "Cinder Typhoon single-participant reliability report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "report_kind",
+    "status",
+    "candidate",
+    "thresholds",
+    "run",
+    "campaign_path",
+    "phases",
+    "assertions"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "report_kind": {"const": "single-participant-reliability"},
+    "status": {"enum": ["passed", "failed"]},
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_id", "source_commit", "candidate_manifest_sha256", "release_manifest_sha256"],
+      "properties": {
+        "candidate_id": {"type": "string", "minLength": 1},
+        "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "candidate_manifest_sha256": {"$ref": "#/$defs/digest"},
+        "release_manifest_sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "defined_at"],
+      "properties": {
+        "path": {"const": "build/reliability/thresholds.json"},
+        "sha256": {"$ref": "#/$defs/digest"},
+        "defined_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "project", "zone", "started_at", "finished_at"],
+      "properties": {
+        "run_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,79}$"},
+        "project": {"const": "prod-mgau4w"},
+        "zone": {"const": "us-central1-a"},
+        "started_at": {"type": "string", "format": "date-time"},
+        "finished_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "campaign_path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transition", "training", "keplerops", "arwc", "retained_state"],
+      "properties": {
+        "transition": {"const": "diagnostic-execution"},
+        "training": {"$ref": "#/$defs/acceptance"},
+        "keplerops": {"$ref": "#/$defs/acceptance"},
+        "arwc": {"$ref": "#/$defs/acceptance"},
+        "retained_state": {"type": "boolean"}
+      }
+    },
+    "phases": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["training", "keplerops", "arwc"],
+      "properties": {
+        "training": {"$ref": "#/$defs/phase"},
+        "keplerops": {"$ref": "#/$defs/phase"},
+        "arwc": {"$ref": "#/$defs/phase"}
+      }
+    },
+    "assertions": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"pattern": "^[a-z][a-z0-9_]*$"},
+      "additionalProperties": {"const": true}
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "result", "elapsed_seconds", "report_sha256"],
+      "properties": {
+        "operation": {"type": "string", "minLength": 1},
+        "result": {"const": "passed"},
+        "elapsed_seconds": {"type": "number", "minimum": 0},
+        "report_sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "service_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected", "running", "successful_one_shots", "restarts", "unhealthy"],
+      "properties": {
+        "expected": {"type": "integer", "minimum": 1},
+        "running": {"type": "integer", "minimum": 1},
+        "successful_one_shots": {"type": "integer", "minimum": 0},
+        "restarts": {"type": "integer", "minimum": 0},
+        "unhealthy": {"type": "integer", "minimum": 0}
+      }
+    },
+    "reset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sequence", "elapsed_seconds", "participant_surface_sha256", "service_state_sha256", "services"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 2},
+        "elapsed_seconds": {"type": "number", "minimum": 0},
+        "participant_surface_sha256": {"$ref": "#/$defs/digest"},
+        "service_state_sha256": {"$ref": "#/$defs/digest"},
+        "services": {"$ref": "#/$defs/service_state"}
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["elapsed_seconds", "services", "retained_state"],
+      "properties": {
+        "elapsed_seconds": {"type": "number", "minimum": 0},
+        "services": {"$ref": "#/$defs/service_state"},
+        "retained_state": {"type": "boolean"}
+      }
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vcpus", "load_1", "memory_available_mib", "root_disk_available_mib", "failed_system_units", "oom_events"],
+      "properties": {
+        "vcpus": {"type": "integer", "minimum": 1},
+        "load_1": {"type": "number", "minimum": 0},
+        "memory_available_mib": {"type": "integer", "minimum": 0},
+        "root_disk_available_mib": {"type": "integer", "minimum": 0},
+        "failed_system_units": {"type": "integer", "minimum": 0},
+        "oom_events": {"type": "integer", "minimum": 0}
+      }
+    },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["instance", "machine_type", "initial_startup_seconds", "service_recovery", "host_recovery", "resets", "resources"],
+      "properties": {
+        "instance": {"type": "string", "minLength": 1},
+        "machine_type": {"type": "string", "minLength": 1},
+        "initial_startup_seconds": {"type": "number", "minimum": 0},
+        "service_recovery": {"$ref": "#/$defs/recovery"},
+        "host_recovery": {"$ref": "#/$defs/recovery"},
+        "resets": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"$ref": "#/$defs/reset"}},
+        "resources": {"$ref": "#/$defs/resources"}
+      }
+    }
+  }
+}
