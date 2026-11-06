@@ -17,7 +17,9 @@ import ssl
 import threading
 import time
 from typing import Any
+from urllib import error as urlerror
 from urllib.parse import urlsplit
+from urllib import request as urlrequest
 import uuid
 
 
@@ -37,6 +39,14 @@ RETAINED_SUPPORT_ROLE = "support-reviewer"
 RETAINED_SUPPORT_KEY_ID = "fieldkest-retained-support-2026"
 
 
+class UpstreamUnavailable(OSError):
+    """An upstream service did not return an HTTP response."""
+
+
+class UpstreamInvalidResponse(ValueError):
+    """An upstream service returned a response that is not a JSON object."""
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
@@ -47,6 +57,35 @@ def canonical_bytes(value: object) -> bytes:
 
 def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
+
+
+def open_json(
+    outbound: urlrequest.Request,
+    context: ssl.SSLContext,
+    *,
+    timeout: float,
+    maximum_bytes: int = 2_000_000,
+) -> tuple[int, dict[str, Any]]:
+    """Return a bounded JSON-object response, including structured HTTP errors."""
+    try:
+        with urlrequest.urlopen(outbound, context=context, timeout=timeout) as response:
+            status = response.status
+            payload = response.read(maximum_bytes)
+    except urlerror.HTTPError as failure:
+        status = failure.code
+        try:
+            payload = failure.read(maximum_bytes)
+        except OSError as error:
+            raise UpstreamUnavailable from error
+    except (urlerror.URLError, TimeoutError, OSError, ssl.SSLError) as error:
+        raise UpstreamUnavailable from error
+    try:
+        value = json.loads(payload)
+    except (json.JSONDecodeError, UnicodeDecodeError) as error:
+        raise UpstreamInvalidResponse from error
+    if not isinstance(value, dict):
+        raise UpstreamInvalidResponse
+    return status, value
 
 
 def _b64url(value: bytes) -> str:
