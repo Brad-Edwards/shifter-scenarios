@@ -213,12 +213,21 @@ class AllowlistTests(unittest.TestCase):
         self.assertFalse(unresolved)
         self.assertEqual(allowed[0]["allowlist_id"], entry["id"])
 
-        changed = dict(item, content_sha256="0" * 64)
-        unresolved, allowed = scan.apply_allowlist(
-            [changed], {"schema_version": 1, "entries": [entry]},
-        )
-        self.assertEqual(unresolved, [changed])
-        self.assertFalse(allowed)
+        mutations = {
+            "source_kind": "participant_file",
+            "location": "other.test/api",
+            "rule_id": "meta-flag",
+            "match": "different answer",
+            "content_sha256": "0" * 64,
+        }
+        for field, replacement in mutations.items():
+            with self.subTest(field=field):
+                changed = dict(item, **{field: replacement})
+                unresolved, allowed = scan.apply_allowlist(
+                    [changed], {"schema_version": 1, "entries": [entry]},
+                )
+                self.assertEqual(unresolved, [changed])
+                self.assertFalse(allowed)
 
     def test_committed_allowlist_is_exact_and_strict(self) -> None:
         value = scan.load_allowlist()
@@ -227,6 +236,8 @@ class AllowlistTests(unittest.TestCase):
             {entry["id"] for entry in value["entries"]},
             {
                 "arwc-invoice-customer-acceptance",
+                "training-git-delivery-formatter-fsmonitor-template",
+                "training-git-handover-fsmonitor-template",
                 "training-kali-login-shell-comment",
             },
         )
