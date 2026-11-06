@@ -218,6 +218,32 @@ class ReleaseManifestTests(unittest.TestCase):
             with self.assertRaisesRegex(release.ManifestError, "stale registry"):
                 release.require_complete_card_coverage()
 
+    def test_cross_segment_trust_requires_exact_public_ca_pairs(self) -> None:
+        keplerops_ca = "a" * 64
+        arwc_ca = "b" * 64
+        with mock.patch.object(
+            release, "_remote_public_file_digest",
+            side_effect=[keplerops_ca, keplerops_ca, arwc_ca, arwc_ca],
+        ) as observe:
+            release.require_cross_segment_trust("prod-mgau4w", "us-central1-a")
+        self.assertEqual(observe.call_count, 4)
+
+        with mock.patch.object(
+            release, "_remote_public_file_digest",
+            side_effect=[keplerops_ca, arwc_ca],
+        ):
+            with self.assertRaisesRegex(release.ManifestError, "kepler-arwc/deploy.sh"):
+                release.require_cross_segment_trust("prod-mgau4w", "us-central1-a")
+
+    def test_cross_segment_trust_rejects_unreadable_public_ca(self) -> None:
+        failed = subprocess.CompletedProcess([], 1, stdout="", stderr="not found")
+        with mock.patch.object(release.subprocess, "run", return_value=failed):
+            with self.assertRaisesRegex(release.ManifestError, "kepler-arwc/deploy.sh"):
+                release._remote_public_file_digest(
+                    "cinder-keplerops-golden", "prod-mgau4w", "us-central1-a",
+                    "/public/ca.crt",
+                )
+
 
 if __name__ == "__main__":
     unittest.main()
