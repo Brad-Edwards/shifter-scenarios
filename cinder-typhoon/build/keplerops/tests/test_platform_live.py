@@ -218,6 +218,11 @@ class PlatformLiveTest(unittest.TestCase):
         reconcile = call("support.keplerops.test", "/api/customers/TEN-ARWC-047/integrations/fieldlink/reconcile", method="POST", body={"candidates": [{"tenant": "TEN-ARWC-019", "revision": "FLK-6.9.8"}, {"tenant": "TEN-ARWC-047", "revision": "FLK-7.4.2"}]}, auth=None, cookie=COOKIE)
         self.assertEqual((dossier["account"], integration["tenant"], reconcile["active_revision"]), ("K-C-001", "TEN-ARWC-047", "FLK-7.4.2"))
         job = call("support.keplerops.test", "/api/customers/TEN-ARWC-047/diagnostics", method="POST", body={"connector_revision": "FLK-7.4.2"}, auth=None, cookie=COOKIE, expected=201)
+        if os.environ.get("CINDER_CROSS_SEGMENT") == "1":
+            rejected_package = call("support.keplerops.test", f"/api/diagnostics/{job['job_id']}/package", method="PUT", body={"interface": "fieldkest.connector/v3", "source": "exports.diagnostic_summary = input => ({assessment:'wrong-output'});", "expected_output": {"assessment": "calibration-review"}}, auth=None, cookie=COOKIE)
+            self.assertEqual(rejected_package["state"], "packaged")
+            rejected_delivery = call("support.keplerops.test", f"/api/diagnostics/{job['job_id']}/deliver", method="POST", body={}, auth=None, cookie=COOKIE, expected=422)
+            self.assertEqual(rejected_delivery["error"], "diagnostic_output_mismatch")
         package = call("support.keplerops.test", f"/api/diagnostics/{job['job_id']}/package", method="PUT", body={"interface": "fieldkest.connector/v3", "source": "exports.diagnostic_summary = input => ({assessment:'calibration-review'});", "expected_output": {"assessment": "calibration-review"}}, auth=None, cookie=COOKIE)
         self.assertEqual(package["state"], "packaged")
         if os.environ.get("CINDER_CROSS_SEGMENT") == "1":
