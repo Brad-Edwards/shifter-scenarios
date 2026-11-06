@@ -18,6 +18,24 @@
       "match": "flag",
       "content_sha256": "54ccdd24f52857bb92e90881e81218b4020f578d0e92db92a8fa1a97ae718d79",
       "rationale": "The pinned Kali base profile describes the standard shell -l flag; this is login-shell documentation, not event terminology."
+    },
+    {
+      "id": "training-git-delivery-formatter-fsmonitor-template",
+      "source_kind": "participant_file",
+      "location": "/tmp/delivery-formatter/.git/hooks/fsmonitor-watchman.sample",
+      "rule_id": "meta-flag",
+      "match": "flag",
+      "content_sha256": "e0549964e93897b519bd8e333c037e51fff0f88ba13e086a331592bf801fa1d0",
+      "rationale": "Git creates this standard sample hook when the participant initializes the delivery-formatter repository; its command-line flag documentation is not event terminology."
+    },
+    {
+      "id": "training-git-handover-fsmonitor-template",
+      "source_kind": "participant_file",
+      "location": "/tmp/handover/.git/hooks/fsmonitor-watchman.sample",
+      "rule_id": "meta-flag",
+      "match": "flag",
+      "content_sha256": "e0549964e93897b519bd8e333c037e51fff0f88ba13e086a331592bf801fa1d0",
+      "rationale": "Git creates this standard sample hook when the participant initializes the handover repository; its command-line flag documentation is not event terminology."
     }
   ]
 }
