@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "manifest_kind": "transition-overlays",
+  "phase": "arwc",
+  "transitions": {
+    "diagnostic-execution": {
+      "state": "earned-diagnostic-execution",
+      "additional_entries": [
+        {
+          "root": "/var/lib/fieldlink-connector",
+          "path": "handover/corporate-session",
+          "type": "file",
+          "mode": "0440",
+          "owner": "arwc-connector",
+          "group": "fieldlink",
+          "classification": "earned-corporate-session"
+        },
+        {
+          "root": "/var/lib/fieldlink-connector",
+          "path": "handover/corporate-session.json",
+          "type": "file",
+          "mode": "0440",
+          "owner": "arwc-connector",
+          "group": "fieldlink",
+          "classification": "earned-session-attestation"
+        },
+        {
+          "root": "/var/lib/fieldlink-connector",
+          "path": "handover/customer-transition.json",
+          "type": "file",
+          "mode": "0440",
+          "owner": "arwc-connector",
+          "group": "fieldlink",
+          "classification": "earned-customer-transition"
+        },
+        {
+          "root": "/var/lib/fieldlink-connector",
+          "dynamic_path": {
+            "prefix": "receipts/DIAG-ARWC-",
+            "alphabet": "uppercase-hex",
+            "length": 8,
+            "suffix": ".json"
+          },
+          "type": "file",
+          "mode": "0600",
+          "owner": "arwc-connector",
+          "group": "arwc-connector",
+          "classification": "earned-diagnostic-receipt"
+        }
+      ],
+      "listener_overrides": [
+        {"host": "business-workplace.arwc.test", "port": 443, "reachable": true},
+        {"host": "planning-data.arwc.test", "port": 443, "reachable": true},
+        {"host": "process-view.arwc.test", "port": 443, "reachable": true},
+        {"host": "retained-archive.arwc.test", "port": 443, "reachable": true},
+        {"host": "corporate-identity.arwc.test", "port": 443, "reachable": true},
+        {"host": "contractor-portal.arwc.test", "port": 443, "reachable": true}
+      ]
+    },
+    "package-activation": {
+      "state": "earned-package-activation",
+      "additional_entries": [
+        {
+          "root": "/var/lib/fieldlink-connector",
+          "path": "handover/corporate-session",
+          "type": "file",
+          "mode": "0440",
+          "owner": "arwc-connector",
+          "group": "fieldlink",
+          "classification": "earned-corporate-session"
+        },
+        {
+          "root": "/var/lib/fieldlink-connector",
+          "path": "handover/corporate-session.json",
+          "type": "file",
+          "mode": "0440",
+          "owner": "arwc-connector",
+          "group": "fieldlink",
+          "classification": "earned-session-attestation"
+        },
+        {
+          "root": "/var/lib/fieldlink-connector",
+          "path": "handover/customer-transition.json",
+          "type": "file",
+          "mode": "0440",
+          "owner": "arwc-connector",
+          "group": "fieldlink",
+          "classification": "earned-customer-transition"
+        },
+        {
+          "root": "/var/lib/fieldlink-connector",
+          "path": "consumer/candidates/7.4.3-cinder.rowan.json",
+          "type": "file",
+          "mode": "0600",
+          "owner": "arwc-connector",
+          "group": "arwc-connector",
+          "classification": "delivered-package-candidate"
+        },
+        {
+          "root": "/var/lib/fieldlink-connector",
+          "path": "receipts/7.4.3-cinder.rowan.json",
+          "type": "file",
+          "mode": "0600",
+          "owner": "arwc-connector",
+          "group": "arwc-connector",
+          "classification": "earned-package-receipt"
+        },
+        {
+          "root": "/var/lib/fieldlink-connector",
+          "dynamic_path": {
+            "prefix": "receipts/rollback-RBK-",
+            "alphabet": "uppercase-hex",
+            "length": 12,
+            "suffix": ".json"
+          },
+          "type": "file",
+          "mode": "0600",
+          "owner": "arwc-connector",
+          "group": "arwc-connector",
+          "classification": "earned-rollback-receipt"
+        }
+      ],
+      "listener_overrides": [
+        {"host": "business-workplace.arwc.test", "port": 443, "reachable": true},
+        {"host": "planning-data.arwc.test", "port": 443, "reachable": true},
+        {"host": "process-view.arwc.test", "port": 443, "reachable": true},
+        {"host": "retained-archive.arwc.test", "port": 443, "reachable": true},
+        {"host": "corporate-identity.arwc.test", "port": 443, "reachable": true},
+        {"host": "contractor-portal.arwc.test", "port": 443, "reachable": true}
+      ]
+    }
+  }
+}
