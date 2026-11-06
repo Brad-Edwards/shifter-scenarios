@@ -25,8 +25,11 @@ from http_support import (
     RETAINED_SUPPORT_ROLE,
     RETAINED_SUPPORT_SUBJECT,
     RETAINED_SUPPORT_TENANT,
+    UpstreamInvalidResponse,
+    UpstreamUnavailable,
     append_audit,
     issue_rs256,
+    open_json,
     serve_tls,
     verify_retained_support_assertion,
 )
@@ -239,7 +242,20 @@ class SupportHandler(KeplerHandler):
             if not job or job.get("state") != "packaged": return self.send_json(409, {"error": "job_not_ready"})
             request = urlrequest.Request("https://connector.arwc.test/api/fieldlink/diagnostics", data=json.dumps({"job_id": match.group(1), "tenant": job["tenant"], "connector_revision": job["connector_revision"], **job["package"]}, sort_keys=True, separators=(",", ":")).encode(), method="POST", headers={"Authorization": f"Bearer {SUPPORT_DELIVERY_TOKEN}", "Content-Type": "application/json"})
             context = ssl.create_default_context(cafile="/tmp/fieldkest-ca.crt")
-            with urlrequest.urlopen(request, context=context, timeout=8) as response: value = json.loads(response.read())
+            try:
+                status, value = open_json(request, context, timeout=8)
+            except UpstreamUnavailable:
+                status, value = 502, {"error": "diagnostic_delivery_unavailable"}
+            except UpstreamInvalidResponse:
+                status, value = 502, {"error": "diagnostic_delivery_invalid_response"}
+            if status >= 400:
+                append_audit(AUDIT, "diagnostic-delivery", {"request_id": self.request_id, "principal": SESSION["principal"], "job_id": match.group(1), "status": status})
+                return self.send_json(status, value)
+            if (status != 202
+                    or not isinstance(value.get("receipt_id"), str)
+                    or not isinstance(value.get("audit_id"), str)):
+                append_audit(AUDIT, "diagnostic-delivery", {"request_id": self.request_id, "principal": SESSION["principal"], "job_id": match.group(1), "status": 502})
+                return self.send_json(502, {"error": "diagnostic_delivery_invalid_response"})
             job.update({"state": "delivered", "receipt": value}); save_extended(state); append_audit(AUDIT, "diagnostic-delivery", {"request_id": self.request_id, "principal": SESSION["principal"], "job_id": match.group(1), "receipt_id": value["receipt_id"], "destination_audit_id": value["audit_id"], "status": 202}); return self.send_json(202, value)
         self.send_json(404, {"error": "not_found"})
 

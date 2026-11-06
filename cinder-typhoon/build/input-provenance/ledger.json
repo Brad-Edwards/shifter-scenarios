@@ -2576,8 +2576,8 @@
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 24,
-      "inventory_sha256": "d2801aaea2ba6e24408b1e785962b6bbf00c9f46d31eb712ed7bba689441862a",
+      "comparison_count": 25,
+      "inventory_sha256": "a8ce94aec37c1b80beb9c446b9271c86e1837f2327446ce75967c1c202e6befb",
       "review_status": "complete",
       "unresolved": []
     },
