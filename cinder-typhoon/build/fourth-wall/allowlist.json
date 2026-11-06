@@ -36,6 +36,24 @@
       "match": "flag",
       "content_sha256": "e0549964e93897b519bd8e333c037e51fff0f88ba13e086a331592bf801fa1d0",
       "rationale": "Git creates this standard sample hook when the participant initializes the handover repository; its command-line flag documentation is not event terminology."
+    },
+    {
+      "id": "keplerops-policy-compiler-readme-flags",
+      "source_kind": "participant_file",
+      "location": "/tmp/journey-pc/README.md",
+      "rule_id": "meta-flag",
+      "match": "flag",
+      "content_sha256": "89dee7ce547265262641d12ca72ddfc5d9067697285be8d5111e8ca488e382dd",
+      "rationale": "The authored retained-compiler README documents the instruction flags field; it does not describe event flags or completion conditions."
+    },
+    {
+      "id": "keplerops-policy-compiler-link-map-flags",
+      "source_kind": "participant_file",
+      "location": "/tmp/journey-pc/maps/fieldkest-policyc-2.6.4.map",
+      "rule_id": "meta-flag",
+      "match": "flag",
+      "content_sha256": "2154d84f97555e8cc51963da030106a1045b0860a891b4ef1445b54813e16541",
+      "rationale": "The authored retained-compiler link map contains standard compiler and C++ library symbol names that include flags; it contains no event terminology."
     }
   ]
 }

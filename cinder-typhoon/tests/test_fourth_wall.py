@@ -236,6 +236,8 @@ class AllowlistTests(unittest.TestCase):
             {entry["id"] for entry in value["entries"]},
             {
                 "arwc-invoice-customer-acceptance",
+                "keplerops-policy-compiler-link-map-flags",
+                "keplerops-policy-compiler-readme-flags",
                 "training-git-delivery-formatter-fsmonitor-template",
                 "training-git-handover-fsmonitor-template",
                 "training-kali-login-shell-comment",
