@@ -34,7 +34,9 @@ The `report-consumer-v2` job accepts JSON shaped as:
 
 The ZIP layout and report-provider interface are in the repository's
 `docs/report-provider.md` and the corresponding review note. Successful output
-is published to the current support handover.
+is published to the current support handover. The consumer binds
+`fixture.json` to the baseline by the SHA-256 digest of its exact file bytes;
+copy the recovered file directly into the ZIP instead of re-serializing it.
 
 ## Support
 

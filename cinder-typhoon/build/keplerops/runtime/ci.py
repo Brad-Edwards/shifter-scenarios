@@ -521,7 +521,14 @@ class CIHandler(KeplerHandler):
             return
         contract = CONFIG["report_consumer"]
         if sha256_bytes(fixture_raw) != contract["baseline_sha256"]:
-            self.send_json(422, {"error": "fixture_binding_mismatch"})
+            self.send_json(422, {
+                "error": "fixture_binding_mismatch",
+                "binding": "sha256_file_bytes",
+                "message": (
+                    "fixture.json must preserve the exact file bytes from the "
+                    "baseline path and revision"
+                ),
+            })
             return
         try:
             worker = run_worker(source, fixture)
