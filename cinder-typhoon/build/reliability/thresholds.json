@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "defined_at": "2026-11-06T08:47:03Z",
-  "candidate_id": "event-2026.11.06-05",
+  "defined_at": "2026-11-07T16:39:15Z",
+  "candidate_id": "event-2026.11.07-02",
   "limits": {
     "max_container_restarts": 0,
     "max_failed_system_units": 0,
