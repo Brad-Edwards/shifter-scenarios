@@ -1,6 +1,6 @@
 {
   "catalog": {
-    "revision": "6a7d6b0a2d1cce575746e701f68c5e0b6db7bc25418dbcc4d1c08e21235512a4",
+    "revision": "6671188bc4005bc5dca0ed2c72ea436f71bd667f74807cb928bf645117740fe9",
     "schema": "cinder-typhoon.challenge-delivery/v2"
   },
   "items": [
@@ -563,7 +563,7 @@
         },
         {
           "level": 2,
-          "sha256": "8ad18dede7d3b7579c1781446f90273be1a24c16f4c74a78c34c800a9398d5e0"
+          "sha256": "e5a374cb8fdbe0029b1cd982da2ee77d258da0206c483a6652dd0cc8ce46ddcf"
         },
         {
           "level": 3,
@@ -6149,7 +6149,7 @@
     "path": "build/hint-delivery/operation-reviews.json",
     "sha256": "b6758f518cabba179165877677714d20d66d6c15185008142934be89ab2d5cd2"
   },
-  "revision": "5e8d3d770c1ef715290a51eeb8bdb218020df4299fe85a4b8035e371b596b2ad",
+  "revision": "339d76d710083a7e00e334a6f3073ec098d844e1edbe02703cdebc27cdcd5bf7",
   "schema": "cinder-typhoon.hint-delivery/v1",
   "score_effect": {
     "maximum_score_unchanged": true,
@@ -6168,7 +6168,7 @@
       "hint_count": 312,
       "path": "build/card-coverage/hints-keplerops.yaml",
       "phase": "keplerops",
-      "sha256": "88a858b52b1e3498854880bfcbf73c66bf8cc9e9fe08360c634c3d8473f39bf6"
+      "sha256": "d480dcfb6ba46dc6615e9365c81f7aba66c4f7eb86681b210e72bb1678017899"
     },
     {
       "card_count": 120,

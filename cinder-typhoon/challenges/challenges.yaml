@@ -1,5 +1,5 @@
 schema: cinder-typhoon.challenge-delivery/v2
-revision: 6a7d6b0a2d1cce575746e701f68c5e0b6db7bc25418dbcc4d1c08e21235512a4
+revision: 6671188bc4005bc5dca0ed2c72ea436f71bd667f74807cb928bf645117740fe9
 scoring:
   model: static
   tier_points:
@@ -418,8 +418,8 @@ phases:
           from ci.keplerops.test's published client document and records already earned in this operation,
           not from an invented endpoint.
         - Treat this as version-history recovery followed by importer-boundary and extension-point analysis.
-          Establish the denied and ordinary baselines first, then vary only the boundary input the service
-          is meant to bind.
+          Keep the recovered fixture's exact file bytes when you build the archive, then vary only the
+          provider extension point.
         - Review the published client document and ordinary records for ci.keplerops.test. Read the current
           revision, submit one minimal variation, and compare the resulting audit and unaffected fields
           with the baseline.
