@@ -8,6 +8,7 @@ import stat
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,6 +52,25 @@ class CanonicalCatalogTests(unittest.TestCase):
             "evidence_contract", "read_only_review",
         ):
             self.assertNotIn(forbidden, serialized)
+
+    def test_candidate_binding_preserves_existing_schema_and_identity(self) -> None:
+        candidate = {
+            "schema_version": 3,
+            "candidate_id": "event-test-candidate",
+            "challenge_delivery": {},
+            "hint_delivery": {},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "candidate.json"
+            path.write_text(json.dumps(candidate), encoding="utf-8")
+            with mock.patch.object(catalog, "CANDIDATE_MANIFEST", path):
+                catalog.write_candidate_binding()
+            rewritten = json.loads(path.read_text(encoding="utf-8"))
+
+        self.assertEqual(rewritten["schema_version"], 3)
+        self.assertEqual(rewritten["candidate_id"], "event-test-candidate")
+        self.assertEqual(rewritten["challenge_delivery"], catalog.catalog_metadata())
+        self.assertEqual(rewritten["hint_delivery"], catalog.hint_manifest_metadata())
 
 
 class EventImportTests(unittest.TestCase):

@@ -1,6 +1,6 @@
 {
   "catalog": {
-    "revision": "8fab6a28f1b6f5b9cdbe362dd227a0a27ea0c4612a172c223f7dc5279b648c66",
+    "revision": "6a7d6b0a2d1cce575746e701f68c5e0b6db7bc25418dbcc4d1c08e21235512a4",
     "schema": "cinder-typhoon.challenge-delivery/v2"
   },
   "items": [
@@ -6149,7 +6149,7 @@
     "path": "build/hint-delivery/operation-reviews.json",
     "sha256": "b6758f518cabba179165877677714d20d66d6c15185008142934be89ab2d5cd2"
   },
-  "revision": "32884bb5276db3b36d4fde6d937cbec0d111fc783488379bc9935c7f79b29187",
+  "revision": "5e8d3d770c1ef715290a51eeb8bdb218020df4299fe85a4b8035e371b596b2ad",
   "schema": "cinder-typhoon.hint-delivery/v1",
   "score_effect": {
     "maximum_score_unchanged": true,

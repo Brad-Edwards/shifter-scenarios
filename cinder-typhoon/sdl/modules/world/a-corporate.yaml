@@ -1081,7 +1081,7 @@ nodes:
           - the-asset-s-true-lineage
           - the-price-of-this-planning-window
           - what-reserve-remains-uncommitted
-          - reporting-checkpoint-submit
+          - reporting-checkpoints/current
           - the-expensive-hour
           - which-view-the-planner-trusts
           - a-reassuring-decision

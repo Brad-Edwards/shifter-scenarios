@@ -328,7 +328,7 @@ nodes:
           - conditions-before-movement
           - accepted-is-not-actuated
           - a-sequence-the-process-can-follow
-          - reporting-checkpoint-submit
+          - reporting-checkpoints/current
           - bind-the-plan-to-the-plant
           - a-forecast-that-matches-the-instrument
           - the-expensive-hour
@@ -920,7 +920,7 @@ nodes:
           - the-machine-inside-the-viewer
           - the-decision-inside-the-sealed-project
           - the-reviewer-who-was-never-listed
-          - signature-program-reproduction
+          - signature-programs/current/reproductions
           - the-constraints-of-a-valid-looking-program
           - the-utility-s-small-world
           - control-with-very-little-room
