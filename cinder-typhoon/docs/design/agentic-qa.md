@@ -14,7 +14,12 @@ source, tests, operator records, or generated credentials to the agent.
 The three phase runs preserve campaign state. Training starts pristine.
 KeplerOps and ARWC start pristine together, KeplerOps earns the selected
 customer transition, and ARWC continues from that earned transition. Operation
-sessions within a phase retain the participant home and range state.
+sessions within a phase retain the participant home and range state. Every
+operation carries one shared campaign identity while each phase keeps its own
+stable participant-container reset identity. KeplerOps completes before ARWC
+starts, and operation sessions in each phase cannot overlap or run out of
+catalog order. Every operation also uses the same exact agent identity and
+configuration.
 
 ## Trust boundaries
 
@@ -62,11 +67,11 @@ Each operation runs in catalog order. The agent must:
 6. Record confusing, misleading, or fragile behavior even when a later attempt
    passes.
 
-The proxy maintains a SHA-256 hash chain over card lifecycle events, hint
-requests, participant command digests, response digests, byte counts, and exit
-status. This provides a content-free start and end observation for every card.
-It rejects missing card lifecycle events and commands outside the selected
-phase.
+The proxy maintains a SHA-256 hash chain over card lifecycle events, the exact
+score result, hint requests, participant command digests, response digests,
+byte counts, and exit status. This provides a content-free start and end
+observation for every card. It rejects missing card lifecycle events and
+commands outside the selected phase.
 
 ## Result and failure classification
 
@@ -75,6 +80,7 @@ challenge catalog. Each result repeats the exact agent product, model, client
 version, configuration, and tool list. It also records:
 
 - card, operation, and segment;
+- campaign and phase reset identities;
 - start and end participant-view hash-chain states;
 - elapsed time, attempt count, and released hint levels;
 - passed or failed outcome;
@@ -125,8 +131,8 @@ The implementation enforces this order:
 
 The assembler requires exactly one operation export for each catalog
 operation. Within each export, card audit states form an unbroken chain. All
-operation exports for one phase use one reset identity. Every agent tool list
-is exactly `cinder-participant`.
+operation exports share one campaign identity, and exports for one phase use
+one reset identity. Every agent tool list is exactly `cinder-participant`.
 
 ## Invariants
 
@@ -147,3 +153,6 @@ is exactly `cinder-participant`.
 10. The assembler validates the reliability report instead of trusting its
     status fields.
 11. A passing card carries an explicit accepted score with its exact points.
+12. All operations share one campaign identity, each phase keeps one reset
+    identity, KeplerOps precedes ARWC, and every operation uses the same agent
+    configuration.

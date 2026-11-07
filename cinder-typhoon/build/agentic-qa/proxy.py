@@ -85,7 +85,7 @@ def load_json(path: Path, context: str) -> Any:
 def validate_config(value: Any) -> dict[str, Any]:
     keys = {
         "schema_version", "candidate", "phase", "operation_id", "session_id",
-        "reset_identity", "project", "zone", "account", "agent", "cards",
+        "campaign_id", "reset_identity", "project", "zone", "account", "agent", "cards",
         "paths", "gcloud_path", "started_at", "start_label", "timeout_seconds",
     }
     if not isinstance(value, dict) or set(value) != keys or value.get("schema_version") != 1:
@@ -97,7 +97,7 @@ def validate_config(value: Any) -> dict[str, Any]:
     operation = value.get("operation_id")
     if not isinstance(operation, str) or not re.fullmatch(rf"{prefix}[0-9]{{2}}", operation):
         raise ProxyError("configuration operation is invalid")
-    for field in ("session_id", "reset_identity", "project", "zone"):
+    for field in ("session_id", "campaign_id", "reset_identity", "project", "zone"):
         if not isinstance(value.get(field), str) or SAFE_ID.fullmatch(value[field]) is None:
             raise ProxyError(f"configuration {field} is invalid")
     if (
@@ -175,11 +175,13 @@ def initial_state(config: dict[str, Any]) -> dict[str, Any]:
         "phase": config["phase"],
         "operation_id": config["operation_id"],
         "session_id": config["session_id"],
+        "campaign_id": config["campaign_id"],
         "reset_identity": config["reset_identity"],
     }
     return {
         "schema_version": 1,
         "chain": digest(canonical(seed)),
+        "started_at": None,
         "active": None,
         "cards": {
             card["id"]: {
@@ -274,10 +276,13 @@ def action_begin(config: dict[str, Any], state: dict[str, Any], args: argparse.N
     if record["attempts"] and record["attempts"][-1]["outcome"] == "passed":
         raise ProxyError("card already passed")
     sequence = len(record["attempts"]) + 1
+    started_at = utc_now()
+    if state["started_at"] is None:
+        state["started_at"] = started_at
     state["active"] = {
         "card_id": args.card_id,
         "sequence": sequence,
-        "started_at": utc_now(),
+        "started_at": started_at,
         "started_ns": time.time_ns(),
         "start_state_sha256": state["chain"],
         "command_count": 0,
@@ -371,11 +376,16 @@ def action_finish(config: dict[str, Any], state: dict[str, Any], args: argparse.
             observations.sort()
     finished_ns = time.time_ns()
     elapsed = round(max(0, finished_ns - active["started_ns"]) / 1_000_000_000, 3)
+    score_result = {
+        "status": args.score_status,
+        "points": card_map(config)[args.card_id]["points"] if args.score_status == "accepted" else 0,
+    }
     event = {
         "kind": "finish",
         "card_id": args.card_id,
         "sequence": active["sequence"],
         "outcome": args.outcome,
+        "score_result": score_result,
         "classification": args.classification,
         "observations": observations,
         "elapsed_seconds": elapsed,
@@ -392,10 +402,7 @@ def action_finish(config: dict[str, Any], state: dict[str, Any], args: argparse.
         "start_state_sha256": active["start_state_sha256"],
         "end_state_sha256": state["chain"],
     })
-    record["score_result"] = {
-        "status": args.score_status,
-        "points": card_map(config)[args.card_id]["points"] if args.score_status == "accepted" else 0,
-    }
+    record["score_result"] = score_result
     state["active"] = None
     print(f"finished {args.card_id} attempt {active['sequence']}: {args.outcome}")
     return 0
@@ -452,9 +459,10 @@ def action_export(config: dict[str, Any], state: dict[str, Any], args: argparse.
         "phase": config["phase"],
         "operation_id": config["operation_id"],
         "session_id": config["session_id"],
+        "campaign_id": config["campaign_id"],
         "reset_identity": config["reset_identity"],
         "agent": config["agent"],
-        "started_at": config["started_at"],
+        "started_at": state["started_at"] or config["started_at"],
         "finished_at": utc_now(),
         "results": results,
     }

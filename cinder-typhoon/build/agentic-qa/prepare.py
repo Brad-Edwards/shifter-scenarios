@@ -41,6 +41,7 @@ def main() -> int:
     parser.add_argument("--phase", choices=("training", "keplerops", "arwc"), required=True)
     parser.add_argument("--operation", required=True)
     parser.add_argument("--session-id", required=True)
+    parser.add_argument("--campaign-id", required=True)
     parser.add_argument("--reset-identity", required=True)
     parser.add_argument("--workspace", type=Path, required=True)
     parser.add_argument("--project", required=True)
@@ -72,6 +73,8 @@ def main() -> int:
     for field, value in agent_identity.items():
         if SAFE_ID.fullmatch(value) is None:
             parser.error(f"--agent-{field} must be a report-safe identifier")
+    if SAFE_ID.fullmatch(arguments.campaign_id) is None:
+        parser.error("--campaign-id must be a report-safe identifier")
     gcloud_path = shutil.which("gcloud")
     if gcloud_path is None:
         parser.error("gcloud is required on the supervisor host")
@@ -120,6 +123,7 @@ def main() -> int:
         "phase": arguments.phase,
         "operation_id": arguments.operation,
         "session_id": arguments.session_id,
+        "campaign_id": arguments.campaign_id,
         "reset_identity": arguments.reset_identity,
         "project": arguments.project,
         "zone": arguments.zone,

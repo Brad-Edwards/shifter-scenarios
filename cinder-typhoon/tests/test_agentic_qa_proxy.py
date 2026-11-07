@@ -35,6 +35,7 @@ class AgenticQAProxyTests(unittest.TestCase):
             "phase": "training",
             "operation_id": "T01",
             "session_id": "session-t01",
+            "campaign_id": "campaign-1",
             "reset_identity": "reset-1",
             "project": "prod-mgau4w",
             "zone": "us-central1-a",
@@ -85,6 +86,8 @@ class AgenticQAProxyTests(unittest.TestCase):
             self.assertEqual(self.call(config, "export"), 0)
             value = json.loads(report.read_text(encoding="utf-8"))
             result = value["results"][0]
+            self.assertEqual(value["campaign_id"], "campaign-1")
+            self.assertNotEqual(value["started_at"], "2026-11-06T17:00:00Z")
             self.assertEqual(result["outcome"], "passed")
             self.assertEqual(result["hints_used"], [1])
             self.assertEqual(result["participant_command_count"], 1)

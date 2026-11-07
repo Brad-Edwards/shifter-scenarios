@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-from collections import Counter
 from datetime import datetime
 import hashlib
 import importlib.util
@@ -209,8 +208,9 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
     require(candidate_record.get("challenge_delivery", {}).get("revision") == catalog["revision"], "report: candidate catalog revision differs")
     require(candidate_record.get("challenge_delivery", {}).get("sha256") == digest_file(root / "challenges/challenges.yaml"), "report: candidate catalog digest differs")
 
-    run = exact_keys(report["run"], {"run_id", "project", "zone", "started_at", "finished_at"}, "report.run")
+    run = exact_keys(report["run"], {"run_id", "campaign_id", "project", "zone", "started_at", "finished_at"}, "report.run")
     safe_id(run["run_id"], "report.run.run_id")
+    safe_id(run["campaign_id"], "report.run.campaign_id")
     require(run["project"] == "prod-mgau4w", "report: GCP project is wrong")
     require(run["zone"] == "us-central1-a", "report: GCP zone is wrong")
     require(timestamp(run["started_at"], "report.run.started_at") <= timestamp(run["finished_at"], "report.run.finished_at"), "report: run timing is invalid")
@@ -225,12 +225,19 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
     session_operations: dict[str, str] = {}
     session_agents: dict[str, Any] = {}
     session_end_states: dict[str, str] = {}
+    agent_identity: dict[str, Any] | None = None
+    phase_reset_identities: dict[str, str] = {}
+    seen_operations: set[tuple[str, str]] = set()
+    operation_order = {
+        phase: [operation["id"] for operation in phase_value["operations"]]
+        for phase, phase_value in catalog["phases"].items()
+    }
     for index, result_value in enumerate(results):
         context = f"report.results[{index}]"
         result = exact_keys(
             result_value,
             {
-                "card_id", "segment", "operation_id", "session_id", "agent",
+                "card_id", "segment", "operation_id", "session_id", "reset_identity", "agent",
                 "start_state", "end_state", "outcome", "elapsed_seconds",
                 "hints_used", "score_result", "attempts", "participant_command_count",
                 "transcript_sha256", "verification", "material_finding", "finding_issues",
@@ -244,9 +251,37 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
         require(result["segment"] == expected["segment"], f"{context}: segment differs")
         require(result["operation_id"] == expected["operation_id"], f"{context}: operation differs")
         safe_id(result["session_id"], f"{context}.session_id")
+        reset_identity = safe_id(result["reset_identity"], f"{context}.reset_identity")
+        phase = result["segment"]
+        if phase in phase_reset_identities:
+            require(
+                phase_reset_identities[phase] == reset_identity,
+                f"{context}: phase reset identity changed",
+            )
+        else:
+            phase_reset_identities[phase] = reset_identity
         validate_agent(result["agent"], f"{context}.agent")
+        if agent_identity is None:
+            agent_identity = result["agent"]
+        else:
+            require(result["agent"] == agent_identity, f"{context}: agent configuration changed")
         validate_state(result["start_state"], f"{context}.start_state")
         validate_state(result["end_state"], f"{context}.end_state")
+        operation_identity = (phase, result["operation_id"])
+        if operation_identity not in seen_operations:
+            operation_index = operation_order[phase].index(result["operation_id"])
+            expected_label = (
+                "transition-earned"
+                if phase == "arwc" and operation_index == 0
+                else "pristine"
+                if operation_index == 0
+                else "retained"
+            )
+            require(
+                result["start_state"]["label"] == expected_label,
+                f"{context}: operation start state is invalid",
+            )
+            seen_operations.add(operation_identity)
         require(result["start_state"]["sha256"] != result["end_state"]["sha256"], f"{context}: audit state did not change")
         final_outcome, implementation_failure = validate_attempts(result["attempts"], f"{context}.attempts")
         require(result["outcome"] == final_outcome, f"{context}: outcome differs from final attempt")
@@ -292,8 +327,7 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
             require(score == {"status": "accepted", "points": expected["points"]}, f"{context}: score was not accepted")
             require(verification["status"] == "passed", f"{context}: independent verification did not pass")
 
-    require(Counter(result_ids) == Counter(expected_cards.keys()), "report: result cards do not exactly match the catalog")
-
+    require(result_ids == list(expected_cards), "report: result cards do not exactly match catalog order")
     findings = report["findings"]
     require(isinstance(findings, list), "report.findings: array required")
     finding_issues: set[int] = set()

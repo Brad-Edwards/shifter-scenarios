@@ -36,14 +36,26 @@ class AgenticQAReportTests(unittest.TestCase):
             "tools": ["cinder-participant"],
         }
         results = []
-        for index, (card_id, card) in enumerate(sorted(cards.items()), start=1):
+        for index, (card_id, card) in enumerate(cards.items(), start=1):
             results.append({
                 "card_id": card_id,
                 "segment": card["segment"],
                 "operation_id": card["operation_id"],
                 "session_id": f"session-{card['operation_id'].lower()}",
+                "reset_identity": (
+                    "training-reset" if card["segment"] == "training" else "transition-reset"
+                ),
                 "agent": deepcopy(agent),
-                "start_state": {"label": "retained", "sha256": f"{index:064x}"},
+                "start_state": {
+                    "label": (
+                        "pristine"
+                        if card["operation_id"] in {"T01", "K01"} and card_id.endswith(".1")
+                        else "transition-earned"
+                        if card["operation_id"] == "W01" and card_id.endswith(".1")
+                        else "retained"
+                    ),
+                    "sha256": f"{index:064x}",
+                },
                 "end_state": {"label": "operation-complete", "sha256": f"{index + 1:064x}"},
                 "outcome": "passed",
                 "elapsed_seconds": 10.0,
@@ -78,6 +90,7 @@ class AgenticQAReportTests(unittest.TestCase):
             },
             "run": {
                 "run_id": "issue-328-test",
+                "campaign_id": "campaign-1",
                 "project": "prod-mgau4w",
                 "zone": "us-central1-a",
                 "started_at": "2026-11-06T17:00:00Z",
@@ -135,6 +148,23 @@ class AgenticQAReportTests(unittest.TestCase):
         ]
         result["elapsed_seconds"] = 9.0
         self.assertIs(agentic_qa.validate_report(report), report)
+
+    def test_agent_and_transition_campaign_must_remain_identical(self) -> None:
+        report = self.valid_report()
+        changed_operation = report["results"][0]["operation_id"]
+        for result in report["results"]:
+            if result["operation_id"] == changed_operation:
+                result["agent"]["model"] = "different-supported-model"
+        with self.assertRaisesRegex(agentic_qa.ValidationError, "agent configuration changed"):
+            agentic_qa.validate_report(report)
+
+        report = self.valid_report()
+        arwc_results = [
+            result for result in report["results"] if result["segment"] == "arwc"
+        ]
+        arwc_results[-1]["reset_identity"] = "different-arwc-reset"
+        with self.assertRaisesRegex(agentic_qa.ValidationError, "phase reset identity changed"):
+            agentic_qa.validate_report(report)
 
     def test_implementation_failure_requires_a_finding_issue(self) -> None:
         report = self.valid_report()

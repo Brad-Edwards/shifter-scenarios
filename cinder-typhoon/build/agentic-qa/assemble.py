@@ -73,7 +73,7 @@ def validate_operation_report(
         value,
         {
             "schema_version", "report_kind", "candidate", "phase", "operation_id",
-            "session_id", "reset_identity", "agent", "started_at", "finished_at",
+            "session_id", "campaign_id", "reset_identity", "agent", "started_at", "finished_at",
             "results",
         },
         context,
@@ -83,6 +83,7 @@ def validate_operation_report(
     if report["phase"] != phase or report["operation_id"] != operation_id:
         raise AssemblyError(f"{context}: catalog binding differs")
     safe_id(report["session_id"], f"{context}.session_id")
+    safe_id(report["campaign_id"], f"{context}.campaign_id")
     safe_id(report["reset_identity"], f"{context}.reset_identity")
     candidate = exact_keys(
         report["candidate"],
@@ -224,6 +225,60 @@ def iso_timestamp(value: str, context: str) -> datetime:
     return parsed
 
 
+def validate_campaign_structure(
+    reports_by_operation: dict[tuple[str, str], dict[str, Any]],
+    operation_order: dict[str, list[str]],
+) -> str:
+    campaign_id: str | None = None
+    agent_identity: dict[str, Any] | None = None
+    for phase, operations in operation_order.items():
+        phase_reset_identity: str | None = None
+        previous_finished: datetime | None = None
+        first_label = "transition-earned" if phase == "arwc" else "pristine"
+        for index, operation_id in enumerate(operations):
+            operation = reports_by_operation[(phase, operation_id)]
+            if campaign_id is None:
+                campaign_id = operation["campaign_id"]
+            elif operation["campaign_id"] != campaign_id:
+                raise AssemblyError("operation reports belong to different campaigns")
+            if agent_identity is None:
+                agent_identity = operation["agent"]
+            elif operation["agent"] != agent_identity:
+                raise AssemblyError("operation reports use different agent configurations")
+            if phase_reset_identity is None:
+                phase_reset_identity = operation["reset_identity"]
+            elif operation["reset_identity"] != phase_reset_identity:
+                raise AssemblyError(f"{phase}: operation reports use different reset identities")
+
+            observed_label = operation["results"][0]["start_state"]["label"]
+            expected_label = first_label if index == 0 else "retained"
+            if observed_label != expected_label:
+                raise AssemblyError(f"{operation_id}: first card state must be {expected_label}")
+            operation_started = iso_timestamp(
+                operation["started_at"], f"{operation_id}.started_at"
+            )
+            operation_finished = iso_timestamp(
+                operation["finished_at"], f"{operation_id}.finished_at"
+            )
+            if previous_finished is not None and operation_started < previous_finished:
+                raise AssemblyError(f"{phase}: operation sessions overlap or are out of order")
+            previous_finished = operation_finished
+
+    keplerops_finished = iso_timestamp(
+        reports_by_operation[("keplerops", operation_order["keplerops"][-1])]["finished_at"],
+        "keplerops.finished_at",
+    )
+    arwc_started = iso_timestamp(
+        reports_by_operation[("arwc", operation_order["arwc"][0])]["started_at"],
+        "arwc.started_at",
+    )
+    if arwc_started < keplerops_finished:
+        raise AssemblyError("ARWC started before the KeplerOps transition campaign completed")
+    if campaign_id is None:
+        raise AssemblyError("campaign identity is missing")
+    return campaign_id
+
+
 def assemble(
     operation_paths: list[Path],
     reliability_path: Path,
@@ -298,7 +353,6 @@ def assemble(
     observed_operations: set[tuple[str, str]] = set()
     observed_results: dict[str, dict[str, Any]] = {}
     reports_by_operation: dict[tuple[str, str], dict[str, Any]] = {}
-    phase_reset_identities: dict[str, str] = {}
     session_ids: set[str] = set()
     started: list[tuple[datetime, str]] = []
     finished: list[tuple[datetime, str]] = []
@@ -311,9 +365,6 @@ def assemble(
         observed_operations.add(identity)
         reports_by_operation[identity] = operation
         reset_identity = operation["reset_identity"]
-        if phase in phase_reset_identities and phase_reset_identities[phase] != reset_identity:
-            raise AssemblyError(f"{phase}: operation reports use different reset identities")
-        phase_reset_identities[phase] = reset_identity
         if operation["session_id"] in session_ids:
             raise AssemblyError(f"duplicate agent session: {operation['session_id']}")
         session_ids.add(operation["session_id"])
@@ -351,6 +402,7 @@ def assemble(
                 "segment": phase,
                 "operation_id": operation_id,
                 "session_id": operation.get("session_id"),
+                "reset_identity": reset_identity,
                 "agent": operation.get("agent"),
                 "start_state": source.get("start_state"),
                 "end_state": source.get("end_state"),
@@ -376,17 +428,7 @@ def assemble(
         raise AssemblyError("card results do not exactly match the catalog")
     if not unseparated_strategy_misses <= set(observed_results):
         raise AssemblyError("a reconstructed strategy miss names an unknown card")
-
-    for phase, operations in operation_order.items():
-        first_label = "transition-earned" if phase == "arwc" else "pristine"
-        for index, operation_id in enumerate(operations):
-            operation = reports_by_operation[(phase, operation_id)]
-            observed_label = operation["results"][0]["start_state"]["label"]
-            expected_label = first_label if index == 0 else "retained"
-            if observed_label != expected_label:
-                raise AssemblyError(
-                    f"{operation_id}: first card state must be {expected_label}"
-                )
+    campaign_id = validate_campaign_structure(reports_by_operation, operation_order)
 
     finding_issues: set[int] = set()
     for finding in findings:
@@ -410,6 +452,7 @@ def assemble(
         "candidate": candidate,
         "run": {
             "run_id": run_id,
+            "campaign_id": campaign_id,
             "project": "prod-mgau4w",
             "zone": "us-central1-a",
             "started_at": min(started)[1],
