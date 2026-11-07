@@ -2367,7 +2367,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             record = result["record"]
             issued = dt.datetime.fromisoformat(record["issued_at"].replace("Z", "+00:00"))
             expires = dt.datetime.fromisoformat(record["expires_at"].replace("Z", "+00:00"))
-            self.assertEqual((expires - issued).total_seconds(), 900)
+            self.assertEqual((expires - issued).total_seconds(), 172800)
             self.evidence["w26_control_client"] = result["control_client"]
             self.evidence["w26_broker_record_id"] = record["record_id"]
             # Confirm the issued client actually carries its granted authority.

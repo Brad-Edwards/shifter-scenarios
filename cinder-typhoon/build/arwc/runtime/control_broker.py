@@ -32,7 +32,7 @@ MAINTENANCE_ROUTE = "/api/approval-clients/current"
 UTILITY_ROUTE = "/api/control-authority"
 UTILITY_SOCKET = "/run/arwc/control-issuer.sock"
 AUTHORITY_EVIDENCE = ROOT / "authority"
-CONTROL_CLIENT_LIFETIME = timedelta(minutes=15)
+CONTROL_CLIENT_LIFETIME = timedelta(hours=48)
 
 APPROVAL_FIELDS = {
     "record_id": "APR-CRR-4417-R6", "revision": 6,

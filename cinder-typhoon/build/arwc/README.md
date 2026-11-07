@@ -406,7 +406,7 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   retained.
 - 2026-09-27: The broker independently verifies the signed approval and fresh
   renderer attestation but intentionally omits the initiating-role comparison.
-  It issues an exact fifteen-minute `CTRL-CLIENT-CRR-26` limited to `OG-CRR-02`,
+  It issues an exact 48-hour `CTRL-CLIENT-CRR-26` limited to `OG-CRR-02`,
   `CRR-CTRL-R21`, plan execution, and readback. Wrong evidence, tenant, outlet,
   project, wider action, and wrong client are denied; an accepted readback
   demonstrates the scoped authority without waiving mode, mapping, or release
@@ -418,10 +418,9 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   directly; the participant route is the existing narrow contractor gateway.
   Destructive state was removed and the complete authored initial state was
   verified. The suite now contains 138 black-box checks.
-- No SDL change was needed for W26, and none of its four cards binds a narrative
-  asset. The existing contracts fully specify the approval and inspection
-  binding, both caller-role omissions, bounded renderer action, fifteen-minute
-  control scope, and authority boundary.
+- No narrative asset is bound to W26. The contracts specify the approval and
+  inspection binding, both caller-role omissions, bounded renderer action,
+  48-hour control scope, and authority boundary.
 - 2026-09-27: W27 adds five passing black-box checks across `a-engineering`,
   `a-diagnostics`, `a-data-bridge`, and `a-data`. A stripped native x86-64
   verifier implements the declared little-endian ROT128 recurrence, padding,
@@ -465,7 +464,7 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   its syscall allowlist, performs `setresuid(0,0,0)`, and calls exported
   `issue_client` with `ISSUER-UTIL-OG2-R4` and the current correlation. The DMZ
   broker independently enforces root Unix peer credentials on the fixed
-  `/run/arwc/control-issuer.sock` boundary and issues an exact fifteen-minute
+  `/run/arwc/control-issuer.sock` boundary and issues an exact 48-hour
   `CTRL-CLIENT-CRR-28` limited to `OG-CRR-02`, `CRR-CTRL-R21`, plan execution,
   and readback. The engineering and DMZ containers retain disjoint internal
   networks; direct TCP, metadata, and Internet egress remain denied. Main
@@ -506,7 +505,7 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   the source package or unrelated narrative content.
 - 2026-09-27: W30 adds four passing black-box checks across `a-hmi`,
   independently owned `a-instruments`, and the new control-only `a-reservoir`.
-  The binder requires a current fifteen-minute control client and exact asset,
+  The binder requires a current 48-hour control client and exact asset,
   outlet, project R21, map R8, mode R17, envelope R6, plan, revision, and unit
   bindings. HMI and reservoir evidence retain the same caller correlation;
   missing evidence, wrong tenant or authority, stale bindings, and removal of
@@ -610,3 +609,8 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   restart, restarting all five preserved the accepted handoff, and a second
   destructive restore returned the complete graph to the verified waiting
   state with no participant transition material.
+- 2026-11-07: Participant-path QA found that the 15-minute scoped control
+  clients expired between W26 or W28 and their required uses in W30, W33, and
+  W34. Both issuance routes now use an exact 48-hour lifetime for the two-day
+  event. Token hashing, scope checks, expiry enforcement, and stale-token
+  rejection are unchanged.

@@ -677,7 +677,6 @@ def write_candidate_binding() -> None:
     """Regenerate only the catalog identity inside the existing candidate."""
 
     candidate = json.loads(CANDIDATE_MANIFEST.read_text(encoding="utf-8"))
-    candidate["schema_version"] = 2
     candidate["challenge_delivery"] = catalog_metadata()
     candidate["hint_delivery"] = hint_manifest_metadata()
     CANDIDATE_MANIFEST.write_text(
