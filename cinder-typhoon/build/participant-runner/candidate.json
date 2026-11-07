@@ -47,7 +47,7 @@
     "training/state": "sha256:360a5c55879fe4b6bc409e7db3d8877ea88d2ba1517ee2151b745ac42f0e8a51",
     "training/workbench": "sha256:f259fff4cfe257577f8c48cf5528ed6a28111f9bf1a71691e4f7f4cdad8d869a"
   },
-  "candidate_id": "event-2026.11.07-03",
+  "candidate_id": "event-2026.11.07-04",
   "challenge_delivery": {
     "card_count": 240,
     "operation_count": 70,
@@ -143,5 +143,5 @@
   },
   "immutable": true,
   "schema_version": 3,
-  "source_commit": "ef77b75c25db63089b9cf960b9a486f52e9d8ae7"
+  "source_commit": "cb46b7eaa5961d0dbc268a3e6fb6be8af43e58ec"
 }

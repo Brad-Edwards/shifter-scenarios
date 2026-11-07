@@ -73,9 +73,9 @@
     }
   },
   "candidate": {
-    "candidate_id": "event-2026.11.07-03",
+    "candidate_id": "event-2026.11.07-04",
     "path": "build/participant-runner/candidate.json",
-    "sha256": "1480f049e1731394481f28adbdd43710f793fe44c888afd020da58a5788c2c7f"
+    "sha256": "98f9f3e5134c71c8875ba7ec20a34e9043bc24069475e6ea7e21ba9c73c3a64e"
   },
   "challenge_delivery": {
     "card_count": 240,
@@ -283,7 +283,7 @@
     "schema": "cinder-typhoon.hint-delivery/v1",
     "sha256": "682df913b427d6398a476e9fc5c7a7eda710cc3270601ae6e448efe144da7ff4"
   },
-  "release_id": "event-2026.11.07-03",
+  "release_id": "event-2026.11.07-04",
   "schema_version": 1,
-  "source_commit": "ef77b75c25db63089b9cf960b9a486f52e9d8ae7"
+  "source_commit": "cb46b7eaa5961d0dbc268a3e6fb6be8af43e58ec"
 }
