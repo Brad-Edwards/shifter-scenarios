@@ -215,6 +215,23 @@ def parse_finding(value: str) -> dict[str, Any]:
     }
 
 
+def retain_unseparated_strategy_miss(
+    attempts: list[dict[str, Any]], card_id: str
+) -> list[dict[str, Any]]:
+    if not attempts:
+        raise AssemblyError(f"{card_id}: cannot reconstruct the strategy miss")
+    retained = [{
+        "sequence": 1,
+        "outcome": "failed",
+        "classification": "agent_strategy",
+        "elapsed_seconds": 0.0,
+        "observations": ["failed_attempt"],
+    }, *[dict(attempt) for attempt in attempts]]
+    for sequence, attempt in enumerate(retained, start=1):
+        attempt["sequence"] = sequence
+    return retained
+
+
 def iso_timestamp(value: str, context: str) -> datetime:
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
@@ -386,17 +403,7 @@ def assemble(
                 raise AssemblyError(f"{card_id}: points differ from the catalog")
             attempts = [dict(item) for item in source.get("attempts", [])]
             if card_id in unseparated_strategy_misses:
-                if not attempts or any(item.get("outcome") == "failed" for item in attempts):
-                    raise AssemblyError(f"{card_id}: cannot reconstruct the strategy miss")
-                attempts.insert(0, {
-                    "sequence": 1,
-                    "outcome": "failed",
-                    "classification": "agent_strategy",
-                    "elapsed_seconds": 0.0,
-                    "observations": ["failed_attempt"],
-                })
-                for sequence, attempt in enumerate(attempts, start=1):
-                    attempt["sequence"] = sequence
+                attempts = retain_unseparated_strategy_miss(attempts, card_id)
             observed_results[card_id] = {
                 "card_id": card_id,
                 "segment": phase,

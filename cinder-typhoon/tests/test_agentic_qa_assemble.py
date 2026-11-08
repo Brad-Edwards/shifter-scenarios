@@ -84,6 +84,35 @@ class AgenticQAAssemblyTests(unittest.TestCase):
             report,
         )
 
+    def test_unseparated_strategy_miss_precedes_retained_attempts(self) -> None:
+        attempts = [
+            {
+                "sequence": 1,
+                "outcome": "failed",
+                "classification": "agent_strategy",
+                "elapsed_seconds": 3.0,
+                "observations": ["failed_attempt"],
+            },
+            {
+                "sequence": 2,
+                "outcome": "passed",
+                "classification": None,
+                "elapsed_seconds": 2.0,
+                "observations": [],
+            },
+        ]
+
+        retained = assemble.retain_unseparated_strategy_miss(attempts, "K04.2")
+
+        self.assertEqual([item["sequence"] for item in retained], [1, 2, 3])
+        self.assertEqual(
+            [item["outcome"] for item in retained], ["failed", "failed", "passed"]
+        )
+        self.assertEqual(retained[0]["elapsed_seconds"], 0.0)
+        self.assertEqual(attempts[0]["sequence"], 1)
+        with self.assertRaises(assemble.AssemblyError):
+            assemble.retain_unseparated_strategy_miss([], "K04.2")
+
     def test_score_tool_and_chain_mutations_fail(self) -> None:
         mutations = {
             "fabricated score": lambda value: value["results"][0].__setitem__(

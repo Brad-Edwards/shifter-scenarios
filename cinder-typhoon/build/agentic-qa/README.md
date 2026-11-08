@@ -15,10 +15,11 @@ before ARWC starts from its earned transition.
 
 Assemble the content-free operation exports with `assemble.py`. Pass every
 operation export, the candidate-bound reliability report, and each finding.
-If the tester corrected a strategy miss without ending the attempt, also pass
-that card with `--unseparated-strategy-miss`. The assembled report retains the
-miss as a zero-duration failed attempt because its exact attempt duration was
-not separately measured.
+If a strategy miss is preserved outside the selected operation export, also
+pass that card with `--unseparated-strategy-miss`. The assembled report places
+the miss before every attempt retained by the selected export, including any
+other failed attempts. It records zero duration because the separate miss was
+not measured independently.
 
 Validate the committed report with:
 
