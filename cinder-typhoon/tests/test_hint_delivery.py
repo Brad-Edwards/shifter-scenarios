@@ -103,7 +103,7 @@ class HintContentTests(unittest.TestCase):
     def test_published_client_route_contract_is_current_and_content_free(self) -> None:
         contract = release.load_client_route_contract()
         self.assertEqual(contract, release.build_client_route_contract())
-        self.assertEqual(len(contract["routes"]), 209)
+        self.assertEqual(len(contract["routes"]), 225)
         self.assertIn("corporate.handover", contract["routes"])
         serialized = json.dumps(contract)
         self.assertNotIn("https://", serialized)

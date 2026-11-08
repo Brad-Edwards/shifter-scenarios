@@ -56,6 +56,9 @@ class OpeningSliceTest(unittest.TestCase):
             "fk-test-6d1e9f7:fixtures/report-crr-og2.json",
         ).stdout
         self.assertEqual(json.loads(fixture)["report_id"], "RPT-CRR-OG2-BASELINE")
+        service_notes = rowan("cat", "work/service-notes.md").stdout
+        self.assertIn("exact file bytes", service_notes)
+        self.assertIn("instead of re-serializing", service_notes)
         push = rowan("git", "-C", "work/fieldlink-connector", "push", "--dry-run", "origin", "HEAD:main", check=False)
         self.assertNotEqual(push.returncode, 0)
 
@@ -139,14 +142,25 @@ class OpeningSliceTest(unittest.TestCase):
 import base64, io, json, pathlib, subprocess, zipfile
 root = pathlib.Path('/home/rowan')
 fixture = subprocess.check_output(['git','-C',str(root/'work/fieldlink-connector'),'show','fk-test-6d1e9f7:fixtures/report-crr-og2.json'])
-buffer = io.BytesIO()
-with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as archive:
-    archive.writestr('provider.py', PROVIDER)
-    archive.writestr('fixture.json', fixture)
-request = {'template':'report-consumer-v2','input':{'archive_base64':base64.b64encode(buffer.getvalue()).decode()}}
-(root/'results/report-job-request.json').write_text(json.dumps(request))
+def write_request(path, fixture_bytes):
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr('provider.py', PROVIDER)
+        archive.writestr('fixture.json', fixture_bytes)
+    request = {'template':'report-consumer-v2','input':{'archive_base64':base64.b64encode(buffer.getvalue()).decode()}}
+    path.write_text(json.dumps(request))
+write_request(root/'results/report-job-request.json', fixture)
+write_request(root/'results/report-job-request-reserialized.json', json.dumps(json.loads(fixture), sort_keys=True).encode())
 """.replace("PROVIDER", repr(provider))
         rowan("python3", "-c", preparation)
+        mismatch = curl_json(
+            "https://ci.keplerops.test/api/jobs", "-u", USER,
+            "-H", "Content-Type: application/json", "--data-binary",
+            "@results/report-job-request-reserialized.json", expected=422,
+        )
+        self.assertEqual(mismatch["error"], "fixture_binding_mismatch")
+        self.assertEqual(mismatch["binding"], "sha256_file_bytes")
+        self.assertIn("exact file bytes", mismatch["message"])
         submitted = curl_json(
             "https://ci.keplerops.test/api/jobs", "-u", USER,
             "-H", "Content-Type: application/json", "--data-binary", "@results/report-job-request.json",

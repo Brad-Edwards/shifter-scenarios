@@ -11,10 +11,10 @@
       "phase_card_count": 104,
       "phase_operation_count": 31,
       "phase_score_total": 16750,
-      "revision": "6a7d6b0a2d1cce575746e701f68c5e0b6db7bc25418dbcc4d1c08e21235512a4",
+      "revision": "6671188bc4005bc5dca0ed2c72ea436f71bd667f74807cb928bf645117740fe9",
       "schema": "cinder-typhoon.challenge-delivery/v2",
       "score_total": 39200,
-      "sha256": "9c00d10c8704974e30a8c8159ada8c7556fb93447ce420494756985f8ee23f55"
+      "sha256": "56887dfbc06fd658a39e109f83eecfbd1a6b9b026ff39711ee76aa68d6ed838b"
     },
     "hints": {
       "items": [
@@ -74,7 +74,7 @@
         },
         {
           "card_id": "K02.3",
-          "content_revision": "6bb096a2c90dd0122e8495bd53c83b05bd0be6ad00f6af0f6359bb6a6ba27038",
+          "content_revision": "b6af2aff2e854e21aefc93c26c26e12a254407c72608fcef97219c7d455d817d",
           "levels": [
             1,
             2,
@@ -960,9 +960,9 @@
         "hint_count": 720,
         "operation_count": 70,
         "path": "build/hint-delivery/manifest.json",
-        "revision": "5e8d3d770c1ef715290a51eeb8bdb218020df4299fe85a4b8035e371b596b2ad",
+        "revision": "339d76d710083a7e00e334a6f3073ec098d844e1edbe02703cdebc27cdcd5bf7",
         "schema": "cinder-typhoon.hint-delivery/v1",
-        "sha256": "682df913b427d6398a476e9fc5c7a7eda710cc3270601ae6e448efe144da7ff4"
+        "sha256": "46c43c70e5a1711a9a5dc352af9bbcd1af41d5243fe171a6849c154b5cff529f"
       },
       "release": {
         "audit": "append_only_metadata_without_hint_text",
@@ -983,7 +983,7 @@
         "hint_count": 312,
         "path": "build/card-coverage/hints-keplerops.yaml",
         "phase": "keplerops",
-        "sha256": "88a858b52b1e3498854880bfcbf73c66bf8cc9e9fe08360c634c3d8473f39bf6"
+        "sha256": "d480dcfb6ba46dc6615e9365c81f7aba66c4f7eb86681b210e72bb1678017899"
       },
       "status": "versioned"
     }
@@ -2016,8 +2016,8 @@
             "mode": "0644",
             "owner": "rowan",
             "path": "work/service-notes.md",
-            "sha256": "74699b2a54d77a65cdf555c9eb2080c374f6f9180c055bc8a9a758f5f0488c46",
-            "size": 1618,
+            "sha256": "6a330823536788153ff6bbe8556e398638c17ee7792a6078904a02ca1cf4b541",
+            "size": 1791,
             "type": "file"
           }
         ],

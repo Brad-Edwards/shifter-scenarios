@@ -69,8 +69,8 @@ hints:
   K02.3:
     h1: Begin with the retained source history and the continuous-integration review workflow. Start from ci.keplerops.test's
       published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as version-history recovery followed by importer-boundary and extension-point analysis. Establish
-      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
+    h2: Treat this as version-history recovery followed by importer-boundary and extension-point analysis. Keep the
+      recovered fixture's exact file bytes when you build the archive, then vary only the provider extension point.
     h3: Review the published client document and ordinary records for ci.keplerops.test. Read the current revision,
       submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
     references:

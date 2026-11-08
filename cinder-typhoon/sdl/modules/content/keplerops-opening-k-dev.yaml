@@ -25,7 +25,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/opening/k-dev-home
           version: '2026-09-18'
-          digest: sha256:492dc0ef0a74f6345c5edae50dd563f76452664941e2d86d41af254c61ba71db
+          digest: sha256:2d0652dee35849ba282ec99ea7c5ca469de14799d88ba00a9ef2e91c32d3a852
           media_type: application/x-tar
         permitted_routes:
         - mechanism:
