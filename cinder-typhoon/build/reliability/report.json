@@ -13,36 +13,36 @@
   },
   "campaign_path": {
     "arwc": {
-      "elapsed_seconds": 251.789,
+      "elapsed_seconds": 251.112,
       "operation": "ending",
-      "report_sha256": "f32a264439ae1006742de530e94a6582a66427d1eac1ce9f7d0638225df998a4",
+      "report_sha256": "fdd6aa754c7eee9caf19f5633da71416e4b9d08b7f9d19bf226d61d6914399e5",
       "result": "passed"
     },
     "keplerops": {
-      "elapsed_seconds": 178.981,
+      "elapsed_seconds": 188.626,
       "operation": "delivery-diagnostic",
-      "report_sha256": "ec4d76128eee866dc0c7bd8b18ffa4d95d09019ec33752606e1f981d05ea1a21",
+      "report_sha256": "fbff83f0700927b1b6b16bf095b0a5472e4d4f60d3d3ff8a675d47d1237dd404",
       "result": "passed"
     },
     "retained_state": true,
     "training": {
-      "elapsed_seconds": 19.66,
+      "elapsed_seconds": 17.518,
       "operation": "all",
-      "report_sha256": "ea2306d3215bd9c87aa385c3c8ba6b395f6bc81c97e466cbe22472c8b5588193",
+      "report_sha256": "c6fe256f7e9f3494786817ad18bb977a17e740da030d2a5a8db0e2ba406ccf0d",
       "result": "passed"
     },
     "transition": "diagnostic-execution"
   },
   "candidate": {
-    "candidate_id": "event-2026.11.07-04",
-    "candidate_manifest_sha256": "98f9f3e5134c71c8875ba7ec20a34e9043bc24069475e6ea7e21ba9c73c3a64e",
-    "release_manifest_sha256": "5bdd3836119fcb59b6f696dfa346c779fff4fe153b603233af1c2b5da0e9f9d1",
-    "source_commit": "cb46b7eaa5961d0dbc268a3e6fb6be8af43e58ec"
+    "candidate_id": "event-2026.11.08-01",
+    "candidate_manifest_sha256": "9538d347d657abc4378c4fa60cd83c44fdcadc49a60ef5560b81369b40001774",
+    "release_manifest_sha256": "f10ff36922fe4bbd7331a6c415c1df4201d4de1cc6c55e2e9026fb2df1565380",
+    "source_commit": "271cdcbaf68f46a3e19cb0e44ae3a683978ebb60"
   },
   "phases": {
     "arwc": {
       "host_recovery": {
-        "elapsed_seconds": 80.0,
+        "elapsed_seconds": 75.0,
         "retained_state": true,
         "services": {
           "expected": 19,
@@ -52,15 +52,15 @@
           "unhealthy": 0
         }
       },
-      "initial_startup_seconds": 79.314,
+      "initial_startup_seconds": 78.42,
       "instance": "cinder-arwc-golden",
       "machine_type": "e2-standard-4",
       "resets": [
         {
-          "elapsed_seconds": 79.314,
-          "participant_surface_sha256": "15a285f6454e6109b869fb04e0d28754902857cadf41292002fc1153320d7145",
+          "elapsed_seconds": 78.42,
+          "participant_surface_sha256": "b00fed193f012aa0d4793346e3812b1746142b654e3d4fe0d6cf290db9cfb949",
           "sequence": 1,
-          "service_state_sha256": "d2dcd851f066852d59d581ee792cb08b2f9eda1a329ed7864a901b7de80e5d95",
+          "service_state_sha256": "984d65adc9ff7438ae30c194b96c1e3a4eabdb85395e8e0ecc014081dccc9fb6",
           "services": {
             "expected": 19,
             "restarts": 0,
@@ -70,10 +70,10 @@
           }
         },
         {
-          "elapsed_seconds": 76.228,
-          "participant_surface_sha256": "15a285f6454e6109b869fb04e0d28754902857cadf41292002fc1153320d7145",
+          "elapsed_seconds": 78.747,
+          "participant_surface_sha256": "b00fed193f012aa0d4793346e3812b1746142b654e3d4fe0d6cf290db9cfb949",
           "sequence": 2,
-          "service_state_sha256": "d2dcd851f066852d59d581ee792cb08b2f9eda1a329ed7864a901b7de80e5d95",
+          "service_state_sha256": "984d65adc9ff7438ae30c194b96c1e3a4eabdb85395e8e0ecc014081dccc9fb6",
           "services": {
             "expected": 19,
             "restarts": 0,
@@ -85,14 +85,14 @@
       ],
       "resources": {
         "failed_system_units": 0,
-        "load_1": 0.14,
-        "memory_available_mib": 14737,
+        "load_1": 0.639,
+        "memory_available_mib": 14657,
         "oom_events": 0,
-        "root_disk_available_mib": 61476,
+        "root_disk_available_mib": 61480,
         "vcpus": 4
       },
       "service_recovery": {
-        "elapsed_seconds": 25.598,
+        "elapsed_seconds": 25.486,
         "retained_state": true,
         "services": {
           "expected": 19,
@@ -105,7 +105,7 @@
     },
     "keplerops": {
       "host_recovery": {
-        "elapsed_seconds": 70.0,
+        "elapsed_seconds": 65.0,
         "retained_state": true,
         "services": {
           "expected": 18,
@@ -115,15 +115,15 @@
           "unhealthy": 0
         }
       },
-      "initial_startup_seconds": 44.3,
+      "initial_startup_seconds": 38.18,
       "instance": "cinder-keplerops-golden",
       "machine_type": "e2-standard-4",
       "resets": [
         {
-          "elapsed_seconds": 44.3,
-          "participant_surface_sha256": "2619c5d6bbb17e96271785de03202033d98dd260e0e0107c992bd82ef78adfff",
+          "elapsed_seconds": 38.18,
+          "participant_surface_sha256": "3337a01ef5157ea7f503c6173e866d99aab4b593ba7bb6d499235a015dff460f",
           "sequence": 1,
-          "service_state_sha256": "2a0592406a07bc5bb9f4363550dcf38070a064551c774cb69e9f8f1c31825897",
+          "service_state_sha256": "7c4de1f054b39428e1915e878b8dd5aaad3cdfee9d5f9e9908cef6b53749ff0e",
           "services": {
             "expected": 18,
             "restarts": 0,
@@ -133,10 +133,10 @@
           }
         },
         {
-          "elapsed_seconds": 45.692,
-          "participant_surface_sha256": "2619c5d6bbb17e96271785de03202033d98dd260e0e0107c992bd82ef78adfff",
+          "elapsed_seconds": 38.781,
+          "participant_surface_sha256": "3337a01ef5157ea7f503c6173e866d99aab4b593ba7bb6d499235a015dff460f",
           "sequence": 2,
-          "service_state_sha256": "2a0592406a07bc5bb9f4363550dcf38070a064551c774cb69e9f8f1c31825897",
+          "service_state_sha256": "7c4de1f054b39428e1915e878b8dd5aaad3cdfee9d5f9e9908cef6b53749ff0e",
           "services": {
             "expected": 18,
             "restarts": 0,
@@ -148,14 +148,14 @@
       ],
       "resources": {
         "failed_system_units": 0,
-        "load_1": 0.17,
-        "memory_available_mib": 14624,
+        "load_1": 0.196,
+        "memory_available_mib": 14546,
         "oom_events": 0,
-        "root_disk_available_mib": 45577,
+        "root_disk_available_mib": 45574,
         "vcpus": 4
       },
       "service_recovery": {
-        "elapsed_seconds": 20.225,
+        "elapsed_seconds": 18.325,
         "retained_state": true,
         "services": {
           "expected": 18,
@@ -168,7 +168,7 @@
     },
     "training": {
       "host_recovery": {
-        "elapsed_seconds": 60.0,
+        "elapsed_seconds": 55.0,
         "retained_state": true,
         "services": {
           "expected": 6,
@@ -178,15 +178,15 @@
           "unhealthy": 0
         }
       },
-      "initial_startup_seconds": 26.936,
+      "initial_startup_seconds": 25.66,
       "instance": "cinder-training-golden",
       "machine_type": "e2-standard-2",
       "resets": [
         {
-          "elapsed_seconds": 26.936,
-          "participant_surface_sha256": "3a9f9eef7298c4eafe1250656c50ed5feb840b4e4a36e9ca6032b3f67ca13ae5",
+          "elapsed_seconds": 25.66,
+          "participant_surface_sha256": "6aaf43a1e1fb812855c30dd20ecfdec2cf98828e79dc7ef5d3a1b0b41d07890b",
           "sequence": 1,
-          "service_state_sha256": "2b7756387394d8c712a1243e5225e03b40aa257a971139ab67b55cd845526d2b",
+          "service_state_sha256": "02cf936c4344e95a0f3a6717c0bd2e61e77f6d8291538d736a07696d1813b09f",
           "services": {
             "expected": 6,
             "restarts": 0,
@@ -196,10 +196,10 @@
           }
         },
         {
-          "elapsed_seconds": 27.928,
-          "participant_surface_sha256": "3a9f9eef7298c4eafe1250656c50ed5feb840b4e4a36e9ca6032b3f67ca13ae5",
+          "elapsed_seconds": 25.472,
+          "participant_surface_sha256": "6aaf43a1e1fb812855c30dd20ecfdec2cf98828e79dc7ef5d3a1b0b41d07890b",
           "sequence": 2,
-          "service_state_sha256": "2b7756387394d8c712a1243e5225e03b40aa257a971139ab67b55cd845526d2b",
+          "service_state_sha256": "02cf936c4344e95a0f3a6717c0bd2e61e77f6d8291538d736a07696d1813b09f",
           "services": {
             "expected": 6,
             "restarts": 0,
@@ -211,14 +211,14 @@
       ],
       "resources": {
         "failed_system_units": 0,
-        "load_1": 0.0,
-        "memory_available_mib": 7203,
+        "load_1": 0.114,
+        "memory_available_mib": 7205,
         "oom_events": 0,
-        "root_disk_available_mib": 33418,
+        "root_disk_available_mib": 33398,
         "vcpus": 2
       },
       "service_recovery": {
-        "elapsed_seconds": 14.409,
+        "elapsed_seconds": 13.767,
         "retained_state": true,
         "services": {
           "expected": 6,
@@ -232,17 +232,17 @@
   },
   "report_kind": "single-participant-reliability",
   "run": {
-    "finished_at": "2026-11-07T22:06:00.000Z",
+    "finished_at": "2026-11-08T16:50:00.000Z",
     "project": "prod-mgau4w",
-    "run_id": "issue-328-20261107-04",
-    "started_at": "2026-11-07T21:40:14.756Z",
+    "run_id": "issue-328-20261108-01",
+    "started_at": "2026-11-08T16:32:51.211Z",
     "zone": "us-central1-a"
   },
   "schema_version": 1,
   "status": "passed",
   "thresholds": {
-    "defined_at": "2026-11-07T21:38:16Z",
+    "defined_at": "2026-11-08T16:26:09Z",
     "path": "build/reliability/thresholds.json",
-    "sha256": "f8ab21cb6ef1548cd94c81d7fac67d410761c3b21b88b5a851323388b480c4af"
+    "sha256": "525b3498c7d9ea9628ee8d31f6d136795ab67f22cc947ea75ae07e2e6e414e77"
   }
 }
