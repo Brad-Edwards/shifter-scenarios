@@ -11,7 +11,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.cinder-typhoon-direct",
-        version="0.3.0",
+        version="0.3.1",
         distribution="shifter-panw-adapter",
         entry_point="cinder_direct",
         worker_image=worker_image,
@@ -39,6 +39,32 @@ _ADDRESS_VALUES = {
 }
 
 
+def _sync_participant_password(username: str, container: str) -> str:
+    """Copy BigRAE's host-side password verifier into the participant container."""
+    return f"""#!/bin/bash
+set -euo pipefail
+username={username}
+container={container}
+deadline=$((SECONDS + 225))
+verifier=""
+while ((SECONDS < deadline)); do
+  if [[ $(docker inspect --format '{{{{.State.Running}}}}' "$container" 2>/dev/null || true) == true ]]; then
+    verifier=$(getent shadow "$username" | cut -d: -f2)
+    case "$verifier" in
+      ""|'!'*|'*'*) ;;
+      *) break ;;
+    esac
+  fi
+  sleep 5
+done
+case "$verifier" in
+  ""|'!'*|'*'*) exit 1 ;;
+esac
+printf '%s:%s\n' "$username" "$verifier" | docker exec -i "$container" chpasswd --encrypted
+test "$(docker exec "$container" getent shadow "$username" | cut -d: -f2)" = "$verifier"
+"""
+
+
 class CinderTyphoonDirectAdapter:
     """Pair the two existing carriers, then verify all three image-owned phases."""
 
@@ -55,45 +81,59 @@ class CinderTyphoonDirectAdapter:
         if request.phase == "configure":
             scripts = [
                 (
+                    "training-participant-password",
+                    "training",
+                    _sync_participant_password("cinder", "cinder-training-kali"),
+                    240,
+                    {},
+                ),
+                (
+                    "keplerops-participant-password",
+                    "keplerops",
+                    _sync_participant_password("rowan", "cinder-keplerops-k-dev"),
+                    240,
+                    {},
+                ),
+                (
                     "keplerops-ca-export",
                     "keplerops",
                     "/usr/local/libexec/cinder-peer-ca export keplerops 18081",
-                    300,
+                    60,
                     {},
                 ),
                 (
                     "arwc-ca-export",
                     "arwc",
                     "/usr/local/libexec/cinder-peer-ca export arwc 18082",
-                    300,
+                    60,
                     {},
                 ),
                 (
                     "keplerops-peer-import",
                     "keplerops",
                     _PREFIX + _IMPORT_KEPLEROPS,
-                    120,
+                    90,
                     {"arwc-address": _ADDRESS_VALUES["arwc-address"]},
                 ),
                 (
                     "arwc-peer-import",
                     "arwc",
                     _PREFIX + _IMPORT_ARWC,
-                    120,
+                    90,
                     {"keplerops-address": _ADDRESS_VALUES["keplerops-address"]},
                 ),
                 (
                     "keplerops-ca-export-stop",
                     "keplerops",
                     "/usr/local/libexec/cinder-peer-ca stop keplerops",
-                    30,
+                    15,
                     {},
                 ),
                 (
                     "arwc-ca-export-stop",
                     "arwc",
                     "/usr/local/libexec/cinder-peer-ca stop arwc",
-                    30,
+                    15,
                     {},
                 ),
             ]

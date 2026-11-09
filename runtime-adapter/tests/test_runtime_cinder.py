@@ -48,6 +48,8 @@ def test_cinder_plan_is_authorized_and_shell_valid(phase):
 def test_configure_only_pairs_existing_image_helpers():
     actions = CinderTyphoonDirectAdapter().plan(request("configure")).actions
     assert [action.action_id for action in actions] == [
+        "training-participant-password",
+        "keplerops-participant-password",
         "keplerops-ca-export",
         "arwc-ca-export",
         "keplerops-peer-import",
@@ -55,10 +57,14 @@ def test_configure_only_pairs_existing_image_helpers():
         "keplerops-ca-export-stop",
         "arwc-ca-export-stop",
     ]
-    assert actions[2].runtime_values["arwc-address"].field == "private_address"
-    assert actions[2].runtime_values["arwc-address"].binding == "arwc"
-    assert actions[3].runtime_values["keplerops-address"].binding == "keplerops"
-    assert all("/usr/local/libexec/cinder-peer-ca" in action.script for action in actions)
+    assert actions[4].runtime_values["arwc-address"].field == "private_address"
+    assert actions[4].runtime_values["arwc-address"].binding == "arwc"
+    assert actions[5].runtime_values["keplerops-address"].binding == "keplerops"
+    assert all("/usr/local/libexec/cinder-peer-ca" in action.script for action in actions[2:])
+    for action in actions[:2]:
+        assert "getent shadow" in action.script
+        assert "chpasswd --encrypted" in action.script
+        assert action.runtime_values == {}
 
 
 def test_verify_delegates_to_image_owned_readiness():
