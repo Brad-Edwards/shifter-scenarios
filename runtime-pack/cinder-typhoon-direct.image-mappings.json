@@ -1,0 +1,52 @@
+[
+  {
+    "provider": "gce",
+    "source_name": "cinder-training-host",
+    "source_version": "event-2026.11.09-02",
+    "image_ref": "projects/prod-mgau4w/global/images/cinder-training-event-20261109-02",
+    "machine_type": "e2-standard-2",
+    "disk_size_gb": 40,
+    "disk_type": "pd-balanced",
+    "management_ssh_username": "hostadmin",
+    "image_kind": "image",
+    "bootstrap_capability": "preconfigured-machine-host",
+    "participant_container_name": "cinder-training-kali",
+    "participant_username": "cinder",
+    "participant_readiness_contract": "participant-readiness/v1",
+    "participant_readiness_manifest_sha256": "77a86d8595bcda3654cd0b1d38356dad1cfe0b9aa08305cdfc8af1e3de87f8cc",
+    "enabled": true,
+    "notes": "Cinder Typhoon event 2026.11.09-02 Training host"
+  },
+  {
+    "provider": "gce",
+    "source_name": "cinder-keplerops-host",
+    "source_version": "event-2026.11.09-02",
+    "image_ref": "projects/prod-mgau4w/global/images/cinder-keplerops-event-20261109-02",
+    "machine_type": "e2-standard-4",
+    "disk_size_gb": 80,
+    "disk_type": "pd-balanced",
+    "management_ssh_username": "hostadmin",
+    "image_kind": "image",
+    "bootstrap_capability": "preconfigured-machine-host",
+    "participant_container_name": "cinder-keplerops-k-dev",
+    "participant_username": "rowan",
+    "participant_readiness_contract": "participant-readiness/v1",
+    "participant_readiness_manifest_sha256": "a6054e790b1e3860a70ad66d60c67dd07abda21cf99b1a9c0b7ca5a7e10faa14",
+    "enabled": true,
+    "notes": "Cinder Typhoon event 2026.11.09-02 KeplerOps host"
+  },
+  {
+    "provider": "gce",
+    "source_name": "cinder-arwc-host",
+    "source_version": "event-2026.11.09-02",
+    "image_ref": "projects/prod-mgau4w/global/images/cinder-arwc-event-20261109-02",
+    "machine_type": "e2-standard-4",
+    "disk_size_gb": 80,
+    "disk_type": "pd-balanced",
+    "management_ssh_username": "hostadmin",
+    "image_kind": "image",
+    "bootstrap_capability": "standard",
+    "enabled": true,
+    "notes": "Cinder Typhoon event 2026.11.09-02 ARWC host"
+  }
+]

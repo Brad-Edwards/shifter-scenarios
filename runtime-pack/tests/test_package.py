@@ -96,25 +96,37 @@ def test_cinder_package_is_conformant_and_uses_only_three_outer_hosts():
     }
 
 
-def test_cinder_binding_uses_exact_private_images_and_current_readiness_manifests():
+def test_cinder_registry_mapping_uses_exact_private_images_and_current_readiness_manifests():
     import hashlib
 
     binding = json.loads((CINDER_ROOT.parent / "cinder-typhoon-direct.binding.json").read_text())
     assert binding["parameters"] == {}
     assert set(binding["targets"]) == {"training", "keplerops", "arwc"}
-    for phase, profile in binding["image_profiles"].items():
-        assert profile["provider"] == "gcp"
-        assert profile["image_kind"] == "image"
-        assert profile["image_ref"] == (
+    assert binding["image_profiles"] == {}
+
+    source = yaml.safe_load((CINDER_ROOT / "sdl/cinder-typhoon.sdl.yaml").read_text())
+    mappings = json.loads((CINDER_ROOT.parent / "cinder-typhoon-direct.image-mappings.json").read_text())
+    assert {mapping["source_name"] for mapping in mappings} == {
+        node["source"]["name"] for node in source["nodes"].values()
+    }
+    by_phase = {
+        mapping["source_name"].removeprefix("cinder-").removesuffix("-host"): mapping
+        for mapping in mappings
+    }
+    for phase, mapping in by_phase.items():
+        assert mapping["provider"] == "gce"
+        assert mapping["source_version"] == "event-2026.11.09-02"
+        assert mapping["image_kind"] == "image"
+        assert mapping["image_ref"] == (
             f"projects/prod-mgau4w/global/images/cinder-{phase}-event-20261109-02"
         )
-        assert "/global/images/" in profile["image_ref"]
+        assert "/global/images/" in mapping["image_ref"]
     for phase in ("training", "keplerops"):
         readiness = CINDER_ROOT.parents[1] / f"cinder-typhoon/build/{phase}/participant-readiness.json"
-        assert binding["image_profiles"][phase]["participant_readiness_manifest_sha256"] == hashlib.sha256(
+        assert by_phase[phase]["participant_readiness_manifest_sha256"] == hashlib.sha256(
             readiness.read_bytes()
         ).hexdigest()
-    assert binding["image_profiles"]["arwc"]["bootstrap_capability"] == "standard"
+    assert by_phase["arwc"]["bootstrap_capability"] == "standard"
 
 
 def test_cinder_archive_is_reproducible(tmp_path):

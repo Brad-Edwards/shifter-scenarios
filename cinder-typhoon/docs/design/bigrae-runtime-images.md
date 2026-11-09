@@ -11,8 +11,8 @@ selection, range provisioning, participant access, readiness orchestration,
 and teardown.
 
 Image construction and environment-pack implementation are independent work
-lanes. They join only when the final image identities are recorded in the
-administrator binding and used for live qualification.
+lanes. They join only when the final image identities are registered in
+BigRAE's RAES Image Registry and used for live qualification.
 
 ## Architecture
 
@@ -67,9 +67,9 @@ GCE custom image. The staging image is never released and is deleted afterward.
 ### Pack and runtime lane
 
 The pack lane creates the three-node SDL, standard env-pack metadata, exact
-source identities, reproducible archive, binding record, and validators. The
-runtime lane adds only the participant-host contract and the fixed
-KeplerOps-to-ARWC pairing actions that require scenario knowledge.
+source identities, reproducible archive, image-registry records, adapter target
+binding, and validators. The runtime lane adds only the participant-host contract
+and the fixed KeplerOps-to-ARWC pairing actions that require scenario knowledge.
 
 ### Qualification join
 
