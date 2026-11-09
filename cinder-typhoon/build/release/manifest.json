@@ -73,9 +73,9 @@
     }
   },
   "candidate": {
-    "candidate_id": "event-2026.11.08-01",
+    "candidate_id": "event-2026.11.09-01",
     "path": "build/participant-runner/candidate.json",
-    "sha256": "9538d347d657abc4378c4fa60cd83c44fdcadc49a60ef5560b81369b40001774"
+    "sha256": "3d82afd1de4e19690cdcb89e645c79f9d6569e36ade2bda582b9faa295794261"
   },
   "challenge_delivery": {
     "card_count": 240,
@@ -89,28 +89,28 @@
   "deployments": {
     "arwc": {
       "images": {
-        "a-approval": "sha256:5981789ee3bb02e83f9427adf760be6915ff37f785153d1f9f26a0c13b706b68",
-        "a-archive": "sha256:8992776014b3f40722884dea98aaf39b82475944422e0da30e8e826589bb521e",
-        "a-business": "sha256:e454a2f54022d1566277870f2e198b11d7798b0efc17e6f48d8fa4c230f28b1a",
-        "a-connector": "sha256:e0ea72dd0877f26474b30b67c33edf9fecff7637c2dfdd946c4cfa3a28dfcb4d",
-        "a-contractor-bridge": "sha256:c41221a49eca1ae5e7f275d1894eaa34c85c39128f13e461f4b6344dcba376ec",
-        "a-contractors": "sha256:df9328965595d1debc734caf68082d23daa86b0ed000ff10790c3f1916ad38d7",
-        "a-control-broker": "sha256:7568a599eead0124bc89f40ca66cd4b3dc6d4536dd704afbb4378a9b0ead15fd",
-        "a-data": "sha256:016cdcf78dbca544255988938541dd7437e2b7f13e12f1a0e4f91c4d300e6644",
-        "a-data-bridge": "sha256:e446acdafd5ef4266d00f445502c701b597b59d011360b0763b38e5ad142bc20",
-        "a-diagnostics": "sha256:7ea815f4b7128e21361332d5966efcc379c2374fe916f91ca41bfcfb19b66f10",
-        "a-distribution": "sha256:445f26f624405ef0cffc48c36cf08aa56b6ea0fe4034d5e69ddb1df95297155c",
-        "a-engineering": "sha256:0605db2be2a065c1ace436127b7c9e556327b59279574241724abe73401ed0fb",
-        "a-historian": "sha256:e5f6ee41cd7d0b6f2492cb3ff453198ce7c115be51efb80ea19f1d05cdda1e60",
-        "a-hmi": "sha256:c9ca12e5b8bb7414429ad6e5bdebd6239a25c895ce7d7c85ac7398bbdefaa2c7",
-        "a-identity": "sha256:80e419b6e51dfd09131a2f16c2ea1f147e2e6b8cac1995a1034ceba354eb2be4",
-        "a-instruments": "sha256:ac6f717da2afed4bce600203413f1ada04c1e72fc2b1e24580276602e9830700",
-        "a-renderer": "sha256:687e4cdedfe718899dbcbb96a8e75df8817991985767b24f70a38111d01a1808",
-        "a-reservoir": "sha256:974acbddbaee1a9f001db754eda2ce82d8602cdd4abd6acea5b691041386a422",
-        "fieldlink-edge": "sha256:df4045bd48aeb04c5dc25ecc6961fe5501402839a4ff54682556ab1e7add0691"
+        "a-approval": "sha256:a80d11d9ba82c0b3e4ba10db3e7382ca0c1907a3037c8944f1f753cec9cf3009",
+        "a-archive": "sha256:d9f5a0d1b47650776f2cb4cd46e7b2f06f615c1be393e2d8ea69708594222587",
+        "a-business": "sha256:86fe00d49ec8b2c6d3da06e3c0c1f991019d6a015126cfbc9820c2e5c48c69a3",
+        "a-connector": "sha256:f20fba01de591401c11da1334c0664668f10905d02929b399ee93e28e999d0f7",
+        "a-contractor-bridge": "sha256:28ecd73ac171821960f1929ac86cc76c59deaa7ae023bc1b2ccd8b2eb3ab7aae",
+        "a-contractors": "sha256:1a201727d474f084ddef557b13f93dc7c5ae146a1a12d00f7bdae4641e5d1bf0",
+        "a-control-broker": "sha256:d0a2bbac6059aff469c2cf220e54edd8ca8d39aaff27e62141d6b6e08722408b",
+        "a-data": "sha256:e739f0ee697f35e9368e9a2afe1bc235304d4b8fd08f4814c8c3d2d75eeeac18",
+        "a-data-bridge": "sha256:04c98d6e6f33131e3dc8c6713072d119980d38d89a0ecbc97927785d8ae17e98",
+        "a-diagnostics": "sha256:d991430645d25ec46cd5a08f2d0f6985db375195b7ca01540817c721ce8ed7e6",
+        "a-distribution": "sha256:fe1b30f15961017a8419982f33343bd5b7786bcc49b192e76374784b3bdba94e",
+        "a-engineering": "sha256:340072666f105257410108d31248d50ef182c9960eb17150cc242555984b35da",
+        "a-historian": "sha256:6a89570fe1319fca5295aad85aaa599ad0e29da9160f02377cb06b0af1628c83",
+        "a-hmi": "sha256:695c9544da2cfee40f957182fd5d7efd2ad03db8d9f2974fcdf37ca982e49f77",
+        "a-identity": "sha256:a4c1bccfe8b4f6066fbe8c49ebf06bbbc38b7913790cc25f8522eea172d82444",
+        "a-instruments": "sha256:7f0259d94afc392df16f02fbe82c2d49e68a677894669339659d256b68ee0634",
+        "a-renderer": "sha256:e02f871a4e3111cefeb0ddfd23e494d39b79cc292d3dfed053e80cea15da5f72",
+        "a-reservoir": "sha256:936d9ae469c58c84bec999cda87b67ce768a49bc9feda265ea2b71f3dde39f78",
+        "fieldlink-edge": "sha256:b7c0540b434a01ab930383c04251f1f1689e7c8ee951e09d686c0cd5af94c3de"
       },
       "instance": "cinder-arwc-golden",
-      "participant_image_digest": "sha256:e0ea72dd0877f26474b30b67c33edf9fecff7637c2dfdd946c4cfa3a28dfcb4d",
+      "participant_image_digest": "sha256:f20fba01de591401c11da1334c0664668f10905d02929b399ee93e28e999d0f7",
       "participant_service": "a-connector",
       "project": "prod-mgau4w",
       "zone": "us-central1-a"
@@ -283,7 +283,7 @@
     "schema": "cinder-typhoon.hint-delivery/v1",
     "sha256": "46c43c70e5a1711a9a5dc352af9bbcd1af41d5243fe171a6849c154b5cff529f"
   },
-  "release_id": "event-2026.11.08-01",
+  "release_id": "event-2026.11.09-01",
   "schema_version": 1,
-  "source_commit": "271cdcbaf68f46a3e19cb0e44ae3a683978ebb60"
+  "source_commit": "dd7a28010c5750889ec1d220290476fd9e6e5c0c"
 }
