@@ -233,7 +233,10 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
         context = f"report.run.reset_boundaries[{index}]"
         boundary = exact_keys(
             boundary_value,
-            {"phase", "operation_id", "previous_reset_identity", "reset_identity"},
+            {
+                "phase", "operation_id", "previous_reset_identity",
+                "reset_identity", "start_state_label",
+            },
             context,
         )
         phase = boundary["phase"]
@@ -249,6 +252,10 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
         require(
             boundary["previous_reset_identity"] != boundary["reset_identity"],
             f"{context}: reset identity did not change",
+        )
+        require(
+            boundary["start_state_label"] in {"pristine", "retained"},
+            f"{context}: reset start state is invalid",
         )
         reset_boundaries[identity] = boundary
 
@@ -360,8 +367,9 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
                     f"{context}: reset identity changed without a declared boundary",
                 )
             expected_label = (
-                "transition-earned" if phase == "arwc" and operation_index == 0
-                else "pristine" if operation_index == 0 or boundary is not None
+                "transition-earned" if phase == "arwc"
+                else "pristine" if operation_index == 0
+                else boundary["start_state_label"] if boundary is not None
                 else "retained"
             )
             require(

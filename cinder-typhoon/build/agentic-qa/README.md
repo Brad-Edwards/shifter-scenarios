@@ -12,7 +12,10 @@ Prepare each operation with `prepare.py`. Reuse one opaque campaign ID for the
 complete run. Reuse one participant-container reset identity within each phase
 unless an operation is an explicit reset boundary. Give every operation a
 distinct session ID. KeplerOps must finish before ARWC starts from its earned
-transition.
+transition. Operation sessions must not partially overlap. A fully nested
+interval represents a paused outer operation while complete inner operations
+run. Catalog order controls report order and reset-state validation; clean
+exports remain usable when an operator correction changes completion order.
 
 Assemble the content-free operation exports with `assemble.py`. Pass every
 operation export, the candidate-bound reliability report, and each finding.
@@ -20,6 +23,9 @@ Use `--reset-boundary PHASE:OPERATION` for each intentional reset identity
 change. Use `--reliability-substitute CARD` only when a failed exploratory card
 must use its passing candidate-bound known-solution assertion instead. The
 substitution contains no participant score or exploratory attempt history.
+The assembled reset record preserves the boundary operation's observed
+`pristine` or `retained` start label. Every ARWC operation retains the
+`transition-earned` phase label.
 
 Validate the committed report with:
 

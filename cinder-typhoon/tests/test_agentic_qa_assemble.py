@@ -165,6 +165,31 @@ class AgenticQAAssemblyTests(unittest.TestCase):
             ("campaign-1", []),
         )
 
+        out_of_catalog_order = deepcopy(reports)
+        out_of_catalog_order[("keplerops", "K01")].update({
+            "started_at": "2026-11-07T11:05:00Z",
+            "finished_at": "2026-11-07T11:10:00Z",
+        })
+        out_of_catalog_order[("keplerops", "K02")].update({
+            "started_at": "2026-11-07T11:00:00Z",
+            "finished_at": "2026-11-07T11:05:00Z",
+        })
+        self.assertEqual(
+            assemble.validate_campaign_structure(out_of_catalog_order, order, set()),
+            ("campaign-1", []),
+        )
+
+        suspended = deepcopy(reports)
+        suspended[("keplerops", "K01")]["finished_at"] = "2026-11-07T11:10:00Z"
+        suspended[("keplerops", "K02")].update({
+            "started_at": "2026-11-07T11:06:00Z",
+            "finished_at": "2026-11-07T11:08:00Z",
+        })
+        self.assertEqual(
+            assemble.validate_campaign_structure(suspended, order, set()),
+            ("campaign-1", []),
+        )
+
         mutations = {
             "campaign": lambda value: value[("arwc", "W01")].__setitem__("campaign_id", "campaign-2"),
             "phase reset": lambda value: value[("keplerops", "K02")].__setitem__("reset_identity", "different-reset"),
@@ -211,7 +236,15 @@ class AgenticQAAssemblyTests(unittest.TestCase):
             "operation_id": "K02",
             "previous_reset_identity": "kepler-old",
             "reset_identity": "kepler-new",
+            "start_state_label": "pristine",
         }])
+
+        retained = deepcopy(reports)
+        retained[("keplerops", "K02")]["results"][0]["start_state"]["label"] = "retained"
+        _, retained_boundaries = assemble.validate_campaign_structure(
+            retained, order, {("keplerops", "K02")}
+        )
+        self.assertEqual(retained_boundaries[0]["start_state_label"], "retained")
 
         for name, declared in {
             "missing": set(),

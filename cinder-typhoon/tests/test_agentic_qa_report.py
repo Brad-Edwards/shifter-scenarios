@@ -52,7 +52,7 @@ class AgenticQAReportTests(unittest.TestCase):
                         "pristine"
                         if card["operation_id"] in {"T01", "K01"} and card_id.endswith(".1")
                         else "transition-earned"
-                        if card["operation_id"] == "W01" and card_id.endswith(".1")
+                        if card["segment"] == "arwc" and card_id.endswith(".1")
                         else "retained"
                     ),
                     "sha256": f"{index:064x}",
@@ -195,6 +195,7 @@ class AgenticQAReportTests(unittest.TestCase):
             "operation_id": "K06",
             "previous_reset_identity": "kepler-old-reset",
             "reset_identity": "transition-reset",
+            "start_state_label": "pristine",
         }]
         self.assertIs(agentic_qa.validate_report(report), report)
 
@@ -202,6 +203,7 @@ class AgenticQAReportTests(unittest.TestCase):
             "missing": lambda value: value["run"].__setitem__("reset_boundaries", []),
             "wrong operation": lambda value: value["run"]["reset_boundaries"][0].__setitem__("operation_id", "K07"),
             "wrong previous identity": lambda value: value["run"]["reset_boundaries"][0].__setitem__("previous_reset_identity", "wrong-reset"),
+            "wrong start label": lambda value: value["run"]["reset_boundaries"][0].__setitem__("start_state_label", "retained"),
         }
         for name, mutate in mutations.items():
             with self.subTest(mutation=name):
@@ -216,6 +218,7 @@ class AgenticQAReportTests(unittest.TestCase):
             "operation_id": "K06",
             "previous_reset_identity": "transition-reset",
             "reset_identity": "different-reset",
+            "start_state_label": "pristine",
         }]
         with self.assertRaises(agentic_qa.ValidationError):
             agentic_qa.validate_report(extra)

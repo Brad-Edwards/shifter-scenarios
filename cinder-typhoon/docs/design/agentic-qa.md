@@ -19,9 +19,16 @@ sessions within a phase retain the participant home and range state. Every
 operation carries one shared campaign identity. A phase normally keeps one
 participant-container reset identity. The report can declare an operation as a
 reset boundary when an operator reset is necessary and earlier operations must
-not be replayed. The first result after that boundary must start pristine and
-must use the declared new identity. KeplerOps completes before ARWC starts, and
-operation sessions in each phase cannot overlap or run out of catalog order.
+not be replayed. The reset record preserves whether the first accepted
+operation began `pristine` or `retained`, and it must use the declared new
+identity. A `retained` label is valid when operator setup or state repair occurs
+after the reset but before that operation. Every ARWC operation records the
+phase's `transition-earned` condition. KeplerOps completes before ARWC starts,
+and operation sessions in each phase cannot partially overlap. A fully nested
+interval is valid when the outer operation was paused while complete inner
+operations ran. Catalog order controls the report and reset-state chain, but a
+completed operation remains valid if an operator correction changes completion
+order. This avoids destructive replay of already verified participant work.
 Within an operation, every proxy-backed card uses the same session identity
 and configuration.
 
@@ -60,7 +67,10 @@ times, expected points, and SHA-256 bindings.
 
 ## Session protocol
 
-Each operation runs in catalog order. The QA operator must:
+Operations normally run in catalog order. If an ordering mistake is found, the
+operator completes only untested work and retains clean, non-overlapping
+exports from work that is already verified. For each operation, the QA operator
+must:
 
 1. Inspect the published card and its expected path before participant work.
 2. Mark a card as started before its first participant command.

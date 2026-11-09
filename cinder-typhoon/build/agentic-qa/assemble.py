@@ -255,9 +255,11 @@ def validate_campaign_structure(
     campaign_id: str | None = None
     observed_boundaries: set[tuple[str, str]] = set()
     boundary_records: list[dict[str, str]] = []
+    phase_intervals: dict[str, list[tuple[datetime, datetime, str]]] = {
+        phase: [] for phase in operation_order
+    }
     for phase, operations in operation_order.items():
         phase_reset_identity: str | None = None
-        previous_finished: datetime | None = None
         first_label = "transition-earned" if phase == "arwc" else "pristine"
         for index, operation_id in enumerate(operations):
             operation = reports_by_operation[(phase, operation_id)]
@@ -280,6 +282,7 @@ def validate_campaign_structure(
                     "operation_id": operation_id,
                     "previous_reset_identity": phase_reset_identity,
                     "reset_identity": reset_identity,
+                    "start_state_label": operation["results"][0]["start_state"]["label"],
                 })
                 phase_reset_identity = reset_identity
             elif boundary in reset_boundaries:
@@ -287,13 +290,18 @@ def validate_campaign_structure(
 
             observed_label = operation["results"][0]["start_state"]["label"]
             expected_label = (
-                first_label
+                "transition-earned"
+                if phase == "arwc"
+                else first_label
                 if index == 0
-                else "pristine"
-                if boundary in observed_boundaries
                 else "retained"
             )
-            if observed_label != expected_label:
+            if boundary in observed_boundaries and phase != "arwc":
+                if observed_label not in {"pristine", "retained"}:
+                    raise AssemblyError(
+                        f"{operation_id}: reset boundary state must be pristine or retained"
+                    )
+            elif observed_label != expected_label:
                 raise AssemblyError(f"{operation_id}: first card state must be {expected_label}")
             operation_started = iso_timestamp(
                 operation["started_at"], f"{operation_id}.started_at"
@@ -301,17 +309,29 @@ def validate_campaign_structure(
             operation_finished = iso_timestamp(
                 operation["finished_at"], f"{operation_id}.finished_at"
             )
-            if previous_finished is not None and operation_started < previous_finished:
-                raise AssemblyError(f"{phase}: operation sessions overlap or are out of order")
-            previous_finished = operation_finished
+            phase_intervals[phase].append(
+                (operation_started, operation_finished, operation_id)
+            )
 
-    keplerops_finished = iso_timestamp(
-        reports_by_operation[("keplerops", operation_order["keplerops"][-1])]["finished_at"],
-        "keplerops.finished_at",
+    for phase, intervals in phase_intervals.items():
+        active: list[tuple[datetime, datetime, str]] = []
+        ordered = sorted(intervals, key=lambda item: (item[0], -item[1].timestamp()))
+        for started_at, finished_at, operation_id in ordered:
+            if started_at > finished_at:
+                raise AssemblyError(f"{operation_id}: run timing is invalid")
+            while active and started_at >= active[-1][1]:
+                active.pop()
+            if active:
+                parent_started, parent_finished, _ = active[-1]
+                if started_at == parent_started or finished_at > parent_finished:
+                    raise AssemblyError(f"{phase}: operation sessions partially overlap")
+            active.append((started_at, finished_at, operation_id))
+
+    keplerops_finished = max(
+        finished_at for _, finished_at, _ in phase_intervals["keplerops"]
     )
-    arwc_started = iso_timestamp(
-        reports_by_operation[("arwc", operation_order["arwc"][0])]["started_at"],
-        "arwc.started_at",
+    arwc_started = min(
+        started_at for started_at, _, _ in phase_intervals["arwc"]
     )
     if arwc_started < keplerops_finished:
         raise AssemblyError("ARWC started before the KeplerOps transition campaign completed")
