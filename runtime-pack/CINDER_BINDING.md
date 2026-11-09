@@ -1,7 +1,7 @@
 # Binding the cinder-typhoon-direct pack
 
 Use `cinder-typhoon-direct.binding.json` with pack version 0.1.0 and adapter
-`panw.cinder-typhoon-direct` version 0.3.0. The adapter binding contains only
+`panw.cinder-typhoon-direct` version 0.3.1. The adapter binding contains only
 the three compiled node addresses. Register
 `cinder-typhoon-direct.image-mappings.json` through BigRAE's RAES Image Registry
 to map the SDL sources to the exact private images in `prod-mgau4w`.
@@ -10,7 +10,7 @@ Pack content digest:
 `sha256:d9a727253e70abd011875318fe4b7d1ebfdcfac4ad2f75ec35fc88681eb92e66`.
 
 Adapter worker:
-`ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:17652ddfc2dbe9fc72d7148e003ef1eb5ee537a402cd12fa8bf179fd60690f3d`.
+`ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:cabeb7b75667678f78fb325253ce41fc96c8d8eaa16e5c1de4b2adc20165026a`.
 Install it with
 [`cinder-typhoon-direct.manifest.json`](../runtime-adapter/cinder-typhoon-direct.manifest.json).
 

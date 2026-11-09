@@ -1,10 +1,10 @@
 {
   "protocol": "shifter.runtime-plugin/v1",
   "plugin_id": "panw.cinder-typhoon-direct",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "distribution": "shifter-panw-adapter",
   "entry_point": "cinder_direct",
-  "worker_image": "ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:17652ddfc2dbe9fc72d7148e003ef1eb5ee537a402cd12fa8bf179fd60690f3d",
+  "worker_image": "ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:cabeb7b75667678f78fb325253ce41fc96c8d8eaa16e5c1de4b2adc20165026a",
   "capabilities": [
     "guest.configure",
     "guest.verify"
