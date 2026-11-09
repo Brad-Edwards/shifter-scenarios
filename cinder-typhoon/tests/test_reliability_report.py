@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from datetime import datetime, timedelta
 import importlib.util
 import hashlib
 import json
@@ -51,6 +52,11 @@ class ReliabilityReportTests(unittest.TestCase):
         threshold_path = ROOT / "build/reliability/thresholds.json"
         candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
         thresholds = json.loads(threshold_path.read_text(encoding="utf-8"))
+        defined_at = datetime.fromisoformat(
+            thresholds["defined_at"].replace("Z", "+00:00")
+        )
+        started_at = defined_at + timedelta(seconds=1)
+        finished_at = started_at + timedelta(hours=1)
         phases = {}
         for index, (phase, metadata) in enumerate(reliability.PHASES.items(), start=1):
             instance, machine_type, expected, one_shots = metadata
@@ -109,8 +115,8 @@ class ReliabilityReportTests(unittest.TestCase):
                 "run_id": "issue-330-test",
                 "project": "prod-mgau4w",
                 "zone": "us-central1-a",
-                "started_at": "2026-11-06T09:00:00Z",
-                "finished_at": "2026-11-06T10:00:00Z",
+                "started_at": started_at.isoformat().replace("+00:00", "Z"),
+                "finished_at": finished_at.isoformat().replace("+00:00", "Z"),
             },
             "campaign_path": {
                 "transition": "diagnostic-execution",
