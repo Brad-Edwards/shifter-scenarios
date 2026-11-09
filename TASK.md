@@ -8,8 +8,8 @@ assembled and strictly validated, and the three earlier product findings are
 recorded as resolved.
 
 The final report is `cinder-typhoon/build/agentic-qa/report.json`. Focused
-report-contract tests pass. Remaining work is the branch commit, dev sync,
-push, and pull request.
+report-contract tests pass. Pull request #359 is open against `dev`; remaining
+work is CI and maintainer review. Do not merge it without explicit approval.
 
 Do not use Ground Control workflows. Use
 `SHIFTER_GITHUB_PERSONAL_ACCESS_TOKEN` for GitHub without exposing it.
