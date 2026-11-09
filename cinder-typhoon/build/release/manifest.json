@@ -73,9 +73,9 @@
     }
   },
   "candidate": {
-    "candidate_id": "event-2026.11.09-01",
+    "candidate_id": "event-2026.11.09-02",
     "path": "build/participant-runner/candidate.json",
-    "sha256": "3d82afd1de4e19690cdcb89e645c79f9d6569e36ade2bda582b9faa295794261"
+    "sha256": "c64b952d29732320f77ce1cec6d42e5991f5b70cab929365026e6e5c700b8e87"
   },
   "challenge_delivery": {
     "card_count": 240,
@@ -117,30 +117,30 @@
     },
     "keplerops": {
       "images": {
-        "a-connector": "sha256:35e7c1be7d93f1790e80367aaec70a643beabafacef1ee57a70d19d4146c8be1",
-        "command-worker": "sha256:f9e9a98e1bf6dd4022434d577906ad31360c0fc9356cd633c30ad4fefa1c6220",
-        "k-assistant": "sha256:ce2b585d7c458f18109c72d219f29e35628a61b1802506568458891b26c28787",
-        "k-cert": "sha256:10bcba2d2abfc32b70e72e031d5b83155ccc6d782e78df4ba69c4d126b857907",
-        "k-ci": "sha256:86e597042294e01c1e1be94f5d71b82a9e0837077a58c23cc33946882e195d68",
-        "k-cloud-api": "sha256:eab8977601c5639087b100aff958447886a3f5244a02148bca9b0d48881f2801",
-        "k-data": "sha256:e701adee411cc9bd6ea94e782aacbd6aec12042a842b2ffede8732597bcab75d",
-        "k-dev": "sha256:64a6344f35132999e63775a631fe42e348480796c25b6b0074c87f84ac68e7d9",
-        "k-dev-seed": "sha256:64a6344f35132999e63775a631fe42e348480796c25b6b0074c87f84ac68e7d9",
-        "k-identity": "sha256:f61930b409cb112e7fa792358014bcbb72604dbdd12fd05f50e4240a63e0a758",
-        "k-indexer": "sha256:582d5a21483182408252f1deec6353ef8ec17e3253296b8a242a3f9706e9f89a",
-        "k-preview": "sha256:e3c221880de578ae53a3114d476b4691d2d6fd927a5b2486c7e8e54ce0480eb3",
-        "k-registry": "sha256:1860a678bb748008c93114d03f9be2c431079dee7553fd6c3e76fbde69adaac8",
-        "k-source": "sha256:4ebd8226362f8786855e16abdbde5c5fbbbd1cb3a5a0b53dc739dfd009be2a9c",
-        "k-staff": "sha256:2278148bb20df4b250bfb017e44d65aa72c9164ed7a95e4772cad1ab470951f3",
-        "k-support": "sha256:9d42d8ac40ba26b7ea7cef745ef533828760dc16e929304ec961acf43ea1c8e9",
-        "k-workload": "sha256:8c48d091ab8617805b3d92cb359d3b59e0d912bb570b26ea9c15d98984967136",
-        "node-worker": "sha256:4cbb8829b5b47ce4de161ad59e52ef0a9a56dcaf780e4bcad0f1b7d571677c1a",
-        "report-worker": "sha256:209b46b4c2eeb44b71c9aff7efead5fa52f6cb0f7e9bf0c3ac3a573dea71b40e",
-        "router": "sha256:4678cc269ce7c8f1b749466ccf66de31d4d64ba17c91bb548efd70c1bd7c2cef",
-        "runner": "sha256:55e689dcac44b4232c15ee15f2a6049ff34cfba3726fc777cbdcb0346215ff94"
+        "a-connector": "sha256:27365cd5e31c4d5afc719f5058bda9644dbc893a3731d0a2cd5434fc7bc47ca4",
+        "command-worker": "sha256:b490851d24e100bd378c8f7b6110d20426a0300b43acb1fe560d57e4ff9ac8e4",
+        "k-assistant": "sha256:56f3df2797b32522babb2518e9ced773fac2f0fb88d4408ca35d399b81eacab6",
+        "k-cert": "sha256:55d647e9468844f4a6deda6bcea026d880c7a40eb15f3a252d53c28a876ba2f9",
+        "k-ci": "sha256:6b60729d438d7609d425a5b4d012b4245b30a1a222e8479c4bff90dda240f13e",
+        "k-cloud-api": "sha256:d5a54e29613614c011cd594e5f4be86e0339017a2cee02b2a21e98a4139216c0",
+        "k-data": "sha256:6e9db953cc4917e1eab4ff7dcfa928d8ea38990a0a0dc7183ecc8d677e9ad8cc",
+        "k-dev": "sha256:2237cca2fc6f2b5a7a364614ebeb464cbc9fa90cc27fa1799f2efaef1c9c5415",
+        "k-dev-seed": "sha256:2237cca2fc6f2b5a7a364614ebeb464cbc9fa90cc27fa1799f2efaef1c9c5415",
+        "k-identity": "sha256:f89f66bc0ac2ddb65f3c09894b92d15f0775954f37cee22ad4de37d1483576be",
+        "k-indexer": "sha256:03f5e054b3bd39b860aeef6026c7d77908a955269d2b50c1d190b0394b621cbe",
+        "k-preview": "sha256:b6f2b39ddf597e63dbe05097fb3fd4b61967ab3896b23ce4c74a972d2cd2b19a",
+        "k-registry": "sha256:aea63e465b6f797d2fdc7674a8ec2e769a813c17206b1634575892482201c1b3",
+        "k-source": "sha256:33657e0727b336e8609483e27859860e13495699caab5df53aef9cae25466b04",
+        "k-staff": "sha256:a4c503a0a81292dd1c569e956627db6a2ce166b5fed4721ffe39607d66e52f2e",
+        "k-support": "sha256:1ec17b969cd4844f68f1967aaa7e42812d246a9e93731e654343622b746aaf42",
+        "k-workload": "sha256:cfaa0a40d048cc5c60ce0e28fd65596b00284f8957f7bbb79ba9f058544876b8",
+        "node-worker": "sha256:d7cc190ce5a4f31a90da9fe5dd96a1e9f82e8954cbb893eb9d11b1dab0dd35e3",
+        "report-worker": "sha256:dae1d0e8ad61f24953693173aa948c5302a28c8d68f7091f83f8b441ecf8af66",
+        "router": "sha256:9e2967477c86b6a415c791b14ad495590e1dd5121c3c90ccd888596a4d823d5b",
+        "runner": "sha256:afaca0c9a2e33a3c600408c4d4ec84ab435210d1420ebe217d8de186749889b9"
       },
       "instance": "cinder-keplerops-golden",
-      "participant_image_digest": "sha256:64a6344f35132999e63775a631fe42e348480796c25b6b0074c87f84ac68e7d9",
+      "participant_image_digest": "sha256:2237cca2fc6f2b5a7a364614ebeb464cbc9fa90cc27fa1799f2efaef1c9c5415",
       "participant_service": "k-dev",
       "project": "prod-mgau4w",
       "zone": "us-central1-a"
@@ -283,7 +283,7 @@
     "schema": "cinder-typhoon.hint-delivery/v1",
     "sha256": "46c43c70e5a1711a9a5dc352af9bbcd1af41d5243fe171a6849c154b5cff529f"
   },
-  "release_id": "event-2026.11.09-01",
+  "release_id": "event-2026.11.09-02",
   "schema_version": 1,
-  "source_commit": "dd7a28010c5750889ec1d220290476fd9e6e5c0c"
+  "source_commit": "2f1338b4708c16ffd3a88087eb5e9984fb305c1e"
 }
