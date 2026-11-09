@@ -1,0 +1,11 @@
+name: cinder-typhoon-direct
+title: Cinder Typhoon
+version: 0.1.0
+status: draft
+description: Private GCP runtime package for the Training, KeplerOps, and ARWC
+  Cinder Typhoon images. Requires the separately installed minimal runtime adapter
+  and exact private image bindings.
+authors:
+- Palo Alto Networks, Inc.
+provenance_ledger: docs/provenance-ledger.yaml
+associated_artifact_manifest: associated-artifacts.json

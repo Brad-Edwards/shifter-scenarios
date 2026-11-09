@@ -32,6 +32,8 @@ tar -C "$PACK_ROOT" -czf "$ARCHIVE" \
   --exclude='build/training/gcp/.terraform' \
   --exclude='*/__pycache__' \
   build/training \
+  build/gcp-images \
+  build/participant-host \
   assets/training \
   build/card-coverage \
   build/fourth-wall \

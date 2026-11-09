@@ -1,0 +1,59 @@
+#!/bin/sh
+set -eu
+
+contract=""
+expected_sha256=""
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --contract)
+      [ "$#" -ge 2 ] || exit 2
+      contract=$2
+      shift 2
+      ;;
+    --manifest-sha256)
+      [ "$#" -ge 2 ] || exit 2
+      expected_sha256=$2
+      shift 2
+      ;;
+    *)
+      exit 2
+      ;;
+  esac
+done
+
+[ "$contract" = "participant-readiness/v1" ] || exit 1
+printf '%s\n' "$expected_sha256" | grep -Eq '^[0-9a-f]{64}$' || exit 1
+
+manifest=/usr/local/share/shifter/participant-readiness.json
+[ -r "$manifest" ] || exit 1
+actual_sha256=$(sha256sum "$manifest" | awk '{print $1}')
+[ "$actual_sha256" = "$expected_sha256" ] || exit 1
+
+python3 - "$manifest" <<'PY'
+import json
+import os
+import pwd
+import socket
+import sys
+from pathlib import Path
+
+manifest = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+if set(manifest) != {"participant_user", "required_paths", "schema_version", "surfaces"}:
+    raise SystemExit(1)
+if manifest["schema_version"] != "participant-readiness/v1":
+    raise SystemExit(1)
+if pwd.getpwuid(os.getuid()).pw_name != manifest["participant_user"]:
+    raise SystemExit(1)
+if manifest["surfaces"] != {"rdp_port": 3389}:
+    raise SystemExit(1)
+paths = manifest["required_paths"]
+if not isinstance(paths, list) or not 1 <= len(paths) <= 16:
+    raise SystemExit(1)
+for value in paths:
+    if not isinstance(value, str) or not value.startswith("/") or not Path(value).exists():
+        raise SystemExit(1)
+if not Path("/usr/sbin/xrdp").is_file() or not Path("/usr/bin/startxfce4").is_file():
+    raise SystemExit(1)
+with socket.create_connection(("127.0.0.1", 3389), timeout=3):
+    pass
+PY

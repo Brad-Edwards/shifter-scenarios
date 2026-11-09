@@ -1,0 +1,48 @@
+#!/bin/bash
+set -euo pipefail
+
+phase=${1-}
+state_root=/var/lib/cinder-typhoon
+mkdir -p "$state_root"
+
+case "$phase" in
+  training)
+    root=/opt/cinder-typhoon/build/training
+    compose=(docker compose -f "$root/compose.yaml")
+    if [[ ! -e "$state_root/training.initialized" ]]; then
+      "${compose[@]}" down -v --remove-orphans
+      "${compose[@]}" up -d --force-recreate
+      touch "$state_root/training.initialized"
+    else
+      "${compose[@]}" up -d
+    fi
+    ;;
+  keplerops)
+    root=/opt/cinder-typhoon/build/keplerops
+    if [[ ! -e "$state_root/keplerops.initialized" ]]; then
+      bash "$root/generate-operator-material.sh"
+      bash "$root/restore-pristine.sh"
+      touch "$state_root/keplerops.initialized"
+    else
+      docker compose -f "$root/compose.yaml" up -d
+    fi
+    ;;
+  arwc)
+    root=/opt/cinder-typhoon/build/arwc
+    if [[ ! -e "$state_root/arwc.initialized" ]]; then
+      printf 'ARWC_CARRIER_ADDRESS=0.0.0.0\n' >"$root/.env"
+      chmod 0600 "$root/.env"
+      bash "$root/generate-operator-material.sh"
+      bash "$root/restore-pristine.sh"
+      touch "$state_root/arwc.initialized"
+    else
+      docker compose -f "$root/compose.yaml" up -d
+    fi
+    ;;
+  *)
+    echo "usage: cinder-image-first-boot training|keplerops|arwc" >&2
+    exit 2
+    ;;
+esac
+
+/usr/local/libexec/cinder-image-verify "$phase" --boot-only

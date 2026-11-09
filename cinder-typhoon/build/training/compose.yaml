@@ -10,13 +10,17 @@ services:
     hostname: kali
     domainname: training
     restart: unless-stopped
-    read_only: true
-    cap_drop: [ALL]
     security_opt:
       - no-new-privileges:true
     tmpfs:
       - /tmp:rw,nosuid,nodev,size=256m,mode=1777
       - /home/cinder/.cache:rw,nosuid,nodev,size=64m,mode=0700,uid=2000,gid=2000
+      - /run:rw,nosuid,nodev,size=16m,mode=0755
+      - /var/log:rw,nosuid,nodev,size=32m,mode=0755
+    ports:
+      - "3389:3389"
+    volumes:
+      - participant-home:/home/cinder
     networks:
       training:
         ipv4_address: 10.77.40.10
@@ -148,6 +152,8 @@ networks:
           gateway: 10.77.40.1
 
 volumes:
+  participant-home:
+    name: cinder-training-participant-home
   workbench-audit:
     name: cinder-training-workbench-audit
   workbench-repository:

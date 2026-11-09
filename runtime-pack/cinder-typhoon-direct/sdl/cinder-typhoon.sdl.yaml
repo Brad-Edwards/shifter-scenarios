@@ -1,0 +1,102 @@
+name: cinder-typhoon-direct
+description: Cinder Typhoon runtime mapping for three private GCE custom images.
+  Training and KeplerOps provide participant RDP desktops. ARWC is the paired
+  backend reached through KeplerOps.
+nodes:
+  training-host:
+    type: compute
+    os: linux
+    os_distribution: debian
+    os_version: '12'
+    source:
+      name: cinder-training-host
+      version: event-2026.11.09-02
+    resources:
+      ram: 8 gib
+      cpu: 2
+    roles:
+      participant:
+        username: cinder
+    services:
+    - port: 3389
+      name: rdp
+  keplerops-host:
+    type: compute
+    os: linux
+    os_distribution: debian
+    os_version: '12'
+    source:
+      name: cinder-keplerops-host
+      version: event-2026.11.09-02
+    resources:
+      ram: 16 gib
+      cpu: 4
+    roles:
+      participant:
+        username: rowan
+    services:
+    - port: 3389
+      name: rdp
+  arwc-host:
+    type: compute
+    os: linux
+    os_distribution: debian
+    os_version: '12'
+    source:
+      name: cinder-arwc-host
+      version: event-2026.11.09-02
+    resources:
+      ram: 16 gib
+      cpu: 4
+    services:
+    - port: 443
+      name: fieldlink
+entities:
+  participant:
+    description: Cinder Typhoon participant
+    role: red
+accounts:
+  training_desktop:
+    username: cinder
+    node: training-host
+    auth_method: password
+  keplerops_desktop:
+    username: rowan
+    node: keplerops-host
+    auth_method: password
+agents:
+  participant:
+    affiliations: [participant]
+    description: Participant with RDP access to Training and KeplerOps
+    starting_accounts:
+    - training_desktop
+    - keplerops_desktop
+    interactive_access:
+      training_rdp:
+        target_ref: training-host
+        channel: rdp
+        account_ref: training_desktop
+      keplerops_rdp:
+        target_ref: keplerops-host
+        channel: rdp
+        account_ref: keplerops_desktop
+realization:
+  constraints:
+  - field_pointer: /nodes/training-host
+    concern: compute-substrate
+    posture: exact
+    domain:
+      kind: exact
+      value: virtual-machine
+  - field_pointer: /nodes/keplerops-host
+    concern: compute-substrate
+    posture: exact
+    domain:
+      kind: exact
+      value: virtual-machine
+  - field_pointer: /nodes/arwc-host
+    concern: compute-substrate
+    posture: exact
+    domain:
+      kind: exact
+      value: virtual-machine

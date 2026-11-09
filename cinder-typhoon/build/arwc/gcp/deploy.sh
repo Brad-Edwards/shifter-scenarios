@@ -32,6 +32,8 @@ tar -C "$PACK_ROOT" -czf "$ARCHIVE" \
   --exclude='build/arwc/gcp/.terraform' \
   --exclude='*/__pycache__' \
   build/arwc \
+  build/gcp-images \
+  build/participant-host \
   assets/narrative/generated/packages/arwc-documents.json \
   build/card-coverage \
   build/fourth-wall \

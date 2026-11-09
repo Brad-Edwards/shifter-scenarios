@@ -1,10 +1,10 @@
-# Private runtime adapter
+# Private runtime plugins
 
 ## Direct Vertex plugin
 
-`polaris_direct` (`panw.polaris-direct`) is the adapter's only plugin. It is
-GCP-only. The broker-backed `polaris` plugin is retired until Shifter's model
-gateway work replaces the parked broker.
+`polaris_direct` (`panw.polaris-direct`) is GCP-only. The broker-backed
+`polaris` plugin is retired until Shifter's model gateway work replaces the
+parked broker.
 
 Claude Code is never baked into the participant image. The pack declares the
 `claude-code` feature on the `a14-kali` host. Shifter acquires the binary,
@@ -51,6 +51,14 @@ alone. It imports no Shifter application code.
 comparison only. The registered entry point does not invoke those credential
 paths and has no provider fallback.
 
+## Cinder Typhoon plugin
+
+`cinder_direct` (`panw.cinder-typhoon-direct`) binds the Training, KeplerOps,
+and ARWC hosts. It exchanges only the KeplerOps and ARWC public CA certificates,
+passes BigRAE's allocated private addresses to the image-owned helpers, and
+asks those helpers to verify readiness. It does not select images, create cloud
+resources, or replace BigRAE provisioning and participant-access behavior.
+
 ## Packaging
 
 Build the SDK wheel separately, then this package with `uv build --wheel`.
@@ -88,12 +96,13 @@ Tenant administrators provide a registry credential with read-only package
 access through the adapter UI. Do not place a publishing credential in the
 manifest or tenant installation.
 
-After publishing the image, generate the upload manifest from
-`shifter_panw_adapter.runtime_direct.manifest(actual_image_reference)`. The
-reference must include the registry's actual `@sha256:` digest. Upload it
-through the tenant adapter administration page, inspect and enable it, then bind
-the installed `polaris-direct` pack digest and explicit host/directory targets.
-Never substitute an image tag or fabricated digest.
+After publishing the image, generate the upload manifest from the applicable
+module: `shifter_panw_adapter.runtime_direct` for Polaris or
+`shifter_panw_adapter.runtime_cinder` for Cinder Typhoon. The reference must
+include the registry's actual `@sha256:` digest. Upload it through the tenant
+adapter administration page, inspect and enable it, then bind the corresponding
+pack digest and explicit targets. Never substitute an image tag or fabricated
+digest.
 
 ## Local evidence
 
@@ -103,7 +112,8 @@ actual SDK inspection/planning from installed wheels. Run them in a clean
 environment with only the SDK, this wheel, pytest and PyYAML installed:
 
 ```sh
-python -m pytest tests/test_runtime_direct.py tests/test_participant_image.py \
+python -m pytest tests/test_runtime_direct.py tests/test_runtime_cinder.py \
+  tests/test_participant_image.py \
   tests/test_bootstrap.py tests/test_release.py -q
 ```
 

@@ -64,7 +64,7 @@ accounts:
     auth_method: password
 agents:
   participant:
-    entity: participant
+    affiliations: [participant]
     description: Participant with SSH and RDP access to the Kali workstation
     starting_accounts:
     - kali_login

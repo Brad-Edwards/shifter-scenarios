@@ -8,13 +8,28 @@ RUN sed -i 's/^Suites: .*/Suites: kali-last-snapshot/' /etc/apt/sources.list.d/k
       git=1:2.53.0-1 \
       jq=1.8.2-1 \
       python3=3.14.7-3 \
+      dbus-x11 \
+      kali-desktop-xfce \
+      xorgxrdp \
+      xrdp \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 2000 cinder \
-    && useradd --uid 2000 --gid cinder --create-home --shell /bin/bash cinder
+    && useradd --uid 2000 --gid cinder --create-home --shell /bin/bash cinder \
+    && usermod -aG ssl-cert cinder
 
 COPY --chown=cinder:cinder assets/training/workstation/TRAINING.md /home/cinder/TRAINING.md
-RUN chmod 0444 /home/cinder/TRAINING.md
+COPY build/participant-host/startwm.sh /etc/xrdp/startwm.sh
+COPY build/participant-host/startwm.sh /home/cinder/.xsession
+COPY build/participant-host/shifter-participant-readiness /usr/local/libexec/shifter-participant-readiness
+COPY build/training/participant-readiness.json /usr/local/share/shifter/participant-readiness.json
+COPY build/training/runtime/participant-entrypoint.sh /usr/local/bin/cinder-participant-entrypoint
+RUN chmod 0444 /home/cinder/TRAINING.md /usr/local/share/shifter/participant-readiness.json \
+    && chmod 0755 /etc/xrdp/startwm.sh /home/cinder/.xsession \
+      /usr/local/libexec/shifter-participant-readiness /usr/local/bin/cinder-participant-entrypoint \
+    && touch /var/log/xrdp.log /var/log/xrdp-sesman.log \
+    && chown xrdp:xrdp /var/log/xrdp.log /var/log/xrdp-sesman.log \
+    && chown -R cinder:cinder /home/cinder
 
-USER cinder
 WORKDIR /home/cinder
-CMD ["sleep", "infinity"]
+EXPOSE 3389
+ENTRYPOINT ["/usr/local/bin/cinder-participant-entrypoint"]

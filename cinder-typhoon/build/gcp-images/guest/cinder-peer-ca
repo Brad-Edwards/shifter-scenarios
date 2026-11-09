@@ -1,0 +1,93 @@
+#!/bin/bash
+set -euo pipefail
+
+action=${1-}
+phase=${2-}
+value=${3-}
+run_root=/run/cinder-peer-ca
+install -d -m 0700 "$run_root"
+
+case "$phase" in
+  keplerops)
+    root=/opt/cinder-typhoon/build/keplerops
+    own_ca="$root/.operator/tls/ca.crt"
+    expected_peer='CN=Alterra Corporate CA'
+    ;;
+  arwc)
+    root=/opt/cinder-typhoon/build/arwc
+    own_ca="$root/.operator/tls/ca.crt"
+    expected_peer='CN=KeplerOps Range CA'
+    ;;
+  *)
+    echo "unsupported Cinder phase" >&2
+    exit 2
+    ;;
+esac
+
+pid_file="$run_root/$phase.pid"
+
+case "$action" in
+  export)
+    port=$value
+    [[ $port =~ ^[0-9]{4,5}$ ]] || exit 2
+    for _attempt in $(seq 1 120); do
+      [[ -s $own_ca ]] && break
+      sleep 2
+    done
+    [[ -s $own_ca ]]
+    if [[ -s $pid_file ]] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+      exit 0
+    fi
+    nohup /usr/bin/python3 /usr/local/libexec/cinder-peer-ca-server.py \
+      --file "$own_ca" --port "$port" </dev/null >"$run_root/$phase.log" 2>&1 &
+    printf '%s\n' "$!" >"$pid_file"
+    chmod 0600 "$pid_file"
+    for _attempt in $(seq 1 30); do
+      curl --fail --silent --show-error --max-time 2 \
+        "http://127.0.0.1:$port/ca.crt" >/dev/null && exit 0
+      sleep 1
+    done
+    exit 1
+    ;;
+  import)
+    peer_address=$value
+    python3 - "$peer_address" <<'PY'
+import ipaddress
+import sys
+
+address = ipaddress.ip_address(sys.argv[1])
+allowed = tuple(ipaddress.ip_network(value) for value in ("10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"))
+if address.version != 4 or not any(address in network for network in allowed):
+    raise SystemExit(1)
+PY
+    if [[ $phase == keplerops ]]; then
+      peer_port=18082
+      destination="$root/.operator/integration/arwc-ca.crt"
+    else
+      peer_port=18081
+      destination="$root/.operator/integration/keplerops-ca.crt"
+    fi
+    temporary=$(mktemp "$run_root/peer.XXXXXX.crt")
+    trap 'rm -f -- "$temporary"' EXIT
+    curl --fail --silent --show-error --max-time 15 \
+      "http://$peer_address:$peer_port/ca.crt" -o "$temporary"
+    openssl x509 -in "$temporary" -noout -subject -nameopt RFC2253 \
+      | grep -Fq "$expected_peer"
+    install -m 0644 "$temporary" "$destination"
+    if [[ $phase == keplerops ]]; then
+      printf 'ARWC_CARRIER_ADDRESS=%s\n' "$peer_address" >"$root/.env"
+      chmod 0600 "$root/.env"
+    fi
+    docker compose -f "$root/compose.yaml" up -d --force-recreate a-connector
+    ;;
+  stop)
+    if [[ -s $pid_file ]]; then
+      kill "$(cat "$pid_file")" 2>/dev/null || true
+      rm -f "$pid_file"
+    fi
+    ;;
+  *)
+    echo "usage: cinder-peer-ca export PHASE PORT | import PHASE PEER_IPV4 | stop PHASE" >&2
+    exit 2
+    ;;
+esac

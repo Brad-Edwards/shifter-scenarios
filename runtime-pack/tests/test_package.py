@@ -11,6 +11,7 @@ from raes.scenarios import load_scenario
 from raes_env_packs import pack_content_digest, validate_pack, verify_pack_content_digest
 
 ROOT = Path(__file__).parents[1] / "polaris-direct"
+CINDER_ROOT = Path(__file__).parents[1] / "cinder-typhoon-direct"
 
 
 def test_package_is_conformant_and_digest_bound():
@@ -75,3 +76,55 @@ def test_binding_matches_the_host_build():
     guide = (ROOT.parent / "BINDING.md").read_text()
     assert f"| Host image | `{image}` |" in guide
     assert f"| Host readiness digest | `{host['participant_readiness_manifest_sha256']}` |" in guide
+
+
+def test_cinder_package_is_conformant_and_uses_only_three_outer_hosts():
+    result = validate_pack(CINDER_ROOT)
+    assert result.errors == []
+    source = CINDER_ROOT / "sdl/cinder-typhoon.sdl.yaml"
+    load_scenario(source)
+    data = yaml.safe_load(source.read_text())
+    assert set(data["nodes"]) == {"training-host", "keplerops-host", "arwc-host"}
+    assert "infrastructure" not in data
+    assert all(
+        constraint["domain"] == {"kind": "exact", "value": "virtual-machine"}
+        for constraint in data["realization"]["constraints"]
+    )
+    assert set(data["agents"]["participant"]["interactive_access"]) == {"training_rdp", "keplerops_rdp"}
+    assert {access["channel"] for access in data["agents"]["participant"]["interactive_access"].values()} == {
+        "rdp"
+    }
+
+
+def test_cinder_binding_uses_exact_private_images_and_current_readiness_manifests():
+    import hashlib
+
+    binding = json.loads((CINDER_ROOT.parent / "cinder-typhoon-direct.binding.json").read_text())
+    assert binding["parameters"] == {}
+    assert set(binding["targets"]) == {"training", "keplerops", "arwc"}
+    for phase, profile in binding["image_profiles"].items():
+        assert profile["provider"] == "gcp"
+        assert profile["image_kind"] == "image"
+        assert profile["image_ref"] == (
+            f"projects/prod-mgau4w/global/images/cinder-{phase}-event-20261109-02"
+        )
+        assert "/global/images/" in profile["image_ref"]
+    for phase in ("training", "keplerops"):
+        readiness = CINDER_ROOT.parents[1] / f"cinder-typhoon/build/{phase}/participant-readiness.json"
+        assert binding["image_profiles"][phase]["participant_readiness_manifest_sha256"] == hashlib.sha256(
+            readiness.read_bytes()
+        ).hexdigest()
+    assert binding["image_profiles"]["arwc"]["bootstrap_capability"] == "standard"
+
+
+def test_cinder_archive_is_reproducible(tmp_path):
+    spec = importlib.util.spec_from_file_location("pack_builder", CINDER_ROOT.parent / "build.py")
+    builder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(builder)
+    copied = tmp_path / "runtime-pack" / "cinder-typhoon-direct"
+    shutil.copytree(CINDER_ROOT, copied)
+    first, second = tmp_path / "first.tar", tmp_path / "second.tar"
+    builder.CINDER_ROOT = copied
+    digest = builder.build_cinder(first)
+    assert builder.build_cinder(second) == digest
+    assert first.read_bytes() == second.read_bytes()

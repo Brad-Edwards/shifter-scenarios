@@ -9,17 +9,20 @@ import tarfile
 from pathlib import Path
 from urllib.parse import quote
 
+import yaml
 from raes.scenarios import load_scenario
 from raes_contracts.associated_artifacts import associated_artifact_set_digest
 from raes_contracts.contracts import AssociatedArtifactManifestModel
 from raes_env_packs import pack_content_digest, validate_pack
 
 ROOT = Path(__file__).parent / "polaris-direct"
+CINDER_ROOT = Path(__file__).parent / "cinder-typhoon-direct"
 MANIFEST = "associated-artifacts.json"
 
 
-def _build_root(root: Path, output: Path, pack_name: str) -> str:
-    load_scenario(root / "sdl/polaris.sdl.yaml")
+def _build_root(root: Path, output: Path, pack_name: str, scenario_path: str) -> str:
+    load_scenario(root / scenario_path)
+    pack_version = str(yaml.safe_load((root / "pack.yaml").read_text())["version"])
     paths = sorted(path for path in root.rglob("*") if path.is_file() and path.name != MANIFEST)
     if any(path.is_symlink() for path in root.rglob("*")):
         raise ValueError("The runtime pack must contain only regular owned files")
@@ -42,7 +45,7 @@ def _build_root(root: Path, output: Path, pack_name: str) -> str:
         {
             "schema_version": "associated-artifact-manifest/v1",
             "manifest_id": f"{pack_name}-associated-artifacts",
-            "manifest_version": "0.3.0",
+            "manifest_version": pack_version,
             "canonicalization_profile": "associated-artifact-set/v1",
             "scope": "scenario",
             "parent_ref": {"ref_kind": "scenario", "ref_id": pack_name},
@@ -68,11 +71,17 @@ def _build_root(root: Path, output: Path, pack_name: str) -> str:
 
 
 def build(output: Path) -> str:
-    return _build_root(ROOT, output, "polaris-direct")
+    return _build_root(ROOT, output, "polaris-direct", "sdl/polaris.sdl.yaml")
+
+
+def build_cinder(output: Path) -> str:
+    return _build_root(CINDER_ROOT, output, "cinder-typhoon-direct", "sdl/cinder-typhoon.sdl.yaml")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--pack", choices=("polaris-direct", "cinder-typhoon-direct"), default="polaris-direct")
     args = parser.parse_args()
-    print(build(args.output))
+    builder = build if args.pack == "polaris-direct" else build_cinder
+    print(builder(args.output))

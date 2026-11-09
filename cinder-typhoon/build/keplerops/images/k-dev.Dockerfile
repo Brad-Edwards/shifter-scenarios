@@ -12,7 +12,7 @@ RUN gcc -std=c11 -O0 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none -D_FORTIFY_S
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates curl git iproute2 jq krb5-user openssh-server procps sqlite3 unzip util-linux zip \
+    && apt-get install --no-install-recommends -y ca-certificates curl dbus-x11 git iproute2 jq krb5-user openssh-server procps sqlite3 unzip util-linux xorgxrdp xrdp xfce4 xfce4-terminal zip \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir cryptography==50.0.2 \
     && groupadd --gid 2000 rowan \
@@ -28,6 +28,10 @@ COPY build/keplerops/runtime/workbench.py /opt/fieldkest-workbench/workbench.py
 COPY build/keplerops/runtime/k-dev-entrypoint.sh /usr/local/bin/fieldkest-k-dev-entrypoint
 COPY build/keplerops/config/sshd_config /etc/ssh/sshd_config
 COPY build/keplerops/config/krb5.conf /etc/krb5.conf
+COPY build/participant-host/startwm.sh /etc/xrdp/startwm.sh
+COPY build/participant-host/startwm.sh /home/rowan/.xsession
+COPY build/participant-host/shifter-participant-readiness /usr/local/libexec/shifter-participant-readiness
+COPY build/keplerops/participant-readiness.json /usr/local/share/shifter/participant-readiness.json
 COPY assets/keplerops/opening/k-dev-home.tar /tmp/k-dev-home.tar
 COPY assets/keplerops/opening/k-dev-workbench.tar /tmp/k-dev-workbench.tar
 COPY assets/keplerops/registry/k-dev-registry.tar /var/lib/fieldkest-workbench/seeds/k-dev-registry.tar
@@ -63,7 +67,12 @@ RUN tar -xf /tmp/k-dev-home.tar -C /home/rowan \
     && chmod 0700 /var/lib/fieldkest-workbench \
     && chmod 0700 /home/rowan /home/rowan/.ssh /home/rowan/.config /home/rowan/.config/chromium /home/rowan/.config/chromium/Default /home/rowan/results \
     && chmod 0600 /home/rowan/.gitconfig /home/rowan/.config/chromium/Default/* \
-    && chmod 0700 /usr/local/bin/fieldkest-k-dev-entrypoint
+    && chmod 0755 /etc/xrdp/startwm.sh /home/rowan/.xsession /usr/local/libexec/shifter-participant-readiness \
+    && chmod 0444 /usr/local/share/shifter/participant-readiness.json \
+    && chmod 0700 /usr/local/bin/fieldkest-k-dev-entrypoint \
+    && touch /var/log/xrdp.log /var/log/xrdp-sesman.log \
+    && chown xrdp:xrdp /var/log/xrdp.log /var/log/xrdp-sesman.log \
+    && chown -R rowan:rowan /home/rowan
 
-EXPOSE 22
+EXPOSE 22 3389
 ENTRYPOINT ["/usr/local/bin/fieldkest-k-dev-entrypoint"]

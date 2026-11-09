@@ -1,0 +1,81 @@
+{
+  "schema_version": "associated-artifact-manifest/v1",
+  "manifest_id": "cinder-typhoon-direct-associated-artifacts",
+  "manifest_version": "0.1.0",
+  "canonicalization_profile": "associated-artifact-set/v1",
+  "scope": "scenario",
+  "parent_ref": {
+    "ref_kind": "scenario",
+    "ref_id": "cinder-typhoon-direct",
+    "ref_version": null,
+    "ref_digest": null,
+    "ref_path": null
+  },
+  "artifacts": {
+    "artifact-0": {
+      "artifact_id": "artifact-0",
+      "role": "other",
+      "media_type": "application/octet-stream",
+      "uri": "raes-environment-pack:/docs/concepts.md",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "d238823b00cac7b0405ae399db6a55727222c9a261b0eafdf0368606f7160c5a"
+      },
+      "size_bytes": 1102,
+      "created_at": "2026-09-17T00:00:00Z",
+      "source": "private-pack-owner",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-1": {
+      "artifact_id": "artifact-1",
+      "role": "other",
+      "media_type": "application/octet-stream",
+      "uri": "raes-environment-pack:/docs/provenance-ledger.yaml",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "7dcbf2bd55e85615ad93f2c92ce36211d6b59406f74ec64dff7f174f439a93bf"
+      },
+      "size_bytes": 839,
+      "created_at": "2026-09-17T00:00:00Z",
+      "source": "private-pack-owner",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-2": {
+      "artifact_id": "artifact-2",
+      "role": "other",
+      "media_type": "application/octet-stream",
+      "uri": "raes-environment-pack:/pack.yaml",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "282e8fac0912e0483bead3684f531a9bd3f47d4250565a839c4039b4e09fba87"
+      },
+      "size_bytes": 416,
+      "created_at": "2026-09-17T00:00:00Z",
+      "source": "private-pack-owner",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    },
+    "artifact-3": {
+      "artifact_id": "artifact-3",
+      "role": "other",
+      "media_type": "application/octet-stream",
+      "uri": "raes-environment-pack:/sdl/cinder-typhoon.sdl.yaml",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "5e57a638d31131a22088f9d0628c1f73c93ba91a99d310cf4bab7559e4720cd4"
+      },
+      "size_bytes": 2348,
+      "created_at": "2026-09-17T00:00:00Z",
+      "source": "private-pack-owner",
+      "satisfies_refs": [],
+      "sensitivity": "internal",
+      "description": null
+    }
+  },
+  "set_digest": "sha256:d9a727253e70abd011875318fe4b7d1ebfdcfac4ad2f75ec35fc88681eb92e66"
+}

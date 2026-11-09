@@ -73,7 +73,6 @@ services:
     hostname: k-dev
     domainname: keplerops.test
     restart: unless-stopped
-    read_only: true
     cap_drop: [ALL]
     cap_add: [NET_ADMIN, SETUID, SETGID, CHOWN, FOWNER, SYS_CHROOT, AUDIT_WRITE, DAC_OVERRIDE, DAC_READ_SEARCH]
     security_opt:
@@ -86,6 +85,9 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
       - /run:rw,nosuid,nodev,size=16m,mode=0755
+      - /var/log:rw,nosuid,nodev,size=32m,mode=0755
+    ports:
+      - "3389:3389"
     volumes:
       - k-dev-home:/home/rowan
       - k-dev-audit:/var/lib/fieldkest-workbench/audit

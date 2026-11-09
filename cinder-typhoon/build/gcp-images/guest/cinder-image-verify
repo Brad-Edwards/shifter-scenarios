@@ -1,0 +1,77 @@
+#!/bin/bash
+set -euo pipefail
+
+phase=${1-}
+mode=${2-}
+if [[ $mode == --boot-only ]]; then
+  deadline=$((SECONDS + 900))
+else
+  deadline=$((SECONDS + 240))
+fi
+
+running() {
+  [[ $(docker inspect --format '{{.State.Running}}' "$1" 2>/dev/null || true) == true ]]
+}
+
+healthy() {
+  [[ $(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{end}}' "$1" 2>/dev/null || true) == healthy ]]
+}
+
+tcp_ready() {
+  timeout 3 bash -c "</dev/tcp/127.0.0.1/$1" 2>/dev/null
+}
+
+ready() {
+  case "$phase" in
+    training)
+      running cinder-training-kali && running cinder-training-workbench \
+        && running cinder-training-accounts && running cinder-training-state \
+        && running cinder-training-developer && running cinder-training-runner \
+        && tcp_ready 3389
+      ;;
+    keplerops)
+      running cinder-keplerops-k-dev && running cinder-keplerops-source \
+        && running cinder-keplerops-registry && running cinder-keplerops-ci \
+        && running cinder-keplerops-support && running cinder-keplerops-connector \
+        && tcp_ready 3389
+      ;;
+    arwc)
+      running cinder-arwc-connector && healthy cinder-arwc-connector \
+        && running cinder-arwc-fieldlink-edge && running cinder-arwc-business \
+        && running cinder-arwc-data && tcp_ready 443
+      ;;
+    *)
+      return 2
+      ;;
+  esac
+}
+
+while ((SECONDS < deadline)); do
+  if ready; then
+    break
+  fi
+  sleep 5
+done
+ready
+
+if [[ $mode != --boot-only ]]; then
+  case "$phase" in
+    training)
+      test -x /usr/local/libexec/cinder-peer-ca
+      test -x /usr/local/libexec/cinder-image-first-boot
+      ;;
+    keplerops)
+      test -s /opt/cinder-typhoon/build/keplerops/.operator/integration/arwc-ca.crt
+      grep -Eq '^ARWC_CARRIER_ADDRESS=[0-9]+(\.[0-9]+){3}$' \
+        /opt/cinder-typhoon/build/keplerops/.env
+      ;;
+    arwc)
+      test -s /opt/cinder-typhoon/build/arwc/.operator/integration/keplerops-ca.crt
+      ;;
+  esac
+fi
+
+if [[ $phase == training || $phase == keplerops ]]; then
+  install -d -m 0755 /run/shifter
+  touch /run/shifter/preconfigured-range-host.ready
+fi
