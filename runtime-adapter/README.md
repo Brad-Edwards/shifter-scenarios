@@ -54,10 +54,12 @@ paths and has no provider fallback.
 ## Cinder Typhoon plugin
 
 `cinder_direct` (`panw.cinder-typhoon-direct`) binds the Training, KeplerOps,
-and ARWC hosts. It exchanges only the KeplerOps and ARWC public CA certificates,
-passes BigRAE's allocated private addresses to the image-owned helpers, and
-asks those helpers to verify readiness. It does not select images, create cloud
-resources, or replace BigRAE provisioning and participant-access behavior.
+and ARWC hosts. It copies BigRAE's generated host-side password verifier into
+each participant container without reading plaintext, exchanges the KeplerOps
+and ARWC public CA certificates, passes BigRAE's allocated private addresses to
+the image-owned helpers, and asks those helpers to verify readiness. It does not
+select images, create cloud resources, or replace BigRAE provisioning and
+participant-access behavior.
 
 ## Packaging
 

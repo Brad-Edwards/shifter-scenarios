@@ -7,7 +7,7 @@ the three compiled node addresses. Register
 to map the SDL sources to the exact private images in `prod-mgau4w`.
 
 Pack content digest:
-`sha256:d9a727253e70abd011875318fe4b7d1ebfdcfac4ad2f75ec35fc88681eb92e66`.
+`sha256:29b50b546906a5e7ccaa55b1653481df6d6dc55c3815d294f1a915be5767ddbf`.
 
 Adapter worker:
 `ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:cabeb7b75667678f78fb325253ce41fc96c8d8eaa16e5c1de4b2adc20165026a`.

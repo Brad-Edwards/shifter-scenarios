@@ -117,8 +117,9 @@ The implementation and targeted tests enforce these invariants:
 5. Training and KeplerOps satisfy BigRAE's existing
    `preconfigured-machine-host` and `participant-readiness/v1` contracts.
 6. ARWC has no direct participant access.
-7. The adapter binds only KeplerOps and ARWC. It receives private addresses
-   through BigRAE's typed guest-value references.
+7. The adapter uses BigRAE's host-side password verifiers for the two participant
+   containers and receives carrier private addresses through BigRAE's typed
+   guest-value references. It neither mints nor reads plaintext credentials.
 8. The adapter creates no VM, image, network, firewall, identity, credential,
    participant endpoint, or lifecycle record.
 9. KeplerOps and ARWC exchange only public CA certificates. Temporary exchange
