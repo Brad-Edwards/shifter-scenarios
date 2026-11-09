@@ -1,12 +1,17 @@
 """Cinder runtime planning is limited to public-CA pairing and readiness."""
 
+import json
 import subprocess
+from pathlib import Path
 from uuid import uuid4
 
 import pytest
 from shifter_adapter_sdk.runtime import PROTOCOL, RuntimeInput, parse_result
 
 from shifter_panw_adapter.runtime_cinder import CinderTyphoonDirectAdapter, manifest
+
+
+ROOT = Path(__file__).parents[1]
 
 
 def request(phase="configure", provider="gcp"):
@@ -66,3 +71,8 @@ def test_verify_delegates_to_image_owned_readiness():
 def test_cinder_variant_rejects_other_clouds():
     with pytest.raises(ValueError, match="Incompatible Cinder Typhoon"):
         CinderTyphoonDirectAdapter().plan(request(provider="aws"))
+
+
+def test_published_manifest_matches_runtime_contract():
+    published = json.loads((ROOT / "cinder-typhoon-direct.manifest.json").read_text())
+    assert published == manifest(published["worker_image"]).model_dump(mode="json")
