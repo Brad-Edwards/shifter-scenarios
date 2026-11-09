@@ -10,3 +10,4 @@ cinder-typhoon/build/training/gcp/.terraform/
 cinder-typhoon/build/keplerops/gcp/.terraform/
 cinder-typhoon/build/arwc/gcp/.terraform/
 cinder-typhoon/build/kepler-arwc/gcp/.terraform/
+/qa-test.json
