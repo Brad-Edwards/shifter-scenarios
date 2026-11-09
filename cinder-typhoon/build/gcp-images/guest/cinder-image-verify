@@ -71,7 +71,7 @@ if [[ $mode != --boot-only ]]; then
   esac
 fi
 
-if [[ $phase == training || $phase == keplerops ]]; then
+if [[ $mode != --boot-only && ($phase == training || $phase == keplerops) ]]; then
   install -d -m 0755 /run/shifter
   touch /run/shifter/preconfigured-range-host.ready
 fi
