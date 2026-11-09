@@ -30,7 +30,7 @@ DIGEST = re.compile(r"^[0-9a-f]{64}$")
 COMMIT = re.compile(r"^[0-9a-f]{40}$")
 SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:+/\-\[\]]{0,159}$")
 OBSERVATIONS = {"confusing", "failed_attempt", "fragile", "misleading"}
-FAILURE_CLASSES = {"agent_strategy", "implementation"}
+FAILURE_CLASSES = {"implementation"}
 STATE_LABELS = {
     "operation-complete", "operation-failed", "pristine", "retained",
     "transition-earned",
@@ -177,7 +177,7 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
         {"schema_version", "report_kind", "status", "candidate", "run", "results", "findings", "assertions"},
         "report",
     )
-    require(report["schema_version"] == 1, "report: schema version must be 1")
+    require(report["schema_version"] == 2, "report: schema version must be 2")
     require(report["report_kind"] == "participant-view-agentic-qa", "report: report kind is wrong")
     require(report["status"] in {"passed", "failed"}, "report: status is invalid")
 
@@ -208,12 +208,49 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
     require(candidate_record.get("challenge_delivery", {}).get("revision") == catalog["revision"], "report: candidate catalog revision differs")
     require(candidate_record.get("challenge_delivery", {}).get("sha256") == digest_file(root / "challenges/challenges.yaml"), "report: candidate catalog digest differs")
 
-    run = exact_keys(report["run"], {"run_id", "campaign_id", "project", "zone", "started_at", "finished_at"}, "report.run")
+    run = exact_keys(
+        report["run"],
+        {
+            "run_id", "campaign_id", "project", "zone", "started_at",
+            "finished_at", "reset_boundaries",
+        },
+        "report.run",
+    )
     safe_id(run["run_id"], "report.run.run_id")
     safe_id(run["campaign_id"], "report.run.campaign_id")
     require(run["project"] == "prod-mgau4w", "report: GCP project is wrong")
     require(run["zone"] == "us-central1-a", "report: GCP zone is wrong")
     require(timestamp(run["started_at"], "report.run.started_at") <= timestamp(run["finished_at"], "report.run.finished_at"), "report: run timing is invalid")
+
+    operation_order = {
+        phase: [operation["id"] for operation in phase_value["operations"]]
+        for phase, phase_value in catalog["phases"].items()
+    }
+    reset_boundaries_value = run["reset_boundaries"]
+    require(isinstance(reset_boundaries_value, list), "report.run.reset_boundaries: array required")
+    reset_boundaries: dict[tuple[str, str], dict[str, str]] = {}
+    for index, boundary_value in enumerate(reset_boundaries_value):
+        context = f"report.run.reset_boundaries[{index}]"
+        boundary = exact_keys(
+            boundary_value,
+            {"phase", "operation_id", "previous_reset_identity", "reset_identity"},
+            context,
+        )
+        phase = boundary["phase"]
+        operation_id = boundary["operation_id"]
+        require(
+            phase in operation_order and operation_id in operation_order[phase][1:],
+            f"{context}: unknown or first phase operation",
+        )
+        identity = (phase, operation_id)
+        require(identity not in reset_boundaries, f"{context}: duplicate reset boundary")
+        safe_id(boundary["previous_reset_identity"], f"{context}.previous_reset_identity")
+        safe_id(boundary["reset_identity"], f"{context}.reset_identity")
+        require(
+            boundary["previous_reset_identity"] != boundary["reset_identity"],
+            f"{context}: reset identity did not change",
+        )
+        reset_boundaries[identity] = boundary
 
     registry = load_json(root / "build/card-coverage/registry.json", "card registry")
     registry_cards = registry.get("cards") if isinstance(registry, dict) else None
@@ -225,24 +262,34 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
     session_operations: dict[str, str] = {}
     session_agents: dict[str, Any] = {}
     session_end_states: dict[str, str] = {}
-    agent_identity: dict[str, Any] | None = None
     phase_reset_identities: dict[str, str] = {}
     seen_operations: set[tuple[str, str]] = set()
-    operation_order = {
-        phase: [operation["id"] for operation in phase_value["operations"]]
-        for phase, phase_value in catalog["phases"].items()
-    }
+    operation_reset_identities: dict[tuple[str, str], str] = {}
+    operation_sessions: dict[tuple[str, str], str] = {}
+    observed_reset_boundaries: set[tuple[str, str]] = set()
+    participant_operations: set[tuple[str, str]] = set()
+    operation_gap_pending: set[tuple[str, str]] = set()
     for index, result_value in enumerate(results):
         context = f"report.results[{index}]"
+        require(isinstance(result_value, dict), f"{context}: object required")
+        evidence_basis = result_value.get("evidence_basis")
+        common_keys = {
+            "card_id", "segment", "operation_id", "evidence_basis", "outcome",
+            "verification", "material_finding", "finding_issues",
+        }
+        participant_keys = common_keys | {
+            "session_id", "reset_identity", "agent", "start_state", "end_state",
+            "elapsed_seconds", "hints_used", "score_result", "attempts",
+            "participant_command_count", "transcript_sha256",
+        }
         result = exact_keys(
             result_value,
-            {
-                "card_id", "segment", "operation_id", "session_id", "reset_identity", "agent",
-                "start_state", "end_state", "outcome", "elapsed_seconds",
-                "hints_used", "score_result", "attempts", "participant_command_count",
-                "transcript_sha256", "verification", "material_finding", "finding_issues",
-            },
+            participant_keys if evidence_basis == "participant_proxy" else common_keys,
             context,
+        )
+        require(
+            evidence_basis in {"participant_proxy", "candidate_reliability"},
+            f"{context}: evidence basis is invalid",
         )
         card_id = result["card_id"]
         require(card_id in expected_cards, f"{context}: unknown card")
@@ -250,31 +297,71 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
         expected = expected_cards[card_id]
         require(result["segment"] == expected["segment"], f"{context}: segment differs")
         require(result["operation_id"] == expected["operation_id"], f"{context}: operation differs")
-        safe_id(result["session_id"], f"{context}.session_id")
-        reset_identity = safe_id(result["reset_identity"], f"{context}.reset_identity")
         phase = result["segment"]
-        if phase in phase_reset_identities:
+        operation_identity = (phase, result["operation_id"])
+        verification = exact_keys(result["verification"], {"assertion_name", "status", "report_sha256"}, f"{context}.verification")
+        expected_assertion = registry_cards[card_id]["black_box_assertion"]["assertion_name"]
+        require(verification["assertion_name"] == expected_assertion, f"{context}: assertion binding differs")
+        require(verification["status"] in {"passed", "failed"}, f"{context}: verification status is invalid")
+        require(DIGEST.fullmatch(str(verification["report_sha256"])) is not None, f"{context}: verification digest is invalid")
+        require(isinstance(result["material_finding"], bool), f"{context}: material finding flag required")
+        issues = result["finding_issues"]
+        require(isinstance(issues, list) and len(issues) == len(set(issues)) and all(isinstance(item, int) and item > 0 for item in issues), f"{context}: finding issues are invalid")
+
+        if evidence_basis == "candidate_reliability":
+            require(result["outcome"] == "passed", f"{context}: reliability evidence did not pass")
+            require(verification["status"] == "passed", f"{context}: reliability assertion did not pass")
+            require(not result["material_finding"] and not issues, f"{context}: reliability substitution hides a finding")
             require(
-                phase_reset_identities[phase] == reset_identity,
-                f"{context}: phase reset identity changed",
+                operation_identity in participant_operations,
+                f"{context}: an operation's first card must use participant evidence",
+            )
+            operation_gap_pending.add(operation_identity)
+            continue
+
+        participant_operations.add(operation_identity)
+        session_id = safe_id(result["session_id"], f"{context}.session_id")
+        if operation_identity in operation_sessions:
+            require(
+                operation_sessions[operation_identity] == session_id,
+                f"{context}: operation session changed",
             )
         else:
-            phase_reset_identities[phase] = reset_identity
-        validate_agent(result["agent"], f"{context}.agent")
-        if agent_identity is None:
-            agent_identity = result["agent"]
+            operation_sessions[operation_identity] = session_id
+        reset_identity = safe_id(result["reset_identity"], f"{context}.reset_identity")
+        if operation_identity in operation_reset_identities:
+            require(
+                operation_reset_identities[operation_identity] == reset_identity,
+                f"{context}: operation reset identity changed",
+            )
         else:
-            require(result["agent"] == agent_identity, f"{context}: agent configuration changed")
+            operation_reset_identities[operation_identity] = reset_identity
+
+        validate_agent(result["agent"], f"{context}.agent")
         validate_state(result["start_state"], f"{context}.start_state")
         validate_state(result["end_state"], f"{context}.end_state")
-        operation_identity = (phase, result["operation_id"])
         if operation_identity not in seen_operations:
             operation_index = operation_order[phase].index(result["operation_id"])
+            boundary = reset_boundaries.get(operation_identity)
+            if phase not in phase_reset_identities:
+                require(boundary is None, f"{context}: first phase operation cannot be a reset boundary")
+                phase_reset_identities[phase] = reset_identity
+            elif boundary is not None:
+                require(
+                    boundary["previous_reset_identity"] == phase_reset_identities[phase]
+                    and boundary["reset_identity"] == reset_identity,
+                    f"{context}: reset boundary identities differ",
+                )
+                phase_reset_identities[phase] = reset_identity
+                observed_reset_boundaries.add(operation_identity)
+            else:
+                require(
+                    phase_reset_identities[phase] == reset_identity,
+                    f"{context}: reset identity changed without a declared boundary",
+                )
             expected_label = (
-                "transition-earned"
-                if phase == "arwc" and operation_index == 0
-                else "pristine"
-                if operation_index == 0
+                "transition-earned" if phase == "arwc" and operation_index == 0
+                else "pristine" if operation_index == 0 or boundary is not None
                 else "retained"
             )
             require(
@@ -302,22 +389,15 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
         commands = nonnegative_integer(result["participant_command_count"], f"{context}.participant_command_count")
         require(commands > 0, f"{context}: participant command evidence is missing")
         require(DIGEST.fullmatch(str(result["transcript_sha256"])) is not None, f"{context}: transcript digest is invalid")
-        verification = exact_keys(result["verification"], {"assertion_name", "status", "report_sha256"}, f"{context}.verification")
-        expected_assertion = registry_cards[card_id]["black_box_assertion"]["assertion_name"]
-        require(verification["assertion_name"] == expected_assertion, f"{context}: assertion binding differs")
-        require(verification["status"] in {"passed", "failed"}, f"{context}: verification status is invalid")
-        require(DIGEST.fullmatch(str(verification["report_sha256"])) is not None, f"{context}: verification digest is invalid")
-        require(isinstance(result["material_finding"], bool), f"{context}: material finding flag required")
-        issues = result["finding_issues"]
-        require(isinstance(issues, list) and len(issues) == len(set(issues)) and all(isinstance(item, int) and item > 0 for item in issues), f"{context}: finding issues are invalid")
         if result["material_finding"] or implementation_failure:
             require(issues, f"{context}: material or implementation finding needs an issue")
-        session_id = result["session_id"]
         if session_id in session_operations:
             require(session_operations[session_id] == result["operation_id"], f"{context}: session spans operations")
             require(session_agents[session_id] == result["agent"], f"{context}: session agent identity changed")
             require(result["start_state"]["label"] == "retained", f"{context}: continued session is not retained")
-            require(result["start_state"]["sha256"] == session_end_states[session_id], f"{context}: session audit chain is broken")
+            if operation_identity not in operation_gap_pending:
+                require(result["start_state"]["sha256"] == session_end_states[session_id], f"{context}: session audit chain is broken")
+            operation_gap_pending.discard(operation_identity)
         else:
             session_operations[session_id] = result["operation_id"]
             session_agents[session_id] = result["agent"]
@@ -328,6 +408,18 @@ def validate_report(value: Any, root: Path = ROOT) -> dict[str, Any]:
             require(verification["status"] == "passed", f"{context}: independent verification did not pass")
 
     require(result_ids == list(expected_cards), "report: result cards do not exactly match catalog order")
+    require(
+        participant_operations == {
+            (phase, operation_id)
+            for phase, operations in operation_order.items()
+            for operation_id in operations
+        },
+        "report: every operation needs participant evidence",
+    )
+    require(
+        observed_reset_boundaries == set(reset_boundaries),
+        "report: declared reset boundaries differ from observed identity changes",
+    )
     findings = report["findings"]
     require(isinstance(findings, list), "report.findings: array required")
     finding_issues: set[int] = set()

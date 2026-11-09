@@ -41,6 +41,7 @@ class AgenticQAReportTests(unittest.TestCase):
                 "card_id": card_id,
                 "segment": card["segment"],
                 "operation_id": card["operation_id"],
+                "evidence_basis": "participant_proxy",
                 "session_id": f"session-{card['operation_id'].lower()}",
                 "reset_identity": (
                     "training-reset" if card["segment"] == "training" else "transition-reset"
@@ -79,7 +80,7 @@ class AgenticQAReportTests(unittest.TestCase):
                 "finding_issues": [],
             })
         return {
-            "schema_version": 1,
+            "schema_version": 2,
             "report_kind": "participant-view-agentic-qa",
             "status": "passed",
             "candidate": {
@@ -95,6 +96,7 @@ class AgenticQAReportTests(unittest.TestCase):
                 "zone": "us-central1-a",
                 "started_at": "2026-11-06T17:00:00Z",
                 "finished_at": "2026-11-06T18:00:00Z",
+                "reset_boundaries": [],
             },
             "results": results,
             "findings": [],
@@ -119,6 +121,7 @@ class AgenticQAReportTests(unittest.TestCase):
             "extra agent tool": lambda value: value["results"][0]["agent"]["tools"].append("local-shell"),
             "score differs from outcome": lambda value: value["results"][0].__setitem__("score_result", {"status": "not_accepted", "points": 0}),
             "broken audit chain": lambda value: value["results"][1]["start_state"].__setitem__("sha256", "f" * 64),
+            "changed operation session": lambda value: value["results"][1].__setitem__("session_id", "different-session"),
         }
         for name, mutate in mutations.items():
             with self.subTest(mutation=name):
@@ -127,14 +130,14 @@ class AgenticQAReportTests(unittest.TestCase):
                 with self.assertRaises(agentic_qa.ValidationError):
                     agentic_qa.validate_report(report)
 
-    def test_failed_attempts_remain_classified_after_success(self) -> None:
+    def test_product_failure_attempts_remain_classified_after_success(self) -> None:
         report = self.valid_report()
         result = report["results"][0]
         result["attempts"] = [
             {
                 "sequence": 1,
                 "outcome": "failed",
-                "classification": "agent_strategy",
+                "classification": "implementation",
                 "elapsed_seconds": 3.0,
                 "observations": ["failed_attempt", "confusing"],
             },
@@ -147,15 +150,27 @@ class AgenticQAReportTests(unittest.TestCase):
             },
         ]
         result["elapsed_seconds"] = 9.0
+        result["material_finding"] = True
+        result["finding_issues"] = [357]
+        report["findings"] = [{
+            "issue": 357,
+            "category": "implementation",
+            "cards": [result["card_id"]],
+            "status": "resolved",
+            "retest_run_id": "focused-retest-357",
+        }]
         self.assertIs(agentic_qa.validate_report(report), report)
 
-    def test_agent_and_transition_campaign_must_remain_identical(self) -> None:
+    def test_session_agent_and_operation_reset_must_remain_identical(self) -> None:
         report = self.valid_report()
-        changed_operation = report["results"][0]["operation_id"]
         for result in report["results"]:
-            if result["operation_id"] == changed_operation:
+            if result["operation_id"] == "K06":
                 result["agent"]["model"] = "different-supported-model"
-        with self.assertRaisesRegex(agentic_qa.ValidationError, "agent configuration changed"):
+        self.assertIs(agentic_qa.validate_report(report), report)
+
+        report = self.valid_report()
+        report["results"][0]["agent"]["model"] = "different-supported-model"
+        with self.assertRaisesRegex(agentic_qa.ValidationError, "session agent identity changed"):
             agentic_qa.validate_report(report)
 
         report = self.valid_report()
@@ -163,8 +178,100 @@ class AgenticQAReportTests(unittest.TestCase):
             result for result in report["results"] if result["segment"] == "arwc"
         ]
         arwc_results[-1]["reset_identity"] = "different-arwc-reset"
-        with self.assertRaisesRegex(agentic_qa.ValidationError, "phase reset identity changed"):
+        with self.assertRaisesRegex(agentic_qa.ValidationError, "operation reset identity changed"):
             agentic_qa.validate_report(report)
+
+    def test_declared_reset_boundary_passes_and_mutations_fail(self) -> None:
+        report = self.valid_report()
+        for result in report["results"]:
+            if result["segment"] == "keplerops" and int(result["operation_id"][1:]) < 6:
+                result["reset_identity"] = "kepler-old-reset"
+        k06_first = next(
+            result for result in report["results"] if result["card_id"] == "K06.1"
+        )
+        k06_first["start_state"]["label"] = "pristine"
+        report["run"]["reset_boundaries"] = [{
+            "phase": "keplerops",
+            "operation_id": "K06",
+            "previous_reset_identity": "kepler-old-reset",
+            "reset_identity": "transition-reset",
+        }]
+        self.assertIs(agentic_qa.validate_report(report), report)
+
+        mutations = {
+            "missing": lambda value: value["run"].__setitem__("reset_boundaries", []),
+            "wrong operation": lambda value: value["run"]["reset_boundaries"][0].__setitem__("operation_id", "K07"),
+            "wrong previous identity": lambda value: value["run"]["reset_boundaries"][0].__setitem__("previous_reset_identity", "wrong-reset"),
+        }
+        for name, mutate in mutations.items():
+            with self.subTest(mutation=name):
+                mutated = deepcopy(report)
+                mutate(mutated)
+                with self.assertRaises(agentic_qa.ValidationError):
+                    agentic_qa.validate_report(mutated)
+
+        extra = self.valid_report()
+        extra["run"]["reset_boundaries"] = [{
+            "phase": "keplerops",
+            "operation_id": "K06",
+            "previous_reset_identity": "transition-reset",
+            "reset_identity": "different-reset",
+        }]
+        with self.assertRaises(agentic_qa.ValidationError):
+            agentic_qa.validate_report(extra)
+
+    def test_candidate_reliability_substitution_omits_agent_attempts(self) -> None:
+        report = self.valid_report()
+        for card_id in ("K04.2", "K04.4"):
+            index = next(
+                index for index, result in enumerate(report["results"])
+                if result["card_id"] == card_id
+            )
+            source = report["results"][index]
+            report["results"][index] = {
+                "card_id": source["card_id"],
+                "segment": source["segment"],
+                "operation_id": source["operation_id"],
+                "evidence_basis": "candidate_reliability",
+                "outcome": "passed",
+                "verification": source["verification"],
+                "material_finding": False,
+                "finding_issues": [],
+            }
+        self.assertIs(agentic_qa.validate_report(report), report)
+
+        with_score = deepcopy(report)
+        substituted = next(
+            result for result in with_score["results"]
+            if result["card_id"] == "K04.2"
+        )
+        substituted["score_result"] = {"status": "accepted", "points": 50}
+        with self.assertRaises(agentic_qa.ValidationError):
+            agentic_qa.validate_report(with_score)
+
+        failed_assertion = deepcopy(report)
+        substituted = next(
+            result for result in failed_assertion["results"]
+            if result["card_id"] == "K04.2"
+        )
+        substituted["verification"]["status"] = "failed"
+        with self.assertRaises(agentic_qa.ValidationError):
+            agentic_qa.validate_report(failed_assertion)
+
+        first_card = self.valid_report()
+        source = first_card["results"][0]
+        first_card["results"][0] = {
+            "card_id": source["card_id"],
+            "segment": source["segment"],
+            "operation_id": source["operation_id"],
+            "evidence_basis": "candidate_reliability",
+            "outcome": "passed",
+            "verification": source["verification"],
+            "material_finding": False,
+            "finding_issues": [],
+        }
+        with self.assertRaisesRegex(agentic_qa.ValidationError, "first card"):
+            agentic_qa.validate_report(first_card)
 
     def test_implementation_failure_requires_a_finding_issue(self) -> None:
         report = self.valid_report()

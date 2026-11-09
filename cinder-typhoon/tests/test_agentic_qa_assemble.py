@@ -84,17 +84,24 @@ class AgenticQAAssemblyTests(unittest.TestCase):
             report,
         )
 
-    def test_unseparated_strategy_miss_precedes_retained_attempts(self) -> None:
+    def test_product_attempts_exclude_agent_strategy_errors(self) -> None:
         attempts = [
             {
                 "sequence": 1,
+                "outcome": "failed",
+                "classification": "implementation",
+                "elapsed_seconds": 3.0,
+                "observations": ["failed_attempt"],
+            },
+            {
+                "sequence": 2,
                 "outcome": "failed",
                 "classification": "agent_strategy",
                 "elapsed_seconds": 3.0,
                 "observations": ["failed_attempt"],
             },
             {
-                "sequence": 2,
+                "sequence": 3,
                 "outcome": "passed",
                 "classification": None,
                 "elapsed_seconds": 2.0,
@@ -102,16 +109,14 @@ class AgenticQAAssemblyTests(unittest.TestCase):
             },
         ]
 
-        retained = assemble.retain_unseparated_strategy_miss(attempts, "K04.2")
+        retained = assemble.product_attempts(attempts, "K04.2")
 
-        self.assertEqual([item["sequence"] for item in retained], [1, 2, 3])
-        self.assertEqual(
-            [item["outcome"] for item in retained], ["failed", "failed", "passed"]
-        )
-        self.assertEqual(retained[0]["elapsed_seconds"], 0.0)
+        self.assertEqual([item["sequence"] for item in retained], [1, 2])
+        self.assertEqual([item["outcome"] for item in retained], ["failed", "passed"])
+        self.assertEqual(retained[0]["classification"], "implementation")
         self.assertEqual(attempts[0]["sequence"], 1)
         with self.assertRaises(assemble.AssemblyError):
-            assemble.retain_unseparated_strategy_miss([], "K04.2")
+            assemble.product_attempts(attempts[1:2], "K04.2")
 
     def test_score_tool_and_chain_mutations_fail(self) -> None:
         mutations = {
@@ -156,12 +161,12 @@ class AgenticQAAssemblyTests(unittest.TestCase):
             ("arwc", "W01"): operation("arwc", "W01", "2026-11-07T11:10:00Z", "2026-11-07T11:15:00Z", "transition-earned"),
         }
         self.assertEqual(
-            assemble.validate_campaign_structure(reports, order), "campaign-1"
+            assemble.validate_campaign_structure(reports, order, set()),
+            ("campaign-1", []),
         )
 
         mutations = {
             "campaign": lambda value: value[("arwc", "W01")].__setitem__("campaign_id", "campaign-2"),
-            "agent": lambda value: value[("keplerops", "K02")]["agent"].__setitem__("model", "different-model"),
             "phase reset": lambda value: value[("keplerops", "K02")].__setitem__("reset_identity", "different-reset"),
             "overlap": lambda value: value[("keplerops", "K02")].__setitem__("started_at", "2026-11-07T11:04:59Z"),
             "transition order": lambda value: value[("arwc", "W01")].__setitem__("started_at", "2026-11-07T11:09:59Z"),
@@ -171,7 +176,51 @@ class AgenticQAAssemblyTests(unittest.TestCase):
                 mutated = deepcopy(reports)
                 mutate(mutated)
                 with self.assertRaises(assemble.AssemblyError):
-                    assemble.validate_campaign_structure(mutated, order)
+                    assemble.validate_campaign_structure(mutated, order, set())
+
+    def test_campaign_structure_accepts_only_an_exact_reset_boundary(self) -> None:
+        agent = self.operation_report()[0]["agent"]
+        order = {
+            "training": ["T01"],
+            "keplerops": ["K01", "K02"],
+            "arwc": ["W01"],
+        }
+
+        def operation(reset: str, label: str, minute: int) -> dict:
+            return {
+                "campaign_id": "campaign-1",
+                "reset_identity": reset,
+                "agent": deepcopy(agent),
+                "started_at": f"2026-11-07T11:{minute:02d}:00Z",
+                "finished_at": f"2026-11-07T11:{minute + 1:02d}:00Z",
+                "results": [{"start_state": {"label": label}}],
+            }
+
+        reports = {
+            ("training", "T01"): operation("training-reset", "pristine", 0),
+            ("keplerops", "K01"): operation("kepler-old", "pristine", 2),
+            ("keplerops", "K02"): operation("kepler-new", "pristine", 4),
+            ("arwc", "W01"): operation("arwc-reset", "transition-earned", 6),
+        }
+        campaign, boundaries = assemble.validate_campaign_structure(
+            reports, order, {("keplerops", "K02")}
+        )
+        self.assertEqual(campaign, "campaign-1")
+        self.assertEqual(boundaries, [{
+            "phase": "keplerops",
+            "operation_id": "K02",
+            "previous_reset_identity": "kepler-old",
+            "reset_identity": "kepler-new",
+        }])
+
+        for name, declared in {
+            "missing": set(),
+            "wrong": {("arwc", "W01")},
+            "extra": {("keplerops", "K01"), ("keplerops", "K02")},
+        }.items():
+            with self.subTest(mutation=name):
+                with self.assertRaises(assemble.AssemblyError):
+                    assemble.validate_campaign_structure(reports, order, declared)
 
 
 if __name__ == "__main__":

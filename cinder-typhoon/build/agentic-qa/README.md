@@ -9,17 +9,17 @@ agent messages, participant commands, service responses, credentials, payloads,
 and target artifacts remain in the approved operator evidence directory.
 
 Prepare each operation with `prepare.py`. Reuse one opaque campaign ID for the
-complete run, reuse one participant-container reset identity within each phase,
-and give every operation a distinct agent session ID. KeplerOps must finish
-before ARWC starts from its earned transition.
+complete run. Reuse one participant-container reset identity within each phase
+unless an operation is an explicit reset boundary. Give every operation a
+distinct session ID. KeplerOps must finish before ARWC starts from its earned
+transition.
 
 Assemble the content-free operation exports with `assemble.py`. Pass every
 operation export, the candidate-bound reliability report, and each finding.
-If a strategy miss is preserved outside the selected operation export, also
-pass that card with `--unseparated-strategy-miss`. The assembled report places
-the miss before every attempt retained by the selected export, including any
-other failed attempts. It records zero duration because the separate miss was
-not measured independently.
+Use `--reset-boundary PHASE:OPERATION` for each intentional reset identity
+change. Use `--reliability-substitute CARD` only when a failed exploratory card
+must use its passing candidate-bound known-solution assertion instead. The
+substitution contains no participant score or exploratory attempt history.
 
 Validate the committed report with:
 

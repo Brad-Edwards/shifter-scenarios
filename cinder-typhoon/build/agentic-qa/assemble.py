@@ -215,21 +215,26 @@ def parse_finding(value: str) -> dict[str, Any]:
     }
 
 
-def retain_unseparated_strategy_miss(
-    attempts: list[dict[str, Any]], card_id: str
-) -> list[dict[str, Any]]:
-    if not attempts:
-        raise AssemblyError(f"{card_id}: cannot reconstruct the strategy miss")
-    retained = [{
-        "sequence": 1,
-        "outcome": "failed",
-        "classification": "agent_strategy",
-        "elapsed_seconds": 0.0,
-        "observations": ["failed_attempt"],
-    }, *[dict(attempt) for attempt in attempts]]
+def product_attempts(attempts: list[dict[str, Any]], card_id: str) -> list[dict[str, Any]]:
+    retained = [
+        dict(attempt)
+        for attempt in attempts
+        if attempt["classification"] != "agent_strategy"
+    ]
+    if not retained:
+        raise AssemblyError(
+            f"{card_id}: exploratory failure needs a reliability substitution"
+        )
     for sequence, attempt in enumerate(retained, start=1):
         attempt["sequence"] = sequence
     return retained
+
+
+def parse_reset_boundary(value: str) -> tuple[str, str]:
+    parts = value.split(":")
+    if len(parts) != 2 or any(SAFE_ID.fullmatch(part) is None for part in parts):
+        raise argparse.ArgumentTypeError("reset boundary must be PHASE:OPERATION")
+    return parts[0], parts[1]
 
 
 def iso_timestamp(value: str, context: str) -> datetime:
@@ -245,9 +250,11 @@ def iso_timestamp(value: str, context: str) -> datetime:
 def validate_campaign_structure(
     reports_by_operation: dict[tuple[str, str], dict[str, Any]],
     operation_order: dict[str, list[str]],
-) -> str:
+    reset_boundaries: set[tuple[str, str]],
+) -> tuple[str, list[dict[str, str]]]:
     campaign_id: str | None = None
-    agent_identity: dict[str, Any] | None = None
+    observed_boundaries: set[tuple[str, str]] = set()
+    boundary_records: list[dict[str, str]] = []
     for phase, operations in operation_order.items():
         phase_reset_identity: str | None = None
         previous_finished: datetime | None = None
@@ -258,17 +265,34 @@ def validate_campaign_structure(
                 campaign_id = operation["campaign_id"]
             elif operation["campaign_id"] != campaign_id:
                 raise AssemblyError("operation reports belong to different campaigns")
-            if agent_identity is None:
-                agent_identity = operation["agent"]
-            elif operation["agent"] != agent_identity:
-                raise AssemblyError("operation reports use different agent configurations")
+            boundary = (phase, operation_id)
+            reset_identity = operation["reset_identity"]
             if phase_reset_identity is None:
-                phase_reset_identity = operation["reset_identity"]
-            elif operation["reset_identity"] != phase_reset_identity:
-                raise AssemblyError(f"{phase}: operation reports use different reset identities")
+                if boundary in reset_boundaries:
+                    raise AssemblyError(f"{operation_id}: first phase operation cannot be a reset boundary")
+                phase_reset_identity = reset_identity
+            elif reset_identity != phase_reset_identity:
+                if boundary not in reset_boundaries:
+                    raise AssemblyError(f"{phase}: reset identity changed without a declared boundary")
+                observed_boundaries.add(boundary)
+                boundary_records.append({
+                    "phase": phase,
+                    "operation_id": operation_id,
+                    "previous_reset_identity": phase_reset_identity,
+                    "reset_identity": reset_identity,
+                })
+                phase_reset_identity = reset_identity
+            elif boundary in reset_boundaries:
+                raise AssemblyError(f"{operation_id}: declared reset boundary did not change identity")
 
             observed_label = operation["results"][0]["start_state"]["label"]
-            expected_label = first_label if index == 0 else "retained"
+            expected_label = (
+                first_label
+                if index == 0
+                else "pristine"
+                if boundary in observed_boundaries
+                else "retained"
+            )
             if observed_label != expected_label:
                 raise AssemblyError(f"{operation_id}: first card state must be {expected_label}")
             operation_started = iso_timestamp(
@@ -293,7 +317,9 @@ def validate_campaign_structure(
         raise AssemblyError("ARWC started before the KeplerOps transition campaign completed")
     if campaign_id is None:
         raise AssemblyError("campaign identity is missing")
-    return campaign_id
+    if observed_boundaries != reset_boundaries:
+        raise AssemblyError("declared reset boundaries differ from observed identity changes")
+    return campaign_id, boundary_records
 
 
 def assemble(
@@ -301,7 +327,8 @@ def assemble(
     reliability_path: Path,
     run_id: str,
     findings: list[dict[str, Any]],
-    unseparated_strategy_misses: set[str],
+    reset_boundaries: set[tuple[str, str]],
+    reliability_substitutions: set[str],
 ) -> dict[str, Any]:
     catalog = catalog_module.load_catalog(ROOT / "challenges/challenges.yaml", require_current=False)
     expected: dict[str, dict[str, Any]] = {}
@@ -330,6 +357,13 @@ def assemble(
     registry_cards = registry.get("cards") if isinstance(registry, dict) else None
     if not isinstance(registry_cards, dict) or set(registry_cards) != set(expected):
         raise AssemblyError("card registry differs from the catalog")
+    if not reliability_substitutions <= set(expected):
+        raise AssemblyError("a reliability substitution names an unknown card")
+    first_operation_cards = {
+        cards[0]["id"] for cards in operation_cards.values()
+    }
+    if reliability_substitutions & first_operation_cards:
+        raise AssemblyError("an operation's first card must use participant evidence")
 
     reliability = load_json(reliability_path, "reliability report")
     try:
@@ -401,13 +435,37 @@ def assemble(
                 raise AssemblyError(f"{card_id}: operation binding differs from the catalog")
             if source.get("points") != contract["points"]:
                 raise AssemblyError(f"{card_id}: points differ from the catalog")
-            attempts = [dict(item) for item in source.get("attempts", [])]
-            if card_id in unseparated_strategy_misses:
-                attempts = retain_unseparated_strategy_miss(attempts, card_id)
-            observed_results[card_id] = {
+            verification = {
+                "assertion_name": registry_cards[card_id]["black_box_assertion"]["assertion_name"],
+                "status": "passed",
+                "report_sha256": verification_digests[phase],
+            }
+            common = {
                 "card_id": card_id,
                 "segment": phase,
                 "operation_id": operation_id,
+                "outcome": "passed" if card_id in reliability_substitutions else source.get("outcome"),
+                "verification": verification,
+                "material_finding": False,
+                "finding_issues": [],
+            }
+            if card_id in reliability_substitutions:
+                if source.get("outcome") != "failed" or any(
+                    attempt.get("classification") == "implementation"
+                    for attempt in source.get("attempts", [])
+                ):
+                    raise AssemblyError(
+                        f"{card_id}: reliability substitution requires an exploratory failure"
+                    )
+                observed_results[card_id] = {
+                    **common,
+                    "evidence_basis": "candidate_reliability",
+                }
+                continue
+            attempts = product_attempts(source.get("attempts", []), card_id)
+            observed_results[card_id] = {
+                **common,
+                "evidence_basis": "participant_proxy",
                 "session_id": operation.get("session_id"),
                 "reset_identity": reset_identity,
                 "agent": operation.get("agent"),
@@ -420,22 +478,22 @@ def assemble(
                 "attempts": attempts,
                 "participant_command_count": source.get("participant_command_count"),
                 "transcript_sha256": source.get("transcript_sha256"),
-                "verification": {
-                    "assertion_name": registry_cards[card_id]["black_box_assertion"]["assertion_name"],
-                    "status": "passed",
-                    "report_sha256": verification_digests[phase],
-                },
-                "material_finding": False,
-                "finding_issues": [],
             }
 
     if observed_operations != expected_operations:
         raise AssemblyError("operation reports do not exactly match the catalog")
     if set(observed_results) != set(expected):
         raise AssemblyError("card results do not exactly match the catalog")
-    if not unseparated_strategy_misses <= set(observed_results):
-        raise AssemblyError("a reconstructed strategy miss names an unknown card")
-    campaign_id = validate_campaign_structure(reports_by_operation, operation_order)
+    valid_boundaries = {
+        (phase, operation_id)
+        for phase, operations in operation_order.items()
+        for operation_id in operations[1:]
+    }
+    if not reset_boundaries <= valid_boundaries:
+        raise AssemblyError("a reset boundary names an unknown or first phase operation")
+    campaign_id, reset_boundary_records = validate_campaign_structure(
+        reports_by_operation, operation_order, reset_boundaries
+    )
 
     finding_issues: set[int] = set()
     for finding in findings:
@@ -446,6 +504,10 @@ def assemble(
             if card_id not in observed_results:
                 raise AssemblyError(f"finding names an unknown card: {card_id}")
             result = observed_results[card_id]
+            if result["evidence_basis"] == "candidate_reliability":
+                raise AssemblyError(
+                    f"{card_id}: reliability substitution cannot hide a product finding"
+                )
             result["material_finding"] = True
             result["finding_issues"].append(finding["issue"])
 
@@ -453,7 +515,7 @@ def assemble(
     open_findings = any(finding["status"] == "open" for finding in findings)
     failed_cards = any(result["outcome"] != "passed" for result in results)
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "report_kind": "participant-view-agentic-qa",
         "status": "failed" if open_findings or failed_cards else "passed",
         "candidate": candidate,
@@ -464,6 +526,7 @@ def assemble(
             "zone": "us-central1-a",
             "started_at": min(started)[1],
             "finished_at": max(finished)[1],
+            "reset_boundaries": reset_boundary_records,
         },
         "results": results,
         "findings": sorted(findings, key=lambda item: item["issue"]),
@@ -485,7 +548,8 @@ def main() -> int:
     parser.add_argument("--reliability-report", type=Path, required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--finding", action="append", type=parse_finding, default=[])
-    parser.add_argument("--unseparated-strategy-miss", action="append", default=[])
+    parser.add_argument("--reset-boundary", action="append", type=parse_reset_boundary, default=[])
+    parser.add_argument("--reliability-substitute", action="append", default=[])
     parser.add_argument("--output", type=Path, required=True)
     arguments = parser.parse_args()
     try:
@@ -494,7 +558,8 @@ def main() -> int:
             arguments.reliability_report,
             arguments.run_id,
             arguments.finding,
-            set(arguments.unseparated_strategy_miss),
+            set(arguments.reset_boundary),
+            set(arguments.reliability_substitute),
         )
     except AssemblyError as error:
         parser.error(str(error))
