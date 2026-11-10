@@ -105,6 +105,7 @@ gcloud compute instances create "$bake_instance" \
   --subnet "$subnet" \
   --no-address \
   --no-service-account \
+  --no-scopes \
   --tags "$tag" \
   --metadata enable-oslogin=TRUE,block-project-ssh-keys=TRUE,serial-port-enable=FALSE
 bake_created=1
