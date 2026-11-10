@@ -11,6 +11,7 @@ case "$phase" in
 esac
 
 source_root=/opt/cinder-typhoon/build/gcp-images/guest
+install -d -m 0755 /usr/local/libexec
 for executable in cinder-image-first-boot cinder-image-verify cinder-peer-ca cinder-peer-ca-server.py; do
   install -m 0755 "$source_root/$executable" "/usr/local/libexec/$executable"
 done
