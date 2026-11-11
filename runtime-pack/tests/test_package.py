@@ -118,7 +118,7 @@ def test_cinder_registry_mapping_uses_exact_private_images_and_current_readiness
         assert mapping["source_version"] == "event-2026.11.09-02"
         assert mapping["image_kind"] == "image"
         assert mapping["image_ref"] == (
-            f"projects/prod-mgau4w/global/images/cinder-{phase}-event-20261109-02"
+            f"projects/prod-2hl4ce/global/images/cinder-{phase}-event-20261109-02"
         )
         assert "/global/images/" in mapping["image_ref"]
     for phase in ("training", "keplerops"):
