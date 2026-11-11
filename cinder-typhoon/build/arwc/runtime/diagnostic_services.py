@@ -34,6 +34,7 @@ VAULT_BASE = 0x555550000000
 INITIAL = {"side_effect_observed": False, "protected_state_controlled": False,
            "false_estimate_observed": False, "oracle_contract_observed": False,
            "selector_predicted": False, "bundle_opened": False,
+           "oracle_attempt_expires_at_epoch": 0,
            "calibration_exported": False, "oracle_queries": 0,
            "colliding_program_accepted": False,
            "vault_contract_observed": False, "vault_boundary_controlled": False,
@@ -42,6 +43,7 @@ INITIAL = {"side_effect_observed": False, "protected_state_controlled": False,
            }
 ORACLE_LOCK = threading.Lock()
 SEEN_CIPHERTEXTS: set[str] = set()
+ORACLE_ATTEMPT_TTL_SECONDS = 600
 
 MASK64 = (1 << 64) - 1
 RSA_P = int("db74524bafbfde47409fb1ba348d31ff76564038c8d1849c7f87af27a9e1581d478d7e83089b5e943edaa149b36d446d8552d8f9785637078bfebf688c386db42a7c37c6cf182b9f09ac952d3445ebd1e5b4066a5df3750325d8dd4d67b2fef2f888de9c4e62c8065e44b8bd6fbb7ba9323d31f174c1dd2f68f291fd888a00d1", 16)
@@ -518,8 +520,6 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/signature-oracles/current":
             if not state["oracle_contract_observed"]:
                 self.send_json(403, {"error": "recovery contract observation required"}); return
-            if state["selector_predicted"]:
-                self.send_json(409, {"error": "prediction set already consumed"}); return
             expected = {"record_id": "ENG-REC-24", "prediction_set": "SELECTOR-CRR-R4",
                         "predictions": [{"request_id": case["request_id"],
                                          "epoch_bucket": case["epoch_bucket"],
@@ -527,7 +527,20 @@ class Handler(BaseHTTPRequestHandler):
                                         for case in PREDICTION_CASES]}
             if request != expected:
                 self.send_json(409, {"error": "response selection predictions rejected"}); return
-            state["selector_predicted"] = True; atomic_json(STATE, state)
+            now = int(datetime.now(timezone.utc).timestamp())
+            with ORACLE_LOCK:
+                state = load_state()
+                if state["selector_predicted"]:
+                    expires = int(state.get("oracle_attempt_expires_at_epoch", 0))
+                    if state["bundle_opened"] or expires <= 0 or expires > now:
+                        self.send_json(409, {"error": "prediction set already consumed"}); return
+                    state["selector_predicted"] = False
+                    state["oracle_queries"] = 0
+                    ORACLE_LOG.write_text("", encoding="ascii")
+                    SEEN_CIPHERTEXTS.clear()
+                state["selector_predicted"] = True
+                state["oracle_attempt_expires_at_epoch"] = now + ORACLE_ATTEMPT_TTL_SECONDS
+                atomic_json(STATE, state)
             self.accepted("signature-oracle-read", {
                 "record_id": "SELECTOR-CRR-R4", "revision": 4, "cases_accepted": len(PREDICTION_CASES),
                 "selector": "xorshift128+", "replayable": False,

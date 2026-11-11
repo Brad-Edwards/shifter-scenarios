@@ -146,6 +146,15 @@ class W24Live(unittest.TestCase):
         status, result = request("/api/signature-oracles/current", method="POST", body=body)
         self.assertEqual(status, 201); self.assertEqual(result["record"]["cases_accepted"], 4)
         self.assertEqual(request("/api/signature-oracles/current", method="POST", body=body)[0], 409)
+        subprocess.run(
+            ["docker", "exec", "--user", "arwc-diagnostics", "cinder-arwc-diagnostics",
+             "python3", "-c",
+             "import json,pathlib; p=pathlib.Path('/var/lib/arwc-diagnostics/state/service.json'); s=json.loads(p.read_text()); s['oracle_attempt_expires_at_epoch']=1; p.write_text(json.dumps(s,sort_keys=True,separators=(',',':'))+'\\n')"],
+            check=True,
+        )
+        renewed, result = request("/api/signature-oracles/current", method="POST", body=body)
+        self.assertEqual(renewed, 201)
+        self.assertEqual(result["record"]["cases_accepted"], 4)
 
     def test_03_oracle_classes_rotation_repeats_and_range(self) -> None:
         bucket = type(self).contract["epoch_bucket"]
