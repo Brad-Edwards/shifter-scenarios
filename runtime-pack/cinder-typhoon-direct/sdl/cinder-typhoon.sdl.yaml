@@ -1,7 +1,7 @@
 name: cinder-typhoon-direct
 description: Cinder Typhoon runtime mapping for three private GCE custom images.
-  Training and KeplerOps provide participant RDP desktops. ARWC is the paired
-  backend reached through KeplerOps.
+  Training and KeplerOps provide participant RDP desktops. ARWC provides a
+  participant SSH terminal confined to its FieldLink connector workstation.
 nodes:
   training-host:
     type: compute
@@ -44,13 +44,15 @@ nodes:
     os_version: '12'
     source:
       name: cinder-arwc-host
-      version: event-2026.11.09-02
+      version: event-2026.11.11-05
     resources:
       ram: 16 gib
       cpu: 4
     services:
     - port: 443
       name: fieldlink
+    - port: 22
+      name: ssh
 entities:
   participant:
     description: Cinder Typhoon participant
@@ -64,13 +66,18 @@ accounts:
     username: rowan
     node: keplerops-host
     auth_method: password
+  arwc_connector:
+    username: fieldlink
+    node: arwc-host
+    auth_method: key
 agents:
   participant:
     affiliations: [participant]
-    description: Participant with RDP access to Training and KeplerOps
+    description: Participant with RDP access to Training and KeplerOps and confined SSH access to ARWC
     starting_accounts:
     - training_desktop
     - keplerops_desktop
+    - arwc_connector
     interactive_access:
       training_rdp:
         target_ref: training-host
@@ -80,6 +87,10 @@ agents:
         target_ref: keplerops-host
         channel: rdp
         account_ref: keplerops_desktop
+      arwc_ssh:
+        target_ref: arwc-host
+        channel: ssh
+        account_ref: arwc_connector
 realization:
   constraints:
   - field_pointer: /nodes/training-host

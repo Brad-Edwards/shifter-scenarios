@@ -11,12 +11,16 @@ provision infrastructure.
 
 Training and KeplerOps use BigRAE's existing `preconfigured-machine-host`
 contract. Their image-owned first-boot services create fresh Docker volumes and
-bring up their participant RDP containers. ARWC is a backend-only exact custom
-image.
+bring up their participant RDP containers.
 
-The adapter copies BigRAE's host-side password verifiers into the two participant
-containers without handling plaintext. It also exchanges the KeplerOps and ARWC
-public CA certificates over the range's private network, gives KeplerOps the
-allocated ARWC private address, restarts the two existing connectors, and
-verifies all three image-owned services. It does not select images, create
-networks, mint credentials, or replace BigRAE lifecycle and access behavior.
+ARWC uses BigRAE's existing SSH participant access. The image confines that
+login to the FieldLink connector workstation. The participant does not receive
+an ARWC host shell or Docker authority.
+
+The adapter copies BigRAE's host-side password verifiers into the two RDP
+containers without handling plaintext. It also exchanges the KeplerOps and
+ARWC public CA certificates over the range's private network. It gives
+KeplerOps the allocated ARWC private address, restarts the two existing
+connectors, and verifies all three image-owned services. It does not select
+images, create networks, mint credentials, or replace BigRAE lifecycle and
+access behavior.

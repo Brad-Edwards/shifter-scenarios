@@ -90,9 +90,24 @@ def test_cinder_package_is_conformant_and_uses_only_three_outer_hosts():
         constraint["domain"] == {"kind": "exact", "value": "virtual-machine"}
         for constraint in data["realization"]["constraints"]
     )
-    assert set(data["agents"]["participant"]["interactive_access"]) == {"training_rdp", "keplerops_rdp"}
+    assert set(data["agents"]["participant"]["interactive_access"]) == {
+        "training_rdp",
+        "keplerops_rdp",
+        "arwc_ssh",
+    }
     assert {access["channel"] for access in data["agents"]["participant"]["interactive_access"].values()} == {
-        "rdp"
+        "rdp",
+        "ssh",
+    }
+    assert data["agents"]["participant"]["interactive_access"]["arwc_ssh"] == {
+        "target_ref": "arwc-host",
+        "channel": "ssh",
+        "account_ref": "arwc_connector",
+    }
+    assert data["accounts"]["arwc_connector"] == {
+        "username": "fieldlink",
+        "node": "arwc-host",
+        "auth_method": "key",
     }
 
 
@@ -116,7 +131,7 @@ def test_cinder_registry_mapping_uses_exact_private_images_and_current_readiness
     expected_images = {
         "training": ("event-2026.11.11-04", "cinder-training-event-20261111-04"),
         "keplerops": ("event-2026.11.11-04", "cinder-keplerops-event-20261111-04"),
-        "arwc": ("event-2026.11.09-02", "cinder-arwc-event-20261109-02"),
+        "arwc": ("event-2026.11.11-05", "cinder-arwc-event-20261111-05"),
     }
     for phase, mapping in by_phase.items():
         assert mapping["provider"] == "gce"

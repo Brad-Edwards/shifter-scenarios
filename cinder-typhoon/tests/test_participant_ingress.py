@@ -60,6 +60,30 @@ class ParticipantIngressTests(unittest.TestCase):
         self.assertIn("\nset -e\n", startwm)
         self.assertNotIn("\nset -eu\n", startwm)
 
+    def test_arwc_ssh_is_confined_to_the_connector_workstation(self) -> None:
+        guest = ROOT / "build/gcp-images/guest"
+        participant_shell = (guest / "cinder-arwc-participant-shell").read_text(encoding="utf-8")
+        container_shell = (guest / "cinder-arwc-container-shell").read_text(encoding="utf-8")
+        sshd = (guest / "cinder-arwc-participant-sshd.conf").read_text(encoding="utf-8")
+        sudoers = (guest / "cinder-arwc-participant-sudoers").read_text(encoding="utf-8")
+        preparation = (guest / "prepare-image.sh").read_text(encoding="utf-8")
+
+        self.assertIn("sudo -n -- /usr/local/libexec/cinder-arwc-container-shell", participant_shell)
+        self.assertIn("container=cinder-arwc-connector", container_shell)
+        self.assertIn("--user fieldlink", container_shell)
+        self.assertIn("--workdir /var/lib/fieldlink-connector", container_shell)
+        self.assertIn("Match User fieldlink", sshd)
+        self.assertIn("AuthenticationMethods publickey", sshd)
+        self.assertIn("ForceCommand /usr/local/libexec/cinder-arwc-participant-shell", sshd)
+        self.assertIn("AllowTcpForwarding no", sshd)
+        self.assertIn("PermitTunnel no", sshd)
+        self.assertEqual(
+            sudoers.strip(),
+            "fieldlink ALL=(root) NOPASSWD: /usr/local/libexec/cinder-arwc-container-shell",
+        )
+        self.assertIn("visudo -cf /etc/sudoers.d/cinder-arwc-participant", preparation)
+        self.assertIn("sshd -t", preparation)
+
 
 if __name__ == "__main__":
     unittest.main()

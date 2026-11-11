@@ -48,6 +48,17 @@ case "$phase" in
   arwc)
     phase_root=/opt/cinder-typhoon/build/arwc
     participant_image=cinder-arwc/a-connector:hand-build
+    install -m 0755 "$source_root/cinder-arwc-participant-shell" \
+      /usr/local/libexec/cinder-arwc-participant-shell
+    install -m 0755 "$source_root/cinder-arwc-container-shell" \
+      /usr/local/libexec/cinder-arwc-container-shell
+    install -d -m 0755 /etc/ssh/sshd_config.d
+    install -m 0644 "$source_root/cinder-arwc-participant-sshd.conf" \
+      /etc/ssh/sshd_config.d/90-cinder-arwc-participant.conf
+    install -m 0440 "$source_root/cinder-arwc-participant-sudoers" \
+      /etc/sudoers.d/cinder-arwc-participant
+    visudo -cf /etc/sudoers.d/cinder-arwc-participant >/dev/null
+    sshd -t
     ;;
 esac
 

@@ -1,0 +1,24 @@
+#!/bin/bash
+set -euo pipefail
+
+if [[ $EUID -ne 0 ]]; then
+  echo "container shell requires root" >&2
+  exit 1
+fi
+
+container=cinder-arwc-connector
+if [[ $(/usr/bin/docker inspect --format '{{.State.Running}}' "$container" 2>/dev/null || true) != true ]]; then
+  echo "ARWC connector workstation is not ready" >&2
+  exit 1
+fi
+
+terminal=(-i)
+if [[ -t 0 && -t 1 ]]; then
+  terminal+=(-t)
+fi
+
+exec /usr/bin/docker exec "${terminal[@]}" \
+  --env "TERM=${TERM:-xterm-256color}" \
+  --user fieldlink \
+  --workdir /var/lib/fieldlink-connector \
+  "$container" /bin/bash -l

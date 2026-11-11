@@ -1,0 +1,1 @@
+fieldlink ALL=(root) NOPASSWD: /usr/local/libexec/cinder-arwc-container-shell
