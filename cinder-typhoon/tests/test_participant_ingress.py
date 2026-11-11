@@ -55,6 +55,11 @@ class ParticipantIngressTests(unittest.TestCase):
         self.assertIn('grp.getgrnam("ssl-cert")', readiness)
         self.assertIn("xrdp.pw_name not in ssl_cert.gr_mem", readiness)
 
+    def test_desktop_startup_accepts_distribution_profile_variables(self) -> None:
+        startwm = (ROOT / "build/participant-host/startwm.sh").read_text(encoding="utf-8")
+        self.assertIn("\nset -e\n", startwm)
+        self.assertNotIn("\nset -eu\n", startwm)
+
 
 if __name__ == "__main__":
     unittest.main()
