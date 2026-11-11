@@ -15,8 +15,10 @@ RUN sed -i 's/^Suites: .*/Suites: kali-last-snapshot/' /etc/apt/sources.list.d/k
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 2000 cinder \
     && useradd --uid 2000 --gid cinder --create-home --shell /bin/bash cinder \
-    && sed -i 's/^security_layer=.*/security_layer=rdp/' /etc/xrdp/xrdp.ini \
-    && grep -qx 'security_layer=rdp' /etc/xrdp/xrdp.ini
+    && usermod -aG ssl-cert xrdp \
+    && sed -i 's/^security_layer=.*/security_layer=tls/; s/^ssl_protocols=.*/ssl_protocols=TLSv1.2/' /etc/xrdp/xrdp.ini \
+    && grep -qx 'security_layer=tls' /etc/xrdp/xrdp.ini \
+    && grep -qx 'ssl_protocols=TLSv1.2' /etc/xrdp/xrdp.ini
 
 COPY --chown=cinder:cinder assets/training/workstation/TRAINING.md /home/cinder/TRAINING.md
 COPY build/participant-host/startwm.sh /etc/xrdp/startwm.sh

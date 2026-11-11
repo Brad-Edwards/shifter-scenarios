@@ -20,8 +20,10 @@ RUN apt-get update \
     # Keep the account eligible for public-key SSH while leaving password
     # authentication impossible both here and in sshd_config.
     && usermod --password x rowan \
-    && sed -i 's/^security_layer=.*/security_layer=rdp/' /etc/xrdp/xrdp.ini \
-    && grep -qx 'security_layer=rdp' /etc/xrdp/xrdp.ini \
+    && usermod -aG ssl-cert xrdp \
+    && sed -i 's/^security_layer=.*/security_layer=tls/; s/^ssl_protocols=.*/ssl_protocols=TLSv1.2/' /etc/xrdp/xrdp.ini \
+    && grep -qx 'security_layer=tls' /etc/xrdp/xrdp.ini \
+    && grep -qx 'ssl_protocols=TLSv1.2' /etc/xrdp/xrdp.ini \
     && groupadd --system fieldkest-workbench \
     && useradd --system --gid fieldkest-workbench --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-workbench
 
