@@ -114,8 +114,8 @@ def test_cinder_registry_mapping_uses_exact_private_images_and_current_readiness
         for mapping in mappings
     }
     expected_images = {
-        "training": ("event-2026.11.11-01", "cinder-training-event-20261111-01"),
-        "keplerops": ("event-2026.11.11-01", "cinder-keplerops-event-20261111-01"),
+        "training": ("event-2026.11.11-04", "cinder-training-event-20261111-04"),
+        "keplerops": ("event-2026.11.11-04", "cinder-keplerops-event-20261111-04"),
         "arwc": ("event-2026.11.09-02", "cinder-arwc-event-20261109-02"),
     }
     for phase, mapping in by_phase.items():
