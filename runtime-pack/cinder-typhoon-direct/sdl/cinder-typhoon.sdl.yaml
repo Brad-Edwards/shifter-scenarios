@@ -44,7 +44,7 @@ nodes:
     os_version: '12'
     source:
       name: cinder-arwc-host
-      version: event-2026.11.11-06
+      version: event-2026.11.11-07
     resources:
       ram: 16 gib
       cpu: 4

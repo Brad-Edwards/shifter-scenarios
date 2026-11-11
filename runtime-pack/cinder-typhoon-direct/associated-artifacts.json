@@ -1,7 +1,7 @@
 {
   "schema_version": "associated-artifact-manifest/v1",
   "manifest_id": "cinder-typhoon-direct-associated-artifacts",
-  "manifest_version": "0.1.4",
+  "manifest_version": "0.1.5",
   "canonicalization_profile": "associated-artifact-set/v1",
   "scope": "scenario",
   "parent_ref": {
@@ -51,7 +51,7 @@
       "uri": "raes-environment-pack:/pack.yaml",
       "checksum": {
         "algorithm": "sha256",
-        "value": "3f9a41dadabe8796d41f2809efc298fcdea84f3532835e0ea86b0981cc32d380"
+        "value": "0bd0b4be6387eafe714a70165c53c4b4b41abec0de62b510fd5eff0833640da3"
       },
       "size_bytes": 416,
       "created_at": "2026-09-17T00:00:00Z",
@@ -67,7 +67,7 @@
       "uri": "raes-environment-pack:/sdl/cinder-typhoon.sdl.yaml",
       "checksum": {
         "algorithm": "sha256",
-        "value": "394f6ce8fdada396ace4ff5b604fa557b85035a07a64161d4cc660daa73eb75e"
+        "value": "7572ae1d4d32b9daf83ffeba284ca409c963c10129b3feb4d72e50ee1225fedc"
       },
       "size_bytes": 2654,
       "created_at": "2026-09-17T00:00:00Z",
@@ -77,5 +77,5 @@
       "description": null
     }
   },
-  "set_digest": "sha256:423fd234a88db3868d1f15650cb90b1a05b73156c6a5dfeda499484b397407b3"
+  "set_digest": "sha256:2c7ee539a8e97219cafc4ec5765d4493c3719b3fcd2f8804a914d879a0b06c16"
 }
