@@ -30,6 +30,7 @@ ZONE=$(terraform -chdir="$GCP_ROOT" output -raw zone)
 tar -C "$PACK_ROOT" -czf "$ARCHIVE" \
   --exclude='build/arwc/.operator' \
   --exclude='build/arwc/gcp/.terraform' \
+  --exclude='build/gcp-images/.operator' \
   --exclude='*/__pycache__' \
   build/arwc \
   build/gcp-images \

@@ -30,6 +30,7 @@ ZONE=$(terraform -chdir="$GCP_ROOT" output -raw zone)
 tar -C "$PACK_ROOT" -czf "$ARCHIVE" \
   --exclude='build/keplerops/.operator' \
   --exclude='build/keplerops/gcp/.terraform' \
+  --exclude='build/gcp-images/.operator' \
   --exclude='*/__pycache__' \
   build/keplerops \
   build/gcp-images \
