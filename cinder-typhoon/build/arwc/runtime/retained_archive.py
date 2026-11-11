@@ -961,7 +961,12 @@ class Handler(BaseHTTPRequestHandler):
             return
         operation = request.get("operation")
         if operation == "exchange":
-            if state.get("current_session"):
+            current_session = state.get("current_session")
+            now = int(datetime.now(timezone.utc).timestamp())
+            if (
+                isinstance(current_session, dict)
+                and int(current_session.get("expires_at_epoch", 0)) > now
+            ) or (current_session and not isinstance(current_session, dict)):
                 self.send_json(409, {"error": "collection session has already been issued"})
                 return
             try:
@@ -997,7 +1002,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(409, {"error": "historical identity does not match"})
                 return
             token = secrets.token_urlsafe(40)
-            expires = int(datetime.now(timezone.utc).timestamp()) + 600
+            expires = now + 600
             state["current_session"] = {
                 "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
                 "expires_at_epoch": expires,
