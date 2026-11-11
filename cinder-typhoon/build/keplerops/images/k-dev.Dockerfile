@@ -20,6 +20,7 @@ RUN apt-get update \
     # Keep the account eligible for public-key SSH while leaving password
     # authentication impossible both here and in sshd_config.
     && usermod --password x rowan \
+    && usermod -aG ssl-cert xrdp \
     && groupadd --system fieldkest-workbench \
     && useradd --system --gid fieldkest-workbench --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-workbench
 

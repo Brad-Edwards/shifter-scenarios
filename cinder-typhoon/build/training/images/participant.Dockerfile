@@ -15,7 +15,7 @@ RUN sed -i 's/^Suites: .*/Suites: kali-last-snapshot/' /etc/apt/sources.list.d/k
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 2000 cinder \
     && useradd --uid 2000 --gid cinder --create-home --shell /bin/bash cinder \
-    && usermod -aG ssl-cert cinder
+    && usermod -aG ssl-cert xrdp
 
 COPY --chown=cinder:cinder assets/training/workstation/TRAINING.md /home/cinder/TRAINING.md
 COPY build/participant-host/startwm.sh /etc/xrdp/startwm.sh
