@@ -30,7 +30,6 @@ actual_sha256=$(sha256sum "$manifest" | awk '{print $1}')
 [ "$actual_sha256" = "$expected_sha256" ] || exit 1
 
 python3 - "$manifest" <<'PY'
-import grp
 import json
 import os
 import pwd
@@ -55,12 +54,12 @@ for value in paths:
         raise SystemExit(1)
 if not Path("/usr/sbin/xrdp").is_file() or not Path("/usr/bin/startxfce4").is_file():
     raise SystemExit(1)
-xrdp = pwd.getpwnam("xrdp")
-ssl_cert = grp.getgrnam("ssl-cert")
-key_path = Path("/etc/xrdp/key.pem")
-if not key_path.is_symlink() or os.readlink(key_path) != "/etc/ssl/private/ssl-cert-snakeoil.key":
-    raise SystemExit(1)
-if xrdp.pw_gid != ssl_cert.gr_gid and xrdp.pw_name not in ssl_cert.gr_mem:
+xrdp_config = {
+    line.strip()
+    for line in Path("/etc/xrdp/xrdp.ini").read_text(encoding="utf-8").splitlines()
+    if line.strip() and not line.lstrip().startswith(("#", ";"))
+}
+if "security_layer=rdp" not in xrdp_config:
     raise SystemExit(1)
 with socket.create_connection(("127.0.0.1", 3389), timeout=3):
     pass
