@@ -10,7 +10,7 @@ nodes:
     os_version: '12'
     source:
       name: cinder-training-host
-      version: event-2026.11.09-02
+      version: event-2026.11.11-01
     resources:
       ram: 8 gib
       cpu: 2
@@ -27,7 +27,7 @@ nodes:
     os_version: '12'
     source:
       name: cinder-keplerops-host
-      version: event-2026.11.09-02
+      version: event-2026.11.11-01
     resources:
       ram: 16 gib
       cpu: 4

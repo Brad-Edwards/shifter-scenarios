@@ -1,26 +1,29 @@
 # Binding the cinder-typhoon-direct pack
 
-Use `cinder-typhoon-direct.binding.json` with pack version 0.1.0 and adapter
+Use `cinder-typhoon-direct.binding.json` with pack version 0.1.1 and adapter
 `panw.cinder-typhoon-direct` version 0.3.1. The adapter binding contains only
 the three compiled node addresses. Register
 `cinder-typhoon-direct.image-mappings.json` through BigRAE's RAES Image Registry
 to map the SDL sources to the exact private images in `prod-2hl4ce`.
 
 Pack content digest:
-`sha256:29b50b546906a5e7ccaa55b1653481df6d6dc55c3815d294f1a915be5767ddbf`.
+`sha256:bcf881bd108c57a599906c72f686c3cef43b33ffed79c9e3a26454b870f5867b`.
 
 Adapter worker:
 `ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:cabeb7b75667678f78fb325253ce41fc96c8d8eaa16e5c1de4b2adc20165026a`.
 Install it with
 [`cinder-typhoon-direct.manifest.json`](../runtime-adapter/cinder-typhoon-direct.manifest.json).
 
-Image source commit:
+Training and KeplerOps image source commit:
+`5414f82434d8f6efbc5ccd93dfc9a1b18933b128`.
+
+ARWC image source commit:
 `3f9cb3e0e353b0f59e96697c5102358b92982728`.
 
 | Target | Image | Numeric image ID | Machine | Disk | Capability |
 | --- | --- | --- | --- | --- | --- |
-| Training | `cinder-training-event-20261109-02` | `2204324802999504936` | `e2-standard-2` | 40 GB `pd-balanced` | `preconfigured-machine-host` |
-| KeplerOps | `cinder-keplerops-event-20261109-02` | `6878736924704395304` | `e2-standard-4` | 80 GB `pd-balanced` | `preconfigured-machine-host` |
+| Training | `cinder-training-event-20261111-01` | `8748915274798446038` | `e2-standard-2` | 40 GB `pd-balanced` | `preconfigured-machine-host` |
+| KeplerOps | `cinder-keplerops-event-20261111-01` | `5774629514417649110` | `e2-standard-4` | 80 GB `pd-balanced` | `preconfigured-machine-host` |
 | ARWC | `cinder-arwc-event-20261109-02` | `1804942567307890728` | `e2-standard-4` | 80 GB `pd-balanced` | `standard` |
 
 Training readiness manifest:

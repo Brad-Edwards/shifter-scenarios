@@ -113,14 +113,23 @@ def test_cinder_registry_mapping_uses_exact_private_images_and_current_readiness
         mapping["source_name"].removeprefix("cinder-").removesuffix("-host"): mapping
         for mapping in mappings
     }
+    expected_images = {
+        "training": ("event-2026.11.11-01", "cinder-training-event-20261111-01"),
+        "keplerops": ("event-2026.11.11-01", "cinder-keplerops-event-20261111-01"),
+        "arwc": ("event-2026.11.09-02", "cinder-arwc-event-20261109-02"),
+    }
     for phase, mapping in by_phase.items():
         assert mapping["provider"] == "gce"
-        assert mapping["source_version"] == "event-2026.11.09-02"
+        source_version, image = expected_images[phase]
+        assert mapping["source_version"] == source_version
         assert mapping["image_kind"] == "image"
-        assert mapping["image_ref"] == (
-            f"projects/prod-2hl4ce/global/images/cinder-{phase}-event-20261109-02"
-        )
+        assert mapping["image_ref"] == f"projects/prod-2hl4ce/global/images/{image}"
         assert "/global/images/" in mapping["image_ref"]
+        node = source["nodes"][f"{phase}-host"]
+        assert node["source"] == {
+            "name": mapping["source_name"],
+            "version": source_version,
+        }
     for phase in ("training", "keplerops"):
         readiness = CINDER_ROOT.parents[1] / f"cinder-typhoon/build/{phase}/participant-readiness.json"
         assert by_phase[phase]["participant_readiness_manifest_sha256"] == hashlib.sha256(
