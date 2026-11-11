@@ -26,6 +26,8 @@ services:
         ipv4_address: 10.77.40.10
         aliases:
           - kali.training
+      participant_ingress:
+        ipv4_address: 10.77.41.2
   workbench:
     build:
       context: ../..
@@ -150,6 +152,15 @@ networks:
       config:
         - subnet: 10.77.40.0/24
           gateway: 10.77.40.1
+  participant_ingress:
+    name: cinder-training-participant-ingress
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_ip_masquerade: "false"
+    ipam:
+      config:
+        - subnet: 10.77.41.0/29
+          gateway: 10.77.41.1
 
 volumes:
   participant-home:

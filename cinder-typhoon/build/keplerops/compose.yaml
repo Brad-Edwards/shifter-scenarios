@@ -112,6 +112,8 @@ services:
       corporate:
         ipv4_address: 10.77.50.20
         aliases: [k-dev.keplerops.test]
+      participant_ingress:
+        ipv4_address: 10.77.55.2
 
   k-source:
     <<: *service-security
@@ -549,6 +551,12 @@ networks:
     name: cinder-keplerops-customer-transit
     driver: bridge
     ipam: {config: [{subnet: 10.77.54.0/29, gateway: 10.77.54.1}]}
+  participant_ingress:
+    name: cinder-keplerops-participant-ingress
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_ip_masquerade: "false"
+    ipam: {config: [{subnet: 10.77.55.0/29, gateway: 10.77.55.1}]}
 
 volumes:
   k-dev-home: {name: cinder-keplerops-k-dev-home}
