@@ -1,0 +1,241 @@
+{
+  "scope": "issue-363 product compatibility fixture; normal operations only",
+  "status": "passed",
+  "collected_at": "2026-11-12T23:44:55.170340+00:00",
+  "project": "prod-mgau4w",
+  "vm": "cinder-arwc-ot-compat-363",
+  "checks": {
+    "opcua": {
+      "namespace": 2,
+      "application_uris": [
+        "urn:arwc:crr:plc"
+      ],
+      "certificate_uris": [
+        "urn:arwc:crr:plc"
+      ],
+      "observations": {
+        "LevelM": {
+          "value": 8.0,
+          "status": "Good",
+          "source_timestamp": "2026-11-12 23:38:24.771156+00:00"
+        },
+        "PositionPct": {
+          "value": 35.0,
+          "status": "Good",
+          "source_timestamp": "2026-11-12 23:38:24.772636+00:00"
+        },
+        "FlowM3s": {
+          "value": 0.17499999701976776,
+          "status": "Good",
+          "source_timestamp": "2026-11-12 23:38:24.773963+00:00"
+        },
+        "IoHealthy": {
+          "value": true,
+          "status": "Good",
+          "source_timestamp": "2026-11-12 23:38:24.775691+00:00"
+        },
+        "RequestedTargetPct": {
+          "value": 35.0,
+          "status": "Good",
+          "source_timestamp": "2026-11-12 23:38:24.777024+00:00"
+        },
+        "Owner": {
+          "value": 1,
+          "status": "Good",
+          "source_timestamp": "2026-11-12 23:38:24.778216+00:00"
+        }
+      }
+    },
+    "path": {
+      "fuxa_hmi": {
+        "sequence": 1,
+        "feedback_pct": 25,
+        "owner": 1
+      },
+      "mqtt_command": {
+        "id": "4d16440d-c335-4c2d-b2c1-f6cee16e73f7",
+        "stages": [
+          "received",
+          "dispatched",
+          "plc_accepted",
+          "completed"
+        ],
+        "feedback_pct": 40,
+        "redelivery": "no redispatch"
+      },
+      "historian": {
+        "source_time": "2026-11-12 23:43:21+00:00",
+        "ingested_at": "2026-11-12 23:43:21.485210+00:00",
+        "position_pct": "40.0",
+        "transport_quality": "Good",
+        "process_quality": "Good"
+      },
+      "historical_viewer": {
+        "dashboard": "arwc-history",
+        "postgres_rows": 5
+      }
+    },
+    "local-priority": {
+      "phase": "local-priority",
+      "observations": {
+        "IoHealthy": true,
+        "RequestedTargetPct": 35.0,
+        "PositionPct": 35.0,
+        "HmiAccepted": 2,
+        "HmiRemoteEnabled": false,
+        "Owner": 1
+      },
+      "historian_quality": "Good",
+      "server_certificate_sha256": "81c206dc110f60125341b1de4e26783a76f53754924d5565e9e6772bf1cb2906"
+    },
+    "field-down": {
+      "phase": "field-down",
+      "observations": {
+        "IoHealthy": false,
+        "RequestedTargetPct": 35.0,
+        "PositionPct": 35.0,
+        "HmiAccepted": 3,
+        "HmiRemoteEnabled": false,
+        "Owner": 1
+      },
+      "historian_quality": "FieldUnavailable",
+      "server_certificate_sha256": "81c206dc110f60125341b1de4e26783a76f53754924d5565e9e6772bf1cb2906"
+    },
+    "field-up": {
+      "phase": "field-up",
+      "observations": {
+        "IoHealthy": true,
+        "RequestedTargetPct": 35.0,
+        "PositionPct": 0.0,
+        "HmiAccepted": 3,
+        "HmiRemoteEnabled": false,
+        "Owner": 1
+      },
+      "historian_quality": "Good",
+      "server_certificate_sha256": "81c206dc110f60125341b1de4e26783a76f53754924d5565e9e6772bf1cb2906"
+    },
+    "retained": {
+      "phase": "retained",
+      "observations": {
+        "IoHealthy": true,
+        "RequestedTargetPct": 35.0,
+        "PositionPct": 35.0,
+        "HmiAccepted": 0,
+        "HmiRemoteEnabled": false,
+        "Owner": 0
+      },
+      "historian_quality": "Good",
+      "server_certificate_sha256": "81c206dc110f60125341b1de4e26783a76f53754924d5565e9e6772bf1cb2906"
+    },
+    "editor": {
+      "product": "OpenPLC Editor",
+      "version": "4.3.4",
+      "network": "separate namespace without interfaces/routes",
+      "compile": "passed",
+      "gui_window": "opened",
+      "external_account": "not required"
+    },
+    "timestamp_precision": {
+      "source_time": "2026-11-12T23:44:54.002288+00:00",
+      "ingested_at": "2026-11-12T23:44:54.745915+00:00",
+      "subsecond_preserved": true
+    }
+  },
+  "setup": "setup-slice.sh completed; native identity and operating paths passed afterwards",
+  "negative_control": "Unmodified Runtime 4.3.2 failed the endpoint/certificate application-URI assertion; the corrected image passed",
+  "source_sha256": {
+    "compose.yaml": "6ce3f2e060486d9e94433ea2f317e3097b3a1dc977d5442dea6138a565326dbd",
+    "main.st": "63e91ca0316b21713cd5d7580c654165a47bccebca46dba21bafa8e01e690835",
+    "tags.json": "8e6e0dd21b5a04ed721a4435bab8f799d540efa33ad2c550686320a4e6bb7a88",
+    "plc.Dockerfile": "71f12109173c4fd0da0c08f7d36fed602c5337d28db73d3a877261ba1c1d1bcb",
+    "fuxa.Dockerfile": "58969113fd5ab8b59122682a43efbf9fa7f8642f19aad7d50cbbb702f7d479a3",
+    "tools.Dockerfile": "3322c61679936e453f8e8aebe0585faba5fb0e05a8a9a27ec41b6e4fbd170909",
+    "patch_opcua_identity.py": "745515a04c907d67adf7a5c45a35211f7b829b83615a70a7f45c554d72b08d3f",
+    "requirements.lock": "f9421aa77d56309ee1bd5a4902e5e891b43795188bd42a579766d0a4b6009673",
+    "fuxa-plugin/package-lock.json": "59e30513a6924e62dba2ffa197cb4cfce54cf27885d4a2f018a8b6023eadbada",
+    "setup-slice.sh": "316dd219f9e4201ec652c3660d98a6cb18498df131e707e71ad2a7db091308e0",
+    "prepare_services.py": "c555877d0c93855c6a7d7f906449129b633fc4e20bdda8c9f1574e9c9666710f"
+  },
+  "images": [
+    {
+      "ID": "sha256:3777b8e3fb6c622cb7ada9c859e47a1fb2fc13cd271a32f5b1de82c78b0db925",
+      "ContainerName": "arwc-ot-compat-fuxa-1",
+      "Repository": "",
+      "Tag": "",
+      "Platform": "unknown",
+      "Size": 0
+    },
+    {
+      "ID": "sha256:fd2cfcd0cd4d7fab71e136bee1f7ee10154ac0a0a049bfb02ab0f981e7c6ce67",
+      "ContainerName": "arwc-ot-compat-dispatcher-1",
+      "Repository": "arwc-ot-compat-io",
+      "Tag": "latest",
+      "Platform": "linux/amd64",
+      "Size": 295712464,
+      "Created": "2026-11-12T23:28:31.79159235Z",
+      "LastTagTime": "2026-11-12T23:42:32.337282665Z"
+    },
+    {
+      "ID": "sha256:35c41e0fd0295f5d0ee5db7e780cf33506abfaf47686196f825364889dee878b",
+      "ContainerName": "arwc-ot-compat-grafana-1",
+      "Repository": "grafana/grafana",
+      "Tag": "",
+      "Platform": "linux/amd64",
+      "Size": 971415159,
+      "Created": "2025-10-20T15:02:25.407386713Z",
+      "LastTagTime": "2026-11-12T22:57:44.190951704Z"
+    },
+    {
+      "ID": "sha256:8c1bc372ffa128be2febfe25f1fe092333d3d6c2293cf5e57176582179ba358a",
+      "ContainerName": "arwc-ot-compat-telegraf-1",
+      "Repository": "telegraf",
+      "Tag": "",
+      "Platform": "linux/amd64",
+      "Size": 741522108,
+      "Created": "2026-07-14T02:43:39.800832552Z",
+      "LastTagTime": "2026-11-12T22:47:22.32415892Z"
+    },
+    {
+      "ID": "sha256:81a6193ae693942a3231cd3ac52875b02b7e3a19da671b2fb4b55cc874c5b279",
+      "ContainerName": "arwc-ot-compat-mosquitto-1",
+      "Repository": "eclipse-mosquitto",
+      "Tag": "",
+      "Platform": "linux/amd64",
+      "Size": 23856598,
+      "Created": "2026-11-05T21:13:15.11336211Z",
+      "LastTagTime": "2026-11-12T22:47:12.363562394Z"
+    },
+    {
+      "ID": "sha256:e3d24f6906d0760bf4da0dae872415391ededefad23fd471c47dc53b0ddf3c42",
+      "ContainerName": "arwc-ot-compat-postgres-1",
+      "Repository": "postgres",
+      "Tag": "",
+      "Platform": "linux/amd64",
+      "Size": 644210918,
+      "Created": "2026-11-05T07:29:44.528257177Z",
+      "LastTagTime": "2026-11-12T22:47:11.025159778Z"
+    },
+    {
+      "ID": "sha256:cc87a6871404d9aeba16594ee09e4db7a7a05f3a44b27f887589f2a0e9e0fc02",
+      "ContainerName": "arwc-ot-compat-io-1",
+      "Repository": "",
+      "Tag": "",
+      "Platform": "unknown",
+      "Size": 0
+    },
+    {
+      "ID": "sha256:8b1cf0983934f74f6614eaf4be9c759de4744a23923e471a19cbd6cc0c2ebd1f",
+      "ContainerName": "arwc-ot-compat-plc-1",
+      "Repository": "",
+      "Tag": "",
+      "Platform": "unknown",
+      "Size": 0
+    }
+  ],
+  "not_qualified_here": [
+    "full water utility logic and graphics",
+    "participant desktop workflows",
+    "BigRAE deployment",
+    "incident/challenge content"
+  ]
+}

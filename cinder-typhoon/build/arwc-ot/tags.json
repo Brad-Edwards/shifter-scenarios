@@ -1,0 +1,42 @@
+{
+  "schema": "arwc.ot-tags/v1",
+  "scope": "compatibility fixture: one Cairn Reach outlet",
+  "asset": "AST-CRR-017",
+  "namespace_uri": "urn:arwc:crr:tags",
+  "opcua": {"application_uri": "urn:arwc:crr:plc", "endpoint": "opc.tcp://plc:4840/arwc", "node_id_template": "nsu=urn:arwc:crr:tags;s=CRR.{variable}", "security_policy": "Basic256Sha256", "security_mode": "SignAndEncrypt", "authentication": "UserName", "access": {"operator": "read all; write Hmi* request/selection tags only", "dispatcher": "read all; write RemoteTargetPct and RemoteSequence only", "reader": "read only"}},
+  "scan_ms": 100,
+  "sample_ms": 1000,
+  "source": "OpenPLC native OPC UA; fields derived from real Modbus I/O",
+  "modbus": {
+    "device": "CairnReachIO", "host": "172.29.64.30", "port": 502, "unit_id": 1,
+    "address_base": 0, "word_order": "single unsigned 16-bit register; network byte order",
+    "read_function": 4, "write_function": 16,
+    "inputs": [
+      {"offset": 0, "iec": "%IW0", "meaning": "level", "unit": "m", "counts_per_unit": 1000},
+      {"offset": 1, "iec": "%IW1", "meaning": "position feedback", "unit": "%", "counts_per_unit": 100},
+      {"offset": 2, "iec": "%IW2", "meaning": "flow measurement", "unit": "m3/s", "counts_per_unit": 10000},
+      {"offset": 3, "iec": "%IW3", "meaning": "I/O heartbeat", "unit": "count", "counts_per_unit": 1}
+    ],
+    "outputs": [{"offset": 0, "iec": "%QW0", "meaning": "actuator target", "unit": "%", "counts_per_unit": 100}]
+  },
+  "commands": {"priority": "HMI request takes local ownership and disables remote; remote requires explicit HmiRemoteEnabled", "handshake": "target first, sequence last; accepted sequence is PLC feedback; inactive remote requests are consumed without acceptance", "retained": ["RequestedTargetPct"], "io_timeout_s": 3},
+  "modes": {"fixture": "manual setpoint", "remote_enable": "HmiRemoteEnabled; resets false at PLC restart", "full_site": "manual/automatic sequences and site alarm catalogue are delivered in issue 364"},
+  "alarms": {"fixture": "IoHealthy=false identifies unavailable field I/O after 3 seconds; no site alarm/acknowledgement engine in this compatibility fixture"},
+  "quality": {"transport": "OPC UA StatusCode", "process": "IoHealthy", "rule": "A Good OPC UA transport value alone does not prove current field I/O"},
+  "timestamps": {"source": "OPC UA SourceTimestamp, sampled at 1 second by Telegraf", "storage": "raw time is UTC timestamp without time zone; process_history.source_time restores UTC zone", "ingestion": "PostgreSQL clock_timestamp() at insert; unknown for pre-migration samples", "restart": "retained setpoint; request sequences, Owner and remote enable reset; clients reconnect without replay"},
+  "tags": [
+    {"variable": "LevelM", "type": "REAL", "unit": "m", "range": [0, 10], "write": false, "owner": "field measurement", "table": "level_m"},
+    {"variable": "PositionPct", "type": "REAL", "unit": "%", "range": [0, 100], "write": false, "owner": "field measurement", "table": "position_pct"},
+    {"variable": "FlowM3s", "type": "REAL", "unit": "m3/s", "range": [0, 0.5], "write": false, "owner": "field measurement", "table": "flow_m3s"},
+    {"variable": "HmiTargetPct", "type": "REAL", "unit": "%", "range": [0, 100], "write": true, "owner": "HMI request", "table": "hmi_target"},
+    {"variable": "HmiSequence", "type": "UINT", "unit": "count", "range": [0, 65535], "write": true, "owner": "HMI request", "table": "hmi_sequence"},
+    {"variable": "HmiAccepted", "type": "UINT", "unit": "count", "range": [0, 65535], "write": false, "owner": "PLC", "table": "hmi_accepted"},
+    {"variable": "HmiRemoteEnabled", "type": "BOOL", "unit": "boolean", "write": true, "owner": "HMI local/remote selection", "table": "remote_enabled"},
+    {"variable": "RemoteTargetPct", "type": "REAL", "unit": "%", "range": [0, 100], "write": true, "owner": "dispatcher request", "table": "remote_target"},
+    {"variable": "RemoteSequence", "type": "UINT", "unit": "count", "range": [0, 65535], "write": true, "owner": "dispatcher request", "table": "remote_sequence"},
+    {"variable": "RemoteAccepted", "type": "UINT", "unit": "count", "range": [0, 65535], "write": false, "owner": "PLC", "table": "remote_accepted"},
+    {"variable": "RequestedTargetPct", "type": "REAL", "unit": "%", "range": [0, 100], "write": false, "owner": "PLC retained setpoint", "table": "target_pct"},
+    {"variable": "IoHealthy", "type": "BOOL", "unit": "boolean", "write": false, "owner": "PLC I/O age check", "table": "io_healthy"},
+    {"variable": "Owner", "type": "UINT", "unit": "enum", "range": [0, 2], "write": false, "owner": "PLC command arbiter", "table": "command_owner"}
+  ]
+}

@@ -1,0 +1,93 @@
+name: arwc-ot-compat
+services:
+  plc:
+    build: {context: ., dockerfile: plc.Dockerfile}
+    image: arwc-ot-openplc:4.3.2-identity1
+    hostname: plc
+    cap_add: [SYS_NICE, SYS_RESOURCE]
+    volumes: ["plc-state:/var/run/runtime"]
+    networks:
+      supervisory: {ipv4_address: 172.29.63.20}
+      field: {ipv4_address: 172.29.64.20}
+  io:
+    build: {context: ., dockerfile: tools.Dockerfile}
+    command: [python, /slice/remote_io.py]
+    volumes: [".:/slice:ro"]
+    networks:
+      field: {ipv4_address: 172.29.64.30}
+  tools:
+    hostname: tools
+    profiles: [qualification]
+    image: arwc-ot-compat-io
+    volumes: [".:/slice:ro", "./.operator:/slice/.operator"]
+    networks: [supervisory, field]
+  fuxa:
+    build: {context: ., dockerfile: fuxa.Dockerfile}
+    image: arwc-ot-fuxa:1.3.5-opcua1
+    volumes:
+      - fuxa-app:/usr/src/app/FUXA/server/_appdata
+      - fuxa-db:/usr/src/app/FUXA/server/_db
+      - ./.operator/fuxa-settings.js:/usr/src/app/FUXA/server/_appdata/settings.js:ro
+    networks:
+      supervisory: {ipv4_address: 172.29.63.21}
+  postgres:
+    image: postgres:18.6-trixie@sha256:e3d24f6906d0760bf4da0dae872415391ededefad23fd471c47dc53b0ddf3c42
+    environment:
+      POSTGRES_DB: historian
+      POSTGRES_USER: historian
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets: [postgres_password]
+    volumes: ["historian-data:/var/lib/postgresql"]
+    networks:
+      supervisory: {ipv4_address: 172.29.63.22}
+  telegraf:
+    image: telegraf:1.39.1@sha256:8c1bc372ffa128be2febfe25f1fe092333d3d6c2293cf5e57176582179ba358a
+    user: "0:0"
+    entrypoint: [/usr/bin/telegraf]
+    command: [--config, /etc/telegraf/telegraf.conf]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: [/tmp]
+    env_file: [.operator/telegraf.env]
+    volumes:
+      - ./.operator/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./.operator/telegraf-pki:/run/pki
+    networks: [supervisory]
+  grafana:
+    image: grafana/grafana:12.2.1@sha256:35c41e0fd0295f5d0ee5db7e780cf33506abfaf47686196f825364889dee878b
+    env_file: [.operator/grafana.env]
+    environment:
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+    volumes:
+      - ./.operator/grafana:/etc/grafana/provisioning:ro
+      - grafana-state:/var/lib/grafana
+    networks:
+      supervisory: {ipv4_address: 172.29.63.25}
+  mosquitto:
+    image: eclipse-mosquitto:2.0.22@sha256:81a6193ae693942a3231cd3ac52875b02b7e3a19da671b2fb4b55cc874c5b279
+    volumes: ["./.operator/mosquitto:/mosquitto/config:ro", "mqtt-state:/mosquitto/data"]
+    networks:
+      supervisory: {ipv4_address: 172.29.63.23}
+  dispatcher:
+    image: arwc-ot-compat-io
+    command: [python, /slice/dispatcher.py]
+    volumes: [".:/slice:ro", "./.operator:/slice/.operator"]
+    networks: [supervisory]
+networks:
+  supervisory:
+    internal: true
+    ipam: {config: [{subnet: 172.29.63.0/24}]}
+  field:
+    internal: true
+    ipam: {config: [{subnet: 172.29.64.0/24}]}
+volumes:
+  plc-state:
+  fuxa-app:
+  fuxa-db:
+  historian-data:
+  mqtt-state:
+  grafana-state:
+secrets:
+  postgres_password: {file: .operator/postgres_password}
