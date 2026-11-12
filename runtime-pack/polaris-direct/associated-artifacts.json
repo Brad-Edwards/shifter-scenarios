@@ -67,9 +67,9 @@
       "uri": "raes-environment-pack:/sdl/polaris.sdl.yaml",
       "checksum": {
         "algorithm": "sha256",
-        "value": "b0e864e80591a569a0c9f60dd71085763bfb55700773e5717a7c7b000bc2a5fc"
+        "value": "58b275b0265df489795c18d162b9db3482514c8b51a14d4975f527ef5a41b417"
       },
-      "size_bytes": 2381,
+      "size_bytes": 2389,
       "created_at": "2026-09-17T00:00:00Z",
       "source": "private-pack-owner",
       "satisfies_refs": [],
@@ -77,5 +77,5 @@
       "description": null
     }
   },
-  "set_digest": "sha256:b2aeabd30c28a790d49144d50c4c5459e4d92c2e0f1b890d800f5786c1de7345"
+  "set_digest": "sha256:7f845aad0d0957f892f2295856cc83d7c24a22343f6075d50c8db2771eaf9c70"
 }

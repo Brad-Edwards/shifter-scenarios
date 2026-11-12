@@ -1,0 +1,10 @@
+{
+  "participant_user": "cinder",
+  "required_paths": [
+    "/home/cinder/TRAINING.md"
+  ],
+  "schema_version": "participant-readiness/v1",
+  "surfaces": {
+    "rdp_port": 3389
+  }
+}

@@ -71,6 +71,21 @@ class BoundaryTests(unittest.TestCase):
         AUTHENTICATION_KEY,
     })
 
+    def test_runner_network_contract_matches_participant_services(self) -> None:
+        services = {
+            "training": "participant",
+            "keplerops": "k-dev",
+            "arwc": "a-connector",
+        }
+        for phase, service in services.items():
+            with self.subTest(phase=phase):
+                compose = yaml.safe_load((ROOT / f"build/{phase}/compose.yaml").read_text())
+                network_keys = compose["services"][service]["networks"]
+                network_names = frozenset(
+                    compose["networks"][key]["name"] for key in network_keys
+                )
+                self.assertEqual(runner.PHASES[phase].expected_networks, network_names)
+
     def arwc_compose_mounts(self) -> frozenset[str]:
         compose = yaml.safe_load((ROOT / "build/arwc/compose.yaml").read_text())
         volumes = compose["services"]["a-connector"]["volumes"]

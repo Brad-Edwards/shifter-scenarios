@@ -1,0 +1,9 @@
+{
+  "targets": {
+    "training": "provision.node.training-host",
+    "keplerops": "provision.node.keplerops-host",
+    "arwc": "provision.node.arwc-host"
+  },
+  "parameters": {},
+  "image_profiles": {}
+}

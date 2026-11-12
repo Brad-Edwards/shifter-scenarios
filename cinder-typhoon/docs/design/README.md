@@ -1,5 +1,9 @@
 # Cinder Typhoon
 
+The [BigRAE runtime-image design](bigrae-runtime-images.md) defines the
+three-image participant-range realization and its environment-pack and adapter
+boundaries.
+
 Draft 3 of the BSides Ottawa challenge architecture: approximately 300 individual
 players, sixteen hours over two days, a provided agent, and optional BYO agents.
 The campaign moves through Cinder Typhoon training, KeplerOps Software, and

@@ -30,4 +30,7 @@ install -m 0444 /run/fieldkest-auth/ca.crt /home/rowan/.local/share/keplerops/ca
 install -m 0600 -o rowan -g rowan /run/fieldkest-auth/rowan_authorized_keys /home/rowan/.ssh/authorized_keys
 setpriv --reuid=fieldkest-workbench --regid=fieldkest-workbench --init-groups \
   python3 /opt/fieldkest-workbench/workbench.py &
-exec /usr/sbin/sshd -D -e
+/usr/sbin/sshd -D -e &
+xrdp-sesman --nodaemon &
+sleep 1
+exec xrdp --nodaemon

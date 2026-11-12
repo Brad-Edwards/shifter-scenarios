@@ -251,6 +251,15 @@ print(base64.b64encode(key.sign(message)).decode())
         type(self).session = response["collection_session"]
         replay, _ = json_request("/api/collection-paths/current", method="POST", body=body)
         self.assertEqual(replay, 409)
+        subprocess.run(
+            ["docker", "exec", "--user", "arwc-archive", ARCHIVE,
+             "python3", "-c",
+             "import json,pathlib; p=pathlib.Path('/var/lib/arwc-archive/state/archive.json'); s=json.loads(p.read_text()); s['current_session']['expires_at_epoch']=0; p.write_text(json.dumps(s,sort_keys=True,separators=(',',':'))+'\\n')"],
+            check=True,
+        )
+        renewed, response = json_request("/api/collection-paths/current", method="POST", body=body)
+        self.assertEqual(renewed, 201)
+        type(self).session = response["collection_session"]
 
     def test_06_only_current_bound_dataset_is_returned(self) -> None:
         baseline = {"operation": "read", "collection_session": type(self).session,

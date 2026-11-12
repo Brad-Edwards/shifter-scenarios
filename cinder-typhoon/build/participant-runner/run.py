@@ -62,7 +62,10 @@ PHASES = {
         home="/home/cinder",
         suite=ROOT / "build/training/tests/test_known_solution_live.py",
         class_name="TrainingKnownSolutionAcceptance",
-        expected_networks=frozenset({"cinder-training"}),
+        expected_networks=frozenset({
+            "cinder-training",
+            "cinder-training-participant-ingress",
+        }),
         allowed_mounts=frozenset(),
         forbidden_paths=COMMON_ABSENT + (
             "/var/lib/cinder-workbench", "/var/lib/cinder-accounts",
@@ -75,7 +78,10 @@ PHASES = {
         home="/home/rowan",
         suite=ROOT / "build/keplerops/tests/test_known_solution_live.py",
         class_name="KeplerOpsKnownSolutionAcceptance",
-        expected_networks=frozenset({"cinder-keplerops-corporate"}),
+        expected_networks=frozenset({
+            "cinder-keplerops-corporate",
+            "cinder-keplerops-participant-ingress",
+        }),
         allowed_mounts=frozenset({
             "/home/rowan", "/var/lib/fieldkest-workbench/audit",
             "/run/fieldkest-auth/ca.crt", "/run/fieldkest-auth/rowan_authorized_keys",

@@ -1,0 +1,11 @@
+{
+  "participant_user": "rowan",
+  "required_paths": [
+    "/home/rowan/work",
+    "/home/rowan/.local/share/keplerops/registry-foundation-2026-09-18"
+  ],
+  "schema_version": "participant-readiness/v1",
+  "surfaces": {
+    "rdp_port": 3389
+  }
+}
