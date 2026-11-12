@@ -18,7 +18,7 @@ if [[ ! -x "$editor/AppRun" ]]; then
 fi
 if [[ ! -f "$project/project.json" ]]; then
   sudo install -d -o "$(id -u)" -g "$(id -g)" "$root/work"
-  env APPDIR="$editor" "$editor/AppRun" --cli create arwc-compat --path "$root/work" --time 100
+  env APPDIR="$editor" "$editor/AppRun" --cli create arwc-compat --path "$root/work" --time 'T#100ms'
 fi
 python3 configure_fixture.py "$project"
 sudo docker compose build plc io fuxa > /tmp/arwc-ot-build.log 2>&1
@@ -37,7 +37,7 @@ sudo docker compose run --rm -T tools python /slice/prepare_services.py
 if ! sudo head -c 12 .operator/mosquitto/passwords | rg -q '^operator:\$7\$'; then
   sudo docker compose run --rm -T --no-deps -v "$PWD/.operator/mosquitto:/mosquitto/config" --entrypoint mosquitto_passwd mosquitto -U /mosquitto/config/passwords
 fi
-sudo docker compose up -d telegraf mosquitto grafana
+sudo docker compose up -d --force-recreate telegraf mosquitto grafana
 for attempt in {1..45}; do
   if sudo docker compose exec -T postgres psql -U historian -d historian -Atc "SELECT to_regclass('remote_enabled') IS NOT NULL" | rg -q '^t$'; then
     break
@@ -48,5 +48,5 @@ done
 sudo docker compose run --rm -T tools python /slice/finalize_history.py
 sudo docker compose run --rm -T tools python /slice/configure_fuxa.py
 sudo docker compose restart fuxa
-sudo docker compose up -d dispatcher
+sudo docker compose up -d --force-recreate dispatcher
 echo 'Compatibility slice configured. Run the focused qualification commands in README.md.'

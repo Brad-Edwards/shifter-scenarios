@@ -1,7 +1,7 @@
 {
   "scope": "issue-363 product compatibility fixture; normal operations only",
   "status": "passed",
-  "collected_at": "2026-11-12T23:38:25.788312+00:00",
+  "collected_at": "2026-11-12T23:44:55.170340+00:00",
   "project": "prod-mgau4w",
   "vm": "cinder-arwc-ot-compat-363",
   "checks": {
@@ -53,7 +53,7 @@
         "owner": 1
       },
       "mqtt_command": {
-        "id": "7723463c-18f9-4918-bf6b-96cea7f8ba4d",
+        "id": "4d16440d-c335-4c2d-b2c1-f6cee16e73f7",
         "stages": [
           "received",
           "dispatched",
@@ -64,8 +64,8 @@
         "redelivery": "no redispatch"
       },
       "historian": {
-        "source_time": "2026-11-12 23:37:01+00:00",
-        "ingested_at": "2026-11-12 23:37:01.863529+00:00",
+        "source_time": "2026-11-12 23:43:21+00:00",
+        "ingested_at": "2026-11-12 23:43:21.485210+00:00",
         "position_pct": "40.0",
         "transport_quality": "Good",
         "process_quality": "Good"
@@ -134,6 +134,11 @@
       "compile": "passed",
       "gui_window": "opened",
       "external_account": "not required"
+    },
+    "timestamp_precision": {
+      "source_time": "2026-11-12T23:44:54.002288+00:00",
+      "ingested_at": "2026-11-12T23:44:54.745915+00:00",
+      "subsecond_preserved": true
     }
   },
   "setup": "setup-slice.sh completed; native identity and operating paths passed afterwards",
@@ -147,7 +152,9 @@
     "tools.Dockerfile": "3322c61679936e453f8e8aebe0585faba5fb0e05a8a9a27ec41b6e4fbd170909",
     "patch_opcua_identity.py": "745515a04c907d67adf7a5c45a35211f7b829b83615a70a7f45c554d72b08d3f",
     "requirements.lock": "f9421aa77d56309ee1bd5a4902e5e891b43795188bd42a579766d0a4b6009673",
-    "fuxa-plugin/package-lock.json": "59e30513a6924e62dba2ffa197cb4cfce54cf27885d4a2f018a8b6023eadbada"
+    "fuxa-plugin/package-lock.json": "59e30513a6924e62dba2ffa197cb4cfce54cf27885d4a2f018a8b6023eadbada",
+    "setup-slice.sh": "316dd219f9e4201ec652c3660d98a6cb18498df131e707e71ad2a7db091308e0",
+    "prepare_services.py": "c555877d0c93855c6a7d7f906449129b633fc4e20bdda8c9f1574e9c9666710f"
   },
   "images": [
     {
@@ -159,12 +166,14 @@
       "Size": 0
     },
     {
-      "ID": "sha256:cc87a6871404d9aeba16594ee09e4db7a7a05f3a44b27f887589f2a0e9e0fc02",
-      "ContainerName": "arwc-ot-compat-io-1",
-      "Repository": "",
-      "Tag": "",
-      "Platform": "unknown",
-      "Size": 0
+      "ID": "sha256:fd2cfcd0cd4d7fab71e136bee1f7ee10154ac0a0a049bfb02ab0f981e7c6ce67",
+      "ContainerName": "arwc-ot-compat-dispatcher-1",
+      "Repository": "arwc-ot-compat-io",
+      "Tag": "latest",
+      "Platform": "linux/amd64",
+      "Size": 295712464,
+      "Created": "2026-11-12T23:28:31.79159235Z",
+      "LastTagTime": "2026-11-12T23:42:32.337282665Z"
     },
     {
       "ID": "sha256:35c41e0fd0295f5d0ee5db7e780cf33506abfaf47686196f825364889dee878b",
@@ -207,16 +216,16 @@
       "LastTagTime": "2026-11-12T22:47:11.025159778Z"
     },
     {
-      "ID": "sha256:8b1cf0983934f74f6614eaf4be9c759de4744a23923e471a19cbd6cc0c2ebd1f",
-      "ContainerName": "arwc-ot-compat-plc-1",
+      "ID": "sha256:cc87a6871404d9aeba16594ee09e4db7a7a05f3a44b27f887589f2a0e9e0fc02",
+      "ContainerName": "arwc-ot-compat-io-1",
       "Repository": "",
       "Tag": "",
       "Platform": "unknown",
       "Size": 0
     },
     {
-      "ID": "sha256:cc87a6871404d9aeba16594ee09e4db7a7a05f3a44b27f887589f2a0e9e0fc02",
-      "ContainerName": "arwc-ot-compat-dispatcher-1",
+      "ID": "sha256:8b1cf0983934f74f6614eaf4be9c759de4744a23923e471a19cbd6cc0c2ebd1f",
+      "ContainerName": "arwc-ot-compat-plc-1",
       "Repository": "",
       "Tag": "",
       "Platform": "unknown",

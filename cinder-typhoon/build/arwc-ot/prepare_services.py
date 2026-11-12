@@ -73,6 +73,7 @@ def main() -> None:
     collector = '''[agent]
   interval = "1s"
   flush_interval = "1s"
+  precision = "1us"
   omit_hostname = true
 [[outputs.postgresql]]
   connection = "host=postgres user=collector password=${PG_PASSWORD} dbname=historian sslmode=disable"
