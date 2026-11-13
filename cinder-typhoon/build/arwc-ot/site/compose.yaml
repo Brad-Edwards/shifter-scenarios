@@ -1,0 +1,34 @@
+# Combine with ../compose.yaml from the arwc-ot directory on the test VM.
+services:
+  plc:
+    restart: unless-stopped
+    volumes:
+      - site-plc-state:/var/run/runtime
+  io:
+    restart: unless-stopped
+    command: [python, /slice/site/remote_io.py]
+    volumes:
+      - ./.operator/site-io:/state
+  postgres:
+    restart: unless-stopped
+    volumes:
+      - site-historian-data:/var/lib/postgresql
+  fuxa:
+    restart: unless-stopped
+    volumes:
+      - site-fuxa-app:/usr/src/app/FUXA/server/_appdata
+      - site-fuxa-db:/usr/src/app/FUXA/server/_db
+  grafana:
+    restart: unless-stopped
+    volumes:
+      - site-grafana-state:/var/lib/grafana
+  telegraf:
+    restart: unless-stopped
+  mosquitto:
+    restart: unless-stopped
+volumes:
+  site-plc-state:
+  site-historian-data:
+  site-fuxa-app:
+  site-fuxa-db:
+  site-grafana-state:

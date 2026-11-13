@@ -38,7 +38,7 @@ Run builds, compilation, and runtime checks on this dedicated VM.
 | Size | `e2-standard-4`, 80 GB balanced disk |
 | Access | IAP SSH and OS Login; no public IP |
 | Cloud identity | No service account or OAuth scopes |
-| Slice | `/tmp/arwc-ot-363` |
+| Slice | `/opt/arwc-ot-compat/slice` |
 | Upstream products / project | `/opt/arwc-ot-compat/upstream` / `/opt/arwc-ot-compat/work/arwc-compat` |
 
 The VM uses existing NAT and IAP rules. Golden hosts and participant ranges
@@ -54,12 +54,19 @@ Create the VM only if it does not exist:
 bash cinder-typhoon/build/arwc-ot/create-test-vm.sh prod-mgau4w
 ```
 
-Wait for `/var/lib/arwc-ot-compat-ready`. Copy this directory through IAP to
-`/tmp/arwc-ot-363`. Exclude `.operator/` and `__pycache__/` from all transfers.
+Wait for `/var/lib/arwc-ot-compat-ready`. Create the persistent working directory
+as the IAP operator on the VM:
+
+```sh
+sudo install -d -o "$(id -u)" -g "$(id -g)" /opt/arwc-ot-compat/slice
+```
+
+Copy this directory through IAP to `/opt/arwc-ot-compat/slice`.
+Exclude `.operator/` and `__pycache__/` from all transfers.
 Run these commands as the IAP operator on the VM:
 
 ```sh
-cd /tmp/arwc-ot-363
+cd /opt/arwc-ot-compat/slice
 sudo bash prepare-upstream.sh
 bash setup-slice.sh
 ```
@@ -70,6 +77,8 @@ interface. It adds no build pipeline. Runtime containers have no Internet route.
 
 Setup generates passwords, broker certificates, client keys, and product state
 under gitignored `.operator/` and named Docker volumes. Keep them on the VM.
+Keep the complete working directory under `/opt`; Debian clears `/tmp` at boot.
+The operator files must survive alongside the named volumes that use their credentials.
 Do not print, commit, archive, or copy that directory. Public qualification
 results are the explicit `*-evidence.json` files only.
 

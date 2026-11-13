@@ -6,6 +6,9 @@ set -euo pipefail
 }
 [[ $EUID != 0 ]] || { echo 'Run as the IAP operator, not root.' >&2; exit 1; }
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+[[ $PWD == /opt/arwc-ot-compat/slice ]] || {
+  echo 'Use the persistent /opt/arwc-ot-compat/slice directory.' >&2; exit 1;
+}
 root=/opt/arwc-ot-compat
 editor="$root/upstream/squashfs-root"
 project="$root/work/arwc-compat"
@@ -31,11 +34,18 @@ for attempt in {1..60}; do
   sleep 1
 done
 python3 upload_fixture.py > /tmp/arwc-ot-upload.log 2>&1
+for attempt in {1..60}; do
+  if sudo docker exec arwc-ot-compat-plc-1 test -s /workdir/core/src/drivers/plugins/python/opcua/certs/server_cert.pem; then
+    break
+  fi
+  [[ $attempt != 60 ]] || { echo 'Native OPC UA certificate did not become ready.' >&2; exit 1; }
+  sleep 1
+done
 sudo docker cp arwc-ot-compat-plc-1:/workdir/core/src/drivers/plugins/python/opcua/certs/server_cert.pem .operator/server-cert.pem
 sudo docker compose run --rm -T tools python /slice/prepare_services.py
 # Hash the bootstrap passwords once with the broker's own maintained utility.
 if ! sudo head -c 12 .operator/mosquitto/passwords | rg -q '^operator:\$7\$'; then
-  sudo docker compose run --rm -T --no-deps -v "$PWD/.operator/mosquitto:/mosquitto/config" --entrypoint mosquitto_passwd mosquitto -U /mosquitto/config/passwords
+  sudo docker run --rm --entrypoint mosquitto_passwd --mount "type=bind,src=$PWD/.operator/mosquitto,dst=/mosquitto/config" eclipse-mosquitto:2.0.22@sha256:81a6193ae693942a3231cd3ac52875b02b7e3a19da671b2fb4b55cc874c5b279 -U /mosquitto/config/passwords
 fi
 sudo docker compose up -d --force-recreate telegraf mosquitto grafana
 for attempt in {1..45}; do
