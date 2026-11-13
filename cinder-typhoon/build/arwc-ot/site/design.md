@@ -60,7 +60,9 @@ requests so that restoring permissives cannot replay them.
 
 Manual mode requests independent actuator positions. Automatic mode requests
 total site flow, split equally between two native PID loops. Each loop uses its
-own actual flow measurement. Mode and setpoint changes require a new sequence.
+own actual flow measurement. Regulation starts above 0.0075 m³/s flow error
+and stops within 0.0025 m³/s, avoiding continuous motor reversals near setpoint.
+Mode and setpoint changes require a new sequence.
 Local HMI requests win competing requests in the same scan and disable remote
 operation. Remote operation requires a new explicit HMI enable. Operator stop
 immediately removes actuator enables and disarms the accepted operation.
@@ -88,6 +90,7 @@ motor enable coils. Record addresses, types, scaling, units, and ownership in
 `tags.json`; derive the project configuration and FBD wiring from that contract.
 
 Use the existing development Compose stack with a small site I/O override.
+Disable IP forwarding in the controller's dual-interface network namespace.
 Download the site project through the official Editor management interface.
 Use separate retained-state and physical-state files. The original fixture can
 be restored with its existing setup script. Do not change a golden or participant

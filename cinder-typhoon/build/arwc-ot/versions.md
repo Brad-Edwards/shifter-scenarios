@@ -7,6 +7,7 @@ Image references in `compose.yaml` and the Dockerfiles contain immutable digests
 | --- | --- | --- | --- |
 | OpenPLC Runtime | 4.3.2 | GPL-3.0-only | Official image plus the source-hash-guarded application-URI correction |
 | OpenPLC Editor | 4.3.4 | GPL-3.0-only | Official Linux AppImage |
+| STruC++ test compiler | 0.7.0 | GPL-3.0; runtime libraries include the upstream runtime exception | Matching official standalone release; development tests only |
 | FUXA | 1.3.5 | MIT | Official image plus its supported `node-opcua` 2.149.0 plugin |
 | node-opcua | 2.149.0 | MIT | `fuxa-plugin/package-lock.json` |
 | PostgreSQL | 18.6, trixie image | PostgreSQL License | Official image |
@@ -17,6 +18,7 @@ Image references in `compose.yaml` and the Dockerfiles contain immutable digests
 
 License references: [Runtime](https://github.com/Autonomy-Logic/openplc-runtime/tree/v4.3.2),
 [Editor](https://github.com/Autonomy-Logic/openplc-editor/blob/v4.3.4/package.json),
+[STruC++ runtime notice](https://github.com/Autonomy-Logic/STruCpp/blob/v0.7.0/COPYING.RUNTIME),
 [FUXA](https://github.com/frangoteam/FUXA/blob/v1.3.5/LICENSE),
 [node-opcua](https://github.com/node-opcua/node-opcua/tree/v2.149.0),
 [PostgreSQL](https://www.postgresql.org/docs/18/license.html),
@@ -38,6 +40,7 @@ The downstream bake must retain product notices and source availability informat
 | FUXA v1.3.5 | `cf0a44c750c0ab89ef0e86ade9fb97fd0613ffca` |
 | Editor AppImage SHA-256 | `b81863722d65eaa786f53234472601b649ea34a3f2f790f931beedaa7ec75fa0` |
 | Original Runtime `server.py` SHA-256 | `544358a7a33fa3244dc6d4753253f17a6e7cdf01d04d5b004e16a8289c039f45` |
+| Standalone STruC++ Linux x64 archive SHA-256 | `eb060d416b18d339db35715ebb06dcbecd70e0c177a4dcbfa57c2fa1c7fb05d5` |
 
 ## Offline requirements
 

@@ -33,6 +33,7 @@ VAR
   Reversing : BOOL;
   Automatic : BOOL;
   Saturated : BOOL;
+  Regulating : BOOL;
 END_VAR
 
 PositionPct := UINT_TO_REAL(PositionRaw) / 100.0;
@@ -43,7 +44,15 @@ IF ResetEdge.Q THEN
   TravelFault := FALSE;
 END_IF;
 
-Automatic := AutoMode AND Armed AND Permissive AND NOT LowLevel AND NOT TravelFault AND NOT Saturated;
+(* Motorized outlets need a flow deadband, not continuous small reversals. *)
+IF NOT AutoMode OR NOT Armed OR NOT Permissive OR LowLevel OR TravelFault THEN
+  Regulating := FALSE;
+ELSIF ABS(FlowSetting - FlowM3s) > 0.0075 THEN
+  Regulating := TRUE;
+ELSIF ABS(FlowSetting - FlowM3s) <= 0.0025 THEN
+  Regulating := FALSE;
+END_IF;
+Automatic := AutoMode AND Armed AND Permissive AND NOT LowLevel AND NOT TravelFault AND Regulating AND NOT Saturated;
 (* The native PID uses PV-SP. Negative gain and negative X0 track positive position. *)
 FlowLoop(AUTO := Automatic, PV := FlowM3s * 200.0, SP := FlowSetting * 200.0,
          X0 := -PositionPct, KP := -1.0, TR := 5.0, TD := 0.0, CYCLE := T#100ms);
@@ -56,14 +65,24 @@ END_IF;
 IF LowLevel THEN
   EffectiveTarget := 0.0;
 END_IF;
+IF AutoMode AND FlowSetting <= 0.0 THEN
+  EffectiveTarget := 0.0;
+END_IF;
 TargetRaw := REAL_TO_UINT(EffectiveTarget * 100.0);
 ErrorPct := EffectiveTarget - PositionPct;
 AtTarget := ABS(ErrorPct) <= 0.5;
+IF TargetRaw = 0 THEN
+  AtTarget := PositionRaw = 0;
+ELSIF TargetRaw >= 10000 THEN
+  AtTarget := PositionRaw >= 10000;
+END_IF;
 DesiredDirection := 0;
-IF ErrorPct > 0.5 THEN
-  DesiredDirection := 1;
-ELSIF ErrorPct < -0.5 THEN
-  DesiredDirection := -1;
+IF NOT AtTarget THEN
+  IF ErrorPct > 0.0 THEN
+    DesiredDirection := 1;
+  ELSE
+    DesiredDirection := -1;
+  END_IF;
 END_IF;
 
 IF Armed AND Permissive AND NOT TravelFault THEN

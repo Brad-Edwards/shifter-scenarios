@@ -79,7 +79,7 @@ async def flow_stable(operator):
     def predicate(v):
         nonlocal stable
         assert not v["TravelFaultA"] and not v["TravelFaultB"], "Automatic operation caused a travel fault"
-        good = v["Armed"] and v["AutoMode"] and abs(v["FlowM3s"]-0.2)<0.01 and abs(v["FlowBM3s"]-0.2)<0.01
+        good = v["Armed"] and v["AutoMode"] and not v["MotorEnableA"] and not v["MotorEnableB"] and abs(v["FlowM3s"]-0.2)<0.01 and abs(v["FlowBM3s"]-0.2)<0.01
         stable = stable+1 if good else 0
         return stable >= 8
     return await operator.wait(predicate,"Measured automatic flow did not settle",90)
@@ -91,8 +91,11 @@ async def operating(operator):
     await operator.write({"HmiStop":True})
     await operator.wait(lambda v:not v["Armed"],"Operator stop did not disarm motion")
     await operator.write({"HmiStop":False})
+    await operator.command(0,0,auto=True,flow=0.0)
+    closed = await operator.wait(lambda v:v["PositionPct"] == 0 and v["PositionBPct"] == 0 and not v["MotorEnableA"] and not v["MotorEnableB"],"Zero-flow operation did not close both outlets completely")
     sequence = await operator.command(25,15)
     manual = await operator.wait(lambda v:abs(v["PositionPct"]-25)<0.6 and abs(v["PositionBPct"]-15)<0.6,"Manual command lacks measured position feedback")
+    await asyncio.sleep(0.3)
     wire = await physical()
     assert wire["target_registers"] == [2500,1500], wire
     assert abs(wire["input_registers"][1]/100-manual["PositionPct"])<0.6
@@ -119,7 +122,7 @@ async def operating(operator):
     automatic = await flow_stable(operator)
     await operator.command(35,20,flow=0.4)
     await operator.wait(lambda v:abs(v["PositionPct"]-35)<0.6 and abs(v["PositionBPct"]-20)<0.6,"Manual recovery did not reach retained settings")
-    return {"manual":manual,"modbus_feedback":wire,"invalid_request":rejected,
+    return {"zero_flow_closed":closed,"manual":manual,"modbus_feedback":wire,"invalid_request":rejected,
             "local_takeover":takeover,"automatic":automatic,"final":await operator.read()}
 
 

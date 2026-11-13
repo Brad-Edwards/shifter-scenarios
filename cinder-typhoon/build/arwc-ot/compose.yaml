@@ -5,6 +5,8 @@ services:
     image: arwc-ot-openplc:4.3.2-identity1
     hostname: plc
     cap_add: [SYS_NICE, SYS_RESOURCE]
+    sysctls:
+      net.ipv4.ip_forward: "0"
     volumes: ["plc-state:/var/run/runtime"]
     networks:
       supervisory: {ipv4_address: 172.29.63.20}

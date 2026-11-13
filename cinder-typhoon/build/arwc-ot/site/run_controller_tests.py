@@ -12,12 +12,15 @@ SOURCES = ("SiteInputs.st", "SiteRequests.st", "OutletControl.st")
 # Native 0.7.0 ADVANCE_TIME is supported at the test's top level only.
 # Unroll 40 seconds of physical feedback, retaining actual TON and PID execution.
 AUTO_SCAN = """
-  g(AutoMode := TRUE, FlowSetting := 0.2, PositionRaw := REAL_TO_UINT(Position*100.0),
-    FlowRaw := REAL_TO_UINT(Position*50.0));
-  IF g.EnableCoil THEN
-    Difference := UINT_TO_REAL(g.TargetRaw)/100.0 - Position;
+  g(AutoMode := TRUE, FlowSetting := 0.2, PositionRaw := REAL_TO_UINT(MeasuredPosition*100.0),
+    FlowRaw := REAL_TO_UINT(MeasuredPosition*50.0));
+  MeasuredPosition := Position;
+  IF DriveEnabled THEN
+    Difference := DriveTarget - Position;
     Position := Position + LIMIT(-0.5, Difference, 0.5);
   END_IF;
+  DriveEnabled := g.EnableCoil;
+  DriveTarget := UINT_TO_REAL(g.TargetRaw)/100.0;
   ADVANCE_TIME(T#100ms);
 """
 MUTATIONS = (
@@ -29,6 +32,8 @@ MUTATIONS = (
     ("low_level_close", "OutletControl.st", "IF LowLevel THEN\n  EffectiveTarget := 0.0;", "IF LowLevel THEN\n  EffectiveTarget := ManualTarget;"),
     ("travel_timeout", "OutletControl.st", "PT := T#25s", "PT := T#250s"),
     ("reversal_delay", "OutletControl.st", "PT := T#500ms", "PT := T#0ms"),
+    ("flow_deadband", "OutletControl.st", "AND Regulating AND NOT Saturated", "AND NOT Saturated"),
+    ("closed_endpoint", "OutletControl.st", "IF TargetRaw = 0 THEN", "IF FALSE THEN"),
 )
 
 
@@ -52,8 +57,9 @@ def main():
     BUILD.mkdir(parents=True, exist_ok=True)
     template = (ROOT / "test_controller.st.in").read_text()
     assert template.count("{{AUTO_SCANS}}") == 1
+    assert template.count("{{AUTO_QUIET_SCANS}}") == 1
     tests = BUILD / "test_controller.st"
-    tests.write_text(template.replace("{{AUTO_SCANS}}", AUTO_SCAN * 400))
+    tests.write_text(template.replace("{{AUTO_SCANS}}", AUTO_SCAN * 400).replace("{{AUTO_QUIET_SCANS}}", (AUTO_SCAN+"\n  ASSERT_FALSE(g.EnableCoil, 'Automatic flow must remain settled');\n")*50))
     sources = {name: (ROOT / name).read_text() for name in SOURCES}
     baseline = run_case("baseline", sources, tests)
     if baseline.returncode:

@@ -133,12 +133,36 @@ TEST 'Automatic control uses measured flow and converges to its assigned setpoin
 VAR
   g : OutletControl;
   Position : REAL;
+  MeasuredPosition : REAL;
+  DriveTarget : REAL;
+  DriveEnabled : BOOL;
   Difference : REAL;
 END_VAR
   g(BasePermit := TRUE, Armed := TRUE, AutoMode := FALSE, PositionRaw := 0);
 {{AUTO_SCANS}}
+{{AUTO_QUIET_SCANS}}
   ASSERT_FALSE(g.TravelFault);
   ASSERT_NEAR(Position*0.005, 0.2, 0.01);
+  ASSERT_FALSE(g.EnableCoil, 'Settled automatic flow must not keep driving the actuator');
+END_TEST
+
+TEST 'Closed and open endpoints complete their travel inside the normal position deadband'
+VAR g : OutletControl; h : OutletControl; END_VAR
+  g(BasePermit := TRUE, Armed := TRUE, PositionRaw := 40, ManualTarget := 0.0);
+  ASSERT_TRUE(g.EnableCoil);
+  ASSERT_EQ(g.MotionState, 2);
+  g(PositionRaw := 0);
+  ASSERT_FALSE(g.EnableCoil);
+  h(BasePermit := TRUE, Armed := TRUE, PositionRaw := 9960, ManualTarget := 100.0);
+  ASSERT_TRUE(h.EnableCoil);
+  ASSERT_EQ(h.MotionState, 1);
+END_TEST
+
+TEST 'A zero automatic flow request closes the outlet completely'
+VAR g : OutletControl; END_VAR
+  g(BasePermit := TRUE, Armed := TRUE, AutoMode := TRUE, PositionRaw := 40, FlowRaw := 20, FlowSetting := 0.0);
+  ASSERT_EQ(g.TargetRaw, 0);
+  ASSERT_TRUE(g.EnableCoil);
 END_TEST
 
 TEST 'A fresh controller starts disarmed and cannot enable an actuator'

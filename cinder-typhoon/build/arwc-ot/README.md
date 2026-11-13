@@ -5,6 +5,9 @@ dedicated GCP VM on November 12, 2026 (UTC). See [qualification.json](evidence/q
 for observations and [versions.md](versions.md) for pinned products and licenses.
 The [platform plan](../../docs/design/arwc-ot-platform-plan.md) defines the complete site.
 
+The [two-outlet site controller](site/README.md) extends this product combination
+with graphical IEC logic and a complete site I/O contract.
+
 This fixture contains one outlet, real IEC logic, real product interfaces, and
 an intentionally small I/O response model. Site sequences, graphics, alarms,
 workstations, and participant qualification belong to issues #364–#370.
