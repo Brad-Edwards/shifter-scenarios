@@ -1,0 +1,176 @@
+TEST 'Level scaling and usable volume use the measured level'
+VAR v : SiteInputs; END_VAR
+  v(LevelRaw := 8000, Heartbeat := 1);
+  ASSERT_NEAR(v.LevelM, 8.0, 0.001);
+  ASSERT_NEAR(v.UsableVolumeML, 14.0, 0.001);
+  ASSERT_TRUE(v.IoHealthy);
+  ASSERT_FALSE(v.LowLevelAlarm);
+END_TEST
+
+TEST 'Heartbeat timeout and low-level hysteresis are PLC decisions'
+VAR v : SiteInputs; END_VAR
+  v(LevelRaw := 8000, Heartbeat := 1);
+  v();
+  ADVANCE_TIME(T#3100ms);
+  v();
+  ASSERT_FALSE(v.IoHealthy);
+  v(LevelRaw := 900, Heartbeat := 2);
+  ASSERT_TRUE(v.IoHealthy);
+  ASSERT_TRUE(v.LowLevelAlarm);
+  v(LevelRaw := 1100, Heartbeat := 3);
+  ASSERT_TRUE(v.LowLevelAlarm);
+  v(LevelRaw := 1300, Heartbeat := 4);
+  ASSERT_FALSE(v.LowLevelAlarm);
+END_TEST
+
+TEST 'An invalid two-outlet request changes neither accepted setting'
+VAR r : SiteRequests; END_VAR
+  r(IoHealthy := TRUE, AvailableA := TRUE, AvailableB := TRUE,
+    HmiTargetA := 25.0, HmiTargetB := 15.0, HmiSequence := 1);
+  ASSERT_EQ(r.HmiAccepted, 1);
+  r(HmiTargetA := 30.0, HmiTargetB := 101.0, HmiSequence := 2);
+  ASSERT_EQ(r.HmiAccepted, 1);
+  ASSERT_EQ(r.HmiRejected, 2);
+  ASSERT_EQ(r.HmiRejectReason, 4);
+  ASSERT_NEAR(r.TargetA, 25.0, 0.01);
+  ASSERT_NEAR(r.TargetB, 15.0, 0.01);
+END_TEST
+
+TEST 'Local wins competing commits and the remote request does not run later'
+VAR r : SiteRequests; END_VAR
+  r(IoHealthy := TRUE, AvailableA := TRUE, AvailableB := TRUE,
+    RemoteEnableInput := TRUE, HmiTargetA := 25.0, HmiTargetB := 10.0,
+    HmiSequence := 1, RemoteTargetA := 80.0, RemoteTargetB := 80.0, RemoteSequence := 1);
+  ASSERT_EQ(r.Owner, 1);
+  ASSERT_EQ(r.HmiAccepted, 1);
+  ASSERT_EQ(r.RemoteRejected, 1);
+  ASSERT_EQ(r.RemoteRejectReason, 8);
+  ASSERT_FALSE(r.RemoteEnabled);
+  r(RemoteEnableInput := TRUE);
+  ASSERT_EQ(r.RemoteAccepted, 0);
+  ASSERT_NEAR(r.TargetA, 25.0, 0.01);
+  r(RemoteSequence := 2);
+  ASSERT_EQ(r.RemoteAccepted, 2);
+  ASSERT_EQ(r.Owner, 2);
+END_TEST
+
+TEST 'Disabled remote and low-level opening requests cannot move the site'
+VAR r : SiteRequests; END_VAR
+  r(IoHealthy := TRUE, AvailableA := TRUE, AvailableB := TRUE,
+    RemoteTargetA := 30.0, RemoteSequence := 1);
+  ASSERT_FALSE(r.Armed);
+  ASSERT_EQ(r.RemoteRejectReason, 5);
+  r(RemoteEnableInput := TRUE);
+  ASSERT_EQ(r.RemoteAccepted, 0);
+  r(LowLevel := TRUE, HmiTargetA := 10.0, HmiSequence := 1);
+  ASSERT_EQ(r.HmiRejectReason, 3);
+  ASSERT_FALSE(r.Armed);
+  r(HmiTargetA := 0.0, HmiTargetB := 0.0, HmiSequence := 2);
+  ASSERT_EQ(r.HmiAccepted, 2);
+END_TEST
+
+TEST 'Communications loss and operator stop require a new request after recovery'
+VAR r : SiteRequests; END_VAR
+  r(IoHealthy := TRUE, AvailableA := TRUE, AvailableB := TRUE,
+    HmiTargetA := 20.0, HmiSequence := 1);
+  ASSERT_TRUE(r.Armed);
+  r(IoHealthy := FALSE);
+  ASSERT_FALSE(r.Armed);
+  r(IoHealthy := TRUE);
+  ASSERT_FALSE(r.Armed);
+  r(HmiSequence := 2);
+  ASSERT_TRUE(r.Armed);
+  r(HmiStop := TRUE);
+  ASSERT_FALSE(r.Armed);
+  r(HmiStop := FALSE);
+  ASSERT_FALSE(r.Armed);
+END_TEST
+
+TEST 'Manual motion follows its position target and observes a reversal pause'
+VAR g : OutletControl; END_VAR
+  g(BasePermit := TRUE, Armed := TRUE, PositionRaw := 2000, ManualTarget := 60.0);
+  ASSERT_TRUE(g.EnableCoil);
+  ASSERT_EQ(g.TargetRaw, 6000);
+  ASSERT_EQ(g.MotionState, 1);
+  g(ManualTarget := 0.0);
+  ASSERT_FALSE(g.EnableCoil);
+  ASSERT_EQ(g.MotionState, 6);
+  ADVANCE_TIME(T#400ms);
+  g();
+  ASSERT_FALSE(g.EnableCoil);
+  ADVANCE_TIME(T#100ms);
+  g();
+  ASSERT_TRUE(g.EnableCoil);
+  ASSERT_EQ(g.MotionState, 2);
+END_TEST
+
+TEST 'Low level closes an operating outlet and loss of permissive removes its enable'
+VAR g : OutletControl; END_VAR
+  g(BasePermit := TRUE, Armed := TRUE, PositionRaw := 3000, ManualTarget := 80.0, LowLevel := TRUE);
+  ASSERT_EQ(g.TargetRaw, 0);
+  ASSERT_TRUE(g.EnableCoil);
+  ASSERT_EQ(g.MotionState, 2);
+  g(BasePermit := FALSE);
+  ASSERT_FALSE(g.EnableCoil);
+  ASSERT_EQ(g.MotionState, 4);
+END_TEST
+
+TEST 'A travel timeout latches until an operator reset edge'
+VAR g : OutletControl; END_VAR
+  g(BasePermit := TRUE, Armed := TRUE, PositionRaw := 0, ManualTarget := 100.0);
+  ADVANCE_TIME(T#25100ms);
+  g();
+  ASSERT_TRUE(g.TravelFault);
+  ASSERT_FALSE(g.EnableCoil);
+  g(Armed := FALSE);
+  ASSERT_TRUE(g.TravelFault);
+  g(ResetFault := TRUE);
+  ASSERT_FALSE(g.TravelFault);
+  ASSERT_FALSE(g.EnableCoil);
+END_TEST
+
+TEST 'Automatic control uses measured flow and converges to its assigned setpoint'
+VAR
+  g : OutletControl;
+  Position : REAL;
+  MeasuredPosition : REAL;
+  DriveTarget : REAL;
+  DriveEnabled : BOOL;
+  Difference : REAL;
+END_VAR
+  g(BasePermit := TRUE, Armed := TRUE, AutoMode := FALSE, PositionRaw := 0);
+{{AUTO_SCANS}}
+{{AUTO_QUIET_SCANS}}
+  ASSERT_FALSE(g.TravelFault);
+  ASSERT_NEAR(Position*0.005, 0.2, 0.01);
+  ASSERT_FALSE(g.EnableCoil, 'Settled automatic flow must not keep driving the actuator');
+END_TEST
+
+TEST 'Closed and open endpoints complete their travel inside the normal position deadband'
+VAR g : OutletControl; h : OutletControl; END_VAR
+  g(BasePermit := TRUE, Armed := TRUE, PositionRaw := 40, ManualTarget := 0.0);
+  ASSERT_TRUE(g.EnableCoil);
+  ASSERT_EQ(g.MotionState, 2);
+  g(PositionRaw := 0);
+  ASSERT_FALSE(g.EnableCoil);
+  h(BasePermit := TRUE, Armed := TRUE, PositionRaw := 9960, ManualTarget := 100.0);
+  ASSERT_TRUE(h.EnableCoil);
+  ASSERT_EQ(h.MotionState, 1);
+END_TEST
+
+TEST 'A zero automatic flow request closes the outlet completely'
+VAR g : OutletControl; END_VAR
+  g(BasePermit := TRUE, Armed := TRUE, AutoMode := TRUE, PositionRaw := 40, FlowRaw := 20, FlowSetting := 0.0);
+  ASSERT_EQ(g.TargetRaw, 0);
+  ASSERT_TRUE(g.EnableCoil);
+END_TEST
+
+TEST 'A fresh controller starts disarmed and cannot enable an actuator'
+VAR r : SiteRequests; g : OutletControl; END_VAR
+  r(IoHealthy := TRUE, AvailableA := TRUE, AvailableB := TRUE);
+  ASSERT_FALSE(r.Armed);
+  ASSERT_FALSE(r.RemoteEnabled);
+  ASSERT_EQ(r.Owner, 0);
+  g(BasePermit := TRUE, Armed := r.Armed, ManualTarget := 50.0);
+  ASSERT_FALSE(g.EnableCoil);
+END_TEST
