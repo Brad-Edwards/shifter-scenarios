@@ -57,3 +57,35 @@ native SSH, runtime egress, and missing persistent product state.
 
 References: [Gitea configuration](https://docs.gitea.com/administration/config-cheat-sheet/)
 and [Gitea API](https://docs.gitea.com/api/1.25/).
+
+## Native CI slice
+
+Jenkins LTS 2.580.2 with Java 21 owns the existing CI address
+`10.77.51.40` and native HTTPS. Its home volume holds users, credentials,
+permissions, jobs, builds, workspaces, artifacts, and history. Git 5.11.0 and
+Matrix Authorization 3.3 supply the required native SCM and permission support.
+No other optional plugin is required for the first freestyle build.
+
+The seed uses Jenkins' supported initialization hooks. It adds a read-only
+source credential, a developer who can read and run selected jobs, and a
+private automation administrator. The initial report test checks out the real
+Gitea repository and reproduces the missing-fixture failure through an actual
+build. It preserves the native console, artifact, workspace, and error paths.
+It does not import a synthetic console response.
+
+Only trusted fixed job steps run inside the controller container. Submitted
+executable FieldLink reports and diagnostic work continue to use the existing
+isolated workers. Jenkins has no host Docker socket or general host access.
+The genuine FieldLink report and rehearsal application remains a separate
+named integration. Its old CI history and workspace facades are retired as the
+equivalent native paths become available.
+
+CI affects K02, K06, K09, K20, and K29. The source and package history remain
+the existing authoritative assets. Card updates must preserve each declared
+difficulty and must refer to actual native records and worker results.
+
+References: [Jenkins Docker installation](https://www.jenkins.io/doc/book/installing/docker/),
+[initial settings](https://www.jenkins.io/doc/book/installing/initial-settings/),
+[initialization hooks](https://www.jenkins.io/doc/book/managing/groovy-hook-scripts/),
+[Git plugin](https://plugins.jenkins.io/git/), and
+[Matrix Authorization](https://plugins.jenkins.io/matrix-auth/).

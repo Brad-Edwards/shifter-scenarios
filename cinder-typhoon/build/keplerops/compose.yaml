@@ -298,6 +298,13 @@ services:
         ipv4_address: 10.77.51.60
         aliases: [support.keplerops.test]
 
+  native-jenkins:
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/jenkins.Dockerfile
+    image: cinder-keplerops/native-jenkins:hand-build
+    profiles: [build-only]
+
   report-worker:
     build:
       context: ../..
