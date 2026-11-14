@@ -1,0 +1,199 @@
+name: cinder-arwc-native
+x-runtime: &runtime
+  restart: unless-stopped
+  security_opt: [no-new-privileges:true]
+  sysctls: {net.ipv4.ip_forward: "0"}
+  logging: {driver: json-file, options: {max-size: 10m, max-file: "3"}}
+x-frappe: &frappe
+  <<: *runtime
+  image: ${ERPNEXT_IMAGE:?Load images.env}
+  networks: [data]
+  volumes: [sites:/home/frappe/frappe-bench/sites, frappe-logs:/home/frappe/frappe-bench/logs]
+  environment:
+    FRAPPE_REDIS_CACHE: redis://redis-cache:6379
+    FRAPPE_REDIS_QUEUE: redis://redis-queue:6379
+services:
+  dns:
+    <<: *runtime
+    build: {context: ., dockerfile: dns.Dockerfile}
+    image: cinder-arwc/native-dns:404
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE, SETUID, SETGID]
+    tmpfs: [/tmp]
+    networks:
+      corporate: {ipv4_address: 10.77.60.10}
+      supervisory: {ipv4_address: 172.29.63.26}
+    healthcheck:
+      test: [CMD-SHELL, "dig @127.0.0.1 erp.arwc.test +short | grep -q 172.29.63.27"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+  edge:
+    <<: *runtime
+    image: ${NGINX_IMAGE:?Load images.env}
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [CHOWN, SETUID, SETGID, NET_BIND_SERVICE]
+    tmpfs: [/tmp, /var/cache/nginx, /var/run]
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./.operator/ca/tls:/etc/nginx/tls:ro
+    networks:
+      corporate: {ipv4_address: 10.77.60.11}
+      supervisory: {ipv4_address: 172.29.63.27}
+      data: {}
+    healthcheck:
+      test: [CMD-SHELL, "wget --no-check-certificate -qO- https://127.0.0.1/health | grep -q ready"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+  ca:
+    <<: *runtime
+    image: ${STEP_CA_IMAGE:?Load images.env}
+    command: [step-ca, /home/step/config/ca.json, --password-file, /home/step/secrets/password]
+    volumes: [./.operator/ca:/home/step]
+    networks:
+      corporate: {ipv4_address: 10.77.60.12}
+    healthcheck:
+      test: [CMD, step, ca, health, --ca-url, https://ca.arwc.test:9000, --root, /home/step/certs/root_ca.crt]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+    extra_hosts: [ca.arwc.test:127.0.0.1]
+  identity-db:
+    <<: *runtime
+    image: ${POSTGRES_IMAGE:?Load images.env}
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_DB: keycloak
+      POSTGRES_PASSWORD_FILE: /run/secrets/identity_db_password
+    secrets: [identity_db_password]
+    volumes: [identity-data:/var/lib/postgresql]
+    networks: [data]
+    healthcheck:
+      test: [CMD, pg_isready, -U, keycloak, -d, keycloak]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+  keycloak:
+    <<: *runtime
+    image: ${KEYCLOAK_IMAGE:?Load images.env}
+    command: [start, --db=postgres, --http-enabled=true, --hostname=https://identity.arwc.test, --proxy-headers=xforwarded, --health-enabled=true, --import-realm]
+    environment:
+      KC_DB_URL: jdbc:postgresql://identity-db/keycloak
+      KC_DB_USERNAME: keycloak
+      JAVA_OPTS_APPEND: -Xms128m -Xmx512m
+    env_file: [.operator/keycloak.env]
+    volumes: [./.operator/realm.json:/opt/keycloak/data/import/arwc-realm.json:ro]
+    networks: [data]
+    depends_on:
+      identity-db: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "bash -c 'exec 3<>/dev/tcp/localhost/9000; printf \"GET /health/ready HTTP/1.0\\r\\n\\r\\n\" >&3; grep -q UP <&3'"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 60s
+  db:
+    <<: *runtime
+    image: ${MARIADB_IMAGE:?Load images.env}
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --skip-character-set-client-handshake, --innodb-snapshot-isolation=OFF]
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/mariadb_root_password
+    secrets: [mariadb_root_password]
+    volumes: [erp-db:/var/lib/mysql]
+    networks: [data]
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+  redis-cache:
+    <<: *runtime
+    image: ${REDIS_IMAGE:?Load images.env}
+    networks: [data]
+  redis-queue:
+    <<: *runtime
+    image: ${REDIS_IMAGE:?Load images.env}
+    volumes: [erp-queue:/data]
+    networks: [data]
+  configurator:
+    <<: *frappe
+    restart: "no"
+    entrypoint: [bash, -ec]
+    command:
+      - |
+        ls -1 apps > sites/apps.txt
+        bench set-config -g db_host db
+        bench set-config -gp db_port 3306
+        bench set-config -g redis_cache redis://redis-cache:6379
+        bench set-config -g redis_queue redis://redis-queue:6379
+        bench set-config -g redis_socketio redis://redis-queue:6379
+        bench set-config -gp socketio_port 9000
+  create-site:
+    <<: *frappe
+    restart: "no"
+    entrypoint: [bash, -ec]
+    env_file: [.operator/erp-init.env]
+    command:
+      - |
+        if [ ! -f sites/erp.arwc.test/site_config.json ]; then
+          bench new-site erp.arwc.test --mariadb-user-host-login-scope='%' --db-root-username=root --db-root-password="$$MARIADB_ROOT_PASSWORD" --admin-password="$$ERP_ADMIN_PASSWORD" --install-app erpnext --set-default
+        fi
+    depends_on:
+      db: {condition: service_healthy}
+      configurator: {condition: service_completed_successfully}
+  backend:
+    <<: *frappe
+    depends_on:
+      create-site: {condition: service_completed_successfully}
+  frontend:
+    <<: *frappe
+    command: [nginx-entrypoint.sh]
+    environment:
+      BACKEND: backend:8000
+      FRAPPE_SITE_NAME_HEADER: erp.arwc.test
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 172.29.66.0/24
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+      PROXY_READ_TIMEOUT: "120"
+      CLIENT_MAX_BODY_SIZE: 50m
+    depends_on: [backend, websocket]
+    healthcheck:
+      test: [CMD-SHELL, "curl -fsS -H 'Host: erp.arwc.test' http://127.0.0.1:8080/api/method/ping | grep -q pong"]
+      interval: 15s
+      timeout: 5s
+      retries: 24
+      start_period: 120s
+  queue:
+    <<: *frappe
+    command: [bench, worker, --queue, long,default,short]
+    depends_on:
+      create-site: {condition: service_completed_successfully}
+  scheduler:
+    <<: *frappe
+    command: [bench, schedule]
+    depends_on:
+      create-site: {condition: service_completed_successfully}
+  websocket:
+    <<: *frappe
+    command: [node, /home/frappe/frappe-bench/apps/frappe/socketio.js]
+    depends_on:
+      create-site: {condition: service_completed_successfully}
+networks:
+  corporate: {external: true, name: cinder-arwc-corporate}
+  supervisory: {external: true, name: arwc-ot-compat_supervisory}
+  data:
+    internal: true
+    ipam: {config: [{subnet: 172.29.66.0/24}]}
+volumes:
+  identity-data:
+  erp-db:
+  erp-queue:
+  sites:
+  frappe-logs:
+secrets:
+  identity_db_password: {file: .operator/identity_db_password}
+  mariadb_root_password: {file: .operator/mariadb_root_password}

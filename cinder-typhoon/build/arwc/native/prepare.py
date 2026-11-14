@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+"""Create private bootstrap material for the native IT products."""
+import json
+import os
+from pathlib import Path
+import secrets
+
+ROOT = Path(__file__).resolve().parent
+OPERATOR = ROOT / ".operator"
+
+
+def write_private(path: Path, value: str, *, mode: int = 0o600) -> None:
+    path.write_text(value, encoding="utf-8")
+    path.chmod(mode)
+
+
+def prepare() -> None:
+    os.umask(0o077)
+    OPERATOR.mkdir(mode=0o700, exist_ok=True)
+    seed_path = OPERATOR / "bootstrap.json"
+    if seed_path.exists():
+        seed = json.loads(seed_path.read_text(encoding="utf-8"))
+    else:
+        seed = {name: secrets.token_hex(24) for name in (
+            "identity_db", "identity_admin", "mariadb_root", "erp_admin", "workforce", "ca",
+        )}
+        write_private(seed_path, json.dumps(seed))
+    write_private(OPERATOR / "identity_db_password", seed["identity_db"])
+    write_private(OPERATOR / "mariadb_root_password", seed["mariadb_root"])
+    write_private(OPERATOR / "keycloak.env", (
+        f'KC_DB_PASSWORD={seed["identity_db"]}\n'
+        'KC_BOOTSTRAP_ADMIN_USERNAME=platform-admin\n'
+        f'KC_BOOTSTRAP_ADMIN_PASSWORD={seed["identity_admin"]}\n'
+    ))
+    write_private(OPERATOR / "erp-init.env", (
+        f'MARIADB_ROOT_PASSWORD={seed["mariadb_root"]}\n'
+        f'ERP_ADMIN_PASSWORD={seed["erp_admin"]}\n'
+    ))
+    realm = {
+        "realm": "arwc", "enabled": True, "displayName": "ARWC Workforce",
+        "registrationAllowed": False, "resetPasswordAllowed": False,
+        "roles": {"realm": [{"name": name} for name in ("staff", "planning", "maintenance")]},
+        "users": [{
+            "username": "morgan.reid", "enabled": True,
+            "firstName": "Morgan", "lastName": "Reid",
+            "email": "morgan.reid@arwc.test", "emailVerified": True,
+            "realmRoles": ["staff"],
+            "credentials": [{"type": "password", "value": seed["workforce"], "temporary": False}],
+        }],
+    }
+    write_private(OPERATOR / "realm.json", json.dumps(realm), mode=0o644)
+    ca = OPERATOR / "ca"
+    ca.mkdir(mode=0o755, exist_ok=True)
+    (ca / "secrets").mkdir(mode=0o700, exist_ok=True)
+    write_private(ca / "secrets/password", seed["ca"])
+
+
+if __name__ == "__main__":
+    prepare()
