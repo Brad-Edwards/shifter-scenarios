@@ -223,7 +223,7 @@ services:
     restart: unless-stopped
     read_only: true
     cap_drop: [ALL]
-    cap_add: [NET_ADMIN, SETUID, SETGID, CHOWN]
+    cap_add: [NET_ADMIN, SETUID, SETGID, CHOWN, FOWNER]
     security_opt: [no-new-privileges:true]
     sysctls:
       net.ipv4.ip_unprivileged_port_start: 0
