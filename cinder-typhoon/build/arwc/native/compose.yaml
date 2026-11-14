@@ -76,6 +76,24 @@ services:
       interval: 5s
       timeout: 3s
       retries: 12
+  kerberos:
+    <<: *runtime
+    build: {context: ., dockerfile: kerberos.Dockerfile}
+    image: cinder-arwc/native-kdc:404
+    environment:
+      KRB5_KDC_PROFILE: /etc/krb5kdc/kdc.conf
+    read_only: true
+    tmpfs: [/tmp, /run]
+    secrets: [kerberos_master, workforce_password]
+    volumes: [kerberos-data:/var/lib/krb5kdc]
+    networks:
+      corporate: {ipv4_address: 10.77.60.13}
+    extra_hosts: [kdc.arwc.test:127.0.0.1]
+    healthcheck:
+      test: [CMD-SHELL, "kadmin.local -r ARWC.TEST -q 'getprinc morgan.reid' >/dev/null"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
   keycloak:
     <<: *runtime
     image: ${KEYCLOAK_IMAGE:?Load images.env}
@@ -169,7 +187,7 @@ services:
       start_period: 120s
   queue:
     <<: *frappe
-    command: [bench, worker, --queue, long,default,short]
+    command: [bench, worker, --queue, "long,default,short"]
     depends_on:
       create-site: {condition: service_completed_successfully}
   scheduler:
@@ -194,6 +212,9 @@ volumes:
   erp-queue:
   sites:
   frappe-logs:
+  kerberos-data:
 secrets:
   identity_db_password: {file: .operator/identity_db_password}
   mariadb_root_password: {file: .operator/mariadb_root_password}
+  kerberos_master: {file: .operator/kerberos_master}
+  workforce_password: {file: .operator/workforce_password}

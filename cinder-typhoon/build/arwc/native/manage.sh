@@ -34,8 +34,9 @@ case "$action" in
     chown -R 1000:1000 .operator/ca
     chmod 0755 .operator/ca/tls
     chown -R root:root .operator/ca/tls
-    "${compose[@]}" build dns
+    "${compose[@]}" build dns kerberos
     "${compose[@]}" up -d
+    bash desktop-access.sh
     ;;
   status)
     "${compose[@]}" ps

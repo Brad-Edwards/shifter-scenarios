@@ -22,11 +22,16 @@ def prepare() -> None:
         seed = json.loads(seed_path.read_text(encoding="utf-8"))
     else:
         seed = {name: secrets.token_hex(24) for name in (
-            "identity_db", "identity_admin", "mariadb_root", "erp_admin", "workforce", "ca",
+            "identity_db", "identity_admin", "mariadb_root", "erp_admin", "workforce", "ca", "kerberos",
         )}
+        write_private(seed_path, json.dumps(seed))
+    if "kerberos" not in seed:
+        seed["kerberos"] = secrets.token_hex(24)
         write_private(seed_path, json.dumps(seed))
     write_private(OPERATOR / "identity_db_password", seed["identity_db"])
     write_private(OPERATOR / "mariadb_root_password", seed["mariadb_root"])
+    write_private(OPERATOR / "kerberos_master", seed["kerberos"])
+    write_private(OPERATOR / "workforce_password", seed["workforce"])
     write_private(OPERATOR / "keycloak.env", (
         f'KC_DB_PASSWORD={seed["identity_db"]}\n'
         'KC_BOOTSTRAP_ADMIN_USERNAME=platform-admin\n'

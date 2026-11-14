@@ -25,6 +25,7 @@ flowchart LR
 | ERPNext | private IT network; frontend 8080 | Assets, work orders, suppliers, purchasing and approvals through native Frappe interfaces. |
 | MariaDB and Redis | private IT network; 3306 and 6379 | ERPNext's supported database, cache and queue. |
 | step-ca | corporate `10.77.60.12`; TLS 9000 | Private certificate issuance and renewal. |
+| MIT Kerberos | corporate `10.77.60.13`; TCP/UDP 88 | Native ARWC.TEST ticket issuing with a persistent realm database. |
 
 Every network is internal. Product backends do not join the supervisory network.
 The multi-homed DNS and edge containers have IP forwarding disabled. The edge
@@ -40,7 +41,8 @@ remove OT or legacy IT volumes. Initial migration retains legacy IT until each
 replacement workflow and affected card is ready.
 
 The first checkpoint is DNS, TLS, Keycloak and a usable stock ERPNext UI.
-Kerberos and remaining product configuration follow on the same foundation.
+Kerberos uses the same workforce bootstrap password and its own realm state.
+Product federation follows only where required for participant workflows.
 Actual VM memory, disk and start time are recorded after deployment.
 
 References: [Keycloak containers](https://www.keycloak.org/server/containers),
