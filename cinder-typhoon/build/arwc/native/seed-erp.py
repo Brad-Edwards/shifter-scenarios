@@ -98,6 +98,42 @@ def seed() -> None:
             "is_existing_asset": 1, "gross_purchase_amount": 45000,
             "calculate_depreciation": 0,
         })
+    team = insert("Asset Maintenance Team", {"maintenance_team_name": "Cairn Reach maintenance"}, {
+        "company": COMPANY,
+        "maintenance_team_members": [{"team_member": "theo.marrivel@alterrawaterco.com"},
+                                     {"team_member": "clara.morivelle@alterrawaterco.com"}],
+    })
+    for number in range(1, 25):
+        asset_name = f"AST-CRR-{number:03d} — Outlet gate assembly {number}"
+        asset = insert("Asset", {"asset_name": asset_name, "company": COMPANY}, {})
+        insert("Asset Maintenance", {"asset_name": asset["name"], "company": COMPANY}, {
+            "maintenance_team": team["name"],
+            "asset_maintenance_tasks": [{
+                "maintenance_task": "Inspect actuator travel and limit indication",
+                "maintenance_status": "Planned", "start_date": "2026-09-01",
+                "periodicity": "Monthly", "assign_to": "theo.marrivel@alterrawaterco.com",
+            }],
+        })
+    for reference, name in (
+        ("WO-CRR-4417", "Cairn Reach outlet inspection"),
+        ("WO-PIN-2192", "Pine intake instrument calibration"),
+        ("WO-RIV-3308", "River distribution pressure review"),
+        ("WO-CRR-4392", "Cairn Reach cabinet ventilation service"),
+    ):
+        project = insert("Project", {"project_name": f"{reference} — {name}"}, {
+            "company": COMPANY, "expected_start_date": "2026-09-01",
+            "expected_end_date": "2026-12-01", "status": "Open",
+        })
+        for subject in ("Confirm site access and maintenance permit", "Complete inspection and record findings",
+                        "Review findings and approve handback"):
+            insert("Task", {"subject": subject, "project": project["name"]}, {
+                "status": "Open", "description": f"{reference}: {subject}. Keep the accepted inspection record with the maintenance handover.",
+            })
+    insert("Supplier Quotation", {"supplier": "Merewick Bulk Water Cooperative", "quotation_number": "QUOTE-MER-884"}, {
+        "company": COMPANY, "transaction_date": "2026-11-09", "valid_till": "2026-12-01",
+        "currency": "USD", "items": [{"item_code": "BULK-WATER", "qty": 0.75,
+            "uom": "Megalitre", "rate": 2280, "description": "Supplementary water for ALLOC-2026-DP3; supplier reservation required."}],
+    })
     print("ARWC company, staff, suppliers and asset records loaded through native APIs")
 
 

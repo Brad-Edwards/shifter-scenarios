@@ -46,6 +46,8 @@ case "$action" in
     "${compose[@]}" ps
     ;;
   seed)
+    "${compose[@]}" exec -T corporate-db psql -U corporate -d planning \
+      --set ON_ERROR_STOP=1 < planning.sql
     "${compose[@]}" --profile seed run --rm seed-erp
     ;;
   reset)
