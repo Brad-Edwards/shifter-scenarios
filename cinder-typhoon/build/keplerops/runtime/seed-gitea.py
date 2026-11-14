@@ -108,6 +108,10 @@ def main() -> None:
                 check=True, env=environment, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
             )
         api('PUT', path + '/collaborators/rowan.ito', password, {'permission': 'read'})
+        if name in {'policy-compiler', 'connector-archive'}:
+            api('PATCH', path, password, {
+                'website': 'https://source-tools.keplerops.test:8443/.well-known/fieldkest-client',
+            })
         marker.touch(mode=0o600)
     handover = json.loads((ROOT / 'handovers/HND-FLK-2026-09.json').read_text())
     marker = ROOT / 'data/.handover-seeded'
