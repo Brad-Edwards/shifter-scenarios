@@ -27,6 +27,8 @@ if [ ! -e /home/rowan/.local/share/keplerops/release-lineage-2026-09-18 ]; then
 fi
 chown rowan:rowan /home/rowan/work
 install -m 0444 /run/fieldkest-auth/ca.crt /home/rowan/.local/share/keplerops/ca.crt
+install -m 0444 /run/fieldkest-auth/ca.crt /usr/local/share/ca-certificates/fieldlink-range.crt
+update-ca-certificates >/dev/null
 install -m 0600 -o rowan -g rowan /run/fieldkest-auth/rowan_authorized_keys /home/rowan/.ssh/authorized_keys
 setpriv --reuid=fieldkest-workbench --regid=fieldkest-workbench --init-groups \
   python3 /opt/fieldkest-workbench/workbench.py &
