@@ -9,6 +9,11 @@ Use the repository's GCP wrappers instead of assembling long sequences of
 remote commands. These goldens are development and QA targets. They are not
 BigRAE participant ranges and do not prove 300-range capacity.
 
+Do not use a golden for FieldLink or ARWC native-application replatforming.
+Use the `cinder-development-ranges` skill and its guarded wrapper for that
+work. A golden deploy or reset now requires an explicit request that names the
+golden operation.
+
 ## Start with the target project
 
 Before any `gcloud`, Terraform, deployment, reset, or live-test command, ask

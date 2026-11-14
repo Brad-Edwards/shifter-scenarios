@@ -5,8 +5,10 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
 
 docker compose -f compose.yaml down -v --remove-orphans
+bash ./generate-operator-material.sh
 docker compose -f compose.yaml up -d --force-recreate \
-  router runner k-source k-registry k-ci k-preview k-support k-indexer \
+  router fieldlink-dns fieldlink-edge fieldlink-postgres runner \
+  k-source k-registry k-ci k-preview k-support k-indexer \
   k-cloud-api k-workload k-data k-assistant k-staff k-identity k-cert \
   a-connector k-dev
 

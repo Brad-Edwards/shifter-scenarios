@@ -9,6 +9,11 @@ Use the repository's GCP wrappers instead of assembling long sequences of
 remote commands. These goldens are development and QA targets. They are not
 BigRAE participant ranges and do not prove 300-range capacity.
 
+Do not use a golden for FieldLink or ARWC native-application replatforming.
+Use the `cinder-development-ranges` skill and its guarded wrapper for that
+work. A golden deploy or reset now requires an explicit request that names the
+golden operation.
+
 ## Start with the target project
 
 Before any `gcloud`, Terraform, deployment, reset, or live-test command, ask
@@ -49,6 +54,18 @@ Terraform, replaces `/opt/cinder-typhoon` on its golden, builds the phase, and
 starts its Compose stack. This is a deployment, not a harmless test command.
 Do not deploy unrelated working-tree content. The scripts exclude operator
 state, but the source archive is not limited to committed files.
+
+Deploying KeplerOps or ARWC regenerates that phase's certificate authority.
+Synchronize the two public peer certificates after either deployment and
+before a cross-segment check or immutable candidate generation:
+
+```sh
+bash cinder-typhoon/build/kepler-arwc/deploy.sh "$CINDER_GCP_PROJECT"
+```
+
+This wrapper exchanges only the public certificate-authority certificates and
+recreates the two connector services. Candidate generation rejects missing or
+stale peer trust.
 
 ### Test a current KeplerOps-to-ARWC development change
 
