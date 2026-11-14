@@ -33,4 +33,6 @@ RUN mkdir -p /var/lib/gitea \
     && chmod 0755 /usr/local/bin/fieldkest-source-entrypoint
 
 EXPOSE 22 443 8443
+HEALTHCHECK --interval=10s --timeout=5s --start-period=60s --retries=6 \
+  CMD test -f /var/lib/gitea/data/.handover-seeded && curl -fsS --cacert /run/fieldkest-tls/ca.crt https://source.keplerops.test/api/healthz >/dev/null || exit 1
 ENTRYPOINT ["/usr/local/bin/fieldkest-source-entrypoint"]

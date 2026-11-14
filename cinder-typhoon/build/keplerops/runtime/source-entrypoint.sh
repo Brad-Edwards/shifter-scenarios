@@ -27,4 +27,4 @@ setpriv --reuid=git --regid=git --init-groups python3 /opt/fieldkest/seed-gitea.
 setpriv --reuid=git --regid=git --init-groups python3 /opt/fieldkest/source.py &
 api_pid=$!
 trap 'kill "$api_pid" "$gitea_pid" 2>/dev/null || true' INT TERM EXIT
-wait "$api_pid"
+wait "$gitea_pid"
