@@ -13,9 +13,11 @@ administration commands and APIs. They add no participant-facing application.
 | Metabase | `reports.arwc.test` | Saved questions and dashboards over the read-only planning role. Its own PostgreSQL application database stores users and report state. |
 | Gitea | `engineering.arwc.test` | Engineering projects, configuration, native Git history and review records. |
 
-All backends attach only to the internal IT network. Nginx serves each product
-through an explicit TLS virtual host. These services gain no control-network
-route and cannot write to the OT historian or controller.
+Corporate backends use the internal IT network. The frontend and reporting
+database also use the dedicated exchanges described in the
+[DMZ design](arwc-native-dmz.md). Nginx serves each product through an explicit
+TLS virtual host. These services gain no control-network route and cannot
+write to the OT historian or controller.
 Gitea uses native HTTPS Git, including clone, fetch and push. SSH is disabled
 in this layout because the edge does not publish an SSH listener.
 

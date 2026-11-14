@@ -28,7 +28,8 @@ def api(path: str, body: dict | None = None, *, method: str | None = None) -> di
         with OPENER.open(request, timeout=180) as response:
             return json.load(response)
     except HTTPError as error:
-        if path.startswith(('/api/resource/Asset', '/api/resource/Supplier%20Quotation')) or path == '/api/method/frappe.client.submit':
+        if path.startswith(('/api/resource/Asset', '/api/resource/Supplier%20Quotation',
+                            '/api/resource/Purchase%20Order')) or path == '/api/method/frappe.client.submit':
             detail = json.load(error)
             raise RuntimeError(f'Native record validation: {detail.get("_server_messages", detail.get("exc_type"))}') from None
         raise RuntimeError(f"Frappe API {path.split('?')[0]} returned HTTP {error.code}") from None
