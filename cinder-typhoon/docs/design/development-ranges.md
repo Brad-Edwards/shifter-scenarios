@@ -34,6 +34,10 @@ the profile before resetting applications. After upgrading an existing clone,
 run `manage.sh bind-peer fieldlink <project>` after source sync. Do not use the
 generic golden peer default for development delivery tests.
 
+The local `.env` peer override is development-only. Before a future bake or
+promotion, exclude that file or replace it through the participant release
+first-boot mapping so a participant range uses its own assigned peer.
+
 ## Development desktop login
 
 The FieldLink development desktop needs a password for authenticated RDP.
