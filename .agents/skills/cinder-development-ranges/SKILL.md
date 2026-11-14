@@ -55,6 +55,11 @@ treat a VM-only edit as durable work.
 
 ## Provisioning
 
+Existing FieldLink clones must use `manage.sh bind-peer fieldlink <project>`
+after source sync before cross-range tests. This verifies that the customer
+relay targets the ARWC development VM. The fixed private IPs and reset behavior
+are documented in the development-ranges design.
+
 Preserve FieldLink once, then provision each development VM:
 
 ```sh

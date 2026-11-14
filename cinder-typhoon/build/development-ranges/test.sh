@@ -18,9 +18,16 @@ source "$root/targets.sh"
 cinder_load_development_target fieldlink
 cinder_validate_development_target
 [[ $CINDER_DEV_INSTANCE == cinder-fieldlink-dev ]]
+[[ $CINDER_DEV_PRIVATE_IP == 10.77.49.9 ]]
 cinder_load_development_target arwc
 cinder_validate_development_target
 [[ $CINDER_DEV_INSTANCE == cinder-arwc-dev ]]
+[[ $CINDER_DEV_PRIVATE_IP == 10.77.59.11 ]]
+CINDER_DEV_PRIVATE_IP=10.77.59.2
+if cinder_validate_development_target; then
+  echo 'golden-address mutation survived' >&2
+  exit 1
+fi
 
 if cinder_load_development_target unknown 2>/dev/null; then
   echo 'unknown target was accepted' >&2

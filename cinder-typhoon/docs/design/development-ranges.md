@@ -22,8 +22,17 @@ flowchart LR
 
 Both VMs are private, have no service account, and accept SSH only through the
 existing IAP firewall rule. They inherit the source machine type and disks.
+Provisioning requests fixed private addresses `10.77.49.9` for FieldLink and
+`10.77.59.11` for ARWC, including after development VM recreation.
 The ARWC first-boot helper changes only the FieldLink listener binding for the
 new private address. It checks that the qualified PLC container is unchanged.
+
+The FieldLink development first-boot helper stores the ARWC development address
+in its local Compose `.env` and recreates only the customer relay with that
+explicit peer. It verifies the effective binding. The development reset applies
+the profile before resetting applications. After upgrading an existing clone,
+run `manage.sh bind-peer fieldlink <project>` after source sync. Do not use the
+generic golden peer default for development delivery tests.
 
 ## Development desktop login
 

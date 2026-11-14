@@ -18,10 +18,10 @@ project=${3-}
 shift $(( $# >= 3 ? 3 : $# ))
 
 case $action in
-  preserve|provision|describe|ssh|run|sync|reset|desktop-login) ;;
+  preserve|provision|describe|ssh|run|sync|reset|desktop-login|bind-peer) ;;
   *)
     echo 'usage: manage.sh ACTION TARGET GCP_PROJECT [ARGUMENTS]' >&2
-    echo 'ACTION: preserve, provision, describe, ssh, run, sync, reset, or desktop-login' >&2
+    echo 'ACTION: preserve, provision, describe, ssh, run, sync, reset, desktop-login, or bind-peer' >&2
     exit 2
     ;;
 esac
@@ -118,7 +118,7 @@ provision() {
   $gcloud_bin compute instances create "$CINDER_DEV_INSTANCE" \
     --project="$project" --zone="$zone" \
     --source-machine-image="projects/$project/global/machineImages/$CINDER_DEV_MACHINE_IMAGE" \
-    --network-interface="network=$CINDER_DEV_NETWORK,subnet=$CINDER_DEV_SUBNET,no-address" \
+    --network-interface="network=$CINDER_DEV_NETWORK,subnet=$CINDER_DEV_SUBNET,private-network-ip=$CINDER_DEV_PRIVATE_IP,no-address" \
     --no-service-account --no-scopes \
     --tags="$CINDER_DEV_TAG" \
     --labels="scenario=cinder-typhoon,segment=$CINDER_DEV_TARGET,purpose=development-range,managed-by=shifter-scenarios" \
@@ -200,6 +200,16 @@ case $action in
     rm -f -- "$archive"
     archive=
     ;;
+  bind-peer)
+    [[ $target == fieldlink ]] || {
+      echo 'The cross-range customer relay belongs to FieldLink.' >&2
+      exit 2
+    }
+    verify_managed_instance
+    $gcloud_bin compute ssh "$CINDER_DEV_INSTANCE" \
+      --project="$project" --zone="$zone" --tunnel-through-iap \
+      --command='sudo bash /opt/cinder-typhoon/build/development-ranges/guest/fieldlink-first-boot.sh'
+    ;;
   desktop-login)
     [[ $target == fieldlink ]] || {
       echo 'ARWC desktop login is supplied by its existing workstation provisioner.' >&2
@@ -215,7 +225,7 @@ case $action in
     if [[ $target == fieldlink ]]; then
       $gcloud_bin compute ssh "$CINDER_DEV_INSTANCE" \
         --project="$project" --zone="$zone" --tunnel-through-iap \
-      --command='cd /opt/cinder-typhoon/build/keplerops && sudo bash ./restore-pristine.sh && sudo python3 ../development-ranges/guest/fieldlink-desktop-login.py'
+      --command='sudo bash /opt/cinder-typhoon/build/development-ranges/guest/fieldlink-first-boot.sh && cd /opt/cinder-typhoon/build/keplerops && sudo bash ./restore-pristine.sh && sudo python3 ../development-ranges/guest/fieldlink-desktop-login.py'
     else
       [[ ${1-} == "$CINDER_DEV_INSTANCE" ]] || {
         echo "ARWC reset recreates the VM. Repeat with: reset arwc $project $CINDER_DEV_INSTANCE" >&2
