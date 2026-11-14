@@ -228,7 +228,7 @@ services:
     sysctls:
       net.ipv4.ip_unprivileged_port_start: 0
     tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=128m,mode=1777
+      - /tmp:rw,noexec,nosuid,nodev,size=2g,mode=1777
     build:
       context: ../..
       dockerfile: build/keplerops/images/jenkins.Dockerfile

@@ -1,22 +1,39 @@
 # FieldKest developer service notes
 
-All three services use the workstation CA. The saved Gitea credential is also
-accepted by the developer CI routes.
+Internal services use the workstation CA. The saved Gitea credential is also
+accepted by Jenkins and the FieldLink report service.
 
 ## Source
 
 - Repository remote: `https://source.keplerops.test/fieldkest/fieldlink-connector.git`
-- Client reference: `GET https://source.keplerops.test/.well-known/fieldkest-client`
-- Current handover: `GET https://source.keplerops.test/api/fieldkest/handovers/current`
+- Source browser: `https://source.keplerops.test/`
+- Handovers: `https://source.keplerops.test/fieldkest/fieldlink-connector/issues`
 - Repository content: `GET https://source.keplerops.test/api/v1/repos/fieldkest/fieldlink-connector/contents/{path}?ref={revision}`
+- SSH remote: `git@source.keplerops.test:fieldkest/fieldlink-connector.git`
 
-## CI
+Add your public SSH key to your Gitea account before using the SSH remote.
+Compiler and archive operations have their own reference at
+`https://source-tools.keplerops.test:8443/.well-known/fieldkest-client`.
 
-- Run record: `GET https://ci.keplerops.test/api/runs/{run_id}`
-- Run log: `GET https://ci.keplerops.test/api/runs/{run_id}/log`
-- Review import: `POST https://ci.keplerops.test/api/reviews/import`
-- Submit an isolated job: `POST https://ci.keplerops.test/api/jobs`
-- Read a job result: `GET https://ci.keplerops.test/api/jobs/{job_id}`
+## Builds
+
+Jenkins is at `https://ci.keplerops.test/`. The connector report job is
+`fieldlink-report`; its retained build number is 1842. Its build page includes
+Console Output, Artifacts, Changes, and Workspace.
+
+- Build record: `GET https://ci.keplerops.test/job/fieldlink-report/{build_number}/api/json`
+- Build log: `GET https://ci.keplerops.test/job/fieldlink-report/{build_number}/consoleText`
+- Build artifact: `GET https://ci.keplerops.test/job/fieldlink-report/{build_number}/artifact/reports/{filename}`
+
+## FieldLink report review
+
+The report service runs submitted providers in isolated workers and publishes
+compatible results to support. It is separate from Jenkins build history.
+
+- Client reference: `GET https://review.keplerops.test/.well-known/fieldkest-client`
+- Review import: `POST https://review.keplerops.test/api/reviews/import`
+- Submit an isolated report: `POST https://review.keplerops.test/api/jobs`
+- Read its result: `GET https://review.keplerops.test/api/jobs/{job_id}`
 
 The review importer accepts `fieldkest.review-import/v1` JSON with `run_id` and
 an `object` beneath `inputs/`.

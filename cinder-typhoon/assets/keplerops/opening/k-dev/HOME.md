@@ -4,8 +4,8 @@ The connector checkout is under `work/fieldlink-connector`. Release-review
 exports, samples and the local helper are kept under `work` as well.
 
 The team’s usual source, CI, and support entry points are recorded in
-`work/service-notes.md`. Each service publishes its own client reference and
-links the references used by related teams.
+`work/service-notes.md`. Gitea and Jenkins provide their usual source and build
+interfaces. FieldLink engineering services publish their client references.
 
 Internal services use the workstation CA at
 `~/.local/share/keplerops/ca.crt`. The usual command-line clients already trust
