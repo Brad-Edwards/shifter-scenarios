@@ -31,7 +31,8 @@
     "FreeOpcUa client GUI",
     "psql",
     "Mosquitto clients",
-    "C++ compiler"
+    "C++ compiler",
+    "Git"
   ],
   "endpoints": {
     "hmi": "http://fuxa:1881",

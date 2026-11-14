@@ -1,7 +1,7 @@
 #!/bin/bash
 # Manual offline image build on the approved development VM.
 set -euo pipefail
-[[ $(hostname) == cinder-arwc-ot-compat-363 ]] || exit 1
+[[ $(hostname) == cinder-arwc-ot-compat-363 || $(hostname) == cinder-arwc-dev ]] || exit 1
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 [[ $PWD == /opt/arwc-ot-compat/slice ]] || exit 1
 python3 workstation/check_contract.py

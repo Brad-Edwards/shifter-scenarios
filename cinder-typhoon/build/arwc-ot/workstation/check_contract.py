@@ -30,7 +30,7 @@ def validate(document, contract):
 
 
 def main():
-    if socket.gethostname() != "cinder-arwc-ot-compat-363":
+    if socket.gethostname() not in ("cinder-arwc-ot-compat-363", "cinder-arwc-dev"):
         raise SystemExit("Check the native model on the approved development VM")
     result = subprocess.run(["sudo", "docker", "compose", "-f", "compose.yaml", "-f", "site/compose.yaml",
         "-f", "workstation/compose.yaml", "config", "--format", "json", "engineering"],

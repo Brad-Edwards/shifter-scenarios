@@ -17,19 +17,20 @@ COMPANY = "Alterra Regional Water Company"
 OPENER = build_opener(HTTPCookieProcessor(CookieJar()))
 
 
-def api(path: str, body: dict | None = None) -> dict:
+def api(path: str, body: dict | None = None, *, method: str | None = None) -> dict:
     request = Request(
         f"http://backend:8000{path}",
         data=json.dumps(body).encode() if body is not None else None,
+        method=method,
         headers={"Host": "erp.arwc.test", "Content-Type": "application/json"},
     )
     try:
         with OPENER.open(request, timeout=180) as response:
             return json.load(response)
     except HTTPError as error:
-        if path.startswith('/api/resource/Asset'):
+        if path.startswith(('/api/resource/Asset', '/api/resource/Supplier%20Quotation')) or path == '/api/method/frappe.client.submit':
             detail = json.load(error)
-            raise RuntimeError(f'Native asset validation: {detail.get("_server_messages", detail.get("exc_type"))}') from None
+            raise RuntimeError(f'Native record validation: {detail.get("_server_messages", detail.get("exc_type"))}') from None
         raise RuntimeError(f"Frappe API {path.split('?')[0]} returned HTTP {error.code}") from None
 
 
@@ -61,6 +62,12 @@ def account(kind: str) -> str:
     return rows[0]["name"]
 
 
+def submit_asset(name: str) -> None:
+    document = api(f'/api/resource/Asset/{quote(name, safe="")}')["data"]
+    if document["docstatus"] == 0:
+        api('/api/method/frappe.client.submit', {"doc": json.dumps(document)})
+
+
 def seed() -> None:
     api("/api/method/login", {"usr": "Administrator", "pwd": os.environ["ERP_ADMIN_PASSWORD"]})
     result = api("/api/method/frappe.desk.page.setup_wizard.setup_wizard.setup_complete", {"args": {
@@ -68,11 +75,19 @@ def seed() -> None:
         "timezone": "America/New_York", "company_name": COMPANY, "company_abbr": "ARWC",
         "full_name": "ARWC Service Desk", "email": "it.service@alterrawaterco.com",
         "password": os.environ["ERP_ADMIN_PASSWORD"], "chart_of_accounts": "Standard",
-        "fiscal_year_start_date": "2026-01-01", "fiscal_year_end_date": "2026-12-31",
+        "fy_start_date": "2026-01-01", "fy_end_date": "2026-12-31",
         "enable_telemetry": 0,
     }})
     if result.get("message", {}).get("status") != "ok":
         raise RuntimeError("Native ERPNext company setup did not complete")
+    fiscal = insert("Fiscal Year", {"year": "2026"}, {
+        "year_start_date": "2026-01-01", "year_end_date": "2026-12-31",
+        "companies": [{"company": COMPANY}],
+    })
+    fiscal_path = f'/api/resource/Fiscal%20Year/{quote(fiscal["name"], safe="")}'
+    fiscal_document = api(fiscal_path)["data"]
+    if fiscal_document["year_start_date"] != "2026-01-01" or fiscal_document["year_end_date"] != "2026-12-31":
+        api(fiscal_path, {"year_start_date": "2026-01-01", "year_end_date": "2026-12-31"}, method="PUT")
     for name in ("Maintenance and engineering", "Operations", "Planning", "Procurement"):
         insert("Department", {"department_name": name, "company": COMPANY}, {})
     roots = api('/api/resource/Cost%20Center?' + urlencode({
@@ -134,6 +149,7 @@ def seed() -> None:
     for number in (17, 18):
         asset_name = f"AST-CRR-{number:03d} — Outlet gate assembly {number}"
         asset = insert("Asset", {"asset_name": asset_name, "company": COMPANY}, {})
+        submit_asset(asset["name"])
         insert("Asset Maintenance", {"asset_name": asset["name"], "company": COMPANY}, {
             "maintenance_team": team["name"],
             "asset_maintenance_tasks": [{
