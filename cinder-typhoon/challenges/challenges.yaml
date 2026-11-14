@@ -387,24 +387,24 @@ phases:
           note identifies a repository revision, so the removed fixture should be sought in version history
           rather than the current tree.
         - This stage is version-history recovery. Keep the named revision and fixture path bound together;
-          importer behavior is a later boundary.
+          the provider contract is a separate build artifact.
         - Compare the revision in the failing-job note with the repository history, then inspect the change
           that removed the named fixture without restoring unrelated files.
         completion:
           mode: automatic_range_evidence
       - id: K02.2
         title: An input outside its lane
-        description: The test importer is supposed to accept only job inputs. Make it expose the separate
-          review note that the ordinary test view withholds.
+        description: The report build failed, but it retained a review note separate from the console log.
+          Recover that note and establish the input contract for a corrected report provider.
         difficulty: easy
         points: 50
         hints:
-        - Stay with the continuous-integration client and compare the importer's accepted job namespace
-          with the object it actually resolves. The ordinary form is the baseline, not the complete boundary.
-        - This is path resolution before authorization. Test whether a job-relative reference remains
-          inside the intended input collection after normalization.
-        - Submit one ordinary job input and one minimally changed relative reference, then compare the
-          resolved object and denial evidence before trying a second variation.
+        - Inspect the native Jenkins build page and its separately archived artifacts. The console is only
+          one part of the retained build record.
+        - Match the review note to the failed build and source revision before using its provider contract.
+          Reading an artifact does not grant repository write or job configuration access.
+        - Compare the exact fixture path and revision in REVNOTE-1842 with the native source history and
+          inspect the file parameter on fieldlink-report-review.
         completion:
           mode: automatic_range_evidence
       - id: K02.3
@@ -414,15 +414,12 @@ phases:
         difficulty: medium
         points: 100
         hints:
-        - Begin with the retained source history and the continuous-integration review workflow. Start
-          from ci.keplerops.test's published client document and records already earned in this operation,
-          not from an invented endpoint.
-        - Treat this as version-history recovery followed by importer-boundary and extension-point analysis.
-          Keep the recovered fixture's exact file bytes when you build the archive, then vary only the
-          provider extension point.
-        - Review the published client document and ordinary records for ci.keplerops.test. Read the current
-          revision, submit one minimal variation, and compare the resulting audit and unaffected fields
-          with the baseline.
+        - Use the native Jenkins fieldlink-report-review job and its provider.zip file parameter. The
+          original fieldlink-report job is the retained failing baseline.
+        - Preserve the fixture's exact file bytes and immutable fields while implementing the documented
+          provider extension point. A valid package is different from an accepted changed report.
+        - Compare the native build artifacts with the support handover. The job ID and report digest must
+          identify the same fresh output; a green status by itself is insufficient.
         completion:
           mode: automatic_range_evidence
     - id: K03

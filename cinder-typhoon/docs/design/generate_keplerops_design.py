@@ -118,9 +118,9 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
     "K01.2": [local_path("k-dev", "/home/rowan/.config/chromium/Default"), route("k-support", "support-service", "conversation")],
     "K01.3": [local_path("k-dev", "/home/rowan/work")],
     "K01.4": [route("k-dev", "local-workbench", "inspection-summary")],
-    "K02.1": [route("k-ci", "fieldkest-ci", "run-log"), route("k-source", "gitea", "repository-content")],
-    "K02.2": [route("k-ci", "fieldkest-ci", "review-import")],
-    "K02.3": [route("k-ci", "fieldkest-ci", "isolated-job-submit"), route("k-ci", "fieldkest-ci", "isolated-job-result"), route("k-support", "support-service", "private-handover")],
+    "K02.1": [route("k-ci", "jenkins", "build-console"), route("k-source", "gitea", "repository-content")],
+    "K02.2": [route("k-ci", "jenkins", "build-artifacts")],
+    "K02.3": [route("k-ci", "jenkins", "file-parameter-build"), route("k-ci", "jenkins", "build-artifacts"), route("k-support", "support-service", "private-handover")],
     "K03.1": [local_path("k-dev", "/home/rowan/work")],
     "K03.2": [route("k-dev", "local-workbench", "reconstruction")],
     "K03.3": [route("k-dev", "local-workbench", "callback-collection")],
@@ -289,27 +289,27 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
         "defect": "the helper accepts any form upload; a review export submitted instead of the collection report is forwarded to the CI report queue",
         "bounds": "only the report-consumer workflow is reachable; no audit or platform authority is granted",
     },
-    # K02 — source and CI review chain
+    # K02 — native source history, build artifacts and repaired report submission.
     "K02.1": {
-        "classification": "service-native",
-        "surface": "source.keplerops.test repository content API; ci.keplerops.test review-job API",
-        "normal_case": "reviewer reads connector source and CI review job for the handover commit",
-        "defect": "the review job carries a signed pointer to the policy-compiler workspace file path",
-        "bounds": "only the workspace file identified by the review job is readable; no other workspace or job is enumerable",
+        "classification": "product-native",
+        "surface": "Native Gitea Git history and Jenkins fieldlink-report build 1842 console/SCM revision",
+        "normal_case": "developer inspects the actual failed test and retained repository history",
+        "defect": "a fixture removed from the current checkout remains in immutable Git history",
+        "bounds": "developer source read and selected Jenkins job read; no source write or administration",
     },
     "K02.2": {
-        "classification": "service-native",
-        "surface": "ci.keplerops.test review-import API; source.keplerops.test policy-evaluate API",
-        "normal_case": "developer imports a CI review and submits the policy program for evaluation",
-        "defect": "the review import credential also accepts a policy-evaluate request with an author-controlled program model",
-        "bounds": "only the one-use evaluate route is reachable; no CI run trigger or artifact delete authority",
+        "classification": "product-native",
+        "surface": "Jenkins fieldlink-report/1842/artifact/reports/REVNOTE-1842.json and native job parameters",
+        "normal_case": "developer reads separately archived review notes and the documented provider interface",
+        "defect": "the console omits the separately retained provider contract",
+        "bounds": "native artifact read; no source write or job configuration authority",
     },
     "K02.3": {
-        "classification": "service-native",
-        "surface": "ci.keplerops.test workspace-file API",
-        "normal_case": "developer retrieves the review workspace artifact uploaded during CI",
-        "defect": "the workspace path disclosed by the review job allows reading an operator-scoped staging artifact",
-        "bounds": "only the named workspace path is readable; no directory listing or arbitrary workspace traversal",
+        "classification": "product-native",
+        "surface": "Jenkins fieldlink-report-review file parameter and build artifacts; actual FieldLink support handover",
+        "normal_case": "fixed Jenkins step submits a compatible provider to the isolated report consumer",
+        "defect": "the documented provider extension can change assessment while preserving required ordinary fields",
+        "bounds": "untrusted code runs only in the existing isolated report worker; controller job steps remain fixed",
     },
     # K03 — CI build operations
     "K03.1": {
@@ -1124,6 +1124,23 @@ def fixture_text(card: str, title: str, row: dict[str, str]) -> str:
             "isolation": "no cross-tenant records, credentials, jobs, uploads, or audit events",
         },
     }
+    if card in {"K02.1", "K02.2", "K02.3"}:
+        core["request_contract"]["correlation"] = (
+            "Use native repository commit IDs, Jenkins job/build URLs and exact artifact digests. "
+            "The report consumer also supplies its actual job ID and input/output digests."
+        )
+        core["evidence_contract"]["producer"] = (
+            "Native Git objects, Jenkins build records and archived actual artifacts; "
+            "for a submitted report, the independently persisted support handover."
+        )
+        core["evidence_contract"]["freshness"] = (
+            "Historical source and build reads remain repeatable. A submitted report requires a new "
+            "native build and a matching fresh report-consumer job and support handover."
+        )
+        core["state_rules"]["completion"] = (
+            "Correlate native build records, exact source/artifact bytes and, where applicable, "
+            "the separately persisted support report; no synthetic product audit is required."
+        )
     canonical = json.dumps(core, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
     payload = {
         **core,
