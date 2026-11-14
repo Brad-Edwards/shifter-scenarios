@@ -15,6 +15,7 @@ import re
 import subprocess
 import sys
 import tarfile
+from urllib.parse import urlsplit
 
 import yaml
 
@@ -629,7 +630,7 @@ def check_client_reference_graph(scenario):
             continue
         visited.add(host)
         for link in documents[host].get("related", []):
-            linked_host = link.split("//", 1)[1].split("/")[0] if "//" in link else ""
+            linked_host = urlsplit(link).hostname
             if linked_host and linked_host not in visited:
                 queue.append(linked_host)
     require(visited == set(documents),

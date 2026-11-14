@@ -921,6 +921,57 @@ nodes:
         privilege_class: namespaced
         description: Jobs have outbound HTTPS only to the named source, registry, staff, certificate and cloud APIs and receive no engine control interface.
       applications:
+      - application_id: jenkins
+        service: ci
+        protocol: https
+        base_path: /
+        description: Native Jenkins LTS jobs, SCM revisions, build history, console, artifacts and file parameters.
+        routes:
+        - route_id: build-console
+          path: /job/{job}/{build}/consoleText
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Native Jenkins account or API token
+          responses:
+          - status_code: 200
+            content_type: text/plain
+          - status_code: 403
+            content_type: text/html
+        - route_id: build-record
+          path: /job/{job}/{build}/api/json
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Native Jenkins account or API token
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: text/html
+        - route_id: build-artifacts
+          path: /job/{job}/{build}/artifact/{path}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Native Jenkins account or API token
+          responses:
+          - status_code: 200
+            content_type: application/octet-stream
+          - status_code: 404
+            content_type: text/html
+        - route_id: file-parameter-build
+          path: /job/fieldlink-report-review/buildWithParameters
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Native Jenkins account or API token with CSRF protection
+          parameters:
+          - name: provider.zip
+            location: form
+            required: true
+            data_type: multipart file
+          responses:
+          - status_code: 201
+            content_type: text/html
+          - status_code: 403
+            content_type: text/html
       - application_id: fieldkest-ci
         service: ci
         protocol: https
@@ -1139,6 +1190,12 @@ nodes:
         - tenant_id: keplerops
           name: KeplerOps
       software_components:
+      - component_id: jenkins
+        name: Jenkins LTS
+        version: 2.580.2
+        component_type: application
+        provenance: upstream
+        installed_paths: [/usr/share/jenkins/jenkins.war]
       - component_id: fieldkest-ci
         name: FieldKest CI and rehearsal service
         version: 1.0.0
