@@ -1,0 +1,15 @@
+{
+  "policies": {
+    "Certificates": {
+      "Import": ["/home/rowan/.local/share/keplerops/ca.crt"]
+    },
+    "Homepage": {
+      "URL": "https://source.keplerops.test/",
+      "StartPage": "homepage"
+    },
+    "OverrideFirstRunPage": "",
+    "OverridePostUpdatePage": "",
+    "DisableAppUpdate": true,
+    "DisableTelemetry": true
+  }
+}
