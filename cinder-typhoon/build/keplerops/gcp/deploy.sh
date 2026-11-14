@@ -37,6 +37,7 @@ tar -C "$PACK_ROOT" -czf "$ARCHIVE" \
   build/participant-host \
   assets/keplerops/opening \
   assets/keplerops/registry \
+  assets/keplerops/native-packages \
   assets/keplerops/build-operations \
   assets/keplerops/policy-compiler \
   assets/keplerops/connector-archive \

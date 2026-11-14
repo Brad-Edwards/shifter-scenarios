@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import base64
-import gzip
 import hashlib
 import io
 import json
@@ -12,8 +11,8 @@ from pathlib import Path, PurePosixPath
 import posixpath
 import socket
 import ssl
-import tarfile
 import threading
+import subprocess
 import time
 from urllib import request as urllib_request
 from urllib.error import HTTPError, URLError
@@ -26,6 +25,7 @@ from http_support import (
     sha256_bytes, utc_now,
 )
 from credentials import credential
+from package_delivery import pack_connector, consume_package
 
 
 STATE = Path("/var/lib/fieldkest-ci")
@@ -50,21 +50,6 @@ ACTIVE_REVIEW_JOBS: set[str] = set()
 
 def run_worker(source: str, fixture: dict[str, object]) -> dict[str, object]:
     request = canonical_bytes({"source": source, "fixture": fixture}) + b"\n"
-    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
-        client.settimeout(14)
-        client.connect(str(RUNNER_SOCKET))
-        client.sendall(request)
-        response = b""
-        while not response.endswith(b"\n"):
-            chunk = client.recv(65536)
-            if not chunk or len(response) + len(chunk) > 1_100_000:
-                raise RuntimeError("invalid_runner_response")
-            response += chunk
-    return json.loads(response)
-
-
-def run_node_consumer(source: str, input_value: dict[str, object]) -> dict[str, object]:
-    request = canonical_bytes({"kind": "node-package", "source": source, "input": input_value}) + b"\n"
     with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
         client.settimeout(14)
         client.connect(str(RUNNER_SOCKET))
@@ -165,35 +150,6 @@ def execute_review_command(run_id: str, lease_id: str, argv: list[str]) -> None:
         "exit_status": result.get("exit_status"), "opened_paths": result.get("opened_paths", []),
         "status": 200,
     })
-
-
-def fetch_connector_package(version: str) -> bytes:
-    url = f"https://packages.keplerops.test/@keplerops%2ffieldlink-connector/-/fieldlink-connector-{version}.tgz"
-    request = urllib_request.Request(url, headers={"Authorization": f"Bearer {REGISTRY_READER_TOKEN}"})
-    context = ssl.create_default_context(cafile="/tmp/fieldkest-ca.crt")
-    with urllib_request.urlopen(request, context=context, timeout=5) as response:
-        payload = response.read(1_000_001)
-    if len(payload) > 1_000_000:
-        raise ValueError("package_too_large")
-    return payload
-
-
-def package_source(archive_bytes: bytes, version: str) -> str:
-    try:
-        with gzip.GzipFile(fileobj=io.BytesIO(archive_bytes)) as zipped:
-            tar_bytes = zipped.read(1_100_000)
-        with tarfile.open(fileobj=io.BytesIO(tar_bytes), mode="r:") as archive:
-            metadata_file = archive.extractfile("package/package.json")
-            source_file = archive.extractfile("package/index.js")
-            if metadata_file is None or source_file is None:
-                raise ValueError
-            metadata = json.loads(metadata_file.read(65_536))
-            source = source_file.read(524_289).decode("utf-8")
-    except (OSError, EOFError, ValueError, UnicodeDecodeError, json.JSONDecodeError, tarfile.TarError, KeyError):
-        raise ValueError("invalid_package")
-    if len(source.encode()) > 524_288 or metadata.get("name") != "@keplerops/fieldlink-connector" or metadata.get("version") != version or metadata.get("fieldkest", {}).get("interface") != "fieldkest.connector/v3":
-        raise ValueError("package_contract_failed")
-    return source
 
 
 class CIHandler(KeplerHandler):
@@ -566,15 +522,14 @@ class CIHandler(KeplerHandler):
             self.send_json(422, {"error": "rehearsal_contract_failed"})
             return
         try:
-            archive = fetch_connector_package(version)
-            source = package_source(archive, version)
-            worker = run_node_consumer(source, input_value)
-        except (OSError, ValueError, RuntimeError, json.JSONDecodeError, HTTPError, URLError):
+            metadata, archive = pack_connector(version)
+            worker = consume_package(archive, input_value)
+        except (OSError, ValueError, RuntimeError, json.JSONDecodeError, HTTPError, URLError, subprocess.SubprocessError):
             self.send_json(422, {"error": "package_resolution_or_execution_failed"})
             return
         output = worker.get("output")
         if not worker.get("ok") or not isinstance(output, dict) or output.get("schema") != "fieldkest.rehearsal-result/v1" or output.get("tenant_id") != input_value["tenant_id"] or output.get("asset_id") != input_value["asset_id"] or not isinstance(output.get("assessment"), str) or output.get("assessment") in {"", "baseline-support-review"}:
-            self.send_json(422, {"error": "rehearsal_result_failed"})
+            self.send_json(422, {"error": "rehearsal_result_failed", "details": worker.get("details")})
             return
         rehearsal_id = "REH-" + uuid.uuid4().hex[:12].upper()
         result = {
@@ -583,7 +538,7 @@ class CIHandler(KeplerHandler):
             "state": "success",
             "consumer": consumer,
             "package": "@keplerops/fieldlink-connector",
-            "version": version,
+            "version": metadata["version"],
             "package_sha256": sha256_bytes(archive),
             "completed_at": utc_now(),
             "input": input_value,

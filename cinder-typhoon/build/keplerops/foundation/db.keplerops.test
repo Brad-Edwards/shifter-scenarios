@@ -19,6 +19,7 @@ source      IN A 10.77.51.20
 source-tools IN A 10.77.51.20
 git         IN A 10.77.51.20
 packages    IN A 10.77.51.30
+delivery    IN A 10.77.51.30
 registry    IN A 10.77.51.30
 ci          IN A 10.77.51.40
 review      IN A 10.77.51.41

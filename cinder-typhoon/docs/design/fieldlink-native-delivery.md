@@ -89,3 +89,29 @@ References: [Jenkins Docker installation](https://www.jenkins.io/doc/book/instal
 [initialization hooks](https://www.jenkins.io/doc/book/managing/groovy-hook-scripts/),
 [Git plugin](https://plugins.jenkins.io/git/), and
 [Matrix Authorization](https://plugins.jenkins.io/matrix-auth/).
+
+## Native package slice
+
+Verdaccio 6.1.6 owns the existing package HTTPS address, UI, accounts, package
+metadata, versions, ACLs, publication, tarballs, errors, and immutable version
+state. Native npm commands seed the ordinary connector packages and perform
+dependency selection. The old fabricated candidate digests and Python package
+metadata, publication, view, and semantic-version resolver routes are removed.
+
+The connector releases are real Node packages with their own manifests,
+documentation, implementation, and ordinary data. The existing isolated Node
+worker installs the selected package with npm and loads its actual module,
+including local files, rather than evaluating a copied entry point in a
+JavaScript context. Its filesystem, network, identity, resource, and lifetime
+boundaries remain container-owned. Package dependencies must be present in the
+offline worker inputs; unavailable dependencies fail through normal npm errors.
+
+The genuine FieldLink release approval and compatibility application keeps a
+separate named endpoint and identity. It reads native package evidence and
+records release business decisions; it does not implement a second registry.
+
+References: [Verdaccio TLS](https://www.verdaccio.org/docs/ssl/),
+[authentication](https://www.verdaccio.org/docs/authentication/),
+[package access](https://www.verdaccio.org/docs/packages/),
+[npm publication](https://docs.npmjs.com/cli/v11/commands/npm-publish/), and
+[npm installation](https://docs.npmjs.com/cli/v11/commands/npm-install/).

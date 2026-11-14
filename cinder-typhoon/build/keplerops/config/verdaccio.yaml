@@ -2,18 +2,34 @@ storage: /var/lib/verdaccio/storage
 auth:
   htpasswd:
     file: /var/lib/verdaccio/htpasswd
+    max_users: -1
 uplinks: {}
 packages:
+  '@keplerops/support-rehearsal':
+    access: svc-fieldlink-ci svc-package-admin
+    publish: svc-package-admin
+    unpublish: svc-package-admin
+  '@keplerops/fieldlink-connector':
+    access: $authenticated
+    publish: fieldlink-importer-publisher svc-package-admin
+    unpublish: svc-package-admin
   '@*/*':
     access: $authenticated
-    publish: $authenticated
+    publish: svc-package-admin
+    unpublish: svc-package-admin
   '**':
     access: $authenticated
-    publish: $authenticated
+    publish: svc-package-admin
+    unpublish: svc-package-admin
 server:
   keepAliveTimeout: 60
 log:
   type: stdout
   format: pretty
   level: error
-listen: 127.0.0.1:4873
+listen: https://0.0.0.0:443
+https:
+  key: /tmp/fieldkest.key
+  cert: /tmp/fieldkest.crt
+web:
+  title: FieldKest Packages

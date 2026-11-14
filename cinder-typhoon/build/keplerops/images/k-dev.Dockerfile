@@ -1,3 +1,5 @@
+FROM node:22.19.0-bookworm-slim AS node-tools
+
 FROM debian:bookworm-slim AS indexer-reproducer
 
 RUN apt-get update \
@@ -26,6 +28,12 @@ RUN apt-get update \
     && grep -qx 'ssl_protocols=TLSv1.2' /etc/xrdp/xrdp.ini \
     && groupadd --system fieldkest-workbench \
     && useradd --system --gid fieldkest-workbench --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-workbench
+
+COPY --from=node-tools /usr/local/bin/node /usr/local/bin/node
+COPY --from=node-tools /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+ENV NODE_EXTRA_CA_CERTS=/home/rowan/.local/share/keplerops/ca.crt
 
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest-workbench/http_support.py
 COPY build/keplerops/runtime/workbench.py /opt/fieldkest-workbench/workbench.py
