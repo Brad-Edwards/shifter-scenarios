@@ -21,6 +21,14 @@ packages:
     access: $authenticated
     publish: svc-package-admin
     unpublish: svc-package-admin
+security:
+  api:
+    jwt:
+      sign:
+        expiresIn: 8h
+  web:
+    sign:
+      expiresIn: 8h
 server:
   keepAliveTimeout: 60
 log:

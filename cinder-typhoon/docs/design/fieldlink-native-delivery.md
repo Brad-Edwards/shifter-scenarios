@@ -94,7 +94,10 @@ References: [Jenkins Docker installation](https://www.jenkins.io/doc/book/instal
 
 Verdaccio 6.1.6 owns the existing package HTTPS address, UI, accounts, package
 metadata, versions, ACLs, publication, tarballs, errors, and immutable version
-state. Native npm commands seed the ordinary connector packages and perform
+state. Its supported API JWT mode accepts the tokens issued by native web
+login. Both native web and API tokens expire after eight hours. The persisted
+upstream storage secret and native ACLs remain authoritative; no token proxy or
+custom verifier is used. Native npm commands seed the ordinary connector packages and perform
 dependency selection. The old fabricated candidate digests and Python package
 metadata, publication, view, and semantic-version resolver routes are removed.
 
