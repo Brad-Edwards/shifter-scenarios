@@ -50,6 +50,11 @@ def user(email: str, name: str, roles: list[str]) -> None:
         "enabled": 1, "send_welcome_email": 0, "new_password": password,
         "roles": [{"role": role} for role in roles],
     })
+    path = f'/api/resource/User/{quote(email, safe="")}'
+    document = api(path)["data"]
+    current = {row["role"] for row in document["roles"]}
+    if not set(roles).issubset(current):
+        api(path, {"roles": [{"role": role} for role in sorted(current | set(roles))]}, method="PUT")
 
 
 def account(kind: str) -> str:
@@ -66,6 +71,16 @@ def submit_asset(name: str) -> None:
     document = api(f'/api/resource/Asset/{quote(name, safe="")}')["data"]
     if document["docstatus"] == 0:
         api('/api/method/frappe.client.submit', {"doc": json.dumps(document)})
+
+
+def maintenance_permissions() -> None:
+    role = "Maintenance Asset Reader"
+    insert("Role", {"role_name": role}, {"desk_access": 1})
+    manager = "/api/method/frappe.core.page.permission_manager.permission_manager"
+    api(f"{manager}.add", {"parent": "Asset", "role": role, "permlevel": 0})
+    for permission in ("read", "report", "select"):
+        api(f"{manager}.update", {"doctype": "Asset", "role": role, "permlevel": 0,
+                                  "ptype": permission, "value": "1"})
 
 
 def seed() -> None:
@@ -100,9 +115,10 @@ def seed() -> None:
         insert("Cost Center", {"cost_center_name": centre, "company": COMPANY}, {
             "parent_cost_center": roots[0]["name"], "is_group": 0,
         })
+    maintenance_permissions()
     for email, name, roles in (
-        ("theo.marrivel@alterrawaterco.com", "Theo Marrivel", ["Maintenance User", "Stock User"]),
-        ("clara.morivelle@alterrawaterco.com", "Clara Morivelle", ["Maintenance User", "Stock User"]),
+        ("theo.marrivel@alterrawaterco.com", "Theo Marrivel", ["Maintenance User", "Stock User", "Maintenance Asset Reader", "Projects User"]),
+        ("clara.morivelle@alterrawaterco.com", "Clara Morivelle", ["Maintenance User", "Stock User", "Maintenance Asset Reader", "Projects User"]),
         ("priya.naravel@alterrawaterco.com", "Priya Naravel", ["Purchase User"]),
         ("luc.venn-morel@alterrawaterco.com", "Luc Venn-Morel", ["Purchase Manager", "Accounts Manager"]),
     ):
@@ -183,6 +199,9 @@ def seed() -> None:
             "company": COMPANY, "expected_start_date": "2026-09-01",
             "expected_end_date": "2026-12-01", "status": "Open",
         })
+        for email in ("theo.marrivel@alterrawaterco.com", "clara.morivelle@alterrawaterco.com"):
+            api('/api/method/frappe.share.add', {"doctype": "Project", "name": project["name"],
+                "user": email, "read": 1, "write": 1, "share": 0, "notify": 0})
         for subject in ("Confirm site access and maintenance permit", "Complete inspection and record findings",
                         "Review findings and approve handback"):
             insert("Task", {"subject": subject, "project": project["name"]}, {

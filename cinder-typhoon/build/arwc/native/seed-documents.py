@@ -5,6 +5,7 @@ import hashlib
 import hmac
 import json
 import os
+import time
 from pathlib import Path
 from urllib.error import HTTPError
 from urllib.parse import quote, urlencode
@@ -96,6 +97,17 @@ def seed() -> None:
                 upload(f"Maintenance records/{Path(name).name}", archive.read(name))
             elif name.startswith("drawings/"):
                 upload(f"Engineering drawings/{Path(name).name}", archive.read(name))
+        request("MKCOL", dav("Engineering drawings/Current"), accepted=(201, 405))
+        for name in archive.namelist():
+            if not name.startswith("drawings/") or not name.endswith("-P1.svg"):
+                continue
+            stem = name[:-7]
+            current = f"Engineering drawings/Current/{Path(stem).name}.svg"
+            if request("HEAD", dav(current), accepted=(200, 404)):
+                continue
+            for revision in ("P1", "P2", "A1"):
+                request("PUT", dav(current), archive.read(f"{stem}-{revision}.svg"))
+                time.sleep(2)
     print("ARWC documents imported with native department sharing")
 
 
