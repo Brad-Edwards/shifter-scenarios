@@ -3,7 +3,6 @@
     "delivery.keplerops.test": {
       "purpose": "FieldLink inspection, entitlement, release approval, and customer delivery operations.",
       "related": [
-        "https://preview.keplerops.test/.well-known/fieldkest-client",
         "https://indexer.keplerops.test/.well-known/fieldkest-client",
         "https://cloud-api.keplerops.test/.well-known/fieldkest-client"
       ],

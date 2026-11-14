@@ -373,7 +373,6 @@ services:
       FIELDKEST_WORKER_IMAGE: cinder-keplerops/report-worker:hand-build
       FIELDKEST_NODE_WORKER_IMAGE: cinder-keplerops/node-worker:hand-build
       FIELDKEST_COMMAND_WORKER_IMAGE: cinder-keplerops/command-worker:hand-build
-      FIELDKEST_PREVIEW_IMAGE: cinder-keplerops/k-preview:hand-build
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
     volumes:
@@ -411,18 +410,31 @@ services:
     image: cinder-keplerops/k-preview:hand-build
     container_name: cinder-keplerops-preview
     hostname: k-preview
-    depends_on: [router, runner]
+    depends_on: [router]
+    cap_add: [NET_ADMIN, CHOWN, SETUID, SETGID]
     environment:
-      <<: *tls-environment
-      FIELDKEST_SERVICE: preview
       FIELDKEST_GATEWAY: 10.77.51.254
+      API_PORT: "443"
+      API_TLS_CERT_FILE: /tmp/fieldlink-preview.crt
+      API_TLS_KEY_FILE: /tmp/fieldlink-preview.key
+      API_BODY_LIMIT: 10MB
+      CHROMIUM_DENY_PUBLIC_IPS: "true"
+      HOME: /tmp
+      XDG_CACHE_HOME: /tmp/cache
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=512m,mode=1777
+      - /dev/shm:rw,noexec,nosuid,nodev,size=128m,mode=1777
+    mem_limit: 1g
+    pids_limit: 256
     volumes:
-      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
-      - preview-state:/var/lib/fieldkest-preview
-      - runner-socket:/run/fieldkest-runner
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--cacert", "/tmp/fieldlink-ca.crt", "--resolve", "preview.keplerops.test:443:127.0.0.1", "https://preview.keplerops.test/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
     networks:
       delivery: {ipv4_address: 10.77.51.50, aliases: [preview.keplerops.test]}
 
@@ -694,7 +706,6 @@ volumes:
   registry-verdaccio: {name: cinder-keplerops-registry-verdaccio}
   support-audit: {name: cinder-keplerops-support-audit}
   cloud-api-audit: {name: cinder-keplerops-cloud-api-audit}
-  preview-state: {name: cinder-keplerops-preview-state}
   indexer-state: {name: cinder-keplerops-indexer-state}
   staff-state: {name: cinder-keplerops-staff-state}
   identity-state: {name: cinder-keplerops-identity-state}

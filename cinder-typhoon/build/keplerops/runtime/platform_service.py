@@ -13,7 +13,6 @@ import subprocess
 import socket
 import threading
 import time
-import unicodedata
 import uuid
 from urllib import parse as urlparse
 from urllib import request as urlrequest
@@ -105,7 +104,6 @@ def credential_principal(value: str | None) -> str:
 
 def initial_state() -> dict[str, object]:
     return {
-        "preview": {"documents": {"SUP-K-2841": {"source_id": "SUP-K-2841", "source_version": 7, "derived_id": "sup-k-2841", "owner_case": "SUP-2841", "owner": "maya.ranscombe", "content": "Restricted release review: retain the compatibility exception."}}, "renders": {}, "review": {"id": "PRV-771", "assignment": "release-preview", "prepared": False, "worker": False}},
         "identity": {"registration_revision": 4, "providers": ["OIDC-FIELDKEST-STAFF"], "federated_sessions": {}, "staff_logins": 0},
         "workload": {"startup_hook": None, "assignment": "SHIFT-SEP16-A", "runs": {}, "jobs": {"MAINT-FLK-01": {"labels": {}, "command": ["maintenance-summary"]}}},
         "data": {"destination": "support-primary", "destination_revision": 6, "restores": {}, "exports": {}},
@@ -189,22 +187,6 @@ def run_isolated_completion(run_id: str, handover_id: str, script: str) -> dict[
             response += chunk
     value = json.loads(response)
     if not value.get("ok"): raise RuntimeError("completion_execution_failed")
-    return value["result"]
-
-
-def run_isolated_preview(run_id: str, worker_scope: str) -> dict[str, object]:
-    request = canonical_bytes({"kind": "preview", "run_id": run_id, "worker_scope": worker_scope}) + b"\n"
-    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
-        client.settimeout(35)
-        client.connect("/run/fieldkest-runner/runner.sock")
-        client.sendall(request)
-        response = b""
-        while not response.endswith(b"\n"):
-            chunk = client.recv(65536)
-            if not chunk: break
-            response += chunk
-    value = json.loads(response)
-    if not value.get("ok"): raise RuntimeError("preview_execution_failed")
     return value["result"]
 
 
@@ -297,84 +279,6 @@ class PlatformHandler(KeplerHandler):
 
     def do_PATCH(self) -> None:
         self.do_POST()
-
-    # Preview service: identity collision and privileged review workflow.
-    def get_preview(self) -> None:
-        if not self.dev_auth(): return self.deny(401, "authentication_required")
-        path = urlparse.urlsplit(self.path).path
-        # Association lookup: the queue exposes the restricted derived identity for a
-        # supplied attachment without confirming the requester owns its case (K10.1).
-        match = re.fullmatch(r"/api/attachments/([A-Za-z0-9._-]+)/preview-association", path)
-        if match:
-            associations = {
-                "CRR-OG2": {
-                    "source_attachment": "CRR-OG2", "attachment_version": "FLK-7.4.2",
-                    "derived_document_id": "SUP-K-2841", "source_version": 7,
-                    "owner_case": "SUP-2841", "viewer_request": "PRV-771",
-                },
-            }
-            assoc = associations.get(match.group(1))
-            if not assoc: return self.deny(404, "association_not_found")
-            self.record("preview-association", principal=DEV_USER, attachment=match.group(1), derived_document_id=assoc["derived_document_id"])
-            return self.send_json(200, assoc)
-        match = re.fullmatch(r"/api/renders/([A-Z0-9-]+)", path)
-        if not match: return self.deny(404, "not_found")
-        result = load_state()["preview"]["renders"].get(match.group(1))
-        if not result: return self.deny(404, "render_not_found")
-        self.record("render-read", principal=DEV_USER, render_id=match.group(1), digest=sha256_bytes(canonical_bytes(result)))
-        self.send_json(200, result)
-
-    def post_preview(self) -> None:
-        path = urlparse.urlsplit(self.path).path
-        state = load_state(); preview = state["preview"]
-        if path == "/api/documents":
-            if not self.dev_auth(): return self.deny(401, "authentication_required")
-            data = self.body(); source = str(data.get("source_id", "")); content = str(data.get("content", ""))
-            if source not in {"SUP-K-2841", "sup-k-2841"}: raise ValueError("source_not_allowed")
-            derived = unicodedata.normalize("NFKC", source).casefold()
-            owner = "maya.ranscombe" if source == "SUP-K-2841" else DEV_USER
-            preview["documents"][source] = {"source_id": source, "source_version": 7 if owner != DEV_USER else 1, "derived_id": derived, "owner_case": "SUP-2841", "owner": owner, "content": content}
-            save_state(state); self.record("document-upload", principal=DEV_USER, source_id=source, derived_id=derived, owner=owner)
-            return self.send_json(201, preview["documents"][source])
-        match = re.fullmatch(r"/api/documents/(.+)/render", path)
-        if match:
-            if not self.dev_auth(): return self.deny(401, "authentication_required")
-            source = urlparse.unquote(match.group(1)); document = preview["documents"].get(source)
-            if not document: return self.deny(404, "document_not_found")
-            derived = document["derived_id"]
-            candidates = [v for v in preview["documents"].values() if v["derived_id"] == derived]
-            protected = next((v for v in candidates if v["owner"] == "maya.ranscombe"), document)
-            render_id = "RND-" + uuid.uuid4().hex[:12].upper()
-            result = {"render_id": render_id, "source_id": source, "derived_id": derived, "content_source": protected["source_id"], "content_version": protected["source_version"], "content": protected["content"], "collision": len(candidates) > 1}
-            preview["renders"][render_id] = result; save_state(state)
-            self.record("render", principal=DEV_USER, **{k: result[k] for k in ("render_id", "source_id", "derived_id", "content_source", "content_version")})
-            return self.send_json(202, result)
-        match = re.fullmatch(r"/api/reviews/(PRV-771)/assignment", path)
-        if match:
-            if not self.dev_auth(): return self.deny(401, "authentication_required")
-            data = self.body()
-            if data.get("queue") != "privileged-review": raise ValueError("queue_not_allowed")
-            preview["review"].update({"assignment": "privileged-review", "loaded_source": data.get("source_id", "sup-k-2841"), "nonce": uuid.uuid4().hex, "nonce_used": False})
-            save_state(state); self.record("review-load", review_id="PRV-771", principal="svc-preview-reviewer", source_id=preview["review"]["loaded_source"])
-            return self.send_json(200, {"review_id": "PRV-771", "state": "loaded", "action_nonce": preview["review"]["nonce"]})
-        match = re.fullmatch(r"/api/reviews/(PRV-771)/actions/prepare", path)
-        if match:
-            data = self.body(); review = preview["review"]
-            if bearer(self) != review.get("nonce") or review.get("nonce_used"): return self.deny(403, "nonce_denied")
-            review.update({"prepared": True, "nonce_used": True}); save_state(state)
-            self.record("review-action", review_id="PRV-771", principal="svc-preview-reviewer", action="prepare")
-            return self.send_json(200, {"review_id": "PRV-771", "prepared": True})
-        match = re.fullmatch(r"/review/(PRV-771)/render", path)
-        if match:
-            data = self.body(); review = preview["review"]
-            if not review.get("prepared"): return self.deny(409, "review_not_prepared")
-            if data.get("worker_scope") != "/review/": raise ValueError("worker_scope_denied")
-            contribution = run_isolated_preview("PRV-771", data["worker_scope"])
-            review["worker"] = True; save_state(state)
-            value = {"review_id": "PRV-771", **contribution, "support_receipt": "PRV-RCPT-771"}
-            self.record("review-render", **value)
-            return self.send_json(200, value, headers={"Service-Worker-Allowed": "/review/"})
-        self.deny(404, "not_found")
 
     # Corporate identity, certificate and staff workplace services.
     def get_identity(self) -> None:

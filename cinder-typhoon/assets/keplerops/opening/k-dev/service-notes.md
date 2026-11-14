@@ -62,3 +62,15 @@ copy the recovered file directly into the ZIP instead of re-serializing it.
 
 The support service expects its ordinary browser session cookie.
 
+
+## Document previews
+
+Gotenberg is at `https://preview.keplerops.test/`. The native multipart route
+`POST /forms/chromium/convert/html` accepts an `index.html` plus its CSS, images,
+and other local assets in the `files` fields. It returns a PDF directly.
+The review draft and stylesheet are in `work/previews/`.
+
+The service also accepts URLs through `/forms/chromium/convert/url` and exposes
+ordinary status at `/health` and version information at `/version`.
+Use the workstation CA with ordinary HTTPS clients. Store the returned PDF with
+its source files when handing a review to another engineer.

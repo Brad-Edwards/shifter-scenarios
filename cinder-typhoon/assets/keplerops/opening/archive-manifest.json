@@ -47,6 +47,18 @@
         },
         {
           "mode": "0640",
+          "path": "work/previews/index.html",
+          "sha256": "511dd8375f763ec12f9ec6064f5d96f3c46d165fcb05e3440c8133ab1f0a0163",
+          "size": 998
+        },
+        {
+          "mode": "0640",
+          "path": "work/previews/review.css",
+          "sha256": "1294dba8d3f087e69094fc311ffbf70688ba289299699198bf1663dfe7c47f5e",
+          "size": 540
+        },
+        {
+          "mode": "0640",
           "path": "work/reproducers/indexer-client.json",
           "sha256": "038f4bc3b8516a31c5a5ef600ad052556260137c06da99baade57ee4b398f801",
           "size": 353
@@ -66,13 +78,13 @@
         {
           "mode": "0644",
           "path": "work/service-notes.md",
-          "sha256": "067ac8e4178e7e87ba3effdaae17053fea41ee48ed23e3def2ce20d017506c6e",
-          "size": 2710
+          "sha256": "43f3da129a56175a2ac72730d6e52f5dabb445ba2cf4b82c1516204e9a9338d5",
+          "size": 3312
         }
       ],
       "group": "rowan",
       "owner": "rowan",
-      "sha256": "738e0fb47cbb6ce2a35284b839af566514b451bb39448275763d3c5086d73675",
+      "sha256": "eba4383a56e269bc7f479e9f27af42b890d4c18839e2dc5393eca0d337a74158",
       "size": 51200
     },
     {

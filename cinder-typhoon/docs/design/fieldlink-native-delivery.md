@@ -115,3 +115,33 @@ References: [Verdaccio TLS](https://www.verdaccio.org/docs/ssl/),
 [package access](https://www.verdaccio.org/docs/packages/),
 [npm publication](https://docs.npmjs.com/cli/v11/commands/npm-publish/), and
 [npm installation](https://docs.npmjs.com/cli/v11/commands/npm-install/).
+
+## Native document renderer
+
+Gotenberg 9.4.1 owns `preview.keplerops.test` at the existing delivery address
+`10.77.51.50`. Its native HTTPS API uses Chromium to generate actual PDF files
+from multipart HTML/CSS/assets or URLs. The image is the official pinned
+release with only route and TLS setup added; its process runs as the upstream
+`gotenberg` user. It does not have the Docker socket or runtime credentials.
+The private network retains its existing egress restrictions.
+
+The renderer is stateless. Participants retain document sources and generated
+PDFs in their ordinary workstation filesystem. Reset restores the committed
+HTML/CSS review draft and removes participant changes through the existing home
+volume reset. No extra preview service, document identity API, synthetic receipt,
+controlled service worker, or separate custom browser executor remains.
+
+The catalog binds document identity work to K10 (three Medium cards) and the
+privileged preview chain to K12 (Easy, Medium, Expert, Elite). Their completion
+paths must be redesigned against actual product/browser/document behavior and
+research, with the same difficulty distribution. Native conversion readiness
+alone does not complete these cards or issue 399.
+
+QA checks native health and version, trusted HTTPS, actual HTML/CSS-to-PDF
+conversion and document content in the desktop PDF viewer, ordinary missing
+`index.html` and malformed-input errors, and native behavior after restart.
+Source/Jenkins/package acceptance remains independent.
+
+References: [Gotenberg 9.4.1](https://github.com/gotenberg/gotenberg/releases/tag/v9.4.1),
+[configuration](https://gotenberg.dev/docs/configuration), and
+[Chromium routes](https://gotenberg.dev/docs/routes#chromium).

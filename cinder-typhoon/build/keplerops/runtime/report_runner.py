@@ -17,7 +17,6 @@ SOCKET = Path("/run/fieldkest-runner/runner.sock")
 WORKER_IMAGE = os.environ["FIELDKEST_WORKER_IMAGE"]
 NODE_WORKER_IMAGE = os.environ["FIELDKEST_NODE_WORKER_IMAGE"]
 COMMAND_WORKER_IMAGE = os.environ["FIELDKEST_COMMAND_WORKER_IMAGE"]
-PREVIEW_IMAGE = os.environ["FIELDKEST_PREVIEW_IMAGE"]
 MAX_REQUEST = 800_000
 ACTIVE_COMMANDS: dict[str, str] = {}
 ACTIVE_LOCK = threading.RLock()
@@ -223,33 +222,6 @@ class Handler(socketserver.StreamRequestHandler):
                 result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=15)
                 lines = result.stdout.splitlines()
                 response = {"ok": False, "error": "workload_failed"}
-                if result.returncode == 0 and len(lines) == 1:
-                    response = {"ok": True, "result": json.loads(lines[0])}
-                self.wfile.write(json.dumps(response, separators=(",", ":")).encode() + b"\n")
-                return
-            if (set(request) == {"kind", "run_id", "worker_scope"}
-                    and request["kind"] == "preview"
-                    and isinstance(request["run_id"], str)
-                    and request["worker_scope"] == "/review/"):
-                name = "fieldkest-preview-" + request["run_id"].lower().replace("_", "-")
-                command = [
-                    "docker", "run", "--rm", "--name", name, "--network", "none",
-                    "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777",
-                    "--tmpfs", "/dev/shm:rw,noexec,nosuid,nodev,size=128m,mode=1777",
-                    "--memory", "512m", "--memory-swap", "512m", "--pids-limit", "128", "--cpus", "1.0",
-                    "--user", "fieldkest-renderer:fieldkest-renderer", "--cap-drop", "ALL",
-                    "--security-opt", "no-new-privileges:true",
-                    "--entrypoint", "/usr/local/bin/python3", PREVIEW_IMAGE,
-                    "/opt/fieldkest/preview_worker.py",
-                ]
-                try:
-                    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=30)
-                except subprocess.TimeoutExpired:
-                    subprocess.run(["docker", "rm", "--force", name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
-                    self.wfile.write(b'{"ok":false,"error":"preview_timeout"}\n')
-                    return
-                lines = result.stdout.splitlines()
-                response = {"ok": False, "error": "preview_failed"}
                 if result.returncode == 0 and len(lines) == 1:
                     response = {"ok": True, "result": json.loads(lines[0])}
                 self.wfile.write(json.dumps(response, separators=(",", ":")).encode() + b"\n")

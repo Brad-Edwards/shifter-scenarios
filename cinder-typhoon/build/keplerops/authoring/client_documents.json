@@ -10,7 +10,6 @@
     "data": "data.keplerops.test",
     "identity": "identity.keplerops.test",
     "indexer": "indexer.keplerops.test",
-    "preview": "preview.keplerops.test",
     "registry": "delivery.keplerops.test",
     "source": "source.keplerops.test",
     "staff": "staff.keplerops.test",
@@ -72,24 +71,11 @@
         {"key": "connector.rollback", "method": "POST", "template": "https://connector.arwc.test/api/fieldlink/rehearsals/rollback"}
       ],
       "related": [
-        "https://preview.keplerops.test/.well-known/fieldkest-client",
         "https://indexer.keplerops.test/.well-known/fieldkest-client",
         "https://cloud-api.keplerops.test/.well-known/fieldkest-client"
       ]
     },
-    "preview.keplerops.test": {
-      "title": "Preview client reference",
-      "purpose": "Attachment, document rendering, and assigned-review operations.",
-      "routes": [
-        {"key": "preview.association", "method": "GET", "template": "https://preview.keplerops.test/api/attachments/{attachment}/preview-association"},
-        {"key": "preview.documents", "method": "POST", "template": "https://preview.keplerops.test/api/documents"},
-        {"key": "preview.render", "method": "POST", "template": "https://preview.keplerops.test/api/documents/{source_id}/render"},
-        {"key": "preview.assignment", "method": "PATCH", "template": "https://preview.keplerops.test/api/reviews/{review_id}/assignment"},
-        {"key": "preview.prepare", "method": "POST", "template": "https://preview.keplerops.test/api/reviews/{review_id}/actions/prepare"},
-        {"key": "preview.review-render", "method": "POST", "template": "https://preview.keplerops.test/review/{review_id}/render"}
-      ],
-      "related": []
-    },
+
     "indexer.keplerops.test": {
       "title": "Bundle index client reference",
       "purpose": "Submit native bundle index requests.",
