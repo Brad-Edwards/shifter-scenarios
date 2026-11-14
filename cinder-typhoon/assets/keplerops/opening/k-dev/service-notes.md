@@ -27,8 +27,14 @@ Console Output, Artifacts, Changes, and Workspace.
 
 ## FieldLink report review
 
-The report service runs submitted providers in isolated workers and publishes
-compatible results to support. It is separate from Jenkins build history.
+Jenkins job `fieldlink-report-review` accepts `provider.zip` through its native
+Build with Parameters form or native `buildWithParameters` API. The fixed build
+step submits the ZIP to the isolated report worker, records its accepted result,
+and archives the actual report. A rejected provider fails the native build.
+The source reader does not need repository write or Jenkins administration.
+
+The underlying report service runs submitted providers in isolated workers and
+publishes compatible results to support.
 
 - Client reference: `GET https://review.keplerops.test/.well-known/fieldkest-client`
 - Review import: `POST https://review.keplerops.test/api/reviews/import`

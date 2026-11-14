@@ -1,6 +1,8 @@
 import groovy.json.JsonSlurper
 import hudson.model.FreeStyleProject
 import hudson.model.Item
+import hudson.model.FileParameterDefinition
+import hudson.model.ParametersDefinitionProperty
 import hudson.model.User
 import hudson.security.HudsonPrivateSecurityRealm
 import hudson.security.ProjectMatrixAuthorizationStrategy
@@ -18,30 +20,28 @@ import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl
 
 def instance = Jenkins.get()
 def marker = new File(instance.rootDir, '.fieldlink-initialized')
-if (marker.exists()) {
-    return
-}
-
 def users = new JsonSlurper().parse(new File('/tmp/fieldlink-ci-users.json'))
-def realm = new HudsonPrivateSecurityRealm(false)
-instance.setSecurityRealm(realm)
-if (User.getById('rowan.ito', false) == null) {
-    realm.createAccount('rowan.ito', users.developer_password)
+if (!marker.exists()) {
+    def realm = new HudsonPrivateSecurityRealm(false)
+    instance.setSecurityRealm(realm)
+    if (User.getById('rowan.ito', false) == null) {
+        realm.createAccount('rowan.ito', users.developer_password)
+    }
+    if (User.getById('ci-automation', false) == null) {
+        realm.createAccount('ci-automation', users.administrator_password)
+    }
+    if (User.getById('release-reader', false) == null) {
+        realm.createAccount('release-reader', users.release_reader_password)
+    }
+    def strategy = new ProjectMatrixAuthorizationStrategy()
+    strategy.add(Jenkins.ADMINISTER, 'ci-automation')
+    strategy.add(Jenkins.READ, 'rowan.ito')
+    strategy.add(Jenkins.READ, 'release-reader')
+    instance.setAuthorizationStrategy(strategy)
+    instance.setNumExecutors(1)
+    instance.setSlaveAgentPort(-1)
+    JenkinsLocationConfiguration.get().setUrl('https://ci.keplerops.test/')
 }
-if (User.getById('ci-automation', false) == null) {
-    realm.createAccount('ci-automation', users.administrator_password)
-}
-if (User.getById('release-reader', false) == null) {
-    realm.createAccount('release-reader', users.release_reader_password)
-}
-def strategy = new ProjectMatrixAuthorizationStrategy()
-strategy.add(Jenkins.ADMINISTER, 'ci-automation')
-strategy.add(Jenkins.READ, 'rowan.ito')
-strategy.add(Jenkins.READ, 'release-reader')
-instance.setAuthorizationStrategy(strategy)
-instance.setNumExecutors(1)
-instance.setSlaveAgentPort(-1)
-JenkinsLocationConfiguration.get().setUrl('https://ci.keplerops.test/')
 
 def store = SystemCredentialsProvider.getInstance()
 if (!store.credentials.any { it.id == 'fieldlink-source-read' }) {
@@ -94,6 +94,25 @@ python3 -m json.tool reports/release-dossier.json
     release.publishersList.add(new ArtifactArchiver('reports/release-dossier.json'))
     release.updateNextBuildNumber(742)
     release.save()
+}
+def review = instance.getItem('fieldlink-report-review')
+if (review == null) {
+    review = instance.createProject(FreeStyleProject, 'fieldlink-report-review')
+    review.setDescription('Validate a connector report provider and publish the accepted report to support. Upload a ZIP containing provider.py and fixture.json. Submitted code runs in the isolated FieldLink review worker.')
+    def permissions = new AuthorizationMatrixProperty()
+    [Item.READ, Item.BUILD, Item.CANCEL, Item.WORKSPACE].each {
+        permissions.add(it, 'rowan.ito')
+    }
+    review.addProperty(permissions)
+    review.addProperty(new ParametersDefinitionProperty(
+        new FileParameterDefinition('provider.zip', 'Report provider and the exact baseline fixture.')))
+    review.buildersList.add(new Shell('''#!/bin/sh
+set -eu
+rm -rf reports
+python3 /usr/share/fieldlink-ci/submit-report.py
+'''))
+    review.publishersList.add(new ArtifactArchiver('reports/**'))
+    review.save()
 }
 instance.save()
 marker.text = 'initialized\n'

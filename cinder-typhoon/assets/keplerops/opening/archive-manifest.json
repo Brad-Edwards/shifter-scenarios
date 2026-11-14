@@ -78,13 +78,13 @@
         {
           "mode": "0644",
           "path": "work/service-notes.md",
-          "sha256": "43f3da129a56175a2ac72730d6e52f5dabb445ba2cf4b82c1516204e9a9338d5",
-          "size": 3312
+          "sha256": "ea23d21754a8bc40ead36506dd01757d43c64194f02a38bb9fab39658bc94a76",
+          "size": 3674
         }
       ],
       "group": "rowan",
       "owner": "rowan",
-      "sha256": "eba4383a56e269bc7f479e9f27af42b890d4c18839e2dc5393eca0d337a74158",
+      "sha256": "96cd43dd51f85f264061710537ed230490bed9114af57bad8366434423db6259",
       "size": 51200
     },
     {

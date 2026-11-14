@@ -7,8 +7,9 @@ RUN apt-get update \
 USER jenkins
 RUN jenkins-plugin-cli --plugins git:5.11.0 matrix-auth:3.3
 
-COPY build/keplerops/native-ci/init.groovy /usr/share/jenkins/ref/init.groovy.d/10-fieldlink.groovy
+COPY build/keplerops/native-ci/init.groovy /usr/share/jenkins/ref/init.groovy.d/10-fieldlink.groovy.override
 COPY assets/keplerops/build-operations/source/k-ci/artifacts/BLD-1842/ /usr/share/fieldlink-ci/reviews/
+COPY build/keplerops/native-ci/submit-report.py /usr/share/fieldlink-ci/submit-report.py
 COPY assets/keplerops/opening/k-ci/REVNOTE-1842.json /usr/share/fieldlink-ci/reviews/REVNOTE-1842.json
 USER root
 COPY assets/keplerops/release-lineage/k-ci-release-lineage-state.tar /tmp/release-lineage.tar

@@ -144,4 +144,21 @@ Source/Jenkins/package acceptance remains independent.
 
 References: [Gotenberg 9.4.1](https://github.com/gotenberg/gotenberg/releases/tag/v9.4.1),
 [configuration](https://gotenberg.dev/docs/configuration), and
-[Chromium routes](https://gotenberg.dev/docs/routes#chromium).
+[Chromium routes](https://gotenberg.dev/docs/getting-started/routes).
+
+### Repaired report completion
+
+The native freestyle job `fieldlink-report-review` accepts the ordinary Jenkins
+file parameter `provider.zip`. Its fixed trusted build step sends the package
+to the genuine isolated report worker and archives the accepted report and exact
+input/output digests as native build artifacts. The original source checkout
+job remains a real failing baseline. Participants can therefore complete the
+repair using their intended build authority without repository write or job
+configuration access. Uploaded code never runs in the Jenkins controller.
+
+The startup hook adds missing jobs without overwriting existing native state,
+users, permissions or build history. The official image's `.override` reference
+file mechanism refreshes only this idempotent hook on image upgrades.
+
+References: [Jenkins file parameters](https://www.jenkins.io/doc/book/using/remote-access-api/)
+and [official image reference files](https://github.com/jenkinsci/docker#preinstalling-plugins).
