@@ -15,7 +15,7 @@ def main() -> None:
     directory.mkdir(mode=0o700, parents=True, exist_ok=True)
     path = directory / "development-desktop-login.json"
     if not path.exists():
-        with path.open("x", opener=lambda name, flags: os.open(name, flags, 0o600)) as output:
+        with open(path, "x", opener=lambda name, flags: os.open(name, flags, 0o600)) as output:
             json.dump({"username": "rowan", "password": secrets.token_urlsafe(24)}, output)
     if path.stat().st_uid != 0 or path.stat().st_mode & 0o077:
         raise SystemExit("Development desktop login must be root-owned and private.")
