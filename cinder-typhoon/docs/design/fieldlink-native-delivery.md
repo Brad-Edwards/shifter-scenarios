@@ -177,3 +177,31 @@ constraints and key identifiers. Operator upgrades refresh public trust copies
 and native service TLS material in the coordinated deployment window.
 
 Reference: [Python 3.13 default TLS validation](https://docs.python.org/3.13/library/ssl.html#ssl.create_default_context).
+
+## Package card rebinding
+
+The seven cards retain their existing IDs, allocation and points. This mapping
+changes the mechanism to native records and execution; it does not equate an
+upstream lab label with a measured participant difficulty.
+
+| Card | Difficulty | Native work and retained reasoning |
+| --- | --- | --- |
+| K05.1 | Easy | Read the native npm manifest/interface and make one documented consumer input execute successfully. |
+| K05.2 | Easy | Correlate the genuinely deprecated 6.9.8 npm version with its retained maintenance record. It remains published; no fictitious hidden package view is used. |
+| K05.3 | Medium | Join release, tenant and native package records by package, version, consumer revision and exact archive digest; explain the independent disagreements. |
+| K05.4 | Medium | Establish what npm actually selects for the declared range and what its installed module and local files actually consume, beyond a release label. |
+| K06.1 | Medium | Follow a delivery branch's real Git history, recover historical native npm configuration and prove its narrowly scoped publishing authority. |
+| K06.2 | Medium | Independently recover the CI reader's native client configuration from an actual package-check job workspace/archive, then use that distinct identity to read the private support package. The publisher remains denied. |
+| K06.3 | Medium | Implement a compatible real npm package, publish a new immutable version with the earned publisher identity and make the isolated consumer execute it with preserved interface bindings. |
+
+The source-history step has a direct precedent in PortSwigger's
+[version-control disclosure exercise](https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-in-version-control-history).
+Jenkins documents both [workspace exposure of credential files](https://www.jenkins.io/doc/pipeline/steps/credentials-binding/)
+and [artifact disclosure despite console masking](https://www.jenkins.io/blog/2019/02/21/credentials-masking/).
+These support the distinct source and CI authority investigations; the fixed CI
+package-check step uses the native credentials store and binding plugin.
+[npm client configuration](https://docs.npmjs.com/cli/v11/configuring-npm/npmrc),
+[publication](https://docs.npmjs.com/cli/v11/commands/npm-publish/), and
+[Verdaccio package ACLs](https://www.verdaccio.org/docs/packages/) define the
+actual account, immutable-version and package boundaries. Native dependency
+selection is governed by [npm package specifications](https://docs.npmjs.com/cli/v11/using-npm/package-spec/).

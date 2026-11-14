@@ -21,6 +21,12 @@ def prepare(operator: Path) -> None:
                 'administrator_password': secrets.token_urlsafe(32),
             }, output)
         users.chmod(0o600)
+    document = json.loads(users.read_text())
+    if 'registry_reader_password' not in document:
+        runtime = json.loads((operator / 'range-seed/runtime-credentials.json').read_text())
+        document['registry_reader_password'] = runtime['credentials']['ci_registry_reader']
+        users.write_text(json.dumps(document))
+        users.chmod(0o600)
     password = directory / 'keystore-password'
     if not password.exists():
         password.write_text(secrets.token_hex(24))

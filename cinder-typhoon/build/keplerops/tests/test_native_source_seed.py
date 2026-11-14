@@ -23,6 +23,37 @@ with patch.dict(sys.modules, {'credentials': types.SimpleNamespace(credential=la
 
 
 class NativeSourceSeedTests(unittest.TestCase):
+    def test_delivery_history_retries_a_failed_push_then_preserves_native_state(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'data').mkdir()
+            marker = root / 'data/.delivery-history-seeded'
+            def fail_push(command, **options):
+                if 'push' in command:
+                    raise subprocess.CalledProcessError(1, ['git', 'push'])
+            with patch.object(SEED, 'ROOT', root), patch.object(SEED, 'exists', return_value=False):
+                with patch.object(SEED.subprocess, 'run', side_effect=fail_push):
+                    with self.assertRaises(subprocess.CalledProcessError):
+                        SEED.delivery_history('bootstrap-test')
+                self.assertFalse(marker.exists())
+                with patch.object(SEED.subprocess, 'run') as run:
+                    SEED.delivery_history('bootstrap-test')
+                    self.assertTrue(marker.exists())
+                    self.assertTrue(any('push' in call.args[0] for call in run.call_args_list))
+                    run.reset_mock()
+                    SEED.delivery_history('bootstrap-test')
+                    run.assert_not_called()
+
+    def test_existing_delivery_branch_is_not_overwritten_after_interruption(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'data').mkdir()
+            with patch.object(SEED, 'ROOT', root), patch.object(SEED, 'exists', return_value=True):
+                with patch.object(SEED.subprocess, 'run') as run:
+                    SEED.delivery_history('bootstrap-test')
+                    run.assert_not_called()
+            self.assertTrue((root / 'data/.delivery-history-seeded').exists())
+
     def test_failed_push_retries_then_preserves_participant_state(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

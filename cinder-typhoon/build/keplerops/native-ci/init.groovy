@@ -17,6 +17,8 @@ import jenkins.model.JenkinsLocationConfiguration
 import com.cloudbees.plugins.credentials.CredentialsScope
 import com.cloudbees.plugins.credentials.SystemCredentialsProvider
 import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl
+import org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper
+import org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordMultiBinding
 
 def instance = Jenkins.get()
 def marker = new File(instance.rootDir, '.fieldlink-initialized')
@@ -48,6 +50,13 @@ if (!store.credentials.any { it.id == 'fieldlink-source-read' }) {
     store.credentials.add(new UsernamePasswordCredentialsImpl(
         CredentialsScope.GLOBAL, 'fieldlink-source-read', 'FieldLink source read access',
         'rowan.ito', users.developer_password))
+    store.save()
+}
+
+if (!store.credentials.any { it.id == 'fieldlink-registry-read' }) {
+    store.credentials.add(new UsernamePasswordCredentialsImpl(
+        CredentialsScope.GLOBAL, 'fieldlink-registry-read', 'FieldLink package metadata reader',
+        'svc-fieldlink-ci', users.registry_reader_password))
     store.save()
 }
 
@@ -114,6 +123,25 @@ python3 /usr/share/fieldlink-ci/submit-report.py
     review.publishersList.add(new ArtifactArchiver('reports/**'))
     review.save()
 }
+def packages = instance.getItem('fieldlink-package-check')
+if (packages == null) {
+    packages = instance.createProject(FreeStyleProject, 'fieldlink-package-check')
+    packages.setDescription('Check the retained connector and support package metadata before customer delivery.')
+    def permissions = new AuthorizationMatrixProperty()
+    [Item.READ, Item.BUILD, Item.CANCEL, Item.WORKSPACE].each {
+        permissions.add(it, 'rowan.ito')
+    }
+    packages.addProperty(permissions)
+    packages.buildWrappersList.add(new SecretBuildWrapper([
+        new UsernamePasswordMultiBinding('FIELDLINK_NPM_USER', 'FIELDLINK_NPM_PASSWORD', 'fieldlink-registry-read')]))
+    packages.buildersList.add(new Shell('''#!/bin/sh
+set -eu
+python3 /usr/share/fieldlink-ci/package-check.py
+'''))
+    packages.publishersList.add(new ArtifactArchiver('package-workspace/**'))
+    packages.updateNextBuildNumber(611)
+    packages.save()
+}
 instance.save()
 marker.text = 'initialized\n'
 if (project.lastBuild == null) {
@@ -121,4 +149,8 @@ if (project.lastBuild == null) {
 }
 if (release.lastBuild == null) {
     release.scheduleBuild2(0)
+}
+
+if (packages.lastBuild == null) {
+    packages.scheduleBuild2(0)
 }
