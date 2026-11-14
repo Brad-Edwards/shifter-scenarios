@@ -88,6 +88,12 @@ def packages() -> None:
                 env=environment, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE,
                 check=True, timeout=30,
             )
+        subprocess.run(
+            ['npm', 'deprecate', '@keplerops/fieldlink-connector@6.9.8',
+             'The legacy v2 interface is retained for maintained installations.'],
+            env=environment, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE,
+            check=True, timeout=30,
+        )
     marker.touch(mode=0o600)
     print('Native Verdaccio packages published')
 
