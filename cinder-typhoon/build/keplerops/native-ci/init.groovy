@@ -62,7 +62,9 @@ if (project == null) {
         [new BranchSpec('*/main')], false, [], null, null, []))
     project.buildersList.add(new Shell('''#!/bin/sh
 set -eu
-python3 -m unittest discover -s tests -v
+mkdir -p reports
+cp /usr/share/fieldlink-ci/reviews/*.json reports/
+python3 -m pytest -v tests
 '''))
     def archive = new ArtifactArchiver('reports/**')
     archive.setAllowEmptyArchive(true)
