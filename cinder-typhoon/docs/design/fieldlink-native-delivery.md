@@ -165,3 +165,15 @@ file mechanism refreshes only this idempotent hook on image upgrades.
 
 References: [Jenkins file parameters](https://www.jenkins.io/doc/book/using/remote-access-api/)
 and [official image reference files](https://github.com/jenkinsci/docker#preinstalling-plugins).
+
+### Standard TLS clients
+
+The generated range root explicitly marks CA basic constraints and certificate
+signing key usage. This supports Python 3.13's default RFC 5280 validation as
+well as browser, Git, curl and npm clients. An older root certificate with a
+missing signing extension is reissued with its existing private key; existing
+CA and server keys remain stable. Generated leaves include their end-entity
+constraints and key identifiers. Operator upgrades refresh public trust copies
+and native service TLS material in the coordinated deployment window.
+
+Reference: [Python 3.13 default TLS validation](https://docs.python.org/3.13/library/ssl.html#ssl.create_default_context).
