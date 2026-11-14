@@ -13,6 +13,7 @@ COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
 COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
 COPY build/keplerops/runtime/client-references/source.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/source.py /opt/fieldkest/source.py
+COPY build/keplerops/runtime/seed-gitea.py /opt/fieldkest/seed-gitea.py
 COPY build/keplerops/runtime/source-entrypoint.sh /usr/local/bin/fieldkest-source-entrypoint
 COPY build/keplerops/config/gitea-app.ini /etc/gitea/app.ini
 COPY assets/keplerops/opening/k-source-state.tar /tmp/k-source-state.tar
@@ -31,5 +32,5 @@ RUN mkdir -p /var/lib/gitea \
     && chmod 0750 /var/lib/gitea \
     && chmod 0755 /usr/local/bin/fieldkest-source-entrypoint
 
-EXPOSE 443
+EXPOSE 22 443 8443
 ENTRYPOINT ["/usr/local/bin/fieldkest-source-entrypoint"]

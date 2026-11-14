@@ -4,6 +4,7 @@ set -eu
 iptables -P FORWARD DROP
 iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 iptables -A FORWARD -s 10.77.50.20 -d 10.77.51.20 -p tcp --dport 443 -j ACCEPT
+iptables -A FORWARD -s 10.77.50.20 -d 10.77.51.20 -p tcp -m multiport --dports 22,8443 -j ACCEPT
 iptables -A FORWARD -s 10.77.50.20 -d 10.77.51.30 -p tcp --dport 443 -j ACCEPT
 iptables -A FORWARD -s 10.77.50.20 -d 10.77.51.40 -p tcp --dport 443 -j ACCEPT
 iptables -A FORWARD -s 10.77.50.20 -d 10.77.51.60 -p tcp --dport 443 -j ACCEPT

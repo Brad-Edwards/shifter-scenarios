@@ -177,6 +177,7 @@ services:
       - identity.keplerops.test:10.77.50.40
       - cert.keplerops.test:10.77.50.50
       - source.keplerops.test:10.77.51.20
+      - source-tools.keplerops.test:10.77.51.20
       - packages.keplerops.test:10.77.51.30
       - ci.keplerops.test:10.77.51.40
       - preview.keplerops.test:10.77.51.50
@@ -210,12 +211,13 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
       - source-audit:/var/lib/gitea/audit
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
       - source-gitea:/var/lib/gitea/data
       - source-repositories:/var/lib/gitea/repositories
     networks:
       delivery:
         ipv4_address: 10.77.51.20
-        aliases: [source.keplerops.test]
+        aliases: [source.keplerops.test, source-tools.keplerops.test]
 
   k-ci:
     <<: *service-security
