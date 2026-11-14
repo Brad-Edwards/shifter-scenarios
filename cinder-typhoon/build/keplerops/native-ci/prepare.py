@@ -17,6 +17,7 @@ def prepare(operator: Path) -> None:
         with users.open('x') as output:
             json.dump({
                 'developer_password': runtime['credentials']['developer_token'],
+                'release_reader_password': runtime['credentials']['release_reader_token'],
                 'administrator_password': secrets.token_urlsafe(32),
             }, output)
         users.chmod(0o600)

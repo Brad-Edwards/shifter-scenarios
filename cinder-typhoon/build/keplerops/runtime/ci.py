@@ -1,4 +1,4 @@
-"""FieldKest CI history, importer and isolated report consumer."""
+"""FieldLink report review, isolated diagnostics, and connector rehearsal."""
 
 from __future__ import annotations
 
@@ -204,26 +204,10 @@ class CIHandler(KeplerHandler):
         if self.send_client_document():
             return
         path = urlsplit(self.path).path
-        if path == "/api/runs/BLD-REL-742/artifacts/release-dossier.json":
-            if self.headers.get("Authorization") != f"Bearer {RELEASE_READER_TOKEN}":
-                return self.send_json(403, {"error": "release_reader_required"})
-            value = json.loads((STATE / "records/release-dossier.json").read_text())
-            append_audit(AUDIT, "release-dossier", {"request_id": self.request_id, "principal": "release-reader", "build_id": "BLD-REL-742", "digest": sha256_bytes(canonical_bytes(value)), "status": 200})
-            return self.send_json(200, value)
         if not self._authorized():
             self.send_json(401, {"error": "authentication_required"})
             return
-        if path == "/api/runs/BLD-1842":
-            value = json.loads((STATE / "runs/BLD-1842.json").read_text())
-            append_audit(AUDIT, "runs", {"request_id": self.request_id, "principal": USERNAME, "run_id": "BLD-1842", "status": 200})
-            self.send_json(200, value)
-        elif path == "/api/runs/BLD-1842/log":
-            payload = (STATE / "runs/BLD-1842.log").read_bytes()
-            append_audit(AUDIT, "runs", {"request_id": self.request_id, "principal": USERNAME, "run_id": "BLD-1842", "object": "log", "status": 200})
-            self.send_bytes(200, payload, "text/plain; charset=utf-8")
-        elif path.startswith("/api/runs/BLD-1842/artifacts/"):
-            self._historical_artifact(path.removeprefix("/api/runs/BLD-1842/artifacts/"))
-        elif path.startswith("/api/review-jobs/"):
+        if path.startswith("/api/review-jobs/"):
             self._review_job_result(path.removeprefix("/api/review-jobs/"))
         elif path.startswith("/api/review-workspace/files/"):
             self._workspace_get(path.removeprefix("/api/review-workspace/files/"))
@@ -275,20 +259,6 @@ class CIHandler(KeplerHandler):
             self._workspace_put(path.removeprefix("/api/review-workspace/files/"))
         else:
             self.send_json(404, {"error": "not_found"})
-
-    def _historical_artifact(self, name: str) -> None:
-        if name != "integration-review-input-v3.json":
-            self.send_json(404, {"error": "artifact_not_found"})
-            return
-        path = STATE / "artifacts/BLD-1842" / name
-        payload = path.read_bytes()
-        append_audit(AUDIT, "artifacts", {
-            "request_id": self.request_id, "principal": USERNAME, "run_id": "BLD-1842",
-            "artifact": name, "object_version": 3,
-            "build_revision": "c37effd7cc86ae4d44f18e95f899b7557d65e0a9",
-            "sha256": sha256_bytes(payload), "status": 200,
-        })
-        self.send_bytes(200, payload, "application/json")
 
     def _review_job_submit(self) -> None:
         try:

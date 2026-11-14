@@ -220,13 +220,45 @@ services:
         aliases: [source.keplerops.test, source-tools.keplerops.test]
 
   k-ci:
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [NET_ADMIN, SETUID, SETGID, CHOWN]
+    security_opt: [no-new-privileges:true]
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=128m,mode=1777
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/jenkins.Dockerfile
+    image: cinder-keplerops/native-jenkins:hand-build
+    container_name: cinder-keplerops-ci
+    hostname: k-ci
+    depends_on:
+      router:
+        condition: service_started
+      k-source:
+        condition: service_healthy
+    volumes:
+      - native-jenkins-home:/var/jenkins_home
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-ci/server.p12:/run/fieldlink-ci/server.p12:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-ci/keystore-password:/run/fieldlink-ci/keystore-password:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-ci/users.json:/run/fieldlink-ci/users.json:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldlink-ci/ca.crt:ro
+    networks:
+      delivery:
+        ipv4_address: 10.77.51.40
+        aliases: [ci.keplerops.test, jenkins.keplerops.test]
+
+  fieldlink-review:
     <<: *service-security
     build:
       context: ../..
       dockerfile: build/keplerops/images/ci.Dockerfile
     image: cinder-keplerops/k-ci:hand-build
-    container_name: cinder-keplerops-ci
-    hostname: k-ci
+    container_name: cinder-keplerops-review
+    hostname: fieldlink-review
     domainname: delivery.keplerops.test
     depends_on: [router, runner]
     cap_add: [NET_ADMIN, SETUID, SETGID, DAC_READ_SEARCH, CHOWN, FOWNER, DAC_OVERRIDE]
@@ -243,8 +275,8 @@ services:
       - runner-socket:/run/fieldkest-runner
     networks:
       delivery:
-        ipv4_address: 10.77.51.40
-        aliases: [ci.keplerops.test]
+        ipv4_address: 10.77.51.41
+        aliases: [review.keplerops.test]
 
   k-registry:
     <<: *service-security
@@ -297,13 +329,6 @@ services:
       delivery:
         ipv4_address: 10.77.51.60
         aliases: [support.keplerops.test]
-
-  native-jenkins:
-    build:
-      context: ../..
-      dockerfile: build/keplerops/images/jenkins.Dockerfile
-    image: cinder-keplerops/native-jenkins:hand-build
-    profiles: [build-only]
 
   report-worker:
     build:
@@ -678,3 +703,4 @@ volumes:
   handover: {name: cinder-keplerops-handover}
   runner-socket: {name: cinder-keplerops-runner-socket}
   native-postgres-data: {name: cinder-keplerops-native-postgres-data}
+  native-jenkins-home: {name: cinder-keplerops-native-jenkins-home}

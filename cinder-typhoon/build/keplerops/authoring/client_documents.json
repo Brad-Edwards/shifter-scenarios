@@ -5,7 +5,7 @@
   "images": {
     "assistant": "assistant.keplerops.test",
     "cert": "cert.keplerops.test",
-    "ci": "ci.keplerops.test",
+    "ci": "review.keplerops.test",
     "cloud-api": "cloud-api.keplerops.test",
     "data": "data.keplerops.test",
     "identity": "identity.keplerops.test",
@@ -29,26 +29,26 @@
         {"key": "source.connector-run", "method": "POST", "template": "https://source-tools.keplerops.test:8443/api/exercises/connector-archive/run"}
       ],
       "related": [
-        "https://ci.keplerops.test/.well-known/fieldkest-client",
+        "https://review.keplerops.test/.well-known/fieldkest-client",
         "https://packages.keplerops.test/.well-known/fieldkest-client",
         "https://support.keplerops.test/.well-known/fieldkest-client"
       ]
     },
-    "ci.keplerops.test": {
-      "title": "CI client reference",
-      "purpose": "Run, review, workspace, and release-rehearsal operations.",
+    "review.keplerops.test": {
+      "title": "FieldLink report and diagnostic service",
+      "purpose": "FieldLink report integration, isolated diagnostics, and connector rehearsal.",
       "routes": [
-        {"key": "ci.run", "method": "GET", "template": "https://ci.keplerops.test/api/runs/{run_id}"},
-        {"key": "ci.run-log", "method": "GET", "template": "https://ci.keplerops.test/api/runs/{run_id}/log"},
-        {"key": "ci.run-artifact", "method": "GET", "template": "https://ci.keplerops.test/api/runs/{run_id}/artifacts/{artifact}"},
-        {"key": "ci.review-import", "method": "POST", "template": "https://ci.keplerops.test/api/reviews/import"},
-        {"key": "ci.report-jobs", "method": "POST", "template": "https://ci.keplerops.test/api/jobs"},
-        {"key": "ci.report-job", "method": "GET", "template": "https://ci.keplerops.test/api/jobs/{job_id}"},
-        {"key": "ci.review-jobs", "method": "POST", "template": "https://ci.keplerops.test/api/review-jobs"},
-        {"key": "ci.review-job", "method": "GET", "template": "https://ci.keplerops.test/api/review-jobs/{run_id}"},
-        {"key": "ci.workspace-file", "method": "GET", "template": "https://ci.keplerops.test/api/review-workspace/files/{path}"},
-        {"key": "ci.connector-rehearsal", "method": "POST", "template": "https://ci.keplerops.test/api/rehearsals/connector"},
-        {"key": "ci.lineage-rollover", "method": "POST", "template": "https://ci.keplerops.test/api/rehearsals/lineage-rollover"}
+        {"key": "ci.run", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-report/{run_id}/api/json"},
+        {"key": "ci.run-log", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-report/{run_id}/consoleText"},
+        {"key": "ci.run-artifact", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-report/{run_id}/artifact/reports/{artifact}"},
+        {"key": "ci.review-import", "method": "POST", "template": "https://review.keplerops.test/api/reviews/import"},
+        {"key": "ci.report-jobs", "method": "POST", "template": "https://review.keplerops.test/api/jobs"},
+        {"key": "ci.report-job", "method": "GET", "template": "https://review.keplerops.test/api/jobs/{job_id}"},
+        {"key": "ci.review-jobs", "method": "POST", "template": "https://review.keplerops.test/api/review-jobs"},
+        {"key": "ci.review-job", "method": "GET", "template": "https://review.keplerops.test/api/review-jobs/{run_id}"},
+        {"key": "ci.workspace-file", "method": "GET", "template": "https://review.keplerops.test/api/review-workspace/files/{path}"},
+        {"key": "ci.connector-rehearsal", "method": "POST", "template": "https://review.keplerops.test/api/rehearsals/connector"},
+        {"key": "ci.lineage-rollover", "method": "POST", "template": "https://review.keplerops.test/api/rehearsals/lineage-rollover"}
       ],
       "related": []
     },

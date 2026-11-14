@@ -31,9 +31,13 @@ if (User.getById('rowan.ito', false) == null) {
 if (User.getById('ci-automation', false) == null) {
     realm.createAccount('ci-automation', users.administrator_password)
 }
+if (User.getById('release-reader', false) == null) {
+    realm.createAccount('release-reader', users.release_reader_password)
+}
 def strategy = new ProjectMatrixAuthorizationStrategy()
 strategy.add(Jenkins.ADMINISTER, 'ci-automation')
 strategy.add(Jenkins.READ, 'rowan.ito')
+strategy.add(Jenkins.READ, 'release-reader')
 instance.setAuthorizationStrategy(strategy)
 instance.setNumExecutors(1)
 instance.setSlaveAgentPort(-1)
@@ -72,8 +76,30 @@ python3 -m pytest -v tests
     project.updateNextBuildNumber(1842)
     project.save()
 }
+def release = instance.getItem('fieldlink-release-review')
+if (release == null) {
+    release = instance.createProject(FreeStyleProject, 'fieldlink-release-review')
+    release.setDescription('FieldLink release lineage and rollover review.')
+    def permissions = new AuthorizationMatrixProperty()
+    [Item.READ, Item.BUILD, Item.WORKSPACE].each {
+        permissions.add(it, 'release-reader')
+    }
+    release.addProperty(permissions)
+    release.buildersList.add(new Shell('''#!/bin/sh
+set -eu
+mkdir -p reports
+cp /usr/share/fieldlink-ci/release/records/release-dossier.json reports/
+python3 -m json.tool reports/release-dossier.json
+'''))
+    release.publishersList.add(new ArtifactArchiver('reports/release-dossier.json'))
+    release.updateNextBuildNumber(742)
+    release.save()
+}
 instance.save()
 marker.text = 'initialized\n'
 if (project.lastBuild == null) {
     project.scheduleBuild2(0)
+}
+if (release.lastBuild == null) {
+    release.scheduleBuild2(0)
 }

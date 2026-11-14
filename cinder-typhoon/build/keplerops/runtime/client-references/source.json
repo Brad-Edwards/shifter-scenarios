@@ -3,7 +3,7 @@
     "source.keplerops.test": {
       "purpose": "Repository, handover, and source-side engineering operations.",
       "related": [
-        "https://ci.keplerops.test/.well-known/fieldkest-client",
+        "https://review.keplerops.test/.well-known/fieldkest-client",
         "https://packages.keplerops.test/.well-known/fieldkest-client",
         "https://support.keplerops.test/.well-known/fieldkest-client"
       ],
