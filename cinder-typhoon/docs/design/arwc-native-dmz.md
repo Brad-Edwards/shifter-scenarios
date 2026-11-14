@@ -32,7 +32,9 @@ reach the corporate, supervisory or control networks. PostgREST has only the
 dedicated database connection and its limited API-facing exchange.
 
 `suppliers.arwc.test` serves the stock ERPNext Website User and Supplier
-interfaces. Jules Orswick is a Veybridge supplier contact. Native supplier,
+interfaces. Jules Orswick is a Veybridge supplier contact with two submitted
+field-service purchase orders; an Ardenvale order stays outside that party.
+Native supplier,
 contact, user and transaction links restrict the portal's records. The site
 handles its own sessions and redirects. The DMZ edge does not expose `/app`
 or `/desk`; it adds no replacement portal or authentication code.
@@ -58,4 +60,4 @@ Legacy endpoints remain until their dependent cards are migrated and checked.
 
 References: [Gotenberg configuration](https://gotenberg.dev/docs/configuration),
 [PostgREST schemas](https://docs.postgrest.org/en/stable/references/api/schemas.html),
-and [ERPNext supplier portal](https://docs.frappe.io/erpnext/user/manual/en/supplier-portal).
+and [ERPNext supplier portal](https://docs.frappe.io/erpnext/how-to-create-a-supplier-quotation-through-the-supplier-portal).

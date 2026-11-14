@@ -13,6 +13,8 @@ sudo bash manage.sh seed
 sudo bash manage.sh seed-documents
 sudo bash manage.sh seed-reports
 sudo bash manage.sh seed-engineering
+sudo bash manage.sh seed-dmz
+sudo bash manage.sh seed-portal
 sudo bash manage.sh status
 ```
 
@@ -24,10 +26,12 @@ interfaces and leave existing records in place.
 The participant engineering desktop uses the authoritative DNS service and
 trusts the private CA. The native product hosts are `erp.arwc.test`,
 `documents.arwc.test`, `reports.arwc.test`, `engineering.arwc.test`, and
-`identity.arwc.test`. Existing OT short names remain available.
+`identity.arwc.test`. The DMZ hosts are `suppliers.arwc.test`,
+`render.arwc.test`, and `read-data.arwc.test`. Existing OT short names remain
+available.
 
 Generated credentials and CA material stay in `.operator`, excluded from Git
-and source archives. Only the two PostgreSQL init-role password files belong
+and source archives. Only the three PostgreSQL init-role password files belong
 to the pinned image's PostgreSQL user; each is mode `0400`. The public CA copy
 in the participant desktop is readable. Private keys are not delivered there.
 
@@ -38,6 +42,9 @@ sudo bash manage.sh reset cinder-arwc-native
 ```
 
 Reset removes this native IT project's volumes and replays initialization and
-all four seed steps. It does not reset the qualified OT project. Company data,
+all five product seed steps. The database initializes its approved read-only
+DMZ views before PostgREST starts. For an existing native IT database, run
+`seed-dmz` once after installing its new secret mount. Reset does not reset
+the qualified OT project. Company data,
 department sharing, planning reports and engineering repositories must pass
 participant checks after reset before this stack is accepted for delivery.

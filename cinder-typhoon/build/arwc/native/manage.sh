@@ -77,6 +77,9 @@ case "$action" in
     "${compose[@]}" exec -T corporate-db psql -U corporate -d planning \
       --set ON_ERROR_STOP=1 < dmz-views.sql
     ;;
+  seed-portal)
+    "${compose[@]}" --profile seed run --rm seed-portal
+    ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
       echo 'Reset requires the exact project name: reset cinder-arwc-native' >&2
@@ -87,7 +90,8 @@ case "$action" in
     bash "$0" seed
     bash "$0" seed-documents
     bash "$0" seed-reports
+    bash "$0" seed-portal
     exec bash "$0" seed-engineering
     ;;
-  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-reports|seed-engineering|reset cinder-arwc-native' >&2; exit 2 ;;
+  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-reports|seed-engineering|seed-dmz|seed-portal|reset cinder-arwc-native' >&2; exit 2 ;;
 esac

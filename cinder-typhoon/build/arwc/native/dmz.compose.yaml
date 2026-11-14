@@ -4,6 +4,17 @@ x-runtime: &runtime
   sysctls: {net.ipv4.ip_forward: "0"}
   logging: {driver: json-file, options: {max-size: 10m, max-file: "3"}}
 services:
+  seed-portal:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-portal.py]
+    env_file: [.operator/erp-seed.env]
+    networks: [data]
+    volumes:
+      - ./seed-portal.py:/seed/seed-portal.py:ro
+      - ./seed-erp.py:/seed/seed-erp.py:ro
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
   dns:
     networks:
       dmz: {ipv4_address: 10.77.62.11}

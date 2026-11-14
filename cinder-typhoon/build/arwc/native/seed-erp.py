@@ -43,11 +43,12 @@ def insert(doctype: str, identity: dict, values: dict) -> dict:
     return api(resource, {"doctype": doctype, **identity, **values})["data"]
 
 
-def user(email: str, name: str, roles: list[str]) -> None:
+def user(email: str, name: str, roles: list[str], *, user_type: str = "System User") -> None:
     password = hmac.new(os.environ["ERP_STAFF_SEED"].encode(), email.encode(), hashlib.sha256).hexdigest()
     insert("User", {"email": email}, {
         "first_name": name.split()[0], "last_name": " ".join(name.split()[1:]),
         "enabled": 1, "send_welcome_email": 0, "new_password": password,
+        "user_type": user_type,
         "roles": [{"role": role} for role in roles],
     })
     path = f'/api/resource/User/{quote(email, safe="")}'
