@@ -21,17 +21,22 @@ def prepare() -> None:
     if seed_path.exists():
         seed = json.loads(seed_path.read_text(encoding="utf-8"))
     else:
-        seed = {name: secrets.token_hex(24) for name in (
-            "identity_db", "identity_admin", "mariadb_root", "erp_admin", "workforce", "ca", "kerberos",
-        )}
-        write_private(seed_path, json.dumps(seed))
-    if "kerberos" not in seed:
-        seed["kerberos"] = secrets.token_hex(24)
-        write_private(seed_path, json.dumps(seed))
+        seed = {}
+    for name in (
+        "identity_db", "identity_admin", "mariadb_root", "erp_admin", "workforce", "ca", "kerberos",
+        "corporate_db", "metabase_db", "planning_reader", "documents_db_root",
+        "documents_db", "documents_admin", "metabase_admin", "engineering_admin",
+    ):
+        seed.setdefault(name, secrets.token_hex(24))
+    write_private(seed_path, json.dumps(seed))
     write_private(OPERATOR / "identity_db_password", seed["identity_db"])
     write_private(OPERATOR / "mariadb_root_password", seed["mariadb_root"])
     write_private(OPERATOR / "kerberos_master", seed["kerberos"])
     write_private(OPERATOR / "workforce_password", seed["workforce"])
+    for name in ("corporate_db", "metabase_db", "planning_reader", "documents_db_root",
+                 "documents_db", "documents_admin"):
+        write_private(OPERATOR / f"{name}_password", seed[name])
+    write_private(OPERATOR / "metabase.env", f'MB_DB_PASS={seed["metabase_db"]}\n')
     write_private(OPERATOR / "keycloak.env", (
         f'KC_DB_PASSWORD={seed["identity_db"]}\n'
         'KC_BOOTSTRAP_ADMIN_USERNAME=platform-admin\n'
@@ -40,6 +45,10 @@ def prepare() -> None:
     write_private(OPERATOR / "erp-init.env", (
         f'MARIADB_ROOT_PASSWORD={seed["mariadb_root"]}\n'
         f'ERP_ADMIN_PASSWORD={seed["erp_admin"]}\n'
+    ))
+    write_private(OPERATOR / "erp-seed.env", (
+        f'ERP_ADMIN_PASSWORD={seed["erp_admin"]}\n'
+        f'ERP_STAFF_SEED={seed["workforce"]}\n'
     ))
     realm = {
         "realm": "arwc", "enabled": True, "displayName": "ARWC Workforce",

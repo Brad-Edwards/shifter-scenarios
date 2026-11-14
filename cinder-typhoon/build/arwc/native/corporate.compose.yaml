@@ -1,0 +1,125 @@
+x-runtime: &runtime
+  restart: unless-stopped
+  security_opt: [no-new-privileges:true]
+  sysctls: {net.ipv4.ip_forward: "0"}
+  logging: {driver: json-file, options: {max-size: 10m, max-file: "3"}}
+  networks: [data]
+services:
+  seed-erp:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-erp.py]
+    env_file: [.operator/erp-seed.env]
+    networks: [data]
+    volumes: [./seed-erp.py:/seed/seed-erp.py:ro]
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
+  corporate-db:
+    <<: *runtime
+    image: ${POSTGRES_IMAGE:?Load images.env}
+    environment:
+      POSTGRES_USER: corporate
+      POSTGRES_DB: planning
+      POSTGRES_PASSWORD_FILE: /run/secrets/corporate_db_password
+    secrets: [corporate_db_password, metabase_db_password, planning_reader_password]
+    volumes:
+      - corporate-data:/var/lib/postgresql
+      - ./init-corporate.sh:/docker-entrypoint-initdb.d/10-corporate.sh:ro
+    healthcheck:
+      test: [CMD, pg_isready, -U, corporate, -d, planning]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+  metabase:
+    <<: *runtime
+    image: ${METABASE_IMAGE:?Load images.env}
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_HOST: corporate-db
+      MB_DB_PORT: "5432"
+      MB_DB_DBNAME: metabase
+      MB_DB_USER: metabase
+      MB_SITE_URL: https://reports.arwc.test
+      MB_ANON_TRACKING_ENABLED: "false"
+      MB_CHECK_FOR_UPDATES: "false"
+      JAVA_OPTS: -Xms128m -Xmx768m
+    env_file: [.operator/metabase.env]
+    depends_on:
+      corporate-db: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "curl -fsS http://127.0.0.1:3000/api/health | grep -q ok"]
+      interval: 15s
+      timeout: 5s
+      retries: 24
+      start_period: 120s
+  documents-db:
+    <<: *runtime
+    image: ${MARIADB_IMAGE:?Load images.env}
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/documents_db_root_password
+      MARIADB_DATABASE: nextcloud
+      MARIADB_USER: nextcloud
+      MARIADB_PASSWORD_FILE: /run/secrets/documents_db_password
+    secrets: [documents_db_root_password, documents_db_password]
+    volumes: [documents-db:/var/lib/mysql]
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+  nextcloud:
+    <<: *runtime
+    image: ${NEXTCLOUD_IMAGE:?Load images.env}
+    environment:
+      MYSQL_HOST: documents-db
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD_FILE: /run/secrets/documents_db_password
+      NEXTCLOUD_ADMIN_USER: records-admin
+      NEXTCLOUD_ADMIN_PASSWORD_FILE: /run/secrets/documents_admin_password
+      NEXTCLOUD_TRUSTED_DOMAINS: documents.arwc.test
+      TRUSTED_PROXIES: 172.29.66.254
+      OVERWRITEPROTOCOL: https
+      OVERWRITECLIURL: https://documents.arwc.test
+    secrets: [documents_db_password, documents_admin_password]
+    volumes: [documents:/var/www/html]
+    depends_on:
+      documents-db: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "curl -fsS http://127.0.0.1/status.php | grep -q '\"installed\":true'"]
+      interval: 15s
+      timeout: 5s
+      retries: 24
+      start_period: 120s
+  gitea:
+    <<: *runtime
+    image: ${GITEA_IMAGE:?Load images.env}
+    environment:
+      GITEA__server__ROOT_URL: https://engineering.arwc.test/
+      GITEA__server__DOMAIN: engineering.arwc.test
+      GITEA__server__DISABLE_SSH: "true"
+      GITEA__database__DB_TYPE: sqlite3
+      GITEA__security__INSTALL_LOCK: "true"
+      GITEA__service__DISABLE_REGISTRATION: "true"
+      GITEA__service__REQUIRE_SIGNIN_VIEW: "true"
+      GITEA__repository__DISABLE_HTTP_GIT: "false"
+      GITEA__mailer__ENABLED: "false"
+      GITEA__actions__ENABLED: "false"
+    volumes: [engineering-git:/data]
+    healthcheck:
+      test: [CMD-SHELL, "wget -qO- http://127.0.0.1:3000/api/v1/version | grep -q version"]
+      interval: 10s
+      timeout: 3s
+      retries: 18
+volumes:
+  corporate-data:
+  documents-db:
+  documents:
+  engineering-git:
+secrets:
+  corporate_db_password: {file: .operator/corporate_db_password}
+  metabase_db_password: {file: .operator/metabase_db_password}
+  planning_reader_password: {file: .operator/planning_reader_password}
+  documents_db_root_password: {file: .operator/documents_db_root_password}
+  documents_db_password: {file: .operator/documents_db_password}
+  documents_admin_password: {file: .operator/documents_admin_password}

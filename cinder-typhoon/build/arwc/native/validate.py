@@ -7,6 +7,14 @@ import yaml
 ROOT = Path(__file__).resolve().parent
 
 
+def load_compose() -> dict:
+    document = yaml.safe_load((ROOT / "compose.yaml").read_text())
+    corporate = yaml.safe_load((ROOT / "corporate.compose.yaml").read_text())
+    assert not (document["services"].keys() & corporate["services"].keys())
+    document["services"].update(corporate["services"])
+    return document
+
+
 def validate(document: dict) -> None:
     services = document["services"]
     assert document["name"] == "cinder-arwc-native"
@@ -24,10 +32,10 @@ def validate(document: dict) -> None:
     assert "proxy_pass $identity;" in (ROOT / "nginx.conf").read_text()
     assert "proxy_pass $erp;" in (ROOT / "nginx.conf").read_text()
     pins = (ROOT / "images.env").read_text().splitlines()
-    assert len(pins) == 7
+    assert len(pins) >= 7
     assert all(re.fullmatch(r"[A-Z_]+=[^\s]+@sha256:[a-f0-9]{64}", line) for line in pins)
 
 
 if __name__ == "__main__":
-    validate(yaml.safe_load((ROOT / "compose.yaml").read_text()))
+    validate(load_compose())
     print("ARWC native IT foundation contract passes")

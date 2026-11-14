@@ -42,7 +42,7 @@ services:
     networks:
       corporate: {ipv4_address: 10.77.60.11}
       supervisory: {ipv4_address: 172.29.63.27}
-      data: {}
+      data: {ipv4_address: 172.29.66.254}
     healthcheck:
       test: [CMD-SHELL, "wget --no-check-certificate -qO- https://127.0.0.1/health | grep -q ready"]
       interval: 10s

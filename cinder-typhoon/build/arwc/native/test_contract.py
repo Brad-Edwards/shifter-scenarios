@@ -1,13 +1,11 @@
 import copy
-from pathlib import Path
 import unittest
-import yaml
-from validate import validate
+from validate import load_compose, validate
 
 
 class BoundaryTests(unittest.TestCase):
     def setUp(self):
-        self.document = yaml.safe_load(Path(__file__).with_name("compose.yaml").read_text())
+        self.document = load_compose()
 
     def test_contract(self):
         validate(self.document)
