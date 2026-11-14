@@ -6,6 +6,10 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/../.." && pwd)
 phase=${1-}
 project=${2-}
 image_suffix=${3-}
+ot_source=${4-}
+ot_ref=${5-}
+ot_bake=0
+release_archive=""
 
 [[ $project =~ ^[a-z][a-z0-9-]{4,28}[a-z0-9]$ ]] || {
   echo "usage: bake-image.sh PHASE GCP_PROJECT IMAGE_SUFFIX" >&2
@@ -41,13 +45,27 @@ case "$phase" in
     ;;
 esac
 
+source_commit=$(git -C "$ROOT/.." rev-parse HEAD)
+if [[ -n $ot_source || -n $ot_ref ]]; then
+  [[ $phase == arwc && $project == prod-mgau4w && $ot_source == cinder-arwc-ot-compat-363 && -n $ot_ref ]] || {
+    echo 'OT mode requires arwc, prod-mgau4w, the approved development VM, and a committed source ref.' >&2
+    exit 2
+  }
+  source_commit=$(git -C "$ROOT/.." rev-parse --verify --end-of-options "$ot_ref^{commit}")
+  for path in image/runtime-inventory.json hmi/views.json historian/contract.json dispatch/contract.json workstation/contract.json integration/contract.json; do
+    git -C "$ROOT/.." cat-file -e "$source_commit:cinder-typhoon/build/arwc-ot/$path"
+  done
+  instance=$ot_source
+  ot_bake=1
+fi
+
 final_image="cinder-$phase-$image_suffix"
 if ((${#final_image} > 63)); then
   echo "final image name exceeds the GCE 63-character limit" >&2
   exit 2
 fi
 
-if [[ -n $(git -C "$ROOT/.." status --porcelain --untracked-files=normal) ]]; then
+if (( ! ot_bake )) && [[ -n $(git -C "$ROOT/.." status --porcelain --untracked-files=normal) ]]; then
   echo "refusing to bake from an uncommitted worktree" >&2
   exit 1
 fi
@@ -65,6 +83,7 @@ bake_created=0
 golden_stopped=0
 cleanup() {
   set +e
+  [[ -z $release_archive ]] || rm -f -- "$release_archive"
   if ((golden_stopped)); then
     gcloud compute instances start "$instance" --project "$project" --zone "$zone" --quiet >/dev/null
   fi
@@ -82,7 +101,12 @@ if gcloud compute images describe "$final_image" --project "$project" >/dev/null
   exit 1
 fi
 
-"$ROOT/build/$phase/gcp/deploy.sh" "$project"
+if ((ot_bake)); then
+  release_archive=$(mktemp /tmp/cinder-arwc-ot-release.XXXXXX.tar.gz)
+  git -C "$ROOT/.." archive --format=tar.gz --output="$release_archive" "$source_commit" cinder-typhoon
+else
+  "$ROOT/build/$phase/gcp/deploy.sh" "$project"
+fi
 
 gcloud compute instances stop "$instance" --project "$project" --zone "$zone" --quiet
 golden_stopped=1
@@ -122,12 +146,18 @@ for attempt in $(seq 1 120); do
   sleep 5
 done
 
-gcloud compute ssh "$bake_instance" --project "$project" --zone "$zone" \
-  --tunnel-through-iap \
-  --command "sudo /opt/cinder-typhoon/build/gcp-images/guest/prepare-image.sh '$phase'"
+if ((ot_bake)); then
+  gcloud compute scp "$release_archive" "$bake_instance:/tmp/cinder-arwc-ot-release.tar.gz" \
+    --project "$project" --zone "$zone" --tunnel-through-iap
+  gcloud compute ssh "$bake_instance" --project "$project" --zone "$zone" --tunnel-through-iap \
+    --command 'sudo tar -xzf /tmp/cinder-arwc-ot-release.tar.gz -C /opt && sudo bash /opt/cinder-typhoon/build/arwc-ot/image/prepare-image.sh'
+else
+  gcloud compute ssh "$bake_instance" --project "$project" --zone "$zone" \
+    --tunnel-through-iap \
+    --command "sudo /opt/cinder-typhoon/build/gcp-images/guest/prepare-image.sh '$phase'"
+fi
 gcloud compute instances stop "$bake_instance" --project "$project" --zone "$zone" --quiet
 
-source_commit=$(git -C "$ROOT/.." rev-parse HEAD)
 gcloud compute images create "$final_image" \
   --project "$project" \
   --source-disk "$bake_instance" \

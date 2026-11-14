@@ -131,10 +131,10 @@ def make_topology(graph):
             ('a-data-bridge', 'Integration read gateway'), ('a-contractor-bridge', 'Contractor read gateway'),
             ('a-control-broker', 'Scoped maintenance broker')]),
         'a-engineering': ('ARWC', 'OT engineering / supervision', [
-            ('a-hmi', 'HMI / practice / scheduler'), ('a-historian', 'Historian / tag records'),
+            ('a-hmi', 'HMI / local controls / remote dispatcher'), ('a-historian', 'Historian / tag records'),
             ('a-engineering', 'Engineering workstation / projects'), ('a-diagnostics', 'Diagnostic services')]),
         'a-control': ('ARWC', 'Process control', [
-            ('a-reservoir', 'Reservoir / outlet endpoint'), ('a-distribution', 'Distribution endpoint'),
+            ('a-reservoir', 'Reservoir / outlet endpoint'),
             ('a-instruments', 'Instrumentation / retained device images')]),
     }
     for zone, (org, label, boxes) in inventory.items():
@@ -220,10 +220,10 @@ def make_topology(graph):
     place('W29.3', 'a-hmi:service', 'a-data:service')
     place('W30.1', 'a-hmi:service', 'a-reservoir:control')
     place('W30.2', 'a-reservoir:control', 'a-instruments:read')
-    place('W33.1', 'a-hmi:service', 'a-historian:read')
-    place('W33.2', 'a-hmi:service', 'a-data:service')
-    for ident in ('W33.3', 'W33.4'):
-        place(ident, 'a-reservoir:control', 'a-distribution:control', 'a-instruments:read')
+    place('W33.1', 'a-engineering:artifact', 'a-hmi:service', 'a-historian:read')
+    place('W33.2', 'a-engineering:artifact', 'a-historian:read', 'a-data:service')
+    place('W33.3', 'a-hmi:service', 'a-historian:read', 'a-reservoir:control', 'a-instruments:read')
+    place('W33.4', 'a-hmi:service', 'a-historian:read', 'a-data:service', 'a-reservoir:control')
     place('W34.1', 'a-data/planning:report', 'a-data:service')
     place('W34.2', 'a-data/planning:report', 'a-data:service')
     place('W34.3', 'a-data/planning:report', 'a-data:service', 'a-reservoir:control', 'a-instruments:read')
@@ -234,11 +234,11 @@ def make_topology(graph):
     # in-world actions have already produced their independently observed
     # effects: a score cannot cause the process transition needed to earn it.
     # This graph does not simulate command execution or hydraulic state.
-    live = 'PROCESS_INTERPRETATION CONTROL MODE CONSEQUENCE_PLAN'
+    live = 'PROCESS_INTERPRETATION CONTROL MODE W29.PLAN'
     model.events = {
         'reservoir_release': either('W30.2 ' + live),
-        'costly_release_rehearsal': either('W33.3 ' + live),
-        'feedback_rehearsal': either('W33.4 ' + live),
+        'peak_schedule_commissioning': either('W33.3 ' + live),
+        'peak_operating_projection': either('W33.4 ' + live),
         'false_planning_decision': either('W34.2'),
         'covered_release_rehearsal': either('W34.3 ' + live),
         'procurement_loss': either('W35.3'),
@@ -485,8 +485,8 @@ def simulate(graph, model, allowed=None):
 
 
 MODES = {'service', 'artifact', 'read', 'delivery', 'control', 'report', 'telemetry'}
-PROCESS_ENDPOINTS = {'a-reservoir', 'a-distribution', 'a-instruments'}
-ACTUATORS = {'a-reservoir', 'a-distribution'}
+PROCESS_ENDPOINTS = {'a-reservoir', 'a-instruments'}
+ACTUATORS = {'a-reservoir'}
 
 
 def check_structure(graph, model):
@@ -604,10 +604,10 @@ def check_boundaries(graph, model):
         command_targets = set(accessible(model, facts, 'control'))
         require(ACTUATORS <= command_targets, f'{terminal}: control scope incomplete')
         require('a-instruments' not in command_targets, f'{terminal}: independent instrumentation became writable')
-        require('reservoir_release' not in events(model, facts), f'{terminal}: authority alone published a completed incident')
+        require('reservoir_release' not in events(model, facts), f'{terminal}: authority alone published a completed operation')
     before = shortest(graph, 'W30.RESULT') - {'W30.2'}
-    require('reservoir_release' not in events(model, earned(graph, before)), 'Preparation published a completed incident')
-    require('reservoir_release' in events(model, earned(graph, before | {'W30.2'})), 'Verified completion did not permit incident presentation')
+    require('reservoir_release' not in events(model, earned(graph, before)), 'Preparation published a completed operation')
+    require('reservoir_release' in events(model, earned(graph, before | {'W30.2'})), 'Verified completion did not permit operation presentation')
 
     # Optional compromises are present in these states. Checking only the
     # shortest main route previously missed CI and diagnostic-origin bypasses.
@@ -794,7 +794,7 @@ def self_test(graph, model):
     variant('control authority includes independent instrumentation',
             lambda m: m.links.append(Link('bad-instruments', 'a-control-broker', 'a-instruments', ('control',), either('CONTROL'))),
             lambda m: check_boundaries(graph, m), 'instrumentation became writable')
-    variant('control authority publishes a completed reservoir incident',
+    variant('control authority publishes a completed reservoir operation',
             lambda m: m.events.update({'reservoir_release': either('CONTROL')}),
             lambda m: check_boundaries(graph, m), 'authority alone published')
     variant('command plan mistaken for executed release',

@@ -16,6 +16,8 @@ from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
+import operating_history
+
 
 ROOT = pathlib.Path("/var/lib/arwc-data-bridge")
 STATE = ROOT / "state" / "integration.json"
@@ -25,13 +27,6 @@ DATA_EVIDENCE = pathlib.Path("/run/arwc-data-integration/planning-data.json")
 OT_EVIDENCE = ROOT / "handover" / "corporate.json"
 PROCESS_PATHS = {
     "/.well-known/arwc-client",
-    "/api/process-views/state", "/api/process-views/mode",
-    "/api/process-views/instruments/active", "/api/observations",
-    "/api/tag-exports/current", "/api/tag-scales/current",
-    "/api/tag-scales/current/history", "/api/outlet-groups/current/instruments",
-    "/api/sealed-projects/current/note", "/api/vault-access",
-    "/api/operating-envelopes/current", "/api/movement-conditions/current",
-    "/api/commands", "/api/practice-sequences",
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
     "/api/signature-programs/current", "/api/diagnostic-programs/legacy",
     "/api/sealed-projects/current/viewer", "/api/sealed-viewers/current/execute",
@@ -45,14 +40,10 @@ PROCESS_PATHS = {
     "/api/diagnostic-runs",
     "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
     "/api/control-authority",
-    "/api/collision-solutions", "/api/reporting-checkpoints/current",
-    "/api/release-plans/current", "/api/release-plans/current/execute",
     "/api/vault-records/current", "/api/signature-records/current",
     "/api/replay-sessions/current/divergence", "/api/diagnostic-programs/authority",
     "/api/replay-sessions/current", "/api/estimator-tasks/current/inputs",
     "/api/estimator-results/current", "/api/replay-sessions/current/execute",
-    "/api/forecasts/current", "/api/schedule-windows/current",
-    "/api/schedules", "/api/feedback-policies",
 }
 
 
@@ -181,6 +172,9 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(result)
 
     def do_GET(self) -> None:
+        if urlsplit(self.path).path == operating_history.PATH:
+            operating_history.respond(self)
+            return
         self.proxy_historian()
 
     def do_POST(self) -> None:
@@ -229,35 +223,6 @@ class Handler(BaseHTTPRequestHandler):
             finally:
                 connection.close()
             self.send_json(response.status, result); return
-        if urlsplit(self.path).path in {
-            "/internal/reserve-observations", "/internal/release-plan-assessments",
-        }:
-            if (self.headers.get("X-ARWC-Internal") != "planning-data-reserve" or
-                    self.headers.get("X-ARWC-Tenant") != "arwc" or
-                    self.client_address[0] != "10.77.62.10"):
-                self.send_json(403, {"error": "planning service context required"})
-                return
-            request = self.body()
-            if request is None:
-                return
-            payload = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
-            context = ssl.create_default_context(cafile="/tmp/ca.crt")
-            connection = http.client.HTTPSConnection("10.77.63.30", 443, context=context, timeout=5)
-            try:
-                connection.request("POST", urlsplit(self.path).path, body=payload, headers={
-                    "Content-Type": "application/json", "Content-Length": str(len(payload)),
-                    "X-ARWC-Internal": "data-bridge-reserve", "X-ARWC-Tenant": "arwc",
-                    "Host": "process-historian.arwc.test",
-                })
-                response = connection.getresponse()
-                result = json.loads(response.read())
-            except (OSError, json.JSONDecodeError):
-                self.send_json(409, {"error": "process evidence service unavailable"})
-                return
-            finally:
-                connection.close()
-            self.send_json(response.status, result)
-            return
         if urlsplit(self.path).path == "/internal/diagnostic-estimate":
             if (self.headers.get("X-ARWC-Internal") != "diagnostics-r27" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or

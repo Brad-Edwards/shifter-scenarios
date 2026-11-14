@@ -50,10 +50,10 @@ catalog.
 | [W27: A valid-looking program](#w27) | 3 |
 | [W28: The utility has no room](#w28) | 3 |
 | [W29: Paper truth](#w29) | 3 |
-| [W30: Open the gates](#w30) | 2 |
+| [W30: Operate the outlet](#w30) | 2 |
 | [W31: The diagnostic vault](#w31) | 4 |
 | [W32: Replay is not reality](#w32) | 4 |
-| [W33: The expensive hour](#w33) | 4 |
+| [W33: Peak-hour commissioning](#w33) | 4 |
 | [W34: The reassuring dashboard](#w34) | 3 |
 
 <a id="w01"></a>
@@ -423,24 +423,24 @@ A constrained engineering tool protects the ordinary hard route to control.
 
 ## W29: Paper truth
 
-A bounded release can still impose replacement cost and restrictions.
+Reconcile current corporate commitments with native OT history without treating a dated report as live process truth.
 
 | Challenge | Difficulty | Required access or evidence |
 | --- | --- | --- |
 | [W29.1: The price of this planning window](W29/W29.1.md) | Easy | [OT_READ](arwc.md#capabilities) |
 | [W29.2: What reserve remains uncommitted](W29/W29.2.md) | Medium | [PROCESS_INTERPRETATION](arwc.md#capabilities) |
-| [W29.3: Paper truth](W29/W29.3.md) | Medium | ([W29.1](W29/W29.1.md) AND [W29.2](W29/W29.2.md) AND [MODE](arwc.md#capabilities)) |
+| [W29.3: Paper truth](W29/W29.3.md) | Medium | ([W29.1](W29/W29.1.md) AND [W29.2](W29/W29.2.md)) |
 
 <a id="w30"></a>
 
-## W30: Open the gates
+## W30: Operate the outlet
 
-Cinder's reservoir objective receives a visible, bounded ending.
+Carry out one bounded operation through the installed dispatcher and controller, then restore local control and prove the handback.
 
 | Challenge | Difficulty | Required access or evidence |
 | --- | --- | --- |
-| [W30.1: Bind the plan to the plant](W30/W30.1.md) | Medium | ([PROCESS_INTERPRETATION](arwc.md#capabilities) AND [CONTROL](arwc.md#capabilities) AND [MODE](arwc.md#capabilities) AND [CONSEQUENCE_PLAN](arwc.md#capabilities)) |
-| [W30.2: Open the gates](W30/W30.2.md) | Medium | [W30.1](W30/W30.1.md) |
+| [W30.1: Bind the plan to the plant](W30/W30.1.md) | Medium | ([PROCESS_INTERPRETATION](arwc.md#capabilities) AND [CONTROL](arwc.md#capabilities) AND [MODE](arwc.md#capabilities) AND [W29.PLAN](arwc.md#capabilities)) |
+| [W30.2: Operate and hand back](W30/W30.2.md) | Medium | [W30.1](W30/W30.1.md) |
 
 <a id="w31"></a>
 
@@ -470,16 +470,16 @@ The old project approved a schedule for a discoverable reason.
 
 <a id="w33"></a>
 
-## W33: The expensive hour
+## W33: Peak-hour commissioning
 
-Precisely timed reserve loss creates a more demanding economic objective.
+A calibrated operating plan must survive real commissioning and honest projection.
 
 | Challenge | Difficulty | Required access or evidence |
 | --- | --- | --- |
-| [W33.1: A forecast that matches the instrument](W33/W33.1.md) | Medium | [OT_READ](arwc.md#capabilities) |
-| [W33.2: The expensive hour](W33/W33.2.md) | Hard | ([W33.1](W33/W33.1.md) AND [ENVELOPE](arwc.md#capabilities)) |
-| [W33.3: The schedule the service accepts](W33/W33.3.md) | Hard | ([W33.2](W33/W33.2.md) AND [PROCESS_INTERPRETATION](arwc.md#capabilities) AND [CONTROL](arwc.md#capabilities) AND [MODE](arwc.md#capabilities) AND [CONSEQUENCE_PLAN](arwc.md#capabilities)) |
-| [W33.4: When the forecast moves](W33/W33.4.md) | Expert | [W33.3](W33/W33.3.md) |
+| [W33.1: A forecast that matches the instrument](W33/W33.1.md) | Medium | [W30.RESULT](arwc.md#capabilities) |
+| [W33.2: The peak hour](W33/W33.2.md) | Hard | ([W33.1](W33/W33.1.md) AND [ENVELOPE](arwc.md#capabilities) AND [W29.PLAN](arwc.md#capabilities)) |
+| [W33.3: Commission the schedule](W33/W33.3.md) | Hard | ([W33.2](W33/W33.2.md) AND [MODE](arwc.md#capabilities)) |
+| [W33.4: Prove the operating projection](W33/W33.4.md) | Expert | ([W33.3](W33/W33.3.md) AND [W29.PLAN](arwc.md#capabilities)) |
 
 <a id="w34"></a>
 

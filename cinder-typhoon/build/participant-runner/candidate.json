@@ -10,7 +10,6 @@
     "arwc/a-data": "sha256:e739f0ee697f35e9368e9a2afe1bc235304d4b8fd08f4814c8c3d2d75eeeac18",
     "arwc/a-data-bridge": "sha256:04c98d6e6f33131e3dc8c6713072d119980d38d89a0ecbc97927785d8ae17e98",
     "arwc/a-diagnostics": "sha256:d991430645d25ec46cd5a08f2d0f6985db375195b7ca01540817c721ce8ed7e6",
-    "arwc/a-distribution": "sha256:fe1b30f15961017a8419982f33343bd5b7786bcc49b192e76374784b3bdba94e",
     "arwc/a-engineering": "sha256:340072666f105257410108d31248d50ef182c9960eb17150cc242555984b35da",
     "arwc/a-historian": "sha256:6a89570fe1319fca5295aad85aaa599ad0e29da9160f02377cb06b0af1628c83",
     "arwc/a-hmi": "sha256:695c9544da2cfee40f957182fd5d7efd2ad03db8d9f2974fcdf37ca982e49f77",
@@ -52,10 +51,10 @@
     "card_count": 240,
     "operation_count": 70,
     "path": "challenges/challenges.yaml",
-    "revision": "6671188bc4005bc5dca0ed2c72ea436f71bd667f74807cb928bf645117740fe9",
+    "revision": "010573653ff970699454ce5243b65a414e3ffc984a81f9526e5431bbded90958",
     "schema": "cinder-typhoon.challenge-delivery/v2",
     "score_total": 39200,
-    "sha256": "56887dfbc06fd658a39e109f83eecfbd1a6b9b026ff39711ee76aa68d6ed838b"
+    "sha256": "14f0ed2e5c8e4b754cd291c78e394466df84585183c745b70da004d05269b4a9"
   },
   "deployments": {
     "arwc": {
@@ -70,7 +69,6 @@
         "a-data": "sha256:e739f0ee697f35e9368e9a2afe1bc235304d4b8fd08f4814c8c3d2d75eeeac18",
         "a-data-bridge": "sha256:04c98d6e6f33131e3dc8c6713072d119980d38d89a0ecbc97927785d8ae17e98",
         "a-diagnostics": "sha256:d991430645d25ec46cd5a08f2d0f6985db375195b7ca01540817c721ce8ed7e6",
-        "a-distribution": "sha256:fe1b30f15961017a8419982f33343bd5b7786bcc49b192e76374784b3bdba94e",
         "a-engineering": "sha256:340072666f105257410108d31248d50ef182c9960eb17150cc242555984b35da",
         "a-historian": "sha256:6a89570fe1319fca5295aad85aaa599ad0e29da9160f02377cb06b0af1628c83",
         "a-hmi": "sha256:695c9544da2cfee40f957182fd5d7efd2ad03db8d9f2974fcdf37ca982e49f77",
@@ -137,9 +135,9 @@
     "hint_count": 720,
     "operation_count": 70,
     "path": "build/hint-delivery/manifest.json",
-    "revision": "339d76d710083a7e00e334a6f3073ec098d844e1edbe02703cdebc27cdcd5bf7",
+    "revision": "8295f158e4e9f621f18664616f7ded3b3e39a2adf0141301435e2b26d5c925a7",
     "schema": "cinder-typhoon.hint-delivery/v1",
-    "sha256": "46c43c70e5a1711a9a5dc352af9bbcd1af41d5243fe171a6849c154b5cff529f"
+    "sha256": "dd6270edeb5f3052359ced05f0e0273a5d8b47d75eb885236ed47ed47007f2a1"
   },
   "immutable": true,
   "schema_version": 3,

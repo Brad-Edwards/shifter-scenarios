@@ -1,0 +1,29 @@
+{
+  "schema": "arwc.operating-instruction/v1",
+  "instruction": "CRR-OP-W30-R1",
+  "asset": "AST-CRR-017",
+  "project_revision": 364,
+  "planning_window": "ALLOC-2026-DP3",
+  "work": {
+    "channel": "authenticated remote dispatcher",
+    "mode": "automatic",
+    "position_a_pct": 20.0,
+    "position_b_pct": 20.0,
+    "total_flow_m3s": 0.3,
+    "expiry_seconds": 90
+  },
+  "handback": {
+    "channel": "local FUXA HMI",
+    "mode": "manual",
+    "position_a_pct": 20.0,
+    "position_b_pct": 20.0,
+    "total_flow_m3s": 0.2,
+    "remote_enabled": false
+  },
+  "limits": {
+    "maximum_total_flow_m3s": 1.0,
+    "maximum_expiry_seconds": 120,
+    "expected_flow_per_outlet_m3s": 0.15,
+    "flow_tolerance_per_outlet_m3s": 0.0075
+  }
+}

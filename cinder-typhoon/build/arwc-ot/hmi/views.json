@@ -1,0 +1,22 @@
+{
+  "schema": "arwc.fuxa-views/v1",
+  "register": "../site/tags.json",
+  "groups": {"viewer": 1, "operator": 2, "configuration": -1},
+  "views": [
+    {"id": "crr-overview", "name": "Cairn Reach overview", "reads": ["LevelM", "UsableVolumeML", "PositionPct", "PositionBPct", "FlowM3s", "FlowBM3s", "TotalFlowM3s", "AutoMode", "Owner", "IoHealthy", "Armed"]},
+    {"id": "crr-controls", "name": "Site controls", "reads": ["HmiAccepted", "HmiRejected", "HmiRejectReason", "RequestedTargetPct", "RequestedTargetBPct", "RequestedFlowM3s", "AutoMode", "Owner", "IoHealthy"], "writes": ["HmiTargetPct", "HmiTargetBPct", "HmiAutoMode", "HmiFlowM3s", "HmiStop", "HmiRemoteEnabled"]},
+    {"id": "crr-outlet-a", "name": "Outlet A", "reads": ["PositionPct", "FlowM3s", "RequestedTargetPct", "PermissiveA", "MovingA", "AtTargetA", "TravelFaultA", "MotionStateA", "IoHealthy"]},
+    {"id": "crr-outlet-b", "name": "Outlet B", "reads": ["PositionBPct", "FlowBM3s", "RequestedTargetBPct", "PermissiveB", "MovingB", "AtTargetB", "TravelFaultB", "MotionStateB", "IoHealthy"]}
+  ],
+  "scripts": [
+    {"id": "crr-apply", "name": "crr_apply_request", "reads": ["HmiSeen"], "writes": ["HmiSequence"]},
+    {"id": "crr-reset", "name": "crr_reset_faults", "reads": [], "writes": ["HmiResetFaults"]}
+  ],
+  "alarms": [
+    {"id": "crr-field-data", "tag": "IoHealthy", "active_value": 0, "text": "Field data unavailable", "group": "Cairn Reach"},
+    {"id": "crr-low-level", "tag": "LowLevelAlarm", "active_value": 1, "text": "Reservoir low level", "group": "Cairn Reach"},
+    {"id": "crr-travel-a", "tag": "TravelFaultA", "active_value": 1, "text": "Outlet A travel timeout", "group": "Outlet A"},
+    {"id": "crr-travel-b", "tag": "TravelFaultB", "active_value": 1, "text": "Outlet B travel timeout", "group": "Outlet B"}
+  ],
+  "history": {"label": "Process history", "url": "http://172.29.63.25:3000/d/arwc-history", "authority": "PostgreSQL", "fuxa_measurement_daq": false}
+}

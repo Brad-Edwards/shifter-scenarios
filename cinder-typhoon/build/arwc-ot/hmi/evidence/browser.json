@@ -1,0 +1,18 @@
+{
+  "issue": 365,
+  "status": "passed",
+  "scope": "normal operating component QA on the dedicated development VM; integrated BigRAE participant acceptance remains downstream",
+  "observations": [
+    {
+      "coordination_message": 684,
+      "subject": "Field recovery checkpoint - alarm, ack, RTN, historian gap: all PASS",
+      "detail": "Field-loss test complete. io container restored.\n\nFIELD-LOSS SEQUENCE (all PASS):\n1. io stopped => IoHealthy=0 within seconds\n2. FUXA overview: Field data changed to UNAVAILABLE\n3. Alarm bell: changed to 1 (red badge)\n4. Alarm panel: 2026.11.13 03:08:14 / 'Field data unavailable' / High / Cairn Reach / Active\n5. Per-row acknowledge clicked => status changed to Active-ACK\n6. io restarted => field recovered\n7. Field data: returned to Healthy\n8. Alarm bell: cleared to 0\n9. Alarm panel: cleared to 0 of 0 (RTN alarm removed from active list)\n\nHISTORIAN ALARM AND GAP:\n- Acquisition gap: Outlet flow chart line breaks during io-down (03:07-03:10), resumes after recovery\n- Native alarms panel shows:\n  ontime: 2026-11-13 03:08:14\n  offtime: 2026-11-13 03:09:23\n  acktime: 2026-11-13 03:08:56\n  acknowledging_user: operator\n  text: Field data unavailable\n\nAll alarm, acknowledgement, RTN, and historian gap checks PASS.\nReady for next fix deployment (SVG serialization fix for missing value widgets and action buttons). Will reload and retest when deployed."
+    },
+    {
+      "coordination_message": 689,
+      "subject": "Full operating walkthrough PASS \u2014 ready for acquisition-gap check",
+      "detail": "Operating walkthrough complete after script-mode fix. All checks PASS.\n\nAPPLY/MODE/REMOTE SELECTION (operator):\n- Proposed A=30%, B=25%, manual mode: Apply accepted. Accepted seq=1, owner=HMI. Outlets moved to 30%/25% positions. PASS\n- Proposed automatic flow=0.300 m3/s: Apply accepted. Actual mode changed to Automatic flow. Seq=2. Each outlet regulated to 0.150 m3/s. Total=0.300 m3/s. PASS\n- Remote enabled + Apply: seq=3, accepted. After Apply, Dispatcher selection auto-reset to Local HMI only (removes remote selection per design). PASS\n\nVIEWER ROLE (new controls):\n- Proposed mode dropdown: disabled\n- Dispatcher selection: disabled\n- All proposed inputs (A,B,flow): disabled\n- Apply complete request: disabled\n- OPERATOR STOP: disabled\n- Clear operator stop: disabled\n- Process history: accessible (read-only link)\nAll new controls correctly disabled for viewer. PASS\n\nOVERVIEW VALUES (confirmed with full display rendering):\n- Level: 7.350 m, Volume: 12.700 ML; both outlets at 30%, each 0.150 m3/s; total 0.300 m3/s\n- Control owner: HMI, Motion: Armed, Mode: Automatic flow\n\nSITE STATE: HMI owns control in Automatic flow mode. PLC armed.\nReady for acquisition-gap check (collector interruption). Preserving PLC and field components."
+    }
+  ],
+  "qualification_note": "An active-fault reset through the operator faceplate remains part of the joined utility walkthrough; a no-fault click is not evidence of that case."
+}

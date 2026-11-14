@@ -607,85 +607,6 @@ def w24_selector_from_disassembly(disassembly: str, cases: list[dict[str, object
     return models[0]
 
 
-def w33_validate_schedule(window: dict[str, object], schedule: dict[str, object]) -> dict[str, object]:
-    """Evaluate a candidate using only the published scheduling contract."""
-    try:
-        count = int(window["interval_count"])
-        interval = float(window["interval_seconds"])
-        demand = [float(value) for value in window["demand_m3s"]]
-        releases = [float(value) for value in schedule["reservoir_release_m3s"]]
-        supplies = [float(value) for value in schedule["alternate_supply_m3s"]]
-        state_bounds = window["state_bounds_m3"]
-        terminal_bounds = window["terminal_bounds_m3"]
-        objective = window["volume_objective_ml"]
-        release_bounds = window["release_bounds_m3s"]
-        supply_bounds = window["supply_bounds_m3s"]
-    except (KeyError, TypeError, ValueError) as error:
-        raise AssertionError(f"W33 schedule derivation failed: incomplete contract: {error}") from error
-    if (len(demand), len(releases), len(supplies)) != (count, count, count):
-        raise AssertionError("W33 schedule derivation failed: series length does not match the contract")
-    try:
-        required_fields = set(window["request_schema"]["required"])
-    except (KeyError, TypeError) as error:
-        raise AssertionError(f"W33 schedule derivation failed: request schema is absent: {error}") from error
-    if set(schedule) != required_fields:
-        raise AssertionError("W33 schedule derivation failed: request does not match the published schema")
-    if schedule.get("demand_m3s") != window["demand_m3s"]:
-        raise AssertionError("W33 schedule derivation failed: demand does not match the published forecast")
-    if not all(math.isfinite(value) for value in demand + releases + supplies):
-        raise AssertionError("W33 schedule derivation failed: a series contains a non-finite value")
-    if any(not float(release_bounds["min"]) <= value <= float(release_bounds["max"]) for value in releases):
-        raise AssertionError("W33 schedule derivation failed: release is outside its bounds")
-    if any(not float(supply_bounds["min"]) <= value <= float(supply_bounds["max"]) for value in supplies):
-        raise AssertionError("W33 schedule derivation failed: alternate supply is outside its bounds")
-    ramp = float(window["ramp_bound_m3s"])
-    if any(abs(series[index] - series[index - 1]) > ramp + 1e-9
-           for series in (releases, supplies) for index in range(1, count)):
-        raise AssertionError("W33 schedule derivation failed: ramp bound exceeded")
-    buffers = [float(window["initial_buffer_m3"])]
-    for release, supply, required in zip(releases, supplies, demand):
-        buffers.append(buffers[-1] + interval * (release + supply - required))
-    if any(not float(state_bounds["min"]) <= value <= float(state_bounds["max"]) for value in buffers):
-        raise AssertionError("W33 schedule derivation failed: operating state bound exceeded")
-    if not float(terminal_bounds["min"]) <= buffers[-1] <= float(terminal_bounds["max"]):
-        raise AssertionError("W33 schedule derivation failed: terminal state bound exceeded")
-    volume = sum(interval * value for value in releases) / 1000.0
-    if not float(objective["min"]) <= volume <= float(objective["max"]):
-        raise AssertionError("W33 schedule derivation failed: volume objective missed")
-    return {"reservoir_volume_ml": round(volume, 9), "buffers_m3": buffers}
-
-
-def w33_derive_schedules(window: dict[str, object]) -> list[dict[str, object]]:
-    """Compute three distinct feasible schedules from the published bounds."""
-    try:
-        objective = window["volume_objective_ml"]
-        minimum = float(objective["min"])
-        maximum = float(objective["max"])
-        interval = float(window["interval_seconds"])
-        demand = [float(value) for value in window["demand_m3s"]]
-    except (KeyError, TypeError, ValueError) as error:
-        raise AssertionError(f"W33 schedule derivation failed: incomplete objective: {error}") from error
-    schedules: list[dict[str, object]] = []
-    for fraction in (0.25, 0.5, 0.75):
-        target_volume = minimum + (maximum - minimum) * fraction
-        target_release_sum = target_volume * 1000.0 / interval
-        supply = (sum(demand) - target_release_sum) / len(demand)
-        releases = [round(value - supply, 9) for value in demand]
-        supplies = [round(supply, 9)] * len(demand)
-        schedule = {
-            "checkpoint": window["checkpoint"],
-            "interval_seconds": window["interval_seconds"],
-            "demand_m3s": window["demand_m3s"],
-            "reservoir_release_m3s": releases,
-            "alternate_supply_m3s": supplies,
-        }
-        w33_validate_schedule(window, schedule)
-        schedules.append(schedule)
-    if len({json.dumps(schedule, sort_keys=True) for schedule in schedules}) != 3:
-        raise AssertionError("W33 schedule derivation failed: schedules are not distinct")
-    return schedules
-
-
 MASK128 = (1 << 128) - 1
 ROT128_IV = int("6a09e667f3bcc908bb67ae8584caa73b", 16)
 
@@ -1486,139 +1407,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                             queue.append(link)
         return result["process_session"]
 
-    # ------------------------------------------------------------------ W17
-    def test_w17_process_view(self) -> None:
-        session = self._process_session()
-        self.evidence["process_session"] = session
-        base = self.evidence["process_view"]
-
-        with self.subTest(card="W17.1 the reservoir's present tense"):
-            status, response = request(self.discovered_route("process.state"), token="wrong")
-            self.assertEqual(status, 403)
-            status, response = request(self.discovered_route("process.state"), token=session, expected=200)
-            record = response["record"]
-            self.assertNotEqual(record["requested_setpoints_m3s"], record["measurements"])
-            self.evidence["outlet_group"] = self.evidence.get("outlet_group", "OG-CRR-02")
-
-        with self.subTest(card="W17.2 the mode the plant is in"):
-            status, response = request(self.discovered_route("process.mode"), token=session, expected=200)
-            mode = response["record"]
-            self.assertTrue(mode["current"])
-            self.evidence["project"] = mode["project"]
-            self.evidence["mode_id"] = mode["record_id"]
-            self.evidence["mode_revision"] = mode["revision"]
-
-        with self.subTest(card="W17.3 the instrument in the note"):
-            status, response = request(self.discovered_route("process.active-instrument"), token=session, expected=200)
-            self.evidence["note_instrument"] = response["record"]["instrument"]
-            self.assertIn("engineering_context", response)
-
-        with self.subTest(card="W17.4 the first live trace"):
-            binding = {"event": "EVT-COMM-OG2-114", "project": self.evidence["project"],
-                       "hmi_series": "HMI-EVT-114", "instrument_series": "INST-EVT-114"}
-            status, _ = request(self.discovered_route("process.observations"), method="POST", token=session, body=dict(binding, project="CRR-CTRL-R19"))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.observations"), method="POST", token=session, body=binding, expected=201)
-            self.assertEqual(response["instrument_observation"]["source"], "independent instruments")
-
-    # ------------------------------------------------------------------ W18
-    def test_w18_tag_scale(self) -> None:
-        base = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-
-        with self.subTest(card="W18.1 the tag export"):
-            status, export = request(self.discovered_route("process.tag-export"), token=session, expected=200)
-            record = export["record"]
-            self.assertEqual(record["project"], self.evidence["project"])
-            self.assertGreaterEqual(len(record["tags"]), 6)
-            self.evidence["tag_export"] = record["record_id"]
-
-        with self.subTest(card="W18.2 the scale kept elsewhere"):
-            status, scale = request(self.discovered_route("process.tag-scale"), token=session, expected=200)
-            record = scale["record"]
-            self.assertNotIn(self.evidence["tag_export"], json.dumps(record))
-            self.evidence["scale_id"] = record["record_id"]
-            self.evidence["counts_per_m3s"] = record["flow"]["counts_per_m3s"]
-
-        with self.subTest(card="W18.3 when the units changed"):
-            body = {"sample_counts": 1200, "current_divisor": self.evidence["counts_per_m3s"],
-                    "retained_divisor": 8000, "deployment": self.evidence["project"]}
-            status, _ = request(self.discovered_route("process.tag-scale-history"), method="POST", token=session, body=dict(body, current_divisor=8000))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.tag-scale-history"), method="POST", token=session, body=body, expected=201)
-            self.assertTrue(response["record"]["current_m3s"])
-
-        with self.subTest(card="W18.4 which outlet answers"):
-            binding = {"event": "EVT-COMM-OG2-114", "scale": self.evidence["scale_id"],
-                       "project": self.evidence["project"], "outlet_group": self.evidence["outlet_group"]}
-            status, _ = request(self.discovered_route("process.outlet-instruments"), method="POST", token=session, body=dict(binding, scale="SCALE-CRR-R7"))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.outlet-instruments"), method="POST", token=session, body=binding, expected=201)
-            self.assertEqual(sorted(response["instrument_observation"]["instruments"]), sorted(self.evidence["instruments"]))
-            self.evidence["map_id"] = response["record"]["record_id"]
-            self.evidence["map_revision"] = response["record"]["revision"]
-
-    # ------------------------------------------------------------------ W21
-    def test_w21_project_identity(self) -> None:
-        base = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-
-        with self.subTest(card="W21.1 the project and the note"):
-            status, response = request(self.discovered_route("process.sealed-project"), token=session, expected=200)
-            record = response["record"]
-            self.evidence["workspace_claim"] = record["workspace_claim"]
-            self.evidence["deployment_note"] = record["deployment_note"]
-            self.assertTrue(record["deployment_note"]["signed"])
-            self.assertNotEqual(record["workspace_claim"], record["deployment_note"]["manifest_project"])
-
-        with self.subTest(card="W21.2 which project is running"):
-            note = self.evidence["deployment_note"]
-            digest = hashlib.sha256(f"{note['manifest_project']}/deployed".encode()).hexdigest()
-            binding = {"project_index": "PROJ-CRR-INDEX-R9", "workspace_claim": self.evidence["workspace_claim"],
-                       "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": note["manifest_project"],
-                       "observed_digest": digest}
-            status, _ = request(self.discovered_route("process.vault-access"), method="POST", token=session,
-                                 body=dict(binding, observed_project=self.evidence["workspace_claim"]))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.vault-access"), method="POST", token=session, body=binding, expected=201)
-            self.assertEqual(response["record"]["deployed_project"], note["manifest_project"])
-            self.assertEqual(response["record"]["rejected_claim"], self.evidence["workspace_claim"])
-
-    # ------------------------------------------------------------------ W25
-    def test_w25_practice_sequence(self) -> None:
-        base = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-
-        with self.subTest(card="W25.1 the operating envelope"):
-            status, envelope = request(self.discovered_route("process.operating-envelope"), token=session, expected=200)
-            self.evidence["envelope"] = envelope["record"]
-            self.assertEqual(envelope["record"]["outlet_group"], self.evidence["outlet_group"])
-            self.assertGreater(envelope["record"]["aggregate_max_m3s"], max(envelope["record"]["per_gate_m3s"]))
-
-        with self.subTest(card="W25.2 conditions before movement"):
-            status, conditions = request(self.discovered_route("process.movement-conditions"), token=session, expected=200)
-            record = conditions["record"]
-            self.assertFalse(record["permissive"])
-            self.assertNotIn(self.evidence["envelope"]["record_id"], json.dumps(record))
-
-        with self.subTest(card="W25.3 accepted is not actuated"):
-            binding = {"requests": ["PRACTICE-REQ-11", "PRACTICE-REQ-12"], "permissive": "PRACTICE-PERM-02", "expected_actuation": False}
-            status, _ = request(self.discovered_route("process.command-accept"), method="POST", token=session, body=dict(binding, expected_actuation=True))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.command-accept"), method="POST", token=session, body=binding, expected=201)
-            self.assertTrue(all(item["acknowledged"] for item in response["record"]["requests"]))
-            self.assertTrue(all(not item["actuated"] for item in response["record"]["requests"]))
-
-        with self.subTest(card="W25.4 a sequence the process can follow"):
-            binding = {"checkpoint": "PRACTICE-OG2-07", "reset_complete": True, "each_gate_target_m3s": 0.15,
-                       "ramp_open_seconds": 30, "hold_seconds": 70, "ramp_close_seconds": 30}
-            status, _ = request(self.discovered_route("process.practice-sequence"), method="POST", token=session, body=dict(binding, each_gate_target_m3s=0.50))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.practice-sequence"), method="POST", token=session, body=binding, expected=201)
-            self.assertFalse(response["record"]["live_reserve_changed"])
-
     # ------------------------------------------------------------------ W19
     def test_w19_diagnostic_binary(self) -> None:
+        self.evidence["process_session"] = self._process_session()
         base = self.evidence["process_view"]
         session = self.evidence["process_session"]
 
@@ -1663,8 +1454,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W19.4 a map from the old diagnostic"):
             group_suffix = self.evidence["outlet_group"]
+            self.evidence["legacy_project"] = "CRR-CTRL-" + self.evidence["migration_record"].rsplit("-", 1)[-1]
             mapping = {
-                "legacy_project": self.evidence["project_family"], "current_project": self.evidence["project"],
+                "legacy_project": self.evidence["project_family"], "current_project": self.evidence["legacy_project"],
                 "legacy_identifiers": {"OUTLET_A": f"{group_suffix}/GT-CRR-02A", "OUTLET_B": f"{group_suffix}/GT-CRR-02B"},
                 "instruments": dict(zip(("OUTLET_A", "OUTLET_B"), sorted(self.evidence["instruments"]))),
             }
@@ -1675,6 +1467,8 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             status, response = request(self.discovered_route("process.diagnostic-program-legacy"), method="POST", token=session, body=map_request, expected=201)
             self.assertTrue(response["record"]["historical"])
             self.evidence["w19_map_request"] = map_request
+            self.evidence["map_id"] = response["record"]["record_id"]
+            self.evidence["map_revision"] = response["record"]["revision"]
 
     # ------------------------------------------------------------------ W20
     def test_w20_nor_flash_image(self) -> None:
@@ -2360,7 +2154,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             broker = self.evidence["w26_broker"]
             body = {"renderer_attestation": self.evidence["w26_attestation"], "approval": approval,
                     "initiating_role": "contractor", "outlet_group": self.evidence["outlet_group"],
-                    "project": self.evidence["project"], "actions": ["readback", "plan-execute"]}
+                    "project": self.evidence["legacy_project"], "actions": ["readback", "plan-execute"]}
             status, _ = request(self.discovered_route("process.approval-client"), method="POST", token=contractor, body={**body, "renderer_attestation": "wrong"})
             self.assertEqual(status, 403)
             status, result = request(self.discovered_route("process.approval-client"), method="POST", token=contractor, body=body, expected=201)
@@ -2372,7 +2166,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["w26_broker_record_id"] = record["record_id"]
             # Confirm the issued client actually carries its granted authority.
             correct = {"operation": "readback", "outlet_group": self.evidence["outlet_group"],
-                       "project": self.evidence["project"], "action": "readback"}
+                       "project": self.evidence["legacy_project"], "action": "readback"}
             status, readback = request(self.discovered_route("process.approval-client"), method="POST",
                                         token=self.evidence["w26_control_client"], body=correct, expected=201)
             self.assertEqual(readback["record"]["authority"], "accepted")
@@ -2470,9 +2264,6 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
     def test_w28_utility_privilege_escalation(self) -> None:
         base = self.evidence["process_view"]
         session = self.evidence["process_session"]
-        site_code = self.evidence["asset_bundle"]["asset"].split("-")[1]
-        project_suffix = self.evidence["project"].rsplit("-", 1)[-1]
-        revision = f"CMP-{site_code}-{project_suffix}"
 
         def frame(relationship: dict, pie_base: int, canary: int, issue: bool) -> bytes:
             offsets = relationship["elf_offsets"]
@@ -2499,10 +2290,10 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W28.1 the utility's small world"):
             status, _ = request(self.discovered_route("process.collision-inputs"), method="POST", token="wrong",
-                                 body={"operation": "materials", "revision": revision})
+                                 body={"operation": "materials", "project_revision": 364})
             self.assertEqual(status, 403)
             status, result = request(self.discovered_route("process.collision-inputs"), method="POST", token=session,
-                                      body={"operation": "materials", "revision": revision}, expected=201)
+                                      body={"operation": "materials", "project_revision": 364}, expected=201)
             record = result["record"]
             binary = base64.b64decode(result["utility_b64"])
             self.assertEqual(binary[:4], b"\x7fELF")
@@ -2535,133 +2326,15 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             status, result = request(self.discovered_route("process.control-authority"), method="POST", token=session, body=body, expected=201)
             record = result["record"]
             self.assertEqual(record["outlet_group"], self.evidence["outlet_group"])
-            self.assertEqual(record["project"], self.evidence["project"])
+            self.assertEqual(record["project"], self.evidence["legacy_project"])
             self.evidence["w28_control_client"] = result["control_client"]
             # The issued client's authority is genuinely scoped and usable.
             readback = {"operation": "readback", "control_client": self.evidence["w28_control_client"],
-                        "outlet_group": self.evidence["outlet_group"], "project": self.evidence["project"], "action": "readback"}
+                        "outlet_group": self.evidence["outlet_group"], "project": self.evidence["legacy_project"], "action": "readback"}
             status, _ = request(self.discovered_route("process.control-authority"), method="POST", token=session, body={**readback, "action": "release"})
             self.assertEqual(status, 409)
             status, confirmed = request(self.discovered_route("process.control-authority"), method="POST", token=session, body=readback, expected=201)
             self.assertEqual(confirmed["record"]["authority"], "accepted")
-
-    # ------------------------------------------------------------------ W29
-    def test_w29_planning_window_economics(self) -> None:
-        planning = self.evidence["process_view"].replace("process-view", "planning-data")
-        process = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-        planner = {"X-ARWC-Planner-Session": "@planner"}
-        site_code = self.evidence["asset_bundle"]["asset"].split("-")[1]
-
-        def plan(path: str, method: str = "GET", body: dict | None = None, token: str | None = None, expected: int | None = None) -> tuple[int, dict]:
-            return request(f"{planning}{path}", method=method, body=body, token=token, headers=planner, expected=expected)
-
-        with self.subTest(card="W29.1 the price of this planning window"):
-            status, denied = plan("/api/planning-windows/current/economics", token="wrong")
-            self.assertEqual(status, 403)
-            status, result = plan("/api/planning-windows/current/economics", expected=200)
-            record = result["record"]
-            self.evidence["planning_tariff"] = record["record_id"]
-            self.evidence["w29_rate_per_ml"] = record["rate_per_ml"]
-
-        with self.subTest(card="W29.2 what reserve remains uncommitted"):
-            binding = {
-                "allocation": self.evidence["ledger_record"], "reserve_observation": f"OBS-RESERVE-{site_code}-R29",
-                "planning_window": self.evidence["planning_window"],
-                "expected_margin_ml": round(self.evidence["usable_reserve_ml"] - self.evidence["committed_ml"], 4),
-            }
-            status, _ = plan("/api/collision-solutions", method="POST", body=dict(binding, allocation="wrong"))
-            self.assertEqual(status, 409)
-            status, result = plan("/api/collision-solutions", method="POST", body=binding, expected=201)
-            record = result["record"]
-            self.evidence["reserve_balance"] = record["record_id"]
-
-        with self.subTest(card="W29.3 paper truth"):
-            plan_id = f"PLAN-{site_code}-LOSS-1000"
-            binding = {
-                "plan_id": plan_id, "tariff": self.evidence["planning_tariff"], "balance": self.evidence["reserve_balance"],
-                "mode": self.evidence["mode_id"], "outlet_group": self.evidence["outlet_group"],
-                "ramp_open_seconds": 100, "each_gate_target_m3s": 0.5, "hold_seconds": 900, "ramp_close_seconds": 100,
-            }
-            # The practice sequence (W25) already satisfied the required movement conditions.
-            status, missing = plan("/api/release-plans/current", method="POST", body=binding)
-            self.assertEqual(status, 404)
-            self.assertNotIn("released_volume_ml", json.dumps(missing))
-            status, _ = request(
-                self.discovered_route("process.reporting-checkpoint-submit"), method="POST",
-                token=session, body=dict(binding, hold_seconds=899),
-            )
-            self.assertEqual(status, 409)
-            status, result = request(
-                self.discovered_route("process.reporting-checkpoint-submit"), method="POST",
-                token=session, body=binding, expected=201,
-            )
-            record = result["record"]
-            self.assertEqual(record["record_id"], plan_id)
-            self.assertFalse(record["live_action_performed"])
-            status, missing = plan("/api/release-plans/current", method="POST", body=binding)
-            self.assertEqual(status, 404)
-            self.assertNotIn("released_volume_ml", json.dumps(missing))
-            self.evidence["w29_plan"] = plan_id
-            status, present = request(self.discovered_route("process.state"), token=session, expected=200)
-            self.assertEqual(present["record"]["measurements"]["usable_reserve_ml"], self.evidence["usable_reserve_ml"])
-
-    # ------------------------------------------------------------------ W30
-    def test_w30_command_release(self) -> None:
-        process = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-        project_revision = int(self.evidence["project"].rsplit("-", 1)[-1].lstrip("R"))
-        envelope = self.evidence["envelope"]
-        bind_correlation = str(uuid.uuid4())
-        release_correlation = str(uuid.uuid4())
-        bind_request = {
-            "correlation": bind_correlation,
-            "request": {
-                "control_client": self.evidence["w26_control_client"],
-                "asset": self.evidence["asset_bundle"]["asset"], "outlet_group": self.evidence["outlet_group"],
-                "project": self.evidence["project"], "project_revision": project_revision,
-                "map": self.evidence["map_id"], "map_revision": self.evidence["map_revision"],
-                "mode": self.evidence["mode_id"], "mode_revision": self.evidence["mode_revision"],
-                "envelope": envelope["record_id"], "envelope_revision": envelope["revision"],
-                "plan": self.evidence["w29_plan"],
-                "units": {"flow": "m3/s", "volume": "ML", "time": "s"},
-            },
-        }
-
-        with self.subTest(card="W30.1 bind the plan to the plant"):
-            status, _ = request(self.discovered_route("process.release-plan"), method="POST", token="wrong", body=bind_request)
-            self.assertEqual(status, 403)
-            wrong = json.loads(json.dumps(bind_request)); wrong["request"]["project_revision"] = project_revision - 1
-            status, _ = request(self.discovered_route("process.release-plan"), method="POST", token=session, body=wrong)
-            self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.release-plan"), method="POST", token=session, body=bind_request, expected=201)
-            record = result["record"]
-            self.assertEqual(record["request_correlation"], bind_correlation)
-            self.assertEqual(record["units"], bind_request["request"]["units"])
-            self.evidence["w30_command_plan"] = record["record_id"]
-
-        with self.subTest(card="W30.2 open the gates"):
-            open_request = {
-                "correlation": release_correlation,
-                "request": {
-                    "control_client": self.evidence["w26_control_client"],
-                    "command_plan": self.evidence["w30_command_plan"],
-                    "expected_reserve_before_ml": self.evidence["usable_reserve_ml"],
-                    "expected_release_ml": 1.0,
-                },
-            }
-            wrong = json.loads(json.dumps(open_request)); wrong["request"]["expected_release_ml"] = 1.2
-            status, _ = request(self.discovered_route("process.release-execute"), method="POST", token=session, body=wrong)
-            self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.release-execute"), method="POST", token=session, body=open_request, expected=201)
-            action = result["actuation"]
-            self.assertEqual(action["integrated_command_volume_ml"], 1.0)
-            self.assertFalse(action["safety_systems_bypassed"])
-            self.assertFalse(result["record"]["flooding"])
-            self.assertFalse(result["record"]["uncontrolled_release"])
-            # Retries are idempotent for the same correlation.
-            status, repeated = request(self.discovered_route("process.release-execute"), method="POST", token=session, body=open_request, expected=201)
-            self.assertEqual(repeated, result)
 
     # ------------------------------------------------------------------ W31
     def test_w31_diagnostic_vault(self) -> None:
@@ -2783,71 +2456,6 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.assertEqual(record2["retained_replay"]["decision"], "accepted")
             self.assertEqual(record2["current_model"]["decision"], "rejected")
             self.assertFalse(record2["live_authority"])
-
-    # ------------------------------------------------------------------ W33
-    def test_w33_forecast_scheduling(self) -> None:
-        process = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-        site_code = self.evidence["asset_bundle"]["asset"].split("-")[1]
-        forecast_id = f"FCST-{site_code}-33"
-        # Derive schedule parameters from the schedule-window GET endpoint.
-        _, window = request(self.discovered_route("process.schedule-window"), token=session, expected=200)
-        checkpoint = window["checkpoint"]
-        policy_format = window["policy_format"]
-        schedules = w33_derive_schedules(window)
-        schedule = schedules[len(schedules) // 2]
-        w33_validate_schedule(window, schedule)
-        self.evidence["w33_schedule"] = schedule
-
-        with self.subTest(card="W33.1 a forecast that matches the instrument"):
-            forecast = {
-                "case": forecast_id, "checkpoint": checkpoint, "sample_period_seconds": 20,
-                "publication_delay_seconds": 40, "scale_gain": 1.0, "map": self.evidence["map_id"],
-                "instrument_reserve_ml": self.evidence["usable_reserve_ml"], "forecast_reserve_ml": self.evidence["usable_reserve_ml"],
-            }
-            status, _ = request(self.discovered_route("process.forecast"), method="POST", token="wrong", body=forecast)
-            self.assertEqual(status, 403)
-            status, result = request(self.discovered_route("process.forecast"), method="POST", token=session, body=forecast, expected=201)
-            self.assertTrue(result["record"]["within_tolerance"])
-
-        with self.subTest(card="W33.2 the expensive hour"):
-            wrong = json.loads(json.dumps(schedule))
-            wrong["alternate_supply_m3s"][0] = float(window["supply_bounds_m3s"]["max"]) + 1.0
-            status, _ = request(self.discovered_route("process.schedule-window-submit"), method="POST", token=session, body=wrong)
-            self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.schedule-window-submit"), method="POST", token=session, body=schedule, expected=201)
-            self.evidence["w33_schedule_sha256"] = result["record"]["schedule_sha256"]
-
-        with self.subTest(card="W33.3 the schedule the service accepts"):
-            rehearsal = {
-                "control_client": self.evidence["w26_control_client"], "checkpoint": checkpoint,
-                "schedule_sha256": self.evidence["w33_schedule_sha256"], "forecast": forecast_id,
-                "map": self.evidence["map_id"], "mode": self.evidence["mode_id"], "envelope": self.evidence["envelope"]["record_id"],
-                "consequence_plan": self.evidence["w29_plan"], "tariff": self.evidence["planning_tariff"],
-                "committed_allocation_ml": self.evidence["committed_ml"],
-            }
-            wrong = dict(rehearsal, control_client="wrong")
-            status, _ = request(self.discovered_route("process.schedule-submit"), method="POST", token=session, body=wrong)
-            self.assertEqual(status, 403)
-            status, result = request(self.discovered_route("process.schedule-submit"), method="POST", token=session, body=rehearsal, expected=201)
-            self.assertFalse(result["record"]["live_state_changed"])
-            self.evidence["w33_schedule_result"] = result["record"]["record_id"]
-
-        with self.subTest(card="W33.4 when the forecast moves"):
-            policy = {
-                "control_client": self.evidence["w26_control_client"],
-                "schedule_result": self.evidence["w33_schedule_result"],
-                "policy": {"format": policy_format, "checkpoint": checkpoint,
-                           "base_release_m3s": schedule["reservoir_release_m3s"],
-                           "buffer_gain": 1.0, "demand_gain": 1.0},
-            }
-            wrong = json.loads(json.dumps(policy)); wrong["policy"]["buffer_gain"] = 1.01
-            status, _ = request(self.discovered_route("process.feedback-policy"), method="POST", token=session, body=wrong)
-            self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.feedback-policy"), method="POST", token=session, body=policy, expected=201)
-            record = result["record"]
-            self.assertEqual(len(record["cases"]), record["case_count"])
-            self.assertTrue(record["all_cases_feasible"])
 
     # ------------------------------------------------------------------ W34
     def test_w34_reporting_checkpoint(self) -> None:

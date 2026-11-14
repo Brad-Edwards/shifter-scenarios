@@ -255,12 +255,6 @@ imports:
 - source: local:modules/content/arwc-a-engineering.yaml
   namespace: arwc-a-engineering
   version: 0.1.0
-- source: local:modules/content/arwc-a-historian.yaml
-  namespace: arwc-a-historian
-  version: 0.1.0
-- source: local:modules/content/arwc-a-hmi.yaml
-  namespace: arwc-a-hmi
-  version: 0.1.0
 - source: local:modules/content/arwc-a-identity.yaml
   namespace: arwc-a-identity
   version: 0.1.0
@@ -269,9 +263,6 @@ imports:
   version: 0.1.0
 - source: local:modules/content/arwc-a-renderer.yaml
   namespace: arwc-a-renderer
-  version: 0.1.0
-- source: local:modules/content/arwc-a-reservoir.yaml
-  namespace: arwc-a-reservoir
   version: 0.1.0
 # END GENERATED ARWC CONTENT
 - source: local:modules/operations/w01.yaml

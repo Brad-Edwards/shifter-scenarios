@@ -1,6 +1,6 @@
 {
   "catalog": {
-    "revision": "6671188bc4005bc5dca0ed2c72ea436f71bd667f74807cb928bf645117740fe9",
+    "revision": "010573653ff970699454ce5243b65a414e3ffc984a81f9526e5431bbded90958",
     "schema": "cinder-typhoon.challenge-delivery/v2"
   },
   "items": [
@@ -4571,23 +4571,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "5b23d3f3d35a7b4d1bce735588d2d1d8ca9e8706bf1c92073a8602ac14f7f019"
+          "sha256": "e1d20df52993265f77b02da3dc9ae5f551be9f81a6327bb826ebf6ec4b363b95"
         },
         {
           "level": 2,
-          "sha256": "9203a8461234d3db3c3c689ae288297ee7ad6574393b064ffb498ca53b90799d"
+          "sha256": "fce645773cb23e29a4c3a00961702cbc03850560a1b5ce659ba9249cb060da80"
         },
         {
           "level": 3,
-          "sha256": "6b1440cde1216c1aa36a899dc8a4d6348d33e5adad445aff5d3e78b85b0917ed"
+          "sha256": "16c423acc14b60b2b5ca6798c04cf18e9095e97a05274b6e108b816b65f7aed2"
         }
       ],
       "operation_id": "W17",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.state",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W17/live-observation.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -4596,23 +4596,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "63b2b6e424e00a9561f6b18ba17816213cd3caba4f18c44be7e49811f0089eb6"
+          "sha256": "4035e086825ddb0508f467e7b35a0c82ffce2f03aad95ed2822d449e0c6246ec"
         },
         {
           "level": 2,
-          "sha256": "9203a8461234d3db3c3c689ae288297ee7ad6574393b064ffb498ca53b90799d"
+          "sha256": "24941d6368b383496e43dfe2dff81aed49b0366049f0df84be61fd45de259726"
         },
         {
           "level": 3,
-          "sha256": "3f8a40f3c643062196dfa798c4bb9ac2f959909bcce8b41db167ca764399c4bd"
+          "sha256": "05bb90dea6f35d95931515a5857c93d6241ca36f39416ef43b7e9d998f7e483b"
         }
       ],
       "operation_id": "W17",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.mode",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W17/live-observation.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -4621,23 +4621,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "7609ecb87408b5d8ef8fadf34167483ff55ceb0a32fe49c739f187264e75679b"
+          "sha256": "50bae253b1fe39897fc9e8535f9e4fba06205b23b14010115608d51040f6c1af"
         },
         {
           "level": 2,
-          "sha256": "9203a8461234d3db3c3c689ae288297ee7ad6574393b064ffb498ca53b90799d"
+          "sha256": "4b81b0281000948d09300f64617eab03d8d6a895172350e65efd947a13fdd53e"
         },
         {
           "level": 3,
-          "sha256": "2856f3cde460c17fec4fc1e4a3124f28eefdc46a2ee68fab84e64ed572647542"
+          "sha256": "d3026acd8a9aaa5a4aa8bf7aad7dd2709f367baebb9dd0aa1ba7a74df7963f33"
         }
       ],
       "operation_id": "W17",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.active-instrument",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W17/engineering-reference.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -4646,23 +4646,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "374729af2ccf76624b1b7e6f2753984ea936e770f226b520462891cd567b3063"
+          "sha256": "edccc96c72ad1586a7ca040cb033d0377ef4006236d8da99f8d492ad9388074a"
         },
         {
           "level": 2,
-          "sha256": "6196529ec8b02ed9d19212becd8b0b820ec88b70d4873fc5c0bc925781207c7c"
+          "sha256": "e98259c91db7e4b66fd2b5c84880545b953012e79064e5d3d20bd746f1e0d1fd"
         },
         {
           "level": 3,
-          "sha256": "a9d3a145629502845e7baa73800b8a4d2c3002c496803ef2be10f4db677884a3"
+          "sha256": "a07f1efd6ff57b2a3fb820ed402c78aea4733280e9c4e9cdc0c9dea91b561a66"
         }
       ],
       "operation_id": "W17",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.observations",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W17/live-observation.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -4671,23 +4671,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "2df2d08bc2346725d67064909a0508706f4589df64cbbfafd18a6838ea821f09"
+          "sha256": "8c021a3fe3a6202a650472d89bdb0e6cc1ef5c4e40614fca46a53d7b0fd01dab"
         },
         {
           "level": 2,
-          "sha256": "f4da4e14e39eb89eab84f1e7e39ab0452789c9358474c654114c2471e496c012"
+          "sha256": "7f1d96cce01826b32814daa308ff618a2875b5dfd230431da15dee916422b870"
         },
         {
           "level": 3,
-          "sha256": "75b67e2ed3d687a90cff842f536b2277c258308ca3ed5c0432bc76f244806680"
+          "sha256": "3fa6c07763a0ecc36fe68a2dce3de966e7edd9e78fcdcfe5384fe2e722afceb9"
         }
       ],
       "operation_id": "W18",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.tag-export",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -4696,23 +4696,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "954cae1fc3458d47c671a0177d3c4626d0a17e417e2b790242031da46639f374"
+          "sha256": "aab20d26d42fd8947f05a0e630ecf9555bd4375af3fcc571adc805d1b6b25acd"
         },
         {
           "level": 2,
-          "sha256": "f4da4e14e39eb89eab84f1e7e39ab0452789c9358474c654114c2471e496c012"
+          "sha256": "a7d6594448cb66e477a7f486923425f1872dfce2dab49a5eda748fc21e5786ab"
         },
         {
           "level": 3,
-          "sha256": "8d2d2737cb72b46ac3c427bf01e57572fb032b32b2ee30e029615928a77aa069"
+          "sha256": "4cc16f57e78c15d9594738c0c08cbdbacc7341253991a0dc9404eed3b73be387"
         }
       ],
       "operation_id": "W18",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.tag-scale",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -4721,23 +4721,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "4ed6dd470dfdefe9fc31bd0f11552bf71adf6d0b0e7418a119c78c6ca67dbe6a"
+          "sha256": "55796ea91bc42a4c14ca7879b3d8a1231a6a8546d0f215d15612fa90c5a724ad"
         },
         {
           "level": 2,
-          "sha256": "4b9aba991c2dab57eab386156016e405711ad9e4d29ad140a480d25a5bf4b708"
+          "sha256": "9c4de1e5934bc18bbe976655a69a659e4d8cad973fcc4de3e5ca86b43bf00a8c"
         },
         {
           "level": 3,
-          "sha256": "a24d62f747a63d5532a27bd3a2b5350d2e790ff5e9bc94263d9e892e61e75a82"
+          "sha256": "2ae84e877fceeec1e6c0c9a3f567d1c0b5e9ce8d0a4c89dfbdd82c2adff44f5b"
         }
       ],
       "operation_id": "W18",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.tag-scale-history",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W18/history-provenance.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -4746,23 +4746,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "17f6fca3519fd5a5079bc73353870ea4199cdde5f12e31124e552d5d45920fad"
+          "sha256": "a583e9ef8da8c03f8f78463b32eae6b6554a751c036baf31b77b2f07cc59a0ca"
         },
         {
           "level": 2,
-          "sha256": "a9c2d4cb9c9a7529b6ffa3a4d426eebfe369ea639500c65e5b27d64175972ab3"
+          "sha256": "0a09770888d8bfb673f0a84f1d30571c04240a88a6436f8f62609a4eab1a6da1"
         },
         {
           "level": 3,
-          "sha256": "0732c8cd80d53b6cd96e614776522d3fcfd4823bf0a72c9c543f816e80144eaf"
+          "sha256": "63c4236f6442d8dc5fb9b988071e02d1a33607bcbe4dafb2390511a34d24c366"
         }
       ],
       "operation_id": "W18",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.outlet-instruments",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -4946,23 +4946,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "4947080f4881622e508f16ba392eb2fd26a0289104f12333b4acfa656207109c"
+          "sha256": "dcff3cff0e2cd07f007834f150aa1f1841c4c8096bcfa8617f203b296e7e8775"
         },
         {
           "level": 2,
-          "sha256": "43340f394b7e6df940ece229d7e8252da6194037c0aa7452b934f87c9b635f6d"
+          "sha256": "0d3af0a5892eb18999b26a5110e9681fcc69f3a944455b33eaaf082a57cc7aa0"
         },
         {
           "level": 3,
-          "sha256": "d5b3f6a2d66830f6d23df5c9c6d6858905401d883208e1f292ac6bfe16b84c8e"
+          "sha256": "daf4b8a283589fc521f6e7b3b61f76714abbc6bf6e4b0f49a06e962cd24d4f53"
         }
       ],
       "operation_id": "W21",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.sealed-project",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W21/project-handover.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -4971,23 +4971,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "02142639a5f85cf79df55a50c35369fddce6a70853b8fe06bbc5ee92e6bd7f7a"
+          "sha256": "283554e9ec9214d3dbfb6e8dde3290353f5993d54c08fcefa32112b49de9fe0c"
         },
         {
           "level": 2,
-          "sha256": "73d17fa9f51e451184ce38b1516440e0e83413e542b51d65afde4091258f7ff5"
+          "sha256": "82c4658ac2f020164f40f026b0f024079c05915d4237d506f4188d006fb64f5a"
         },
         {
           "level": 3,
-          "sha256": "2da90f4cc6f409b72038a945b4c6c86a735f3b2940ddbdae021dab32a3be6efd"
+          "sha256": "fb22e1153c5ecbff7dffdb2dda77d66afe0e6fbde01fdb180ec418f29905bdaa"
         }
       ],
       "operation_id": "W21",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.vault-access",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W21/deployment-note.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5046,7 +5046,7 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "d0fa2a3a4baa9a6d2e9b5ac67b0221fbd20c96e03564b310868b8b2866fdad1b"
+          "sha256": "ebee4f19ddfb6bfd0641886dca6eb688c83a61fe9a1e26f266cb9c1304d94b8b"
         },
         {
           "level": 2,
@@ -5054,14 +5054,14 @@
         },
         {
           "level": 3,
-          "sha256": "7fe9aaae1201043235e934c4d7cf89f898f4ee8ef1b55952c101e9d322064950"
+          "sha256": "4ad25ae552752877cdf12ce08564e6eed9fab9464964c8caa9a03e37055a6223"
         }
       ],
       "operation_id": "W22",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.sealed-project",
+          "id": "process.sealed-project-open",
           "kind": "client_route"
         }
       ]
@@ -5271,23 +5271,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "2dafd0bb54f4264d3016636f532a8261a4dd775cb3ae043b3a6da5d8011cb8cf"
+          "sha256": "8bd327e70fd3c0bfffb12394254e25b6df3badcf1d5375604162c0e13530d302"
         },
         {
           "level": 2,
-          "sha256": "e8944d7dd2c75056ce08fab41a3d578b8239610c9c7542b6e677666524725237"
+          "sha256": "e4e5654704350672dc79c93cb5cc24994f3b3fe61b4e5f46f4c9ae95cc9a0737"
         },
         {
           "level": 3,
-          "sha256": "302b38fc8a19c72ef196d940d52968241a6f088f090fe5e91e487026dd3aaa9b"
+          "sha256": "e4d98736c891ab16c61259078aee6b24e05a746808acec138cf015c46300a62c"
         }
       ],
       "operation_id": "W25",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.operating-envelope",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W25/operating-envelope.csv",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5296,23 +5296,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "3147812028218ac9787b5ba1ca4d78c980832a18ef88b313765d806032f4a9eb"
+          "sha256": "d144b499ceef3383a9016eace47942ea30d0264ba5ced12001c5709c745506d1"
         },
         {
           "level": 2,
-          "sha256": "e8944d7dd2c75056ce08fab41a3d578b8239610c9c7542b6e677666524725237"
+          "sha256": "10f8db218f211cd4b8b16297fdb36ea4f27f1cba4f82dd0038c7dc8885959a1e"
         },
         {
           "level": 3,
-          "sha256": "9b6142079036a9172baf741ce4800e860d3d9c07cd4114bf2d0496dbe62d668d"
+          "sha256": "6b76bd0b3b9a26f59518a6107b2baf884aa0f39ce46d0c8875a0c0c9c0e9c6f1"
         }
       ],
       "operation_id": "W25",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.movement-conditions",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5321,23 +5321,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "7248ea96da1e43932872e681e3520821876ceee60f001ca047ce098b6635ca28"
+          "sha256": "cd2672fbecfce21df9e147ebda472e35feedb9f60ffe33f601a56a7db9e9463d"
         },
         {
           "level": 2,
-          "sha256": "d9e58c6f1f4d985a4b1af382c751c6254f2b12ef4fcf475485dd35a4541963f8"
+          "sha256": "06ec7062df651a14eb8dd44d60dafb3f1003db60fccc5f45a650164306b00939"
         },
         {
           "level": 3,
-          "sha256": "19159f36edab4ebc3e1cd8168c02baefe772455eeff5535f932c0de089de72d0"
+          "sha256": "75960bac8a11de73d77a4d4e204b8dfee2e7e04a717e81c94ef6d54339b5f7c2"
         }
       ],
       "operation_id": "W25",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.command-accept",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5346,23 +5346,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "27a4026a75492cb1dcb82173438b158c29be87bfeb5fd04d6fa4e60eb9611dff"
+          "sha256": "17a84aac7c06cee57daa7fca2b21586c3e54b2d6331e9ae20181b445af4dee8f"
         },
         {
           "level": 2,
-          "sha256": "b715bd2409fc0e479ea600e7a072fa3fbd2c828ba9f5581dc6aaee4fa04ae1f1"
+          "sha256": "8e9fea404d4f63214dc244135838b358284096f1612ec05d1cc73f5594315a25"
         },
         {
           "level": 3,
-          "sha256": "b1a75fa8a091b0d8e288e221ca8f65adb62367995220303151b80d0a2ef8b636"
+          "sha256": "dac7353405bb342ae61be412e26bf7a5524932d1376b2e7d647110dea7bfcbe3"
         }
       ],
       "operation_id": "W25",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.practice-sequence",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5625,23 +5625,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "fcd507baacb42b5e452b8d4992f13c1d973e9e5ae76de76a5d9ec072c48dc014"
+          "sha256": "d85b5eed55ffc629499d74634d6c95b4805feac9827fac10730ab7fef5cd027a"
         },
         {
           "level": 2,
-          "sha256": "ec2e53c901ae622f1803fa68da34cc16b9f204fe426a20643aaa0bdc7d0512aa"
+          "sha256": "e75a787f870e0e7e6f01cc1e9fe67f505d5c296d028b41431d1b8610fb26947f"
         },
         {
           "level": 3,
-          "sha256": "6a20224042501444dbaef33bb8f9f71d808dec5dfd9b67a4a4041b92eeaf6eb2"
+          "sha256": "7801cd9b8b4208f87392975dd64786c0ede11db13d24c18d845a5d6a22650c69"
         }
       ],
       "operation_id": "W29",
       "phase": "arwc",
       "references": [
         {
-          "id": "process-view.arwc.test",
-          "kind": "participant_service"
+          "id": "/home/fieldlink/CairnReach/Briefs/W29/allocation-ledger.csv",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5650,23 +5650,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "fcd507baacb42b5e452b8d4992f13c1d973e9e5ae76de76a5d9ec072c48dc014"
+          "sha256": "6907557fb75e05c85e90e6416099516df7b050fcff658b4b68d185887ebc3c8a"
         },
         {
           "level": 2,
-          "sha256": "4b94676318b0614d4ae29228aceec7f2021ed2f96338dc0a5d027ee271c13c78"
+          "sha256": "6b59632785ce6896c6a743cb76024d2344f11bf4be8b6262241df4dcf0d5f1b5"
         },
         {
           "level": 3,
-          "sha256": "64302d85d69fcd964add67e67d9de6b87f1934dd611430f20da8b9a32b729e0c"
+          "sha256": "6b5cd4f68e9dcb3799deaf3d24215d13956def60ba8ec6a7a60ee119bcada9f9"
         }
       ],
       "operation_id": "W29",
       "phase": "arwc",
       "references": [
         {
-          "id": "process-view.arwc.test",
-          "kind": "participant_service"
+          "id": "/home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5675,27 +5675,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "50fddd1a91dfe1bc2191043adc439e3972a0f092464ff794f7c756b57941d9d0"
+          "sha256": "b416c6ef4f8afef94a044ef7a3a8fbea5a52c015f54694992f4ea6d5839f9b22"
         },
         {
           "level": 2,
-          "sha256": "7f0539209cdf8e48c7696be89a1e5e1df93d083481c76c141864379a2369efcf"
+          "sha256": "77f55d7815d1faad754b03e169d5aa4b91c63f236f2f44bf91c6e6eff8519bbe"
         },
         {
           "level": 3,
-          "sha256": "64183904cb79daeef31db7405c434eb192da9d0be3a0f6dfd557e2be02dcb865"
+          "sha256": "9510c435623780ed7e7a947547b9206d39ef5de1bc36de52a3151f23ec9d4552"
         }
       ],
       "operation_id": "W29",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.reporting-checkpoint-submit",
-          "kind": "client_route"
-        },
-        {
-          "id": "process.state",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5704,23 +5700,27 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "e46af40ff08016ee0cc0c39740b4060a767ac7bdec2d265088b36ba5bd5b6f05"
+          "sha256": "8378b5bc978882f21c0d9909a8b71b54eadab75bf17caad671ff56e9fdb710b6"
         },
         {
           "level": 2,
-          "sha256": "afa9bf117d4ef0679ff25a68601b827a537606962bd425f76dbe02c1c6495afb"
+          "sha256": "5efe823059ac8e121780575173507511342d7d8607826cc001280fbf1991187d"
         },
         {
           "level": 3,
-          "sha256": "59a815c3a94c7e803a1068579fcc76c8e184302748d3eaca962fe1734e36a536"
+          "sha256": "cc99ae68f8fac634d5560eb0f000e65439ed3eca0e2c9e74e01fe46659881069"
         }
       ],
       "operation_id": "W30",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.release-plan",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W30/release-plan.json",
+          "kind": "participant_artifact"
+        },
+        {
+          "id": "/home/fieldlink/CairnReach/Briefs/W30/operator-brief.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5729,23 +5729,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "bdf2790c107e4c7bd4a7339299e9158809ec71cb13ddce0fdf90c08c2f5bcf3e"
+          "sha256": "53ac359c6131b98efc0836f88ead002552235c153ea02fd6ee5c37c15a231a4e"
         },
         {
           "level": 2,
-          "sha256": "a164a97a607ddde5da01785b61cb32a446dff63db3d4bd8017c8bda7cb99f43b"
+          "sha256": "54cd2633528434908d8a29ba649c0afd4111ec3bf74f09a5c8f0f4678ff35974"
         },
         {
           "level": 3,
-          "sha256": "fcf4d7268eedadc0d0dc105e8dab27d782c2561664cf97bc1d7c271c870cb900"
+          "sha256": "7864bef4c05a1a94f8911df3f46cddcee4f20a49562e341d14973f53a382000e"
         }
       ],
       "operation_id": "W30",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.release-execute",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W30/operator-brief.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5954,23 +5954,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "291f8ff545f04e0f9de6bee8c16a9c93c33879f84be37e375347fc0d9e31c149"
+          "sha256": "601d3f1dacfecbdcd6d4bd82612bc69b299724d2f47455847b135d5a4711d821"
         },
         {
           "level": 2,
-          "sha256": "0b28c58c6532b1d9d7e0c290aeb1060485ccb2eca40aef55f868dcf80338b7cb"
+          "sha256": "8a6bc9613f95acc5e5d9298eff80cd416ef584bc77ab3dfcca209a52876758f0"
         },
         {
           "level": 3,
-          "sha256": "379bd8d455db8392c901d4f7d63b5a1c9e866ae56c3cecb03d7b31fef48aa300"
+          "sha256": "f1851f7f74572853a1873f47be47dd40c42c5cee8e7a44359699c5bce964c69d"
         }
       ],
       "operation_id": "W33",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.forecast",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -5979,23 +5979,27 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "9c4f4bad4eae08bdbe4abcb5d62c4962a165c0b822197053728da07e55af191c"
+          "sha256": "30da4df4a789831e14b2786e2cbcee9dd0d9369e476de8a72b9e56c73d6b7aa2"
         },
         {
           "level": 2,
-          "sha256": "0348e9aaec11a9648eabba675344ca79d38a9e7324025c06bf931b16a75f9aaa"
+          "sha256": "dfe2c4c2d196b4da40c7fe870ab327d87d724593ef5f4554e3dd38618a34ec1b"
         },
         {
           "level": 3,
-          "sha256": "86a1cc95119eeac07e12873a09ef94e23520551586968a9fbc3931d7b9a64fda"
+          "sha256": "fc6486540d5e0c3a6baf590f352fabf87c001a6486ba1207e176b841bc0e1c6d"
         }
       ],
       "operation_id": "W33",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.schedule-window",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W33/operating-window.csv",
+          "kind": "participant_artifact"
+        },
+        {
+          "id": "/home/fieldlink/CairnReach/Briefs/W33/schedule-template.json",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -6004,23 +6008,27 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "dc9ea84e39273bd1fc6b9fe1b1a02ad7b1fe19cbbc65320341998a37cf967f8b"
+          "sha256": "512d2d85887a0afa1c52cd86c8e50646cfb409c8eb524b2be83e4974a296e702"
         },
         {
           "level": 2,
-          "sha256": "4a6de868c947db1666e592845c647af3fd26ac3f00a2930fee54213885df0032"
+          "sha256": "f4b03a8bf7bf3fb8fb5654c1f00d017422dc8f8762d6c0c2b6962d8b3d310892"
         },
         {
           "level": 3,
-          "sha256": "0a0e5295e3b7564eb53f81fa12d3b4ef8f926d5015f769b9ef0c9b42249d5130"
+          "sha256": "fb71db7203cf97f3347f3cf8c7840122af163cedc1731d518420a87dab97542d"
         }
       ],
       "operation_id": "W33",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.schedule-submit",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W33/run-schedule.py",
+          "kind": "participant_artifact"
+        },
+        {
+          "id": "/home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -6029,23 +6037,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "07c423b8e843b625b2ef686fff77f8e77f6fdecbf36f8d17d8dbe483839d9b8e"
+          "sha256": "9305595abbfd97ac3cffd8c4e801c0c926cf12644eab4ae2baa0785fe37cb164"
         },
         {
           "level": 2,
-          "sha256": "d1eff638edcee98c37ab9b5dd962805c6179bd0182ff7da231b18e1335d39df3"
+          "sha256": "35dc722667f3af38beeb515d9e61561ad813216a9ae170527a51af3197771e2e"
         },
         {
           "level": 3,
-          "sha256": "d236906be969ed9bac3bdae03ea8b140ac4097675bcc6d3d777176c2c4b958f3"
+          "sha256": "dedbff080e04465f71a824bfdb6b118f78f62ac4902077d78532cf06fb322ae4"
         }
       ],
       "operation_id": "W33",
       "phase": "arwc",
       "references": [
         {
-          "id": "process.feedback-policy",
-          "kind": "client_route"
+          "id": "/home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -6147,9 +6155,9 @@
   "review": {
     "operation_count": 70,
     "path": "build/hint-delivery/operation-reviews.json",
-    "sha256": "b6758f518cabba179165877677714d20d66d6c15185008142934be89ab2d5cd2"
+    "sha256": "27c82c1d8d885db2c7c10054eb37b935b623ae7827280a0aa0aa80feaf6d6dfb"
   },
-  "revision": "339d76d710083a7e00e334a6f3073ec098d844e1edbe02703cdebc27cdcd5bf7",
+  "revision": "8295f158e4e9f621f18664616f7ded3b3e39a2adf0141301435e2b26d5c925a7",
   "schema": "cinder-typhoon.hint-delivery/v1",
   "score_effect": {
     "maximum_score_unchanged": true,
@@ -6175,7 +6183,7 @@
       "hint_count": 360,
       "path": "build/card-coverage/hints-arwc.yaml",
       "phase": "arwc",
-      "sha256": "5b70136c1f5b0f6b5af34b521ef60bbab78246e9536213a767dc3e0c371468a0"
+      "sha256": "8791c19642f73b8a02706a1d08c36d1702afbc012c1ec0fb88c197bf337ae4d2"
     }
   ],
   "summary": {

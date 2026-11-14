@@ -1,0 +1,54 @@
+{
+  "issue": 365,
+  "timestamp": "2026-11-13T01:33:28.294002+00:00",
+  "scope": "native import and initial live device values; browser QA pending",
+  "views": [
+    "crr-overview",
+    "crr-controls",
+    "crr-outlet-a",
+    "crr-outlet-b"
+  ],
+  "tags": 50,
+  "alarms": 4,
+  "scripts": [
+    "crr-apply",
+    "crr-reset"
+  ],
+  "live_values": {
+    "LevelM": {
+      "id": "LevelM",
+      "value": 7.743000030517578,
+      "ts": 1794533608081
+    },
+    "PositionPct": {
+      "id": "PositionPct",
+      "value": 40.04999923706055,
+      "ts": 1794533608081
+    },
+    "PositionBPct": {
+      "id": "PositionBPct",
+      "value": 40.189998626708984,
+      "ts": 1794533608081
+    },
+    "FlowM3s": {
+      "id": "FlowM3s",
+      "value": 0.20020000636577606,
+      "ts": 1794533608081
+    },
+    "FlowBM3s": {
+      "id": "FlowBM3s",
+      "value": 0.20100000500679016,
+      "ts": 1794533608081
+    },
+    "IoHealthy": {
+      "id": "IoHealthy",
+      "value": true,
+      "ts": 1794533608081
+    },
+    "ProjectRevision": {
+      "id": "ProjectRevision",
+      "value": 364,
+      "ts": 1794533608081
+    }
+  }
+}

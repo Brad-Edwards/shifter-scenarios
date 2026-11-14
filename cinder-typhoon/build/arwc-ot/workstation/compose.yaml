@@ -1,0 +1,23 @@
+# Add to the existing base/site/component Compose files.
+services:
+  engineering:
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: "3"}
+    image: arwc-ot-engineering:368
+    container_name: cinder-arwc-ot-engineering
+    hostname: ot-engineering
+    init: true
+    restart: unless-stopped
+    shm_size: 512m
+    pids_limit: 512
+    cap_drop: [NET_RAW]
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./workstation/browser-seccomp.json
+    ports: ["3389:3389"]
+    volumes: ["engineering-home:/home/fieldlink"]
+    networks:
+      supervisory: {ipv4_address: 172.29.63.10}
+volumes:
+  engineering-home:

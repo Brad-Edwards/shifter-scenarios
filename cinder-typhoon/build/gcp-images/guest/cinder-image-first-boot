@@ -5,6 +5,10 @@ phase=${1-}
 state_root=/var/lib/cinder-typhoon
 mkdir -p "$state_root"
 
+if [[ $phase == arwc && -x /usr/local/libexec/cinder-arwc-ot-first-boot ]]; then
+  /usr/local/libexec/cinder-arwc-ot-first-boot desktop
+fi
+
 case "$phase" in
   training)
     root=/opt/cinder-typhoon/build/training
@@ -36,7 +40,9 @@ case "$phase" in
       bash "$root/restore-pristine.sh"
       touch "$state_root/arwc.initialized"
     else
-      docker compose -f "$root/compose.yaml" up -d
+      if [[ ! -x /usr/local/libexec/cinder-arwc-ot-first-boot ]]; then
+        docker compose -f "$root/compose.yaml" up -d
+      fi
     fi
     ;;
   *)
@@ -44,5 +50,9 @@ case "$phase" in
     exit 2
     ;;
 esac
+
+if [[ $phase == arwc && -x /usr/local/libexec/cinder-arwc-ot-first-boot ]]; then
+  /usr/local/libexec/cinder-arwc-ot-first-boot complete
+fi
 
 /usr/local/libexec/cinder-image-verify "$phase" --boot-only

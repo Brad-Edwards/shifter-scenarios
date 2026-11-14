@@ -45,13 +45,14 @@ realization:
 evidence_requirements:
   c1:
     description: |-
-      Recover the actual channel, rate, and volume constraints with their applicable context. This supplies W25.ENVELOPE and ENVELOPE, not a release plan.
+      Identify the installed manual-position and automatic-flow limits, the per-outlet physical capacity, and the exact baseline, observation target, mode, and restoration target authorized by CRR-OP-W25-R1. This supplies W25.ENVELOPE, not permission for another movement.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh product records captured by OpenPLC and the native historian. Product evidence is supplied by the range, never by the participant. W25.1 and W25.2 are read-only. W25.3 and W25.4 may use only the two authorized FUXA requests in CRR-OP-W25-R1, and completion cannot write a tag, issue a command, retry a rejection, or create product evidence.
 
-      Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-engineering`. A wrong asset, operating limit, command sequence, ownership, permissive, product time, process quality, measured response, or restored baseline is rejected.
     source_refs:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -73,6 +74,7 @@ evidence_requirements:
         - cinder.w25-1.satisfied
         component_refs:
         - features.a-engineering.a-hmi
+        - features.a-engineering.a-engineering
       collection: require
       retention: require
       redaction: redact-secrets
@@ -80,20 +82,22 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Confirm the two read-only
+      cards against the installed project and live HMI, then execute the exact bounded movement through FUXA. Require
+      product-owned accepted-sequence, ownership, permissive, position, flow, quality, and restored-baseline evidence.
+      Reject wrong or stale intervals, missing sources, participant-supplied product evidence, rejected requests,
+      unsettled feedback, active faults, or failure to restore baseline. Reset must return the same qualified baseline
+      without changing product identities or trust material.'
   c2:
     description: |-
-      Recover the separate permissive/interlock evidence and its practice-state binding. Repeating the current-mode label from W17 does not establish the result.
+      Identify the field-freshness, availability/selector, low-level, stop, fault, authorization, and per-outlet permissive conditions, then report their current live results and whether the authorized movement may proceed.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh product records captured by OpenPLC and the native historian. Product evidence is supplied by the range, never by the participant. W25.1 and W25.2 are read-only. W25.3 and W25.4 may use only the two authorized FUXA requests in CRR-OP-W25-R1, and completion cannot write a tag, issue a command, retry a rejection, or create product evidence.
 
-      Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-engineering`. A wrong asset, operating limit, command sequence, ownership, permissive, product time, process quality, measured response, or restored baseline is rejected.
     source_refs:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -115,6 +119,7 @@ evidence_requirements:
         - cinder.w25-2.satisfied
         component_refs:
         - features.a-engineering.a-hmi
+        - features.a-engineering.a-engineering
       collection: require
       retention: require
       redaction: redact-secrets
@@ -122,20 +127,23 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Confirm the two read-only
+      cards against the installed project and live HMI, then execute the exact bounded movement through FUXA. Require
+      product-owned accepted-sequence, ownership, permissive, position, flow, quality, and restored-baseline evidence.
+      Reject wrong or stale intervals, missing sources, participant-supplied product evidence, rejected requests,
+      unsettled feedback, active faults, or failure to restore baseline. Reset must return the same qualified baseline
+      without changing product identities or trust material.'
   c3:
     description: |-
-      Correctly relate the practice requests, permissives, and observed outcomes. An acknowledgement alone does not establish an actuation.
+      Correlate one new HMI sequence with OpenPLC seen and accepted state, HMI ownership, the accepted A30/B10 settings, valid permissives, and subsequent position/flow feedback. An Apply acknowledgement or changed input field alone does not prove actuation.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh product records captured by OpenPLC and the native historian. Product evidence is supplied by the range, never by the participant. W25.1 and W25.2 are read-only. W25.3 and W25.4 may use only the two authorized FUXA requests in CRR-OP-W25-R1, and completion cannot write a tag, issue a command, retry a rejection, or create product evidence.
 
-      Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-historian`, `features.a-control.a-instruments`. A wrong asset, operating limit, command sequence, ownership, permissive, product time, process quality, measured response, or restored baseline is rejected.
     source_refs:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
+    - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -157,6 +165,8 @@ evidence_requirements:
         - cinder.w25-3.satisfied
         component_refs:
         - features.a-engineering.a-hmi
+        - features.a-engineering.a-historian
+        - features.a-control.a-instruments
       collection: require
       retention: require
       redaction: redact-secrets
@@ -164,20 +174,22 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Confirm the two read-only
+      cards against the installed project and live HMI, then execute the exact bounded movement through FUXA. Require
+      product-owned accepted-sequence, ownership, permissive, position, flow, quality, and restored-baseline evidence.
+      Reject wrong or stale intervals, missing sources, participant-supplied product evidence, rejected requests,
+      unsettled feedback, active faults, or failure to restore baseline. Reset must return the same qualified baseline
+      without changing product identities or trust material.'
   c4:
     description: |-
-      Demonstrate the intended practice effect under the correct conditions. This supplies W25.MODE and MODE; it does not grant live write authority. In the clearly identified practice model, the valid sequence produces visible outlet movement and a matching measured response, contrasting with the acknowledged but ineffective requests investigated earlier. The operator has turned process understanding into controlled movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current outlet mapping or live client and does not change the real operating context's reserve.
+      Show good-quality position and flow history for the A20/B20 to A30/B10 movement, then use a second accepted HMI request to restore manual A20/B20. Confirm measured A20/B20, approximately 0.10 m³/s per outlet and 0.20 m³/s total, healthy I/O, clear travel faults, valid permissives, and no unsettled motion. This supplies W25.MODE and MODE.
 
-      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh product records captured by OpenPLC and the native historian. Product evidence is supplied by the range, never by the participant. W25.1 and W25.2 are read-only. W25.3 and W25.4 may use only the two authorized FUXA requests in CRR-OP-W25-R1, and completion cannot write a tag, issue a command, retry a rejection, or create product evidence.
 
-      Evidence sources are `features.a-engineering.a-hmi`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-historian`, `features.a-control.a-instruments`. A wrong asset, operating limit, command sequence, ownership, permissive, product time, process quality, measured response, or restored baseline is rejected.
     source_refs:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
     - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -200,6 +212,7 @@ evidence_requirements:
         - cinder.w25-4.satisfied
         component_refs:
         - features.a-engineering.a-hmi
+        - features.a-engineering.a-historian
         - features.a-control.a-instruments
       collection: require
       retention: require
@@ -208,17 +221,20 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Confirm the two read-only
+      cards against the installed project and live HMI, then execute the exact bounded movement through FUXA. Require
+      product-owned accepted-sequence, ownership, permissive, position, flow, quality, and restored-baseline evidence.
+      Reject wrong or stale intervals, missing sources, participant-supplied product evidence, rejected requests,
+      unsettled feedback, active faults, or failure to restore baseline. Reset must return the same qualified baseline
+      without changing product identities or trust material.'
 propositions:
   c1:
-    description: Recover the actual channel, rate, and volume constraints with their applicable context. This supplies
-      W25.ENVELOPE and ENVELOPE, not a release plan.
+    description: Identify the installed manual-position and automatic-flow limits, the per-outlet physical capacity,
+      and the exact baseline, observation target, mode, and restoration target authorized by CRR-OP-W25-R1. This
+      supplies W25.ENVELOPE, not permission for another movement.
     subjects:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -230,10 +246,12 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the separate permissive/interlock evidence and its practice-state binding. Repeating the
-      current-mode label from W17 does not establish the result.
+    description: Identify the field-freshness, availability/selector, low-level, stop, fault, authorization, and
+      per-outlet permissive conditions, then report their current live results and whether the authorized movement
+      may proceed.
     subjects:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -245,10 +263,13 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Correctly relate the practice requests, permissives, and observed outcomes. An acknowledgement
-      alone does not establish an actuation.
+    description: Correlate one new HMI sequence with OpenPLC seen and accepted state, HMI ownership, the accepted
+      A30/B10 settings, valid permissives, and subsequent position/flow feedback. An Apply acknowledgement or changed
+      input field alone does not prove actuation.
     subjects:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
+    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -260,12 +281,13 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: |-
-      Demonstrate the intended practice effect under the correct conditions. This supplies W25.MODE and MODE; it does not grant live write authority.
-
-      In the clearly identified practice model, the valid sequence produces visible outlet movement and a matching measured response, contrasting with the acknowledged but ineffective requests investigated earlier. The operator has turned process understanding into controlled movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current outlet mapping or live client and does not change the real operating context's reserve.
+    description: Show good-quality position and flow history for the A20/B20 to A30/B10 movement, then use a second
+      accepted HMI request to restore manual A20/B20. Confirm measured A20/B20, approximately 0.10 m³/s per outlet
+      and 0.20 m³/s total, healthy I/O, clear travel faults, valid permissives, and no unsettled motion. This supplies
+      W25.MODE and MODE.
     subjects:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
     - features.a-control.a-instruments
     basis: observed_state
     predicate:
@@ -313,15 +335,14 @@ assertions:
 objectives:
   c1:
     name: 'This action: The operating envelope'
-    description: |-
-      Recover the outlet's current operating envelope: the limits within which a release can occur.
-
-      Establishes the bounded physical conditions for the water story.
+    description: Read the Cairn Reach operating instruction and reconcile its bounded movement with the limits shown
+      by the installed HMI and controller project.
     assigned_participant: participant.operator
     actions:
     - w25.c1
     targets:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
     success:
       mode: all_of
       assertions:
@@ -331,15 +352,14 @@ objectives:
       - w25.c1
   c2:
     name: 'This action: Conditions before movement'
-    description: |-
-      Recover the control-permissive record and identify the condition withholding movement in the supplied practice state.
-
-      Adds control-condition evidence beyond W17's general mode record.
+    description: Use FUXA and the live OpenPLC project to explain whether the Cairn Reach outlets can move now and
+      which conditions establish that result.
     assigned_participant: participant.operator
     actions:
     - w25.c2
     targets:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
     success:
       mode: all_of
       assertions:
@@ -349,15 +369,15 @@ objectives:
       - w25.c2
   c3:
     name: 'This action: Accepted is not actuated'
-    description: |-
-      Resolve why the supplied practice requests receive acknowledgements without producing the expected outlet movement.
-
-      Makes command feedback accountable to process observations.
+    description: Apply the authorized A30/B10 manual request and distinguish the staged request, PLC decision, command
+      owner, permissives, and measured outlet response.
     assigned_participant: participant.operator
     actions:
     - w25.c3
     targets:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
+    - features.a-control.a-instruments
     success:
       mode: all_of
       assertions:
@@ -367,15 +387,14 @@ objectives:
       - w25.c3
   c4:
     name: 'This action: A sequence the process can follow'
-    description: |-
-      Construct a valid practice sequence that respects the operating envelope and produces the specified bounded movement.
-
-      Completes the knowledge needed to distinguish a valid command plan from an unsafe guess.
+    description: Prove the bounded movement in native process history, then apply the authorized A20/B20 restoration
+      and verify the live site has returned to baseline.
     assigned_participant: participant.operator
     actions:
     - w25.c4
     targets:
     - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
     - features.a-control.a-instruments
     success:
       mode: all_of
@@ -485,9 +504,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Envelope ENV-OG2-R6 limits each gate to 0.50 m3/s, aggregate to 1.00 m3/s, ramp to 0.10 m3/s per 20 seconds, hold to 1200 seconds, and volume to 1.20 ML. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and control task, not a privilege flaw. The participant must use the installed products to reconcile the documented job limits with the installed HMI and controller limits. A copied value, synthetic response, or request acknowledgement without matching product evidence does not establish the result.
 
-      The required result is: Recover the actual channel, rate, and volume constraints with their applicable context. This supplies W25.ENVELOPE and ENVELOPE, not a release plan. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ENV-OG2-R6`, `PRACTICE-OG2-07`.
+      The required result is: Identify the installed manual-position and automatic-flow limits, the per-outlet physical capacity, and the exact baseline, observation target, mode, and restoration target authorized by CRR-OP-W25-R1. This supplies W25.ENVELOPE, not permission for another movement.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -500,44 +519,51 @@ action_contracts:
       support_refs:
       - workflows.w25.c1
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-hmi` and its `supervisory-operations` application own this part of **The operating envelope**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Envelope ENV-OG2-R6 limits each gate to 0.50 m3/s, aggregate to 1.00 m3/s, ramp to 0.10 m3/s per 20 seconds, hold to 1200 seconds, and volume to 1.20 ML.
+        The installed Cairn Reach OT products own this part of **The operating envelope**. The exact initial state is: Operating instruction CRR-OP-W25-R1 binds the installed controller limits to one authorized manual movement: normal baseline A 20 percent and B 20 percent, bounded observation A 30 percent and B 10 percent, then restore A 20 percent and B 20 percent; total measured flow remains approximately 0.20 m3/s.
 
         Native bindings:
 
-        - `a-engineering.a-hmi/supervisory-operations/the-operating-envelope`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W25/operating-envelope.csv`
+        - `a-engineering.a-hmi/FUXA:crr-controls`
+        - `a-engineering.a-engineering/OpenPLC-Editor:SiteRequests-and-OutletControl`
 
-        The private service-loader contract is `content.arwc-a-hmi.w25-1-the-operating-envelope`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W25 operating envelope and bounded-movement instruction define the authorized work, but do not prove controller acceptance or movement. FUXA, OpenPLC, PostgreSQL history, and remote-I/O feedback remain authoritative; no private service-loader route duplicates them.
       support_refs:
       - features.a-engineering.a-hmi
-      - content.arwc-a-hmi.w25-1-the-operating-envelope
+      - features.a-engineering.a-engineering
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        Supplies W25.ENVELOPE and ENVELOPE. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        Supplies W25.ENVELOPE and ENVELOPE. The product keeps normal command and process history. Completion of the movement requires a second accepted HMI request, measured return to A 20 percent and B 20 percent, total flow near 0.20 m3/s, healthy I/O, and clear travel faults. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and CRR-OP-W25-R1. It grants no dispatcher authority, engineering force, program upload, interlock bypass, or alternate control endpoint.
       support_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual channel, rate, and volume constraints with their applicable context. This
-        supplies W25.ENVELOPE and ENVELOPE, not a release plan.
+      description: Identify the installed manual-position and automatic-flow limits, the per-outlet physical capacity,
+        and the exact baseline, observation target, mode, and restoration target authorized by CRR-OP-W25-R1. This
+        supplies W25.ENVELOPE, not permission for another movement.
       target_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w25.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh product records captured by OpenPLC and the native historian. Product evidence is supplied by the range, never by the participant. W25.1 and W25.2 are read-only. W25.3 and W25.4 may use only the two authorized FUXA requests in CRR-OP-W25-R1, and completion cannot write a tag, issue a command, retry a rejection, or create product evidence.
 
-        Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-engineering`. A wrong asset, operating limit, command sequence, ownership, permissive, product time, process quality, measured response, or restored baseline is rejected.
       target_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w25.c1
     failure_classes:
@@ -552,9 +578,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Practice permissive PRACTICE-PERM-02 is false in supplied state because simulation reset_complete is not asserted; live permissive PERM-OG2-LIVE-R4 is separate. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and control task, not a privilege flaw. The participant must use the installed products to trace the installed permissive chain and identify the current live movement condition. A copied value, synthetic response, or request acknowledgement without matching product evidence does not establish the result.
 
-      The required result is: Recover the separate permissive/interlock evidence and its practice-state binding. Repeating the current-mode label from W17 does not establish the result. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ENV-OG2-R6`, `PRACTICE-OG2-07`.
+      The required result is: Identify the field-freshness, availability/selector, low-level, stop, fault, authorization, and per-outlet permissive conditions, then report their current live results and whether the authorized movement may proceed.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -567,44 +593,53 @@ action_contracts:
       support_refs:
       - workflows.w25.c2
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-hmi` and its `supervisory-operations` application own this part of **Conditions before movement**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Practice permissive PRACTICE-PERM-02 is false in supplied state because simulation reset_complete is not asserted; live permissive PERM-OG2-LIVE-R4 is separate.
+        The installed Cairn Reach OT products own this part of **Conditions before movement**. The exact initial state is: The live movement condition comes from OpenPLC field freshness, physical availability and remote selectors, low-level protection, travel faults, operator stop, controller authorization, and the two outlet permissives; FUXA shows their current results while the supplied FBD explains the chain.
 
         Native bindings:
 
-        - `a-engineering.a-hmi/supervisory-operations/conditions-before-movement`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md`
+        - `a-engineering.a-hmi/FUXA:crr-overview`
+        - `a-engineering.a-hmi/FUXA:crr-outlet-a`
+        - `a-engineering.a-hmi/FUXA:crr-outlet-b`
+        - `a-engineering.a-engineering/OpenPLC-Editor:live-permissive-chain`
 
-        The private service-loader contract is `content.arwc-a-hmi.w25-2-conditions-before-movement`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W25 operating envelope and bounded-movement instruction define the authorized work, but do not prove controller acceptance or movement. FUXA, OpenPLC, PostgreSQL history, and remote-I/O feedback remain authoritative; no private service-loader route duplicates them.
       support_refs:
       - features.a-engineering.a-hmi
-      - content.arwc-a-hmi.w25-2-conditions-before-movement
+      - features.a-engineering.a-engineering
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The product keeps normal command and process history. Completion of the movement requires a second accepted HMI request, measured return to A 20 percent and B 20 percent, total flow near 0.20 m3/s, healthy I/O, and clear travel faults. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and CRR-OP-W25-R1. It grants no dispatcher authority, engineering force, program upload, interlock bypass, or alternate control endpoint.
       support_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the separate permissive/interlock evidence and its practice-state binding. Repeating
-        the current-mode label from W17 does not establish the result.
+      description: Identify the field-freshness, availability/selector, low-level, stop, fault, authorization, and
+        per-outlet permissive conditions, then report their current live results and whether the authorized movement
+        may proceed.
       target_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w25.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh product records captured by OpenPLC and the native historian. Product evidence is supplied by the range, never by the participant. W25.1 and W25.2 are read-only. W25.3 and W25.4 may use only the two authorized FUXA requests in CRR-OP-W25-R1, and completion cannot write a tag, issue a command, retry a rejection, or create product evidence.
 
-        Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-engineering`. A wrong asset, operating limit, command sequence, ownership, permissive, product time, process quality, measured response, or restored baseline is rejected.
       target_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w25.c2
     failure_classes:
@@ -619,9 +654,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Practice requests PRACTICE-REQ-11 and PRACTICE-REQ-12 are acknowledged but not actuated while PRACTICE-PERM-02 is false; simulator measurements remain at zero. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and control task, not a privilege flaw. The participant must use the installed products to separate staged request values, PLC receipt and decision, command ownership, permissives, and physical feedback. A copied value, synthetic response, or request acknowledgement without matching product evidence does not establish the result.
 
-      The required result is: Correctly relate the practice requests, permissives, and observed outcomes. An acknowledgement alone does not establish an actuation. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ENV-OG2-R6`, `PRACTICE-OG2-07`.
+      The required result is: Correlate one new HMI sequence with OpenPLC seen and accepted state, HMI ownership, the accepted A30/B10 settings, valid permissives, and subsequent position/flow feedback. An Apply acknowledgement or changed input field alone does not prove actuation.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -634,44 +669,57 @@ action_contracts:
       support_refs:
       - workflows.w25.c3
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
+      - features.a-control.a-instruments
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-hmi` and its `supervisory-operations` application own this part of **Accepted is not actuated**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Practice requests PRACTICE-REQ-11 and PRACTICE-REQ-12 are acknowledged but not actuated while PRACTICE-PERM-02 is false; simulator measurements remain at zero.
+        The installed Cairn Reach OT products own this part of **Accepted is not actuated**. The exact initial state is: A FUXA Apply action stages one complete request and advances its sequence; OpenPLC separately records seen, accepted or rejected sequence, owner and requested settings before remote I/O position and flow feedback can prove physical actuation.
 
         Native bindings:
 
-        - `a-engineering.a-hmi/supervisory-operations/accepted-is-not-actuated`
+        - `a-engineering.a-hmi/FUXA:crr-controls`
+        - `a-engineering.a-hmi/OPC-UA:HmiSeen-HmiAccepted-Owner-PermissiveA-PermissiveB`
+        - `a-engineering.a-historian/PostgreSQL:public.command_history`
+        - `a-control.a-instruments/Modbus-TCP:position-and-flow-feedback`
 
-        The private service-loader contract is `content.arwc-a-hmi.w25-3-accepted-is-not-actuated`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W25 operating envelope and bounded-movement instruction define the authorized work, but do not prove controller acceptance or movement. FUXA, OpenPLC, PostgreSQL history, and remote-I/O feedback remain authoritative; no private service-loader route duplicates them.
       support_refs:
       - features.a-engineering.a-hmi
-      - content.arwc-a-hmi.w25-3-accepted-is-not-actuated
+      - features.a-engineering.a-historian
+      - features.a-control.a-instruments
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The product keeps normal command and process history. Completion of the movement requires a second accepted HMI request, measured return to A 20 percent and B 20 percent, total flow near 0.20 m3/s, healthy I/O, and clear travel faults. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and CRR-OP-W25-R1. It grants no dispatcher authority, engineering force, program upload, interlock bypass, or alternate control endpoint.
       support_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
+      - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Correctly relate the practice requests, permissives, and observed outcomes. An acknowledgement
-        alone does not establish an actuation.
+      description: Correlate one new HMI sequence with OpenPLC seen and accepted state, HMI ownership, the accepted
+        A30/B10 settings, valid permissives, and subsequent position/flow feedback. An Apply acknowledgement or
+        changed input field alone does not prove actuation.
       target_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w25.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh product records captured by OpenPLC and the native historian. Product evidence is supplied by the range, never by the participant. W25.1 and W25.2 are read-only. W25.3 and W25.4 may use only the two authorized FUXA requests in CRR-OP-W25-R1, and completion cannot write a tag, issue a command, retry a rejection, or create product evidence.
 
-        Evidence sources are `features.a-engineering.a-hmi`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-historian`, `features.a-control.a-instruments`. A wrong asset, operating limit, command sequence, ownership, permissive, product time, process quality, measured response, or restored baseline is rejected.
       target_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
+      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w25.c3
     failure_classes:
@@ -686,9 +734,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      The authored condition is **interlock-aware practice sequencing**. Practice checkpoint PRACTICE-OG2-07 accepts a permissive transition then ramps each simulated gate linearly to 0.15 m3/s for 30 seconds, holds 70 seconds, and ramps closed for 30 seconds; 100 full-flow-equivalent seconds independently report 0.03 ML without changing live reserve. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+      This is a bounded operating observation and control task, not a privilege flaw. The participant must use the installed products to complete the authorized movement, prove the measured response in retained history, and restore the operating baseline. A copied value, synthetic response, or request acknowledgement without matching product evidence does not establish the result.
 
-      The required result is: Demonstrate the intended practice effect under the correct conditions. This supplies W25.MODE and MODE; it does not grant live write authority. In the clearly identified practice model, the valid sequence produces visible outlet movement and a matching measured response, contrasting with the acknowledged but ineffective requests investigated earlier. The operator has turned process understanding into controlled movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current outlet mapping or live client and does not change the real operating context's reserve. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `ENV-OG2-R6`, `PRACTICE-OG2-07`.
+      The required result is: Show good-quality position and flow history for the A20/B20 to A30/B10 movement, then use a second accepted HMI request to restore manual A20/B20. Confirm measured A20/B20, approximately 0.10 m³/s per outlet and 0.20 m³/s total, healthy I/O, clear travel faults, valid permissives, and no unsettled motion. This supplies W25.MODE and MODE.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -701,53 +749,57 @@ action_contracts:
       support_refs:
       - workflows.w25.c4
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       - features.a-control.a-instruments
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-hmi` and its `supervisory-operations` application own this part of **A sequence the process can follow**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Practice checkpoint PRACTICE-OG2-07 accepts a permissive transition then ramps each simulated gate linearly to 0.15 m3/s for 30 seconds, holds 70 seconds, and ramps closed for 30 seconds; 100 full-flow-equivalent seconds independently report 0.03 ML without changing live reserve.
+        The installed Cairn Reach OT products own this part of **A sequence the process can follow**. The exact initial state is: Authorized movement CRR-W25-MOVE-01 changes the live manual request from A 20/B 20 to A 30/B 10, records good native position and flow history, and uses a second accepted request to restore A 20/B 20 with both outlets settled, total flow near 0.20 m3/s, healthy I/O and no travel fault.
 
         Native bindings:
 
-        - `a-engineering.a-hmi/supervisory-operations/a-sequence-the-process-can-follow`
-        - `a-control.a-instruments/independent-instruments/a-sequence-the-process-can-follow`
+        - `a-engineering.a-hmi/FUXA:crr-controls`
+        - `a-engineering.a-historian/Grafana:arwc-history`
+        - `a-engineering.a-historian/PostgreSQL:public.process_history`
+        - `a-control.a-instruments/Modbus-TCP:position-and-flow-feedback`
 
-        The private service-loader contract is `content.arwc-a-hmi.w25-4-a-sequence-the-process-can-follow`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W25 operating envelope and bounded-movement instruction define the authorized work, but do not prove controller acceptance or movement. FUXA, OpenPLC, PostgreSQL history, and remote-I/O feedback remain authoritative; no private service-loader route duplicates them.
       support_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       - features.a-control.a-instruments
-      - content.arwc-a-hmi.w25-4-a-sequence-the-process-can-follow
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        Supplies W25.MODE and MODE without live authority. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        Supplies W25.MODE and MODE without live authority. The product keeps normal command and process history. Completion of the movement requires a second accepted HMI request, measured return to A 20 percent and B 20 percent, total flow near 0.20 m3/s, healthy I/O, and clear travel faults. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and CRR-OP-W25-R1. It grants no dispatcher authority, engineering force, program upload, interlock bypass, or alternate control endpoint.
       support_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the intended practice effect under the correct conditions. This supplies W25.MODE
-        and MODE; it does not grant live write authority. In the clearly identified practice model, the valid sequence
-        produces visible outlet movement and a matching measured response, contrasting with the acknowledged but
-        ineffective requests investigated earlier. The operator has turned process understanding into controlled
-        movement in rehearsal. The conclusion uses the existing bounded practice result; it requires no current
-        outlet mapping or live client and does not change the real operating context's reserve.
+      description: Show good-quality position and flow history for the A20/B20 to A30/B10 movement, then use a second
+        accepted HMI request to restore manual A20/B20. Confirm measured A20/B20, approximately 0.10 m³/s per outlet
+        and 0.20 m³/s total, healthy I/O, clear travel faults, valid permissives, and no unsettled motion. This
+        supplies W25.MODE and MODE.
       target_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w25.c4
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh product records captured by OpenPLC and the native historian. Product evidence is supplied by the range, never by the participant. W25.1 and W25.2 are read-only. W25.3 and W25.4 may use only the two authorized FUXA requests in CRR-OP-W25-R1, and completion cannot write a tag, issue a command, retry a rejection, or create product evidence.
 
-        Evidence sources are `features.a-engineering.a-hmi`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-historian`, `features.a-control.a-instruments`. A wrong asset, operating limit, command sequence, ownership, permissive, product time, process quality, measured response, or restored baseline is rejected.
       target_refs:
       - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w25.c4

@@ -1,0 +1,23 @@
+{
+  "schema": "arwc.remote-request/v1",
+  "asset": "AST-CRR-017",
+  "namespace_uri": "urn:arwc:crr:tags",
+  "request_topic": "arwc/crr/commands/operator",
+  "outcome_topic": "arwc/crr/outcomes/operator",
+  "principal": "operator",
+  "qos": 1,
+  "retain": false,
+  "maximum_payload_bytes": 2048,
+  "maximum_expiry_seconds": 120,
+  "expiry_format": "Numeric Unix epoch seconds in UTC, including optional fractional seconds; not an ISO 8601 string",
+  "maximum_pending_messages": 16,
+  "request_fields": ["id", "asset", "mode", "position_a_pct", "position_b_pct", "total_flow_m3s", "expires_at"],
+  "request_tags": {"position_a_pct": "RemoteTargetPct", "position_b_pct": "RemoteTargetBPct", "total_flow_m3s": "RemoteFlowM3s", "mode": "RemoteAutoMode"},
+  "commit": {"seen": "RemoteSeen", "sequence": "RemoteSequence", "rule": "choose the next sequence from PLC Seen; stage all four settings before committing it"},
+  "receipt": "native MQTT PUBACK establishes broker receipt only; received outcome establishes durable dispatcher receipt",
+  "states": ["received", "dispatch_intent", "dispatched", "plc_accepted", "plc_rejected", "completed", "superseded", "uncertain", "expired"],
+  "terminal": ["plc_rejected", "completed", "superseded", "uncertain", "expired"],
+  "feedback": {"position_tolerance_pct": 0.6, "flow_tolerance_m3s_per_outlet": 0.0075, "settled_samples": 5, "poll_seconds": 0.2},
+  "restart": "mark unfinished requests uncertain; never resume or replay them",
+  "boundaries": {"caller_supplied_authority": false, "arbitrary_node_writes": false, "plc_interlock_reimplementation": false, "automatic_uncertain_retry": false}
+}

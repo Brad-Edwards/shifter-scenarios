@@ -3,10 +3,11 @@
 [Campaign map](../design/logical-architecture.md) ·
 [Previous: corporate and maintenance](arwc-corporate.md)
 
-Ten systems occupy three subnets. Two DMZ gateways independently expose a
+Nine systems occupy three subnets. Two DMZ gateways independently expose a
 defined set of engineering services and read-only process observations. A third
 DMZ system, the maintenance broker, sends authorized requests to the HMI's
-supervisory dispatcher, which commands the two actuator endpoints.
+supervisory dispatcher, which commands the two outlet actuators through the
+native reservoir-site controller.
 
 ```mermaid
 flowchart LR
@@ -27,9 +28,8 @@ flowchart LR
     a_engineering["Engineering workstation and projects<br/>a-engineering"]
     a_diagnostics["Diagnostic services<br/>a-diagnostics"]
   end
-  subgraph a_control["PROCESS CONTROL — 3 systems"]
+  subgraph a_control["PROCESS CONTROL — 2 systems"]
     a_reservoir["Reservoir and outlet endpoint<br/>a-reservoir"]
-    a_distribution["Distribution endpoint<br/>a-distribution"]
     a_instruments["Independent instrumentation<br/>a-instruments"]
   end
   integration --> a_data_bridge
@@ -43,12 +43,10 @@ flowchart LR
   published -->|Projects and named utility interfaces| a_engineering
   published -->|Diagnostic interfaces| a_diagnostics
   published -->|Read only| a_reservoir
-  published -->|Read only| a_distribution
   published -->|Read only and retained images| a_instruments
   a_engineering -->|Earned utility: engineering issuer| a_control_broker
   a_control_broker ==>|Authorized request to live dispatcher| a_hmi
   a_hmi ==>|Scoped live commands| a_reservoir
-  a_hmi ==>|Scoped live commands| a_distribution
   a_diagnostics -->|Accepted estimate output| a_data_bridge
   a_data_bridge -->|Publication role only| estimates
   classDef port fill:#e0e7ff,stroke:#4338ca,color:#172554;
@@ -57,7 +55,7 @@ flowchart LR
   classDef observer fill:#ecfeff,stroke:#0e7490,color:#164e63;
   class integration,contractor,command,issuance,estimates port;
   class published conduit;
-  class a_control_broker,a_reservoir,a_distribution commandbox;
+  class a_control_broker,a_reservoir commandbox;
   class a_instruments observer;
 ```
 
@@ -82,7 +80,6 @@ simulation.
 ```mermaid
 flowchart LR
   reservoir["a-reservoir<br/>Outlet outcome"]
-  distribution["a-distribution<br/>Distribution outcome"]
   instruments["a-instruments<br/>Independent observations"]
   historian["a-historian<br/>Retained measurements"]
   hmi["a-hmi<br/>Operator view"]
@@ -92,7 +89,6 @@ flowchart LR
   planning(["ESTIMATE → a-data<br/>Corporate planning consumer"])
   business(["a-business<br/>Allocation workflow"])
   reservoir -->|Measured outcome| instruments
-  distribution -->|Measured outcome| instruments
   instruments -->|Observation history| historian
   historian -->|Measurements and history| hmi
   engineering -->|Approved configuration| hmi
@@ -120,7 +116,6 @@ retained approval history. None acquires the other's authority by sharing
 | OT engineering / supervision | `a-engineering` | Engineering projects, deployed revision evidence, retained review context, diagnostics programs, and the small privileged utility. | W19, W21, W22, W27, W28, W32 |
 | OT engineering / supervision | `a-diagnostics` | Estimation, diagnostic authorization, and native diagnostic services. | W23, W24, W27, W31 |
 | Process control | `a-reservoir` | Reservoir/outlet state and accepted release actions. | W30, W33, W34 |
-| Process control | `a-distribution` | Distribution state and the second actuator used in deeper scheduling work. | W33 |
 | Process control | `a-instruments` | Independent observations, current device evidence, and retained device images. | W17, W18, W20, W21, W25, W29, W30, W33, W34 |
 
 ## The command boundary

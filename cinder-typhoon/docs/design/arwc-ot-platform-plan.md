@@ -1,7 +1,11 @@
 # ARWC operating OT platform plan
 
-Status: accepted delivery direction; implementation pending.
-Research reviewed: 12 November 2026.
+Status: normal-operation qualification passed on the golden-VPC development VM.
+VM bakes and BigRAE delivery are deferred until later challenge design and testing.
+Challenge design is outside this OT development work.
+Research reviewed: November 12, 2026.
+Qualification completed: November 13, 2026.
+See the [operating qualification record](../../build/arwc-ot/integration/evidence/development.json).
 
 ## Purpose and scope
 
@@ -134,7 +138,7 @@ FUXA provides an overview mimic, site detail, equipment faceplates, setpoint
 controls, mode selection, permissive status, alarm summary and acknowledgement,
 historical trends, and visible stale or bad-quality indication. Use consistent
 water-utility tags and subdued normal-state colours. Reserve emphasis for
-abnormal state. A water-control practitioner reviews the graphics and terms.
+abnormal state. Use the documented water-site terms throughout the views.
 
 The HMI and remote dispatcher use distinct request tags with a PLC-side command
 arbiter. Document local priority and command ownership. Do not permit competing
@@ -178,7 +182,7 @@ establish a dependency.
 | MQTT and dispatcher | Broker roles, authenticated requests, OPC UA dispatch, and separate outcomes. | Compatibility slice. |
 | Engineering workstation | Offline RDP desktop, Editor, OPC UA browser, history tools, and project documentation. | Compatibility slice. |
 | Integrated utility site | Joined normal workflows, measured resource use, and read-only ARWC IT integration. | All five component items. |
-| Images and participant qualification | Private bake, pack and readiness updates, normal participant checks, and OT practitioner walkthrough record. | Integrated utility site. |
+| Images and participant qualification | Private bake, pack and readiness updates, normal participant checks. | Integrated utility site. |
 
 Component work uses the published contract and development fixtures. It does not
 wait for another component PR. Integrated acceptance joins the real components.
@@ -238,11 +242,11 @@ An operator must be able to complete these actions from the participant desktop:
 11. Perform an authorized maintenance project download and inspect the running project revision.
 12. Restart the range and verify documented retained state, acquisition recovery, and a usable desktop.
 
-Run focused automated normal-operation checks, then a white-box participant
-walkthrough. An experienced water OT practitioner must review the operating
-model, terminology, graphics, protocol arrangement, logic, and normal workflow
-before the platform is called qualified. Record limits openly: virtual I/O,
-shared host, approximate physical response, and no hard-real-time guarantee.
+Run focused automated normal-operation checks, then a white-box walkthrough
+through the normal desktop tools. Use the QA agent for the operating checks.
+Qualification requires the complete normal workflow and recovery checks to pass.
+Record limits openly: virtual I/O, shared host, approximate physical response,
+and no hard-real-time guarantee.
 
 ## Research references
 

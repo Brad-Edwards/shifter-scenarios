@@ -16,7 +16,7 @@ fail() {
 if ! docker compose -f compose.yaml up -d --force-recreate \
   a-connector fieldlink-edge a-business a-archive a-identity a-data-bridge a-data \
   a-contractors a-contractor-bridge a-approval a-renderer a-control-broker \
-  a-hmi a-historian a-engineering a-instruments a-reservoir a-distribution \
+  a-hmi a-historian a-engineering a-instruments a-reservoir \
   a-diagnostics >"$startup_log" 2>&1; then
   fail "service graph startup failed; see $startup_log"
 fi

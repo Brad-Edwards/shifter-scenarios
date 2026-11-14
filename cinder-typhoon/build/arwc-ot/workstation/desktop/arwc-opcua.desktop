@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=OPC UA browser
+Comment=Native FreeOpcUa namespace browser
+Exec=/opt/opcua-client/bin/opcua-client
+Icon=network-workgroup
+Terminal=false
+Categories=Development;Education;

@@ -279,14 +279,6 @@ def decode_vault_record(request: dict[str, object]) -> bytes | None:
         return None
 
 
-def deployed_revision_ready() -> bool:
-    try:
-        state = json.loads(ENGINEERING_STATE.read_text())
-    except (OSError, json.JSONDecodeError):
-        return False
-    return state.get("deployed_revision_observed") is True
-
-
 def rsa_decrypt(ciphertext: int) -> bytes:
     first = pow(ciphertext, RSA_DP, RSA_P); second = pow(ciphertext, RSA_DQ, RSA_Q)
     message = second + RSA_Q * (((first - second) * RSA_QINV) % RSA_P)
@@ -375,8 +367,6 @@ class Handler(BaseHTTPRequestHandler):
         if not self.authorized(): return
         path = urlsplit(self.path).path
         if path == "/api/vault-records/current":
-            if not deployed_revision_ready():
-                self.send_json(403, {"error": "current deployed engineering revision required"}); return
             metadata = vault_metadata(); artifact = VAULT_WORKER.read_bytes()
             record = {
                 "record_id": "VAULT-CRR-R5", "revision": 5, "case_id": "DV-CRR-4417",
@@ -403,8 +393,6 @@ class Handler(BaseHTTPRequestHandler):
             return
         if path != "/api/signature-requests":
             self.send_json(404, {"error": "record not found"}); return
-        if not deployed_revision_ready():
-            self.send_json(403, {"error": "current deployed engineering revision required"}); return
         state = load_state(); state["oracle_contract_observed"] = True; atomic_json(STATE, state)
         nonce, ciphertext = sealed_bundle()
         record = {

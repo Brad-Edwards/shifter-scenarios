@@ -206,18 +206,18 @@ def record_specs(brief, model, ident):
 CONSEQUENCE_SUFFIX = (' Apply once per validated participant event; repeated evidence is '
                       'idempotent. No continuous process simulation.')
 # Explicit affected systems and bounded effects, independent of event predicates.
-# These protect the distinction between live process state and retained rehearsal.
+# These protect the distinction between measured commissioning and projection.
 CONSEQUENCES = {
     'reservoir-release': (
-        'Cairn Reach reserve incident',
-        ('a-control.a-reservoir', 'a-control.a-instruments', 'a-corporate.a-data'),
-        'Retain and present this participant’s already verified reservoir incident and continuity notice. The accepted in-world command produces the persisted process transition and independent gate-position and usable-volume records; reserve planning calculates financial loss and water restrictions before W30.2 is satisfied. This post-completion event neither commands the gates nor creates the evidence required to trigger itself. Replaying it cannot release more water or duplicate the financial loss. A command acknowledgement alone does not establish the result. No catastrophic effects.'),
-    'costly-release-rehearsal': (
-        'Costed release rehearsal', ('a-engineering.a-hmi', 'a-corporate.a-data'),
-        'Advance only the participant’s costed-release rehearsal record. Publish its trace and costed reserve consequence separately from the live reservoir stage.'),
-    'feedback-rehearsal': (
-        'Feedback rehearsal', ('a-engineering.a-hmi', 'a-control.a-instruments'),
-        'Record the accepted supervisory rehearsal and its independent feedback. Rehearsal state cannot overwrite the live reservoir outcome.'),
+        'Cairn Reach bounded operation',
+        ('a-engineering.a-hmi', 'a-engineering.a-historian', 'a-control.a-reservoir', 'a-control.a-instruments'),
+        'Retain and present this participant’s already verified CRR-OP-W30-R1 operation and handback. The product records contain the authenticated dispatcher request, native PLC acceptance, measured two-outlet response, retained history, and later local FUXA restoration. This post-completion event neither commands the outlets nor creates the evidence required to trigger itself. Replaying it cannot repeat movement. A broker acknowledgement alone does not establish the result.'),
+    'peak-schedule-commissioning': (
+        'Peak schedule commissioning', ('a-engineering.a-hmi', 'a-engineering.a-historian', 'a-control.a-reservoir', 'a-control.a-instruments'),
+        'Retain the twelve authenticated dispatcher requests, native PLC acceptances, measured flow responses, and local FUXA handback. Presentation cannot issue or replay a process request.'),
+    'peak-operating-projection': (
+        'Peak operating projection', ('a-corporate.a-data', 'a-engineering.a-hmi', 'a-engineering.a-historian', 'a-control.a-reservoir'),
+        'Retain twelve measured commissioning means and the separately labelled one-hour volume, reserve, shortfall, and tariff projections. Projection cannot overwrite process history.'),
     'false-planning-decision': (
         'False reserve-planning decision', ('a-corporate.a-data', 'a-engineering.a-diagnostics'),
         'Retain the accepted estimate and changed planning decision. Independent process measurements stay truthful. This planning effect does not open gates.'),

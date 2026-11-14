@@ -1,0 +1,19 @@
+{
+  "schema": "arwc.historian/v1",
+  "register": "../site/tags.json",
+  "sample_seconds": 1,
+  "stale_seconds": 3,
+  "raw_schema": "ot_history",
+  "tables": ["process_samples", "command_signals"],
+  "timestamps": {"source": "native OPC UA SourceTimestamp", "collected": "Telegraf metric construction time in nanoseconds", "ingested": "PostgreSQL clock_timestamp"},
+  "retention": {"process_days": 7, "event_days": 30, "database_high_bytes": 8589934592, "database_target_bytes": 7516192768, "maintenance_seconds": 60},
+  "command_signals": {
+    "HmiAccepted": {"channel": "HMI", "decision": "accepted"},
+    "HmiRejected": {"channel": "HMI", "decision": "rejected"},
+    "RemoteAccepted": {"channel": "dispatcher", "decision": "accepted"},
+    "RemoteRejected": {"channel": "dispatcher", "decision": "rejected"}
+  },
+  "roles": {"collector": "insert native metrics only", "reader": "select historical and event views", "event_exporter": "upsert native FUXA alarm records only", "history_maintenance": "own historian objects and maintain partitions", "dmz_reader": "select the small DMZ measurement view only"},
+  "event_sources": {"commands": "native OPC UA StatusValue subscription; observed PLC decisions, not user identity or a complete transaction audit", "alarms": "native FUXA alarm history API; preserve on, off, acknowledgement, acknowledging user, and original value", "dispatcher": "durable dispatcher request and transition tables; expanded by issue 367"},
+  "boundaries": {"control_writes": false, "gap_interpolation": false, "corporate_planning_database": false, "fuxa_measurement_daq": false}
+}

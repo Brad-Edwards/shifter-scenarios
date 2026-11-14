@@ -1,0 +1,187 @@
+{
+  "issue": 369,
+  "recorded_at": "2026-11-13T10:12:58.639663+00:00",
+  "project": "prod-mgau4w",
+  "vm": "cinder-arwc-ot-compat-363",
+  "status": "normal operating qualification passed on the golden-VPC development VM",
+  "focused_bridge_cases": 4,
+  "boundary_mutations_detected": 8,
+  "native_compose_contract": "passed",
+  "network_mutations_detected": 6,
+  "it_image_build": "completed; no active OT services restarted",
+  "joined_participant_acceptance": "passed through real RDP and native operating/engineering tools",
+  "capacity_measurement": "passed for the observed shared-host workload; native controller metrics captured",
+  "existing_it_services": "started separately; active OT containers preserved",
+  "capacity_logger_smoke": "passed; bounded observations include the actual maintenance download",
+  "exchange_members": [
+    "arwc-ot-compat-postgres-1",
+    "cinder-arwc-data-bridge"
+  ],
+  "deployed_container_states": {
+    "postgres": "running after automatic full-VM restart",
+    "bridge": "running after automatic full-VM restart",
+    "dispatcher": "running after automatic full-VM restart",
+    "desktop": "running after automatic full-VM restart"
+  },
+  "http_endpoint_qualification": {
+    "status": "passed",
+    "coordination_message": 729,
+    "http_status": 200,
+    "samples": 900,
+    "series": 3,
+    "authentication": "missing/wrong credentials denied with 401",
+    "provenance": "all nine fields present; values match the historian"
+  },
+  "capacity_observation": "joined-first-observation.json",
+  "log_rotation": {
+    "native_models": "passed for all 30 running service definitions",
+    "policy": "three 10 MiB JSON files per container",
+    "mutations_detected": 2,
+    "live_application": "applied to 29 service containers; original PLC preserved until separate maintenance replacement"
+  },
+  "lifecycle_contract": {
+    "initial_to_joined_plc_and_desktop": "unchanged native service definitions",
+    "mutations_detected": 1
+  },
+  "capacity_observations": [
+    "joined-first-observation.json",
+    "native-editor-observation.json",
+    "maintenance-download-observation.json"
+  ],
+  "development_refresh": {
+    "status": "applied after saved QA checkpoint 748",
+    "helper": "refresh-development.sh",
+    "desktop_image": "sha256:83084f752656dc45a404abfb18fbd473e69c4ecbd24eb71e9aace07cda00312b",
+    "running_containers": 30,
+    "plc_container": "preserved during configuration refresh and retained through full VM restart",
+    "persistent_state": "existing product volumes and participant home retained",
+    "participant_retest": "passed"
+  },
+  "maintenance_download": {
+    "status": "passed",
+    "coordination_messages": [
+      766,
+      767
+    ],
+    "program_md5": "ceab3e96d5929f6617acb2020defe659",
+    "restart": "disarmed, healthy field I/O",
+    "host_window": "08:36:00-08:45:55 UTC on November 13, 2026",
+    "host_cpu_mean_percent": 12.67,
+    "host_cpu_peak_percent": 38.72,
+    "memory_available_min_bytes": 13867581440,
+    "measurement_errors": []
+  },
+  "mechanical_fault_reset": {
+    "status": "passed",
+    "coordination_message": 780,
+    "stimulus": "authored mechanical jam before a fresh operator motion request; no engineering forcing",
+    "held_position_pct": 90,
+    "requested_position_pct": 1,
+    "native_timeout_seconds": 25,
+    "field_communications": "healthy while the actuator remained stuck",
+    "operator_reset": "actual FUXA faceplate button; reset pulse returned false",
+    "recovery": "normal mechanical response restored; fresh request accepted and reached target"
+  },
+  "communications_recovery": {
+    "status": "passed",
+    "coordination_messages": [
+      780,
+      783
+    ],
+    "field_loss": "unhealthy I/O disarmed control",
+    "recovery": "healthy communications required a fresh request; old requests did not replay"
+  },
+  "full_vm_restart": {
+    "status": "passed",
+    "coordination_message": 783,
+    "restarted_at": "2026-11-13T09:28:17Z",
+    "automatic_service_restart_count": 30,
+    "controller": "disarmed; automatic mode and remote enable cleared; healthy field I/O",
+    "retention": "physical positions/settings and historical data retained",
+    "normal_operation": "fresh FUXA request reached target after restart",
+    "historian_samples_by_utc_minute": {
+      "09:27": 3000,
+      "09:28": 1050,
+      "09:29": 3000
+    },
+    "acquisition_gap": "approximately 39 seconds, without invented measurements"
+  },
+  "corporate_history_after_restart": {
+    "status": "passed",
+    "coordination_message": 788,
+    "http_status": 200,
+    "samples": 900,
+    "series": 3,
+    "origin": "OpenPLC native OPC UA via Telegraf",
+    "observed_values": {
+      "level_m": 8.335,
+      "usable_volume_ml": 14.67,
+      "total_flow_m3s": 0.5
+    }
+  },
+  "native_controller_timing": {
+    "status": "passed",
+    "coordination_messages": [
+      788,
+      789
+    ],
+    "source": "native Runtime status API and graphical Editor Runtime Status view",
+    "units": "microseconds",
+    "task": "TASK0",
+    "scan_count": 21228,
+    "scan_time": {
+      "average": 10,
+      "minimum": 6,
+      "maximum": 162
+    },
+    "cycle_time": {
+      "average": 100001,
+      "minimum": 87186,
+      "maximum": 112814
+    },
+    "cycle_latency": {
+      "average": 81,
+      "minimum": 3,
+      "maximum": 12848
+    },
+    "overruns": 0,
+    "scan_time_scope": "IEC code execution, separate from the scheduled cycle period"
+  },
+  "graphical_engineering": {
+    "status": "passed",
+    "coordination_messages": [
+      788,
+      789
+    ],
+    "native_views": "connected Debugger, live FBD values, and Device / Runtime Status",
+    "observed_live_values": {
+      "LevelRaw": 8203,
+      "LevelM": 8.203,
+      "UsableVolumeML": 14.406,
+      "IoHealthy": true
+    }
+  },
+  "limits": [
+    "virtual field I/O and approximate physical response",
+    "shared VM; observed workload only",
+    "no hard real-time or safety-instrumented guarantee",
+    "fresh private VM images and BigRAE delivery deferred to issue 370"
+  ],
+  "normal_cleanup": {
+    "status": "passed",
+    "coordination_message": 795,
+    "operating_mode": "manual",
+    "armed": true,
+    "io_healthy": true,
+    "position_a_percent": 20.0,
+    "position_b_percent": 20.0,
+    "total_flow_m3s": 0.2,
+    "authored_inflow_m3s": 0.2,
+    "level_m": 6.425,
+    "travel_fault_a": false,
+    "travel_fault_b": false,
+    "engineering_forces": "none",
+    "io_fixture": "standard",
+    "preservation": "running services, participant project, credentials, history and journals intact"
+  }
+}

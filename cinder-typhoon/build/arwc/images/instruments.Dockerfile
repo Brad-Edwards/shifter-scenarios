@@ -16,7 +16,7 @@ RUN apt-get update \
 COPY --chown=arwc-instruments:arwc-instruments --chmod=0640 \
   build/arwc/runtime/process_services.py /opt/process-service/process_services.py
 COPY --chown=arwc-instruments:arwc-instruments --chmod=0640 \
-  build/arwc/runtime/schedule33.py /opt/process-service/schedule33.py
+  build/arwc/runtime/reporting_schedule.py /opt/process-service/reporting_schedule.py
 COPY --from=artifacts --chown=arwc-instruments:arwc-instruments --chmod=0640 \
   /tmp/IMG-FIT-204-R6.bin /tmp/IMG-FIT-204-R6.json /opt/process-service/artifacts/
 COPY --chmod=0750 build/arwc/runtime/process-service-entrypoint.sh /usr/local/sbin/arwc-process-entrypoint

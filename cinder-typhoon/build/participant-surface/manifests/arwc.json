@@ -11,10 +11,10 @@
       "phase_card_count": 120,
       "phase_operation_count": 35,
       "phase_score_total": 21450,
-      "revision": "6671188bc4005bc5dca0ed2c72ea436f71bd667f74807cb928bf645117740fe9",
+      "revision": "010573653ff970699454ce5243b65a414e3ffc984a81f9526e5431bbded90958",
       "schema": "cinder-typhoon.challenge-delivery/v2",
       "score_total": 39200,
-      "sha256": "56887dfbc06fd658a39e109f83eecfbd1a6b9b026ff39711ee76aa68d6ed838b"
+      "sha256": "14f0ed2e5c8e4b754cd291c78e394466df84585183c745b70da004d05269b4a9"
     },
     "hints": {
       "items": [
@@ -542,7 +542,7 @@
         },
         {
           "card_id": "W17.1",
-          "content_revision": "c945dc8042ff4f5f23e59fecbb730c00ce8678de09fa28ad926e336f14a65f34",
+          "content_revision": "c773c2eabe2349fc137a49c7ee7bc2825fadafbfd7f764e901e23dd41e087154",
           "levels": [
             1,
             2,
@@ -551,7 +551,7 @@
         },
         {
           "card_id": "W17.2",
-          "content_revision": "04820d2d3aeadd33677785c6c719c1b087a659e481eb2095f2b9f3aaa25a7bff",
+          "content_revision": "5b3d1bd58f73ce7bde2462428ab1d33b8769ac66abc1757705db43d5b6fd52f5",
           "levels": [
             1,
             2,
@@ -560,7 +560,7 @@
         },
         {
           "card_id": "W17.3",
-          "content_revision": "7a73b475554a5ddc36b656ff229d2327d509daed208dddaf0d1480c38a2b5de1",
+          "content_revision": "9be013ab8efae02c2fde49ad7fc98caff21897272e2a87cc5a920e1f47addd84",
           "levels": [
             1,
             2,
@@ -569,7 +569,7 @@
         },
         {
           "card_id": "W17.4",
-          "content_revision": "529b934205aa815d12efb52134b5139b54557586df9f9cbf70da8887871c29cb",
+          "content_revision": "5b51be889a53cc4fe374934b7e70af1250a8704150dddcd2caf367325272304a",
           "levels": [
             1,
             2,
@@ -578,7 +578,7 @@
         },
         {
           "card_id": "W18.1",
-          "content_revision": "183479efb668bb457d57a3bfe75ad0aeec14ef3be35e784ed94f6d23f6717638",
+          "content_revision": "cd700da54bfb5874fa79cb132a4c5f62623071f92f120ff1cecfb63d9f089339",
           "levels": [
             1,
             2,
@@ -587,7 +587,7 @@
         },
         {
           "card_id": "W18.2",
-          "content_revision": "94e53ad89d0c968554fef985195b4db883069207b09a64790f590c4361dcc55c",
+          "content_revision": "0aba1a0a27053c15ea358003d34884e5244501942e38882a7ee271a8d9dc636b",
           "levels": [
             1,
             2,
@@ -596,7 +596,7 @@
         },
         {
           "card_id": "W18.3",
-          "content_revision": "2c8b7943682b2d7091b3fd8cfdcbbe6ed43a396049408a1edd4bdcf576b38731",
+          "content_revision": "ae956e0815d3e8a68efa07a8164c0d1f90b14064dc33edba77f6a3c9b26dfc8a",
           "levels": [
             1,
             2,
@@ -605,7 +605,7 @@
         },
         {
           "card_id": "W18.4",
-          "content_revision": "7054685447bb9b94caa3469fc6ec3a359874fee9dfa1901d6bba6ebf54308662",
+          "content_revision": "dcc08f1aee5ef10b1583618f51d127935b5cbb284eecbc1814d73595ac078110",
           "levels": [
             1,
             2,
@@ -677,7 +677,7 @@
         },
         {
           "card_id": "W21.1",
-          "content_revision": "372d8ff7928a7d1b1281ca70841df95ae0de959a3ca20fb6fa1b8e478cc64ef0",
+          "content_revision": "4848981bef9c023cb0725e9007e08c08dfd079aa145ab59371084ea5e6a0be88",
           "levels": [
             1,
             2,
@@ -686,7 +686,7 @@
         },
         {
           "card_id": "W21.2",
-          "content_revision": "c32adc6dff7aadedd8e409f0afedac5130b15168bab12009fc2e20989a52e8ca",
+          "content_revision": "cbca58934c88de0b4cf38d8fce1620187e641707b04852021e02bc3b6cb97e79",
           "levels": [
             1,
             2,
@@ -713,7 +713,7 @@
         },
         {
           "card_id": "W22.3",
-          "content_revision": "68480c7c34be3df6dbda10d4e25765fe6ef215b5f8b60689b6d02843a816b592",
+          "content_revision": "fa05ddb1c1cd7f76893c44097b50fe26bf4d877b5df7c5a2d3aef91c0a2068d6",
           "levels": [
             1,
             2,
@@ -794,7 +794,7 @@
         },
         {
           "card_id": "W25.1",
-          "content_revision": "71ed876b62f98d55c97f0acdbf02e52343d3cfe1ffba4a9262d4c712bd0c13d5",
+          "content_revision": "200015543112527850ba1cff2dcf371d821565f223e94632154bce972f8c4ba2",
           "levels": [
             1,
             2,
@@ -803,7 +803,7 @@
         },
         {
           "card_id": "W25.2",
-          "content_revision": "006f53489dab2f05b7be38bc45508d76d8c6612d32759aef846b7a09ae1b35b7",
+          "content_revision": "5788e309c93f9ce28c43aaaf91e8ac7689486a5028fc15706466fc1bc8491849",
           "levels": [
             1,
             2,
@@ -812,7 +812,7 @@
         },
         {
           "card_id": "W25.3",
-          "content_revision": "a06fbb981922903499a1fad323b521e6920a6a5bfbc14985dac543014ac4461a",
+          "content_revision": "9019ac81d59365e89866acc3aee54780753f68a740f89534a6b097aca26af794",
           "levels": [
             1,
             2,
@@ -821,7 +821,7 @@
         },
         {
           "card_id": "W25.4",
-          "content_revision": "71a17e56b348fdd64a03efd28c3b111113bb0f9320e987497336df9fada9c1e2",
+          "content_revision": "81440a970fd74b7d824cff1cf1d14347304ea39208bb283ad11c0fb76a81b597",
           "levels": [
             1,
             2,
@@ -920,7 +920,7 @@
         },
         {
           "card_id": "W29.1",
-          "content_revision": "013086284df8b73aad58c0fcc8f744804d777650ee298adbea461c437fd0968c",
+          "content_revision": "6bbdcf5c647b0de1c51bd49a418359c1b1218aa914bafa649e09cddd7bed91ac",
           "levels": [
             1,
             2,
@@ -929,7 +929,7 @@
         },
         {
           "card_id": "W29.2",
-          "content_revision": "5dab63a3c29e109b2eb12e6fced6f63a9b63ee1b287287db1f636ad4773b1ac7",
+          "content_revision": "c135e5d2ffdf11031576b7e1dedb8f7a105004d7f8f52caf0b6fad7dacdc104e",
           "levels": [
             1,
             2,
@@ -938,7 +938,7 @@
         },
         {
           "card_id": "W29.3",
-          "content_revision": "982efe5138947d3412060e65d785064d27676fa789823c755a4d7fb2d22f1a2b",
+          "content_revision": "5f9e148dcf32fb2dbed8e94c9cf11b987881b01a6bb08f258e2c2d3771ea9920",
           "levels": [
             1,
             2,
@@ -947,7 +947,7 @@
         },
         {
           "card_id": "W30.1",
-          "content_revision": "b1305aa72a17a4b446bb910628544061aff3c68950167747a9a1355695c0e228",
+          "content_revision": "6d1cd0228a8c263d4a04d761c493926dd4363984e730aebb9308d800f80f6d2f",
           "levels": [
             1,
             2,
@@ -956,7 +956,7 @@
         },
         {
           "card_id": "W30.2",
-          "content_revision": "4cfa3ba39541d34e2d3bf247b797a31a47816c5434522d8a1a720104329a1272",
+          "content_revision": "3b018e2ba9d1795afa7e7ffb022e419c2d0008e67013818b6494bc4abffc0072",
           "levels": [
             1,
             2,
@@ -1037,7 +1037,7 @@
         },
         {
           "card_id": "W33.1",
-          "content_revision": "0fe73a48f3091f38b92ece7d4b5e61978fb8848b8dee59b717f6bf2ec940de77",
+          "content_revision": "43d707f7536dd0c23daea91cb07771e307f62cbd7b95738d36182bd11328183a",
           "levels": [
             1,
             2,
@@ -1046,7 +1046,7 @@
         },
         {
           "card_id": "W33.2",
-          "content_revision": "7fd5b02aab5eee8e4aec82c557765162968085d09a42b6df27c977027e83cd3f",
+          "content_revision": "df26262371f4cc8c025324ab23e709edc6b616b71b961f60a163aa654d0b84a9",
           "levels": [
             1,
             2,
@@ -1055,7 +1055,7 @@
         },
         {
           "card_id": "W33.3",
-          "content_revision": "181d6638e31f0c517ce9db50c43fa81cb1788ae0f1a569418fbf735cdb81404c",
+          "content_revision": "8f14682a2ca342cf82158aba648226be666efe081edc1319916d02e443d8ff3d",
           "levels": [
             1,
             2,
@@ -1064,7 +1064,7 @@
         },
         {
           "card_id": "W33.4",
-          "content_revision": "e1d718c6284121c2193231dc8328df04782820badd12f1c645b3e75bc516cb49",
+          "content_revision": "a4093f45e77819866b185a0fedd4f0c0eac5d468629fff009e6600b7a0cf7136",
           "levels": [
             1,
             2,
@@ -1104,9 +1104,9 @@
         "hint_count": 720,
         "operation_count": 70,
         "path": "build/hint-delivery/manifest.json",
-        "revision": "339d76d710083a7e00e334a6f3073ec098d844e1edbe02703cdebc27cdcd5bf7",
+        "revision": "8295f158e4e9f621f18664616f7ded3b3e39a2adf0141301435e2b26d5c925a7",
         "schema": "cinder-typhoon.hint-delivery/v1",
-        "sha256": "46c43c70e5a1711a9a5dc352af9bbcd1af41d5243fe171a6849c154b5cff529f"
+        "sha256": "dd6270edeb5f3052359ced05f0e0273a5d8b47d75eb885236ed47ed47007f2a1"
       },
       "release": {
         "audit": "append_only_metadata_without_hint_text",
@@ -1127,12 +1127,109 @@
         "hint_count": 360,
         "path": "build/card-coverage/hints-arwc.yaml",
         "phase": "arwc",
-        "sha256": "5b70136c1f5b0f6b5af34b521ef60bbab78246e9536213a767dc3e0c371468a0"
+        "sha256": "8791c19642f73b8a02706a1d08c36d1702afbc012c1ec0fb88c197bf337ae4d2"
       },
       "status": "versioned"
     }
   },
-  "disclosures": [],
+  "disclosures": [
+    {
+      "exposes": [
+        "W17 live observation and measurement binding"
+      ],
+      "id": "arwc-w17-live-observation",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W17/live-observation.md"
+    },
+    {
+      "exposes": [
+        "W17 outlet B engineering reference"
+      ],
+      "id": "arwc-w17-engineering-reference",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W17/engineering-reference.md"
+    },
+    {
+      "exposes": [
+        "W18 native tag register"
+      ],
+      "id": "arwc-w18-tag-register",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv"
+    },
+    {
+      "exposes": [
+        "W18 historian provenance guidance"
+      ],
+      "id": "arwc-w18-history-provenance",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W18/history-provenance.md"
+    },
+    {
+      "exposes": [
+        "W21 project handover"
+      ],
+      "id": "arwc-w21-project-handover",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W21/project-handover.md"
+    },
+    {
+      "exposes": [
+        "W21 deployment note"
+      ],
+      "id": "arwc-w21-deployment-note",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W21/deployment-note.md"
+    },
+    {
+      "exposes": [
+        "W25 operating envelope"
+      ],
+      "id": "arwc-w25-operating-envelope",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W25/operating-envelope.csv"
+    },
+    {
+      "exposes": [
+        "W25 bounded movement guide"
+      ],
+      "id": "arwc-w25-bounded-movement",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md"
+    },
+    {
+      "exposes": [
+        "W29 corporate allocation export"
+      ],
+      "id": "arwc-w29-allocation-ledger",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W29/allocation-ledger.csv"
+    },
+    {
+      "exposes": [
+        "W29 reconciliation method"
+      ],
+      "id": "arwc-w29-reconciliation-method",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md"
+    },
+    {
+      "exposes": [
+        "W30 approved remote operating plan"
+      ],
+      "id": "arwc-w30-release-plan",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W30/release-plan.json"
+    },
+    {
+      "exposes": [
+        "W30 dispatcher operation and handback brief"
+      ],
+      "id": "arwc-w30-operator-brief",
+      "kind": "workplace-document",
+      "path": "/home/fieldlink/CairnReach/Briefs/W30/operator-brief.md"
+    }
+  ],
   "filesystem": {
     "forbidden_paths": [
       {

@@ -23,13 +23,6 @@ AUDIT = ROOT / "audit" / "events.jsonl"
 SESSION = pathlib.Path("/run/arwc-field-session/contractor-session.json")
 OT_EVIDENCE = ROOT / "handover" / "contractor.json"
 PROCESS_PATHS = {
-    "/api/process-views/state", "/api/process-views/mode",
-    "/api/process-views/instruments/active", "/api/observations",
-    "/api/tag-exports/current", "/api/tag-scales/current",
-    "/api/tag-scales/current/history", "/api/outlet-groups/current/instruments",
-    "/api/sealed-projects/current/note", "/api/vault-access",
-    "/api/operating-envelopes/current", "/api/movement-conditions/current",
-    "/api/commands", "/api/practice-sequences",
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
     "/api/signature-programs/current", "/api/diagnostic-programs/legacy",
     "/api/sealed-projects/current/viewer", "/api/sealed-viewers/current/execute",
@@ -43,14 +36,10 @@ PROCESS_PATHS = {
     "/api/diagnostic-runs",
     "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
     "/api/control-authority",
-    "/api/collision-solutions", "/api/reporting-checkpoints/current",
-    "/api/release-plans/current", "/api/release-plans/current/execute",
     "/api/vault-records/current", "/api/signature-records/current",
     "/api/replay-sessions/current/divergence", "/api/diagnostic-programs/authority",
     "/api/replay-sessions/current", "/api/estimator-tasks/current/inputs",
     "/api/estimator-results/current", "/api/replay-sessions/current/execute",
-    "/api/forecasts/current", "/api/schedule-windows/current",
-    "/api/schedules", "/api/feedback-policies",
 }
 MANIFEST = {
     "record_id": "FIELD-SERVICES-R21",

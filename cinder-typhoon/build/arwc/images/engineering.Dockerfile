@@ -1,8 +1,3 @@
-FROM python:3.12.11-slim-bookworm AS narrative
-COPY assets/narrative/generated/packages/arwc-documents.json /tmp/arwc-documents.json
-COPY build/arwc/runtime/extract_document.py /usr/local/bin/extract-document
-RUN python3 /usr/local/bin/extract-document /tmp/arwc-documents.json me-project-handover-01 /tmp/me-project-handover-01.md
-
 FROM debian:bookworm-slim AS native
 RUN apt-get update \
     && apt-get install --no-install-recommends -y binutils g++ gcc libc6-dev python3 \
@@ -71,7 +66,6 @@ RUN apt-get update \
 RUN pip install --no-cache-dir cryptography==50.0.2
 COPY --chown=arwc-engineering:arwc-engineering --chmod=0640 build/arwc/runtime/process_services.py /opt/process-service/process_services.py
 COPY --chown=arwc-engineering:arwc-engineering --chmod=0640 build/arwc/runtime/dpg1.py /opt/process-service/dpg1.py
-COPY --from=narrative --chown=arwc-engineering:arwc-engineering --chmod=0640 /tmp/me-project-handover-01.md /opt/process-service/assets/me-project-handover-01.md
 COPY --from=native --chown=arwc-engineering:arwc-engineering --chmod=0750 /tmp/diag-crr-mixed-19 /opt/process-service/artifacts/diag-crr-mixed-19
 COPY --from=viewer --chown=arwc-engineering:arwc-engineering --chmod=0750 /tmp/sealed-viewer /opt/process-service/artifacts/sealed-viewer
 COPY --from=sealed --chown=arwc-engineering:arwc-engineering --chmod=0640 /tmp/sealed/ /opt/process-service/artifacts/

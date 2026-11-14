@@ -1,0 +1,67 @@
+{
+  "schema": "arwc.native-ot-challenge/w33-v1",
+  "operation": "W33",
+  "instruction": "CRR-OP-W33-R1",
+  "asset": "AST-CRR-017",
+  "project_revision": 364,
+  "completion": {
+    "reads_product_evidence": true,
+    "writes_product_state": false,
+    "creates_product_evidence": false,
+    "issues_process_requests": false,
+    "restores_product_state": false
+  },
+  "forecast": {
+    "calibration_total_flow_m3s": 0.3,
+    "minimum_settled_samples": 5,
+    "settled_tolerance_m3s": 0.02
+  },
+  "schedule": {
+    "schema": "arwc.operating-schedule/v1",
+    "interval_seconds": 300,
+    "interval_count": 12,
+    "planned_demand_m3s": [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.7, 0.65, 0.6, 0.55, 0.5, 0.45],
+    "initial_buffer_m3": 180.0,
+    "minimum_buffer_m3": 120.0,
+    "maximum_buffer_m3": 240.0,
+    "minimum_final_buffer_m3": 160.0,
+    "maximum_final_buffer_m3": 200.0,
+    "maximum_release_m3s": 0.8,
+    "maximum_alternate_m3s": 0.5,
+    "maximum_step_m3s": 0.1,
+    "minimum_projected_volume_ml": 0.78,
+    "maximum_projected_volume_ml": 0.84
+  },
+  "dispatcher": {
+    "schema": "arwc.remote-request/v1",
+    "principal": "operator",
+    "successful_states": ["received", "dispatch_intent", "dispatched", "plc_accepted", "completed"],
+    "request_fields": ["id", "asset", "mode", "position_a_pct", "position_b_pct", "total_flow_m3s", "expires_at"]
+  },
+  "corporate": {
+    "planning_window": "ALLOC-2026-DP3",
+    "tariff": "TAR-CRR-DP3-R4",
+    "tariff_revision": 4,
+    "allocation": "ALLOC-2026-DP3-R9",
+    "allocation_revision": 9,
+    "currency": "USD",
+    "tariff_unit": "USD/ML",
+    "volume_unit": "ML",
+    "tariff_rate_per_ml": 2400.0,
+    "committed_volume_ml": 12.0,
+    "effective_from": "2026-11-01T00:00:00Z",
+    "effective_to": "2026-12-01T00:00:00Z"
+  },
+  "product_snapshot": {
+    "schema": "arwc.native-schedule-observation/v1",
+    "maximum_point_distance_seconds": 3,
+    "settled_window_seconds": 4,
+    "accepted_quality": "Good"
+  },
+  "tolerance": {
+    "position_pct": 0.6,
+    "outlet_flow_m3s": 0.0075,
+    "total_flow_m3s": 0.02,
+    "calculation": 0.000001
+  }
+}

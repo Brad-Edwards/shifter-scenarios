@@ -1,0 +1,49 @@
+{
+  "schema": "arwc.native-ot-challenge/w29-v1",
+  "operation": "W29",
+  "asset": "AST-CRR-017",
+  "planning_window": "ALLOC-2026-DP3",
+  "completion": {
+    "reads_product_evidence": true,
+    "writes_product_state": false,
+    "creates_product_evidence": false,
+    "issues_process_requests": false
+  },
+  "tariff": {
+    "record_id": "TAR-CRR-DP3-R4",
+    "revision": 4,
+    "currency": "USD",
+    "rate_per_ml": 2400.0,
+    "unit": "USD/ML",
+    "effective_from": "2026-11-01T00:00:00Z",
+    "effective_to": "2026-12-01T00:00:00Z"
+  },
+  "allocation": {
+    "record_id": "ALLOC-2026-DP3-R9",
+    "revision": 9,
+    "committed_ml": 12.0,
+    "unit": "ML",
+    "effective_from": "2026-11-01T00:00:00Z",
+    "effective_to": "2026-12-01T00:00:00Z"
+  },
+  "report": {
+    "record_id": "RPT-CRR-DP3-R7",
+    "revision": 7,
+    "reported_ml": 13.4,
+    "unit": "ML",
+    "as_of": "2026-11-09T00:00:00Z"
+  },
+  "product_snapshot": {
+    "schema": "arwc.native-allocation-reconciliation/v1",
+    "variable": "UsableVolumeML",
+    "series": "usable_volume_ml",
+    "accepted_quality": "Good",
+    "maximum_capture_age_seconds": 60,
+    "maximum_point_distance_seconds": 3,
+    "maximum_collection_delay_seconds": 3,
+    "maximum_ingestion_delay_seconds": 5,
+    "minimum_usable_volume_ml": 0.0,
+    "maximum_usable_volume_ml": 18.0
+  },
+  "tolerance_ml": 0.005
+}

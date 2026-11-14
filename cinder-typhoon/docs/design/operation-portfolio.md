@@ -227,12 +227,22 @@ No host, subnet, deployment unit, or infrastructure size is assigned here.
 | W27: A valid-looking program | 1H, 1X, 1L | W21; isolated program verifier | Recover the legacy integrity algorithm; model its linear collision constraints; create a semantically valid altered diagnostic program accepted by the engineering consumer. A useful collision and its final accepted program form one elite achievement; W34 can use the program to alter a planning view. | [C15](reference-catalog.md#c15) |
 | W28: The utility has no room | 1M, 2H | W21 | Characterize the small engineering utility; build a control-flow exploit with its constrained code surface; retain the correct execution privilege to obtain the scoped control capability. | [C16](reference-catalog.md#c16) |
 
+#### Planning
+
+| Operation | Slots | Available from | Principal work and story effect | Source |
+| --- | --- | --- | --- | --- |
+| W29: Paper truth | 1E, 2M | OT visibility and process interpretation | Bind the current tariff and allocation; derive the current uncommitted margin from good native history; compare a dated report with a later measurement while preserving their different as-of times. | Original accessible task |
+
+#### Plant operation
+
+| Operation | Slots | Available from | Principal work and story effect | Source |
+| --- | --- | --- | --- | --- |
+| W30: Operate the outlet | 2M | PROCESS_INTERPRETATION AND CONTROL AND MODE AND W29.PLAN | Bind the approved instruction to the installed dispatcher; execute one bounded automatic-flow request through the native controller and feedback path; use local FUXA priority to restore and prove the normal baseline. | Original accessible task |
+
 #### Release and consequences
 
 | Operation | Slots | Available from | Principal work and story effect | Source |
 | --- | --- | --- | --- | --- |
-| W29: Paper truth | 1E, 2M | PROCESS_INTERPRETATION AND MODE; tariff artifact visible from OT visibility | Recover the current replacement-supply tariff; reconcile live usable reserve with allocation commitments; construct a bounded release/consequence plan using the supplied equation and current envelope. W30 requires the last output; no exploit or extra riddle is added. | Original accessible task |
-| W30: Open the gates | 2M | PROCESS_INTERPRETATION AND CONTROL AND MODE AND CONSEQUENCE_PLAN | Bind the scoped control client and validated process evidence into a correct command plan; execute the opening and prove the volume effect independently as one achievement. The visible financial consequence completes the episode. | Original accessible task |
 | W31: The diagnostic vault | 1M, 1H, 2X | W21; optional native diagnostic service | Find the formatting/length discrepancy; combine it with the parser boundary error; construct control over the saved execution state; obtain the diagnostic service privilege despite its stack protection. Optional alternative control research, not a finale requirement. | [C22](reference-catalog.md#c22) |
 | W32: Replay is not reality | 1M, 2H, 1X | W21; optional offline replay artifact | Identify the replay tool's entity/component layout; reconstruct the relevant update systems; recover the hidden state condition; produce a trace that exposes why replay and live process disagree. Distinct from modifying the actual process. The resulting witness explains why the replay approved a gate schedule that current observations reject; it supplies an optional scenario model for W33, never authority or current telemetry. | [C26](reference-catalog.md#c26) |
 | W33: The expensive hour | 1M, 2H, 1X | OT visibility for investigation; PROCESS_INTERPRETATION AND MODE AND CONTROL AND CONSEQUENCE_PLAN for execution | Reconstruct a forecast from observable calibration evidence; derive a feasible constrained gate schedule in the practice model; exploit the overly broad scheduler authority to apply it under the current mode; run a feedback policy through that earned capability across disclosed demand/calibration changes in private live rehearsals. A finite horizon, ramp limits, channel capacity, and allocation cost make timing and process interpretation matter. | [C30](reference-catalog.md#c30) |

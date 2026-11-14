@@ -285,7 +285,7 @@ def check_campaign(graph):
     graph.every_path_has('PROCESS_INTERPRETATION', ['MAPPING', 'W09.DATA', 'W21.REVISION', 'ENVELOPE'])
     graph.every_path_has('W26.CONTROL', ['W13.SESSION', 'W15.APPROVAL'])
     graph.every_path_has('W28.CONTROL', ['W21.REVISION'])
-    required = ['PROCESS_INTERPRETATION', 'CONTROL', 'MODE', 'CONSEQUENCE_PLAN',
+    required = ['PROCESS_INTERPRETATION', 'CONTROL', 'MODE', 'W29.PLAN',
                 'W09.3', 'W21.2', 'W25.1', 'W25.4', 'W29.3']
     graph.every_path_has('W30.RESULT', required)
     excluded = {'K29', 'K30', 'K31', 'W16', 'W22', 'W23', 'W24', 'W27', 'W33', 'W34', 'W35'}
@@ -458,12 +458,12 @@ def self_test(data, briefs):
     changed('hard customer-entry gate', 'K25.2', [['G01', 'K04.4']])
     changed('both customer routes required', 'CORPORATE', [['A04', 'B04']], True)
     changed('ending requires both customer entries', 'W30.1',
-            [['PROCESS_INTERPRETATION', 'CONTROL', 'MODE', 'CONSEQUENCE_PLAN', 'A04', 'B04']])
+            [['PROCESS_INTERPRETATION', 'CONTROL', 'MODE', 'W29.PLAN', 'A04', 'B04']])
     changed('both control routes required', 'CONTROL', [['W26.CONTROL', 'W28.CONTROL']], True)
     changed('both mapping routes required', 'MAPPING', [['W18.MAP', 'W19.MAP']], True)
     changed('mapping replaces current evidence', 'PROCESS_INTERPRETATION', [['W19.MAP']], True)
-    changed('finale omits authority', 'W30.1', [['PROCESS_INTERPRETATION', 'MODE', 'CONSEQUENCE_PLAN']])
-    changed('finale omits consequence plan', 'W30.1', [['PROCESS_INTERPRETATION', 'CONTROL', 'MODE']])
+    changed('finale omits authority', 'W30.1', [['PROCESS_INTERPRETATION', 'MODE', 'W29.PLAN']])
+    changed('finale omits planning basis', 'W30.1', [['PROCESS_INTERPRETATION', 'CONTROL', 'MODE']])
     changed('optional elite becomes mandatory', 'W09.3', [['W09.1', 'W09.2', 'W16.4']])
     changed('AI target becomes mandatory', 'W09.3', [['W09.1', 'W09.2', 'K21.3']])
     changed('discovery substituted for workload access', 'K30.1', [['K09.1']])

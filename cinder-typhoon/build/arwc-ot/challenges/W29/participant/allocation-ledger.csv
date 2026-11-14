@@ -1,0 +1,4 @@
+record_type,record_id,revision,planning_window,asset,value,unit,effective_from,effective_to,as_of,source
+tariff,TAR-CRR-DP3-R4,4,ALLOC-2026-DP3,AST-CRR-017,2400,USD/ML,2026-11-01T00:00:00Z,2026-12-01T00:00:00Z,,corporate planning PostgreSQL
+allocation,ALLOC-2026-DP3-R9,9,ALLOC-2026-DP3,AST-CRR-017,12.00,ML,2026-11-01T00:00:00Z,2026-12-01T00:00:00Z,,corporate allocation ledger
+reserve_report,RPT-CRR-DP3-R7,7,ALLOC-2026-DP3,AST-CRR-017,13.40,ML,,,2026-11-09T00:00:00Z,corporate reserve report

@@ -41,7 +41,7 @@ nodes:
       remain open.'
   a-hmi:
     type: compute
-    description: Supervisory process view, practice model, command-plan binder, and private scheduler.
+    description: Supervisory process view, local controls, and authenticated remote dispatcher.
     features:
       a-hmi: ''
       a-hmi--dispatch: ''
@@ -99,205 +99,8 @@ nodes:
         service: supervisory-operations
         protocol: https
         base_path: /
-        description: Supervisory process view, practice model, command-plan binder, and private scheduler.
-        routes:
-        - route_id: the-reservoir-s-present-tense
-          path: /api/the-reservoir-s-present-tense
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Current process view PV-CRR-2026-09-25T1400Z reports measured gate positions, actual flows,
-            integrated volume, and usable reserve for interval 14:00:00-14:05:00Z separately from requested setpoints.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: the-mode-the-plant-is-in
-          path: /api/the-mode-the-plant-is-in
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Mode record MODE-CRR-17 is DRY_PERIOD_MANAGED, effective for project CRR-CTRL-R21 and outlet
-            group OG-CRR-02.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: the-instrument-in-the-note
-          path: /api/the-instrument-in-the-note
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Controls note ENG-CRR-OG2-17 names instrument FIT-CRR-204B and historian tag CRR.OUTLET.02B.FLOW_ACTUAL;
-            ordinary context reuses narrative document me-engineering-note-01-1.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: the-first-live-trace
-          path: /api/the-first-live-trace
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Commissioning event EVT-COMM-OG2-114 ramped each gate linearly for 20 seconds, held 40 seconds,
-            and ramped closed for 20 seconds; the 60 full-flow-equivalent seconds integrate to 0.012 ML, and HMI
-            plus independent instrument series must correlate to that trace while reusing ordinary narrative document
-            me-commissioning-01.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: the-operating-envelope
-          path: /api/the-operating-envelope
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Envelope ENV-OG2-R6 limits each gate to 0.50 m3/s, aggregate to 1.00 m3/s, ramp to 0.10 m3/s
-            per 20 seconds, hold to 1200 seconds, and volume to 1.20 ML.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: conditions-before-movement
-          path: /api/conditions-before-movement
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Practice permissive PRACTICE-PERM-02 is false in supplied state because simulation reset_complete
-            is not asserted; live permissive PERM-OG2-LIVE-R4 is separate.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: accepted-is-not-actuated
-          path: /api/accepted-is-not-actuated
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Practice requests PRACTICE-REQ-11 and PRACTICE-REQ-12 are acknowledged but not actuated while
-            PRACTICE-PERM-02 is false; simulator measurements remain at zero.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: a-sequence-the-process-can-follow
-          path: /api/a-sequence-the-process-can-follow
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Practice checkpoint PRACTICE-OG2-07 accepts a permissive transition then ramps each simulated
-            gate linearly to 0.15 m3/s for 30 seconds, holds 70 seconds, and ramps closed for 30 seconds; 100 full-flow-equivalent
-            seconds independently report 0.03 ML without changing live reserve.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: reporting-checkpoint-submit
-          path: /api/reporting-checkpoints/current
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Plan PLAN-CRR-LOSS-1000 ramps balanced gates linearly for 100 seconds, holds each at 0.50
-            m3/s for 900 seconds, and ramps closed for 100 seconds; 1000 full-flow-equivalent seconds release 1.00
-            ML, leaving 11.40 ML, a 0.60 ML shortfall, USD 1,440 liability, and Stage A restrictions under CONT-DRY-A-R3.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: bind-the-plan-to-the-plant
-          path: /api/bind-the-plan-to-the-plant
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Command-plan binder requires scoped client, asset AST-CRR-017, outlet OG-CRR-02, project
-            CRR-CTRL-R21, map MAP-OG2-R8, mode MODE-CRR-17, envelope ENV-OG2-R6, and plan PLAN-CRR-LOSS-1000.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: a-forecast-that-matches-the-instrument
-          path: /api/a-forecast-that-matches-the-instrument
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Forecast case FCST-CRR-33 joins 20-second instrument samples, fixed 40-second publication
-            delay, scale gain 1.00, and current map MAP-OG2-R8; tolerance is 0.01 ML.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: the-expensive-hour
-          path: /api/the-expensive-hour
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC scoped OT read or control session
-          session_required: true
-          description: Checkpoint REH-SCHED-33 has twelve 300-second intervals, disclosed demand vector, 180 m3
-            initial buffer, 120-240 m3 bounds, 160-200 m3 final bound, 0.10 m3/s ramps, and 0.78-0.84 ML reservoir-volume
-            objective.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
+        description: Supervisory process view, local controls, and authenticated remote dispatcher.
+        routes: []
       app_authorizations:
       - app_authorization_id: supervisory-operations-rbac
         resource_vocabulary: app_resource
@@ -319,19 +122,7 @@ nodes:
           - read
           - update
           - execute
-          resource_patterns:
-          - the-reservoir-s-present-tense
-          - the-mode-the-plant-is-in
-          - the-instrument-in-the-note
-          - the-first-live-trace
-          - the-operating-envelope
-          - conditions-before-movement
-          - accepted-is-not-actuated
-          - a-sequence-the-process-can-follow
-          - reporting-checkpoints/current
-          - bind-the-plan-to-the-plant
-          - a-forecast-that-matches-the-instrument
-          - the-expensive-hour
+          resource_patterns: []
           effect: allow
         role_mappings:
         - mapping_id: supervisory-operator-mapping
@@ -343,7 +134,7 @@ nodes:
           name: Alterra Regional Water Company
       software_components:
       - component_id: supervisory-operations
-        name: Supervisory process view, practice model, command-plan binder, and private scheduler
+        name: Supervisory process view, local controls, and authenticated remote dispatcher
         version: 1.0.0
         component_type: application
         provenance: operator
@@ -409,87 +200,7 @@ nodes:
         protocol: https
         base_path: /
         description: Versioned process historian, tag, scale, and trace service.
-        routes:
-        - route_id: the-tag-export
-          path: /api/the-tag-export
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC scoped OT read session
-          session_required: true
-          description: Engineering export TAGS-CRR-R21 lists outlet command, position, and flow tags with project
-            revision CRR-CTRL-R21 and ambiguous legacy group labels.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: the-scale-kept-elsewhere
-          path: /api/the-scale-kept-elsewhere
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC scoped OT read session
-          session_required: true
-          description: Separate scale table SCALE-CRR-R8 maps raw counts to percent-open and m3/s with signed engineering
-            revision R8.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: when-the-units-changed
-          path: /api/when-the-units-changed
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC scoped OT read session
-          session_required: true
-          description: Revision note SCALE-CHANGE-OG2-8 changes flow divisor from 8000 to 10000 counts per m3/s
-            at deployment R21; retained R19 samples use the old scale.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: which-outlet-answers
-          path: /api/which-outlet-answers
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC scoped OT read session
-          session_required: true
-          description: Observed commissioning trace EVT-COMM-OG2-114 and current scale resolve MAP-OG2-R8 from tag
-            identifiers to gates GT-CRR-02A and GT-CRR-02B and outlet group OG-CRR-02.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: a-forecast-that-matches-the-instrument
-          path: /api/a-forecast-that-matches-the-instrument
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC scoped OT read session
-          session_required: true
-          description: Forecast case FCST-CRR-33 joins 20-second instrument samples, fixed 40-second publication
-            delay, scale gain 1.00, and current map MAP-OG2-R8; tolerance is 0.01 ML.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
+        routes: []
       app_authorizations:
       - app_authorization_id: process-historian-rbac
         resource_vocabulary: app_resource
@@ -511,12 +222,7 @@ nodes:
           - read
           - update
           - execute
-          resource_patterns:
-          - the-tag-export
-          - the-scale-kept-elsewhere
-          - when-the-units-changed
-          - which-outlet-answers
-          - a-forecast-that-matches-the-instrument
+          resource_patterns: []
           effect: allow
         role_mappings:
         - mapping_id: historian-reader-mapping
@@ -653,38 +359,6 @@ nodes:
           session_required: true
           description: Recovered migration record maps legacy project R19 identifiers to CRR-CTRL-R21 and provides
             a signed comparison digest, but is historical rather than current deployment evidence.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: the-project-and-the-note
-          path: /api/the-project-and-the-note
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC engineering workspace session
-          session_required: true
-          description: 'Engineering project index PROJ-CRR-INDEX-R9 and note ENG-DEPLOY-CRR-21 disagree: workspace
-            claims R19 while signed deployment manifest claims CRR-CTRL-R21; ordinary background reuses me-project-handover-01.'
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: which-project-is-running
-          path: /api/which-project-is-running
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC engineering workspace session
-          session_required: true
-          description: Independent instrument handshake DEPLOY-OBS-CRR-21 reports project digest for CRR-CTRL-R21;
-            comparison must reject the stale workspace claim and bind the observed revision.
           responses:
           - status_code: 201
             content_type: application/json
@@ -914,8 +588,6 @@ nodes:
           - a-second-interpretation
           - the-hidden-check
           - a-map-from-the-old-diagnostic
-          - the-project-and-the-note
-          - which-project-is-running
           - the-viewer-in-the-delivery
           - the-machine-inside-the-viewer
           - the-decision-inside-the-sealed-project

@@ -66,7 +66,7 @@ assign(13, ["a-contractors"] * 4)
 assign(14, ["a-contractors", "a-contractor-bridge", "a-contractor-bridge"])
 assign(15, ["a-approval"] * 4)
 assign(16, ["a-archive"] * 4)
-assign(17, ["a-hmi"] * 4)
+assign(17, ["a-hmi", "a-hmi", "a-engineering", "a-historian"])
 assign(18, ["a-historian"] * 4)
 assign(19, ["a-engineering"] * 4)
 assign(20, ["a-instruments"] * 3)
@@ -78,13 +78,212 @@ assign(25, ["a-hmi"] * 4)
 assign(26, ["a-renderer", "a-renderer", "a-renderer", "a-control-broker"])
 assign(27, ["a-engineering", "a-engineering", "a-diagnostics"])
 assign(28, ["a-engineering", "a-engineering", "a-control-broker"])
-assign(29, ["a-data", "a-data", "a-hmi"])
+assign(29, ["a-data"] * 3)
 assign(30, ["a-hmi", "a-reservoir"])
 assign(31, ["a-diagnostics"] * 4)
 assign(32, ["a-engineering"] * 4)
 assign(33, ["a-hmi", "a-hmi", "a-reservoir", "a-reservoir"])
 assign(34, ["a-data", "a-data", "a-data"])
 assign(35, ["a-business"] * 3)
+
+NATIVE_OT_CARDS = {
+    *{f"W17.{number}" for number in range(1, 5)},
+    *{f"W18.{number}" for number in range(1, 5)},
+    *{f"W21.{number}" for number in range(1, 3)},
+    *{f"W25.{number}" for number in range(1, 5)},
+    *{f"W29.{number}" for number in range(1, 4)},
+    *{f"W30.{number}" for number in range(1, 3)},
+    *{f"W33.{number}" for number in range(1, 5)},
+}
+NATIVE_OT_TARGETS = {
+    "W17.1": ("features.a-engineering.a-hmi", "features.a-engineering.a-historian"),
+    "W17.2": ("features.a-engineering.a-hmi",),
+    "W17.3": ("features.a-engineering.a-engineering", "features.a-engineering.a-historian"),
+    "W17.4": (
+        "features.a-engineering.a-hmi", "features.a-engineering.a-historian",
+        "features.a-control.a-instruments",
+    ),
+    "W18.1": ("features.a-engineering.a-engineering", "features.a-engineering.a-historian"),
+    "W18.2": ("features.a-engineering.a-engineering", "features.a-engineering.a-historian"),
+    "W18.3": ("features.a-engineering.a-engineering", "features.a-engineering.a-historian"),
+    "W18.4": (
+        "features.a-engineering.a-engineering", "features.a-engineering.a-historian",
+        "features.a-control.a-instruments",
+    ),
+    "W21.1": ("features.a-engineering.a-engineering",),
+    "W21.2": ("features.a-engineering.a-engineering",),
+    "W25.1": ("features.a-engineering.a-hmi", "features.a-engineering.a-engineering"),
+    "W25.2": ("features.a-engineering.a-hmi", "features.a-engineering.a-engineering"),
+    "W25.3": (
+        "features.a-engineering.a-hmi", "features.a-engineering.a-historian",
+        "features.a-control.a-instruments",
+    ),
+    "W25.4": (
+        "features.a-engineering.a-hmi", "features.a-engineering.a-historian",
+        "features.a-control.a-instruments",
+    ),
+    "W29.1": (
+        "features.a-corporate.a-data", "features.a-engineering.a-engineering",
+    ),
+    "W29.2": (
+        "features.a-corporate.a-data", "features.a-engineering.a-historian",
+    ),
+    "W29.3": (
+        "features.a-corporate.a-data", "features.a-engineering.a-historian",
+    ),
+    "W30.1": (
+        "features.a-engineering.a-engineering", "features.a-engineering.a-hmi",
+    ),
+    "W30.2": (
+        "features.a-engineering.a-hmi", "features.a-engineering.a-historian",
+        "features.a-control.a-reservoir", "features.a-control.a-instruments",
+    ),
+    "W33.1": (
+        "features.a-engineering.a-engineering", "features.a-engineering.a-historian",
+        "features.a-engineering.a-hmi",
+    ),
+    "W33.2": (
+        "features.a-engineering.a-engineering", "features.a-engineering.a-historian",
+        "features.a-corporate.a-data",
+    ),
+    "W33.3": (
+        "features.a-engineering.a-engineering", "features.a-engineering.a-hmi", "features.a-engineering.a-historian",
+        "features.a-control.a-reservoir", "features.a-control.a-instruments",
+    ),
+    "W33.4": (
+        "features.a-engineering.a-historian", "features.a-engineering.a-hmi",
+        "features.a-corporate.a-data", "features.a-control.a-reservoir",
+    ),
+}
+NATIVE_OT_BINDINGS = {
+    "W17.1": [
+        "a-engineering.a-hmi/FUXA:crr-overview",
+        "a-engineering.a-historian/PostgreSQL:public.process_history",
+    ],
+    "W17.2": [
+        "a-engineering.a-hmi/FUXA:crr-overview",
+        "a-engineering.a-hmi/FUXA:crr-outlet-a",
+        "a-engineering.a-hmi/FUXA:crr-outlet-b",
+    ],
+    "W17.3": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W17/engineering-reference.md",
+        "a-engineering.a-hmi/OPC-UA:nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s",
+        "a-engineering.a-historian/PostgreSQL:public.historian_tag_catalog",
+    ],
+    "W17.4": [
+        "a-engineering.a-hmi/FUXA:FlowBM3s",
+        "a-engineering.a-hmi/OPC-UA:nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s",
+        "a-engineering.a-historian/PostgreSQL:public.process_history",
+        "a-control.a-instruments/Modbus-TCP:outlet-B-position-and-flow",
+    ],
+    "W18.1": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv",
+        "a-engineering.a-hmi/OPC-UA:nsu=urn:arwc:crr:tags;s=CRR.ProjectRevision",
+        "a-engineering.a-historian/PostgreSQL:public.historian_tag_catalog",
+    ],
+    "W18.2": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv",
+        "a-engineering.a-hmi/OPC-UA:nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s",
+        "a-engineering.a-historian/PostgreSQL:public.historian_tag_catalog",
+    ],
+    "W18.3": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W18/history-provenance.md",
+        "a-engineering.a-historian/PostgreSQL:public.process_history",
+    ],
+    "W18.4": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv",
+        "a-engineering.a-historian/PostgreSQL:public.historian_tag_catalog",
+        "a-engineering.a-historian/PostgreSQL:public.process_history",
+        "a-control.a-instruments/Modbus-TCP:outlet-A-and-B-input-registers",
+    ],
+    "W21.1": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/controller",
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W21",
+        "a-engineering.a-engineering/OpenPLC-Editor:project-structure-and-device-configuration",
+    ],
+    "W21.2": [
+        "a-engineering.a-engineering/OpenPLC-Editor:debug-program-md5-match",
+        "a-engineering.a-engineering/OpenPLC-Runtime-v4:running-status",
+        "a-engineering.a-engineering/OpenPLC-Debugger:ProjectRevision",
+    ],
+    "W25.1": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W25/operating-envelope.csv",
+        "a-engineering.a-hmi/FUXA:crr-controls",
+        "a-engineering.a-engineering/OpenPLC-Editor:SiteRequests-and-OutletControl",
+    ],
+    "W25.2": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md",
+        "a-engineering.a-hmi/FUXA:crr-overview",
+        "a-engineering.a-hmi/FUXA:crr-outlet-a",
+        "a-engineering.a-hmi/FUXA:crr-outlet-b",
+        "a-engineering.a-engineering/OpenPLC-Editor:live-permissive-chain",
+    ],
+    "W25.3": [
+        "a-engineering.a-hmi/FUXA:crr-controls",
+        "a-engineering.a-hmi/OPC-UA:HmiSeen-HmiAccepted-Owner-PermissiveA-PermissiveB",
+        "a-engineering.a-historian/PostgreSQL:public.command_history",
+        "a-control.a-instruments/Modbus-TCP:position-and-flow-feedback",
+    ],
+    "W25.4": [
+        "a-engineering.a-hmi/FUXA:crr-controls",
+        "a-engineering.a-historian/Grafana:arwc-history",
+        "a-engineering.a-historian/PostgreSQL:public.process_history",
+        "a-control.a-instruments/Modbus-TCP:position-and-flow-feedback",
+    ],
+    "W29.1": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W29/allocation-ledger.csv",
+        "a-corporate.a-data/PostgreSQL:public.settlement_tariff",
+    ],
+    "W29.2": [
+        "a-corporate.a-data/PostgreSQL:public.allocation_ledger",
+        "a-engineering.a-historian/Grafana:arwc-history",
+        "a-engineering.a-historian/PostgreSQL:public.process_history:usable_volume_ml",
+    ],
+    "W29.3": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md",
+        "a-corporate.a-data/PostgreSQL:public.business_reserve_report",
+        "a-engineering.a-historian/PostgreSQL:public.process_history:usable_volume_ml",
+    ],
+    "W30.1": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W30/release-plan.json",
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W30/operator-brief.md",
+        "a-engineering.a-hmi/filesystem:/usr/share/arwc-ot/remote-request.json",
+        "a-engineering.a-hmi/Mosquitto:arwc/crr/commands/operator",
+    ],
+    "W30.2": [
+        "a-engineering.a-hmi/Mosquitto:arwc/crr/commands/operator-and-outcomes/operator",
+        "a-engineering.a-historian/PostgreSQL:public.dispatch_history-and-command_history",
+        "a-control.a-reservoir/OpenPLC:RemoteAccepted-Owner-AutoMode",
+        "a-control.a-instruments/Modbus-TCP:two-outlet-position-and-flow-feedback",
+        "a-engineering.a-hmi/FUXA:crr-controls-local-restore",
+        "a-engineering.a-historian/PostgreSQL:public.process_history",
+    ],
+    "W33.1": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md",
+        "a-engineering.a-historian/PostgreSQL:public.dispatch_history-and-process_history",
+        "a-engineering.a-hmi/FUXA:completed-W30-operating-record",
+    ],
+    "W33.2": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W33/operating-window.csv",
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W33/schedule-template.json",
+        "a-engineering.a-historian/PostgreSQL:calibrated-W30-process-history",
+        "a-corporate.a-data/PostgreSQL:public.settlement_tariff-and-allocation_ledger",
+    ],
+    "W33.3": [
+        "a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W33/run-schedule.py",
+        "a-engineering.a-hmi/Mosquitto:arwc/crr/commands/operator-and-outcomes/operator",
+        "a-engineering.a-historian/PostgreSQL:public.dispatch_history-and-command_history",
+        "a-control.a-reservoir/OpenPLC:RemoteAccepted-Owner-AutoMode",
+        "a-control.a-instruments/Modbus-TCP:two-outlet-position-and-flow-feedback",
+        "a-engineering.a-hmi/FUXA:crr-controls-local-restore",
+    ],
+    "W33.4": [
+        "a-engineering.a-historian/PostgreSQL:public.process_history-and-dispatch_history",
+        "a-engineering.a-hmi/FUXA:crr-controls-local-handback",
+        "a-corporate.a-data/PostgreSQL:public.settlement_tariff-and-allocation_ledger",
+        "a-control.a-reservoir/OpenPLC:measured-commissioning-response",
+    ],
+}
 
 NAMESPACE = {
     "a-connector": "a-corporate", "a-business": "a-corporate",
@@ -93,7 +292,7 @@ NAMESPACE = {
     "a-data-bridge": "a-dmz", "a-contractor-bridge": "a-dmz", "a-control-broker": "a-dmz",
     "a-hmi": "a-engineering", "a-historian": "a-engineering",
     "a-engineering": "a-engineering", "a-diagnostics": "a-engineering",
-    "a-reservoir": "a-control", "a-distribution": "a-control", "a-instruments": "a-control",
+    "a-reservoir": "a-control", "a-instruments": "a-control",
 }
 
 APPLICATION = {
@@ -104,16 +303,13 @@ APPLICATION = {
     "a-contractor-bridge": "field-gateway", "a-control-broker": "control-broker",
     "a-hmi": "supervisory-operations", "a-historian": "process-historian",
     "a-engineering": "engineering-workbench", "a-diagnostics": "diagnostic-services",
-    "a-reservoir": "reservoir-controller", "a-distribution": "distribution-rehearsal",
-    "a-instruments": "independent-instruments",
+    "a-reservoir": "reservoir-controller", "a-instruments": "independent-instruments",
 }
 ROUTE_ID_OVERRIDES = {
     "W27.1": "signature-program-reproduction",
-    "W29.3": "reporting-checkpoint-submit",
 }
 ROUTE_PATH_OVERRIDES = {
     "W27.1": "/api/signature-programs/current/reproductions",
-    "W29.3": "/api/reporting-checkpoints/current",
 }
 SERVICE = {node: application for node, application in APPLICATION.items()}
 SERVICE["a-business"] = "workplace"
@@ -127,7 +323,7 @@ ADDRESS = {
     "a-data-bridge": "10.77.62.20", "a-contractor-bridge": "10.77.62.30",
     "a-control-broker": "10.77.62.40", "a-hmi": "10.77.63.20", "a-historian": "10.77.63.30",
     "a-engineering": "10.77.63.40", "a-diagnostics": "10.77.63.50",
-    "a-reservoir": "10.77.64.20", "a-distribution": "10.77.64.30", "a-instruments": "10.77.64.40",
+    "a-reservoir": "10.77.64.20", "a-instruments": "10.77.64.40",
 }
 
 AUTH = {
@@ -146,8 +342,7 @@ AUTH = {
     "a-historian": ("ARWC scoped OT read session", "historian-reader"),
     "a-engineering": ("ARWC engineering workspace session", "engineer"),
     "a-diagnostics": ("ARWC diagnostic service session", "diagnostic-user"),
-    "a-reservoir": ("ARWC scoped live control or rehearsal session", "reservoir-operator"),
-    "a-distribution": ("ARWC private rehearsal scheduler session", "rehearsal-operator"),
+    "a-reservoir": ("ARWC scoped control or reporting session", "reservoir-operator"),
     "a-instruments": ("ARWC read-only instrument session", "instrument-reader"),
 }
 
@@ -248,16 +443,16 @@ initial(16, [
     "Protected 32-byte calibration record CAL-CRR-OG2-R8 occupies sequencer slots 160-191 and includes revision R8 plus an internal CRC32C; only descriptor-valid experiments of at most 64 instructions are accepted",
 ])
 initial(17, [
-    "Current process view PV-CRR-2026-09-25T1400Z reports measured gate positions, actual flows, integrated volume, and usable reserve for interval 14:00:00-14:05:00Z separately from requested setpoints",
-    "Mode record MODE-CRR-17 is DRY_PERIOD_MANAGED, effective for project CRR-CTRL-R21 and outlet group OG-CRR-02",
-    "Controls note ENG-CRR-OG2-17 names instrument FIT-CRR-204B and historian tag CRR.OUTLET.02B.FLOW_ACTUAL; ordinary context reuses narrative document me-engineering-note-01-1",
-    "Commissioning event EVT-COMM-OG2-114 ramped each gate linearly for 20 seconds, held 40 seconds, and ramped closed for 20 seconds; the 60 full-flow-equivalent seconds integrate to 0.012 ML, and HMI plus independent instrument series must correlate to that trace while reusing ordinary narrative document me-commissioning-01",
+    "FUXA's Cairn Reach overview displays live level, usable volume, two measured outlet positions and flows, measured total flow, actual mode, command owner, field state, and motion authorization; accepted controller settings remain separately labelled",
+    "FUXA's PLC-backed header and outlet faceplates display actual mode, command owner, field-data state, and each outlet permissive without requiring a write or inferred default",
+    "Image-owned reference CRR-ENG-INST-204B-R1 maps physical instrument FIT-CRR-204B to IEC variable FlowBM3s, OPC UA NodeId nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s, historian series flow_b_m3s, and unit m3/s; the native catalog must expose the same point",
+    "A read-only 15-to-300-second outlet B observation joins FUXA variable FlowBM3s, its native OPC UA identity, good PostgreSQL process-history samples, and time-aligned field position whose physical response is consistent with the installed outlet capacity",
 ])
 initial(18, [
-    "Engineering export TAGS-CRR-R21 lists outlet command, position, and flow tags with project revision CRR-CTRL-R21 and ambiguous legacy group labels",
-    "Separate scale table SCALE-CRR-R8 maps raw counts to percent-open and m3/s with signed engineering revision R8",
-    "Revision note SCALE-CHANGE-OG2-8 changes flow divisor from 8000 to 10000 counts per m3/s at deployment R21; retained R19 samples use the old scale",
-    "Observed commissioning trace EVT-COMM-OG2-114 and current scale resolve MAP-OG2-R8 from tag identifiers to gates GT-CRR-02A and GT-CRR-02B and outlet group OG-CRR-02",
+    "Image-owned native I/O register CRR-IO-R364 identifies six Modbus input registers for the Cairn Reach controller; its revision and digest must agree with the live ProjectRevision point and historian catalog",
+    "The CRR-IO-R364 row for FIT-CRR-204B binds Modbus function 4 and zero-based PDU offset 5 to OpenPLC address %IW5, UINT raw variable FlowBRaw, 10000 counts per m3/s, PLC value FlowBM3s, its stable OPC UA NodeId, and historian series flow_b_m3s",
+    "The native historian records controller source time, Telegraf collection time, PostgreSQL ingestion time, transport quality, and process quality; retained history contains a real collection gap while the engineering unit remains m3/s",
+    "CRR-IO-R364 and the native catalog map both gates' position and flow channels, while time-aligned good product samples show each measured flow agrees with its corresponding measured position",
 ])
 initial(19, [
     "Legacy diagnostic package DIAG-CRR-MIXED-19 contains linux x86_64 ELF, symbols stripped, SHA-256 manifest, project R19 samples, and expected ordinary output",
@@ -271,8 +466,8 @@ initial(20, [
     "Last inspection record INSP-FIT-204-118 must be changed from status REVIEW to ACCEPTED while every other valid record, sequence relation, and page wear limit remains unchanged",
 ])
 initial(21, [
-    "Engineering project index PROJ-CRR-INDEX-R9 and note ENG-DEPLOY-CRR-21 disagree: workspace claims R19 while signed deployment manifest claims CRR-CTRL-R21; ordinary background reuses me-project-handover-01",
-    "Independent instrument handshake DEPLOY-OBS-CRR-21 reports project digest for CRR-CTRL-R21; comparison must reject the stale workspace claim and bind the observed revision",
+    "Image-owned handover CRR-PLC-COM-364 identifies native project arwc-site, main FBD program, T#100ms task, ProjectRevision 364, and OpenPLC Runtime v4 target 172.29.63.20; the participant must confirm those claims in the supplied native project",
+    "The OpenPLC debug channel reports the running program MD5 and whether it matches the locally compiled saved project; a clean conclusion also requires connected running state, no active forces, and live ProjectRevision 364",
 ])
 initial(22, [
     "Delivery ENG-CRR-SEALED-22 contains Nim 2.0.8 linux/amd64 viewer VIEW-CRR-R5, sealed project CRR-SEALED-PKG-R7, and exact build manifest",
@@ -292,10 +487,10 @@ initial(24, [
     "Signer CRR25519-S uses Edwards25519 field p=2^255-19, d=-121665/121666, standard compressed base point, scalar order 2^252+27742317777372353535851937790883648493, little-endian encoding, h=SHA-512(R||A||message) reduced modulo the order, and s=k+h*x mod order; each record leaks nonce bits 60-251 and metadata gives the signed delta between the two records' lower 60-bit nonce portions, permitting recovery of the existing key and one fresh request EXP-CAL-CRR-25",
 ])
 initial(25, [
-    "Envelope ENV-OG2-R6 limits each gate to 0.50 m3/s, aggregate to 1.00 m3/s, ramp to 0.10 m3/s per 20 seconds, hold to 1200 seconds, and volume to 1.20 ML",
-    "Practice permissive PRACTICE-PERM-02 is false in supplied state because simulation reset_complete is not asserted; live permissive PERM-OG2-LIVE-R4 is separate",
-    "Practice requests PRACTICE-REQ-11 and PRACTICE-REQ-12 are acknowledged but not actuated while PRACTICE-PERM-02 is false; simulator measurements remain at zero",
-    "Practice checkpoint PRACTICE-OG2-07 accepts a permissive transition then ramps each simulated gate linearly to 0.15 m3/s for 30 seconds, holds 70 seconds, and ramps closed for 30 seconds; 100 full-flow-equivalent seconds independently report 0.03 ML without changing live reserve",
+    "Operating instruction CRR-OP-W25-R1 binds the installed controller limits to one authorized manual movement: normal baseline A 20 percent and B 20 percent, bounded observation A 30 percent and B 10 percent, then restore A 20 percent and B 20 percent; total measured flow remains approximately 0.20 m3/s",
+    "The live movement condition comes from OpenPLC field freshness, physical availability and remote selectors, low-level protection, travel faults, operator stop, controller authorization, and the two outlet permissives; FUXA shows their current results while the supplied FBD explains the chain",
+    "A FUXA Apply action stages one complete request and advances its sequence; OpenPLC separately records seen, accepted or rejected sequence, owner and requested settings before remote I/O position and flow feedback can prove physical actuation",
+    "Authorized movement CRR-W25-MOVE-01 changes the live manual request from A 20/B 20 to A 30/B 10, records good native position and flow history, and uses a second accepted request to restore A 20/B 20 with both outlets settled, total flow near 0.20 m3/s, healthy I/O and no travel fault",
 ])
 initial(26, [
     "Renderer profile RENDER-MAINT-CRR-R9 binds approval APR-CRR-4417-R6, inspection INSP-CRR-2026-09-18, reviewer role maintenance-reviewer, and worker svc-maint-render",
@@ -314,13 +509,13 @@ initial(28, [
     "Successful chain calls built-in issue_client for issuer record ISSUER-UTIL-OG2-R4 after setresuid(0,0,0); seccomp permits only the fixed issuer socket and the resulting 48-hour client matches W26 scope",
 ])
 initial(29, [
-    "Settlement tariff TAR-CRR-DP3-R4 is USD 2,400 per ML for planning window ALLOC-2026-DP3 and is distinct from the general procurement catalog",
-    "Current balance joins instrument reserve 12.40 ML and committed allocation 12.00 ML, yielding 0.40 ML uncommitted margin before any release",
-    "Plan PLAN-CRR-LOSS-1000 ramps balanced gates linearly for 100 seconds, holds each at 0.50 m3/s for 900 seconds, and ramps closed for 100 seconds; 1000 full-flow-equivalent seconds release 1.00 ML, leaving 11.40 ML, a 0.60 ML shortfall, USD 1,440 liability, and Stage A restrictions under CONT-DRY-A-R3",
+    "Corporate tariff TAR-CRR-DP3-R4 is USD 2,400 per ML in planning window ALLOC-2026-DP3, effective 2026-11-01 through 2026-12-01; allocation ALLOC-2026-DP3-R9 commits 12.00 ML to Cairn Reach and is distinct from the W35 procurement catalog",
+    "Current uncommitted margin is the latest good native UsableVolumeML historian observation for AST-CRR-017 minus the 12.00 ML accrued allocation commitment; observation time, process quality, unit, asset, and planning window must remain explicit",
+    "Corporate report RPT-CRR-DP3-R7 records 13.40 ML as of 2026-11-09T00:00:00Z, while native history supplies a later measured usable volume; their signed difference is valid, but different as-of times mean the paper report cannot be presented as current process truth or assigned a causal correction without further evidence",
 ])
 initial(30, [
-    "Command-plan binder requires scoped client, asset AST-CRR-017, outlet OG-CRR-02, project CRR-CTRL-R21, map MAP-OG2-R8, mode MODE-CRR-17, envelope ENV-OG2-R6, and plan PLAN-CRR-LOSS-1000",
-    "Live reservoir accepts bound plan PLAN-CRR-LOSS-1000; command audit records the ramp and setpoint timeline while independent instruments integrate 1.00 ML and reserve 12.40 to 11.40 ML, producing liability and Stage A continuity records",
+    "Operating instruction CRR-OP-W30-R1 binds AST-CRR-017 to the installed arwc.remote-request/v1 dispatcher contract, automatic total flow 0.30 m3/s, a fresh UUID, 90-second Unix-time expiry, non-retained QoS 1 delivery, and a separate local FUXA restoration to manual A20/B20",
+    "One authenticated remote request must progress through durable receipt, native OpenPLC acceptance, and settled two-outlet feedback near 0.15 m3/s each; a later local FUXA request must take priority and restore manual A20/B20, total flow near 0.20 m3/s, healthy I/O, clear motion, and clear travel faults",
 ])
 initial(31, [
     "Diagnostic vault VAULT-CRR-R5 uses DVL1 records with u16 declared length, u16 header length, u32 CRC32C, and 512-byte bounded request; case DV-CRR-4417 references protected history HIST-APR-CRR-09",
@@ -335,10 +530,10 @@ initial(32, [
     "Witness trace TRACE-R19-DISPUTED shows old acceptance at 12.40 ML for a 1.00 ML request while current independent observations yield 11.40 ML and reject the old sufficiency claim",
 ])
 initial(33, [
-    "Forecast case FCST-CRR-33 joins 20-second instrument samples, fixed 40-second publication delay, scale gain 1.00, and current map MAP-OG2-R8; tolerance is 0.01 ML",
-    "Checkpoint REH-SCHED-33 has twelve 300-second intervals, disclosed demand vector, 180 m3 initial buffer, 120-240 m3 bounds, 160-200 m3 final bound, 0.10 m3/s ramps, and 0.78-0.84 ML reservoir-volume objective",
-    "Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client; reference trajectory releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall, and computes USD 984 liability within the isolated checkpoint",
-    "Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and bounded buffer and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00, +0.05 m3/s, outlet gain 0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must derive from the buffer and demand observations available at that step, and per-case schedules are rejected",
+    "Operating instruction CRR-OP-W33-R1 requires calibration from one completed W30 dispatcher request, its native PLC acceptance, and at least five good settled TotalFlowM3s samples; response delay begins at PLC acceptance and gain is measured flow divided by requested flow",
+    "The image-owned operating window has twelve 300-second intervals, a disclosed demand vector, 180 m3 initial buffer, 120-240 m3 running bounds, 160-200 m3 final bound, 0.10 m3/s ramps, and a calibrated 0.78-0.84 ML reservoir-volume objective",
+    "The reviewed schedule is commissioned through twelve sequential authenticated dispatcher requests with fresh identities; every step requires durable receipt, native OpenPLC acceptance, measured completion, and a later local FUXA handback to manual A20/B20",
+    "The final operating record reconstructs twelve settled flow means from product history, projects their one-hour reservoir volume, remaining usable volume, allocation shortfall, and tariff liability, and labels the short commissioning trial separately from the projection",
 ])
 initial(34, [
     "Planning consumer PLAN-CONSUMER-R8 accepts Cairn estimate output from the W23 estimator or W27 verifier path and refreshes checkpoint REH-REPORT-34 while retaining raw-observation links",
@@ -381,13 +576,12 @@ MECHANIC_KIND = {
     "W26.4": "issuer initiating-role omission", "W27.1": "linear ROT128 integrity reconstruction",
     "W27.2": "structurally constrained GF(2) collision model", "W27.3": "accepted colliding diagnostic program",
     "W28.1": "privileged utility contract recovery", "W28.2": "stack control under sparse executable surface",
-    "W28.3": "privilege-preserving bounded issuer call", "W30.1": "multi-authority live command binding",
-    "W30.2": "bounded actuation with independent measurement", "W31.2": "16-bit parser-length arithmetic mismatch",
+    "W28.3": "privilege-preserving bounded issuer call", "W30.2": "bounded native operation with verified handback", "W31.2": "16-bit parser-length arithmetic mismatch",
     "W31.3": "saved-state control with canary, NX, and PIE", "W31.4": "bounded diagnostic service export call",
     "W32.2": "entity-component update-order reconstruction", "W32.3": "stale cached-state approval condition",
-    "W32.4": "historical replay versus independent current truth", "W33.1": "delay and calibration forecast reconciliation",
-    "W33.2": "bounded discrete-time schedule synthesis", "W33.3": "authorization-bound private rehearsal",
-    "W33.4": "observation-driven feedback policy evaluation", "W34.1": "estimate-output consumer binding",
+    "W32.4": "historical replay versus independent current truth", "W33.1": "native response calibration",
+    "W33.2": "bounded discrete-time schedule synthesis", "W33.3": "sequential native commissioning",
+    "W33.4": "measured-history operating projection", "W34.1": "estimate-output consumer binding",
     "W34.2": "consistency-preserving decision manipulation", "W34.3": "false-report and independent-truth checkpoint join",
     "W35.2": "district-object authorization omission", "W35.3": "charge-district binding omission",
 }
@@ -560,31 +754,25 @@ MECHANIC_DETAILS = {
 }
 
 MUTATING = set(MECHANIC_KIND) | {
-    "W09.4", "W17.4", "W18.3", "W18.4", "W21.2", "W25.3", "W29.2", "W29.3",
+    "W09.4", "W25.3",
 }
 
 NARRATIVE_REUSE = {
     "W01.3": ["arwc-documents:pl-arwc-plan-method-01-method"],
-    "W17.3": ["arwc-documents:me-engineering-note-01-1"],
-    "W17.4": ["arwc-documents:me-commissioning-01"],
-    "W21.1": ["arwc-documents:me-project-handover-01"],
-    "W29.1": ["arwc-documents:pl-arwc-plan-method-01-method"],
-    "W33.1": ["arwc-documents:service-meter-guide"],
     "W35.1": ["arwc-documents:as003-agreement-summary"],
 }
 
 PROCESS_REFS = {
     **{f"W09.{n}": ["ALLOC-2026-DP3", "REC-CRR-DP3-17"] for n in range(1, 5)},
-    **{f"W17.{n}": ["EVT-COMM-OG2-114", "CRR-CTRL-R21"] for n in range(1, 5)},
-    **{f"W18.{n}": ["MAP-OG2-R8", "CRR-CTRL-R21"] for n in range(1, 5)},
-    **{f"W21.{n}": ["CRR-CTRL-R21"] for n in range(1, 3)},
+    **{f"W18.{n}": ["CRR-IO-R364", "ProjectRevision 364"] for n in range(1, 5)},
+    **{f"W21.{n}": ["arwc-site", "ProjectRevision 364"] for n in range(1, 3)},
     **{f"W23.{n}": ["ALLOC-CASE-CRR-33"] for n in range(1, 4)},
-    **{f"W25.{n}": ["ENV-OG2-R6", "PRACTICE-OG2-07"] for n in range(1, 5)},
+    **{f"W25.{n}": ["CRR-OP-W25-R1", "CRR-W25-MOVE-01", "ProjectRevision 364"] for n in range(1, 5)},
     **{f"W27.{n}": ["PLAN-CONSUMER-R8"] for n in range(1, 4)},
-    **{f"W29.{n}": ["PLAN-CRR-LOSS-1000", "TAR-CRR-DP3-R4"] for n in range(1, 4)},
-    **{f"W30.{n}": ["PLAN-CRR-LOSS-1000", "ENV-OG2-R6"] for n in range(1, 3)},
+    **{f"W29.{n}": ["TAR-CRR-DP3-R4", "ALLOC-2026-DP3-R9", "RPT-CRR-DP3-R7", "UsableVolumeML"] for n in range(1, 4)},
+    **{f"W30.{n}": ["CRR-OP-W30-R1", "arwc.remote-request/v1", "ProjectRevision 364"] for n in range(1, 3)},
     **{f"W32.{n}": ["TRACE-R19-DISPUTED"] for n in range(1, 5)},
-    **{f"W33.{n}": ["REH-SCHED-33"] for n in range(1, 5)},
+    **{f"W33.{n}": ["CRR-OP-W33-R1", "AST-CRR-017", "ProjectRevision 364"] for n in range(1, 5)},
     **{f"W34.{n}": ["REH-REPORT-34", "PLAN-CONSUMER-R8"] for n in range(1, 4)},
 }
 
@@ -639,6 +827,28 @@ def sentence(value: str) -> str:
     return value if value.endswith((".", "!", "?")) else value + "."
 
 
+TECHNICAL_IDENTIFIERS = (
+    "CRR-ENG-INST-204B-R1",
+    "FIT-CRR-204A",
+    "FIT-CRR-204B",
+    "CRR.OUTLET.02B.FLOW_ACTUAL",
+    "GT-CRR-02A",
+    "GT-CRR-02B",
+    "T#100ms",
+)
+
+
+def markdown_technical_text(value: str) -> str:
+    """Protect technical identifiers from prose-linter unit rewrites."""
+    for identifier in TECHNICAL_IDENTIFIERS:
+        value = re.sub(
+            rf"(?<!`)({re.escape(identifier)})(?!`)",
+            r"`\1`",
+            value,
+        )
+    return value
+
+
 def fixture_key(card: str) -> str:
     title, _ = title_and_path(card)
     return f"{card.lower().replace('.', '-')}-{slug(title)}"
@@ -664,6 +874,8 @@ def route_binding(node: str, card: str) -> str:
 
 @cache
 def card_targets(card: str) -> tuple[str, ...]:
+    if card in NATIVE_OT_CARDS:
+        return NATIVE_OT_TARGETS[card]
     op, number = card.lower().split(".")
     doc = yaml.safe_load((OPERATIONS / f"{op}.yaml").read_text())
     return tuple(doc["objectives"][f"c{number}"]["targets"])
@@ -681,6 +893,8 @@ def target_nodes(card: str) -> tuple[str, ...]:
 
 
 def surface_bindings(card: str) -> list[str]:
+    if card in NATIVE_OT_CARDS:
+        return NATIVE_OT_BINDINGS[card]
     result = [route_binding(node, card) for node in target_nodes(card)]
     if card in OFFLINE_ARTIFACTS:
         node = NODE_FOR_CARD[card]
@@ -763,8 +977,9 @@ def reuse_for(card: str) -> str:
         "W26.4": "Supplies W26.CONTROL and CONTROL.",
         "W27.3": "Supplies the verifier form of the W34 planning-view capability.",
         "W28.3": "Supplies W28.CONTROL and CONTROL.",
-        "W29.3": "Supplies W29.PLAN and CONSEQUENCE_PLAN.",
-        "W30.2": "Supplies W30.RESULT and the main bounded consequence.",
+        "W29.3": "Supplies W29.PLAN and CONSEQUENCE_PLAN as a verified current planning basis, not an executable control plan.",
+        "W30.2": "Supplies W30.RESULT as a verified bounded operation with the normal baseline restored.",
+        "W33.4": "Supplies a measured commissioning record and explicit one-hour operating projection; it grants no reusable control authority.",
     }
     return known.get(card, "The result remains local evidence unless a downstream workflow explicitly names it.")
 
@@ -785,16 +1000,15 @@ def write_matrix() -> None:
     ]
     for card in sorted(NODE_FOR_CARD, key=lambda item: (int(item[1:3]), int(item.split(".")[1]))):
         bindings = ", ".join(f"`{value}`" for value in surface_bindings(card))
-        initial_text = sentence(INITIAL[card]).replace("|", "\\|")
-        for identifier in (
-            "FIT-CRR-204A", "FIT-CRR-204B", "CRR.OUTLET.02B.FLOW_ACTUAL",
-            "GT-CRR-02A", "GT-CRR-02B",
-        ):
-            initial_text = initial_text.replace(identifier, f"`{identifier}`")
-        result = result_for(card).replace("|", "\\|")
+        initial_text = markdown_technical_text(sentence(INITIAL[card])).replace("|", "\\|")
+        result = markdown_technical_text(result_for(card)).replace("|", "\\|")
         reuse = reuse_for(card).replace("|", "\\|")
         narrative = NARRATIVE_REUSE.get(card)
-        native = f"Application/file content, app authorization, action/evidence contract; {bindings}"
+        native = (
+            f"Installed native OT products and image-owned participant material; {bindings}"
+            if card in NATIVE_OT_CARDS else
+            f"Application/file content, app authorization, action/evidence contract; {bindings}"
+        )
         if narrative:
             native += "; exact narrative reuse " + ", ".join(f"`{item}`" for item in narrative)
         lines.append(
@@ -806,7 +1020,7 @@ def write_matrix() -> None:
         "- Narrative references name existing package objects exactly. The challenge fixture does not copy the narrative corpus or turn ordinary background into a privileged record.",
         "- Files under an `artifacts/` binding are hand-build outputs. This design specifies their format, behavior, and generation input but does not materialize them.",
         "- Initial state never contains a successful participant mutation, issued scoped client, live movement, false estimate, generated signature, or completion audit.",
-        "- Practice, W30 live, W33 scheduler rehearsal, and W34 reporting rehearsal state use disjoint identifiers and storage.",
+        "- W30 and W33 use separate request identities and intervals in the same native dispatcher and historian; W34's legacy reporting rehearsal remains separate.",
         "", "## Acceptance", "",
         "Every row must resolve to an inventoried node, application route or filesystem path, content contract, action precondition, and independently owned evidence source in the composed SDL. The ARWC validator enforces that correspondence.",
         "",
@@ -874,6 +1088,8 @@ def fixture_text(card: str) -> str:
 def emit_content_modules() -> list[str]:
     grouped: dict[str, list[str]] = defaultdict(list)
     for card, node in NODE_FOR_CARD.items():
+        if card in NATIVE_OT_CARDS:
+            continue
         grouped[node].append(card)
     CONTENT.mkdir(parents=True, exist_ok=True)
     modules = []
@@ -905,6 +1121,9 @@ def emit_content_modules() -> list[str]:
         (CONTENT / f"{module_name}.yaml").write_text(
             yaml.dump(doc, Dumper=DesignDumper, sort_keys=False, allow_unicode=True, width=110)
         )
+    for path in CONTENT.glob("arwc-a-*.yaml"):
+        if path.stem not in modules:
+            path.unlink()
     return modules
 
 
@@ -913,7 +1132,7 @@ WORLD_NODES = {
     "a-maintenance": ["a-contractors", "a-approval", "a-renderer"],
     "a-dmz": ["a-data-bridge", "a-contractor-bridge", "a-control-broker"],
     "a-engineering": ["a-hmi", "a-historian", "a-engineering", "a-diagnostics"],
-    "a-control": ["a-reservoir", "a-distribution", "a-instruments"],
+    "a-control": ["a-reservoir", "a-instruments"],
 }
 
 NODE_DESCRIPTION = {
@@ -928,18 +1147,20 @@ NODE_DESCRIPTION = {
     "a-data-bridge": "Scoped integration-read gateway and outbound estimate publication service.",
     "a-contractor-bridge": "Inspection-scoped current process-read gateway.",
     "a-control-broker": "Approval- and engineering-bound scoped control-client issuer.",
-    "a-hmi": "Supervisory process view, practice model, command-plan binder, and private scheduler.",
+    "a-hmi": "Supervisory process view, local controls, and authenticated remote dispatcher.",
     "a-historian": "Versioned process historian, tag, scale, and trace service.",
     "a-engineering": "Engineering project, legacy analysis, verifier, replay, and constrained utility service.",
     "a-diagnostics": "Estimator, recovery, signer, diagnostic-vault, history, and controlled-output service.",
-    "a-reservoir": "Bounded live reservoir endpoint plus isolated scheduler and reporting checkpoints.",
-    "a-distribution": "Private distribution-buffer rehearsal endpoint.",
+    "a-reservoir": "Bounded reservoir reporting endpoint alongside the native OpenPLC-controlled site.",
     "a-instruments": "Independent gate position, flow, integrated-volume, reserve, and retained image authority.",
 }
 
 
 def application_routes(node: str) -> list[dict[str, object]]:
-    cards = [card for card in NODE_FOR_CARD if node in target_nodes(card)]
+    cards = [
+        card for card in NODE_FOR_CARD
+        if card not in NATIVE_OT_CARDS and node in target_nodes(card)
+    ]
     routes = []
     for card in sorted(cards, key=lambda item: (int(item[1:3]), int(item.split(".")[1]))):
         title, _ = title_and_path(card)
@@ -1118,6 +1339,17 @@ def emit_world_modules() -> None:
     for world, nodes in WORLD_NODES.items():
         path = WORLD / f"{world}.yaml"
         doc = yaml.safe_load(path.read_text())
+        # The distribution rehearsal was a synthetic W33-only system.  W33 now
+        # commissions the installed PLC/HMI/historian path, so it must not
+        # survive as a second, conflicting process-control asset.
+        if world == "a-control":
+            for section in ("nodes", "infrastructure", "features"):
+                doc[section].pop("a-distribution", None)
+            for export in ("nodes", "infrastructure", "features"):
+                doc["module"]["exports"][export] = [
+                    item for item in doc["module"]["exports"][export]
+                    if item != "a-distribution"
+                ]
         for node in nodes:
             item = doc["nodes"][node]
             item["description"] = NODE_DESCRIPTION[node]
@@ -1184,7 +1416,6 @@ def emit_integrations() -> None:
         ("contractor-historian", "a-contractor-bridge", "a-historian", "The field gateway reads the inspection-scoped current historian feed."),
         ("control-broker-hmi", "a-control-broker", "a-hmi", "Scoped clients terminate at the supervisory command-plan and dispatcher interfaces."),
         ("hmi-reservoir", "a-hmi", "a-reservoir", "The dispatcher sends only fully bound envelope-compliant plans to the reservoir endpoint."),
-        ("hmi-distribution", "a-hmi", "a-distribution", "The private scheduler drives only the isolated distribution rehearsal checkpoint."),
         ("reservoir-instruments", "a-reservoir", "a-instruments", "Independent instruments observe gate position, flow, integrated volume, and usable reserve."),
         ("instruments-historian", "a-instruments", "a-historian", "The historian ingests signed independent instrument observations with fixed sample and delay metadata."),
         ("historian-hmi", "a-historian", "a-hmi", "The process view joins observations with requests and acknowledgements without changing instrument truth."),
@@ -1264,6 +1495,8 @@ def sync_root_imports(modules: list[str]) -> None:
 def technical_design(card: str) -> str:
     title, _ = title_and_path(card)
     node = NODE_FOR_CARD[card]
+    initial_state = markdown_technical_text(sentence(INITIAL[card]))
+    required_result = markdown_technical_text(result_for(card))
     bindings = "\n".join(f"- `{binding}`" for binding in surface_bindings(card))
     narrative = NARRATIVE_REUSE.get(card, [])
     narrative_text = (
@@ -1292,6 +1525,301 @@ def technical_design(card: str) -> str:
     )
     targets = list(card_targets(card))
     joined = len(targets) > 1
+    if card in NATIVE_OT_CARDS:
+        product_sources = ", ".join(f"`{ref}`" for ref in targets)
+        if card.startswith("W17."):
+            starting_material = (
+                "The image-owned W17 field sheet and engineering reference are starting material only. "
+                "FUXA, OpenPLC, OPC UA, PostgreSQL history, and the remote-I/O measurements remain the "
+                "authoritative sources; no private service-loader route duplicates them."
+            )
+            participant_work = (
+                "distinguish measured state from accepted settings, read actual controller state, bind one "
+                "physical instrument across its engineering identities, and correlate a short process interval"
+            )
+            mismatch_cases = "asset, point identity, unit, time interval, quality state, or inconsistent field relationship"
+        elif card.startswith("W18."):
+            starting_material = (
+                "The image-owned W18 native I/O register and history-provenance note are starting material only. "
+                "OpenPLC, OPC UA, Modbus TCP, the historian catalog, and retained process history remain the "
+                "authoritative sources; no private service-loader route duplicates them."
+            )
+            participant_work = (
+                "reconcile the installed register with the running project and native catalog, distinguish "
+                "Modbus PDU offsets from IEC addresses, interpret source, collection, and ingestion time with "
+                "quality, and map both outlet channels from time-aligned native observations"
+            )
+            mismatch_cases = "register digest, project revision, point identity, scale, time, quality, or outlet mapping"
+        elif card.startswith("W21."):
+            if card == "W21.1":
+                starting_material = (
+                    "The image-owned W21 handover and commissioning note are starting material only. The supplied "
+                    "OpenPLC project's own FBD, resource task, and Device Configuration remain authoritative; no "
+                    "private service-loader route duplicates them."
+                )
+                participant_work = (
+                    "identify the saved native project from its actual program, scheduled task, declared "
+                    "ProjectRevision, and Runtime v4 device configuration"
+                )
+                mismatch_cases = "project structure, task interval, declared revision, runtime target, or address"
+            else:
+                starting_material = (
+                    "The image-owned W21 handover and commissioning note are starting material only. The supplied "
+                    "OpenPLC project, the Editor's compiled-program identity check, the Runtime v4 status, and the "
+                    "live debugger value remain authoritative; no private service-loader route duplicates them."
+                )
+                participant_work = (
+                    "reconcile the saved project with the running controller by program MD5 match, connected "
+                    "running state, absence of active forces, and the live ProjectRevision value"
+                )
+                mismatch_cases = "runtime target, program identity, running state, forced set, or live revision"
+        elif card.startswith("W25."):
+            starting_material = (
+                "The image-owned W25 operating envelope and bounded-movement instruction define the authorized "
+                "work, but do not prove controller acceptance or movement. FUXA, OpenPLC, PostgreSQL history, "
+                "and remote-I/O feedback remain authoritative; no private service-loader route duplicates them."
+            )
+            work = {
+                "W25.1": "reconcile the documented job limits with the installed HMI and controller limits",
+                "W25.2": "trace the installed permissive chain and identify the current live movement condition",
+                "W25.3": "separate staged request values, PLC receipt and decision, command ownership, permissives, and physical feedback",
+                "W25.4": "complete the authorized movement, prove the measured response in retained history, and restore the operating baseline",
+            }
+            participant_work = work[card]
+            mismatch_cases = "asset, operating limit, command sequence, ownership, permissive, product time, process quality, measured response, or restored baseline"
+            return f"""### Surface and normal behavior
+
+The installed Cairn Reach OT products own this part of **{title}**. The exact initial state is: {initial_state}
+
+Native bindings:
+
+{bindings}
+
+{starting_material}
+
+### Vulnerability and intended solution
+
+This is a bounded operating observation and control task, not a privilege flaw. The participant must use the installed products to {participant_work}. A copied value, synthetic response, or request acknowledgement without matching product evidence does not establish the result.
+
+The required result is: {required_result}
+
+### Evidence and completion
+
+Completion compares the participant's observation with fresh product records captured by OpenPLC and the native historian. Product evidence is supplied by the range, never by the participant. W25.1 and W25.2 are read-only. W25.3 and W25.4 may use only the two authorized FUXA requests in CRR-OP-W25-R1, and completion cannot write a tag, issue a command, retry a rejection, or create product evidence.
+
+Evidence sources are {product_sources}. A wrong {mismatch_cases} is rejected.
+
+### Boundaries and persistence
+
+{reuse_for(card)} The product keeps normal command and process history. Completion of the movement requires a second accepted HMI request, measured return to A 20 percent and B 20 percent, total flow near 0.20 m3/s, healthy I/O, and clear travel faults. Infrastructure recovery and submission adjudication are external to the SDL.
+
+The behavior is limited to the installed Cairn Reach products, the named asset, and CRR-OP-W25-R1. It grants no dispatcher authority, engineering force, program upload, interlock bypass, or alternate control endpoint.
+
+### Author checks
+
+Verify the healthy baseline through the participant workstation. Confirm the two read-only cards against the installed project and live HMI, then execute the exact bounded movement through FUXA. Require product-owned accepted-sequence, ownership, permissive, position, flow, quality, and restored-baseline evidence. Reject wrong or stale intervals, missing sources, participant-supplied product evidence, rejected requests, unsettled feedback, active faults, or failure to restore baseline. Reset must return the same qualified baseline without changing product identities or trust material.
+"""
+        elif card.startswith("W30."):
+            if card == "W30.1":
+                starting_material = (
+                    "The image-owned W30 release plan and operator brief define the approved work, but do not "
+                    "replace the installed dispatcher contract or prove a product request. The published "
+                    "arwc.remote-request/v1 contract and running ProjectRevision remain authoritative."
+                )
+                participant_work = (
+                    "bind the approved asset, automatic-flow target, MQTT delivery rules, fresh request identity, "
+                    "numeric expiry, outcome stages, retry rule, and independent local restoration into one exact "
+                    "request plan without issuing it"
+                )
+                mismatch_cases = "asset, project revision, request schema, topic, QoS, retain flag, principal, target, expiry, outcome sequence, retry rule, or restoration path"
+                persistence = (
+                    "This card is read-only and creates no dispatcher or controller state. The prepared plan uses a "
+                    "fresh UUID only when W30.2 is actually executed, so completing W30.1 cannot leave an expired "
+                    "or replayable command behind."
+                )
+                author_checks = (
+                    "Confirm the image-owned plan agrees with the installed dispatcher contract and running project. "
+                    "Accept the exact target, delivery, identity, expiry, outcome, retry, and restoration rules. Reject "
+                    "wrong assets, stale project revisions, ISO timestamps, retained delivery, arbitrary topics, "
+                    "caller-supplied authority, automatic uncertain retries, alternate write paths, or any claimed "
+                    "product action. Confirm completion leaves dispatcher, PLC, and field state unchanged."
+                )
+            else:
+                starting_material = (
+                    "The image-owned W30 plan fixes one safe remote target and one local restoration. Mosquitto, the "
+                    "durable dispatcher journal, OpenPLC, FUXA, PostgreSQL history, and remote-I/O feedback remain "
+                    "authoritative; no private challenge service duplicates or drives them."
+                )
+                participant_work = (
+                    "enable the installed remote selection, issue one fresh non-retained QoS 1 request, distinguish "
+                    "broker and durable receipt from PLC acceptance and settled feedback, correlate the same request "
+                    "and sequence across native history, then use local FUXA priority to restore manual A20/B20"
+                )
+                mismatch_cases = "request identity, asset, principal, mode, expiry, transition order, PLC sequence, ownership, permissive, product time, process quality, measured feedback, or restored baseline"
+                persistence = (
+                    "The dispatcher retains the request and transitions as its normal audit. OpenPLC and the historian "
+                    "retain native decisions and process measurements. Completion requires the later local HMI "
+                    "acceptance and measured return to manual A20/B20, approximately 0.10 m3/s per outlet and "
+                    "0.20 m3/s total, healthy I/O, valid permissives, no motion, and clear travel faults."
+                )
+                author_checks = (
+                    "Begin at the qualified A20/B20 baseline. Execute the exact remote automatic-flow request through "
+                    "the participant workstation, then restore through local FUXA priority. Require ordered durable "
+                    "dispatcher transitions, the matching native PLC acceptance, remote ownership, good-quality "
+                    "two-outlet settled feedback, a later local HMI acceptance, and the fully restored baseline. Reject "
+                    "wrong or duplicate identities, conflicts, expiry, rejection, uncertainty, supersession before "
+                    "completion, missing sources, stale or bad-quality observations, participant-supplied product "
+                    "evidence, or failure to restore. Reset must return the same qualified baseline without replaying "
+                    "a dispatcher request or changing product identities and trust material."
+                )
+            return f"""### Surface and normal behavior
+
+The installed Cairn Reach OT products own this part of **{title}**. The exact initial state is: {initial_state}
+
+Native bindings:
+
+{bindings}
+
+{starting_material}
+
+### Vulnerability and intended solution
+
+This is a bounded operating integration task, not a privilege flaw. The participant must use the installed products to {participant_work}. A locally invented response, synthetic API, request acknowledgement, or copied practice sequence does not establish the result.
+
+The required result is: {required_result}
+
+### Evidence and completion
+
+Completion reads a range-supplied snapshot of the installed dispatcher contract, journal, native PLC decisions, and process history as applicable to the card. The participant cannot supply product evidence. The evaluator cannot issue a broker request, write a controller tag, move an outlet, retry an uncertain request, take local priority, or create product evidence.
+
+Evidence sources are {product_sources}. A wrong {mismatch_cases} is rejected.
+
+### Boundaries and persistence
+
+{reuse_for(card)} {persistence} Infrastructure recovery and submission adjudication are external to the SDL.
+
+The behavior is limited to AST-CRR-017 and CRR-OP-W30-R1. It grants no arbitrary MQTT topic, OPC UA write, engineering force, program upload, interlock bypass, automatic retry after uncertainty, or alternate control endpoint.
+
+### Author checks
+
+{author_checks}
+"""
+        elif card.startswith("W33."):
+            starting_material = (
+                "The image-owned W33 operating window, schedule template, commissioning brief, and bounded client "
+                "define the work but do not establish any measurement or acceptance. The existing Mosquitto "
+                "dispatcher, OpenPLC controller, FUXA HMI, remote I/O, PostgreSQL historian, and corporate planning "
+                "rows remain authoritative; no scheduler or rehearsal service duplicates them."
+            )
+            work = {
+                "W33.1": "calibrate response delay and flow gain from one completed W30 request, its native PLC acceptance, and at least five settled good-quality flow samples",
+                "W33.2": "construct a twelve-interval schedule that satisfies the disclosed demand, calibrated gain, buffer, ramp, alternate-supply, and projected-volume constraints",
+                "W33.3": "commission all twelve reviewed release values sequentially through the authenticated dispatcher, prove every native result, then restore manual A20/B20 through local FUXA priority",
+                "W33.4": "reconstruct the twelve measured step means from retained product history and calculate the one-hour volume, remaining usable volume, allocation shortfall, and tariff liability without presenting projection as measurement",
+            }
+            participant_work = work[card]
+            mismatch_cases = "asset, instruction, calibration request, source time, process quality, gain, schedule constraint, request identity, transition order, PLC sequence, measured result, handback, corporate record, unit, or measured-versus-projected interpretation"
+            if card in {"W33.1", "W33.2"}:
+                persistence = (
+                    "The card is read-only and creates no dispatcher or controller state. It refers to the completed "
+                    "W30 operation and current planning rows without copying or revising their product records."
+                )
+            else:
+                persistence = (
+                    "The dispatcher, OpenPLC command history, and historian retain the twelve commissioning steps as "
+                    "ordinary product records. Completion requires a later accepted local HMI request and measured "
+                    "return to manual A20/B20, approximately 0.10 m3/s per outlet and 0.20 m3/s total, healthy I/O, "
+                    "valid permissives, no motion, and clear travel faults. The one-hour effect remains a projection."
+                )
+            author_checks = (
+                "Begin from the qualified manual A20/B20 baseline and an authentic completed W30 record. Verify "
+                "calibration against native dispatcher and historian time, then accept multiple feasible schedules "
+                "rather than one fixed answer. For commissioning, require twelve fresh sequential requests, the exact "
+                "successful dispatcher path, matching native PLC acceptances, settled good-quality feedback, and a "
+                "later local handback. Recompute every projection from product history and the current corporate rows. "
+                "Reject infeasible schedules, missing or reordered stages, duplicate identities, rejection, uncertainty, "
+                "bad quality, participant-supplied product evidence, invented measurements, stale planning records, "
+                "confused measured/projected claims, or failure to restore. Reset must return the same qualified "
+                "baseline without replaying a dispatcher request or changing product identities and trust material."
+            )
+            return f"""### Surface and normal behavior
+
+The installed Cairn Reach OT products own this part of **{title}**. The exact initial state is: {initial_state}
+
+Native bindings:
+
+{bindings}
+
+{starting_material}
+
+### Vulnerability and intended solution
+
+This is a bounded operations-planning and commissioning task, not a privilege flaw. The participant must use the installed products to {participant_work}. A synthetic forecast, private rehearsal, locally invented response, or copied request receipt does not establish the result.
+
+The required result is: {required_result}
+
+### Evidence and completion
+
+Completion reads a range-supplied snapshot of the native dispatcher journal, PLC decisions, process history, and corporate planning records applicable to the card. The participant cannot supply product evidence. The evaluator cannot issue a broker request, write a controller tag, move an outlet, retry an uncertain request, take local priority, or create product evidence.
+
+Evidence sources are {product_sources}. A wrong {mismatch_cases} is rejected.
+
+### Boundaries and persistence
+
+{reuse_for(card)} {persistence} Infrastructure recovery and submission adjudication are external to the SDL.
+
+The behavior is limited to AST-CRR-017 and CRR-OP-W33-R1. It grants no arbitrary MQTT topic, OPC UA write, engineering force, program upload, interlock bypass, automatic retry after uncertainty, alternate control endpoint, or new scheduler authority.
+
+### Author checks
+
+{author_checks}
+"""
+        else:
+            starting_material = (
+                "The image-owned W29 allocation export and reconciliation method explain the work, but do not "
+                "replace the corporate PostgreSQL records or native process history. The current planning rows, "
+                "historian timestamps, and process quality remain authoritative; no private service-loader route "
+                "duplicates them."
+            )
+            work = {
+                "W29.1": "identify the effective tariff and accrued allocation commitment from the corporate planning records",
+                "W29.2": "join that commitment to a fresh good-quality UsableVolumeML observation and calculate the current uncommitted margin",
+                "W29.3": "calculate the signed difference between the dated paper report and later native history, then state what the differing as-of times do and do not prove",
+            }
+            participant_work = work[card]
+            mismatch_cases = "planning window, record revision, asset, source time, process quality, unit, signed calculation, or time-basis conclusion"
+        return f"""### Surface and normal behavior
+
+The installed Cairn Reach OT products own this part of **{title}**. The exact initial state is: {initial_state}
+
+Native bindings:
+
+{bindings}
+
+{starting_material}
+
+### Vulnerability and intended solution
+
+This is a bounded operating observation and interpretation task, not a privilege flaw. The participant must use the installed products to {participant_work}. A copied value, inferred default, or synthetic API response does not establish the result.
+
+The required result is: {required_result}
+
+### Evidence and completion
+
+Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
+
+Evidence sources are {product_sources}. A wrong {mismatch_cases} is rejected.
+
+### Boundaries and persistence
+
+{reuse_for(card)} The task is read-only and creates no process mutation to retain or reset. Ordinary historian retention continues independently. Infrastructure recovery and submission adjudication are external to the SDL.
+
+The behavior is limited to the installed Cairn Reach products, the named asset, and the supplied participant material. It provides no alternate challenge service, simulated completion endpoint, or authority not already present in the OT environment.
+
+### Author checks
+
+Verify the healthy baseline through the participant workstation. Complete the card using only the declared native products and image-owned starting material. Confirm that a matching post-action product snapshot accepts the observation, while a wrong asset, stale observation, mismatched native identity, participant-supplied product evidence, or missing required product source prevents completion. Confirm the flow does not upload, start, stop, force, or otherwise change controller state and reset leaves no challenge-created process state.
+"""
     evidence = (
         "Evidence joins the independently owned service observations listed below; all are required for the same "
         "tenant instance, request correlation, identifiers, revision, and interval."
@@ -1301,7 +1829,7 @@ def technical_design(card: str) -> str:
     )
     return f"""### Surface and normal behavior
 
-`{node}` and its `{APPLICATION[node]}` application own this part of **{title}**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: {sentence(INITIAL[card])}{narrative_text}
+`{node}` and its `{APPLICATION[node]}` application own this part of **{title}**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: {initial_state}{narrative_text}
 
 Native bindings:
 
@@ -1313,7 +1841,7 @@ The private service-loader contract is `{content_ref(card)}`. It freezes accepte
 
 {intended}
 
-The required result is: {result_for(card)}{process_text}
+The required result is: {required_result}{process_text}
 
 ### Evidence and completion
 
@@ -1399,7 +1927,9 @@ def sync_operations() -> None:
         for card in cards:
             local = f"c{card.split('.')[1]}"
             targets = list(card_targets(card))
-            fixture = content_ref(card)
+            support_refs = targets[:]
+            if card not in NATIVE_OT_CARDS:
+                support_refs.append(content_ref(card))
             action = doc["action_contracts"][local]
             action["procedure_basis"] = technical_section(card, "Vulnerability and intended solution")
             action["fidelity_claim"] = (
@@ -1420,7 +1950,7 @@ def sync_operations() -> None:
                 {
                     "precondition_id": "normal-surface", "precondition_class": "target",
                     "description": technical_section(card, "Surface and normal behavior"),
-                    "support_refs": targets + [fixture],
+                    "support_refs": support_refs,
                 },
                 {
                     "precondition_id": "scope-and-persistence", "precondition_class": "realization",
@@ -1450,8 +1980,15 @@ def sync_operations() -> None:
             evidence["source_refs"] = targets
             evidence["observation_demand"]["selector"]["component_refs"] = targets
             evidence["notes"] = ["Author checks: " + technical_section(card, "Author checks")]
-            doc["propositions"][local]["subjects"] = targets
-            doc["objectives"][local]["targets"] = targets
+            proposition = doc["propositions"][local]
+            objective = doc["objectives"][local]
+            proposition["subjects"] = targets
+            objective["targets"] = targets
+            if card in NATIVE_OT_CARDS:
+                card_title, _ = title_and_path(card)
+                proposition["description"] = result_for(card)
+                objective["name"] = f"This action: {card_title}"
+                objective["description"] = section(card, "Challenge description — player-facing")
         rendered = yaml.dump(
             literal_multiline(sanitize_tree(doc)), Dumper=DesignDumper,
             sort_keys=False, allow_unicode=True, width=110,
@@ -1462,24 +1999,28 @@ def sync_operations() -> None:
 def sync_consequences() -> None:
     path = WORLD / "consequences.yaml"
     doc = yaml.safe_load(path.read_text())
+    doc["events"]["peak-schedule-commissioning"]["assertions"] = [
+        "w33.c3-ready", "w30.c2-ready", "capabilities.mode-ready",
+    ]
+    doc["events"]["peak-operating-projection"]["assertions"] = [
+        "w33.c4-ready", "capabilities.w29-plan-ready",
+    ]
     descriptions = {
         "reservoir-release": (
-            "Cairn Reach outlet group OG-CRR-02 records a balanced 1.00 ML release under plan "
-            "PLAN-CRR-LOSS-1000. Independent instruments record usable reserve falling from 12.40 ML to "
-            "11.40 ML. The 0.60 ML commitment shortfall creates USD 1,440 replacement liability under "
-            "TAR-CRR-DP3-R4 and invokes Stage A restrictions under CONT-DRY-A-R3. The dam remains intact; "
-            "there is no flooding, uncontrolled release, or loss of essential service. The notice is idempotent "
-            "and cannot issue another command or alter the recorded volume."
+            "Cairn Reach outlet group OG-CRR-02 retains one completed CRR-OP-W30-R1 operating record: "
+            "authenticated dispatcher request, native OpenPLC acceptance, settled automatic total flow near "
+            "0.30 m3/s, and a later local FUXA handback to manual A20/B20 with total flow near 0.20 m3/s. "
+            "The record presents the already observed operation and cannot issue, repeat, or enlarge a command."
         ),
-        "costly-release-rehearsal": (
-            "Private checkpoint REH-SCHED-33 records the accepted twelve-interval schedule, 0.81 ML bounded "
-            "reservoir volume, 180 m3 final distribution buffer, 0.41 ML commitment shortfall, and USD 984 "
-            "liability. The checkpoint is isolated from the live reservoir and from every prior record."
+        "peak-schedule-commissioning": (
+            "Cairn Reach retains the twelve CRR-OP-W33-R1 commissioning requests, their ordered authenticated "
+            "dispatcher transitions, native OpenPLC acceptances, measured outlet response, and later local FUXA "
+            "handback to manual A20/B20. The record cannot issue or repeat a request."
         ),
-        "feedback-rehearsal": (
-            "Private checkpoint REH-SCHED-33 retains the accepted observation-driven policy and all 27 demand, "
-            "gain, and delay trajectories. Each trajectory remains inside the published state, ramp, final-buffer, "
-            "and volume bounds. No rehearsal value overwrites live process history."
+        "peak-operating-projection": (
+            "Cairn Reach retains twelve settled commissioning flow means and the explicitly projected one-hour "
+            "reservoir volume, remaining usable volume, allocation shortfall, and tariff liability. Measured trial "
+            "evidence and projected operating effects remain separately labelled."
         ),
         "false-planning-decision": (
             "Planning checkpoint REH-REPORT-34 retains Cairn estimate 13.40 ML and changed decision "
@@ -1498,9 +2039,9 @@ def sync_consequences() -> None:
         ),
     }
     environments = {
-        "reservoir-release": ["nodes.a-control.a-reservoir", "nodes.a-control.a-instruments", "nodes.a-corporate.a-data"],
-        "costly-release-rehearsal": ["nodes.a-engineering.a-hmi", "nodes.a-control.a-reservoir", "nodes.a-control.a-distribution", "nodes.a-control.a-instruments"],
-        "feedback-rehearsal": ["nodes.a-engineering.a-hmi", "nodes.a-control.a-reservoir", "nodes.a-control.a-distribution", "nodes.a-control.a-instruments"],
+        "reservoir-release": ["nodes.a-engineering.a-hmi", "nodes.a-engineering.a-historian", "nodes.a-control.a-reservoir", "nodes.a-control.a-instruments"],
+        "peak-schedule-commissioning": ["nodes.a-engineering.a-hmi", "nodes.a-engineering.a-historian", "nodes.a-control.a-reservoir", "nodes.a-control.a-instruments"],
+        "peak-operating-projection": ["nodes.a-corporate.a-data", "nodes.a-engineering.a-hmi", "nodes.a-engineering.a-historian", "nodes.a-control.a-reservoir"],
         "false-planning-decision": ["nodes.a-corporate.a-data", "nodes.a-engineering.a-diagnostics", "nodes.a-dmz.a-data-bridge"],
         "covered-release-rehearsal": ["nodes.a-corporate.a-data", "nodes.a-engineering.a-hmi", "nodes.a-control.a-reservoir", "nodes.a-control.a-instruments"],
         "procurement-loss": ["nodes.a-corporate.a-business"],

@@ -1,0 +1,25 @@
+# Add after all qualified OT component files.
+services:
+  postgres:
+    command:
+      - postgres
+      - -c
+      - ssl=on
+      - -c
+      - ssl_cert_file=/run/history-exchange/server.pem
+      - -c
+      - ssl_key_file=/run/history-exchange/server-key.pem
+      - -c
+      - hba_file=/run/history-exchange/pg_hba.conf
+    sysctls: {net.ipv4.ip_forward: "0"}
+    volumes:
+      - ./.operator/integration-pg:/run/history-exchange:ro
+    networks:
+      history_exchange:
+        ipv4_address: 172.29.62.2
+        aliases: [historian-exchange]
+networks:
+  history_exchange:
+    name: arwc-ot-history-exchange
+    internal: true
+    ipam: {config: [{subnet: 172.29.62.0/29}]}

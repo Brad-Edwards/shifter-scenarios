@@ -1,0 +1,12 @@
+record_id,scope,parameter,minimum,maximum,unit,source
+CRR-OP-W25-R1,installed controller,manual outlet A position,0,100,percent,FUXA Site controls and OpenPLC SiteRequests
+CRR-OP-W25-R1,installed controller,manual outlet B position,0,100,percent,FUXA Site controls and OpenPLC SiteRequests
+CRR-OP-W25-R1,installed controller,automatic total flow,0,1.0,m3/s,FUXA Site controls and OpenPLC SiteRequests
+CRR-OP-W25-R1,physical outlet A,measured flow,0,0.5,m3/s,CRR-IO-R364
+CRR-OP-W25-R1,physical outlet B,measured flow,0,0.5,m3/s,CRR-IO-R364
+CRR-OP-W25-R1,W25 normal baseline,outlet A position,20,20,percent,qualified operating baseline
+CRR-OP-W25-R1,W25 normal baseline,outlet B position,20,20,percent,qualified operating baseline
+CRR-OP-W25-R1,W25 observation target,outlet A position,30,30,percent,authorized movement
+CRR-OP-W25-R1,W25 observation target,outlet B position,10,10,percent,authorized movement
+CRR-OP-W25-R1,W25 restoration target,outlet A position,20,20,percent,required handback
+CRR-OP-W25-R1,W25 restoration target,outlet B position,20,20,percent,required handback

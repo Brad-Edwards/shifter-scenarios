@@ -1793,8 +1793,7 @@
       "requires_any": [
         [
           "W29.1",
-          "W29.2",
-          "MODE"
+          "W29.2"
         ]
       ]
     },
@@ -1804,7 +1803,7 @@
           "PROCESS_INTERPRETATION",
           "CONTROL",
           "MODE",
-          "CONSEQUENCE_PLAN"
+          "W29.PLAN"
         ]
       ]
     },

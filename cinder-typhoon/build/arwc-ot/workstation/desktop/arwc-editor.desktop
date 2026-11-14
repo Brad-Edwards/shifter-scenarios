@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=OpenPLC Editor
+Comment=Open the native Cairn Reach controller project
+Exec=openplc-editor
+Icon=applications-development
+Terminal=false
+Categories=Development;Education;

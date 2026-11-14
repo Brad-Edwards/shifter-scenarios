@@ -38,13 +38,14 @@ realization:
 evidence_requirements:
   c1:
     description: |-
-      Recover the current tariff and its effective window. This is distinct from W35's general procurement catalog and its private district quote.
+      Identify tariff `TAR-CRR-DP3-R4`, its USD/ML rate and effective interval, plus allocation `ALLOC-2026-DP3-R9` and its 12.00 ML commitment for `AST-CRR-017`. Do not substitute W35's procurement catalog or treat either business record as a live process measurement.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-      Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-corporate.a-data`, `features.a-engineering.a-engineering`. A wrong planning window, record revision, asset, source time, process quality, unit, signed calculation, or time-basis conclusion is rejected.
     source_refs:
     - features.a-corporate.a-data
+    - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -66,6 +67,7 @@ evidence_requirements:
         - cinder.w29-1.satisfied
         component_refs:
         - features.a-corporate.a-data
+        - features.a-engineering.a-engineering
       collection: require
       retention: require
       redaction: redact-secrets
@@ -73,21 +75,21 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Complete the card using only
+      the declared native products and image-owned starting material. Confirm that a matching post-action product
+      snapshot accepts the observation, while a wrong asset, stale observation, mismatched native identity, participant-supplied
+      product evidence, or missing required product source prevents completion. Confirm the flow does not upload,
+      start, stop, force, or otherwise change controller state and reset leaves no work item-created process state.'
   c2:
     description: |-
-      Produce the correctly bound current reserve/commitment balance. Repeating W09's historical reporting discrepancy is insufficient.
+      Report the source time, process quality, unit, and value of a fresh `UsableVolumeML` sample, then calculate `uncommitted margin = measured usable volume - committed allocation`. State whether that current margin is positive, zero, or negative. A historical meter export or paper report is not a substitute for the current native observation.
 
-      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-      Evidence sources are `features.a-corporate.a-data`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-corporate.a-data`, `features.a-engineering.a-historian`. A wrong planning window, record revision, asset, source time, process quality, unit, signed calculation, or time-basis conclusion is rejected.
     source_refs:
     - features.a-corporate.a-data
-    - features.a-control.a-instruments
+    - features.a-engineering.a-historian
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -109,7 +111,7 @@ evidence_requirements:
         - cinder.w29-2.satisfied
         component_refs:
         - features.a-corporate.a-data
-        - features.a-control.a-instruments
+        - features.a-engineering.a-historian
       collection: require
       retention: require
       redaction: redact-secrets
@@ -117,21 +119,21 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Complete the card using only
+      the declared native products and image-owned starting material. Confirm that a matching post-action product
+      snapshot accepts the observation, while a wrong asset, stale observation, mismatched native identity, participant-supplied
+      product evidence, or missing required product source prevents completion. Confirm the flow does not upload,
+      start, stop, force, or otherwise change controller state and reset leaves no work item-created process state.'
   c3:
     description: |-
-      Produce the bounded plan and its predicted reserve and economic effects. This supplies W29.PLAN and CONSEQUENCE_PLAN; the tariff, current evidence, and mode must agree.
+      Calculate `signed paper variance = reported usable volume - later measured usable volume`, classify its direction from the actual values, and record both source times and units. Conclude that the dated paper report is not current process truth and that the differing as-of times do not by themselves establish a causal correction. This supplies W29.PLAN and CONSEQUENCE_PLAN as the verified current planning basis for later work, not as an executable control plan.
 
-      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-      Evidence sources are `features.a-engineering.a-hmi`, `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-corporate.a-data`, `features.a-engineering.a-historian`. A wrong planning window, record revision, asset, source time, process quality, unit, signed calculation, or time-basis conclusion is rejected.
     source_refs:
-    - features.a-engineering.a-hmi
     - features.a-corporate.a-data
+    - features.a-engineering.a-historian
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -152,8 +154,8 @@ evidence_requirements:
         names:
         - cinder.w29-3.satisfied
         component_refs:
-        - features.a-engineering.a-hmi
         - features.a-corporate.a-data
+        - features.a-engineering.a-historian
       collection: require
       retention: require
       redaction: redact-secrets
@@ -161,17 +163,19 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Complete the card using only
+      the declared native products and image-owned starting material. Confirm that a matching post-action product
+      snapshot accepts the observation, while a wrong asset, stale observation, mismatched native identity, participant-supplied
+      product evidence, or missing required product source prevents completion. Confirm the flow does not upload,
+      start, stop, force, or otherwise change controller state and reset leaves no work item-created process state.'
 propositions:
   c1:
-    description: Recover the current tariff and its effective window. This is distinct from W35's general procurement
-      catalog and its private district quote.
+    description: Identify tariff `TAR-CRR-DP3-R4`, its USD/ML rate and effective interval, plus allocation `ALLOC-2026-DP3-R9`
+      and its 12.00 ML commitment for `AST-CRR-017`. Do not substitute W35's procurement catalog or treat either
+      business record as a live process measurement.
     subjects:
     - features.a-corporate.a-data
+    - features.a-engineering.a-engineering
     basis: observed_state
     predicate:
       kind: boolean
@@ -183,11 +187,13 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce the correctly bound current reserve/commitment balance. Repeating W09's historical reporting
-      discrepancy is insufficient.
+    description: Report the source time, process quality, unit, and value of a fresh `UsableVolumeML` sample, then
+      calculate `uncommitted margin = measured usable volume - committed allocation`. State whether that current
+      margin is positive, zero, or negative. A historical meter export or paper report is not a substitute for the
+      current native observation.
     subjects:
     - features.a-corporate.a-data
-    - features.a-control.a-instruments
+    - features.a-engineering.a-historian
     basis: observed_state
     predicate:
       kind: boolean
@@ -199,11 +205,14 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Produce the bounded plan and its predicted reserve and economic effects. This supplies W29.PLAN
-      and CONSEQUENCE_PLAN; the tariff, current evidence, and mode must agree.
+    description: Calculate `signed paper variance = reported usable volume - later measured usable volume`, classify
+      its direction from the actual values, and record both source times and units. Conclude that the dated paper
+      report is not current process truth and that the differing as-of times do not by themselves establish a causal
+      correction. This supplies W29.PLAN and CONSEQUENCE_PLAN as the verified current planning basis for later work,
+      not as an executable control plan.
     subjects:
-    - features.a-engineering.a-hmi
     - features.a-corporate.a-data
+    - features.a-engineering.a-historian
     basis: observed_state
     predicate:
       kind: boolean
@@ -242,15 +251,14 @@ assertions:
 objectives:
   c1:
     name: 'This action: The price of this planning window'
-    description: |-
-      Recover the settlement tariff that applies to replacement supply in the current allocation window.
-
-      Gives the final consequence a current financial basis.
+    description: Use the Cairn Reach allocation export and corporate planning records to identify the replacement-supply
+      tariff, its effective interval, and the allocation commitment for the same asset and planning window.
     assigned_participant: participant.operator
     actions:
     - w29.c1
     targets:
     - features.a-corporate.a-data
+    - features.a-engineering.a-engineering
     success:
       mode: all_of
       assertions:
@@ -260,16 +268,14 @@ objectives:
       - w29.c1
   c2:
     name: 'This action: What reserve remains uncommitted'
-    description: |-
-      Reconcile the current usable reserve with the company's allocation commitments and establish what the release plan must account for.
-
-      Connects present process state to the business obligations discovered earlier.
+    description: Select a fresh good-quality `UsableVolumeML` observation from native Cairn Reach history and reconcile
+      it with the 12.00 ML allocation commitment to calculate the current uncommitted margin.
     assigned_participant: participant.operator
     actions:
     - w29.c2
     targets:
     - features.a-corporate.a-data
-    - features.a-control.a-instruments
+    - features.a-engineering.a-historian
     success:
       mode: all_of
       assertions:
@@ -279,16 +285,14 @@ objectives:
       - w29.c2
   c3:
     name: 'This action: Paper truth'
-    description: |-
-      Construct a release plan that reduces usable reserve within the operating envelope and explains the resulting replacement cost and restrictions.
-
-      Defines the intended non-catastrophic consequence before live action.
+    description: Compare corporate report `RPT-CRR-DP3-R7` with the later good-quality native usable-volume observation,
+      calculate their signed difference, and explain what their different as-of times allow you to conclude.
     assigned_participant: participant.operator
     actions:
     - w29.c3
     targets:
-    - features.a-engineering.a-hmi
     - features.a-corporate.a-data
+    - features.a-engineering.a-historian
     success:
       mode: all_of
       assertions:
@@ -355,7 +359,6 @@ workflows:
             assertions:
             - w29.c1-ready
             - w29.c2-ready
-            - capabilities.mode-ready
           next: attempt
         default: unavailable
       available:
@@ -374,9 +377,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Settlement tariff TAR-CRR-DP3-R4 is USD 2,400 per ML for planning window ALLOC-2026-DP3 and is distinct from the general procurement catalog. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and interpretation task, not a privilege flaw. The participant must use the installed products to identify the effective tariff and accrued allocation commitment from the corporate planning records. A copied value, inferred default, or synthetic API response does not establish the result.
 
-      The required result is: Recover the current tariff and its effective window. This is distinct from W35's general procurement catalog and its private district quote. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `PLAN-CRR-LOSS-1000`, `TAR-CRR-DP3-R4`.
+      The required result is: Identify tariff `TAR-CRR-DP3-R4`, its USD/ML rate and effective interval, plus allocation `ALLOC-2026-DP3-R9` and its 12.00 ML commitment for `AST-CRR-017`. Do not substitute W35's procurement catalog or treat either business record as a live process measurement.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -389,44 +392,50 @@ action_contracts:
       support_refs:
       - workflows.w29.c1
       - features.a-corporate.a-data
+      - features.a-engineering.a-engineering
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-data` and its `planning-data` application own this part of **The price of this planning window**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Settlement tariff TAR-CRR-DP3-R4 is USD 2,400 per ML for planning window ALLOC-2026-DP3 and is distinct from the general procurement catalog. Ordinary workplace context reuses `arwc-documents:pl-arwc-plan-method-01-method`; the work item-specific service state is separate.
+        The installed Cairn Reach OT products own this part of **The price of this planning window**. The exact initial state is: Corporate tariff TAR-CRR-DP3-R4 is USD 2,400 per ML in planning window ALLOC-2026-DP3, effective 2026-11-01 through 2026-12-01; allocation ALLOC-2026-DP3-R9 commits 12.00 ML to Cairn Reach and is distinct from the W35 procurement catalog.
 
         Native bindings:
 
-        - `a-corporate.a-data/planning-data/the-price-of-this-planning-window`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W29/allocation-ledger.csv`
+        - `a-corporate.a-data/PostgreSQL:public.settlement_tariff`
 
-        The private service-loader contract is `content.arwc-a-data.w29-1-the-price-of-this-planning-window`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W29 allocation export and reconciliation method explain the work, but do not replace the corporate PostgreSQL records or native process history. The current planning rows, historian timestamps, and process quality remain authoritative; no private service-loader route duplicates them.
       support_refs:
       - features.a-corporate.a-data
-      - content.arwc-a-data.w29-1-the-price-of-this-planning-window
+      - features.a-engineering.a-engineering
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The task is read-only and creates no process mutation to retain or reset. Ordinary historian retention continues independently. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and the supplied participant material. It provides no alternate work item service, simulated completion endpoint, or authority not already present in the OT environment.
       support_refs:
       - features.a-corporate.a-data
+      - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the current tariff and its effective window. This is distinct from W35's general procurement
-        catalog and its private district quote.
+      description: Identify tariff `TAR-CRR-DP3-R4`, its USD/ML rate and effective interval, plus allocation `ALLOC-2026-DP3-R9`
+        and its 12.00 ML commitment for `AST-CRR-017`. Do not substitute W35's procurement catalog or treat either
+        business record as a live process measurement.
       target_refs:
       - features.a-corporate.a-data
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w29.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-        Evidence sources are `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-corporate.a-data`, `features.a-engineering.a-engineering`. A wrong planning window, record revision, asset, source time, process quality, unit, signed calculation, or time-basis conclusion is rejected.
       target_refs:
       - features.a-corporate.a-data
+      - features.a-engineering.a-engineering
       evidence_refs:
       - evidence_requirements.w29.c1
     failure_classes:
@@ -441,9 +450,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Current balance joins instrument reserve 12.40 ML and committed allocation 12.00 ML, yielding 0.40 ML uncommitted margin before any release. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and interpretation task, not a privilege flaw. The participant must use the installed products to join that commitment to a fresh good-quality UsableVolumeML observation and calculate the current uncommitted margin. A copied value, inferred default, or synthetic API response does not establish the result.
 
-      The required result is: Produce the correctly bound current reserve/commitment balance. Repeating W09's historical reporting discrepancy is insufficient. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `PLAN-CRR-LOSS-1000`, `TAR-CRR-DP3-R4`.
+      The required result is: Report the source time, process quality, unit, and value of a fresh `UsableVolumeML` sample, then calculate `uncommitted margin = measured usable volume - committed allocation`. State whether that current margin is positive, zero, or negative. A historical meter export or paper report is not a substitute for the current native observation.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -456,50 +465,52 @@ action_contracts:
       support_refs:
       - workflows.w29.c2
       - features.a-corporate.a-data
-      - features.a-control.a-instruments
+      - features.a-engineering.a-historian
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-data` and its `planning-data` application own this part of **What reserve remains uncommitted**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Current balance joins instrument reserve 12.40 ML and committed allocation 12.00 ML, yielding 0.40 ML uncommitted margin before any release.
+        The installed Cairn Reach OT products own this part of **What reserve remains uncommitted**. The exact initial state is: Current uncommitted margin is the latest good native UsableVolumeML historian observation for AST-CRR-017 minus the 12.00 ML accrued allocation commitment; observation time, process quality, unit, asset, and planning window must remain explicit.
 
         Native bindings:
 
-        - `a-corporate.a-data/planning-data/what-reserve-remains-uncommitted`
-        - `a-control.a-instruments/independent-instruments/what-reserve-remains-uncommitted`
+        - `a-corporate.a-data/PostgreSQL:public.allocation_ledger`
+        - `a-engineering.a-historian/Grafana:arwc-history`
+        - `a-engineering.a-historian/PostgreSQL:public.process_history:usable_volume_ml`
 
-        The private service-loader contract is `content.arwc-a-data.w29-2-what-reserve-remains-uncommitted`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W29 allocation export and reconciliation method explain the work, but do not replace the corporate PostgreSQL records or native process history. The current planning rows, historian timestamps, and process quality remain authoritative; no private service-loader route duplicates them.
       support_refs:
       - features.a-corporate.a-data
-      - features.a-control.a-instruments
-      - content.arwc-a-data.w29-2-what-reserve-remains-uncommitted
+      - features.a-engineering.a-historian
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The task is read-only and creates no process mutation to retain or reset. Ordinary historian retention continues independently. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and the supplied participant material. It provides no alternate work item service, simulated completion endpoint, or authority not already present in the OT environment.
       support_refs:
       - features.a-corporate.a-data
-      - features.a-control.a-instruments
+      - features.a-engineering.a-historian
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correctly bound current reserve/commitment balance. Repeating W09's historical reporting
-        discrepancy is insufficient.
+      description: Report the source time, process quality, unit, and value of a fresh `UsableVolumeML` sample,
+        then calculate `uncommitted margin = measured usable volume - committed allocation`. State whether that
+        current margin is positive, zero, or negative. A historical meter export or paper report is not a substitute
+        for the current native observation.
       target_refs:
       - features.a-corporate.a-data
-      - features.a-control.a-instruments
+      - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w29.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-        Evidence sources are `features.a-corporate.a-data`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-corporate.a-data`, `features.a-engineering.a-historian`. A wrong planning window, record revision, asset, source time, process quality, unit, signed calculation, or time-basis conclusion is rejected.
       target_refs:
       - features.a-corporate.a-data
-      - features.a-control.a-instruments
+      - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w29.c2
     failure_classes:
@@ -514,9 +525,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Plan PLAN-CRR-LOSS-1000 ramps balanced gates linearly for 100 seconds, holds each at 0.50 m3/s for 900 seconds, and ramps closed for 100 seconds; 1000 full-flow-equivalent seconds release 1.00 ML, leaving 11.40 ML, a 0.60 ML shortfall, USD 1,440 liability, and Stage A restrictions under CONT-DRY-A-R3. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and interpretation task, not a privilege flaw. The participant must use the installed products to calculate the signed difference between the dated paper report and later native history, then state what the differing as-of times do and do not prove. A copied value, inferred default, or synthetic API response does not establish the result.
 
-      The required result is: Produce the bounded plan and its predicted reserve and economic effects. This supplies W29.PLAN and CONSEQUENCE_PLAN; the tariff, current evidence, and mode must agree. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `PLAN-CRR-LOSS-1000`, `TAR-CRR-DP3-R4`.
+      The required result is: Calculate `signed paper variance = reported usable volume - later measured usable volume`, classify its direction from the actual values, and record both source times and units. Conclude that the dated paper report is not current process truth and that the differing as-of times do not by themselves establish a causal correction. This supplies W29.PLAN and CONSEQUENCE_PLAN as the verified current planning basis for later work, not as an executable control plan.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -528,51 +539,54 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w29.c3
-      - features.a-engineering.a-hmi
       - features.a-corporate.a-data
+      - features.a-engineering.a-historian
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-hmi` and its `supervisory-operations` application own this part of **Paper truth**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Plan PLAN-CRR-LOSS-1000 ramps balanced gates linearly for 100 seconds, holds each at 0.50 m3/s for 900 seconds, and ramps closed for 100 seconds; 1000 full-flow-equivalent seconds release 1.00 ML, leaving 11.40 ML, a 0.60 ML shortfall, USD 1,440 liability, and Stage A restrictions under CONT-DRY-A-R3.
+        The installed Cairn Reach OT products own this part of **Paper truth**. The exact initial state is: Corporate report RPT-CRR-DP3-R7 records 13.40 ML as of 2026-11-09T00:00:00Z, while native history supplies a later measured usable volume; their signed difference is valid, but different as-of times mean the paper report cannot be presented as current process truth or assigned a causal correction without further evidence.
 
         Native bindings:
 
-        - `a-engineering.a-hmi/supervisory-operations/reporting-checkpoint-submit`
-        - `a-corporate.a-data/planning-data/reporting-checkpoint-submit`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md`
+        - `a-corporate.a-data/PostgreSQL:public.business_reserve_report`
+        - `a-engineering.a-historian/PostgreSQL:public.process_history:usable_volume_ml`
 
-        The private service-loader contract is `content.arwc-a-hmi.w29-3-paper-truth`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W29 allocation export and reconciliation method explain the work, but do not replace the corporate PostgreSQL records or native process history. The current planning rows, historian timestamps, and process quality remain authoritative; no private service-loader route duplicates them.
       support_refs:
-      - features.a-engineering.a-hmi
       - features.a-corporate.a-data
-      - content.arwc-a-hmi.w29-3-paper-truth
+      - features.a-engineering.a-historian
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        Supplies W29.PLAN and CONSEQUENCE_PLAN. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        Supplies W29.PLAN and CONSEQUENCE_PLAN as a verified current planning basis, not an executable control plan. The task is read-only and creates no process mutation to retain or reset. Ordinary historian retention continues independently. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and the supplied participant material. It provides no alternate work item service, simulated completion endpoint, or authority not already present in the OT environment.
       support_refs:
-      - features.a-engineering.a-hmi
       - features.a-corporate.a-data
+      - features.a-engineering.a-historian
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the bounded plan and its predicted reserve and economic effects. This supplies W29.PLAN
-        and CONSEQUENCE_PLAN; the tariff, current evidence, and mode must agree.
+      description: Calculate `signed paper variance = reported usable volume - later measured usable volume`, classify
+        its direction from the actual values, and record both source times and units. Conclude that the dated paper
+        report is not current process truth and that the differing as-of times do not by themselves establish a
+        causal correction. This supplies W29.PLAN and CONSEQUENCE_PLAN as the verified current planning basis for
+        later work, not as an executable control plan.
       target_refs:
-      - features.a-engineering.a-hmi
       - features.a-corporate.a-data
+      - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w29.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-        Evidence sources are `features.a-engineering.a-hmi`, `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-corporate.a-data`, `features.a-engineering.a-historian`. A wrong planning window, record revision, asset, source time, process quality, unit, signed calculation, or time-basis conclusion is rejected.
       target_refs:
-      - features.a-engineering.a-hmi
       - features.a-corporate.a-data
+      - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w29.c3
     failure_classes:

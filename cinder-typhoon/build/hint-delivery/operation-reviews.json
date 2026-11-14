@@ -620,7 +620,7 @@
         "no_sensitive_answer",
         "references_current"
       ],
-      "rationale": "The W17.1 sample starts from current process state, operating mode, and independent instrument records, names time-window and identity correlation across requested and measured process values, and ends with an observed diagnostic action bound to process.state. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "rationale": "The W17.1 sample starts from the installed FUXA view and field sheet, distinguishes measured feedback from accepted settings, and ends with a time-bound check against good product-owned history. Review found no credential, fixed process value, unpublished route, final answer, or precomputed result.",
       "sample_card": "W17.1",
       "status": "reviewed"
     },
@@ -632,7 +632,7 @@
         "no_sensitive_answer",
         "references_current"
       ],
-      "rationale": "The W18.1 sample starts from engineering tag export, separate scale table, and outlet instruments, names revision-aware unit conversion across independently owned engineering records, and ends with an observed diagnostic action bound to process.tag-export. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "rationale": "The W18.1 sample starts from the supplied native I/O register, points to the running project revision and historian catalog as independent checks, and preserves the read-only operating boundary. Review found no credential, exact answer, unpublished route, or precomputed product result.",
       "sample_card": "W18.1",
       "status": "reviewed"
     },
@@ -668,7 +668,7 @@
         "no_sensitive_answer",
         "references_current"
       ],
-      "rationale": "The W21.1 sample starts from sealed engineering project and independently observed deployed revision, names claim-versus-deployment reconciliation across separate evidence owners, and ends with an observed diagnostic action bound to process.sealed-project. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "rationale": "The W21.1 sample starts from the supplied native OpenPLC project and handover, points to project structure and Device Configuration, and stops before giving the declared values. Review found no credential, upload instruction, process control action, final answer, or precomputed result.",
       "sample_card": "W21.1",
       "status": "reviewed"
     },
@@ -812,7 +812,7 @@
         "no_sensitive_answer",
         "references_current"
       ],
-      "rationale": "The W33.1 sample starts from forecast, schedule window, and feedback-policy services, names model calibration and constrained time-series scheduling under disclosed bounds, and ends with an observed diagnostic action bound to process.forecast. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "rationale": "The W33.1 sample starts from the supplied operating brief and an authentic completed W30 record, names calibration from native dispatcher, PLC, and historian evidence, and ends with a reproducible gain calculation tied to the same request. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
       "sample_card": "W33.1",
       "status": "reviewed"
     },

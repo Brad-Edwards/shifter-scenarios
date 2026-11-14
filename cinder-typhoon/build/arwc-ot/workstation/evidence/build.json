@@ -1,0 +1,68 @@
+{
+  "issue": 368,
+  "scope": "developer image/architecture checks and actual participant RDP/native application qualification on the development VM",
+  "project": "prod-mgau4w",
+  "vm": "cinder-arwc-ot-compat-363",
+  "image": "arwc-ot-engineering:368",
+  "image_id": "sha256:83084f752656dc45a404abfb18fbd473e69c4ecbd24eb71e9aace07cda00312b",
+  "build_network": "none for package installation",
+  "offline_dependencies": {
+    "debian_packages": 285,
+    "python_wheels": 19,
+    "checksums": "../locks/SHA256SUMS"
+  },
+  "native_compose_contract": "passed",
+  "isolation_mutations_detected": 6,
+  "participant_acceptance": "passed: RDP, FUXA, Grafana, SQL, OPC UA, native graphical FBD/debugging, engineering reads and maintenance download",
+  "native_gui_libraries_missing": [],
+  "xrdp_container_health": "healthy",
+  "native_gui_linkage_checked_image": "sha256:5fd41b5d7786527f7425e4baa1013d4a00c27a8f3d360f2ca964de85c29a3741",
+  "participant_readiness": "shared executable and pinned manifest deployed; final platform image/readiness qualification remains deferred to issue 370",
+  "active_qa_container": "qualified built image 83084f7, retained across a successful full VM restart",
+  "participant_editor_entrypoint_access": "all public bundle directories and resources readable as fieldlink; AppRun executable; native app.asar readable",
+  "setup_boundary_cases": 3,
+  "setup_boundary_mutations_detected": 3,
+  "dbus": "distribution system package and local service start successfully; native applications qualified",
+  "native_editor_gui": {
+    "coordination_message": 735,
+    "participant": "fieldlink",
+    "launcher": "normal provided desktop launcher; browser sandbox enabled",
+    "project": "arwc-site",
+    "graphical_logic": "real main FBD and IEC blocks with live typed project values",
+    "remaining": "none for normal development-VM engineering qualification",
+    "coordination_messages": [
+      735,
+      788,
+      789
+    ],
+    "status": "passed"
+  },
+  "native_editor_compile": {
+    "status": "passed",
+    "coordination_message": 738,
+    "path": "official Editor compile from the engineering workstation",
+    "outputs": "Runtime v4 upload bundle, persistent storage configuration, native debug map",
+    "download": "passed through the participant terminal; coordination message 766"
+  },
+  "native_engineering": {
+    "status": "passed",
+    "coordination_messages": [
+      760,
+      762,
+      766,
+      767
+    ],
+    "origin": "official Editor CLI through the participant engineering terminal",
+    "live_project_variables": "typed native variables read successfully",
+    "runtime": "running, connected through the native engineering transport",
+    "program_md5": "ceab3e96d5929f6617acb2020defe659",
+    "download": "native upload completed; running program matches compiled project",
+    "restart": "disarmed, healthy I/O, automatic mode cleared",
+    "graphical_input": "passed through the normal RDP application controls and live Debugger view",
+    "graphical_coordination_messages": [
+      788,
+      789
+    ]
+  },
+  "post_vm_restart": "passed; participant desktop and operating tools remained usable"
+}

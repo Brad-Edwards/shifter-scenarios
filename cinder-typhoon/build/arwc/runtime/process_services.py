@@ -25,8 +25,8 @@ if ROLE == "engineering":
     import dpg1
     from cryptography.hazmat.primitives import serialization
     from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-if ROLE in {"hmi", "instruments"}:
-    import schedule33
+if ROLE == "instruments":
+    import reporting_schedule
 ROOT = pathlib.Path(os.environ["ARWC_STATE_ROOT"])
 STATE = ROOT / "state" / "service.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
@@ -43,35 +43,14 @@ OWNERS = {
     "instruments": "a-instruments",
     "reservoir": "a-reservoir",
     "data_bridge": "10.77.63.10",
-    "distribution": "a-distribution",
 }
 
 INITIAL = {
-    "hmi": {
-        "present_observed": False, "mode_observed": False, "note_observed": False,
-        "trace_correlated": False, "envelope_observed": False,
-        "practice_conditions_observed": False, "ineffective_requests_observed": False,
-        "practice_sequence_observed": False,
-        "loss_plan_constructed": False,
-        "release_plan_bound": False,
-        "forecast_observed": False, "schedule_observed": False,
-        "schedule_rehearsal_observed": False, "forecast_policy_observed": False,
-        "schedule_response": None, "schedule_rehearsal_response": None,
-        "forecast_policy_response": None, "forecast_response": None,
-    },
-    "historian": {
-        "tag_export_observed": False, "scale_observed": False,
-        "unit_change_interpreted": False, "mapping_observed": False,
-        "forecast_observed": False, "forecast_response": None,
-    },
-    "engineering": {"project_bundle_observed": False, "deployed_revision_observed": False},
+    "hmi": {},
+    "historian": {},
+    "engineering": {},
     "instruments": {
-        "trace_observed": False, "mapping_observed": False,
-        "deployment_observed": False, "practice_observed": False,
         "reserve_observed": False,
-        "gate_release_observed": False, "gate_release_response": None,
-        "schedule_rehearsal_observed": False, "forecast_policy_observed": False,
-        "schedule_rehearsal_response": None, "forecast_policy_response": None,
         "reporting_handover_observed": False, "reporting_handover_response": None,
     },
 }
@@ -107,104 +86,6 @@ W19_RECORDS = [
 W19_ALTERNATE = "WRAP-FFFFFFFF-OG2"
 CRC32C_POLY = 0x82F63B78
 W22_PROJECT = "CRR-SEALED-PKG-R7"
-
-PRESENT = {
-    "record_id": "PV-CRR-2026-09-25T1400Z", "revision": 21,
-    "interval": {"start": "2026-09-25T14:00:00Z", "end": "2026-09-25T14:05:00Z"},
-    "outlet_group": "OG-CRR-02", "asset": "AST-CRR-017",
-    "requested_setpoints_m3s": {"GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0},
-    "measurements": {
-        "gate_position_percent": {"GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0},
-        "actual_flow_m3s": {"FIT-CRR-204A": 0.0, "FIT-CRR-204B": 0.0},
-        "integrated_volume_ml": 0.0, "usable_reserve_ml": 12.40,
-    },
-}
-MODE = {
-    "record_id": "MODE-CRR-17", "revision": 17, "mode": "DRY_PERIOD_MANAGED",
-    "project": "CRR-CTRL-R21", "outlet_group": "OG-CRR-02", "current": True,
-}
-NOTE = {
-    "record_id": "ENG-CRR-OG2-17", "revision": 1,
-    "instrument": "FIT-CRR-204B", "historian_tag": "CRR.OUTLET.02B.FLOW_ACTUAL",
-    "description": "Cairn Reach outlet group 2B actual-flow instrument",
-}
-TRACE = {
-    "record_id": "EVT-COMM-OG2-114", "revision": 21,
-    "outlet_group": "OG-CRR-02", "project": "CRR-CTRL-R21",
-    "sequence": {"ramp_open_seconds": 20, "hold_seconds": 40, "ramp_close_seconds": 20,
-                 "each_gate_peak_m3s": 0.10},
-    "full_flow_equivalent_seconds": 60, "integrated_volume_ml": 0.012,
-    "authority": "read-only recorded commissioning event",
-}
-TAG_EXPORT = {
-    "record_id": "TAGS-CRR-R21", "revision": 21, "project": "CRR-CTRL-R21",
-    "tags": [
-        {"legacy_group": "OUTLET_A", "kind": "command", "tag": "CRR.OUTLET.02A.FLOW_SP"},
-        {"legacy_group": "OUTLET_A", "kind": "position", "tag": "CRR.OUTLET.02A.POS_ACTUAL"},
-        {"legacy_group": "OUTLET_A", "kind": "flow", "tag": "CRR.OUTLET.02A.FLOW_ACTUAL"},
-        {"legacy_group": "OUTLET_B", "kind": "command", "tag": "CRR.OUTLET.02B.FLOW_SP"},
-        {"legacy_group": "OUTLET_B", "kind": "position", "tag": "CRR.OUTLET.02B.POS_ACTUAL"},
-        {"legacy_group": "OUTLET_B", "kind": "flow", "tag": "CRR.OUTLET.02B.FLOW_ACTUAL"},
-    ],
-}
-SCALE = {
-    "record_id": "SCALE-CRR-R8", "revision": 8, "signed": True,
-    "position": {"counts_full_scale": 10000, "engineering_unit": "percent-open"},
-    "flow": {"counts_per_m3s": 10000, "engineering_unit": "m3/s"},
-}
-UNIT_CHANGE = {
-    "record_id": "SCALE-CHANGE-OG2-8", "revision": 8,
-    "deployment": "CRR-CTRL-R21", "current_divisor": 10000,
-    "retained_project": "CRR-CTRL-R19", "retained_divisor": 8000,
-    "sample_counts": 1200, "current_m3s": 0.12, "retained_m3s": 0.15,
-}
-MAPPING = {
-    "record_id": "MAP-OG2-R8", "revision": 8, "project": "CRR-CTRL-R21",
-    "event": "EVT-COMM-OG2-114", "outlet_group": "OG-CRR-02",
-    "map": [
-        {"flow_tag": "CRR.OUTLET.02A.FLOW_ACTUAL", "gate": "GT-CRR-02A", "instrument": "FIT-CRR-204A"},
-        {"flow_tag": "CRR.OUTLET.02B.FLOW_ACTUAL", "gate": "GT-CRR-02B", "instrument": "FIT-CRR-204B"},
-    ],
-}
-PROJECT_BUNDLE = {
-    "record_id": "PROJ-CRR-INDEX-R9", "revision": 9,
-    "workspace_claim": "CRR-CTRL-R19",
-    "deployment_note": {"record_id": "ENG-DEPLOY-CRR-21", "signed": True,
-                        "manifest_project": "CRR-CTRL-R21"},
-}
-DEPLOYMENT = {
-    "record_id": "DEPLOY-OBS-CRR-21", "revision": 21,
-    "project": "CRR-CTRL-R21",
-    "project_sha256": hashlib.sha256(b"CRR-CTRL-R21/deployed").hexdigest(),
-    "source": "independent instrument handshake",
-}
-ENVELOPE = {
-    "record_id": "ENV-OG2-R6", "revision": 6, "outlet_group": "OG-CRR-02",
-    "per_gate_m3s": [0.0, 0.50], "aggregate_max_m3s": 1.0,
-    "ramp_max_m3s_per_20s": 0.10, "hold_max_seconds": 1200,
-    "volume_max_ml": 1.20,
-}
-CONDITIONS = {
-    "record_id": "PRACTICE-PERM-02", "revision": 2, "checkpoint": "PRACTICE-OG2-07",
-    "permissive": False, "reason": "simulation reset_complete is not asserted",
-    "live_permissive": "PERM-OG2-LIVE-R4", "live_state_separate": True,
-}
-INEFFECTIVE = {
-    "record_id": "PRACTICE-REQUESTS-11-12", "revision": 1,
-    "requests": [
-        {"request_id": "PRACTICE-REQ-11", "acknowledged": True, "actuated": False},
-        {"request_id": "PRACTICE-REQ-12", "acknowledged": True, "actuated": False},
-    ],
-    "permissive": "PRACTICE-PERM-02", "measured_flow_m3s": 0.0,
-}
-PRACTICE = {
-    "record_id": "PRACTICE-OG2-07", "revision": 7, "live": False,
-    "permissive_transition": {"reset_complete": True, "permissive": True},
-    "sequence": {"each_gate_target_m3s": 0.15, "ramp_open_seconds": 30,
-                 "hold_seconds": 70, "ramp_close_seconds": 30},
-    "full_flow_equivalent_seconds": 100, "measured_volume_ml": 0.03,
-    "live_reserve_changed": False,
-}
 
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
@@ -514,18 +395,8 @@ class Handler(BaseHTTPRequestHandler):
             connection.close()
 
     def historian_proxy(self, method: str, path: str, body: dict[str, object] | None) -> None:
-        owner = "hmi" if path in {
-            "/api/process-views/state", "/api/process-views/mode",
-            "/api/process-views/instruments/active", "/api/operating-envelopes/current",
-            "/api/movement-conditions/current", "/api/commands",
-            "/api/practice-sequences",
-            "/api/reporting-checkpoints/current",
-            "/api/release-plans/current", "/api/release-plans/current/execute",
-            "/api/forecasts/current", "/api/schedule-windows/current",
-            "/api/schedules", "/api/feedback-policies",
-        } else "instruments" if path in {
+        owner = "instruments" if path in {
             "/api/firmware-images/current", "/api/maintenance-records/current",
-            "/api/collision-solutions",
         } else "diagnostics" if path in {
             "/api/control-commands", "/api/control-commands/consequence",
             "/api/estimator-runs",
@@ -550,46 +421,6 @@ class Handler(BaseHTTPRequestHandler):
         if urlsplit(self.path).path != "/.well-known/arwc-client":
             return False
         routes = [
-    {
-        "key": "process.state",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/process-views/state"
-    },
-    {
-        "key": "process.mode",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/process-views/mode"
-    },
-    {
-        "key": "process.active-instrument",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/process-views/instruments/active"
-    },
-    {
-        "key": "process.observations",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/observations"
-    },
-    {
-        "key": "process.tag-export",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/tag-exports/current"
-    },
-    {
-        "key": "process.tag-scale",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/tag-scales/current"
-    },
-    {
-        "key": "process.tag-scale-history",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/tag-scales/current/history"
-    },
-    {
-        "key": "process.outlet-instruments",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/outlet-groups/current/instruments"
-    },
     {
         "key": "process.diagnostic-program",
         "method": "GET",
@@ -624,11 +455,6 @@ class Handler(BaseHTTPRequestHandler):
         "key": "process.maintenance-record-update",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/maintenance-records/current"
-    },
-    {
-        "key": "process.sealed-project",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/sealed-projects/current/note"
     },
     {
         "key": "process.sealed-project-open",
@@ -691,26 +517,6 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/signature-programs/current/constraints"
     },
     {
-        "key": "process.operating-envelope",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/operating-envelopes/current"
-    },
-    {
-        "key": "process.movement-conditions",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/movement-conditions/current"
-    },
-    {
-        "key": "process.command-accept",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/commands"
-    },
-    {
-        "key": "process.practice-sequence",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/practice-sequences"
-    },
-    {
         "key": "process.control-authority",
         "method": "GET",
         "template": "PROCESS_VIEW_BASE/api/control-authority"
@@ -726,19 +532,9 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/collision-inputs/current"
     },
     {
-        "key": "process.collision-solve",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/collision-solutions"
-    },
-    {
         "key": "process.vault-record",
         "method": "GET",
         "template": "PROCESS_VIEW_BASE/api/vault-records/current"
-    },
-    {
-        "key": "process.vault-access",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/vault-access"
     },
     {
         "key": "process.replay-session",
@@ -756,64 +552,14 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/replay-sessions/current/divergence"
     },
     {
-        "key": "process.forecast",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/forecasts/current"
-    },
-    {
-        "key": "process.schedule-window",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/schedule-windows/current"
-    },
-    {
-        "key": "process.schedule-window-submit",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/schedule-windows/current"
-    },
-    {
-        "key": "process.schedule-submit",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/schedules"
-    },
-    {
-        "key": "process.feedback-policy",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/feedback-policies"
-    },
-    {
-        "key": "process.planning-window-economics",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/planning-windows/current/economics"
-    },
-    {
         "key": "process.planning-bid",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/planning-bids"
     },
     {
-        "key": "process.release-plan",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/release-plans/current"
-    },
-    {
-        "key": "process.release-execute",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/release-plans/current/execute"
-    },
-    {
         "key": "process.release-confirmation",
         "method": "GET",
         "template": "PROCESS_VIEW_BASE/api/release-plans/current/confirmation"
-    },
-    {
-        "key": "process.reporting-checkpoint",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/reporting-checkpoints/current"
-    },
-    {
-        "key": "process.reporting-checkpoint-submit",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/reporting-checkpoints/current"
     },
     {
         "key": "process.reporting-submit",
@@ -854,18 +600,12 @@ class Handler(BaseHTTPRequestHandler):
             return
         path = urlsplit(self.path).path
         if ROLE == "historian":
-            if path in {"/api/tag-exports/current", "/api/tag-scales/current"}:
-                self.historian_get(path)
-            elif path in {
-                "/api/process-views/state", "/api/process-views/mode",
-                "/api/process-views/instruments/active", "/api/operating-envelopes/current",
-                "/api/movement-conditions/current", "/api/sealed-projects/current/note",
+            if path in {
                 "/api/diagnostic-programs/current", "/api/firmware-images/current",
                 "/api/sealed-projects/current/viewer",
                 "/api/signature-requests",
                 "/api/vault-records/current",
                 "/api/replay-sessions/current",
-                "/api/schedule-windows/current",
             }:
                 self.historian_proxy("GET", path, None)
             else:
@@ -887,53 +627,12 @@ class Handler(BaseHTTPRequestHandler):
             except (OSError, json.JSONDecodeError):
                 self.send_json(409, {"error": "independent instrument path unavailable"}); return
             self.send_json(status, result); return
-        if ROLE == "historian" and path in {
-            "/internal/reserve-observations", "/internal/release-plan-assessments",
-        }:
-            if (self.headers.get("X-ARWC-Internal") != "data-bridge-reserve" or
-                    self.headers.get("X-ARWC-Tenant") != "arwc" or
-                    self.client_address[0] != "10.77.63.10"):
-                self.send_json(403, {"error": "integration service context required"})
-                return
-            request = self.body()
-            if request is None:
-                return
-            owner = "instruments" if path == "/internal/reserve-observations" else "hmi"
-            owner_path = ("/api/collision-solutions"
-                          if owner == "instruments" else "/api/reporting-checkpoints/current")
-            try:
-                status, result = self.internal_request(owner, "POST", owner_path, request)
-            except (OSError, json.JSONDecodeError):
-                self.send_json(409, {"error": "independent process owner unavailable"})
-                return
-            self.send_json(status, result)
-            return
         if not self.authorized():
             return
         request = self.body()
         if request is None:
             return
-        if path in {"/internal/reserve-observations", "/internal/release-plan-assessments"} and \
-                self.client_address[0] != "10.77.63.30":
-            self.send_json(403, {"error": "historian service context required"})
-            return
-        if ((ROLE == "instruments" and path == "/api/collision-solutions") or
-                (ROLE == "hmi" and path == "/api/reporting-checkpoints/current")) and \
-                self.client_address[0] != "10.77.63.30":
-            self.send_json(403, {"error": "historian service context required"})
-            return
-        if ROLE == "hmi" and path in {
-                "/api/release-plans/current", "/api/release-plans/current/execute",
-                "/internal/forecast-updates", "/api/schedule-windows/current",
-                "/api/schedules", "/api/feedback-policies",
-        } and self.client_address[0] != "10.77.63.30":
-            self.send_json(403, {"error": "historian service context required"})
-            return
-        if ROLE == "instruments" and path in {
-                "/internal/release-plan-bindings", "/internal/release-executions",
-                "/internal/schedule-validations", "/internal/feedback-policy-validations",
-                "/internal/control-handovers",
-        } and self.client_address[0] != "10.77.63.20":
+        if ROLE == "instruments" and path == "/internal/control-handovers" and self.client_address[0] != "10.77.63.20":
             self.send_json(403, {"error": "supervisory service context required"})
             return
         if ROLE == "historian":
@@ -941,99 +640,7 @@ class Handler(BaseHTTPRequestHandler):
         else:
             self.owner_post(path, request)
 
-    def historian_get(self, path: str) -> None:
-        state = load_state()
-        if path == "/api/tag-exports/current":
-            state["tag_export_observed"] = True
-            record, action = TAG_EXPORT, "tag-export-read"
-        else:
-            state["scale_observed"] = True
-            record, action = SCALE, "tag-scale-read"
-        save_state(state)
-        self.accepted(action, record)
-
     def historian_post(self, path: str, request: dict[str, object]) -> None:
-        if path == "/api/forecasts/current":
-            self.w33_forecast(request)
-            return
-        if path == "/api/observations":
-            expected = {"event": "EVT-COMM-OG2-114", "project": "CRR-CTRL-R21",
-                        "hmi_series": "HMI-EVT-114", "instrument_series": "INST-EVT-114"}
-            if request != expected:
-                self.send_json(409, {"error": "commissioning trace binding does not match"})
-                return
-            h_status, h_result = self.internal_request("hmi", "POST", path, request)
-            if h_status != 201:
-                self.send_json(h_status, h_result)
-                return
-            i_status, i_result = self.internal_request("instruments", "POST", path, request)
-            if i_status != 201:
-                self.send_json(409, {"error": "independent trace correlation failed"})
-                return
-            self.send_json(201, {**h_result, "instrument_observation": i_result["record"]})
-            return
-        if path == "/api/tag-scales/current/history":
-            state = load_state()
-            if not state["tag_export_observed"] or not state["scale_observed"]:
-                self.send_json(403, {"error": "tag export and scale table required"})
-                return
-            if request != {"sample_counts": 1200, "current_divisor": 10000,
-                           "retained_divisor": 8000, "deployment": "CRR-CTRL-R21"}:
-                self.send_json(409, {"error": "scale interpretation does not match"})
-                return
-            state["unit_change_interpreted"] = True
-            save_state(state)
-            self.accepted("unit-change-read", UNIT_CHANGE, 201)
-            return
-        if path == "/api/outlet-groups/current/instruments":
-            state = load_state()
-            if not state["unit_change_interpreted"]:
-                self.send_json(403, {"error": "current scale interpretation required"})
-                return
-            if request != {"event": "EVT-COMM-OG2-114", "scale": "SCALE-CRR-R8",
-                           "project": "CRR-CTRL-R21", "outlet_group": "OG-CRR-02"}:
-                self.send_json(409, {"error": "mapping evidence does not match"})
-                return
-            try:
-                trace = json.loads((EVIDENCE / "hmi" / "process-observation.json").read_text())
-            except (OSError, json.JSONDecodeError):
-                self.send_json(403, {"error": "commissioning observation evidence required"})
-                return
-            i_status, i_result = self.internal_request("instruments", "POST", path, request)
-            if i_status != 201 or trace.get("record_id") != "EVT-COMM-OG2-114":
-                self.send_json(409, {"error": "independent mapping observation failed"})
-                return
-            state["mapping_observed"] = True
-            save_state(state)
-            atomic_json(EVIDENCE / "historian" / "outlet-map.json", MAPPING)
-            self.accepted("outlet-map-read", MAPPING, 201,
-                          {"instrument_observation": i_result["record"]})
-            return
-        if path == "/api/vault-access":
-            e_status, e_result = self.internal_request("engineering", "POST", path, request)
-            if e_status != 201:
-                self.send_json(e_status, e_result)
-                return
-            i_status, i_result = self.internal_request("instruments", "POST", path, request)
-            if i_status != 201:
-                self.send_json(409, {"error": "deployed project comparison failed"})
-                return
-            self.send_json(201, {**e_result, "instrument_observation": i_result["record"]})
-            return
-        if path == "/api/practice-sequences":
-            h_status, h_result = self.internal_request("hmi", "POST", path, request)
-            if h_status != 201:
-                self.send_json(h_status, h_result)
-                return
-            i_status, i_result = self.internal_request("instruments", "POST", path, request)
-            if i_status != 201:
-                self.send_json(409, {"error": "practice sequence did not produce independent observation"})
-                return
-            self.send_json(201, {**h_result, "instrument_observation": i_result["record"]})
-            return
-        if path in {"/api/commands"}:
-            self.historian_proxy("POST", path, request)
-            return
         if path in {
             "/api/signature-records/current/interpretation", "/api/signature-programs/current",
             "/api/diagnostic-programs/legacy", "/api/maintenance-records/current",
@@ -1048,14 +655,10 @@ class Handler(BaseHTTPRequestHandler):
             "/api/diagnostic-runs",
             "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
             "/api/control-authority",
-            "/api/collision-solutions", "/api/reporting-checkpoints/current",
-            "/api/release-plans/current", "/api/release-plans/current/execute",
             "/api/signature-records/current", "/api/replay-sessions/current/divergence",
             "/api/diagnostic-programs/authority",
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
             "/api/replay-sessions/current/execute",
-            "/api/schedule-windows/current", "/api/schedules",
-            "/api/feedback-policies",
         }:
             self.historian_proxy("POST", path, request)
             return
@@ -1064,9 +667,6 @@ class Handler(BaseHTTPRequestHandler):
     def owner_get(self, path: str) -> None:
         state = load_state()
         if ROLE == "engineering" and path == "/api/replay-sessions/current":
-            if not state["deployed_revision_observed"]:
-                self.send_json(403, {"error": "current deployed-revision evidence required"})
-                return
             binary = W32_ARTIFACT.read_bytes()
             structure = run_replay32("structure")
             cases = run_replay32("inputs")
@@ -1103,9 +703,6 @@ class Handler(BaseHTTPRequestHandler):
                           extra={"artifact_b64": base64.b64encode(binary).decode()})
             return
         if ROLE == "engineering" and path == "/api/sealed-projects/current/viewer":
-            if not state["deployed_revision_observed"]:
-                self.send_json(403, {"error": "current deployed-revision evidence required"})
-                return
             viewer = (ARTIFACTS / "sealed-viewer").read_bytes()
             program = (ARTIFACTS / "viewer-program.bin").read_bytes()
             package = (ARTIFACTS / "sealed-project.bin").read_bytes()
@@ -1143,98 +740,10 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("firmware-image-read", record,
                           extra={"image_b64": base64.b64encode(image).decode()})
             return
-        if ROLE == "hmi":
-            if path == "/api/schedule-windows/current":
-                self.send_json(200, {
-                    "schema": "arwc.schedule-window/v1",
-                    "checkpoint": schedule33.CHECKPOINT,
-                    "interval_seconds": 300,
-                    "interval_count": 12,
-                    "demand_m3s": schedule33.DEMAND,
-                    "initial_buffer_m3": 180.0,
-                    "state_bounds_m3": {"min": 120.0, "max": 240.0},
-                    "terminal_bounds_m3": {"min": 160.0, "max": 200.0},
-                    "volume_objective_ml": {"min": 0.78, "max": 0.84},
-                    "ramp_bound_m3s": 0.1,
-                    "release_bounds_m3s": {"min": 0.0, "max": 0.8},
-                    "supply_bounds_m3s": {"min": 0.0, "max": 0.5},
-                    "policy_format": "ARWC-POL1",
-                    "request_schema": {
-                        "required": [
-                            "checkpoint", "interval_seconds", "demand_m3s",
-                            "reservoir_release_m3s", "alternate_supply_m3s",
-                        ],
-                        "series_length": 12,
-                        "number_type": "finite-real",
-                    },
-                })
-                return
-            records = {
-                "/api/process-views/state": ("present_observed", PRESENT, "current-process-view-read"),
-                "/api/process-views/mode": ("mode_observed", MODE, "process-mode-read"),
-                "/api/process-views/instruments/active": ("note_observed", NOTE, "instrument-note-read"),
-                "/api/operating-envelopes/current": ("envelope_observed", ENVELOPE, "operating-envelope-read"),
-                "/api/movement-conditions/current": ("practice_conditions_observed", CONDITIONS, "movement-conditions-read"),
-            }
-        elif ROLE == "engineering":
-            records = {
-                "/api/sealed-projects/current/note": ("project_bundle_observed", PROJECT_BUNDLE, "sealed-project-note-read"),
-            }
-        else:
-            records = {}
-        if path not in records:
-            self.send_json(404, {"error": "record not found"})
-            return
-        field, record, action = records[path]
-        state[field] = True
-        save_state(state)
-        if path == "/api/operating-envelopes/current":
-            atomic_json(EVIDENCE / "hmi" / "operating-envelope.json", record)
-        extra: dict[str, object] = {}
-        if path == "/api/process-views/instruments/active":
-            extra["engineering_context"] = authored_asset("me-engineering-note-01-1")
-        elif path == "/api/sealed-projects/current/note":
-            extra["handover_context"] = authored_asset("me-project-handover-01")
-        self.accepted(action, record, extra=extra)
+        self.send_json(404, {"error": "record not found"})
 
     def owner_post(self, path: str, request: dict[str, object]) -> None:
         state = load_state()
-        if ROLE == "instruments" and path == "/api/collision-solutions":
-            self.w29_reserve(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/reporting-checkpoints/current":
-            self.w29_plan(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/release-plans/current":
-            self.w30_bind(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/release-plans/current/execute":
-            self.w30_open(request)
-            return
-        if ROLE == "hmi" and path == "/internal/forecast-updates":
-            self.w33_hmi_forecast(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/schedule-windows/current":
-            self.w33_schedule(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/schedules":
-            self.w33_rehearsal(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/feedback-policies":
-            self.w33_policy(request, state)
-            return
-        if ROLE == "instruments" and path == "/internal/release-plan-bindings":
-            self.w30_reservoir_request(path, request)
-            return
-        if ROLE == "instruments" and path == "/internal/release-executions":
-            self.w30_observe_release(request, state)
-            return
-        if ROLE == "instruments" and path == "/internal/schedule-validations":
-            self.w33_instrument_schedule(request, state)
-            return
-        if ROLE == "instruments" and path == "/internal/feedback-policy-validations":
-            self.w33_instrument_policy(request, state)
-            return
         if ROLE == "instruments" and path == "/internal/control-handovers":
             self.w34_instrument_handover(request, state)
             return
@@ -1271,104 +780,9 @@ class Handler(BaseHTTPRequestHandler):
         if ROLE == "instruments" and path == "/api/maintenance-records/current":
             self.w20_post(path, request, state)
             return
-        if ROLE == "hmi" and path == "/api/observations":
-            if not (state["present_observed"] and state["mode_observed"] and state["note_observed"]):
-                self.send_json(403, {"error": "current view, mode, and instrument note required"})
-                return
-            if request != {"event": "EVT-COMM-OG2-114", "project": "CRR-CTRL-R21",
-                           "hmi_series": "HMI-EVT-114", "instrument_series": "INST-EVT-114"}:
-                self.send_json(409, {"error": "commissioning trace binding does not match"})
-                return
-            state["trace_correlated"] = True
-            save_state(state)
-            atomic_json(EVIDENCE / "hmi" / "process-observation.json", TRACE)
-            self.accepted("live-trace-correlated", TRACE, 201,
-                          {"commissioning_context": authored_asset("me-commissioning-01")})
-            return
-        if ROLE == "hmi" and path == "/api/commands":
-            if not state["envelope_observed"] or not state["practice_conditions_observed"]:
-                self.send_json(403, {"error": "practice envelope and permissive evidence required"})
-                return
-            if request != {"requests": ["PRACTICE-REQ-11", "PRACTICE-REQ-12"],
-                           "permissive": "PRACTICE-PERM-02", "expected_actuation": False}:
-                self.send_json(409, {"error": "practice request interpretation does not match"})
-                return
-            state["ineffective_requests_observed"] = True
-            save_state(state)
-            self.accepted("ineffective-request-read", INEFFECTIVE, 201)
-            return
-        if ROLE == "hmi" and path == "/api/practice-sequences":
-            if not state["ineffective_requests_observed"] or not state["trace_correlated"]:
-                self.send_json(403, {"error": "practice interpretation and current observation evidence required"})
-                return
-            expected = {"checkpoint": "PRACTICE-OG2-07", "reset_complete": True,
-                        "each_gate_target_m3s": 0.15, "ramp_open_seconds": 30,
-                        "hold_seconds": 70, "ramp_close_seconds": 30}
-            if request != expected:
-                self.send_json(409, {"error": "practice sequence is outside approved movement limits"})
-                return
-            state["practice_sequence_observed"] = True
-            save_state(state)
-            atomic_json(EVIDENCE / "hmi" / "practice-sequence.json", PRACTICE)
-            self.accepted("practice-sequence-read", PRACTICE, 201)
-            return
-        if ROLE == "engineering" and path == "/api/vault-access":
-            if not state["project_bundle_observed"]:
-                self.send_json(403, {"error": "project index and deployment note required"})
-                return
-            expected = {"project_index": "PROJ-CRR-INDEX-R9", "workspace_claim": "CRR-CTRL-R19",
-                        "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": "CRR-CTRL-R21",
-                        "observed_digest": DEPLOYMENT["project_sha256"]}
-            if request != expected:
-                self.send_json(409, {"error": "project comparison does not match deployment observation"})
-                return
-            state["deployed_revision_observed"] = True
-            save_state(state)
-            result = {"record_id": "CMP-CRR-R21", "revision": 21,
-                      "rejected_claim": "CRR-CTRL-R19", "deployed_project": "CRR-CTRL-R21",
-                      "observation": "DEPLOY-OBS-CRR-21"}
-            atomic_json(EVIDENCE / "engineering" / "deployment-revision.json", result)
-            self.accepted("deployment-revision-read", result, 201)
-            return
-        if ROLE == "instruments" and path == "/api/observations":
-            state["trace_observed"] = True
-            save_state(state)
-            result = {**TRACE, "record_id": "INST-EVT-114", "source": "independent instruments"}
-            atomic_json(EVIDENCE / "instruments" / "process-observation.json", result)
-            self.accepted("live-trace-correlated", result, 201)
-            return
-        if ROLE == "instruments" and path == "/api/outlet-groups/current/instruments":
-            if not state["trace_observed"]:
-                self.send_json(403, {"error": "independent commissioning trace required"})
-                return
-            state["mapping_observed"] = True
-            save_state(state)
-            result = {"record_id": "INST-MAP-OG2-R8", "revision": 8,
-                      "outlet_group": "OG-CRR-02", "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"]}
-            atomic_json(EVIDENCE / "instruments" / "outlet-map.json", result)
-            self.accepted("outlet-map-read", result, 201)
-            return
-        if ROLE == "instruments" and path == "/api/vault-access":
-            state["deployment_observed"] = True
-            save_state(state)
-            atomic_json(EVIDENCE / "instruments" / "deployment-observation.json", DEPLOYMENT)
-            self.accepted("deployment-revision-read", DEPLOYMENT, 201)
-            return
-        if ROLE == "instruments" and path == "/api/practice-sequences":
-            state["practice_observed"] = True
-            save_state(state)
-            result = {"record_id": "INST-PRACTICE-OG2-07", "revision": 7,
-                      "measured_volume_ml": 0.03, "live_reserve_changed": False,
-                      "gate_peak_m3s": {"GT-CRR-02A": 0.15, "GT-CRR-02B": 0.15}}
-            atomic_json(EVIDENCE / "instruments" / "practice-sequence.json", result)
-            self.accepted("practice-sequence-read", result, 201)
-            return
         self.send_json(404, {"error": "record not found"})
 
     def w27_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
-        if not state["deployed_revision_observed"]:
-            self.send_json(403, {"error": "current deployed-revision evidence required"})
-            return
         manifest = json.loads((INTEGRITY_ARTIFACTS / "manifest.json").read_text())
         base = (INTEGRITY_ARTIFACTS / "base.dpg").read_bytes()
         if path == "/api/signature-programs/current/reproductions":
@@ -1522,260 +936,13 @@ class Handler(BaseHTTPRequestHandler):
         state["replay_witness_response"] = response; save_state(state)
         self.send_json(201, response)
 
-    def w33_forecast(self, request: dict[str, object]) -> None:
-        expected = {
-            "case": "FCST-CRR-33", "checkpoint": "REH-SCHED-33",
-            "sample_period_seconds": 20, "publication_delay_seconds": 40,
-            "scale_gain": 1.0, "map": "MAP-OG2-R8",
-            "instrument_reserve_ml": 12.4, "forecast_reserve_ml": 12.4,
-        }
-        if request != expected:
-            self.send_json(409, {"error": "forecast and instrument bindings do not agree"})
-            return
-        state = load_state(); existing = state.get("forecast_response")
-        if isinstance(existing, dict): self.send_json(201, existing); return
-        correlation = str(uuid.uuid4())
-        try:
-            status, result = self.internal_request("hmi", "POST", "/internal/forecast-updates", {
-                "correlation": correlation, "request": request,
-            })
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "supervisory forecast observation unavailable"})
-            return
-        record = result.get("record")
-        if (status != 201 or result.get("audit_id") != correlation or
-                not isinstance(record, dict) or record.get("record_id") != "FCST-CRR-33"):
-            self.send_json(status if status in {403, 409} else 409, result)
-            return
-        state["forecast_observed"] = True
-        historian_audit = append_audit("forecast-record-created", record, correlation)
-        response = {**result, "historian_audit_id": historian_audit}
-        state["forecast_response"] = response; save_state(state); self.send_json(201, response)
-
-    def w33_hmi_forecast(self, request: dict[str, object], state: dict[str, object]) -> None:
-        correlation = request.get("correlation"); binding = request.get("request")
-        expected = {
-            "case": "FCST-CRR-33", "checkpoint": "REH-SCHED-33",
-            "sample_period_seconds": 20, "publication_delay_seconds": 40,
-            "scale_gain": 1.0, "map": "MAP-OG2-R8",
-            "instrument_reserve_ml": 12.4, "forecast_reserve_ml": 12.4,
-        }
-        if set(request) != {"correlation", "request"} or not valid_uuid(correlation) or binding != expected:
-            self.send_json(409, {"error": "forecast observation request is not bound"})
-            return
-        existing = state.get("forecast_response")
-        if isinstance(existing, dict):
-            if existing.get("audit_id") == correlation: self.send_json(201, existing)
-            else: self.send_json(409, {"error": "forecast already recorded under another correlation"})
-            return
-        record = {
-            "record_id": "FCST-CRR-33", "revision": 1,
-            "request_correlation": correlation, "checkpoint": "REH-SCHED-33",
-            "instrument": "FIT-CRR-204B", "historian_tag": "CRR.OUTLET.02B.FLOW_ACTUAL",
-            "map": "MAP-OG2-R8", "sample_period_seconds": 20,
-            "publication_delay_seconds": 40, "scale_gain": 1.0,
-            "instrument_reserve_ml": 12.4, "forecast_reserve_ml": 12.4,
-            "absolute_error_ml": 0.0, "tolerance_ml": 0.01, "within_tolerance": True,
-        }
-        state["forecast_observed"] = True; save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "forecast-observation.json", record)
-        response = {"audit_id": append_audit("forecast-record-created", record, str(correlation)),
-                    "record": record, "meter_context": authored_asset("service-meter-guide")}
-        state["forecast_response"] = response; save_state(state); self.send_json(201, response)
-
-    def w33_schedule(self, request: dict[str, object], state: dict[str, object]) -> None:
-        forecast = None
-        try:
-            forecast = json.loads((EVIDENCE / "hmi" / "forecast-observation.json").read_text())
-            envelope = json.loads((EVIDENCE / "hmi" / "operating-envelope.json").read_text())
-        except (OSError, json.JSONDecodeError):
-            envelope = None
-        if (forecast is None or forecast.get("record_id") != "FCST-CRR-33" or
-                not isinstance(envelope, dict) or envelope.get("record_id") != "ENV-OG2-R6"):
-            self.send_json(403, {"error": "forecast and current operating envelope required"})
-            return
-        if set(request) != {"checkpoint", "interval_seconds", "demand_m3s",
-                            "reservoir_release_m3s", "alternate_supply_m3s"} or \
-                request.get("checkpoint") != schedule33.CHECKPOINT or request.get("interval_seconds") != 300:
-            self.send_json(409, {"error": "rehearsal schedule is not bound"})
-            return
-        evaluated = schedule33.evaluate_schedule(request.get("reservoir_release_m3s"),
-                                                 request.get("alternate_supply_m3s"),
-                                                 request.get("demand_m3s"))
-        if evaluated is None or request.get("demand_m3s") != schedule33.DEMAND:
-            self.send_json(409, {"error": "rehearsal schedule is outside approved movement limits"})
-            return
-        existing = state.get("schedule_response")
-        if isinstance(existing, dict):
-            if existing.get("record", {}).get("schedule_sha256") == evaluated["schedule_sha256"]:
-                self.send_json(201, existing)
-            else: self.send_json(409, {"error": "another schedule already owns this checkpoint"})
-            return
-        correlation = str(uuid.uuid4())
-        wrapped = {"correlation": correlation, "request": request, "evaluation": evaluated}
-        try:
-            status, data_result = self.internal_request("data_bridge", "POST", "/internal/schedule-validations",
-                                                        wrapped, "hmi-scheduling")
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "planning schedule service unavailable"}); return
-        if (status != 201 or data_result.get("audit_id") != correlation or
-                data_result.get("record", {}).get("schedule_sha256") != evaluated["schedule_sha256"]):
-            self.send_json(status if status in {403, 409} else 409, data_result); return
-        record = {"record_id": "SCHED-CRR-33", "revision": 1,
-                  "request_correlation": correlation, **evaluated,
-                  "forecast": "FCST-CRR-33", "envelope": "ENV-OG2-R6",
-                  "demand_m3s": request["demand_m3s"],
-                  "reservoir_release_m3s": request["reservoir_release_m3s"],
-                  "alternate_supply_m3s": request["alternate_supply_m3s"]}
-        response = {"audit_id": correlation, "hmi_audit_id": append_audit(
-            "schedule-window-read", record, correlation), "planning_audit_id": data_result["audit_id"],
-            "record": record}
-        state["schedule_observed"] = True; state["schedule_response"] = response; save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "schedule-evaluation.json", record)
-        self.send_json(201, response)
-
-    def w33_rehearsal(self, request: dict[str, object], state: dict[str, object]) -> None:
-        schedule = None
-        try:
-            schedule = json.loads((EVIDENCE / "hmi" / "schedule-evaluation.json").read_text())
-        except (OSError, json.JSONDecodeError):
-            pass
-        expected = {
-            "control_client": request.get("control_client"), "checkpoint": "REH-SCHED-33",
-            "schedule_sha256": None if schedule is None else schedule.get("schedule_sha256"),
-            "forecast": "FCST-CRR-33", "map": "MAP-OG2-R8", "mode": "MODE-CRR-17",
-            "envelope": "ENV-OG2-R6", "consequence_plan": "PLAN-CRR-LOSS-1000",
-            "tariff": "TAR-CRR-DP3-R4", "committed_allocation_ml": 12.0,
-        }
-        if (schedule is None or not self.w30_process_context() or not isinstance(request.get("control_client"), str)):
-            self.send_json(403, {"error": "current schedule, process context, and consequence plan required"}); return
-        if request != expected:
-            self.send_json(409, {"error": "rehearsal bindings do not agree"}); return
-        existing = state.get("schedule_rehearsal_response")
-        if isinstance(existing, dict): self.send_json(201, existing); return
-        correlation = str(uuid.uuid4())
-        wrapped = {"correlation": correlation, "request": request, "schedule": schedule}
-        try:
-            status, result = self.internal_request("instruments", "POST", "/internal/schedule-validations", wrapped)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "independent rehearsal path unavailable"}); return
-        record = result.get("record")
-        if (status != 201 or result.get("audit_id") != correlation or not isinstance(record, dict) or
-                record.get("record_id") != "REH-RESULT-CRR-33"):
-            self.send_json(status if status in {403, 409} else 409, result); return
-        response = {**result, "hmi_audit_id": append_audit(
-            "schedule-evaluation-created", record, correlation)}
-        state["schedule_rehearsal_observed"] = True; state["schedule_rehearsal_response"] = response; save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "schedule-rehearsal.json", record)
-        self.send_json(201, response)
-
-    def w33_policy(self, request: dict[str, object], state: dict[str, object]) -> None:
-        expected = {"control_client": request.get("control_client"),
-                    "schedule_result": "REH-RESULT-CRR-33", "policy": request.get("policy")}
-        if not state.get("schedule_rehearsal_observed") or not isinstance(request.get("control_client"), str):
-            self.send_json(403, {"error": "accepted rehearsal result required"}); return
-        evaluated = schedule33.evaluate_policy(request.get("policy"))
-        if request != expected or evaluated is None:
-            self.send_json(409, {"error": "forecast-response policy rejected"}); return
-        existing = state.get("forecast_policy_response")
-        if isinstance(existing, dict):
-            if existing.get("record", {}).get("policy_sha256") == evaluated["policy_sha256"]:
-                self.send_json(201, existing)
-            else: self.send_json(409, {"error": "another policy already owns this checkpoint"})
-            return
-        correlation = str(uuid.uuid4())
-        wrapped = {"correlation": correlation, "request": request, "evaluation": evaluated}
-        try:
-            status, result = self.internal_request("instruments", "POST", "/internal/feedback-policy-validations", wrapped)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "independent policy path unavailable"}); return
-        record = result.get("record")
-        if (status != 201 or result.get("audit_id") != correlation or not isinstance(record, dict) or
-                record.get("record_id") != "POL-RESULT-CRR-33"):
-            self.send_json(status if status in {403, 409} else 409, result); return
-        response = {**result, "hmi_audit_id": append_audit("forecast-policy-created", record, correlation)}
-        state["forecast_policy_observed"] = True; state["forecast_policy_response"] = response; save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "forecast-policy.json", record)
-        self.send_json(201, response)
-
-    def w33_control_call(self, owner: str, path: str,
-                         request: dict[str, object]) -> tuple[int, dict[str, object]]:
-        return self.internal_request(owner, "POST", path, request, "instruments-scheduling")
-
-    def w33_instrument_schedule(self, request: dict[str, object], state: dict[str, object]) -> None:
-        correlation = request.get("correlation"); binding = request.get("request"); schedule = request.get("schedule")
-        if (set(request) != {"correlation", "request", "schedule"} or not valid_uuid(correlation) or
-                not isinstance(binding, dict) or not isinstance(schedule, dict) or
-                schedule.get("record_id") != "SCHED-CRR-33" or
-                binding.get("schedule_sha256") != schedule.get("schedule_sha256")):
-            self.send_json(409, {"error": "independent rehearsal request is not bound"}); return
-        existing = state.get("schedule_rehearsal_response")
-        if isinstance(existing, dict):
-            if existing.get("audit_id") == correlation: self.send_json(201, existing)
-            else: self.send_json(409, {"error": "rehearsal already recorded under another correlation"})
-            return
-        for owner in ("reservoir", "distribution"):
-            try: status, result = self.w33_control_call(owner, "/internal/schedule-validations", request)
-            except (OSError, json.JSONDecodeError):
-                self.send_json(409, {"error": f"{owner} observation unavailable"}); return
-            if status != 201 or result.get("audit_id") != correlation:
-                self.send_json(status if status in {403, 409} else 409, result); return
-            if owner == "reservoir": reservoir = result
-            else: distribution = result
-        record = {
-            "record_id": "REH-RESULT-CRR-33", "revision": 1, "request_correlation": correlation,
-            "checkpoint": "REH-SCHED-33", "schedule": "SCHED-CRR-33",
-            "reservoir_volume_ml": 0.81, "buffer_final_m3": 180.0,
-            "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
-            "committed_allocation_ml": 12.0, "shortfall_ml": 0.41,
-            "tariff": "TAR-CRR-DP3-R4", "replacement_liability_usd": 984,
-            "live_state_changed": False,
-        }
-        response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
-            "schedule-evaluation-created", record, str(correlation)),
-            "reservoir_audit_id": reservoir["audit_id"], "distribution_audit_id": distribution["audit_id"],
-            "record": record, "reservoir_observation": reservoir["record"],
-            "distribution_observation": distribution["record"]}
-        state["schedule_rehearsal_observed"] = True; state["schedule_rehearsal_response"] = response; save_state(state)
-        atomic_json(EVIDENCE / "instruments" / "schedule-rehearsal.json", record)
-        self.send_json(201, response)
-
-    def w33_instrument_policy(self, request: dict[str, object], state: dict[str, object]) -> None:
-        correlation = request.get("correlation"); binding = request.get("request"); evaluated = request.get("evaluation")
-        if (not state.get("schedule_rehearsal_observed") or set(request) != {"correlation", "request", "evaluation"} or
-                not valid_uuid(correlation) or not isinstance(binding, dict) or not isinstance(evaluated, dict) or
-                evaluated != schedule33.evaluate_policy(binding.get("policy"))):
-            self.send_json(409, {"error": "independent policy request is not bound"}); return
-        existing = state.get("forecast_policy_response")
-        if isinstance(existing, dict):
-            if existing.get("audit_id") == correlation: self.send_json(201, existing)
-            else: self.send_json(409, {"error": "policy already recorded under another correlation"})
-            return
-        for owner in ("reservoir", "distribution"):
-            try: status, result = self.w33_control_call(owner, "/internal/feedback-policy-validations", request)
-            except (OSError, json.JSONDecodeError):
-                self.send_json(409, {"error": f"{owner} policy evaluation unavailable"}); return
-            if status != 201 or result.get("audit_id") != correlation:
-                self.send_json(status if status in {403, 409} else 409, result); return
-            if owner == "reservoir": reservoir = result
-            else: distribution = result
-        record = {"record_id": "POL-RESULT-CRR-33", "revision": 1,
-                  "request_correlation": correlation, "schedule_result": "REH-RESULT-CRR-33", **evaluated,
-                  "live_state_changed": False}
-        response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
-            "forecast-policy-created", record, str(correlation)),
-            "reservoir_audit_id": reservoir["audit_id"], "distribution_audit_id": distribution["audit_id"],
-            "record": record}
-        state["forecast_policy_observed"] = True; state["forecast_policy_response"] = response; save_state(state)
-        self.send_json(201, response)
-
     def w34_instrument_handover(self, request: dict[str, object], state: dict[str, object]) -> None:
         correlation = request.get("correlation"); binding = request.get("request"); evaluated = request.get("evaluation")
         if (set(request) != {"correlation", "request", "evaluation"} or not valid_uuid(correlation) or
                 not isinstance(binding, dict) or not isinstance(evaluated, dict)):
             self.send_json(409, {"error": "reporting handover request is not bound"}); return
         schedule = binding.get("schedule")
-        calculated = None if not isinstance(schedule, dict) else schedule33.evaluate_schedule(
+        calculated = None if not isinstance(schedule, dict) else reporting_schedule.evaluate_schedule(
             schedule.get("reservoir_release_m3s"), schedule.get("alternate_supply_m3s"),
             schedule.get("demand_m3s"))
         if (calculated is None or calculated != evaluated or binding.get("checkpoint") != "REH-REPORT-34" or
@@ -1807,283 +974,6 @@ class Handler(BaseHTTPRequestHandler):
             "reservoir_observation": reservoir["record"]}
         state["reporting_handover_observed"] = True; state["reporting_handover_response"] = response; save_state(state)
         atomic_json(EVIDENCE / "instruments" / "reporting-handover.json", record)
-        self.send_json(201, response)
-
-    def w29_reserve(self, request: dict[str, object], state: dict[str, object]) -> None:
-        correlation = request.get("correlation")
-        try:
-            correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
-        except (ValueError, TypeError):
-            correlation_valid = False
-        if (set(request) != {"correlation", "record_id", "planning_window"} or
-                not correlation_valid or request.get("record_id") != "OBS-RESERVE-CRR-R29" or
-                request.get("planning_window") != "ALLOC-2026-DP3"):
-            self.send_json(409, {"error": "reserve observation binding does not match"})
-            return
-        record = {
-            "record_id": "OBS-RESERVE-CRR-R29", "revision": 29,
-            "request_correlation": correlation, "planning_window": "ALLOC-2026-DP3",
-            "process_record": "PV-CRR-2026-09-25T1400Z",
-            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "usable_reserve_ml": 12.4, "unit": "ML",
-            "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
-            "source": "independent instruments", "current": True,
-        }
-        state["reserve_observed"] = True
-        save_state(state)
-        atomic_json(EVIDENCE / "instruments" / "reserve-observation.json", record)
-        self.accepted("reserve-balance-created", record, 201,
-                      correlation=str(correlation))
-
-    def w29_plan(self, request: dict[str, object], state: dict[str, object]) -> None:
-        if not state["mode_observed"] or not state["practice_sequence_observed"]:
-            self.send_json(403, {"error": "validated current operating mode evidence required"})
-            return
-        correlation = request.get("correlation")
-        plan_request = request.get("request")
-        tariff = request.get("tariff")
-        balance = request.get("balance")
-        try:
-            correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
-        except (ValueError, TypeError):
-            correlation_valid = False
-        expected_request = {
-            "plan_id": "PLAN-CRR-LOSS-1000", "tariff": "TAR-CRR-DP3-R4",
-            "balance": "BAL-CRR-DP3-R29", "mode": "MODE-CRR-17",
-            "outlet_group": "OG-CRR-02", "ramp_open_seconds": 100,
-            "each_gate_target_m3s": 0.5, "hold_seconds": 900,
-            "ramp_close_seconds": 100,
-        }
-        expected_tariff = {
-            "record_id": "TAR-CRR-DP3-R4", "revision": 4,
-            "planning_window": "ALLOC-2026-DP3", "currency": "USD",
-            "rate_per_ml": 2400, "unit": "USD/ML", "status": "current",
-        }
-        if (set(request) != {"correlation", "request", "tariff", "balance"} or
-                not correlation_valid or plan_request != expected_request or
-                tariff != expected_tariff or not isinstance(balance, dict) or
-                balance.get("record_id") != "BAL-CRR-DP3-R29" or
-                balance.get("planning_window") != "ALLOC-2026-DP3" or
-                balance.get("usable_reserve_ml") != 12.4 or
-                balance.get("committed_ml") != 12.0 or
-                balance.get("uncommitted_margin_ml") != 0.4 or
-                balance.get("unit") != "ML" or balance.get("before_release") is not True):
-            self.send_json(409, {"error": "tariff, reserve, mode, or plan binding does not match"})
-            return
-        full_flow_seconds = 100 // 2 + 900 + 100 // 2
-        released_ml = round((0.5 + 0.5) * full_flow_seconds / 1000, 2)
-        reserve_after = round(float(balance["usable_reserve_ml"]) - released_ml, 2)
-        shortfall = round(max(0.0, float(balance["committed_ml"]) - reserve_after), 2)
-        liability = int(round(shortfall * int(tariff["rate_per_ml"])))
-        if (full_flow_seconds, released_ml, reserve_after, shortfall, liability) != \
-                (1000, 1.0, 11.4, 0.6, 1440):
-            self.send_json(409, {"error": "release consequence calculation is inconsistent"})
-            return
-        record = {
-            "record_id": "PLAN-CRR-LOSS-1000", "revision": 1,
-            "request_correlation": correlation, "outlet_group": "OG-CRR-02",
-            "mode": "MODE-CRR-17", "mode_name": "DRY_PERIOD_MANAGED",
-            "tariff": "TAR-CRR-DP3-R4", "balance": "BAL-CRR-DP3-R29",
-            "sequence": {
-                "balanced_gates": ["GT-CRR-02A", "GT-CRR-02B"],
-                "ramp_open_seconds": 100, "each_gate_target_m3s": 0.5,
-                "hold_seconds": 900, "ramp_close_seconds": 100,
-                "full_flow_equivalent_seconds": full_flow_seconds,
-                "elapsed_seconds": 1100,
-            },
-            "released_volume_ml": released_ml, "reserve_before_ml": 12.4,
-            "reserve_after_ml": reserve_after, "committed_ml": 12.0,
-            "shortfall_ml": shortfall, "replacement_liability_usd": liability,
-            "continuity_rule": "CONT-DRY-A-R3", "restriction_stage": "A",
-            "live_action_performed": False,
-        }
-        state["loss_plan_constructed"] = True
-        save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "loss-plan.json", record)
-        self.accepted("loss-plan-created", record, 201, correlation=str(correlation))
-
-    def w30_process_context(self) -> bool:
-        expected = {
-            EVIDENCE / "historian" / "outlet-map.json": ("MAP-OG2-R8", 8),
-            EVIDENCE / "engineering" / "deployment-revision.json": ("CMP-CRR-R21", 21),
-            EVIDENCE / "hmi" / "operating-envelope.json": ("ENV-OG2-R6", 6),
-            EVIDENCE / "hmi" / "practice-sequence.json": ("PRACTICE-OG2-07", 7),
-            EVIDENCE / "hmi" / "loss-plan.json": ("PLAN-CRR-LOSS-1000", 1),
-        }
-        for path, (record_id, revision) in expected.items():
-            try:
-                record = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
-                return False
-            if record.get("record_id") != record_id or record.get("revision") != revision:
-                return False
-        return True
-
-    def w30_bind(self, request: dict[str, object], state: dict[str, object]) -> None:
-        if not self.w30_process_context():
-            self.send_json(403, {"error": "current process interpretation and consequence plan required"})
-            return
-        binding = request.get("request")
-        correlation = request.get("correlation")
-        try:
-            correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
-        except (ValueError, TypeError):
-            correlation_valid = False
-        if (set(request) != {"correlation", "request"} or not correlation_valid or
-                not isinstance(binding, dict)):
-            self.send_json(409, {"error": "command-plan request is not bound"})
-            return
-        expected = {
-            "control_client": binding.get("control_client"),
-            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "project": "CRR-CTRL-R21", "project_revision": 21,
-            "map": "MAP-OG2-R8", "map_revision": 8,
-            "mode": "MODE-CRR-17", "mode_revision": 17,
-            "envelope": "ENV-OG2-R6", "envelope_revision": 6,
-            "plan": "PLAN-CRR-LOSS-1000",
-            "units": {"flow": "m3/s", "volume": "ML", "time": "s"},
-        }
-        if not isinstance(binding.get("control_client"), str) or binding != expected:
-            self.send_json(409, {"error": "current command-plan bindings do not agree"})
-            return
-        try:
-            status, result = self.internal_request("instruments", "POST", "/internal/release-plan-bindings", request)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "independent command path unavailable"})
-            return
-        record = result.get("record")
-        if (status != 201 or not isinstance(record, dict) or
-                record.get("record_id") != "CMD-PLAN-CRR-30-R1" or
-                record.get("request_correlation") != correlation or
-                result.get("audit_id") != correlation):
-            self.send_json(status if status in {403, 409} else 409, result)
-            return
-        state["release_plan_bound"] = True
-        save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "release-plan.json", record)
-        self.accepted("release-plan-bound", record, 201,
-                      {"reservoir_audit_id": result["audit_id"]}, str(correlation))
-
-    def w30_open(self, request: dict[str, object]) -> None:
-        if not load_state()["release_plan_bound"]:
-            self.send_json(403, {"error": "bound command plan required"})
-            return
-        try:
-            status, result = self.internal_request("instruments", "POST", "/internal/release-executions", request)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "independent release path unavailable"})
-            return
-        self.send_json(status, result)
-
-    def w30_reservoir_call(self, path: str,
-                           request: dict[str, object]) -> tuple[int, dict[str, object]]:
-        payload = json.dumps(request, separators=(",", ":")).encode()
-        headers = {
-            "X-ARWC-Internal": "instruments-release", "X-ARWC-Tenant": "arwc",
-            "Content-Type": "application/json", "Content-Length": str(len(payload)),
-        }
-        context = ssl.create_default_context(cafile=CA)
-        connection = http.client.HTTPSConnection(OWNERS["reservoir"], 443,
-                                                   context=context, timeout=5)
-        try:
-            connection.request("POST", path, body=payload, headers=headers)
-            response = connection.getresponse()
-            return response.status, json.loads(response.read())
-        finally:
-            connection.close()
-
-    def w30_reservoir_request(self, path: str, request: dict[str, object]) -> None:
-        try:
-            status, result = self.w30_reservoir_call(path, request)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "reservoir controller unavailable"})
-            return
-        self.send_json(status, result)
-
-    def w30_observe_release(self, request: dict[str, object],
-                            state: dict[str, object]) -> None:
-        try:
-            status, reservoir = self.w30_reservoir_call("/internal/release-executions", request)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "reservoir controller unavailable"})
-            return
-        if status != 201:
-            self.send_json(status, reservoir)
-            return
-        action = reservoir.get("record")
-        correlation = request.get("correlation")
-        if (not isinstance(action, dict) or
-                action.get("record_id") != "ACT-CRR-OG2-30" or
-                action.get("request_correlation") != correlation or
-                reservoir.get("audit_id") != correlation or
-                action.get("reserve_before_ml") != 12.4 or
-                action.get("reserve_after_ml") != 11.4 or
-                action.get("integrated_command_volume_ml") != 1.0 or
-                action.get("final_gate_positions_percent") != {
-                    "GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0,
-                } or action.get("safety_systems_bypassed") is not False):
-            self.send_json(409, {"error": "reservoir command evidence did not agree"})
-            return
-        timeline = action.get("timeline")
-        if not isinstance(timeline, list) or len(timeline) != 56:
-            self.send_json(409, {"error": "independent command timeline unavailable"})
-            return
-        try:
-            measured = round(sum(
-                ((float(timeline[index - 1]["GT-CRR-02A_m3s"]) +
-                  float(timeline[index]["GT-CRR-02A_m3s"])) +
-                 (float(timeline[index - 1]["GT-CRR-02B_m3s"]) +
-                  float(timeline[index]["GT-CRR-02B_m3s"]))) * 0.5 *
-                (int(timeline[index]["elapsed_seconds"]) -
-                 int(timeline[index - 1]["elapsed_seconds"])) / 1000
-                for index in range(1, len(timeline))
-            ), 2)
-        except (KeyError, TypeError, ValueError):
-            measured = -1.0
-        if measured != 1.0:
-            self.send_json(409, {"error": "independent release measurement did not agree"})
-            return
-        existing = state.get("gate_release_response")
-        if isinstance(existing, dict):
-            if existing.get("audit_id") != correlation:
-                self.send_json(409, {"error": "release already recorded under another correlation"})
-                return
-            self.send_json(201, existing)
-            return
-        observation = {
-            "record_id": "OBS-RELEASE-CRR-30", "revision": 1,
-            "request_correlation": correlation, "actuation": "ACT-CRR-OG2-30",
-            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
-            "measured_release_ml": measured, "reserve_before_ml": 12.4,
-            "reserve_after_ml": 11.4,
-            "final_gate_positions_percent": {"GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0},
-            "source": "independent instruments", "interval_seconds": 1100,
-        }
-        result = {
-            "record_id": "GATE-RESULT-CRR-30", "revision": 1,
-            "request_correlation": correlation, "actuation": "ACT-CRR-OG2-30",
-            "observation": "OBS-RELEASE-CRR-30", "plan": "PLAN-CRR-LOSS-1000",
-            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "released_volume_ml": 1.0, "reserve_before_ml": 12.4,
-            "reserve_after_ml": 11.4, "committed_ml": 12.0,
-            "shortfall_ml": 0.6, "tariff": "TAR-CRR-DP3-R4",
-            "replacement_liability_usd": 1440,
-            "continuity_notice": "CONT-DRY-A-R3", "restriction_stage": "A",
-            "maintenance": "WO-CRR-4417", "dam_integrity": "intact",
-            "flooding": False, "uncontrolled_release": False,
-            "essential_service_loss": False,
-        }
-        instrument_audit = append_audit("gate-release-executed", result, str(correlation))
-        response = {
-            "audit_id": str(correlation), "reservoir_audit_id": reservoir["audit_id"],
-            "instrument_audit_id": instrument_audit, "record": result,
-            "actuation": action, "instrument_observation": observation,
-        }
-        state["gate_release_observed"] = True
-        state["gate_release_response"] = response
-        save_state(state)
-        atomic_json(EVIDENCE / "instruments" / "gate-release.json", observation)
         self.send_json(201, response)
 
     def w28_status(self, state: dict[str, object], relationship: dict[str, object]) -> dict[str, object]:
@@ -2138,10 +1028,7 @@ class Handler(BaseHTTPRequestHandler):
     def w28_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         relationship = json.loads((UTILITY_ARTIFACTS / "relationship.json").read_text())
         if path == "/api/collision-inputs/current":
-            if not state["deployed_revision_observed"]:
-                self.send_json(403, {"error": "current deployed-revision evidence required"})
-                return
-            if request != {"operation": "materials", "revision": "CMP-CRR-R21"}:
+            if request != {"operation": "materials", "project_revision": 364}:
                 self.send_json(409, {"error": "utility analysis request does not match the engineering revision"})
                 return
             status = self.w28_status(state, relationship)

@@ -31,11 +31,11 @@ realization:
 evidence_requirements:
   c1:
     description: |-
-      Recover the project and note as one bundle. Neither alone proves the deployed revision.
+      Identify the saved project's actual structure, declared ProjectRevision, task interval, and configured Runtime v4 target. This establishes the saved-project side of the W21 comparison; it does not establish what is running.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-      Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong project structure, task interval, declared revision, runtime target, or address is rejected.
     source_refs:
     - features.a-engineering.a-engineering
     scope: Per-participant in-world evidence; no other participant state.
@@ -66,21 +66,20 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Complete the card using only
+      the declared native products and image-owned starting material. Confirm that a matching post-action product
+      snapshot accepts the observation, while a wrong asset, stale observation, mismatched native identity, participant-supplied
+      product evidence, or missing required product source prevents completion. Confirm the flow does not upload,
+      start, stop, force, or otherwise change controller state and reset leaves no work item-created process state.'
   c2:
     description: |-
-      Produce the correct project/deployment comparison. This supplies W21.REVISION; an old diagnostic or historical migration record cannot replace the deployed observation.
+      Prove that the native debugger's locally compiled project identity matches the runtime-reported program identity, the controller is connected and running, there are no active forces, and live `ProjectRevision` is 364. This supplies W21.REVISION. Do not upload a program to make a mismatch disappear.
 
-      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-      Evidence sources are `features.a-engineering.a-engineering`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-engineering`. A wrong runtime target, program identity, running state, forced set, or live revision is rejected.
     source_refs:
     - features.a-engineering.a-engineering
-    - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -102,7 +101,6 @@ evidence_requirements:
         - cinder.w21-2.satisfied
         component_refs:
         - features.a-engineering.a-engineering
-        - features.a-control.a-instruments
       collection: require
       retention: require
       redaction: redact-secrets
@@ -110,14 +108,16 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Complete the card using only
+      the declared native products and image-owned starting material. Confirm that a matching post-action product
+      snapshot accepts the observation, while a wrong asset, stale observation, mismatched native identity, participant-supplied
+      product evidence, or missing required product source prevents completion. Confirm the flow does not upload,
+      start, stop, force, or otherwise change controller state and reset leaves no work item-created process state.'
 propositions:
   c1:
-    description: Recover the project and note as one bundle. Neither alone proves the deployed revision.
+    description: Identify the saved project's actual structure, declared ProjectRevision, task interval, and configured
+      Runtime v4 target. This establishes the saved-project side of the W21 comparison; it does not establish what
+      is running.
     subjects:
     - features.a-engineering.a-engineering
     basis: observed_state
@@ -131,11 +131,11 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old diagnostic
-      or historical migration record cannot replace the deployed observation.
+    description: Prove that the native debugger's locally compiled project identity matches the runtime-reported
+      program identity, the controller is connected and running, there are no active forces, and live `ProjectRevision`
+      is 364. This supplies W21.REVISION. Do not upload a program to make a mismatch disappear.
     subjects:
     - features.a-engineering.a-engineering
-    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -167,9 +167,8 @@ objectives:
   c1:
     name: 'This action: The project and the note'
     description: |-
-      Recover the engineering project and its commissioning note for the outlet group.
-
-      Gives the controls engineer's records a concrete place in the operating context.
+      Open the supplied native controller project and commissioning note. Identify the
+      project, main program, scheduled task, declared revision, and runtime target.
     assigned_participant: participant.operator
     actions:
     - w21.c1
@@ -185,15 +184,13 @@ objectives:
   c2:
     name: 'This action: Which project is running'
     description: |-
-      Compare the recovered project claims with the independently observed deployed revision. Establish which version is actually in use.
-
-      Supplies current engineering context for control and the final consequence.
+      Use the normal OpenPLC debug and Runtime Status views to determine whether the
+      saved project is the program currently running on the Cairn Reach controller.
     assigned_participant: participant.operator
     actions:
     - w21.c2
     targets:
     - features.a-engineering.a-engineering
-    - features.a-control.a-instruments
     success:
       mode: all_of
       assertions:
@@ -254,9 +251,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Engineering project index PROJ-CRR-INDEX-R9 and note ENG-DEPLOY-CRR-21 disagree: workspace claims R19 while signed deployment manifest claims CRR-CTRL-R21; ordinary background reuses me-project-handover-01. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and interpretation task, not a privilege flaw. The participant must use the installed products to identify the saved native project from its actual program, scheduled task, declared ProjectRevision, and Runtime v4 device configuration. A copied value, inferred default, or synthetic API response does not establish the result.
 
-      The required result is: Recover the project and note as one bundle. Neither alone proves the deployed revision. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `CRR-CTRL-R21`.
+      The required result is: Identify the saved project's actual structure, declared ProjectRevision, task interval, and configured Runtime v4 target. This establishes the saved-project side of the W21 comparison; it does not establish what is running.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -272,28 +269,31 @@ action_contracts:
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-engineering` and its `engineering-workbench` application own this part of **The project and the note**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Engineering project index PROJ-CRR-INDEX-R9 and note ENG-DEPLOY-CRR-21 disagree: workspace claims R19 while signed deployment manifest claims CRR-CTRL-R21; ordinary background reuses me-project-handover-01. Ordinary workplace context reuses `arwc-documents:me-project-handover-01`; the work item-specific service state is separate.
+        The installed Cairn Reach OT products own this part of **The project and the note**. The exact initial state is: Image-owned handover CRR-PLC-COM-364 identifies native project arwc-site, main FBD program, `T#100ms` task, ProjectRevision 364, and OpenPLC Runtime v4 target 172.29.63.20; the participant must confirm those claims in the supplied native project.
 
         Native bindings:
 
-        - `a-engineering.a-engineering/engineering-workbench/the-project-and-the-note`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/controller`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W21`
+        - `a-engineering.a-engineering/OpenPLC-Editor:project-structure-and-device-configuration`
 
-        The private service-loader contract is `content.arwc-a-engineering.w21-1-the-project-and-the-note`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W21 handover and commissioning note are starting material only. The supplied OpenPLC project's own FBD, resource task, and Device Configuration remain authoritative; no private service-loader route duplicates them.
       support_refs:
       - features.a-engineering.a-engineering
-      - content.arwc-a-engineering.w21-1-the-project-and-the-note
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The task is read-only and creates no process mutation to retain or reset. Ordinary historian retention continues independently. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and the supplied participant material. It provides no alternate work item service, simulated completion endpoint, or authority not already present in the OT environment.
       support_refs:
       - features.a-engineering.a-engineering
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the project and note as one bundle. Neither alone proves the deployed revision.
+      description: Identify the saved project's actual structure, declared ProjectRevision, task interval, and configured
+        Runtime v4 target. This establishes the saved-project side of the W21 comparison; it does not establish
+        what is running.
       target_refs:
       - features.a-engineering.a-engineering
       evidence_refs:
@@ -301,9 +301,9 @@ action_contracts:
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-        Evidence sources are `features.a-engineering.a-engineering`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong project structure, task interval, declared revision, runtime target, or address is rejected.
       target_refs:
       - features.a-engineering.a-engineering
       evidence_refs:
@@ -320,9 +320,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Independent instrument handshake DEPLOY-OBS-CRR-21 reports project digest for CRR-CTRL-R21; comparison must reject the stale workspace claim and bind the observed revision. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and interpretation task, not a privilege flaw. The participant must use the installed products to reconcile the saved project with the running controller by program MD5 match, connected running state, absence of active forces, and the live ProjectRevision value. A copied value, inferred default, or synthetic API response does not establish the result.
 
-      The required result is: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old diagnostic or historical migration record cannot replace the deployed observation. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `CRR-CTRL-R21`.
+      The required result is: Prove that the native debugger's locally compiled project identity matches the runtime-reported program identity, the controller is connected and running, there are no active forces, and live `ProjectRevision` is 364. This supplies W21.REVISION. Do not upload a program to make a mismatch disappear.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -335,50 +335,46 @@ action_contracts:
       support_refs:
       - workflows.w21.c2
       - features.a-engineering.a-engineering
-      - features.a-control.a-instruments
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-engineering` and its `engineering-workbench` application own this part of **Which project is running**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Independent instrument handshake DEPLOY-OBS-CRR-21 reports project digest for CRR-CTRL-R21; comparison must reject the stale workspace claim and bind the observed revision.
+        The installed Cairn Reach OT products own this part of **Which project is running**. The exact initial state is: The OpenPLC debug channel reports the running program MD5 and whether it matches the locally compiled saved project; a clean conclusion also requires connected running state, no active forces, and live ProjectRevision 364.
 
         Native bindings:
 
-        - `a-engineering.a-engineering/engineering-workbench/which-project-is-running`
-        - `a-control.a-instruments/independent-instruments/which-project-is-running`
+        - `a-engineering.a-engineering/OpenPLC-Editor:debug-program-md5-match`
+        - `a-engineering.a-engineering/OpenPLC-Runtime-v4:running-status`
+        - `a-engineering.a-engineering/OpenPLC-Debugger:ProjectRevision`
 
-        The private service-loader contract is `content.arwc-a-engineering.w21-2-which-project-is-running`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W21 handover and commissioning note are starting material only. The supplied OpenPLC project, the Editor's compiled-program identity check, the Runtime v4 status, and the live debugger value remain authoritative; no private service-loader route duplicates them.
       support_refs:
       - features.a-engineering.a-engineering
-      - features.a-control.a-instruments
-      - content.arwc-a-engineering.w21-2-which-project-is-running
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        Supplies W21.REVISION. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        Supplies W21.REVISION. The task is read-only and creates no process mutation to retain or reset. Ordinary historian retention continues independently. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and the supplied participant material. It provides no alternate work item service, simulated completion endpoint, or authority not already present in the OT environment.
       support_refs:
       - features.a-engineering.a-engineering
-      - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old diagnostic
-        or historical migration record cannot replace the deployed observation.
+      description: Prove that the native debugger's locally compiled project identity matches the runtime-reported
+        program identity, the controller is connected and running, there are no active forces, and live `ProjectRevision`
+        is 364. This supplies W21.REVISION. Do not upload a program to make a mismatch disappear.
       target_refs:
       - features.a-engineering.a-engineering
-      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w21.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-        Evidence sources are `features.a-engineering.a-engineering`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-engineering`. A wrong runtime target, program identity, running state, forced set, or live revision is rejected.
       target_refs:
       - features.a-engineering.a-engineering
-      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w21.c2
     failure_classes:

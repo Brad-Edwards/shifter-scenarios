@@ -1,0 +1,58 @@
+{
+  "schema": "arwc.native-ot-challenge/w30-v1",
+  "operation": "W30",
+  "instruction": "CRR-OP-W30-R1",
+  "asset": "AST-CRR-017",
+  "project_revision": 364,
+  "completion": {
+    "reads_product_evidence": true,
+    "writes_product_state": false,
+    "creates_product_evidence": false,
+    "issues_process_requests": false,
+    "retries_process_requests": false
+  },
+  "dispatcher": {
+    "schema": "arwc.remote-request/v1",
+    "request_topic": "arwc/crr/commands/operator",
+    "outcome_topic": "arwc/crr/outcomes/operator",
+    "principal": "operator",
+    "qos": 1,
+    "retain": false,
+    "expiry_format": "numeric_unix_epoch_seconds_utc",
+    "expiry_seconds": 90,
+    "maximum_expiry_seconds": 120,
+    "request_fields": ["id", "asset", "mode", "position_a_pct", "position_b_pct", "total_flow_m3s", "expires_at"],
+    "successful_states": ["received", "dispatch_intent", "dispatched", "plc_accepted", "completed"],
+    "duplicate_rule": "same_uuid_same_payload_returns_recorded_state_without_another_plc_operation",
+    "conflict_rule": "same_uuid_changed_payload_is_conflict",
+    "uncertain_rule": "inspect_and_reconcile_never_automatic_retry"
+  },
+  "authorized_work": {
+    "remote": {
+      "mode": "automatic",
+      "position_a_pct": 20.0,
+      "position_b_pct": 20.0,
+      "total_flow_m3s": 0.3,
+      "expected_flow_per_outlet_m3s": 0.15
+    },
+    "restore": {
+      "channel": "hmi",
+      "mode": "manual",
+      "position_a_pct": 20.0,
+      "position_b_pct": 20.0,
+      "total_flow_m3s": 0.2,
+      "remote_enabled": false
+    }
+  },
+  "product_snapshot": {
+    "schema": "arwc.native-remote-operation-observation/v1",
+    "maximum_point_distance_seconds": 3,
+    "minimum_trace_samples": 5,
+    "accepted_quality": "Good"
+  },
+  "tolerance": {
+    "position_pct": 0.6,
+    "outlet_flow_m3s": 0.0075,
+    "total_flow_m3s": 0.02
+  }
+}

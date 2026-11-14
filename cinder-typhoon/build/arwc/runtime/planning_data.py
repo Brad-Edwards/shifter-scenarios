@@ -23,7 +23,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
 import psycopg2
-import schedule33
+import reporting_schedule
 
 
 ROOT = pathlib.Path("/var/lib/arwc-data")
@@ -36,16 +36,8 @@ ARCHIVE_EVIDENCE = ROOT / "archive" / "archive-lineage.json"
 BUSINESS_RELATION_EVIDENCE = pathlib.Path("/run/arwc-business-relation/drawing-association.json")
 OT_READ_EVIDENCE = pathlib.Path("/run/arwc-ot-read")
 PROCESS_EVIDENCE = pathlib.Path("/run/arwc-process-evidence")
-PLAN_METHOD = pathlib.Path("/opt/planning-data/assets/pl-arwc-plan-method-01-method.md")
 PROCESS_PATHS = {
     "/.well-known/arwc-client",
-    "/api/process-views/state", "/api/process-views/mode",
-    "/api/process-views/instruments/active", "/api/observations",
-    "/api/tag-exports/current", "/api/tag-scales/current",
-    "/api/tag-scales/current/history", "/api/outlet-groups/current/instruments",
-    "/api/sealed-projects/current/note", "/api/vault-access",
-    "/api/operating-envelopes/current", "/api/movement-conditions/current",
-    "/api/commands", "/api/practice-sequences",
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
     "/api/signature-programs/current", "/api/diagnostic-programs/legacy",
     "/api/sealed-projects/current/viewer", "/api/sealed-viewers/current/execute",
@@ -59,13 +51,9 @@ PROCESS_PATHS = {
     "/api/diagnostic-runs",
     "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
     "/api/control-authority",
-    "/api/collision-solutions", "/api/reporting-checkpoints/current",
-    "/api/release-plans/current", "/api/release-plans/current/execute",
     "/api/vault-records/current", "/api/signature-records/current",
     "/api/replay-sessions/current/divergence", "/api/diagnostic-programs/authority",
     "/api/replay-sessions/current", "/api/estimator-tasks/current/inputs",
-    "/api/forecasts/current", "/api/schedule-windows/current",
-    "/api/schedules", "/api/feedback-policies",
     "/api/estimator-results/current", "/api/replay-sessions/current/execute",
 }
 
@@ -352,12 +340,6 @@ def initialize() -> None:
             "relation_exchange_observed": False,
             "lineage_observed": False,
             "diagnostic_estimate_observed": False,
-            "planning_tariff_observed": False,
-            "reserve_balance_observed": False,
-            "loss_plan_observed": False,
-            "planning_tariff": None,
-            "reserve_balance": None,
-            "schedule_observed": False, "schedule_response": None,
             "reporting_view_observed": False, "reporting_decision_observed": False,
             "reporting_handover_observed": False, "reporting_view_response": None,
             "reporting_decision_response": None, "reporting_handover_response": None,
@@ -369,14 +351,12 @@ def initialize() -> None:
             "allocation_observed", "meter_observed", "reserve_reconciled",
             "relation_contract_observed", "relation_exchange_observed", "lineage_observed",
             "diagnostic_estimate_observed",
-            "planning_tariff_observed", "reserve_balance_observed", "loss_plan_observed",
-            "schedule_observed",
             "reporting_view_observed", "reporting_decision_observed", "reporting_handover_observed",
         ):
             if key not in state:
                 state[key] = False
                 changed = True
-        for key in ("planning_tariff", "reserve_balance", "schedule_response", "reporting_view_response",
+        for key in ("reporting_view_response",
                     "reporting_decision_response", "reporting_handover_response"):
             if key not in state:
                 state[key] = None
@@ -436,19 +416,10 @@ def process_interpretation_prerequisite() -> bool:
     if not load_state().get("reserve_reconciled"):
         return False
     integration = load_evidence(INTEGRATION_EVIDENCE)
-    mapping = load_evidence(PROCESS_EVIDENCE / "historian" / "outlet-map.json")
-    revision = load_evidence(PROCESS_EVIDENCE / "engineering" / "deployment-revision.json")
-    envelope = load_evidence(PROCESS_EVIDENCE / "hmi" / "operating-envelope.json")
     return bool(
         integration is not None and
         integration.get("record_id") == "REC-CRR-DP3-17" and
-        integration.get("planning_window") == "ALLOC-2026-DP3" and
-        mapping is not None and mapping.get("record_id") == "MAP-OG2-R8" and
-        mapping.get("project") == "CRR-CTRL-R21" and
-        revision is not None and revision.get("record_id") == "CMP-CRR-R21" and
-        revision.get("deployed_project") == "CRR-CTRL-R21" and
-        envelope is not None and envelope.get("record_id") == "ENV-OG2-R6" and
-        envelope.get("outlet_group") == "OG-CRR-02"
+        integration.get("planning_window") == "ALLOC-2026-DP3"
     )
 
 
@@ -604,28 +575,6 @@ class Handler(BaseHTTPRequestHandler):
             return
         self.send_json(response.status, payload)
 
-    def w29_internal(self, path: str, request: dict[str, object]) -> tuple[int, dict[str, object]]:
-        data = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
-        outbound = urllib.request.Request(
-            "https://10.77.62.20" + path, data=data,
-            headers={
-                "Content-Type": "application/json", "X-ARWC-Internal": "planning-data-reserve",
-                "X-ARWC-Tenant": "arwc",
-            }, method="POST",
-        )
-        context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
-        try:
-            response = urllib.request.urlopen(outbound, context=context, timeout=5)
-        except urllib.error.HTTPError as error:
-            response = error
-        except OSError:
-            return 409, {"error": "current process evidence is unavailable"}
-        try:
-            result = json.loads(response.read())
-        except json.JSONDecodeError:
-            return 409, {"error": "current process evidence is invalid"}
-        return response.status, result
-
     def w34_internal(self, path: str, request: dict[str, object]) -> tuple[int, dict[str, object]]:
         data = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
         outbound = urllib.request.Request(
@@ -742,23 +691,6 @@ class Handler(BaseHTTPRequestHandler):
             return
         if not self.authorized():
             return
-        if path == "/api/planning-windows/current/economics":
-            if not ot_read_prerequisite():
-                self.send_json(403, {"error": "scoped process-read evidence required"})
-                return
-            state = load_state()
-            result = {
-                "record_id": "TAR-CRR-DP3-R4", "revision": 4,
-                "planning_window": "ALLOC-2026-DP3", "currency": "USD",
-                "rate_per_ml": 2400, "unit": "USD/ML", "status": "current",
-            }
-            state["planning_tariff_observed"] = True
-            state["planning_tariff"] = result
-            save_state(state)
-            self.accepted("planning-tariff-read", result, extra={
-                "planning_method": PLAN_METHOD.read_text(encoding="utf-8"),
-            })
-            return
         if path == "/api/allocation-ledgers/current":
             self.allocation()
             return
@@ -789,38 +721,6 @@ class Handler(BaseHTTPRequestHandler):
         self.accepted("saved-query-read", DEFINITION)
 
     def do_POST(self) -> None:
-        if urlsplit(self.path).path == "/internal/schedule-validations":
-            if (self.headers.get("X-ARWC-Internal") != "data-bridge-scheduling" or
-                    self.headers.get("X-ARWC-Tenant") != "arwc" or
-                    self.client_address[0] != "10.77.62.20"):
-                self.send_json(403, {"error": "integration service context required"}); return
-            request = self.body()
-            if request is None: return
-            correlation = request.get("correlation"); binding = request.get("request"); supplied = request.get("evaluation")
-            try: correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
-            except (TypeError, ValueError): correlation_valid = False
-            evaluated = None if not isinstance(binding, dict) else schedule33.evaluate_schedule(
-                binding.get("reservoir_release_m3s"), binding.get("alternate_supply_m3s"),
-                binding.get("demand_m3s"))
-            if (set(request) != {"correlation", "request", "evaluation"} or not correlation_valid or
-                    binding.get("checkpoint") != schedule33.CHECKPOINT or binding.get("interval_seconds") != 300 or
-                    binding.get("demand_m3s") != schedule33.DEMAND or evaluated is None or supplied != evaluated):
-                self.send_json(409, {"error": "planning schedule rejected"}); return
-            state = load_state(); existing = state.get("schedule_response")
-            if isinstance(existing, dict):
-                if existing.get("audit_id") == correlation: self.send_json(201, existing)
-                else: self.send_json(409, {"error": "schedule already recorded under another correlation"})
-                return
-            record = {"record_id": "PLAN-SCHED-CRR-33", "revision": 1,
-                      "request_correlation": correlation, **evaluated,
-                      "demand_m3s": binding["demand_m3s"],
-                      "reservoir_release_m3s": binding["reservoir_release_m3s"],
-                      "alternate_supply_m3s": binding["alternate_supply_m3s"]}
-            response = {"audit_id": append_audit("schedule-window-read", record, str(correlation)),
-                        "record": record}
-            state["schedule_observed"] = True; state["schedule_response"] = response; save_state(state)
-            atomic_json(ROOT / "results/PLAN-SCHED-CRR-33.json", record)
-            self.send_json(201, response); return
         if urlsplit(self.path).path == "/internal/diagnostic-estimate":
             if (self.headers.get("X-ARWC-Internal") != "data-bridge-r27" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
@@ -858,13 +758,6 @@ class Handler(BaseHTTPRequestHandler):
             return
         path = urlsplit(self.path).path
         if self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test":
-            if path == "/api/reporting-checkpoints/current":
-                if not self.process_authorized():
-                    return
-                request = self.body()
-                if request is not None:
-                    self.w29_plan(request)
-                return
             if path in PROCESS_PATHS:
                 self.process_proxy()
             else:
@@ -886,10 +779,6 @@ class Handler(BaseHTTPRequestHandler):
             self.relation_exchange(request, lineage=False)
         elif path == "/api/asset-lineage/current":
             self.relation_exchange(request, lineage=True)
-        elif path == "/api/collision-solutions":
-            self.reserve_balance(request)
-        elif path == "/api/reporting-checkpoints/current":
-            self.w29_plan(request)
         elif path == "/api/reporting-submissions/current/result":
             self.w34_view(request)
         elif path == "/api/planning-bids":
@@ -983,7 +872,7 @@ class Handler(BaseHTTPRequestHandler):
         if not isinstance(state.get("reporting_decision_response"), dict):
             self.send_json(403, {"error": "accepted changed planning decision required"}); return
         schedule = request.get("schedule")
-        evaluated = None if not isinstance(schedule, dict) else schedule33.evaluate_schedule(
+        evaluated = None if not isinstance(schedule, dict) else reporting_schedule.evaluate_schedule(
             schedule.get("reservoir_release_m3s"), schedule.get("alternate_supply_m3s"),
             schedule.get("demand_m3s"))
         expected_keys = {"checkpoint", "view", "decision", "control_client", "schedule", "handover"}
@@ -1026,107 +915,6 @@ class Handler(BaseHTTPRequestHandler):
                     "reservoir_observation": observed["reservoir_observation"]}
         state["reporting_handover_observed"] = True; state["reporting_handover_response"] = response; save_state(state)
         atomic_json(ROOT / "results/REPORT-CRR-34.json", record); self.send_json(201, response)
-
-    def reserve_balance(self, request: dict[str, object]) -> None:
-        if not process_interpretation_prerequisite():
-            self.send_json(403, {"error": "current process interpretation evidence required"})
-            return
-        expected = {
-            "allocation": "ALLOC-2026-DP3-R9",
-            "reserve_observation": "OBS-RESERVE-CRR-R29",
-            "planning_window": "ALLOC-2026-DP3",
-            "expected_margin_ml": 0.4,
-        }
-        if request != expected:
-            self.send_json(409, {"error": "reserve and allocation binding does not match"})
-            return
-        with database() as connection, connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT record_id,revision,planning_window,committed_ml,unit "
-                "FROM allocation_ledger WHERE record_id=%s", (expected["allocation"],),
-            )
-            allocation = cursor.fetchone()
-        if allocation is None:
-            self.send_json(409, {"error": "current allocation record is unavailable"})
-            return
-        correlation = str(uuid.uuid4())
-        status, response = self.w29_internal("/internal/reserve-observations", {
-            "correlation": correlation,
-            "record_id": "OBS-RESERVE-CRR-R29",
-            "planning_window": "ALLOC-2026-DP3",
-        })
-        observation = response.get("record")
-        if (status != 201 or not isinstance(observation, dict) or
-                observation.get("record_id") != "OBS-RESERVE-CRR-R29" or
-                observation.get("planning_window") != allocation[2] or
-                observation.get("usable_reserve_ml") != 12.4 or
-                observation.get("unit") != allocation[4] or
-                response.get("audit_id") != correlation):
-            self.send_json(409, {"error": "independent reserve observation did not join"})
-            return
-        committed = Decimal(str(allocation[3]))
-        reserve = Decimal(str(observation["usable_reserve_ml"]))
-        margin = reserve - committed
-        if margin != Decimal("0.40"):
-            self.send_json(409, {"error": "current reserve balance does not reconcile"})
-            return
-        result = {
-            "record_id": "BAL-CRR-DP3-R29", "revision": 29,
-            "request_correlation": correlation, "planning_window": allocation[2],
-            "allocation": allocation[0], "allocation_revision": allocation[1],
-            "reserve_observation": observation["record_id"],
-            "observation_revision": observation["revision"],
-            "usable_reserve_ml": float(reserve), "committed_ml": float(committed),
-            "uncommitted_margin_ml": float(margin), "unit": allocation[4],
-            "before_release": True,
-        }
-        state = load_state()
-        state["reserve_balance_observed"] = True
-        state["reserve_balance"] = result
-        save_state(state)
-        self.accepted("reserve-balance-created", result, 201, {
-            "instrument_audit_id": response["audit_id"],
-        }, correlation=correlation)
-
-    def w29_plan(self, request: dict[str, object]) -> None:
-        expected = {
-            "plan_id": "PLAN-CRR-LOSS-1000", "tariff": "TAR-CRR-DP3-R4",
-            "balance": "BAL-CRR-DP3-R29", "mode": "MODE-CRR-17",
-            "outlet_group": "OG-CRR-02", "ramp_open_seconds": 100,
-            "each_gate_target_m3s": 0.5, "hold_seconds": 900,
-            "ramp_close_seconds": 100,
-        }
-        if request != expected:
-            self.send_json(409, {"error": "release-plan binding or quantity does not match"})
-            return
-        state = load_state()
-        tariff = state.get("planning_tariff")
-        balance = state.get("reserve_balance")
-        if (not state["planning_tariff_observed"] or not state["reserve_balance_observed"] or
-                not isinstance(tariff, dict) or not isinstance(balance, dict)):
-            self.send_json(403, {"error": "current tariff and reserve balance are required"})
-            return
-        correlation = str(uuid.uuid4())
-        status, response = self.w29_internal("/internal/release-plan-assessments", {
-            "correlation": correlation, "request": request,
-            "tariff": tariff, "balance": balance,
-        })
-        result = response.get("record")
-        if status == 403:
-            self.send_json(403, {"error": "validated current operating mode evidence required"})
-            return
-        if (status != 201 or not isinstance(result, dict) or
-                result.get("record_id") != "PLAN-CRR-LOSS-1000" or
-                result.get("request_correlation") != correlation or
-                response.get("audit_id") != correlation):
-            self.send_json(409, {"error": "supervisory plan calculation did not join"})
-            return
-        state["loss_plan_observed"] = True
-        save_state(state)
-        atomic_json(ROOT / "results" / "PLAN-CRR-LOSS-1000.json", result)
-        self.accepted("loss-plan-created", result, 201, {
-            "supervisory_audit_id": response["audit_id"],
-        }, correlation=correlation)
 
     def relation_exchange(self, request: dict[str, object], *, lineage: bool) -> None:
         state = load_state()

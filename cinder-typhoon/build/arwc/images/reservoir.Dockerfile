@@ -12,7 +12,7 @@ RUN apt-get update \
 COPY --chown=arwc-reservoir:arwc-reservoir --chmod=0640 \
   build/arwc/runtime/reservoir_controller.py /opt/reservoir-controller/reservoir_controller.py
 COPY --chown=arwc-reservoir:arwc-reservoir --chmod=0640 \
-  build/arwc/runtime/schedule33.py /opt/reservoir-controller/schedule33.py
+  build/arwc/runtime/reporting_schedule.py /opt/reservoir-controller/reporting_schedule.py
 COPY --chmod=0750 build/arwc/runtime/reservoir-entrypoint.sh /usr/local/sbin/arwc-reservoir-entrypoint
 
 EXPOSE 443

@@ -1,5 +1,5 @@
 schema: cinder-typhoon.challenge-delivery/v2
-revision: 6671188bc4005bc5dca0ed2c72ea436f71bd667f74807cb928bf645117740fe9
+revision: 010573653ff970699454ce5243b65a414e3ffc984a81f9526e5431bbded90958
 scoring:
   model: static
   tier_points:
@@ -3485,70 +3485,68 @@ phases:
       cards:
       - id: W17.1
         title: The reservoir's present tense
-        description: Recover the reservoir's current measured state for the specified observation interval.
-          Distinguish measured values from requested settings.
+        description: Record the reservoir's current measured state from the live operator view. Keep measured
+          values separate from the controller's accepted settings and bind both to one UTC observation
+          time.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the current process state, operating mode, and independent instrument records. Its
-          published client document exposes the state operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as time-window and identity correlation across requested and measured process values.
-          Separate the authoritative service record from stale or local copies, and preserve its identity,
-          revision, and scope.
-        - Locate the state operation in the published client reference. Capture one ordinary response
-          and one denial, then correlate the returned identifiers with evidence already earned.
+        - Open the Cairn Reach overview in FUXA and use the installed live-observation document. Start
+          with the values explicitly labelled measured; do not treat an accepted setting as physical feedback.
+        - Record one UTC observation time, then read the live data for level, usable volume, both measured
+          positions and flows, total flow, and the three accepted settings without changing any proposed
+          field.
+        - Check measured and accepted values in their separate sections of the sheet. Process history
+          must contain good product-owned samples close to the UTC time you record.
         completion:
           mode: automatic_range_evidence
       - id: W17.2
         title: The mode the plant is in
-        description: Recover the current operating-mode record and identify what the process presently
-          permits.
+        description: Use the real operator and equipment views to identify the current controller mode,
+          command owner, field-data state, and both outlet permissives at one UTC observation time.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the current process state, operating mode, and independent instrument records. Its
-          published client document exposes the mode operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as time-window and identity correlation across requested and measured process values.
-          Separate the authoritative service record from stale or local copies, and preserve its identity,
-          revision, and scope.
-        - Locate the mode operation in the published client reference. Capture one ordinary response and
-          one denial, then correlate the returned identifiers with evidence already earned.
+        - FUXA's system header shows actual mode, command owner, and field-data state. Each outlet faceplate
+          shows its own live permissive, so use both equipment views rather than assuming one outlet represents
+          the other.
+        - Use the same UTC observation time for comparison with the process values when possible. Proposed
+          mode is an input; actual mode and owner are PLC outputs and are the values this card requires.
+        - Record actual mode, owner, field state, and both permissives exactly as the live PLC-backed
+          views show them. No mode change or interlock test is needed.
         completion:
           mode: automatic_range_evidence
       - id: W17.3
         title: The instrument in the note
-        description: Find the instrument described in the controls engineer's note and recover its correct
-          observation identifier.
+        description: Use the installed engineering reference to map the outlet B physical instrument to
+          its IEC variable, OPC UA NodeId, historian series, and unit. Verify that the live point exists.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the current process state, operating mode, and independent instrument records. Its
-          published client document exposes the active instrument operation, so use that ordinary contract
-          instead of guessing a path.
-        - Treat this as time-window and identity correlation across requested and measured process values.
-          Separate the authoritative service record from stale or local copies, and preserve its identity,
-          revision, and scope.
-        - Locate the active instrument operation in the published client reference. Capture one ordinary
-          response and one denial, then correlate the returned identifiers with evidence already earned.
+        - Read the installed outlet B engineering-reference document. It names the physical instrument
+          and the controller variable; verify the same variable in the native OPC UA browser rather than
+          copying only the note.
+        - Preserve the expanded namespace URI binding of the NodeId and the engineering unit. The historian
+          catalog supplies the series name for the same controller variable.
+        - Join the physical instrument, IEC variable, OPC UA NodeId, historian series, and unit. Confirm
+          the live browser and catalog expose that point before recording the binding.
         completion:
           mode: automatic_range_evidence
       - id: W17.4
         title: The first live trace
-        description: Correlate the routine commissioning reference event with independent process observations
-          and establish which changes belong to that event.
+        description: Correlate one bounded live outlet B observation across FUXA, the OPC UA controller
+          point, and PostgreSQL process history. Establish that position and measured flow belong to the
+          same interval and point.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the current process state, operating mode, and independent instrument records. Its
-          published client document exposes the observations operation, so use that ordinary contract
-          instead of guessing a path.
-        - Treat this as time-window and identity correlation across requested and measured process values.
-          Observe the ordinary and denied cases first, then change one input at a time and keep every
-          unrelated binding fixed.
-        - Fetch observations spanning the commissioning reference event, align them by instrument identity
-          and time, and mark only changes independently present in both the reference and process records.
+        - Follow outlet B measured flow from FUXA to its OPC UA identity and then to PostgreSQL history.
+          Use one 15-to-300-second interval and do not issue a control request to manufacture a trace.
+        - Select only good process-history samples for flow and measured position. Align them by source
+          time; a local screenshot or copied number does not replace the historian rows.
+        - Record the flow series first, last, minimum, maximum, and good sample count. Check that the
+          time-aligned measured position is consistent with outlet capacity before submitting the joined
+          observation.
         completion:
           mode: automatic_range_evidence
     - id: W18
@@ -3560,70 +3558,67 @@ phases:
       cards:
       - id: W18.1
         title: The tag export
-        description: Recover the engineering tag export used for the reservoir outlet group.
+        description: Identify the installed Cairn Reach native I/O register and prove that its revision
+          and digest agree with the running controller and historian catalog.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the engineering tag export, separate scale table, and outlet instruments. Its published
-          client document exposes the tag export operation, so use that ordinary contract instead of guessing
-          a path.
-        - Treat this as revision-aware unit conversion across independently owned engineering records.
-          Separate the authoritative service record from stale or local copies, and preserve its identity,
-          revision, and scope.
-        - Locate the tag export operation in the published client reference. Capture one ordinary response
-          and one denial, then correlate the returned identifiers with evidence already earned.
+        - Start with CRR-IO-R364 and the installed native register file at /usr/share/arwc-ot/tags.json.
+          Record the register identifier and project revision, then calculate the native JSON digest rather
+          than hashing the CSV export.
+        - Compare the register revision with the live ProjectRevision OPC UA point. The historian tag
+          catalog carries the register digest for the native variables and provides an independent product-owned
+          check.
+        - Submit the register ID, revision, digest, and required variable names only after both native
+          views agree. No controller download, tag write, or history change is required.
         completion:
           mode: automatic_range_evidence
       - id: W18.2
         title: The scale kept elsewhere
-        description: Recover the separate scale table referenced by the outlet instrumentation records.
+        description: Reconcile one outlet flow point across its Modbus register, OpenPLC address, raw
+          type and scale, PLC value, OPC UA identity, and historian series.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the engineering tag export, separate scale table, and outlet instruments. Its published
-          client document exposes the tag scale operation, so use that ordinary contract instead of guessing
-          a path.
-        - Treat this as revision-aware unit conversion across independently owned engineering records.
-          Separate the authoritative service record from stale or local copies, and preserve its identity,
-          revision, and scope.
-        - Locate the tag scale operation in the published client reference. Capture one ordinary response
-          and one denial, then correlate the returned identifiers with evidence already earned.
+        - Follow FIT-CRR-204B across the CRR-IO-R364 document. Modbus function 4 and its zero-based PDU
+          offset are not the same notation as an OpenPLC IEC address or an OPC UA NodeId.
+        - Preserve the raw UINT encoding and counts-per-unit conversion separately from the engineering
+          REAL value. Verify the stable namespace-URI NodeId and historian series against the native catalog.
+        - Join the instrument, gate, function, offset, IEC address, raw type and scale, PLC value, NodeId,
+          and series. A matching display name without the native identities is incomplete.
         completion:
           mode: automatic_range_evidence
       - id: W18.3
-        title: When the units changed
-        description: Reconcile the tag export and scale table so the outlet readings have the correct
-          units and revision context.
+        title: Three clocks and a gap
+        description: Use retained native history to identify a genuine collection gap and explain it using
+          source time, collection time, ingestion time, transport quality, process quality, and engineering
+          unit.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the engineering tag export, separate scale table, and outlet instruments. Its published
-          client document exposes the tag scale history operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as revision-aware unit conversion across independently owned engineering records.
-          Correlate independently owned records by identity, revision, units, and scope instead of trusting
-          a display label.
-        - Locate the tag scale history operation in the published client reference. Join the independent
-          records on their stable identifiers and revisions, then explain any mismatch before acting on
-          it.
+        - Read the installed history-provenance document before querying FlowBM3s. Find the largest source-time
+          gap whose bounding rows both have Good transport and process quality.
+        - Treat source time, collection time, and ingestion time as separate metadata because they belong
+          to the controller value, Telegraf, and PostgreSQL respectively. Record all three for both sides
+          and check their order rather than treating them as one clock.
+        - Compare the engineering unit on both bounding rows. The retained gap is a collection gap; do
+          not invent a scale or unit change that the native history does not show.
         completion:
           mode: automatic_range_evidence
       - id: W18.4
         title: Which outlet answers
-        description: Use the interpreted engineering evidence and reference trace to identify the actual
-          reservoir outlet group.
+        description: Map both Cairn Reach outlet gates from native register channels to PLC values, OPC
+          UA identities, historian series, and a time-aligned physical observation.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the engineering tag export, separate scale table, and outlet instruments. Its published
-          client document exposes the outlet instruments operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as revision-aware unit conversion across independently owned engineering records.
-          Carry forward only earned identities and record bindings; possession of a copied identifier
-          alone does not cross the next boundary.
-        - Locate the outlet instruments operation in the published client reference. Replay the preceding
-          evidence through the next documented boundary and verify the downstream service, not the client,
-          records the outcome.
+        - Build one row for each outlet from the CRR-IO-R364 document, including gate, position raw/value
+          channel, flow raw/value channel, expanded OPC UA flow NodeId, and historian series. Carry forward
+          W17.OBS as the physical reference.
+        - Use correlation across good position and flow rows with the same source time for both outlets.
+          Names alone do not prove that a position channel and flow channel describe the same gate.
+        - Verify each measured flow is physically consistent with its time-aligned measured position,
+          then submit the complete A/B mapping for OG-CRR-02. Do not move either gate to manufacture evidence.
         completion:
           mode: automatic_range_evidence
     - id: W19
@@ -3771,35 +3766,34 @@ phases:
       cards:
       - id: W21.1
         title: The project and the note
-        description: Recover the engineering project and its commissioning note for the outlet group.
+        description: Open the supplied native controller project and commissioning note. Identify the
+          project, main program, scheduled task, declared revision, and runtime target.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the sealed engineering project and independently observed deployed revision. Its
-          published client document exposes the sealed project operation, so use that ordinary contract
-          instead of guessing a path.
-        - Treat this as claim-versus-deployment reconciliation across separate evidence owners. Separate
-          the authoritative service record from stale or local copies, and preserve its identity, revision,
-          and scope.
-        - Locate the sealed project operation in the published client reference. Capture one ordinary
-          response and one denial, then correlate the returned identifiers with evidence already earned.
+        - Start with the W21 handover and commissioning note, then open the supplied controller project
+          in OpenPLC Editor. The note identifies the claims to check; it does not prove what is running.
+        - Review the main FBD structure, scheduled resource task, and Device Configuration. Keep the project,
+          program, language, interval, ProjectRevision, Runtime v4 target, and address together.
+        - Record that ProjectRevision is declared in the project logic and that the runtime target and
+          address are in Device Configuration. This card needs no compile, upload, start, stop, or force
+          action.
         completion:
           mode: automatic_range_evidence
       - id: W21.2
         title: Which project is running
-        description: Compare the recovered project claims with the independently observed deployed revision.
-          Establish which version is actually in use.
+        description: Use the normal OpenPLC debug and Runtime Status views to determine whether the saved
+          project is the program currently running on the Cairn Reach controller.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the sealed engineering project and independently observed deployed revision. Its
-          published client document exposes the vault access operation, so use that ordinary contract
-          instead of guessing a path.
-        - Treat this as claim-versus-deployment reconciliation across separate evidence owners. Correlate
-          independently owned records by identity, revision, units, and scope instead of trusting a display
-          label.
-        - Locate the vault access operation in the published client reference. Join the independent records
-          on their stable identifiers and revisions, then explain any mismatch before acting on it.
+        - Use the existing Runtime v4 system connection and open a native debug session without accepting
+          an upload offer. Runtime Status and the debugger supply the running evidence.
+        - Treat the program MD5 as an integrity match proving the debugger's locally compiled project
+          matches the runtime program. Check it beside connected running state, an empty forced set, and
+          live ProjectRevision; no one check replaces the others.
+        - Record the runtime-reported program MD5, saved-project match result, PLC state, and live ProjectRevision.
+          A connection, commissioning note, or old migration record alone is insufficient.
         completion:
           mode: automatic_range_evidence
     - id: W22
@@ -3852,14 +3846,14 @@ phases:
         points: 200
         hints:
         - Begin with the sealed viewer, project decision, and retained review context. Its published client
-          document exposes the sealed project operation, so use that ordinary contract instead of guessing
-          a path.
+          document exposes the sealed project open operation, so use that ordinary contract instead of
+          guessing a path.
         - Treat this as embedded-machine reconstruction followed by concealed reviewer-identity analysis.
           Observe the ordinary and denied cases first, then change one input at a time and keep every
           unrelated binding fixed.
-        - Locate the sealed project operation in the published client reference. Record the normal result
-          and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
-          the difference.
+        - Locate the sealed project open operation in the published client reference. Record the normal
+          result and a denied variant, alter one dimension, and keep the service-owned evidence needed
+          to explain the difference.
         completion:
           mode: automatic_range_evidence
       - id: W22.4
@@ -4022,72 +4016,67 @@ phases:
       cards:
       - id: W25.1
         title: The operating envelope
-        description: 'Recover the outlet''s current operating envelope: the limits within which a release
-          can occur.'
+        description: Read the Cairn Reach operating instruction and reconcile its bounded movement with
+          the limits shown by the installed HMI and controller project.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the operating envelope, movement conditions, and practice sequencer. Its published
-          client document exposes the operating envelope operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as interlock-aware command sequencing within declared process safety bounds. Separate
-          the authoritative service record from stale or local copies, and preserve its identity, revision,
-          and scope.
-        - Locate the operating envelope operation in the published client reference. Capture one ordinary
-          response and one denial, then correlate the returned identifiers with evidence already earned.
+        - Start with the CRR-OP-W25-R1 document. Reconcile the narrower authorized movement with the manual-position
+          and automatic-flow limits shown by FUXA and the supplied OpenPLC project before touching a control.
+        - Keep the installed limits, outlet capacity, normal A20/B20 baseline, A30/B10 observation target,
+          and A20/B20 restoration separate in the comparison. The job instruction does not replace the
+          live product views.
+        - Record the exact asset, mode, baseline, observation target, restoration target, and per-outlet
+          capacity. This card establishes the envelope only and needs no request or movement.
         completion:
           mode: automatic_range_evidence
       - id: W25.2
         title: Conditions before movement
-        description: Recover the control-permissive record and identify the condition withholding movement
-          in the supplied practice state.
+        description: Use FUXA and the live OpenPLC project to explain whether the Cairn Reach outlets
+          can move now and which conditions establish that result.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the operating envelope, movement conditions, and practice sequencer. Its published
-          client document exposes the movement conditions operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as interlock-aware command sequencing within declared process safety bounds. Separate
-          the authoritative service record from stale or local copies, and preserve its identity, revision,
-          and scope.
-        - Locate the movement conditions operation in the published client reference. Capture one ordinary
-          response and one denial, then correlate the returned identifiers with evidence already earned.
+        - Use the FUXA overview and both outlet faceplates for current system state, then trace the same
+          conditions in the live OpenPLC project. Position alone does not establish that an outlet may
+          move.
+        - Check field freshness, drive availability, remote selectors, low-level protection, operator
+          stop, travel faults, controller authorization, and both outlet permissives as one movement decision.
+        - Verify every current condition and record the resulting may-move decision without changing mode
+          or issuing a request. The supplied bounded-movement guide names the chain but the live product
+          state proves it.
         completion:
           mode: automatic_range_evidence
       - id: W25.3
         title: Accepted is not actuated
-        description: Resolve why the supplied practice requests receive acknowledgements without producing
-          the expected outlet movement.
+        description: Apply the authorized A30/B10 manual request and distinguish the staged request, PLC
+          decision, command owner, permissives, and measured outlet response.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the operating envelope, movement conditions, and practice sequencer. Its published
-          client document exposes the command accept operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as interlock-aware command sequencing within declared process safety bounds. Correlate
-          independently owned records by identity, revision, units, and scope instead of trusting a display
-          label.
-        - Locate the command accept operation in the published client reference. Join the independent
-          records on their stable identifiers and revisions, then explain any mismatch before acting on
-          it.
+        - From the qualified A20/B20 baseline record, use FUXA once for the prescribed manual A30/B10
+          observation request. Preserve the new sequence and time so you can follow the request after
+          the Apply action.
+        - Use correlation to join the staged request to OpenPLC seen and accepted sequence, HMI ownership,
+          permissives, accepted settings, and the later measured position and flow. A changed field or
+          Apply acknowledgement is not actuation.
+        - Check that the same sequence and interval show accepted A30/B10 settings and settled product-owned
+          feedback near the corresponding outlet flows, with good quality and no active fault.
         completion:
           mode: automatic_range_evidence
       - id: W25.4
         title: A sequence the process can follow
-        description: Construct a valid practice sequence that respects the operating envelope and produces
-          the specified bounded movement.
+        description: Prove the bounded movement in native process history, then apply the authorized A20/B20
+          restoration and verify the live site has returned to baseline.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the operating envelope, movement conditions, and practice sequencer. Its published
-          client document exposes the practice sequence operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as interlock-aware command sequencing within declared process safety bounds. Derive
-          every constraint from supplied records or normal responses, test a deliberately failing candidate,
-          and only then produce a candidate.
-        - Locate the practice sequence operation in the published client reference. List the observed
-          constraints, exercise a known rejection, and use the difference to test a candidate that still
-          requires service validation.
+        - Prove the A20/B20 to A30/B10 movement from good native position and flow history, then use a
+          second FUXA request for the prescribed manual A20/B20 restoration. Keep both accepted sequences.
+        - Correlate each accepted request with later process samples. The final state needs measured A20/B20,
+          about 0.10 m3/s per outlet and 0.20 m3/s total, not merely restored input fields.
+        - Verify ownership, healthy field data, both permissives, stopped motion, and clear travel faults
+          agree with the restored measurements. Leave no unsettled movement for the next participant task.
         completion:
           mode: automatic_range_evidence
     - id: W26
@@ -4288,7 +4277,7 @@ phases:
         completion:
           mode: automatic_range_evidence
     - id: W29
-      chapter: Release and consequences
+      chapter: Planning
       title: Paper truth
       allocation:
         easy: 1
@@ -4296,95 +4285,93 @@ phases:
       cards:
       - id: W29.1
         title: The price of this planning window
-        description: Recover the settlement tariff that applies to replacement supply in the current allocation
-          window.
+        description: Use the Cairn Reach allocation export and corporate planning records to identify
+          the replacement-supply tariff, its effective interval, and the allocation commitment for the
+          same asset and planning window.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the planning tariff, reserve commitments, and reporting checkpoint. Start from process-view.arwc.test's
-          published client document and records already earned in this operation, not from an invented
-          endpoint.
-        - Treat this as economic consequence modeling tied to independently measured reserve state. Separate
-          the authoritative service record from stale or local copies, and preserve its identity, revision,
-          and scope.
-        - Review the published client document and ordinary records for process-view.arwc.test. Capture
-          one ordinary response and one denial, then correlate the returned identifiers with evidence
-          already earned.
+        - Start with the supplied allocation ledger, then read the current settlement tariff and allocation
+          records from the corporate PostgreSQL service. Preserve their planning window, asset, revision,
+          unit, and effective time.
+        - The tariff is a price per ML and the allocation is a committed ML quantity. Keep those different
+          data meanings explicit, and do not substitute the procurement catalog used by a later operation.
+        - Verify TAR-CRR-DP3-R4 and ALLOC-2026-DP3-R9 are bound to AST-CRR-017 and their common planning
+          window only after the native corporate rows agree with the supplied ledger.
         completion:
           mode: automatic_range_evidence
       - id: W29.2
         title: What reserve remains uncommitted
-        description: Reconcile the current usable reserve with the company's allocation commitments and
-          establish what the release plan must account for.
+        description: Select a fresh good-quality `UsableVolumeML` observation from native Cairn Reach
+          history and reconcile it with the 12.00 ML allocation commitment to calculate the current uncommitted
+          margin.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the planning tariff, reserve commitments, and reporting checkpoint. Start from process-view.arwc.test's
-          published client document and records already earned in this operation, not from an invented
-          endpoint.
-        - Treat this as economic consequence modeling tied to independently measured reserve state. Correlate
-          independently owned records by identity, revision, units, and scope instead of trusting a display
-          label.
-        - Review the published client document and ordinary records for process-view.arwc.test. Join the
-          independent records on their stable identifiers and revisions, then explain any mismatch before
-          acting on it.
+        - Follow the reconciliation document and query native process history for the latest good UsableVolumeML
+          sample for AST-CRR-017. Retain its source time, process quality, unit, and planning window.
+        - Use reconciliation to join that measured value to the 12.00 ML corporate allocation by asset
+          and planning window. Calculate measured usable volume minus committed allocation; do not use
+          a paper report as the current measurement.
+        - Check the signed uncommitted margin and classify it as positive, zero, or negative. A stale
+          or bad-quality historian row cannot establish the current margin even if its number looks plausible.
         completion:
           mode: automatic_range_evidence
       - id: W29.3
         title: Paper truth
-        description: Construct a release plan that reduces usable reserve within the operating envelope
-          and explains the resulting replacement cost and restrictions.
+        description: Compare corporate report `RPT-CRR-DP3-R7` with the later good-quality native usable-volume
+          observation, calculate their signed difference, and explain what their different as-of times
+          allow you to conclude.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the planning tariff, reserve commitments, and reporting checkpoint. Its published
-          client document exposes the reporting checkpoint submit and state operation, so use that ordinary
-          contract instead of guessing a path.
-        - Treat this as economic consequence modeling tied to independently measured reserve state. Derive
-          every constraint from supplied records or normal responses, test a deliberately failing candidate,
-          and only then produce a candidate.
-        - Locate the reporting checkpoint submit and state operation in the published client reference.
-          List the observed constraints, exercise a known rejection, and use the difference to test a
-          candidate that still requires service validation.
+        - Read RPT-CRR-DP3-R7 from the corporate records and select a later good UsableVolumeML historian
+          sample for the same asset. Keep both as-of times beside their values and units.
+        - Use an explicit comparison of reported usable volume minus the later measured usable volume,
+          preserving the sign. The two records describe different times, so their difference is a variance
+          rather than proof of a correction or cause.
+        - Record the direction of the paper variance and the time-basis limitation. Finish with a current
+          planning basis, not an executable control plan or a claim that the dated report is live process
+          truth.
         completion:
           mode: automatic_range_evidence
     - id: W30
-      chapter: Release and consequences
-      title: Open the gates
+      chapter: Plant operation
+      title: Operate the outlet
       allocation:
         medium: 2
       cards:
       - id: W30.1
         title: Bind the plan to the plant
-        description: Turn the bounded release plan into a correctly bound live command plan using the
-          client and authority you earned.
+        description: Turn the approved operating instruction into an exact request for the installed Cairn
+          Reach dispatcher. Bind the asset, mode, setpoint, expiry, delivery rules, and recovery path
+          before anything moves.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the live command-plan binder and bounded release executor. Its published client document
-          exposes the release plan operation, so use that ordinary contract instead of guessing a path.
-        - Treat this as end-to-end binding of earned authority, engineering revisions, and idempotent
-          actuation. Correlate independently owned records by identity, revision, units, and scope instead
-          of trusting a display label.
-        - Locate the release plan operation in the published client reference. Join the independent records
-          on their stable identifiers and revisions, then explain any mismatch before acting on it.
+        - Begin with the W30 release plan, operator brief, and installed remote-request contract. Reconcile
+          the asset, target, topic, delivery, expiry, and restoration fields before acting.
+        - Separate the fixed plan from execution-time values. The request needs a fresh UUID and a numeric
+          Unix-time expiry; neither should be copied from an old request.
+        - Record the durable dispatcher and PLC outcome stages, duplicate rule, and local FUXA handback.
+          Broker receipt alone does not prove controller acceptance or movement.
         completion:
           mode: automatic_range_evidence
       - id: W30.2
-        title: Open the gates
-        description: Execute the bounded opening and establish its actual effect on usable reserve. Show
-          the replacement cost and restrictions that follow from the lost water.
+        title: Operate and hand back
+        description: Execute the approved dispatcher request, prove the PLC and both outlets reached the
+          requested flow, then take local control through FUXA and restore the normal A20/B20 baseline.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the live command-plan binder and bounded release executor. Its published client document
-          exposes the release execute operation, so use that ordinary contract instead of guessing a path.
-        - Treat this as end-to-end binding of earned authority, engineering revisions, and idempotent
-          actuation. Observe the ordinary and denied cases first, then change one input at a time and
-          keep every unrelated binding fixed.
-        - Locate the release execute operation in the published client reference. Record the normal result
-          and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
-          the difference.
+        - Enable remote selection in FUXA, then use the fixed authenticated MQTT contract topics for one
+          fresh, non-retained QoS 1 request at the approved target.
+        - Correlate the same UUID and PLC sequence through durable receipt, dispatch, native acceptance,
+          settled two-outlet feedback, and retained history. Treat a publish acknowledgement as broker
+          receipt only.
+        - After remote completion, use local FUXA priority to restore manual A20/B20. Verify the local
+          sequence, measured flow, ownership, permissives, motion, faults, and historian record before
+          finishing.
         completion:
           mode: automatic_range_evidence
     - id: W31
@@ -4553,73 +4540,71 @@ phases:
       cards:
       - id: W33.1
         title: A forecast that matches the instrument
-        description: Reconcile calibration and observation delay with the supplied trace so the planning
-          model reproduces the relevant forecast.
+        description: Calibrate outlet response delay and flow gain from a completed native operation and
+          good-quality process history.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the forecast, schedule window, and feedback-policy services. Its published client
-          document exposes the forecast operation, so use that ordinary contract instead of guessing a
-          path.
-        - Treat this as model calibration and constrained time-series scheduling under disclosed bounds.
-          Correlate independently owned records by identity, revision, units, and scope instead of trusting
-          a display label.
-        - Locate the forecast operation in the published client reference. Join the independent records
-          on their stable identifiers and revisions, then explain any mismatch before acting on it.
+        - Begin with the W33 scheduling brief and one completed W30 operating record. Use the dispatcher,
+          native PLC, and historian rows for the same request rather than a displayed setpoint or copied
+          receipt.
+        - Measure delay from native PLC acceptance to the first good in-tolerance TotalFlowM3s sample.
+          Keep controller source time distinct from collection time, and choose the settled window before
+          calculating gain.
+        - Check that at least five good settled samples belong to the same request and asset. Divide their
+          mean total flow by the requested total flow, retaining the sample interval and request identity
+          with the result.
         completion:
           mode: automatic_range_evidence
       - id: W33.2
-        title: The expensive hour
-        description: Construct a time-varying release schedule that meets the practice objective while
-          respecting the declared operating constraints.
+        title: The peak hour
+        description: Construct a twelve-interval release and alternate-supply schedule using the measured
+          gain, planned demand, and declared operating limits.
         difficulty: hard
         points: 200
         hints:
-        - Begin with the forecast, schedule window, and feedback-policy services. Its published client
-          document exposes the schedule window operation, so use that ordinary contract instead of guessing
-          a path.
-        - Treat this as model calibration and constrained time-series scheduling under disclosed bounds.
-          Derive every constraint from supplied records or normal responses, test a deliberately failing
-          candidate, and only then produce a candidate.
-        - Locate the schedule window operation in the published client reference. List the observed constraints,
-          exercise a known rejection, and use the difference to test a candidate that still requires service
-          validation.
+        - Use the operating-window CSV, schedule template, and measured W33.1 gain. Model all twelve five-minute
+          intervals; the alternate supply and reservoir release are separate planning inputs.
+        - Recalculate buffer state after every interval, not only at the end. Then check both action ranges,
+          both step limits, the final buffer range, and projected reservoir-volume range.
+        - Keep the template identity fields unchanged and supply twelve values for both series. A feasible
+          schedule is enough; there is no single hidden trajectory to reproduce.
         completion:
           mode: automatic_range_evidence
       - id: W33.3
-        title: The schedule the service accepts
-        description: Carry the planned release across the scheduler's authorization boundary and demonstrate
-          its bounded economic effect in the live rehearsal.
+        title: Commission the schedule
+        description: Commission all twelve reviewed release values through the authenticated dispatcher,
+          prove each native result, and hand the site back locally.
         difficulty: hard
         points: 200
         hints:
-        - Begin with the forecast, schedule window, and feedback-policy services. Its published client
-          document exposes the schedule submit operation, so use that ordinary contract instead of guessing
-          a path.
-        - Treat this as model calibration and constrained time-series scheduling under disclosed bounds.
-          Carry forward only earned identities and record bindings; possession of a copied identifier
-          alone does not cross the next boundary.
-        - Locate the schedule submit operation in the published client reference. Replay the preceding
-          evidence through the next documented boundary and verify the downstream service, not the client,
-          records the outcome.
+        - Start from the qualified manual A20/B20 baseline and enable remote selection in FUXA. Use the
+          supplied bounded client for the reviewed schedule rather than writing PLC nodes or publishing
+          an improvised message.
+        - Let each fresh request reach a completed product state before the next. Stop on rejection or
+          uncertainty, and bind every request UUID to its durable dispatcher path, native PLC acceptance,
+          and settled feedback.
+        - After all twelve steps, restore manual A20/B20 with local FUXA priority. Confirm the later local
+          acceptance, measured baseline, healthy I/O, permissives, stopped motion, and clear travel faults
+          in native history.
         completion:
           mode: automatic_range_evidence
       - id: W33.4
-        title: When the forecast moves
-        description: Run a feedback policy through your earned scheduler capability so the bounded objective
-          is met across the disclosed demand and calibration conditions.
+        title: Prove the operating projection
+        description: Reconstruct every commissioning step from product history and turn the measured results
+          into an explicitly labelled one-hour operating projection.
         difficulty: expert
         points: 400
         hints:
-        - Begin with the forecast, schedule window, and feedback-policy services. Its published client
-          document exposes the feedback policy operation, so use that ordinary contract instead of guessing
-          a path.
-        - Treat this as model calibration and constrained time-series scheduling under disclosed bounds.
-          Observe the ordinary and denied cases first, then change one input at a time and keep every
-          unrelated binding fixed.
-        - Locate the feedback policy operation in the published client reference. Record the normal result
-          and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
-          the difference.
+        - Reconstruct one settled TotalFlowM3s mean per commissioning request from product history. Preserve
+          the request order, source times, quality, and later local handback instead of treating the client
+          receipt as measurement.
+        - Project one-hour reservoir volume from the twelve measured means and the published 300-second
+          intervals. Join the result to the current W29 usable-volume, allocation, and tariff rows by
+          asset and planning window.
+        - Label the twelve-step run as measured commissioning evidence and the hour-scale volume, remaining
+          reserve, shortfall, and liability as projections. Recompute every value; do not copy a fixed
+          expected total.
         completion:
           mode: automatic_range_evidence
     - id: W34
