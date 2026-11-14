@@ -68,6 +68,11 @@ image. The development VMs have no external IP and no service account.
 
 ## Reset
 
+For authenticated RDP QA on FieldLink, run `manage.sh desktop-login fieldlink
+<project>` after source sync or desktop-container replacement. The private
+login file path and handling rules are in the development-ranges design.
+The development reset reapplies this login. Never print its password.
+
 FieldLink has an in-place application reset:
 
 ```sh

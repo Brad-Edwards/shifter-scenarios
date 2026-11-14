@@ -25,6 +25,18 @@ existing IAP firewall rule. They inherit the source machine type and disks.
 The ARWC first-boot helper changes only the FieldLink listener binding for the
 new private address. It checks that the qualified PLC container is unchanged.
 
+## Development desktop login
+
+The FieldLink development desktop needs a password for authenticated RDP.
+After source sync, run `manage.sh desktop-login fieldlink <project>` from the
+repository root. This creates a root-owned, mode-0600 login file at
+`/opt/cinder-typhoon/build/keplerops/.operator/development-desktop-login.json`
+on the development VM and applies the password without printing it.
+The development reset reapplies it. Run the action again after replacing the
+desktop container. Use the login securely for QA; never copy it into Git,
+the coordination file, or command output. ARWC uses its existing development
+workstation provisioner. BigRAE participant credentials remain platform-owned.
+
 ## Safety invariants
 
 - Development commands accept only the aliases `fieldlink` and `arwc`.

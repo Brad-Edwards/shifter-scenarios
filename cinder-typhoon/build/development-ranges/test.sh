@@ -7,6 +7,12 @@ repo=$(CDPATH='' cd -- "$root/../../.." && pwd)
 bash -n "$root/manage.sh" "$root/targets.sh" "$root/guest/fieldlink-first-boot.sh" \
   "$root/guest/arwc-first-boot.sh"
 
+if [[ $(hostname) != cinder-fieldlink-dev ]] \
+    && python3 "$root/guest/fieldlink-desktop-login.py" 2>/dev/null; then
+  echo 'development desktop login accepted an unrelated host' >&2
+  exit 1
+fi
+
 # shellcheck source=targets.sh disable=SC1091
 source "$root/targets.sh"
 cinder_load_development_target fieldlink
