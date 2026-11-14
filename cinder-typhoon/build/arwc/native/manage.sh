@@ -20,10 +20,15 @@ certificate_is_current() {
 }
 action=${1:-up}
 case "$action" in
+  build)
+    python3 prepare.py
+    "${compose[@]}" pull --ignore-buildable
+    "${compose[@]}" build dns kerberos
+    ;;
   up)
     python3 prepare.py
     if [[ ! -f .operator/ca/config/ca.json ]]; then
-      docker run --rm --user 0:0 --network none --entrypoint step \
+      docker run --pull never --rm --user 0:0 --network none --entrypoint step \
         -v "$PWD/.operator/ca:/home/step" "$STEP_CA_IMAGE" \
         ca init --deployment-type standalone --name 'ARWC Certificate Authority' \
         --dns ca.arwc.test --address :9000 --provisioner infrastructure \
@@ -31,7 +36,7 @@ case "$action" in
     fi
     if ! certificate_is_current; then
       mkdir -p .operator/ca/tls
-      docker run --rm --user 0:0 --network none --entrypoint step \
+      docker run --pull never --rm --user 0:0 --network none --entrypoint step \
         -v "$PWD/.operator/ca:/home/step" "$STEP_CA_IMAGE" \
         certificate create edge.arwc.test /home/step/tls/server.crt /home/step/tls/server.key \
         --profile leaf --ca /home/step/certs/intermediate_ca.crt \
@@ -45,8 +50,7 @@ case "$action" in
     chown -R 1000:1000 .operator/ca
     chmod 0755 .operator/ca/tls
     chown -R root:root .operator/ca/tls
-    "${compose[@]}" build dns kerberos
-    "${compose[@]}" up -d
+    "${compose[@]}" up --no-build --pull never --wait --wait-timeout 420
     bash desktop-access.sh
     ;;
   status)
@@ -63,6 +67,9 @@ case "$action" in
   seed-reports)
     "${compose[@]}" --profile seed run --rm seed-reports
     ;;
+  seed-engineering)
+    bash seed-engineering.sh
+    ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
       echo 'Reset requires the exact project name: reset cinder-arwc-native' >&2
@@ -70,7 +77,10 @@ case "$action" in
     }
     "${compose[@]}" down --volumes
     bash "$0" up
-    exec bash "$0" seed
+    bash "$0" seed
+    bash "$0" seed-documents
+    bash "$0" seed-reports
+    exec bash "$0" seed-engineering
     ;;
-  *) echo 'Usage: manage.sh up|status|seed|seed-documents|reset cinder-arwc-native' >&2; exit 2 ;;
+  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-reports|seed-engineering|reset cinder-arwc-native' >&2; exit 2 ;;
 esac

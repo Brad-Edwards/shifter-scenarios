@@ -123,13 +123,13 @@ def seed() -> None:
         insert("Asset", {"asset_name": asset_name, "company": COMPANY}, {
             "item_code": "OUTLET-GATE", "location": "Cairn Reach",
             "purchase_date": "2019-06-20", "available_for_use_date": "2019-07-01",
-            "is_existing_asset": 1, "gross_purchase_amount": 45000,
+            "is_existing_asset": 1, "net_purchase_amount": 45000,
             "calculate_depreciation": 0,
         })
     team = insert("Asset Maintenance Team", {"maintenance_team_name": "Cairn Reach maintenance"}, {
         "company": COMPANY,
-        "maintenance_team_members": [{"team_member": "theo.marrivel@alterrawaterco.com"},
-                                     {"team_member": "clara.morivelle@alterrawaterco.com"}],
+        "maintenance_team_members": [{"team_member": "theo.marrivel@alterrawaterco.com", "maintenance_role": "Maintenance User"},
+                                     {"team_member": "clara.morivelle@alterrawaterco.com", "maintenance_role": "Maintenance User"}],
     })
     for number in (17, 18):
         asset_name = f"AST-CRR-{number:03d} — Outlet gate assembly {number}"
@@ -154,7 +154,7 @@ def seed() -> None:
             insert("Asset", {"asset_name": f'{row["asset_id"]} — {row["name"]}', "company": COMPANY}, {
                 "item_code": item, "location": location["name"], "purchase_date": row["in_service_from"],
                 "available_for_use_date": row["in_service_from"], "is_existing_asset": 1,
-                "gross_purchase_amount": 500000 if "building" in row["family"] else 45000,
+                "net_purchase_amount": 500000 if "building" in row["family"] else 45000,
                 "calculate_depreciation": 0,
             })
     for reference, name in (

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Create private bootstrap material for the native IT products."""
 import json
+import hashlib
+import hmac
 import os
 from pathlib import Path
 import secrets
@@ -49,6 +51,11 @@ def prepare() -> None:
         f'METABASE_ADMIN_PASSWORD={seed["metabase_admin"]}\n'
         f'PLANNING_READER_PASSWORD={seed["planning_reader"]}\n'
         f'STAFF_SEED={seed["workforce"]}\n'
+    ))
+    write_private(OPERATOR / "engineering-seed.env", (
+        f'GITEA_ADMIN_PASSWORD={seed["engineering_admin"]}\n'
+        'CLARA_PASSWORD=' + hmac.new(seed["workforce"].encode(), b"clara.morivelle@alterrawaterco.com", hashlib.sha256).hexdigest() + '\n'
+        'THEO_PASSWORD=' + hmac.new(seed["workforce"].encode(), b"theo.marrivel@alterrawaterco.com", hashlib.sha256).hexdigest() + '\n'
     ))
     write_private(OPERATOR / "keycloak.env", (
         f'KC_DB_PASSWORD={seed["identity_db"]}\n'
