@@ -50,6 +50,9 @@ case "$action" in
       --set ON_ERROR_STOP=1 < planning.sql
     "${compose[@]}" --profile seed run --rm seed-erp
     ;;
+  seed-documents)
+    "${compose[@]}" --profile seed run --rm seed-documents
+    ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
       echo 'Reset requires the exact project name: reset cinder-arwc-native' >&2
@@ -59,5 +62,5 @@ case "$action" in
     bash "$0" up
     exec bash "$0" seed
     ;;
-  *) echo 'Usage: manage.sh up|status|seed|reset cinder-arwc-native' >&2; exit 2 ;;
+  *) echo 'Usage: manage.sh up|status|seed|seed-documents|reset cinder-arwc-native' >&2; exit 2 ;;
 esac

@@ -2,12 +2,16 @@
 """Load ordinary utility records through the supported Frappe REST API."""
 import hashlib
 import hmac
+import csv
 from http.cookiejar import CookieJar
+import io
 import json
 import os
+import re
 from urllib.error import HTTPError
 from urllib.parse import quote, urlencode
 from urllib.request import HTTPCookieProcessor, Request, build_opener
+from zipfile import ZipFile
 
 COMPANY = "Alterra Regional Water Company"
 OPENER = build_opener(HTTPCookieProcessor(CookieJar()))
@@ -58,9 +62,15 @@ def seed() -> None:
         raise RuntimeError("Native ERPNext company setup did not complete")
     for name in ("Maintenance and engineering", "Operations", "Planning", "Procurement"):
         insert("Department", {"department_name": name, "company": COMPANY}, {})
+    roots = api('/api/resource/Cost%20Center?' + urlencode({
+        "filters": json.dumps({"company": COMPANY, "is_group": 1}),
+        "fields": '["name"]', "limit_page_length": 1,
+    }))["data"]
+    if not roots:
+        raise RuntimeError("ERPNext company has no root cost centre")
     for centre in ("Pine", "River"):
         insert("Cost Center", {"cost_center_name": centre, "company": COMPANY}, {
-            "parent_cost_center": "Main - ARWC", "is_group": 0,
+            "parent_cost_center": roots[0]["name"], "is_group": 0,
         })
     for email, name, roles in (
         ("theo.marrivel@alterrawaterco.com", "Theo Marrivel", ["Maintenance User", "Stock User"]),
@@ -84,13 +94,14 @@ def seed() -> None:
         "is_stock_item": 0, "is_purchase_item": 1,
     })
     insert("Asset Category", {"asset_category_name": "Water infrastructure"}, {})
+    insert("Item Group", {"item_group_name": "Plant equipment"}, {"parent_item_group": "All Item Groups"})
     insert("Item", {"item_code": "OUTLET-GATE"}, {
-        "item_name": "Outlet gate assembly", "item_group": "All Item Groups", "stock_uom": "Nos",
+        "item_name": "Outlet gate assembly", "item_group": "Plant equipment", "stock_uom": "Nos",
         "is_stock_item": 0, "is_fixed_asset": 1, "asset_category": "Water infrastructure",
     })
     for location in ("Cairn Reach", "Pine treatment", "River distribution"):
         insert("Location", {"location_name": location}, {})
-    for number in range(1, 25):
+    for number in (17, 18):
         asset_name = f"AST-CRR-{number:03d} — Outlet gate assembly {number}"
         insert("Asset", {"asset_name": asset_name, "company": COMPANY}, {
             "item_code": "OUTLET-GATE", "location": "Cairn Reach",
@@ -103,7 +114,7 @@ def seed() -> None:
         "maintenance_team_members": [{"team_member": "theo.marrivel@alterrawaterco.com"},
                                      {"team_member": "clara.morivelle@alterrawaterco.com"}],
     })
-    for number in range(1, 25):
+    for number in (17, 18):
         asset_name = f"AST-CRR-{number:03d} — Outlet gate assembly {number}"
         asset = insert("Asset", {"asset_name": asset_name, "company": COMPANY}, {})
         insert("Asset Maintenance", {"asset_name": asset["name"], "company": COMPANY}, {
@@ -114,6 +125,21 @@ def seed() -> None:
                 "periodicity": "Monthly", "assign_to": "theo.marrivel@alterrawaterco.com",
             }],
         })
+    with ZipFile("/seed/maintenance-engineering-records.zip") as archive:
+        rows = csv.DictReader(io.StringIO(archive.read("registers/assets.csv").decode()))
+        for row in rows:
+            location = insert("Location", {"location_name": row["site"]}, {})
+            item = "PLANT-" + re.sub(r"[^A-Z0-9]+", "-", row["family"].upper()).strip("-")
+            insert("Item", {"item_code": item}, {
+                "item_name": row["family"].capitalize(), "item_group": "Plant equipment", "stock_uom": "Nos",
+                "is_stock_item": 0, "is_fixed_asset": 1, "asset_category": "Water infrastructure",
+            })
+            insert("Asset", {"asset_name": f'{row["asset_id"]} — {row["name"]}', "company": COMPANY}, {
+                "item_code": item, "location": location["name"], "purchase_date": row["in_service_from"],
+                "available_for_use_date": row["in_service_from"], "is_existing_asset": 1,
+                "gross_purchase_amount": 500000 if "building" in row["family"] else 45000,
+                "calculate_depreciation": 0,
+            })
     for reference, name in (
         ("WO-CRR-4417", "Cairn Reach outlet inspection"),
         ("WO-PIN-2192", "Pine intake instrument calibration"),

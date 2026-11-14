@@ -36,7 +36,15 @@ def prepare() -> None:
     for name in ("corporate_db", "metabase_db", "planning_reader", "documents_db_root",
                  "documents_db", "documents_admin"):
         write_private(OPERATOR / f"{name}_password", seed[name])
+    for name in ("metabase_db", "planning_reader"):
+        path = OPERATOR / f"{name}_password"
+        os.chown(path, 999, 999)
+        path.chmod(0o400)
     write_private(OPERATOR / "metabase.env", f'MB_DB_PASS={seed["metabase_db"]}\n')
+    write_private(OPERATOR / "documents-seed.env", (
+        f'DOCUMENTS_ADMIN_PASSWORD={seed["documents_admin"]}\n'
+        f'STAFF_SEED={seed["workforce"]}\n'
+    ))
     write_private(OPERATOR / "keycloak.env", (
         f'KC_DB_PASSWORD={seed["identity_db"]}\n'
         'KC_BOOTSTRAP_ADMIN_USERNAME=platform-admin\n'
