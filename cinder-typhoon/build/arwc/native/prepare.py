@@ -28,6 +28,7 @@ def prepare() -> None:
         "identity_db", "identity_admin", "mariadb_root", "erp_admin", "workforce", "ca", "kerberos",
         "corporate_db", "metabase_db", "planning_reader", "documents_db_root",
         "documents_db", "documents_admin", "metabase_admin", "engineering_admin",
+        "postgrest",
     ):
         seed.setdefault(name, secrets.token_hex(24))
     write_private(seed_path, json.dumps(seed))
@@ -35,10 +36,14 @@ def prepare() -> None:
     write_private(OPERATOR / "mariadb_root_password", seed["mariadb_root"])
     write_private(OPERATOR / "kerberos_master", seed["kerberos"])
     write_private(OPERATOR / "workforce_password", seed["workforce"])
+    write_private(OPERATOR / "postgrest_password", seed["postgrest"])
+    write_private(OPERATOR / "postgrest.env", (
+        f'PGRST_DB_URI=postgresql://pgrst_authenticator:{seed["postgrest"]}@172.29.70.2:5432/planning\n'
+    ))
     for name in ("corporate_db", "metabase_db", "planning_reader", "documents_db_root",
                  "documents_db", "documents_admin"):
         write_private(OPERATOR / f"{name}_password", seed[name])
-    for name in ("metabase_db", "planning_reader"):
+    for name in ("metabase_db", "planning_reader", "postgrest"):
         path = OPERATOR / f"{name}_password"
         os.chown(path, 999, 999)
         path.chmod(0o400)

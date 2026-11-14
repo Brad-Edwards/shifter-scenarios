@@ -8,11 +8,12 @@ umask 077
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 # shellcheck disable=SC1091
 source images.env
-compose=(docker compose --env-file images.env -f compose.yaml -f corporate.compose.yaml)
+compose=(docker compose --env-file images.env -f compose.yaml -f corporate.compose.yaml -f dmz.compose.yaml)
+hostnames=(edge.arwc.test erp.arwc.test identity.arwc.test documents.arwc.test reports.arwc.test engineering.arwc.test suppliers.arwc.test render.arwc.test read-data.arwc.test)
 certificate_is_current() {
   [[ -f .operator/ca/tls/server.crt ]] || return 1
   openssl x509 -in .operator/ca/tls/server.crt -noout -checkend 86400 >/dev/null || return 1
-  for hostname in edge.arwc.test erp.arwc.test identity.arwc.test documents.arwc.test reports.arwc.test engineering.arwc.test; do
+  for hostname in "${hostnames[@]}"; do
     openssl verify -verify_hostname "$hostname" \
       -CAfile .operator/ca/certs/root_ca.crt -untrusted .operator/ca/certs/intermediate_ca.crt \
       .operator/ca/tls/server.crt >/dev/null 2>&1 || return 1
@@ -36,14 +37,15 @@ case "$action" in
     fi
     if ! certificate_is_current; then
       mkdir -p .operator/ca/tls
+      sans=()
+      for hostname in "${hostnames[@]}"; do sans+=(--san "$hostname"); done
       docker run --pull never --rm --user 0:0 --network none --entrypoint step \
         -v "$PWD/.operator/ca:/home/step" "$STEP_CA_IMAGE" \
         certificate create edge.arwc.test /home/step/tls/server.crt /home/step/tls/server.key \
         --profile leaf --ca /home/step/certs/intermediate_ca.crt \
         --ca-key /home/step/secrets/intermediate_ca_key \
         --ca-password-file /home/step/secrets/password --not-after 8760h \
-        --san edge.arwc.test --san erp.arwc.test --san identity.arwc.test \
-        --san documents.arwc.test --san reports.arwc.test --san engineering.arwc.test \
+        "${sans[@]}" \
         --no-password --insecure --force >/dev/null
       cat .operator/ca/certs/intermediate_ca.crt >> .operator/ca/tls/server.crt
     fi
@@ -69,6 +71,11 @@ case "$action" in
     ;;
   seed-engineering)
     bash seed-engineering.sh
+    ;;
+  seed-dmz)
+    "${compose[@]}" exec -T --user postgres corporate-db bash /docker-entrypoint-initdb.d/10-corporate.sh
+    "${compose[@]}" exec -T corporate-db psql -U corporate -d planning \
+      --set ON_ERROR_STOP=1 < dmz-views.sql
     ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {

@@ -36,6 +36,32 @@ def validate(document: dict) -> None:
     assert all(re.fullmatch(r"[A-Z_]+=[^\s]+@sha256:[a-f0-9]{64}", line) for line in pins)
 
 
+def validate_dmz(document: dict) -> None:
+    services = document["services"]
+    expected = {
+        "dmz-edge": {"dmz", "portal_exchange", "render_exchange", "api_exchange"},
+        "renderer": {"render_exchange"},
+        "postgrest": {"api_exchange", "api_database"},
+    }
+    for name, networks in expected.items():
+        service = services[name]
+        assert set(service["networks"]) == networks, name
+        assert str(service["sysctls"]["net.ipv4.ip_forward"]) == "0", name
+        assert not service.get("ports"), name
+        assert not service.get("privileged"), name
+    assert set(services["frontend"]["networks"]) == {"portal_exchange"}
+    assert set(services["corporate-db"]["networks"]) == {"api_database"}
+    assert services["postgrest"]["environment"]["PGRST_DB_SCHEMAS"] == "dmz_api"
+    assert services["postgrest"]["environment"]["PGRST_DB_ANON_ROLE"] == "dmz_reader"
+    for name in ("portal_exchange", "render_exchange", "api_exchange", "api_database"):
+        assert document["networks"][name]["internal"] is True
+    allowed = {"@", "IN", "ns", "suppliers", "render", "read-data"}
+    for line in (ROOT / "db.arwc-dmz.test").read_text().splitlines():
+        if line and not line.startswith("$"):
+            assert line.split()[0] in allowed, "Unapproved DMZ DNS host"
+
+
 if __name__ == "__main__":
     validate(load_compose())
+    validate_dmz(yaml.safe_load((ROOT / "dmz.compose.yaml").read_text()))
     print("ARWC native IT foundation contract passes")

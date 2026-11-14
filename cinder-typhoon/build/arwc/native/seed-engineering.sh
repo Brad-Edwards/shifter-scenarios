@@ -6,7 +6,7 @@ set -a
 # shellcheck disable=SC1091
 source .operator/engineering-seed.env
 set +a
-compose=(docker compose --env-file images.env -f compose.yaml -f corporate.compose.yaml)
+compose=(docker compose --env-file images.env -f compose.yaml -f corporate.compose.yaml -f dmz.compose.yaml)
 # The script variables expand in the container shell.
 # shellcheck disable=SC2016
 "${compose[@]}" exec -T --user git \

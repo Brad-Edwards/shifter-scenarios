@@ -1,0 +1,21 @@
+$TTL 300
+@ IN SOA ns.arwc.test. hostmaster.arwc.test. (2026111501 300 60 86400 300)
+  IN NS ns.arwc.test.
+ns       IN A 10.77.60.10
+edge     IN A 10.77.60.11
+erp      IN A 10.77.60.11
+identity IN A 10.77.60.11
+documents IN A 10.77.60.11
+reports IN A 10.77.60.11
+engineering IN A 10.77.60.11
+suppliers IN A 10.77.60.11
+render IN A 10.77.60.11
+read-data IN A 10.77.60.11
+ca       IN A 10.77.60.12
+kdc      IN A 10.77.60.13
+_kerberos._tcp IN SRV 0 0 88 kdc.arwc.test.
+_kerberos._udp IN SRV 0 0 88 kdc.arwc.test.
+business-workplace IN A 10.77.60.30
+planning-data IN A 10.77.60.40
+retained-archive IN A 10.77.60.50
+fieldlink IN A 10.77.60.20

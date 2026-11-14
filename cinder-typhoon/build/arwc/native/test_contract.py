@@ -1,6 +1,7 @@
 import copy
 import unittest
-from validate import load_compose, validate
+import yaml
+from validate import ROOT, load_compose, validate, validate_dmz
 
 
 class BoundaryTests(unittest.TestCase):
@@ -27,6 +28,21 @@ class BoundaryTests(unittest.TestCase):
         changed["services"]["backend"]["ports"] = ["8000:8000"]
         with self.assertRaises(AssertionError):
             validate(changed)
+
+    def test_dmz_contract(self):
+        validate_dmz(yaml.safe_load((ROOT / "dmz.compose.yaml").read_text()))
+
+    def test_renderer_cannot_join_corporate_data(self):
+        changed = yaml.safe_load((ROOT / "dmz.compose.yaml").read_text())
+        changed["services"]["renderer"]["networks"]["data"] = {}
+        with self.assertRaises(AssertionError):
+            validate_dmz(changed)
+
+    def test_dmz_reader_cannot_expose_public_schema(self):
+        changed = yaml.safe_load((ROOT / "dmz.compose.yaml").read_text())
+        changed["services"]["postgrest"]["environment"]["PGRST_DB_SCHEMAS"] = "public"
+        with self.assertRaises(AssertionError):
+            validate_dmz(changed)
 
 
 if __name__ == "__main__":

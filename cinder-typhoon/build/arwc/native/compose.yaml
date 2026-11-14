@@ -37,6 +37,7 @@ services:
     cap_add: [CHOWN, SETUID, SETGID, NET_BIND_SERVICE]
     tmpfs: [/tmp, /var/cache/nginx, /var/run]
     volumes:
+      - ./edge-http.conf:/etc/nginx/conf.d/00-arwc.conf:ro
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./.operator/ca/tls:/etc/nginx/tls:ro
     networks:

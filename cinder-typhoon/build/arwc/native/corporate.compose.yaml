@@ -58,8 +58,10 @@ services:
     volumes:
       - corporate-data:/var/lib/postgresql
       - ./init-corporate.sh:/docker-entrypoint-initdb.d/10-corporate.sh:ro
+      - ./planning.sql:/docker-entrypoint-initdb.d/20-planning.sql:ro
+      - ./dmz-views.sql:/docker-entrypoint-initdb.d/30-dmz.sql:ro
     healthcheck:
-      test: [CMD, pg_isready, -U, corporate, -d, planning]
+      test: [CMD, pg_isready, -h, 127.0.0.1, -U, corporate, -d, planning]
       interval: 5s
       timeout: 3s
       retries: 12
