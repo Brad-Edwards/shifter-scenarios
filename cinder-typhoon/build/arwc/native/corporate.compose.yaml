@@ -5,6 +5,15 @@ x-runtime: &runtime
   logging: {driver: json-file, options: {max-size: 10m, max-file: "3"}}
   networks: [data]
 services:
+  seed-reports:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-reports.py]
+    env_file: [.operator/reports-seed.env]
+    networks: [data]
+    volumes: [./seed-reports.py:/seed/seed-reports.py:ro]
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
   seed-documents:
     image: ${ERPNEXT_IMAGE:?Load images.env}
     profiles: [seed]

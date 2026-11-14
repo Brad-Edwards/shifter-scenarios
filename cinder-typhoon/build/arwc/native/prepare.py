@@ -45,6 +45,11 @@ def prepare() -> None:
         f'DOCUMENTS_ADMIN_PASSWORD={seed["documents_admin"]}\n'
         f'STAFF_SEED={seed["workforce"]}\n'
     ))
+    write_private(OPERATOR / "reports-seed.env", (
+        f'METABASE_ADMIN_PASSWORD={seed["metabase_admin"]}\n'
+        f'PLANNING_READER_PASSWORD={seed["planning_reader"]}\n'
+        f'STAFF_SEED={seed["workforce"]}\n'
+    ))
     write_private(OPERATOR / "keycloak.env", (
         f'KC_DB_PASSWORD={seed["identity_db"]}\n'
         'KC_BOOTSTRAP_ADMIN_USERNAME=platform-admin\n'

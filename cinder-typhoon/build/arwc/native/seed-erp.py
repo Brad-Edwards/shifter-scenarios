@@ -27,6 +27,9 @@ def api(path: str, body: dict | None = None) -> dict:
         with OPENER.open(request, timeout=180) as response:
             return json.load(response)
     except HTTPError as error:
+        if path.startswith('/api/resource/Asset'):
+            detail = json.load(error)
+            raise RuntimeError(f'Native asset validation: {detail.get("_server_messages", detail.get("exc_type"))}') from None
         raise RuntimeError(f"Frappe API {path.split('?')[0]} returned HTTP {error.code}") from None
 
 
@@ -46,6 +49,16 @@ def user(email: str, name: str, roles: list[str]) -> None:
         "enabled": 1, "send_welcome_email": 0, "new_password": password,
         "roles": [{"role": role} for role in roles],
     })
+
+
+def account(kind: str) -> str:
+    rows = api('/api/resource/Account?' + urlencode({
+        "filters": json.dumps({"company": COMPANY, "account_type": kind, "is_group": 0}),
+        "fields": '["name"]', "limit_page_length": 1,
+    }))["data"]
+    if not rows:
+        raise RuntimeError(f"ERPNext company is missing its {kind} account")
+    return rows[0]["name"]
 
 
 def seed() -> None:
@@ -93,7 +106,11 @@ def seed() -> None:
         "item_name": "Supplementary bulk water", "item_group": "Services", "stock_uom": "Megalitre",
         "is_stock_item": 0, "is_purchase_item": 1,
     })
-    insert("Asset Category", {"asset_category_name": "Water infrastructure"}, {})
+    insert("Asset Category", {"asset_category_name": "Water infrastructure"}, {"accounts": [{
+        "company_name": COMPANY, "fixed_asset_account": account("Fixed Asset"),
+        "accumulated_depreciation_account": account("Accumulated Depreciation"),
+        "depreciation_expense_account": account("Depreciation"),
+    }]})
     insert("Item Group", {"item_group_name": "Plant equipment"}, {"parent_item_group": "All Item Groups"})
     insert("Item", {"item_code": "OUTLET-GATE"}, {
         "item_name": "Outlet gate assembly", "item_group": "Plant equipment", "stock_uom": "Nos",

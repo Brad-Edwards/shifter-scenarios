@@ -9,6 +9,15 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 # shellcheck disable=SC1091
 source images.env
 compose=(docker compose --env-file images.env -f compose.yaml -f corporate.compose.yaml)
+certificate_is_current() {
+  [[ -f .operator/ca/tls/server.crt ]] || return 1
+  openssl x509 -in .operator/ca/tls/server.crt -noout -checkend 86400 >/dev/null || return 1
+  for hostname in edge.arwc.test erp.arwc.test identity.arwc.test documents.arwc.test reports.arwc.test engineering.arwc.test; do
+    openssl verify -verify_hostname "$hostname" \
+      -CAfile .operator/ca/certs/root_ca.crt -untrusted .operator/ca/certs/intermediate_ca.crt \
+      .operator/ca/tls/server.crt >/dev/null 2>&1 || return 1
+  done
+}
 action=${1:-up}
 case "$action" in
   up)
@@ -20,9 +29,7 @@ case "$action" in
         --dns ca.arwc.test --address :9000 --provisioner infrastructure \
         --password-file /home/step/secrets/password >/dev/null 2>&1
     fi
-    if [[ ! -f .operator/ca/tls/server.crt ]] ||
-        ! openssl x509 -in .operator/ca/tls/server.crt -noout -checkhost documents.arwc.test >/dev/null ||
-        ! openssl x509 -in .operator/ca/tls/server.crt -noout -checkend 86400 >/dev/null; then
+    if ! certificate_is_current; then
       mkdir -p .operator/ca/tls
       docker run --rm --user 0:0 --network none --entrypoint step \
         -v "$PWD/.operator/ca:/home/step" "$STEP_CA_IMAGE" \
@@ -52,6 +59,9 @@ case "$action" in
     ;;
   seed-documents)
     "${compose[@]}" --profile seed run --rm seed-documents
+    ;;
+  seed-reports)
+    "${compose[@]}" --profile seed run --rm seed-reports
     ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
