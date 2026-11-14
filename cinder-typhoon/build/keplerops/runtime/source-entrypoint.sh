@@ -14,7 +14,7 @@ setpriv --reuid=git --regid=git --init-groups sh -c '
 ' >/tmp/gitea.log 2>&1 &
 gitea_pid=$!
 for attempt in $(seq 1 30); do
-  if curl -sS --fail --cacert /run/fieldkest-tls/ca.crt https://source.keplerops.test/api/v1/version >/dev/null; then
+  if curl -sS --fail --cacert /run/fieldkest-tls/ca.crt https://source.keplerops.test/user/login >/dev/null; then
     break
   fi
   if [ "$attempt" -eq 30 ]; then

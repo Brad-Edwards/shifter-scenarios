@@ -45,6 +45,6 @@ docker exec cinder-keplerops-foundation-postgres sh -ec \
 
 docker exec cinder-keplerops-k-dev curl -fsS \
   --cacert /home/rowan/.local/share/keplerops/ca.crt \
-  https://source.keplerops.test/api/healthz >/dev/null
+  https://source.keplerops.test/user/login >/dev/null
 
 echo 'FieldLink foundation live checks passed.'
