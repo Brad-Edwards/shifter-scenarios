@@ -32,6 +32,7 @@ tar -C "$PACK_ROOT" -czf "$ARCHIVE" \
   --exclude='build/keplerops/gcp/.terraform' \
   --exclude='build/gcp-images/.operator' \
   --exclude='*/__pycache__' \
+  .dockerignore \
   build/keplerops \
   build/gcp-images \
   build/participant-host \
