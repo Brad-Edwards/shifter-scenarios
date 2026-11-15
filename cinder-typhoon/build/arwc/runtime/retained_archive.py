@@ -1339,14 +1339,14 @@ class Handler(BaseHTTPRequestHandler):
         if normalized_path != HANDOVER_STAGING_PATH:
             self.send_json(409, {"error": "archive member does not select an available action"})
             return
-        # Read the staged Gitea handover from the filesystem (outside extraction dir).
-        # This is the real filesystem escape: NFKC normalization caused the path
-        # to resolve outside the extraction boundary to the helper-staging area.
-        if not HANDOVER_STAGING_PATH.exists():
+        # Read the handover from the traversed path (outside the extraction dir).
+        # normalized_path == HANDOVER_STAGING_PATH after the authorization check,
+        # so this read visibly follows the traversal rather than using a fixed constant.
+        if not normalized_path.exists():
             self.send_json(503, {"error": "archive handover artifact unavailable"})
             return
         try:
-            handover = json.loads(HANDOVER_STAGING_PATH.read_text(encoding="utf-8"))
+            handover = json.loads(normalized_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             self.send_json(503, {"error": "archive handover artifact unreadable"})
             return
