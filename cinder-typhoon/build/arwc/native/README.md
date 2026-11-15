@@ -82,6 +82,10 @@ native dispatcher, OpenPLC, FUXA and historian. No OT operation or reset was
 required. Current source and the W33 retirement manifest already exclude its
 Dockerfile/controller; do not restore those deleted files.
 
+Fresh PostgreSQL initialization loads the approved DMZ reporting view after
+its underlying planning tables. Explicit reset also reapplies that view and
+its narrow read-only grant. Ordinary `up` does not reseed product data.
+
 Coordinate the test window before reset:
 
 ```sh
@@ -89,7 +93,7 @@ sudo bash manage.sh reset cinder-arwc-native
 ```
 
 Reset removes this native IT project's volumes and replays initialization and
-all seven product seed steps. The database initializes its approved read-only
+all product seed steps and the DMZ view grants. The database initializes its approved read-only
 DMZ views before PostgREST starts. For an existing native IT database, run
 `seed-dmz` once after installing its new secret mount. Reset does not reset
 the qualified OT project. Company data,

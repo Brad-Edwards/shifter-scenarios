@@ -94,6 +94,7 @@ case "$action" in
     "${compose[@]}" down --volumes
     bash "$0" up
     bash "$0" seed
+    bash "$0" seed-dmz
     bash "$0" seed-documents
     bash "$0" seed-reports
     bash "$0" seed-portal
