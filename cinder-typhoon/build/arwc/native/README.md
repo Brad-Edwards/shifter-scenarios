@@ -45,6 +45,27 @@ the native IT operator directory when the source trees are separate. The
 handover supplies Jules's real account material. It does not exchange the
 connector capability for another product's session or broader authority.
 
+The engineering desktop mounts only the connector volume's `handover` subdirectory
+read-only at `/var/lib/fieldlink-connector/handover`. Its ordinary `fieldlink`
+login joins that directory's read group; neither connector receipts, candidates,
+private customer state nor keys are mounted. Files appear only after genuine
+customer delivery. `customer-transition.json` identifies the retained service,
+and `corporate-session` carries its earned read capability. The authoritative
+supervisory zone resolves `customer-handover.arwc.test` to `172.29.63.28`;
+a fixed socat listener passes only port 8443 to `10.77.60.20:8443`, retaining
+the connector's original end-to-end TLS identity. The relay's corporate address
+is `10.77.60.16`; it has no host ports, keys, state volumes or forwarding.
+The connector keeps its original networks and gains no supervisory interface.
+The desktop trusts only the public customer-integration root in addition to the
+native IT root. Docker Compose's documented read-only volume `subpath` feature
+provides this filesystem boundary; it does not expose the complete connector volume.
+See <https://docs.docker.com/reference/compose-file/services/#volumes>.
+Before the first desktop start, `workstation/prepare-handover.sh` creates only
+an empty `handover` directory if absent. Image initialization and desktop setup
+call it before Compose; it neither creates earned files nor changes existing
+files. Start the parent ARWC Compose project to include `handover-edge`; its
+ordinary startup and retained reset use that checked service definition.
+
 `early-card-evidence.py` compares W01-W03 submissions with a separately
 collected, fresh `arwc.native-early-observation/v1` product snapshot. The
 snapshot carries native ERPNext User, Task, Project, File, DocShare and Version

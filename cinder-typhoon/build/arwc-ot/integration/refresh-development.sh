@@ -10,6 +10,7 @@ plc_before=$(sudo docker inspect --format '{{.Id}}' arwc-ot-compat-plc-1)
 joined=(sudo docker compose -f compose.yaml -f site/compose.yaml \
   -f historian/compose.yaml -f dispatch/compose.yaml \
   -f workstation/compose.yaml -f integration/compose.yaml)
+sudo bash workstation/prepare-handover.sh
 # Explicit targets and --no-deps keep the PLC's container layer intact.
 "${joined[@]}" up -d --no-deps --no-build --pull never \
   io fuxa postgres telegraf mosquitto grafana engineering \

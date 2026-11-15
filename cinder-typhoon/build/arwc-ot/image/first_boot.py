@@ -71,6 +71,7 @@ def verify_images():
 def start_desktop():
     operator_credentials(ROOT)
     verify_images()
+    run("bash", str(ROOT / "workstation/prepare-handover.sh"))
     compose("up", "-d", "--no-build", "engineering")
 
 
@@ -149,6 +150,7 @@ def readiness():
 
 
 def complete():
+    run("bash", str(ROOT / "workstation/prepare-handover.sh"))
     if STATE.exists():
         compose("up", "-d", "--no-build", joined=True)
     else:

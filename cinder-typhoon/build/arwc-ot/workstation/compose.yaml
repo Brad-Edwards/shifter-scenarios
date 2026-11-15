@@ -16,8 +16,18 @@ services:
       - no-new-privileges:true
       - seccomp=./workstation/browser-seccomp.json
     ports: ["3389:3389"]
-    volumes: ["engineering-home:/home/fieldlink"]
+    dns: [172.29.63.26]
+    volumes:
+      - engineering-home:/home/fieldlink
+      - type: volume
+        source: customer-handover
+        target: /var/lib/fieldlink-connector/handover
+        read_only: true
+        volume: {subpath: handover, nocopy: true}
     networks:
       supervisory: {ipv4_address: 172.29.63.10}
 volumes:
+  customer-handover:
+    external: true
+    name: cinder-arwc-connector-fieldlink
   engineering-home:

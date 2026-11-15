@@ -1,5 +1,5 @@
 $TTL 300
-@ IN SOA ns.arwc.test. hostmaster.arwc.test. (2026111501 300 60 86400 300)
+@ IN SOA ns.arwc.test. hostmaster.arwc.test. (2026111502 300 60 86400 300)
   IN NS ns.arwc.test.
 ns       IN A 10.77.60.10
 edge     IN A 10.77.60.11
@@ -19,3 +19,4 @@ business-workplace IN A 10.77.60.30
 planning-data IN A 10.77.60.40
 retained-archive IN A 10.77.60.50
 fieldlink IN A 10.77.60.20
+customer-handover IN A 10.77.60.20

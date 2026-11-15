@@ -48,3 +48,11 @@ Actual VM memory, disk and start time are recorded after deployment.
 References: [Keycloak containers](https://www.keycloak.org/server/containers),
 [Frappe Docker](https://github.com/frappe/frappe_docker), and
 [step-ca Docker setup](https://smallstep.com/docs/tutorials/docker-tls-certificate-authority/).
+
+The retained customer handover uses a separate fixed L4 socat relay at supervisory
+`172.29.63.28:8443` to the existing corporate connector `10.77.60.20:8443`.
+Its corporate address is `10.77.60.16`. It passes TLS bytes without terminating
+or translating authentication, has no keys or volumes, and cannot forward IP
+traffic. The connector itself does not join the supervisory network. Only its
+`handover` volume subdirectory is mounted read-only in the engineering desktop;
+receipts, candidates and private customer state remain outside that mount.

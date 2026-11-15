@@ -20,7 +20,15 @@ def validate(document, contract):
     assert not service.get("cap_add")
     assert "NET_RAW" in service["cap_drop"]
     assert any(option.startswith("no-new-privileges") for option in service["security_opt"])
-    assert all(volume["type"] == "volume" and volume["target"] == "/home/fieldlink" for volume in service["volumes"])
+    for volume in service["volumes"]:
+        assert volume["type"] == "volume"
+        if volume["target"] == "/home/fieldlink":
+            continue
+        assert volume["target"] == "/var/lib/fieldlink-connector/handover"
+        assert volume["source"] == "customer-handover"
+        assert volume["read_only"] is True
+        assert volume["volume"]["subpath"] == "handover"
+        assert volume["volume"]["nocopy"] is True
     assert any(int(port["target"]) == contract["rdp_port"] for port in service["ports"])
     assert (HERE / "Dockerfile").read_text().splitlines()[0] == "FROM " + contract["base"]
     assert "--no-sandbox" not in (HERE / "launch-editor.sh").read_text()
@@ -39,6 +47,8 @@ def main():
     contract = json.loads((HERE / "contract.json").read_text())
     validate(document, contract)
     mutations = [
+        lambda s: s["volumes"][1].update(read_only=False),
+        lambda s: s["volumes"][1]["volume"].update(subpath=""),
         lambda s: s.update(privileged=True),
         lambda s: s.update(network_mode="host"),
         lambda s: s.update(ipc="host"),

@@ -1,5 +1,13 @@
 #!/bin/bash
 set -euo pipefail
+# The customer connector publishes only its earned handover subdirectory here.
+if mountpoint -q /var/lib/fieldlink-connector/handover; then
+  handover_gid=$(stat -c %g /var/lib/fieldlink-connector/handover)
+  if ! getent group "$handover_gid" >/dev/null; then
+    groupadd --gid "$handover_gid" customer-handover
+  fi
+  usermod --append --groups "$handover_gid" fieldlink
+fi
 mkdir -p /run/xrdp /var/log
 install -d -m 0755 /run/dbus
 dbus-uuidgen --ensure=/etc/machine-id

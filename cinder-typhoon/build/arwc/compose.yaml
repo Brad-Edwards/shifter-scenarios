@@ -81,6 +81,20 @@ services:
         ipv4_address: 10.77.60.15
       carrier_transit: {}
 
+  handover-edge:
+    image: cinder-arwc/fieldlink-edge:hand-build
+    container_name: cinder-arwc-handover-edge
+    restart: unless-stopped
+    entrypoint: [socat, "TCP4-LISTEN:8443,bind=172.29.63.28,reuseaddr,fork", "TCP4:10.77.60.20:8443"]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    sysctls: {net.ipv4.ip_forward: "0"}
+    logging: {driver: json-file, options: {max-size: 10m, max-file: "3"}}
+    networks:
+      corporate: {ipv4_address: 10.77.60.16}
+      handover_supervisory: {ipv4_address: 172.29.63.28}
+
   a-business:
     build:
       context: ../..
@@ -684,6 +698,9 @@ services:
         aliases: [a-control-broker, control-broker.arwc.test]
 
 networks:
+  handover_supervisory:
+    external: true
+    name: arwc-ot-compat_supervisory
   carrier_transit:
     name: cinder-arwc-carrier-transit
     driver: bridge
