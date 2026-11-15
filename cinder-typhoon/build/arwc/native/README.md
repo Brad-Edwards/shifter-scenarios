@@ -42,6 +42,12 @@ public host key. The terminal has no sudo or forwarding. Normal `kinit`, `klist`
 `/etc/krb5.conf`; KDC access does not add a network interface to the OT desktop.
 Use the normal workforce principal and password, not an operator keytab.
 
+Nextcloud's startup wrapper gives its configuration directory to `www-data`
+before the unchanged upstream entrypoint runs. This allows the stock installer
+to create its private configuration on an empty volume when the read-only
+ARWC settings file is already mounted. It does not change existing file modes
+or recursively change ownership.
+
 Nextcloud's native `/cron.sh` companion uses the same pinned image, product
 volume and private backend network. Startup selects native cron mode for
 regular background housekeeping. The configured 30-day version retention

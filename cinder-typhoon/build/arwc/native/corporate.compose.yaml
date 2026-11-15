@@ -134,6 +134,8 @@ services:
   nextcloud:
     <<: *runtime
     image: ${NEXTCLOUD_IMAGE:?Load images.env}
+    entrypoint: [/bin/sh, /usr/local/bin/arwc-nextcloud-entrypoint.sh]
+    command: [apache2-foreground]
     environment:
       MYSQL_HOST: documents-db
       MYSQL_DATABASE: nextcloud
@@ -149,6 +151,7 @@ services:
     volumes:
       - documents:/var/www/html
       - ./nextcloud.config.php:/var/www/html/config/arwc.config.php:ro
+      - ./nextcloud-entrypoint.sh:/usr/local/bin/arwc-nextcloud-entrypoint.sh:ro
     depends_on:
       documents-db: {condition: service_healthy}
     healthcheck:
