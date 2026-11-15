@@ -69,6 +69,24 @@ References: [K3s single-server container pattern](https://github.com/k3s-io/k3s/
 [AnythingLLM Docker](https://github.com/Mintplex-Labs/anything-llm/blob/master/docker/HOW_TO_USE_DOCKER.md),
 and [Ollama local import](https://docs.ollama.com/import).
 
+## Development disk growth
+
+The qualified clone uses `/dev/sda1` with ext4. After the guarded cloud disk
+increase, verify that the block device is 100 GiB and that this is still the root
+partition. If the partition has not yet grown, the standard online steps are:
+
+```bash
+sudo apt-get install --no-install-recommends cloud-guest-utils
+sudo growpart /dev/sda 1
+sudo resize2fs /dev/sda1
+df -h /
+```
+
+The small native growth utility avoids an interactive partition prompt. This
+procedure completed without an application restart. Keep normal kubelet storage
+thresholds; the bootstrap waits for native disk pressure to clear and verifies
+the qualified client image in the node cache before reporting workload readiness.
+
 ## Current operation
 
 Use the guarded development wrapper for access and source synchronization. The
