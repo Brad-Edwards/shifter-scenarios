@@ -14,6 +14,7 @@ def create(path: Path, value: str, mode: int = 0o600) -> None:
         descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, mode)
     except FileExistsError:
         return
+    os.fchmod(descriptor, mode)
     with os.fdopen(descriptor, 'w') as output:
         output.write(value)
 
@@ -28,7 +29,7 @@ def prepare(operator: Path) -> None:
         'assistant_admin', 'assistant_bootstrap', 'assistant_jwt',
     )}))
     values = json.loads(private.read_text())
-    for directory in ('kubernetes', 'model-source'):
+    for directory in ('kubernetes', 'model-source', 'k3s-images'):
         (target / directory).mkdir(mode=0o700, exist_ok=True)
     create(target / 'k3s.env', 'K3S_TOKEN=' + values['k3s_token'] + '\n')
     identities = [{
@@ -41,6 +42,7 @@ def prepare(operator: Path) -> None:
         'actions': [action + ':fieldlink-exports' for action in ('Read', 'Write', 'List', 'Tagging')],
     }]
     create(target / 's3.json', json.dumps({'identities': identities}), 0o444)
+    os.chmod(target / 's3.json', 0o444)
     create(target / 'anythingllm.env', '\n'.join((
         'STORAGE_DIR=/app/server/storage', 'NODE_ENV=production',
         'DISABLE_TELEMETRY=true', 'VECTOR_DB=lancedb', 'EMBEDDING_ENGINE=native',

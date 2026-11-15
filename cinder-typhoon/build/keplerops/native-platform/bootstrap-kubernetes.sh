@@ -5,10 +5,10 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$ROOT"
 operator=${KEPLEROPS_OPERATOR_DIR:-./.operator}
 docker compose up -d --no-deps --wait --wait-timeout 300 fieldlink-k3s
-docker compose exec -T fieldlink-k3s k3s kubectl apply -f - <native-platform/namespace.yaml
+docker compose exec -T fieldlink-k3s /bin/kubectl apply -f - <native-platform/namespace.yaml
 profile="$operator/native-platform/kubernetes/rowan.yaml"
 if [[ ! -e $profile ]]; then
-  token=$(docker compose exec -T fieldlink-k3s k3s kubectl create token rowan-workspace --namespace fieldlink --duration=720h)
+  token=$(docker compose exec -T fieldlink-k3s /bin/kubectl create token rowan-workspace --namespace fieldlink --duration=720h)
   ca=$(docker compose exec -T fieldlink-k3s cat /var/lib/rancher/k3s/server/tls/server-ca.crt | base64 -w0)
   temporary=$(mktemp "$profile.XXXXXX")
   trap 'rm -f -- "$temporary"' EXIT

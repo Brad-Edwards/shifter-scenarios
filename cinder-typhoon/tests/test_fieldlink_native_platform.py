@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -19,7 +20,11 @@ class NativePlatformTests(unittest.TestCase):
     def test_warm_prepare_preserves_private_inputs_and_native_environment(self) -> None:
         with tempfile.TemporaryDirectory() as directory, patch.object(module.os, 'chown'):
             operator = Path(directory)
-            module.prepare(operator)
+            previous_umask = os.umask(0o077)
+            try:
+                module.prepare(operator)
+            finally:
+                os.umask(previous_umask)
             target = operator / 'native-platform'
             original = (target / 'bootstrap.json').read_bytes()
             environment = target / 'anythingllm.env'
@@ -27,6 +32,7 @@ class NativePlatformTests(unittest.TestCase):
             module.prepare(operator)
             self.assertEqual((target / 'bootstrap.json').read_bytes(), original)
             self.assertEqual(environment.read_text(), 'native application changed its own settings\n')
+            self.assertEqual((target / 's3.json').stat().st_mode & 0o777, 0o444)
             identities = json.loads((target / 's3.json').read_text())['identities']
             developer = next(value for value in identities if value['name'] == 'rowan.ito')
             self.assertNotIn('Admin', developer['actions'])

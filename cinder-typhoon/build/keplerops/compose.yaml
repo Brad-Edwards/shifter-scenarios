@@ -725,6 +725,7 @@ services:
     privileged: true
     mem_limit: 2g
     cpus: 1
+    entrypoint: [/bin/sh, /run/fieldlink/k3s-entrypoint.sh]
     command: [server, --disable=traefik, --disable=servicelb, --tls-san=cloud-api.keplerops.test, --tls-san=workloads.keplerops.test, --write-kubeconfig=/output/admin.yaml, --write-kubeconfig-mode=600, --node-ip=10.77.52.60]
     env_file:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/k3s.env
@@ -734,9 +735,11 @@ services:
       nofile: {soft: 65535, hard: 65535}
     volumes:
       - native-k3s-data:/var/lib/rancher/k3s
+      - ./native-platform/k3s-entrypoint.sh:/run/fieldlink/k3s-entrypoint.sh:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/k3s-images:/var/lib/rancher/k3s/agent/images:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/kubernetes:/output
     healthcheck:
-      test: [CMD, k3s, kubectl, get, --raw=/readyz]
+      test: [CMD, /bin/kubectl, get, --raw=/readyz]
       interval: 10s
       timeout: 5s
       retries: 45
