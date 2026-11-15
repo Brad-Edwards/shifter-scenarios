@@ -32,8 +32,9 @@ JSON object or backup routes.
 
 AnythingLLM connects directly to Ollama and uses its built-in LanceDB. Import
 the existing `Qwen/Qwen2.5-3B-Instruct` weights at revision
-`14d7620ba47cf51be0b176e14e27e38a34d4ff88` through Ollama's supported local
-Safetensors import. Keep inference on CPU with one parallel request, a bounded
+`14d7620ba47cf51be0b176e14e27e38a34d4ff88` through upstream llama.cpp conversion and quantization into GGUF, followed by
+Ollama's supported local import. This Ollama release does not directly import
+the retained Qwen2 Safetensors architecture. Keep inference on CPU with one parallel request, a bounded
 context and native quantization where supported. Preserve the old model files
 and stop the replaced model process before loading the native model. Do not
 change the model silently or add an external inference/vector service.

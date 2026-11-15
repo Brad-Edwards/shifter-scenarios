@@ -800,7 +800,7 @@ services:
       OLLAMA_NO_CLOUD: '1'
     volumes:
       - native-ollama-data:/root/.ollama
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/model-source:/model-source:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/model-converted:/model-converted:ro
       - ./native-platform/Modelfile:/run/fieldlink/Modelfile:ro
     healthcheck:
       test: [CMD, ollama, list]

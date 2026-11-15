@@ -4,16 +4,33 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$ROOT"
 operator=${KEPLEROPS_OPERATOR_DIR:-./.operator}
 source_dir="$operator/native-platform/model-source"
-mkdir -p "$source_dir"
+converted="$operator/native-platform/model-converted"
+mkdir -p "$source_dir" "$converted"
 if [[ ! -f $source_dir/.fieldlink-model-copied ]]; then
   docker cp cinder-keplerops-assistant:/opt/fieldkest-assistant/models/Qwen2.5-3B-Instruct/. "$source_dir/"
   touch "$source_dir/.fieldlink-model-copied"
 fi
-# Use only after the old assistant's public window is released. Its container
-# and volumes remain available; do not load both model servers together.
+# This release imports GGUF for the retained Qwen2 architecture. Both conversion
+# steps use unmodified upstream tools and the exact preserved original weights.
+converter=ghcr.io/ggml-org/llama.cpp@sha256:5bee33d877070ee246edb2f3442bcea4942d01d602f1abf479183c49a0f2ba7c
+source_dir=$(realpath "$source_dir")
+converted=$(realpath "$converted")
 docker compose stop k-assistant
+if [[ ! -f $converted/fieldlink-qwen-q4_k_m.gguf ]]; then
+  docker run --rm --network none --cpus 2 --memory 4g \
+    --mount "type=bind,source=$source_dir,target=/input,readonly" \
+    --mount "type=bind,source=$converted,target=/output" \
+    --entrypoint python3 "$converter" /app/convert_hf_to_gguf.py /input \
+    --outfile /output/fieldlink-qwen-f16.gguf --outtype f16
+  docker run --rm --network none --cpus 2 --memory 4g \
+    --mount "type=bind,source=$converted,target=/output" \
+    --entrypoint /app/llama-quantize "$converter" \
+    /output/fieldlink-qwen-f16.gguf /output/fieldlink-qwen-q4_k_m.gguf.part Q4_K_M 2
+  mv "$converted/fieldlink-qwen-q4_k_m.gguf.part" "$converted/fieldlink-qwen-q4_k_m.gguf"
+  rm -- "$converted/fieldlink-qwen-f16.gguf"
+fi
 docker compose up -d --no-deps --wait fieldlink-ollama
 if ! docker compose exec -T fieldlink-ollama ollama show fieldlink-qwen >/dev/null 2>&1; then
-  docker compose exec -T fieldlink-ollama ollama create fieldlink-qwen --quantize int4 --file /run/fieldlink/Modelfile
+  docker compose exec -T fieldlink-ollama ollama create fieldlink-qwen --file /run/fieldlink/Modelfile
 fi
 echo 'Original Qwen model imported into native Ollama.'

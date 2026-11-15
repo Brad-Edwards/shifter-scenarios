@@ -29,7 +29,7 @@ def prepare(operator: Path) -> None:
         'assistant_admin', 'assistant_bootstrap', 'assistant_jwt',
     )}))
     values = json.loads(private.read_text())
-    for directory in ('kubernetes', 'model-source', 'k3s-images'):
+    for directory in ('kubernetes', 'model-source', 'model-converted', 'k3s-images'):
         (target / directory).mkdir(mode=0o700, exist_ok=True)
     runtime = json.loads((operator / 'range-seed/runtime-credentials.json').read_text())['credentials']
     create(target / 'assistant-support.json', json.dumps({'token': runtime['assistant_tool_session']}), 0o400)
