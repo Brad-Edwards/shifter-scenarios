@@ -170,18 +170,20 @@ hints:
     - kind: client_route
       id: packages.metadata
   K05.2:
-    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
-      client document exposes the release and conversation operation, so use that ordinary contract instead of guessing
-      a path.
-    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the release and conversation operation in the published client reference. Record the normal result
-      and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The Verdaccio metadata for @keplerops/fieldlink-connector lists 6.9.8 under dist-tags.legacy. The
+      deprecated field on the 6.9.8 version object carries the genuine native deprecation notice; the
+      dist.tarball URL in that version object points to the actual downloadable archive.
+    h2: Download the 6.9.8 tarball directly from the dist.tarball URL using the same developer credentials.
+      A withdrawn customer rollout does not remove the package from the native registry; the archive remains
+      retrievable. Unknown versions return 404 from the packages.release route.
+    h3: Fetch the release record REL-FLK-6.9.8-ARCHIVE from the packages.release route. It carries
+      status=yanked, a maintenance_note, and a compatibility block for the retained entitlement investigation.
+      Correlate the version and package name across the Verdaccio metadata and the release record.
     references:
     - kind: client_route
-      id: packages.release
+      id: packages.metadata
     - kind: client_route
-      id: support.conversation
+      id: packages.release
   K05.3:
     h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
       client document exposes the reconcile operation, so use that ordinary contract instead of guessing a path.
