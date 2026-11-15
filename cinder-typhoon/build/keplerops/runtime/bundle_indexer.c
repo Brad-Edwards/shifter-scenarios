@@ -31,7 +31,7 @@
 #include <unistd.h>
 
 #define ARENA_SHM_PATH "/var/lib/fieldkest-indexer/arena.shm"
-#define ARENA_SIZE 128
+#define ARENA_SIZE 512
 
 static int hex_decode(const char *src, uint8_t *dst, size_t cap) {
     size_t n = strlen(src);
@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
     if (buflen < (int)sizeof(struct fki_header) + (int)datalen) return 65;
 
     /* Read the current arena region before writing.  This captures state
-     * the service may have placed at bytes 80-127 since the last request. */
+     * the service may have placed at bytes 80-511 since the last request. */
     uint8_t read_buf[ARENA_SIZE];
     memset(read_buf, 0, ARENA_SIZE);
     int fd = open(ARENA_SHM_PATH, O_RDWR | O_CREAT, 0600);

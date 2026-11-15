@@ -46,9 +46,9 @@ def save_state(value: dict[str, object]) -> None:
 
 
 ARENA_SHM_PATH = STATE_ROOT / 'arena.shm'
-ARENA_SIZE = 128
+ARENA_SIZE = 512
 DESCRIPTOR_OFFSET = 80
-DESCRIPTOR_SIZE = 48  # bytes 80-127
+DESCRIPTOR_SIZE = 432  # bytes 80-511
 
 
 def write_descriptor_to_arena(generation: int) -> None:

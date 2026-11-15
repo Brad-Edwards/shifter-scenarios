@@ -40,17 +40,17 @@ class K04LiveTest(unittest.TestCase):
              body={"bundle_hex": bad.hex()}, expected=422)
 
     def test_02_extended_read_discloses_runtime_descriptor(self) -> None:
-        # K04.2: extend to ie=16 ae=48 (datalen=128) to include descriptor at bytes 80-127.
-        # The binary reads the arena before each memcpy; after K04.1 bytes 80-127 hold the
-        # service-written descriptor.  No conditional: data_hex always covers datalen bytes.
-        extended = build_fki(48, 16, b"\xff" * 72 + b"\x00" * 56)
+        # K04.2: extend to ie=64, ae=432 (datalen=512) to include descriptor at bytes 80-511.
+        # The binary reads the arena (512 bytes) before each memcpy; after K04.1 bytes
+        # 80-511 hold the service-written descriptor.  No conditional: data_hex covers datalen.
+        extended = build_fki(432, 64, b"\xff" * 72 + b"\x00" * 440)
         disclosed = call("indexer.keplerops.test", "/api/indexes", method="POST",
                          body={"bundle_hex": extended.hex()}, expected=201)
         self.assertIn("data_hex", disclosed)
         data_hex = disclosed["data_hex"]
-        self.assertEqual(len(data_hex), 256)  # 128 bytes → 256 hex chars
-        # Descriptor at bytes 80-127 → hex chars 160-255
-        descriptor_hex = data_hex[160:256]
+        self.assertEqual(len(data_hex), 1024)  # 512 bytes → 1024 hex chars
+        # Descriptor at bytes 80-511 → hex chars 160-1023
+        descriptor_hex = data_hex[160:1024]
         descriptor = json.loads(bytes.fromhex(descriptor_hex).rstrip(b'\x00'))
         self.assertEqual(descriptor.get("schema"), "fieldkest.runtime-descriptor/v1")
         self.assertIn("worker_session", descriptor)

@@ -576,14 +576,15 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             # (datalen=128) causes the binary to include bytes 80-127 in data_hex.
             # No conditional: the binary always emits data_hex[0..datalen]; the
             # descriptor appears because K04.1 wrote it and datalen now reaches it.
-            extended = build_fki(48, 16, b"\xff" * 72 + b"\x00" * 56)
+            # datalen=512: ie=64, ae=432 → check 512 <= 80+432=512 passes
+            extended = build_fki(432, 64, b"\xff" * 72 + b"\x00" * 440)
             disclosed = post_json_route(
                 indexer, {"bundle_hex": extended.hex()}, creds=dev, expected=201)
             self.assertIn("data_hex", disclosed, "binary must return data_hex")
             data_hex = disclosed["data_hex"]
-            self.assertEqual(len(data_hex), 256, "datalen=128 → 256 hex chars")
-            # Descriptor is at bytes 80-127 → hex chars 160-255
-            descriptor_hex = data_hex[160:256]
+            self.assertEqual(len(data_hex), 1024, "datalen=512 → 1024 hex chars")
+            # Descriptor is at bytes 80-511 → hex chars 160-1023
+            descriptor_hex = data_hex[160:1024]
             descriptor_bytes = bytes.fromhex(descriptor_hex).rstrip(b'\x00')
             descriptor = json.loads(descriptor_bytes)
             self.assertEqual(descriptor.get("schema"), "fieldkest.runtime-descriptor/v1")
