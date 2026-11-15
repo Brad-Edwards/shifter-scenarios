@@ -91,7 +91,7 @@ while read -r volume; do
     'find /volume -mindepth 1 -delete; tar -xzpf "$1" -C /volume' restore "/backup/$volume.tar.gz"
 done <"$backup/volumes"
 tar -xzpf "$backup/operator.tar.gz"
-"${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 300 "${stateful[@]}" router fieldlink-dns fieldlink-edge a-connector
+"${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 300
 python3 ../development-ranges/guest/fieldlink-desktop-login.py
 ```
 
