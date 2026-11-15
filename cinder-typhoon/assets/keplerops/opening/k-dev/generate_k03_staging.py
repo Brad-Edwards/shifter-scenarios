@@ -104,7 +104,7 @@ def build_staging_bin(
     callback_integrity: str,
 ) -> str:
     return (
-        "FIELDKEST-STAGE/1\n"
+        "FIELDKEST-STAGE/2\n"
         f"collection={COLLECTION_ID}\n"
         "payload-encoding=base64+zlib\n"
         f"payload-sha256={payload_sha256}\n"
