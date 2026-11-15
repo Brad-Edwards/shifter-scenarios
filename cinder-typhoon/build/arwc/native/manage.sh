@@ -53,6 +53,7 @@ case "$action" in
     chmod 0755 .operator/ca/tls
     chown -R root:root .operator/ca/tls
     "${compose[@]}" up --no-build --pull never --wait --wait-timeout 420
+    "${compose[@]}" exec -T --user www-data nextcloud php occ background:cron
     bash desktop-access.sh
     ;;
   status)

@@ -32,6 +32,12 @@ trusts the private CA. The native product hosts are `erp.arwc.test`,
 `render.arwc.test`, and `read-data.arwc.test`. Existing OT short names remain
 available.
 
+Nextcloud's native `/cron.sh` companion uses the same pinned image, product
+volume and private backend network. Startup selects native cron mode for
+regular background housekeeping. The configured 30-day version retention
+remains unchanged. This follows the upstream [Docker cron example](https://github.com/nextcloud/docker)
+and [background job guidance](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html).
+
 Imported workforce users retain Keycloak's stock `default-roles-arwc` role for
 ordinary own-account pages and credential management. It does not confer realm
 administration. For an existing import missing this baseline, the explicit

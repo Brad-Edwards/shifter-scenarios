@@ -143,6 +143,25 @@ services:
       timeout: 5s
       retries: 24
       start_period: 120s
+  nextcloud-cron:
+    <<: *runtime
+    image: ${NEXTCLOUD_IMAGE:?Load images.env}
+    entrypoint: [/cron.sh]
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID]
+    tmpfs: [/tmp, /var/run]
+    volumes:
+      - documents:/var/www/html
+      - ./nextcloud.config.php:/var/www/html/config/arwc.config.php:ro
+    depends_on:
+      nextcloud: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, busybox, pidof, crond]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
   gitea:
     <<: *runtime
     image: ${GITEA_IMAGE:?Load images.env}
