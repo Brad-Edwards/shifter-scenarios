@@ -95,6 +95,14 @@ held until that native checkpoint is ready. The import uses the upstream
 [Kanboard models](https://github.com/kanboard/kanboard/tree/v1.2.57/app/Model)
 and its normal PostgreSQL schema and file store.
 
+The support image uses the official osTicket 1.18.4 release archive, verified
+against its published SHA-256, on the qualified PHP 8.4 Apache image. Its own
+MariaDB stores native ticket, session, history and attachment records. After
+building on the development VM, `native-workplace/bootstrap-support.sh` invokes
+the upstream installer with private runtime inputs. The web setup directory is
+disabled; existing application databases require their retained configuration.
+Customer-case migration and public cutover remain separate checkpoints.
+
 References: [Keycloak administration](https://www.keycloak.org/docs/latest/server_admin/),
 [Keycloak hostname and proxy settings](https://www.keycloak.org/server/reverseproxy),
 [step-ca configuration](https://smallstep.com/docs/step-ca/configuration/),
