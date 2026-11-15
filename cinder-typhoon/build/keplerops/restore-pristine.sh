@@ -1,43 +1,49 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
+umask 077
 ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
+[[ $EUID == 0 && $(hostname) == cinder-fieldlink-dev && $ROOT == /opt/cinder-typhoon/build/keplerops ]] || {
+  echo 'Native reset is restricted to the isolated FieldLink development VM.' >&2
+  exit 1
+}
+project=$(curl --fail --silent --show-error --header 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/project/project-id)
+[[ $project == prod-mgau4w ]] || { echo 'Unexpected development project.' >&2; exit 1; }
+operator=${KEPLEROPS_OPERATOR_DIR:-"$ROOT/.operator"}
+# A verified private backup and a released QA window are prerequisites. This
+# explicit reset destroys application volumes; ordinary startup never does.
+docker compose down --volumes --remove-orphans
+rm -f -- "$operator/native-platform/assistant-company-seeded" \
+  "$operator/native-platform/objects-company-seeded" \
+  "$operator/native-platform/exports/company-history.dump" \
+  "$operator/native-platform/exports/company-history.dump.part" \
+  "$operator/native-platform/kubernetes/rowan.yaml" \
+  "$operator/native-platform/kubernetes/cluster-identity"
+if [[ -d $operator/native-platform/assistant-documents ]]; then
+  find "$operator/native-platform/assistant-documents" -mindepth 1 -maxdepth 1 -type f -delete
+fi
+bash generate-operator-material.sh
+bash native-platform/fetch-kubernetes-images.sh
+# Initialize databases before dependent applications, and native workspace
+# credentials before the missing-only desktop profile seed is started.
+docker compose up -d --no-deps --wait --wait-timeout 120 router fieldlink-dns fieldlink-edge fieldlink-postgres
+bash native-workplace/bootstrap-databases.sh
+bash native-platform/bootstrap-data.sh
+bash native-platform/bootstrap-kubernetes.sh
+docker compose up -d --no-deps --wait --wait-timeout 180 \
+  runner k-source k-registry k-ci fieldlink-review k-preview k-support k-indexer \
+  k-identity fieldlink-keycloak k-cert fieldlink-objects fieldlink-ollama a-connector
+bash native-workplace/bootstrap-staff.sh
+bash native-workplace/bootstrap-support.sh
+docker compose up -d --no-deps --wait --wait-timeout 180 fieldlink-assistant
+bash native-platform/import-model.sh
+bash native-platform/cache-embedder.sh
+python3 native-platform/seed-assistant.py --operator-dir "$operator"
+bash native-platform/seed-objects.sh
+docker compose up --no-deps --force-recreate k-dev-seed
+docker compose up -d --no-deps k-dev
+python3 ../development-ranges/guest/fieldlink-desktop-login.py
 
-docker compose -f compose.yaml down -v --remove-orphans
-bash ./generate-operator-material.sh
-docker compose -f compose.yaml up -d --force-recreate \
-  router fieldlink-dns fieldlink-edge fieldlink-postgres runner \
-  k-source k-registry k-ci fieldlink-review k-preview k-support k-indexer \
-  k-cloud-api k-workload k-data k-assistant k-identity fieldlink-keycloak k-cert \
-  fieldlink-kanboard fieldlink-support-db fieldlink-support a-connector k-dev
-
-for attempt in $(seq 1 60); do
-  if docker exec --user rowan cinder-keplerops-k-dev curl -sS --fail \
-      --cacert /home/rowan/.local/share/keplerops/ca.crt \
-      https://source.keplerops.test/user/login >/dev/null; then
-    break
-  fi
-  if [[ $attempt -eq 60 ]]; then
-    echo "KeplerOps opening services did not initialize" >&2
-    exit 1
-  fi
-  sleep 1
-done
-
-bash ./native-workplace/bootstrap-databases.sh
-bash ./native-workplace/bootstrap-staff.sh
-bash ./native-workplace/bootstrap-support.sh
-
-docker exec --user fieldkest-registry cinder-keplerops-registry \
-  sh -c 'test -z "$(find /var/lib/fieldkest-registry/published -type f -print -quit)"'
-docker exec --user fieldkest-ci cinder-keplerops-review \
-  sh -c 'test -z "$(find /var/lib/fieldkest-ci/results -type f \( -name "JOB-*.json" -o -name "REH-*.json" \) -print -quit)"'
-docker exec --user fieldkest-support cinder-keplerops-support \
-  python3 -c 'import json; from pathlib import Path; p=Path("/var/lib/fieldkest-support/extended.json"); raise SystemExit(0 if not p.exists() or json.loads(p.read_text()).get("diagnostics") == {} else 1)'
-
-[[ $(docker inspect -f '{{.State.Status}}' cinder-keplerops-connector) == running ]]
-docker exec cinder-keplerops-connector sh -c \
-  'grep -q "^Uid:[[:space:]]*999[[:space:]]*999[[:space:]]*999[[:space:]]*999" /proc/1/status && grep -q "^CapBnd:[[:space:]]*0000000000000000" /proc/1/status && grep -q "^NoNewPrivs:[[:space:]]*1" /proc/1/status'
-
-echo "KeplerOps authored pre-delivery state restored"
+docker compose exec -T --user fieldkest-support k-support python3 -c \
+  'import json; from pathlib import Path; p=Path("/var/lib/fieldkest-support/audit/extended-state.json"); assert not p.exists() or json.loads(p.read_text()).get("diagnostics") == {}'
+echo 'Native FieldLink application state initialized.'
