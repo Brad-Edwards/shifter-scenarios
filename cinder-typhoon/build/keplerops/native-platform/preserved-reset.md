@@ -6,6 +6,11 @@ connector, earned handover and destination receipts unchanged. The FieldLink
 relay can restart during a FieldLink reset; it must still target the development
 peer `10.77.59.11`.
 
+Outbound osTicket email is unconfigured. Cases, correspondence and files use
+the native application; no SMTP delivery is qualified. Historical imports use
+the native no-alert and no-autoresponse options, but upstream processing can
+still report a missing local `sendmail` command.
+
 Become root on the development VM and run from the FieldLink build directory.
 The backup stays private on that same VM. It contains passwords, sessions,
 private CA inputs and product data. Do not upload it or print its contents.
