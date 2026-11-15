@@ -2206,7 +2206,7 @@ phases:
         points: 200
         hints:
         - Begin with the retained connector archive and its signed diagnostic configuration. Start from
-          source.keplerops.test's published client document and records already earned in this operation,
+          source-tools.keplerops.test:8443's published client document and records already earned in this operation,
           not from an invented endpoint.
         - Treat this as static and dynamic loader analysis for behavior that appears only at runtime.
           Build a local model from the supplied reference cases, then confirm it explains both accepted
@@ -2224,14 +2224,14 @@ phases:
         points: 200
         hints:
         - Begin with the retained connector archive and its signed diagnostic configuration. Start from
-          source.keplerops.test's published client document and records already earned in this operation,
+          source-tools.keplerops.test:8443's published client document and records already earned in this operation,
           not from an invented endpoint.
         - Treat this as static and dynamic loader analysis for behavior that appears only at runtime.
           Separate the authoritative service record from stale or local copies, and preserve its identity,
           revision, and scope.
-        - Trace the diagnostic-only loader branch in the retained source, follow the runtime path it registers,
-          and verify the engineering note comes from that loaded branch rather than an ordinary connector
-          response.
+        - Trace the diagnostic-only loader branch, then match its recovered archive namespace and object
+          identifier to the native repository note. Preserve the note revision and content digest alongside
+          the fresh loader result.
         completion:
           mode: automatic_range_evidence
     - id: K29

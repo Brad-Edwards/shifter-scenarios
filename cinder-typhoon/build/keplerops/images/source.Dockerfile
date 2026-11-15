@@ -14,6 +14,7 @@ COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
 COPY build/keplerops/runtime/client-references/source.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/source.py /opt/fieldkest/source.py
 COPY build/keplerops/runtime/seed-gitea.py /opt/fieldkest/seed-gitea.py
+COPY assets/keplerops/connector-archive/engineering-note.md /opt/fieldkest/engineering-note.md
 COPY build/keplerops/runtime/source-entrypoint.sh /usr/local/bin/fieldkest-source-entrypoint
 COPY build/keplerops/config/gitea-app.ini /etc/gitea/app.ini
 COPY assets/keplerops/opening/k-source-state.tar /tmp/k-source-state.tar
@@ -34,5 +35,5 @@ RUN mkdir -p /var/lib/gitea \
 
 EXPOSE 22 443 8443
 HEALTHCHECK --interval=10s --timeout=5s --start-period=60s --retries=6 \
-  CMD setpriv --reuid=git --regid=git --init-groups sh -c 'test -f /var/lib/gitea/data/.handover-seeded && test -f /var/lib/gitea/data/.delivery-history-seeded && test -f /var/lib/gitea/data/.seeded-fieldlink-connector && test -f /var/lib/gitea/data/.seeded-policy-compiler && test -f /var/lib/gitea/data/.seeded-connector-archive && test -f /var/lib/gitea/data/.seeded-release-signer-history && curl -fsS --cacert /run/fieldkest-tls/ca.crt https://source.keplerops.test/user/login >/dev/null' || exit 1
+  CMD setpriv --reuid=git --regid=git --init-groups sh -c 'test -f /var/lib/gitea/data/.connector-engineering-note-seeded && test -f /var/lib/gitea/data/.handover-seeded && test -f /var/lib/gitea/data/.delivery-history-seeded && test -f /var/lib/gitea/data/.seeded-fieldlink-connector && test -f /var/lib/gitea/data/.seeded-policy-compiler && test -f /var/lib/gitea/data/.seeded-connector-archive && test -f /var/lib/gitea/data/.seeded-release-signer-history && curl -fsS --cacert /run/fieldkest-tls/ca.crt https://source.keplerops.test/user/login >/dev/null' || exit 1
 ENTRYPOINT ["/usr/local/bin/fieldkest-source-entrypoint"]
