@@ -66,7 +66,7 @@ def workforce(path: Path = Path("/seed/a-personnel-register.csv")) -> list[dict]
 
 def import_payload(users: list[dict]) -> dict:
     groups = sorted({group.lstrip("/") for user in users for group in user["groups"]})
-    return {"ifResourceExists": "SKIP", "groups": [{"name": name} for name in groups], "users": users}
+    return {"ifResourceExists": "SKIP", "groups": [{"name": name, "path": "/" + name} for name in groups], "users": users}
 
 
 def seed() -> None:

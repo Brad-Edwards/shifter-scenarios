@@ -40,6 +40,7 @@ class IdentityImportTests(unittest.TestCase):
     def test_groups_follow_real_departments_not_reader_combinations(self):
         payload = identity.import_payload(self.users())
         self.assertEqual({group["name"] for group in payload["groups"]}, {"Planning", "Temporary planning staff"})
+        self.assertTrue(all(group["path"] == "/" + group["name"] for group in payload["groups"]))
 
 
 if __name__ == "__main__":
