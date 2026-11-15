@@ -5,6 +5,10 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$ROOT"
 operator=${KEPLEROPS_OPERATOR_DIR:-./.operator}
 docker compose up -d --no-deps --wait --wait-timeout 300 fieldlink-k3s
+client_image=docker.io/rancher/k3s:v1.37.2-k3s1
+if ! docker compose exec -T fieldlink-k3s /bin/ctr --namespace k8s.io images list --quiet | grep -Fxq "$client_image"; then
+  docker image save rancher/k3s:v1.37.2-k3s1 | docker compose exec -T fieldlink-k3s /bin/ctr --namespace k8s.io images import - >/dev/null
+fi
 docker compose exec -T fieldlink-k3s /bin/kubectl apply -f - <native-platform/namespace.yaml
 profile="$operator/native-platform/kubernetes/rowan.yaml"
 identity="$operator/native-platform/kubernetes/cluster-identity"

@@ -15,6 +15,8 @@ your home directory.
 Kubernetes access applies to the FieldLink namespace. It does not grant cluster
 administration or permission to run workloads with host privileges. Standard
 Kubernetes API errors and job logs show the result of ordinary operations.
+The approved `rancher/k3s:v1.37.2-k3s1` client image is available on the node
+for ordinary jobs without an external image pull.
 
 The assistant uses the local model and local document retrieval. Its FieldLink
 support tool reads current report metadata or the state of an existing job. It
