@@ -65,3 +65,25 @@ References: [K3s single-server container pattern](https://github.com/k3s-io/k3s/
 [SeaweedFS S3](https://github.com/seaweedfs/seaweedfs/wiki/Amazon-S3-API),
 [AnythingLLM Docker](https://github.com/Mintplex-Labs/anything-llm/blob/master/docker/HOW_TO_USE_DOCKER.md),
 and [Ollama local import](https://docs.ollama.com/import).
+
+## Current operation
+
+Use the guarded development wrapper for access and source synchronization. The
+old golden deployment script is disabled. Build changed images on the development
+VM, then coordinate any application, DNS, edge, desktop or PostgreSQL change with
+QA. The native product helpers initialize databases before dependent applications
+and Kubernetes credentials before the missing-only desktop seed.
+
+The retired Python cloud, workload, data and assistant product services are no
+longer started. The runner retains only genuine isolated report and package
+execution; its former command, workload and completion APIs are removed. Existing
+challenge callers of those interfaces require later content work, which remains
+paused. Do not add compatibility routes for them.
+
+Use the [preserved reset runbook](../../build/keplerops/native-platform/preserved-reset.md)
+to make a consistent private backup before any destructive development reset.
+Keep the original model and offline Kubernetes images cached on the VM. Reset
+clears mutable product seed markers and regenerates native workspace credentials;
+ordinary service restarts preserve user changes. Restore the accepted working
+state after QA checks fresh initialization. ARWC and its earned destination state
+remain outside this reset.

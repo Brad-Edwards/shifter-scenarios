@@ -70,6 +70,14 @@ private backup path. Stop writers before replacing volume contents. Preserve
 the immutable caches that remained outside the operator archive.
 
 ```bash
+set -euo pipefail
+umask 077
+cd /opt/cinder-typhoon/build/keplerops
+[[ $EUID == 0 && $(hostname) == cinder-fieldlink-dev ]]
+project=$(curl --fail --silent --show-error --header 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/project/project-id)
+[[ $project == prod-mgau4w && ${backup-} == /var/backups/cinder-fieldlink-native/* ]]
+compose=(docker compose -f compose.yaml)
+export ARWC_CARRIER_ADDRESS=10.77.59.11
 (cd "$backup" && sha256sum --check --quiet SHA256SUMS)
 "${compose[@]}" down
 while read -r volume; do
@@ -83,7 +91,7 @@ while read -r volume; do
     'find /volume -mindepth 1 -delete; tar -xzpf "$1" -C /volume' restore "/backup/$volume.tar.gz"
 done <"$backup/volumes"
 tar -xzpf "$backup/operator.tar.gz"
-"${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 300 "${stateful[@]}" a-connector
+"${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 300 "${stateful[@]}" router fieldlink-dns fieldlink-edge a-connector
 python3 ../development-ranges/guest/fieldlink-desktop-login.py
 ```
 
