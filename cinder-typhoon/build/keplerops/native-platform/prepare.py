@@ -51,6 +51,17 @@ def prepare(operator: Path) -> None:
         'AUTH_TOKEN=' + values['assistant_bootstrap'],
         'JWT_SECRET=' + values['assistant_jwt'],
     )) + '\n', 0o600)
+    create(target / 'postgres.sql', '\n'.join((
+        "SELECT 'CREATE ROLE fieldlink_data_owner NOLOGIN' WHERE NOT EXISTS "
+        "(SELECT FROM pg_roles WHERE rolname='fieldlink_data_owner')\\gexec",
+        "SELECT 'CREATE ROLE rowan_data LOGIN' WHERE NOT EXISTS "
+        "(SELECT FROM pg_roles WHERE rolname='rowan_data')\\gexec",
+        "ALTER ROLE rowan_data PASSWORD '" + values['data_rowan'] + "';",
+        "SELECT 'CREATE DATABASE fieldlink_data OWNER fieldlink_data_owner' WHERE NOT EXISTS "
+        "(SELECT FROM pg_database WHERE datname='fieldlink_data')\\gexec",
+        "REVOKE ALL ON DATABASE fieldlink_data FROM PUBLIC;",
+        "GRANT CONNECT ON DATABASE fieldlink_data TO rowan_data;",
+    )) + '\n')
     # The native application updates its own environment after first setup.
     os.chown(target / 'anythingllm.env', 1000, 1000)
 

@@ -5,8 +5,9 @@ cd "$ROOT"
 operator=${KEPLEROPS_OPERATOR_DIR:-./.operator}
 source_dir="$operator/native-platform/model-source"
 mkdir -p "$source_dir"
-if [[ ! -f $source_dir/config.json ]]; then
+if [[ ! -f $source_dir/.fieldlink-model-copied ]]; then
   docker cp cinder-keplerops-assistant:/opt/fieldkest-assistant/models/Qwen2.5-3B-Instruct/. "$source_dir/"
+  touch "$source_dir/.fieldlink-model-copied"
 fi
 # Use only after the old assistant's public window is released. Its container
 # and volumes remain available; do not load both model servers together.
