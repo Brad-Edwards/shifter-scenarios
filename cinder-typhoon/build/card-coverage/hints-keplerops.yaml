@@ -260,17 +260,22 @@ hints:
     - kind: client_route
       id: packages.publish
   K07.1:
-    h1: Begin with the package inspection contract and its trace records. Its published client document exposes
-      the inspection trace and inspections operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as message-envelope interpretation across a parser and a protected downstream action. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the inspection trace and inspections operation in the published client reference. Capture one ordinary
-      response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Read work/registry/inspection-normal.json from the developer workstation. It contains the exact
+      inspection request the packages.inspections endpoint accepts. POST it verbatim; any deviation returns
+      422. The response contains inspection_id=INSP-2047 and a trace path.
+    h2: Fetch the trace with GET /api/inspections/INSP-2047/trace using the same developer credentials.
+      Unrelated inspection IDs return 403. The trace record (fieldkest.inspection-trace/v1) contains
+      normalized_request_id, assessor_correlation_id, and compatibility_envelope_sha256.
+    h3: The trace fields supply the evidence binding for K07.2: assessor_correlation_id=PAS-884,
+      normalized_request_id=release-742, and compatibility_envelope_sha256 identify the downstream
+      assessment component and the forwarded request.
     references:
     - kind: client_route
       id: packages.inspection-trace
     - kind: client_route
       id: packages.inspections
+    - kind: participant_artifact
+      id: work/registry/inspection-normal.json
   K07.2:
     h1: Begin with the package inspection contract and its trace records. Its published client document exposes
       the inspection envelope operation, so use that ordinary contract instead of guessing a path.
