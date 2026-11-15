@@ -26,7 +26,9 @@ if [ ! -e /home/rowan/.local/share/keplerops/release-lineage-2026-09-18 ]; then
   chown -R rowan:rowan /home/rowan/work/build-operations /home/rowan/.local/share/keplerops
 fi
 chown rowan:rowan /home/rowan/work
-install -m 0644 -o rowan -g rowan /usr/local/share/fieldlink/identity-access.md /home/rowan/work/identity-access.md
+if [ ! -e /home/rowan/work/identity-access.md ]; then
+  install -m 0644 -o rowan -g rowan /usr/local/share/fieldlink/identity-access.md /home/rowan/work/identity-access.md
+fi
 install -m 0444 /run/fieldkest-auth/ca.crt /home/rowan/.local/share/keplerops/ca.crt
 install -m 0444 /run/fieldkest-auth/ca.crt /usr/local/share/ca-certificates/fieldlink-range.crt
 install -m 0444 /run/fieldkest-auth/enrollment-ca.crt /home/rowan/.local/share/keplerops/enrollment-ca.crt
