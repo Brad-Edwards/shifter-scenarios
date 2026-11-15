@@ -42,6 +42,7 @@ STEP_CA_ROOT = "/run/arwc-step-ca/root.crt"
 STEP_CA_INTERMEDIATE = "/run/arwc-step-ca/intermediate.crt"
 STEP_CA_URL = "https://ca.arwc.test:9000"
 OTT_POOL = pathlib.Path("/run/arwc-tokens")
+GITEA_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/gitea-reader.json")
 
 def _load_workflow() -> dict:
     """Load the workflow record from the Nextcloud-sourced file.
@@ -1283,13 +1284,19 @@ class Handler(BaseHTTPRequestHandler):
         if normalized != "../copy_handover(HND-PLANNER-06)":
             self.send_json(409, {"error": "archive member does not select an available action"})
             return
-        atomic_json(RESULT, HANDOVER)
+        # Fetch the handover record from native Gitea (svc-archive-helper identity).
+        # Gitea produces authentic access telemetry for the helper-context read.
+        handover = _fetch_gitea_handover()
+        if handover is None:
+            self.send_json(503, {"error": "archive handover artifact unavailable"})
+            return
+        atomic_json(RESULT, handover)
         token = state.get("planner_handover_token")
         if not isinstance(token, str):
             token = secrets.token_urlsafe(32)
             state["planner_handover_token"] = token
         atomic_json(HANDOVER_EVIDENCE, {
-            "record_id": "HND-PLANNER-06",
+            "record_id": handover.get("record_id", "HND-PLANNER-06"),
             "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
         })
         os.chown(HANDOVER_EVIDENCE, -1, grp.getgrnam("arwc-handover").gr_gid)
@@ -1297,9 +1304,44 @@ class Handler(BaseHTTPRequestHandler):
         state["helper_handover_copied"] = True
         save_state(state)
         self.accepted(
-            "archive-helper-executed", HANDOVER, "svc-archive-helper",
+            "archive-helper-executed", handover, "svc-archive-helper",
             extra={"planner_handover": token},
         )
+
+
+def _fetch_gitea_handover() -> dict | None:
+    """Fetch HND-PLANNER-06 from the native Gitea repository.
+
+    Uses the read-only token stored in the operator state file. Gitea records
+    the access in its activity log, providing authentic helper-context telemetry.
+    Returns the parsed JSON record, or None if credentials or the file are absent.
+    """
+    if not GITEA_STATE_PATH.exists():
+        return None
+    try:
+        state = json.loads(GITEA_STATE_PATH.read_text(encoding="utf-8"))
+        gitea_url = state.get("gitea_url", "https://engineering.arwc.test")
+        org = state.get("org", "arwc-archive")
+        repo = state.get("repo", "retained-handovers")
+        file_name = state.get("file", "HND-PLANNER-06.json")
+        token = state.get("token", "")
+        if not token:
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+
+    import urllib.request as _urllib_request
+    ctx = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
+    api_url = f"{gitea_url}/api/v1/repos/{org}/{repo}/contents/{file_name}"
+    req = _urllib_request.Request(api_url, headers={"Authorization": f"token {token}"})
+    try:
+        with _urllib_request.urlopen(req, context=ctx, timeout=10) as resp:
+            resp_data = json.loads(resp.read())
+        content_b64 = resp_data.get("content", "")
+        content_bytes = base64.b64decode(content_b64)
+        return json.loads(content_bytes.decode("utf-8"))
+    except Exception:
+        return None
 
 
 def main() -> None:

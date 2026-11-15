@@ -6,10 +6,13 @@ Creates:
   archive workflow contract (AWF-CRR-229-R4.json).
 - A PostgreSQL archive.records table with AR-MAINT-017 and AR-CRR-229 rows
   and a read-only archive_query role for the archive service.
+- A Gitea organisation, repository and read-only token for the W04.3 archive
+  helper handover artifact (HND-PLANNER-06.json).
 
 Writes:
 - .operator/archive-workflow/nc-reader.json: Nextcloud reader credentials.
 - .operator/archive-workflow/db-reader.json: PostgreSQL query credentials.
+- .operator/archive-workflow/gitea-reader.json: Gitea token for archive service.
 """
 from __future__ import annotations
 
@@ -28,6 +31,12 @@ from urllib.request import Request, urlopen
 ADMIN = "records-admin"
 ADMIN_PASSWORD = os.environ["DOCUMENTS_ADMIN_PASSWORD"]
 AUTH = "Basic " + base64.b64encode(f"{ADMIN}:{ADMIN_PASSWORD}".encode()).decode()
+GITEA_ADMIN_PASSWORD = os.environ.get("GITEA_ADMIN_PASSWORD", "")
+GITEA_ADMIN = "engineering-admin"
+GITEA_URL = "http://gitea:3000"
+GITEA_ORG = "arwc-archive"
+GITEA_REPO = "retained-handovers"
+GITEA_HANDOVER_FILE = "HND-PLANNER-06.json"
 DOCUMENTS_URL = "https://documents.arwc.test"
 READER_USERNAME = "arwc-archive-reader"
 OPERATOR_DIR = Path(os.environ.get("ARWC_OPERATOR_DIR", ".operator"))
@@ -185,7 +194,114 @@ def main() -> None:
     except OSError:
         print("ARCHIVE_STATE_JSON=" + json.dumps(json.dumps(nc_state)))
 
+    # Seed Gitea: W04.3 archive helper handover artifact.
+    if GITEA_ADMIN_PASSWORD:
+        gitea_state = seed_gitea_handover()
+        gitea_out = CREDENTIALS_OUT.parent / "gitea-reader.json"
+        try:
+            gitea_out.write_text(json.dumps(gitea_state, indent=2), encoding="utf-8")
+            gitea_out.chmod(0o600)
+            print(f"Wrote Gitea credentials to {gitea_out}")
+        except OSError:
+            print("ARCHIVE_GITEA_STATE_JSON=" + json.dumps(json.dumps(gitea_state)))
+    else:
+        print("No Gitea credentials available; skipping Gitea handover setup")
+
     print("Archive workflow seeded successfully")
+
+
+def seed_gitea_handover() -> dict:
+    """Create the HND-PLANNER-06 handover artifact in Gitea and return a reader token."""
+    gitea_auth = "Basic " + base64.b64encode(f"{GITEA_ADMIN}:{GITEA_ADMIN_PASSWORD}".encode()).decode()
+
+    def gitea(method: str, path: str, body: dict | None = None,
+              *, accepted: tuple = (200, 201), auth: str = gitea_auth) -> dict:
+        req = Request(f"{GITEA_URL}/api/v1/{path}", method=method,
+                      data=json.dumps(body).encode() if body is not None else None,
+                      headers={"Authorization": auth, "Content-Type": "application/json"})
+        try:
+            with urlopen(req, timeout=30) as resp:
+                return json.loads(resp.read()) if resp.length else {}
+        except HTTPError as error:
+            if error.code in accepted:
+                return json.loads(error.read()) if error.length else {}
+            raise RuntimeError(f"Gitea {method} /api/v1/{path} → HTTP {error.code}: {error.read()[:100]}") from None
+
+    # Create organisation if it doesn't exist.
+    try:
+        gitea("POST", "orgs", {"username": GITEA_ORG, "visibility": "private"}, accepted=(201,))
+        print(f"Created Gitea org: {GITEA_ORG}")
+    except RuntimeError:
+        print(f"Gitea org already exists: {GITEA_ORG}")
+
+    # Create repository if it doesn't exist.
+    try:
+        gitea("POST", f"org/{GITEA_ORG}/repos",
+              {"name": GITEA_REPO, "private": True, "auto_init": True, "default_branch": "main"},
+              accepted=(201,))
+        print(f"Created Gitea repo: {GITEA_ORG}/{GITEA_REPO}")
+    except RuntimeError:
+        print(f"Gitea repo already exists: {GITEA_ORG}/{GITEA_REPO}")
+
+    # Seed or update the HND-PLANNER-06 handover file.
+    handover_content = json.dumps({
+        "record_id": "HND-PLANNER-06",
+        "revision": 6,
+        "service_identity": "svc-archive-helper",
+        "source_record": "AR-CRR-229",
+        "destination": "caller result directory",
+        "archive_helper": "7-Zip 23.01",
+    }, sort_keys=True, indent=2).encode("utf-8")
+    encoded = base64.b64encode(handover_content).decode()
+
+    # Check if file exists.
+    file_path = f"repos/{GITEA_ORG}/{GITEA_REPO}/contents/{GITEA_HANDOVER_FILE}"
+    try:
+        existing = gitea("GET", file_path)
+        sha = existing.get("sha", "")
+        gitea("PUT", file_path, {
+            "message": "Update handover artifact",
+            "content": encoded,
+            "sha": sha,
+            "branch": "main",
+        }, accepted=(200,))
+        print(f"Updated {GITEA_HANDOVER_FILE} in Gitea")
+    except RuntimeError:
+        gitea("POST", file_path, {
+            "message": "Add retained archive handover artifact",
+            "content": encoded,
+            "branch": "main",
+        }, accepted=(201,))
+        print(f"Created {GITEA_HANDOVER_FILE} in Gitea")
+
+    # Create or update a read-only token for the archive service.
+    # Token name is stable; recreate if it already exists.
+    token_name = "arwc-archive-reader"
+    try:
+        # Try to delete existing token.
+        tokens = gitea("GET", f"users/{GITEA_ADMIN}/tokens", accepted=(200,))
+        for t in tokens if isinstance(tokens, list) else []:
+            if t.get("name") == token_name:
+                gitea("DELETE", f"users/{GITEA_ADMIN}/tokens/{t['id']}", accepted=(204, 404))
+                break
+    except RuntimeError:
+        pass
+
+    token_resp = gitea("POST", f"users/{GITEA_ADMIN}/tokens",
+                       {"name": token_name, "scopes": ["read:repository", "read:user"]},
+                       accepted=(201,))
+    token_value = token_resp.get("sha1", "")
+    if not token_value:
+        raise RuntimeError("Gitea did not return a token value")
+    print(f"Created Gitea read token for archive service")
+
+    return {
+        "gitea_url": "https://engineering.arwc.test",
+        "org": GITEA_ORG,
+        "repo": GITEA_REPO,
+        "file": GITEA_HANDOVER_FILE,
+        "token": token_value,
+    }
 
 
 if __name__ == "__main__":

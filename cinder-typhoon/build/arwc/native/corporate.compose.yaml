@@ -58,7 +58,7 @@ services:
     image: ${ERPNEXT_IMAGE:?Load images.env}
     profiles: [seed]
     entrypoint: [python, /seed/seed-archive.py]
-    env_file: [.operator/documents-seed.env]
+    env_file: [.operator/documents-seed.env, .operator/engineering-seed.env]
     environment:
       ARWC_OPERATOR_DIR: /operator
     networks: [data]
