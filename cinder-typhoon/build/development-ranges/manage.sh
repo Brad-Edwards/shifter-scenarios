@@ -180,6 +180,7 @@ case $action in
         assets/keplerops/opening \
         assets/keplerops/registry \
         assets/keplerops/native-packages \
+        assets/keplerops/native-workplace \
         assets/keplerops/build-operations \
         assets/keplerops/policy-compiler \
         assets/keplerops/connector-archive \
