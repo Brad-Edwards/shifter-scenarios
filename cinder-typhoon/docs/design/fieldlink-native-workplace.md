@@ -82,8 +82,10 @@ loading an alternate Compose environment must not discard that mapping.
 The native KDC image contains no database, keytabs, fixed passwords or private
 bootstrap inputs. Its first start initializes only an empty volume from private
 per-range runtime material, using the native MIT administration tools. An
-existing retained database returns without provisioning or reading those inputs;
-ordinary restarts preserve its principal keys and history.
+existing retained database receives only missing declared human principals;
+existing passwords, principal keys, service keytabs and history are preserved.
+MIT's native password prompts receive private input through stdin, never command
+arguments. Repeating setup does not rotate an existing identity.
 
 For staff work, pull the pinned official Kanboard image and run
 `native-workplace/bootstrap-staff.sh` after preparing its private inputs and
