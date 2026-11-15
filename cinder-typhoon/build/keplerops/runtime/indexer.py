@@ -82,15 +82,19 @@ class IndexerHandler(KeplerHandler):
                 indexer["disclosed"] = True; save_state(state)
                 value = {"process_generation": indexer["generation"], "protected_object_marker": "release-exception-state", "integrity_relation": "sha256(generation:state)", "worker_lease": INDEXER_WORKER_TOKEN, "record_id": "REL-EXC-2841", "ready_state": "queue-ready", "routine": "recover_exception_queue", "state_route": "/api/internal/release-exceptions/state", "completion_route": "/api/internal/release-exceptions/REL-EXC-2841/complete"}
                 self.record("runtime-disclosure", principal=DEV_USER, **value); return self.send_json(200, value)
-            allocated = data.get("allocated_length"); body_hex = str(data.get("body_hex", "")); body = bytes.fromhex(body_hex)
-            if not isinstance(allocated, int) or allocated < 1 or allocated > 4096 or len(body) < 1 or len(body) > 4096: raise ValueError("bundle_rejected")
+            bundle_hex = str(data.get("bundle_hex", ""))
+            try:
+                bundle = bytes.fromhex(bundle_hex)
+            except ValueError:
+                raise ValueError("bundle_rejected")
+            if len(bundle) < 8 or len(bundle) > 4096: raise ValueError("bundle_rejected")
             native = subprocess.run(
-                ["/usr/local/bin/fieldkest-bundle-indexer", str(allocated), body_hex],
+                ["/usr/local/bin/fieldkest-bundle-indexer", bundle_hex],
                 capture_output=True, text=True, timeout=3, check=False,
             )
             if native.returncode != 0: raise ValueError("bundle_rejected")
             native_result = json.loads(native.stdout)
-            index_id = "IDX-" + uuid.uuid4().hex[:10].upper(); result = {"index_id": index_id, "state": "indexed", "body_sha256": sha256_bytes(body), **native_result}
+            index_id = "IDX-" + uuid.uuid4().hex[:10].upper(); result = {"index_id": index_id, "state": "indexed", "bundle_sha256": sha256_bytes(bundle), **native_result}
             if native_result["sentinel"] == "mutated": indexer["sentinel"] = "mutated"
             indexer["indexes"][index_id] = result; save_state(state); self.record("bundle-index", principal=DEV_USER, **result); return self.send_json(201, result)
         if path == "/api/internal/release-exceptions/state":

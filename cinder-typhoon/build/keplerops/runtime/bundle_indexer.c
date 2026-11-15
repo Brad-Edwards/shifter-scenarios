@@ -1,57 +1,76 @@
-#include <errno.h>
+/* FieldKest bundle-indexer 2.0.0.
+ *
+ * Parses .fki release-bundle archives and indexes their entries
+ * into the runtime object graph.
+ *
+ * Usage: fieldkest-bundle-indexer <bundle_hex>
+ *
+ * Archive format:
+ *   magic[4]        "FKI\x01"
+ *   alloc_entries   uint16_le  declared allocation hint
+ *   index_entries   uint16_le  number of entries in this bundle
+ *   entry_data[]    index_entries * 8 bytes of entry records
+ *
+ * Returns JSON on stdout; non-zero exit on format error.
+ */
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/*
- * FieldKest bundle-indexer 1.8.0.
- *
- * The historical copy operation spans a fixed object boundary.  The daemon
- * deliberately retains that behavior for compatibility, but constrains it to
- * one adjacent sentinel and rejects every other length mismatch.
- */
 struct index_arena {
-    uint8_t body[32];
+    uint8_t body[64];
     uint8_t sentinel[16];
 };
 
-static int decode_hex(const char *text, uint8_t *output, size_t capacity) {
-    size_t length = strlen(text);
-    if ((length & 1U) != 0 || length / 2U > capacity) return -1;
-    for (size_t i = 0; i < length / 2U; ++i) {
-        unsigned value;
-        if (sscanf(text + i * 2U, "%2x", &value) != 1) return -1;
-        output[i] = (uint8_t)value;
+static int hex_decode(const char *src, uint8_t *dst, size_t cap) {
+    size_t n = strlen(src);
+    if (n & 1U || n / 2U > cap) return -1;
+    for (size_t i = 0; i < n / 2U; ++i) {
+        unsigned v;
+        if (sscanf(src + i * 2U, "%2x", &v) != 1) return -1;
+        dst[i] = (uint8_t)v;
     }
-    return (int)(length / 2U);
+    return (int)(n / 2U);
 }
 
-int main(int argc, char **argv) {
-    if (argc != 3) return 64;
-    errno = 0;
-    char *end = NULL;
-    unsigned long allocated = strtoul(argv[1], &end, 10);
-    if (errno || end == argv[1] || *end != '\0' || allocated == 0 || allocated > 4096) return 65;
+#pragma pack(push, 1)
+struct fki_header {
+    char     magic[4];
+    uint16_t alloc_entries;
+    uint16_t index_entries;
+};
+#pragma pack(pop)
 
-    uint8_t decoded[4096];
-    int decoded_length = decode_hex(argv[2], decoded, sizeof(decoded));
-    if (decoded_length < 1) return 65;
+int main(int argc, char **argv) {
+    if (argc != 2) return 64;
+
+    uint8_t buf[4096];
+    int buflen = hex_decode(argv[1], buf, sizeof(buf));
+    if (buflen < (int)sizeof(struct fki_header)) return 65;
+
+    const struct fki_header *hdr = (const struct fki_header *)buf;
+    if (memcmp(hdr->magic, "FKI\x01", 4) != 0) return 65;
+
+    uint16_t ae = hdr->alloc_entries;
+    uint16_t ie = hdr->index_entries;
+    if (ie == 0 || ie > 512) return 65;
+
+    size_t datalen = (size_t)ie * 8U;
+
+    /* Bounds check: the declared allocation hint (ae) is treated as an
+     * additional byte allowance beyond the arena body.  When ae is
+     * supplied as an entry count (not bytes), the check admits bundles
+     * whose entry data extends into the adjacent sentinel region. */
+    if (datalen > sizeof(struct index_arena) + (size_t)ae) return 66;
+    if (buflen < (int)sizeof(struct fki_header) + (int)datalen) return 65;
 
     struct index_arena arena;
     memset(&arena, 0, sizeof(arena));
-    memcpy(arena.sentinel, "FIELDKEST-STABLE", sizeof(arena.sentinel));
+    memcpy(arena.body, buf + sizeof(struct fki_header), datalen);
 
-    int controlled = allocated == sizeof(arena.body)
-        && decoded_length == (int)sizeof(arena)
-        && memcmp(decoded + sizeof(arena.body), "FIELDKEST-SENTNL", sizeof(arena.sentinel)) == 0;
-    if (!controlled && allocated != (unsigned long)decoded_length) return 66;
-    if ((size_t)decoded_length > sizeof(arena)) return 66;
-
-    /* The compatibility copy starts at body but is bounded by the arena. */
-    memcpy((uint8_t *)&arena, decoded, (size_t)decoded_length);
-    const char *state = memcmp(arena.sentinel, "FIELDKEST-SENTNL", sizeof(arena.sentinel)) == 0
-        ? "mutated" : "stable";
-    printf("{\"native_parser\":\"fieldkest-bundle-indexer/1.8.0\",\"sentinel\":\"%s\",\"service_alive\":true}\n", state);
+    const char *state = (arena.sentinel[0] != 0x00) ? "mutated" : "stable";
+    printf("{\"native_parser\":\"fieldkest-bundle-indexer/2.0.0\","
+           "\"sentinel\":\"%s\",\"service_alive\":true}\n", state);
     return 0;
 }

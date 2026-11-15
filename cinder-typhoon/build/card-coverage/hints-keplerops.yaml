@@ -102,12 +102,13 @@ hints:
       id: work/analysis/field-notes-2026-08.odt
   K04.1:
     h1: Begin with the offline indexer reproducer and its protected runtime service. The supplied indexer client.json
-      artifact carries the relevant lead; check its provenance and references before contacting another service.
-    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Inspect the supplied indexer client.json artifact and the normal client documentation it names. Record the
-      normal result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
-      the difference.
+      artifact documents the .fki archive format and the offline reproducer binary; both carry the relevant lead.
+    h2: Treat this as binary layout analysis of the .fki deserializer. The bundle header declares two entry counts;
+      compare how each is used in the bounds check and in the memcpy to find the allocation confusion.
+    h3: Identify how the bounds check compares total entry data against the full arena size (body plus sentinel)
+      while the memcpy writes only into the body region. Construct a bundle where index_entries produces a copy
+      length that exceeds the body but stays within the arena, then verify the service records the controlled
+      sentinel mutation while staying live.
     references:
     - kind: participant_artifact
       id: work/reproducers/indexer-client.json
