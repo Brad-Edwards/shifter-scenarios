@@ -14,6 +14,7 @@ COPY build/keplerops/runtime/credentials.py /opt/fieldkest-registry/credentials.
 COPY build/keplerops/runtime/channel_credentials.py /opt/fieldkest-registry/channel_credentials.py
 COPY build/keplerops/runtime/client-references/registry.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/registry.py /opt/fieldkest-registry/registry.py
+COPY build/keplerops/runtime/assessor.py /opt/fieldkest-registry/assessor.py
 COPY build/keplerops/runtime/package_delivery.py /opt/fieldkest-registry/package_delivery.py
 COPY build/keplerops/native-registry/seed.py /opt/fieldkest-registry/seed-native-registry.py
 COPY assets/keplerops/native-packages /opt/fieldlink-native-packages

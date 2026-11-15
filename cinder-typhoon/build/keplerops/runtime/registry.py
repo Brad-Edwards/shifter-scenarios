@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import binascii
+import http.client as _http_client
 import json
 import os
 from pathlib import Path
@@ -272,32 +273,65 @@ class RegistryHandler(KeplerHandler):
         except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
             self.send_json(422, {"error": "invalid_inspection"})
             return
-        expected = json.loads((STATE / "examples/inspection-normal.json").read_text())
-        if request != expected:
+        if not (isinstance(request, dict)
+                and request.get("schema") == "fieldkest.inspection/v1"
+                and isinstance(request.get("package"), str)
+                and isinstance(request.get("version"), str)
+                and isinstance(request.get("action"), str)):
             self.send_json(422, {"error": "inspection_contract_failed"})
             return
+        # Forward to the upstream assessor (Python BaseHTTPRequestHandler, CL-based parser).
+        assessor_body = canonical_bytes(request)
+        try:
+            conn = _http_client.HTTPConnection("127.0.0.1", 9001, timeout=5)
+            conn.request("POST", "/assess", body=assessor_body, headers={
+                "Content-Type": "application/json",
+                "Content-Length": str(len(assessor_body)),
+            })
+            upstream = conn.getresponse()
+            assessor_data = json.loads(upstream.read(65_536))
+            conn.close()
+        except (OSError, _http_client.HTTPException, json.JSONDecodeError, ValueError):
+            self.send_json(503, {"error": "assessor_unavailable"})
+            return
+        inspection_id = "INSP-" + uuid.uuid4().hex[:8].upper()
         fixture = (STATE / "examples/inspection-compat.fki").read_bytes()
         trace = {
             "schema": "fieldkest.inspection-trace/v1",
-            "inspection_id": "INSP-2047",
-            "normalized_request_id": "release-742",
-            "assessor_correlation_id": "PAS-884",
+            "inspection_id": inspection_id,
+            "normalized_request_id": request.get("request_id", ""),
+            "assessor_correlation_id": str(assessor_data.get("assessor_id", "")),
             "compatibility_envelope_sha256": sha256_bytes(fixture),
             "package": request["package"],
             "version": request["version"],
         }
         RESULTS.mkdir(parents=True, exist_ok=True)
-        (RESULTS / "INSP-2047.json").write_text(json.dumps(trace, sort_keys=True, separators=(",", ":")) + "\n")
-        append_audit(AUDIT, "inspections", {"request_id": self.request_id, "principal": USERNAME, "inspection_id": "INSP-2047", "action": request["action"], "status": 201})
-        self.send_json(201, {"inspection_id": "INSP-2047", "trace": "/api/inspections/INSP-2047/trace", "assessment": "public-manifest-consistent"})
+        (RESULTS / f"{inspection_id}.json").write_text(
+            json.dumps(trace, sort_keys=True, separators=(",", ":")) + "\n"
+        )
+        append_audit(AUDIT, "inspections", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "inspection_id": inspection_id,
+            "action": request["action"], "status": 201,
+        })
+        self.send_json(201, {
+            "inspection_id": inspection_id,
+            "trace": f"/api/inspections/{inspection_id}/trace",
+            "assessment": str(assessor_data.get("assessment", "public-manifest-consistent")),
+        })
 
     def _inspection_trace(self, inspection_id: str) -> None:
+        import re as _re
         path = RESULTS / f"{inspection_id}.json"
-        if inspection_id != "INSP-2047" or not path.is_file():
+        if not _re.fullmatch(r"INSP-[0-9A-F]{8}", inspection_id) or not path.is_file():
             self.send_json(403, {"error": "inspection_trace_denied"})
             return
         trace = json.loads(path.read_text())
-        append_audit(AUDIT, "inspection-traces", {"request_id": self.request_id, "principal": USERNAME, "inspection_id": inspection_id, "trace_sha256": sha256_bytes(canonical_bytes(trace)), "status": 200})
+        append_audit(AUDIT, "inspection-traces", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "inspection_id": inspection_id,
+            "trace_sha256": sha256_bytes(canonical_bytes(trace)), "status": 200,
+        })
         self.send_json(200, trace)
 
     def _inspection_envelope(self) -> None:
@@ -318,23 +352,41 @@ class RegistryHandler(KeplerHandler):
         except (ValueError, UnicodeDecodeError, OverflowError):
             self.send_json(422, {"error": "invalid_inspection_envelope"})
             return
-        trace_path = RESULTS / "INSP-2047.json"
-        if not trace_path.is_file() or sha256_bytes(data) != json.loads(trace_path.read_text())["compatibility_envelope_sha256"]:
+        # Find an existing trace whose compatibility_envelope_sha256 matches this payload.
+        import re as _re
+        trace_path = None
+        for candidate in sorted(RESULTS.glob("INSP-????????.json")):
+            try:
+                candidate_trace = json.loads(candidate.read_text())
+                if sha256_bytes(data) == candidate_trace.get("compatibility_envelope_sha256"):
+                    trace_path = candidate
+                    break
+            except (json.JSONDecodeError, OSError):
+                continue
+        if trace_path is None or not trace_path.is_file():
             self.send_json(422, {"error": "inspection_trace_binding_mismatch"})
             return
         if assessor_name != "kqa" or payload_length != 1 or payload != b"\x01":
             self.send_json(422, {"error": "assessor_frame_denied"})
             return
-        state = {"assessment_id": "PAS-884", "sentinel": "support-package-reviewed", "updated_at": utc_now()}
-        (RESULTS / "PAS-884.json").write_text(json.dumps(state, sort_keys=True, separators=(",", ":")) + "\n")
+        matched_trace = json.loads(trace_path.read_text())
+        matched_inspection_id = matched_trace["inspection_id"]
+        assessor_correlation_id = matched_trace.get("assessor_correlation_id", "unknown")
+        state = {"assessment_id": assessor_correlation_id, "sentinel": "support-package-reviewed", "updated_at": utc_now()}
+        (RESULTS / f"{assessor_correlation_id}.json").write_text(json.dumps(state, sort_keys=True, separators=(",", ":")) + "\n")
         result = {
             "schema": "fieldkest.inspection-envelope-result/v1",
-            "inspection_id": "INSP-2047",
+            "inspection_id": matched_inspection_id,
             "front_end": {"request_id": front_name, "following_length": front_following_length, "framing": "compatibility-forwarded"},
-            "assessor": {"request_id": assessor_name, "assessment_id": "PAS-884", "action": "inspect_support_package"},
+            "assessor": {"request_id": assessor_name, "assessment_id": assessor_correlation_id, "action": "inspect_support_package"},
             "finding": {"package": "@keplerops/support-rehearsal", "version": "1.3.1", "view_binding": "publisher", "status": "protected-inspection-complete"},
         }
-        append_audit(AUDIT, "inspection-envelopes", {"request_id": self.request_id, "principal": USERNAME, "inspection_id": "INSP-2047", "front_request_id": front_name, "assessor_request_id": assessor_name, "assessment_id": "PAS-884", "envelope_sha256": sha256_bytes(data), "status": 200})
+        append_audit(AUDIT, "inspection-envelopes", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "inspection_id": matched_inspection_id, "front_request_id": front_name,
+            "assessor_request_id": assessor_name, "assessment_id": assessor_correlation_id,
+            "envelope_sha256": sha256_bytes(data), "status": 200,
+        })
         self.send_json(200, result)
 
     def _entitlement_record(self, record_id: str) -> None:

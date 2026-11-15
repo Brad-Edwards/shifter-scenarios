@@ -23,7 +23,10 @@ done
 setpriv --reuid=verdaccio --regid=verdaccio --init-groups \
   python3 /opt/fieldkest-registry/seed-native-registry.py packages
 setpriv --reuid=fieldkest-registry --regid=fieldkest-registry --init-groups \
+  python3 /opt/fieldkest-registry/assessor.py &
+assessor_pid=$!
+setpriv --reuid=fieldkest-registry --regid=fieldkest-registry --init-groups \
   python3 /opt/fieldkest-registry/registry.py &
 api_pid=$!
-trap 'kill "$api_pid" "$verdaccio_pid" 2>/dev/null || true' INT TERM EXIT
+trap 'kill "$api_pid" "$assessor_pid" "$verdaccio_pid" 2>/dev/null || true' INT TERM EXIT
 wait "$verdaccio_pid"

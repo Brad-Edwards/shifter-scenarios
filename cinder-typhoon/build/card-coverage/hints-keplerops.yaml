@@ -260,15 +260,17 @@ hints:
     - kind: client_route
       id: packages.publish
   K07.1:
-    h1: Read work/registry/inspection-normal.json from the developer workstation. It contains the exact
-      inspection request the packages.inspections endpoint accepts. POST it verbatim; any deviation returns
-      422. The response contains inspection_id=INSP-2047 and a trace path.
-    h2: Fetch the trace with GET /api/inspections/INSP-2047/trace using the same developer credentials.
-      Unrelated inspection IDs return 403. The trace record (fieldkest.inspection-trace/v1) contains
-      normalized_request_id, assessor_correlation_id, and compatibility_envelope_sha256.
-    h3: The trace fields supply the evidence binding for K07.2: assessor_correlation_id=PAS-884,
-      normalized_request_id=release-742, and compatibility_envelope_sha256 identify the downstream
-      assessment component and the forwarded request.
+    h1: Read work/registry/inspection-normal.json from the developer workstation and POST it to
+      packages.inspections. The service validates schema, package, version, and action fields; it
+      does not require exact byte equality. The response has a dynamic inspection_id (changes each
+      request) and a trace link. Submit twice to confirm both IDs differ.
+    h2: Fetch the trace at GET /api/inspections/{inspection_id}/trace. It contains a real
+      assessor_correlation_id (UUID from the upstream assessor — not a fixed constant) and the
+      compatibility_envelope_sha256 for K07.2. Requests for unknown trace IDs return 403.
+    h3: The trace proves a real upstream exists: the inspection service forwards to a Python
+      BaseHTTPRequestHandler assessor (CL-based parser), while the Nginx edge is TE-aware. This
+      Nginx/assessor parser disagreement is the K07.2 smuggling target. The compatibility_envelope_sha256
+      binds the inspection to the K07.2 envelope.
     references:
     - kind: client_route
       id: packages.inspection-trace
