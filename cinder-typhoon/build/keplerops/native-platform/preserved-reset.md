@@ -45,6 +45,7 @@ tar --exclude=.operator/native-platform/model-source \
   --exclude=.operator/native-platform/k3s-images --exclude=.operator/.terraform \
   -czpf "$backup/operator.tar.gz" .operator
 (cd "$backup" && sha256sum -- *.tar.gz >SHA256SUMS && sha256sum --check --quiet SHA256SUMS)
+chmod 0600 "$backup"/*.tar.gz "$backup/SHA256SUMS"
 "${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 300 "${stateful[@]}"
 python3 ../development-ranges/guest/fieldlink-desktop-login.py
 ```
@@ -90,10 +91,25 @@ while read -r volume; do
     cinder-keplerops/foundation-dns:hand-build -ec \
     'find /volume -mindepth 1 -delete; tar -xzpf "$1" -C /volume' restore "/backup/$volume.tar.gz"
 done <"$backup/volumes"
+cache_dir="$backup/immutable-caches"
+[[ ! -e $cache_dir && ! -e $backup/fresh-operator ]]
+mkdir -m 0700 "$cache_dir"
+for cache in model-source model-converted k3s-images; do
+  mv ".operator/native-platform/$cache" "$cache_dir/$cache"
+done
+mv .operator "$backup/fresh-operator"
 tar -xzpf "$backup/operator.tar.gz"
+for cache in model-source model-converted k3s-images; do
+  mv "$cache_dir/$cache" ".operator/native-platform/$cache"
+done
 "${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 300
 python3 ../development-ranges/guest/fieldlink-desktop-login.py
 ```
+
+If extraction fails, keep products stopped. The immutable caches and the fresh
+operator directory remain recoverable under the private backup path; correct
+the extraction before moving caches back or restarting. The accepted operator
+archive replaces active mutable inputs completely, including keys and markers.
 
 QA confirms that ordinary record changes, files, versions, passwords and product
 history returned, and that the retained diagnostic job and earned destination
