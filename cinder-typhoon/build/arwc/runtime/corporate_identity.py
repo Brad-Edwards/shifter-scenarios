@@ -186,11 +186,6 @@ class Handler(BaseHTTPRequestHandler):
             "title": "Corporate identity, provisioning, and session service",
             "routes": [
                 {
-                    "key": "identity.drawing-context",
-                    "method": "GET",
-                    "template": "https://corporate-identity.arwc.test/api/drawing-contexts/current"
-                },
-                {
                     "key": "identity.sessions",
                     "method": "POST",
                     "template": "https://corporate-identity.arwc.test/api/sessions"
@@ -214,32 +209,11 @@ class Handler(BaseHTTPRequestHandler):
         request = self.body()
         if request is None:
             return
-        if path == "/api/drawing-contexts/current":
-            if self.planning_authorized():
-                self.attach_preview(request)
-        elif path == "/api/sessions":
+        if path == "/api/sessions":
             if self.planning_authorized():
                 self.bootstrap(request)
         else:
             self.send_json(404, {"error": "record not found"})
-
-    def attach_preview(self, request: dict[str, object]) -> None:
-        state = load_state()
-        if request.get("oauth_state") != state["oauth_state"]:
-            self.send_json(409, {"error": "OAuth state does not match"})
-            return
-        if request.get("drawing") != "DRW-OG2-R8" or request.get("review") != "REV-CRR-4417":
-            self.send_json(409, {"error": "drawing review binding does not match"})
-            return
-        if request.get("preview_origin") != "https://preview-cinder.arwc.test":
-            self.send_json(409, {"error": "preview origin is not available"})
-            return
-        state["preview_origin"] = request["preview_origin"]
-        state["preview_attached"] = True
-        save_state(state)
-        result = dict(RENDERING)
-        result.update({"revision": 9, "preview_origin": request["preview_origin"]})
-        self.accepted("drawing-context-created", result, "planning-consumer", 201)
 
     def bootstrap(self, request: dict[str, object]) -> None:
         state = load_state()

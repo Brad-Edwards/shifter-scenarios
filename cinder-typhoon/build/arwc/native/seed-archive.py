@@ -46,6 +46,7 @@ WORKFLOW_FOLDER = "Corporate Records/Archive"
 WORKFLOW_FILENAME = "AWF-CRR-229-R4.json"
 PLANNING_FOLDER = "Corporate Records/Planning"
 PLANNING_FILENAME = "RENDER-CRR-882.json"
+OAUTH_CONTEXT_FILENAME = "OAUTH-PLN-882.json"
 
 WORKFLOW_RECORD = {
     "record_id": "AWF-CRR-229-R4",
@@ -71,6 +72,18 @@ PLANNING_RECORD = {
     "oauth_transaction": "OAUTH-PLN-882",
     "browser_profile": "planner-review-3",
 }
+
+# OAUTH-PLN-882.json is the planning OAuth context for the drawing review callback.
+# oauth_state is derived from STAFF_SEED so it is stable across seed runs.
+# pending_origin is the expected (legitimate) preview callback origin.
+def _make_oauth_context_record(oauth_state: str) -> dict:
+    return {
+        "transaction": "OAUTH-PLN-882",
+        "oauth_state": oauth_state,
+        "drawing": "DRW-OG2-R8",
+        "review": "REV-CRR-4417",
+        "pending_origin": "https://drawing-preview.arwc.test",
+    }
 
 
 def nc_request(method: str, path: str, body: bytes | None = None,
@@ -262,9 +275,51 @@ def main() -> None:
                    }).encode(), accepted=(200, 100))
         print(f"Created authenticated read-only share with {PLANNER_READER_USERNAME}")
 
-    # Seed Gitea: W04.3 archive helper handover artifact (includes W06.1 planning_access).
+    # Seed Nextcloud planner reader: W06.2 OAuth context for drawing review callback.
+    if staff_seed:
+        import hashlib as _hashlib2
+        oauth_state = _hashlib2.sha256(f"planning-oauth-state:{staff_seed}".encode()).hexdigest()
+    else:
+        oauth_state = secrets.token_hex(32)
+
+    oauth_context_record = _make_oauth_context_record(oauth_state)
+    oauth_context_content = json.dumps(oauth_context_record, sort_keys=True, separators=(",", ":"),
+                                       ensure_ascii=False).encode("utf-8")
+    webdav("PUT", f"{ADMIN}/{PLANNING_FOLDER}/{OAUTH_CONTEXT_FILENAME}", oauth_context_content,
+           content_type="application/json")
+    print(f"Uploaded {OAUTH_CONTEXT_FILENAME} to Nextcloud folder '{PLANNING_FOLDER}'")
+
+    # Share the OAuth context file read-only with the planner reader account.
+    oauth_file_path = f"/{PLANNING_FOLDER}/{OAUTH_CONTEXT_FILENAME}"
+    oauth_shares_raw = nc_request(
+        "GET", f"/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json"
+        f"&path={quote(oauth_file_path, safe='/')}&reshares=false",
+        accepted=(200,),
+    )
+    existing_oauth_shares = json.loads(oauth_shares_raw)["ocs"]["data"]
+    existing_oauth_planner_share = [s for s in existing_oauth_shares
+                                    if s.get("share_type") == 0 and s.get("share_with") == PLANNER_READER_USERNAME]
+    for stale in existing_oauth_shares:
+        if stale.get("share_type") == 3:
+            nc_request("DELETE", f"/ocs/v2.php/apps/files_sharing/api/v1/shares/{stale['id']}?format=json",
+                       accepted=(200, 100))
+            print(f"Removed stale public share on OAuth context file id={stale['id']}")
+
+    if existing_oauth_planner_share:
+        print(f"OAuth context share already exists for {PLANNER_READER_USERNAME}")
+    else:
+        nc_request("POST", "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json",
+                   urlencode({
+                       "path": oauth_file_path,
+                       "shareType": 0,
+                       "shareWith": PLANNER_READER_USERNAME,
+                       "permissions": 1,
+                   }).encode(), accepted=(200, 100))
+        print(f"Created OAuth context read-only share with {PLANNER_READER_USERNAME}")
+
+    # Seed Gitea: W04.3 archive helper handover artifact (includes W06.1 and W06.2 planning_access).
     if GITEA_ADMIN_PASSWORD:
-        gitea_state = seed_gitea_handover(planner_password)
+        gitea_state = seed_gitea_handover(planner_password, oauth_state)
         gitea_out = CREDENTIALS_OUT.parent / "gitea-reader.json"
         try:
             gitea_out.write_text(json.dumps(gitea_state, indent=2), encoding="utf-8")
@@ -278,7 +333,7 @@ def main() -> None:
     print("Archive workflow seeded successfully")
 
 
-def seed_gitea_handover(planner_password: str) -> dict:
+def seed_gitea_handover(planner_password: str, oauth_state: str) -> dict:
     """Create the HND-PLANNER-06 handover artifact in Gitea and return a reader token."""
     gitea_auth = "Basic " + base64.b64encode(f"{GITEA_ADMIN}:{GITEA_ADMIN_PASSWORD}".encode()).decode()
 
@@ -312,10 +367,11 @@ def seed_gitea_handover(planner_password: str) -> dict:
         print(f"Gitea repo already exists: {GITEA_ORG}/{GITEA_REPO}")
 
     # Seed or update the HND-PLANNER-06 handover file.
-    # planning_access gives the participant Nextcloud credentials for W06.1 (RENDER-CRR-882).
+    # planning_access gives the participant Nextcloud credentials for W06.1 (RENDER-CRR-882)
+    # and the OAuth context path for W06.2 (OAUTH-PLN-882.json).
     handover_content = json.dumps({
         "record_id": "HND-PLANNER-06",
-        "revision": 7,
+        "revision": 8,
         "service_identity": "svc-archive-helper",
         "source_record": "AR-CRR-229",
         "destination": "caller result directory",
@@ -325,6 +381,7 @@ def seed_gitea_handover(planner_password: str) -> dict:
             "password": planner_password,
             "documents": DOCUMENTS_URL,
             "record_path": f"/{PLANNING_FOLDER}/{PLANNING_FILENAME}",
+            "oauth_context_path": f"/{OAUTH_CONTEXT_FILENAME}",
         },
     }, sort_keys=True, indent=2).encode("utf-8")
     encoded = base64.b64encode(handover_content).decode()

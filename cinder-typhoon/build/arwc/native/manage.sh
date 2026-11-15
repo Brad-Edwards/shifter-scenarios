@@ -219,7 +219,17 @@ SQL
     done
     echo "PostgreSQL archive.records seeded"
     # Seed Nextcloud workflow and reader credentials.
-    "${compose[@]}" --profile seed run --rm seed-archive
+    # Capture output so we can extract the Gitea reader state printed to stdout.
+    seed_archive_out=$("${compose[@]}" --profile seed run --rm seed-archive 2>&1)
+    echo "${seed_archive_out}"
+    gitea_state_json=$(echo "${seed_archive_out}" | grep '^ARCHIVE_GITEA_STATE_JSON=' \
+        | sed 's/^ARCHIVE_GITEA_STATE_JSON=//' | python3 -c 'import sys,json; print(json.loads(sys.stdin.read().strip()))' 2>/dev/null || true)
+    if [ -n "${gitea_state_json}" ]; then
+        mkdir -p "${golden_op}/archive-workflow"
+        printf '%s\n' "${gitea_state_json}" > "${golden_op}/archive-workflow/gitea-reader.json"
+        chmod 0644 "${golden_op}/archive-workflow/gitea-reader.json"
+        echo "Wrote Gitea reader credentials to golden operator dir"
+    fi
     ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {

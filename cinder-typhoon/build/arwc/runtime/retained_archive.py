@@ -17,6 +17,7 @@ import unicodedata
 import uuid
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import urllib.parse
 from urllib.parse import urlsplit
 
 from cryptography import x509
@@ -318,6 +319,9 @@ def initialize() -> None:
             "protected_record_observed": False,
             "helper_handover_copied": False,
             "planner_handover_token": None,
+            "drawing_context_attached": False,
+            "drawing_context_preview_origin": None,
+            "drawing_context_render_hash": None,
             "work_bundle_observed": False,
             "exchange_reconstructed": False,
             "collector_reconstructed": False,
@@ -338,6 +342,7 @@ def initialize() -> None:
         state = load_state()
         changed = False
         for key in (
+            "drawing_context_attached", "drawing_context_preview_origin", "drawing_context_render_hash",
             "work_bundle_observed", "exchange_reconstructed",
             "collector_reconstructed", "collector_config_recovered",
             "quarantine_observed", "protection_reconstructed",
@@ -630,6 +635,23 @@ class Handler(BaseHTTPRequestHandler):
             return False
         return True
 
+    def planning_authorized(self, token: str) -> bool:
+        """Validate a W04.3 planner handover token against the stored evidence."""
+        try:
+            evidence = json.loads(HANDOVER_EVIDENCE.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            self.send_json(403, {"error": "planning access required"})
+            return False
+        if evidence.get("record_id") != "HND-PLANNER-06":
+            self.send_json(403, {"error": "planning access required"})
+            return False
+        expected = str(evidence.get("token_sha256", ""))
+        supplied_digest = hashlib.sha256(token.encode()).hexdigest()
+        if not hmac.compare_digest(supplied_digest, expected):
+            self.send_json(403, {"error": "planning access required"})
+            return False
+        return True
+
     def body(self) -> dict[str, object] | None:
         try:
             length = int(self.headers.get("Content-Length", "0"))
@@ -766,6 +788,11 @@ class Handler(BaseHTTPRequestHandler):
                     "method": "GET",
                     "template": "https://documents.arwc.test/remote.php/dav/files/"
                                 "arwc-planner-reader/RENDER-CRR-882.json"
+                },
+                {
+                    "key": "identity.drawing-context",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/drawing-contexts"
                 }
             ],
             "related": ["https://business-workplace.arwc.test/.well-known/arwc-client"],
@@ -887,7 +914,9 @@ class Handler(BaseHTTPRequestHandler):
         request = self.body()
         if request is None:
             return
-        if path == "/api/archived-queries/current":
+        if path == "/api/drawing-contexts":
+            self.drawing_context(request)
+        elif path == "/api/archived-queries/current":
             self.query(request)
         elif path == "/api/archive-operations":
             self.helper(request)
@@ -1250,6 +1279,66 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         self.accepted("collection-artifact-read", COLLECTOR_CONFIG, "corporate-reader-principal")
 
+    def drawing_context(self, request: dict[str, object]) -> None:
+        """W06.2: Attach a controlled preview origin to the drawing review context.
+
+        Requires the W04.3 planner handover token. Validates the OAuth state from
+        the native Nextcloud OAUTH-PLN-882.json file, then calls Gotenberg to render
+        a preview artifact confirming the attachment.
+        """
+        supplied = self.headers.get("X-ARWC-Planning-Access", "")
+        if not supplied:
+            self.send_json(403, {"error": "planning access required"})
+            return
+        if not self.planning_authorized(supplied):
+            return
+
+        drawing = request.get("drawing")
+        review = request.get("review")
+        oauth_state = request.get("oauth_state")
+        preview_origin = request.get("preview_origin")
+
+        if not all([drawing, review, oauth_state, preview_origin]):
+            self.send_json(409, {"error": "drawing, review, oauth_state, and preview_origin are required"})
+            return
+        if drawing != "DRW-OG2-R8" or review != "REV-CRR-4417":
+            self.send_json(409, {"error": "drawing review binding does not match"})
+            return
+        if preview_origin != "https://preview-cinder.arwc.test":
+            self.send_json(409, {"error": "preview origin is not an available controlled endpoint"})
+            return
+
+        # Validate oauth_state against the native Nextcloud planning OAuth context.
+        oauth_ctx = _fetch_planning_oauth_context()
+        if oauth_ctx is None:
+            self.send_json(503, {"error": "planning OAuth context unavailable"})
+            return
+        if not hmac.compare_digest(str(oauth_state), str(oauth_ctx.get("oauth_state", ""))):
+            self.send_json(409, {"error": "OAuth state does not match the planning context"})
+            return
+
+        state = load_state()
+        # Render a preview confirmation artifact via Gotenberg.
+        render_hash = _render_drawing_context_preview(drawing, review, preview_origin)
+
+        state["drawing_context_attached"] = True
+        state["drawing_context_preview_origin"] = preview_origin
+        state["drawing_context_render_hash"] = render_hash
+        save_state(state)
+
+        result = {
+            "record_id": "RENDER-CRR-882",
+            "revision": 9,
+            "planner": "nadia.corvane",
+            "drawing": drawing,
+            "review": review,
+            "oauth_transaction": "OAUTH-PLN-882",
+            "browser_profile": "planner-review-3",
+            "preview_origin": preview_origin,
+            "render_hash": render_hash,
+        }
+        self.accepted("drawing-context-created", result, "planning-consumer", 201)
+
     def query(self, request: dict[str, object]) -> None:
         operation = request.get("operation")
         if operation == "enroll":
@@ -1371,6 +1460,78 @@ class Handler(BaseHTTPRequestHandler):
             "archive-helper-executed", handover, "svc-archive-helper",
             extra={"planner_handover": token},
         )
+
+
+def _fetch_planning_oauth_context() -> dict | None:
+    """Fetch OAUTH-PLN-882.json from Nextcloud using the staged planning_access credentials.
+
+    Returns the parsed JSON record, or None on any failure.
+    """
+    if not HANDOVER_STAGING_PATH.exists():
+        return None
+    try:
+        handover = json.loads(HANDOVER_STAGING_PATH.read_text(encoding="utf-8"))
+        pa = handover.get("planning_access", {})
+        username = pa.get("username", "")
+        password = pa.get("password", "")
+        documents = pa.get("documents", "https://documents.arwc.test")
+        oauth_path = pa.get("oauth_context_path", "")
+        if not (username and password and oauth_path):
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+
+    import urllib.request as _urllib_request
+    ctx = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
+    # Shared files appear at the root of the recipient's DAV namespace (just the filename).
+    oauth_filename = oauth_path.rsplit("/", 1)[-1]
+    encoded_path = "/".join(
+        urllib.parse.quote(part, safe="")
+        for part in f"{username}/{oauth_filename}".split("/")
+    )
+    url = f"https://documents.arwc.test/remote.php/dav/files/{encoded_path}"
+    auth = "Basic " + base64.b64encode(f"{username}:{password}".encode()).decode()
+    req = _urllib_request.Request(url, headers={"Authorization": auth})
+    try:
+        with _urllib_request.urlopen(req, context=ctx, timeout=10) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except Exception:
+        return None
+
+
+def _render_drawing_context_preview(drawing: str, review: str, preview_origin: str) -> str | None:
+    """Call Gotenberg to render a preview HTML confirming the drawing context attachment.
+
+    Returns the hex SHA-256 of the rendered PDF, or None on failure.
+    """
+    import urllib.request as _urllib_request
+    html = (
+        f"<!DOCTYPE html><html><body>"
+        f"<h1>Drawing context attachment</h1>"
+        f"<p>Drawing: {drawing}</p>"
+        f"<p>Review: {review}</p>"
+        f"<p>Preview origin: {preview_origin}</p>"
+        f"</body></html>"
+    ).encode("utf-8")
+    boundary = "----GotenbergBoundary"
+    body = (
+        f"--{boundary}\r\n"
+        f'Content-Disposition: form-data; name="files"; filename="index.html"\r\n'
+        f"Content-Type: text/html\r\n\r\n"
+    ).encode() + html + f"\r\n--{boundary}--\r\n".encode()
+    ctx = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
+    req = _urllib_request.Request(
+        "https://render.arwc.test/forms/chromium/convert/html",
+        data=body,
+        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
+        method="POST",
+    )
+    try:
+        with _urllib_request.urlopen(req, context=ctx, timeout=30) as resp:
+            pdf_bytes = resp.read()
+        return hashlib.sha256(pdf_bytes).hexdigest()
+    except Exception:
+        return None
 
 
 def _fetch_gitea_handover() -> dict | None:
