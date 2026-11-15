@@ -9,8 +9,9 @@ if ($state->get('company_case_import_revision') === '1') {
 }
 $conversation = json_decode(file_get_contents('/operator/company-conversation.json'), true, 512, JSON_THROW_ON_ERROR);
 $ticket = Ticket::lookupByNumber($conversation['conversation_id']);
-$thisstaff = Staff::lookup('maya.ranscombe');
-if (!$thisstaff) {
+$owner = Staff::lookup('maya.ranscombe');
+$thisstaff = Staff::lookup('platform-admin');
+if (!$owner || !$thisstaff) {
     throw new RuntimeException('Native company case owner was not found');
 }
 if (!$ticket) {
@@ -19,8 +20,8 @@ if (!$ticket) {
         'name' => 'ARWC FieldLink Operations', 'email' => 'fieldlink-operations@arwc.test',
         'subject' => $conversation['subject'],
         'message' => 'Retained support conversation for '.$conversation['customer'].'. Asset '.$conversation['asset_id'].', connector '.$conversation['connector_revision'].'.',
-        'topicId' => 1, 'deptId' => $thisstaff->getDeptId(),
-        'staffId' => $thisstaff->getId(), 'source' => 'Email',
+        'topicId' => 1, 'deptId' => $owner->getDeptId(),
+        'staffId' => $owner->getId(), 'source' => 'Email',
     ], $errors, 'Staff', false, false);
     if (!$ticket) {
         throw new RuntimeException('Native company case import failed: '.implode(', ', array_keys($errors)));
