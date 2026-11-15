@@ -44,6 +44,7 @@ COPY build/keplerops/runtime/k-dev-entrypoint.sh /usr/local/bin/fieldkest-k-dev-
 COPY build/keplerops/config/sshd_config /etc/ssh/sshd_config
 COPY build/keplerops/config/firefox-policies.json /usr/lib/firefox-esr/distribution/policies.json
 COPY build/keplerops/config/krb5.conf /etc/krb5.conf
+COPY assets/keplerops/native-workplace/identity-access.md /usr/local/share/fieldlink/identity-access.md
 COPY build/participant-host/startwm.sh /etc/xrdp/startwm.sh
 COPY build/participant-host/startwm.sh /home/rowan/.xsession
 COPY build/participant-host/shifter-participant-readiness /usr/local/libexec/shifter-participant-readiness
