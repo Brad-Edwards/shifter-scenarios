@@ -35,10 +35,12 @@ content:
         fieldkest/fieldlink-connector, and handover HND-FLK-2026-09 revision 12.
       mechanic_profile:
         classification: service-native
-        surface: Chromium SQLite (History, Cookies) and git credential store
-        normal_case: developer authenticates to source service and browses support console
-        defect: retained browser cookies and plaintext git credentials give session access
-          to both services without re-authentication
+        surface: saved native Git client identity and protected Gitea repository handover
+          issue
+        normal_case: developer authenticates through native Gitea and reads the current
+          repository handover issue
+        defect: retained Git client credentials still authorize the limited native repository
+          identity
         bounds: the recovered identity has no push access to the connector repository and
           no operator authority
       request_contract:
@@ -50,8 +52,8 @@ content:
           fieldkest/fieldlink-connector, and handover HND-FLK-2026-09 revision 12.
         success: Authenticated handover read and Gitea audit by the recovered developer
           credential.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        correlation: Bind the recovered Git identity to the protected native repository
+          issue, handover identifier and revision.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -64,8 +66,8 @@ content:
       transition_contract: Authenticated handover read and Gitea audit by the recovered
         developer credential.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Actual authenticated Gitea repository/issue responses and their native
+          object identity; no custom handover API or synthetic product audit.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -73,8 +75,8 @@ content:
         - exact input identifiers and revisions
         - result identifier and digest
         downstream_join: Workforce identity reused; supplies G01.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: Native handover reads remain repeatable; demonstrate actual use of the
+          recovered limited identity.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
@@ -84,7 +86,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 024b10aa542af5db5b8ea0f9068e3ba439941a45cbe57af1287f30cc177668ec
+        digest: 9cb4245cece648a0c1acd59745a165ccfcb6dda2e4eac5a8fc9c3b603a6fde6e
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

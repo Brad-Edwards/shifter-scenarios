@@ -149,11 +149,11 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
     "K10.2": [route("k-preview", "preview-service", "render-document")],
     "K10.3": [route("k-preview", "preview-service", "source-upload"), route("k-preview", "preview-service", "render-result")],
     "K11.1": [route("k-source", "gitea", "repository-content")],
-    "K11.2": [route("k-source", "gitea", "policy-compiler-evaluations")],
-    "K11.3": [route("k-source", "gitea", "policy-compiler-evaluations")],
+    "K11.2": [route("k-source", "source-tools", "policy-compiler-evaluations")],
+    "K11.3": [route("k-source", "source-tools", "policy-compiler-evaluations")],
     "K11.4": [
-        route("k-source", "gitea", "policy-compiler-nonces"),
-        route("k-source", "gitea", "policy-compiler-evaluations"),
+        route("k-source", "source-tools", "policy-compiler-nonces"),
+        route("k-source", "source-tools", "policy-compiler-evaluations"),
     ],
     "K12.1": [route("k-preview", "preview-service", "review-reassign")],
     "K12.2": [route("k-preview", "preview-service", "review-action")],
@@ -208,9 +208,9 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
     "K27.1": [route("k-support", "support-service", "diagnostic-job")],
     "K27.2": [route("k-support", "support-service", "diagnostic-package"), route("k-registry", "verdaccio", "package-publication")],
     "K27.3": [route("k-support", "support-service", "diagnostic-delivery"), route("a-connector", "fieldlink-customer-consumer", "diagnostic-intake"), route("a-connector", "fieldlink-customer-consumer", "diagnostic-receipt")],
-    "K28.1": [route("k-source", "gitea", "repository-content"), route("k-source", "gitea", "archived-connector-exercise")],
-    "K28.2": [route("k-source", "gitea", "archived-connector-exercise")],
-    "K28.3": [route("k-source", "gitea", "archived-connector-exercise")],
+    "K28.1": [route("k-source", "gitea", "repository-content"), route("k-source", "source-tools", "archived-connector-exercise")],
+    "K28.2": [route("k-source", "source-tools", "archived-connector-exercise")],
+    "K28.3": [route("k-source", "source-tools", "archived-connector-exercise"), route("k-source", "gitea", "repository-content")],
     "K29.1": [route("k-cloud-api", "fieldkest-cloud-api", "build-record"), route("k-ci", "fieldkest-ci", "historical-artifact")],
     "K29.2": [route("k-source", "gitea", "repository-content")],
     "K29.3": [route("k-registry", "verdaccio", "package-publication"), route("k-ci", "fieldkest-ci", "private-consumer-submit")],
@@ -265,9 +265,9 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
     # K01 — developer workstation opening
     "K01.1": {
         "classification": "service-native",
-        "surface": "Chromium SQLite (History, Cookies) and git credential store",
-        "normal_case": "developer authenticates to source service and browses support console",
-        "defect": "retained browser cookies and plaintext git credentials give session access to both services without re-authentication",
+        "surface": "saved native Git client identity and protected Gitea repository handover issue",
+        "normal_case": "developer authenticates through native Gitea and reads the current repository handover issue",
+        "defect": "retained Git client credentials still authorize the limited native repository identity",
         "bounds": "the recovered identity has no push access to the connector repository and no operator authority",
     },
     "K01.2": {
@@ -1174,6 +1174,10 @@ def fixture_text(card: str, title: str, row: dict[str, str]) -> str:
             "Correlate native build records, exact source/artifact bytes and, where applicable, "
             "the separately persisted support report; no synthetic product audit is required."
         )
+    if card == 'K01.1':
+        core['request_contract']['correlation'] = 'Bind the recovered Git identity to the protected native repository issue, handover identifier and revision.'
+        core['evidence_contract']['producer'] = 'Actual authenticated Gitea repository/issue responses and their native object identity; no custom handover API or synthetic product audit.'
+        core['evidence_contract']['freshness'] = 'Native handover reads remain repeatable; demonstrate actual use of the recovered limited identity.'
     if card == 'K28.3':
         core['request_contract']['correlation'] = 'Join the genuine tool request and output digest to the native Git note path, commit and content digest.'
         core['evidence_contract']['producer'] = 'The retained loader tool supplies its protected request/output audit; Gitea supplies actual Git note objects and history.'
