@@ -7,6 +7,6 @@ install -m 0444 /run/fieldkest-tls/server.crt /tmp/fieldkest.crt
 install -m 0400 /run/fieldkest-tls/server.key /tmp/fieldkest.key
 chown fieldkest-ci:fieldkest-ci /tmp/fieldkest.key
 install -m 0444 /run/fieldkest-tls/ca.crt /tmp/fieldkest-ca.crt
-mkdir -p /var/lib/fieldkest-ci/audit /var/lib/fieldkest-ci/results /var/lib/fieldkest-ci/workspaces/rowan /var/lib/fieldkest-handover
-chown -R fieldkest-ci:fieldkest-ci /var/lib/fieldkest-ci/audit /var/lib/fieldkest-ci/results /var/lib/fieldkest-ci/workspaces/rowan /var/lib/fieldkest-handover
+mkdir -p /var/lib/fieldkest-ci/audit /var/lib/fieldkest-ci/results /var/lib/fieldkest-handover
+chown -R fieldkest-ci:fieldkest-ci /var/lib/fieldkest-ci/audit /var/lib/fieldkest-ci/results /var/lib/fieldkest-handover
 exec setpriv --reuid=fieldkest-ci --regid=fieldkest-ci --init-groups python3 /opt/fieldkest/ci.py
