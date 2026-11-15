@@ -163,3 +163,10 @@ Source files, expected results, test cases, plaintext answers, operator files
 and keys are excluded. Source checksums are kept in the private build cache;
 normal Gitea file reads verify uploaded bytes. Existing native repository files
 are never overwritten by a later seed.
+
+The explicit bulk import uses a temporary native app password for the existing
+administrative import account, following Nextcloud's [WebDAV authentication guidance](https://docs.nextcloud.com/server/stable/user_manual/en/files/access_webdav.html).
+This avoids repeated normal-password verification on every file/share request.
+The app password inherits that account's authority. It is held privately for
+the batch and only its newly created exact token ID is revoked on completion
+or interruption. Participant passwords and other sessions are unchanged.
