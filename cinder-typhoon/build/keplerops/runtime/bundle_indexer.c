@@ -13,14 +13,19 @@
  *
  * Returns JSON on stdout; non-zero exit on format error.
  *
- * The arena is backed by a persistent shared region.  On every request the
- * binary reads the current 128-byte region into a local buffer (capturing
- * any state the service wrote since the last request), copies the bundle
- * entry data into the region (updating it), and returns data_hex of the
- * local read buffer up to datalen bytes as an ordinary part of the response.
- * The sentinel is at bytes 64-79 of the region; the runtime descriptor
- * occupies bytes 80-127 and is written by the service when the first
- * mutation is recorded.
+ * The arena is backed by a persistent shared region of ARENA_SIZE bytes.
+ * On every request the binary reads the full region into a local buffer
+ * (capturing any state the service wrote since the last request), copies the
+ * bundle entry data into the region (updating it), and returns data_hex of
+ * the local read buffer up to datalen bytes as an ordinary part of the response.
+ *
+ * Arena layout:
+ *   bytes   0-63   body          (normal index entries)
+ *   bytes  64-79   sentinel      (non-zero after first mutation)
+ *   bytes  80-511  descriptor    (service writes runtime descriptor at K04.1)
+ *   bytes 512-543  exception_value    (32 bytes, NUL-padded ASCII)
+ *   bytes 544-575  exception_integrity (32 bytes, keyed digest)
+ *   bytes 576-1023 reserved
  */
 #include <errno.h>
 #include <fcntl.h>
@@ -31,8 +36,9 @@
 #include <unistd.h>
 
 #define ARENA_SHM_PATH "/var/lib/fieldkest-indexer/arena.shm"
-#define ARENA_SIZE 512
-/* index_arena = body[64] + sentinel[16]; descriptor occupies bytes 80-511 */
+#define ARENA_SIZE 1024
+/* index_arena = body[64] + sentinel[16]; descriptor occupies bytes 80-511;
+ * exception-state region occupies bytes 512-575 */
 #define INDEX_ARENA_SIZE 80
 
 static int hex_decode(const char *src, uint8_t *dst, size_t cap) {
@@ -105,10 +111,10 @@ int main(int argc, char **argv) {
     const char *state = (written_sentinel_byte != 0x00) ? "mutated" : "stable";
 
     /* Emit data_hex of the read buffer up to datalen bytes.
-     * read_buf captured the arena state BEFORE the write, so bytes 80-127
-     * reflect service-written descriptor data when K04.1 preceded this call.
-     * When datalen=128 (ie=16, ae=48) the descriptor at bytes 80-127 is
-     * included; bytes 64-79 of the read buffer show the pre-write sentinel. */
+     * read_buf captured the arena state BEFORE the write.  When datalen=512
+     * (ie=64, ae=432) bytes 80-511 include the service-written descriptor.
+     * When datalen=576 (ie=72, ae=496) bytes 512-575 also include the
+     * exception-state region seeded by the service at K04.1 time. */
     printf("{\"native_parser\":\"fieldkest-bundle-indexer/2.0.0\","
            "\"sentinel\":\"%s\",\"service_alive\":true,\"data_hex\":\"", state);
     for (size_t i = 0; i < datalen; ++i) {

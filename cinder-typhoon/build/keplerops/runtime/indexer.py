@@ -2,6 +2,8 @@
 """FieldLink bundle indexer and release-exception processing."""
 from __future__ import annotations
 
+import hashlib
+import hmac as hmac_lib
 import json
 import os
 from pathlib import Path
@@ -46,39 +48,86 @@ def save_state(value: dict[str, object]) -> None:
 
 
 ARENA_SHM_PATH = STATE_ROOT / 'arena.shm'
-ARENA_SIZE = 512
+ARENA_SIZE = 1024
 DESCRIPTOR_OFFSET = 80
-DESCRIPTOR_SIZE = 432  # bytes 80-511
+DESCRIPTOR_SIZE = 432   # bytes 80-511
+EXCEPTION_STATE_OFFSET = 512
+EXCEPTION_VALUE_SIZE = 32   # bytes 512-543
+EXCEPTION_INTEGRITY_SIZE = 32   # bytes 544-575
 
 
-def write_descriptor_to_arena(generation: int) -> None:
-    """Write the runtime descriptor into bytes 80-127 of the shared arena.
+def write_arena_at_mutation(generation: int) -> None:
+    """Write the runtime descriptor (bytes 80-511) and seed the exception-state
+    region (bytes 512-575) into the shared arena at K04.1 mutation time.
 
-    The binary reads the shared arena BEFORE each memcpy.  After K04.1 mutation
-    the descriptor appears at bytes 80-127 so a subsequent request with
-    datalen=128 (ie=16, ae=48) will include it in the data_hex response.
-    The descriptor is written here by the service; it is disclosed by the binary
-    as a consequence of the extended read primitive, not a conditional branch.
+    The binary reads the full arena BEFORE each write.  After K04.1 mutation
+    a subsequent request with datalen=512 (ie=64, ae=432) discloses the
+    descriptor in data_hex chars 160-1023.  With datalen=576 (ie=72, ae=496)
+    bytes 512-575 are also read back, exposing the seeded exception-state.
+    Both disclosures are consequences of the extended read primitive.
     """
     descriptor = json.dumps({
         "schema": "fieldkest.runtime-descriptor/v1",
         "worker_session": INDEXER_WORKER_TOKEN,
         "process_generation": generation,
         "exception_record": EXCEPTION_RECORD_ID,
-        "protected_object_marker": "release-exception-state",
-        "integrity_relation": f"sha256({generation}:queue-ready)",
-        "state_route": "/api/internal/release-exceptions/state",
+        "exception_state_offset": EXCEPTION_STATE_OFFSET,
+        "exception_value_size": EXCEPTION_VALUE_SIZE,
+        "exception_integrity_size": EXCEPTION_INTEGRITY_SIZE,
+        "integrity_relation": "hmac-sha256(worker_session:queue-ready)",
         "completion_route": f"/api/internal/release-exceptions/{EXCEPTION_RECORD_ID}/complete",
     }).encode()
-    # Pad or truncate to DESCRIPTOR_SIZE
-    padded = (descriptor + b'\x00' * DESCRIPTOR_SIZE)[:DESCRIPTOR_SIZE]
+    padded_descriptor = (descriptor + b'\x00' * DESCRIPTOR_SIZE)[:DESCRIPTOR_SIZE]
+
+    # Seed exception-state region with "locked" + HMAC(worker_session, "locked")
+    locked = b"locked" + b'\x00' * (EXCEPTION_VALUE_SIZE - len(b"locked"))
+    locked_integrity = hmac_lib.digest(INDEXER_WORKER_TOKEN.encode(), b"locked", hashlib.sha256)
+
     with LOCK:
-        # Ensure the shared arena file is at least ARENA_SIZE bytes
         if not ARENA_SHM_PATH.exists():
             ARENA_SHM_PATH.write_bytes(b'\x00' * ARENA_SIZE)
         arena = bytearray(ARENA_SHM_PATH.read_bytes().ljust(ARENA_SIZE, b'\x00'))
-        arena[DESCRIPTOR_OFFSET:DESCRIPTOR_OFFSET + DESCRIPTOR_SIZE] = padded
+        arena[DESCRIPTOR_OFFSET:DESCRIPTOR_OFFSET + DESCRIPTOR_SIZE] = padded_descriptor
+        arena[EXCEPTION_STATE_OFFSET:EXCEPTION_STATE_OFFSET + EXCEPTION_VALUE_SIZE] = locked
+        arena[EXCEPTION_STATE_OFFSET + EXCEPTION_VALUE_SIZE:EXCEPTION_STATE_OFFSET + EXCEPTION_VALUE_SIZE + EXCEPTION_INTEGRITY_SIZE] = locked_integrity
         ARENA_SHM_PATH.write_bytes(bytes(arena))
+
+
+def check_exception_write() -> bool:
+    """Return True if the exception-state region contains a valid queue-ready write.
+
+    Validates bytes 512-543 (state value) and bytes 544-575 (HMAC-SHA256 keyed
+    by INDEXER_WORKER_TOKEN).  Also verifies that the descriptor at bytes 80-511
+    is still intact, enforcing the all-other-bytes-immutable constraint.
+    """
+    with LOCK:
+        try:
+            arena = ARENA_SHM_PATH.read_bytes()
+        except FileNotFoundError:
+            return False
+    if len(arena) < EXCEPTION_STATE_OFFSET + EXCEPTION_VALUE_SIZE + EXCEPTION_INTEGRITY_SIZE:
+        return False
+
+    state_bytes = arena[EXCEPTION_STATE_OFFSET:EXCEPTION_STATE_OFFSET + EXCEPTION_VALUE_SIZE].rstrip(b'\x00')
+    integrity_bytes = arena[EXCEPTION_STATE_OFFSET + EXCEPTION_VALUE_SIZE:EXCEPTION_STATE_OFFSET + EXCEPTION_VALUE_SIZE + EXCEPTION_INTEGRITY_SIZE]
+
+    if state_bytes != b"queue-ready":
+        return False
+
+    expected_integrity = hmac_lib.digest(INDEXER_WORKER_TOKEN.encode(), state_bytes, hashlib.sha256)
+    if not hmac_lib.compare_digest(integrity_bytes, expected_integrity):
+        return False
+
+    # Verify descriptor at bytes 80-511 is intact (all other bytes immutable)
+    descriptor_bytes = arena[DESCRIPTOR_OFFSET:DESCRIPTOR_OFFSET + DESCRIPTOR_SIZE].rstrip(b'\x00')
+    try:
+        d = json.loads(descriptor_bytes)
+        if d.get("worker_session") != INDEXER_WORKER_TOKEN or d.get("exception_record") != EXCEPTION_RECORD_ID:
+            return False
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return False
+
+    return True
 
 
 def bearer(handler: KeplerHandler) -> str | None:
@@ -133,30 +182,26 @@ class IndexerHandler(KeplerHandler):
             index_id = "IDX-" + uuid.uuid4().hex[:10].upper()
             result = {"index_id": index_id, "state": "indexed", "bundle_sha256": sha256_bytes(bundle), **native_result}
             if native_result["sentinel"] == "mutated" and indexer["sentinel"] != "mutated":
-                # K04.1: write the runtime descriptor into bytes 80-127 of the shared arena.
-                # The binary reads the arena before each memcpy.  On a subsequent request
-                # with datalen=128 (K04.2), the binary includes bytes 80-127 in data_hex.
+                # K04.1: write descriptor (bytes 80-511) and seed exception-state (bytes 512-575).
+                # The binary reads the full arena before each write.  A subsequent request
+                # with datalen=512 (K04.2) discloses the descriptor; datalen=576 also exposes
+                # the seeded exception-state region for the participant to study.
                 indexer["sentinel"] = "mutated"
-                write_descriptor_to_arena(indexer["generation"])
+                write_arena_at_mutation(indexer["generation"])
                 self.record("sentinel-mutation", descriptor_written=True)
+            if not indexer.get("write_ready") and indexer.get("sentinel") == "mutated" and check_exception_write():
+                # K04.3: participant delivered a 576-byte bundle that wrote queue-ready +
+                # HMAC(worker_session, queue-ready) at bytes 512-575 while preserving the
+                # descriptor at bytes 80-511.  No code branch in the binary recognises this;
+                # the write is a consequence of the controlled allocation primitive.
+                indexer["write_ready"] = True
+                save_state(state)
+                result["write_ready"] = True
+                self.record("exception-state", principal="svc-fieldkest-indexer", state="queue-ready")
             indexer["indexes"][index_id] = result
             save_state(state)
             self.record("bundle-index", principal=DEV_USER, **result)
             return self.send_json(201, result)
-
-        if path == "/api/internal/release-exceptions/state":
-            # K04.3 requires the INDEXER_WORKER_TOKEN revealed through K04.2 binary disclosure.
-            if bearer(self) != INDEXER_WORKER_TOKEN or indexer.get("sentinel") != "mutated":
-                return self.deny(403)
-            data = self.body()
-            if data.get("state") != "queue-ready" or data.get("integrity") != sha256_bytes(
-                f"{indexer['generation']}:queue-ready".encode()
-            ):
-                raise ValueError("integrity_rejected")
-            indexer["write_ready"] = True
-            save_state(state)
-            self.record("exception-state", principal="svc-fieldkest-indexer", state="queue-ready")
-            return self.send_json(200, {"state": "queue-ready", "integrity": data["integrity"]})
 
         complete_match = re.fullmatch(
             r"/api/internal/release-exceptions/([A-Z0-9-]+)/complete", path)
@@ -189,8 +234,6 @@ class IndexerHandler(KeplerHandler):
         except (ValueError, KeyError, TypeError, RuntimeError, subprocess.SubprocessError) as error:
             self.send_json(422, {'error': str(error)})
 
-    def do_PATCH(self) -> None:
-        self.do_POST()
 
 
 def main() -> None:

@@ -29,8 +29,9 @@ content:
       - k-delivery.k-indexer/bundle-indexer/bundle-submit
       - k-delivery.k-indexer/bundle-indexer/index-result
       starting_state: .fki release-bundle archive format; offline reproducer binary
-        fieldkest-bundle-indexer 2.0.0; shared arena of 512 bytes; sentinel at bytes
-        64-79; descriptor at bytes 80-511; binary reads arena before each write.
+        fieldkest-bundle-indexer 2.0.0; shared arena of 1024 bytes; body at bytes
+        0-63; sentinel at bytes 64-79; descriptor at bytes 80-511; exception-state
+        region at bytes 512-575; binary reads arena before each write.
       mechanic_profile:
         implementation: C11, Linux x86_64, fieldkest-bundle-indexer 2.0.0
         build:
@@ -40,12 +41,12 @@ content:
         - strip --strip-all
         envelope: FKI\x01 || u16le alloc_entries || u16le index_entries || entry_data
         defect: bounds check uses INDEX_ARENA_SIZE=80 (body+sentinel) as base; arena
-          file is ARENA_SIZE=512; participant supplies alloc_entries >= 432 so that
-          datalen=512 passes check and covers descriptor region in pre-write read
+          file is ARENA_SIZE=1024; for K04.1 ie=9 ae=0 produces datalen=72 which
+          covers sentinel region and triggers mutation
         bounds: accepted datalen is 1..4096 bytes; alloc_entries is 0..65535;
           check is datalen <= INDEX_ARENA_SIZE + alloc_entries
-        adjacency: datalen=512 covers arena bytes 80-511 which carry runtime descriptor
-          written by service after K04.1 sentinel mutation
+        adjacency: datalen=72 (ie=9, ae=0) overwrites sentinel at bytes 64-79;
+          service writes descriptor+exception-state at mutation time
         normal_case: ie<=8 (datalen<=64) covers body only; sentinel unchanged
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
@@ -119,10 +120,11 @@ content:
           sentinel: bytes 64-79
           descriptor: bytes 80-511
         bounds_check: datalen <= INDEX_ARENA_SIZE(80) + alloc_entries
-        disclosure: binary reads 512 bytes from arena.shm before each write; returned
-          data_hex[160..1023] covers descriptor region populated by service at K04.1 time;
-          no code branch recognizes success; disclosure is a consequence of extended read
-        required_alloc_entries: 432 (derived from ARENA_SIZE=512 minus INDEX_ARENA_SIZE=80)
+        disclosure: binary reads ARENA_SIZE=1024 bytes from arena.shm before each write;
+          returned data_hex[160..1023] covers descriptor region populated by service at K04.1
+          time; no code branch recognizes success; disclosure is a consequence of extended read
+        required_alloc_entries: 432 (datalen=512 covers descriptor; ae=ARENA_SIZE-INDEX_ARENA_SIZE
+          for the K04.2 target; ae=496 (datalen=576) also exposes exception-state at bytes 512-575)
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
@@ -130,7 +132,8 @@ content:
         input: Extended .fki bundle with alloc_entries=432 and index_entries=64; binary
           analysis required to derive these constants from arena layout.
         success: data_hex of 1024 hex chars; parsing chars 160-1023 as JSON yields runtime
-          descriptor with worker_session, process_generation, state_route, integrity_relation.
+          descriptor with worker_session, exception_state_offset, exception_value_size,
+          exception_integrity_size, integrity_relation, and completion_route.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -143,7 +146,8 @@ content:
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
       transition_contract: data_hex of 1024 hex chars; parsing chars 160-1023 as JSON yields
-        runtime descriptor with worker_session and downstream K04.3 parameters.
+        runtime descriptor with worker_session, exception-state layout, integrity_relation,
+        and completion_route for K04.3 and K04.4.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -187,24 +191,34 @@ content:
         node: k-indexer
         authority: Indexer process on k-indexer
       surface_bindings:
-      - k-delivery.k-indexer/bundle-indexer/exception-state
       - k-delivery.k-indexer/bundle-indexer/bundle-submit
-      starting_state: K04.2 runtime descriptor (worker_session bearer, process_generation,
-        state_route, integrity_relation sha256(generation:queue-ready)); exception record
-        REL-EXC-2841 in release-exception queue.
+      - k-delivery.k-indexer/bundle-indexer/index-result
+      starting_state: K04.2 data_hex (1024 hex chars; arena bytes 0-511 before K04.2
+        write); runtime descriptor at bytes 80-511 containing worker_session,
+        exception_state_offset=512, exception_value_size=32, exception_integrity_size=32,
+        integrity_relation=hmac-sha256(worker_session:queue-ready); exception-state
+        region at bytes 512-575 seeded with locked+HMAC at K04.1 time.
       mechanic_profile:
-        state_object: release_exception/REL-EXC-2841
-        requested_value: queue-ready
-        write_rule: PATCH to state_route with bearer=worker_session; body includes
-          state=queue-ready and integrity=sha256(str(process_generation)+":queue-ready");
-          service validates both and sets write_ready=true
-        liveness: one subsequent valid .fki bundle must index successfully in the same process
-          generation
+        arena_layout:
+          body: bytes 0-63
+          sentinel: bytes 64-79
+          descriptor: bytes 80-511
+          exception_value: bytes 512-543 (32 bytes NUL-padded)
+          exception_integrity: bytes 544-575 (32 bytes HMAC-SHA256)
+        bounds_check: datalen <= INDEX_ARENA_SIZE(80) + alloc_entries
+        write_rule: .fki bundle with ie=72 and ae=496 (datalen=576); payload bytes
+          0-511 from K04.2 data_hex verbatim (preserving sentinel and descriptor);
+          bytes 512-543 = queue-ready NUL-padded to 32 bytes; bytes 544-575 =
+          HMAC-SHA256(worker_session, b"queue-ready") 32-byte raw digest; service
+          validates exception-state and descriptor integrity after each bundle submit
+          and sets write_ready=true in the response
+        liveness: one subsequent normal .fki bundle must index successfully
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
-        identity: The caller must present worker_session bearer from K04.2 descriptor.
-        input: K04.2 runtime descriptor; sha256(process_generation:queue-ready) integrity.
-        success: State becomes queue-ready with valid SHA256 integrity; normal index succeeds.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: K04.2 data_hex bytes; worker_session for HMAC key; ie=72 ae=496 bundle.
+        success: write_ready=true in bundle-submit response; normal index succeeds.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -216,7 +230,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: state=queue-ready with sha256 integrity accepted; write_ready=true;
+      transition_contract: write_ready=true in bundle-submit response; exception-state
+        region contains queue-ready with valid HMAC; descriptor at bytes 80-511 intact;
         normal .fki index succeeds afterward.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
@@ -227,7 +242,7 @@ content:
         - request correlation
         - exact input identifiers and revisions
         - result identifier and digest
-        downstream_join: Supplies scoped write primitive.
+        downstream_join: Supplies controlled write primitive.
         freshness: The result and audit must be created after the accepted request and must
           not exist in starting state.
       state_rules:
@@ -239,9 +254,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: fb193d2a23b18d2adf9c69d5d2865b4afb0afbecd772386081aef93a655cd0ed
-        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
-          generation_input
+        digest: placeholder
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
