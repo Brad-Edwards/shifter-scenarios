@@ -57,9 +57,12 @@ def seed() -> None:
         api("/api/method/frappe.share.add", {"doctype": doctype, "name": name, "user": EMAIL,
             "read": 1, "write": write, "share": 0, "notify": 0})
     order = find("Purchase Order", {"title": "PO-VEY-4417", "supplier": "Veybridge Field Services"})
-    insert("File", {"file_name": "ANN-4417-R2.md", "attached_to_doctype": "Purchase Order", "attached_to_name": order["name"]}, {
+    attachment = insert("File", {"file_name": "ANN-4417-R2.md", "attached_to_doctype": "Purchase Order", "attached_to_name": order["name"]}, {
         "is_private": 1, "content": (RECORDS / "ANN-4417-R2.md").read_text(),
     })
+    api("/api/method/frappe.share.add", {"doctype": "File", "name": attachment["name"], "user": EMAIL,
+        "read": 1, "write": 0, "share": 0, "notify": 0})
+    attachment = api(f'/api/resource/File/{quote(attachment["name"], safe="")}')["data"]
 
     if not ocs("GET", "groups/Veybridge", accepted=(200, 404)):
         ocs("POST", "groups", {"groupid": "Veybridge"})
@@ -98,6 +101,13 @@ def seed() -> None:
         task = find("Task", {"project": related_project["name"], "subject": "Complete inspection and record findings"})
         writer.writerow((case, task["name"], related_project["name"], "Inspection findings"))
     upload("Veybridge handover/service-record-index.csv", register.getvalue().encode())
+    order_documents = (
+        "# Supplier order documents\n\n"
+        f'Order: PO-VEY-4417  \nERP reference: {order["name"]}  \nSupplier: Veybridge Field Services\n\n'
+        f'- [ANN-4417-R2 — Work-order annex](https://suppliers.arwc.test{attachment["file_url"]})\n\n'
+        "The annex is retained with the supplier order. Sign in to the supplier account to read the private copy.\n"
+    )
+    upload("Veybridge handover/order-documents.md", order_documents.encode())
     print(json.dumps({"project": project["name"], "supplier_handback": handback["name"],
                       "engineering_review": restricted["name"], "denied_review": other["name"]}))
     print("Native supplier documents, attachments and per-record maintenance shares imported")
