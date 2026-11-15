@@ -34,6 +34,7 @@ HANDOVER_EVIDENCE = ROOT / "handover" / "access-grant.json"
 ARTIFACTS = ROOT / "artifacts"
 WORKFLOW_PATH = ROOT / "workflow" / "AWF-CRR-229-R4.json"
 SHARE_URL_PATH = ROOT / "workflow" / "contract-share-url"
+DB_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/db-reader.json")
 BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/archive-source.json")
 IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/archive-source.json")
 DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/archive-lineage.json")
@@ -73,6 +74,75 @@ def _load_contract_webdav_url() -> str:
             "run seed-archive before starting the archive service"
         )
     return SHARE_URL_PATH.read_text(encoding="utf-8").strip()
+
+
+def _load_db_state() -> dict | None:
+    """Load PostgreSQL query credentials if available."""
+    if not DB_STATE_PATH.exists():
+        return None
+    try:
+        state = json.loads(DB_STATE_PATH.read_text(encoding="utf-8"))
+        if state.get("host") and state.get("user") and state.get("password"):
+            return state
+    except (OSError, json.JSONDecodeError):
+        pass
+    return None
+
+
+def archive_db_query(organizational_unit: str) -> tuple[dict | None, str, str]:
+    """Execute a real PostgreSQL query using the OU from the client certificate.
+
+    Returns (record, query_string, error_code) where error_code is '' on success,
+    'write' if a write keyword was detected, or 'forbidden' if no matching record.
+    The query is built without parameterization so the OU is injectable.
+    """
+    db = _load_db_state()
+    if db is None:
+        return None, "", "unavailable"
+    query = (
+        "SELECT record_id, revision, workflow, attachment, classification "
+        "FROM archive.records WHERE organizational_unit = '"
+        + organizational_unit + "'"
+    )
+    if re.search(
+        r"\b(INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|GRANT|REVOKE|TRUNCATE|EXECUTE)\b",
+        query, re.IGNORECASE,
+    ):
+        return None, query, "write"
+    try:
+        import psycopg2
+        conn = psycopg2.connect(
+            host=db["host"], dbname=db["database"],
+            user=db["user"], password=db["password"],
+            connect_timeout=5,
+        )
+        conn.set_session(readonly=True, autocommit=True)
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            rows = cursor.fetchall()
+        conn.close()
+    except Exception as error:
+        return None, query, f"db_error:{error}"
+    if not rows:
+        return None, query, "forbidden"
+    # If multiple rows, prefer AR-CRR-229 (injection result) over ordinary record.
+    for row in rows:
+        if row[0] == "AR-CRR-229":
+            record = {
+                "record_id": row[0], "revision": row[1], "workflow": row[2],
+                "attachment": row[3], "classification": row[4],
+            }
+            return record, query, ""
+    # Return the first (ordinary) row.
+    row = rows[0]
+    # Only return records that belong to the archive's declared scope.
+    if row[0] not in ("AR-MAINT-017", "AR-CRR-229"):
+        return None, query, "forbidden"
+    record = {
+        "record_id": row[0], "revision": row[1], "workflow": row[2],
+        "attachment": row[3], "classification": row[4],
+    }
+    return record, query, ""
 
 
 WORKFLOW = _load_workflow()
@@ -677,6 +747,21 @@ class Handler(BaseHTTPRequestHandler):
         if not self.authorized():
             return
         path = urlsplit(self.path).path
+        if path == "/api/archived-queries/current":
+            # Serve the current enrollment token for archive query enrollment.
+            # The archive service manages this token; the workflow record is in Nextcloud.
+            state = load_state()
+            if state["enrollment_consumed"]:
+                token, digest = new_enrollment()
+                state["enrollment_token"] = token
+                state["enrollment_token_sha256"] = digest
+                state["enrollment_consumed"] = False
+                save_state(state)
+            self.send_json(200, {
+                "enrollment_token": state["enrollment_token"],
+                "profile": "ArchiveSubmitter",
+            })
+            return
         if path == "/api/sequencer-specs/current":
             state = load_state()
             state["sequencer_descriptor_observed"] = True
@@ -1169,30 +1254,22 @@ class Handler(BaseHTTPRequestHandler):
         if not organizational_unit:
             self.send_json(403, {"error": "ArchiveSubmitter client identity required"})
             return
-        query = (
-            "MATCH (i:Identity {ou:'" + organizational_unit +
-            "'})-[:CAN_READ]->(r:ArchiveRecord) RETURN r"
-        )
-        if re.search(r"\b(CREATE|DELETE|SET|MERGE|REMOVE|DROP)\b", query, re.IGNORECASE):
+        record, backend_query, error_code = archive_db_query(organizational_unit)
+        if error_code == "write":
             self.send_json(409, {"error": "archive backend is read only"})
             return
-        if organizational_unit == "MaintenanceArchive":
-            self.accepted("archive-identity-query/query", CALLER_RECORD,
-                          "corporate-reader-principal", extra={"backend_query": query})
-            return
-        protected = re.search(
-            r"\bOR\s+r\.id\s*=\s*['\"]AR-CRR-229['\"]", organizational_unit, re.IGNORECASE,
-        )
-        other_record = re.search(r"\b(?:r\.id|record_id)\s*=\s*['\"]([^'\"]+)", organizational_unit,
-                                 re.IGNORECASE)
-        if not protected or (other_record and other_record.group(1) != "AR-CRR-229"):
+        if error_code in ("forbidden", "unavailable", "") and record is None:
             self.send_json(403, {"error": "identity has no matching archive record"})
             return
-        state = load_state()
-        state["protected_record_observed"] = True
-        save_state(state)
-        self.accepted("archive-identity-query/query", PROTECTED_RECORD,
-                      "corporate-reader-principal", extra={"backend_query": query})
+        if error_code.startswith("db_error:"):
+            self.send_json(503, {"error": "archive backend unavailable"})
+            return
+        if record and record["record_id"] == "AR-CRR-229":
+            state = load_state()
+            state["protected_record_observed"] = True
+            save_state(state)
+        self.accepted("archive-identity-query/query", record,
+                      "corporate-reader-principal", extra={"backend_query": backend_query})
 
     def helper(self, request: dict[str, object]) -> None:
         state = load_state()

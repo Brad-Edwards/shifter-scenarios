@@ -164,12 +164,21 @@ services:
       read_only: true
       bind:
         create_host_path: false
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/db-reader.json
+      target: /run/arwc-archive-workflow/db-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
     networks:
       corporate:
         ipv4_address: 10.77.60.50
         aliases:
         - a-archive
         - retained-archive.arwc.test
+      archive_db:
+        aliases:
+        - a-archive
   a-data-bridge:
     build:
       context: ../..
@@ -212,6 +221,9 @@ networks:
   native_api_exchange:
     external: true
     name: cinder-arwc-native_api_exchange
+  archive_db:
+    external: true
+    name: cinder-arwc-native_data
   handover_supervisory:
     external: true
     name: arwc-ot-compat_supervisory

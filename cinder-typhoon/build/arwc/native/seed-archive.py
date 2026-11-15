@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
-"""Seed the ARWC archive workflow contract into Nextcloud and write reader credentials.
+"""Seed the ARWC archive workflow and query database.
 
-Creates a service account for the archive reader, creates the Corporate Records/Archive
-folder, uploads the archive workflow contract, and writes the credentials to
-.operator/archive-workflow/nc-reader.json for the archive container to read at startup.
+Creates:
+- A Nextcloud service account and authenticated read-only file share for the
+  archive workflow contract (AWF-CRR-229-R4.json).
+- A PostgreSQL archive.records table with AR-MAINT-017 and AR-CRR-229 rows
+  and a read-only archive_query role for the archive service.
+
+Writes:
+- .operator/archive-workflow/nc-reader.json: Nextcloud reader credentials.
+- .operator/archive-workflow/db-reader.json: PostgreSQL query credentials.
 """
 from __future__ import annotations
 
@@ -159,8 +165,8 @@ def main() -> None:
                    }).encode(), accepted=(200, 100))
         print(f"Created authenticated read-only share with {READER_USERNAME}")
 
-    # Write operator state: reader credentials only. No public-share fields.
-    state = {
+    # Write operator state: Nextcloud reader credentials.
+    nc_state = {
         "reader_username": READER_USERNAME,
         "reader_password": reader_password,
         "documents_url": DOCUMENTS_URL,
@@ -168,11 +174,11 @@ def main() -> None:
     }
     try:
         CREDENTIALS_OUT.parent.mkdir(parents=True, exist_ok=True)
-        CREDENTIALS_OUT.write_text(json.dumps(state, indent=2), encoding="utf-8")
+        CREDENTIALS_OUT.write_text(json.dumps(nc_state, indent=2), encoding="utf-8")
         CREDENTIALS_OUT.chmod(0o600)
-        print(f"Wrote archive operator state to {CREDENTIALS_OUT}")
+        print(f"Wrote Nextcloud credentials to {CREDENTIALS_OUT}")
     except OSError:
-        print("ARCHIVE_STATE_JSON=" + json.dumps(json.dumps(state)))
+        print("ARCHIVE_STATE_JSON=" + json.dumps(json.dumps(nc_state)))
 
     print("Archive workflow seeded successfully")
 

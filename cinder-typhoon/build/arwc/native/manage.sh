@@ -93,6 +93,49 @@ case "$action" in
     "${compose[@]}" --profile seed run --rm seed-identity
     ;;
   seed-archive)
+    # Generate a password for the archive query role.
+    archive_db_pass=$(openssl rand -hex 24)
+    # Seed archive.records table and archive_query role in corporate-db.
+    "${compose[@]}" exec -T --user postgres corporate-db psql -U corporate -d planning \
+        --no-psqlrc --set ON_ERROR_STOP=1 <<SQL
+CREATE SCHEMA IF NOT EXISTS archive;
+CREATE TABLE IF NOT EXISTS archive.records (
+    record_id TEXT PRIMARY KEY,
+    revision INTEGER NOT NULL,
+    workflow TEXT,
+    attachment TEXT,
+    organizational_unit TEXT,
+    classification TEXT NOT NULL
+);
+INSERT INTO archive.records (record_id, revision, workflow, attachment, organizational_unit, classification)
+VALUES
+    ('AR-MAINT-017', 2, 'AWF-CRR-229-R4', 'ARC-229-A', 'MaintenanceArchive', 'maintenance archive'),
+    ('AR-CRR-229', 4, 'AWF-CRR-229-R4', 'ARC-229-A', 'CairnReachArchive', 'retained corporate archive')
+ON CONFLICT (record_id) DO UPDATE SET
+    revision = EXCLUDED.revision, workflow = EXCLUDED.workflow,
+    attachment = EXCLUDED.attachment, organizational_unit = EXCLUDED.organizational_unit,
+    classification = EXCLUDED.classification;
+DO \$\$ BEGIN
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'archive_query') THEN
+        EXECUTE 'CREATE ROLE archive_query LOGIN PASSWORD ''${archive_db_pass}''';
+    ELSE
+        EXECUTE 'ALTER ROLE archive_query LOGIN PASSWORD ''${archive_db_pass}''';
+    END IF;
+END \$\$;
+GRANT USAGE ON SCHEMA archive TO archive_query;
+GRANT SELECT ON archive.records TO archive_query;
+SQL
+    # Write DB credentials for the archive container.
+    # The golden ARWC compose reads from ../arwc/.operator/archive-workflow/.
+    for opdir in .operator ../arwc/.operator; do
+        mkdir -p "${opdir}/archive-workflow"
+        chmod 0755 "${opdir}/archive-workflow"
+        printf '{"host":"corporate-db","database":"planning","user":"archive_query","password":"%s"}\n' \
+            "${archive_db_pass}" > "${opdir}/archive-workflow/db-reader.json"
+        chmod 0644 "${opdir}/archive-workflow/db-reader.json"
+    done
+    echo "PostgreSQL archive.records seeded"
+    # Seed Nextcloud workflow and reader credentials.
     "${compose[@]}" --profile seed run --rm seed-archive
     ;;
   reset)

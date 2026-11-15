@@ -62,6 +62,7 @@ services:
     environment:
       ARWC_OPERATOR_DIR: /operator
     networks: [data]
+    secrets: [corporate_db_password]
     volumes:
       - ./seed-archive.py:/seed/seed-archive.py:ro
       - ./.operator:/operator
