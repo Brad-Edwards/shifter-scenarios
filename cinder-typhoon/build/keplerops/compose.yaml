@@ -551,6 +551,48 @@ services:
     networks:
       foundation_data: {ipv4_address: 10.77.56.22}
 
+  fieldlink-support-db:
+    image: mariadb:11.8@sha256:d36f18d65a0459510b8b0f643b226a6d299e3206486e2b64ff20754a6d291707
+    container_name: cinder-keplerops-support-db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: fieldlink_support
+      MARIADB_USER: fieldlink_support
+      MARIADB_PASSWORD_FILE: /run/fieldlink/support_db_password
+      MARIADB_ROOT_PASSWORD_FILE: /run/fieldlink/mariadb_root_password
+    volumes:
+      - native-support-db:/var/lib/mysql
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/support_db_password:/run/fieldlink/support_db_password:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/mariadb_root_password:/run/fieldlink/mariadb_root_password:ro
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.24}
+
+  fieldlink-support:
+    build:
+      context: ../..
+      dockerfile: build/keplerops/native-workplace/osticket.Dockerfile
+    image: cinder-keplerops/osticket:1.18.4
+    container_name: cinder-keplerops-osticket
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    depends_on:
+      fieldlink-support-db: {condition: service_healthy}
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ost-config.php:/var/www/html/include/ost-config.php
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/support-bootstrap.json:/run/fieldlink/support-bootstrap.json:ro
+    healthcheck:
+      test: [CMD, php, -r, 'require "/var/www/html/include/ost-config.php"; exit(defined("OSTINSTALLED") && OSTINSTALLED ? 0 : 1);']
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.23}
+
   k-identity:
     <<: *service-security
     build:
@@ -774,4 +816,5 @@ volumes:
   native-postgres-data: {name: cinder-keplerops-native-postgres-data}
   native-ca-data: {name: cinder-keplerops-native-ca-data}
   native-kanboard-data: {name: cinder-keplerops-native-kanboard-data}
+  native-support-db: {name: cinder-keplerops-native-support-db}
   native-jenkins-home: {name: cinder-keplerops-native-jenkins-home}

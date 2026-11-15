@@ -60,6 +60,17 @@ def prepare(operator: Path) -> None:
     write(target / 'kanboard_db_password', values['kanboard_db'])
     write(target / 'support_db_password', values['support_db'])
     write(target / 'mariadb_root_password', values['mariadb_root'])
+    write(target / 'support-bootstrap.json', json.dumps({
+        'name': 'FieldKest Support', 'email': 'support@keplerops.test',
+        'fname': 'Support', 'lname': 'Administrator',
+        'admin_email': 'support-admin@keplerops.test', 'username': 'platform-admin',
+        'passwd': values['support_admin'], 'passwd2': values['support_admin'],
+        'prefix': 'ost_', 'dbhost': 'fieldlink-support-db', 'dbname': 'fieldlink_support',
+        'dbuser': 'fieldlink_support', 'dbpass': values['support_db'],
+    }))
+    configuration = target / 'ost-config.php'
+    if not configuration.exists():
+        write(configuration, '')
     sql = []
     for product, password in (('identity', values['identity_db']), ('staff', values['kanboard_db'])):
         role = 'fieldlink_' + product
