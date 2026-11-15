@@ -17,6 +17,32 @@ spec.loader.exec_module(module)
 
 
 class NativePlatformTests(unittest.TestCase):
+    def test_retained_kdc_adds_missing_user_without_rotating_existing_identity(self) -> None:
+        source = ROOT / 'build/keplerops/native-workplace/initialize-kdc.py'
+        kdc_spec = importlib.util.spec_from_file_location('kdc_initialize', source)
+        kdc = importlib.util.module_from_spec(kdc_spec)
+        kdc_spec.loader.exec_module(kdc)
+        existing = {'evan.calderoux@KEPLEROPS.TEST', 'HTTP/staff.keplerops.test@KEPLEROPS.TEST'}
+        calls = []
+        def run(arguments, data=''):
+            calls.append((arguments, data))
+            existing.add('rowan.ito@KEPLEROPS.TEST')
+        with tempfile.TemporaryDirectory() as directory:
+            state = Path(directory)
+            (state / 'krb5kdc').mkdir()
+            (state / 'krb5kdc/principal').touch()
+            (state / '.native-initialization-complete').touch()
+            inputs = state / 'inputs.json'
+            inputs.write_text(json.dumps({'users': {'rowan.ito': 'private-new', 'evan.calderoux': 'private-existing'}}))
+            with patch.object(kdc, 'STATE', state), patch.object(kdc, 'INPUT', inputs), patch.object(kdc, 'run', run), patch.object(kdc.subprocess, 'check_output', side_effect=lambda *a, **kw: '\n'.join(existing)):
+                kdc.initialize()
+                kdc.initialize()
+        self.assertEqual(len(calls), 1)
+        arguments, data = calls[0]
+        self.assertEqual(arguments[-1], 'addprinc rowan.ito@KEPLEROPS.TEST')
+        self.assertNotIn('private-new', ' '.join(arguments))
+        self.assertEqual(data, 'private-new\nprivate-new\n')
+
     def test_interrupted_assistant_setup_completes_membership_without_reset(self) -> None:
         source = ROOT / 'build/keplerops/native-platform/seed-assistant.py'
         assistant_spec = importlib.util.spec_from_file_location('assistant_seed', source)
