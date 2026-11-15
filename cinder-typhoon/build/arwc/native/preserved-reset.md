@@ -34,6 +34,7 @@ for volume in $(cat "$backup/volumes"); do
     cinder-arwc/native-dns:404 -czpf "/backup/$volume.tar.gz" -C /volume .
 done
 tar -czpf "$backup/operator.tar.gz" .operator
+chmod 0600 "$backup"/*.tar.gz
 (cd "$backup" && sha256sum -- *.tar.gz > SHA256SUMS)
 (cd "$backup" && sha256sum --check --quiet SHA256SUMS)
 "${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 420
