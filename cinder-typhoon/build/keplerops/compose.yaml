@@ -705,12 +705,29 @@ services:
     networks:
       foundation_data: {ipv4_address: 10.77.56.41}
 
+  fieldlink-assistant-init:
+    image: mintplexlabs/anythingllm:1.19.0@sha256:daf5a6ae9d363ed578e7d41e2d0668c7eaa604bd90b0ff27435f893b0906833e
+    container_name: cinder-keplerops-anythingllm-init
+    user: '0:0'
+    entrypoint: [/bin/sh, /run/fieldlink/assistant-storage.sh]
+    restart: 'no'
+    network_mode: none
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE]
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - native-assistant-data:/app/server/storage
+      - ./native-platform/assistant-storage.sh:/run/fieldlink/assistant-storage.sh:ro
+
   fieldlink-assistant:
     image: mintplexlabs/anythingllm:1.19.0@sha256:daf5a6ae9d363ed578e7d41e2d0668c7eaa604bd90b0ff27435f893b0906833e
     container_name: cinder-keplerops-anythingllm
     mem_limit: 2g
     cpus: 1
     restart: unless-stopped
+    depends_on:
+      fieldlink-assistant-init:
+        condition: service_completed_successfully
     security_opt: [no-new-privileges:true]
     env_file:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/anythingllm.env

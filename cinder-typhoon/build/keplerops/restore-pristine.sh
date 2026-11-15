@@ -39,7 +39,7 @@ docker compose up -d --no-deps --wait --wait-timeout 180 \
 docker inspect --format '{{range .HostConfig.ExtraHosts}}{{println .}}{{end}}' cinder-keplerops-connector | grep -Fxq 'fieldlink.arwc.test:10.77.59.11'
 bash native-workplace/bootstrap-staff.sh
 bash native-workplace/bootstrap-support.sh
-docker compose up -d --no-deps --wait --wait-timeout 180 fieldlink-assistant
+docker compose up -d --wait --wait-timeout 180 fieldlink-assistant
 bash native-platform/import-model.sh
 bash native-platform/cache-embedder.sh
 python3 native-platform/seed-assistant.py --operator-dir "$operator"
