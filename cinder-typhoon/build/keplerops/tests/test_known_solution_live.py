@@ -31,6 +31,7 @@ from __future__ import annotations
 import base64
 import gzip
 import hashlib
+import html
 import io
 import inspect
 import json
@@ -305,8 +306,21 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             task = rowan("curl", "-sS", "--cacert", CA, "-b", cookie_jar,
                          f"https://staff.keplerops.test/task/{task_id}").stdout
             self.assertIn("fieldlink-7.4.2-review.md", task)
+            search = rowan(
+                "curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                "https://staff.keplerops.test/?controller=SearchController&action=index&search=reference%3AREL-FLK-7.4.2-09",
+            ).stdout
+            self.assertIn("FieldLink 7.4.2 release review", search)
+            download_href = html.unescape(re.search(
+                rf'href="([^"]*/task/{task_id}/file/\d+/download/[^"]+)"', task,
+            ).group(1))
+            attachment = rowan(
+                "curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                urljoin("https://staff.keplerops.test", download_href),
+            ).stdout
+            self.assertIn("REL-FLK-7.4.2-09", attachment)
             for reference in ("REV-219", "REV-224", "REV-231"):
-                self.assertIn(reference, task)
+                self.assertIn(reference, attachment)
             self.evidence["release"] = "REL-FLK-7.4.2-09"
 
         with self.subTest(card="K01.4 produce an inspection summary with the local helper"):
