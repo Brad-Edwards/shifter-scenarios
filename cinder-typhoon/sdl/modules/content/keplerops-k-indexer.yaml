@@ -277,23 +277,28 @@ content:
         authority: Indexer worker and queue on k-indexer
       surface_bindings:
       - k-delivery.k-indexer/bundle-indexer/complete-exception
-      starting_state: Restricted worker identity; encrypted queue dossier REX-2026-091;
-        one internal complete_exception(record_id) routine.
+      starting_state: K04.3 write_ready=true; restricted worker identity (worker_session
+        bearer); exception record REL-EXC-2841 in release-exception queue; completion_route
+        from K04.2 descriptor; K04.3 HMAC value HMAC-SHA256(worker_session,"queue-ready").
       mechanic_profile:
-        routine: complete_exception(record_id)
-        allowed_record: REX-2026-091
-        authority: the routine executes only as the restricted indexer worker and returns
-          the one decrypted queue dossier
-        exclusions: no shell, arbitrary file read, dynamic symbol selection, record enumeration,
-          or caller-selected command
+        routine: recover_exception_queue
+        allowed_record: REL-EXC-2841
+        authority: bearer=worker_session; body routine=recover_exception_queue and
+          generation=process_generation; write_ready=true required
+        response: encrypted_record (hex ciphertext of dossier JSON) and key_relation
+          (sha256-ctr key derivation formula); plaintext dossier not in any response
+        decryption: k43_hmac=HMAC-SHA256(worker_session,"queue-ready"); derived_key=
+          SHA256(k43_hmac+":dossier-key"); sha256-ctr block i keystream=SHA256(derived_key
+          +big_endian_uint32(i)); XOR each 32-byte ciphertext block with keystream
+        exclusions: no shell, arbitrary file read, dynamic symbol selection, record
+          enumeration, or caller-selected command; no plaintext dossier in any route response
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
-        identity: The caller must present the identity or session obtainable through the
-          declared world state and prerequisites.
-        input: Restricted worker identity; encrypted queue dossier REX-2026-091; one internal
-          complete_exception(record_id) routine.
-        success: Audited invocation under worker identity returns one decrypted dossier;
-          no general command execution.
+        identity: The caller must present worker_session bearer from K04.2 descriptor.
+        input: bearer=worker_session; routine=recover_exception_queue; generation=process_generation;
+          write_ready=true gating; K04.3 HMAC retained from K04.3 controlled write.
+        success: encrypted_record hex in response; participant decrypts to dossier JSON
+          with service_identity and dossier fields using K04.3 HMAC derivation.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -305,8 +310,9 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Audited invocation under worker identity returns one decrypted
-        dossier; no general command execution.
+      transition_contract: Audited invocation under restricted worker identity; response
+        contains encrypted_record and key_relation; participant decrypts using K04.3
+        HMAC to recover service_identity=svc-fieldkest-indexer and dossier=BLD-REL-742.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.

@@ -143,12 +143,16 @@ hints:
     - kind: participant_artifact
       id: work/reproducers/indexer-client.json
   K04.4:
-    h1: Begin with the offline indexer reproducer and its protected runtime service. Start from indexer.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Review the published client document and ordinary records for indexer.keplerops.test. Join the independent
-      records on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: Call the completion_route from the K04.2 descriptor. Use bearer=worker_session, body
+      routine=recover_exception_queue and generation=process_generation. The response contains
+      encrypted_record (hex ciphertext) and key_relation (the decryption formula); write_ready
+      must be True before the call succeeds.
+    h2: The key_relation field names the derivation. Compute the K04.3 HMAC first:
+      HMAC-SHA256(worker_session, b"queue-ready"). Then derive the decryption key:
+      SHA256(k43_hmac_bytes + b":dossier-key"). That 32-byte key drives the counter-mode stream.
+    h3: Decrypt the encrypted_record hex in 32-byte blocks. For each block i (zero-indexed):
+      keystream = SHA256(derived_key + struct.pack(">I", i)); XOR each ciphertext byte with the
+      corresponding keystream byte. The plaintext is a JSON object with service_identity and dossier.
     references:
     - kind: participant_service
       id: indexer.keplerops.test

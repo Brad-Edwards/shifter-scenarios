@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import re
+import struct
 import subprocess
 import threading
 import uuid
@@ -130,6 +131,29 @@ def check_exception_write() -> bool:
     return True
 
 
+_DOSSIER_KEY_RELATION = "sha256-ctr(sha256(hmac-sha256(worker_session:queue-ready)+':dossier-key'))"
+_DOSSIER_PLAINTEXT = json.dumps({
+    "dossier": "BLD-REL-742",
+    "exceptions": ["signer rollover pending", "connector v2 compatibility retained"],
+    "service_identity": "svc-fieldkest-indexer",
+}, separators=(',', ':'), sort_keys=True).encode()
+
+
+def encrypt_record(derived_key: bytes, plaintext: bytes) -> bytes:
+    """SHA256 counter-mode XOR stream cipher.
+
+    For each 32-byte block i: keystream = SHA256(derived_key || big-endian(i)).
+    Participant decrypts by reproducing this keystream from the derived key.
+    """
+    result = bytearray(len(plaintext))
+    for i in range(0, len(plaintext), 32):
+        block = plaintext[i:i + 32]
+        keystream = hashlib.sha256(derived_key + struct.pack(">I", i // 32)).digest()
+        for j, (p, k) in enumerate(zip(block, keystream)):
+            result[i + j] = p ^ k
+    return bytes(result)
+
+
 def bearer(handler: KeplerHandler) -> str | None:
     value = handler.headers.get("Authorization", "")
     return value[7:] if value.startswith("Bearer ") else None
@@ -212,10 +236,19 @@ class IndexerHandler(KeplerHandler):
             data = self.body()
             if data.get("routine") != "recover_exception_queue" or data.get("generation") != indexer["generation"]:
                 raise ValueError("routine_arguments_rejected")
-            value = {"record_id": EXCEPTION_RECORD_ID, "revision": 9,
-                     "service_identity": "svc-fieldkest-indexer", "dossier": "BLD-REL-742",
-                     "exceptions": ["signer rollover pending", "connector v2 compatibility retained"]}
-            self.record("exception-complete", **value)
+            # Derive the dossier encryption key from the K04.3 HMAC.
+            # Participant must reproduce this derivation to decrypt encrypted_record.
+            k43_hmac = hmac_lib.digest(INDEXER_WORKER_TOKEN.encode(), b"queue-ready", hashlib.sha256)
+            derived_key = hashlib.sha256(k43_hmac + b":dossier-key").digest()
+            ciphertext = encrypt_record(derived_key, _DOSSIER_PLAINTEXT)
+            value = {
+                "record_id": EXCEPTION_RECORD_ID,
+                "revision": 9,
+                "encrypted_record": ciphertext.hex(),
+                "key_relation": _DOSSIER_KEY_RELATION,
+            }
+            self.record("exception-complete", principal="svc-fieldkest-indexer",
+                        record_id=EXCEPTION_RECORD_ID, revision=9)
             return self.send_json(200, value)
 
         self.deny(404, "not_found")
