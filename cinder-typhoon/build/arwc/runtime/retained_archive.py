@@ -33,6 +33,7 @@ RESULT = ROOT / "results" / "HND-PLANNER-06.json"
 HANDOVER_EVIDENCE = ROOT / "handover" / "access-grant.json"
 ARTIFACTS = ROOT / "artifacts"
 WORKFLOW_PATH = ROOT / "workflow" / "AWF-CRR-229-R4.json"
+SHARE_URL_PATH = ROOT / "workflow" / "contract-share-url"
 BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/archive-source.json")
 IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/archive-source.json")
 DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/archive-lineage.json")
@@ -59,7 +60,22 @@ def _load_workflow() -> dict:
     return value
 
 
+def _load_share_url() -> str:
+    """Return the Nextcloud public share download URL for the workflow contract.
+
+    The archive service's client document exposes this URL as the archive.contract
+    route so the participant fetches the workflow directly from native Nextcloud.
+    """
+    if not SHARE_URL_PATH.exists():
+        raise SystemExit(
+            f"archive-workflow: share URL not found at {SHARE_URL_PATH}; "
+            "run seed-archive before starting the archive service"
+        )
+    return SHARE_URL_PATH.read_text(encoding="utf-8").strip()
+
+
 WORKFLOW = _load_workflow()
+CONTRACT_SHARE_URL = _load_share_url()
 
 CALLER_RECORD = {
     "record_id": "AR-MAINT-017",
@@ -577,7 +593,7 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "archive.contract",
                     "method": "GET",
-                    "template": "https://retained-archive.arwc.test/api/archive-contracts/current"
+                    "template": CONTRACT_SHARE_URL,
                 },
                 {
                     "key": "archive.archived-query",
@@ -734,19 +750,7 @@ class Handler(BaseHTTPRequestHandler):
             content_type = "application/octet-stream" if name.endswith(".aqtn") else "application/json"
             self.send_bytes((ARTIFACTS / name).read_bytes(), content_type, name)
             return
-        if path != "/api/archive-contracts/current":
-            self.send_json(404, {"error": "record not found"})
-            return
-        state = load_state()
-        if state["enrollment_consumed"]:
-            token, digest = new_enrollment()
-            state["enrollment_token"] = token
-            state["enrollment_token_sha256"] = digest
-            state["enrollment_consumed"] = False
-            save_state(state)
-        result = dict(WORKFLOW)
-        result["enrollment_token"] = state["enrollment_token"]
-        self.accepted("archive-contract-read", result, "corporate-reader-principal", 200)
+        self.send_json(404, {"error": "record not found"})
 
     def do_POST(self) -> None:
         if not self.authorized():

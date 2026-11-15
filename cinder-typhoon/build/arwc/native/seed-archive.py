@@ -130,41 +130,44 @@ def main() -> None:
            content_type="application/json")
     print(f"Uploaded {WORKFLOW_FILENAME} to Nextcloud folder '{WORKFLOW_FOLDER}'")
 
-    # Share the folder with the archive reader (read-only).
-    # First check for existing share.
-    shares_raw = nc_request("GET", f"/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json"
-                            f"&path=/{quote(WORKFLOW_FOLDER, safe='/')}&reshares=false",
-                            accepted=(200,))
-    shares = json.loads(shares_raw)["ocs"]["data"]
-    existing = [s for s in shares if s.get("share_with") == READER_USERNAME]
-    if not existing:
-        nc_request("POST", "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json",
-                   urlencode({
-                       "path": f"/{WORKFLOW_FOLDER}",
-                       "shareType": 0,
-                       "shareWith": READER_USERNAME,
-                       "permissions": 1,
-                   }).encode(), accepted=(200, 100))
-        print(f"Shared '{WORKFLOW_FOLDER}' with {READER_USERNAME} (read-only)")
+    # Create a public share of the workflow file so the participant can read it
+    # directly from Nextcloud without needing Nextcloud credentials.
+    public_share_token = None
+    pub_shares_raw = nc_request("GET", f"/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json"
+                                f"&path=/{quote(WORKFLOW_FOLDER + '/' + WORKFLOW_FILENAME, safe='/')}&reshares=false",
+                                accepted=(200,))
+    pub_shares = json.loads(pub_shares_raw)["ocs"]["data"]
+    existing_public = [s for s in pub_shares if s.get("share_type") == 3]
+    if existing_public:
+        public_share_token = existing_public[0]["token"]
+        print(f"Public share already exists: token={public_share_token}")
     else:
-        print(f"Share already exists for {READER_USERNAME}")
+        create_raw = nc_request("POST", "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json",
+                                urlencode({
+                                    "path": f"/{WORKFLOW_FOLDER}/{WORKFLOW_FILENAME}",
+                                    "shareType": 3,
+                                    "permissions": 1,
+                                }).encode(), accepted=(200, 100))
+        create_data = json.loads(create_raw)["ocs"]["data"]
+        public_share_token = create_data["token"]
+        print(f"Created public share: token={public_share_token}")
 
-    # Write credentials for the archive container.
-    credentials = {
-        "username": READER_USERNAME,
-        "password": reader_password,
+    # Write operator state: reader credentials and public share token.
+    state = {
+        "reader_username": READER_USERNAME,
+        "reader_password": reader_password,
         "documents_url": DOCUMENTS_URL,
         "workflow_nc_path": f"{WORKFLOW_FOLDER.rsplit('/', 1)[-1]}/{WORKFLOW_FILENAME}",
+        "public_share_token": public_share_token,
+        "public_share_url": f"{DOCUMENTS_URL}/index.php/s/{public_share_token}/download",
     }
     try:
         CREDENTIALS_OUT.parent.mkdir(parents=True, exist_ok=True)
-        CREDENTIALS_OUT.write_text(json.dumps(credentials, indent=2), encoding="utf-8")
+        CREDENTIALS_OUT.write_text(json.dumps(state, indent=2), encoding="utf-8")
         CREDENTIALS_OUT.chmod(0o600)
-        print(f"Wrote archive reader credentials to {CREDENTIALS_OUT}")
+        print(f"Wrote archive operator state to {CREDENTIALS_OUT}")
     except OSError:
-        # Operator directory is not writable from the container; emit credentials
-        # for the host to capture and write.
-        print("ARCHIVE_CREDENTIALS_JSON=" + json.dumps(json.dumps(credentials)))
+        print("ARCHIVE_STATE_JSON=" + json.dumps(json.dumps(state)))
 
     print("Archive workflow seeded successfully")
 

@@ -15,9 +15,12 @@ import sys
 import urllib.error
 import urllib.request
 
-CREDENTIALS_PATH = pathlib.Path("/run/arwc-archive-workflow/nc-reader.json")
+STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/nc-reader.json")
 WORKFLOW_PATH = pathlib.Path("/var/lib/arwc-archive/workflow/AWF-CRR-229-R4.json")
+SHARE_URL_PATH = pathlib.Path("/var/lib/arwc-archive/workflow/contract-share-url")
 CA_BUNDLE = "/tmp/arwc-ca-bundle.pem"
+# Keep the old name as an alias for backward compatibility with the entrypoint check.
+CREDENTIALS_PATH = STATE_PATH
 
 
 def main() -> None:
@@ -34,15 +37,16 @@ def main() -> None:
         sys.exit(1)
 
     try:
-        credentials = json.loads(CREDENTIALS_PATH.read_text(encoding="utf-8"))
+        state = json.loads(STATE_PATH.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
-        print(f"fetch_archive_workflow: cannot read credentials: {error}", flush=True, file=sys.stderr)
+        print(f"fetch_archive_workflow: cannot read state: {error}", flush=True, file=sys.stderr)
         sys.exit(1)
 
-    username = credentials["username"]
-    password = credentials["password"]
-    documents_url = credentials["documents_url"].rstrip("/")
-    workflow_nc_path = credentials["workflow_nc_path"]
+    username = state["reader_username"]
+    password = state["reader_password"]
+    documents_url = state["documents_url"].rstrip("/")
+    workflow_nc_path = state["workflow_nc_path"]
+    public_share_url = state.get("public_share_url", "")
 
     encoded_path = "/".join(urllib.request.quote(part, safe="") for part in workflow_nc_path.split("/"))
     url = f"{documents_url}/remote.php/dav/files/{urllib.request.quote(username, safe='')}/{encoded_path}"
@@ -67,6 +71,10 @@ def main() -> None:
 
     WORKFLOW_PATH.write_bytes(content)
     WORKFLOW_PATH.chmod(0o600)
+    # Store the public share URL so the archive service can expose it in its client document.
+    if public_share_url:
+        SHARE_URL_PATH.write_text(public_share_url, encoding="utf-8")
+        SHARE_URL_PATH.chmod(0o600)
     print(f"fetch_archive_workflow: workflow contract fetched from Nextcloud ({len(content)} bytes)", flush=True)
 
 
