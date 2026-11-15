@@ -98,7 +98,7 @@ Fresh PostgreSQL initialization loads the approved DMZ reporting view after
 its underlying planning tables. Explicit reset also reapplies that view and
 its narrow read-only grant. Ordinary `up` does not reseed product data.
 
-Coordinate the test window before reset:
+Coordinate the test window and follow the [private backup and recovery steps](preserved-reset.md) before reset:
 
 ```sh
 sudo bash manage.sh reset cinder-arwc-native
