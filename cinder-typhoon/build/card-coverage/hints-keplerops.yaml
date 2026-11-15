@@ -113,13 +113,12 @@ hints:
     - kind: participant_artifact
       id: work/reproducers/indexer-client.json
   K04.2:
-    h1: Begin with the offline indexer reproducer and its protected runtime service. Start from indexer.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Carry forward only
-      earned identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Review the published client document and ordinary records for indexer.keplerops.test. Replay the preceding
-      evidence through the next documented boundary and verify the downstream service, not the client, records the
-      outcome.
+    h1: The indexer exposes more operations than the client reference lists. The K04.1 mutation changes the service's
+      internal state; use the same index endpoint with an operation field that names the protected disclosure.
+    h2: The disclosure is gated on both the service's recorded sentinel state and the value you supply in the request.
+      Carry both conditions together; the service checks its own recorded state first.
+    h3: The descriptor response contains the process generation, integrity relation formula, and worker lease needed
+      for the next stage. Record all three fields; they are the credentials for K04.3's bounded write.
     references:
     - kind: participant_service
       id: indexer.keplerops.test
