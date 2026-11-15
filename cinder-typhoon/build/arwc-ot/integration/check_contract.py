@@ -31,7 +31,7 @@ def validate(ot, it, contract, initial):
         assert service["networks"]["history_exchange"]["ipv4_address"] == exchange["members"][name]
     assert not ot["services"]["postgres"].get("ports")
     assert set(ot["services"]["postgres"]["networks"]) == {"supervisory", "history_exchange"}
-    assert set(it["services"]["a-data-bridge"]["networks"]) == {"dmz", "engineering", "history_exchange"}
+    assert set(it["services"]["a-data-bridge"]["networks"]) == {"dmz", "native_api_exchange", "history_exchange"}
     assert all("history_exchange" not in service["networks"] for name, service in ot["services"].items() if name != "postgres")
     assert all("history_exchange" not in service["networks"] for name, service in it["services"].items() if name != "a-data-bridge")
 

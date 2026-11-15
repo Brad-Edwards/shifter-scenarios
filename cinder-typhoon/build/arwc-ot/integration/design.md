@@ -21,8 +21,11 @@ Use native PostgreSQL TLS and verify the server identity at the bridge.
 Keep the existing bridge's native HTTPS listener and server identity.
 Require standard HTTP Basic authentication with a dedicated read-only operating-reader
 identity on the new endpoint. Store its password separately from the SQL password.
-Existing interfaces keep their current authentication contracts. Do not redirect
-legacy historian requests or modify challenge state to enable ordinary readings.
+The bridge has only that fixed GET path and no product-session or legacy
+historian proxy endpoints. It joins only DMZ, the private history exchange,
+and the existing native read-data publication exchange; it has no engineering
+interface. `read-data.arwc.test/api/operating-history` uses the existing Nginx
+entry points and verified upstream TLS. Normal PostgREST paths stay unchanged.
 
 ```mermaid
 flowchart LR

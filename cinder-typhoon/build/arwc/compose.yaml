@@ -301,15 +301,12 @@ services:
     security_opt:
       - no-new-privileges:true
     sysctls:
+      net.ipv4.ip_forward: "0"
       net.ipv4.ip_unprivileged_port_start: 0
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
       - /run:rw,nosuid,nodev,size=16m,mode=0755
     volumes:
-      - data-bridge-state:/var/lib/arwc-data-bridge
-      - business-integration-evidence:/run/arwc-business-integration:ro
-      - data-integration-evidence:/run/arwc-data-integration:ro
-      - ot-read-evidence:/var/lib/arwc-data-bridge/handover
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
@@ -319,8 +316,8 @@ services:
         aliases:
           - a-data-bridge
           - integration-gateway.arwc.test
-      engineering:
-        ipv4_address: 10.77.63.10
+      native_api_exchange:
+        ipv4_address: 172.29.69.5
 
   a-contractors:
     build:
@@ -698,6 +695,9 @@ services:
         aliases: [a-control-broker, control-broker.arwc.test]
 
 networks:
+  native_api_exchange:
+    external: true
+    name: cinder-arwc-native_api_exchange
   handover_supervisory:
     external: true
     name: arwc-ot-compat_supervisory

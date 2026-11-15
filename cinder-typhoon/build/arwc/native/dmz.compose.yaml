@@ -34,6 +34,7 @@ services:
   edge:
     volumes:
       - ./dmz-nginx.conf:/etc/nginx/conf.d/dmz.conf:ro
+      - ../.operator/tls/ca.crt:/etc/nginx/customer-ca.crt:ro
     networks:
       portal_exchange: {ipv4_address: 172.29.67.4}
       render_exchange: {ipv4_address: 172.29.68.4}
@@ -55,6 +56,7 @@ services:
     volumes:
       - ./edge-http.conf:/etc/nginx/conf.d/00-arwc.conf:ro
       - ./dmz-nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../.operator/tls/ca.crt:/etc/nginx/customer-ca.crt:ro
       - ./.operator/ca/tls:/etc/nginx/tls:ro
     networks:
       dmz: {ipv4_address: 10.77.62.13}
