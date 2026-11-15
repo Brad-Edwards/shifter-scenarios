@@ -44,6 +44,15 @@ the native IT operator directory when the source trees are separate. The
 handover supplies Jules's real account material. It does not exchange the
 connector capability for another product's session or broader authority.
 
+`early-card-evidence.py` compares W01-W03 submissions with a separately
+collected, fresh `arwc.native-early-observation/v1` product snapshot. The
+snapshot carries native ERPNext User, Task, Project, File, DocShare and Version
+records; Nextcloud file IDs, contents, shares and version downloads; and native
+PostgREST schema/results plus observed denial responses. It records the
+instance, collection time and source digest. Keep this operator evidence
+separate from the participant submission. The checker reads only these inputs
+and cannot change products or manufacture a successful action.
+
 Coordinate the test window before reset:
 
 ```sh
