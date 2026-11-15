@@ -200,12 +200,15 @@ hints:
     - kind: client_route
       id: packages.metadata
   K05.4:
-    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
-      client document exposes the resolver operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the resolver operation in the published client reference. Record the normal result and a denied variant,
-      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The declared range from K05.3 is ^7.4.0. The Verdaccio metadata lists 7.4.0, 7.4.1, and 7.4.2 under
+      versions. npm selects the highest stable matching version: 7.4.2. Requesting a non-existent version
+      (such as 7.4.3) from Verdaccio returns 404.
+    h2: Download the 7.4.2 tarball from its dist.tarball URL in the Verdaccio version object and compute its
+      SHA256. Then POST a valid fieldkest.connector/v3 request to packages.consumer-check. The service runs
+      npm pack with ^7.4.0 and returns resolved_version=7.4.2 with the matching package_sha256.
+    h3: Verify that the package_sha256 from the consumer-check response matches the sha256 you computed from
+      the Verdaccio tarball. The result object also includes connector_version=7.4.2 from the installed module,
+      confirming the actual dependency that ran rather than the release label.
     references:
     - kind: client_route
       id: packages.resolver
