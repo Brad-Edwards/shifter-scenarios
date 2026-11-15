@@ -47,7 +47,10 @@ session exchange service is required.
 ## Lifecycle and resources
 
 Build and import only on `cinder-fieldlink-dev` in `prod-mgau4w`. The initial
-capacity check found 12 GB available RAM and 28 GB free disk. Pull pinned
+capacity check found 12 GB available RAM and 28 GB free disk. Native node
+scheduling also requires free disk above the unchanged kubelet pressure
+thresholds; the development boot disk is expanded to 100 GB for the complete
+product set and a private backup. Pull pinned
 images before starting services; check actual memory after importing the model.
 Do not run both old and new model servers. Coordinate public DNS, desktop,
 edge or PostgreSQL changes with the active QA window.
