@@ -27,7 +27,7 @@ compose=(docker compose -f compose.yaml)
 backup=/var/backups/cinder-fieldlink-native/$(date -u +%Y%m%dT%H%M%SZ)
 mkdir -p "$backup"
 chmod 0700 "$backup"
-docker volume ls --filter label=com.docker.compose.project=cinder-keplerops -q >"$backup/volumes"
+python3 native-platform/backup-volumes.py >"$backup/volumes"
 [[ -s $backup/volumes ]]
 while read -r volume; do [[ $volume == cinder-keplerops-* ]]; done <"$backup/volumes"
 stateful=(k-dev k-source k-registry k-ci fieldlink-review k-preview k-support k-indexer k-identity fieldlink-keycloak k-cert fieldlink-kanboard fieldlink-support fieldlink-support-db fieldlink-assistant fieldlink-ollama fieldlink-objects fieldlink-k3s fieldlink-postgres runner)
@@ -36,6 +36,8 @@ stateful=(k-dev k-source k-registry k-ci fieldlink-review k-preview k-support k-
 Stop state writers before archiving the validated volumes. Keep the existing
 immutable model and Kubernetes image caches on disk; the reset does not remove
 them. Excluding those reproducible caches avoids a second large local copy.
+The inventory includes existing declared volumes and actual container mounts as
+well as ownership labels, including a legacy CA volume created without labels.
 
 ```bash
 "${compose[@]}" stop "${stateful[@]}"
