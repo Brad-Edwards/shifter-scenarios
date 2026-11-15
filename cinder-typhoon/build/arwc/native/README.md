@@ -15,6 +15,7 @@ sudo bash manage.sh seed-reports
 sudo bash manage.sh seed-engineering
 sudo bash manage.sh seed-dmz
 sudo bash manage.sh seed-portal
+sudo bash manage.sh seed-early-cards
 sudo bash manage.sh status
 ```
 
@@ -42,7 +43,7 @@ sudo bash manage.sh reset cinder-arwc-native
 ```
 
 Reset removes this native IT project's volumes and replays initialization and
-all five product seed steps. The database initializes its approved read-only
+all six product seed steps. The database initializes its approved read-only
 DMZ views before PostgREST starts. For an existing native IT database, run
 `seed-dmz` once after installing its new secret mount. Reset does not reset
 the qualified OT project. Company data,

@@ -75,6 +75,15 @@ def prepare() -> None:
         f'ERP_ADMIN_PASSWORD={seed["erp_admin"]}\n'
         f'ERP_STAFF_SEED={seed["workforce"]}\n'
     ))
+    supplier = "jules.orswick@veybridge.test"
+    write_private(OPERATOR / "supplier-onboarding.json", json.dumps({
+        "account": "Veybridge Field Services", "contact": "Jules Orswick",
+        "maintenance_case": "MTN-CRR-204", "username": supplier,
+        "password": hmac.new(seed["workforce"].encode(), supplier.encode(), hashlib.sha256).hexdigest(),
+        "supplier_portal": "https://suppliers.arwc.test/purchase-orders",
+        "documents": "https://documents.arwc.test/",
+        "document_folder": "Veybridge handover",
+    }))
     realm = {
         "realm": "arwc", "enabled": True, "displayName": "ARWC Workforce",
         "registrationAllowed": False, "resetPasswordAllowed": False,

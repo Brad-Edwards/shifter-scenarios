@@ -117,7 +117,9 @@ services:
       OVERWRITEPROTOCOL: https
       OVERWRITECLIURL: https://documents.arwc.test
     secrets: [documents_db_password, documents_admin_password]
-    volumes: [documents:/var/www/html]
+    volumes:
+      - documents:/var/www/html
+      - ./nextcloud.config.php:/var/www/html/config/arwc.config.php:ro
     depends_on:
       documents-db: {condition: service_healthy}
     healthcheck:

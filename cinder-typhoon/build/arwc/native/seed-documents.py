@@ -10,6 +10,7 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
+import xml.etree.ElementTree as ET
 from zipfile import ZipFile
 
 ADMIN = "records-admin"
@@ -17,10 +18,12 @@ AUTH = "Basic " + base64.b64encode(f'{ADMIN}:{os.environ["DOCUMENTS_ADMIN_PASSWO
 SOURCE = Path("/seed/documents")
 
 
-def request(method: str, path: str, body: bytes | None = None, *, accepted=(200, 201, 204)) -> bytes:
+def request(method: str, path: str, body: bytes | None = None, *, accepted=(200, 201, 204),
+            headers: dict | None = None) -> bytes:
     operation = Request(f"http://nextcloud{path}", method=method, data=body, headers={
         "Host": "documents.arwc.test", "Authorization": AUTH,
         "OCS-APIRequest": "true", "Content-Type": "application/x-www-form-urlencoded",
+        **(headers or {}),
     })
     try:
         with urlopen(operation, timeout=90) as response:
@@ -55,6 +58,33 @@ def upload(path: str, contents: bytes) -> None:
     if request("HEAD", dav(path), accepted=(200, 404)):
         return
     request("PUT", dav(path), contents)
+
+
+def version_digests(path: str) -> dict[str, str]:
+    metadata = ET.fromstring(request("PROPFIND", dav(path),
+        b'<d:propfind xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><oc:fileid/></d:prop></d:propfind>',
+        accepted=(207,), headers={"Depth": "0", "Content-Type": "application/xml"}))
+    file_id = metadata.findtext(".//{http://owncloud.org/ns}fileid")
+    if not file_id or not file_id.isdigit():
+        raise RuntimeError("Native file metadata did not return its file ID")
+    base = f"/remote.php/dav/versions/{ADMIN}/versions/{file_id}/"
+    listing = ET.fromstring(request("PROPFIND", base, accepted=(207,), headers={"Depth": "1"}))
+    versions = {}
+    for response in listing.findall("{DAV:}response"):
+        href = response.findtext("{DAV:}href", "")
+        if href.startswith(base) and href[len(base):].isdigit():
+            versions[href[len(base):]] = hashlib.sha256(request("GET", href)).hexdigest()
+    return versions
+
+
+def verify_versions(path: str, expected: list[bytes]) -> None:
+    actual = version_digests(path)
+    required = {hashlib.sha256(content).hexdigest() for content in expected}
+    if not required.issubset(actual.values()):
+        raise RuntimeError(f"Native version history is incomplete for {path}")
+    print(json.dumps({"file": path, "verified_versions": {
+        revision: digest for revision, digest in actual.items() if digest in required
+    }}, sort_keys=True))
 
 
 def seed() -> None:
@@ -103,11 +133,11 @@ def seed() -> None:
                 continue
             stem = name[:-7]
             current = f"Engineering drawings/Current/{Path(stem).name}.svg"
-            if request("HEAD", dav(current), accepted=(200, 404)):
-                continue
-            for revision in ("P1", "P2", "A1"):
-                request("PUT", dav(current), archive.read(f"{stem}-{revision}.svg"))
-                time.sleep(2)
+            if not request("HEAD", dav(current), accepted=(200, 404)):
+                for revision in ("P1", "P2", "A1"):
+                    request("PUT", dav(current), archive.read(f"{stem}-{revision}.svg"))
+                    time.sleep(2)
+            verify_versions(current, [archive.read(f"{stem}-{revision}.svg") for revision in ("P1", "P2")])
     print("ARWC documents imported with native department sharing")
 
 

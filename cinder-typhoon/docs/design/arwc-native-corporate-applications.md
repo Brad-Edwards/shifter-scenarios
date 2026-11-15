@@ -37,6 +37,9 @@ Every product uses its own persistent volumes and credentials. Supported seed
 operations must be safe to repeat. Reset drops only native IT product state and
 replays the same seed. History examples are created through native updates,
 uploads or Git commits, rather than by altering product history tables.
+Nextcloud keeps all revisions for at least 30 days through its supported
+retention setting. The document importer reads native version IDs, downloads
+the versions and checks their content hashes before it reports success.
 
 The existing services remain until their replacements and affected card paths
 are verified. Card rebinding and final retirement are tracked by issue #407;
