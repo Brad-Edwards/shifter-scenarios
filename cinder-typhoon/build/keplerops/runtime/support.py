@@ -12,7 +12,7 @@ import uuid
 from urllib import request as urlrequest
 from urllib.parse import urlsplit
 
-from http_support import KeplerHandler, UpstreamInvalidResponse, UpstreamUnavailable, append_audit, bearer, open_json, serve_tls
+from http_support import KeplerHandler, UpstreamInvalidResponse, UpstreamUnavailable, append_audit, open_json, serve_tls
 from credentials import credential
 
 
@@ -43,7 +43,8 @@ def save_extended(value: dict[str, object]) -> None:
 
 class SupportHandler(KeplerHandler):
     def _authorized(self) -> bool:
-        token = bearer(self)
+        authorization = self.headers.get("Authorization", "")
+        token = authorization[7:] if authorization.startswith("Bearer ") else None
         if not token:
             cookies = SimpleCookie()
             try:
