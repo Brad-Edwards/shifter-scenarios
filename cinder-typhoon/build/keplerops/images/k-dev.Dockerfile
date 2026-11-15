@@ -31,6 +31,19 @@ RUN apt-get update \
     && groupadd --system fieldkest-workbench \
     && useradd --system --gid fieldkest-workbench --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-workbench
 
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y awscli gpg \
+    && install -d /usr/share/postgresql-common/pgdg \
+    && curl --fail --silent --show-error https://www.postgresql.org/media/keys/ACCC4CF8.asc -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc \
+    && gpg --show-keys --with-colons /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc | grep -q B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8 \
+    && echo 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt bookworm-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
+    && apt-get update \
+    && apt-get install --no-install-recommends -y postgresql-client-16 \
+    && curl --fail --silent --show-error --location https://dl.k8s.io/release/v1.37.2/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl \
+    && echo 'c04487523e7aa7d1493f7808174c899db93d7a9cf57531420cd76b9bd415f8f4  /usr/local/bin/kubectl' | sha256sum --check \
+    && chmod 0755 /usr/local/bin/kubectl \
+    && apt-get clean
+
 COPY --from=node-tools /usr/local/bin/node /usr/local/bin/node
 COPY --from=node-tools /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=step-tools /usr/local/bin/step /usr/local/bin/step
@@ -44,6 +57,7 @@ COPY build/keplerops/runtime/k-dev-entrypoint.sh /usr/local/bin/fieldkest-k-dev-
 COPY build/keplerops/config/sshd_config /etc/ssh/sshd_config
 COPY build/keplerops/config/firefox-policies.json /usr/lib/firefox-esr/distribution/policies.json
 COPY build/keplerops/config/krb5.conf /etc/krb5.conf
+COPY build/keplerops/native-platform/platform-access.md /usr/local/share/fieldlink/platform-access.md
 COPY assets/keplerops/native-workplace/identity-access.md /usr/local/share/fieldlink/identity-access.md
 COPY build/participant-host/startwm.sh /etc/xrdp/startwm.sh
 COPY build/participant-host/startwm.sh /home/rowan/.xsession

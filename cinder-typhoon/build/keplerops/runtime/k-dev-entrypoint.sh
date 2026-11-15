@@ -29,6 +29,9 @@ chown rowan:rowan /home/rowan/work
 if [ ! -e /home/rowan/work/identity-access.md ]; then
   install -m 0644 -o rowan -g rowan /usr/local/share/fieldlink/identity-access.md /home/rowan/work/identity-access.md
 fi
+if [ ! -e /home/rowan/work/platform-access.md ]; then
+  install -m 0644 -o rowan -g rowan /usr/local/share/fieldlink/platform-access.md /home/rowan/work/platform-access.md
+fi
 install -m 0444 /run/fieldkest-auth/ca.crt /home/rowan/.local/share/keplerops/ca.crt
 install -m 0444 /run/fieldkest-auth/ca.crt /usr/local/share/ca-certificates/fieldlink-range.crt
 install -m 0444 /run/fieldkest-auth/enrollment-ca.crt /home/rowan/.local/share/keplerops/enrollment-ca.crt

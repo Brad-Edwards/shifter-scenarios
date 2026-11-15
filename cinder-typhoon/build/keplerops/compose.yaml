@@ -87,6 +87,7 @@ services:
       fieldlink-dns: {condition: service_healthy}
     dns: 10.77.50.10
     volumes:
+      - ./native-platform/nginx-main.conf:/etc/nginx/nginx.conf:ro
       - ./native-workplace/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/etc/nginx/tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/etc/nginx/tls/server.key:ro
@@ -103,7 +104,7 @@ services:
       timeout: 3s
       retries: 20
     networks:
-      corporate: {ipv4_address: 10.77.50.11, aliases: [edge.keplerops.test, foundation.keplerops.test, identity.keplerops.test, id.keplerops.test, ca.keplerops.test, cert.keplerops.test, staff.keplerops.test, workboard.keplerops.test, support.keplerops.test, tickets.keplerops.test]}
+      corporate: {ipv4_address: 10.77.50.11, aliases: [edge.keplerops.test, foundation.keplerops.test, identity.keplerops.test, id.keplerops.test, ca.keplerops.test, cert.keplerops.test, staff.keplerops.test, workboard.keplerops.test, support.keplerops.test, tickets.keplerops.test, cloud.keplerops.test, cloud-api.keplerops.test, workload.keplerops.test, workloads.keplerops.test, data.keplerops.test, objects.keplerops.test, assistant.keplerops.test, llm.keplerops.test]}
       delivery: {ipv4_address: 10.77.51.11}
       cloud: {ipv4_address: 10.77.52.11}
       foundation_data: {ipv4_address: 10.77.56.11}
@@ -114,7 +115,11 @@ services:
     restart: unless-stopped
     env_file:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-foundation.env
+    command: [postgres, -c, ssl=on, -c, ssl_cert_file=/run/fieldlink/server.crt, -c, ssl_key_file=/run/fieldlink/server.key, -c, hba_file=/etc/postgresql/fieldlink-pg_hba.conf]
     volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/postgres-server.crt:/run/fieldlink/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/postgres-server.key:/run/fieldlink/server.key:ro
+      - ./native-platform/pg_hba.conf:/etc/postgresql/fieldlink-pg_hba.conf:ro
       - native-postgres-data:/var/lib/postgresql/data
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/postgres.sql:/docker-entrypoint-initdb.d/30-workplace.sql:ro
     healthcheck:
@@ -146,6 +151,18 @@ services:
         if [ ! -e /home/rowan/.config/fieldlink/support-client.json ]; then
           install -m 0600 -o rowan -g rowan /run/participant-seed/support-client.json /home/rowan/.config/fieldlink/support-client.json
         fi
+        for directory in .kube .aws; do
+          if [ ! -d /home/rowan/$$directory ]; then
+            install -d -m 0700 -o rowan -g rowan /home/rowan/$$directory
+          fi
+        done
+        for pair in kubeconfig:.kube/config aws-credentials:.aws/credentials aws-config:.aws/config pgpass:.pgpass pg_service.conf:.pg_service.conf; do
+          source=$${pair%%:*}
+          destination=$${pair#*:}
+          if [ ! -e /home/rowan/$$destination ]; then
+            install -m 0600 -o rowan -g rowan /run/platform-seed/$$source /home/rowan/$$destination
+          fi
+        done
     restart: "no"
     read_only: true
     cap_drop: [ALL]
@@ -157,6 +174,11 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/git-credentials:/run/participant-seed/git-credentials:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/npmrc:/run/participant-seed/npmrc:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/support-client.json:/run/participant-seed/support-client.json:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/kubernetes/rowan.yaml:/run/platform-seed/kubeconfig:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/aws-credentials:/run/platform-seed/aws-credentials:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/aws-config:/run/platform-seed/aws-config:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/pgpass:/run/platform-seed/pgpass:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/pg_service.conf:/run/platform-seed/pg_service.conf:ro
     network_mode: none
 
   k-dev:
@@ -208,10 +230,13 @@ services:
       - support.keplerops.test:10.77.50.11
       - tickets.keplerops.test:10.77.50.11
       - indexer.keplerops.test:10.77.51.70
-      - cloud-api.keplerops.test:10.77.52.20
-      - workloads.keplerops.test:10.77.52.30
-      - data.keplerops.test:10.77.52.40
-      - assistant.keplerops.test:10.77.52.50
+      - cloud-api.keplerops.test:10.77.50.11
+      - workloads.keplerops.test:10.77.50.11
+      - data.keplerops.test:10.77.50.11
+      - assistant.keplerops.test:10.77.50.11
+      - objects.keplerops.test:10.77.50.11
+      - llm.keplerops.test:10.77.50.11
+      - workload.keplerops.test:10.77.50.11
       - connector.arwc.test:10.77.60.20
     networks:
       corporate:
@@ -797,6 +822,10 @@ services:
     volumes:
       - native-assistant-data:/app/server/storage
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/anythingllm.env:/app/server/.env
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/assistant-support.json:/run/fieldlink/support.json:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldlink/ca.crt:ro
+      - ./native-platform/agent-skills/fieldlink-support:/app/server/storage/plugins/agent-skills/fieldlink-support:ro
+    extra_hosts: [support.keplerops.test:10.77.56.11]
     networks:
       foundation_data: {ipv4_address: 10.77.56.42}
 
