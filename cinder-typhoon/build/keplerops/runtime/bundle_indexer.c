@@ -67,7 +67,10 @@ int main(int argc, char **argv) {
     if (ie == 0 || ie > 512) return 65;
 
     size_t datalen = (size_t)ie * 8U;
-    if (datalen > ARENA_SIZE + (size_t)ae) return 66;
+    /* Bounds check uses the arena struct size (body+sentinel=80), not ARENA_SIZE.
+     * To reach the descriptor at bytes 80-511 the participant must supply
+     * alloc_entries >= ARENA_SIZE - sizeof(struct index_arena) = 432. */
+    if (datalen > sizeof(struct index_arena) + (size_t)ae) return 66;
     if (buflen < (int)sizeof(struct fki_header) + (int)datalen) return 65;
 
     /* Read the current arena region before writing.  This captures state
