@@ -28,32 +28,31 @@ content:
       surface_bindings:
       - k-delivery.k-indexer/bundle-indexer/bundle-submit
       - k-delivery.k-indexer/bundle-indexer/index-result
-      starting_state: Source and reproducible build input for fieldkest-bundle-indexer 1.8.0;
-        signed valid bundles; C++17 object decoder whose 16-bit entry length is widened
-        after allocation; sentinel object.
+      starting_state: .fki release-bundle archive format; offline reproducer binary
+        fieldkest-bundle-indexer 2.0.0; shared arena of 512 bytes; sentinel at bytes
+        64-79; descriptor at bytes 80-511; binary reads arena before each write.
       mechanic_profile:
-        implementation: C++17, Linux x86_64, fieldkest-bundle-indexer 1.8.0
+        implementation: C11, Linux x86_64, fieldkest-bundle-indexer 2.0.0
         build:
-        - -std=c++17
+        - -std=c++17 (compiled as C++)
         - -O2
-        - -fno-omit-frame-pointer
-        - retain symbols and linker map
-        envelope: FKB1 || u16le allocated_length || u32le verified_body_length || body ||
-          blake2s-256 tag
-        defect: allocate allocated_length bytes, authenticate verified_body_length bytes,
-          then copy verified_body_length bytes into that allocation
-        bounds: accepted body is 1..4096 bytes; allocated_length is 1..4096; the intended
-          fixture uses 32 allocated bytes and 48 copied bytes
-        adjacency: the 16 overflow bytes reach only the operator-scoped sentinel object;
-          guard pages surround the exercise arena
-        normal_case: equal lengths index successfully and leave the sentinel unchanged
+        - -fPIE -pie -Wl,-z,relro,-z,now
+        - strip --strip-all
+        envelope: FKI\x01 || u16le alloc_entries || u16le index_entries || entry_data
+        defect: bounds check uses INDEX_ARENA_SIZE=80 (body+sentinel) as base; arena
+          file is ARENA_SIZE=512; participant supplies alloc_entries >= 432 so that
+          datalen=512 passes check and covers descriptor region in pre-write read
+        bounds: accepted datalen is 1..4096 bytes; alloc_entries is 0..65535;
+          check is datalen <= INDEX_ARENA_SIZE + alloc_entries
+        adjacency: datalen=512 covers arena bytes 80-511 which carry runtime descriptor
+          written by service after K04.1 sentinel mutation
+        normal_case: ie<=8 (datalen<=64) covers body only; sentinel unchanged
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Source and reproducible build input for fieldkest-bundle-indexer 1.8.0; signed
-          valid bundles; C++17 object decoder whose 16-bit entry length is widened after
-          allocation; sentinel object.
+        input: .fki archive with sentinel-triggering payload; discovery of INDEX_ARENA_SIZE
+          and ARENA_SIZE through binary analysis.
         success: Controlled sentinel mutation plus a later normal index transaction.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
@@ -88,7 +87,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 66c168a5d1f46bbec1e8712b777edc0fa805a86a34f343377c2d20d39f533b6e
+        digest: 587e72e5ebe5e017935f51c6106957e9448c92fc3eda9c12c62bdafc0d4c13a2
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -110,27 +109,28 @@ content:
         node: k-indexer
         authority: Indexer process on k-indexer
       surface_bindings:
+      - k-delivery.k-indexer/bundle-indexer/bundle-submit
       - k-delivery.k-indexer/bundle-indexer/index-result
-      starting_state: Protected runtime descriptor containing process generation, arena/object
-        marker and keyed integrity relation outside ordinary index.
+      starting_state: .fki archive with extended datalen=512 (ie=64, alloc_entries=432);
+        arena.shm populated at bytes 80-511 with runtime descriptor after K04.1 mutation.
       mechanic_profile:
-        descriptor_fields:
-        - process_generation
-        - arena_base_offset
-        - sentinel_offset
-        - sentinel_value
-        - integrity_tag
-        integrity: BLAKE2s-256 keyed with the per-world descriptor key over the preceding
-          fields in canonical CBOR order
-        disclosure: the descriptor route returns only the current operator arena and never
-          an address outside the exercise process
+        arena_layout:
+          body: bytes 0-63
+          sentinel: bytes 64-79
+          descriptor: bytes 80-511
+        bounds_check: datalen <= INDEX_ARENA_SIZE(80) + alloc_entries
+        disclosure: binary reads 512 bytes from arena.shm before each write; returned
+          data_hex[160..1023] covers descriptor region populated by service at K04.1 time;
+          no code branch recognizes success; disclosure is a consequence of extended read
+        required_alloc_entries: 432 (derived from ARENA_SIZE=512 minus INDEX_ARENA_SIZE=80)
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Protected runtime descriptor containing process generation, arena/object
-          marker and keyed integrity relation outside ordinary index.
-        success: Bounded disclosure response whose fields mutually validate.
+        input: Extended .fki bundle with alloc_entries=432 and index_entries=64; binary
+          analysis required to derive these constants from arena layout.
+        success: data_hex of 1024 hex chars; parsing chars 160-1023 as JSON yields runtime
+          descriptor with worker_session, process_generation, state_route, integrity_relation.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -142,7 +142,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Bounded disclosure response whose fields mutually validate.
+      transition_contract: data_hex of 1024 hex chars; parsing chars 160-1023 as JSON yields
+        runtime descriptor with worker_session and downstream K04.3 parameters.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -164,7 +165,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 163e1c8ca64c346a25d5c04ade42cda92255b9b15ab250f97d27d0106214b7c8
+        digest: 6e21a82d2903db45a325f49173c967851cb615c9d933c57f06363e20123b57cb
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
