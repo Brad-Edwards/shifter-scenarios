@@ -144,7 +144,7 @@ services:
       GITEA__actions__ENABLED: "false"
     volumes: [engineering-git:/data]
     healthcheck:
-      test: [CMD, wget, -q, --spider, http://127.0.0.1:3000/api/healthz]
+      test: [CMD-SHELL, "wget -qO- http://127.0.0.1:3000/api/healthz >/dev/null"]
       interval: 10s
       timeout: 3s
       retries: 18
