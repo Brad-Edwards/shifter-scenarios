@@ -85,6 +85,16 @@ per-range runtime material, using the native MIT administration tools. An
 existing retained database returns without provisioning or reading those inputs;
 ordinary restarts preserve its principal keys and history.
 
+For staff work, pull the pinned official Kanboard image and run
+`native-workplace/bootstrap-staff.sh` after preparing its private inputs and
+database. The one-time native import retains Rowan, Maya, Talia and the inactive
+Evan record, assigns project roles, and stores the existing release-review export
+as a native task attachment with its three unresolved comments. Later starts do
+not reset native user, task or attachment changes. Keep its public staff vhost
+held until that native checkpoint is ready. The import uses the upstream
+[Kanboard models](https://github.com/kanboard/kanboard/tree/v1.2.57/app/Model)
+and its normal PostgreSQL schema and file store.
+
 References: [Keycloak administration](https://www.keycloak.org/docs/latest/server_admin/),
 [Keycloak hostname and proxy settings](https://www.keycloak.org/server/reverseproxy),
 [step-ca configuration](https://smallstep.com/docs/step-ca/configuration/),
