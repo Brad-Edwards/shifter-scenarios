@@ -213,16 +213,20 @@ hints:
     - kind: client_route
       id: packages.resolver
   K06.1:
-    h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
-      exposes the import operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as publisher credential scope and package publication without release-administration authority.
-      Observe the ordinary and denied cases first, then change one input at a time and keep every unrelated binding
-      fixed.
-    h3: Locate the import operation in the published client reference. Record the normal result and a denied variant,
-      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: Navigate to the fieldkest/fieldlink-connector repository in Gitea and check the delivery-operations
+      branch commit history. Find the commit that removed delivery/.npmrc from the working tree and inspect
+      the file at the parent commit using the Gitea raw or contents API with the parent commit SHA as the ref.
+    h2: The .npmrc file has an _auth field that is base64-encoded credentials for the fieldlink-importer-publisher
+      account. Decode it to recover the username and token. These credentials authenticate to Verdaccio
+      using the same HTTP Basic Auth as other package operations.
+    h3: Confirm the publisher scope: the recovered credentials return 200 for @keplerops/fieldlink-connector
+      metadata and tarballs, but 403 for @keplerops/support-rehearsal and 403 for the release-administration
+      session route. These are the outer bounds of the publisher account.
     references:
-    - kind: client_route
-      id: packages.import
+    - kind: participant_service
+      id: source.keplerops.test
+    - kind: participant_service
+      id: packages.keplerops.test
   K06.2:
     h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
       exposes the view operation, so use that ordinary contract instead of guessing a path.
