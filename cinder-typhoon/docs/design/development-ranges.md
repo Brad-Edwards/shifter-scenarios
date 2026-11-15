@@ -9,6 +9,7 @@ flowchart LR
     KG[cinder-keplerops-golden] -->|machine image| FB[cinder-fieldlink-golden-preserved-20261114]
     FB --> FD[cinder-fieldlink-dev]
     AB[cinder-arwc-ot-backup-20261113-qualified] --> AD[cinder-arwc-dev]
+    FD -->|TCP 443| AD
     FD -->|IAP SSH only| DEV[Developer]
     AD -->|IAP SSH only| DEV
 ```
@@ -33,6 +34,13 @@ explicit peer. It verifies the effective binding. The development reset applies
 the profile before resetting applications. After upgrading an existing clone,
 run `manage.sh bind-peer fieldlink <project>` after source sync. Do not use the
 generic golden peer default for development delivery tests.
+
+The same action sets up TCP 443 access from `10.77.49.9/32` to the unique
+`cinder-arwc-dev` destination tag. The golden firewall rule remains unchanged.
+Both instances must have their managed development labels and fixed addresses.
+Use `manage.sh allow-peer fieldlink <project>` to repair only this cloud access
+without restarting a guest service. The helper rejects an existing rule with
+broader scope or a destination tag present on another VM.
 
 The local `.env` peer override is development-only. Before a future bake or
 promotion, exclude that file or replace it through the participant release
