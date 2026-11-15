@@ -16,12 +16,14 @@ from zipfile import ZipFile
 ADMIN = "records-admin"
 AUTH = "Basic " + base64.b64encode(f'{ADMIN}:{os.environ["DOCUMENTS_ADMIN_PASSWORD"]}'.encode()).decode()
 SOURCE = Path("/seed/documents")
+IMPORT_AUTH = ("Basic " + base64.b64encode(f'{ADMIN}:{os.environ["DOCUMENTS_IMPORT_PASSWORD"]}'.encode()).decode()
+               if os.environ.get("DOCUMENTS_IMPORT_PASSWORD") else AUTH)
 
 
 def request(method: str, path: str, body: bytes | None = None, *, accepted=(200, 201, 204),
             headers: dict | None = None) -> bytes:
     operation = Request(f"http://nextcloud{path}", method=method, data=body, headers={
-        "Host": "documents.arwc.test", "Authorization": AUTH,
+        "Host": "documents.arwc.test", "Authorization": AUTH if path.startswith("/ocs/v2.php/cloud/") else IMPORT_AUTH,
         "OCS-APIRequest": "true", "Content-Type": "application/x-www-form-urlencoded",
         **(headers or {}),
     })

@@ -78,9 +78,9 @@ def main():
         secret = subprocess.check_output(command, text=True, env=environment).strip().splitlines()[-1]
         if not re.fullmatch(r'[A-Za-z0-9]{72}', secret):
             raise RuntimeError('Native app-password creation did not return the supported token format')
-        environment = dict(os.environ, DOCUMENTS_ADMIN_PASSWORD=secret)
+        environment = dict(os.environ, DOCUMENTS_IMPORT_PASSWORD=secret)
         process = subprocess.Popen(COMPOSE + ['--profile', 'seed', 'run', '--rm', '--name', name,
-                                             '--env', 'DOCUMENTS_ADMIN_PASSWORD', 'seed-corporate-documents'], env=environment)
+                                             '--env', 'DOCUMENTS_IMPORT_PASSWORD', 'seed-corporate-documents'], env=environment)
         result = process.wait()
     finally:
         for signum in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
