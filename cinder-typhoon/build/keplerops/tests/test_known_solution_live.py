@@ -335,6 +335,130 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             curl(helper_route, "-F", "sample=@work/service-notes.md", expected=422)
             self.evidence["sample"] = receipt
 
+    # ------------------------------------------------------------------ K02
+    def test_k02_report_fixture_and_changed_report(self) -> None:
+        dev = self.evidence["dev"]
+        jenkins = "https://ci.keplerops.test"
+
+        with self.subTest(card="K02.1 recover the missing report fixture"):
+            build = curl_json(
+                jenkins + "/job/fieldlink-report/1842/api/json",
+                creds=dev,
+            )
+            self.assertEqual(build["result"], "FAILURE")
+            _, console = curl(
+                jenkins + "/job/fieldlink-report/1842/consoleText",
+                creds=dev,
+            )
+            fixture_ref = re.search(r"fixture provenance: ([A-Za-z0-9._-]+)", console).group(1)
+            fixture_path = re.search(r"fixture path: ([A-Za-z0-9._/-]+)", console).group(1)
+            self.assertNotEqual(
+                rowan("git", "-C", "work/fieldlink-connector", "cat-file", "-e", f"HEAD:{fixture_path}").returncode,
+                0,
+            )
+            fixture_raw = rowan_bytes(
+                "git", "-C", "work/fieldlink-connector", "show", f"{fixture_ref}:{fixture_path}",
+            )
+            fixture = json.loads(fixture_raw)
+            test_source = rowan_bytes(
+                "git", "-C", "work/fieldlink-connector", "show",
+                f"{fixture_ref}:tests/test_crr_og2_report.py",
+            ).decode()
+            self.assertIn(fixture_path, test_source)
+            self.assertEqual(fixture["schema"], "fieldkest.report/v2")
+            self.evidence["fixture_ref"] = fixture_ref
+            self.evidence["fixture"] = fixture
+            self.evidence["fixture_raw"] = fixture_raw
+
+        with self.subTest(card="K02.2 recover the native Jenkins review artifact"):
+            artifact_url = jenkins + "/job/fieldlink-report/1842/artifact/reports/REVNOTE-1842.json"
+            _, note_raw = curl(artifact_url, creds=dev)
+            note = json.loads(note_raw)
+            self.assertEqual(note["review_id"], "REVNOTE-1842")
+            self.assertEqual(note["baseline"]["ref"], self.evidence["fixture_ref"])
+            self.assertEqual(note["baseline"]["path"], "fixtures/report-crr-og2.json")
+            review_job = curl_json(
+                jenkins + "/job/fieldlink-report-review/api/json?tree=actions[parameterDefinitions[name,type,description]]",
+                creds=dev,
+            )
+            self.assertIn("provider.zip", json.dumps(review_job))
+            curl(
+                jenkins + "/job/fieldlink-report/1842/artifact/reports/not-present.json",
+                creds=dev, expected=404,
+            )
+            curl(jenkins + "/job/fieldlink-report-review/config.xml", creds=dev, expected=403)
+            self.evidence["review_note"] = note
+
+        with self.subTest(card="K02.3 publish Cinder's report through a green Jenkins build"):
+            note = self.evidence["review_note"]
+            fixture = self.evidence["fixture"]
+            provider = (
+                "def render_report(fixture):\n"
+                "    report = dict(fixture)\n"
+                "    report['assessment'] = {'rating': 'action-required',\n"
+                "        'summary': 'Cinder review: callback latency needs support attention.'}\n"
+                "    return report\n"
+            )
+            buffer = io.BytesIO()
+            with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
+                archive.writestr("provider.py", provider)
+                archive.writestr("fixture.json", self.evidence["fixture_raw"])
+            write_tmp("/tmp/provider.zip", buffer.getvalue())
+
+            crumb = curl_json(jenkins + "/crumbIssuer/api/json", creds=dev)
+            job_url = jenkins + "/job/fieldlink-report-review"
+            job = curl_json(job_url + "/api/json?tree=nextBuildNumber,lastBuild[number]", creds=dev)
+            build_number = int(job["nextBuildNumber"])
+            curl(
+                job_url + "/buildWithParameters",
+                "-H", f"{crumb['crumbRequestField']}: {crumb['crumb']}",
+                "-F", "provider.zip=@/tmp/provider.zip",
+                creds=dev, expected=201, timeout=30,
+            )
+            for _ in range(90):
+                current = curl_json(job_url + "/api/json?tree=lastBuild[number]", creds=dev)
+                if int(current.get("lastBuild", {}).get("number", 0)) >= build_number:
+                    break
+                time.sleep(1)
+            else:
+                self.fail("native Jenkins review build did not start")
+            for _ in range(120):
+                current = curl_json(job_url + f"/{build_number}/api/json", creds=dev)
+                if not current["building"]:
+                    break
+                time.sleep(1)
+            else:
+                self.fail("native Jenkins review build did not finish")
+            self.assertEqual(current["result"], "SUCCESS")
+
+            result = curl_json(
+                job_url + f"/{build_number}/artifact/reports/review-result.json",
+                creds=dev,
+            )
+            report = curl_json(
+                job_url + f"/{build_number}/artifact/reports/report.json",
+                creds=dev,
+            )
+            self.assertEqual(report["assessment"]["rating"], "action-required")
+            self.assertEqual(result["report_sha256"], hashlib.sha256(
+                json.dumps(report, sort_keys=True, separators=(",", ":")).encode()
+            ).hexdigest())
+            for field in note["immutable_fields"]:
+                base = fixture
+                got = report
+                for part in field.split("."):
+                    base, got = base.get(part), got.get(part)
+                self.assertEqual(got, base, f"immutable field changed: {field}")
+            support_handover = re.search(
+                r"Current handover: `GET (https://support\S+)`", self.service_notes,
+            ).group(1)
+            handover = curl_json(
+                support_handover,
+                cookie=f"fieldkest_support={self.evidence['support_cookie']}",
+            )
+            self.assertEqual(handover["job_id"], result["job_id"])
+            self.assertEqual(handover["report_sha256"], result["report_sha256"])
+
 
     # ------------------------------------------------------------------ K03
     def test_k03_predecessor_callback(self) -> None:

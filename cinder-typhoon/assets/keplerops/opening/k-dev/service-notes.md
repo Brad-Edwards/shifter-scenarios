@@ -37,7 +37,6 @@ The underlying report service runs submitted providers in isolated workers and
 publishes compatible results to support.
 
 - Client reference: `GET https://review.keplerops.test/.well-known/fieldkest-client`
-- Review import: `POST https://review.keplerops.test/api/reviews/import`
 - Submit an isolated report: `POST https://review.keplerops.test/api/jobs`
 - Read its result: `GET https://review.keplerops.test/api/jobs/{job_id}`
 

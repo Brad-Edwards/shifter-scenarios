@@ -45,7 +45,6 @@
         {"key": "ci.report-artifact", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-report-review/{build_number}/artifact/reports/{artifact}"},
         {"key": "ci.package-build", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-package-check/{build_number}/api/json"},
         {"key": "ci.package-artifact", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-package-check/{build_number}/artifact/package-workspace/{artifact}"},
-        {"key": "ci.review-import", "method": "POST", "template": "https://review.keplerops.test/api/reviews/import"},
         {"key": "ci.report-jobs", "method": "POST", "template": "https://review.keplerops.test/api/jobs"},
         {"key": "ci.report-job", "method": "GET", "template": "https://review.keplerops.test/api/jobs/{job_id}"},
         {"key": "ci.review-jobs", "method": "POST", "template": "https://review.keplerops.test/api/review-jobs"},

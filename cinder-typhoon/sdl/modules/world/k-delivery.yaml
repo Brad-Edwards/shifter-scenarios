@@ -1013,22 +1013,6 @@ nodes:
             content_type: application/octet-stream
           - status_code: 404
             content_type: application/json
-        - route_id: review-import
-          path: /api/reviews/import
-          methods: [POST]
-          auth_required: true
-          auth_scheme: Gitea developer session
-          session_required: true
-          parameters:
-          - name: request
-            location: json_body
-            required: true
-            data_type: fieldkest.review-import/v1
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 422
-            content_type: application/json
         - route_id: isolated-job-submit
           path: /api/jobs
           methods: [POST]

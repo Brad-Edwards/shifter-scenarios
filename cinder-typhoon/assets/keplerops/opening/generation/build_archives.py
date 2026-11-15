@@ -57,8 +57,6 @@ ARCHIVES: dict[str, dict[str, object]] = {
         "files": {
             "runs/BLD-1842.json": ("k-ci/run-BLD-1842.json", 0o640),
             "runs/BLD-1842.log": ("k-ci/run-BLD-1842.log", 0o640),
-            "import-objects/inputs/report-request.json": ("k-ci/import-example.json", 0o640),
-            "import-objects/reviews/REVNOTE-1842.json": ("k-ci/REVNOTE-1842.json", 0o640),
             "config/opening.json": ("k-ci/ci-service.json", 0o600),
         },
     },

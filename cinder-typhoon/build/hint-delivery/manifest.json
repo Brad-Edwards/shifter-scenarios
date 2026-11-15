@@ -1,6 +1,6 @@
 {
   "catalog": {
-    "revision": "6671188bc4005bc5dca0ed2c72ea436f71bd667f74807cb928bf645117740fe9",
+    "revision": "34a95eabb7eb88f22da74d9c4b17bfb797b1e81ead6c4c55cdddbe71b7389cd9",
     "schema": "cinder-typhoon.challenge-delivery/v2"
   },
   "items": [
@@ -409,15 +409,15 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "bca72d39a5a8c06b1c0d9683afcdf936abf8aee84420c9b8e71b9d41995c8f7f"
+          "sha256": "f9f4d05f98515d87907855c8a2e3aa211066f2e2dd771cf5d01335fbcb834cc7"
         },
         {
           "level": 2,
-          "sha256": "3c639c5f9bae5ed27939d29fd639f43ec93a540a21b0e7996461239455568dd6"
+          "sha256": "524c2801f82abe70f43b9085ba37167c30c15a43a5239bbb3c031146aca4612f"
         },
         {
           "level": 3,
-          "sha256": "4e163dcc426f5f328f9a74fe87cc01982b81c5d77b9f0015eab495413a572103"
+          "sha256": "47e45a7271374d7877720a0bb3d9042adec6527ca3304c5c4fb4da8197809184"
         }
       ],
       "operation_id": "K01",
@@ -434,22 +434,22 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "35dcc3d0461a8c8680f52cd7554861afa71ffdf9301937559755ab8a293b87a8"
+          "sha256": "2d05e38e131e1b275e3f0d0e10aad0ed90a66e79e07b89abcb2a26a418e3e8e8"
         },
         {
           "level": 2,
-          "sha256": "3c639c5f9bae5ed27939d29fd639f43ec93a540a21b0e7996461239455568dd6"
+          "sha256": "f57fbfb1a0adc78340f9f4e1df731381ebd1002059a6fbce235e4a44eedecfbe"
         },
         {
           "level": 3,
-          "sha256": "37e2a300bae8db6ab31cace45a1d2bd17e0149c6e8b04f2dfe494648af41a37b"
+          "sha256": "fbe204e2000b9cf4717c92320ef416617d5c1d06552c6614865a325e08777dbc"
         }
       ],
       "operation_id": "K01",
       "phase": "keplerops",
       "references": [
         {
-          "id": "source.keplerops.test",
+          "id": "support.keplerops.test",
           "kind": "participant_service"
         }
       ]
@@ -459,23 +459,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "da8b05e69ce7e007b37c33297656bcdc56fdde9ff382db69bb61c4d28d12d6f5"
+          "sha256": "82b474f64cd0d1c19c63e67815c1bd35832823e1c843ab3932e7c6868cc78c79"
         },
         {
           "level": 2,
-          "sha256": "3c639c5f9bae5ed27939d29fd639f43ec93a540a21b0e7996461239455568dd6"
+          "sha256": "9539f58ce0054ce9e8174658472d603976c758304628f3feb1f437dd37434fdd"
         },
         {
           "level": 3,
-          "sha256": "98582b8edd7a6d4c5ea49aee9593294e1595d96b26428d0556ed547077e80d22"
+          "sha256": "3381e182de2b20e6f7d8e40c374734ebfc7b9f70fca01e3b734f606565b702a6"
         }
       ],
       "operation_id": "K01",
       "phase": "keplerops",
       "references": [
         {
-          "id": "work/review-exports/fieldlink-7.4.2-review.md",
-          "kind": "participant_artifact"
+          "id": "staff.keplerops.test",
+          "kind": "participant_service"
         }
       ]
     },
@@ -484,15 +484,15 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "34a626d7afd88d2fc87f5314093e3840909a5d8a0248550ce9b42501ec9512ab"
+          "sha256": "69fbc2495b2470704b2bff08f1b8ceb0058cce0716e7d9cb2625640837f0bd8d"
         },
         {
           "level": 2,
-          "sha256": "3c639c5f9bae5ed27939d29fd639f43ec93a540a21b0e7996461239455568dd6"
+          "sha256": "6cda69aea5d6af9f093fd0a18c58819f9e00ca976c823483bfa18de0fce16acb"
         },
         {
           "level": 3,
-          "sha256": "a4205408bb37eb7b5cf4d70a89dde5f25c1c0d924ce297bfc7c79c6ba0448f54"
+          "sha256": "313c8691e3073451cf6949d292c9e9a406b24f2167266a4016ca90a48504a967"
         }
       ],
       "operation_id": "K01",
@@ -513,7 +513,7 @@
         },
         {
           "level": 2,
-          "sha256": "127ab8543c37c7c8efabbf29b505546610feb03c80ae25dccc00f67b527b8b3a"
+          "sha256": "a971dc0775254b3fa1b4ef7d1c3739554fae9091642dcabffd1d8793ef83a225"
         },
         {
           "level": 3,
@@ -534,15 +534,15 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "9fde0502135f8cf37dd7cdcb741b2829a6c57ba6e242d9370b8c89de06101380"
+          "sha256": "e20275f61b19e81df620cec45040630e4f47f0b9392abbcee032f18e1241e8f2"
         },
         {
           "level": 2,
-          "sha256": "ac1bfb3d52651d2d53619f5336d4f0be687c605a42ed5f741dcebbec79dcda80"
+          "sha256": "a8157eb09e2d4b314b6ac4e676c9265c5e5fc8c3955bd20f8531875f73fc8d06"
         },
         {
           "level": 3,
-          "sha256": "7f4a09fe63750b8ccdb006655f5bc733e0af0cbada2b7d99d36eb08a5aca192c"
+          "sha256": "fd98f590d8fa2dc5464e7fbcb3ea7f83a0cc3095e41f982a937aabb31f565999"
         }
       ],
       "operation_id": "K02",
@@ -559,15 +559,15 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "586482613f9bd926d54fd94b062866ededc349d2a8715a93dc6552029ff9c580"
+          "sha256": "b7634a67fb31b2e86aba9883ef6a412e8b415d91aa3f2517c3251f7f49d2d55a"
         },
         {
           "level": 2,
-          "sha256": "e5a374cb8fdbe0029b1cd982da2ee77d258da0206c483a6652dd0cc8ce46ddcf"
+          "sha256": "4f81c336008437516882ef64d362dccdf98d3f125c716ed0bc470140437c981c"
         },
         {
           "level": 3,
-          "sha256": "cd3e10caee31d8453c03142aa1f1743b841a6599c14bde9cb2178808f5764300"
+          "sha256": "835b33836b47c4621a0721056c82bec661c676567a83d6d50d79a8bd2e379c5b"
         }
       ],
       "operation_id": "K02",
@@ -6149,7 +6149,7 @@
     "path": "build/hint-delivery/operation-reviews.json",
     "sha256": "b6758f518cabba179165877677714d20d66d6c15185008142934be89ab2d5cd2"
   },
-  "revision": "339d76d710083a7e00e334a6f3073ec098d844e1edbe02703cdebc27cdcd5bf7",
+  "revision": "ed561c746ff5db4e6561eefc9f9de2bfa8dcf34d8da863d3942fcfc59591429e",
   "schema": "cinder-typhoon.hint-delivery/v1",
   "score_effect": {
     "maximum_score_unchanged": true,
@@ -6168,7 +6168,7 @@
       "hint_count": 312,
       "path": "build/card-coverage/hints-keplerops.yaml",
       "phase": "keplerops",
-      "sha256": "d480dcfb6ba46dc6615e9365c81f7aba66c4f7eb86681b210e72bb1678017899"
+      "sha256": "bf8145884527533baec9b89213c1906f9a544d20c66f741f0009d5717034366c"
     },
     {
       "card_count": 120,

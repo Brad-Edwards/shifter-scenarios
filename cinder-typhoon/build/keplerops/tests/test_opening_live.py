@@ -9,6 +9,7 @@ import re
 from pathlib import Path
 import subprocess
 import textwrap
+import time
 import unittest
 from urllib.parse import urljoin
 
@@ -167,35 +168,46 @@ class OpeningSliceTest(unittest.TestCase):
         )
         self.assertEqual(bad["error"], "invalid_sample")
 
-    def test_05_ci_importer_boundary(self) -> None:
-        log = rowan(
+    def test_05_native_jenkins_build_and_review_artifact(self) -> None:
+        base = "https://ci.keplerops.test"
+        build = curl_json(base + "/job/fieldlink-report/1842/api/json", "-u", USER)
+        self.assertEqual(build["result"], "FAILURE")
+        console = rowan(
             "curl", "-sS", "--fail", "--cacert", CA, "-u", USER,
-            "https://ci.keplerops.test/api/runs/BLD-1842/log",
+            base + "/job/fieldlink-report/1842/consoleText",
         ).stdout
-        self.assertIn("fk-test-6d1e9f7", log)
-        normal = curl_json(
-            "https://ci.keplerops.test/api/reviews/import", "-u", USER,
-            "-H", "Content-Type: application/json", "--data-binary",
-            '{"schema":"fieldkest.review-import/v1","run_id":"BLD-1842","object":"inputs/report-request.json"}',
-            expected=201,
+        fixture_ref = re.search(r"fixture provenance: ([A-Za-z0-9._-]+)", console).group(1)
+        fixture_path = re.search(r"fixture path: ([A-Za-z0-9._/-]+)", console).group(1)
+        self.assertNotEqual(
+            rowan("git", "-C", "work/fieldlink-connector", "cat-file", "-e", f"HEAD:{fixture_path}", check=False).returncode,
+            0,
         )
-        self.assertEqual(normal["resolved_object"], "inputs/report-request.json")
-        crossed = curl_json(
-            "https://ci.keplerops.test/api/reviews/import", "-u", USER,
-            "-H", "Content-Type: application/json", "--data-binary",
-            '{"schema":"fieldkest.review-import/v1","run_id":"BLD-1842","object":"inputs/%2e%2e/reviews/REVNOTE-1842.json"}',
-            expected=201,
+        fixture = rowan(
+            "git", "-C", "work/fieldlink-connector", "show", f"{fixture_ref}:{fixture_path}",
+        ).stdout
+        self.assertEqual(json.loads(fixture)["schema"], "fieldkest.report/v2")
+        note = rowan(
+            "curl", "-sS", "--fail", "--cacert", CA, "-u", USER,
+            base + "/job/fieldlink-report/1842/artifact/reports/REVNOTE-1842.json",
+        ).stdout
+        review = json.loads(note)
+        self.assertEqual(review["baseline"], {
+            "repository": "fieldkest/fieldlink-connector",
+            "ref": fixture_ref,
+            "path": fixture_path,
+        })
+        parameters = curl_json(
+            base + "/job/fieldlink-report-review/api/json?tree=actions[parameterDefinitions[name,type,description]]",
+            "-u", USER,
         )
-        self.assertEqual(crossed["object"]["review_id"], "REVNOTE-1842")
-        denied = curl_json(
-            "https://ci.keplerops.test/api/reviews/import", "-u", USER,
-            "-H", "Content-Type: application/json", "--data-binary",
-            '{"schema":"fieldkest.review-import/v1","run_id":"BLD-1842","object":"inputs/%2e%2e/%2e%2e/etc/passwd"}',
-            expected=422,
-        )
-        self.assertEqual(denied["error"], "object_outside_repository")
+        self.assertIn("provider.zip", json.dumps(parameters))
+        denied = rowan(
+            "curl", "-sS", "--cacert", CA, "-u", USER, "-o", "/dev/null", "-w", "%{http_code}",
+            base + "/job/fieldlink-report-review/config.xml",
+        ).stdout
+        self.assertEqual(denied, "403")
 
-    def test_06_isolated_changed_report_and_support_handover(self) -> None:
+    def test_06_native_jenkins_changed_report_and_support_handover(self) -> None:
         provider = textwrap.dedent("""
             def render_report(fixture):
                 report = dict(fixture)
@@ -206,34 +218,50 @@ class OpeningSliceTest(unittest.TestCase):
                 return report
         """).lstrip()
         preparation = """
-import base64, io, json, pathlib, subprocess, zipfile
+import io, pathlib, subprocess, zipfile
 root = pathlib.Path('/home/rowan')
 fixture = subprocess.check_output(['git','-C',str(root/'work/fieldlink-connector'),'show','fk-test-6d1e9f7:fixtures/report-crr-og2.json'])
-def write_request(path, fixture_bytes):
-    buffer = io.BytesIO()
-    with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as archive:
-        archive.writestr('provider.py', PROVIDER)
-        archive.writestr('fixture.json', fixture_bytes)
-    request = {'template':'report-consumer-v2','input':{'archive_base64':base64.b64encode(buffer.getvalue()).decode()}}
-    path.write_text(json.dumps(request))
-write_request(root/'results/report-job-request.json', fixture)
-write_request(root/'results/report-job-request-reserialized.json', json.dumps(json.loads(fixture), sort_keys=True).encode())
+(root/'results').mkdir(exist_ok=True)
+with zipfile.ZipFile(root/'results/provider.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
+    archive.writestr('provider.py', PROVIDER)
+    archive.writestr('fixture.json', fixture)
 """.replace("PROVIDER", repr(provider))
         rowan("python3", "-c", preparation)
-        mismatch = curl_json(
-            "https://ci.keplerops.test/api/jobs", "-u", USER,
-            "-H", "Content-Type: application/json", "--data-binary",
-            "@results/report-job-request-reserialized.json", expected=422,
+        base = "https://ci.keplerops.test"
+        crumb = curl_json(base + "/crumbIssuer/api/json", "-u", USER)
+        job = curl_json(
+            base + "/job/fieldlink-report-review/api/json?tree=nextBuildNumber,lastBuild[number]", "-u", USER,
         )
-        self.assertEqual(mismatch["error"], "fixture_binding_mismatch")
-        self.assertEqual(mismatch["binding"], "sha256_file_bytes")
-        self.assertIn("exact file bytes", mismatch["message"])
-        submitted = curl_json(
-            "https://ci.keplerops.test/api/jobs", "-u", USER,
-            "-H", "Content-Type: application/json", "--data-binary", "@results/report-job-request.json",
-            expected=202,
+        build_number = int(job["nextBuildNumber"])
+        submitted = rowan(
+            "curl", "-sS", "--cacert", CA, "-u", USER,
+            "-H", f"{crumb['crumbRequestField']}: {crumb['crumb']}",
+            "-F", "provider.zip=@results/provider.zip", "-o", "/dev/null", "-w", "%{http_code}",
+            base + "/job/fieldlink-report-review/buildWithParameters",
         )
-        result = curl_json(f"https://ci.keplerops.test/api/jobs/{submitted['job_id']}", "-u", USER)
+        self.assertEqual(submitted.stdout, "201")
+        for _ in range(90):
+            current = curl_json(
+                base + "/job/fieldlink-report-review/api/json?tree=lastBuild[number]", "-u", USER,
+            )
+            if int(current.get("lastBuild", {}).get("number", 0)) >= build_number:
+                break
+            time.sleep(1)
+        else:
+            self.fail("native Jenkins review build did not start")
+        for _ in range(120):
+            current = curl_json(
+                base + f"/job/fieldlink-report-review/{build_number}/api/json", "-u", USER,
+            )
+            if not current["building"]:
+                break
+            time.sleep(1)
+        else:
+            self.fail("native Jenkins review build did not finish")
+        self.assertEqual(current["result"], "SUCCESS")
+        result = curl_json(
+            base + f"/job/fieldlink-report-review/{build_number}/artifact/reports/review-result.json", "-u", USER,
+        )
         self.assertEqual(result["state"], "success")
         self.assertEqual(result["report"]["assessment"]["rating"], "action-required")
         cookie = rowan("sqlite3", ".config/chromium/Default/Cookies", "select value from cookies where name='fieldkest_support';").stdout.strip()
@@ -241,7 +269,7 @@ write_request(root/'results/report-job-request-reserialized.json', json.dumps(js
             "https://support.keplerops.test/api/handovers/current",
             "-H", f"Cookie: fieldkest_support={cookie}",
         )
-        self.assertEqual(handover["job_id"], submitted["job_id"])
+        self.assertEqual(handover["job_id"], result["job_id"])
         self.assertEqual(handover["report_sha256"], result["report_sha256"])
 
     def test_07_staged_callback_reconstruction(self) -> None:

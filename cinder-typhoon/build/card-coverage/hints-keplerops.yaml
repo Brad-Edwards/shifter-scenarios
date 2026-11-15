@@ -22,8 +22,8 @@ hints:
       id: support.keplerops.test
   K01.3:
     h1: Release reviews are on the staff work board named in the workstation notes, not in the connector checkout.
-    h2: Use Kanboard's normal task search. The release reference distinguishes the target from the neighboring review
-      tasks, and the task owns both comments and an attachment.
+    h2: Use Kanboard's normal task search and reference correlation. The release reference distinguishes the target
+      from the neighboring review tasks, and the task owns both comments and an attachment.
     h3: Find release REL-FLK-7.4.2-09 in Kanboard, open its review attachment, and correlate the unresolved REV comments
       with the task reference.
     references:
@@ -41,30 +41,30 @@ hints:
     h1: Begin with the retained source history and the continuous-integration review workflow. The failing-job note
       identifies a repository revision, so the removed fixture should be sought in version history rather than the
       current tree.
-    h2: This stage is version-history recovery. Keep the named revision and fixture path bound together; importer
-      behavior is a later boundary.
+    h2: This stage is version-history recovery. Keep the named revision and fixture path bound together; the provider
+      contract is a separate build artifact.
     h3: Compare the revision in the failing-job note with the repository history, then inspect the change that removed
       the named fixture without restoring unrelated files.
     references:
     - kind: participant_service
       id: ci.keplerops.test
   K02.2:
-    h1: Stay with the continuous-integration client and compare the importer's accepted job namespace with the object
-      it actually resolves. The ordinary form is the baseline, not the complete boundary.
-    h2: This is path resolution before authorization. Test whether a job-relative reference remains inside the intended
-      input collection after normalization.
-    h3: Submit one ordinary job input and one minimally changed relative reference, then compare the resolved object
-      and denial evidence before trying a second variation.
+    h1: Inspect the native Jenkins build page and its separately archived artifacts. The console is only one part
+      of the retained build record.
+    h2: Match the review note to the failed build and source revision before using its provider contract. Reading
+      an artifact does not grant repository write or job configuration access.
+    h3: Compare the exact fixture path and revision in REVNOTE-1842 with the native source history and inspect the
+      file parameter on fieldlink-report-review.
     references:
     - kind: participant_service
       id: ci.keplerops.test
   K02.3:
-    h1: Begin with the retained source history and the continuous-integration review workflow. Start from ci.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as version-history recovery followed by importer-boundary and extension-point analysis. Keep the
-      recovered fixture's exact file bytes when you build the archive, then vary only the provider extension point.
-    h3: Review the published client document and ordinary records for ci.keplerops.test. Read the current revision,
-      submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: Use the native Jenkins fieldlink-report-review job and its provider.zip file parameter. The original
+      fieldlink-report job is the retained failing baseline.
+    h2: This is interface validation. Preserve the fixture's exact file bytes and immutable fields while implementing
+      the documented provider extension point. A valid package is different from an accepted changed report.
+    h3: Compare the native build artifacts with the support handover. The job ID and report digest must identify
+      the same fresh output; a green status by itself is insufficient.
     references:
     - kind: participant_service
       id: ci.keplerops.test

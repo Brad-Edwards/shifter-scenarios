@@ -7,12 +7,11 @@ import hashlib
 import io
 import json
 from pathlib import Path, PurePosixPath
-import posixpath
 import socket
 import threading
 import subprocess
 from urllib.error import HTTPError, URLError
-from urllib.parse import unquote, urlsplit
+from urllib.parse import urlsplit
 import uuid
 import zipfile
 
@@ -88,39 +87,12 @@ class CIHandler(KeplerHandler):
         if not self._authorized():
             self.send_json(401, {"error": "authentication_required"})
             return
-        if path == "/api/reviews/import":
-            self._review_import()
-        elif path == "/api/jobs":
+        if path == "/api/jobs":
             self._job_submit()
         elif path == "/api/rehearsals/connector":
             self._connector_rehearsal()
         else:
             self.send_json(404, {"error": "not_found"})
-
-
-    def _review_import(self) -> None:
-        try:
-            request = self.read_json(65_536)
-        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
-            self.send_json(422, {"error": "invalid_import"})
-            return
-        raw_object = request.get("object") if isinstance(request, dict) else None
-        if not isinstance(request, dict) or request.get("schema") != "fieldkest.review-import/v1" or request.get("run_id") != "BLD-1842" or not isinstance(raw_object, str) or not raw_object.startswith("inputs/"):
-            self.send_json(422, {"error": "input_contract_denied"})
-            return
-        decoded = unquote(raw_object)
-        normalized = posixpath.normpath(decoded)
-        candidate = PurePosixPath(normalized)
-        if normalized.startswith("/") or ".." in candidate.parts:
-            self.send_json(422, {"error": "object_outside_repository"})
-            return
-        path = STATE / "import-objects" / candidate
-        if not path.is_file():
-            self.send_json(422, {"error": "object_not_found"})
-            return
-        value = json.loads(path.read_text())
-        append_audit(AUDIT, "imports", {"request_id": self.request_id, "principal": USERNAME, "run_id": "BLD-1842", "raw_object": raw_object, "resolved_object": normalized, "object_sha256": sha256_bytes(path.read_bytes()), "status": 201})
-        self.send_json(201, {"schema": "fieldkest.review-import-receipt/v1", "run_id": "BLD-1842", "raw_object": raw_object, "resolved_object": normalized, "object": value, "job_mutated": False})
 
     def _job_submit(self) -> None:
         try:
