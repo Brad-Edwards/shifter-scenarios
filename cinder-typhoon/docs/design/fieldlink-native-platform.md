@@ -10,7 +10,7 @@ Challenge changes remain paused.
 | PostgreSQL | Relational company records in a separate database and role | Existing PostgreSQL volume |
 | SeaweedFS | Native S3 objects, versions, exports and backup files | One node with persistent native storage |
 | AnythingLLM | Users, workspaces, conversations, retrieval and tools | Native storage and built-in LanceDB |
-| Ollama | Local inference from the existing Qwen 3B weights | Native model store |
+| Ollama | Local inference from the existing Qwen weights | Native model store |
 
 Use the upstream single-server container pattern for K3s. Its required
 privileged container stays on the existing isolated development VM; ordinary
@@ -31,7 +31,7 @@ clients use ordinary S3 requests and product authorization, without replacement
 JSON object or backup routes.
 
 AnythingLLM connects directly to Ollama and uses its built-in LanceDB. Import
-the existing Qwen/Qwen2.5-3B-Instruct weights at revision
+the existing `Qwen/Qwen2.5-3B-Instruct` weights at revision
 `14d7620ba47cf51be0b176e14e27e38a34d4ff88` through Ollama's supported local
 Safetensors import. Keep inference on CPU with one parallel request, a bounded
 context and native quantization where supported. Preserve the old model files
