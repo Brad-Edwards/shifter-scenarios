@@ -14,6 +14,6 @@ fi
 docker compose stop k-assistant
 docker compose up -d --no-deps --wait fieldlink-ollama
 if ! docker compose exec -T fieldlink-ollama ollama show fieldlink-qwen >/dev/null 2>&1; then
-  docker compose exec -T fieldlink-ollama ollama create fieldlink-qwen --quantize q4_K_M --file /run/fieldlink/Modelfile
+  docker compose exec -T fieldlink-ollama ollama create fieldlink-qwen --quantize int4 --file /run/fieldlink/Modelfile
 fi
 echo 'Original Qwen model imported into native Ollama.'
