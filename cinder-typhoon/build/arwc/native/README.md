@@ -16,6 +16,7 @@ sudo bash manage.sh seed-engineering
 sudo bash manage.sh seed-dmz
 sudo bash manage.sh seed-portal
 sudo bash manage.sh seed-early-cards
+sudo bash manage.sh seed-identity
 sudo bash manage.sh status
 ```
 
@@ -53,6 +54,13 @@ instance, collection time and source digest. Keep this operator evidence
 separate from the participant submission. The checker reads only these inputs
 and cannot change products or manufacture a successful action.
 
+The restored development VM still has the obsolete `a-distribution` W33
+rehearsal service in its old compatibility Compose state. Current source and
+the W33 retirement manifest already remove that facade. It was preserved for
+the narrow paired-connector window. Remove only that stale container and
+override entry after the window releases, then check the existing native W33
+path. Do not restore its deleted Dockerfile/controller into this source.
+
 Coordinate the test window before reset:
 
 ```sh
@@ -60,7 +68,7 @@ sudo bash manage.sh reset cinder-arwc-native
 ```
 
 Reset removes this native IT project's volumes and replays initialization and
-all six product seed steps. The database initializes its approved read-only
+all seven product seed steps. The database initializes its approved read-only
 DMZ views before PostgREST starts. For an existing native IT database, run
 `seed-dmz` once after installing its new secret mount. Reset does not reset
 the qualified OT project. Company data,

@@ -5,6 +5,21 @@ x-runtime: &runtime
   logging: {driver: json-file, options: {max-size: 10m, max-file: "3"}}
   networks: [data]
 services:
+  seed-identity:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-identity.py]
+    env_file: [.operator/identity-seed.env, .operator/documents-seed.env]
+    networks: [data]
+    extra_hosts: [identity.arwc.test:172.29.66.254]
+    volumes:
+      - ./seed-identity.py:/seed/seed-identity.py:ro
+      - ./seed-documents.py:/seed/seed-documents.py:ro
+      - ./records/starting-arrangements-mira.md.in:/seed/starting-arrangements-mira.md.in:ro
+      - ../../../assets/narrative/documents/workforce/a-personnel-register.csv:/seed/a-personnel-register.csv:ro
+      - ./.operator/ca/certs/root_ca.crt:/run/arwc-ca/root.crt:ro
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
   seed-engineering:
     image: ${ERPNEXT_IMAGE:?Load images.env}
     profiles: [seed]

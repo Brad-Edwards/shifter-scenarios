@@ -1,5 +1,5 @@
 schema: cinder-typhoon.challenge-delivery/v2
-revision: ddac0d56edd7e38a2f99d20df1ba5c754e6eca9ec4affd24c42f76ee004a05a3
+revision: aa24346ef2733a5f9c5a27e93e3817f6fb089ed3849873b7f21938a08bcab406
 scoring:
   model: static
   tier_points:
@@ -2476,12 +2476,12 @@ phases:
         difficulty: easy
         points: 50
         hints:
-        - The permitted purchase order has ordinary file attachments. Keep the supplier order and attachment
-          identities together when reading the work-order annex.
+        - The supplier handover has an ordinary order-document register. Keep its purchase order and attachment
+          identities together when following the retained annex link.
         - Use the native attachment relationship instead of a guessed business-service route. Check the
           annex revision and its drawing reference.
-        - Download the actual annex attached to the supplier order and retain its file identity and content
-          hash alongside the order reference.
+        - Follow the supplier document register to the native private annex and retain its file identity
+          and content hash alongside the actual order reference.
         completion:
           mode: automatic_range_evidence
       - id: W03.2
@@ -2584,53 +2584,47 @@ phases:
       cards:
       - id: W05.1
         title: A starter pack left open
-        description: Recover the temporary employee's exposed starter pack and the corporate assignment
-          it names.
+        description: Recover Mira Vale's exposed starting arrangements and identify the temporary account
+          and approved work assignment.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the onboarding package, activation roster, and temporary identity service. Its published
-          client document exposes the provisioning package operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as activation proof that is not correctly bound to the approved assignment. Separate
-          the authoritative service record from stale or local copies, and preserve its identity, revision,
-          and scope.
-        - Locate the provisioning package operation in the published client reference. Capture one ordinary
-          response and one denial, then correlate the returned identifiers with evidence already earned.
+        - The external handover contains ordinary starting arrangements alongside supplier documents.
+          Look for the temporary employee named in the case.
+        - A starting letter identifies an actual work account and initial credential; it does not contain
+          a ready-made privileged session.
+        - Read the employee starting document and retain its employee, account and assignment references
+          with the native file identity.
         completion:
           mode: automatic_range_evidence
       - id: W05.2
         title: The activation roster
-        description: Recover the separate activation roster that the onboarding portal should keep internal.
+        description: Find Mira Vale in the activation roster and establish the native identity and assignment
+          approved for that employee.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the onboarding package, activation roster, and temporary identity service. Its published
-          client document exposes the activation roster operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as activation proof that is not correctly bound to the approved assignment. Separate
-          the authoritative service record from stale or local copies, and preserve its identity, revision,
-          and scope.
-        - Locate the activation roster operation in the published client reference. Capture one ordinary
-          response and one denial, then correlate the returned identifiers with evidence already earned.
+        - An activation roster is retained separately from the starting letter. It includes ordinary employees
+          and their native identity references.
+        - Correlate the employee number, username and identity UUID rather than relying on a similar display
+          name or a copied assignment label.
+        - Find the temporary employee in the activation export and compare its enabled state, assignment
+          and native identity with the starting arrangements.
         completion:
           mode: automatic_range_evidence
       - id: W05.3
         title: Temporary, with the wrong rights
-        description: Establish the temporary employee's usable corporate identity with the restricted
-          assignment the onboarding workflow should deny.
+        description: Complete the temporary employee's first sign-in and establish the directory authority
+          that exceeds the approved account scope.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the onboarding package, activation roster, and temporary identity service. Its published
-          client document exposes the temporary credential operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as activation proof that is not correctly bound to the approved assignment. Correlate
-          independently owned records by identity, revision, units, and scope instead of trusting a display
-          label.
-        - Locate the temporary credential operation in the published client reference. Join the independent
-          records on their stable identifiers and revisions, then explain any mismatch before acting on
-          it.
+        - The starting arrangements point to the actual identity account. Complete its normal first-sign-in
+          requirements before evaluating the access it provides.
+        - Account self-service and delegated administration are different client and permission boundaries.
+          Compare the actual native role scope with the approved work assignment.
+        - Use the native identity console and documented administration interface to establish permitted
+          directory reads and denied management actions under that same limited employee identity.
         completion:
           mode: automatic_range_evidence
     - id: W06

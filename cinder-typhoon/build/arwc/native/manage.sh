@@ -83,6 +83,9 @@ case "$action" in
   seed-early-cards)
     "${compose[@]}" --profile seed run --rm seed-early-cards
     ;;
+  seed-identity)
+    "${compose[@]}" --profile seed run --rm seed-identity
+    ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
       echo 'Reset requires the exact project name: reset cinder-arwc-native' >&2
@@ -95,7 +98,8 @@ case "$action" in
     bash "$0" seed-reports
     bash "$0" seed-portal
     bash "$0" seed-early-cards
+    bash "$0" seed-identity
     exec bash "$0" seed-engineering
     ;;
-  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-reports|seed-engineering|seed-dmz|seed-portal|seed-early-cards|reset cinder-arwc-native' >&2; exit 2 ;;
+  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-reports|seed-engineering|seed-dmz|seed-portal|seed-early-cards|seed-identity|reset cinder-arwc-native' >&2; exit 2 ;;
 esac
