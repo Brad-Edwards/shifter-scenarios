@@ -39,10 +39,13 @@ GITEA_REPO = "retained-handovers"
 GITEA_HANDOVER_FILE = "HND-PLANNER-06.json"
 DOCUMENTS_URL = "https://documents.arwc.test"
 READER_USERNAME = "arwc-archive-reader"
+PLANNER_READER_USERNAME = "arwc-planner-reader"
 OPERATOR_DIR = Path(os.environ.get("ARWC_OPERATOR_DIR", ".operator"))
 CREDENTIALS_OUT = OPERATOR_DIR / "archive-workflow" / "nc-reader.json"
 WORKFLOW_FOLDER = "Corporate Records/Archive"
 WORKFLOW_FILENAME = "AWF-CRR-229-R4.json"
+PLANNING_FOLDER = "Corporate Records/Planning"
+PLANNING_FILENAME = "RENDER-CRR-882.json"
 
 WORKFLOW_RECORD = {
     "record_id": "AWF-CRR-229-R4",
@@ -57,6 +60,16 @@ WORKFLOW_RECORD = {
         "organizational_unit": "caller supplied",
         "use": "one time",
     },
+}
+
+PLANNING_RECORD = {
+    "record_id": "RENDER-CRR-882",
+    "revision": 8,
+    "planner": "nadia.corvane",
+    "drawing": "DRW-OG2-R8",
+    "review": "REV-CRR-4417",
+    "oauth_transaction": "OAUTH-PLN-882",
+    "browser_profile": "planner-review-3",
 }
 
 
@@ -194,9 +207,64 @@ def main() -> None:
     except OSError:
         print("ARCHIVE_STATE_JSON=" + json.dumps(json.dumps(nc_state)))
 
-    # Seed Gitea: W04.3 archive helper handover artifact.
+    # Seed Nextcloud planner reader: W06.1 planning rendering record.
+    if staff_seed:
+        import hashlib as _hashlib
+        planner_password = _hashlib.sha256(f"planner-reader:{staff_seed}".encode()).hexdigest()
+    else:
+        planner_password = secrets.token_hex(32)
+
+    try:
+        ocs("POST", "users", {
+            "userid": PLANNER_READER_USERNAME,
+            "password": planner_password,
+            "displayName": "Planning Service Reader",
+            "email": "arwc-planner-reader@arwc.test",
+        }, accepted=(200, 100))
+        print(f"Created Nextcloud account: {PLANNER_READER_USERNAME}")
+    except RuntimeError:
+        ocs("PUT", f"users/{PLANNER_READER_USERNAME}", {"key": "password", "value": planner_password})
+        print(f"Set password for existing account: {PLANNER_READER_USERNAME}")
+
+    # Create the planning folder and upload the planning rendering record.
+    ensure_folder(ADMIN, PLANNING_FOLDER)
+    planning_content = json.dumps(PLANNING_RECORD, sort_keys=True, separators=(",", ":"),
+                                  ensure_ascii=False).encode("utf-8")
+    webdav("PUT", f"{ADMIN}/{PLANNING_FOLDER}/{PLANNING_FILENAME}", planning_content,
+           content_type="application/json")
+    print(f"Uploaded {PLANNING_FILENAME} to Nextcloud folder '{PLANNING_FOLDER}'")
+
+    # Share the planning file read-only with the planner reader account.
+    planning_file_path = f"/{PLANNING_FOLDER}/{PLANNING_FILENAME}"
+    planning_shares_raw = nc_request(
+        "GET", f"/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json"
+        f"&path={quote(planning_file_path, safe='/')}&reshares=false",
+        accepted=(200,),
+    )
+    existing_planning_shares = json.loads(planning_shares_raw)["ocs"]["data"]
+    existing_planner_share = [s for s in existing_planning_shares
+                              if s.get("share_type") == 0 and s.get("share_with") == PLANNER_READER_USERNAME]
+    for stale in existing_planning_shares:
+        if stale.get("share_type") == 3:
+            nc_request("DELETE", f"/ocs/v2.php/apps/files_sharing/api/v1/shares/{stale['id']}?format=json",
+                       accepted=(200, 100))
+            print(f"Removed stale public share on planning file id={stale['id']}")
+
+    if existing_planner_share:
+        print(f"Authenticated user share already exists for {PLANNER_READER_USERNAME}")
+    else:
+        nc_request("POST", "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json",
+                   urlencode({
+                       "path": planning_file_path,
+                       "shareType": 0,
+                       "shareWith": PLANNER_READER_USERNAME,
+                       "permissions": 1,
+                   }).encode(), accepted=(200, 100))
+        print(f"Created authenticated read-only share with {PLANNER_READER_USERNAME}")
+
+    # Seed Gitea: W04.3 archive helper handover artifact (includes W06.1 planning_access).
     if GITEA_ADMIN_PASSWORD:
-        gitea_state = seed_gitea_handover()
+        gitea_state = seed_gitea_handover(planner_password)
         gitea_out = CREDENTIALS_OUT.parent / "gitea-reader.json"
         try:
             gitea_out.write_text(json.dumps(gitea_state, indent=2), encoding="utf-8")
@@ -210,7 +278,7 @@ def main() -> None:
     print("Archive workflow seeded successfully")
 
 
-def seed_gitea_handover() -> dict:
+def seed_gitea_handover(planner_password: str) -> dict:
     """Create the HND-PLANNER-06 handover artifact in Gitea and return a reader token."""
     gitea_auth = "Basic " + base64.b64encode(f"{GITEA_ADMIN}:{GITEA_ADMIN_PASSWORD}".encode()).decode()
 
@@ -244,13 +312,20 @@ def seed_gitea_handover() -> dict:
         print(f"Gitea repo already exists: {GITEA_ORG}/{GITEA_REPO}")
 
     # Seed or update the HND-PLANNER-06 handover file.
+    # planning_access gives the participant Nextcloud credentials for W06.1 (RENDER-CRR-882).
     handover_content = json.dumps({
         "record_id": "HND-PLANNER-06",
-        "revision": 6,
+        "revision": 7,
         "service_identity": "svc-archive-helper",
         "source_record": "AR-CRR-229",
         "destination": "caller result directory",
         "archive_helper": "7-Zip 23.01",
+        "planning_access": {
+            "username": PLANNER_READER_USERNAME,
+            "password": planner_password,
+            "documents": DOCUMENTS_URL,
+            "record_path": f"/{PLANNING_FOLDER}/{PLANNING_FILENAME}",
+        },
     }, sort_keys=True, indent=2).encode("utf-8")
     encoded = base64.b64encode(handover_content).decode()
 

@@ -186,11 +186,6 @@ class Handler(BaseHTTPRequestHandler):
             "title": "Corporate identity, provisioning, and session service",
             "routes": [
                 {
-                    "key": "identity.session-audit",
-                    "method": "GET",
-                    "template": "https://corporate-identity.arwc.test/api/sessions/current/audit"
-                },
-                {
                     "key": "identity.drawing-context",
                     "method": "GET",
                     "template": "https://corporate-identity.arwc.test/api/drawing-contexts/current"
@@ -210,17 +205,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         if not self.corporate_authorized():
             return
-        path = urlsplit(self.path).path
-        state = load_state()
-        if path == "/api/sessions/current/audit":
-            if not self.planning_authorized():
-                return
-            result = dict(RENDERING)
-            result["oauth_state"] = state["oauth_state"]
-            result["pending_preview_origin"] = state["preview_origin"]
-            self.accepted("login-trail-read", result, "planning-consumer")
-        else:
-            self.send_json(404, {"error": "record not found"})
+        self.send_json(404, {"error": "record not found"})
 
     def do_POST(self) -> None:
         if not self.corporate_authorized():

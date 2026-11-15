@@ -363,8 +363,6 @@ def initialize() -> None:
 
 def _stage_handover_from_gitea() -> None:
     """Fetch HND-PLANNER-06 from Gitea and stage it for the helper filesystem read."""
-    if HANDOVER_STAGING_PATH.exists():
-        return
     handover = _fetch_gitea_handover()
     if handover is None:
         return
@@ -762,6 +760,12 @@ class Handler(BaseHTTPRequestHandler):
                     "key": "archive.cold-archive-job",
                     "method": "POST",
                     "template": "https://retained-archive.arwc.test/api/archive-jobs"
+                },
+                {
+                    "key": "identity.session-audit",
+                    "method": "GET",
+                    "template": "https://documents.arwc.test/remote.php/dav/files/"
+                                "arwc-planner-reader/RENDER-CRR-882.json"
                 }
             ],
             "related": ["https://business-workplace.arwc.test/.well-known/arwc-client"],
