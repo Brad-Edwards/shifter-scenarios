@@ -66,6 +66,9 @@ class K02NativeDesignTest(unittest.TestCase):
         for forbidden in ("challenge", "participant", "ctf", "flag", "hint", "cyber range"):
             self.assertNotIn(forbidden, text)
 
+        review = json.loads(assets[0].read_text())
+        self.assertEqual(review["extension_point"], "render_report")
+
 
 if __name__ == "__main__":
     unittest.main()

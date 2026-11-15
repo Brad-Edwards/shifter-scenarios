@@ -23,13 +23,23 @@ FRAGMENTS = RUNTIME / "client-references"
 OPENING = ROOT / "assets" / "keplerops" / "opening" / "k-dev"
 REQUEST_FUNCTIONS = {"curl", "curl_json", "post_json_route"}
 CLASSIFIED_API_LITERALS = {
-    # Parsed from participant-supplied local-helper.md, never used as an
-    # author-selected request target.
+    # Parsed from participant-supplied local-helper.md.
     r"(http://127\.0\.0\.1:8701/api/inspection-summary)",
-    r"(http://127\.0\.0\.1:8701/api/reconstruction)",
-    r"at `(/api/callback/collection)`",
+    # Native Gitea and Jenkins paths fixed by the product interfaces and the
+    # in-world K01/K02 records.
+    "/api/v1/repos/fieldkest/fieldlink-connector/issues?type=issues",
+    "/job/fieldlink-report/1842/api/json",
+    "/job/fieldlink-report-review/api/json?tree=actions[parameterDefinitions[name,type,description]]",
+    "/crumbIssuer/api/json",
+    "/api/json?tree=nextBuildNumber,lastBuild[number]",
+    "/api/json?tree=lastBuild[number]",
+    "/api/json",
     # Participant repository file layout, not an HTTP route.
     "/tmp/journey-pc/api/fragment-",
+}
+DIRECT_PRODUCT_NATIVE_API_LITERALS = {
+    value for value in CLASSIFIED_API_LITERALS
+    if value.startswith("/job/") or value.startswith("/crumbIssuer/") or value.startswith("/api/json")
 }
 FORBIDDEN_ACCEPTED_VALUES = {"7.4.2", "7.4.3-cinder.rowan"}
 GENERIC_PROVENANCE_PHRASES = {
@@ -131,7 +141,10 @@ def method_route_keys(source: str) -> dict[str, set[str]]:
 class KeplerOpsRouteDiscoveryTests(unittest.TestCase):
     def test_request_targets_have_no_direct_route_literals(self) -> None:
         source = SUITE.read_text(encoding="utf-8")
-        self.assertEqual(direct_request_route_literals(source), [])
+        self.assertEqual(
+            {value for _, value in direct_request_route_literals(source)},
+            DIRECT_PRODUCT_NATIVE_API_LITERALS,
+        )
 
     def test_remaining_api_literals_are_classified_participant_artifacts(self) -> None:
         tree = ast.parse(SUITE.read_text(encoding="utf-8"))

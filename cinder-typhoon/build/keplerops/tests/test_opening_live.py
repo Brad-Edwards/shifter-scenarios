@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import html
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -274,42 +275,45 @@ with zipfile.ZipFile(root/'results/provider.zip', 'w', zipfile.ZIP_DEFLATED) as 
 
     def test_07_staged_callback_reconstruction(self) -> None:
         reconstruction = r"""
-import base64, json, pathlib, zlib, zipfile
+import base64, hashlib, json, pathlib, re, zlib, zipfile
 root = pathlib.Path('/home/rowan')
 with zipfile.ZipFile(root/'work/analysis/field-notes-2026-08.odt') as archive:
     stage = archive.read('Attachments/staging-FKCOL-2841.bin')
 values = dict(line.split('=',1) for line in stage.decode().splitlines() if '=' in line)
-request = {
-    'schema':'fieldkest.reconstruction/v1',
-    'collection_id':values['collection'],
-    'script_base64':base64.b64encode(zlib.decompress(base64.b64decode(values['payload']))).decode(),
-    'instructions_base64':values['instructions'],
-}
-(root/'results/reconstructed-FKCOL-2841.json').write_text(json.dumps(request))
+powershell = zlib.decompress(base64.b64decode(values['payload']))
+assert hashlib.sha256(powershell).hexdigest() == values['payload-sha256']
+stage2 = re.search(rb"\$Stage2 = '([^']+)'", powershell).group(1)
+javascript = zlib.decompress(base64.b64decode(stage2))
+expected = re.search(rb"\$Stage2Sha256 = '([0-9a-f]+)'", powershell).group(1).decode()
+assert hashlib.sha256(javascript).hexdigest() == expected
+encoded = re.search(rb'const encoded = "([^"]+)"', javascript).group(1)
+key = bytes.fromhex(re.search(rb'const key = Buffer\.from\("([0-9a-f]+)", "hex"\)', javascript).group(1).decode())
+cipher = base64.b64decode(encoded)
+compressed = bytes(value ^ key[index % len(key)] for index, value in enumerate(cipher))
+manifest = json.loads(zlib.decompress(compressed))
+(root/'results/reconstructed-FKCOL-2841.json').write_text(json.dumps(manifest))
 """
         rowan("python3", "-c", reconstruction)
-        receipt = curl_json(
-            "http://127.0.0.1:8701/api/reconstruction",
-            "-F", "bundle=@results/reconstructed-FKCOL-2841.json", expected=201,
+        manifest = json.loads(rowan("cat", "results/reconstructed-FKCOL-2841.json").stdout)
+        self.assertEqual((manifest["collection_id"], manifest["endpoint_id"]), ("FKCOL-2841", "CB-17"))
+        fetched = rowan(
+            "aws", "--endpoint-url", manifest["endpoint"], "s3api", "get-object",
+            "--bucket", manifest["bucket"], "--key", manifest["object_key"],
+            "/tmp/FKCOL-2841.json", check=False,
         )
-        self.assertEqual(receipt["endpoint_id"], "CB-17")
-        request = json.dumps({
-            "endpoint_id": receipt["endpoint_id"],
-            "collection_id": receipt["collection_id"],
-            "integrity": receipt["callback_integrity"],
-        })
-        collection = curl_json(
-            "http://127.0.0.1:8701/api/callback/collection",
-            "-H", "Content-Type: application/json", "--data-binary", request,
+        self.assertEqual(fetched.returncode, 0, fetched.stderr)
+        data = rowan("cat", "/tmp/FKCOL-2841.json").stdout.encode()
+        self.assertEqual(hashlib.sha256(data).hexdigest(), manifest["object_sha256"])
+        collection = json.loads(data)
+        self.assertEqual(
+            (collection["source"]["ticket_reference"], collection["source"]["asset_id"]),
+            ("SUP-2841", "CRR-OG2"),
         )
-        self.assertEqual((collection["ticket_reference"], collection["asset_id"]), ("SUP-2841", "CRR-OG2"))
-        denied = curl_json(
-            "http://127.0.0.1:8701/api/callback/collection",
-            "-H", "Content-Type: application/json", "--data-binary",
-            '{"endpoint_id":"CB-17","collection_id":"FKCOL-2841","integrity":"wrong"}',
-            expected=403,
+        denied = rowan(
+            "aws", "--endpoint-url", manifest["endpoint"], "s3api", "list-objects-v2",
+            "--bucket", manifest["bucket"], check=False,
         )
-        self.assertEqual(denied["error"], "callback_binding_denied")
+        self.assertNotEqual(denied.returncode, 0)
 
     def test_08_no_participant_egress_or_author_material(self) -> None:
         outbound = rowan("curl", "-sS", "--max-time", "2", "https://example.com", check=False)

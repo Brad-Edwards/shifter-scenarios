@@ -52,10 +52,10 @@
     "card_count": 240,
     "operation_count": 70,
     "path": "challenges/challenges.yaml",
-    "revision": "34a95eabb7eb88f22da74d9c4b17bfb797b1e81ead6c4c55cdddbe71b7389cd9",
+    "revision": "795ca3d807bd9e8be251089bb6455d3992dd5178a044198af086e0d8eb5674ad",
     "schema": "cinder-typhoon.challenge-delivery/v2",
     "score_total": 39200,
-    "sha256": "c7303f13ae2f33d8abe3c3536f243f92196f68a65c637348156fe17464aff7d7"
+    "sha256": "846f177c556c6aeff613406ff6362f7e7286b13afd30ca4813606a79c5bce18f"
   },
   "deployments": {
     "arwc": {
@@ -137,9 +137,9 @@
     "hint_count": 720,
     "operation_count": 70,
     "path": "build/hint-delivery/manifest.json",
-    "revision": "ed561c746ff5db4e6561eefc9f9de2bfa8dcf34d8da863d3942fcfc59591429e",
+    "revision": "74d064d6e6854c56419ab231595b446f564dc505b58802d9d48125b932aa7600",
     "schema": "cinder-typhoon.hint-delivery/v1",
-    "sha256": "3a72ba15b2d4cdff25f7b2dff89897cd934f19a9fae71b5b1269611a6d87aad5"
+    "sha256": "1ac7acc310a1b0acba1a3ec0c1181b125398c6cd01866a52855ac82e60a58466"
   },
   "immutable": true,
   "schema_version": 3,

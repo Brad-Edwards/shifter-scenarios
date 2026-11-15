@@ -42,9 +42,15 @@ def prepare(operator: Path) -> None:
     }, {
         'name': 'rowan.ito',
         'credentials': [{'accessKey': values['objects_rowan_key'], 'secretKey': values['objects_rowan_secret']}],
-        'actions': [action + ':fieldlink-exports' for action in ('Read', 'Write', 'List', 'Tagging')],
+        'actions': [action + ':fieldlink-exports' for action in ('Read', 'Write', 'List', 'Tagging')]
+        + ['Read:fieldlink-collections'],
     }]
-    create(target / 's3.json', json.dumps({'identities': identities}), 0o444)
+    s3_config = target / 's3.json'
+    if s3_config.exists():
+        os.chmod(s3_config, 0o600)
+        s3_config.write_text(json.dumps({'identities': identities}))
+    else:
+        create(s3_config, json.dumps({'identities': identities}), 0o444)
     os.chmod(target / 's3.json', 0o444)
     create(target / 'anythingllm.env', '\n'.join((
         'STORAGE_DIR=/app/server/storage', 'NODE_ENV=production',

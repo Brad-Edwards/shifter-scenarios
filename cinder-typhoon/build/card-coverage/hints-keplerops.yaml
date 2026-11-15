@@ -69,35 +69,32 @@ hints:
     - kind: participant_service
       id: ci.keplerops.test
   K03.1:
-    h1: Begin with the predecessor notes, staged attachments, and the workstation analysis helper. Start from ci.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as layered payload reconstruction with integrity and callback correlation. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for ci.keplerops.test. Record the normal result
-      and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The predecessor left one ordinary document package in the analysis directory; its rendered pages are not
+      the whole file.
+    h2: Treat the OpenDocument format as a ZIP package structure. Compare the visible note with its packaged attachments
+      and retain the attachment bytes before interpreting them.
+    h3: Inspect `Attachments/staging-FKCOL-2841.bin` inside `field-notes-2026-08.odt`, then bind its digest to the
+      collection identifier recorded in the stage header.
     references:
-    - kind: participant_service
-      id: ci.keplerops.test
+    - kind: participant_artifact
+      id: work/analysis/field-notes-2026-08.odt
   K03.2:
-    h1: Begin with the predecessor notes, staged attachments, and the workstation analysis helper. The supplied
-      staging decoder.ps1 artifact carries the relevant lead; check its provenance and references before contacting
-      another service.
-    h2: Treat this as layered payload reconstruction with integrity and callback correlation. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Inspect the supplied staging decoder.ps1 artifact and the normal client documentation it names. Record the
-      normal result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
-      the difference.
+    h1: The supplied decoder artifact describes only the outer encoding. Preserve the recovered bytes and verify
+      the digest in the stage header before following what they contain.
+    h2: The recovered PowerShell carries another compressed script and its own digest. Preserve the encoding and
+      integrity boundary while reconstructing it as data; neither retained stage needs to be executed.
+    h3: The JavaScript stage shows how its base64 bytes, repeating key, and zlib layer produce the collection manifest.
+      Verify both script digests and recover every manifest field.
     references:
     - kind: participant_artifact
       id: work/analysis/staging-decoder.ps1
   K03.3:
-    h1: Begin with the predecessor notes, staged attachments, and the workstation analysis helper. The supplied
-      local helper.md artifact carries the relevant lead; check its provenance and references before contacting
-      another service.
-    h2: Treat this as layered payload reconstruction with integrity and callback correlation. Build a local model
-      from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Inspect the supplied local helper.md artifact and the normal client documentation it names. Extract the
-      supplied cases into a small local reproducer and do not use its result until every reference case matches.
+    h1: The workstation already has an ordinary scoped object-storage profile. The recovered manifest supplies the
+      address that profile cannot discover by browsing.
+    h2: Reading a known S3 object and listing its bucket cross separate authorization boundaries. Use the exact endpoint,
+      bucket, and key from the reconstructed manifest.
+    h3: Fetch the manifest's object with the normal AWS client, verify its SHA-256 before trusting it, and correlate
+      its support ticket, asset, and connector revision. Bucket enumeration should remain denied.
     references:
     - kind: participant_artifact
       id: work/local-helper.md

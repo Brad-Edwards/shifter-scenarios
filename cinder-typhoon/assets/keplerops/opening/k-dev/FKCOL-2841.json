@@ -1,0 +1,33 @@
+{
+  "schema": "fieldkest.retained-collection/v1",
+  "collection_id": "FKCOL-2841",
+  "endpoint_id": "CB-17",
+  "captured_at": "2026-08-27T02:18:44Z",
+  "source": {
+    "service": "FieldKest Support",
+    "source_endpoint": "ARWC-FIELDLINK-07",
+    "ticket_reference": "SUP-2841",
+    "customer": "Alterra Regional Water Company",
+    "asset_id": "CRR-OG2",
+    "connector_revision": "FLK-7.4.2"
+  },
+  "observations": [
+    {
+      "timestamp": "2026-08-27T02:18:11Z",
+      "event": "receipt-attempt",
+      "result": "name-resolution-retry"
+    },
+    {
+      "timestamp": "2026-08-27T02:18:44Z",
+      "event": "receipt-posted",
+      "result": "accepted",
+      "asset_binding": "CRR-OG2"
+    }
+  ],
+  "finding": "The callback client waits for its first name-resolution retry before posting the maintenance receipt; the delayed request retains the original asset binding.",
+  "provenance": {
+    "collector": "fieldlink-callback/3.8.1",
+    "capture_id": "CAP-CB17-20260827-0218",
+    "retention": "support-investigation"
+  }
+}

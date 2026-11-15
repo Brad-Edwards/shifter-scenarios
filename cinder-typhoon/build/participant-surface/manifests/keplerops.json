@@ -11,10 +11,10 @@
       "phase_card_count": 104,
       "phase_operation_count": 31,
       "phase_score_total": 16750,
-      "revision": "34a95eabb7eb88f22da74d9c4b17bfb797b1e81ead6c4c55cdddbe71b7389cd9",
+      "revision": "795ca3d807bd9e8be251089bb6455d3992dd5178a044198af086e0d8eb5674ad",
       "schema": "cinder-typhoon.challenge-delivery/v2",
       "score_total": 39200,
-      "sha256": "c7303f13ae2f33d8abe3c3536f243f92196f68a65c637348156fe17464aff7d7"
+      "sha256": "846f177c556c6aeff613406ff6362f7e7286b13afd30ca4813606a79c5bce18f"
     },
     "hints": {
       "items": [
@@ -83,7 +83,7 @@
         },
         {
           "card_id": "K03.1",
-          "content_revision": "327060c725a01f85155856dfb1212362e7a6212abdbc98d02c7ff37592c7c0fe",
+          "content_revision": "7ee971aa42219f33b841054572694a9f70cf9616e739275d5c7ae4fbcafebe70",
           "levels": [
             1,
             2,
@@ -92,7 +92,7 @@
         },
         {
           "card_id": "K03.2",
-          "content_revision": "4b6533a0c8e4dd15ff6b8dda6abae156d5c315f234d1690c151e36e3dae1016d",
+          "content_revision": "1944cd7f064bc358e2b4c06abf20fb48e4b27bfb2f13cecb3423026af8a140c9",
           "levels": [
             1,
             2,
@@ -101,7 +101,7 @@
         },
         {
           "card_id": "K03.3",
-          "content_revision": "e264e9629e864c0f4e7a3cd4ede937321f0f82e60e008c2820f81299ed4f011d",
+          "content_revision": "576bf3b3e04649228337c4f6b9098d1703b8f35c9ac3ce1227d10b4ea39d5ccf",
           "levels": [
             1,
             2,
@@ -960,9 +960,9 @@
         "hint_count": 720,
         "operation_count": 70,
         "path": "build/hint-delivery/manifest.json",
-        "revision": "ed561c746ff5db4e6561eefc9f9de2bfa8dcf34d8da863d3942fcfc59591429e",
+        "revision": "74d064d6e6854c56419ab231595b446f564dc505b58802d9d48125b932aa7600",
         "schema": "cinder-typhoon.hint-delivery/v1",
-        "sha256": "3a72ba15b2d4cdff25f7b2dff89897cd934f19a9fae71b5b1269611a6d87aad5"
+        "sha256": "1ac7acc310a1b0acba1a3ec0c1181b125398c6cd01866a52855ac82e60a58466"
       },
       "release": {
         "audit": "append_only_metadata_without_hint_text",
@@ -983,7 +983,7 @@
         "hint_count": 312,
         "path": "build/card-coverage/hints-keplerops.yaml",
         "phase": "keplerops",
-        "sha256": "bf8145884527533baec9b89213c1906f9a544d20c66f741f0009d5717034366c"
+        "sha256": "c9b3cad48624d9d89075037d8cba83de1469a703aae9fa177d5babef9e356969"
       },
       "status": "versioned"
     }

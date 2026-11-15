@@ -172,7 +172,7 @@ nodes:
         service: workbench
         protocol: http
         base_path: /
-        description: Loopback-only helpers for K01 and K03. They consume exact local fixtures and cannot provide general network forwarding.
+        description: Loopback-only sample inspection for K01. It consumes one exact local fixture and cannot provide general network forwarding.
         routes:
         - route_id: inspection-summary
           path: /api/inspection-summary
@@ -182,46 +182,6 @@ nodes:
           session_required: false
           parameters:
           - name: sample
-            location: uploaded_file
-            required: true
-            data_type: application/json
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 422
-            content_type: application/json
-        - route_id: callback-collection
-          path: /api/callback/collection
-          methods:
-          - POST
-          auth_required: false
-          session_required: false
-          parameters:
-          - name: endpoint_id
-            location: json_body
-            required: true
-            data_type: string
-          - name: collection_id
-            location: json_body
-            required: true
-            data_type: string
-          - name: integrity
-            location: json_body
-            required: true
-            data_type: string
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-        - route_id: reconstruction
-          path: /api/reconstruction
-          methods:
-          - POST
-          auth_required: false
-          session_required: false
-          parameters:
-          - name: bundle
             location: uploaded_file
             required: true
             data_type: application/json

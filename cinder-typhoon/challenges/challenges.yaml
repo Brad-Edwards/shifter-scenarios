@@ -1,5 +1,5 @@
 schema: cinder-typhoon.challenge-delivery/v2
-revision: 34a95eabb7eb88f22da74d9c4b17bfb797b1e81ead6c4c55cdddbe71b7389cd9
+revision: 795ca3d807bd9e8be251089bb6455d3992dd5178a044198af086e0d8eb5674ad
 scoring:
   model: static
   tier_points:
@@ -429,15 +429,12 @@ phases:
         difficulty: medium
         points: 100
         hints:
-        - Begin with the predecessor notes, staged attachments, and the workstation analysis helper. Start
-          from ci.keplerops.test's published client document and records already earned in this operation,
-          not from an invented endpoint.
-        - Treat this as layered payload reconstruction with integrity and callback correlation. Observe
-          the ordinary and denied cases first, then change one input at a time and keep every unrelated
-          binding fixed.
-        - Review the published client document and ordinary records for ci.keplerops.test. Record the
-          normal result and a denied variant, alter one dimension, and keep the service-owned evidence
-          needed to explain the difference.
+        - The predecessor left one ordinary document package in the analysis directory; its rendered pages
+          are not the whole file.
+        - Treat the OpenDocument format as a ZIP package structure. Compare the visible note with its
+          packaged attachments and retain the attachment bytes before interpreting them.
+        - Inspect `Attachments/staging-FKCOL-2841.bin` inside `field-notes-2026-08.odt`, then bind its
+          digest to the collection identifier recorded in the stage header.
         completion:
           mode: automatic_range_evidence
       - id: K03.2
@@ -447,15 +444,13 @@ phases:
         difficulty: hard
         points: 200
         hints:
-        - Begin with the predecessor notes, staged attachments, and the workstation analysis helper. The
-          supplied staging decoder.ps1 artifact carries the relevant lead; check its provenance and references
-          before contacting another service.
-        - Treat this as layered payload reconstruction with integrity and callback correlation. Observe
-          the ordinary and denied cases first, then change one input at a time and keep every unrelated
-          binding fixed.
-        - Inspect the supplied staging decoder.ps1 artifact and the normal client documentation it names.
-          Record the normal result and a denied variant, alter one dimension, and keep the service-owned
-          evidence needed to explain the difference.
+        - The supplied decoder artifact describes only the outer encoding. Preserve the recovered bytes
+          and verify the digest in the stage header before following what they contain.
+        - The recovered PowerShell carries another compressed script and its own digest. Preserve the
+          encoding and integrity boundary while reconstructing it as data; neither retained stage needs
+          to be executed.
+        - The JavaScript stage shows how its base64 bytes, repeating key, and zlib layer produce the collection
+          manifest. Verify both script digests and recover every manifest field.
         completion:
           mode: automatic_range_evidence
       - id: K03.3
@@ -465,15 +460,13 @@ phases:
         difficulty: hard
         points: 200
         hints:
-        - Begin with the predecessor notes, staged attachments, and the workstation analysis helper. The
-          supplied local helper.md artifact carries the relevant lead; check its provenance and references
-          before contacting another service.
-        - Treat this as layered payload reconstruction with integrity and callback correlation. Build
-          a local model from the supplied reference cases, then confirm it explains both accepted and
-          rejected behavior.
-        - Inspect the supplied local helper.md artifact and the normal client documentation it names.
-          Extract the supplied cases into a small local reproducer and do not use its result until every
-          reference case matches.
+        - The workstation already has an ordinary scoped object-storage profile. The recovered manifest
+          supplies the address that profile cannot discover by browsing.
+        - Reading a known S3 object and listing its bucket cross separate authorization boundaries. Use
+          the exact endpoint, bucket, and key from the reconstructed manifest.
+        - Fetch the manifest's object with the normal AWS client, verify its SHA-256 before trusting it,
+          and correlate its support ticket, asset, and connector revision. Bucket enumeration should remain
+          denied.
         completion:
           mode: automatic_range_evidence
     - id: K04

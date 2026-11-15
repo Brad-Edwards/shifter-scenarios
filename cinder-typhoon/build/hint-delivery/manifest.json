@@ -1,6 +1,6 @@
 {
   "catalog": {
-    "revision": "34a95eabb7eb88f22da74d9c4b17bfb797b1e81ead6c4c55cdddbe71b7389cd9",
+    "revision": "795ca3d807bd9e8be251089bb6455d3992dd5178a044198af086e0d8eb5674ad",
     "schema": "cinder-typhoon.challenge-delivery/v2"
   },
   "items": [
@@ -584,23 +584,23 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "c2501e60e7d33b1aab75391fec1ec163bd86136ea40dfdac2ceb5bbca0971ab1"
+          "sha256": "57785267271046a902ba91c79a3e58db4bd463fd4a51e81bc7ed8bc82753d8e4"
         },
         {
           "level": 2,
-          "sha256": "27342309ffdd2a9b2fa78fb4b56c9754dd2c13f830749e21d9365522fa045d80"
+          "sha256": "5ec858a7f79ce4f8449287f3be87087d843fce2a2a113e0796c6c4c70ea78923"
         },
         {
           "level": 3,
-          "sha256": "9f0bb480ae2ec08fb989c2a7d689a3914f356d6e19fe9efc6288c231d3591787"
+          "sha256": "fa1f56a478cbf7871afd44287661c2af152c4b746436e3285b1d64f8e06e8d88"
         }
       ],
       "operation_id": "K03",
       "phase": "keplerops",
       "references": [
         {
-          "id": "ci.keplerops.test",
-          "kind": "participant_service"
+          "id": "work/analysis/field-notes-2026-08.odt",
+          "kind": "participant_artifact"
         }
       ]
     },
@@ -609,15 +609,15 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "4f136459184c49f9f89b7633d99eb33d825314a4d31bdbeecca624869b2d9357"
+          "sha256": "eec9f7c7ed039708e8a479aa9e3687f09e19f4c4d40523e835aa5b1eba51de9a"
         },
         {
           "level": 2,
-          "sha256": "27342309ffdd2a9b2fa78fb4b56c9754dd2c13f830749e21d9365522fa045d80"
+          "sha256": "7f0ce712c2e37bf553ef569215c182dd9d7480df8ac66488c28e774ee583e81a"
         },
         {
           "level": 3,
-          "sha256": "fca29764836eb79981a8a45a50c3ae17ef255e15efba34d211e3b9fa94c1e733"
+          "sha256": "0b0447471e85d042b877724c02432cf8a14e1040adfcd65f2a3f740f2c6a4502"
         }
       ],
       "operation_id": "K03",
@@ -634,15 +634,15 @@
       "levels": [
         {
           "level": 1,
-          "sha256": "ee6f10d24f30fcfafb00176265922eed66d8c828fb2570fa84a17435f8104d17"
+          "sha256": "2a4182db7ffe27eff4337b576e4649a5f1d46fdb5d43fa652225371b9720eede"
         },
         {
           "level": 2,
-          "sha256": "e74c9079700086d28959401ef11b6431b1fb65f6ea3ff6d6a12fe71d665402a7"
+          "sha256": "a0b9f0b1880bc54ffd4dc92101497e29cd1876e0db7be5a6c4cd3bd4a6d1a351"
         },
         {
           "level": 3,
-          "sha256": "4e5d9c5d6be442f49dc37473c9120a8b535d677bc671e57bbb8201c31ebefb97"
+          "sha256": "fe6a80553ef7d1a31fe0aa5df6595913efe2b5c3a1d820bff28fe364435a1b71"
         }
       ],
       "operation_id": "K03",
@@ -6149,7 +6149,7 @@
     "path": "build/hint-delivery/operation-reviews.json",
     "sha256": "b6758f518cabba179165877677714d20d66d6c15185008142934be89ab2d5cd2"
   },
-  "revision": "ed561c746ff5db4e6561eefc9f9de2bfa8dcf34d8da863d3942fcfc59591429e",
+  "revision": "74d064d6e6854c56419ab231595b446f564dc505b58802d9d48125b932aa7600",
   "schema": "cinder-typhoon.hint-delivery/v1",
   "score_effect": {
     "maximum_score_unchanged": true,
@@ -6168,7 +6168,7 @@
       "hint_count": 312,
       "path": "build/card-coverage/hints-keplerops.yaml",
       "phase": "keplerops",
-      "sha256": "bf8145884527533baec9b89213c1906f9a544d20c66f741f0009d5717034366c"
+      "sha256": "c9b3cad48624d9d89075037d8cba83de1469a703aae9fa177d5babef9e356969"
     },
     {
       "card_count": 120,

@@ -18,6 +18,7 @@ operator=${KEPLEROPS_OPERATOR_DIR:-"$ROOT/.operator"}
 docker compose down --volumes --remove-orphans
 rm -f -- "$operator/native-platform/assistant-company-seeded" \
   "$operator/native-platform/objects-company-seeded" \
+  "$operator/native-platform/objects-company-seeded-v2" \
   "$operator/native-platform/exports/company-history.dump" \
   "$operator/native-platform/exports/company-history.dump.part" \
   "$operator/native-platform/kubernetes/rowan.yaml" \
