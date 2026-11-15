@@ -5,7 +5,8 @@ RUN apk add --no-cache ca-certificates curl unzip \
     && unzip -q /tmp/osticket.zip -d /opt/osticket
 
 FROM php:8.4-apache-bookworm@sha256:5d55c49594dd833e2e4ff677b65f7d8ff48817f443a60691d9b2b382413bba42
-RUN apt-get update \
+RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+    && apt-get update \
     && apt-get install --no-install-recommends -y libfreetype6-dev libicu-dev libjpeg62-turbo-dev libonig-dev libpng-dev libzip-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j2 gd intl mbstring mysqli opcache zip \
