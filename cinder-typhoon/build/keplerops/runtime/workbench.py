@@ -1,8 +1,7 @@
-"""Loopback-only FieldKest inspection and reconstruction helper."""
+"""Loopback-only FieldKest sample inspection helper."""
 
 from __future__ import annotations
 
-import base64
 import hashlib
 import json
 from pathlib import Path
@@ -21,8 +20,6 @@ class WorkbenchHandler(KeplerHandler):
         path = urlsplit(self.path).path
         if path == CONFIG["inspection_summary"]["route"]:
             self._inspection()
-        elif path == CONFIG["reconstruction"]["route"]:
-            self._reconstruction()
         else:
             self.send_json(404, {"error": "not_found"})
 
@@ -61,42 +58,6 @@ class WorkbenchHandler(KeplerHandler):
         }
         append_audit(AUDIT, "inspection", {"request_id": self.request_id, "sample_id": sample["sample_id"], "asset_id": sample["asset_id"], "connector_revision": sample["connector_revision"], "input_sha256": receipt["input_sha256"], "output_sha256": output_sha, "status": 201})
         self.send_json(201, receipt)
-
-    def _reconstruction(self) -> None:
-        try:
-            raw = self.read_upload("bundle", 524_288)
-            request = json.loads(raw.decode("utf-8"))
-            script = base64.b64decode(request["script_base64"], validate=True)
-            instructions = base64.b64decode(request["instructions_base64"], validate=True)
-        except (ValueError, KeyError, TypeError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
-            self.send_json(422, {"error": "invalid_reconstruction"})
-            return
-        contract = CONFIG["reconstruction"]
-        script_digest = hashlib.sha256(script).hexdigest()
-        instructions_digest = hashlib.sha256(instructions).hexdigest()
-        valid = (
-            request.get("schema") == contract["accepted_schema"]
-            and request.get("collection_id") == contract["collection_id"]
-            and script_digest == contract["script_sha256"]
-            and instructions_digest == contract["instructions_sha256"]
-        )
-        if not valid:
-            append_audit(AUDIT, "reconstruction", {"request_id": self.request_id, "collection_id": request.get("collection_id"), "script_sha256": script_digest, "instructions_sha256": instructions_digest, "status": 422})
-            self.send_json(422, {"error": "reconstruction_mismatch"})
-            return
-        receipt = {
-            "schema": "fieldkest.reconstruction-receipt/v1",
-            "receipt_id": "REC-" + self.request_id,
-            "collection_id": contract["collection_id"],
-            "script_sha256": script_digest,
-            "instructions_sha256": instructions_digest,
-            "endpoint_id": contract["endpoint_id"],
-            "callback_integrity": contract["callback_integrity"],
-            "executed": False,
-        }
-        append_audit(AUDIT, "reconstruction", {"request_id": self.request_id, **{key: receipt[key] for key in ("collection_id", "script_sha256", "instructions_sha256", "endpoint_id", "callback_integrity")}, "status": 201})
-        self.send_json(201, receipt)
-
 
 def main() -> None:
     AUDIT.mkdir(parents=True, exist_ok=True)
