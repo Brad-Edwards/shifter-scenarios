@@ -1,0 +1,11 @@
+{
+  "schema": "fieldkest.release-exception/v1",
+  "record_id": "REL-EXC-2841",
+  "process_generation": 1,
+  "protected_object_marker": "release-exception-state",
+  "integrity_relation": "sha256(generation:queue-ready)",
+  "state_route": "/api/internal/release-exceptions/state",
+  "completion_route": "/api/internal/release-exceptions/REL-EXC-2841/complete",
+  "authority_derivation": "HMAC-SHA256(signer-history.passphrase_half, record_id)",
+  "signer_history_ref": "fieldkest/release-signer-history/signer-history.json"
+}

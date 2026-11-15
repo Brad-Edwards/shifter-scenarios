@@ -20,11 +20,14 @@ STATE_FILE = STATE_ROOT / 'state.json'
 LOCK = threading.RLock()
 DEV_USER = 'rowan.ito'
 DEV_TOKEN = credential('developer_token')
+# Worker authority is HMAC-derived from release-signer-history credentials.
+# Participants discover the derivation path via release-signer-history in Gitea.
 INDEXER_WORKER_TOKEN = credential('indexer_worker_lease')
+EXCEPTION_RECORD_ID = 'REL-EXC-2841'
 
 
 def initial_state() -> dict[str, object]:
-    return {'indexer': {'sentinel': 'stable', 'generation': 1, 'disclosed': False, 'write_ready': False, 'indexes': {}}}
+    return {'indexer': {'sentinel': 'stable', 'generation': 1, 'write_ready': False, 'indexes': {}}}
 
 
 def load_state() -> dict[str, object]:
@@ -42,6 +45,7 @@ def save_state(value: dict[str, object]) -> None:
         temporary = STATE_FILE.with_suffix(".tmp")
         temporary.write_bytes(canonical_bytes(value) + b"\n")
         temporary.replace(STATE_FILE)
+
 
 
 def bearer(handler: KeplerHandler) -> str | None:
@@ -68,20 +72,19 @@ class IndexerHandler(KeplerHandler):
     def get_indexer(self) -> None:
         match = re.fullmatch(r"/api/indexes/([A-Z0-9-]+)", urlparse.urlsplit(self.path).path)
         if not match or not self.dev_auth(): return self.deny(403)
-        value = load_state()["indexer"]["indexes"].get(match.group(1));
+        value = load_state()["indexer"]["indexes"].get(match.group(1))
         if not value: return self.deny(404, "index_not_found")
-        self.record("index-read", principal=DEV_USER, index_id=match.group(1)); self.send_json(200, value)
+        self.record("index-read", principal=DEV_USER, index_id=match.group(1))
+        self.send_json(200, value)
 
     def post_indexer(self) -> None:
-        path = urlparse.urlsplit(self.path).path; state = load_state(); indexer = state["indexer"]
+        path = urlparse.urlsplit(self.path).path
+        state = load_state()
+        indexer = state["indexer"]
+
         if path == "/api/indexes":
             if not self.dev_auth(): return self.deny(401, "authentication_required")
             data = self.body()
-            if data.get("operation") == "runtime-descriptor":
-                if indexer["sentinel"] != "mutated" or data.get("sentinel") != "mutated": return self.deny(403, "descriptor_probe_denied")
-                indexer["disclosed"] = True; save_state(state)
-                value = {"process_generation": indexer["generation"], "protected_object_marker": "release-exception-state", "integrity_relation": "sha256(generation:state)", "worker_lease": INDEXER_WORKER_TOKEN, "record_id": "REL-EXC-2841", "ready_state": "queue-ready", "routine": "recover_exception_queue", "state_route": "/api/internal/release-exceptions/state", "completion_route": "/api/internal/release-exceptions/REL-EXC-2841/complete"}
-                self.record("runtime-disclosure", principal=DEV_USER, **value); return self.send_json(200, value)
             bundle_hex = str(data.get("bundle_hex", ""))
             try:
                 bundle = bytes.fromhex(bundle_hex)
@@ -94,21 +97,45 @@ class IndexerHandler(KeplerHandler):
             )
             if native.returncode != 0: raise ValueError("bundle_rejected")
             native_result = json.loads(native.stdout)
-            index_id = "IDX-" + uuid.uuid4().hex[:10].upper(); result = {"index_id": index_id, "state": "indexed", "bundle_sha256": sha256_bytes(bundle), **native_result}
-            if native_result["sentinel"] == "mutated": indexer["sentinel"] = "mutated"
-            indexer["indexes"][index_id] = result; save_state(state); self.record("bundle-index", principal=DEV_USER, **result); return self.send_json(201, result)
+            index_id = "IDX-" + uuid.uuid4().hex[:10].upper()
+            result = {"index_id": index_id, "state": "indexed", "bundle_sha256": sha256_bytes(bundle), **native_result}
+            if native_result["sentinel"] == "mutated":
+                indexer["sentinel"] = "mutated"
+            indexer["indexes"][index_id] = result
+            save_state(state)
+            self.record("bundle-index", principal=DEV_USER, **result)
+            return self.send_json(201, result)
+
         if path == "/api/internal/release-exceptions/state":
-            if bearer(self) != INDEXER_WORKER_TOKEN or not indexer["disclosed"]: return self.deny(403)
+            # K04.3: requires K04.1 mutation and the HMAC-derived worker authority.
+            # The worker token is derived by the participant from release-signer-history in Gitea.
+            if bearer(self) != INDEXER_WORKER_TOKEN or indexer.get("sentinel") != "mutated":
+                return self.deny(403)
             data = self.body()
-            if data.get("state") != "queue-ready" or data.get("integrity") != sha256_bytes(f"{indexer['generation']}:queue-ready".encode()): raise ValueError("integrity_rejected")
-            indexer["write_ready"] = True; save_state(state); self.record("exception-state", principal="svc-fieldkest-indexer", state="queue-ready"); return self.send_json(200, {"state": "queue-ready", "integrity": data["integrity"]})
-        match = re.fullmatch(r"/api/internal/release-exceptions/(REL-EXC-2841)/complete", path)
-        if match:
-            if bearer(self) != INDEXER_WORKER_TOKEN or not indexer["write_ready"]: return self.deny(403)
+            if data.get("state") != "queue-ready" or data.get("integrity") != sha256_bytes(
+                f"{indexer['generation']}:queue-ready".encode()
+            ):
+                raise ValueError("integrity_rejected")
+            indexer["write_ready"] = True
+            save_state(state)
+            self.record("exception-state", principal="svc-fieldkest-indexer", state="queue-ready")
+            return self.send_json(200, {"state": "queue-ready", "integrity": data["integrity"]})
+
+        complete_match = re.fullmatch(
+            r"/api/internal/release-exceptions/([A-Z0-9-]+)/complete", path)
+        if complete_match:
+            if complete_match.group(1) != EXCEPTION_RECORD_ID: return self.deny(404, "not_found")
+            if bearer(self) != INDEXER_WORKER_TOKEN or not indexer.get("write_ready"):
+                return self.deny(403)
             data = self.body()
-            if data.get("routine") != "recover_exception_queue" or data.get("generation") != indexer["generation"]: raise ValueError("routine_arguments_rejected")
-            value = {"record_id": "REL-EXC-2841", "revision": 9, "service_identity": "svc-fieldkest-indexer", "dossier": "BLD-REL-742", "exceptions": ["signer rollover pending", "connector v2 compatibility retained"]}
-            self.record("exception-complete", **value); return self.send_json(200, value)
+            if data.get("routine") != "recover_exception_queue" or data.get("generation") != indexer["generation"]:
+                raise ValueError("routine_arguments_rejected")
+            value = {"record_id": EXCEPTION_RECORD_ID, "revision": 9,
+                     "service_identity": "svc-fieldkest-indexer", "dossier": "BLD-REL-742",
+                     "exceptions": ["signer rollover pending", "connector v2 compatibility retained"]}
+            self.record("exception-complete", **value)
+            return self.send_json(200, value)
+
         self.deny(404, "not_found")
 
     def do_GET(self) -> None:
@@ -129,7 +156,9 @@ class IndexerHandler(KeplerHandler):
         self.do_POST()
 
 
+def main() -> None:
+    serve_tls(IndexerHandler, int(os.environ.get('PORT', '443')))
+
+
 if __name__ == '__main__':
-    STATE_ROOT.mkdir(parents=True, exist_ok=True, mode=0o700)
-    load_state()
-    serve_tls(IndexerHandler)
+    main()

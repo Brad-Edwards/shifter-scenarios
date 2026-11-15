@@ -2000,8 +2000,8 @@
             "mode": "0640",
             "owner": "rowan",
             "path": "work/reproducers/indexer-client.json",
-            "sha256": "e863340b6908c9e0005b04c93ab09cdf32d48a9eb8fa20aef064db2ad3f05ee7",
-            "size": 591,
+            "sha256": "37f4524862978f25c93f1af8ba225d93f78480b4ffb02c9113ef692d50964dcd",
+            "size": 650,
             "type": "file"
           },
           {

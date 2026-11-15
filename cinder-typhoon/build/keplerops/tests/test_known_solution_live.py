@@ -31,6 +31,7 @@ from __future__ import annotations
 import base64
 import gzip
 import hashlib
+import hmac
 import html
 import io
 import inspect
@@ -568,19 +569,44 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 indexer, {"bundle_hex": normal_probe.hex()}, creds=dev, expected=201)
             self.assertTrue(normal_live["service_alive"])
 
-        with self.subTest(card="K04.2 disclose the protected runtime descriptor"):
-            descriptor = post_json_route(
-                indexer, {"operation": "runtime-descriptor", "sentinel": "mutated"}, creds=dev)
-            for field in ("record_id", "ready_state", "routine", "state_route", "completion_route", "worker_lease", "process_generation", "integrity_relation"):
-                self.assertIn(field, descriptor, "descriptor must surface the continuation evidence")
-            self.evidence["indexer_descriptor"] = descriptor
+        with self.subTest(card="K04.2 derive worker authority from release-signer-history"):
+            # Read the exception record from the native Gitea release-signer-history repo.
+            client_doc = json.loads(read_home("work/reproducers/indexer-client.json"))
+            exception_repo = client_doc.get("exception_records", "fieldkest/release-signer-history")
+            exception_ref = curl_json(
+                f"https://source.keplerops.test/api/v1/repos/{exception_repo}/raw/release-exception-REL-EXC-2841.json",
+                creds=dev,
+            )
+            self.assertEqual(exception_ref.get("schema"), "fieldkest.release-exception/v1")
+            record_id = exception_ref["record_id"]
+            generation = exception_ref["process_generation"]
+            state_route = exception_ref["state_route"]
+            # Read signer-history.json to get the passphrase.
+            signer_history = curl_json(
+                f"https://source.keplerops.test/api/v1/repos/{exception_repo}/raw/signer-history.json",
+                creds=dev,
+            )
+            passphrase_half = signer_history["passphrase_half"]
+            # Derive the worker authority: HMAC-SHA256(passphrase_half, record_id).
+            lease = hmac.new(
+                passphrase_half.encode(), record_id.encode(), hashlib.sha256
+            ).hexdigest()
+            self.evidence["indexer_descriptor"] = {
+                "record_id": record_id,
+                "process_generation": generation,
+                "state_route": state_route,
+                "worker_lease": lease,
+                "completion_route": exception_ref["completion_route"],
+                "integrity_relation": exception_ref["integrity_relation"],
+                "ready_state": "queue-ready",
+            }
 
         with self.subTest(card="K04.3 scoped write under the integrity relation"):
             descriptor = self.evidence["indexer_descriptor"]
             lease = descriptor["worker_lease"]
             generation = descriptor["process_generation"]
-            ready = descriptor["ready_state"]
-            # The disclosed integrity relation is sha256(generation:state).
+            ready = "queue-ready"
+            # The integrity relation is sha256(generation:queue-ready).
             integrity = hashlib.sha256(f"{generation}:{ready}".encode()).hexdigest()
             updated = post_json_route(
                 base + descriptor["state_route"], {"state": ready, "integrity": integrity},
@@ -595,7 +621,7 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             descriptor = self.evidence["indexer_descriptor"]
             result = post_json_route(
                 base + descriptor["completion_route"],
-                {"routine": descriptor["routine"], "generation": descriptor["process_generation"]},
+                {"routine": "recover_exception_queue", "generation": descriptor["process_generation"]},
                 bearer=descriptor["worker_lease"])
             self.assertEqual(result["service_identity"], "svc-fieldkest-indexer")
             # The recovered exception dossier is an alternative K29 release lead.

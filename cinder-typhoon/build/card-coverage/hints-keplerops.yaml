@@ -113,15 +113,17 @@ hints:
     - kind: participant_artifact
       id: work/reproducers/indexer-client.json
   K04.2:
-    h1: The indexer exposes more operations than the client reference lists. The K04.1 mutation changes the service's
-      internal state; use the same index endpoint with an operation field that names the protected disclosure.
-    h2: The disclosure is gated on both the service's recorded sentinel state and the value you supply in the request.
-      Carry both conditions together; the service checks its own recorded state first.
-    h3: The descriptor response contains the process generation, integrity relation formula, and worker lease needed
-      for the next stage. Record all three fields; they are the credentials for K04.3's bounded write.
+    h1: The indexer-client.json names the exception_records repository. Check that native Gitea repository for the
+      release exception record that the K04.1 mutation generates.
+    h2: The exception record identifies the authority derivation method and the signer-history reference. Read the
+      signer-history.json from the same repository to find the passphrase input.
+    h3: Compute the worker authority as HMAC-SHA256 of the signer passphrase half and the exception record ID. The
+      indexer validates this computed value; no service endpoint reveals it.
     references:
     - kind: participant_service
-      id: indexer.keplerops.test
+      id: source.keplerops.test
+    - kind: participant_artifact
+      id: work/reproducers/indexer-client.json
   K04.3:
     h1: Begin with the offline indexer reproducer and its protected runtime service. Start from indexer.keplerops.test's
       published client document and records already earned in this operation, not from an invented endpoint.

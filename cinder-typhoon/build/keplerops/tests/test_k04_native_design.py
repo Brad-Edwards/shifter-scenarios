@@ -38,6 +38,10 @@ class K04NativeDesign(unittest.TestCase):
         # Service must call the real binary with the bundle.
         self.assertIn("fieldkest-bundle-indexer", indexer)
         self.assertNotIn('"sentinel": "mutated"', indexer)
+        # K04.2: no hidden runtime-descriptor facade; worker token from credentials only.
+        self.assertNotIn("runtime-descriptor", indexer)
+        self.assertNotIn("descriptor_probe_denied", indexer)
+        self.assertIn("INDEXER_WORKER_TOKEN", indexer)
 
     def test_binary_source_has_fki_format_not_direct_allocation(self) -> None:
         source = (RUNTIME / "bundle_indexer.c").read_text()

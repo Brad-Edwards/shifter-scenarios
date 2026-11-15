@@ -13,5 +13,6 @@
   "arguments": [
     {"name": "bundle_hex", "encoding": "lowercase hexadecimal", "description": "hex-encoded .fki archive"}
   ],
-  "result": "one JSON object on standard output"
+  "result": "one JSON object on standard output",
+  "exception_records": "fieldkest/release-signer-history"
 }
