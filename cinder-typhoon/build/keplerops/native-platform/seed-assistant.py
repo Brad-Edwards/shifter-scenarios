@@ -23,6 +23,10 @@ def api(path: str, data: dict | None = None, token: str | None = None) -> dict:
 
 
 def seed(operator: Path) -> None:
+    marker = operator / 'native-platform/assistant-company-seeded'
+    if marker.exists():
+        print('Native assistant company state retained.')
+        return
     values = json.loads((operator / 'native-platform/bootstrap.json').read_text())
     workplace = json.loads((operator / 'native-workplace/bootstrap.json').read_text())
     runtime = json.loads((operator / 'range-seed/runtime-credentials.json').read_text())['credentials']
@@ -53,6 +57,7 @@ def seed(operator: Path) -> None:
         }, token)
         if not result.get('success'):
             raise RuntimeError('Native assistant workspace assignment failed')
+    marker.touch(mode=0o600)
     print('Native assistant company users and workspace ready.')
 
 
