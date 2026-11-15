@@ -285,7 +285,7 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
 - 2026-09-27: W15 adds five passing black-box tests on `a-approval`. Both the
   field-session and planning-read authority branches reach the exact maintenance
   association. The cache key intentionally omits revision and upstream identity;
-  pinned Chrome-for-Testing 1`28.0.6613`.137 executes the nested-frame message
+  pinned Chrome-for-Testing `128.0.6613.137` executes the nested-frame message
   flow, including the declared source-identity omission. The bounded review
   action produces a real Ed25519-signed approval whose signature is independently
   verified. No W15 card binds a narrative asset.
