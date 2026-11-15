@@ -21,7 +21,7 @@ if (!$ticket) {
         'message' => 'Retained support conversation for '.$conversation['customer'].'. Asset '.$conversation['asset_id'].', connector '.$conversation['connector_revision'].'.',
         'topicId' => 1, 'deptId' => $thisstaff->getDeptId(),
         'staffId' => $thisstaff->getId(), 'source' => 'Email',
-    ], $errors, 'Email', false, false);
+    ], $errors, 'Staff', false, false);
     if (!$ticket) {
         throw new RuntimeException('Native company case import failed: '.implode(', ', array_keys($errors)));
     }
