@@ -15,8 +15,15 @@ if (!$owner || !$thisstaff) {
     throw new RuntimeException('Native company case owner was not found');
 }
 if (!$ticket) {
+    $customer = User::fromVars([
+        'name' => 'ARWC FieldLink Operations', 'email' => 'fieldlink-operations@arwc.test',
+    ]);
+    if (!$customer) {
+        throw new RuntimeException('Native company contact import failed');
+    }
     $errors = [];
     $ticket = Ticket::create([
+        'uid' => $customer->getId(),
         'name' => 'ARWC FieldLink Operations', 'email' => 'fieldlink-operations@arwc.test',
         'subject' => $conversation['subject'],
         'message' => 'Retained support conversation for '.$conversation['customer'].'. Asset '.$conversation['asset_id'].', connector '.$conversation['connector_revision'].'.',
