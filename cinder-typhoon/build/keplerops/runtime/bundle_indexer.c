@@ -91,13 +91,19 @@ int main(int argc, char **argv) {
         close(fd);
     }
 
-    /* Sentinel is at bytes 64-79 of the read buffer. */
-    const char *state = (read_buf[64] != 0x00) ? "mutated" : "stable";
+    /* Sentinel is at bytes 64-79.  Determine its state from the participant's
+     * write (what will be at byte 64 after the memcpy), falling back to the
+     * read buffer when the write does not reach the sentinel region. */
+    uint8_t written_sentinel_byte = (datalen > 64)
+        ? *(buf + sizeof(struct fki_header) + 64)
+        : read_buf[64];
+    const char *state = (written_sentinel_byte != 0x00) ? "mutated" : "stable";
 
     /* Emit data_hex of the read buffer up to datalen bytes.
-     * When datalen reaches 128 (ie=16, ae=48) the descriptor region at
-     * bytes 80-127 is included if the service wrote it after the first
-     * mutation request. */
+     * read_buf captured the arena state BEFORE the write, so bytes 80-127
+     * reflect service-written descriptor data when K04.1 preceded this call.
+     * When datalen=128 (ie=16, ae=48) the descriptor at bytes 80-127 is
+     * included; bytes 64-79 of the read buffer show the pre-write sentinel. */
     printf("{\"native_parser\":\"fieldkest-bundle-indexer/2.0.0\","
            "\"sentinel\":\"%s\",\"service_alive\":true,\"data_hex\":\"", state);
     for (size_t i = 0; i < datalen; ++i) {
