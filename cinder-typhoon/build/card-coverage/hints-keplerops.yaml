@@ -228,16 +228,20 @@ hints:
     - kind: participant_service
       id: packages.keplerops.test
   K06.2:
-    h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
-      exposes the view operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as publisher credential scope and package publication without release-administration authority.
-      Observe the ordinary and denied cases first, then change one input at a time and keep every unrelated binding
-      fixed.
-    h3: Locate the view operation in the published client reference. Record the normal result and a denied variant,
-      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: Navigate to the Jenkins fieldlink-package-check job on ci.keplerops.test. The build archives
+      package-workspace/.npmrc alongside the support-rehearsal.json artifact. Download the .npmrc
+      from the archived build artifacts; it carries a separate svc-fieldlink-ci credential.
+    h2: Decode the .npmrc _auth field (base64) to recover the svc-fieldlink-ci username and token.
+      Those credentials can read @keplerops/support-rehearsal (200) from Verdaccio. The
+      fieldlink-importer-publisher credentials from K06.1 remain denied (403) for that package.
+    h3: Confirm the CI reader scope: @keplerops/support-rehearsal metadata and tarball pass (200).
+      Then verify the boundary: a PUT to @keplerops/fieldlink-connector with CI credentials is
+      denied (403); the publisher from K06.1 is still denied on support-rehearsal (403).
     references:
-    - kind: client_route
-      id: packages.view
+    - kind: participant_service
+      id: ci.keplerops.test
+    - kind: participant_service
+      id: packages.keplerops.test
   K06.3:
     h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
       exposes the connector rehearsal and publish operation, so use that ordinary contract instead of guessing a
