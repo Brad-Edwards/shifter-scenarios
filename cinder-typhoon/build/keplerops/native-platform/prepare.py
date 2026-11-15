@@ -31,6 +31,9 @@ def prepare(operator: Path) -> None:
     values = json.loads(private.read_text())
     for directory in ('kubernetes', 'model-source', 'k3s-images'):
         (target / directory).mkdir(mode=0o700, exist_ok=True)
+    runtime = json.loads((operator / 'range-seed/runtime-credentials.json').read_text())['credentials']
+    create(target / 'assistant-support.json', json.dumps({'token': runtime['assistant_tool_session']}), 0o400)
+    os.chown(target / 'assistant-support.json', 1000, 1000)
     create(target / 'k3s.env', 'K3S_TOKEN=' + values['k3s_token'] + '\n')
     identities = [{
         'name': 'platform-admin',

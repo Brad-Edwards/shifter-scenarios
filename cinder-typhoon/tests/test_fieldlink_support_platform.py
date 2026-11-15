@@ -18,7 +18,7 @@ class SupportPlatformTests(unittest.TestCase):
             credentials.write_text(json.dumps({
                 'schema': 'fieldkest.runtime-credentials/v1',
                 'credentials': {name: str(index) * 40 for index, name in enumerate((
-                    'support_rowan_session', 'support_reviewer_session', 'support_delivery_token'), 1)},
+                    'support_rowan_session', 'support_reviewer_session', 'support_delivery_token', 'assistant_tool_session'), 1)},
             }))
             result = subprocess.run(
                 ['python3', '-c', '''
@@ -31,6 +31,12 @@ handler.headers['Authorization'] = 'Bearer ' + '1' * 40
 assert handler._authorized() and handler.principal == 'rowan.ito'
 handler.headers.replace_header('Authorization', 'Bearer wrong')
 assert not handler._authorized()
+handler.headers.replace_header('Authorization', 'Bearer ' + '4' * 40)
+assert handler._authorized() and handler.principal == 'svc-fieldlink-assistant'
+responses = []
+handler.send_json = lambda status, value: responses.append(status)
+handler.do_POST()
+assert responses == [403]
 '''], cwd=RUNTIME,
                 env={**os.environ, 'FIELDKEST_CREDENTIALS_FILE': str(credentials)},
                 capture_output=True, text=True, check=False,

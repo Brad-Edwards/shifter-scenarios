@@ -20,6 +20,8 @@ class NativePlatformTests(unittest.TestCase):
     def test_warm_prepare_preserves_private_inputs_and_native_environment(self) -> None:
         with tempfile.TemporaryDirectory() as directory, patch.object(module.os, 'chown'):
             operator = Path(directory)
+            (operator / 'range-seed').mkdir()
+            (operator / 'range-seed/runtime-credentials.json').write_text(json.dumps({'credentials': {'assistant_tool_session': 'test-service-token'}}))
             previous_umask = os.umask(0o077)
             try:
                 module.prepare(operator)
