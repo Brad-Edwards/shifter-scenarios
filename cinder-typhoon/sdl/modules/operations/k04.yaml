@@ -84,7 +84,7 @@ evidence_requirements:
     description: |-
       Recover the protected runtime evidence needed to reason about the actual process state. This is a separate disclosure capability, not another reward for the first corruption.
 
-      Required technical proof: Completion returns the expected runtime descriptor with process generation, protected object marker, and integrity relation checked by the daemon.
+      Required technical proof: Participant submits an extended .fki bundle (derived from binary analysis of arena constants) and parses the data_hex output to recover the runtime descriptor containing worker_session, process_generation, state_route, and integrity_relation.
     source_refs:
     - features.k-delivery.k-indexer
     scope: Per-participant in-world evidence; no other participant state.
@@ -530,8 +530,9 @@ action_contracts:
       - features.k-delivery.k-indexer
     - precondition_id: normal-surface
       precondition_class: target
-      description: The indexer process holds a protected runtime descriptor and release-queue metadata outside the
-        ordinary bundle index. K04.1's controlled primitive applies only to the designated object graph.
+      description: The binary reads the shared arena before each bundle write. After K04.1 mutation the service
+        writes the runtime descriptor into arena bytes 80-511. An extended bundle (ie=64, alloc_entries derived
+        from binary analysis) causes the binary's pre-write read to cover the descriptor region in its data_hex output.
       support_refs:
       - features.k-delivery.k-indexer
       - content.keplerops-k-indexer.k04-2-read-past-the-index
@@ -555,8 +556,8 @@ action_contracts:
       - evidence_requirements.k04.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Completion returns the expected runtime descriptor with process generation, protected object
-        marker, and integrity relation checked by the daemon.
+      description: Completion returns data_hex of 512 bytes; parsing hex chars 160-1023 as JSON yields the
+        runtime descriptor with worker_session, process_generation, state_route, and integrity_relation.
       target_refs:
       - features.k-delivery.k-indexer
       evidence_refs:

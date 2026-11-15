@@ -115,8 +115,9 @@ hints:
   K04.2:
     h1: The binary returns a data_hex field covering the bytes read from the shared arena before each write. After
       K04.1 the arena carries a runtime descriptor at bytes 80-511 that the service wrote at mutation time.
-    h2: Extend the .fki bundle to datalen=512 (ie=64, ae=432) so the binary's pre-write read covers the descriptor
-      region. The sentinel region (bytes 64-79) still triggers the mutation state; bytes 80-511 carry the descriptor.
+    h2: The bounds check uses sizeof(struct index_arena) as its base, not the full arena size. Analyze the binary
+      to find both constants; then choose alloc_entries so that the check passes for datalen equal to the full
+      arena size, covering the descriptor region.
     h3: Parse data_hex hex chars 160-1023 (arena bytes 80-511) as JSON to recover the runtime descriptor.
       It contains the worker_session bearer, process_generation, state_route, and integrity_relation for K04.3.
     references:
