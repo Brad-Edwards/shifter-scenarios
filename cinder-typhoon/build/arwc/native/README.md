@@ -132,3 +132,18 @@ boundaries; an inherited or broader existing share stops the import. Existing
 mapped workforce users and their passwords are preserved. New ordinary users
 use the existing product provisioning pattern and the existing `Staff` group;
 no synthetic permission groups are created.
+
+The genuine corporate operating-history connection is the fixed GET path
+`https://read-data.arwc.test/api/operating-history`. Existing Nginx routes it to
+the read-only historian bridge with verified upstream TLS. The bridge uses the
+existing operating-reader Basic identity and selected PostgreSQL view, accepts
+no SQL or control input, and no longer serves product/session imitations. Its
+old engineering interface and legacy evidence-state mounts are removed.
+
+The explicit corporate-record import temporarily sets a finite authenticated
+share-create limit using Nextcloud's documented `ratelimit_overwrite` setting.
+It obtains the exact route from native `occ router:list`; it does not disable
+rate limiting, change anonymous limits or alter brute-force protection. The
+prior route/global settings are saved privately, restored on completion,
+error or interruption, and checked after restoration. Ordinary runtime retains
+the original product protection settings. See the upstream [route limit guidance](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/config_sample_php_parameters.html#ratelimit-overwrite).

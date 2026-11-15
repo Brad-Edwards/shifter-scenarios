@@ -67,7 +67,7 @@ case "$action" in
     "${compose[@]}" --profile seed run --rm seed-erp
     ;;
   seed-corporate-documents)
-    "${compose[@]}" --profile seed run --rm seed-corporate-documents
+    python3 import-corporate-documents.py
     ;;
   seed-documents)
     "${compose[@]}" --profile seed run --rm seed-documents
