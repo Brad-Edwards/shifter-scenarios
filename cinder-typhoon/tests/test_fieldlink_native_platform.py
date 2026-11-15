@@ -17,6 +17,44 @@ spec.loader.exec_module(module)
 
 
 class NativePlatformTests(unittest.TestCase):
+    def test_interrupted_assistant_setup_completes_membership_without_reset(self) -> None:
+        source = ROOT / 'build/keplerops/native-platform/seed-assistant.py'
+        assistant_spec = importlib.util.spec_from_file_location('assistant_seed', source)
+        assistant = importlib.util.module_from_spec(assistant_spec)
+        assistant_spec.loader.exec_module(assistant)
+        updates = []
+        def native_api(path, data=None, token=None):
+            responses = {
+                '/system/multi-user-mode': {'multiUserMode': True},
+                '/request-token': {'token': 'setup-token'},
+                '/system/update-env': {},
+                '/admin/users': {'users': [{'username': name, 'id': index} for index, name in enumerate(('rowan.ito', 'maya.ranscombe', 'talia.mornac'), 1)]},
+                '/workspaces': {'workspaces': [{'id': 4, 'name': 'FieldLink Operations', 'slug': 'fieldlink-operations'}]},
+                '/admin/workspaces/4/users': {'users': [{'userId': 1}, {'userId': 9}]},
+            }
+            if path.endswith('/update-users'):
+                updates.append(data['userIds'])
+                return {'success': True}
+            return responses[path]
+        with tempfile.TemporaryDirectory() as directory, patch.object(assistant, 'api', native_api):
+            operator = Path(directory)
+            for name, value in (
+                ('native-platform/bootstrap.json', {'assistant_admin': 'private'}),
+                ('native-workplace/bootstrap.json', {'staff_maya': 'private', 'staff_talia': 'private'}),
+                ('range-seed/runtime-credentials.json', {'credentials': {'developer_token': 'private'}}),
+            ):
+                path = operator / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(json.dumps(value))
+            documents = operator / 'native-platform/assistant-documents'
+            documents.mkdir()
+            for name in ('company-history.md', 'working-guide.md', 'customer-relationships.md'):
+                (documents / name).touch()
+            assistant.seed(operator)
+            self.assertEqual(updates, [[1, 2, 3, 9]])
+            with patch.object(assistant, 'api', side_effect=AssertionError('completed state was reseeded')):
+                assistant.seed(operator)
+
     def test_warm_prepare_preserves_private_inputs_and_native_environment(self) -> None:
         with tempfile.TemporaryDirectory() as directory, patch.object(module.os, 'chown'):
             operator = Path(directory)

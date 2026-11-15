@@ -70,9 +70,11 @@ def seed(operator: Path) -> None:
     workspace = next((value for value in workspaces if value['name'] == 'FieldLink Operations'), None)
     if not workspace:
         workspace = api('/admin/workspaces/new', {'name': 'FieldLink Operations'}, token)['workspace']
-        result = api('/admin/workspaces/' + str(workspace['id']) + '/update-users', {
-            'userIds': [users[name]['id'] for name in ('rowan.ito', 'maya.ranscombe', 'talia.mornac')],
-        }, token)
+    endpoint = '/admin/workspaces/' + str(workspace['id'])
+    existing = {value['userId'] for value in api(endpoint + '/users', token=token)['users']}
+    expected = {users[name]['id'] for name in ('rowan.ito', 'maya.ranscombe', 'talia.mornac')}
+    if not expected <= existing:
+        result = api(endpoint + '/update-users', {'userIds': sorted(existing | expected)}, token)
         if not result.get('success'):
             raise RuntimeError('Native assistant workspace assignment failed')
     documents = operator / 'native-platform/assistant-documents'
