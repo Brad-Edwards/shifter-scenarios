@@ -46,7 +46,10 @@ def validate_dmz(document: dict) -> None:
         if isinstance(settings, dict) and "ipv4_address" in settings
     }
     for name, service in services.items():
-        for settings in (service.get("networks", {}) or {}).values():
+        networks = service.get("networks", {}) or {}
+        if not isinstance(networks, dict):
+            continue
+        for settings in networks.values():
             if isinstance(settings, dict) and "ipv4_address" in settings:
                 assert settings["ipv4_address"] not in legacy_addresses, f"{name}: legacy address collision"
     expected = {
