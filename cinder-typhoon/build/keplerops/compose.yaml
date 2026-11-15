@@ -717,6 +717,86 @@ services:
     networks:
       cloud: {ipv4_address: 10.77.52.50, aliases: [assistant.keplerops.test]}
 
+  fieldlink-k3s:
+    image: rancher/k3s:v1.37.2-k3s1@sha256:21ea6e0fac4e3930c2ce8aa40ddd41a8b18cb3e9a0222c030dc005e7e88c4332
+    container_name: cinder-keplerops-k3s
+    hostname: fieldlink-k3s
+    restart: unless-stopped
+    privileged: true
+    mem_limit: 2g
+    cpus: 1
+    command: [server, --disable=traefik, --disable=servicelb, --tls-san=cloud-api.keplerops.test, --tls-san=workloads.keplerops.test, --write-kubeconfig=/output/admin.yaml, --write-kubeconfig-mode=600, --node-ip=10.77.52.60]
+    env_file:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/k3s.env
+    tmpfs: [/run, /var/run]
+    ulimits:
+      nproc: 65535
+      nofile: {soft: 65535, hard: 65535}
+    volumes:
+      - native-k3s-data:/var/lib/rancher/k3s
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/kubernetes:/output
+    healthcheck:
+      test: [CMD, k3s, kubectl, get, --raw=/readyz]
+      interval: 10s
+      timeout: 5s
+      retries: 45
+      start_period: 30s
+    networks:
+      cloud: {ipv4_address: 10.77.52.60}
+
+  fieldlink-objects:
+    image: chrislusf/seaweedfs:4.53@sha256:ccad23e18639c8b98cee17e7100b95830a06077b56d8e5b006d6dcf8ec5e94a0
+    container_name: cinder-keplerops-objects
+    mem_limit: 512m
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    command: [mini, -dir=/data, -ip=127.0.0.1, -ip.bind=0.0.0.0, -s3.config=/run/fieldlink/s3.json, -s3.port.iceberg=0, -s3.port.lance=0, -volume.max=4]
+    volumes:
+      - native-objects-data:/data
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/s3.json:/run/fieldlink/s3.json:ro
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.40}
+
+  fieldlink-ollama:
+    image: ollama/ollama:0.40.16@sha256:910d0d8107b538fb0894e63163eb195de0cc7aefcbc666dc62d3b18f71124592
+    container_name: cinder-keplerops-ollama
+    mem_limit: 4g
+    cpus: 2
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+      OLLAMA_NUM_PARALLEL: '1'
+      OLLAMA_MAX_LOADED_MODELS: '1'
+      OLLAMA_CONTEXT_LENGTH: '4096'
+      OLLAMA_NO_CLOUD: '1'
+    volumes:
+      - native-ollama-data:/root/.ollama
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/model-source:/model-source:ro
+      - ./native-platform/Modelfile:/run/fieldlink/Modelfile:ro
+    healthcheck:
+      test: [CMD, ollama, list]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.41}
+
+  fieldlink-assistant:
+    image: mintplexlabs/anythingllm:1.19.0@sha256:daf5a6ae9d363ed578e7d41e2d0668c7eaa604bd90b0ff27435f893b0906833e
+    container_name: cinder-keplerops-anythingllm
+    mem_limit: 2g
+    cpus: 1
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    env_file:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/anythingllm.env
+    volumes:
+      - native-assistant-data:/app/server/storage
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/anythingllm.env:/app/server/.env
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.42}
+
   a-connector:
     build:
       context: ../..
@@ -820,3 +900,8 @@ volumes:
   native-kanboard-data: {name: cinder-keplerops-native-kanboard-data}
   native-support-db: {name: cinder-keplerops-native-support-db}
   native-jenkins-home: {name: cinder-keplerops-native-jenkins-home}
+
+  native-k3s-data: {name: cinder-keplerops-native-k3s-data}
+  native-objects-data: {name: cinder-keplerops-native-objects-data}
+  native-ollama-data: {name: cinder-keplerops-native-ollama-data}
+  native-assistant-data: {name: cinder-keplerops-native-assistant-data}
