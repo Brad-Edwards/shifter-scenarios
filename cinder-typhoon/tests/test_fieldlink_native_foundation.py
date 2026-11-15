@@ -50,6 +50,19 @@ class FieldLinkFoundationTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("host port", result.stdout)
 
+    def test_edge_rejects_enrollment_signing_directory_mount(self) -> None:
+        compose_path = ROOT / "build/keplerops/compose.yaml"
+        compose = yaml.safe_load(compose_path.read_text(encoding="utf-8"))
+        compose['services']['fieldlink-edge']['volumes'].append(
+            '${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ca:/etc/nginx/enrollment:ro'
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            mutant = Path(directory) / 'compose.yaml'
+            mutant.write_text(yaml.safe_dump(compose), encoding='utf-8')
+            result = run_validator('--compose', str(mutant))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('CA signing material', result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

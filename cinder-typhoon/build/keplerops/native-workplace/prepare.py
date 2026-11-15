@@ -39,6 +39,20 @@ def prepare(operator: Path) -> None:
     write(target / 'kanboard_db_password', values['kanboard_db'])
     write(target / 'support_db_password', values['support_db'])
     write(target / 'mariadb_root_password', values['mariadb_root'])
+    sql = []
+    for product, password in (('identity', values['identity_db']), ('staff', values['kanboard_db'])):
+        role = 'fieldlink_' + product
+        sql.extend((
+            f"SELECT 'CREATE ROLE {role} LOGIN' WHERE NOT EXISTS "
+            f"(SELECT FROM pg_roles WHERE rolname = '{role}')\\gexec",
+            f"ALTER ROLE {role} PASSWORD '{password}';",
+            f"SELECT 'CREATE DATABASE {role} OWNER {role}' WHERE NOT EXISTS "
+            f"(SELECT FROM pg_database WHERE datname = '{role}')\\gexec",
+            f"REVOKE ALL ON DATABASE {role} FROM PUBLIC;",
+        ))
+    # The enclosing operator directory remains private; PostgreSQL's own UID
+    # must be able to read the individually mounted initialization file.
+    write(target / 'postgres.sql', '\n'.join(sql) + '\n', 0o444)
     realm = {
         'realm': 'keplerops', 'enabled': True, 'displayName': 'KeplerOps Staff',
         'registrationAllowed': False, 'resetPasswordAllowed': False,
@@ -67,9 +81,35 @@ def prepare(operator: Path) -> None:
     write(ca / 'secrets/password', values['ca'])
 
 
+def configure_ca(operator: Path) -> None:
+    target = operator / 'native-workplace'
+    values = json.loads((target / 'bootstrap.json').read_text())
+    path = target / 'ca/config/ca.json'
+    config = json.loads(path.read_text())
+    provisioners = config['authority']['provisioners']
+    provisioner = {
+        'type': 'OIDC', 'name': 'keplerops-staff', 'clientID': 'fieldlink-enrollment',
+        'clientSecret': values['enrollment_client'],
+        'configurationEndpoint': 'https://identity.keplerops.test/realms/keplerops/.well-known/openid-configuration',
+        'domains': ['keplerops.test'], 'listenAddress': ':10000',
+    }
+    matches = [index for index, value in enumerate(provisioners) if value.get('name') == provisioner['name']]
+    if matches:
+        provisioners[matches[0]] = provisioner
+    else:
+        provisioners.append(provisioner)
+    write(path, json.dumps(config, indent=2) + '\n')
+    # step-ca validates the IdP over HTTPS using the public infrastructure CA.
+    write(target / 'ca/issuer-trust.crt', (operator / 'tls/ca.crt').read_text(), 0o644)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--operator-dir', type=Path, required=True)
+    parser.add_argument('--ca-config', action='store_true')
     arguments = parser.parse_args()
     os.umask(0o077)
-    prepare(arguments.operator_dir)
+    if arguments.ca_config:
+        configure_ca(arguments.operator_dir)
+    else:
+        prepare(arguments.operator_dir)

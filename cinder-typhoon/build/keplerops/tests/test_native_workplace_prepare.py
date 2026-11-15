@@ -32,3 +32,20 @@ class WorkplacePrepareTests(unittest.TestCase):
             self.assertEqual(realm['users'][0]['realmRoles'], ['developer'])
             self.assertFalse(realm['clients'][0]['serviceAccountsEnabled'])
             self.assertFalse(realm['clients'][0]['directAccessGrantsEnabled'])
+
+    def test_ca_configuration_keeps_existing_native_provisioners_on_repeat(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            operator = Path(temporary)
+            target = operator / 'native-workplace'
+            (target / 'ca/config').mkdir(parents=True)
+            (operator / 'tls').mkdir()
+            (operator / 'tls/ca.crt').write_text('public infrastructure CA fixture')
+            (target / 'bootstrap.json').write_text(json.dumps({'enrollment_client': 'local-client-fixture'}))
+            config = target / 'ca/config/ca.json'
+            config.write_text(json.dumps({'authority': {'provisioners': [{'name': 'infrastructure', 'type': 'JWK'}]}}))
+            MODULE.configure_ca(operator)
+            MODULE.configure_ca(operator)
+            values = json.loads(config.read_text())['authority']['provisioners']
+            self.assertEqual([value['name'] for value in values], ['infrastructure', 'keplerops-staff'])
+            self.assertEqual(values[1]['configurationEndpoint'],
+                             'https://identity.keplerops.test/realms/keplerops/.well-known/openid-configuration')

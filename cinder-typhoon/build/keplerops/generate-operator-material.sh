@@ -139,3 +139,5 @@ chmod 0644 "$OPERATOR_DIR/rowan_ed25519.pub" "$OPERATOR_DIR/rowan_authorized_key
 chmod 0644 "$OPERATOR_DIR/integration/arwc-ca.crt" "$OPERATOR_DIR/integration/registry-delivery.crt" "$OPERATOR_DIR/integration/support-delivery.crt"
 python3 "$ROOT/native-ci/prepare.py" --operator-dir "$OPERATOR_DIR"
 python3 "$ROOT/native-registry/prepare-participant.py" --operator-dir "$OPERATOR_DIR"
+python3 "$ROOT/native-workplace/prepare.py" --operator-dir "$OPERATOR_DIR"
+bash "$ROOT/native-workplace/prepare-ca.sh"

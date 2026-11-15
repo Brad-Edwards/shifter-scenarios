@@ -1,5 +1,7 @@
 FROM node:22.19.0-bookworm-slim AS node-tools
 
+FROM smallstep/step-ca:0.28.4@sha256:0f88382ac5af5c6b7bbba0c6e8fcefef52aee6f22ea364df8e02a09ffd0d22f3 AS step-tools
+
 FROM debian:bookworm-slim AS indexer-reproducer
 
 RUN apt-get update \
@@ -31,6 +33,7 @@ RUN apt-get update \
 
 COPY --from=node-tools /usr/local/bin/node /usr/local/bin/node
 COPY --from=node-tools /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=step-tools /usr/local/bin/step /usr/local/bin/step
 RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
     && ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 ENV NODE_EXTRA_CA_CERTS=/home/rowan/.local/share/keplerops/ca.crt

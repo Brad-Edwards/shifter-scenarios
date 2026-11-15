@@ -9,7 +9,7 @@ bash ./generate-operator-material.sh
 docker compose -f compose.yaml up -d --force-recreate \
   router fieldlink-dns fieldlink-edge fieldlink-postgres runner \
   k-source k-registry k-ci fieldlink-review k-preview k-support k-indexer \
-  k-cloud-api k-workload k-data k-assistant k-staff k-identity k-cert \
+  k-cloud-api k-workload k-data k-assistant k-staff k-identity fieldlink-keycloak k-cert \
   a-connector k-dev
 
 for attempt in $(seq 1 60); do

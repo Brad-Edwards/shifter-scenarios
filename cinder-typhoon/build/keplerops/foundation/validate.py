@@ -57,10 +57,24 @@ def validate(pack_root: Path, compose_path: Path, named_conf_path: Path) -> None
     require("@sha256:" in dns_dockerfile, "DNS base image is not digest pinned")
     require("bind=9.18.44-r0" in dns_dockerfile, "BIND package is not version pinned")
 
-    nginx = (pack_root / "build/keplerops/foundation/nginx.conf").read_text(encoding="utf-8")
+    edge_volumes = services['fieldlink-edge']['volumes']
+    require('${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls:/etc/nginx/tls:ro' not in edge_volumes,
+            'edge can read infrastructure CA signing material')
+    require('./native-workplace/nginx.conf:/etc/nginx/conf.d/default.conf:ro' in edge_volumes,
+            'native edge configuration is not mounted')
+    enrollment_mounts = [value for value in edge_volumes if '/native-workplace/ca' in value]
+    require(set(enrollment_mounts) == {
+        '${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ca/tls:/etc/nginx/enrollment/tls:ro',
+        '${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ca/certs/root_ca.crt:/etc/nginx/enrollment/root_ca.crt:ro',
+    }, 'edge can read enrollment CA signing material')
+    nginx = (pack_root / "build/keplerops/native-workplace/nginx.conf").read_text(encoding="utf-8")
     require("ssl_certificate " in nginx, "Nginx TLS is absent")
     require("location = /health" in nginx, "Nginx health route is absent")
-    require("proxy_pass" not in nginx, "foundation Nginx has an undeclared upstream")
+    require('set $identity http://fieldlink-keycloak:8080;' in nginx,
+            'native identity upstream is absent')
+    require('set $authority https://k-cert:9000;' in nginx,
+            'native enrollment upstream is absent')
+    require('proxy_ssl_verify on;' in nginx, 'enrollment upstream TLS is not verified')
 
     for relative in (
         "build/keplerops/restore-pristine.sh",

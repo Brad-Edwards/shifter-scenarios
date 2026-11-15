@@ -53,6 +53,32 @@ cards. Native product visibility alone does not establish full card acceptance.
 Restart persistence and a final pristine reset must reproduce the migrated
 native state before issue 400 closes.
 
+## Manual identity deployment
+
+Use the development-range wrapper to synchronize committed source and build on
+`cinder-fieldlink-dev`. Do not use this procedure against the golden range.
+Coordinate the DNS, desktop and shared edge window before applying it.
+
+1. Run `generate-operator-material.sh` from the FieldLink build directory. It
+   preserves the private bootstrap account inputs and existing CA keys, prepares
+   the native realm import and creates missing native enrollment CA material.
+2. Build `fieldlink-dns`, `k-identity` and `k-dev` with the existing Compose file.
+   Pull the pinned Keycloak and step-ca images. Run
+   `native-workplace/bootstrap-databases.sh` to initialize the existing PostgreSQL
+   volume's separate native application databases. Fresh PostgreSQL volumes use
+   the same supported initialization SQL automatically.
+3. Start the native identity services and recreate DNS and the existing edge.
+   Recreate the desktop only in its agreed window and reapply its private
+   development login with `manage.sh desktop-login fieldlink prod-mgau4w`.
+4. Supply the native enrollment CA's public root through ordinary desktop trust.
+   Ask QA to check actual native account login, protocol behavior, enrollment and
+   retained state. Product health alone does not establish participant acceptance.
+
+Nginx receives only its leaf certificate/key and the explicitly required public
+roots. It receives neither CA's signing keys, password, private configuration or
+database. Development peer overrides remain in the existing private `.env`;
+loading an alternate Compose environment must not discard that mapping.
+
 References: [Keycloak administration](https://www.keycloak.org/docs/latest/server_admin/),
 [Keycloak hostname and proxy settings](https://www.keycloak.org/server/reverseproxy),
 [step-ca configuration](https://smallstep.com/docs/step-ca/configuration/),
