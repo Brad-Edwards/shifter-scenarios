@@ -124,6 +124,10 @@ sudo bash manage.sh reset cinder-arwc-native
 Reset removes this native IT project's volumes and replays initialization and
 all product seed steps and the DMZ view grants. The database initializes its approved read-only
 DMZ views before PostgREST starts. For an existing native IT database, run
+Reset runs the ordinary document and workforce setup before the bulk document
+import. This keeps their small share operations out of the large import
+account's temporary rate-limit window.
+
 `seed-dmz` once after installing its new secret mount. Reset does not reset
 the qualified OT project. Company data,
 department sharing, planning reports and engineering repositories must pass
