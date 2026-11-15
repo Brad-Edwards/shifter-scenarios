@@ -28,7 +28,7 @@ def prepare(operator: Path) -> None:
     values = json.loads(private.read_text()) if private.exists() else {}
     for name in ('identity_db', 'identity_admin', 'kanboard_db', 'kanboard_admin',
                  'support_db', 'support_admin', 'mariadb_root', 'ca', 'enrollment_client',
-                 'kerberos_master', 'kerberos_evan'):
+                 'kerberos_master', 'kerberos_evan', 'staff_maya', 'staff_talia'):
         values.setdefault(name, secrets.token_urlsafe(32))
     write(private, json.dumps(values))
     runtime = json.loads((operator / 'range-seed/runtime-credentials.json').read_text())['credentials']
@@ -40,6 +40,22 @@ def prepare(operator: Path) -> None:
           'KC_DB_PASSWORD=' + values['identity_db'] + '\n'
           'KC_BOOTSTRAP_ADMIN_USERNAME=platform-admin\n'
           'KC_BOOTSTRAP_ADMIN_PASSWORD=' + values['identity_admin'] + '\n')
+    write(target / 'kanboard.env',
+          'DATABASE_URL=postgres://fieldlink_staff:' + values['kanboard_db']
+          + '@fieldlink-postgres:5432/fieldlink_staff\n')
+    write(target / 'kanboard-bootstrap.json', json.dumps({
+        'admin_password': values['kanboard_admin'],
+        'users': [
+            {'username': 'rowan.ito', 'name': 'Rowan Ito', 'password': runtime['developer_token'],
+             'role': 'app-user', 'is_active': 1},
+            {'username': 'maya.ranscombe', 'name': 'Maya Ranscombe', 'password': values['staff_maya'],
+             'role': 'app-user', 'is_active': 1},
+            {'username': 'talia.mornac', 'name': 'Talia Mornac', 'password': values['staff_talia'],
+             'role': 'app-user', 'is_active': 1},
+            {'username': 'evan.calderoux', 'name': 'Evan Calderoux', 'password': values['kerberos_evan'],
+             'role': 'app-user', 'is_active': 0},
+        ],
+    }))
     write(target / 'identity_db_password', values['identity_db'])
     write(target / 'kanboard_db_password', values['kanboard_db'])
     write(target / 'support_db_password', values['support_db'])
