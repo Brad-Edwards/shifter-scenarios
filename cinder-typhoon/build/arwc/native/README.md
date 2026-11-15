@@ -154,3 +154,12 @@ participant's home. It contains only the existing `operating-reader` identity,
 its password and that fixed endpoint. Existing connection provisioning delivers
 it as participant-owned mode `0600`; no PostgreSQL password, keytab, private
 server key or operator administration credential is included.
+
+The private Gitea repository `clara.morivelle/retained-engineering-tools` holds
+twelve unchanged existing compiled maintenance/engineering outputs. Clara owns
+the repository; Theo has normal read access. Capture uses an explicit file
+allowlist from the cached build images without starting their old services.
+Source files, expected results, test cases, plaintext answers, operator files
+and keys are excluded. Source checksums are kept in the private build cache;
+normal Gitea file reads verify uploaded bytes. Existing native repository files
+are never overwritten by a later seed.

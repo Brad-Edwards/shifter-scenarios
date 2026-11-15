@@ -2,6 +2,7 @@
 set -euo pipefail
 [[ $(hostname) == cinder-arwc-dev ]] || exit 1
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+bash capture-retained-tools.sh
 set -a
 # shellcheck disable=SC1091
 source .operator/engineering-seed.env

@@ -42,6 +42,7 @@ services:
     volumes:
       - ./seed-engineering.py:/seed/seed-engineering.py:ro
       - ../../arwc-ot/site:/seed/controller:ro
+      - ./.operator/retained-tools/files:/seed/retained-tools:ro
     sysctls: {net.ipv4.ip_forward: "0"}
     security_opt: [no-new-privileges:true]
   seed-reports:
