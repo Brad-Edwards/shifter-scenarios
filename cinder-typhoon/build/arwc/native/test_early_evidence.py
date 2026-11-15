@@ -79,5 +79,51 @@ class NativeEvidenceTests(unittest.TestCase):
             evidence.evaluate("W03.3", submission, product, now=NOW)
 
 
+class WorkforceEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        self.product = snapshot()
+        self.product["identity"] = {
+            "users": [
+                {"id": "native-mira", "username": "mira.vale.temp", "enabled": True, "requiredActions": [],
+                 "attributes": {"employee_number": ["TMP-4821"], "assignment_ref": ["PLAN-RELIEF-3"], "department": ["Planning"]}},
+                {"id": "native-nadia", "username": "nadia.corvane", "attributes": {"assignment_ref": ["Regional planner"]}},
+            ],
+            "temporary_effective_admin_roles": [{"name": "view-users"}, {"name": "query-users"}],
+            "events": [{"userId": "native-mira", "type": "LOGIN"}, {"userId": "native-mira", "type": "UPDATE_PASSWORD"}],
+            "temporary_sessions": [{"userId": "native-mira"}],
+        }
+        self.product["observations"] = [
+            {"source": "keycloak", "actor": "native-mira", "method": "GET", "path": "/admin/realms/arwc/users/native-nadia",
+             "status": 200, "response": deepcopy(self.product["identity"]["users"][1])},
+            {"source": "keycloak", "actor": "native-mira", "method": "PUT", "path": "/admin/realms/arwc/users/native-nadia", "status": 403},
+            {"source": "keycloak", "actor": "native-mira", "method": "GET", "path": "/admin/realms/master/users", "status": 403},
+        ]
+        self.submission = {"username": "mira.vale.temp", "identity_id": "native-mira", "read_identity_id": "native-nadia",
+                           "read_assignment": "Regional planner", "directory_roles": ["query-users", "view-users"]}
+
+    def test_native_actor_login_directory_read_and_boundaries_match(self):
+        self.assertEqual(evidence.evaluate("W05.3", self.submission, self.product, now=NOW)["card"], "W05.3")
+
+    def test_seeded_roles_alone_do_not_prove_first_login_or_other_person_read(self):
+        for change in ("no-login", "no-password-change", "no-session", "admin-read", "no-denial", "wrong-attributes", "broad-role"):
+            product = deepcopy(self.product)
+            if change == "no-login":
+                product["identity"]["events"] = product["identity"]["events"][1:]
+            elif change == "no-password-change":
+                product["identity"]["events"] = product["identity"]["events"][:1]
+            elif change == "no-session":
+                product["identity"]["temporary_sessions"] = []
+            elif change == "admin-read":
+                product["observations"][0]["actor"] = "platform-admin"
+            elif change == "no-denial":
+                product["observations"][1]["status"] = 200
+            elif change == "wrong-attributes":
+                product["observations"][0]["response"]["attributes"]["assignment_ref"] = ["Unrelated"]
+            else:
+                product["identity"]["temporary_effective_admin_roles"].append({"name": "manage-users"})
+            with self.subTest(change=change), self.assertRaises(evidence.EvidenceError):
+                evidence.evaluate("W05.3", self.submission, product, now=NOW)
+
+
 if __name__ == "__main__":
     unittest.main()

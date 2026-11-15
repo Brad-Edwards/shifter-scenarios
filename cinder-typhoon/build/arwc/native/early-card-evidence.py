@@ -25,6 +25,9 @@ FIELDS = {
     "W02.3": {"task", "project", "asset", "revision", "denied_neighbor"},
     "W03.1": {"order", "file", "annex", "drawing", "sha256"},
     "W03.2": {"file_id", "prior_version", "prior_sha256", "current_sha256", "prior_recipient", "current_recipient", "shared_file", "share_id"},
+    "W05.1": {"reference", "employee_number", "username", "approved_assignment", "file_id", "file_sha256"},
+    "W05.2": {"employee_number", "username", "identity_id", "department", "approved_assignment", "file_id", "file_sha256"},
+    "W05.3": {"username", "identity_id", "read_identity_id", "read_assignment", "directory_roles"},
     "W03.3": {"schema", "relation", "role", "record_id", "revision", "asset", "planning_window", "reported_ml", "as_of"},
 }
 
@@ -154,6 +157,46 @@ def evaluate(card: str, submission: dict, product: dict, *, now: dt.datetime | N
         require(str(incoming.get("share_type")) == "0" and int(incoming.get("permissions", 0)) == 1, "Engineering acceptance is not the intended individual native read share")
         denied(product, "nextcloud", "PROPFIND", "/Engineering reviews", {403, 404})
         expected = {"file_id": str(current["file_id"]), "prior_version": old["version_id"], "prior_sha256": old["sha256"], "current_sha256": current["sha256"], "prior_recipient": "Clara Morivelle", "current_recipient": EMAIL, "shared_file": str(acceptance["file_id"]), "share_id": str(incoming["id"])}
+    elif card.startswith("W05."):
+        identity = product["identity"]
+        temporary = one(identity["users"], username="mira.vale.temp")
+        attributes = temporary.get("attributes", {})
+        require(temporary.get("enabled") is True and attributes.get("employee_number") == ["TMP-4821"]
+                and attributes.get("assignment_ref") == ["PLAN-RELIEF-3"], "Wrong actual temporary identity")
+        if card == "W05.1":
+            record = native_file(product, HANDOVER + "starting-arrangements-mira.md")
+            require(all(value in record["content"] for value in ("START-MIRA-2026", "TMP-4821", temporary["username"], "PLAN-RELIEF-3")), "Starter document does not bind the actual account")
+            expected = {"reference": "START-MIRA-2026", "employee_number": "TMP-4821", "username": temporary["username"],
+                        "approved_assignment": "PLAN-RELIEF-3", "file_id": str(record["file_id"]), "file_sha256": record["sha256"]}
+        elif card == "W05.2":
+            record = native_file(product, HANDOVER + "activation-roster-2026-11.csv")
+            row = one(list(csv.DictReader(io.StringIO(record["content"]))), username=temporary["username"])
+            require(row["identity_id"] == temporary["id"] and row["employee_number"] == "TMP-4821"
+                    and row["approved_assignment"] == "PLAN-RELIEF-3" and row["enabled"] == "True"
+                    and row["department"] == attributes["department"][0], "Roster is not exported from the actual identity")
+            expected = {key: row[key] for key in ("employee_number", "username", "identity_id", "department", "approved_assignment")}
+            expected.update(file_id=str(record["file_id"]), file_sha256=record["sha256"])
+        else:
+            roles = {row["name"] for row in identity["temporary_effective_admin_roles"]}
+            require({"view-users", "query-users"}.issubset(roles) and roles <= {"view-users", "query-users", "query-groups"}, "Temporary identity has unrelated administrative authority")
+            require("UPDATE_PASSWORD" not in temporary.get("requiredActions", []), "Required first login has not completed")
+            actor_events = [event for event in identity["events"] if event.get("userId") == temporary["id"] and not event.get("error")]
+            require(any(event.get("type") == "LOGIN" for event in actor_events), "Native temporary-user login event is missing")
+            require(any(event.get("type") == "UPDATE_PASSWORD" or (event.get("type") == "UPDATE_CREDENTIAL"
+                        and event.get("details", {}).get("credential_type") == "password") for event in actor_events), "Native first-login credential event is missing")
+            require(any(session.get("userId") == temporary["id"] for session in identity["temporary_sessions"]), "Native active temporary-user session is missing")
+            target = one(identity["users"], id=submission["read_identity_id"])
+            require(target["id"] != temporary["id"] and target.get("attributes", {}).get("assignment_ref"), "A different actual staff identity is required")
+            observations = [row for row in product["observations"] if row.get("source") == "keycloak" and row.get("actor") == temporary["id"]]
+            require(any(row.get("method") == "GET" and row.get("path") == "/admin/realms/arwc/users/" + target["id"]
+                        and row.get("status") == 200 and row.get("response", {}).get("id") == target["id"]
+                        and row["response"].get("attributes", {}).get("assignment_ref") == target["attributes"]["assignment_ref"] for row in observations), "Native actor-owned directory read is missing")
+            require(any(row.get("method") == "PUT" and row.get("path") == "/admin/realms/arwc/users/" + target["id"]
+                        and row.get("status") == 403 for row in observations), "Native user-management denial is missing")
+            require(any(row.get("method") == "GET" and row.get("path", "").startswith("/admin/realms/master/")
+                        and row.get("status") in {401, 403} for row in observations), "Unrelated native realm denial is missing")
+            expected = {"username": temporary["username"], "identity_id": temporary["id"], "read_identity_id": target["id"],
+                        "read_assignment": target["attributes"]["assignment_ref"][0], "directory_roles": sorted(roles)}
     else:
         data = product["postgrest"]
         require(data.get("role") == "dmz_reader" and data.get("schema") == "dmz_api", "Wrong native published role or schema")
