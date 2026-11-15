@@ -21,7 +21,7 @@ class NativeDocumentImportTests(unittest.TestCase):
             root = Path(directory)
             content = b'ordinary original document'
             docs = [{'text': content.decode(), 'readers': ['alice', 'bob']},
-                    {'content_base64': base64.b64encode(content).decode(), 'readers': ['bob', 'clara'], 'sha256': hashlib.sha256(content).hexdigest()}]
+                    {'content_base64': base64.b64encode(b'excerpt only').decode(), 'readers': ['bob', 'clara'], 'sha256': hashlib.sha256(content).hexdigest()}]
             manifest = root / 'manifest.json'
             manifest.write_text(json.dumps({'documents': docs}))
             with ZipFile(root / 'finance-records.zip', 'w') as archive:

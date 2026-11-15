@@ -7,6 +7,7 @@ import hashlib
 import hmac
 import json
 import os
+import re
 from pathlib import Path, PurePosixPath
 import runpy
 from urllib.parse import quote, urlencode
@@ -26,10 +27,15 @@ def shares(path):
 def records():
     by_digest = {}
     for document in json.loads(Path('/seed/arwc-documents.json').read_text())['documents']:
-        content = base64.b64decode(document['content_base64'], validate=True) if 'content_base64' in document else document['text'].encode()
-        digest = hashlib.sha256(content).hexdigest()
-        if document.get('sha256') and document['sha256'] != digest:
-            raise RuntimeError('Corporate source content failed its checksum')
+        digest = document.get('sha256')
+        if digest:
+            # File-backed records may carry an excerpt in the document body;
+            # the declared hash identifies the complete original archive file.
+            if not re.fullmatch(r'[0-9a-f]{64}', digest):
+                raise RuntimeError('Malformed corporate source checksum')
+        else:
+            content = base64.b64decode(document['content_base64'], validate=True) if 'content_base64' in document else document['text'].encode()
+            digest = hashlib.sha256(content).hexdigest()
         by_digest.setdefault(digest, []).append(document)
     selected = []
     for source in sorted(SOURCE.glob('*-records.zip')):
