@@ -48,7 +48,8 @@ controls bound the service. The renderer has no runtime Internet access.
 `read-data.arwc.test` serves only the PostgreSQL `dmz_api` schema through
 PostgREST. A non-login reader role has explicit SELECT grants on approved
 views. The authenticator can assume only that role, has no create authority,
-and defaults to read-only transactions. No corporate write or controller
+and receives no write grants. PostgREST owns its normal request transactions
+and schema notifications. No corporate write or controller
 operation is available through this path.
 
 Standard BIND views return the supervisory edge address for engineering

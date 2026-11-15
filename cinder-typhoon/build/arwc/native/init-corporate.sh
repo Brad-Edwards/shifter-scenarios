@@ -24,5 +24,5 @@ SELECT format('CREATE ROLE pgrst_authenticator LOGIN NOINHERIT NOSUPERUSER NOCRE
  WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'pgrst_authenticator')
 \gexec
 GRANT dmz_reader TO pgrst_authenticator;
-ALTER ROLE pgrst_authenticator SET default_transaction_read_only = on;
+ALTER ROLE pgrst_authenticator RESET default_transaction_read_only;
 SQL
