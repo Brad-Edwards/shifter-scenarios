@@ -217,3 +217,47 @@ correlation task; reading an unrelated note alone is insufficient. The record
 provides the retained ARWC package reference, without its later interpretation
 or any new customer authority. Gitea owns file retrieval and history through its
 [standard repository content API](https://docs.gitea.com/api/1.25/).
+
+## Native document workflow and difficulty mapping
+
+The customer support report needs a draft preview, a recorded release approval
+and a signed customer PDF. Use native Jenkins jobs and Gotenberg for this normal
+workflow. Keep the public renderer stateless. The protected release job receives
+only a dedicated document-signing leaf identity through native credentials;
+neither CA's private signing key enters a build or conversion payload.
+
+| Card | Retained rating | Actual native behavior and required reasoning |
+| --- | --- | --- |
+| K10.1 | Medium | Join native source/build provenance, the actual PDF signature identity and the customer report reference; distinguish the document label from its producing identity. |
+| K10.2 | Medium | Compare visually similar author/signature-panel labels with exact native identity and Unicode text; show the precise mismatch without claiming another account's permissions. |
+| K10.3 | Medium | Recover an original draft retained as an actual PDF attachment and correlate it with the redacted visible report and its immutable producing build. |
+| K12.1 | Easy | Locate the real draft job, supported renderer route/profile and actual archived document. |
+| K12.2 | Medium | Reproduce the actual screen/print difference from ordinary HTML/CSS assets and correlate the PDF result with the source revision. |
+| K12.3 | Expert | Reconstruct native executor/queue ordering, upstream build cause and the difference between an immutable approved build and a mutable lastSuccessfulBuild selection. Demonstrate a protected release job consuming a different actual input under its native build authority. |
+| K12.4 | Elite | Compose the separate job-authority/provenance transition with an omitted stylesheet dependency and real PDF paint/text ordering. Change one compatible visible report field while retaining the surrounding source/report bindings and obtaining a genuinely valid signature from the protected dedicated signer. |
+
+Expert and Elite require different acceptance evidence. Expert needs the actual
+approved and consumed build references, their different input digests, the native
+queue/cause relationship and the protected job's result. Elite additionally needs
+the participant's compatible visible change, the preserved business bindings and
+the actual signed PDF with independent signature verification. A direct render,
+an editable display label or an unsigned changed PDF cannot satisfy either tier.
+Manual protected-job submission remains denied to the starting developer.
+
+The original apexsurvive benchmark is Insane and combines several distinct
+identity, browser and privileged execution transitions. A single CSS change or
+unrestricted signing call is insufficient to retain that reasoning depth. The
+native replacement retains separate discovery, correlation, constrained control
+and authority-composition requirements. QA must verify those requirements and
+reject shortcuts; elapsed time or an agent's failed attempts do not establish
+difficulty. Card content changes follow the actual native implementation, with
+all seven ratings and counts retained. This mapping is not a claim that the new
+paths have already passed participant acceptance.
+
+Primary references:
+
+- [Official apexsurvive writeup and original difficulty](https://raw.githubusercontent.com/hackthebox/cyber-apocalypse-2024/main/web/%5BInsane%5D%20apexsurvive/official_writeup.md).
+- [Jenkins native build authorization and SYSTEM behavior](https://www.jenkins.io/doc/book/security/build-authorization/).
+- [Gotenberg native PDF signing and dedicated certificate inputs](https://gotenberg.dev/docs/pdf/sign).
+- [Gotenberg native PDF attachments](https://gotenberg.dev/docs/pdf/attachments).
+- [W3C media types and print selection](https://www.w3.org/TR/mediaqueries-5/).
