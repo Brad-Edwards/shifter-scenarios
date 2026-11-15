@@ -23,10 +23,10 @@ COPY --from=builder /fieldkest-bundle-indexer /usr/local/bin/fieldkest-bundle-in
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
 COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
 COPY build/keplerops/runtime/client-references/indexer.json /opt/fieldkest/client_documents.json
-COPY build/keplerops/runtime/platform_service.py /opt/fieldkest/platform_service.py
-COPY build/keplerops/runtime/platform-entrypoint.sh /usr/local/bin/fieldkest-platform-entrypoint
+COPY build/keplerops/runtime/indexer.py /opt/fieldkest/indexer.py
+COPY build/keplerops/runtime/indexer-entrypoint.sh /usr/local/bin/fieldkest-indexer-entrypoint
 RUN mkdir -p /opt/fieldkest-indexer/bin \
     && ln -s /usr/local/bin/fieldkest-bundle-indexer /opt/fieldkest-indexer/bin/fieldkest-bundle-indexer \
-    && chmod 0555 /usr/local/bin/fieldkest-bundle-indexer /usr/local/bin/fieldkest-platform-entrypoint
+    && chmod 0555 /usr/local/bin/fieldkest-bundle-indexer /usr/local/bin/fieldkest-indexer-entrypoint
 EXPOSE 443
-ENTRYPOINT ["/usr/local/bin/fieldkest-platform-entrypoint"]
+ENTRYPOINT ["/usr/local/bin/fieldkest-indexer-entrypoint"]

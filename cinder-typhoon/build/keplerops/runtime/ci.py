@@ -6,22 +6,18 @@ import base64
 import hashlib
 import io
 import json
-import os
 from pathlib import Path, PurePosixPath
 import posixpath
 import socket
-import ssl
 import threading
 import subprocess
-import time
-from urllib import request as urllib_request
 from urllib.error import HTTPError, URLError
 from urllib.parse import unquote, urlsplit
 import uuid
 import zipfile
 
 from http_support import (
-    KeplerHandler, append_audit, canonical_bytes, issue_worker_token, serve_tls,
+    KeplerHandler, append_audit, canonical_bytes, serve_tls,
     sha256_bytes, utc_now,
 )
 from credentials import credential
@@ -37,15 +33,8 @@ CONFIG = json.loads((STATE / "config/opening.json").read_text())
 TOKEN = credential("developer_token")
 USERNAME = "rowan.ito"
 LOCK = threading.RLock()
-REGISTRY_READER_TOKEN = credential("ci_registry_reader")
 RELEASE_READER_TOKEN = credential("release_reader_token")
-K09_CONFIG = json.loads((STATE / "config/runner-foundation.json").read_text())
 K29_CONFIG = json.loads((STATE / "config/release-lineage.json").read_text())
-WORKSPACE = STATE / "workspaces/rowan"
-REFERENCE = Path("/srv/fieldlink-ci/reviews/diagnostic-request-reference.md")
-WORKER_SECRET = Path("/tmp/worker-hmac.key").read_bytes()
-WORKER_AUDIENCES = ("source", "packages", "staff", "cloud-policy", "build-records", "maintenance")
-ACTIVE_REVIEW_JOBS: set[str] = set()
 
 
 def run_worker(source: str, fixture: dict[str, object]) -> dict[str, object]:
@@ -63,95 +52,6 @@ def run_worker(source: str, fixture: dict[str, object]) -> dict[str, object]:
     return json.loads(response)
 
 
-def runner_request(value: dict[str, object], *, timeout: int = 35) -> dict[str, object]:
-    payload = canonical_bytes(value) + b"\n"
-    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
-        client.settimeout(timeout)
-        client.connect(str(RUNNER_SOCKET))
-        client.sendall(payload)
-        response = b""
-        while not response.endswith(b"\n"):
-            chunk = client.recv(65536)
-            if not chunk or len(response) + len(chunk) > 1_100_000:
-                raise RuntimeError("invalid_runner_response")
-            response += chunk
-    return json.loads(response)
-
-
-def write_json_atomic(path: Path, value: object) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name("." + path.name + ".tmp")
-    temporary.write_text(json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n")
-    temporary.replace(path)
-
-
-def workspace_parts(raw: str) -> tuple[str, ...]:
-    decoded = unquote(raw)
-    path = PurePosixPath(decoded)
-    if decoded.startswith("/") or not path.parts or len(path.parts) > 16 or ".." in path.parts:
-        raise ValueError("invalid_workspace_path")
-    if any(not part or len(part.encode()) > 255 for part in path.parts):
-        raise ValueError("invalid_workspace_path")
-    return path.parts
-
-
-def workspace_open(parts: tuple[str, ...], flags: int, mode: int = 0o600, *, create_parents: bool = False) -> int:
-    directory = os.open(WORKSPACE, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-    try:
-        for part in parts[:-1]:
-            if create_parents:
-                try:
-                    os.mkdir(part, 0o700, dir_fd=directory)
-                except FileExistsError:
-                    pass
-            next_directory = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=directory)
-            os.close(directory)
-            directory = next_directory
-        return os.open(parts[-1], flags | os.O_NOFOLLOW, mode, dir_fd=directory)
-    finally:
-        os.close(directory)
-
-
-def execute_review_command(run_id: str, lease_id: str, argv: list[str]) -> None:
-    tokens = {
-        audience: issue_worker_token(
-            WORKER_SECRET, audience, run_id, lease_id,
-            lifetime_seconds=K09_CONFIG["lease_seconds"],
-        )
-        for audience in WORKER_AUDIENCES
-    }
-    try:
-        response = runner_request({
-            "kind": "command", "run_id": run_id, "lease_id": lease_id,
-            "argv": argv, "tokens": tokens,
-        })
-        if response.get("ok") and isinstance(response.get("result"), dict):
-            proof = response["result"]
-            state = "success" if proof.get("exit_status") == 0 and not proof.get("timed_out") else "failed"
-            result = {"schema": "fieldkest.review-command-result/v1", "state": state, **proof}
-        else:
-            error = str(response.get("error", "worker_failed"))
-            state = "cancelled" if error == "worker_cancelled" else "failed"
-            result = {
-                "schema": "fieldkest.review-command-result/v1", "run_id": run_id,
-                "lease_id": lease_id, "state": state, "error": error,
-            }
-    except (OSError, RuntimeError, json.JSONDecodeError):
-        result = {
-            "schema": "fieldkest.review-command-result/v1", "run_id": run_id,
-            "lease_id": lease_id, "state": "failed", "error": "worker_unavailable",
-        }
-    with LOCK:
-        write_json_atomic(RESULTS / "review-jobs" / f"{run_id}.json", result)
-        ACTIVE_REVIEW_JOBS.discard(run_id)
-    append_audit(AUDIT, "review-jobs", {
-        "request_id": str(uuid.uuid4()), "principal": USERNAME, "run_id": run_id,
-        "lease_id": lease_id, "profile": "runner-command", "state": result["state"],
-        "exit_status": result.get("exit_status"), "opened_paths": result.get("opened_paths", []),
-        "status": 200,
-    })
-
-
 class CIHandler(KeplerHandler):
     def _authorized(self) -> bool:
         return self.basic_or_bearer(USERNAME, TOKEN)
@@ -163,11 +63,7 @@ class CIHandler(KeplerHandler):
         if not self._authorized():
             self.send_json(401, {"error": "authentication_required"})
             return
-        if path.startswith("/api/review-jobs/"):
-            self._review_job_result(path.removeprefix("/api/review-jobs/"))
-        elif path.startswith("/api/review-workspace/files/"):
-            self._workspace_get(path.removeprefix("/api/review-workspace/files/"))
-        elif path.startswith("/api/jobs/"):
+        if path.startswith("/api/jobs/"):
             job_id = path.removeprefix("/api/jobs/")
             if not job_id.startswith("JOB-") or not (RESULTS / f"{job_id}.json").is_file():
                 self.send_json(404, {"error": "job_not_found"})
@@ -198,204 +94,9 @@ class CIHandler(KeplerHandler):
             self._job_submit()
         elif path == "/api/rehearsals/connector":
             self._connector_rehearsal()
-        elif path == "/api/review-jobs":
-            self._review_job_submit()
-        elif path.startswith("/api/review-jobs/") and path.endswith("/cancel"):
-            run_id = path.removeprefix("/api/review-jobs/").removesuffix("/cancel")
-            self._review_job_cancel(run_id)
         else:
             self.send_json(404, {"error": "not_found"})
 
-    def do_PUT(self) -> None:
-        if not self._authorized():
-            self.send_json(401, {"error": "authentication_required"})
-            return
-        path = urlsplit(self.path).path
-        if path.startswith("/api/review-workspace/files/"):
-            self._workspace_put(path.removeprefix("/api/review-workspace/files/"))
-        else:
-            self.send_json(404, {"error": "not_found"})
-
-    def _review_job_submit(self) -> None:
-        try:
-            value = self.read_json(131_072)
-            support_input = value["support_input"]
-            diagnostic = value["diagnostic"]
-        except (ValueError, KeyError, TypeError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
-            self.send_json(422, {"error": "invalid_review_job"})
-            return
-        if not isinstance(diagnostic, dict) or not isinstance(diagnostic.get("profile"), str):
-            self.send_json(422, {"error": "invalid_diagnostic"})
-            return
-        profile = diagnostic["profile"]
-        if profile == "render-review":
-            if not isinstance(support_input, dict):
-                self.send_json(422, {"error": "retained_artifact_required"})
-                return
-            artifacts = {
-                "ART-BLD-1842-INTEGRATION-REVIEW": "integration-review-input-v3.json",
-                "ART-BLD-1842-ORDINARY-SUPPORT": "ordinary-support-input-v1.json",
-            }
-            artifact_id = support_input.get("artifact_id")
-            filename = artifacts.get(artifact_id)
-            if filename is None:
-                self.send_json(422, {"error": "artifact_binding_denied"})
-                return
-            artifact = json.loads((STATE / "artifacts/BLD-1842" / filename).read_text())
-            if support_input != artifact:
-                self.send_json(422, {"error": "artifact_binding_denied"})
-                return
-            run_id = "REVJOB-" + uuid.uuid4().hex[:12].upper()
-            retained = "SIR-" + uuid.uuid4().hex[:16].upper()
-            retained_record = {
-                "schema": "fieldkest.retained-support-input/v1",
-                "support_input": retained,
-                "submitting_account": USERNAME,
-                "workspace_generation": K09_CONFIG["workspace"]["generation"],
-                "artifact_id": artifact["artifact_id"],
-                "object_version": artifact["object_version"],
-                "build_revision": artifact["build_revision"],
-                "resolved_support_ref": artifact["linked_support_ref"],
-                "diagnostic_eligible": artifact["diagnostic_eligible"],
-            }
-            if artifact["diagnostic_eligible"]:
-                review = {
-                    "schema": "fieldkest.integration-review/v1",
-                    "resolved_support_ref": artifact["linked_support_ref"],
-                    "maintained_reference": REFERENCE.read_text(),
-                }
-            else:
-                review = {
-                    "schema": "fieldkest.support-review/v1",
-                    "resolved_support_ref": artifact["linked_support_ref"],
-                    "summary": "Ordinary support review completed.",
-                }
-            result = {
-                "schema": "fieldkest.review-job-result/v1", "run_id": run_id,
-                "state": "success", "profile": profile, "support_input": retained,
-                "workspace_generation": retained_record["workspace_generation"], "review": review,
-            }
-            with LOCK:
-                write_json_atomic(RESULTS / "retained-inputs" / f"{retained}.json", retained_record)
-                write_json_atomic(RESULTS / "review-jobs" / f"{run_id}.json", result)
-            append_audit(AUDIT, "review-jobs", {
-                "request_id": self.request_id, "principal": USERNAME, "run_id": run_id,
-                "profile": profile, "artifact_id": artifact_id,
-                "resolved_support_ref": artifact["linked_support_ref"],
-                "workspace_generation": retained_record["workspace_generation"], "state": "success", "status": 202,
-            })
-            self.send_json(202, {"run_id": run_id, "state": "success", "result": f"/api/review-jobs/{run_id}"})
-            return
-        if profile != "runner-command" or not isinstance(support_input, str):
-            self.send_json(422, {"error": "unsupported_diagnostic_profile"})
-            return
-        retained_path = RESULTS / "retained-inputs" / f"{support_input}.json"
-        if not retained_path.is_file():
-            self.send_json(403, {"error": "retained_input_denied"})
-            return
-        retained = json.loads(retained_path.read_text())
-        if (retained.get("submitting_account") != USERNAME or
-                retained.get("workspace_generation") != K09_CONFIG["workspace"]["generation"] or
-                not retained.get("diagnostic_eligible")):
-            self.send_json(403, {"error": "build_operations_entitlement_required"})
-            return
-        argv = diagnostic.get("argv")
-        if (not isinstance(argv, list) or not argv or len(argv) > 64 or
-                not all(isinstance(item, str) and item and len(item.encode()) <= 16_384 for item in argv)):
-            self.send_json(422, {"error": "invalid_command_argv"})
-            return
-        run_id = "CMDRUN-" + uuid.uuid4().hex[:12].upper()
-        lease_id = "LEASE-" + uuid.uuid4().hex[:16].upper()
-        queued = {
-            "schema": "fieldkest.review-command-result/v1", "run_id": run_id,
-            "lease_id": lease_id, "state": "queued", "profile": profile,
-            "support_input": support_input, "workspace_generation": retained["workspace_generation"],
-            "argv": argv,
-        }
-        with LOCK:
-            if ACTIVE_REVIEW_JOBS:
-                self.send_json(409, {"error": "workspace_busy"})
-                return
-            ACTIVE_REVIEW_JOBS.add(run_id)
-            write_json_atomic(RESULTS / "review-jobs" / f"{run_id}.json", queued)
-        threading.Thread(target=execute_review_command, args=(run_id, lease_id, argv), daemon=True).start()
-        append_audit(AUDIT, "review-jobs", {
-            "request_id": self.request_id, "principal": USERNAME, "run_id": run_id,
-            "lease_id": lease_id, "profile": profile, "support_input": support_input,
-            "workspace_generation": retained["workspace_generation"], "state": "queued", "status": 202,
-        })
-        self.send_json(202, {"run_id": run_id, "state": "queued", "result": f"/api/review-jobs/{run_id}"})
-
-    def _review_job_result(self, run_id: str) -> None:
-        if "/" in run_id or not run_id:
-            self.send_json(404, {"error": "review_job_not_found"})
-            return
-        path = RESULTS / "review-jobs" / f"{run_id}.json"
-        if not path.is_file():
-            self.send_json(404, {"error": "review_job_not_found"})
-            return
-        result = json.loads(path.read_text())
-        append_audit(AUDIT, "review-job-reads", {
-            "request_id": self.request_id, "principal": USERNAME, "run_id": run_id,
-            "state": result["state"], "status": 200,
-        })
-        self.send_json(200, result)
-
-    def _review_job_cancel(self, run_id: str) -> None:
-        with LOCK:
-            active = run_id in ACTIVE_REVIEW_JOBS
-        if not active:
-            self.send_json(409, {"error": "review_job_not_active"})
-            return
-        try:
-            response = runner_request({"kind": "command-cancel", "run_id": run_id}, timeout=8)
-        except (OSError, RuntimeError, json.JSONDecodeError):
-            self.send_json(503, {"error": "worker_unavailable"})
-            return
-        if not response.get("ok"):
-            self.send_json(409, {"error": response.get("error", "cancel_failed")})
-            return
-        append_audit(AUDIT, "review-jobs", {
-            "request_id": self.request_id, "principal": USERNAME, "run_id": run_id,
-            "operation": "cancel", "state": "cancelled", "status": 202,
-        })
-        self.send_json(202, {"run_id": run_id, "state": "cancelled"})
-
-    def _workspace_get(self, raw_path: str) -> None:
-        try:
-            parts = workspace_parts(raw_path)
-            descriptor = workspace_open(parts, os.O_RDONLY)
-            with os.fdopen(descriptor, "rb") as handle:
-                payload = handle.read(1_048_577)
-            if len(payload) > 1_048_576:
-                raise OverflowError
-        except (ValueError, FileNotFoundError, NotADirectoryError, OSError, OverflowError):
-            self.send_json(404, {"error": "workspace_file_not_found"})
-            return
-        append_audit(AUDIT, "workspace-files", {
-            "request_id": self.request_id, "principal": USERNAME,
-            "path": "/".join(parts), "operation": "read", "sha256": sha256_bytes(payload), "status": 200,
-        })
-        self.send_bytes(200, payload, "application/octet-stream")
-
-    def _workspace_put(self, raw_path: str) -> None:
-        try:
-            parts = workspace_parts(raw_path)
-            payload = self.read_body(1_048_576)
-            with LOCK:
-                descriptor = workspace_open(
-                    parts, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600, create_parents=True
-                )
-                with os.fdopen(descriptor, "wb") as handle:
-                    handle.write(payload)
-        except (ValueError, NotADirectoryError, OSError, OverflowError):
-            self.send_json(422, {"error": "invalid_workspace_file"})
-            return
-        append_audit(AUDIT, "workspace-files", {
-            "request_id": self.request_id, "principal": USERNAME,
-            "path": "/".join(parts), "operation": "write", "sha256": sha256_bytes(payload), "status": 201,
-        })
-        self.send_json(201, {"path": "/".join(parts), "size": len(payload), "sha256": sha256_bytes(payload)})
 
     def _review_import(self) -> None:
         try:
