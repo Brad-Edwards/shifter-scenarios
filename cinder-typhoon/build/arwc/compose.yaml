@@ -117,6 +117,53 @@ services:
         ipv4_address: 10.77.60.16
       handover_supervisory:
         ipv4_address: 172.29.63.28
+  a-archive:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/archive.Dockerfile
+    image: cinder-arwc/a-archive:hand-build
+    container_name: cinder-arwc-archive
+    hostname: a-archive
+    domainname: corporate.arwc.test
+    dns:
+    - 10.77.60.10
+    restart: unless-stopped
+    read_only: true
+    cap_drop:
+    - ALL
+    cap_add:
+    - SETUID
+    - SETGID
+    - CHOWN
+    - FOWNER
+    - DAC_OVERRIDE
+    security_opt:
+    - no-new-privileges:true
+    tmpfs:
+    - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+    - arwc-archive-data:/var/lib/arwc-archive
+    - connector-fieldlink:/run/arwc-corporate:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/archive-ca.crt:/run/arwc-tls/archive-ca.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/archive-ca.key:/run/arwc-tls/archive-ca.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow:/run/arwc-archive-workflow:ro
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
+      target: /run/arwc-native/root-ca.crt
+      read_only: true
+      bind:
+        create_host_path: false
+    networks:
+      corporate:
+        ipv4_address: 10.77.60.50
+        aliases:
+        - a-archive
+        - retained-archive.arwc.test
   a-data-bridge:
     build:
       context: ../..
@@ -195,3 +242,5 @@ volumes:
     name: cinder-arwc-connector-fieldlink
   connector-customer:
     name: cinder-arwc-connector-customer
+  arwc-archive-data:
+    name: cinder-arwc-archive-data

@@ -105,7 +105,11 @@ class Handler(BaseHTTPRequestHandler):
                 "title": "Customer integration handover", "routes": [{
                     "key": "corporate.handover", "method": "GET",
                     "template": "https://customer-handover.arwc.test:8443/api/handovers/current",
-                }], "related": ["https://suppliers.arwc.test/purchase-orders", "https://documents.arwc.test/"],
+                }], "related": [
+                    "https://suppliers.arwc.test/purchase-orders",
+                    "https://documents.arwc.test/",
+                    "https://retained-archive.arwc.test/.well-known/arwc-client",
+                ],
             })
             return
         if not self.authorized():

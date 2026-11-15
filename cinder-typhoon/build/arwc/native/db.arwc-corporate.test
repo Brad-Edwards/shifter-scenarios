@@ -17,4 +17,5 @@ _kerberos._tcp IN SRV 0 0 88 kdc.arwc.test.
 _kerberos._udp IN SRV 0 0 88 kdc.arwc.test.
 fieldlink IN A 10.77.60.20
 customer-handover IN A 10.77.60.20
+retained-archive IN A 10.77.60.50
 workplace IN A 10.77.60.14

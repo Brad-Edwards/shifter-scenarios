@@ -54,6 +54,19 @@ services:
     volumes: [./seed-reports.py:/seed/seed-reports.py:ro]
     sysctls: {net.ipv4.ip_forward: "0"}
     security_opt: [no-new-privileges:true]
+  seed-archive:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-archive.py]
+    env_file: [.operator/documents-seed.env]
+    environment:
+      ARWC_OPERATOR_DIR: /operator
+    networks: [data]
+    volumes:
+      - ./seed-archive.py:/seed/seed-archive.py:ro
+      - ./.operator:/operator
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
   seed-documents:
     image: ${ERPNEXT_IMAGE:?Load images.env}
     profiles: [seed]

@@ -6,7 +6,8 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 OPERATOR_DIR=${ARWC_OPERATOR_DIR:-"$ROOT/.operator"}
 mkdir -p "$OPERATOR_DIR/tls"
 mkdir -p "$OPERATOR_DIR/integration"
-chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls" "$OPERATOR_DIR/integration"
+mkdir -p "$OPERATOR_DIR/archive-workflow"
+chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls" "$OPERATOR_DIR/integration" "$OPERATOR_DIR/archive-workflow"
 
 case ${1-} in
   '') ca_profile_only=false ;;

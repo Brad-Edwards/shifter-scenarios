@@ -32,13 +32,15 @@ STATE = ROOT / "state" / "archive.json"
 RESULT = ROOT / "results" / "HND-PLANNER-06.json"
 HANDOVER_EVIDENCE = ROOT / "handover" / "access-grant.json"
 ARTIFACTS = ROOT / "artifacts"
+WORKFLOW_PATH = ROOT / "workflow" / "AWF-CRR-229-R4.json"
 BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/archive-source.json")
 IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/archive-source.json")
 DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/archive-lineage.json")
 ARCHIVE_CA = "/tmp/archive-ca.crt"
 ARCHIVE_CA_KEY = "/tmp/archive-ca.key"
 
-WORKFLOW = {
+# Default workflow used only when the Nextcloud-sourced file is absent.
+_WORKFLOW_DEFAULT = {
     "record_id": "AWF-CRR-229-R4",
     "revision": 4,
     "attachment": "ARC-229-A",
@@ -52,6 +54,21 @@ WORKFLOW = {
         "use": "one time",
     },
 }
+
+
+def _load_workflow() -> dict:
+    """Return the workflow record from Nextcloud-sourced file, or the default."""
+    if WORKFLOW_PATH.exists():
+        try:
+            value = json.loads(WORKFLOW_PATH.read_text(encoding="utf-8"))
+            if isinstance(value, dict) and value.get("record_id") == "AWF-CRR-229-R4":
+                return value
+        except (OSError, json.JSONDecodeError):
+            pass
+    return _WORKFLOW_DEFAULT
+
+
+WORKFLOW = _load_workflow()
 
 CALLER_RECORD = {
     "record_id": "AR-MAINT-017",

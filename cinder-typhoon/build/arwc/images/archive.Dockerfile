@@ -29,6 +29,8 @@ COPY --chown=arwc-archive:arwc-archive --chmod=0640 \
   build/arwc/runtime/retained_archive.py /opt/retained-archive/retained_archive.py
 COPY --chown=arwc-archive:arwc-archive --chmod=0640 \
   build/arwc/runtime/generate_archive_artifacts.py /opt/retained-archive/generate_archive_artifacts.py
+COPY --chown=arwc-archive:arwc-archive --chmod=0640 \
+  build/arwc/runtime/fetch_archive_workflow.py /opt/retained-archive/fetch_archive_workflow.py
 COPY --from=collector --chown=arwc-archive:arwc-archive --chmod=0750 \
   /collector-crr /opt/retained-archive/collector-crr
 COPY --chmod=0755 build/arwc/runtime/arwc_handover.py /usr/local/libexec/arwc-handover.py
