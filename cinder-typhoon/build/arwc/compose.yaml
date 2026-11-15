@@ -10,6 +10,10 @@ services:
     hostname: a-connector
     domainname: corporate.arwc.test
     dns: [10.77.60.10]
+    environment:
+      SSL_CERT_FILE: /tmp/arwc-ca-bundle.pem
+      REQUESTS_CA_BUNDLE: /tmp/arwc-ca-bundle.pem
+      CURL_CA_BUNDLE: /tmp/arwc-ca-bundle.pem
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "/usr/local/sbin/arwc-connector-health"]

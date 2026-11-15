@@ -30,9 +30,9 @@ install -d -o arwc-connector -g arwc-connector -m 0700 \
 install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-native/supplier-onboarding.json \
   /var/lib/arwc-connector/native/supplier-onboarding.json
-install -m 0644 /run/arwc-native/root-ca.crt \
-  /usr/local/share/ca-certificates/arwc-native-it.crt
-update-ca-certificates >/dev/null
+cat /etc/ssl/certs/ca-certificates.crt /run/arwc-tls/ca.crt \
+  /run/arwc-native/root-ca.crt > /tmp/arwc-ca-bundle.pem
+chmod 0644 /tmp/arwc-ca-bundle.pem
 install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.crt /tmp/arwc-server.crt
 install -o arwc-connector -g arwc-connector -m 0400 \
