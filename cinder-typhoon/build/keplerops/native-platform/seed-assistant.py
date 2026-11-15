@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import uuid
 from pathlib import Path
 from urllib.request import Request, urlopen
 
@@ -20,6 +21,22 @@ def api(path: str, data: dict | None = None, token: str | None = None) -> dict:
     if result.get('error'):
         raise RuntimeError('Native assistant administration rejected ' + path)
     return result
+
+
+
+def import_document(path: Path, slug: str, token: str) -> None:
+    boundary = uuid.uuid4().hex
+    body = ('--' + boundary + '\r\nContent-Disposition: form-data; name="file"; filename="'
+            + path.name + '"\r\nContent-Type: text/markdown\r\n\r\n').encode()
+    body += path.read_bytes() + ('\r\n--' + boundary + '--\r\n').encode()
+    request = Request(BASE + '/workspace/' + slug + '/upload-and-embed', data=body, headers={
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'multipart/form-data; boundary=' + boundary,
+    })
+    with urlopen(request, timeout=180) as response:
+        result = json.load(response)
+    if not result.get('success') or not result.get('document'):
+        raise RuntimeError('Native company document import failed')
 
 
 def seed(operator: Path) -> None:
@@ -57,6 +74,14 @@ def seed(operator: Path) -> None:
         }, token)
         if not result.get('success'):
             raise RuntimeError('Native assistant workspace assignment failed')
+    documents = operator / 'native-platform/assistant-documents'
+    documents.mkdir(mode=0o700, exist_ok=True)
+    source = Path(__file__).resolve().parents[3] / 'assets/narrative/documents/keplerops'
+    for name in ('company-history.md', 'working-guide.md', 'customer-relationships.md'):
+        imported = documents / name
+        if not imported.exists():
+            import_document(source / name, workspace['slug'], token)
+            imported.touch(mode=0o600)
     marker.touch(mode=0o600)
     print('Native assistant company users and workspace ready.')
 
