@@ -66,6 +66,9 @@ case "$action" in
       --set ON_ERROR_STOP=1 < planning.sql
     "${compose[@]}" --profile seed run --rm seed-erp
     ;;
+  seed-corporate-documents)
+    "${compose[@]}" --profile seed run --rm seed-corporate-documents
+    ;;
   seed-documents)
     "${compose[@]}" --profile seed run --rm seed-documents
     ;;
@@ -99,11 +102,12 @@ case "$action" in
     bash "$0" seed
     bash "$0" seed-dmz
     bash "$0" seed-documents
+    bash "$0" seed-corporate-documents
     bash "$0" seed-reports
     bash "$0" seed-portal
     bash "$0" seed-early-cards
     bash "$0" seed-identity
     exec bash "$0" seed-engineering
     ;;
-  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-reports|seed-engineering|seed-dmz|seed-portal|seed-early-cards|seed-identity|reset cinder-arwc-native' >&2; exit 2 ;;
+  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-corporate-documents|seed-reports|seed-engineering|seed-dmz|seed-portal|seed-early-cards|seed-identity|reset cinder-arwc-native' >&2; exit 2 ;;
 esac

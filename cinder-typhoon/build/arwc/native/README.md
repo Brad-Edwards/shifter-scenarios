@@ -11,6 +11,7 @@ sudo bash manage.sh build
 sudo bash manage.sh up
 sudo bash manage.sh seed
 sudo bash manage.sh seed-documents
+sudo bash manage.sh seed-corporate-documents
 sudo bash manage.sh seed-reports
 sudo bash manage.sh seed-engineering
 sudo bash manage.sh seed-dmz
@@ -120,3 +121,14 @@ DMZ views before PostgREST starts. For an existing native IT database, run
 the qualified OT project. Company data,
 department sharing, planning reports and engineering repositories must pass
 participant checks after reset before this stack is accepted for delivery.
+
+`seed-corporate-documents` moves only original archive members whose content
+hash matches the ARWC-owned document package. It preserves their bytes and
+uses the intersection of original per-record readers when identical content
+has multiple source entries. Unassigned members from other business areas are
+not imported. The destination `Retained corporate records` and all its parents
+must be unshared. Native per-file, read-only user shares enforce the original
+boundaries; an inherited or broader existing share stops the import. Existing
+mapped workforce users and their passwords are preserved. New ordinary users
+use the existing product provisioning pattern and the existing `Staff` group;
+no synthetic permission groups are created.
