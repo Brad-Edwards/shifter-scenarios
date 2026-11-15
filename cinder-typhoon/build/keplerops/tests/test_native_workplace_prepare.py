@@ -18,8 +18,10 @@ class WorkplacePrepareTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             operator = Path(temporary)
             (operator / 'range-seed').mkdir()
+            (operator / 'range-seed/participant').mkdir()
             (operator / 'range-seed/runtime-credentials.json').write_text(json.dumps({
-                'credentials': {'developer_token': 'local-test-developer-password'},
+                'credentials': {'developer_token': 'local-test-developer-password',
+                                'support_rowan_session': 'local-test-support-token'},
             }))
             MODULE.prepare(operator)
             target = operator / 'native-workplace'

@@ -103,8 +103,8 @@ services:
       timeout: 3s
       retries: 20
     networks:
-      corporate: {ipv4_address: 10.77.50.11, aliases: [edge.keplerops.test, foundation.keplerops.test, identity.keplerops.test, id.keplerops.test, ca.keplerops.test, cert.keplerops.test]}
-      delivery: {ipv4_address: 10.77.51.11}
+      corporate: {ipv4_address: 10.77.50.11, aliases: [edge.keplerops.test, foundation.keplerops.test, identity.keplerops.test, id.keplerops.test, ca.keplerops.test, cert.keplerops.test, staff.keplerops.test, workboard.keplerops.test]}
+      delivery: {ipv4_address: 10.77.51.11, aliases: [support.keplerops.test, tickets.keplerops.test]}
       cloud: {ipv4_address: 10.77.52.11}
       foundation_data: {ipv4_address: 10.77.56.11}
 
@@ -132,9 +132,11 @@ services:
     command:
       - |
         install -d -m 0700 -o rowan -g rowan /home/rowan/.config/git /home/rowan/.config/chromium/Default
+        install -d -m 0700 -o rowan -g rowan /home/rowan/.config/fieldlink
         install -m 0600 -o rowan -g rowan /run/participant-seed/git-credentials /home/rowan/.config/git/credentials
         install -m 0600 -o rowan -g rowan /run/participant-seed/chromium-Cookies /home/rowan/.config/chromium/Default/Cookies
         install -m 0600 -o rowan -g rowan /run/participant-seed/npmrc /home/rowan/.npmrc
+        install -m 0600 -o rowan -g rowan /run/participant-seed/support-client.json /home/rowan/.config/fieldlink/support-client.json
     restart: "no"
     read_only: true
     cap_drop: [ALL]
@@ -146,6 +148,7 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/git-credentials:/run/participant-seed/git-credentials:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/chromium-Cookies:/run/participant-seed/chromium-Cookies:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/npmrc:/run/participant-seed/npmrc:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/support-client.json:/run/participant-seed/support-client.json:ro
     network_mode: none
 
   k-dev:
@@ -182,7 +185,8 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ca/certs/root_ca.crt:/run/fieldkest-auth/enrollment-ca.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/rowan_authorized_keys:/run/fieldkest-auth/rowan_authorized_keys:ro
     extra_hosts:
-      - staff.keplerops.test:10.77.50.30
+      - staff.keplerops.test:10.77.50.11
+      - workboard.keplerops.test:10.77.50.11
       - identity.keplerops.test:10.77.50.11
       - id.keplerops.test:10.77.50.11
       - cert.keplerops.test:10.77.50.11
@@ -193,7 +197,8 @@ services:
       - packages.keplerops.test:10.77.51.30
       - ci.keplerops.test:10.77.51.40
       - preview.keplerops.test:10.77.51.50
-      - support.keplerops.test:10.77.51.60
+      - support.keplerops.test:10.77.51.11
+      - tickets.keplerops.test:10.77.51.11
       - indexer.keplerops.test:10.77.51.70
       - cloud-api.keplerops.test:10.77.52.20
       - workloads.keplerops.test:10.77.52.30
@@ -331,20 +336,17 @@ services:
     depends_on: [router]
     extra_hosts:
       - connector.arwc.test:10.77.60.20
-      - identity.keplerops.test:10.77.50.40
     volumes:
       - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/fixture-issuer.key:/run/fieldkest-oidc/fixture-issuer.key:ro
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/fixture-issuer.pub:/run/fieldkest-oidc/fixture-issuer.pub:ro
       - support-audit:/var/lib/fieldkest-support/audit
       - handover:/var/lib/fieldkest-handover:ro
     networks:
       delivery:
         ipv4_address: 10.77.51.60
-        aliases: [support.keplerops.test]
+        aliases: [fieldlink-support-integration]
 
   report-worker:
     build:
@@ -472,35 +474,6 @@ services:
     networks:
       delivery: {ipv4_address: 10.77.51.70, aliases: [indexer.keplerops.test]}
 
-  k-staff:
-    <<: *service-security
-    build:
-      context: ../..
-      dockerfile: build/keplerops/images/staff.Dockerfile
-    image: cinder-keplerops/k-staff:hand-build
-    container_name: cinder-keplerops-staff
-    hostname: k-staff
-    depends_on: [router, k-identity]
-    environment:
-      <<: *tls-environment
-      FIELDKEST_SERVICE: staff
-      FIELDKEST_GATEWAY: 10.77.50.254
-      FIELDKEST_CLIENT_CA: /tmp/fieldkest-ca.crt
-      FIELDKEST_SERVICE_ROOT: /opt/keplerops-staff
-      FIELDKEST_STATE_ROOT: /var/lib/keplerops-staff
-      KRB5_CONFIG: /etc/krb5.conf
-      KRB5_KTNAME: /opt/keplerops-staff/keytabs/staff.keytab
-      KRB5RCACHEDIR: /tmp
-    extra_hosts: [identity.keplerops.test:10.77.50.40]
-    volumes:
-      - *runtime-credentials
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
-      - staff-state:/var/lib/keplerops-staff
-    networks:
-      corporate: {ipv4_address: 10.77.50.30, aliases: [staff.keplerops.test]}
-
   fieldlink-keycloak:
     image: quay.io/keycloak/keycloak:26.4.7@sha256:9409c59bdfb65dbffa20b11e6f18b8abb9281d480c7ca402f51ed3d5977e6007
     container_name: cinder-keplerops-keycloak
@@ -601,6 +574,10 @@ services:
     volumes:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ost-config.php:/var/www/html/include/ost-config.php
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/support-bootstrap.json:/run/fieldlink/support-bootstrap.json:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/support-accounts.json:/run/fieldlink/support-accounts.json:ro
+      - ./native-workplace/seed-support-users.php:/opt/fieldlink/seed-support-users.php:ro
+      - ./native-workplace/seed-support-case.php:/opt/fieldlink/seed-support-case.php:ro
+      - ../../assets/keplerops/opening/k-support/SUP-2841.json:/operator/company-conversation.json:ro
     healthcheck:
       test: [CMD, php, -r, '$$body=@file_get_contents("http://127.0.0.1/scp/login.php"); exit(is_string($$body) && str_contains($$body, "name=\"userid\"") ? 0 : 1);']
       interval: 10s

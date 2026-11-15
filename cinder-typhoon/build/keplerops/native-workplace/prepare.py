@@ -32,6 +32,11 @@ def prepare(operator: Path) -> None:
         values.setdefault(name, secrets.token_urlsafe(32))
     write(private, json.dumps(values))
     runtime = json.loads((operator / 'range-seed/runtime-credentials.json').read_text())['credentials']
+    write(operator / 'range-seed/participant/support-client.json', json.dumps({
+        'service_url': 'https://support.keplerops.test:8443', 'principal': 'rowan.ito',
+        'authorization': 'Bearer ' + runtime['support_rowan_session'],
+        'ca_file': '/home/rowan/.local/share/keplerops/ca.crt',
+    }), 0o444)
     write(target / 'kerberos.json', json.dumps({
         'master': values['kerberos_master'],
         'users': {'rowan.ito': runtime['developer_token'], 'evan.calderoux': values['kerberos_evan']},
@@ -71,6 +76,14 @@ def prepare(operator: Path) -> None:
         'prefix': 'ost_', 'dbhost': 'fieldlink-support-db', 'dbname': 'fieldlink_support',
         'dbuser': 'fieldlink_support', 'dbpass': values['support_db'],
     }))
+    write(target / 'support-accounts.json', json.dumps({'users': [
+        {'username': 'rowan.ito', 'firstname': 'Rowan', 'lastname': 'Ito',
+         'password': runtime['developer_token'], 'role': 'Limited Access'},
+        {'username': 'maya.ranscombe', 'firstname': 'Maya', 'lastname': 'Ranscombe',
+         'password': values['staff_maya'], 'role': 'Expanded Access'},
+        {'username': 'talia.mornac', 'firstname': 'Talia', 'lastname': 'Mornac',
+         'password': values['staff_talia'], 'role': 'View only'},
+    ]}))
     configuration = target / 'ost-config.php'
     if not configuration.exists():
         write(configuration, '')

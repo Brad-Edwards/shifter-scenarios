@@ -1,0 +1,18 @@
+{
+  "documents": {
+    "support.keplerops.test": {
+      "title": "FieldLink support integration",
+      "purpose": "Report handovers and scoped customer diagnostic jobs. Staff cases and account sessions belong to osTicket on HTTPS port 443.",
+      "routes": [
+        {"key": "handover.current", "method": "GET", "template": "https://support.keplerops.test:8443/api/handovers/current"},
+        {"key": "diagnostics.create", "method": "POST", "template": "https://support.keplerops.test:8443/api/customers/{tenant}/diagnostics"},
+        {"key": "diagnostics.read", "method": "GET", "template": "https://support.keplerops.test:8443/api/diagnostics/{job}"},
+        {"key": "diagnostics.package", "method": "POST", "template": "https://support.keplerops.test:8443/api/diagnostics/{job}/package"},
+        {"key": "diagnostics.deliver", "method": "POST", "template": "https://support.keplerops.test:8443/api/diagnostics/{job}/deliver"}
+      ],
+      "related": []
+    }
+  },
+  "schema": "fieldkest.client-documents/v1",
+  "path": "/.well-known/fieldkest-client"
+}
