@@ -32,6 +32,8 @@
 
 #define ARENA_SHM_PATH "/var/lib/fieldkest-indexer/arena.shm"
 #define ARENA_SIZE 512
+/* index_arena = body[64] + sentinel[16]; descriptor occupies bytes 80-511 */
+#define INDEX_ARENA_SIZE 80
 
 static int hex_decode(const char *src, uint8_t *dst, size_t cap) {
     size_t n = strlen(src);
@@ -67,10 +69,10 @@ int main(int argc, char **argv) {
     if (ie == 0 || ie > 512) return 65;
 
     size_t datalen = (size_t)ie * 8U;
-    /* Bounds check uses the arena struct size (body+sentinel=80), not ARENA_SIZE.
+    /* Bounds check uses INDEX_ARENA_SIZE (body+sentinel=80), not ARENA_SIZE.
      * To reach the descriptor at bytes 80-511 the participant must supply
-     * alloc_entries >= ARENA_SIZE - sizeof(struct index_arena) = 432. */
-    if (datalen > sizeof(struct index_arena) + (size_t)ae) return 66;
+     * alloc_entries >= ARENA_SIZE - INDEX_ARENA_SIZE = 432. */
+    if (datalen > INDEX_ARENA_SIZE + (size_t)ae) return 66;
     if (buflen < (int)sizeof(struct fki_header) + (int)datalen) return 65;
 
     /* Read the current arena region before writing.  This captures state
