@@ -121,17 +121,17 @@ Coordinate the test window and follow the [private backup and recovery steps](pr
 sudo bash manage.sh reset cinder-arwc-native
 ```
 
-Reset removes this native IT project's volumes and replays initialization and
-all product seed steps and the DMZ view grants. The database initializes its approved read-only
+Reset removes this native IT project's volumes and replays product initialization,
+seed steps and DMZ view grants. The database initializes its approved read-only
 DMZ views before PostgREST starts. For an existing native IT database, run
+`seed-dmz` once after installing its new secret mount.
+
 Reset runs the ordinary document and workforce setup before the bulk document
 import. This keeps their small share operations out of the large import
-account's temporary rate-limit window.
-
-`seed-dmz` once after installing its new secret mount. Reset does not reset
-the qualified OT project. Company data,
-department sharing, planning reports and engineering repositories must pass
-participant checks after reset before this stack is accepted for delivery.
+account's temporary rate-limit window. Reset does not reset the qualified OT
+project. Company data, department sharing, planning reports and engineering
+repositories must pass participant checks after reset before this stack is
+accepted for delivery.
 
 `seed-corporate-documents` moves only original archive members whose content
 hash matches the ARWC-owned document package. It preserves their bytes and
