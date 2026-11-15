@@ -79,6 +79,12 @@ roots. It receives neither CA's signing keys, password, private configuration or
 database. Development peer overrides remain in the existing private `.env`;
 loading an alternate Compose environment must not discard that mapping.
 
+The native KDC image contains no database, keytabs, fixed passwords or private
+bootstrap inputs. Its first start initializes only an empty volume from private
+per-range runtime material, using the native MIT administration tools. An
+existing retained database returns without provisioning or reading those inputs;
+ordinary restarts preserve its principal keys and history.
+
 References: [Keycloak administration](https://www.keycloak.org/docs/latest/server_admin/),
 [Keycloak hostname and proxy settings](https://www.keycloak.org/server/reverseproxy),
 [step-ca configuration](https://smallstep.com/docs/step-ca/configuration/),

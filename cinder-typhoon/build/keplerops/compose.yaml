@@ -543,6 +543,7 @@ services:
       KRB5_KDC_PROFILE: /etc/krb5kdc/kdc.conf
     volumes:
       - identity-state:/var/lib/keplerops-identity
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/kerberos.json:/run/fieldlink/kerberos.json:ro
     networks:
       corporate: {ipv4_address: 10.77.50.40, aliases: [kerberos.keplerops.test]}
       foundation_data: {ipv4_address: 10.77.56.30}

@@ -27,10 +27,15 @@ def prepare(operator: Path) -> None:
     private = target / 'bootstrap.json'
     values = json.loads(private.read_text()) if private.exists() else {}
     for name in ('identity_db', 'identity_admin', 'kanboard_db', 'kanboard_admin',
-                 'support_db', 'support_admin', 'mariadb_root', 'ca', 'enrollment_client'):
+                 'support_db', 'support_admin', 'mariadb_root', 'ca', 'enrollment_client',
+                 'kerberos_master', 'kerberos_evan'):
         values.setdefault(name, secrets.token_urlsafe(32))
     write(private, json.dumps(values))
     runtime = json.loads((operator / 'range-seed/runtime-credentials.json').read_text())['credentials']
+    write(target / 'kerberos.json', json.dumps({
+        'master': values['kerberos_master'],
+        'users': {'rowan.ito': runtime['developer_token'], 'evan.calderoux': values['kerberos_evan']},
+    }), 0o444)
     write(target / 'keycloak.env',
           'KC_DB_PASSWORD=' + values['identity_db'] + '\n'
           'KC_BOOTSTRAP_ADMIN_USERNAME=platform-admin\n'

@@ -7,13 +7,13 @@ RUN apt-get update \
 COPY build/keplerops/config/krb5.conf /etc/krb5.conf
 COPY build/keplerops/config/kdc.conf /etc/krb5kdc/kdc.conf
 COPY build/keplerops/config/kadm5.acl /etc/krb5kdc/kadm5.acl
-COPY build/keplerops/runtime/provision-kerberos.sh /usr/local/sbin/fieldkest-provision-kerberos
+COPY build/keplerops/native-workplace/initialize-kdc.py /usr/local/libexec/fieldlink-initialize-kdc.py
 COPY build/keplerops/native-workplace/kerberos-entrypoint.sh /usr/local/bin/fieldlink-kerberos
-RUN chmod 0555 /usr/local/sbin/fieldkest-provision-kerberos /usr/local/bin/fieldlink-kerberos \
-    && /usr/local/sbin/fieldkest-provision-kerberos >/dev/null 2>&1 \
+RUN chmod 0555 /usr/local/bin/fieldlink-kerberos \
+    && mkdir -p /var/lib/keplerops-identity/krb5kdc /var/lib/keplerops-identity/keytabs \
     && chmod 0755 /etc/krb5kdc \
     && chmod 0444 /etc/krb5kdc/kdc.conf /etc/krb5kdc/kadm5.acl \
-    && chown -R keplerops-identity:keplerops-identity /var/lib/keplerops-identity /opt/keplerops-identity \
+    && chown -R keplerops-identity:keplerops-identity /var/lib/keplerops-identity \
     && chmod 0700 /var/lib/keplerops-identity /var/lib/keplerops-identity/krb5kdc
 EXPOSE 88/tcp 88/udp
 ENTRYPOINT ["/usr/local/bin/fieldlink-kerberos"]
