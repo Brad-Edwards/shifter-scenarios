@@ -130,36 +130,41 @@ def main() -> None:
            content_type="application/json")
     print(f"Uploaded {WORKFLOW_FILENAME} to Nextcloud folder '{WORKFLOW_FOLDER}'")
 
-    # Create a public share of the workflow file so the participant can read it
-    # directly from Nextcloud without needing Nextcloud credentials.
-    public_share_token = None
-    pub_shares_raw = nc_request("GET", f"/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json"
-                                f"&path=/{quote(WORKFLOW_FOLDER + '/' + WORKFLOW_FILENAME, safe='/')}&reshares=false",
-                                accepted=(200,))
-    pub_shares = json.loads(pub_shares_raw)["ocs"]["data"]
-    existing_public = [s for s in pub_shares if s.get("share_type") == 3]
-    if existing_public:
-        public_share_token = existing_public[0]["token"]
-        print(f"Public share already exists: token={public_share_token}")
-    else:
-        create_raw = nc_request("POST", "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json",
-                                urlencode({
-                                    "path": f"/{WORKFLOW_FOLDER}/{WORKFLOW_FILENAME}",
-                                    "shareType": 3,
-                                    "permissions": 1,
-                                }).encode(), accepted=(200, 100))
-        create_data = json.loads(create_raw)["ocs"]["data"]
-        public_share_token = create_data["token"]
-        print(f"Created public share: token={public_share_token}")
+    # Share the workflow file read-only with the archive reader account.
+    # This is a bounded user share (shareType=0): only arwc-archive-reader
+    # can access the file; unauthenticated requests and other identities are denied.
+    file_path = f"/{WORKFLOW_FOLDER}/{WORKFLOW_FILENAME}"
+    shares_raw = nc_request("GET", f"/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json"
+                            f"&path={quote(file_path, safe='/')}&reshares=false",
+                            accepted=(200,))
+    existing_shares = json.loads(shares_raw)["ocs"]["data"]
+    existing_user_share = [s for s in existing_shares
+                           if s.get("share_type") == 0 and s.get("share_with") == READER_USERNAME]
+    # Remove any stale public shares to ensure no unauthenticated access.
+    for stale in existing_shares:
+        if stale.get("share_type") == 3:
+            nc_request("DELETE", f"/ocs/v2.php/apps/files_sharing/api/v1/shares/{stale['id']}?format=json",
+                       accepted=(200, 100))
+            print(f"Removed stale public share id={stale['id']}")
 
-    # Write operator state: reader credentials and public share token.
+    if existing_user_share:
+        print(f"Authenticated user share already exists for {READER_USERNAME}")
+    else:
+        nc_request("POST", "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json",
+                   urlencode({
+                       "path": file_path,
+                       "shareType": 0,
+                       "shareWith": READER_USERNAME,
+                       "permissions": 1,
+                   }).encode(), accepted=(200, 100))
+        print(f"Created authenticated read-only share with {READER_USERNAME}")
+
+    # Write operator state: reader credentials only. No public-share fields.
     state = {
         "reader_username": READER_USERNAME,
         "reader_password": reader_password,
         "documents_url": DOCUMENTS_URL,
-        "workflow_nc_path": f"{WORKFLOW_FOLDER.rsplit('/', 1)[-1]}/{WORKFLOW_FILENAME}",
-        "public_share_token": public_share_token,
-        "public_share_url": f"{DOCUMENTS_URL}/index.php/s/{public_share_token}/download",
+        "workflow_nc_path": WORKFLOW_FILENAME,
     }
     try:
         CREDENTIALS_OUT.parent.mkdir(parents=True, exist_ok=True)
