@@ -243,17 +243,20 @@ hints:
     - kind: participant_service
       id: packages.keplerops.test
   K06.3:
-    h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
-      exposes the connector rehearsal and publish operation, so use that ordinary contract instead of guessing a
-      path.
-    h2: Treat this as publisher credential scope and package publication without release-administration authority.
-      Establish the denied and ordinary baselines first, then vary only the boundary input the service is meant
-      to bind.
-    h3: Locate the connector rehearsal and publish operation in the published client reference. Read the current
-      revision, submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: Build a compatible 7.4.3 package with the same fieldkest.connector/v3 interface (same index.js logic,
+      same limits.json structure, same package.json fieldkest.interface field) but different limits.json values.
+      Use npm publish with the K06.1 publisher .npmrc to publish it; Verdaccio rejects a duplicate version.
+    h2: After publishing 7.4.3, the consumer-check endpoint runs npm pack with ^7.4.0 and now selects 7.4.3
+      as the highest stable version. Provide the same fieldkest.connector/v3 request as K05.1. The changed
+      limits.json values produce a different assessment in the module output.
+    h3: Confirm the changed result: the consumer-check response shows resolved_version=7.4.3 and the result
+      assessment differs from 7.4.2 (for example, callback-review-required instead of within-operating-limits).
+      Verify that tenant_id, asset_id, and schema are preserved. The publisher still has no release-admin authority.
     references:
+    - kind: participant_service
+      id: packages.keplerops.test
     - kind: client_route
-      id: ci.connector-rehearsal
+      id: packages.consumer-check
     - kind: client_route
       id: packages.publish
   K07.1:
