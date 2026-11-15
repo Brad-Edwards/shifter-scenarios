@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Serve the customer's retained integration handover and supplier onboarding."""
 from __future__ import annotations
 
 import hashlib
@@ -7,94 +8,52 @@ import json
 import os
 import pathlib
 import ssl
-import tempfile
 import uuid
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
-
 ROOT = pathlib.Path("/var/lib/arwc-connector")
-STATE = ROOT / "state" / "planner-handover.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
-PLANNING_CONTEXT = pathlib.Path(
-    "/opt/customer-handover/assets/pl-arwc-plan-method-01-method.md"
-)
-
+ONBOARDING = ROOT / "native" / "supplier-onboarding.json"
 CUSTOMER_COPY = {
-    "record_id": "HND-ARWC-047",
-    "tenant": "TEN-ARWC-047",
-    "active_connector": "FLK-7.4.2",
-    "maintenance_case": "MTN-CRR-204",
-    "customer_receipt": "RCP-742-047",
-    "status": "retained",
-}
-
-CONTINUITY_NOTE = {
-    "record_id": "CONT-DRY-A-R3",
-    "revision": 3,
-    "status": "unpublished",
-    "condition": "usable reserve falls below committed allocation",
-    "measures": ["replacement water purchasing", "Stage A restrictions"],
-    "planning_reference": "ARWC-PLAN-METHOD-01",
+    "record_id": "HND-ARWC-047", "tenant": "TEN-ARWC-047", "active_connector": "FLK-7.4.2",
+    "maintenance_case": "MTN-CRR-204", "customer_receipt": "RCP-742-047", "status": "retained",
 }
 
 
-def atomic_json(path: pathlib.Path, value: object) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.")
-    try:
-        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-            json.dump(value, handle, sort_keys=True, separators=(",", ":"))
-            handle.write("\n")
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.chmod(temporary, 0o600)
-        os.replace(temporary, path)
-    finally:
-        if os.path.exists(temporary):
-            os.unlink(temporary)
-
-
-def initial_state() -> dict[str, object]:
-    return {
-        "record_id": "PLN-HO-CRR-17",
-        "revision": 3,
-        "inspection": "INSP-CRR-2026-09-18",
-        "assignee": "nadia.corvane",
-        "attachment": {
-            "filename": "inspection-summary-r2.md",
-            "owner": "nadia.corvane",
-            "sha256": "eb95820a0a056548d727bd6901243347e20bcd0c28a973c065142291fb6d4380",
-        },
+def native_onboarding() -> dict[str, str]:
+    record = json.loads(ONBOARDING.read_text(encoding="utf-8"))
+    expected = {
+        "account": "Veybridge Field Services", "contact": "Jules Orswick",
+        "maintenance_case": CUSTOMER_COPY["maintenance_case"], "username": "jules.orswick@veybridge.test",
+        "supplier_portal": "https://suppliers.arwc.test/purchase-orders",
+        "documents": "https://documents.arwc.test/", "document_folder": "Veybridge handover",
     }
+    if not isinstance(record, dict) or set(record) != {*expected, "password"}:
+        raise ValueError("Supplier onboarding fields do not match the customer record")
+    if any(record.get(key) != value for key, value in expected.items()):
+        raise ValueError("Supplier onboarding belongs to a different case, identity or service")
+    password = record["password"]
+    if not isinstance(password, str) or len(password) != 64 or any(c not in "0123456789abcdef" for c in password):
+        raise ValueError("Supplier onboarding credential format is invalid")
+    return record
 
 
 def initialize() -> None:
-    if not STATE.exists():
-        atomic_json(STATE, initial_state())
+    native_onboarding()
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
-
-
-def now() -> str:
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def append_audit(action: str, result: dict[str, object]) -> str:
     correlation = str(uuid.uuid4())
     event = {
-        "audit_id": correlation,
-        "time": now(),
-        "tenant": "arwc",
-        "principal": "corporate-reader-principal",
-        "action": action,
+        "audit_id": correlation, "time": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "tenant": "arwc", "principal": "corporate-reader-principal", "action": action,
         "object": result.get("record_id"),
-        "revision": result.get("revision"),
-        "result_digest": hashlib.sha256(
-            json.dumps(result, sort_keys=True, separators=(",", ":")).encode()
-        ).hexdigest(),
+        "result_digest": hashlib.sha256(json.dumps(result, sort_keys=True, separators=(",", ":")).encode()).hexdigest(),
     }
     with AUDIT.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(event, sort_keys=True, separators=(",", ":")) + "\n")
@@ -104,7 +63,7 @@ def append_audit(action: str, result: dict[str, object]) -> str:
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "ARWC-Customer-Handover/1.0"
+    server_version = "ARWC-Customer-Handover/2.0"
     sys_version = ""
 
     def log_message(self, message: str, *args: object) -> None:
@@ -138,108 +97,31 @@ class Handler(BaseHTTPRequestHandler):
             return False
         return True
 
-    def accepted_read(self, action: str, result: dict[str, object]) -> None:
-        correlation = append_audit(action, result)
-        self.send_json(200, {"audit_id": correlation, "record": result})
-
     def do_GET(self) -> None:
         path = urlsplit(self.path).path
         if path == "/.well-known/arwc-client":
             self.send_json(200, {
-                "schema": "arwc.client-documents/v1",
-                "service": "customer-handover.arwc.test",
-                "title": "Corporate handover and work order service",
-                "routes": [
-                    {"key": "corporate.handover", "method": "GET",
-                     "template": "https://customer-handover.arwc.test:8443/api/handovers/current"},
-                    {"key": "corporate.work-order", "method": "GET",
-                     "template": "https://customer-handover.arwc.test:8443/api/work-orders/{wo_id}"},
-                    {"key": "corporate.continuity-plan", "method": "GET",
-                     "template": "https://customer-handover.arwc.test:8443/api/continuity-plans/current"},
-                    {"key": "corporate.work-order-update", "method": "POST",
-                     "template": "https://customer-handover.arwc.test:8443/api/work-orders/{wo_id}"},
-                ],
-                "related": ["https://business-workplace.arwc.test/.well-known/arwc-client"],
+                "schema": "arwc.client-documents/v1", "service": "customer-handover.arwc.test",
+                "title": "Customer integration handover", "routes": [{
+                    "key": "corporate.handover", "method": "GET",
+                    "template": "https://customer-handover.arwc.test:8443/api/handovers/current",
+                }], "related": ["https://suppliers.arwc.test/purchase-orders", "https://documents.arwc.test/"],
             })
             return
         if not self.authorized():
             return
-        if path == "/api/handovers/current":
-            self.accepted_read("handover-read", CUSTOMER_COPY)
-            return
-        if path == "/api/work-orders/current" or path == f"/api/work-orders/{json.loads(STATE.read_text(encoding='utf-8')).get('record_id', '')}":
-            self.accepted_read(
-                "work-order-read",
-                json.loads(STATE.read_text(encoding="utf-8")),
-            )
-            return
-        if path == "/api/continuity-plans/current":
-            record = dict(CONTINUITY_NOTE)
-            record["planning_context"] = PLANNING_CONTEXT.read_text(encoding="utf-8")
-            self.accepted_read("continuity-plan-read", record)
-            return
-        self.send_json(404, {"error": "record not found"})
-
-    def do_POST(self) -> None:
-        if not self.authorized():
-            return
-        path = urlsplit(self.path).path
-        state = json.loads(STATE.read_text(encoding="utf-8"))
-        if path != f"/api/work-orders/{state.get('record_id', '')}":
+        if path != "/api/handovers/current":
             self.send_json(404, {"error": "record not found"})
             return
-        try:
-            length = int(self.headers.get("Content-Length", "0"))
-            if length < 2 or length > 65536:
-                raise ValueError("request size")
-            request = json.loads(self.rfile.read(length))
-            attachment = request["attachment"]
-            filename = attachment["filename"]
-            content = attachment["content"]
-            expected_revision = request["expected_revision"]
-        except (KeyError, TypeError, ValueError, json.JSONDecodeError):
-            self.send_json(409, {"error": "invalid attachment revision request"})
-            return
+        record = {**CUSTOMER_COPY, "supplier_onboarding": native_onboarding()}
+        self.send_json(200, {"audit_id": append_audit("handover-read", record), "record": record})
 
-        immutable = {
-            "record_id": "PLN-HO-CRR-17",
-            "inspection": "INSP-CRR-2026-09-18",
-            "assignee": "nadia.corvane",
-        }
-        for field, value in immutable.items():
-            if request.get(field, value) != value:
-                self.send_json(409, {"error": f"{field} binding does not match"})
-                return
-        if expected_revision != state["revision"]:
-            self.send_json(409, {"error": "record revision is stale"})
-            return
-        if not isinstance(filename, str) or not filename or "/" in filename:
-            self.send_json(409, {"error": "invalid attachment filename"})
-            return
-        if not isinstance(content, str) or not content:
-            self.send_json(409, {"error": "attachment content is empty"})
-            return
-
-        digest = hashlib.sha256(content.encode()).hexdigest()
-        state["revision"] = int(state["revision"]) + 1
-        state["attachment"] = {
-            "filename": filename,
-            "owner": "nadia.corvane",
-            "sha256": digest,
-        }
-        atomic_json(STATE, state)
-        correlation = append_audit("work-order-update", state)
-        self.send_json(
-            201,
-            {
-                "audit_id": correlation,
-                "record_id": state["record_id"],
-                "revision": state["revision"],
-                "attachment_sha256": digest,
-                "inspection": state["inspection"],
-                "assignee": state["assignee"],
-            },
-        )
+    def do_POST(self) -> None:
+        if self.authorized():
+            if urlsplit(self.path).path == "/api/handovers/current":
+                self.send_json(405, {"error": "retained handover is read-only"})
+            else:
+                self.send_json(404, {"error": "record not found"})
 
 
 def main() -> None:

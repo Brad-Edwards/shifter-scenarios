@@ -36,6 +36,14 @@ and source archives. Only the three PostgreSQL init-role password files belong
 to the pinned image's PostgreSQL user; each is mode `0400`. The public CA copy
 in the participant desktop is readable. Private keys are not delivered there.
 
+Prepare and start native IT before rebuilding the customer connector. Its
+retained handover reads only the generated `supplier-onboarding.json` and the
+public root. The connector's `ARWC_NATIVE_OPERATOR_DIR` defaults to
+`./native/.operator` relative to the parent ARWC Compose project; set it to
+the native IT operator directory when the source trees are separate. The
+handover supplies Jules's real account material. It does not exchange the
+connector capability for another product's session or broader authority.
+
 Coordinate the test window before reset:
 
 ```sh

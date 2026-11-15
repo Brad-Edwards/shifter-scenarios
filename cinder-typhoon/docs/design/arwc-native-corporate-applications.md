@@ -45,6 +45,11 @@ The existing services remain until their replacements and affected card paths
 are verified. Card rebinding and final retirement are tracked by issue #407;
 the existing OT challenge conversions retain their difficulty and evidence.
 
+W01-W03 use native records and per-record grants. Their opening handover
+lists only the native product entry points. Old W02/W03 producers remain
+temporarily for W04/W09/W11/W12 consumers; remove those producers after the
+dependent cards move to their real product evidence in the same change.
+
 References: [Gitea Docker](https://docs.gitea.com/installation/install-with-docker/),
 [Metabase Docker](https://www.metabase.com/docs/latest/installation-and-operation/running-metabase-on-docker),
 [Nextcloud installation](https://docs.nextcloud.com/server/stable/admin_manual/installation/command_line_installation.html),

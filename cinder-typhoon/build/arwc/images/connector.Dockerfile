@@ -1,12 +1,3 @@
-FROM python:3.12.11-slim-bookworm AS narrative
-
-COPY assets/narrative/generated/packages/arwc-documents.json /tmp/arwc-documents.json
-COPY build/arwc/runtime/extract_document.py /usr/local/bin/extract-document
-RUN python3 /usr/local/bin/extract-document \
-      /tmp/arwc-documents.json \
-      pl-arwc-plan-method-01-method \
-      /tmp/pl-arwc-plan-method-01-method.md
-
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
@@ -35,8 +26,6 @@ COPY --chown=arwc-connector:arwc-connector --chmod=0640 \
   build/arwc/runtime/fieldlink_consumer.py /opt/fieldlink-connector/fieldlink_consumer.py
 COPY --chown=arwc-connector:arwc-connector --chmod=0640 \
   build/arwc/runtime/arwc_handover.py /opt/fieldlink-connector/arwc_handover.py
-COPY --from=narrative --chown=arwc-connector:arwc-connector --chmod=0640 \
-  /tmp/pl-arwc-plan-method-01-method.md /opt/customer-handover/assets/pl-arwc-plan-method-01-method.md
 COPY --chmod=0750 build/arwc/runtime/connector-entrypoint.sh /usr/local/sbin/arwc-connector-entrypoint
 COPY --chmod=0755 build/arwc/runtime/connector-health.sh /usr/local/sbin/arwc-connector-health
 

@@ -9,6 +9,7 @@ services:
     container_name: cinder-arwc-connector
     hostname: a-connector
     domainname: corporate.arwc.test
+    dns: [10.77.60.10]
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "/usr/local/sbin/arwc-connector-health"]
@@ -34,6 +35,16 @@ services:
       - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/integration/keplerops-ca.crt:/run/arwc-peer/keplerops-ca.crt:ro
+      - type: bind
+        source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/supplier-onboarding.json
+        target: /run/arwc-native/supplier-onboarding.json
+        read_only: true
+        bind: {create_host_path: false}
+      - type: bind
+        source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
+        target: /run/arwc-native/root-ca.crt
+        read_only: true
+        bind: {create_host_path: false}
     networks:
       corporate:
         ipv4_address: 10.77.60.20

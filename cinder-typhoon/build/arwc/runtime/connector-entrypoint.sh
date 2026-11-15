@@ -25,7 +25,14 @@ install -d -o arwc-connector -g fieldlink -m 0770 \
 install -d -o arwc-connector -g arwc-connector -m 0700 \
   /var/lib/arwc-connector/audit \
   /var/lib/arwc-connector/auth \
+  /var/lib/arwc-connector/native \
   /var/lib/arwc-connector/state
+install -o arwc-connector -g arwc-connector -m 0400 \
+  /run/arwc-native/supplier-onboarding.json \
+  /var/lib/arwc-connector/native/supplier-onboarding.json
+install -m 0644 /run/arwc-native/root-ca.crt \
+  /usr/local/share/ca-certificates/arwc-native-it.crt
+update-ca-certificates >/dev/null
 install -o arwc-connector -g arwc-connector -m 0400 \
   /run/arwc-tls/server.crt /tmp/arwc-server.crt
 install -o arwc-connector -g arwc-connector -m 0400 \
