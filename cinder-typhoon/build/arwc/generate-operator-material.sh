@@ -8,21 +8,52 @@ mkdir -p "$OPERATOR_DIR/tls"
 mkdir -p "$OPERATOR_DIR/integration"
 chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls" "$OPERATOR_DIR/integration"
 
-# This key authenticates the corporate handover only. Rotate it for every
-# freshly generated range or restore so prior handover material cannot replay.
+case ${1-} in
+  '') ca_profile_only=false ;;
+  --ca-profile-only)
+    [[ $(hostname) == cinder-arwc-dev ]] || { echo 'CA profile repair is restricted to cinder-arwc-dev.' >&2; exit 1; }
+    ca_profile_only=true
+    for identity in ca archive-ca; do
+      [[ -s "$OPERATOR_DIR/tls/$identity.key" && -s "$OPERATOR_DIR/tls/$identity.crt" ]] || {
+        echo 'CA profile repair requires the existing key and certificate.' >&2
+        exit 1
+      }
+    done
+    ;;
+  *) echo 'Usage: generate-operator-material.sh [--ca-profile-only]' >&2; exit 2 ;;
+esac
+
+ca_profile() {
+  local identity=$1 subject=$2
+  if [[ ! -s "$OPERATOR_DIR/tls/$identity.key" ]]; then
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 \
+      -out "$OPERATOR_DIR/tls/$identity.key" 2>/dev/null
+  fi
+  if [[ -s "$OPERATOR_DIR/tls/$identity.crt" ]]; then
+    subject=$(openssl x509 -in "$OPERATOR_DIR/tls/$identity.crt" -noout -subject -nameopt compat | sed 's/^subject=//')
+  fi
+  if [[ ! -s "$OPERATOR_DIR/tls/$identity.crt" ]] || ! openssl x509 \
+      -in "$OPERATOR_DIR/tls/$identity.crt" -noout -ext keyUsage 2>/dev/null | grep -q 'Certificate Sign'; then
+    openssl req -x509 -new -key "$OPERATOR_DIR/tls/$identity.key" -days 3650 \
+      -subj "$subject" \
+      -addext 'basicConstraints=critical,CA:TRUE' \
+      -addext 'keyUsage=critical,keyCertSign,cRLSign' \
+      -addext 'subjectKeyIdentifier=hash' \
+      -addext 'authorityKeyIdentifier=keyid:always' \
+      -out "$OPERATOR_DIR/tls/$identity.crt"
+  fi
+}
+
+ca_profile ca '/CN=Alterra Corporate CA/O=Alterra Regional Water Company'
+ca_profile archive-ca '/CN=Alterra Archive Enrollment CA/O=Alterra Regional Water Company'
+chmod 0600 "$OPERATOR_DIR/tls/ca.key" "$OPERATOR_DIR/tls/archive-ca.key"
+chmod 0644 "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/tls/archive-ca.crt"
+if $ca_profile_only; then
+  exit 0
+fi
+
+# Rotate the handover key only for an explicit full material generation.
 openssl rand -hex 32 > "$OPERATOR_DIR/handover.key"
-
-if [[ ! -s "$OPERATOR_DIR/tls/ca.key" ]]; then
-  openssl req -x509 -newkey rsa:3072 -nodes -days 3650 \
-    -subj '/CN=Alterra Corporate CA/O=Alterra Regional Water Company' \
-    -keyout "$OPERATOR_DIR/tls/ca.key" -out "$OPERATOR_DIR/tls/ca.crt" 2>/dev/null
-fi
-
-if [[ ! -s "$OPERATOR_DIR/tls/archive-ca.key" ]]; then
-  openssl req -x509 -newkey rsa:3072 -nodes -days 3650 \
-    -subj '/CN=Alterra Archive Enrollment CA/O=Alterra Regional Water Company' \
-    -keyout "$OPERATOR_DIR/tls/archive-ca.key" -out "$OPERATOR_DIR/tls/archive-ca.crt" 2>/dev/null
-fi
 
 openssl req -newkey rsa:3072 -nodes \
   -subj '/CN=customer-handover.arwc.test/O=Alterra Regional Water Company' \

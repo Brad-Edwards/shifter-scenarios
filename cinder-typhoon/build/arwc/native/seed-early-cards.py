@@ -2,6 +2,8 @@
 """Import contractor records using native ERPNext and Nextcloud administration."""
 import hashlib
 import hmac
+import csv
+import io
 import json
 import os
 from pathlib import Path
@@ -47,7 +49,7 @@ def seed() -> None:
         "status": "Open", "description": "Restricted maintenance record. Outlet frame anchor fixings require engineering review before handback. Asset AST-CRR-017; inspection INSP-CRR-2026-09-18; revision 6.",
     })
     other_project = find("Project", {"project_name": "WO-RIV-3308 — River distribution pressure review"})
-    insert("Task", {"subject": "MR-RIV-3308-R2 — Engineering inspection record", "project": other_project["name"]}, {
+    other = insert("Task", {"subject": "MR-RIV-3308-R2 — Engineering inspection record", "project": other_project["name"]}, {
         "status": "Open", "description": "Restricted maintenance record. Review the River distribution pressure instrument findings with the district engineer.",
     })
     for doctype, name, write in (("Project", project["name"], 0), ("Task", handback["name"], 1),
@@ -84,6 +86,20 @@ def seed() -> None:
     acceptance = "Engineering reviews/integration-read-acceptance.md"
     upload(acceptance, (RECORDS / "integration-read-acceptance.md").read_bytes())
     share(acceptance, EMAIL, 0)
+    register = io.StringIO()
+    writer = csv.writer(register)
+    writer.writerow(("maintenance_case", "task_reference", "project_reference", "record_type"))
+    writer.writerows((("MTN-CRR-204", handback["name"], project["name"], "Supplier handback"),
+                     ("MTN-CRR-204", restricted["name"], project["name"], "Engineering review"),
+                     ("MTN-RIV-3308", other["name"], other_project["name"], "Engineering review")))
+    for case, project_name in (("MTN-PIN-2192", "WO-PIN-2192 — Pine intake instrument calibration"),
+                               ("MTN-CRR-4392", "WO-CRR-4392 — Cairn Reach cabinet ventilation service")):
+        related_project = find("Project", {"project_name": project_name})
+        task = find("Task", {"project": related_project["name"], "subject": "Complete inspection and record findings"})
+        writer.writerow((case, task["name"], related_project["name"], "Inspection findings"))
+    upload("Veybridge handover/service-record-index.csv", register.getvalue().encode())
+    print(json.dumps({"project": project["name"], "supplier_handback": handback["name"],
+                      "engineering_review": restricted["name"], "denied_review": other["name"]}))
     print("Native supplier documents, attachments and per-record maintenance shares imported")
 
 
