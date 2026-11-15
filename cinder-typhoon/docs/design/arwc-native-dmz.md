@@ -26,6 +26,8 @@ flowchart LR
 | Read API database | `172.29.70.0/29` | PostgREST and corporate PostgreSQL. |
 
 Every exchange is internal. Every multi-homed service has IP forwarding off.
+The existing DMZ hosts keep their addresses. Native DNS uses `10.77.62.11`
+and the native DMZ edge uses `10.77.62.13`.
 The DMZ edge joins only the existing DMZ and these three service exchanges;
 it does not join the general native IT backend network. Gotenberg cannot
 reach the corporate, supervisory or control networks. PostgREST has only the

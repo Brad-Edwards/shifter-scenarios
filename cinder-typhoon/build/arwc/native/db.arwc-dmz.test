@@ -1,7 +1,7 @@
 $TTL 300
-@ IN SOA ns.arwc.test. hostmaster.arwc.test. (2026111501 300 60 86400 300)
+@ IN SOA ns.arwc.test. hostmaster.arwc.test. (2026111502 300 60 86400 300)
   IN NS ns.arwc.test.
 ns        IN A 10.77.62.11
-suppliers IN A 10.77.62.12
-render    IN A 10.77.62.12
-read-data IN A 10.77.62.12
+suppliers IN A 10.77.62.13
+render    IN A 10.77.62.13
+read-data IN A 10.77.62.13

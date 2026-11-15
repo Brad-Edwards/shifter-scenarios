@@ -57,7 +57,7 @@ services:
       - ./dmz-nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./.operator/ca/tls:/etc/nginx/tls:ro
     networks:
-      dmz: {ipv4_address: 10.77.62.12}
+      dmz: {ipv4_address: 10.77.62.13}
       portal_exchange: {ipv4_address: 172.29.67.3}
       render_exchange: {ipv4_address: 172.29.68.3}
       api_exchange: {ipv4_address: 172.29.69.3}
