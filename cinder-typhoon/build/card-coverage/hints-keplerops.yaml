@@ -157,13 +157,13 @@ hints:
     - kind: participant_service
       id: indexer.keplerops.test
   K05.1:
-    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
-      client document exposes the consumer check and metadata operation, so use that ordinary contract instead of
-      guessing a path.
-    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the consumer check and metadata operation in the published client reference. Capture one ordinary
-      response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Fetch the Verdaccio metadata for @keplerops/fieldlink-connector from the packages.metadata route.
+      The registry README documents the fieldkest.connector/v3 interface and its required fields.
+    h2: Construct a consumer request with schema=fieldkest.connector/v3 and the required tenant_id and
+      asset_id fields. Optionally include a measurements object with callback_latency_ms and sample_count.
+      Missing required fields return 422 from the consumer-check route.
+    h3: POST the request to packages.consumer-check. The result includes check_id, resolved_version (7.4.2),
+      consumer_revision, package_sha256, the original request, and the actual installed module output.
     references:
     - kind: client_route
       id: packages.consumer-check
