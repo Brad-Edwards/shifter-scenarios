@@ -10,7 +10,6 @@ iptables -A FORWARD -s 10.77.50.20 -d 10.77.51.30 -p tcp --dport 8443 -j ACCEPT
 iptables -A FORWARD -s 10.77.50.20 -d 10.77.51.40 -p tcp --dport 443 -j ACCEPT
 iptables -A FORWARD -s 10.77.50.20 -d 10.77.51.41 -p tcp --dport 443 -j ACCEPT
 iptables -A FORWARD -s 10.77.50.20 -d 10.77.51.60 -p tcp --dport 443 -j ACCEPT
-iptables -A FORWARD -s 10.77.50.20 -d 10.77.51.11 -p tcp -m multiport --dports 443,8443 -j ACCEPT
 iptables -A FORWARD -s 10.77.50.20 -d 10.77.50.30 -p tcp --dport 443 -j ACCEPT
 iptables -A FORWARD -s 10.77.50.20 -d 10.77.50.40 -p tcp --dport 443 -j ACCEPT
 iptables -A FORWARD -s 10.77.50.20 -d 10.77.50.50 -p tcp --dport 443 -j ACCEPT

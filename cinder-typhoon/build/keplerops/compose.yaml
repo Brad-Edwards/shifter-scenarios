@@ -103,8 +103,8 @@ services:
       timeout: 3s
       retries: 20
     networks:
-      corporate: {ipv4_address: 10.77.50.11, aliases: [edge.keplerops.test, foundation.keplerops.test, identity.keplerops.test, id.keplerops.test, ca.keplerops.test, cert.keplerops.test, staff.keplerops.test, workboard.keplerops.test]}
-      delivery: {ipv4_address: 10.77.51.11, aliases: [support.keplerops.test, tickets.keplerops.test]}
+      corporate: {ipv4_address: 10.77.50.11, aliases: [edge.keplerops.test, foundation.keplerops.test, identity.keplerops.test, id.keplerops.test, ca.keplerops.test, cert.keplerops.test, staff.keplerops.test, workboard.keplerops.test, support.keplerops.test, tickets.keplerops.test]}
+      delivery: {ipv4_address: 10.77.51.11}
       cloud: {ipv4_address: 10.77.52.11}
       foundation_data: {ipv4_address: 10.77.56.11}
 
@@ -205,8 +205,8 @@ services:
       - packages.keplerops.test:10.77.51.30
       - ci.keplerops.test:10.77.51.40
       - preview.keplerops.test:10.77.51.50
-      - support.keplerops.test:10.77.51.11
-      - tickets.keplerops.test:10.77.51.11
+      - support.keplerops.test:10.77.50.11
+      - tickets.keplerops.test:10.77.50.11
       - indexer.keplerops.test:10.77.51.70
       - cloud-api.keplerops.test:10.77.52.20
       - workloads.keplerops.test:10.77.52.30
