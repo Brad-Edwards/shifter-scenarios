@@ -30,7 +30,7 @@ def seed() -> None:
         "is_stock_item": 0, "is_purchase_item": 1,
     })
     for reference, supplier_name, description, rate in (
-        ("PO-VEY-4417", "Veybridge Field Services", "Cairn Reach outlet actuator inspection — WO-CRR-4417", 1800),
+        ("PO-VEY-4417", "Veybridge Field Services", "Cairn Reach outlet actuator inspection — asset AST-CRR-017; WO-CRR-4417", 1800),
         ("PO-VEY-4392", "Veybridge Field Services", "Cairn Reach cabinet ventilation service — WO-CRR-4392", 650),
         ("PO-ARD-2192", "Ardenvale Instrument Services", "Pine intake instrument calibration — WO-PIN-2192", 1200),
     ):

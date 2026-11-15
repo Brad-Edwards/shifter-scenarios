@@ -1,5 +1,5 @@
 schema: cinder-typhoon.challenge-delivery/v2
-revision: 010573653ff970699454ce5243b65a414e3ffc984a81f9526e5431bbded90958
+revision: a57bf9c98a4f910603ae17fa7d98354b6ce4155fd1caae41ee6e17ee0981d185
 scoring:
   model: static
   tier_points:
@@ -2353,67 +2353,62 @@ phases:
       cards:
       - id: W01.1
         title: The customer's copy
-        description: Recover ARWC's retained integration handover from the corporate connector. Find what
-          the customer recorded about the maintenance package before Cinder arrived.
+        description: Recover the retained customer handover and identify the maintenance case attached
+          to the accepted FieldLink delivery.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the corporate handover, work-order, and continuity records. Its published client
-          document exposes the handover operation, so use that ordinary contract instead of guessing a
-          path.
-        - Treat this as record-version binding and minimal corporate handover updates. Separate the authoritative
-          service record from stale or local copies, and preserve its identity, revision, and scope.
-        - Locate the handover operation in the published client reference. Capture one ordinary response
-          and one denial, then correlate the returned identifiers with evidence already earned.
+        - Start with the customer-owned handover associated with the accepted FieldLink delivery. Its
+          ordinary client reference identifies the retained handover route.
+        - Distinguish the customer record from the supplier delivery receipt. Match the current connector,
+          customer receipt and maintenance binding.
+        - Read the retained handover through its published client route and compare its business identifiers
+          with the accepted delivery record.
         completion:
           mode: automatic_range_evidence
       - id: W01.2
         title: The planner's unfinished handover
-        description: Recover the exposed maintenance-planning handover and the outstanding inspection
-          it describes.
+        description: Find the planning handover retained with the supplier documents. Identify the outstanding
+          inspection and its planning assignee.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the corporate handover, work-order, and continuity records. Its published client
-          document exposes the work order operation, so use that ordinary contract instead of guessing
-          a path.
-        - Treat this as record-version binding and minimal corporate handover updates. Separate the authoritative
-          service record from stale or local copies, and preserve its identity, revision, and scope.
-        - Locate the work order operation in the published client reference. Capture one ordinary response
-          and one denial, then correlate the returned identifiers with evidence already earned.
+        - The supplier onboarding material names the document service and the external handover folder.
+          Look among the ordinary planning and attendance documents.
+        - Use the document itself rather than an old work-order API. The planning assignee and physical
+          inspection are distinct from software delivery acceptance.
+        - Open the planning handover in Nextcloud and retain its current file identity, revision and outstanding
+          inspection details.
         completion:
           mode: automatic_range_evidence
       - id: W01.3
         title: How the company buys time
-        description: Find ARWC's internal continuity note explaining how it handles a shortfall in usable
-          reserve.
+        description: Determine how ARWC handles a dry-period shortfall and which purchasing records govern
+          supplementary water.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the corporate handover, work-order, and continuity records. Its published client
-          document exposes the continuity plan operation, so use that ordinary contract instead of guessing
-          a path.
-        - Treat this as record-version binding and minimal corporate handover updates. Separate the authoritative
-          service record from stale or local copies, and preserve its identity, revision, and scope.
-        - Locate the continuity plan operation in the published client reference. Capture one ordinary
-          response and one denial, then correlate the returned identifiers with evidence already earned.
+        - The supplier handover includes an ordinary purchasing note. It explains which records Planning
+          and Procurement use for dry-period decisions.
+        - Distinguish a supplier quotation, an accepted reservation and a settlement tariff. They do not
+          describe the same business commitment.
+        - Read the continuity purchasing note and identify the stated measures and reservation condition
+          without borrowing authority from another supplier.
         completion:
           mode: automatic_range_evidence
       - id: W01.4
         title: Change the corporate record
-        description: Make the corporate handover service replace the planner's inspection-summary attachment
-          with Cinder's copy while preserving the original inspection and assignee.
+        description: Correct the supplier handback for the pending Cairn Reach inspection and record that
+          the work is in progress.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the corporate handover, work-order, and continuity records. Its published client
-          document exposes the work order update operation, so use that ordinary contract instead of guessing
-          a path.
-        - Treat this as record-version binding and minimal corporate handover updates. Establish the denied
-          and ordinary baselines first, then vary only the boundary input the service is meant to bind.
-        - Locate the work order update operation in the published client reference. Read the current revision,
-          submit one minimal variation, and compare the resulting audit and unaffected fields with the
-          baseline.
+        - The physical inspection and its supplier handback remain separate from the accepted software
+          delivery. Find the actual maintenance task for the current case.
+        - A native per-record share can grant more authority than the supplier role suggests. Compare
+          the available task permissions with neighboring inspection records.
+        - Reconcile the case, project and inspection first, make only the requested task change through
+          ERPNext, then inspect its native version history.
         completion:
           mode: automatic_range_evidence
     - id: W02
@@ -2425,54 +2420,46 @@ phases:
       cards:
       - id: W02.1
         title: The asset and the contractor
-        description: Recover the retained asset-and-contractor bundle for the upcoming outlet inspection.
+        description: Identify the asset and contractor associated with the outlet inspection order.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the business workplace asset, contractor, and association records. Its published
-          client document exposes the asset bundle operation, so use that ordinary contract instead of
-          guessing a path.
-        - Treat this as entity reconciliation followed by association-bound authorization testing. Separate
-          the authoritative service record from stale or local copies, and preserve its identity, revision,
-          and scope.
-        - Locate the asset bundle operation in the published client reference. Capture one ordinary response
-          and one denial, then correlate the returned identifiers with evidence already earned.
+        - The supplier portal contains ordinary purchase orders with supplier relationships and service
+          line descriptions. Begin with the current outlet inspection order.
+        - A display label alone is weaker than the actual supplier relationship and asset reference carried
+          by the order.
+        - Open the permitted order and record its native identity, supplier and maintenance asset from
+          the order itself.
         completion:
           mode: automatic_range_evidence
       - id: W02.2
         title: Three names for one job
-        description: Reconcile the contractor, asset, and inspection identifiers so the maintenance record
-          can be tied to the correct physical assignment.
+        description: Reconcile the internal work order, supplier job and engineering drawing that refer
+          to the same outlet inspection.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the business workplace asset, contractor, and association records. Its published
-          client document exposes the association record operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as entity reconciliation followed by association-bound authorization testing. Correlate
-          independently owned records by identity, revision, units, and scope instead of trusting a display
-          label.
-        - Locate the association record operation in the published client reference. Join the independent
-          records on their stable identifiers and revisions, then explain any mismatch before acting on
-          it.
+        - The internal work order, supplier job and engineering drawing use different names. The supplier
+          order, annex and drawing register carry their stable references.
+        - Join independently owned business records by their references and accepted revisions rather
+          than by similar display labels.
+        - Compare the ERPNext project and order with the annex and native document register; retain a
+          source identity for each side of the join.
         completion:
           mode: automatic_range_evidence
       - id: W02.3
         title: The record behind the wrong association
-        description: Use the maintenance service to recover the protected record outside your ordinary
-          assignment, bound to the asset you identified.
+        description: Find the engineering inspection record exposed through the supplier job association
+          and establish the extent of that access.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the business workplace asset, contractor, and association records. Its published
-          client document exposes the work order attachment operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as entity reconciliation followed by association-bound authorization testing. Carry
-          forward only earned identities and record bindings; possession of a copied identifier alone
-          does not cross the next boundary.
-        - Locate the work order attachment operation in the published client reference. Replay the preceding
-          evidence through the next documented boundary and verify the downstream service, not the client,
-          records the outcome.
+        - The supplier account can see a small set of maintenance records. Check which are ordinary handback
+          work and which belong to engineering review.
+        - Compare native per-record sharing with the intended supplier job association. A readable engineering
+          record need not grant permission to edit it.
+        - Read the associated inspection record, inspect its actual sharing scope and establish the denied
+          neighboring record and write boundary.
         completion:
           mode: automatic_range_evidence
     - id: W03
@@ -2484,54 +2471,47 @@ phases:
       cards:
       - id: W03.1
         title: An annex left with the order
-        description: Recover the unpublished work-order annex and identify the process-data handover mentioned
-          in it.
+        description: Recover the work-order annex retained with the supplier order and identify its engineering
+          drawing reference.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the work-order annex, reference resolver, and integration contract. Its published
-          client document exposes the work order annex operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as reference normalization across an attachment namespace and protected export boundary.
-          Separate the authoritative service record from stale or local copies, and preserve its identity,
-          revision, and scope.
-        - Locate the work order annex operation in the published client reference. Capture one ordinary
-          response and one denial, then correlate the returned identifiers with evidence already earned.
+        - The permitted purchase order has ordinary file attachments. Keep the supplier order and attachment
+          identities together when reading the work-order annex.
+        - Use the native attachment relationship instead of a guessed business-service route. Check the
+          annex revision and its drawing reference.
+        - Download the actual annex attached to the supplier order and retain its file identity and content
+          hash alongside the order reference.
         completion:
           mode: automatic_range_evidence
       - id: W03.2
         title: A reference outside the order
-        description: Make the annex workflow recover the restricted handover file that the ordinary work-order
-          view cannot read.
+        description: Reconcile the annex revision history with the engineering document that reached the
+          supplier account.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the work-order annex, reference resolver, and integration contract. Its published
-          client document exposes the work order references operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as reference normalization across an attachment namespace and protected export boundary.
-          Establish the denied and ordinary baselines first, then vary only the boundary input the service
-          is meant to bind.
-        - Locate the work order references operation in the published client reference. Read the current
-          revision, submit one minimal variation, and compare the resulting audit and unaffected fields
-          with the baseline.
+        - The current annex is only one revision of a logical file. Nextcloud also shows versions and
+          files shared directly with the supplier account.
+        - Compare the earlier distribution with the current recipient and the native incoming share. File
+          access does not imply access to its parent department folder.
+        - Download the previous annex version, reconcile its recipient with the current account and incoming
+          share, then establish the separately shared engineering file and denied parent.
         completion:
           mode: automatic_range_evidence
       - id: W03.3
         title: The integration's read contract
-        description: Recover the protected read-integration configuration behind the annex service's separate
-          export boundary.
+        description: Establish what the approved planning read service actually publishes and what remains
+          outside its boundary.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the work-order annex, reference resolver, and integration contract. Its published
-          client document exposes the integration contract operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as reference normalization across an attachment namespace and protected export boundary.
-          Separate the authoritative service record from stale or local copies, and preserve its identity,
-          revision, and scope.
-        - Locate the integration contract operation in the published client reference. Capture one ordinary
-          response and one denial, then correlate the returned identifiers with evidence already earned.
+        - The engineering acceptance note names the approved read service. Its live OpenAPI document describes
+          the relations and fields that are actually published.
+        - Reconcile a filtered live result with the accepted asset, planning window and source revision.
+          A role name in a note does not prove the current database boundary.
+        - Use the native schema document and a scoped read to establish the active record, then verify
+          that an unpublished base relation and a write remain denied.
         completion:
           mode: automatic_range_evidence
     - id: W04
