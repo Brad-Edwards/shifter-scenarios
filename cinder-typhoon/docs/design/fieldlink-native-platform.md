@@ -99,6 +99,8 @@ router networks. It validates the actual project, addresses and bridge identitie
 The router retains its existing port and role rules; host inter-bridge traffic,
 external addresses and other ranges receive no exception. Startup, reset and
 recovery reconcile only this range's own chain against the current bridge IDs.
+The development VM's startup metadata uses the published first-boot script;
+refresh that same metadata after changing this startup hook on an existing VM.
 See [Docker's firewall guidance](https://docs.docker.com/engine/network/firewall-iptables/).
 
 Use the guarded development wrapper for access and source synchronization. The

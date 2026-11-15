@@ -17,6 +17,8 @@ NETWORKS = {'corporate': '10.77.50.0/24', 'delivery': '10.77.51.0/24',
 
 
 def command(arguments: list[str], *, check: bool = True) -> subprocess.CompletedProcess:
+    if arguments[0] == 'iptables':
+        arguments = ['iptables', '--wait', '10', *arguments[1:]]
     return subprocess.run(arguments, check=check, capture_output=True, text=True, timeout=30)
 
 
