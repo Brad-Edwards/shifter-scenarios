@@ -40,6 +40,9 @@ def prepare(operator: Path) -> None:
           'KC_DB_PASSWORD=' + values['identity_db'] + '\n'
           'KC_BOOTSTRAP_ADMIN_USERNAME=platform-admin\n'
           'KC_BOOTSTRAP_ADMIN_PASSWORD=' + values['identity_admin'] + '\n')
+    write(target / 'identity-admin.env',
+          'KC_BOOTSTRAP_ADMIN_USERNAME=platform-admin\n'
+          'KC_BOOTSTRAP_ADMIN_PASSWORD=' + values['identity_admin'] + '\n')
     write(target / 'kanboard.env',
           'DATABASE_URL=postgres://fieldlink_staff:' + values['kanboard_db']
           + '@fieldlink-postgres:5432/fieldlink_staff\n')
