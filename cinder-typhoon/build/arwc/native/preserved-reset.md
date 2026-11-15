@@ -72,6 +72,7 @@ done < "$backup/volumes"
 rm -rf -- .operator
 tar -xzpf "$backup/operator.tar.gz"
 "${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 420
+bash corporate-access.sh trust
 ```
 
 QA confirms the preserved ordinary changes, replacement password and product

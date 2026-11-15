@@ -16,7 +16,7 @@ docker run --rm --platform linux/amd64 --entrypoint bash \
   rm -f /etc/apt/apt.conf.d/docker-clean
   apt-get update >/dev/null
   apt-get -o Dir::State::status=/download/status -o Dir::Cache::archives=/download/cache \
-    install --download-only --no-install-recommends -y git
+    install --download-only --no-install-recommends -y git openssh-client
   '
 cp "$stage"/cache/*.deb "$assets/debs/"
 (
@@ -29,4 +29,4 @@ for package in "$stage"/cache/*.deb; do
   docker cp "$package" "$desktop:/tmp/arwc-git-debs/"
 done
 docker exec --user 0 "$desktop" sh -ec 'dpkg -i /tmp/arwc-git-debs/*.deb >/dev/null'
-echo 'Git dependencies are in the offline bundle and installed on the development desktop.'
+echo 'Git and OpenSSH client dependencies are in the offline bundle and installed on the development desktop.'

@@ -56,3 +56,16 @@ or translating authentication, has no keys or volumes, and cannot forward IP
 traffic. The connector itself does not join the supervisory network. Only its
 `handover` volume subdirectory is mounted read-only in the engineering desktop;
 receipts, candidates and private customer state remain outside that mount.
+
+The corporate workplace is a normal Linux SSH client at `10.77.60.14` with MIT
+Kerberos, Git and HTTPS tools. It joins only corporate, never supervisory or
+field. A fixed socat relay exposes only `172.29.63.29:22` to that host's port 22;
+its corporate relay address is `10.77.60.17`. Forwarding is off on both services.
+OpenSSH permits only user `morgan` and public-key login; root, password login,
+tunnels, agent and TCP forwarding are disabled. The private client key is
+created inside the engineering participant's persistent home and stays there.
+Only its public key is provisioned to the corporate host. SSH host keys and the
+corporate user's home persist in native IT volumes; keys are generated at
+runtime and are absent from the image. Existing trusted public roots support
+normal application clients. Kerberos credentials use the normal user's ticket
+cache, never a KDC root session or copied keytab.

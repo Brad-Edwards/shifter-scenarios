@@ -49,6 +49,41 @@ services:
       interval: 10s
       timeout: 3s
       retries: 6
+  workplace:
+    <<: *runtime
+    build: {context: ., dockerfile: workplace.Dockerfile}
+    image: cinder-arwc/native-workplace:404
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, CHOWN, DAC_OVERRIDE, SYS_CHROOT]
+    sysctls: {net.ipv4.ip_forward: "0", net.ipv4.ip_unprivileged_port_start: "0"}
+    dns: [10.77.60.10]
+    tmpfs: [/tmp, /run]
+    volumes:
+      - workplace-home:/home/morgan
+      - workplace-ssh:/var/lib/arwc-workplace/ssh
+      - ./.operator/corporate-user.pub:/run/participant/morgan.pub:ro
+      - ./.operator/ca/certs/root_ca.crt:/run/public-ca/native.crt:ro
+      - ../.operator/tls/ca.crt:/run/public-ca/customer.crt:ro
+    networks:
+      corporate: {ipv4_address: 10.77.60.14}
+    healthcheck:
+      test: [CMD, /usr/sbin/sshd, -t]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+  workplace-edge:
+    <<: *runtime
+    image: cinder-arwc/fieldlink-edge:hand-build
+    entrypoint: [socat, "TCP4-LISTEN:22,bind=172.29.63.29,reuseaddr,fork", "TCP4:10.77.60.14:22"]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    sysctls: {net.ipv4.ip_forward: "0", net.ipv4.ip_unprivileged_port_start: "0"}
+    networks:
+      corporate: {ipv4_address: 10.77.60.17}
+      supervisory: {ipv4_address: 172.29.63.29}
+
   ca:
     <<: *runtime
     image: ${STEP_CA_IMAGE:?Load images.env}
@@ -208,6 +243,8 @@ networks:
     internal: true
     ipam: {config: [{subnet: 172.29.66.0/24}]}
 volumes:
+  workplace-home:
+  workplace-ssh:
   identity-data:
   erp-db:
   erp-queue:

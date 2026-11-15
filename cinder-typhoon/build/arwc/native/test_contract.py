@@ -29,6 +29,18 @@ class BoundaryTests(unittest.TestCase):
         with self.assertRaises(AssertionError):
             validate(changed)
 
+    def test_corporate_workplace_cannot_join_supervisory(self):
+        changed = copy.deepcopy(self.document)
+        changed["services"]["workplace"]["networks"]["supervisory"] = {}
+        with self.assertRaises(AssertionError):
+            validate(changed)
+
+    def test_workplace_tcp_relay_cannot_mount_private_state(self):
+        changed = copy.deepcopy(self.document)
+        changed["services"]["workplace-edge"]["volumes"] = ["workplace-ssh:/keys"]
+        with self.assertRaises(AssertionError):
+            validate(changed)
+
     def test_dmz_contract(self):
         validate_dmz(yaml.safe_load((ROOT / "dmz.compose.yaml").read_text()))
 

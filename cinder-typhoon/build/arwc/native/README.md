@@ -32,6 +32,15 @@ trusts the private CA. The native product hosts are `erp.arwc.test`,
 `render.arwc.test`, and `read-data.arwc.test`. Existing OT short names remain
 available.
 
+The corporate terminal is `workplace.arwc.test`, reached from the engineering
+desktop using `ssh -i ~/.ssh/arwc-corporate morgan@workplace.arwc.test`.
+The participant's private key stays in that engineering home. Startup installs
+only its public key in the corporate workstation and registers the workstation's
+public host key. The terminal has no sudo or forwarding. Normal `kinit`, `klist`,
+`kdestroy`, Git and verified HTTPS clients run in its corporate context using
+`/etc/krb5.conf`; KDC access does not add a network interface to the OT desktop.
+Use the normal workforce principal and password, not an operator keytab.
+
 Nextcloud's native `/cron.sh` companion uses the same pinned image, product
 volume and private backend network. Startup selects native cron mode for
 regular background housekeeping. The configured 30-day version retention

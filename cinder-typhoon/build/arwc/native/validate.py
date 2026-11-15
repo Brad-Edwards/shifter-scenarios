@@ -23,9 +23,13 @@ def validate(document: dict) -> None:
         assert not service.get("ports"), f"{name}: unexpected host port"
         assert "control" not in service.get("networks", {}), name
         assert "field" not in service.get("networks", {}), name
-        if name not in ("dns", "edge"):
+        if name not in ("dns", "edge", "workplace-edge"):
             assert "supervisory" not in service.get("networks", {}), name
         assert str(service["sysctls"]["net.ipv4.ip_forward"]) == "0", name
+    assert set(services["workplace"]["networks"]) == {"corporate"}
+    assert set(services["workplace-edge"]["networks"]) == {"corporate", "supervisory"}
+    assert not services["workplace-edge"].get("volumes")
+    assert services["workplace-edge"]["cap_drop"] == ["ALL"]
     assert services["keycloak"]["image"].startswith("${KEYCLOAK_IMAGE")
     assert services["backend"]["image"].startswith("${ERPNEXT_IMAGE")
     assert "recursion no;" in (ROOT / "named.conf").read_text()

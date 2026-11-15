@@ -32,7 +32,8 @@
     "psql",
     "Mosquitto clients",
     "C++ compiler",
-    "Git"
+    "Git",
+    "OpenSSH client"
   ],
   "endpoints": {
     "hmi": "http://fuxa:1881",

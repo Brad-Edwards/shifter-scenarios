@@ -24,7 +24,7 @@ case "$action" in
   build)
     python3 prepare.py
     "${compose[@]}" pull --ignore-buildable
-    "${compose[@]}" build dns kerberos
+    "${compose[@]}" build dns kerberos workplace
     ;;
   up)
     python3 prepare.py
@@ -52,9 +52,11 @@ case "$action" in
     chown -R 1000:1000 .operator/ca
     chmod 0755 .operator/ca/tls
     chown -R root:root .operator/ca/tls
+    bash corporate-access.sh prepare
     "${compose[@]}" up --no-build --pull never --wait --wait-timeout 420
     "${compose[@]}" exec -T --user www-data nextcloud php occ background:cron
     bash desktop-access.sh
+    bash corporate-access.sh trust
     ;;
   status)
     "${compose[@]}" ps

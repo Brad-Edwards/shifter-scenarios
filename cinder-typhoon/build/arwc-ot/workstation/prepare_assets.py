@@ -14,7 +14,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 HERE = ROOT / "workstation"
 CONTRACT = json.loads((HERE / "contract.json").read_text())
 ASSETS = ROOT / ".operator/workstation-assets"
-PACKAGES = ["xfce4", "xfce4-terminal", "xrdp", "xorgxrdp", "dbus", "dbus-x11", "firefox-esr", "git", "postgresql-client",
+PACKAGES = ["xfce4", "xfce4-terminal", "xrdp", "xorgxrdp", "dbus", "dbus-x11", "firefox-esr", "git", "openssh-client", "postgresql-client",
             "mosquitto-clients", "g++", "ca-certificates", "openssl", "libgtk-3-0", "libnss3", "libasound2",
             "libgbm1", "libxss1", "libx11-xcb1", "libdrm2", "libxcb-cursor0", "fonts-dejavu-core",
             "libxkbcommon-x11-0", "libxcb-icccm4", "libxcb-keysyms1", "libxcb-shape0", "libxcb-xkb1"]
