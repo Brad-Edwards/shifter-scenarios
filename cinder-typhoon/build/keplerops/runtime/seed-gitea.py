@@ -75,8 +75,8 @@ def delivery_history(password: str) -> None:
         'GIT_AUTHOR_EMAIL': 'talia.mornac@fieldkest.test',
         'GIT_COMMITTER_NAME': 'Talia Mornac',
         'GIT_COMMITTER_EMAIL': 'talia.mornac@fieldkest.test',
-        'GIT_AUTHOR_DATE': '2026-08-26T11:32:00Z',
-        'GIT_COMMITTER_DATE': '2026-08-26T11:32:00Z',
+        'GIT_AUTHOR_DATE': '2026-09-17T11:32:00Z',
+        'GIT_COMMITTER_DATE': '2026-09-17T11:32:00Z',
     }
     with tempfile.TemporaryDirectory(prefix='fieldlink-delivery-') as temporary:
         directory = Path(temporary)
@@ -85,7 +85,7 @@ def delivery_history(password: str) -> None:
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         git('clone', '--branch', 'main', '--single-branch',
             BASE + '/fieldkest/fieldlink-connector.git', '.')
-        git('checkout', '-b', branch)
+        git('checkout', '-b', branch, 'fk-test-6d1e9f7')
         (directory / 'delivery').mkdir()
         (directory / 'delivery/README.md').write_text(
             '# Customer package delivery\n\n'

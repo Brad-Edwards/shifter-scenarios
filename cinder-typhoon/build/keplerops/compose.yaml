@@ -242,6 +242,8 @@ services:
         condition: service_started
       k-source:
         condition: service_healthy
+      k-registry:
+        condition: service_healthy
     volumes:
       - native-jenkins-home:/var/jenkins_home
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-ci/server.p12:/run/fieldlink-ci/server.p12:ro

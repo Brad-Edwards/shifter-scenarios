@@ -38,10 +38,11 @@ realization:
 evidence_requirements:
   c1:
     description: |-
-      Recover and demonstrate the limited registry publication authority. This supplies A01; recovering its configuration and using the resulting credential are one achievement.
+      Recover the actual scoped publisher configuration from native Git history and demonstrate its authorization limits. It supports K06.3 but does not authorize the private package read in K06.2 or release administration.
 
-      Required technical proof: Registry audit data must show the scoped identity performing its permitted release-channel action; this awards `A01`.
+      Required technical proof: The recovered native configuration and Git commit establish the account provenance. Actual scoped native registry authorization permits the intended connector publication while denying the independent private package and release-administration boundaries.
     source_refs:
+    - features.k-delivery.k-source
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -63,6 +64,7 @@ evidence_requirements:
         names:
         - cinder.k06-1.satisfied
         component_refs:
+        - features.k-delivery.k-source
         - features.k-delivery.k-registry
       collection: require
       retention: require
@@ -71,14 +73,16 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test direct developer denial, intended error evidence, scoped registry use, other-scope denial,
-      no accepted result for copied configuration, and revocation.'
+    - 'Author checks: Verify native Git discovery/history and removed-current-file behavior, working scoped publisher
+      authentication, private package denial, release-administration denial and persistence without changing main
+      or retained tags.'
   c2:
     description: |-
-      Recover the protected package through the distinct package-view authorization weakness. Merely reusing A01 for an already permitted read does not satisfy this result.
+      Recover the distinct native CI reader configuration from the actual package-check build workspace/archive and use it to retrieve the private support package. Preserve the denial evidence for the publisher identity and the CI reader's publication boundary.
 
-      Required technical proof: The registry logs an authorized-by-flaw read of the protected package version and returns its immutable manifest/content digest.
+      Required technical proof: The native Jenkins build/workspace/archive establishes the independent CI credential provenance. A real private npm package read succeeds under that reader while publisher/private-read and reader/publish combinations remain denied.
     source_refs:
+    - features.k-delivery.k-ci
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -100,6 +104,7 @@ evidence_requirements:
         names:
         - cinder.k06-2.satisfied
         component_refs:
+        - features.k-delivery.k-ci
         - features.k-delivery.k-registry
       collection: require
       retention: require
@@ -108,13 +113,13 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test normal view separation, intended package read, unrelated private package denial, no write
-      escalation, audit attribution.'
+    - 'Author checks: Verify actual native build execution and artifacts, distinct CI reader identity, private package
+      metadata/tarball read, publisher private-read denial, CI publication denial and normal native role boundaries.'
   c3:
     description: |-
       Cause actual changed behavior in the separate test consumer and recover its result. This grants no ARWC execution and does not replace K26.
 
-      Required technical proof: Completion requires publication, resolution, execution, and a receipt showing the protected rehearsal result and exact consumed package revision.
+      Required technical proof: The native publication, immutable version, exact tarball digest and fresh isolated rehearsal result bind the executed package to its actual changed output and preserved tenant/asset/interface fields.
     source_refs:
     - features.k-delivery.k-registry
     - features.k-delivery.k-ci--rehearsals
@@ -147,13 +152,15 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test baseline resolution, intended compatible behavior, failed incompatible package, fresh
-      consumer receipt, no cross-operator result, and registry/consumer state persistence.'
+    - 'Author checks: Verify native publish and duplicate-version rejection, changed compatible module execution,
+      required-local-file or interface failure, preserved tenant and asset fields, and no release-administration
+      authority.'
 propositions:
   c1:
     description: Recover and demonstrate the limited registry publication authority. This supplies A01; recovering
       its configuration and using the resulting credential are one achievement.
     subjects:
+    - features.k-delivery.k-source
     - features.k-delivery.k-registry
     basis: observed_state
     predicate:
@@ -169,6 +176,7 @@ propositions:
     description: Recover the protected package through the distinct package-view authorization weakness. Merely
       reusing A01 for an already permitted read does not satisfy this result.
     subjects:
+    - features.k-delivery.k-ci
     - features.k-delivery.k-registry
     basis: observed_state
     predicate:
@@ -225,13 +233,14 @@ objectives:
   c1:
     name: 'K06.1: House credentials'
     description: |-
-      The importer can retrieve material the developer cannot read directly. Recover usable authority over the release channel consumed by FieldKest customers.
+      The delivery team removed its local npm configuration from the current source tree. Recover usable publishing authority from the retained native history and establish its limits.
 
       Creates the ordinary package-delivery route's publication capability.
     assigned_participant: participant.operator
     actions:
     - k06.c1
     targets:
+    - features.k-delivery.k-source
     - features.k-delivery.k-registry
     success:
       mode: all_of
@@ -243,13 +252,14 @@ objectives:
   c2:
     name: 'K06.2: A private package in the wrong view'
     description: |-
-      Your publication identity still cannot read the private support package. Cross the package-view boundary and recover its protected contents.
+      Your publishing account cannot read the private support package. Investigate the independent package-check build and recover the distinct CI identity that can.
 
       Adds a separate registry data compromise after publication access.
     assigned_participant: participant.operator
     actions:
     - k06.c2
     targets:
+    - features.k-delivery.k-ci
     - features.k-delivery.k-registry
     success:
       mode: all_of
@@ -261,7 +271,7 @@ objectives:
   c3:
     name: 'K06.3: The rehearsal consumer'
     description: |-
-      Make the isolated test consumer run your compatible package behavior and return its protected rehearsal result.
+      Publish a compatible connector package under the authority you recovered, then make the isolated rehearsal consumer run its actual code and return your changed result.
 
       Completes a local supplier-side execution episode before customer delivery.
     assigned_participant: participant.operator
@@ -352,9 +362,9 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The importer exposes its resolved configuration in an error path after validating a normal
-      package request. The intended solution is to recover and use the scoped credential through the registry's
-      ordinary authenticated flow.
+    procedure_basis: Follow the delivery branch history, recover the historical client configuration and identify
+      its actual native publishing account. Establish its scope through ordinary Verdaccio requests; it publishes
+      the connector but cannot read the private support package or administer releases.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -365,13 +375,16 @@ action_contracts:
       description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
         to every listed surface.
       support_refs:
-      - workflows.k06.c1
+      - workflows.c1
+      - features.k-delivery.k-source
       - features.k-delivery.k-registry
     - precondition_id: normal-surface
       precondition_class: target
-      description: The FieldKest importer uses a registry configuration object that the developer cannot directly
-        read, and a scoped Verdaccio publication identity for the customer connector channel.
+      description: The existing private Gitea connector repository contains the delivery-operations branch with
+        real commits for the delivery workspace. Current source uses managed credentials, but an earlier committed
+        native npm configuration remains in Git history.
       support_refs:
+      - features.k-delivery.k-source
       - features.k-delivery.k-registry
       - content.keplerops-k-registry.k06-1-house-credentials
     - precondition_id: scope-and-persistence
@@ -381,22 +394,26 @@ action_contracts:
         destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
         and submission adjudication are outside this in-world contract.
       support_refs:
+      - features.k-delivery.k-source
       - features.k-delivery.k-registry
-      - content.keplerops-k-registry.k06-1-house-credentials
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover and demonstrate the limited registry publication authority. This supplies A01; recovering
-        its configuration and using the resulting credential are one achievement.
+      description: Recover the actual scoped publisher configuration from native Git history and demonstrate its
+        authorization limits. It supports K06.3 but does not authorize the private package read in K06.2 or release
+        administration.
       target_refs:
+      - features.k-delivery.k-source
       - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k06.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Registry audit data must show the scoped identity performing its permitted release-channel action;
-        this awards `A01`.
+      description: The recovered native configuration and Git commit establish the account provenance. Actual scoped
+        native registry authorization permits the intended connector publication while denying the independent private
+        package and release-administration boundaries.
       target_refs:
+      - features.k-delivery.k-source
       - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k06.c1
@@ -411,9 +428,9 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: A view-resolution endpoint evaluates the requested package before applying the caller's restricted
-      view. The intended solution is to demonstrate the specific cross-view authorization error with `A01`, then
-      recover the protected package contents.
+    procedure_basis: Correlate the package-check job and archived workspace with its separate CI reader account.
+      Recover that native client configuration and use the distinct identity against Verdaccio to read the private
+      support package. The publisher identity remains denied throughout.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -424,13 +441,16 @@ action_contracts:
       description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
         to every listed surface.
       support_refs:
-      - workflows.k06.c2
+      - workflows.c2
+      - features.k-delivery.k-ci
       - features.k-delivery.k-registry
     - precondition_id: normal-surface
       precondition_class: target
-      description: Verdaccio presents public release-channel packages and a protected support package using the
-        same scoped package namespace but different view policies.
+      description: The native Jenkins fieldlink-package-check job uses its stored CI reader credential through standard
+        Credentials Binding. Its fixed npm step creates a genuine client configuration in the build workspace and
+        archives that workspace with the actual package metadata and connector tarball.
       support_refs:
+      - features.k-delivery.k-ci
       - features.k-delivery.k-registry
       - content.keplerops-k-registry.k06-2-a-private-package-in-the-wrong-view
     - precondition_id: scope-and-persistence
@@ -440,22 +460,26 @@ action_contracts:
         destination effects declared here; unrelated tenants and services remain denied. Infrastructure recovery
         and submission adjudication are outside this in-world contract.
       support_refs:
+      - features.k-delivery.k-ci
       - features.k-delivery.k-registry
-      - content.keplerops-k-registry.k06-2-a-private-package-in-the-wrong-view
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the protected package through the distinct package-view authorization weakness. Merely
-        reusing A01 for an already permitted read does not satisfy this result.
+      description: Recover the distinct native CI reader configuration from the actual package-check build workspace/archive
+        and use it to retrieve the private support package. Preserve the denial evidence for the publisher identity
+        and the CI reader's publication boundary.
       target_refs:
+      - features.k-delivery.k-ci
       - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k06.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The registry logs an authorized-by-flaw read of the protected package version and returns its
-        immutable manifest/content digest.
+      description: The native Jenkins build/workspace/archive establishes the independent CI credential provenance.
+        A real private npm package read succeeds under that reader while publisher/private-read and reader/publish
+        combinations remain denied.
       target_refs:
+      - features.k-delivery.k-ci
       - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k06.c2
@@ -470,8 +494,9 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The intended solution uses the distinct package-view result and the normal release-channel
-      publication scope to supply compatible changed behavior to the isolated consumer.
+    procedure_basis: Use the private support package interface and scoped publisher identity to implement and publish
+      a new compatible connector version. Invoke the normal rehearsal with that native version, preserving the request
+      and output interface while changing the assessment.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -487,8 +512,9 @@ action_contracts:
       - features.k-delivery.k-ci--rehearsals
     - precondition_id: normal-surface
       precondition_class: target
-      description: The private package describes a operator-local rehearsal consumer that resolves compatible FieldKest
-        versions, runs its documented diagnostic behavior, and returns a protected receipt.
+      description: Verdaccio owns ordinary npm publication and immutable package versions. The existing FieldLink
+        rehearsal application retrieves the requested real package and the isolated worker installs it offline and
+        loads its actual Node module and local files.
       support_refs:
       - features.k-delivery.k-registry
       - features.k-delivery.k-ci--rehearsals
@@ -514,8 +540,8 @@ action_contracts:
       - evidence_requirements.k06.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Completion requires publication, resolution, execution, and a receipt showing the protected rehearsal
-        result and exact consumed package revision.
+      description: The native publication, immutable version, exact tarball digest and fresh isolated rehearsal
+        result bind the executed package to its actual changed output and preserved tenant/asset/interface fields.
       target_refs:
       - features.k-delivery.k-registry
       - features.k-delivery.k-ci--rehearsals

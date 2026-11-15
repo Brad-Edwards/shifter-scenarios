@@ -24,7 +24,7 @@ content:
         node: a-connector
         authority: External consumer contract on a-connector
       surface_bindings:
-      - k-delivery.k-registry/package-registry/connector-metadata
+      - k-delivery.k-registry/verdaccio/connector-metadata
       - a-corporate.a-connector/fieldlink-customer-consumer/package-poll
       - a-corporate.a-connector/fieldlink-customer-consumer/package-activate
       - a-corporate.a-connector/fieldlink-customer-consumer/package-receipt
@@ -81,7 +81,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: e0550aeb90542aa68e11b1817922d03bc3af15a579a8a7bdf7a6088c23d7d9ad
+        digest: 3158f9257fa2a045796639ba40268dda71341543bbb8b8ff2704b8e0b65ea50d
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

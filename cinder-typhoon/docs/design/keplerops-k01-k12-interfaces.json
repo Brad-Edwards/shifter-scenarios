@@ -14,9 +14,9 @@
     {
       "operation": "K02",
       "intended_user": "FieldKest developer investigating and repairing a failed connector report build",
-      "baseline_workflow": "Follow the handover to the CI run, recover the removed fixture from repository history, import the review record, and submit the replacement report provider through the isolated CI job interface.",
-      "discovery": "The current handover and developer service notes name the CI run, import, job, result, and support handover interfaces.",
-      "route_keys": ["ci.run", "ci.review-import", "ci.report-jobs", "ci.report-job", "support.handover"],
+      "baseline_workflow": "Read the native Jenkins build and archived review contract, recover the fixture from native Git history, and submit provider.zip through the native report-review file parameter; correlate its actual report with the support handover.",
+      "discovery": "The Gitea handover and developer service notes name the native build, artifact and file-parameter workflows and the support handover.",
+      "route_keys": ["ci.run", "ci.run-log", "ci.run-artifact", "ci.report-parameter-build", "ci.report-build", "ci.report-artifact", "support.handover"],
       "local_interfaces": ["checked-out repository history"],
       "supplied_source_or_reproducer": null
     },
@@ -45,19 +45,19 @@
     {
       "operation": "K05",
       "intended_user": "FieldKest package maintainer reconciling a connector consumer with retained releases",
-      "baseline_workflow": "Inspect current package metadata, run the consumer check, read the linked archived release, reconcile tenant state, and run the normal resolver.",
+      "baseline_workflow": "Inspect native npm metadata and real deprecated versions, run the actual consumer check, correlate retained release/tenant records and verify native npm selection against installed module behavior.",
       "discovery": "The package client reference and response links provide each package and release resource.",
-      "route_keys": ["packages.metadata", "packages.consumer-check", "support.conversation", "packages.release", "packages.reconcile", "packages.resolver"],
-      "local_interfaces": [],
+      "route_keys": ["packages.metadata", "packages.consumer-check", "support.conversation", "packages.release", "packages.reconcile"],
+      "local_interfaces": ["native npm client", "native Git history", "native Jenkins workspace and artifacts"],
       "supplied_source_or_reproducer": null
     },
     {
       "operation": "K06",
-      "intended_user": "FieldKest package maintainer importing, reviewing, publishing, and rehearsing a connector package",
-      "baseline_workflow": "Import the retained package, inspect its publisher view, publish through the package resource, and submit it to the CI connector rehearsal.",
-      "discovery": "The package and CI client references publish the import, view, package, and rehearsal resources.",
-      "route_keys": ["packages.import", "packages.view", "packages.publish", "ci.connector-rehearsal"],
-      "local_interfaces": [],
+      "intended_user": "FieldKest package maintainer recovering scoped delivery configuration and rehearsing a connector package",
+      "baseline_workflow": "Recover publisher configuration from native Git history, separately recover CI reader configuration from an actual Jenkins package-check workspace/archive, read the private npm package, publish a compatible connector and run the existing isolated rehearsal.",
+      "discovery": "Native source branches/history, Jenkins job/workspace/artifacts, npm metadata and the genuine rehearsal client reference supply the normal entry points.",
+      "route_keys": ["packages.metadata", "packages.private-metadata", "packages.publish", "ci.package-build", "ci.package-artifact", "ci.connector-rehearsal"],
+      "local_interfaces": ["native npm client", "native Git history", "native Jenkins workspace and artifacts"],
       "supplied_source_or_reproducer": null
     },
     {

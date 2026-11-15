@@ -34,5 +34,5 @@ RUN mkdir -p /var/lib/gitea \
 
 EXPOSE 22 443 8443
 HEALTHCHECK --interval=10s --timeout=5s --start-period=60s --retries=6 \
-  CMD setpriv --reuid=git --regid=git --init-groups sh -c 'test -f /var/lib/gitea/data/.handover-seeded && curl -fsS --cacert /run/fieldkest-tls/ca.crt https://source.keplerops.test/user/login >/dev/null' || exit 1
+  CMD setpriv --reuid=git --regid=git --init-groups sh -c 'test -f /var/lib/gitea/data/.handover-seeded && test -f /var/lib/gitea/data/.delivery-history-seeded && test -f /var/lib/gitea/data/.seeded-fieldlink-connector && test -f /var/lib/gitea/data/.seeded-policy-compiler && test -f /var/lib/gitea/data/.seeded-connector-archive && test -f /var/lib/gitea/data/.seeded-release-signer-history && curl -fsS --cacert /run/fieldkest-tls/ca.crt https://source.keplerops.test/user/login >/dev/null' || exit 1
 ENTRYPOINT ["/usr/local/bin/fieldkest-source-entrypoint"]

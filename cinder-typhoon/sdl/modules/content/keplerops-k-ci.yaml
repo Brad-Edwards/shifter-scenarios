@@ -273,29 +273,31 @@ content:
       record_key: the-rehearsal-consumer
       owner:
         node: k-ci
-        authority: Registry + private consumer on k-ci
+        authority: Native Verdaccio and existing FieldLink rehearsal consumer
       surface_bindings:
-      - k-delivery.k-registry/package-registry/package-publication
+      - k-delivery.k-registry/verdaccio/package-publication
       - k-delivery.k-ci/fieldkest-ci/private-consumer-submit
-      starting_state: Synthetic rehearsal input and compatible consumer contract.
+      starting_state: Real compatible Node package; fieldkest.connector/v3; exact supplied
+        tenant/asset/interface input.
       mechanic_profile:
-        package: '@keplerops/fieldlink-connector'
-        channel: arwc-stable
-        consumer: support-rehearsal-v3
-        input_schema: fieldkest.connector/v3
-        output_schema: fieldkest.rehearsal-result/v1
-        execution: the CI service resolves the immutable published tarball and runs it in
-          a short-lived networkless Node.js worker
-        bounds: the rehearsal tenant is synthetic and has no ARWC route or credential
+        classification: product-native
+        interface: fieldkest.connector/v3
+        publication: Actual native npm publication and duplicate-version rejection
+        execution: Actual Node module and local files installed offline in existing networkless
+          worker
+        bounds: Preserve tenant, asset and interface; no release administration or customer
+          route
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Synthetic rehearsal input and compatible consumer contract.
-        success: operator version publication, isolated resolution/execution and protected
-          fresh receipt.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Real compatible Node package; fieldkest.connector/v3; exact supplied tenant/asset/interface
+          input.
+        success: Native immutable publication and fresh actual module/local-file execution
+          with changed compatible output.
+        correlation: Use native repository commit IDs, registry versions, Jenkins build
+          URLs and exact artifact digests. The report consumer also supplies its actual
+          job ID and input/output digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -305,11 +307,12 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: operator version publication, isolated resolution/execution and
-        protected fresh receipt.
+      transition_contract: Native immutable publication and fresh actual module/local-file
+        execution with changed compatible output.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, registry package state, Jenkins build records and
+          actual execution artifacts; for a submitted report, the independently persisted
+          support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -317,18 +320,20 @@ content:
         - exact input identifiers and revisions
         - result identifier and digest
         downstream_join: Supplier-only result; no ARWC route.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: Historical source, metadata and build reads remain repeatable. Submitted
+          work requires a new native build or actual worker result, with matching input/output
+          digests and downstream evidence.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: b2eda26f651ab5cd4b0bb303d2851140563b8661e894a9a7c112e142efc053d5
+        digest: 8abf9233755fec12386b046b34cf0afbbcae96760afb7ed3426ac7768ffcc834
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -665,7 +670,7 @@ content:
         node: k-ci
         authority: Registry + two private consumers on k-ci
       surface_bindings:
-      - k-delivery.k-registry/package-registry/package-publication
+      - k-delivery.k-registry/verdaccio/package-publication
       - k-delivery.k-ci/fieldkest-ci/private-consumer-submit
       starting_state: Signed support release must support connector v2 and v3; ARWC rehearsal
         and unrelated TEN-RILL-022 reference fixtures.
@@ -717,7 +722,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: d3cfcad1c2a1d4b55cfa0ff05e5652722a466f8e93d14784052ce23e5ea41a38
+        digest: 8872754d9d95c2fe3abe07063392ff7724d3b55e34856b6df6ba91827d125ba2
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
