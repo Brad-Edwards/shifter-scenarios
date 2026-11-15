@@ -473,8 +473,7 @@ action_contracts:
       - features.k-delivery.k-indexer
     - precondition_id: normal-surface
       precondition_class: target
-      description: The source-available support indexer accepts signed archive bundles, indexes their entries, and
-        maintains an in-memory object graph for the release-exception queue.
+      description: The native support indexer accepts .fki bundle archives parsed by the offline reproducer binary, indexes their entries, and maintains an in-memory object graph for the release-exception queue.
       support_refs:
       - features.k-delivery.k-indexer
       - content.keplerops-k-indexer.k04-1-a-bundle-with-consequences
