@@ -1,3 +1,4 @@
 **/.operator
 **/.terraform
 **/__pycache__
+build/keplerops/runtime/provision-kerberos.sh
