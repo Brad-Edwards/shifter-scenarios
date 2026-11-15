@@ -147,3 +147,10 @@ rate limiting, change anonymous limits or alter brute-force protection. The
 prior route/global settings are saved privately, restored on completion,
 error or interruption, and checked after restoration. Ordinary runtime retains
 the original product protection settings. See the upstream [route limit guidance](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/config_sample_php_parameters.html#ratelimit-overwrite).
+
+The ordinary HTTPS history client material is the private
+`~/CairnReach/Connections/operating-history.json` file in the engineering
+participant's home. It contains only the existing `operating-reader` identity,
+its password and that fixed endpoint. Existing connection provisioning delivers
+it as participant-owned mode `0600`; no PostgreSQL password, keytab, private
+server key or operator administration credential is included.

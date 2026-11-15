@@ -32,3 +32,19 @@ for root in ('/usr/local/share/ca-certificates/arwc-native-it.crt',
         install.append(root)
 path.write_text(json.dumps(document))
 PY
+
+# Deliver only the existing scoped HTTPS reader's normal client configuration.
+if ! docker exec "$desktop" test -e /home/fieldlink/CairnReach/Connections/operating-history.json; then
+ot_operator=${ARWC_OT_OPERATOR_DIR:-/opt/arwc-ot-compat/slice/.operator}
+docker cp "$ot_operator/integration-bridge/operating-reader.json" "$desktop:/home/fieldlink/CairnReach/Connections/operating-history.json"
+docker exec --user 0 -i "$desktop" python3 - <<'PYCLIENT'
+import json
+from pathlib import Path
+path = Path('/home/fieldlink/CairnReach/Connections/operating-history.json')
+client = json.loads(path.read_text())
+client['endpoint'] = 'https://read-data.arwc.test/api/operating-history'
+path.write_text(json.dumps(client) + '\n')
+path.chmod(0o600)
+PYCLIENT
+docker exec --user 0 "$desktop" chown 2500:2500 /home/fieldlink/CairnReach/Connections/operating-history.json
+fi

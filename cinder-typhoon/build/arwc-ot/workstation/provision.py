@@ -49,6 +49,17 @@ def seed_connections(project=None):
     notes.write_text(text)
     notes.chmod(0o600)
     copy(notes, "/home/fieldlink/CairnReach/Connections/README.md")
+    operating = PRIVATE / "integration-bridge/operating-reader.json"
+    operating_client = "/home/fieldlink/CairnReach/Connections/operating-history.json"
+    missing_client = subprocess.run(["sudo", "docker", "exec", CONTAINER, "test", "-e", operating_client],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode != 0
+    if operating.exists() and missing_client:
+        client = json.loads(operating.read_text())
+        client["endpoint"] = "https://read-data.arwc.test/api/operating-history"
+        material = PRIVATE / "workstation-operating-history.json"
+        material.write_text(json.dumps(client) + "\n")
+        material.chmod(0o600)
+        copy(material, "/home/fieldlink/CairnReach/Connections/operating-history.json")
     copy(PRIVATE / "server-cert.pem", "/home/fieldlink/CairnReach/Connections/plc-server-cert.pem")
     copy(PRIVATE / "mosquitto/ca.pem", "/home/fieldlink/CairnReach/Connections/mqtt-ca.pem")
     service = PRIVATE / "workstation-pg-service.conf"
