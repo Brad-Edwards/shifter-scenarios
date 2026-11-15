@@ -92,6 +92,15 @@ K3s owns import and pinning across startup and cache recovery. See the upstream
 
 ## Current operation
 
+Docker's internal-network filter can reject routed traffic before it reaches the
+range router. `native-platform/host-routing.py` uses Docker's supported
+`DOCKER-USER` hook only for same-bridge transit between the five declared private
+router networks. It validates the actual project, addresses and bridge identities.
+The router retains its existing port and role rules; host inter-bridge traffic,
+external addresses and other ranges receive no exception. Startup, reset and
+recovery reconcile only this range's own chain against the current bridge IDs.
+See [Docker's firewall guidance](https://docs.docker.com/engine/network/firewall-iptables/).
+
 Use the guarded development wrapper for access and source synchronization. The
 old golden deployment script is disabled. Build changed images on the development
 VM, then coordinate any application, DNS, edge, desktop or PostgreSQL change with

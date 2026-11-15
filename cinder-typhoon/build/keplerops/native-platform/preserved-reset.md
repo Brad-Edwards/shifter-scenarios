@@ -52,6 +52,7 @@ tar --exclude=.operator/native-platform/model-source \
 (cd "$backup" && sha256sum -- *.tar.gz >SHA256SUMS && sha256sum --check --quiet SHA256SUMS)
 chmod 0600 "$backup"/*.tar.gz "$backup/SHA256SUMS"
 "${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 300 "${stateful[@]}"
+python3 native-platform/host-routing.py
 python3 ../development-ranges/guest/fieldlink-desktop-login.py
 ```
 
@@ -108,6 +109,7 @@ for cache in model-source model-converted k3s-images; do
   mv "$cache_dir/$cache" ".operator/native-platform/$cache"
 done
 "${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 300
+python3 native-platform/host-routing.py
 python3 ../development-ranges/guest/fieldlink-desktop-login.py
 ```
 

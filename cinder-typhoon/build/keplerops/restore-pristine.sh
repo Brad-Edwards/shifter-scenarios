@@ -30,6 +30,7 @@ bash native-platform/fetch-kubernetes-images.sh
 # Initialize databases before dependent applications, and native workspace
 # credentials before the missing-only desktop profile seed is started.
 docker compose up -d --no-deps --wait --wait-timeout 120 router fieldlink-dns fieldlink-edge fieldlink-postgres
+python3 native-platform/host-routing.py
 bash native-workplace/bootstrap-databases.sh
 bash native-platform/bootstrap-data.sh
 bash native-platform/bootstrap-kubernetes.sh

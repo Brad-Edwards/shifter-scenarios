@@ -13,6 +13,9 @@ for _ in $(seq 1 120); do
   if [[ $(docker inspect --format '{{.State.Running}}' cinder-keplerops-k-dev 2>/dev/null || true) == true ]] \
       && test -d /opt/cinder-typhoon/build/keplerops; then
     cd /opt/cinder-typhoon/build/keplerops
+    if [[ -f native-platform/host-routing.py ]]; then
+      python3 native-platform/host-routing.py
+    fi
     # Keep the development relay away from the preserved golden peer.
     umask 077
     profile=$(mktemp .env.development.XXXXXX)
