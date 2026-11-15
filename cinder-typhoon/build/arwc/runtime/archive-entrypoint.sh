@@ -8,7 +8,8 @@ install -d -o arwc-archive -g arwc-archive -m 0700 \
   /var/lib/arwc-archive/audit \
   /var/lib/arwc-archive/auth \
   /var/lib/arwc-archive/state \
-  /var/lib/arwc-archive/workflow
+  /var/lib/arwc-archive/workflow \
+  /var/lib/arwc-archive/helper-staging
 install -d -o arwc-archive -g arwc-handover -m 0750 \
   /var/lib/arwc-archive/results \
   /var/lib/arwc-archive/handover

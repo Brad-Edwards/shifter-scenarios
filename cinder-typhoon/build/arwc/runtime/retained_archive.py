@@ -43,6 +43,11 @@ STEP_CA_INTERMEDIATE = "/run/arwc-step-ca/intermediate.crt"
 STEP_CA_URL = "https://ca.arwc.test:9000"
 OTT_POOL = pathlib.Path("/run/arwc-tokens")
 GITEA_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/gitea-reader.json")
+# W04.3 helper staging: the handover artifact is staged one level above the
+# per-request extraction directory. The Unicode NFKC traversal in the archive
+# member name escapes the extraction boundary and resolves to this path.
+HELPER_STAGING_DIR = ROOT / "helper-staging"
+HANDOVER_STAGING_PATH = HELPER_STAGING_DIR / "copy_handover(HND-PLANNER-06)"
 
 def _load_workflow() -> dict:
     """Load the workflow record from the Nextcloud-sourced file.
@@ -351,6 +356,21 @@ def initialize() -> None:
         atomic_json(descriptor, SEQUENCER)
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
+    # Stage the W04.3 handover artifact from Gitea so the helper can read it
+    # via the filesystem after the Unicode traversal resolves the path.
+    _stage_handover_from_gitea()
+
+
+def _stage_handover_from_gitea() -> None:
+    """Fetch HND-PLANNER-06 from Gitea and stage it for the helper filesystem read."""
+    if HANDOVER_STAGING_PATH.exists():
+        return
+    handover = _fetch_gitea_handover()
+    if handover is None:
+        return
+    HELPER_STAGING_DIR.mkdir(mode=0o700, exist_ok=True)
+    atomic_json(HANDOVER_STAGING_PATH, handover)
+    HANDOVER_STAGING_PATH.chmod(0o600)
 
 
 def load_state() -> dict[str, object]:
@@ -1277,18 +1297,58 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, subprocess.SubprocessError, TimeoutError):
             self.send_json(409, {"error": "archive is not accepted"})
             return
+        # Raw validation before NFKC normalization: reject ASCII dot-dot and slash.
         if ".." in member or "/" in member:
             self.send_json(409, {"error": "archive member is outside the result directory"})
             return
+        # Genuine extraction: 7-Zip extracts the archive to a per-request
+        # subdirectory of the helper staging area. The member is extracted with
+        # its literal name (including Unicode fullwidth chars).
+        import shutil
+        extract_nonce = secrets.token_hex(8)
+        extract_dir = HELPER_STAGING_DIR / f"extract-{extract_nonce}"
+        HELPER_STAGING_DIR.mkdir(mode=0o700, exist_ok=True)
+        extract_dir.mkdir(mode=0o700)
+        archive_path = None
+        try:
+            with tempfile.NamedTemporaryFile(suffix=".7z", delete=False) as archive_file:
+                archive_path = pathlib.Path(archive_file.name)
+                archive_file.write(data)
+            subprocess.run(
+                ["7zz", "x", str(archive_path), f"-o{extract_dir}", "-ba"],
+                check=True, timeout=10, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+        except (ValueError, subprocess.SubprocessError, TimeoutError):
+            shutil.rmtree(str(extract_dir), ignore_errors=True)
+            if archive_path and archive_path.exists():
+                archive_path.unlink(missing_ok=True)
+            self.send_json(409, {"error": "archive extraction failed"})
+            return
+        finally:
+            if archive_path and archive_path.exists():
+                archive_path.unlink(missing_ok=True)
+        # NFKC normalization: fullwidth dot-dot-slash normalizes to ASCII ../
+        # The normalized path resolves outside the extraction directory into the
+        # helper staging area, where the Gitea handover artifact was staged.
         normalized = unicodedata.normalize("NFKC", member)
-        if normalized != "../copy_handover(HND-PLANNER-06)":
+        normalized_path = pathlib.Path(os.path.normpath(extract_dir / normalized))
+        # Clean up extraction directory now (contents no longer needed).
+        shutil.rmtree(str(extract_dir), ignore_errors=True)
+        # Authorization bound: the traversal must resolve exactly to the staged
+        # Gitea handover artifact path (bounded helper action).
+        if normalized_path != HANDOVER_STAGING_PATH:
             self.send_json(409, {"error": "archive member does not select an available action"})
             return
-        # Fetch the handover record from native Gitea (svc-archive-helper identity).
-        # Gitea produces authentic access telemetry for the helper-context read.
-        handover = _fetch_gitea_handover()
-        if handover is None:
+        # Read the staged Gitea handover from the filesystem (outside extraction dir).
+        # This is the real filesystem escape: NFKC normalization caused the path
+        # to resolve outside the extraction boundary to the helper-staging area.
+        if not HANDOVER_STAGING_PATH.exists():
             self.send_json(503, {"error": "archive handover artifact unavailable"})
+            return
+        try:
+            handover = json.loads(HANDOVER_STAGING_PATH.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            self.send_json(503, {"error": "archive handover artifact unreadable"})
             return
         atomic_json(RESULT, handover)
         token = state.get("planner_handover_token")
