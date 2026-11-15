@@ -531,6 +531,8 @@ services:
       fieldlink-postgres: {condition: service_healthy}
     volumes:
       - native-kanboard-data:/var/www/app/data
+      - native-kanboard-plugins:/var/www/app/plugins
+      - native-kanboard-tls:/etc/nginx/ssl
       - ./native-workplace/seed-staff.php:/opt/fieldlink/seed-staff.php:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/kanboard-bootstrap.json:/run/fieldlink/kanboard-bootstrap.json:ro
       - ../../assets/keplerops/opening/k-dev/fieldlink-7.4.2-review.md:/opt/fieldlink/review-export.md:ro
@@ -655,6 +657,9 @@ services:
       nofile: {soft: 65535, hard: 65535}
     volumes:
       - native-k3s-data:/var/lib/rancher/k3s
+      - native-k3s-logs:/var/log
+      - native-k3s-cni:/var/lib/cni
+      - native-k3s-kubelet:/var/lib/kubelet
       - ./native-platform/k3s-entrypoint.sh:/run/fieldlink/k3s-entrypoint.sh:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/k3s-images:/var/lib/rancher/k3s/agent/images:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/kubernetes:/output
@@ -842,10 +847,15 @@ volumes:
   native-postgres-data: {name: cinder-keplerops-native-postgres-data}
   native-ca-data: {name: cinder-keplerops-native-ca-data}
   native-kanboard-data: {name: cinder-keplerops-native-kanboard-data}
+  native-kanboard-plugins: {name: cinder-keplerops-native-kanboard-plugins}
+  native-kanboard-tls: {name: cinder-keplerops-native-kanboard-tls}
   native-support-db: {name: cinder-keplerops-native-support-db}
   native-jenkins-home: {name: cinder-keplerops-native-jenkins-home}
 
   native-k3s-data: {name: cinder-keplerops-native-k3s-data}
+  native-k3s-logs: {name: cinder-keplerops-native-k3s-logs}
+  native-k3s-cni: {name: cinder-keplerops-native-k3s-cni}
+  native-k3s-kubelet: {name: cinder-keplerops-native-k3s-kubelet}
   native-objects-data: {name: cinder-keplerops-native-objects-data}
   native-ollama-data: {name: cinder-keplerops-native-ollama-data}
   native-assistant-data: {name: cinder-keplerops-native-assistant-data}

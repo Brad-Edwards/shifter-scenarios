@@ -33,7 +33,7 @@ class BackupVolumeTests(unittest.TestCase):
         self.assertEqual(backup.inventory(run), [prefix + 'legacy-data', prefix + 'native-ca-data', prefix + 'native-postgres-data'])
 
     def test_undeclared_or_foreign_mounted_volume_refuses_incomplete_backup(self):
-        for name in ('foreign-data', backup.PROJECT + '-undeclared'):
+        for name in ('foreign-data', backup.PROJECT + '-undeclared', 'f' * 64):
             with self.subTest(name=name):
                 def run(arguments):
                     if arguments[1:3] == ['compose', 'config']:

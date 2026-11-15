@@ -38,6 +38,8 @@ immutable model and Kubernetes image caches on disk; the reset does not remove
 them. Excluding those reproducible caches avoids a second large local copy.
 The inventory includes existing declared volumes and actual container mounts as
 well as ownership labels, including a legacy CA volume created without labels.
+Inherited K3s runtime and Kanboard plugin/TLS directories also have explicit
+named volumes. The inventory refuses anonymous or undeclared product storage.
 
 ```bash
 "${compose[@]}" stop "${stateful[@]}"
