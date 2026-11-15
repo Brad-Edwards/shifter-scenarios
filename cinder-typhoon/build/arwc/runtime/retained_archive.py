@@ -39,33 +39,24 @@ DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/archive-lineage.json")
 ARCHIVE_CA = "/tmp/archive-ca.crt"
 ARCHIVE_CA_KEY = "/tmp/archive-ca.key"
 
-# Default workflow used only when the Nextcloud-sourced file is absent.
-_WORKFLOW_DEFAULT = {
-    "record_id": "AWF-CRR-229-R4",
-    "revision": 4,
-    "attachment": "ARC-229-A",
-    "protected_record": "AR-CRR-229",
-    "planner_handover_target": "HND-PLANNER-06",
-    "enrollment_profile": {
-        "name": "ArchiveSubmitter",
-        "common_name": "corporate-reader-principal",
-        "extended_key_usage": "clientAuth",
-        "organizational_unit": "caller supplied",
-        "use": "one time",
-    },
-}
-
-
 def _load_workflow() -> dict:
-    """Return the workflow record from Nextcloud-sourced file, or the default."""
-    if WORKFLOW_PATH.exists():
-        try:
-            value = json.loads(WORKFLOW_PATH.read_text(encoding="utf-8"))
-            if isinstance(value, dict) and value.get("record_id") == "AWF-CRR-229-R4":
-                return value
-        except (OSError, json.JSONDecodeError):
-            pass
-    return _WORKFLOW_DEFAULT
+    """Load the workflow record from the Nextcloud-sourced file.
+
+    Exits if the file is absent or invalid. Nextcloud is the authoritative
+    source; the service must not start without it.
+    """
+    if not WORKFLOW_PATH.exists():
+        raise SystemExit(
+            f"archive-workflow: {WORKFLOW_PATH} is absent; "
+            "run seed-archive before starting the archive service"
+        )
+    value = json.loads(WORKFLOW_PATH.read_text(encoding="utf-8"))
+    if not isinstance(value, dict) or value.get("record_id") != "AWF-CRR-229-R4":
+        raise SystemExit(
+            f"archive-workflow: {WORKFLOW_PATH} contains an unexpected record; "
+            "re-run seed-archive"
+        )
+    return value
 
 
 WORKFLOW = _load_workflow()

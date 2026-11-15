@@ -26,8 +26,12 @@ def main() -> None:
     except OSError:
         exists = False
     if not exists:
-        print("fetch_archive_workflow: no credentials file; using bundled workflow", flush=True)
-        return
+        print(
+            f"fetch_archive_workflow: credentials not found at {CREDENTIALS_PATH}; "
+            "run seed-archive first",
+            flush=True, file=sys.stderr,
+        )
+        sys.exit(1)
 
     try:
         credentials = json.loads(CREDENTIALS_PATH.read_text(encoding="utf-8"))
