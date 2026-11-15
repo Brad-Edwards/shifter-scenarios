@@ -8,10 +8,23 @@ docker compose up -d --no-deps --wait --wait-timeout 300 fieldlink-k3s
 docker compose exec -T fieldlink-k3s /bin/kubectl wait --for=condition=Ready --timeout=120s node/fieldlink-k3s
 docker compose exec -T fieldlink-k3s /bin/kubectl wait --for=condition=DiskPressure=False --timeout=360s node/fieldlink-k3s
 client_image=docker.io/rancher/k3s:v1.37.2-k3s1
-if ! docker compose exec -T fieldlink-k3s /bin/ctr --namespace k8s.io images list --quiet | grep -Fxq "$client_image"; then
-  docker image save rancher/k3s:v1.37.2-k3s1 | docker compose exec -T fieldlink-k3s /bin/ctr --namespace k8s.io images import --platform linux/amd64 --index-name "$client_image" - >/dev/null
+client_archive="$operator/native-platform/k3s-images/fieldlink-client.tar"
+if [[ ! -s $client_archive ]]; then
+  docker image save rancher/k3s:v1.37.2-k3s1 --output "$client_archive.part"
+  mv "$client_archive.part" "$client_archive"
 fi
-docker compose exec -T fieldlink-k3s /bin/ctr --namespace k8s.io images list --quiet | grep -Fxq "$client_image"
+if ! docker compose exec -T fieldlink-k3s /bin/crictl inspecti "$client_image" >/dev/null 2>&1; then
+  # K3s watches this directory and owns native import/CRI pinning. Refresh an
+  # existing archive's timestamp if an earlier cache was removed.
+  touch "$client_archive"
+  for ((attempt=0; attempt<60; attempt++)); do
+    if docker compose exec -T fieldlink-k3s /bin/crictl inspecti "$client_image" >/dev/null 2>&1; then
+      break
+    fi
+    sleep 2
+  done
+fi
+docker compose exec -T fieldlink-k3s /bin/crictl inspecti "$client_image" >/dev/null
 docker compose exec -T fieldlink-k3s /bin/kubectl apply -f - <native-platform/namespace.yaml
 profile="$operator/native-platform/kubernetes/rowan.yaml"
 identity="$operator/native-platform/kubernetes/cluster-identity"
