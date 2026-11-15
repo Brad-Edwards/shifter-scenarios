@@ -21,6 +21,11 @@ docker volume ls --filter label=com.docker.compose.project=cinder-arwc-native -q
 while read -r volume; do [[ $volume == cinder-arwc-native_* ]]; done < "$backup/volumes"
 ```
 
+The backup excludes the `redis-cache` service's anonymous `/data` mount from
+authoritative recovery state. Frappe rebuilds its [application cache](https://docs.frappe.io/framework/user/en/guides/caching)
+during normal use. The background-job queue and Socket.IO use `redis-queue`;
+its named `erp-queue` volume is included.
+
 Stop only native IT before copying database and file volumes. This makes the
 backup consistent across the selected products. Keep the backup private on this
 VM; it contains credentials, application sessions and private CA material.
