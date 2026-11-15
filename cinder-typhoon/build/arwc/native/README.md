@@ -75,12 +75,12 @@ instance, collection time and source digest. Keep this operator evidence
 separate from the participant submission. The checker reads only these inputs
 and cannot change products or manufacture a successful action.
 
-The restored development VM still has the obsolete `a-distribution` W33
-rehearsal service in its old compatibility Compose state. Current source and
-the W33 retirement manifest already remove that facade. It was preserved for
-the narrow paired-connector window. Remove only that stale container and
-override entry after the window releases, then check the existing native W33
-path. Do not restore its deleted Dockerfile/controller into this source.
+The obsolete `a-distribution` W33 rehearsal facade has been removed from the
+restored development VM and its old base/compatibility Compose state. The
+retirement preserved all 52 other running containers, including the qualified
+native dispatcher, OpenPLC, FUXA and historian. No OT operation or reset was
+required. Current source and the W33 retirement manifest already exclude its
+Dockerfile/controller; do not restore those deleted files.
 
 Coordinate the test window before reset:
 
