@@ -131,12 +131,21 @@ services:
     entrypoint: ["/bin/sh", "-ec"]
     command:
       - |
-        install -d -m 0700 -o rowan -g rowan /home/rowan/.config/git /home/rowan/.config/chromium/Default
-        install -d -m 0700 -o rowan -g rowan /home/rowan/.config/fieldlink
-        install -m 0600 -o rowan -g rowan /run/participant-seed/git-credentials /home/rowan/.config/git/credentials
-        install -m 0600 -o rowan -g rowan /run/participant-seed/chromium-Cookies /home/rowan/.config/chromium/Default/Cookies
-        install -m 0600 -o rowan -g rowan /run/participant-seed/npmrc /home/rowan/.npmrc
-        install -m 0600 -o rowan -g rowan /run/participant-seed/support-client.json /home/rowan/.config/fieldlink/support-client.json
+        if [ ! -d /home/rowan/.config/git ]; then
+          install -d -m 0700 -o rowan -g rowan /home/rowan/.config/git
+        fi
+        if [ ! -d /home/rowan/.config/fieldlink ]; then
+          install -d -m 0700 -o rowan -g rowan /home/rowan/.config/fieldlink
+        fi
+        if [ ! -e /home/rowan/.config/git/credentials ]; then
+          install -m 0600 -o rowan -g rowan /run/participant-seed/git-credentials /home/rowan/.config/git/credentials
+        fi
+        if [ ! -e /home/rowan/.npmrc ]; then
+          install -m 0600 -o rowan -g rowan /run/participant-seed/npmrc /home/rowan/.npmrc
+        fi
+        if [ ! -e /home/rowan/.config/fieldlink/support-client.json ]; then
+          install -m 0600 -o rowan -g rowan /run/participant-seed/support-client.json /home/rowan/.config/fieldlink/support-client.json
+        fi
     restart: "no"
     read_only: true
     cap_drop: [ALL]
@@ -146,7 +155,6 @@ services:
     volumes:
       - k-dev-home:/home/rowan
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/git-credentials:/run/participant-seed/git-credentials:ro
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/chromium-Cookies:/run/participant-seed/chromium-Cookies:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/npmrc:/run/participant-seed/npmrc:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/support-client.json:/run/participant-seed/support-client.json:ro
     network_mode: none

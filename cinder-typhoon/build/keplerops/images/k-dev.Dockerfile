@@ -63,6 +63,7 @@ RUN tar -xf /tmp/k-dev-home.tar -C /home/rowan \
     && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-policy-compiler-home.tar -C /home/rowan \
     && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-connector-archive-home.tar -C /home/rowan \
     && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-release-lineage-home.tar -C /home/rowan \
+    && rm -f /home/rowan/.config/git/credentials /home/rowan/.npmrc /home/rowan/.config/chromium/Default/Cookies \
     && mkdir -p /home/rowan/.local/share/keplerops \
     && touch /home/rowan/.local/share/keplerops/registry-foundation-2026-09-18 \
     && touch /home/rowan/.local/share/keplerops/policy-compiler-2026-09-18 \
