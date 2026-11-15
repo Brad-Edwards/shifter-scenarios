@@ -54,6 +54,7 @@ def prepare(operator: Path) -> None:
         'AUTH_TOKEN=' + values['assistant_bootstrap'],
         'JWT_SECRET=' + values['assistant_jwt'],
     )) + '\n', 0o600)
+    create(target / 'aws-admin', '[default]\naws_access_key_id=' + values['objects_admin_key'] + '\naws_secret_access_key=' + values['objects_admin_secret'] + '\n')
     create(target / 'aws-credentials', '[default]\naws_access_key_id=' + values['objects_rowan_key'] + '\naws_secret_access_key=' + values['objects_rowan_secret'] + '\n')
     create(target / 'aws-config', '[default]\nregion=us-east-1\nca_bundle=/home/rowan/.local/share/keplerops/ca.crt\ns3=\n    addressing_style=path\n')
     create(target / 'pgpass', 'data.keplerops.test:5432:fieldlink_data:rowan_data:' + values['data_rowan'] + '\n')
