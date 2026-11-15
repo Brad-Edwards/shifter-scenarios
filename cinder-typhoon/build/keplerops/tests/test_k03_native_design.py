@@ -44,6 +44,13 @@ class K03NativeDesign(unittest.TestCase):
         self.assertEqual(manifest["bucket"], "fieldlink-collections")
         self.assertEqual(manifest["object_key"], "callbacks/CB-17/FKCOL-2841.json")
         self.assertEqual(manifest["object_sha256"], hashlib.sha256(collection).hexdigest())
+        # Verify callback_integrity = sha256(ps_bytes + collection_bytes) binding
+        stage = (ASSETS / "staging-FKCOL-2841.bin").read_text()
+        values = dict(line.split("=", 1) for line in stage.splitlines() if "=" in line)
+        self.assertEqual(
+            hashlib.sha256(powershell + collection).hexdigest(),
+            values["callback-integrity"],
+        )
 
     def test_collection_is_seeded_into_real_storage_without_listing(self) -> None:
         prepare = (BUILD / "native-platform/prepare.py").read_text()

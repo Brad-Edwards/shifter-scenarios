@@ -309,6 +309,22 @@ manifest = json.loads(zlib.decompress(compressed))
             (collection["source"]["ticket_reference"], collection["source"]["asset_id"]),
             ("SUP-2841", "CRR-OG2"),
         )
+        # Verify the callback integrity binding: sha256(ps_bytes + collection_bytes)
+        # ties K03.2's reconstructed PowerShell to K03.3's retrieved collection object.
+        verify = r"""
+import base64, hashlib, json, pathlib, zipfile, zlib
+root = pathlib.Path('/home/rowan')
+with zipfile.ZipFile(root/'work/analysis/field-notes-2026-08.odt') as a:
+    stage = a.read('Attachments/staging-FKCOL-2841.bin').decode()
+values = dict(line.split('=',1) for line in stage.splitlines() if '=' in line)
+ps = zlib.decompress(base64.b64decode(values['payload']))
+col = open('/tmp/FKCOL-2841.json','rb').read()
+computed = hashlib.sha256(ps + col).hexdigest()
+assert computed == values['callback-integrity'], f"integrity mismatch: {computed} != {values['callback-integrity']}"
+print('integrity_ok')
+"""
+        result = rowan("python3", "-c", verify)
+        self.assertIn("integrity_ok", result.stdout)
         denied = rowan(
             "aws", "--endpoint-url", manifest["endpoint"], "s3api", "list-objects-v2",
             "--bucket", manifest["bucket"], check=False,

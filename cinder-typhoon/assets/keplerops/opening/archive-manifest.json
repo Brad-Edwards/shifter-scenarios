@@ -30,8 +30,8 @@
         {
           "mode": "0640",
           "path": "work/analysis/field-notes-2026-08.odt",
-          "sha256": "236114a448130854e2b6e604366ef0e95993fe2b1fa1ef8f460fc247a7d0614c",
-          "size": 2404
+          "sha256": "677d859355ae669429bac29d2fd0e3f746d9ef3e93056d3b6258f31976b4f4d5",
+          "size": 2525
         },
         {
           "mode": "0640",
@@ -78,7 +78,7 @@
       ],
       "group": "rowan",
       "owner": "rowan",
-      "sha256": "a0e86da6471d147a3994d6959ea0dd67f27aedb27061f4a0e804f83c3cd09e0f",
+      "sha256": "46d42ced248e66771ada70c55059a08da7afbd218a85559fabc84d157ce37f6b",
       "size": 51200
     },
     {

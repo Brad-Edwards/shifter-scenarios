@@ -92,12 +92,14 @@ hints:
     h1: The workstation already has an ordinary scoped object-storage profile. The recovered manifest supplies the
       address that profile cannot discover by browsing.
     h2: Reading a known S3 object and listing its bucket cross separate authorization boundaries. Use the exact endpoint,
-      bucket, and key from the reconstructed manifest.
-    h3: Fetch the manifest's object with the normal AWS client, verify its SHA-256 before trusting it, and correlate
-      its support ticket, asset, and connector revision. Bucket enumeration should remain denied.
+      bucket, and key from the reconstructed manifest; the callback-integrity in the staging bundle documents how
+      provenance is verified.
+    h3: After retrieving and verifying the object SHA-256, derive the callback integrity from the reconstructed PowerShell
+      bytes and the retrieved collection bytes and confirm it matches the staged bundle's declared callback-integrity.
+      Correlate the support ticket, asset, and connector revision, and confirm bucket enumeration is denied.
     references:
     - kind: participant_artifact
-      id: work/local-helper.md
+      id: work/analysis/field-notes-2026-08.odt
   K04.1:
     h1: Begin with the offline indexer reproducer and its protected runtime service. The supplied indexer client.json
       artifact carries the relevant lead; check its provenance and references before contacting another service.

@@ -91,6 +91,8 @@ def build_instructions() -> bytes:
             "encoding": "three-stage: base64+zlib PowerShell, base64+zlib JavaScript, XOR+zlib JSON manifest",
             "endpoint_id": ENDPOINT_ID,
             "collection_id": COLLECTION_ID,
+            "integrity_algorithm": "sha256",
+            "integrity_input": "UTF-8 callback-stage.ps1 bytes concatenated with FKCOL collection object bytes",
         },
         indent=2,
     ).encode()
@@ -149,8 +151,9 @@ def main() -> None:
     inst_sha256 = hashlib.sha256(instructions).hexdigest()
     inst_b64 = base64.b64encode(instructions).decode()
 
-    # 6. Callback integrity = sha256(powershell_bytes + instructions_bytes)
-    callback_integrity = hashlib.sha256(powershell + instructions).hexdigest()
+    # 6. Callback integrity = sha256(powershell_bytes + collection_object_bytes)
+    # Binds the K03.2 staged script to the K03.3 retrieved collection.
+    callback_integrity = hashlib.sha256(powershell + obj_bytes).hexdigest()
     print(f"[cb]     integrity: {callback_integrity}")
 
     # 7. Build staging bin content

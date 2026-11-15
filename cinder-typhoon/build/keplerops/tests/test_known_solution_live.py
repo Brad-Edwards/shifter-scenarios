@@ -506,6 +506,11 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             self.assertEqual(hashlib.sha256(body).hexdigest(), manifest["object_sha256"])
             collection = json.loads(body)
             self.assertEqual(collection["source"]["ticket_reference"], self.evidence["ticket"])
+            # Verify the callback integrity: sha256(staged PowerShell + collection object bytes)
+            # binds K03.2's reconstructed script to K03.3's retrieved collection.
+            powershell = zlib.decompress(base64.b64decode(self.evidence["stage"]["payload"]))
+            expected_integrity = self.evidence["stage"]["callback-integrity"]
+            self.assertEqual(hashlib.sha256(powershell + body).hexdigest(), expected_integrity)
             denied = rowan(
                 "aws", "--endpoint-url", manifest["endpoint"], "s3api", "list-objects-v2",
                 "--bucket", manifest["bucket"],
