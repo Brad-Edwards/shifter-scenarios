@@ -31,7 +31,7 @@ class WorkplacePrepareTests(unittest.TestCase):
             self.assertEqual(target.stat().st_mode & 0o777, 0o700)
             self.assertEqual((target / 'ca/secrets/password').stat().st_ino, ca_password_inode)
             realm = json.loads((target / 'realm.json').read_text())
-            self.assertEqual(realm['users'][0]['realmRoles'], ['developer'])
+            self.assertEqual(realm['users'][0]['realmRoles'], ['default-roles-keplerops', 'developer'])
             self.assertFalse(realm['clients'][0]['serviceAccountsEnabled'])
             self.assertFalse(realm['clients'][0]['directAccessGrantsEnabled'])
 

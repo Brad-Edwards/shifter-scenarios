@@ -95,7 +95,7 @@ def prepare(operator: Path) -> None:
         'users': [{
             'username': 'rowan.ito', 'enabled': True, 'firstName': 'Rowan', 'lastName': 'Ito',
             'email': 'rowan.ito@keplerops.test', 'emailVerified': True,
-            'realmRoles': ['developer'], 'groups': ['/Engineering'],
+            'realmRoles': ['default-roles-keplerops', 'developer'], 'groups': ['/Engineering'],
             'credentials': [{'type': 'password', 'value': runtime['developer_token'], 'temporary': False}],
         }],
         'clients': [{
