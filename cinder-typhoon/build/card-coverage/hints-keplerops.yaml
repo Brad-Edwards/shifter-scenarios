@@ -185,15 +185,20 @@ hints:
     - kind: client_route
       id: packages.release
   K05.3:
-    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
-      client document exposes the reconcile operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the reconcile operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: POST to packages.reconcile with the correct tenant/release pair: tenant_record_id=TEN-ARWC-047 and
+      release_id=REL-FLK-7.4.2-09. Wrong record pairs return 422. The release record is readable from
+      the packages.release route and the tenant ID comes from the support ticket customer context (K01.2).
+    h2: The reconcile result compares four fields: package, declared_range, resolved_version, and consumer_revision.
+      Only resolved_version disagrees: the tenant record has 7.4.1 and the release has 7.4.2. The comparison_digest
+      binds the full result including the tenant_record_id and release_id.
+    h3: Verify the tenant version against the actual native package: download the 7.4.1 tarball from
+      Verdaccio (use the dist.tarball URL in the 7.4.1 version object) and compute its SHA256. This binds
+      the archive digest to the disagreeing version in the reconcile comparison.
     references:
     - kind: client_route
       id: packages.reconcile
+    - kind: client_route
+      id: packages.metadata
   K05.4:
     h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
       client document exposes the resolver operation, so use that ordinary contract instead of guessing a path.
