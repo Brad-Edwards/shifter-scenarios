@@ -46,7 +46,6 @@ def main() -> None:
     password = state["reader_password"]
     documents_url = state["documents_url"].rstrip("/")
     workflow_nc_path = state["workflow_nc_path"]
-    public_share_url = state.get("public_share_url", "")
 
     encoded_path = "/".join(urllib.request.quote(part, safe="") for part in workflow_nc_path.split("/"))
     url = f"{documents_url}/remote.php/dav/files/{urllib.request.quote(username, safe='')}/{encoded_path}"
@@ -71,10 +70,11 @@ def main() -> None:
 
     WORKFLOW_PATH.write_bytes(content)
     WORKFLOW_PATH.chmod(0o600)
-    # Store the public share URL so the archive service can expose it in its client document.
-    if public_share_url:
-        SHARE_URL_PATH.write_text(public_share_url, encoding="utf-8")
-        SHARE_URL_PATH.chmod(0o600)
+    # Store the authenticated WebDAV URL for the archive service's .well-known document.
+    # The participant must supply the archive_access credentials from the handover to fetch it.
+    webdav_url = f"{documents_url}/remote.php/dav/files/{urllib.request.quote(username, safe='')}/{urllib.request.quote(workflow_nc_path, safe='/')}"
+    SHARE_URL_PATH.write_text(webdav_url, encoding="utf-8")
+    SHARE_URL_PATH.chmod(0o600)
     print(f"fetch_archive_workflow: workflow contract fetched from Nextcloud ({len(content)} bytes)", flush=True)
 
 

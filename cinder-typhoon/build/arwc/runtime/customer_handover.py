@@ -17,6 +17,7 @@ ROOT = pathlib.Path("/var/lib/arwc-connector")
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 ONBOARDING = ROOT / "native" / "supplier-onboarding.json"
+ARCHIVE_STATE = pathlib.Path("/run/arwc-archive/nc-reader.json")
 CUSTOMER_COPY = {
     "record_id": "HND-ARWC-047", "tenant": "TEN-ARWC-047", "active_connector": "FLK-7.4.2",
     "maintenance_case": "MTN-CRR-204", "customer_receipt": "RCP-742-047", "status": "retained",
@@ -39,6 +40,26 @@ def native_onboarding() -> dict[str, str]:
     if not isinstance(password, str) or len(password) != 64 or any(c not in "0123456789abcdef" for c in password):
         raise ValueError("Supplier onboarding credential format is invalid")
     return record
+
+
+def archive_access() -> dict[str, str] | None:
+    """Return bounded archive access credentials if the archive has been seeded."""
+    if not ARCHIVE_STATE.exists():
+        return None
+    try:
+        state = json.loads(ARCHIVE_STATE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    username = state.get("reader_username", "")
+    password = state.get("reader_password", "")
+    documents_url = state.get("documents_url", "")
+    if not (username and password and documents_url):
+        return None
+    return {
+        "username": username,
+        "password": password,
+        "documents": documents_url,
+    }
 
 
 def initialize() -> None:
@@ -118,6 +139,9 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(404, {"error": "record not found"})
             return
         record = {**CUSTOMER_COPY, "supplier_onboarding": native_onboarding()}
+        access = archive_access()
+        if access is not None:
+            record["archive_access"] = access
         self.send_json(200, {"audit_id": append_audit("handover-read", record), "record": record})
 
     def do_POST(self) -> None:

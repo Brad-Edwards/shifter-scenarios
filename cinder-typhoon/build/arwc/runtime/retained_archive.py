@@ -60,22 +60,23 @@ def _load_workflow() -> dict:
     return value
 
 
-def _load_share_url() -> str:
-    """Return the Nextcloud public share download URL for the workflow contract.
+def _load_contract_webdav_url() -> str:
+    """Return the authenticated Nextcloud WebDAV URL for the workflow contract.
 
-    The archive service's client document exposes this URL as the archive.contract
-    route so the participant fetches the workflow directly from native Nextcloud.
+    The archive service's client document exposes this as the archive.contract
+    route. The participant must supply the archive access credentials (from the
+    FieldLink handover record) to fetch the file.
     """
     if not SHARE_URL_PATH.exists():
         raise SystemExit(
-            f"archive-workflow: share URL not found at {SHARE_URL_PATH}; "
+            f"archive-workflow: contract URL not found at {SHARE_URL_PATH}; "
             "run seed-archive before starting the archive service"
         )
     return SHARE_URL_PATH.read_text(encoding="utf-8").strip()
 
 
 WORKFLOW = _load_workflow()
-CONTRACT_SHARE_URL = _load_share_url()
+CONTRACT_SHARE_URL = _load_contract_webdav_url()
 
 CALLER_RECORD = {
     "record_id": "AR-MAINT-017",

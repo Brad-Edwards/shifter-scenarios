@@ -60,6 +60,12 @@ services:
       read_only: true
       bind:
         create_host_path: false
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/nc-reader.json
+      target: /run/arwc-archive/nc-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
     networks:
       corporate:
         ipv4_address: 10.77.60.20
