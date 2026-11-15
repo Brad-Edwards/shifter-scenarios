@@ -59,17 +59,18 @@ def prepare(operator: Path) -> None:
     create(target / 'aws-config', '[default]\nregion=us-east-1\nca_bundle=/home/rowan/.local/share/keplerops/ca.crt\ns3=\n    addressing_style=path\n')
     create(target / 'pgpass', 'data.keplerops.test:5432:fieldlink_data:rowan_data:' + values['data_rowan'] + '\n')
     create(target / 'pg_service.conf', '[fieldlink]\nhost=data.keplerops.test\nport=5432\ndbname=fieldlink_data\nuser=rowan_data\nsslmode=verify-full\nsslrootcert=/home/rowan/.local/share/keplerops/ca.crt\n')
-    create(target / 'postgres.sql', '\n'.join((
+    database_sql = '\n'.join((
         "SELECT 'CREATE ROLE fieldlink_data_owner NOLOGIN' WHERE NOT EXISTS "
         "(SELECT FROM pg_roles WHERE rolname='fieldlink_data_owner')\\gexec",
-        "SELECT 'CREATE ROLE rowan_data LOGIN' WHERE NOT EXISTS "
+        "SELECT format('CREATE ROLE rowan_data LOGIN PASSWORD %L', '" + values['data_rowan'] + "') WHERE NOT EXISTS "
         "(SELECT FROM pg_roles WHERE rolname='rowan_data')\\gexec",
-        "ALTER ROLE rowan_data PASSWORD '" + values['data_rowan'] + "';",
         "SELECT 'CREATE DATABASE fieldlink_data OWNER fieldlink_data_owner' WHERE NOT EXISTS "
         "(SELECT FROM pg_database WHERE datname='fieldlink_data')\\gexec",
         "REVOKE ALL ON DATABASE fieldlink_data FROM PUBLIC;",
         "GRANT CONNECT ON DATABASE fieldlink_data TO rowan_data;",
-    )) + '\n')
+    )) + '\n'
+    (target / 'postgres.sql').write_text(database_sql)
+    os.chmod(target / 'postgres.sql', 0o600)
     # The native application updates its own environment after first setup.
     os.chown(target / 'anythingllm.env', 1000, 1000)
 
