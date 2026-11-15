@@ -205,3 +205,15 @@ package-check step uses the native credentials store and binding plugin.
 [Verdaccio package ACLs](https://www.verdaccio.org/docs/packages/) define the
 actual account, immutable-version and package boundaries. Native dependency
 selection is governed by [npm package specifications](https://docs.npmjs.com/cli/v11/using-npm/package-spec/).
+
+### Retained engineering note
+
+The connector archive keeps its original binary, tag, encrypted module and
+transformations. Its recovered internal namespace now identifies an actual
+native Git Markdown note, with a normal archive-migration explanation in the
+repository README. Completion joins the fresh loader output to the note's Git
+revision and content digest. This preserves the Hard loader reconstruction and
+correlation task; reading an unrelated note alone is insufficient. The record
+provides the retained ARWC package reference, without its later interpretation
+or any new customer authority. Gitea owns file retrieval and history through its
+[standard repository content API](https://docs.gitea.com/api/1.25/).

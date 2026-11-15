@@ -507,25 +507,29 @@ content:
       record_key: the-path-that-appears-at-runtime
       owner:
         node: k-source
-        authority: Archived connector exercise
+        authority: Native Gitea archive plus retained connector tool
       surface_bindings:
       - k-delivery.k-source/gitea/archived-connector-exercise
-      starting_state: Hidden module constructs route /internal/fieldlink/legacy-diagnostics/CRR-OG2
-        and embeds engineering-note object ID.
+      starting_state: Unchanged hidden module constructs archive namespace /internal/fieldlink/legacy-diagnostics/CRR-OG2
+        and note object ID; native repository retains its Markdown engineering record.
       mechanic_profile:
         route: /internal/fieldlink/legacy-diagnostics/CRR-OG2
         engineering_note: ENG-FLK-LEGACY-42
         construction: bytecode appends fixed path segments and note identifier; returned
           JSON contains route, note_id, and output_sha256
+        native_archive: 'Gitea fieldkest/connector-archive main: internal/fieldlink/legacy-diagnostics/CRR-OG2/ENG-FLK-LEGACY-42.md'
+        proof: fresh diagnostic loader output plus native Git note revision, content digest
+          and matching customer/package reference
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Hidden module constructs route /internal/fieldlink/legacy-diagnostics/CRR-OG2
-          and embeds engineering-note object ID.
-        success: Invocation returns actual path and note ENG-FLK-LEGACY-42.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Unchanged hidden module constructs archive namespace /internal/fieldlink/legacy-diagnostics/CRR-OG2
+          and note object ID; native repository retains its Markdown engineering record.
+        success: Fresh loader result joined to actual native Git note revision and content
+          digest for ENG-FLK-LEGACY-42.
+        correlation: Join the genuine tool request and output digest to the native Git note
+          path, commit and content digest.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -535,19 +539,20 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Invocation returns actual path and note ENG-FLK-LEGACY-42.
+      transition_contract: Fresh loader result joined to actual native Git note revision
+        and content digest for ENG-FLK-LEGACY-42.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: The retained loader tool supplies its protected request/output audit;
+          Gitea supplies actual Git note objects and history.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
         - request correlation
         - exact input identifiers and revisions
         - result identifier and digest
-        downstream_join: Lead to W19 only.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        downstream_join: Optional ARWC retained package discovery only.
+        freshness: Require a fresh loader result. Native archive reads remain repeatable
+          and retain their actual Git revision.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
@@ -557,7 +562,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 24e4ecc69a0faa755fa98903c02bbc01c3db254701edd68f619684ecf2397c44
+        digest: 6fbadd3cdee3003ce79229e7f31ab5b2a708dcf84a364a9f18880d97398f5395
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

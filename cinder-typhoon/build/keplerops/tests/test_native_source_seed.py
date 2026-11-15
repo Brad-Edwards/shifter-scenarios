@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import base64
 import json
 from pathlib import Path
 import subprocess
@@ -23,6 +24,27 @@ with patch.dict(sys.modules, {'credentials': types.SimpleNamespace(credential=la
 
 
 class NativeSourceSeedTests(unittest.TestCase):
+    def test_engineering_note_import_retries_without_overwriting_completed_native_state(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'data').mkdir()
+            note = root / 'engineering-note.md'
+            note.write_text('# Retained engineering record\n')
+            with patch.object(SEED, 'ROOT', root), patch.object(SEED, 'ENGINEERING_NOTE', note):
+                with patch.object(SEED, 'exists', return_value=False), patch.object(SEED, 'api') as api:
+                    api.side_effect = RuntimeError('interrupted native import')
+                    with self.assertRaises(RuntimeError):
+                        SEED.engineering_note('bootstrap-test')
+                    self.assertFalse((root / 'data/.connector-engineering-note-seeded').exists())
+                    api.reset_mock(side_effect=True)
+                    api.return_value = {'content': base64.b64encode(b'# Archive\n').decode(), 'sha': 'native-readme-sha'}
+                    SEED.engineering_note('bootstrap-test')
+                    self.assertTrue((root / 'data/.connector-engineering-note-seeded').exists())
+                    self.assertEqual([call.args[0] for call in api.call_args_list], ['POST', 'GET', 'PUT'])
+                    api.reset_mock()
+                    SEED.engineering_note('bootstrap-test')
+                    api.assert_not_called()
+
     def test_delivery_history_retries_a_failed_push_then_preserves_native_state(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

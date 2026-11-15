@@ -22,6 +22,7 @@ from credentials import credential
 ROOT = Path('/var/lib/gitea')
 CONFIG = ROOT / 'data/app.ini'
 BASE = 'https://source.keplerops.test'
+ENGINEERING_NOTE = Path('/opt/fieldkest/engineering-note.md')
 CONTEXT = ssl.create_default_context(cafile='/run/fieldkest-tls/ca.crt')
 REPOSITORIES = {
     'fieldlink-connector': 'FieldLink customer connector and delivery notes',
@@ -112,6 +113,31 @@ def delivery_history(password: str) -> None:
     marker.touch(mode=0o600)
 
 
+def engineering_note(password: str) -> None:
+    """Retain the ordinary engineering record in native repository history."""
+    marker = ROOT / 'data/.connector-engineering-note-seeded'
+    if marker.exists():
+        return
+    repository = '/repos/fieldkest/connector-archive/contents/'
+    note = 'internal/fieldlink/legacy-diagnostics/CRR-OG2/ENG-FLK-LEGACY-42.md'
+    if not exists(repository + note, password):
+        api('POST', repository + note, password, {
+            'branch': 'main', 'message': 'Retain Cedar Run engineering reference',
+            'content': base64.b64encode(ENGINEERING_NOTE.read_bytes()).decode(),
+        })
+    readme = api('GET', repository + 'README.md', password)
+    contents = base64.b64decode(readme['content']).decode()
+    guidance = ('Archived internal diagnostic paths are retained as repository file paths. '
+                'Match the path and engineering-note object ID emitted by the retained loader '
+                'to its Markdown record in this repository.')
+    if guidance not in contents:
+        api('PUT', repository + 'README.md', password, {
+            'branch': 'main', 'message': 'Document engineering archive locations', 'sha': readme['sha'],
+            'content': base64.b64encode((contents.rstrip() + '\n\n' + guidance + '\n').encode()).decode(),
+        })
+    marker.touch(mode=0o600)
+
+
 def main() -> None:
     password_path = ROOT / 'data/.bootstrap-password'
     if not password_path.exists():
@@ -182,6 +208,8 @@ def main() -> None:
         marker.touch(mode=0o600)
     if 'fieldlink-connector' in REPOSITORIES:
         delivery_history(password)
+    if 'connector-archive' in REPOSITORIES:
+        engineering_note(password)
     print('Native Gitea repositories and handover ready')
 
 

@@ -958,6 +958,8 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
         "route": "/internal/fieldlink/legacy-diagnostics/CRR-OG2",
         "engineering_note": "ENG-FLK-LEGACY-42",
         "construction": "bytecode appends fixed path segments and note identifier; returned JSON contains route, note_id, and output_sha256",
+        "native_archive": "Gitea fieldkest/connector-archive main: internal/fieldlink/legacy-diagnostics/CRR-OG2/ENG-FLK-LEGACY-42.md",
+        "proof": "fresh diagnostic loader output plus native Git note revision, content digest and matching customer/package reference",
     },
     "K29.2": {
         "algorithm": "Ed25519",
@@ -1172,6 +1174,10 @@ def fixture_text(card: str, title: str, row: dict[str, str]) -> str:
             "Correlate native build records, exact source/artifact bytes and, where applicable, "
             "the separately persisted support report; no synthetic product audit is required."
         )
+    if card == 'K28.3':
+        core['request_contract']['correlation'] = 'Join the genuine tool request and output digest to the native Git note path, commit and content digest.'
+        core['evidence_contract']['producer'] = 'The retained loader tool supplies its protected request/output audit; Gitea supplies actual Git note objects and history.'
+        core['evidence_contract']['freshness'] = 'Require a fresh loader result. Native archive reads remain repeatable and retain their actual Git revision.'
     canonical = json.dumps(core, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
     payload = {
         **core,
