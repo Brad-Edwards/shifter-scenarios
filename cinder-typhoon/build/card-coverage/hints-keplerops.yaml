@@ -2,46 +2,38 @@ schema_version: 2
 phase: keplerops
 hints:
   K01.1:
-    h1: Begin with the developer workspace, service notes, and normal source clients. The supplied credentials artifact
-      carries the relevant lead; check its provenance and references before contacting another service.
-    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
-      cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Inspect the supplied credentials artifact and the normal client documentation it names. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: Start with the developer's ordinary Git client configuration and the source links in the service notes.
+    h2: The retained identity is deliberately limited. Use Gitea's normal issue list for the private connector repository,
+      and distinguish successful read access from repository write authority.
+    h3: Recover the saved Gitea identity, open the fieldkest/fieldlink-connector issue list, and correlate the handover
+      issue's release and revision. Confirm that the same identity cannot push.
     references:
     - kind: participant_artifact
       id: .config/git/credentials
   K01.2:
-    h1: Begin with the developer workspace, service notes, and normal source clients. Start from source.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
-      cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for source.keplerops.test. Record the normal result
-      and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The closed page is not an open tab. Inspect Chromium's ordinary history and then use the support desk named
+      in the workstation notes.
+    h2: The history title retains a ticket number and subject. Rowan's normal staff identity can enter the native
+      osTicket agent queue; unrelated queue records are context, not the answer.
+    h3: Search osTicket for the retained ticket number and read its actual thread. Correlate the customer, asset,
+      connector revision, and callback-latency correspondence.
     references:
     - kind: participant_service
-      id: source.keplerops.test
+      id: support.keplerops.test
   K01.3:
-    h1: Begin with the developer workspace, service notes, and normal source clients. The supplied fieldlink 7.4.2
-      review.md artifact carries the relevant lead; check its provenance and references before contacting another
-      service.
-    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
-      cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Inspect the supplied fieldlink 7.4.2 review.md artifact and the normal client documentation it names. Record
-      the normal result and a denied variant, alter one dimension, and keep the service-owned evidence needed to
-      explain the difference.
+    h1: Release reviews are on the staff work board named in the workstation notes, not in the connector checkout.
+    h2: Use Kanboard's normal task search. The release reference distinguishes the target from the neighboring review
+      tasks, and the task owns both comments and an attachment.
+    h3: Find release REL-FLK-7.4.2-09 in Kanboard, open its review attachment, and correlate the unresolved REV comments
+      with the task reference.
     references:
-    - kind: participant_artifact
-      id: work/review-exports/fieldlink-7.4.2-review.md
+    - kind: participant_service
+      id: staff.keplerops.test
   K01.4:
-    h1: Begin with the developer workspace, service notes, and normal source clients. The supplied local helper.md
-      artifact carries the relevant lead; check its provenance and references before contacting another service.
-    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
-      cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Inspect the supplied local helper.md artifact and the normal client documentation it names. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: The local helper documentation and supplied FieldKest samples are under the developer's work directory.
+    h2: This is a normal local report action. Preserve the sample's own asset and connector revision rather than
+      substituting values from another record.
+    h3: Submit the documented FK-SAMPLE-017 file to the helper's inspection-summary form and retain the fresh receipt.
     references:
     - kind: participant_artifact
       id: work/local-helper.md

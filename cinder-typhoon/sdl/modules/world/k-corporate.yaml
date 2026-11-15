@@ -406,7 +406,63 @@ nodes:
             content_type: application/json
           - status_code: 403
             content_type: application/json
+      - application_id: kanboard
+        service: workplace
+        protocol: https
+        base_path: /
+        description: Native Kanboard projects, searchable release tasks, comments and task attachments.
+        routes:
+        - route_id: release-review
+          path: /task/{task_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Native Kanboard session
+          session_required: true
+          parameters:
+          - name: task_id
+            location: path
+            required: true
+            data_type: integer
+          responses:
+          - status_code: 200
+            content_type: text/html
+          - status_code: 403
+            content_type: text/html
+        - route_id: task-search
+          path: /project/{project_id}/task/search
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Native Kanboard session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: text/html
       app_authorizations:
+      - app_authorization_id: kanboard-project-rbac
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rowan-kanboard
+          kind: user
+          name: rowan.ito
+          credential_classification: none
+        roles:
+        - role_id: project-member
+          name: Project member
+        permission_grants:
+        - grant_id: fieldlink-project-read
+          role_ref: project-member
+          resource_kind: app_resource
+          actions: [read]
+          resource_patterns: [projects/FIELDLINK/tasks/*]
+          effect: allow
+        role_mappings:
+        - mapping_id: rowan-fieldlink-member
+          role_ref: project-member
+          users: [rowan-kanboard]
+        tenants:
+        - tenant_id: keplerops
+          name: KeplerOps
       - app_authorization_id: staff-workplace-rbac
         resource_vocabulary: app_resource
         auth_enabled: true
@@ -509,6 +565,12 @@ nodes:
         provenance: operator
         installed_paths:
         - /opt/keplerops-staff
+      - component_id: kanboard
+        name: Kanboard
+        version: 1.2.57
+        component_type: application
+        provenance: container_image
+        installed_paths: [/var/www/app]
   k-identity:
     type: compute
     description: KeplerOps OIDC and Kerberos identity authority.

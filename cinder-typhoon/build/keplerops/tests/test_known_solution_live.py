@@ -241,16 +241,12 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             match = re.match(r"https://([^:]+):([^@]+)@([^/\s]+)", stored)
             self.assertIsNotNone(match, "stored git credential not in the expected form")
             user, secret, source_host = match.group(1), match.group(2), match.group(3)
-            # The handover route is documented in the developer service notes.
-            handover_route = re.search(r"Current handover: `GET (https://\S+)`", notes).group(1)
-            self.assertIn(source_host, handover_route)
-            # Anonymous access is denied.
-            _, denied = curl(handover_route, expected=401)
-            self.assertEqual(json.loads(denied)["error"], "authentication_required")
-            # The recovered developer credential reads the protected handover.
-            handover = curl_json(handover_route, creds=(user, secret))
-            self.assertRegex(str(handover["handover_id"]), r"^HND-")
-            self.assertIsInstance(handover["revision"], int)
+            issue_route = f"https://{source_host}/api/v1/repos/fieldkest/fieldlink-connector/issues?type=issues"
+            curl(issue_route, expected=404)
+            issues = curl_json(issue_route, creds=(user, secret))
+            handover = next(issue for issue in issues if "HND-FLK-2026-09" in issue["title"])
+            self.assertIn("Release FLK-7.4.2 · revision 12", handover["body"])
+            self.assertGreaterEqual(len(issues), 4)
             # The recovered identity has no write access to the repository.
             push = rowan("git", "-C", "work/fieldlink-connector", "push", "--dry-run", "origin", "HEAD:main")
             self.assertNotEqual(push.returncode, 0, "recovered identity must not be able to push")
@@ -258,40 +254,60 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["source_host"] = source_host
             self.evidence["handover"] = handover
 
-        with self.subTest(card="K01.2 recover the retained support conversation"):
-            # The closed support tab is recoverable from the browser history.
+        with self.subTest(card="K01.2 recover the retained native support ticket"):
             history = rowan(
                 "sqlite3", ".config/chromium/Default/History",
-                "select url from urls order by id limit 1;",
-            ).stdout.strip()
-            conv_match = re.search(r"support\.keplerops\.test/conversations/(SUP-\d+)", history)
-            self.assertIsNotNone(conv_match, "no retained support conversation in history")
-            ticket = conv_match.group(1)
-            # The session cookie is retained in the browser profile.
-            cookie = rowan(
+                "select url || ' ' || title from urls order by id limit 1;",
+            ).stdout
+            ticket = re.search(r"SUP-\d+", history).group(0)
+            self.assertIn("support.keplerops.test/scp/tickets.php", history)
+            cookie_jar = "/tmp/k01-osticket.cookies"
+            login = rowan("curl", "-sS", "--cacert", CA, "-c", cookie_jar,
+                          "https://support.keplerops.test/scp/login.php").stdout
+            csrf = re.search(r'name="__CSRFToken__" value="([^"]+)"', login).group(1)
+            response = rowan(
+                "curl", "-sS", "--cacert", CA, "-b", cookie_jar, "-c", cookie_jar,
+                "--data-urlencode", f"__CSRFToken__={csrf}", "--data-urlencode", "do=scplogin",
+                "--data-urlencode", "ajax=1", "--data-urlencode", f"userid={user}",
+                "--data-urlencode", f"passwd={secret}", "https://support.keplerops.test/scp/login.php",
+            ).stdout
+            self.assertEqual(json.loads(response)["status"], 302)
+            queue = rowan("curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                          "https://support.keplerops.test/scp/tickets.php").stdout
+            ticket_id = re.search(rf'href="tickets\.php\?id=(\d+)[^"]*"[^>]*>\s*{ticket}', queue).group(1)
+            thread = rowan("curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                           f"https://support.keplerops.test/scp/tickets.php?id={ticket_id}").stdout
+            self.assertIn("Alterra Regional Water Company", thread)
+            self.assertIn("callback sometimes arrives late", thread)
+            self.assertGreaterEqual(len(set(re.findall(r"SUP-\d+", queue))), 4)
+            legacy_cookie = rowan(
                 "sqlite3", ".config/chromium/Default/Cookies",
                 "select value from cookies where name='fieldkest_support';",
             ).stdout.strip()
-            self.assertTrue(cookie, "retained support cookie missing")
-            conv_route = re.search(r"Conversation: `GET (https://\S+)/\{conversation_id\}`", notes).group(1)
-            conversation = curl_json(
-                f"{conv_route}/{ticket}", cookie=f"fieldkest_support={cookie}",
-            )
-            self.assertEqual(conversation["conversation_id"], ticket)
-            # A wrong session is refused.
-            curl(f"{conv_route}/{ticket}", cookie="fieldkest_support=wrong", expected=403)
             self.evidence["ticket"] = ticket
-            self.evidence["support_cookie"] = cookie
+            self.evidence["support_cookie"] = legacy_cookie
 
-        with self.subTest(card="K01.3 recover the stale release-review export"):
-            pointer = read_home("work/review-exports/fieldlink-7.4.2-review.md")
-            release = re.search(r"(REL-FLK-[0-9.]+-\d+)", pointer)
-            self.assertIsNotNone(release, "release reference missing from the review export")
-            self.assertRegex(pointer, r"REV-\d+")
-            # The file is deliberately outside the checkout.
-            in_checkout = rowan("test", "-e", "work/fieldlink-connector/fieldlink-7.4.2-review.md")
-            self.assertNotEqual(in_checkout.returncode, 0)
-            self.evidence["release"] = release.group(1)
+        with self.subTest(card="K01.3 recover the native release review"):
+            self.assertNotEqual(rowan("test", "-e", "work/review-exports/fieldlink-7.4.2-review.md").returncode, 0)
+            cookie_jar = "/tmp/k01-kanboard.cookies"
+            login = rowan("curl", "-sS", "--cacert", CA, "-c", cookie_jar,
+                          "https://staff.keplerops.test/login").stdout
+            csrf = re.search(r'name="csrf_token" value="([^"]+)"', login).group(1)
+            rowan(
+                "curl", "-sS", "-L", "--cacert", CA, "-b", cookie_jar, "-c", cookie_jar,
+                "--data-urlencode", f"csrf_token={csrf}", "--data-urlencode", f"username={user}",
+                "--data-urlencode", f"password={secret}", "--data-urlencode", "remember_me=1",
+                "https://staff.keplerops.test/login/check",
+            )
+            tasks = rowan("curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                          "https://staff.keplerops.test/project/1/task/list").stdout
+            task_id = re.search(r'href="/task/(\d+)"[^>]*>\s*FieldLink 7\.4\.2 release review', tasks).group(1)
+            task = rowan("curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                         f"https://staff.keplerops.test/task/{task_id}").stdout
+            self.assertIn("fieldlink-7.4.2-review.md", task)
+            for reference in ("REV-219", "REV-224", "REV-231"):
+                self.assertIn(reference, task)
+            self.evidence["release"] = "REL-FLK-7.4.2-09"
 
         with self.subTest(card="K01.4 produce an inspection summary with the local helper"):
             helper = read_home("work/local-helper.md")
@@ -302,7 +318,7 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             sample = json.loads(read_home(sample_path))
             self.assertEqual(receipt["sample_id"], sample["sample_id"])
             # The helper rejects a non-sample document.
-            curl(helper_route, "-F", "sample=@work/review-exports/fieldlink-7.4.2-review.md", expected=422)
+            curl(helper_route, "-F", "sample=@work/service-notes.md", expected=422)
             self.evidence["sample"] = receipt
 
 

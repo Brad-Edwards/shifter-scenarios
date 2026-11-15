@@ -536,8 +536,10 @@ services:
       - ./native-workplace/seed-staff.php:/opt/fieldlink/seed-staff.php:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/kanboard-bootstrap.json:/run/fieldlink/kanboard-bootstrap.json:ro
       - ../../assets/keplerops/opening/k-dev/fieldlink-7.4.2-review.md:/opt/fieldlink/review-export.md:ro
+      - ../../assets/keplerops/native-workplace/review-records.json:/operator/review-records.json:ro
+      - ../../assets/keplerops/native-workplace/reviews:/operator/reviews:ro
     healthcheck:
-      test: [CMD-SHELL, 'test -f /var/www/app/data/.fieldlink-seeded && curl -fsS http://127.0.0.1/healthcheck.php >/dev/null']
+      test: [CMD-SHELL, 'test -f /var/www/app/data/.fieldlink-seeded-v2 && curl -fsS http://127.0.0.1/healthcheck.php >/dev/null']
       interval: 10s
       timeout: 5s
       retries: 20
@@ -582,6 +584,7 @@ services:
       - ./native-workplace/seed-support-users.php:/opt/fieldlink/seed-support-users.php:ro
       - ./native-workplace/seed-support-case.php:/opt/fieldlink/seed-support-case.php:ro
       - ../../assets/keplerops/opening/k-support/SUP-2841.json:/operator/company-conversation.json:ro
+      - ../../assets/keplerops/native-workplace/support-cases.json:/operator/support-cases.json:ro
     healthcheck:
       test: [CMD, php, -r, '$$body=@file_get_contents("http://127.0.0.1/scp/login.php"); exit(is_string($$body) && str_contains($$body, "name=\"userid\"") ? 0 : 1);']
       interval: 10s

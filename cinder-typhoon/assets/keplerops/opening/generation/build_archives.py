@@ -29,7 +29,6 @@ ARCHIVES: dict[str, dict[str, object]] = {
             "work/previews/review.css": ("k-dev/preview-review.css", 0o640),
             "work/reproducers/indexer-client.json": ("k-dev/indexer-client.json", 0o640),
             "work/samples/FK-SAMPLE-017.json": ("k-dev/sample-FK-SAMPLE-017.json", 0o640),
-            "work/review-exports/fieldlink-7.4.2-review.md": ("k-dev/fieldlink-7.4.2-review.md", 0o640),
             "work/analysis/field-notes-2026-08.odt": ("k-dev/field-notes-2026-08.odt", 0o640),
             "work/analysis/staging-decoder.ps1": ("k-dev/staging-decoder.ps1", 0o640),
         },

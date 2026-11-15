@@ -42,7 +42,7 @@ ROUTES = PACK / "sdl/modules/routes"
 
 
 NODE_FOR_CARD = {
-    **{f"K01.{n}": node for n, node in enumerate(("k-dev", "k-support", "k-dev", "k-dev"), 1)},
+    **{f"K01.{n}": node for n, node in enumerate(("k-dev", "k-support", "k-staff", "k-dev"), 1)},
     **{f"K02.{n}": "k-ci" for n in range(1, 4)},
     **{f"K03.{n}": "k-dev" for n in range(1, 4)},
     **{f"K04.{n}": "k-indexer" for n in range(1, 5)},
@@ -115,8 +115,8 @@ def local_path(node: str, path: str) -> str:
 # are deliberate: a single objective may need supplier and consumer state.
 SURFACE_BINDINGS: dict[str, list[str]] = {
     "K01.1": [local_path("k-dev", "/home/rowan"), route("k-source", "gitea", "protected-handover")],
-    "K01.2": [local_path("k-dev", "/home/rowan/.config/chromium/Default"), route("k-support", "support-service", "conversation")],
-    "K01.3": [local_path("k-dev", "/home/rowan/work")],
+    "K01.2": [local_path("k-dev", "/home/rowan/.config/chromium/Default"), route("k-support", "osticket", "ticket-thread")],
+    "K01.3": [route("k-staff", "kanboard", "release-review")],
     "K01.4": [route("k-dev", "local-workbench", "inspection-summary")],
     "K02.1": [route("k-ci", "jenkins", "build-console"), route("k-source", "gitea", "repository-content")],
     "K02.2": [route("k-ci", "jenkins", "build-artifacts")],
@@ -230,6 +230,7 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
 JOINED_FEATURES: dict[str, list[str]] = {
     "K01.1": ["features.k-corporate.k-dev", "features.k-delivery.k-source"],
     "K01.2": ["features.k-corporate.k-dev", "features.k-delivery.k-support"],
+    "K01.3": ["features.k-corporate.k-staff"],
     "K02.1": ["features.k-delivery.k-ci", "features.k-delivery.k-source"],
     "K02.3": ["features.k-delivery.k-ci", "features.k-delivery.k-support"],
     "K06.1": ["features.k-delivery.k-source", "features.k-delivery.k-registry"],
@@ -272,17 +273,17 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
     },
     "K01.2": {
         "classification": "service-native",
-        "surface": "Chromium SQLite (History, Cookies); support.keplerops.test conversation and cookie APIs",
-        "normal_case": "developer closes browser tab, leaving session cookie in profile",
-        "defect": "closed-tab URL in History plus retained session cookie give read access to the support conversation",
-        "bounds": "only the retained SUP-2841 conversation is accessible; no write or assignment authority is granted",
+        "surface": "retained Chromium history and the native osTicket agent ticket queue and thread",
+        "normal_case": "staff sign in to osTicket and search their accessible support queue",
+        "defect": "the closed-tab title retains the exact customer ticket reference and the normal staff identity remains usable",
+        "bounds": "Rowan's osTicket role reads the assigned support queue but has no administration authority",
     },
     "K01.3": {
         "classification": "service-native",
-        "surface": "source.keplerops.test git clone and CI review-import API",
-        "normal_case": "developer clones the connector repository and reviews release exports",
-        "defect": "the developer credential also permits submitting a CI review import, which leaks the workspace file path",
-        "bounds": "the import stores the review document and reveals only the scoped workspace URI",
+        "surface": "native Kanboard FieldLink release project, searchable task, comments and task attachment",
+        "normal_case": "staff use the work board to inspect release tasks and their attached review records",
+        "defect": "the unfinished review and its unresolved comments remain readable to Rowan's ordinary project role",
+        "bounds": "the recovered identity is a project member without application or user administration",
     },
     "K01.4": {
         "classification": "service-native",
@@ -1178,6 +1179,14 @@ def fixture_text(card: str, title: str, row: dict[str, str]) -> str:
         core['request_contract']['correlation'] = 'Bind the recovered Git identity to the protected native repository issue, handover identifier and revision.'
         core['evidence_contract']['producer'] = 'Actual authenticated Gitea repository/issue responses and their native object identity; no custom handover API or synthetic product audit.'
         core['evidence_contract']['freshness'] = 'Native handover reads remain repeatable; demonstrate actual use of the recovered limited identity.'
+    if card == 'K01.2':
+        core['request_contract']['correlation'] = 'Bind the retained Chromium history entry to the native osTicket number, subject, customer, asset and thread correspondence.'
+        core['evidence_contract']['producer'] = 'The native osTicket session, ticket record and thread entries; no conversation facade or synthetic read audit.'
+        core['evidence_contract']['freshness'] = 'The support thread is an immutable starting record; demonstrate actual access through Rowan\'s native staff session.'
+    if card == 'K01.3':
+        core['request_contract']['correlation'] = 'Bind the Kanboard task reference to its native attachment and unresolved native comments.'
+        core['evidence_contract']['producer'] = 'The native Kanboard task, comments and attachment identity and bytes; no local duplicate or custom lookup service.'
+        core['evidence_contract']['freshness'] = 'The release review remains repeatable product-owned state under Rowan\'s ordinary project role.'
     if card == 'K28.3':
         core['request_contract']['correlation'] = 'Join the genuine tool request and output digest to the native Git note path, commit and content digest.'
         core['evidence_contract']['producer'] = 'The retained loader tool supplies its protected request/output audit; Gitea supplies actual Git note objects and history.'

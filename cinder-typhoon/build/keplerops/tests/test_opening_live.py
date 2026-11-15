@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 import subprocess
 import textwrap
@@ -43,13 +44,16 @@ class OpeningSliceTest(unittest.TestCase):
     def test_01_source_credential_handover_and_read_only_history(self) -> None:
         self.assertEqual(rowan("stat", "-c", "%a", ".config/git/credentials").stdout.strip(), "600")
         anonymous = curl_json(
-            "https://source.keplerops.test/api/fieldkest/handovers/current", expected=401
+            "https://source.keplerops.test/api/v1/repos/fieldkest/fieldlink-connector/issues?type=issues", expected=404
         )
-        self.assertEqual(anonymous["error"], "authentication_required")
-        handover = curl_json(
-            "https://source.keplerops.test/api/fieldkest/handovers/current", "-u", USER
+        self.assertTrue(anonymous.get("message"))
+        issues = curl_json(
+            "https://source.keplerops.test/api/v1/repos/fieldkest/fieldlink-connector/issues?type=issues", "-u", USER
         )
-        self.assertEqual((handover["handover_id"], handover["revision"]), ("HND-FLK-2026-09", 12))
+        handover = next(issue for issue in issues if "HND-FLK-2026-09" in issue["title"])
+        self.assertIn("Release FLK-7.4.2 · revision 12", handover["body"])
+        self.assertEqual(handover["repository"]["full_name"], "fieldkest/fieldlink-connector")
+        self.assertGreaterEqual(len(issues), 4)
         rowan("git", "-C", "work/fieldlink-connector", "fetch", "origin", "--tags")
         fixture = rowan(
             "git", "-C", "work/fieldlink-connector", "show",
@@ -63,30 +67,79 @@ class OpeningSliceTest(unittest.TestCase):
         self.assertNotEqual(push.returncode, 0)
 
     def test_02_retained_browser_conversation(self) -> None:
-        history = rowan(
-            "sqlite3", ".config/chromium/Default/History", "select url from urls where id=1;"
-        ).stdout.strip()
-        self.assertEqual(history, "https://support.keplerops.test/conversations/SUP-2841")
-        cookie = rowan(
-            "sqlite3", ".config/chromium/Default/Cookies",
-            "select value from cookies where name='fieldkest_support';",
-        ).stdout.strip()
-        conversation = curl_json(
-            "https://support.keplerops.test/api/conversations/SUP-2841",
-            "-H", f"Cookie: fieldkest_support={cookie}",
-        )
-        self.assertEqual((conversation["conversation_id"], conversation["revision"]), ("SUP-2841", 7))
-        denied = curl_json(
-            "https://support.keplerops.test/api/conversations/SUP-2841",
-            "-H", "Cookie: fieldkest_support=wrong", expected=403,
-        )
-        self.assertEqual(denied["error"], "session_denied")
+        history = rowan("sqlite3", ".config/chromium/Default/History", "select url || ' ' || title from urls where id=1;").stdout
+        self.assertIn("https://support.keplerops.test/scp/tickets.php", history)
+        self.assertIn("SUP-2841", history)
+        user, secret = USER.split(":", 1)
+        cookie_jar = "/tmp/k01-osticket.cookies"
+        login = rowan(
+            "curl", "-sS", "--cacert", CA, "-c", cookie_jar,
+            "https://support.keplerops.test/scp/login.php",
+        ).stdout
+        csrf = re.search(r'name="__CSRFToken__" value="([^"]+)"', login).group(1)
+        response = rowan(
+            "curl", "-sS", "--cacert", CA, "-b", cookie_jar, "-c", cookie_jar,
+            "--data-urlencode", f"__CSRFToken__={csrf}", "--data-urlencode", "do=scplogin",
+            "--data-urlencode", "ajax=1", "--data-urlencode", f"userid={user}",
+            "--data-urlencode", f"passwd={secret}",
+            "https://support.keplerops.test/scp/login.php",
+        ).stdout
+        self.assertEqual(json.loads(response)["status"], 302)
+        queue = rowan(
+            "curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+            "https://support.keplerops.test/scp/tickets.php",
+        ).stdout
+        self.assertIn("SUP-2841", queue)
+        self.assertIn("ARWC connector callback latency", queue)
+        self.assertGreaterEqual(len(set(re.findall(r"SUP-\d+", queue))), 4)
+        ticket_id = re.search(r'href="tickets\.php\?id=(\d+)[^"]*"[^>]*>\s*SUP-2841', queue).group(1)
+        ticket = rowan(
+            "curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+            f"https://support.keplerops.test/scp/tickets.php?id={ticket_id}",
+        ).stdout
+        self.assertIn("Alterra Regional Water Company", ticket)
+        self.assertIn("CRR-OG2", ticket)
+        self.assertIn("callback sometimes arrives late", ticket)
+        denied = rowan(
+            "curl", "-sS", "--cacert", CA, "-o", "/dev/null", "-w", "%{http_code}",
+            f"https://support.keplerops.test/scp/tickets.php?id={ticket_id}",
+        ).stdout
+        self.assertEqual(denied, "302")
 
-    def test_03_review_export_and_inspection(self) -> None:
+    def test_03_native_release_review(self) -> None:
         self.assertFalse(rowan("test", "-e", "work/fieldlink-connector/fieldlink-7.4.2-review.md", check=False).returncode == 0)
-        review = rowan("cat", "work/review-exports/fieldlink-7.4.2-review.md").stdout
-        self.assertIn("REL-FLK-7.4.2-09", review)
-        self.assertIn("REV-231", review)
+        self.assertFalse(rowan("test", "-e", "work/review-exports/fieldlink-7.4.2-review.md", check=False).returncode == 0)
+        user, secret = USER.split(":", 1)
+        cookie_jar = "/tmp/k01-kanboard.cookies"
+        login = rowan(
+            "curl", "-sS", "--cacert", CA, "-c", cookie_jar,
+            "https://staff.keplerops.test/login",
+        ).stdout
+        csrf = re.search(r'name="csrf_token" value="([^"]+)"', login).group(1)
+        board = rowan(
+            "curl", "-sS", "-L", "--cacert", CA, "-b", cookie_jar, "-c", cookie_jar,
+            "--data-urlencode", f"csrf_token={csrf}", "--data-urlencode", f"username={user}",
+            "--data-urlencode", f"password={secret}", "--data-urlencode", "remember_me=1",
+            "https://staff.keplerops.test/login/check",
+        ).stdout
+        self.assertIn("FieldLink release operations", board)
+        tasks = rowan(
+            "curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+            "https://staff.keplerops.test/project/1/task/list",
+        ).stdout
+        self.assertIn("FieldLink 7.4.2 release review", tasks)
+        self.assertGreaterEqual(tasks.count("REL-FLK-"), 4)
+        task_id = re.search(r'href="/task/(\d+)"[^>]*>\s*FieldLink 7\.4\.2 release review', tasks).group(1)
+        task = rowan(
+            "curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+            f"https://staff.keplerops.test/task/{task_id}",
+        ).stdout
+        self.assertIn("REL-FLK-7.4.2-09", task)
+        self.assertIn("fieldlink-7.4.2-review.md", task)
+        for reference in ("REV-219", "REV-224", "REV-231"):
+            self.assertIn(reference, task)
+
+    def test_04_local_inspection_helper(self) -> None:
         receipt = curl_json(
             "http://127.0.0.1:8701/api/inspection-summary",
             "-F", "sample=@work/samples/FK-SAMPLE-017.json",
@@ -100,7 +153,7 @@ class OpeningSliceTest(unittest.TestCase):
         )
         self.assertEqual(bad["error"], "invalid_sample")
 
-    def test_04_ci_importer_boundary(self) -> None:
+    def test_05_ci_importer_boundary(self) -> None:
         log = rowan(
             "curl", "-sS", "--fail", "--cacert", CA, "-u", USER,
             "https://ci.keplerops.test/api/runs/BLD-1842/log",
@@ -128,7 +181,7 @@ class OpeningSliceTest(unittest.TestCase):
         )
         self.assertEqual(denied["error"], "object_outside_repository")
 
-    def test_05_isolated_changed_report_and_support_handover(self) -> None:
+    def test_06_isolated_changed_report_and_support_handover(self) -> None:
         provider = textwrap.dedent("""
             def render_report(fixture):
                 report = dict(fixture)
@@ -177,7 +230,7 @@ write_request(root/'results/report-job-request-reserialized.json', json.dumps(js
         self.assertEqual(handover["job_id"], submitted["job_id"])
         self.assertEqual(handover["report_sha256"], result["report_sha256"])
 
-    def test_06_staged_callback_reconstruction(self) -> None:
+    def test_07_staged_callback_reconstruction(self) -> None:
         reconstruction = r"""
 import base64, json, pathlib, zlib, zipfile
 root = pathlib.Path('/home/rowan')
@@ -216,7 +269,7 @@ request = {
         )
         self.assertEqual(denied["error"], "callback_binding_denied")
 
-    def test_07_no_participant_egress_or_author_material(self) -> None:
+    def test_08_no_participant_egress_or_author_material(self) -> None:
         outbound = rowan("curl", "-sS", "--max-time", "2", "https://example.com", check=False)
         self.assertNotEqual(outbound.returncode, 0)
         self.assertNotEqual(rowan("test", "-e", "/opt/tests", check=False).returncode, 0)

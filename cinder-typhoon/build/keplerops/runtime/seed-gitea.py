@@ -206,6 +206,15 @@ def main() -> None:
                     + '\n'.join('- ' + note for note in handover['notes']),
         })
         marker.touch(mode=0o600)
+    ordinary_marker = ROOT / 'data/.ordinary-issues-seeded'
+    if not ordinary_marker.exists():
+        for title, body in (
+            ('Connector 7.3 maintenance follow-up', 'Retain the Riverbend compatibility notes until the September support window closes.'),
+            ('Document package channel ownership', 'Release Operations owns the stable package channel. Customer Support owns the handover record.'),
+            ('North Quay rehearsal summary', 'The rehearsal completed with the expected connector revision and no customer-side retry.'),
+        ):
+            api('POST', '/repos/fieldkest/fieldlink-connector/issues', password, {'title': title, 'body': body})
+        ordinary_marker.touch(mode=0o600)
     if 'fieldlink-connector' in REPOSITORIES:
         delivery_history(password)
     if 'connector-archive' in REPOSITORIES:

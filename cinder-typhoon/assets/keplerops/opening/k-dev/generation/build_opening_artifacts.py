@@ -101,8 +101,8 @@ def build_history() -> None:
             "INSERT INTO urls VALUES (?, ?, ?, ?, ?, ?, ?)",
             (
                 1,
-                "https://support.keplerops.test/conversations/SUP-2841",
-                "SUP-2841 · FieldKest Support",
+                "https://support.keplerops.test/scp/tickets.php",
+                "SUP-2841 · ARWC connector callback latency · FieldKest Support",
                 3,
                 1,
                 chromium_time,
