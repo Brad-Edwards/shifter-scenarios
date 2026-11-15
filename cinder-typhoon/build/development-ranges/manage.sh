@@ -102,11 +102,30 @@ ensure_no_service_account() {
   }
 }
 
+ensure_boot_disk_capacity() {
+  [[ $target == fieldlink ]] || return 0
+  verify_managed_instance
+  boot_disk=$($gcloud_bin compute instances describe "$CINDER_DEV_INSTANCE" \
+    --project="$project" --zone="$zone" --format='value(disks[0].source.basename())')
+  [[ $boot_disk == "$CINDER_DEV_INSTANCE" ]] || {
+    echo 'The boot disk is not the expected development disk.' >&2
+    return 1
+  }
+  disk_size=$($gcloud_bin compute disks describe "$boot_disk" \
+    --project="$project" --zone="$zone" --format='value(sizeGb)')
+  [[ $disk_size =~ ^[1-9][0-9]*$ ]] || return 1
+  if ((disk_size < 100)); then
+    $gcloud_bin compute disks resize "$boot_disk" \
+      --project="$project" --zone="$zone" --size=100GB --quiet
+  fi
+}
+
 provision() {
   if $gcloud_bin compute instances describe "$CINDER_DEV_INSTANCE" \
       --project="$project" --zone="$zone" >/dev/null 2>&1; then
     verify_managed_instance
     ensure_no_service_account
+    ensure_boot_disk_capacity
     wait_for_ready
     return
   fi
@@ -125,6 +144,7 @@ provision() {
     --metadata=enable-oslogin=TRUE,block-project-ssh-keys=TRUE,serial-port-enable=FALSE \
     --metadata-from-file="startup-script=$startup"
   ensure_no_service_account
+  ensure_boot_disk_capacity
   wait_for_ready
 }
 

@@ -22,7 +22,14 @@ flowchart LR
 | `arwc` | Qualified ARWC OT machine image | `cinder-arwc-golden` / `cinder-arwc-carrier` | `/opt/arwc-ot-compat/it/cinder-typhoon` and `/opt/arwc-ot-compat/slice` | Recreate only `cinder-arwc-dev` from the qualified image. |
 
 Both VMs are private, have no service account, and accept SSH only through the
-existing IAP firewall rule. They inherit the source machine type and disks.
+existing IAP firewall rule. They inherit the source machine type. FieldLink
+requires a boot disk of at least 100 GiB for its native product images, model,
+Kubernetes image cache and local recovery backup. Provisioning grows only its
+verified development boot disk when smaller; it never shrinks a disk. ARWC
+keeps its source disk size. Keep normal Kubernetes disk-pressure thresholds.
+After cloud disk growth, verify that the guest partition and filesystem also
+use the added space before checking workload readiness. Follow the
+[GCP disk resize procedure](https://docs.cloud.google.com/compute/docs/disks/resize-persistent-disk).
 Provisioning requests fixed private addresses `10.77.49.9` for FieldLink and
 `10.77.59.11` for ARWC, including after development VM recreation.
 The ARWC first-boot helper changes only the FieldLink listener binding for the
