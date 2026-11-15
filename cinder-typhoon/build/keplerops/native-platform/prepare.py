@@ -25,7 +25,7 @@ def prepare(operator: Path) -> None:
     private = target / 'bootstrap.json'
     create(private, json.dumps({name: secrets.token_urlsafe(32) for name in (
         'k3s_token', 'objects_admin_key', 'objects_admin_secret',
-        'objects_rowan_key', 'objects_rowan_secret', 'data_owner', 'data_rowan',
+        'objects_rowan_key', 'objects_rowan_secret', 'data_rowan',
         'assistant_admin', 'assistant_bootstrap', 'assistant_jwt',
     )}))
     values = json.loads(private.read_text())
