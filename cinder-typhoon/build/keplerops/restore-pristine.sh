@@ -9,6 +9,9 @@ cd "$ROOT"
 }
 project=$(curl --fail --silent --show-error --header 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/project/project-id)
 [[ $project == prod-mgau4w ]] || { echo 'Unexpected development project.' >&2; exit 1; }
+# Reuse the development peer binding even for direct invocation or a caller
+# environment override. Never fall back to the preserved golden peer.
+export ARWC_CARRIER_ADDRESS=10.77.59.11
 operator=${KEPLEROPS_OPERATOR_DIR:-"$ROOT/.operator"}
 # A verified private backup and a released QA window are prerequisites. This
 # explicit reset destroys application volumes; ordinary startup never does.
@@ -33,6 +36,7 @@ bash native-platform/bootstrap-kubernetes.sh
 docker compose up -d --no-deps --wait --wait-timeout 180 \
   runner k-source k-registry k-ci fieldlink-review k-preview k-support k-indexer \
   k-identity fieldlink-keycloak k-cert fieldlink-objects fieldlink-ollama a-connector
+docker inspect --format '{{range .HostConfig.ExtraHosts}}{{println .}}{{end}}' cinder-keplerops-connector | grep -Fxq 'fieldlink.arwc.test:10.77.59.11'
 bash native-workplace/bootstrap-staff.sh
 bash native-workplace/bootstrap-support.sh
 docker compose up -d --no-deps --wait --wait-timeout 180 fieldlink-assistant
