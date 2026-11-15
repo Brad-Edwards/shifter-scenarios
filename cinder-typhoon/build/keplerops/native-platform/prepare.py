@@ -50,7 +50,7 @@ def prepare(operator: Path) -> None:
         'STORAGE_DIR=/app/server/storage', 'NODE_ENV=production',
         'DISABLE_TELEMETRY=true', 'VECTOR_DB=lancedb', 'EMBEDDING_ENGINE=native',
         'LLM_PROVIDER=ollama', 'OLLAMA_BASE_PATH=http://fieldlink-ollama:11434',
-        'OLLAMA_MODEL_PREF=fieldlink-qwen', 'OLLAMA_MODEL_TOKEN_LIMIT=4096',
+        'OLLAMA_MODEL_PREF=fieldlink-qwen:latest', 'OLLAMA_MODEL_TOKEN_LIMIT=4096',
         'AUTH_TOKEN=' + values['assistant_bootstrap'],
         'JWT_SECRET=' + values['assistant_jwt'],
     )) + '\n', 0o600)

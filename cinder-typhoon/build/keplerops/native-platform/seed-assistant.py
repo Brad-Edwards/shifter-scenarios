@@ -54,6 +54,7 @@ def seed(operator: Path) -> None:
     token = session['token']
     if not token:
         raise RuntimeError('Native assistant administrator authentication failed')
+    api('/system/update-env', {'OllamaLLMModelPref': 'fieldlink-qwen:latest'}, token)
     users = {value['username']: value for value in api('/admin/users', token=token)['users']}
     for username, password, role in (
         ('rowan.ito', runtime['developer_token'], 'default'),

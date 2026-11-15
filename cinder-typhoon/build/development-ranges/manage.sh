@@ -181,6 +181,9 @@ case $action in
         assets/keplerops/registry \
         assets/keplerops/native-packages \
         assets/keplerops/native-workplace \
+        assets/narrative/documents/keplerops/company-history.md \
+        assets/narrative/documents/keplerops/working-guide.md \
+        assets/narrative/documents/keplerops/customer-relationships.md \
         assets/keplerops/build-operations \
         assets/keplerops/policy-compiler \
         assets/keplerops/connector-archive \
