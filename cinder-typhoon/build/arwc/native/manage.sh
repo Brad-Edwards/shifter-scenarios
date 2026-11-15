@@ -73,7 +73,7 @@ case "$action" in
     bash seed-engineering.sh
     ;;
   seed-dmz)
-    "${compose[@]}" exec -T --user postgres corporate-db bash /docker-entrypoint-initdb.d/10-corporate.sh
+    "${compose[@]}" exec -T --user postgres corporate-db bash -s < init-corporate.sh
     "${compose[@]}" exec -T corporate-db psql -U corporate -d planning \
       --set ON_ERROR_STOP=1 < dmz-views.sql
     ;;
