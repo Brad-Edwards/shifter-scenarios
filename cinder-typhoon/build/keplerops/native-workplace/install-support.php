@@ -23,6 +23,8 @@ $installer = new Installer($configuration);
 if (!$installer->install($input)) {
     throw new RuntimeException('Native osTicket installation failed');
 }
+file_put_contents($configuration, str_replace("define('TRUSTED_PROXIES', '');",
+    "define('TRUSTED_PROXIES', '10.77.56.11');", file_get_contents($configuration)));
 chgrp($configuration, 33);
 chmod($configuration, 0640);
 echo "Native support application installed.\n";

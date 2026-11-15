@@ -586,7 +586,7 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ost-config.php:/var/www/html/include/ost-config.php
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/support-bootstrap.json:/run/fieldlink/support-bootstrap.json:ro
     healthcheck:
-      test: [CMD, php, -r, 'require "/var/www/html/include/ost-config.php"; exit(defined("OSTINSTALLED") && OSTINSTALLED ? 0 : 1);']
+      test: [CMD, php, -r, '$$body=@file_get_contents("http://127.0.0.1/scp/login.php"); exit(is_string($$body) && str_contains($$body, "name=\"userid\"") ? 0 : 1);']
       interval: 10s
       timeout: 5s
       retries: 30
