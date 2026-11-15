@@ -189,22 +189,22 @@ content:
       surface_bindings:
       - k-delivery.k-indexer/bundle-indexer/exception-state
       - k-delivery.k-indexer/bundle-indexer/bundle-submit
-      starting_state: Designated release-exception state object with value and integrity
-        fields.
+      starting_state: K04.2 runtime descriptor (worker_session bearer, process_generation,
+        state_route, integrity_relation sha256(generation:queue-ready)); exception record
+        REL-EXC-2841 in release-exception queue.
       mechanic_profile:
-        state_object: release_exception/REX-2026-091
-        requested_value: approved-for-diagnostic-review
-        write_rule: the bounded overwrite changes value and recomputes the keyed BLAKE2s
-          integrity field; all other object bytes are immutable
-        liveness: one subsequent valid FKB1 bundle must index successfully in the same process
+        state_object: release_exception/REL-EXC-2841
+        requested_value: queue-ready
+        write_rule: PATCH to state_route with bearer=worker_session; body includes
+          state=queue-ready and integrity=sha256(str(process_generation)+":queue-ready");
+          service validates both and sets write_ready=true
+        liveness: one subsequent valid .fki bundle must index successfully in the same process
           generation
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
-        identity: The caller must present the identity or session obtainable through the
-          declared world state and prerequisites.
-        input: Designated release-exception state object with value and integrity fields.
-        success: State becomes requested value with valid integrity; service completes normal
-          index afterward.
+        identity: The caller must present worker_session bearer from K04.2 descriptor.
+        input: K04.2 runtime descriptor; sha256(process_generation:queue-ready) integrity.
+        success: State becomes queue-ready with valid SHA256 integrity; normal index succeeds.
         correlation: The service generates a per-request UUIDv4 and writes it to its protected
           audit before returning it.
       denial_contract:
@@ -216,8 +216,8 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: State becomes requested value with valid integrity; service completes
-        normal index afterward.
+      transition_contract: state=queue-ready with sha256 integrity accepted; write_ready=true;
+        normal .fki index succeeds afterward.
       evidence_contract:
         producer: The owning service writes the audit; the caller-controlled request and
           output are not sufficient by themselves.
@@ -239,7 +239,9 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 1964b5eb944ad98bb026588598bac2f7067e64d311f4d3085fe20deb078026a3
+        digest: fb193d2a23b18d2adf9c69d5d2865b4afb0afbecd772386081aef93a655cd0ed
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

@@ -126,13 +126,14 @@ hints:
     - kind: participant_artifact
       id: work/reproducers/indexer-client.json
   K04.3:
-    h1: Begin with the offline indexer reproducer and its protected runtime service. Start from indexer.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for indexer.keplerops.test. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: Use the state_route and worker_session from the K04.2 runtime descriptor. Present
+      worker_session as the bearer credential on the PATCH request to the state route.
+    h2: The integrity_relation field in the K04.2 descriptor names the formula. Compute
+      the integrity value from process_generation and the target state string, then include
+      it in the PATCH body alongside the state value.
+    h3: A subsequent normal bundle index must still succeed. The service checks state=queue-ready,
+      the computed integrity, and sentinel=mutated; it rejects wrong-integrity or pre-K04.1
+      requests and stays alive after a correct write.
     references:
     - kind: participant_service
       id: indexer.keplerops.test
