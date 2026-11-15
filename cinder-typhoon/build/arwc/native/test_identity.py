@@ -42,6 +42,23 @@ class IdentityImportTests(unittest.TestCase):
         self.assertEqual({group["name"] for group in payload["groups"]}, {"Planning", "Temporary planning staff"})
         self.assertTrue(all(group["path"] == "/" + group["name"] for group in payload["groups"]))
 
+    def test_every_imported_human_retains_native_self_account_access(self):
+        self.assertTrue(all("default-roles-arwc" in user["realmRoles"] for user in self.users()))
+
+    def test_account_repair_is_additive_and_leaves_credentials_and_services_alone(self):
+        role = {"id": "native-default", "name": "default-roles-arwc"}
+        calls = []
+        def api(method, path, value=None):
+            calls.append((method, path, value))
+            if path.endswith("/roles/default-roles-arwc"):
+                return role
+            if method == "GET":
+                return [role] if "/existing/" in path else [{"id": "staff-role", "name": "staff"}]
+        with patch.object(identity, "api", side_effect=api):
+            identity.repair_account_access([{"id": "missing"}, {"id": "existing"}, {"id": "service", "serviceAccountClientId": "backend"}])
+        writes = [call for call in calls if call[0] != "GET"]
+        self.assertEqual(writes, [("POST", "/admin/realms/arwc/users/missing/role-mappings/realm", [role])])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -32,6 +32,12 @@ trusts the private CA. The native product hosts are `erp.arwc.test`,
 `render.arwc.test`, and `read-data.arwc.test`. Existing OT short names remain
 available.
 
+Imported workforce users retain Keycloak's stock `default-roles-arwc` role for
+ordinary own-account pages and credential management. It does not confer realm
+administration. For an existing import missing this baseline, the explicit
+`seed-identity.py --repair-account-access` operation restores only that role,
+additively, without reseeding users/documents or changing passwords and sessions.
+
 Generated credentials and CA material stay in `.operator`, excluded from Git
 and source archives. Only the three PostgreSQL init-role password files belong
 to the pinned image's PostgreSQL user; each is mode `0400`. The public CA copy

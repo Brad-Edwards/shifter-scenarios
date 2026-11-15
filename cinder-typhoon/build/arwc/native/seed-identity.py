@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Import real workforce identities through Keycloak's supported partial import."""
+import argparse
 import csv
 import hashlib
 import hmac
@@ -20,7 +21,7 @@ TEMPORARY = "mira.vale.temp"
 TEMPORARY_EMAIL = TEMPORARY + "@alterrawaterco.com"
 
 
-def api(method: str, path: str, values: dict | None = None, *, form=False):
+def api(method: str, path: str, values: dict | list | None = None, *, form=False):
     body = None if values is None else (urlencode(values).encode() if form else json.dumps(values).encode())
     request = Request(ROOT + path, method=method, data=body, headers={
         "Content-Type": "application/x-www-form-urlencoded" if form else "application/json",
@@ -47,7 +48,7 @@ def workforce(path: Path = Path("/seed/a-personnel-register.csv")) -> list[dict]
         users.append({
             "username": row["work_email"].split("@")[0], "firstName": first, "lastName": last,
             "email": row["work_email"], "emailVerified": True, "enabled": True,
-            "realmRoles": ["staff"], "groups": ["/" + row["department"]],
+            "realmRoles": ["default-roles-arwc", "staff"], "groups": ["/" + row["department"]],
             "attributes": {"employee_number": [row["employee_id"]], "department": [row["department"]],
                            "team": [row["team"]], "assignment_ref": [row["role"]]},
             "credentials": [{"type": "password", "value": password(row["work_email"]), "temporary": False}],
@@ -55,6 +56,7 @@ def workforce(path: Path = Path("/seed/a-personnel-register.csv")) -> list[dict]
     users.append({
         "username": TEMPORARY, "firstName": "Mira", "lastName": "Vale", "email": TEMPORARY_EMAIL,
         "emailVerified": True, "enabled": True, "groups": ["/Temporary planning staff"],
+        "realmRoles": ["default-roles-arwc"],
         "attributes": {"employee_number": ["TMP-4821"], "department": ["Planning, quality, and compliance"],
                        "team": ["Planning relief"], "assignment_ref": ["PLAN-RELIEF-3"]},
         "clientRoles": {"realm-management": ["view-users", "query-users"]},
@@ -69,13 +71,31 @@ def import_payload(users: list[dict]) -> dict:
     return {"ifResourceExists": "SKIP", "groups": [{"name": name, "path": "/" + name} for name in groups], "users": users}
 
 
-def seed() -> None:
+def authenticate() -> None:
     global TOKEN, CONTEXT
     CONTEXT = ssl.create_default_context(cafile="/run/arwc-ca/root.crt")
     TOKEN = api("POST", "/realms/master/protocol/openid-connect/token", {
         "client_id": "admin-cli", "grant_type": "password", "username": "platform-admin",
         "password": os.environ["IDENTITY_ADMIN_PASSWORD"],
     }, form=True)["access_token"]
+
+
+def repair_account_access(users: list[dict]) -> None:
+    role = api("GET", "/admin/realms/arwc/roles/default-roles-arwc")
+    changed = 0
+    for user in users:
+        if user.get("serviceAccountClientId"):
+            continue
+        path = f'/admin/realms/arwc/users/{user["id"]}/role-mappings/realm'
+        existing = api("GET", path)
+        if not any(item["id"] == role["id"] for item in existing):
+            api("POST", path, [role])
+            changed += 1
+    print(json.dumps({"native_default_account_roles_restored": changed}))
+
+
+def seed() -> None:
+    authenticate()
     profile = api("GET", "/admin/realms/arwc/users/profile")
     names = {attribute["name"] for attribute in profile["attributes"]}
     for name, display in (("employee_number", "Employee number"), ("department", "Department"),
@@ -91,6 +111,7 @@ def seed() -> None:
     users = workforce()
     api("POST", "/admin/realms/arwc/partialImport", import_payload(users))
     actual = api("GET", "/admin/realms/arwc/users?max=1000")
+    repair_account_access(actual)
     by_name = {user["username"]: user for user in actual}
     if not {user["username"] for user in users}.issubset(by_name):
         raise RuntimeError("Native workforce import is incomplete")
@@ -120,4 +141,11 @@ def seed() -> None:
 
 
 if __name__ == "__main__":
-    seed()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repair-account-access", action="store_true")
+    arguments = parser.parse_args()
+    if arguments.repair_account_access:
+        authenticate()
+        repair_account_access(api("GET", "/admin/realms/arwc/users?max=1000"))
+    else:
+        seed()

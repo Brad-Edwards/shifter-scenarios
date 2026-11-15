@@ -96,7 +96,7 @@ def prepare() -> None:
             "username": "morgan.reid", "enabled": True,
             "firstName": "Morgan", "lastName": "Reid",
             "email": "morgan.reid@arwc.test", "emailVerified": True,
-            "realmRoles": ["staff"],
+            "realmRoles": ["default-roles-arwc", "staff"],
             "credentials": [{"type": "password", "value": seed["workforce"], "temporary": False}],
         }],
     }
