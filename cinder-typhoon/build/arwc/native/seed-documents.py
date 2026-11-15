@@ -73,7 +73,9 @@ def version_digests(path: str) -> dict[str, str]:
     for response in listing.findall("{DAV:}response"):
         href = response.findtext("{DAV:}href", "")
         if href.startswith(base) and href[len(base):].isdigit():
-            versions[href[len(base):]] = hashlib.sha256(request("GET", href)).hexdigest()
+            content = request("GET", href, accepted=(200, 404))
+            if content:
+                versions[href[len(base):]] = hashlib.sha256(content).hexdigest()
     return versions
 
 
