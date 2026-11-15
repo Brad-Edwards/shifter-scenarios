@@ -11,12 +11,17 @@ import runpy
 import time
 from urllib.parse import quote, urlencode
 
-erp = runpy.run_path("/seed/seed-erp.py")
-files = runpy.run_path("/seed/seed-documents.py")
+SEED_ROOT = Path("/seed") if Path("/seed/seed-erp.py").exists() else Path(__file__).resolve().parent
+erp = runpy.run_path(str(SEED_ROOT / "seed-erp.py"))
+files = runpy.run_path(str(SEED_ROOT / "seed-documents.py"))
 api, insert = (erp[name] for name in ("api", "insert"))
 request, ocs, decode_ocs, dav, upload = (files[name] for name in ("request", "ocs", "decode_ocs", "dav", "upload"))
 EMAIL = "jules.orswick@veybridge.test"
-RECORDS = Path("/seed/records")
+RECORDS = SEED_ROOT / "records"
+HANDBACK_DESCRIPTION = (
+    "Confirm the pending inspection reference in the supplier handback before closing the maintenance case."
+)
+NEXTCLOUD_VERSION_INTERVAL_SECONDS = 121
 
 
 def find(doctype: str, filters: dict) -> dict:
@@ -37,14 +42,46 @@ def share(path: str, recipient: str, kind: int) -> None:
         }).encode()))
 
 
+def share_record(doctype: str, name: str, *, write: int = 0) -> None:
+    api("/api/method/frappe.share.add", {
+        "doctype": doctype, "name": name, "user": EMAIL,
+        "read": 1, "write": write, "share": 0, "notify": 0,
+    })
+
+
+def restore_handback(task: dict) -> None:
+    """Restore the participant-owned task without retaining an earlier run's audit trail."""
+    name = task["name"]
+    api(f'/api/resource/Task/{quote(name, safe="")}', {
+        "status": "Open", "description": HANDBACK_DESCRIPTION,
+    }, method="PUT")
+    query = urlencode({
+        "filters": json.dumps({"ref_doctype": "Task", "docname": name}),
+        "fields": '["name"]', "limit_page_length": 1000,
+    })
+    versions = api(f"/api/resource/Version?{query}")["data"]
+    for version in versions:
+        api(f'/api/resource/Version/{quote(version["name"], safe="")}', method="DELETE")
+
+
+def rebuild_annex_history(path: str) -> None:
+    """Create one genuine, fetchable prior revision and the current annex."""
+    request("DELETE", dav(path), accepted=(204, 404))
+    request("PUT", dav(path), (RECORDS / "ANN-4417-R1.md").read_bytes())
+    time.sleep(NEXTCLOUD_VERSION_INTERVAL_SECONDS)
+    request("PUT", dav(path), (RECORDS / "ANN-4417-R2.md").read_bytes())
+    files["verify_versions"](path, [(RECORDS / "ANN-4417-R1.md").read_bytes()])
+
+
 def seed() -> None:
     api("/api/method/login", {"usr": "Administrator", "pwd": os.environ["ERP_ADMIN_PASSWORD"]})
     insert("Property Setter", {"doc_type": "Task", "doctype_or_field": "DocType", "property": "track_changes"},
            {"property_type": "Check", "value": "1"})
     project = find("Project", {"project_name": "WO-CRR-4417 — Cairn Reach outlet inspection"})
     handback = insert("Task", {"subject": "Supplier handback — MTN-CRR-204", "project": project["name"]}, {
-        "status": "Open", "description": "Confirm the pending inspection reference in the supplier handback before closing the maintenance case.",
+        "status": "Open", "description": HANDBACK_DESCRIPTION,
     })
+    restore_handback(handback)
     restricted = insert("Task", {"subject": "MR-CRR-4417-R6 — Engineering inspection record", "project": project["name"]}, {
         "status": "Open", "description": "Restricted maintenance record. Outlet frame anchor fixings require engineering review before handback. Asset AST-CRR-017; inspection INSP-CRR-2026-09-18; revision 6.",
     })
@@ -54,14 +91,13 @@ def seed() -> None:
     })
     for doctype, name, write in (("Project", project["name"], 0), ("Task", handback["name"], 1),
                                   ("Task", restricted["name"], 0)):
-        api("/api/method/frappe.share.add", {"doctype": doctype, "name": name, "user": EMAIL,
-            "read": 1, "write": write, "share": 0, "notify": 0})
+        share_record(doctype, name, write=write)
     order = find("Purchase Order", {"title": "PO-VEY-4417", "supplier": "Veybridge Field Services"})
+    share_record("Purchase Order", order["name"])
     attachment = insert("File", {"file_name": "ANN-4417-R2.md", "attached_to_doctype": "Purchase Order", "attached_to_name": order["name"]}, {
         "is_private": 1, "content": (RECORDS / "ANN-4417-R2.md").read_text(),
     })
-    api("/api/method/frappe.share.add", {"doctype": "File", "name": attachment["name"], "user": EMAIL,
-        "read": 1, "write": 0, "share": 0, "notify": 0})
+    share_record("File", attachment["name"])
     attachment = api(f'/api/resource/File/{quote(attachment["name"], safe="")}')["data"]
 
     if not ocs("GET", "groups/Veybridge", accepted=(200, 404)):
@@ -81,11 +117,7 @@ def seed() -> None:
                  "material-return-notes.md", "site-attendance.md"):
         upload(f"Veybridge handover/{name}", (RECORDS / name).read_bytes())
     annex = "Veybridge handover/ANN-4417.md"
-    if not request("HEAD", dav(annex), accepted=(200, 404)):
-        request("PUT", dav(annex), (RECORDS / "ANN-4417-R1.md").read_bytes())
-        time.sleep(2)
-        request("PUT", dav(annex), (RECORDS / "ANN-4417-R2.md").read_bytes())
-    files["verify_versions"](annex, [(RECORDS / "ANN-4417-R1.md").read_bytes()])
+    rebuild_annex_history(annex)
     acceptance = "Engineering reviews/integration-read-acceptance.md"
     upload(acceptance, (RECORDS / "integration-read-acceptance.md").read_bytes())
     share(acceptance, EMAIL, 0)

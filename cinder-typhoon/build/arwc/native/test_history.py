@@ -27,12 +27,14 @@ class HistoryImportTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 seed.version_digests("Drawing.svg")
 
-    def test_unarchived_current_revision_does_not_hide_real_history(self):
+    def test_broken_listed_version_fails_validation(self):
         base = "/remote.php/dav/versions/records-admin/versions/42/"
         metadata = b'<d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><oc:fileid>42</oc:fileid></d:multistatus>'
         listing = f'<d:multistatus xmlns:d="DAV:"><d:response><d:href>{base}124</d:href></d:response><d:response><d:href>{base}123</d:href></d:response></d:multistatus>'.encode()
-        with patch.object(seed, "request", side_effect=(metadata, listing, b"", b"P1")):
-            self.assertEqual(set(seed.version_digests("Drawing.svg")), {"123"})
+        not_found = b'<?xml version="1.0"?><d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns"><s:exception>Sabre\\DAV\\Exception\\NotFound</s:exception></d:error>'
+        with patch.object(seed, "request", side_effect=(metadata, listing, not_found)):
+            with self.assertRaises(RuntimeError):
+                seed.version_digests("Drawing.svg")
 
     def test_wrong_or_missing_version_content_fails(self):
         for versions in ({}, {"123": "0" * 64}):
