@@ -113,12 +113,12 @@ hints:
     - kind: participant_artifact
       id: work/reproducers/indexer-client.json
   K04.2:
-    h1: The binary response includes a data_hex field covering the bytes actually read from the shared arena. After
-      K04.1 the arena's descriptor region at bytes 80-127 carries runtime state the service wrote at mutation time.
-    h2: Extend the .fki bundle to datalen=128 (ie=16, ae=48) so the binary's read includes the descriptor region.
-      The sentinel region (bytes 64-79) still triggers the mutation check; bytes 80-127 carry the descriptor.
-    h3: Parse data_hex bytes 160-255 (hex chars for bytes 80-127) as JSON to extract the runtime descriptor.
-      It supplies the worker_session bearer, state_route, process_generation, and integrity_relation for K04.3.
+    h1: The binary returns a data_hex field covering the bytes read from the shared arena before each write. After
+      K04.1 the arena carries a runtime descriptor at bytes 80-511 that the service wrote at mutation time.
+    h2: Extend the .fki bundle to datalen=512 (ie=64, ae=432) so the binary's pre-write read covers the descriptor
+      region. The sentinel region (bytes 64-79) still triggers the mutation state; bytes 80-511 carry the descriptor.
+    h3: Parse data_hex hex chars 160-1023 (arena bytes 80-511) as JSON to recover the runtime descriptor.
+      It contains the worker_session bearer, process_generation, state_route, and integrity_relation for K04.3.
     references:
     - kind: participant_service
       id: indexer.keplerops.test
