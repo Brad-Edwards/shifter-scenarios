@@ -21,14 +21,26 @@ python3 /usr/local/libexec/arwc-handover.py wait \
 chown arwc-archive:arwc-archive /var/lib/arwc-archive/auth/corporate-session.sha256
 chmod 0400 /var/lib/arwc-archive/auth/corporate-session.sha256
 
-for file in server.crt server.key archive-ca.crt archive-ca.key; do
+for file in server.crt server.key; do
   install -o arwc-archive -g arwc-archive -m 0400 "/run/arwc-tls/$file" "/tmp/$file"
 done
+# archive-ca is used only by generate_archive_artifacts (W04.8+ collector signing);
+# it is NOT used for client certificate verification (step-ca root is used instead).
+for file in archive-ca.crt archive-ca.key; do
+  if [ -r "/run/arwc-tls/$file" ]; then
+    install -o arwc-archive -g arwc-archive -m 0400 "/run/arwc-tls/$file" "/tmp/$file"
+  fi
+done
 
-# Build CA bundle: golden CA + native IT CA (for Nextcloud connections).
+# Build CA bundle: golden CA + native IT step-ca root and intermediate.
+# The bundle is used for Nextcloud connections and for verifying step-ca-signed
+# client certificates in mTLS (both root and intermediate are required).
 cat /run/arwc-tls/ca.crt > /tmp/arwc-ca-bundle.pem
 if [ -r /run/arwc-native/root-ca.crt ]; then
   cat /run/arwc-native/root-ca.crt >> /tmp/arwc-ca-bundle.pem
+fi
+if [ -r /run/arwc-step-ca/intermediate.crt ]; then
+  cat /run/arwc-step-ca/intermediate.crt >> /tmp/arwc-ca-bundle.pem
 fi
 chmod 0644 /tmp/arwc-ca-bundle.pem
 

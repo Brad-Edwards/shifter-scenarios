@@ -38,8 +38,11 @@ DB_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/db-reader.json")
 BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/archive-source.json")
 IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/archive-source.json")
 DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/archive-lineage.json")
-ARCHIVE_CA = "/tmp/archive-ca.crt"
-ARCHIVE_CA_KEY = "/tmp/archive-ca.key"
+STEP_CA_ROOT = "/run/arwc-step-ca/root.crt"
+STEP_CA_URL = "https://ca.arwc.test:9000"
+STEP_CA_PROVISIONER_KEY = "/run/arwc-step-ca/provisioner.enc.json"
+STEP_CA_PROVISIONER_PASS = "/run/arwc-step-ca/password"
+STEP_CLI = "/usr/local/bin/step"
 
 def _load_workflow() -> dict:
     """Load the workflow record from the Nextcloud-sourced file.
@@ -405,44 +408,86 @@ def has_w12_source() -> bool:
 
 
 def issue_certificate(organizational_unit: str) -> tuple[str, str, str]:
+    """Issue a certificate via native step-ca with the caller-supplied OU.
+
+    The step-ca infrastructure JWK provisioner signs the CSR. The x509 template
+    is configured to include the OU from the CSR subject. The archive service
+    does not operate its own CA; step-ca owns certificate identity and telemetry.
+    """
     if not (1 <= len(organizational_unit) <= 160):
         raise ValueError("organizational unit has an invalid length")
-    if any(character in organizational_unit for character in "\r\n\x00/"):
+    if any(character in organizational_unit for character in "\r\n\x00"):
         raise ValueError("organizational unit contains an invalid character")
     with tempfile.TemporaryDirectory() as directory:
         work = pathlib.Path(directory)
         key = work / "client.key"
         request = work / "client.csr"
-        certificate = work / "client.crt"
-        extensions = work / "client.ext"
-        extensions.write_text(
-            "basicConstraints=critical,CA:FALSE\n"
-            "keyUsage=critical,digitalSignature\n"
-            "extendedKeyUsage=clientAuth\n",
-            encoding="utf-8",
-        )
+        # Generate RSA key and CSR. The CN must match the token subject (OU value)
+        # for step-ca to accept the sign request. Step-ca embeds the CN (= OU) in
+        # the signed cert; the query handler reads it as the archive identity.
         subprocess.run(
             ["openssl", "req", "-new", "-newkey", "rsa:2048", "-nodes",
-             "-subj", "/CN=corporate-reader-principal/O=Alterra Regional Water Company/"
-             f"OU={organizational_unit}",
+             "-subj", f"/CN={organizational_unit}",
              "-keyout", str(key), "-out", str(request)],
             check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         )
-        serial = "0x" + secrets.token_hex(16)
-        subprocess.run(
-            ["openssl", "x509", "-req", "-days", "30", "-sha256",
-             "-in", str(request), "-CA", ARCHIVE_CA, "-CAkey", ARCHIVE_CA_KEY,
-             "-set_serial", serial, "-extfile", str(extensions), "-out", str(certificate)],
-            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        # Obtain a step-ca OTT using the organizational_unit as the token subject.
+        # The step-ca JWK provisioner sanitizes the CSR's Subject fields, so the
+        # OU value is passed as the token subject instead. It becomes the cert's CN,
+        # which the query handler reads as the archive identity for the SQL query.
+        # HOME must be set explicitly: setpriv inherits HOME=/root from the
+        # entrypoint but arwc-archive cannot access /root/.step/.
+        step_home = str(ROOT)
+        step_env = {**os.environ, "HOME": step_home, "STEPPATH": str(ROOT / ".step")}
+        (ROOT / ".step").mkdir(mode=0o700, exist_ok=True)
+        token_result = subprocess.run(
+            [STEP_CLI, "ca", "token", organizational_unit,
+             "--provisioner", "infrastructure",
+             "--key", STEP_CA_PROVISIONER_KEY,
+             "--password-file", STEP_CA_PROVISIONER_PASS,
+             "--ca-url", STEP_CA_URL,
+             "--root", STEP_CA_ROOT,
+             "--not-after", "1h"],
+            capture_output=True, text=True, check=True,
+            env=step_env,
         )
-        return (
-            certificate.read_text(encoding="utf-8"),
-            key.read_text(encoding="utf-8"),
-            serial,
+        ott = token_result.stdout.strip()
+        if not ott:
+            raise ValueError("step-ca did not return a provisioner token")
+        # POST the CSR and OTT to step-ca's sign endpoint.
+        import urllib.request as _urllib_request
+        csr_pem = request.read_text(encoding="utf-8")
+        body = json.dumps({"csr": csr_pem, "ott": ott}).encode()
+        ctx = ssl.create_default_context(cafile=STEP_CA_ROOT)
+        req = _urllib_request.Request(
+            STEP_CA_URL + "/1.0/sign",
+            data=body, method="POST",
+            headers={"Content-Type": "application/json"},
         )
+        with _urllib_request.urlopen(req, context=ctx, timeout=15) as response:
+            signed = json.loads(response.read())
+        cert_pem = signed.get("crt", "")
+        if not cert_pem:
+            raise ValueError("step-ca sign response did not include a certificate")
+        # Include the issuer chain so the client can present the full chain
+        # for server-side verification (root CA is in the trust store but
+        # the intermediate must be supplied by the client).
+        chain_pem = signed.get("ca", "")
+        if chain_pem:
+            cert_pem = cert_pem + chain_pem
+        # Return cert, key, and a stable identifier from the signed cert.
+        import hashlib as _hashlib
+        serial = _hashlib.sha256(cert_pem.encode()).hexdigest()[:32]
+        return cert_pem, key.read_text(encoding="utf-8"), serial
 
 
 def peer_organizational_unit(socket: ssl.SSLSocket) -> str | None:
+    """Return the archive identity from the client certificate's Common Name.
+
+    The step-ca infrastructure provisioner signs certificates where the CN
+    carries the participant-supplied OU value (the provisioner uses the token
+    subject as CN). The CN is therefore the injection point for the SQL query.
+    """
     der = socket.getpeercert(binary_form=True)
     if not der:
         return None
@@ -455,7 +500,7 @@ def peer_organizational_unit(socket: ssl.SSLSocket) -> str | None:
             check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
         )
     for line in completed.stdout.splitlines():
-        match = re.match(r"\s*organizationalUnitName\s*=\s*(.*)$", line)
+        match = re.match(r"\s*commonName\s*=\s*(.*)$", line)
         if match:
             return match.group(1)
     return None
@@ -1075,7 +1120,7 @@ class Handler(BaseHTTPRequestHandler):
                 if not isinstance(rollover, dict):
                     raise ValueError
                 certificate = x509.load_pem_x509_certificate(certificate_pem)
-                ca = x509.load_pem_x509_certificate(pathlib.Path(ARCHIVE_CA).read_bytes())
+                ca = x509.load_pem_x509_certificate(pathlib.Path(STEP_CA_ROOT).read_bytes())
                 ca.public_key().verify(
                     certificate.signature, certificate.tbs_certificate_bytes,
                     padding.PKCS1v15(), certificate.signature_hash_algorithm,
@@ -1226,8 +1271,13 @@ class Handler(BaseHTTPRequestHandler):
                 return
             try:
                 certificate, private_key, serial = issue_certificate(organizational_unit)
-            except (ValueError, subprocess.SubprocessError):
+            except (ValueError, subprocess.SubprocessError) as _exc:
+                print(f"enrollment error ({type(_exc).__name__}): {_exc}", flush=True)
                 self.send_json(409, {"error": "organizational unit is not accepted"})
+                return
+            except Exception as _exc:
+                print(f"enrollment unexpected error ({type(_exc).__name__}): {_exc}", flush=True)
+                self.send_json(409, {"error": "enrollment failed"})
                 return
             state["enrollment_consumed"] = True
             issued = state["issued_certificates"]
@@ -1318,7 +1368,10 @@ def main() -> None:
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     context.minimum_version = ssl.TLSVersion.TLSv1_2
     context.load_cert_chain("/tmp/server.crt", "/tmp/server.key")
-    context.load_verify_locations(ARCHIVE_CA)
+    # Use the combined CA bundle so the archive service trusts step-ca-signed
+    # client certificates for mTLS. The bundle was built by the entrypoint from
+    # the golden CA and the native IT step-ca root.
+    context.load_verify_locations("/tmp/arwc-ca-bundle.pem")
     context.verify_mode = ssl.CERT_OPTIONAL
     server.socket = context.wrap_socket(server.socket, server_side=True)
     server.serve_forever()

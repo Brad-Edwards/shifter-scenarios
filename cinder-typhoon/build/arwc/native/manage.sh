@@ -35,6 +35,35 @@ case "$action" in
         --dns ca.arwc.test --address :9000 --provisioner infrastructure \
         --password-file /home/step/secrets/password >/dev/null 2>&1
     fi
+    # Install the archive-submitter x509 template so step-ca signs archive
+    # enrollment certificates with the participant-supplied CN (OU value).
+    mkdir -p .operator/ca/templates/certs/x509
+    cp templates/archive-submitter.tpl .operator/ca/templates/certs/x509/archive-submitter.tpl
+    # Configure the infrastructure provisioner to use the template.
+    python3 - <<'PYEOF'
+import json, pathlib
+p = pathlib.Path('.operator/ca/config/ca.json')
+if p.exists():
+    config = json.loads(p.read_text())
+    for prov in config.get('authority', {}).get('provisioners', []):
+        if prov.get('name') == 'infrastructure':
+            prov.setdefault('options', {}).setdefault('x509', {})['templateFile'] = 'templates/certs/x509/archive-submitter.tpl'
+            break
+    p.write_text(json.dumps(config, indent=2))
+PYEOF
+    # Extract the provisioner JWK for the archive service to generate OTTs.
+    python3 - <<'PYEOF'
+import json, pathlib
+p = pathlib.Path('.operator/ca/config/ca.json')
+out = pathlib.Path('.operator/ca/provisioner.enc.json')
+if p.exists():
+    config = json.loads(p.read_text())
+    for prov in config.get('authority', {}).get('provisioners', []):
+        if prov.get('name') == 'infrastructure' and prov.get('encryptedKey'):
+            out.write_text(prov['encryptedKey'])
+            out.chmod(0o644)
+            break
+PYEOF
     if ! certificate_is_current; then
       mkdir -p .operator/ca/tls
       sans=()

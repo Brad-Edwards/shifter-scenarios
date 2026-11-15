@@ -154,9 +154,33 @@ services:
     - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/archive-ca.crt:/run/arwc-tls/archive-ca.crt:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/archive-ca.key:/run/arwc-tls/archive-ca.key:ro
-    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
+      target: /run/arwc-step-ca/root.crt
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/intermediate_ca.crt
+      target: /run/arwc-step-ca/intermediate.crt
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/provisioner.enc.json
+      target: /run/arwc-step-ca/provisioner.enc.json
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/secrets/password
+      target: /run/arwc-step-ca/password
+      read_only: true
+      bind:
+        create_host_path: false
     - ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow:/run/arwc-archive-workflow:ro
     - type: bind
       source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt

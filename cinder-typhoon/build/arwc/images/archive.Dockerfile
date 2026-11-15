@@ -1,3 +1,5 @@
+FROM smallstep/step-ca:0.28.4@sha256:0f88382ac5af5c6b7bbba0c6e8fcefef52aee6f22ea364df8e02a09ffd0d22f3 AS step-source
+
 FROM golang:1.22.12-bookworm AS collector
 
 WORKDIR /src
@@ -33,6 +35,7 @@ COPY --chown=arwc-archive:arwc-archive --chmod=0640 \
   build/arwc/runtime/fetch_archive_workflow.py /opt/retained-archive/fetch_archive_workflow.py
 COPY --from=collector --chown=arwc-archive:arwc-archive --chmod=0750 \
   /collector-crr /opt/retained-archive/collector-crr
+COPY --from=step-source --chmod=0755 /usr/local/bin/step /usr/local/bin/step
 COPY --chmod=0755 build/arwc/runtime/arwc_handover.py /usr/local/libexec/arwc-handover.py
 COPY --chmod=0750 build/arwc/runtime/archive-entrypoint.sh /usr/local/sbin/arwc-archive-entrypoint
 
