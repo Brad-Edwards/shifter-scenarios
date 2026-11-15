@@ -1,66 +1,23 @@
-# Use with the existing ARWC compose.yaml; its project and state stay separate.
-x-integration-logging: &integration-logging
+# Join only the genuine scoped integrations; upstream applications own product state.
+x-integration-logging: &id001
   driver: json-file
-  options: {max-size: 10m, max-file: "3"}
+  options:
+    max-size: 10m
+    max-file: '3'
 services:
   a-data-bridge:
-    logging: *integration-logging
-    sysctls: {net.ipv4.ip_forward: "0"}
+    logging: *id001
+    sysctls:
+      net.ipv4.ip_forward: '0'
     volumes:
-      - ${ARWC_OT_OPERATOR_DIR:?Set the OT operator directory}/integration-bridge:/run/arwc-ot:ro
+    - ${ARWC_OT_OPERATOR_DIR:?Set the OT operator directory}/integration-bridge:/run/arwc-ot:ro
     networks:
-      history_exchange: {ipv4_address: 172.29.62.3}
+      history_exchange:
+        ipv4_address: 172.29.62.3
   a-connector:
-    logging: *integration-logging
-
-  a-business:
-    logging: *integration-logging
-
-  a-data:
-    logging: *integration-logging
-
-  a-archive:
-    logging: *integration-logging
-
-  a-identity:
-    logging: *integration-logging
-
-  a-contractors:
-    logging: *integration-logging
-
-  a-contractor-bridge:
-    logging: *integration-logging
-
-  a-hmi:
-    logging: *integration-logging
-
-  a-historian:
-    logging: *integration-logging
-
-  a-engineering:
-    logging: *integration-logging
-
-  a-instruments:
-    logging: *integration-logging
-
-  a-reservoir:
-    logging: *integration-logging
-
-  a-diagnostics:
-    logging: *integration-logging
-
-  a-approval:
-    logging: *integration-logging
-
-  a-renderer:
-    logging: *integration-logging
-
-  a-control-broker:
-    logging: *integration-logging
-
+    logging: *id001
   fieldlink-edge:
-    logging: *integration-logging
-
+    logging: *id001
 networks:
   history_exchange:
     external: true

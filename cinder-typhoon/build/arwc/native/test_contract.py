@@ -44,9 +44,9 @@ class BoundaryTests(unittest.TestCase):
     def test_dmz_contract(self):
         validate_dmz(yaml.safe_load((ROOT / "dmz.compose.yaml").read_text()))
 
-    def test_dmz_cannot_reuse_existing_contractor_address(self):
+    def test_dmz_cannot_reuse_existing_history_bridge_address(self):
         changed = yaml.safe_load((ROOT / "dmz.compose.yaml").read_text())
-        changed["services"]["dmz-edge"]["networks"]["dmz"]["ipv4_address"] = "10.77.62.12"
+        changed["services"]["dmz-edge"]["networks"]["dmz"]["ipv4_address"] = "10.77.62.20"
         with self.assertRaises(AssertionError):
             validate_dmz(changed)
 

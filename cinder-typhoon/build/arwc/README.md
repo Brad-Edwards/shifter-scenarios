@@ -1,5 +1,12 @@
 # Alterra Regional Water Company golden-range hand build
 
+This is the historical hand-build ledger. The current platform uses the real
+upstream applications described in [native/README.md](native/README.md) and the
+qualified native OT project. The parent Compose file now contains only the
+bounded FieldLink consumer, fixed TCP relays and read-only operating-history
+integration. The product/process stand-ins below are retired from runtime;
+this older ledger does not describe current product surfaces.
+
 This directory is the implementation ledger for materializing the validated
 ARWC SDL as an isolated participant environment. The SDL and its owned content
 remain the source of truth. Runtime discoveries that change an observable
@@ -278,7 +285,7 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
 - 2026-09-27: W15 adds five passing black-box tests on `a-approval`. Both the
   field-session and planning-read authority branches reach the exact maintenance
   association. The cache key intentionally omits revision and upstream identity;
-  pinned Chrome-for-Testing 128.0.6613.137 executes the nested-frame message
+  pinned Chrome-for-Testing 1`28.0.6613`.137 executes the nested-frame message
   flow, including the declared source-identity omission. The bounded review
   action produces a real Ed25519-signed approval whose signature is independently
   verified. No W15 card binds a narrative asset.

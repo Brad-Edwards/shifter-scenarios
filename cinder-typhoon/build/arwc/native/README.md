@@ -170,3 +170,11 @@ This avoids repeated normal-password verification on every file/share request.
 The app password inherits that account's authority. It is held privately for
 the batch and only its newly created exact token ID is revoked on completion
 or interruption. Participant passwords and other sessions are unchanged.
+
+The parent ARWC Compose project now declares only genuine integrations:
+FieldLink consumer/customer handover, the two fixed TCP relays, and the scoped
+read-only operating-history bridge. Corporate/maintenance/DMZ product facades,
+old simulated HMI/historian/reservoir services and their fake session/control
+brokers are removed from runtime definitions. Existing upstream products and
+qualified native OT own those functions. Old implementation sources remain
+outside participant images for content handoff; they are not active services.
