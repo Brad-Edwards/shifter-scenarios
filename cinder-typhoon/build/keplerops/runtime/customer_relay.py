@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import re
 import ssl
+import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib import error, request
 from urllib.parse import urlsplit
@@ -152,7 +153,13 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_payload(response.status, payload, response.headers.get_content_type())
         except error.HTTPError as failure:
             self.send_payload(failure.code, failure.read(2_000_000), failure.headers.get_content_type())
-        except (OSError, ssl.SSLError):
+        except (OSError, ssl.SSLError) as failure:
+            cause = getattr(failure, 'reason', failure)
+            print(json.dumps({
+                'service': 'customer-relay', 'operation': grant_name,
+                'error_type': type(cause).__name__, 'errno': getattr(cause, 'errno', None),
+                'tls_verify_code': getattr(cause, 'verify_code', None),
+            }), file=sys.stderr, flush=True)
             self.send_payload(502, b'{"error":"customer_connector_unavailable"}\n', "application/json")
 
     do_GET = relay

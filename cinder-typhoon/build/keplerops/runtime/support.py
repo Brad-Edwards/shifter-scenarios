@@ -243,8 +243,15 @@ class SupportHandler(KeplerHandler):
             request = urlrequest.Request("https://connector.arwc.test/api/fieldlink/diagnostics", data=json.dumps({"job_id": match.group(1), "tenant": job["tenant"], "connector_revision": job["connector_revision"], **job["package"]}, sort_keys=True, separators=(",", ":")).encode(), method="POST", headers={"Authorization": f"Bearer {SUPPORT_DELIVERY_TOKEN}", "Content-Type": "application/json"})
             context = ssl.create_default_context(cafile="/tmp/fieldkest-ca.crt")
             try:
-                status, value = open_json(request, context, timeout=8)
-            except UpstreamUnavailable:
+                status, value = open_json(request, context, timeout=20)
+            except UpstreamUnavailable as failure:
+                cause = failure.__cause__ or failure
+                cause = getattr(cause, 'reason', cause)
+                append_audit(AUDIT, 'diagnostic-delivery-transport', {
+                    'request_id': self.request_id, 'job_id': match.group(1),
+                    'error_type': type(cause).__name__, 'errno': getattr(cause, 'errno', None),
+                    'tls_verify_code': getattr(cause, 'verify_code', None), 'status': 502,
+                })
                 status, value = 502, {"error": "diagnostic_delivery_unavailable"}
             except UpstreamInvalidResponse:
                 status, value = 502, {"error": "diagnostic_delivery_invalid_response"}
