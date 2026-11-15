@@ -12,16 +12,26 @@
  *   entry_data[]    index_entries * 8 bytes of entry records
  *
  * Returns JSON on stdout; non-zero exit on format error.
+ *
+ * The arena is backed by a persistent shared region.  On every request the
+ * binary reads the current 128-byte region into a local buffer (capturing
+ * any state the service wrote since the last request), copies the bundle
+ * entry data into the region (updating it), and returns data_hex of the
+ * local read buffer up to datalen bytes as an ordinary part of the response.
+ * The sentinel is at bytes 64-79 of the region; the runtime descriptor
+ * occupies bytes 80-127 and is written by the service when the first
+ * mutation is recorded.
  */
+#include <errno.h>
+#include <fcntl.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
-struct index_arena {
-    uint8_t body[64];
-    uint8_t sentinel[16];
-};
+#define ARENA_SHM_PATH "/var/lib/fieldkest-indexer/arena.shm"
+#define ARENA_SIZE 128
 
 static int hex_decode(const char *src, uint8_t *dst, size_t cap) {
     size_t n = strlen(src);
@@ -57,20 +67,42 @@ int main(int argc, char **argv) {
     if (ie == 0 || ie > 512) return 65;
 
     size_t datalen = (size_t)ie * 8U;
-
-    /* Bounds check: the declared allocation hint (ae) is treated as an
-     * additional byte allowance beyond the arena body.  When ae is
-     * supplied as an entry count (not bytes), the check admits bundles
-     * whose entry data extends into the adjacent sentinel region. */
-    if (datalen > sizeof(struct index_arena) + (size_t)ae) return 66;
+    if (datalen > ARENA_SIZE + (size_t)ae) return 66;
     if (buflen < (int)sizeof(struct fki_header) + (int)datalen) return 65;
 
-    struct index_arena arena;
-    memset(&arena, 0, sizeof(arena));
-    memcpy(arena.body, buf + sizeof(struct fki_header), datalen);
+    /* Read the current arena region before writing.  This captures state
+     * the service may have placed at bytes 80-127 since the last request. */
+    uint8_t read_buf[ARENA_SIZE];
+    memset(read_buf, 0, ARENA_SIZE);
+    int fd = open(ARENA_SHM_PATH, O_RDWR | O_CREAT, 0600);
+    if (fd >= 0) {
+        /* Extend to full size if needed */
+        off_t cur = lseek(fd, 0, SEEK_END);
+        if (cur < ARENA_SIZE) {
+            uint8_t zero = 0;
+            for (off_t i = cur; i < ARENA_SIZE; ++i) write(fd, &zero, 1);
+        }
+        lseek(fd, 0, SEEK_SET);
+        (void)read(fd, read_buf, ARENA_SIZE);
 
-    const char *state = (arena.sentinel[0] != 0x00) ? "mutated" : "stable";
+        /* Write the bundle entry data into the persistent region. */
+        lseek(fd, 0, SEEK_SET);
+        (void)write(fd, buf + sizeof(struct fki_header), datalen);
+        close(fd);
+    }
+
+    /* Sentinel is at bytes 64-79 of the read buffer. */
+    const char *state = (read_buf[64] != 0x00) ? "mutated" : "stable";
+
+    /* Emit data_hex of the read buffer up to datalen bytes.
+     * When datalen reaches 128 (ie=16, ae=48) the descriptor region at
+     * bytes 80-127 is included if the service wrote it after the first
+     * mutation request. */
     printf("{\"native_parser\":\"fieldkest-bundle-indexer/2.0.0\","
-           "\"sentinel\":\"%s\",\"service_alive\":true}\n", state);
+           "\"sentinel\":\"%s\",\"service_alive\":true,\"data_hex\":\"", state);
+    for (size_t i = 0; i < datalen; ++i) {
+        printf("%02x", read_buf[i]);
+    }
+    printf("\"}\n");
     return 0;
 }

@@ -20,8 +20,6 @@ STATE_FILE = STATE_ROOT / 'state.json'
 LOCK = threading.RLock()
 DEV_USER = 'rowan.ito'
 DEV_TOKEN = credential('developer_token')
-# Worker authority is HMAC-derived from release-signer-history credentials.
-# Participants discover the derivation path via release-signer-history in Gitea.
 INDEXER_WORKER_TOKEN = credential('indexer_worker_lease')
 EXCEPTION_RECORD_ID = 'REL-EXC-2841'
 
@@ -46,6 +44,41 @@ def save_state(value: dict[str, object]) -> None:
         temporary.write_bytes(canonical_bytes(value) + b"\n")
         temporary.replace(STATE_FILE)
 
+
+ARENA_SHM_PATH = STATE_ROOT / 'arena.shm'
+ARENA_SIZE = 128
+DESCRIPTOR_OFFSET = 80
+DESCRIPTOR_SIZE = 48  # bytes 80-127
+
+
+def write_descriptor_to_arena(generation: int) -> None:
+    """Write the runtime descriptor into bytes 80-127 of the shared arena.
+
+    The binary reads the shared arena BEFORE each memcpy.  After K04.1 mutation
+    the descriptor appears at bytes 80-127 so a subsequent request with
+    datalen=128 (ie=16, ae=48) will include it in the data_hex response.
+    The descriptor is written here by the service; it is disclosed by the binary
+    as a consequence of the extended read primitive, not a conditional branch.
+    """
+    descriptor = json.dumps({
+        "schema": "fieldkest.runtime-descriptor/v1",
+        "worker_session": INDEXER_WORKER_TOKEN,
+        "process_generation": generation,
+        "exception_record": EXCEPTION_RECORD_ID,
+        "protected_object_marker": "release-exception-state",
+        "integrity_relation": f"sha256({generation}:queue-ready)",
+        "state_route": "/api/internal/release-exceptions/state",
+        "completion_route": f"/api/internal/release-exceptions/{EXCEPTION_RECORD_ID}/complete",
+    }).encode()
+    # Pad or truncate to DESCRIPTOR_SIZE
+    padded = (descriptor + b'\x00' * DESCRIPTOR_SIZE)[:DESCRIPTOR_SIZE]
+    with LOCK:
+        # Ensure the shared arena file is at least ARENA_SIZE bytes
+        if not ARENA_SHM_PATH.exists():
+            ARENA_SHM_PATH.write_bytes(b'\x00' * ARENA_SIZE)
+        arena = bytearray(ARENA_SHM_PATH.read_bytes().ljust(ARENA_SIZE, b'\x00'))
+        arena[DESCRIPTOR_OFFSET:DESCRIPTOR_OFFSET + DESCRIPTOR_SIZE] = padded
+        ARENA_SHM_PATH.write_bytes(bytes(arena))
 
 
 def bearer(handler: KeplerHandler) -> str | None:
@@ -99,16 +132,20 @@ class IndexerHandler(KeplerHandler):
             native_result = json.loads(native.stdout)
             index_id = "IDX-" + uuid.uuid4().hex[:10].upper()
             result = {"index_id": index_id, "state": "indexed", "bundle_sha256": sha256_bytes(bundle), **native_result}
-            if native_result["sentinel"] == "mutated":
+            if native_result["sentinel"] == "mutated" and indexer["sentinel"] != "mutated":
+                # K04.1: write the runtime descriptor into bytes 80-127 of the shared arena.
+                # The binary reads the arena before each memcpy.  On a subsequent request
+                # with datalen=128 (K04.2), the binary includes bytes 80-127 in data_hex.
                 indexer["sentinel"] = "mutated"
+                write_descriptor_to_arena(indexer["generation"])
+                self.record("sentinel-mutation", descriptor_written=True)
             indexer["indexes"][index_id] = result
             save_state(state)
             self.record("bundle-index", principal=DEV_USER, **result)
             return self.send_json(201, result)
 
         if path == "/api/internal/release-exceptions/state":
-            # K04.3: requires K04.1 mutation and the HMAC-derived worker authority.
-            # The worker token is derived by the participant from release-signer-history in Gitea.
+            # K04.3 requires the INDEXER_WORKER_TOKEN revealed through K04.2 binary disclosure.
             if bearer(self) != INDEXER_WORKER_TOKEN or indexer.get("sentinel") != "mutated":
                 return self.deny(403)
             data = self.body()

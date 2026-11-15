@@ -91,14 +91,6 @@ def main() -> int:
     os.chmod(args.output_dir, 0o700)
 
     credentials = {name: derive(seed_bytes, name) for name in sorted(PURPOSES)}
-    # K04.2: derive indexer_worker_lease from the release-signer-history passphrase
-    # so participants can compute it from the native Gitea record.
-    # passphrase from fieldkest/release-signer-history/signer-history.json
-    _signer_passphrase = "SignerHistory-6Yp4"
-    _exception_record_id = "REL-EXC-2841"
-    credentials["indexer_worker_lease"] = hmac.new(
-        _signer_passphrase.encode(), _exception_record_id.encode(), hashlib.sha256
-    ).hexdigest()
     runtime = {"schema": SCHEMA, "credentials": credentials}
     write_private(
         args.output_dir / "runtime-credentials.json",

@@ -113,15 +113,15 @@ hints:
     - kind: participant_artifact
       id: work/reproducers/indexer-client.json
   K04.2:
-    h1: The indexer-client.json names the exception_records repository. Check that native Gitea repository for the
-      release exception record that the K04.1 mutation generates.
-    h2: The exception record identifies the authority derivation method and the signer-history reference. Read the
-      signer-history.json from the same repository to find the passphrase input.
-    h3: Compute the worker authority as HMAC-SHA256 of the signer passphrase half and the exception record ID. The
-      indexer validates this computed value; no service endpoint reveals it.
+    h1: The binary response includes a data_hex field covering the bytes actually read from the shared arena. After
+      K04.1 the arena's descriptor region at bytes 80-127 carries runtime state the service wrote at mutation time.
+    h2: Extend the .fki bundle to datalen=128 (ie=16, ae=48) so the binary's read includes the descriptor region.
+      The sentinel region (bytes 64-79) still triggers the mutation check; bytes 80-127 carry the descriptor.
+    h3: Parse data_hex bytes 160-255 (hex chars for bytes 80-127) as JSON to extract the runtime descriptor.
+      It supplies the worker_session bearer, state_route, process_generation, and integrity_relation for K04.3.
     references:
     - kind: participant_service
-      id: source.keplerops.test
+      id: indexer.keplerops.test
     - kind: participant_artifact
       id: work/reproducers/indexer-client.json
   K04.3:
