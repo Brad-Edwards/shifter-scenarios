@@ -619,6 +619,7 @@ services:
     user: 1000:1000
     read_only: true
     cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
     security_opt: [no-new-privileges:true]
     command: [step-ca, /home/step/config/ca.json, --password-file, /home/step/secrets/password]
     environment:
