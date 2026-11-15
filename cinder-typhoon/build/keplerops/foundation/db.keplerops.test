@@ -26,8 +26,8 @@ ci          IN A 10.77.51.40
 review      IN A 10.77.51.41
 jenkins     IN A 10.77.51.40
 preview     IN A 10.77.51.50
-support     IN A 10.77.51.11
-tickets     IN A 10.77.51.11
+support     IN A 10.77.50.11
+tickets     IN A 10.77.50.11
 indexer     IN A 10.77.51.70
 cloud-api   IN A 10.77.52.20
 workload    IN A 10.77.52.30
