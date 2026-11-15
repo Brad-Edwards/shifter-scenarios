@@ -58,7 +58,11 @@ services:
     cap_add: [SETUID, SETGID, CHOWN, DAC_OVERRIDE, SYS_CHROOT]
     sysctls: {net.ipv4.ip_forward: "0", net.ipv4.ip_unprivileged_port_start: "0"}
     dns: [10.77.60.10]
-    tmpfs: [/tmp, /run]
+    tmpfs:
+      - /tmp
+      - /run
+      - /etc/ssl/certs:rw,nosuid,nodev,noexec,size=4m,mode=0755
+      - /usr/local/share/ca-certificates:rw,nosuid,nodev,noexec,size=1m,mode=0755
     volumes:
       - workplace-home:/home/morgan
       - workplace-ssh:/var/lib/arwc-workplace/ssh

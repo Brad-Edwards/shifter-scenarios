@@ -14,5 +14,4 @@ COPY workplace-sshd.conf /etc/ssh/sshd_config
 COPY krb5.conf /etc/krb5.conf
 COPY workplace-entrypoint.sh /usr/local/bin/arwc-workplace
 RUN chmod 0755 /usr/local/bin/arwc-workplace
-ENV SSL_CERT_FILE=/tmp/arwc-public-ca.pem CURL_CA_BUNDLE=/tmp/arwc-public-ca.pem GIT_SSL_CAINFO=/tmp/arwc-public-ca.pem
 ENTRYPOINT ["/usr/local/bin/arwc-workplace"]
