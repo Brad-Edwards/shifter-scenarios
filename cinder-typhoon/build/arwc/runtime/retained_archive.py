@@ -39,10 +39,9 @@ BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/archive-source.json"
 IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/archive-source.json")
 DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/archive-lineage.json")
 STEP_CA_ROOT = "/run/arwc-step-ca/root.crt"
+STEP_CA_INTERMEDIATE = "/run/arwc-step-ca/intermediate.crt"
 STEP_CA_URL = "https://ca.arwc.test:9000"
-STEP_CA_PROVISIONER_KEY = "/run/arwc-step-ca/provisioner.enc.json"
-STEP_CA_PROVISIONER_PASS = "/run/arwc-step-ca/password"
-STEP_CLI = "/usr/local/bin/step"
+OTT_POOL = pathlib.Path("/run/arwc-tokens")
 
 def _load_workflow() -> dict:
     """Load the workflow record from the Nextcloud-sourced file.
@@ -407,86 +406,37 @@ def has_w12_source() -> bool:
     )
 
 
-def issue_certificate(organizational_unit: str) -> tuple[str, str, str]:
-    """Issue a certificate via native step-ca with the caller-supplied OU.
+def consume_enrollment_token() -> str:
+    """Return the next pre-generated step-ca OTT from the token pool.
 
-    The step-ca infrastructure JWK provisioner signs the CSR. The x509 template
-    is configured to include the OU from the CSR subject. The archive service
-    does not operate its own CA; step-ca owns certificate identity and telemetry.
+    The archive service does NOT hold CA provisioner secrets. OTTs are
+    generated during seeding (by manage.sh using the provisioner key on the
+    host) and stored in a read-only bind mount. Each OTT is single-use;
+    step-ca enforces this via jti uniqueness. The archive tracks which OTT
+    to serve next using a counter in its persistent state.
     """
-    if not (1 <= len(organizational_unit) <= 160):
-        raise ValueError("organizational unit has an invalid length")
-    if any(character in organizational_unit for character in "\r\n\x00"):
-        raise ValueError("organizational unit contains an invalid character")
-    with tempfile.TemporaryDirectory() as directory:
-        work = pathlib.Path(directory)
-        key = work / "client.key"
-        request = work / "client.csr"
-        # Generate RSA key and CSR. The CN must match the token subject (OU value)
-        # for step-ca to accept the sign request. Step-ca embeds the CN (= OU) in
-        # the signed cert; the query handler reads it as the archive identity.
-        subprocess.run(
-            ["openssl", "req", "-new", "-newkey", "rsa:2048", "-nodes",
-             "-subj", f"/CN={organizational_unit}",
-             "-keyout", str(key), "-out", str(request)],
-            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-        )
-        # Obtain a step-ca OTT using the organizational_unit as the token subject.
-        # The step-ca JWK provisioner sanitizes the CSR's Subject fields, so the
-        # OU value is passed as the token subject instead. It becomes the cert's CN,
-        # which the query handler reads as the archive identity for the SQL query.
-        # HOME must be set explicitly: setpriv inherits HOME=/root from the
-        # entrypoint but arwc-archive cannot access /root/.step/.
-        step_home = str(ROOT)
-        step_env = {**os.environ, "HOME": step_home, "STEPPATH": str(ROOT / ".step")}
-        (ROOT / ".step").mkdir(mode=0o700, exist_ok=True)
-        token_result = subprocess.run(
-            [STEP_CLI, "ca", "token", organizational_unit,
-             "--provisioner", "infrastructure",
-             "--key", STEP_CA_PROVISIONER_KEY,
-             "--password-file", STEP_CA_PROVISIONER_PASS,
-             "--ca-url", STEP_CA_URL,
-             "--root", STEP_CA_ROOT,
-             "--not-after", "1h"],
-            capture_output=True, text=True, check=True,
-            env=step_env,
-        )
-        ott = token_result.stdout.strip()
-        if not ott:
-            raise ValueError("step-ca did not return a provisioner token")
-        # POST the CSR and OTT to step-ca's sign endpoint.
-        import urllib.request as _urllib_request
-        csr_pem = request.read_text(encoding="utf-8")
-        body = json.dumps({"csr": csr_pem, "ott": ott}).encode()
-        ctx = ssl.create_default_context(cafile=STEP_CA_ROOT)
-        req = _urllib_request.Request(
-            STEP_CA_URL + "/1.0/sign",
-            data=body, method="POST",
-            headers={"Content-Type": "application/json"},
-        )
-        with _urllib_request.urlopen(req, context=ctx, timeout=15) as response:
-            signed = json.loads(response.read())
-        cert_pem = signed.get("crt", "")
-        if not cert_pem:
-            raise ValueError("step-ca sign response did not include a certificate")
-        # Include the issuer chain so the client can present the full chain
-        # for server-side verification (root CA is in the trust store but
-        # the intermediate must be supplied by the client).
-        chain_pem = signed.get("ca", "")
-        if chain_pem:
-            cert_pem = cert_pem + chain_pem
-        # Return cert, key, and a stable identifier from the signed cert.
-        import hashlib as _hashlib
-        serial = _hashlib.sha256(cert_pem.encode()).hexdigest()[:32]
-        return cert_pem, key.read_text(encoding="utf-8"), serial
+    pool = OTT_POOL
+    tokens = sorted(pool.glob("ott-*.jwt")) if pool.exists() else []
+    if not tokens:
+        raise ValueError("no enrollment tokens available; re-run seed-archive")
+    state = load_state()
+    index = int(state.get("ott_index", 0)) % len(tokens)
+    state["ott_index"] = index + 1
+    save_state(state)
+    token_path = tokens[index]
+    ott = token_path.read_text(encoding="utf-8").strip()
+    if not ott:
+        raise ValueError("enrollment token file is empty; re-run seed-archive")
+    return ott
 
 
 def peer_organizational_unit(socket: ssl.SSLSocket) -> str | None:
-    """Return the archive identity from the client certificate's Common Name.
+    """Return the archive identity from the client certificate's OrganizationalUnit.
 
-    The step-ca infrastructure provisioner signs certificates where the CN
-    carries the participant-supplied OU value (the provisioner uses the token
-    subject as CN). The CN is therefore the injection point for the SQL query.
+    The step-ca infrastructure provisioner signs certificates with the
+    participant-supplied OU value via the archive-submitter x509 template
+    (which uses .Insecure.CR.Subject.OrganizationalUnit). The OU is the
+    identity field that flows into the unparameterized SQL query.
     """
     der = socket.getpeercert(binary_form=True)
     if not der:
@@ -499,11 +449,22 @@ def peer_organizational_unit(socket: ssl.SSLSocket) -> str | None:
             ["openssl", "x509", "-in", handle.name, "-noout", "-subject", "-nameopt", "multiline"],
             check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
         )
-    for line in completed.stdout.splitlines():
-        match = re.match(r"\s*commonName\s*=\s*(.*)$", line)
+    # Collect all OU lines (openssl may wrap long values across continuation lines).
+    lines = completed.stdout.splitlines()
+    ou_parts: list[str] = []
+    collecting = False
+    for line in lines:
+        match = re.match(r"\s*organizationalUnitName\s*=\s*(.*)$", line)
         if match:
-            return match.group(1)
-    return None
+            collecting = True
+            ou_parts.append(match.group(1))
+        elif collecting:
+            stripped = line.strip()
+            if stripped and not re.match(r"\w+\s*=", stripped):
+                ou_parts.append(stripped)
+            else:
+                break
+    return "".join(ou_parts) if ou_parts else None
 
 
 def archive_member(data: bytes) -> str:
@@ -793,18 +754,29 @@ class Handler(BaseHTTPRequestHandler):
             return
         path = urlsplit(self.path).path
         if path == "/api/archived-queries/current":
-            # Serve the current enrollment token for archive query enrollment.
-            # The archive service manages this token; the workflow record is in Nextcloud.
-            state = load_state()
-            if state["enrollment_consumed"]:
-                token, digest = new_enrollment()
-                state["enrollment_token"] = token
-                state["enrollment_token_sha256"] = digest
-                state["enrollment_consumed"] = False
-                save_state(state)
+            # Return a pre-generated step-ca OTT from the pool, plus the
+            # step-ca connection info. The participant calls step-ca directly
+            # with the OTT and their CSR to obtain a certificate. The archive
+            # service does not hold CA provisioner secrets.
+            try:
+                ott = consume_enrollment_token()
+            except ValueError as err:
+                self.send_json(503, {"error": str(err)})
+                return
+            # Compute step-ca root fingerprint for the participant to trust the CA.
+            root_cert_pem = pathlib.Path(STEP_CA_ROOT).read_bytes()
+            from cryptography.hazmat.primitives import hashes
+            from cryptography import x509 as _x509
+            root_cert = _x509.load_pem_x509_certificate(root_cert_pem)
+            fingerprint = root_cert.fingerprint(hashes.SHA256()).hex()
             self.send_json(200, {
-                "enrollment_token": state["enrollment_token"],
+                "ott": ott,
+                "ca_url": STEP_CA_URL,
+                "ca_fingerprint": fingerprint,
                 "profile": "ArchiveSubmitter",
+                "sign_endpoint": STEP_CA_URL + "/1.0/sign",
+                "enrollment_cn": "archive-submitter",
+                "identity_field": "organizationalUnit",
             })
             return
         if path == "/api/sequencer-specs/current":
@@ -1256,46 +1228,14 @@ class Handler(BaseHTTPRequestHandler):
     def query(self, request: dict[str, object]) -> None:
         operation = request.get("operation")
         if operation == "enroll":
-            state = load_state()
-            supplied = request.get("enrollment_token")
-            if not isinstance(supplied, str) or state["enrollment_consumed"]:
-                self.send_json(409, {"error": "enrollment is not current"})
-                return
-            if not hmac.compare_digest(hashlib.sha256(supplied.encode()).hexdigest(),
-                                       str(state["enrollment_token_sha256"])):
-                self.send_json(409, {"error": "enrollment is not current"})
-                return
-            organizational_unit = request.get("organizational_unit")
-            if not isinstance(organizational_unit, str):
-                self.send_json(409, {"error": "organizational unit is required"})
-                return
-            try:
-                certificate, private_key, serial = issue_certificate(organizational_unit)
-            except (ValueError, subprocess.SubprocessError) as _exc:
-                print(f"enrollment error ({type(_exc).__name__}): {_exc}", flush=True)
-                self.send_json(409, {"error": "organizational unit is not accepted"})
-                return
-            except Exception as _exc:
-                print(f"enrollment unexpected error ({type(_exc).__name__}): {_exc}", flush=True)
-                self.send_json(409, {"error": "enrollment failed"})
-                return
-            state["enrollment_consumed"] = True
-            issued = state["issued_certificates"]
-            assert isinstance(issued, list)
-            issued.append({"serial": serial, "organizational_unit": organizational_unit})
-            save_state(state)
-            result = {
-                "record_id": f"ArchiveSubmitter-{serial[2:]}",
-                "revision": 1,
-                "profile": "ArchiveSubmitter",
-                "common_name": "corporate-reader-principal",
-                "organizational_unit": organizational_unit,
-                "extended_key_usage": "clientAuth",
-            }
-            self.accepted(
-                "archive-identity-query/enroll", result,
-                "corporate-reader-principal", extra={"certificate": certificate, "private_key": private_key},
-            )
+            # Certificate issuance is owned by step-ca. The participant must use
+            # the OTT from GET /api/archived-queries/current to call step-ca's
+            # /1.0/sign endpoint directly. This endpoint is kept for compatibility
+            # but no longer issues certificates.
+            self.send_json(410, {
+                "error": "enrollment is handled by step-ca directly",
+                "sign_endpoint": STEP_CA_URL + "/1.0/sign",
+            })
             return
         if operation != "query":
             self.send_json(409, {"error": "unknown archive operation"})

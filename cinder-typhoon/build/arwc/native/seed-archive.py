@@ -106,10 +106,16 @@ def ensure_folder(owner: str, folder_path: str, auth: str = AUTH) -> None:
 
 
 def main() -> None:
-    # Generate a strong password for the archive reader.
-    reader_password = secrets.token_hex(32)
+    # Derive a stable password from the STAFF_SEED so it is consistent across
+    # seed-archive runs and matches any previously written credentials file.
+    staff_seed = os.environ.get("STAFF_SEED", "")
+    if staff_seed:
+        import hashlib as _hashlib
+        reader_password = _hashlib.sha256(f"archive-reader:{staff_seed}".encode()).hexdigest()
+    else:
+        reader_password = secrets.token_hex(32)
 
-    # Create or update the archive reader account.
+    # Create the archive reader account or update the password to match.
     try:
         ocs("POST", "users", {
             "userid": READER_USERNAME,
@@ -119,9 +125,8 @@ def main() -> None:
         }, accepted=(200, 100))
         print(f"Created Nextcloud account: {READER_USERNAME}")
     except RuntimeError:
-        # Account exists; set a new password.
         ocs("PUT", f"users/{READER_USERNAME}", {"key": "password", "value": reader_password})
-        print(f"Updated password for existing account: {READER_USERNAME}")
+        print(f"Set password for existing account: {READER_USERNAME}")
 
     reader_auth = "Basic " + base64.b64encode(f"{READER_USERNAME}:{reader_password}".encode()).decode()
 

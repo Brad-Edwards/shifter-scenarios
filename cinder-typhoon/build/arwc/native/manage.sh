@@ -122,8 +122,60 @@ PYEOF
     "${compose[@]}" --profile seed run --rm seed-identity
     ;;
   seed-archive)
-    # Generate a password for the archive query role.
-    archive_db_pass=$(openssl rand -hex 24)
+    # Generate a pool of step-ca OTTs for the archive enrollment endpoint.
+    # The provisioner key stays on the host; the archive container receives
+    # only the pre-generated tokens, not the signing secrets.
+    # Each OTT is single-use (step-ca enforces jti uniqueness).
+    # Generate enough for a full participant session.
+    mkdir -p .operator/archive-workflow/tokens
+    chmod 0755 .operator/archive-workflow/tokens
+    # Clear any stale tokens from a previous reset.
+    rm -f .operator/archive-workflow/tokens/ott-*.jwt
+    # Extract the provisioner encrypted key if not already done.
+    python3 - <<'PYEOF'
+import json, pathlib
+p = pathlib.Path('.operator/ca/config/ca.json')
+out = pathlib.Path('.operator/ca/provisioner.enc.json')
+if p.exists() and not out.exists():
+    config = json.loads(p.read_text())
+    for prov in config.get('authority', {}).get('provisioners', []):
+        if prov.get('name') == 'infrastructure' and prov.get('encryptedKey'):
+            out.write_text(prov['encryptedKey']); out.chmod(0o644); break
+PYEOF
+    # Generate OTTs from within the running step-ca container.
+    # The step-ca server must be running (it was started by 'up' above).
+    # Generate 50 OTTs (1-hour validity each; participant calls GET for a fresh one).
+    # 50 tokens covers repeated enrollment attempts across a full event session.
+    echo "Generating step-ca enrollment tokens..."
+    for i in $(seq -w 1 50); do
+      # Note: stdout redirect must come before stderr redirect for docker exec.
+      docker exec cinder-arwc-native-ca-1 \
+        step ca token \
+        --provisioner infrastructure \
+        --key /home/step/provisioner.enc.json \
+        --password-file /home/step/secrets/password \
+        --ca-url https://ca.arwc.test:9000 \
+        --root /home/step/certs/root_ca.crt \
+        --not-after 1h \
+        "archive-submitter" \
+        > ".operator/archive-workflow/tokens/ott-${i}.jwt" 2>/dev/null || true
+    done
+    # Also copy root and intermediate certs for the participant to discover.
+    cp .operator/ca/certs/root_ca.crt .operator/archive-workflow/step-ca-root.pem
+    cp .operator/ca/certs/intermediate_ca.crt .operator/archive-workflow/step-ca-intermediate.pem
+    chmod 0644 .operator/archive-workflow/step-ca-root.pem .operator/archive-workflow/step-ca-intermediate.pem
+    echo "Generated $(ls .operator/archive-workflow/tokens/ott-*.jwt 2>/dev/null | wc -l) enrollment tokens"
+    # Copy tokens to the golden ARWC operator directory for the archive container.
+    # From build/arwc/native/, the golden .operator is at ../  (build/arwc/.operator).
+    golden_op="$(cd .. && pwd)/.operator"
+    mkdir -p "${golden_op}/archive-workflow/tokens"
+    chmod 0755 "${golden_op}/archive-workflow/tokens"
+    cp .operator/archive-workflow/tokens/ott-*.jwt "${golden_op}/archive-workflow/tokens/" 2>/dev/null || true
+    chmod 0644 "${golden_op}/archive-workflow/tokens/"ott-*.jwt 2>/dev/null || true
+    # Derive a stable password for the archive query role from the handover key.
+    # The handover key is stable per range; this keeps the archive DB password
+    # consistent across seed-archive runs without requiring manual updates.
+    archive_db_pass=$(head -c 32 ../.operator/handover.key 2>/dev/null | sha256sum | head -c 48 || openssl rand -hex 24)
     # Seed archive.records table and archive_query role in corporate-db.
     "${compose[@]}" exec -T --user postgres corporate-db psql -U corporate -d planning \
         --no-psqlrc --set ON_ERROR_STOP=1 <<SQL
@@ -144,19 +196,21 @@ ON CONFLICT (record_id) DO UPDATE SET
     revision = EXCLUDED.revision, workflow = EXCLUDED.workflow,
     attachment = EXCLUDED.attachment, organizational_unit = EXCLUDED.organizational_unit,
     classification = EXCLUDED.classification;
-DO \$\$ BEGIN
+DO \$\$
+BEGIN
     IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'archive_query') THEN
-        EXECUTE 'CREATE ROLE archive_query LOGIN PASSWORD ''${archive_db_pass}''';
-    ELSE
-        EXECUTE 'ALTER ROLE archive_query LOGIN PASSWORD ''${archive_db_pass}''';
+        CREATE ROLE archive_query NOINHERIT;
     END IF;
-END \$\$;
+END
+\$\$;
+ALTER ROLE archive_query LOGIN PASSWORD '${archive_db_pass}';
+GRANT USAGE ON SCHEMA archive TO archive_query;
 GRANT USAGE ON SCHEMA archive TO archive_query;
 GRANT SELECT ON archive.records TO archive_query;
 SQL
     # Write DB credentials for the archive container.
     # The golden ARWC compose reads from ../arwc/.operator/archive-workflow/.
-    for opdir in .operator ../arwc/.operator; do
+    for opdir in .operator "${golden_op}"; do
         mkdir -p "${opdir}/archive-workflow"
         chmod 0755 "${opdir}/archive-workflow"
         printf '{"host":"corporate-db","database":"planning","user":"archive_query","password":"%s"}\n' \
