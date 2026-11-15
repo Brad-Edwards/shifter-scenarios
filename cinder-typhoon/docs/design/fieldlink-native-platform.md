@@ -85,7 +85,10 @@ df -h /
 The small native growth utility avoids an interactive partition prompt. This
 procedure completed without an application restart. Keep normal kubelet storage
 thresholds; the bootstrap waits for native disk pressure to clear and verifies
-the qualified client image in the node cache before reporting workload readiness.
+the qualified client image through the native CRI before reporting workload
+readiness. Its archive uses K3s's existing watched offline image directory, so
+K3s owns import and pinning across startup and cache recovery. See the upstream
+[image import procedure](https://docs.k3s.io/add-ons/import-images).
 
 ## Current operation
 
