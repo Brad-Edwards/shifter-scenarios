@@ -16,7 +16,7 @@ RUN gcc -std=c11 -O0 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none -D_FORTIFY_S
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates curl dbus-x11 firefox-esr git iproute2 jq krb5-user openssh-server procps sqlite3 unzip util-linux xorgxrdp xrdp xfce4 xfce4-terminal zip \
+    && apt-get install --no-install-recommends -y ca-certificates curl dbus-x11 firefox-esr git iproute2 jq krb5-user openssh-server procps sqlite3 unzip util-linux xdg-utils xorgxrdp xrdp xfce4 xfce4-terminal zip \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir cryptography==50.0.2 \
     && groupadd --gid 2000 rowan \
