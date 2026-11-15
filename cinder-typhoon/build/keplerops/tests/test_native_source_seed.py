@@ -24,6 +24,14 @@ with patch.dict(sys.modules, {'credentials': types.SimpleNamespace(credential=la
 
 
 class NativeSourceSeedTests(unittest.TestCase):
+    def test_fieldlink_reference_repository_uses_native_archived_state(self) -> None:
+        with patch.object(SEED, 'api') as api:
+            SEED.archive_reference_repository('bootstrap-test')
+        api.assert_called_once_with(
+            'PATCH', '/repos/fieldkest/fieldlink-connector',
+            'bootstrap-test', {'archived': True},
+        )
+
     def test_engineering_note_import_retries_without_overwriting_completed_native_state(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

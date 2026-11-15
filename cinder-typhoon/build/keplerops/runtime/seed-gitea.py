@@ -138,6 +138,11 @@ def engineering_note(password: str) -> None:
     marker.touch(mode=0o600)
 
 
+def archive_reference_repository(password: str) -> None:
+    """Make the retained connector repository read-only through Gitea."""
+    api('PATCH', '/repos/fieldkest/fieldlink-connector', password, {'archived': True})
+
+
 def main() -> None:
     password_path = ROOT / 'data/.bootstrap-password'
     if not password_path.exists():
@@ -217,6 +222,11 @@ def main() -> None:
         ordinary_marker.touch(mode=0o600)
     if 'fieldlink-connector' in REPOSITORIES:
         delivery_history(password)
+        # This retained release repository is reference material for the
+        # developer workstation.  Gitea's native archived state preserves
+        # authenticated reads while rejecting issue, branch and repository
+        # writes by ordinary collaborators.
+        archive_reference_repository(password)
     if 'connector-archive' in REPOSITORIES:
         engineering_note(password)
     print('Native Gitea repositories and handover ready')
