@@ -1,4 +1,4 @@
-# ENG-FLK-LEGACY-42 — Cedar Run diagnostic retention
+# ENG-FLK-LEGACY-42: Cedar Run diagnostic retention
 
 Owner: FieldLink Release Engineering  
 Date: 22 August 2026  
