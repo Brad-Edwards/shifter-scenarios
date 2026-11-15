@@ -50,12 +50,19 @@ nodes:
       addressing remain open.'
   k-source:
     type: compute
-    description: Gitea source, handover, retained release and binary archive service.
+    description: Native Gitea repositories, issues and Git transport, with separate retained FieldLink compiler and
+      archive tools.
     os: linux
     architecture: x86_64
     services:
     - name: source
       port: 443
+      protocol: tcp
+    - name: source-tools
+      port: 8443
+      protocol: tcp
+    - name: source-ssh
+      port: 22
       protocol: tcp
     features:
       k-source: ''
@@ -91,6 +98,8 @@ nodes:
           - k-source
           dns_names:
           - source.keplerops.test
+          - source-tools.keplerops.test
+          - git.keplerops.test
           backend:
             driver: bridge
             description: KeplerOps delivery segment.
@@ -102,12 +111,26 @@ nodes:
         protocol: tcp
         address_family: ipv4
         scope: wildcard
+      - service_listener_id: source-tools
+        service: source-tools
+        address: 0.0.0.0
+        port: 8443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: source-ssh
+        service: source-ssh
+        address: 0.0.0.0
+        port: 22
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
       applications:
       - application_id: gitea
         service: source
         protocol: https
         base_path: /
-        description: Gitea-compatible repositories plus exact authored release-history and retained-tool endpoints.
+        description: Native Gitea private repositories, issues, file objects, history and Git transport.
         routes:
         - route_id: current-user-repositories
           path: /api/v1/user/repos
@@ -115,7 +138,7 @@ nodes:
           - GET
           auth_required: true
           auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          session_required: false
           responses:
           - status_code: 200
             content_type: application/json
@@ -127,7 +150,7 @@ nodes:
           - GET
           auth_required: true
           auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          session_required: false
           parameters:
           - name: owner
             location: path
@@ -159,7 +182,7 @@ nodes:
           - POST
           auth_required: true
           auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          session_required: false
           parameters:
           - name: owner
             location: path
@@ -181,24 +204,31 @@ nodes:
           - status_code: 403
             content_type: application/json
         - route_id: protected-handover
-          path: /api/fieldkest/handovers/current
+          path: /api/v1/repos/fieldkest/fieldlink-connector/issues
           methods:
           - GET
           auth_required: true
           auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          session_required: false
           responses:
           - status_code: 200
             content_type: application/json
           - status_code: 403
             content_type: application/json
+      - application_id: source-tools
+        service: source-tools
+        protocol: https
+        base_path: /
+        description: Genuine retained FieldLink policy compiler and archived connector operations; native Git and
+          Gitea remain separate.
+        routes:
         - route_id: policy-compiler-evaluations
           path: /api/policy-compilers/fieldkest-policyc/evaluations
           methods:
           - POST
           auth_required: true
-          auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          auth_scheme: FieldLink developer HTTP Basic credential
+          session_required: false
           parameters:
           - name: operation
             location: json_body
@@ -224,8 +254,8 @@ nodes:
           methods:
           - POST
           auth_required: true
-          auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          auth_scheme: FieldLink developer HTTP Basic credential
+          session_required: false
           responses:
           - status_code: 201
             content_type: application/json
@@ -238,8 +268,8 @@ nodes:
           methods:
           - POST
           auth_required: true
-          auth_scheme: Gitea session
-          session_required: true
+          auth_scheme: FieldLink developer HTTP Basic credential
+          session_required: false
           parameters:
           - name: input
             location: uploaded_file
