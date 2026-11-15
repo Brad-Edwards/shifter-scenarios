@@ -45,11 +45,13 @@ realization:
 evidence_requirements:
   c1:
     description: |-
-      Recover the customer-side handover and its original maintenance binding. Reusing the delivery receipt that earned corporate access does not establish the result.
+      Reconcile HND-ARWC-047 with the delivered receipt, active connector, maintenance case and customer receipt. Use the connector-owned record and audit; a copied FieldLink delivery receipt alone is insufficient.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Reconcile HND-ARWC-047 with the delivered receipt, active connector, maintenance case and customer receipt. Use the connector-owned record and audit; a copied FieldLink delivery receipt alone is insufficient.
 
-      Evidence sources are `features.a-corporate.a-connector`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence collection is read-only. It cannot create a share, change a document,
+      issue a product session, or fabricate a product history entry. Native product
+      state and submitted observations must refer to the same range instance.
     source_refs:
     - features.a-corporate.a-connector
     scope: Per-participant in-world evidence; no other participant state.
@@ -80,20 +82,20 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Complete the documented participant path through the named native products. Verify the product-owned
+      record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, fresh evidence,
+      and retained-volume persistence after an ordinary restart.'
   c2:
     description: |-
-      Recover the actual handover and inspection reference from its separate corporate surface. No OT authority is implied.
+      Read the live planning note and identify PLN-HO-CRR-17 revision 3, its inspection reference and planning assignee. Compare submitted facts and the file hash with a trusted native product snapshot.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Read the live planning note and identify PLN-HO-CRR-17 revision 3, its inspection reference and planning assignee. Compare submitted facts and the file hash with a trusted native product snapshot.
 
-      Evidence sources are `features.a-corporate.a-connector`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence collection is read-only. It cannot create a share, change a document,
+      issue a product session, or fabricate a product history entry. Native product
+      state and submitted observations must refer to the same range instance.
     source_refs:
-    - features.a-corporate.a-connector
+    - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -114,7 +116,7 @@ evidence_requirements:
         names:
         - cinder.w01-2.satisfied
         component_refs:
-        - features.a-corporate.a-connector
+        - features.a-corporate.a-business
       collection: require
       retention: require
       redaction: redact-secrets
@@ -122,20 +124,20 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Complete the documented participant path through the named native products. Verify the product-owned
+      record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, fresh evidence,
+      and retained-volume persistence after an ordinary restart.'
   c3:
     description: |-
-      Recover the unpublished continuity note. Its narrative context is separate from the price catalog and private quotes in W35.
+      Identify supplementary water purchasing, Stage A restrictions and the reservation condition from the actual document. The supplier identity must not gain access to another supplier quotation or planning administration.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Identify supplementary water purchasing, Stage A restrictions and the reservation condition from the actual document. The supplier identity must not gain access to another supplier quotation or planning administration.
 
-      Evidence sources are `features.a-corporate.a-connector`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence collection is read-only. It cannot create a share, change a document,
+      issue a product session, or fabricate a product history entry. Native product
+      state and submitted observations must refer to the same range instance.
     source_refs:
-    - features.a-corporate.a-connector
+    - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -156,7 +158,7 @@ evidence_requirements:
         names:
         - cinder.w01-3.satisfied
         component_refs:
-        - features.a-corporate.a-connector
+        - features.a-corporate.a-business
       collection: require
       retention: require
       redaction: redact-secrets
@@ -164,20 +166,20 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Complete the documented participant path through the named native products. Verify the product-owned
+      record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, fresh evidence,
+      and retained-volume persistence after an ordinary restart.'
   c4:
     description: |-
-      Cause the server-side attachment replacement on the designated inspection handover, with the assignee and inspection binding unchanged. Connector execution alone or editing a local copy is insufficient.
+      Locate the correct Task by its project, case and inspection references. Set status to Working and retain the confirmed inspection reference in its description. Require the native Version entry attributed to Jules, the expected field changes and unchanged neighboring records. The observer never creates the mutation or its audit.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Locate the correct Task by its project, case and inspection references. Set status to Working and retain the confirmed inspection reference in its description. Require the native Version entry attributed to Jules, the expected field changes and unchanged neighboring records. The observer never creates the mutation or its audit.
 
-      Evidence sources are `features.a-corporate.a-connector`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence collection is read-only. It cannot create a share, change a document,
+      issue a product session, or fabricate a product history entry. Native product
+      state and submitted observations must refer to the same range instance.
     source_refs:
-    - features.a-corporate.a-connector
+    - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -198,7 +200,7 @@ evidence_requirements:
         names:
         - cinder.w01-4.satisfied
         component_refs:
-        - features.a-corporate.a-connector
+        - features.a-corporate.a-business
       collection: require
       retention: require
       redaction: redact-secrets
@@ -206,11 +208,9 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Complete the documented participant path through the named native products. Verify the product-owned
+      record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, fresh evidence,
+      and retained-volume persistence after an ordinary restart.'
 propositions:
   c1:
     description: Recover the customer-side handover and its original maintenance binding. Reusing the delivery receipt
@@ -231,7 +231,7 @@ propositions:
     description: Recover the actual handover and inspection reference from its separate corporate surface. No OT
       authority is implied.
     subjects:
-    - features.a-corporate.a-connector
+    - features.a-corporate.a-business
     basis: observed_state
     predicate:
       kind: boolean
@@ -246,7 +246,7 @@ propositions:
     description: Recover the unpublished continuity note. Its narrative context is separate from the price catalog
       and private quotes in W35.
     subjects:
-    - features.a-corporate.a-connector
+    - features.a-corporate.a-business
     basis: observed_state
     predicate:
       kind: boolean
@@ -261,7 +261,7 @@ propositions:
     description: Cause the server-side attachment replacement on the designated inspection handover, with the assignee
       and inspection binding unchanged. Connector execution alone or editing a local copy is insufficient.
     subjects:
-    - features.a-corporate.a-connector
+    - features.a-corporate.a-business
     basis: observed_state
     predicate:
       kind: boolean
@@ -334,7 +334,7 @@ objectives:
     actions:
     - w01.c2
     targets:
-    - features.a-corporate.a-connector
+    - features.a-corporate.a-business
     success:
       mode: all_of
       assertions:
@@ -352,7 +352,7 @@ objectives:
     actions:
     - w01.c3
     targets:
-    - features.a-corporate.a-connector
+    - features.a-corporate.a-business
     success:
       mode: all_of
       assertions:
@@ -370,7 +370,7 @@ objectives:
     actions:
     - w01.c4
     targets:
-    - features.a-corporate.a-connector
+    - features.a-corporate.a-business
     success:
       mode: all_of
       assertions:
@@ -476,10 +476,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Retained handover HND-ARWC-047 binds active FieldLink tenant TEN-ARWC-047, connector FLK-7.4.2, maintenance case MTN-CRR-204, and customer receipt RCP-742-047. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
-
-      The required result is: Recover the customer-side handover and its original maintenance binding. Reusing the delivery receipt that earned corporate access does not establish the result.
+    procedure_basis: Recover the retained customer handover and identify the maintenance case attached to the accepted
+      FieldLink delivery.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -494,30 +492,24 @@ action_contracts:
       - features.a-corporate.a-connector
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        `a-connector` and its `customer-handover` application own this part of **The customer's copy**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Retained handover HND-ARWC-047 binds active FieldLink tenant TEN-ARWC-047, connector FLK-7.4.2, maintenance case MTN-CRR-204, and customer receipt RCP-742-047.
-
-        Native bindings:
-
-        - `a-corporate.a-connector/customer-handover/the-customer-s-copy`
-
-        The private service-loader contract is `content.arwc-a-connector.w01-1-the-customer-s-copy`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      description: The existing customer-owned connector serves its genuine retained handover. It does not issue
+        sessions for other products. The earned connector capability remains bound to this customer and delivery.
       support_refs:
       - features.a-corporate.a-connector
-      - content.arwc-a-connector.w01-1-the-customer-s-copy
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
-
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        Check the ordinary user and one denied neighboring record through supported
+        interfaces. Retained-volume restarts preserve product state. Explicit native IT
+        reset restores the seeded accounts, documents, history and per-record grants;
+        it does not reset qualified OT.
       support_refs:
       - features.a-corporate.a-connector
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the customer-side handover and its original maintenance binding. Reusing the delivery
-        receipt that earned corporate access does not establish the result.
+      description: Reconcile HND-ARWC-047 with the delivered receipt, active connector, maintenance case and customer
+        receipt. Use the connector-owned record and audit; a copied FieldLink delivery receipt alone is insufficient.
       target_refs:
       - features.a-corporate.a-connector
       evidence_refs:
@@ -525,9 +517,11 @@ action_contracts:
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Reconcile HND-ARWC-047 with the delivered receipt, active connector, maintenance case and customer receipt. Use the connector-owned record and audit; a copied FieldLink delivery receipt alone is insufficient.
 
-        Evidence sources are `features.a-corporate.a-connector`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence collection is read-only. It cannot create a share, change a document,
+        issue a product session, or fabricate a product history entry. Native product
+        state and submitted observations must refer to the same range instance.
       target_refs:
       - features.a-corporate.a-connector
       evidence_refs:
@@ -543,10 +537,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Unpublished planner handover PLN-HO-CRR-17 names inspection INSP-CRR-2026-09-18 and assignee nadia.corvane. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
-
-      The required result is: Recover the actual handover and inspection reference from its separate corporate surface. No OT authority is implied.
+    procedure_basis: Find the planning handover retained with the supplier documents. Identify the outstanding inspection
+      and its planning assignee.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -558,45 +550,41 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w01.c2
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        `a-connector` and its `customer-handover` application own this part of **The planner's unfinished handover**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Unpublished planner handover PLN-HO-CRR-17 names inspection INSP-CRR-2026-09-18 and assignee nadia.corvane.
-
-        Native bindings:
-
-        - `a-corporate.a-connector/customer-handover/the-planner-s-unfinished-handover`
-
-        The private service-loader contract is `content.arwc-a-connector.w01-2-the-planner-s-unfinished-handover`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      description: Nextcloud Files and WebDAV expose the Veybridge handover folder to Jules through the real Veybridge
+        group. The current planning note is an ordinary imported file.
       support_refs:
-      - features.a-corporate.a-connector
-      - content.arwc-a-connector.w01-2-the-planner-s-unfinished-handover
+      - features.a-corporate.a-business
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
-
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        Check the ordinary user and one denied neighboring record through supported
+        interfaces. Retained-volume restarts preserve product state. Explicit native IT
+        reset restores the seeded accounts, documents, history and per-record grants;
+        it does not reset qualified OT.
       support_refs:
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual handover and inspection reference from its separate corporate surface. No
-        OT authority is implied.
+      description: Read the live planning note and identify PLN-HO-CRR-17 revision 3, its inspection reference and
+        planning assignee. Compare submitted facts and the file hash with a trusted native product snapshot.
       target_refs:
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
       evidence_refs:
       - evidence_requirements.w01.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Read the live planning note and identify PLN-HO-CRR-17 revision 3, its inspection reference and planning assignee. Compare submitted facts and the file hash with a trusted native product snapshot.
 
-        Evidence sources are `features.a-corporate.a-connector`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence collection is read-only. It cannot create a share, change a document,
+        issue a product session, or fabricate a product history entry. Native product
+        state and submitted observations must refer to the same range instance.
       target_refs:
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
       evidence_refs:
       - evidence_requirements.w01.c2
     failure_classes:
@@ -610,10 +598,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Continuity note CONT-DRY-A-R3 explains replacement purchasing and Stage A restrictions when usable reserve falls below committed allocation; ordinary context reuses narrative document pl-arwc-plan-method-01-method. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
-
-      The required result is: Recover the unpublished continuity note. Its narrative context is separate from the price catalog and private quotes in W35.
+    procedure_basis: Determine how ARWC handles a dry-period shortfall and which purchasing records govern supplementary
+      water.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -625,45 +611,42 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w01.c3
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        `a-connector` and its `customer-handover` application own this part of **How the company buys time**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Continuity note CONT-DRY-A-R3 explains replacement purchasing and Stage A restrictions when usable reserve falls below committed allocation; ordinary context reuses narrative document pl-arwc-plan-method-01-method. Ordinary workplace context reuses `arwc-documents:pl-arwc-plan-method-01-method`; the work item-specific service state is separate.
-
-        Native bindings:
-
-        - `a-corporate.a-connector/customer-handover/how-the-company-buys-time`
-
-        The private service-loader contract is `content.arwc-a-connector.w01-3-how-the-company-buys-time`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      description: The ordinary procurement continuity note accompanies native ERPNext supplier and order records.
+        Supplier quotations, settlement tariffs and accepted reservations remain distinct business records.
       support_refs:
-      - features.a-corporate.a-connector
-      - content.arwc-a-connector.w01-3-how-the-company-buys-time
+      - features.a-corporate.a-business
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
-
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        Check the ordinary user and one denied neighboring record through supported
+        interfaces. Retained-volume restarts preserve product state. Explicit native IT
+        reset restores the seeded accounts, documents, history and per-record grants;
+        it does not reset qualified OT.
       support_refs:
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the unpublished continuity note. Its narrative context is separate from the price catalog
-        and private quotes in W35.
+      description: Identify supplementary water purchasing, Stage A restrictions and the reservation condition from
+        the actual document. The supplier identity must not gain access to another supplier quotation or planning
+        administration.
       target_refs:
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
       evidence_refs:
       - evidence_requirements.w01.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Identify supplementary water purchasing, Stage A restrictions and the reservation condition from the actual document. The supplier identity must not gain access to another supplier quotation or planning administration.
 
-        Evidence sources are `features.a-corporate.a-connector`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence collection is read-only. It cannot create a share, change a document,
+        issue a product session, or fabricate a product history entry. Native product
+        state and submitted observations must refer to the same range instance.
       target_refs:
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
       evidence_refs:
       - evidence_requirements.w01.c3
     failure_classes:
@@ -677,10 +660,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      The authored condition is **field-level authorization omission**. Attachment endpoint for PLN-HO-CRR-17 authorizes corporate attachment update but omits the attachment-owner comparison; inspection and assignee fields are immutable and the new attachment digest is audited. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
-
-      The required result is: Cause the server-side attachment replacement on the designated inspection handover, with the assignee and inspection binding unchanged. Connector execution alone or editing a local copy is insufficient.
+    procedure_basis: Correct the supplier handback for the pending Cairn Reach inspection and record that the work
+      is in progress.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -692,45 +673,44 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w01.c4
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        `a-connector` and its `customer-handover` application own this part of **Change the corporate record**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Attachment endpoint for PLN-HO-CRR-17 authorizes corporate attachment update but omits the attachment-owner comparison; inspection and assignee fields are immutable and the new attachment digest is audited.
-
-        Native bindings:
-
-        - `a-corporate.a-connector/customer-handover/change-the-corporate-record`
-
-        The private service-loader contract is `content.arwc-a-connector.w01-4-change-the-corporate-record`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      description: ERPNext stores the real maintenance Project and Task. Jules has an overbroad write DocShare for
+        one supplier handback Task, without a staff or administrator role. Native Task versioning is enabled through
+        supported metadata configuration.
       support_refs:
-      - features.a-corporate.a-connector
-      - content.arwc-a-connector.w01-4-change-the-corporate-record
+      - features.a-corporate.a-business
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
-
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        Check the ordinary user and one denied neighboring record through supported
+        interfaces. Retained-volume restarts preserve product state. Explicit native IT
+        reset restores the seeded accounts, documents, history and per-record grants;
+        it does not reset qualified OT.
       support_refs:
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Cause the server-side attachment replacement on the designated inspection handover, with the
-        assignee and inspection binding unchanged. Connector execution alone or editing a local copy is insufficient.
+      description: Locate the correct Task by its project, case and inspection references. Set status to Working
+        and retain the confirmed inspection reference in its description. Require the native Version entry attributed
+        to Jules, the expected field changes and unchanged neighboring records. The observer never creates the mutation
+        or its audit.
       target_refs:
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
       evidence_refs:
       - evidence_requirements.w01.c4
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Locate the correct Task by its project, case and inspection references. Set status to Working and retain the confirmed inspection reference in its description. Require the native Version entry attributed to Jules, the expected field changes and unchanged neighboring records. The observer never creates the mutation or its audit.
 
-        Evidence sources are `features.a-corporate.a-connector`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence collection is read-only. It cannot create a share, change a document,
+        issue a product session, or fabricate a product history entry. Native product
+        state and submitted observations must refer to the same range instance.
       target_refs:
-      - features.a-corporate.a-connector
+      - features.a-corporate.a-business
       evidence_refs:
       - evidence_requirements.w01.c4
     failure_classes:

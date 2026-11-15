@@ -231,9 +231,6 @@ imports:
 - source: local:modules/content/arwc-a-business.yaml
   namespace: arwc-a-business
   version: 0.1.0
-- source: local:modules/content/arwc-a-connector.yaml
-  namespace: arwc-a-connector
-  version: 0.1.0
 - source: local:modules/content/arwc-a-contractor-bridge.yaml
   namespace: arwc-a-contractor-bridge
   version: 0.1.0

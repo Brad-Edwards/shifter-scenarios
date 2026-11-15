@@ -428,7 +428,7 @@
         "no_sensitive_answer",
         "references_current"
       ],
-      "rationale": "The W01.1 sample starts from corporate handover, work-order, and continuity records, names record-version binding and minimal corporate handover updates, and ends with an observed diagnostic action bound to corporate.handover. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "rationale": "The W01.1 sample starts from the customer-owned FieldLink handover, distinguishes the customer record from its delivery receipt through the current connector and maintenance binding, and ends with a read-and-compare action on corporate.handover. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
       "sample_card": "W01.1",
       "status": "reviewed"
     },
@@ -440,7 +440,7 @@
         "no_sensitive_answer",
         "references_current"
       ],
-      "rationale": "The W02.1 sample starts from business workplace asset, contractor, and association records, names entity reconciliation followed by association-bound authorization testing, and ends with an observed diagnostic action bound to business.asset-bundle. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "rationale": "The W02.1 sample starts from ordinary native supplier purchase orders, names correlation through the actual supplier relationship and asset reference, and ends with opening the permitted order through suppliers.arwc.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
       "sample_card": "W02.1",
       "status": "reviewed"
     },
@@ -452,7 +452,7 @@
         "no_sensitive_answer",
         "references_current"
       ],
-      "rationale": "The W03.1 sample starts from work-order annex, reference resolver, and integration contract, names reference normalization across an attachment namespace and protected export boundary, and ends with an observed diagnostic action bound to business.work-order-annex. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
+      "rationale": "The W03.1 sample starts from the supplier order-document register, names the native attachment relationship and annex revision boundary, and ends with opening and hashing the real private ERPNext attachment through suppliers.arwc.test. Review found no credential, exact payload, unpublished route, final answer, or precomputed result.",
       "sample_card": "W03.1",
       "status": "reviewed"
     },

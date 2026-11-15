@@ -1,5 +1,5 @@
 schema: cinder-typhoon.challenge-delivery/v2
-revision: aa24346ef2733a5f9c5a27e93e3817f6fb089ed3849873b7f21938a08bcab406
+revision: 0862277292f01267f5cfbff2c0c82b211d39a64f6465e623ec89909f345042e0
 scoring:
   model: static
   tier_points:
@@ -2375,8 +2375,8 @@ phases:
         hints:
         - The supplier onboarding material names the document service and the external handover folder.
           Look among the ordinary planning and attendance documents.
-        - Use the document itself rather than an old work-order API. The planning assignee and physical
-          inspection are distinct from software delivery acceptance.
+        - Use record correlation from the document itself rather than an old work-order API. The planning
+          assignee and physical inspection are distinct from software delivery acceptance.
         - Open the planning handover in Nextcloud and retain its current file identity, revision and outstanding
           inspection details.
         completion:
@@ -2390,8 +2390,8 @@ phases:
         hints:
         - The supplier handover includes an ordinary purchasing note. It explains which records Planning
           and Procurement use for dry-period decisions.
-        - Distinguish a supplier quotation, an accepted reservation and a settlement tariff. They do not
-          describe the same business commitment.
+        - Use business-record classification to distinguish a supplier quotation, an accepted reservation
+          and a settlement tariff. They do not describe the same commitment.
         - Read the continuity purchasing note and identify the stated measures and reservation condition
           without borrowing authority from another supplier.
         completion:
@@ -2404,7 +2404,7 @@ phases:
         points: 100
         hints:
         - The physical inspection and its supplier handback remain separate from the accepted software
-          delivery. Find the actual maintenance task for the current case.
+          delivery. Find the actual maintenance task in the ERP system for the current case.
         - A native per-record share can grant more authority than the supplier role suggests. Compare
           the available task permissions with neighboring inspection records.
         - Reconcile the case, project and inspection first, make only the requested task change through
@@ -2426,8 +2426,8 @@ phases:
         hints:
         - The supplier portal contains ordinary purchase orders with supplier relationships and service
           line descriptions. Begin with the current outlet inspection order.
-        - A display label alone is weaker than the actual supplier relationship and asset reference carried
-          by the order.
+        - A display label alone is weaker than correlation through the actual supplier relationship and
+          asset reference carried by the order.
         - Open the permitted order and record its native identity, supplier and maintenance asset from
           the order itself.
         completion:
@@ -2439,10 +2439,10 @@ phases:
         difficulty: medium
         points: 100
         hints:
-        - The internal work order, supplier job and engineering drawing use different names. The supplier
-          order, annex and drawing register carry their stable references.
-        - Join independently owned business records by their references and accepted revisions rather
-          than by similar display labels.
+        - The internal work order, supplier job and engineering drawing use different names. Each independent
+          order, annex and drawing-register record carries stable references.
+        - Use reconciliation across independently owned business records, matching their references and
+          accepted revisions rather than similar display labels.
         - Compare the ERPNext project and order with the annex and native document register; retain a
           source identity for each side of the join.
         completion:
@@ -2456,8 +2456,8 @@ phases:
         hints:
         - The supplier account can see a small set of maintenance records. Check which are ordinary handback
           work and which belong to engineering review.
-        - Compare native per-record sharing with the intended supplier job association. A readable engineering
-          record need not grant permission to edit it.
+        - Compare native per-record authorization with the intended supplier job association. A readable
+          engineering record need not grant permission to edit it.
         - Read the associated inspection record, inspect its actual sharing scope and establish the denied
           neighboring record and write boundary.
         completion:
@@ -2480,8 +2480,8 @@ phases:
           identities together when following the retained annex link.
         - Use the native attachment relationship instead of a guessed business-service route. Check the
           annex revision and its drawing reference.
-        - Follow the supplier document register to the native private annex and retain its file identity
-          and content hash alongside the actual order reference.
+        - Open the supplier document register, follow it to the native private annex, and retain its file
+          identity and content hash alongside the actual order reference.
         completion:
           mode: automatic_range_evidence
       - id: W03.2
@@ -2495,7 +2495,7 @@ phases:
           files shared directly with the supplier account.
         - Compare the earlier distribution with the current recipient and the native incoming share. File
           access does not imply access to its parent department folder.
-        - Download the previous annex version, reconcile its recipient with the current account and incoming
+        - Download the previous annex version, compare its recipient with the current account and incoming
           share, then establish the separately shared engineering file and denied parent.
         completion:
           mode: automatic_range_evidence
@@ -2604,8 +2604,8 @@ phases:
         difficulty: easy
         points: 50
         hints:
-        - An activation roster is retained separately from the starting letter. It includes ordinary employees
-          and their native identity references.
+        - An activation roster is retained separately from the starting letter. Each employee record includes
+          its native identity references.
         - Correlate the employee number, username and identity UUID rather than relying on a similar display
           name or a copied assignment label.
         - Find the temporary employee in the activation export and compare its enabled state, assignment
@@ -2619,7 +2619,7 @@ phases:
         difficulty: medium
         points: 100
         hints:
-        - The starting arrangements point to the actual identity account. Complete its normal first-sign-in
+        - The starting arrangements point to the actual identity system account. Complete its normal first-sign-in
           requirements before evaluating the access it provides.
         - Account self-service and delegated administration are different client and permission boundaries.
           Compare the actual native role scope with the approved work assignment.

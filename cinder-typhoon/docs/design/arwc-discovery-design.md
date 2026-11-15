@@ -33,51 +33,34 @@ must appear in the graph.
 
 ## Service domains
 
-### 1. customer_handover: `corporate.arwc.test`
+### 1. Customer handover: `customer-handover.arwc.test`
 
-Corporate work order and customer handover management.
-
-| Route key | Method | Template | Cards |
-|---|---|---|---|
-| `corporate.handover` | GET | `.../api/handovers/{handover_id}` | W01.1 |
-| `corporate.work-order` | GET | `.../api/work-orders/{wo_id}` | W01.2 |
-| `corporate.continuity-plan` | GET | `.../api/continuity-plans/{plan_id}` | W01.3 |
-| `corporate.work-order-update` | PATCH | `.../api/work-orders/{wo_id}` | W01.4 |
-
-Related: `business.arwc.test/.well-known/arwc-client`
-
-**Normal use**: operations staff read the current customer delivery handover,
-open work orders, and published continuity plans. Planners update work orders
-with inspection attachments.
-
----
-
-### 2. business_workplace: `business.arwc.test`
-
-Business asset records, associations, reports, and procurement.
+The connector publishes only the retained customer integration handover.
 
 | Route key | Method | Template | Cards |
 |---|---|---|---|
-| `business.asset-bundle` | GET | `.../api/asset-bundles/{bundle_id}` | W02.1 |
-| `business.association-record` | GET | `.../api/association-records/{assoc_id}` | W02.2 |
-| `business.work-order-attachment` | GET | `.../api/work-order-attachments/{attach_id}` | W02.3, W03.1 |
-| `business.work-order-references` | GET | `.../api/work-orders/{wo_id}/references` | W03.2 |
-| `business.integration-contract` | GET | `.../api/integration-contracts/{contract_id}` | W03.3 |
-| `business.report-sources` | GET | `.../api/reports/{report_id}/sources` | W10.1 |
-| `business.report-row` | GET | `.../api/reports/{report_id}/rows/{district_id}` | W10.2 |
-| `business.report-document` | GET | `.../api/reports/{report_id}/document` | W10.3 |
-| `business.procurement-quote` | GET | `.../api/procurement-quotes/{quote_id}` | W35.1 |
-| `business.district-quote` | GET | `.../api/procurement-quotes/{quote_id}/districts/{district_id}` | W35.2 |
-| `business.invoice` | GET | `.../api/invoices/{invoice_id}` | W35.3 |
+| `corporate.handover` | GET | `.../api/handovers/current` | W01.1 |
 
-Related: `planning.arwc.test/.well-known/arwc-client`
-
-**Normal use**: business staff manage asset-work associations, retrieve
-attachments for open orders, query district reports, and review procurement
-quotes and invoices.
+The response supplies the Veybridge supplier onboarding for ERPNext and
+Nextcloud. It does not exchange the connector capability for a product session.
 
 ---
 
+### 2. Native business products
+
+W01.2-W03.3 use normal upstream product interfaces. They do not use
+challenge-specific business routes.
+
+| Product | Interface | Cards |
+|---|---|---|
+| Nextcloud | Files and WebDAV under `documents.arwc.test` | W01.2, W01.3, W02.2, W03.2 |
+| ERPNext | Supplier purchase orders and native resource records under `suppliers.arwc.test` | W01.4, W02.1-W02.3, W03.1 |
+| PostgREST | OpenAPI and `/reserve_report` under `read-data.arwc.test` | W03.3 |
+
+The remaining `business.*` discovery routes belong only to W10 and W35.
+They remain until those operations move to native products.
+
+---
 ### 3. retained_archive: `archive.arwc.test`
 
 Retained archive contracts, bundles, and cold archive access.

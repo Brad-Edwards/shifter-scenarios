@@ -42,6 +42,9 @@ nodes:
     - name: integration-gateway
       port: 443
       protocol: tcp
+    - name: postgrest
+      port: 3000
+      protocol: tcp
     runtime:
       filesystem_inventory:
       - path: /var/lib/arwc-data-bridge
@@ -86,6 +89,13 @@ nodes:
         protocol: tcp
         address_family: ipv4
         scope: wildcard
+      - service_listener_id: postgrest-http
+        service: postgrest
+        address: 0.0.0.0
+        port: 3000
+        protocol: tcp
+        address_family: ipv4
+        scope: network_facing
       applications:
       - application_id: integration-gateway
         service: integration-gateway
@@ -108,6 +118,32 @@ nodes:
           - status_code: 403
             content_type: application/json
           - status_code: 409
+            content_type: application/json
+      - application_id: postgrest
+        service: postgrest
+        protocol: https
+        base_path: /
+        description: Native read-only PostgREST publication of the approved DMZ database view.
+        routes:
+        - route_id: openapi
+          path: /
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          responses:
+          - status_code: 200
+            content_type: application/openapi+json
+        - route_id: reserve-report
+          path: /reserve_report
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
             content_type: application/json
       app_authorizations:
       - app_authorization_id: integration-gateway-rbac
@@ -141,6 +177,34 @@ nodes:
         tenants:
         - tenant_id: arwc
           name: Alterra Regional Water Company
+      - app_authorization_id: postgrest-dmz-reader
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: dmz-reader
+          kind: service_account
+          name: dmz_reader
+          credential_classification: redacted
+        roles:
+        - role_id: dmz-reader
+          name: DMZ read-only publisher
+        permission_grants:
+        - grant_id: reserve-report-select
+          role_ref: dmz-reader
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - dmz_api.reserve_report
+          effect: allow
+        role_mappings:
+        - mapping_id: postgrest-anonymous-role
+          role_ref: dmz-reader
+          users:
+          - dmz-reader
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
       software_components:
       - component_id: integration-gateway
         name: Scoped integration-read gateway and outbound estimate publication service
@@ -149,6 +213,13 @@ nodes:
         provenance: operator
         installed_paths:
         - /opt/integration-gateway
+      - component_id: postgrest
+        name: PostgREST
+        version: '16.5'
+        component_type: application
+        provenance: upstream
+        installed_paths:
+        - /usr/local/bin/postgrest
   a-contractor-bridge:
     type: compute
     description: Inspection-scoped current process-read gateway.

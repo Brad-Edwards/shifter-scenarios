@@ -11,16 +11,16 @@
       "phase_card_count": 120,
       "phase_operation_count": 35,
       "phase_score_total": 21450,
-      "revision": "010573653ff970699454ce5243b65a414e3ffc984a81f9526e5431bbded90958",
+      "revision": "0862277292f01267f5cfbff2c0c82b211d39a64f6465e623ec89909f345042e0",
       "schema": "cinder-typhoon.challenge-delivery/v2",
       "score_total": 39200,
-      "sha256": "14f0ed2e5c8e4b754cd291c78e394466df84585183c745b70da004d05269b4a9"
+      "sha256": "ec2fc9a0ebfdac8bbc97477ce2dc2b63d702e4471dd85c65094f3ba27b1368fc"
     },
     "hints": {
       "items": [
         {
           "card_id": "W01.1",
-          "content_revision": "ecea459c20f264c5e7ce1f9bb9ba94101259afbba1dc4e5f3ab2228c9d4959dc",
+          "content_revision": "0093271ab4d1d6e1a96fefc5435194745f55318af934c3b9af3a8c0a48ba4813",
           "levels": [
             1,
             2,
@@ -29,7 +29,7 @@
         },
         {
           "card_id": "W01.2",
-          "content_revision": "e8352a5c27ce0b30bf41782b5e1ed9eb252f4967d4821a6eccdc31e11808235c",
+          "content_revision": "87e5559013d173aba9b3fcee851951abf8e0ce3a7dd11fd7177f9e8a7f00381e",
           "levels": [
             1,
             2,
@@ -38,7 +38,7 @@
         },
         {
           "card_id": "W01.3",
-          "content_revision": "d9cdb3d9f8c6261ca3d507af460e71ab542b4484b6be83eca77966774b03fafa",
+          "content_revision": "ccc026036acb1cffddcfa513917be0da983b3e8d3c0dfb262e1b7dac87fc6fee",
           "levels": [
             1,
             2,
@@ -47,7 +47,7 @@
         },
         {
           "card_id": "W01.4",
-          "content_revision": "80126c73d5265244051de4b93ac1ec7ca59c3a0293a3412c8063f0070d411ec8",
+          "content_revision": "eff3aaca9ab3f48dcbb5bd634f50bdd5c34e87b691bc9166189e0a947366fd77",
           "levels": [
             1,
             2,
@@ -56,7 +56,7 @@
         },
         {
           "card_id": "W02.1",
-          "content_revision": "70d75e39684e03cdd7ee520636ac032f743471708d2ea7111859b4f70f99c066",
+          "content_revision": "3fb290a0d20a274cadb7c4a4c05df7c38308abd183202b821a1b308cc8232fde",
           "levels": [
             1,
             2,
@@ -65,7 +65,7 @@
         },
         {
           "card_id": "W02.2",
-          "content_revision": "b6fed1b7555fdf163ed331095b79cb201a57625ae77c063b7b4bacc6dd3d0b88",
+          "content_revision": "24784daef7d2f55ebf205ee1a722dd5fe46ebfa7c1dfd5302ae060dac47a75d7",
           "levels": [
             1,
             2,
@@ -74,7 +74,7 @@
         },
         {
           "card_id": "W02.3",
-          "content_revision": "7694067229ede4ad549dfdf7761426ece2600aafbc8f148a2423d71b52966458",
+          "content_revision": "c849b3628cf8f8e49b9203e15dced089f513e402442d91838e7d793fe82a6ddc",
           "levels": [
             1,
             2,
@@ -83,7 +83,7 @@
         },
         {
           "card_id": "W03.1",
-          "content_revision": "8a174e4de928ad9888cfdc01748ac59c3472728e8cdae4c1189759cd92f3e913",
+          "content_revision": "8c7cc6b29119967a90fd452a4d2d363c2d18c135bf44856d0bc6d0e40e38b249",
           "levels": [
             1,
             2,
@@ -92,7 +92,7 @@
         },
         {
           "card_id": "W03.2",
-          "content_revision": "8170a9b32fad589e3d46035eebcb2b6ccad80e2a01447ad0e03609b274aaf163",
+          "content_revision": "f65e6dc1ddd1b0a7320cec9a1ecf86371b0da8ef4ad645493f11df56fe70ec4c",
           "levels": [
             1,
             2,
@@ -101,7 +101,7 @@
         },
         {
           "card_id": "W03.3",
-          "content_revision": "dcaa1d8aa3529d7a48eca53097477b911f4ae195b5ba723d49969fdbf2d231f1",
+          "content_revision": "aeb1bdfd2004816c8c8bca7e7f2610c8ccc57cc69ffc63a846f128bc98947af7",
           "levels": [
             1,
             2,
@@ -137,7 +137,7 @@
         },
         {
           "card_id": "W05.1",
-          "content_revision": "93bf971d3d66bf2ce4c6ba66f12640b5b81e9d17754732ed87a5418c7e2d0fe5",
+          "content_revision": "eae8c8f495c3a8c198fcd2f32b1fa67e21519d0294d2d945164a8a373552f7ea",
           "levels": [
             1,
             2,
@@ -146,7 +146,7 @@
         },
         {
           "card_id": "W05.2",
-          "content_revision": "30369f3484553b7666a955d9dd8e63acc2df66de813e361f6d9af28676074532",
+          "content_revision": "36d732f2478f31037da381af76a7262c24d8a26844087e131154f863e9243973",
           "levels": [
             1,
             2,
@@ -155,7 +155,7 @@
         },
         {
           "card_id": "W05.3",
-          "content_revision": "ca62fcdd1a5d3edde4e7d664d2cdef47747a02ed7a24598f6b31cf51255d408e",
+          "content_revision": "0d57ed697c76f39a5b6f2bdf9248c43c1f0beb230a89ab194863268a4a18aa30",
           "levels": [
             1,
             2,
@@ -1104,9 +1104,9 @@
         "hint_count": 720,
         "operation_count": 70,
         "path": "build/hint-delivery/manifest.json",
-        "revision": "8295f158e4e9f621f18664616f7ded3b3e39a2adf0141301435e2b26d5c925a7",
+        "revision": "2ba69dd131f7fe35c3d2c8d99ea1a444bd1933b3268e969a79b97b5978480777",
         "schema": "cinder-typhoon.hint-delivery/v1",
-        "sha256": "dd6270edeb5f3052359ced05f0e0273a5d8b47d75eb885236ed47ed47007f2a1"
+        "sha256": "ba64d99714f74fb7824baa1e0e7aac5d537841fc494fd1dc5a87714caba1978e"
       },
       "release": {
         "audit": "append_only_metadata_without_hint_text",
@@ -1127,7 +1127,7 @@
         "hint_count": 360,
         "path": "build/card-coverage/hints-arwc.yaml",
         "phase": "arwc",
-        "sha256": "8791c19642f73b8a02706a1d08c36d1702afbc012c1ec0fb88c197bf337ae4d2"
+        "sha256": "b8517d5e8d68ef7c4236f735f20824d7c8949f7239ec13ef95e1b558243f52a1"
       },
       "status": "versioned"
     }
@@ -1448,6 +1448,54 @@
       },
       {
         "addresses": [
+          "10.77.60.11"
+        ],
+        "name": "erp.arwc.test"
+      },
+      {
+        "addresses": [
+          "10.77.60.11"
+        ],
+        "name": "documents.arwc.test"
+      },
+      {
+        "addresses": [
+          "10.77.60.11"
+        ],
+        "name": "reports.arwc.test"
+      },
+      {
+        "addresses": [
+          "10.77.60.11"
+        ],
+        "name": "engineering.arwc.test"
+      },
+      {
+        "addresses": [
+          "10.77.60.11"
+        ],
+        "name": "identity.arwc.test"
+      },
+      {
+        "addresses": [
+          "10.77.60.11"
+        ],
+        "name": "suppliers.arwc.test"
+      },
+      {
+        "addresses": [
+          "10.77.60.11"
+        ],
+        "name": "render.arwc.test"
+      },
+      {
+        "addresses": [
+          "10.77.60.11"
+        ],
+        "name": "read-data.arwc.test"
+      },
+      {
+        "addresses": [
           "10.77.60.30"
         ],
         "name": "business-workplace.arwc.test"
@@ -1536,6 +1584,46 @@
       {
         "host": "fieldlink.arwc.test",
         "port": 8443,
+        "reachable": true
+      },
+      {
+        "host": "erp.arwc.test",
+        "port": 443,
+        "reachable": true
+      },
+      {
+        "host": "documents.arwc.test",
+        "port": 443,
+        "reachable": true
+      },
+      {
+        "host": "reports.arwc.test",
+        "port": 443,
+        "reachable": true
+      },
+      {
+        "host": "engineering.arwc.test",
+        "port": 443,
+        "reachable": true
+      },
+      {
+        "host": "identity.arwc.test",
+        "port": 443,
+        "reachable": true
+      },
+      {
+        "host": "suppliers.arwc.test",
+        "port": 443,
+        "reachable": true
+      },
+      {
+        "host": "render.arwc.test",
+        "port": 443,
+        "reachable": true
+      },
+      {
+        "host": "read-data.arwc.test",
+        "port": 443,
         "reachable": true
       },
       {

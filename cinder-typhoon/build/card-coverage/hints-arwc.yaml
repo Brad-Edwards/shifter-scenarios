@@ -14,8 +14,8 @@ hints:
   W01.2:
     h1: The supplier onboarding material names the document service and the external handover folder.
       Look among the ordinary planning and attendance documents.
-    h2: Use the document itself rather than an old work-order API. The planning assignee and physical
-      inspection are distinct from software delivery acceptance.
+    h2: Use record correlation from the document itself rather than an old work-order API. The planning
+      assignee and physical inspection are distinct from software delivery acceptance.
     h3: Open the planning handover in Nextcloud and retain its current file identity, revision and outstanding
       inspection details.
     references:
@@ -24,8 +24,8 @@ hints:
   W01.3:
     h1: The supplier handover includes an ordinary purchasing note. It explains which records Planning
       and Procurement use for dry-period decisions.
-    h2: Distinguish a supplier quotation, an accepted reservation and a settlement tariff. They do not
-      describe the same business commitment.
+    h2: Use business-record classification to distinguish a supplier quotation, an accepted reservation
+      and a settlement tariff. They do not describe the same commitment.
     h3: Read the continuity purchasing note and identify the stated measures and reservation condition
       without borrowing authority from another supplier.
     references:
@@ -33,7 +33,7 @@ hints:
       id: documents.arwc.test
   W01.4:
     h1: The physical inspection and its supplier handback remain separate from the accepted software delivery.
-      Find the actual maintenance task for the current case.
+      Find the actual maintenance task in the ERP system for the current case.
     h2: A native per-record share can grant more authority than the supplier role suggests. Compare the
       available task permissions with neighboring inspection records.
     h3: Reconcile the case, project and inspection first, make only the requested task change through
@@ -44,18 +44,18 @@ hints:
   W02.1:
     h1: The supplier portal contains ordinary purchase orders with supplier relationships and service
       line descriptions. Begin with the current outlet inspection order.
-    h2: A display label alone is weaker than the actual supplier relationship and asset reference carried
-      by the order.
+    h2: A display label alone is weaker than correlation through the actual supplier relationship and asset
+      reference carried by the order.
     h3: Open the permitted order and record its native identity, supplier and maintenance asset from the
       order itself.
     references:
     - kind: participant_service
       id: suppliers.arwc.test
   W02.2:
-    h1: The internal work order, supplier job and engineering drawing use different names. The supplier
-      order, annex and drawing register carry their stable references.
-    h2: Join independently owned business records by their references and accepted revisions rather than
-      by similar display labels.
+    h1: The internal work order, supplier job and engineering drawing use different names. Each independent
+      order, annex and drawing-register record carries stable references.
+    h2: Use reconciliation across independently owned business records, matching their references and accepted
+      revisions rather than similar display labels.
     h3: Compare the ERPNext project and order with the annex and native document register; retain a source
       identity for each side of the join.
     references:
@@ -64,8 +64,8 @@ hints:
   W02.3:
     h1: The supplier account can see a small set of maintenance records. Check which are ordinary handback
       work and which belong to engineering review.
-    h2: Compare native per-record sharing with the intended supplier job association. A readable engineering
-      record need not grant permission to edit it.
+    h2: Compare native per-record authorization with the intended supplier job association. A readable
+      engineering record need not grant permission to edit it.
     h3: Read the associated inspection record, inspect its actual sharing scope and establish the denied
       neighboring record and write boundary.
     references:
@@ -76,8 +76,8 @@ hints:
       identities together when following the retained annex link.
     h2: Use the native attachment relationship instead of a guessed business-service route. Check the
       annex revision and its drawing reference.
-    h3: Follow the supplier document register to the native private annex and retain its file identity and content
-      hash alongside the actual order reference.
+    h3: Open the supplier document register, follow it to the native private annex, and retain its file identity
+      and content hash alongside the actual order reference.
     references:
     - kind: participant_service
       id: suppliers.arwc.test
@@ -86,7 +86,7 @@ hints:
       shared directly with the supplier account.
     h2: Compare the earlier distribution with the current recipient and the native incoming share. File
       access does not imply access to its parent department folder.
-    h3: Download the previous annex version, reconcile its recipient with the current account and incoming
+    h3: Download the previous annex version, compare its recipient with the current account and incoming
       share, then establish the separately shared engineering file and denied parent.
     references:
     - kind: participant_service
@@ -143,8 +143,8 @@ hints:
     - kind: participant_service
       id: documents.arwc.test
   W05.2:
-    h1: An activation roster is retained separately from the starting letter. It includes ordinary employees
-      and their native identity references.
+    h1: An activation roster is retained separately from the starting letter. Each employee record includes
+      its native identity references.
     h2: Correlate the employee number, username and identity UUID rather than relying on a similar display
       name or a copied assignment label.
     h3: Find the temporary employee in the activation export and compare its enabled state, assignment
@@ -153,7 +153,7 @@ hints:
     - kind: participant_service
       id: documents.arwc.test
   W05.3:
-    h1: The starting arrangements point to the actual identity account. Complete its normal first-sign-in
+    h1: The starting arrangements point to the actual identity system account. Complete its normal first-sign-in
       requirements before evaluating the access it provides.
     h2: Account self-service and delegated administration are different client and permission boundaries.
       Compare the actual native role scope with the approved work assignment.

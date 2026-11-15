@@ -95,6 +95,58 @@ NATIVE_OT_CARDS = {
     *{f"W30.{number}" for number in range(1, 3)},
     *{f"W33.{number}" for number in range(1, 5)},
 }
+NATIVE_IT_CARDS = {
+    *{f"W01.{number}" for number in range(1, 5)},
+    *{f"W02.{number}" for number in range(1, 4)},
+    *{f"W03.{number}" for number in range(1, 4)},
+}
+NATIVE_PRODUCT_CARDS = NATIVE_IT_CARDS | NATIVE_OT_CARDS
+NATIVE_IT_TARGETS = {
+    "W01.1": ("features.a-corporate.a-connector",),
+    "W01.2": ("features.a-corporate.a-business",),
+    "W01.3": ("features.a-corporate.a-business",),
+    "W01.4": ("features.a-corporate.a-business",),
+    "W02.1": ("features.a-corporate.a-business",),
+    "W02.2": ("features.a-corporate.a-business",),
+    "W02.3": ("features.a-corporate.a-business",),
+    "W03.1": ("features.a-corporate.a-business",),
+    "W03.2": ("features.a-corporate.a-business",),
+    "W03.3": ("features.a-dmz.a-data-bridge", "features.a-corporate.a-data"),
+}
+NATIVE_IT_BINDINGS = {
+    "W01.1": ["a-corporate.a-connector/customer-handover:handovers-current"],
+    "W01.2": ["a-corporate.a-business/Nextcloud:Veybridge-handover/planning-handover-2026-09.md"],
+    "W01.3": [
+        "a-corporate.a-business/Nextcloud:Veybridge-handover/procurement-continuity.md",
+        "a-corporate.a-business/ERPNext:supplier-and-purchasing-records",
+    ],
+    "W01.4": ["a-corporate.a-business/ERPNext:Project-Task-DocShare-Version"],
+    "W02.1": ["a-corporate.a-business/ERPNext:Purchase-Order-Supplier"],
+    "W02.2": [
+        "a-corporate.a-business/ERPNext:Project-Purchase-Order",
+        "a-corporate.a-business/Nextcloud:annex-and-engineering-register",
+    ],
+    "W02.3": ["a-corporate.a-business/ERPNext:Task-DocShare"],
+    "W03.1": ["a-corporate.a-business/ERPNext:private-Purchase-Order-File"],
+    "W03.2": ["a-corporate.a-business/Nextcloud:file-versions-and-individual-share"],
+    "W03.3": [
+        "a-corporate.a-business/Nextcloud:integration-read-acceptance.md",
+        "a-dmz.a-data-bridge/PostgREST:dmz_api.reserve_report",
+        "a-corporate.a-data/PostgreSQL:dmz_reader-grants",
+    ],
+}
+NATIVE_IT_OWNERS = {
+    "W01.1": "a-connector/customer-handover",
+    "W01.2": "a-business/nextcloud",
+    "W01.3": "a-business/nextcloud",
+    "W01.4": "a-business/erpnext",
+    "W02.1": "a-business/erpnext",
+    "W02.2": "a-business/erpnext + a-business/nextcloud",
+    "W02.3": "a-business/erpnext",
+    "W03.1": "a-business/erpnext",
+    "W03.2": "a-business/nextcloud",
+    "W03.3": "a-data-bridge/postgrest + a-data/postgresql",
+}
 NATIVE_OT_TARGETS = {
     "W17.1": ("features.a-engineering.a-hmi", "features.a-engineering.a-historian"),
     "W17.2": ("features.a-engineering.a-hmi",),
@@ -356,20 +408,20 @@ def initial(operation: int, values: list[str]) -> None:
 
 
 initial(1, [
-    "Retained handover HND-ARWC-047 binds active FieldLink tenant TEN-ARWC-047, connector FLK-7.4.2, maintenance case MTN-CRR-204, and customer receipt RCP-742-047",
-    "Unpublished planner handover PLN-HO-CRR-17 names inspection INSP-CRR-2026-09-18 and assignee nadia.corvane",
-    "Continuity note CONT-DRY-A-R3 explains replacement purchasing and Stage A restrictions when usable reserve falls below committed allocation; ordinary context reuses narrative document pl-arwc-plan-method-01-method",
-    "Attachment endpoint for PLN-HO-CRR-17 authorizes corporate attachment update but omits the attachment-owner comparison; inspection and assignee fields are immutable and the new attachment digest is audited",
+    "Customer handover HND-ARWC-047 binds FieldLink tenant TEN-ARWC-047, connector FLK-7.4.2, maintenance case MTN-CRR-204, and receipt RCP-742-047",
+    "Nextcloud file planning-handover-2026-09.md is in the Veybridge handover folder and names PLN-HO-CRR-17 revision 3, inspection INSP-CRR-2026-09-18, and Nadia Corvane",
+    "Nextcloud file procurement-continuity.md explains supplementary water purchasing, Stage A restrictions, and the accepted-reservation condition beside ordinary ERPNext supplier and purchasing records",
+    "ERPNext stores the Cairn Reach maintenance Project and supplier handback Task; a native per-record DocShare gives Jules write access to that Task and native Version history records changes",
 ])
 initial(2, [
-    "Bundle BND-CRR-OUTLET-17 contains asset AST-CRR-017, outlet group OG-CRR-02, contractor assignment CTR-VEY-204, and inspection INSP-CRR-2026-09-18",
-    "Association table uses work order WO-CRR-4417, contractor job VYB-204-77, asset AST-CRR-017, and inspection INSP-CRR-2026-09-18 with distinct display names",
-    "Maintenance lookup checks the caller's assignment against the supplied association row rather than the resolved record; association ASC-CRR-4417-ALT resolves protected record MR-CRR-4417-R6",
+    "ERPNext purchase order PO-VEY-4417 has the Veybridge supplier relationship and an item description that identifies asset AST-CRR-017",
+    "ERPNext Project and purchase-order records and the independent Nextcloud annex and engineering register bind WO-CRR-4417, supplier job VYB-204-77, drawing DRG-CRR-OUT-017, and asset AST-CRR-017",
+    "A native ERPNext read DocShare exposes the Cairn Reach engineering Task to Jules while a neighboring River Task remains unshared and the exposed Task remains read-only",
 ])
 initial(3, [
-    "Work order WO-CRR-4417 exposes annex ANN-4417-R2 naming process-data handover PDH-CRR-READ-08 and importer revision annex-import/2",
-    "Annex importer validates an attachments/ prefix before percent decoding; attachments/%2e%2e%2frestricted%2fPDH-CRR-READ-08 resolves the restricted handover under service identity svc-annex",
-    "Export boundary for PDH-CRR-READ-08 returns integration client INT-CRR-08, endpoint process-read.arwc.test, protocol process-read/v2, scope OG-CRR-02/read, and retained bundle BND-COLLECT-CRR-12",
+    "ERPNext purchase order PO-VEY-4417 owns a private ANN-4417-R2 File attachment and a native read DocShare for Jules; the Nextcloud supplier register links the actual order and file URL",
+    "Nextcloud retains two real versions of ANN-4417 and an individual read share of integration-read-acceptance.md to Jules without exposing its parent engineering folder",
+    "The engineering acceptance note identifies the PostgREST read service; its OpenAPI document and PostgreSQL dmz_reader grants expose only dmz_api.reserve_report as read-only data",
 ])
 initial(4, [
     "Archive workflow AWF-CRR-229-R4 binds attachment ARC-229-A, protected record AR-CRR-229, and one-use enrollment profile ArchiveSubmitter, which fixes CN to the corporate subject and clientAuth EKU but permits a caller-supplied organizationalUnit",
@@ -550,8 +602,8 @@ if set(INITIAL) != set(NODE_FOR_CARD):
     raise RuntimeError(f"initial-state inventory drift: {sorted(set(NODE_FOR_CARD) ^ set(INITIAL))}")
 
 MECHANIC_KIND = {
-    "W01.4": "field-level authorization omission", "W02.3": "association-bound object authorization omission",
-    "W03.2": "validate-before-decode path canonicalization", "W04.2": "certificate-subject query construction",
+    "W01.4": "overbroad native per-record write grant", "W02.3": "overbroad native per-record read grant",
+    "W04.2": "certificate-subject query construction",
     "W04.3": "Unicode-normalization archive helper argument confusion", "W05.3": "independent-factor binding omission",
     "W06.2": "OAuth state and mutable preview-origin confusion", "W06.3": "privileged-browser origin trust",
     "W07.2": "quoted-identifier SQL construction", "W07.3": "bounded SECURITY DEFINER invocation",
@@ -874,6 +926,8 @@ def route_binding(node: str, card: str) -> str:
 
 @cache
 def card_targets(card: str) -> tuple[str, ...]:
+    if card in NATIVE_IT_CARDS:
+        return NATIVE_IT_TARGETS[card]
     if card in NATIVE_OT_CARDS:
         return NATIVE_OT_TARGETS[card]
     op, number = card.lower().split(".")
@@ -893,6 +947,8 @@ def target_nodes(card: str) -> tuple[str, ...]:
 
 
 def surface_bindings(card: str) -> list[str]:
+    if card in NATIVE_IT_CARDS:
+        return NATIVE_IT_BINDINGS[card]
     if card in NATIVE_OT_CARDS:
         return NATIVE_OT_BINDINGS[card]
     result = [route_binding(node, card) for node in target_nodes(card)]
@@ -955,6 +1011,8 @@ def service_prose(value: str) -> str:
 
 
 def result_for(card: str) -> str:
+    if card in NATIVE_IT_CARDS:
+        return sentence(section(card, "Completion and product evidence").split("\n\n", 1)[0])
     return sentence(in_world(section(card, "Completion and downstream use")))
 
 
@@ -985,6 +1043,8 @@ def reuse_for(card: str) -> str:
 
 
 def owner_for(card: str) -> str:
+    if card in NATIVE_IT_CARDS:
+        return NATIVE_IT_OWNERS[card]
     node = NODE_FOR_CARD[card]
     return f"{node}/{APPLICATION[node]}"
 
@@ -1006,7 +1066,7 @@ def write_matrix() -> None:
         narrative = NARRATIVE_REUSE.get(card)
         native = (
             f"Installed native OT products and image-owned participant material; {bindings}"
-            if card in NATIVE_OT_CARDS else
+            if card in NATIVE_PRODUCT_CARDS else
             f"Application/file content, app authorization, action/evidence contract; {bindings}"
         )
         if narrative:
@@ -1088,7 +1148,7 @@ def fixture_text(card: str) -> str:
 def emit_content_modules() -> list[str]:
     grouped: dict[str, list[str]] = defaultdict(list)
     for card, node in NODE_FOR_CARD.items():
-        if card in NATIVE_OT_CARDS:
+        if card in NATIVE_PRODUCT_CARDS:
             continue
         grouped[node].append(card)
     CONTENT.mkdir(parents=True, exist_ok=True)
@@ -1159,7 +1219,7 @@ NODE_DESCRIPTION = {
 def application_routes(node: str) -> list[dict[str, object]]:
     cards = [
         card for card in NODE_FOR_CARD
-        if card not in NATIVE_OT_CARDS and node in target_nodes(card)
+        if card not in NATIVE_PRODUCT_CARDS and node in target_nodes(card)
     ]
     routes = []
     for card in sorted(cards, key=lambda item: (int(item[1:3]), int(item.split(".")[1]))):
@@ -1183,13 +1243,147 @@ def application_routes(node: str) -> list[dict[str, object]]:
     return routes
 
 
+def native_application_routes(node: str) -> list[dict[str, object]]:
+    if node != "a-connector":
+        return []
+    return [{
+        "route_id": "handovers-current", "path": "/api/handovers/current", "methods": ["GET"],
+        "auth_required": True, "auth_scheme": "ARWC customer corporate session",
+        "session_required": True,
+        "description": sentence(INITIAL["W01.1"]),
+        "responses": [
+            {"status_code": 200, "content_type": "application/json"},
+            {"status_code": 403, "content_type": "application/json"},
+            {"status_code": 405, "content_type": "application/json"},
+        ],
+    }]
+
+
+def add_native_business_products(runtime: dict[str, object]) -> None:
+    runtime["service_listeners"].extend([
+        {
+            "service_listener_id": "erpnext-https", "service": "erpnext", "address": "0.0.0.0",
+            "port": 443, "protocol": "tcp", "address_family": "ipv4", "scope": "network_facing",
+        },
+        {
+            "service_listener_id": "nextcloud-https", "service": "nextcloud", "address": "0.0.0.0",
+            "port": 443, "protocol": "tcp", "address_family": "ipv4", "scope": "network_facing",
+        },
+    ])
+    runtime["applications"].extend([
+        {
+            "application_id": "erpnext", "service": "erpnext", "protocol": "https", "base_path": "/",
+            "description": "Native ERPNext supplier, project, task, purchase-order, file, sharing, and version records.",
+            "routes": [
+                {
+                    "route_id": "supplier-purchase-orders", "path": "/purchase-orders", "methods": ["GET"],
+                    "auth_required": True, "auth_scheme": "ERPNext supplier account", "session_required": True,
+                    "responses": [{"status_code": 200, "content_type": "text/html"}, {"status_code": 403, "content_type": "text/html"}],
+                },
+                {
+                    "route_id": "native-documents", "path": "/api/resource/{doctype}/{name}",
+                    "methods": ["GET", "PUT"], "auth_required": True,
+                    "auth_scheme": "ERPNext supplier account and native DocShare", "session_required": True,
+                    "responses": [{"status_code": 200, "content_type": "application/json"}, {"status_code": 403, "content_type": "application/json"}, {"status_code": 404, "content_type": "application/json"}],
+                },
+                {
+                    "route_id": "private-files", "path": "/private/files/{filename}", "methods": ["GET"],
+                    "auth_required": True, "auth_scheme": "ERPNext native File DocShare", "session_required": True,
+                    "responses": [{"status_code": 200, "content_type": "application/octet-stream"}, {"status_code": 403, "content_type": "text/html"}],
+                },
+            ],
+        },
+        {
+            "application_id": "nextcloud", "service": "nextcloud", "protocol": "https", "base_path": "/",
+            "description": "Native Nextcloud files, WebDAV versions, and individual or group shares.",
+            "routes": [
+                {
+                    "route_id": "files", "path": "/remote.php/dav/files/{user}/", "methods": ["GET", "PROPFIND"],
+                    "auth_required": True, "auth_scheme": "Nextcloud account", "session_required": True,
+                    "responses": [{"status_code": 200, "content_type": "application/xml"}, {"status_code": 403, "content_type": "application/xml"}, {"status_code": 404, "content_type": "application/xml"}],
+                },
+                {
+                    "route_id": "versions", "path": "/remote.php/dav/versions/{user}/versions/{fileid}/",
+                    "methods": ["GET", "PROPFIND"], "auth_required": True,
+                    "auth_scheme": "Nextcloud file owner or native share", "session_required": True,
+                    "responses": [{"status_code": 200, "content_type": "application/xml"}, {"status_code": 403, "content_type": "application/xml"}],
+                },
+                {
+                    "route_id": "shares", "path": "/ocs/v2.php/apps/files_sharing/api/v1/shares",
+                    "methods": ["GET"], "auth_required": True, "auth_scheme": "Nextcloud account",
+                    "session_required": True,
+                    "responses": [{"status_code": 200, "content_type": "application/json"}, {"status_code": 403, "content_type": "application/json"}],
+                },
+            ],
+        },
+    ])
+    runtime["app_authorizations"].extend([
+        {
+            "app_authorization_id": "erpnext-native-acl", "resource_vocabulary": "app_resource",
+            "auth_enabled": True,
+            "principals": [{"principal_id": "jules-erpnext", "kind": "user", "name": "Jules Orswick", "credential_classification": "operator_secret"}],
+            "roles": [{"role_id": "supplier", "name": "Supplier"}],
+            "permission_grants": [{
+                "grant_id": "supplier-native-records", "role_ref": "supplier", "resource_kind": "app_resource",
+                "actions": ["read", "update"],
+                "resource_patterns": ["purchase-order/$shared", "project/$shared", "task/$shared", "file/$shared", "version/$own"],
+                "effect": "allow",
+            }],
+            "role_mappings": [{"mapping_id": "jules-supplier", "role_ref": "supplier", "users": ["jules-erpnext"]}],
+            "tenants": [{"tenant_id": "arwc", "name": "Alterra Regional Water Company"}],
+        },
+        {
+            "app_authorization_id": "nextcloud-native-acl", "resource_vocabulary": "app_resource",
+            "auth_enabled": True,
+            "principals": [{"principal_id": "jules-nextcloud", "kind": "user", "name": "Jules Orswick", "credential_classification": "operator_secret"}],
+            "roles": [{"role_id": "veybridge-documents", "name": "Veybridge external documents"}],
+            "permission_grants": [{
+                "grant_id": "veybridge-files-and-shares", "role_ref": "veybridge-documents",
+                "resource_kind": "app_resource", "actions": ["read"],
+                "resource_patterns": ["Veybridge handover/**", "shares/$incoming"], "effect": "allow",
+            }],
+            "role_mappings": [{"mapping_id": "jules-veybridge", "role_ref": "veybridge-documents", "users": ["jules-nextcloud"]}],
+            "tenants": [{"tenant_id": "arwc", "name": "Alterra Regional Water Company"}],
+        },
+    ])
+    runtime["software_components"].extend([
+        {"component_id": "erpnext", "name": "ERPNext", "version": "16.55.0", "component_type": "application", "provenance": "upstream", "installed_paths": ["/home/frappe/frappe-bench/apps/erpnext"]},
+        {"component_id": "nextcloud", "name": "Nextcloud", "version": "35", "component_type": "application", "provenance": "upstream", "installed_paths": ["/var/www/html"]},
+    ])
+
+
+def add_native_postgrest(runtime: dict[str, object]) -> None:
+    runtime["service_listeners"].append({
+        "service_listener_id": "postgrest-http", "service": "postgrest", "address": "0.0.0.0",
+        "port": 3000, "protocol": "tcp", "address_family": "ipv4", "scope": "network_facing",
+    })
+    runtime["applications"].append({
+        "application_id": "postgrest", "service": "postgrest", "protocol": "https", "base_path": "/",
+        "description": "Native read-only PostgREST publication of the approved DMZ database view.",
+        "routes": [
+            {"route_id": "openapi", "path": "/", "methods": ["GET"], "auth_required": False, "session_required": False, "responses": [{"status_code": 200, "content_type": "application/openapi+json"}]},
+            {"route_id": "reserve-report", "path": "/reserve_report", "methods": ["GET"], "auth_required": False, "session_required": False, "responses": [{"status_code": 200, "content_type": "application/json"}, {"status_code": 404, "content_type": "application/json"}]},
+        ],
+    })
+    runtime["app_authorizations"].append({
+        "app_authorization_id": "postgrest-dmz-reader", "resource_vocabulary": "app_resource",
+        "auth_enabled": True,
+        "principals": [{"principal_id": "dmz-reader", "kind": "service_account", "name": "dmz_reader", "credential_classification": "redacted"}],
+        "roles": [{"role_id": "dmz-reader", "name": "DMZ read-only publisher"}],
+        "permission_grants": [{"grant_id": "reserve-report-select", "role_ref": "dmz-reader", "resource_kind": "app_resource", "actions": ["read"], "resource_patterns": ["dmz_api.reserve_report"], "effect": "allow"}],
+        "role_mappings": [{"mapping_id": "postgrest-anonymous-role", "role_ref": "dmz-reader", "users": ["dmz-reader"]}],
+        "tenants": [{"tenant_id": "arwc", "name": "Alterra Regional Water Company"}],
+    })
+    runtime["software_components"].append({"component_id": "postgrest", "name": "PostgREST", "version": "16.5", "component_type": "application", "provenance": "upstream", "installed_paths": ["/usr/local/bin/postgrest"]})
+
+
 def arwc_runtime(node: str) -> dict[str, object]:
     user = f"arwc-{node.removeprefix('a-')}"
     network = NAMESPACE[node]
     app = APPLICATION[node]
     service = SERVICE[node]
     role = AUTH[node][1]
-    routes = application_routes(node)
+    routes = application_routes(node) + native_application_routes(node)
     return {
         "filesystem_inventory": [{
             "path": BASE_PATH[node], "entry_type": "directory", "owner_user": user,
@@ -1335,8 +1529,10 @@ def add_planning_database(runtime: dict[str, object]) -> None:
     }]
 
 
-def emit_world_modules() -> None:
+def emit_world_modules(only: set[str] | None = None) -> None:
     for world, nodes in WORLD_NODES.items():
+        if only is not None and world not in only:
+            continue
         path = WORLD / f"{world}.yaml"
         doc = yaml.safe_load(path.read_text())
         # The distribution rehearsal was a synthetic W33-only system.  W33 now
@@ -1388,12 +1584,23 @@ def emit_world_modules() -> None:
                 ] + arwc_runtime(node)["software_components"]
             else:
                 item["services"] = [{"name": SERVICE[node], "port": 443, "protocol": "tcp"}]
+                if node == "a-business":
+                    item["services"].extend([
+                        {"name": "erpnext", "port": 443, "protocol": "tcp"},
+                        {"name": "nextcloud", "port": 443, "protocol": "tcp"},
+                    ])
                 if node == "a-data":
                     item["services"].append({"name": "planning-postgresql", "port": 5432, "protocol": "tcp"})
+                if node == "a-data-bridge":
+                    item["services"].append({"name": "postgrest", "port": 3000, "protocol": "tcp"})
                 runtime = arwc_runtime(node)
                 add_identity_authorities(node, runtime)
                 if node == "a-data":
                     add_planning_database(runtime)
+                if node == "a-business":
+                    add_native_business_products(runtime)
+                if node == "a-data-bridge":
+                    add_native_postgrest(runtime)
                 item["runtime"] = runtime
         path.write_text(
             "# In-world draft. Unspecified realization remains open.\n" +
@@ -1870,6 +2077,8 @@ def sanitize_visible_sections(text: str) -> str:
 
 def sync_cards() -> None:
     for card in sorted(NODE_FOR_CARD, key=lambda item: (int(item[1:3]), int(item.split(".")[1]))):
+        if card in NATIVE_IT_CARDS:
+            continue
         _, path = title_and_path(card)
         text = path.read_text()
         text = text.replace("| Design status | Challenge brief |", "| Design status | Technical draft |")
@@ -1890,6 +2099,20 @@ def literal_multiline(value):
 
 
 def technical_section(card: str, heading: str) -> str:
+    if card in NATIVE_IT_CARDS:
+        headings = {
+            "Surface and normal behavior": "Native surface and normal behavior",
+            "Vulnerability and intended solution": "Challenge description—player-facing",
+            "Evidence and completion": "Completion and product evidence",
+            "Boundaries and persistence": "Denied neighbors and reset",
+        }
+        if heading == "Author checks":
+            return (
+                "Complete the documented participant path through the named native products. Verify the product-owned "
+                "record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, "
+                "fresh evidence, and retained-volume persistence after an ordinary restart."
+            )
+        return section(card, headings[heading])
     return section(card, heading, 3)
 
 
@@ -1911,8 +2134,10 @@ def sanitize_tree(value):
     return value
 
 
-def sync_operations() -> None:
+def sync_operations(only: set[int] | None = None) -> None:
     for operation in range(1, 36):
+        if only is not None and operation not in only:
+            continue
         path = OPERATIONS / f"w{operation:02d}.yaml"
         doc = yaml.safe_load(path.read_text())
         exports = doc["module"]["exports"]
@@ -1928,7 +2153,7 @@ def sync_operations() -> None:
             local = f"c{card.split('.')[1]}"
             targets = list(card_targets(card))
             support_refs = targets[:]
-            if card not in NATIVE_OT_CARDS:
+            if card not in NATIVE_PRODUCT_CARDS:
                 support_refs.append(content_ref(card))
             action = doc["action_contracts"][local]
             action["procedure_basis"] = technical_section(card, "Vulnerability and intended solution")

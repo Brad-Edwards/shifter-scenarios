@@ -216,70 +216,21 @@ nodes:
         base_path: /
         description: Customer integration connector and retained corporate handover service.
         routes:
-        - route_id: the-customer-s-copy
-          path: /api/the-customer-s-copy
+        - route_id: handovers-current
+          path: /api/handovers/current
           methods:
           - GET
           auth_required: true
           auth_scheme: ARWC customer corporate session
           session_required: true
-          description: Retained handover HND-ARWC-047 binds active FieldLink tenant TEN-ARWC-047, connector FLK-7.4.2,
-            maintenance case MTN-CRR-204, and customer receipt RCP-742-047.
+          description: Customer handover HND-ARWC-047 binds FieldLink tenant TEN-ARWC-047, connector FLK-7.4.2,
+            maintenance case MTN-CRR-204, and receipt RCP-742-047.
           responses:
           - status_code: 200
             content_type: application/json
           - status_code: 403
             content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: the-planner-s-unfinished-handover
-          path: /api/the-planner-s-unfinished-handover
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC customer corporate session
-          session_required: true
-          description: Unpublished planner handover PLN-HO-CRR-17 names inspection INSP-CRR-2026-09-18 and assignee
-            nadia.corvane.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: how-the-company-buys-time
-          path: /api/how-the-company-buys-time
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC customer corporate session
-          session_required: true
-          description: Continuity note CONT-DRY-A-R3 explains replacement purchasing and Stage A restrictions when
-            usable reserve falls below committed allocation; ordinary context reuses narrative document pl-arwc-plan-method-01-method.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: change-the-corporate-record
-          path: /api/change-the-corporate-record
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC customer corporate session
-          session_required: true
-          description: Attachment endpoint for PLN-HO-CRR-17 authorizes corporate attachment update but omits the
-            attachment-owner comparison; inspection and assignee fields are immutable and the new attachment digest
-            is audited.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
+          - status_code: 405
             content_type: application/json
       app_authorizations:
       - app_authorization_id: fieldlink-boundary-rbac
@@ -373,10 +324,7 @@ nodes:
           - update
           - execute
           resource_patterns:
-          - the-customer-s-copy
-          - the-planner-s-unfinished-handover
-          - how-the-company-buys-time
-          - change-the-corporate-record
+          - handovers/current
           effect: allow
         role_mappings:
         - mapping_id: corporate-reader-mapping
@@ -408,6 +356,12 @@ nodes:
     description: Corporate workplace, maintenance records, report assistant, and procurement service.
     services:
     - name: workplace
+      port: 443
+      protocol: tcp
+    - name: erpnext
+      port: 443
+      protocol: tcp
+    - name: nextcloud
       port: 443
       protocol: tcp
     features:
@@ -457,6 +411,20 @@ nodes:
         protocol: tcp
         address_family: ipv4
         scope: wildcard
+      - service_listener_id: erpnext-https
+        service: erpnext
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: network_facing
+      - service_listener_id: nextcloud-https
+        service: nextcloud
+        address: 0.0.0.0
+        port: 443
+        protocol: tcp
+        address_family: ipv4
+        scope: network_facing
       applications:
       - application_id: business-workplace
         service: workplace
@@ -464,102 +432,6 @@ nodes:
         base_path: /
         description: Corporate workplace, maintenance records, report assistant, and procurement service.
         routes:
-        - route_id: the-asset-and-the-contractor
-          path: /api/the-asset-and-the-contractor
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC corporate session
-          session_required: true
-          description: Bundle BND-CRR-OUTLET-17 contains asset AST-CRR-017, outlet group OG-CRR-02, contractor assignment
-            CTR-VEY-204, and inspection INSP-CRR-2026-09-18.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: three-names-for-one-job
-          path: /api/three-names-for-one-job
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC corporate session
-          session_required: true
-          description: Association table uses work order WO-CRR-4417, contractor job VYB-204-77, asset AST-CRR-017,
-            and inspection INSP-CRR-2026-09-18 with distinct display names.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: the-record-behind-the-wrong-association
-          path: /api/the-record-behind-the-wrong-association
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC corporate session
-          session_required: true
-          description: Maintenance lookup checks the caller's assignment against the supplied association row rather
-            than the resolved record; association ASC-CRR-4417-ALT resolves protected record MR-CRR-4417-R6.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: an-annex-left-with-the-order
-          path: /api/an-annex-left-with-the-order
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC corporate session
-          session_required: true
-          description: Work order WO-CRR-4417 exposes annex ANN-4417-R2 naming process-data handover PDH-CRR-READ-08
-            and importer revision annex-import/2.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: a-reference-outside-the-order
-          path: /api/a-reference-outside-the-order
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: ARWC corporate session
-          session_required: true
-          description: Annex importer validates an attachments/ prefix before percent decoding; attachments/%2e%2e%2frestricted%2fPDH-CRR-READ-08
-            resolves the restricted handover under service identity svc-annex.
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
-        - route_id: the-integration-s-read-contract
-          path: /api/the-integration-s-read-contract
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: ARWC corporate session
-          session_required: true
-          description: Export boundary for PDH-CRR-READ-08 returns integration client INT-CRR-08, endpoint process-read.arwc.test,
-            protocol process-read/v2, scope OG-CRR-02/read, and retained bundle BND-COLLECT-CRR-12.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
-            content_type: application/json
-          - status_code: 409
-            content_type: application/json
         - route_id: the-report-s-source-list
           path: /api/the-report-s-source-list
           methods:
@@ -657,6 +529,97 @@ nodes:
             content_type: application/json
           - status_code: 409
             content_type: application/json
+      - application_id: erpnext
+        service: erpnext
+        protocol: https
+        base_path: /
+        description: Native ERPNext supplier, project, task, purchase-order, file, sharing, and version records.
+        routes:
+        - route_id: supplier-purchase-orders
+          path: /purchase-orders
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ERPNext supplier account
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: text/html
+          - status_code: 403
+            content_type: text/html
+        - route_id: native-documents
+          path: /api/resource/{doctype}/{name}
+          methods:
+          - GET
+          - PUT
+          auth_required: true
+          auth_scheme: ERPNext supplier account and native DocShare
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: private-files
+          path: /private/files/{filename}
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: ERPNext native File DocShare
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/octet-stream
+          - status_code: 403
+            content_type: text/html
+      - application_id: nextcloud
+        service: nextcloud
+        protocol: https
+        base_path: /
+        description: Native Nextcloud files, WebDAV versions, and individual or group shares.
+        routes:
+        - route_id: files
+          path: /remote.php/dav/files/{user}/
+          methods:
+          - GET
+          - PROPFIND
+          auth_required: true
+          auth_scheme: Nextcloud account
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/xml
+          - status_code: 403
+            content_type: application/xml
+          - status_code: 404
+            content_type: application/xml
+        - route_id: versions
+          path: /remote.php/dav/versions/{user}/versions/{fileid}/
+          methods:
+          - GET
+          - PROPFIND
+          auth_required: true
+          auth_scheme: Nextcloud file owner or native share
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/xml
+          - status_code: 403
+            content_type: application/xml
+        - route_id: shares
+          path: /ocs/v2.php/apps/files_sharing/api/v1/shares
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Nextcloud account
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
       app_authorizations:
       - app_authorization_id: business-workplace-rbac
         resource_vocabulary: app_resource
@@ -679,12 +642,6 @@ nodes:
           - update
           - execute
           resource_patterns:
-          - the-asset-and-the-contractor
-          - three-names-for-one-job
-          - the-record-behind-the-wrong-association
-          - an-annex-left-with-the-order
-          - a-reference-outside-the-order
-          - the-integration-s-read-contract
           - the-report-s-source-list
           - another-district-in-the-results
           - the-document-behind-the-answer
@@ -700,6 +657,68 @@ nodes:
         tenants:
         - tenant_id: arwc
           name: Alterra Regional Water Company
+      - app_authorization_id: erpnext-native-acl
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: jules-erpnext
+          kind: user
+          name: Jules Orswick
+          credential_classification: operator_secret
+        roles:
+        - role_id: supplier
+          name: Supplier
+        permission_grants:
+        - grant_id: supplier-native-records
+          role_ref: supplier
+          resource_kind: app_resource
+          actions:
+          - read
+          - update
+          resource_patterns:
+          - purchase-order/$shared
+          - project/$shared
+          - task/$shared
+          - file/$shared
+          - version/$own
+          effect: allow
+        role_mappings:
+        - mapping_id: jules-supplier
+          role_ref: supplier
+          users:
+          - jules-erpnext
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
+      - app_authorization_id: nextcloud-native-acl
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: jules-nextcloud
+          kind: user
+          name: Jules Orswick
+          credential_classification: operator_secret
+        roles:
+        - role_id: veybridge-documents
+          name: Veybridge external documents
+        permission_grants:
+        - grant_id: veybridge-files-and-shares
+          role_ref: veybridge-documents
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - Veybridge handover/**
+          - shares/$incoming
+          effect: allow
+        role_mappings:
+        - mapping_id: jules-veybridge
+          role_ref: veybridge-documents
+          users:
+          - jules-nextcloud
+        tenants:
+        - tenant_id: arwc
+          name: Alterra Regional Water Company
       software_components:
       - component_id: business-workplace
         name: Corporate workplace, maintenance records, report assistant, and procurement service
@@ -708,6 +727,20 @@ nodes:
         provenance: operator
         installed_paths:
         - /opt/business-workplace
+      - component_id: erpnext
+        name: ERPNext
+        version: 16.55.0
+        component_type: application
+        provenance: upstream
+        installed_paths:
+        - /home/frappe/frappe-bench/apps/erpnext
+      - component_id: nextcloud
+        name: Nextcloud
+        version: '35'
+        component_type: application
+        provenance: upstream
+        installed_paths:
+        - /var/www/html
   a-data:
     type: compute
     description: Planning data, allocation, relation, reconciliation, query, and planning-consumer service.

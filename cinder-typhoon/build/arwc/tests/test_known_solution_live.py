@@ -33,7 +33,7 @@ import subprocess
 import time
 import unittest
 import uuid
-from urllib.parse import urlsplit
+from urllib.parse import quote, urlencode, urlsplit
 
 
 CONTAINER = "cinder-arwc-connector"
@@ -297,6 +297,93 @@ def get_bytes(url: str, *, token: str | None = None, tenant: str = "arwc", expec
         elapsed_ms=round((time.monotonic() - started) * 1000),
     )
     return value, content_type
+
+
+_NATIVE_REQUEST = r'''
+import base64, http.cookiejar, json, pathlib, ssl, sys, urllib.error, urllib.parse, urllib.request
+service, method, path, body, extra = sys.argv[1:]
+context = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
+token = pathlib.Path("/var/lib/fieldlink-connector/handover/corporate-session").read_text().strip()
+handover_request = urllib.request.Request(
+    "https://customer-handover.arwc.test:8443/api/handovers/current",
+    headers={"Authorization": "Bearer " + token, "X-ARWC-Tenant": "arwc"},
+)
+onboarding = json.loads(urllib.request.urlopen(handover_request, context=context).read())["record"]["supplier_onboarding"]
+path = path.replace("{user}", urllib.parse.quote(onboarding["username"], safe=""))
+headers = json.loads(extra)
+data = None if not body else body.encode()
+if service == "nextcloud":
+    url = "https://documents.arwc.test" + path
+    credentials = base64.b64encode((onboarding["username"] + ":" + onboarding["password"]).encode()).decode()
+    headers["Authorization"] = "Basic " + credentials
+    opener = urllib.request.build_opener(urllib.request.HTTPSHandler(context=context))
+elif service == "erpnext":
+    url = "https://suppliers.arwc.test" + path
+    cookies = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookies), urllib.request.HTTPSHandler(context=context))
+    login = urllib.parse.urlencode({"usr": onboarding["username"], "pwd": onboarding["password"]}).encode()
+    opener.open(urllib.request.Request("https://suppliers.arwc.test/api/method/login", data=login, method="POST"), timeout=30).read()
+    if data is not None:
+        headers.setdefault("Content-Type", "application/json")
+elif service == "postgrest":
+    url = "https://read-data.arwc.test" + path
+    opener = urllib.request.build_opener(urllib.request.HTTPSHandler(context=context))
+else:
+    raise ValueError("unknown native service")
+try:
+    response = opener.open(urllib.request.Request(url, data=data, headers=headers, method=method), timeout=30)
+except urllib.error.HTTPError as error:
+    response = error
+payload = response.read()
+print(json.dumps({
+    "status": response.status,
+    "content_type": response.headers.get_content_type(),
+    "body": base64.b64encode(payload).decode(),
+}, separators=(",", ":")))
+'''
+
+
+def native_request(service: str, path: str, *, method: str = "GET", body: dict | bytes | None = None,
+                   headers: dict[str, str] | None = None, expected: int | set[int] | None = None) -> tuple[int, bytes, str]:
+    if isinstance(body, dict):
+        encoded = json.dumps(body, separators=(",", ":"))
+    elif isinstance(body, bytes):
+        encoded = body.decode()
+    else:
+        encoded = ""
+    completed = inside("python3", "-c", _NATIVE_REQUEST, service, method, path, encoded, json.dumps(headers or {}))
+    if completed.returncode:
+        raise AssertionError(completed.stderr)
+    response = json.loads(completed.stdout)
+    status = int(response["status"])
+    allowed = {expected} if isinstance(expected, int) else expected
+    if allowed is not None and status not in allowed:
+        raise AssertionError(f"{service} {method} {path} -> {status} (want {sorted(allowed)})")
+    value = base64.b64decode(response["body"])
+    trace_event(
+        "http", method=method, host=service,
+        path_sha256=hashlib.sha256(path.encode()).hexdigest(), status=status,
+        response_bytes=len(value), response_sha256=hashlib.sha256(value).hexdigest(),
+    )
+    return status, value, response["content_type"]
+
+
+def native_json(service: str, path: str, *, method: str = "GET", body: dict | None = None,
+                headers: dict[str, str] | None = None, expected: int | set[int] | None = None) -> tuple[int, dict]:
+    status, value, _ = native_request(service, path, method=method, body=body, headers=headers, expected=expected)
+    return status, json.loads(value) if value else {}
+
+
+def erp_list(doctype: str, filters: dict, fields: list[str]) -> list[dict]:
+    query = urlencode({"filters": json.dumps(filters), "fields": json.dumps(fields), "limit_page_length": 20})
+    _, response = native_json("erpnext", f"/api/resource/{quote(doctype, safe='')}?{query}", expected=200)
+    return response["data"]
+
+
+def one(rows: list[dict], description: str) -> dict:
+    if len(rows) != 1:
+        raise AssertionError(f"expected one {description}, got {len(rows)}")
+    return rows[0]
 
 
 _MAKE_ARCHIVE = r'''
@@ -750,107 +837,163 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
     # ------------------------------------------------------------------ W01
     def test_w01_customer_copy(self) -> None:
-        base = self.host("customer_handover")
-
         with self.subTest(card="W01.1 the customer's copy"):
             status, response = request(self.discovered_route("corporate.handover"), expected=200)
             record = response["record"]
-            # The copy is bound to the delivered customer and active connector.
             self.assertEqual(record["tenant"], self.transition["tenant"])
             self.assertEqual(record["active_connector"], self.transition["active_connector"])
-            self.evidence["customer_record"] = record
+            self.assertEqual(record["maintenance_case"], record["supplier_onboarding"]["maintenance_case"])
+            self.assertRegex(response["audit_id"], r"^[0-9a-f-]{36}$")
+            self.evidence["maintenance_case"] = record["maintenance_case"]
 
         with self.subTest(card="W01.2 the planner's unfinished handover"):
-            status, response = request(
-                self.discovered_route("corporate.work-order").replace("{wo_id}", "current"),
+            status, content, _ = native_request(
+                "nextcloud",
+                "/remote.php/dav/files/{user}/Veybridge%20handover/planning-handover-2026-09.md",
                 expected=200,
             )
-            record = response["record"]
-            self.assertNotIn("customer_receipt", record)
-            self.evidence["planner_handover"] = record
+            text = content.decode()
+            self.assertIn("PLN-HO-CRR-17", text)
+            self.assertIn("INSP-CRR-2026-09-18", text)
+            self.assertIn("Nadia Corvane", text)
+            self.evidence["inspection"] = "INSP-CRR-2026-09-18"
+            self.evidence["planning_handover_sha256"] = hashlib.sha256(content).hexdigest()
 
         with self.subTest(card="W01.3 how the company buys time"):
-            status, response = request(self.discovered_route("corporate.continuity-plan"), expected=200)
-            record = response["record"]
-            self.assertTrue(record["planning_reference"])
-            self.assertTrue(record["measures"])
+            _, content, _ = native_request(
+                "nextcloud",
+                "/remote.php/dav/files/{user}/Veybridge%20handover/procurement-continuity.md",
+                expected=200,
+            )
+            text = content.decode()
+            for phrase in ("supplementary water purchasing", "Stage A restrictions", "reservation must be accepted"):
+                self.assertIn(phrase, text)
 
         with self.subTest(card="W01.4 change the corporate record"):
-            original = self.evidence["planner_handover"]
-            content = "# Cinder inspection summary\n\nOutlet inspection remains scheduled for 18 September.\n"
-            # The change must carry the record's immutable bindings unchanged.
-            body = {
-                "record_id": original["record_id"],
-                "expected_revision": original["revision"],
-                "inspection": original["inspection"],
-                "assignee": original["assignee"],
-                "attachment": {"filename": "cinder-inspection-summary.md", "content": content},
-            }
-            status, changed = request(self.discovered_route("corporate.work-order-update").replace("{wo_id}", self.evidence["planner_handover"]["record_id"]), method="POST", body=body, expected=201)
-            self.assertEqual(changed["attachment_sha256"], hashlib.sha256(content.encode()).hexdigest())
-            self.assertEqual(changed["inspection"], original["inspection"])
-            # A replayed stale-revision change is refused.
-            status, _ = request(self.discovered_route("corporate.work-order-update").replace("{wo_id}", self.evidence["planner_handover"]["record_id"]), method="POST", body=body)
-            self.assertEqual(status, 409)
+            task = one(erp_list("Task", {"subject": "Supplier handback — MTN-CRR-204"},
+                                         ["name", "project", "status", "description"]), "supplier handback Task")
+            description = task["description"].rstrip() + " Confirmed inspection: " + self.evidence["inspection"]
+            _, changed = native_json(
+                "erpnext", "/api/resource/Task/" + quote(task["name"], safe=""), method="PUT",
+                body={"status": "Working", "description": description}, expected=200,
+            )
+            self.assertEqual(changed["data"]["status"], "Working")
+            self.assertIn(self.evidence["inspection"], changed["data"]["description"])
+            self.evidence["supplier_handback_task"] = task["name"]
+            self.evidence["supplier_project"] = task["project"]
 
     # ------------------------------------------------------------------ W02
     def test_w02_asset_association(self) -> None:
-        base = self.host("business_workplace")
-
         with self.subTest(card="W02.1 the asset and the contractor"):
-            status, response = request(self.discovered_route("business.asset-bundle"), expected=200)
-            self.assertIn("record", response)
-            self.evidence["asset_bundle"] = response["record"]
+            order_row = one(erp_list("Purchase Order", {"title": "PO-VEY-4417"},
+                                               ["name", "title", "supplier", "docstatus"]), "supplier purchase order")
+            _, response = native_json(
+                "erpnext", "/api/resource/Purchase%20Order/" + quote(order_row["name"], safe=""), expected=200,
+            )
+            order = response["data"]
+            self.assertEqual(order["supplier"], "Veybridge Field Services")
+            self.assertTrue(any("AST-CRR-017" in row.get("description", "") for row in order["items"]))
+            self.evidence["supplier_order"] = order["name"]
 
         with self.subTest(card="W02.2 three names for one job"):
-            status, response = request(self.discovered_route("business.association-record"), expected=200)
-            sources = response["record"]["sources"]
-            self.assertIn("work_order", sources)
-            self.evidence["work_order"] = sources["work_order"]["id"]
+            project = one(erp_list("Project", {"project_name": "WO-CRR-4417 — Cairn Reach outlet inspection"},
+                                      ["name", "project_name"]), "Cairn Reach Project")
+            _, annex, _ = native_request(
+                "nextcloud", "/remote.php/dav/files/{user}/Veybridge%20handover/ANN-4417.md", expected=200,
+            )
+            _, register, _ = native_request(
+                "nextcloud", "/remote.php/dav/files/{user}/Veybridge%20handover/engineering-reference-register.csv",
+                expected=200,
+            )
+            self.assertIn("VYB-204-77", annex.decode())
+            self.assertIn("DRG-CRR-OUT-017", annex.decode())
+            self.assertIn("AST-CRR-017", register.decode())
+            self.evidence["supplier_project"] = project["name"]
+            self.evidence["annex_sha256"] = hashlib.sha256(annex).hexdigest()
+            self.evidence["register_sha256"] = hashlib.sha256(register).hexdigest()
 
         with self.subTest(card="W02.3 the record behind the wrong association"):
-            # The merge authorization trusts the supplied association row; the
-            # alternate association for this work order reaches the protected merge.
-            suffix = self.evidence["work_order"].split("-", 1)[1]
-            association = f"ASC-{suffix}-ALT"
-            status, result = request(
-                self.discovered_route("business.work-order-attachment"), method="POST",
-                body={"association_id": association, "expected_revision": 6}, expected=201)
-            self.assertTrue(result["record"]["record_id"])
-            # An unrelated association is refused.
-            status, _ = request(
-                self.discovered_route("business.work-order-attachment"), method="POST",
-                body={"association_id": "ASC-MER-1000", "expected_revision": 6})
-            self.assertEqual(status, 409)
+            restricted = one(erp_list("Task", {"subject": "MR-CRR-4417-R6 — Engineering inspection record"},
+                                      ["name", "project", "description"]), "shared engineering Task")
+            self.assertEqual(restricted["project"], self.evidence["supplier_project"])
+            self.assertIn("AST-CRR-017", restricted["description"])
+            neighbor = "MR-RIV-3308-R2 — Engineering inspection record"
+            neighbor_query = urlencode({"filters": json.dumps({"subject": neighbor}),
+                                        "fields": json.dumps(["name"]), "limit_page_length": 2})
+            _, denied = native_json("erpnext", "/api/resource/Task?" + neighbor_query, expected=200)
+            self.assertEqual(denied["data"], [])
+            status, _, _ = native_request(
+                "erpnext", "/api/resource/Task/" + quote(restricted["name"], safe=""), method="PUT",
+                body={"description": restricted["description"] + " unauthorized change"}, expected={403},
+            )
+            self.assertEqual(status, 403)
+            self.evidence["restricted_task"] = restricted["name"]
 
     # ------------------------------------------------------------------ W03
     def test_w03_annex_reference(self) -> None:
-        base = self.host("business_workplace")
-
         with self.subTest(card="W03.1 an annex left with the order"):
-            status, response = request(self.discovered_route("business.work-order-annex"), expected=200)
-            record = response["record"]
-            self.assertRegex(record["record_id"], r"^ANN-")
-            self.assertRegex(record["process_data_handover"], r"^PDH-")
-            self.evidence["process_data_handover"] = record["process_data_handover"]
+            files = erp_list("File", {"file_name": "ANN-4417-R2.md", "attached_to_doctype": "Purchase Order",
+                                      "attached_to_name": self.evidence["supplier_order"]},
+                             ["name", "file_name", "file_url", "is_private"])
+            attachment = one(files, "private purchase-order attachment")
+            self.assertEqual(attachment["is_private"], 1)
+            _, annex, _ = native_request("erpnext", attachment["file_url"], expected=200)
+            text = annex.decode()
+            self.assertIn("ANN-4417-R2", text)
+            self.assertIn("DRG-CRR-OUT-017", text)
+            self.evidence["order_annex_sha256"] = hashlib.sha256(annex).hexdigest()
 
         with self.subTest(card="W03.2 a reference outside the order"):
-            handover = self.evidence["process_data_handover"]
-            # A plain restricted reference is refused; a validate-before-decode
-            # traversal from the attachments namespace reaches it.
-            status, _ = request(
-                self.discovered_route("business.work-order-references"), method="POST",
-                body={"reference": f"restricted/{handover}"})
-            self.assertEqual(status, 409)
-            status, imported = request(
-                self.discovered_route("business.work-order-references"), method="POST",
-                body={"reference": f"attachments/%2e%2e%2frestricted%2f{handover}"}, expected=201)
-            self.assertEqual(imported["record"]["record_id"], handover)
+            propfind = b'<?xml version="1.0"?><d:propfind xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><oc:fileid/></d:prop></d:propfind>'
+            _, metadata, _ = native_request(
+                "nextcloud", "/remote.php/dav/files/{user}/Veybridge%20handover/ANN-4417.md",
+                method="PROPFIND", body=propfind,
+                headers={"Depth": "0", "Content-Type": "application/xml"}, expected=207,
+            )
+            match = re.search(rb"<oc:fileid>(\d+)</oc:fileid>", metadata)
+            self.assertIsNotNone(match)
+            file_id = match.group(1).decode()
+            _, versions, _ = native_request(
+                "nextcloud", f"/remote.php/dav/versions/{{user}}/versions/{file_id}/",
+                method="PROPFIND", headers={"Depth": "1"}, expected=207,
+            )
+            version_ids = re.findall(rb"/versions/\d+/(\d+)</d:href>", versions)
+            self.assertTrue(version_ids)
+            _, prior, _ = native_request(
+                "nextcloud", f"/remote.php/dav/versions/{{user}}/versions/{file_id}/{version_ids[-1].decode()}",
+                expected=200,
+            )
+            self.assertIn("ANN-4417-R1", prior.decode())
+            _, shares = native_json(
+                "nextcloud", "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json&shared_with_me=true",
+                headers={"OCS-APIRequest": "true"}, expected=200,
+            )
+            incoming = shares["ocs"]["data"]
+            acceptance = [row for row in incoming if row.get("file_target", "").endswith("integration-read-acceptance.md")]
+            self.assertEqual(len(acceptance), 1)
+            self.assertEqual(int(acceptance[0]["permissions"]), 1)
+            status, _, _ = native_request(
+                "nextcloud", "/remote.php/dav/files/{user}/Engineering%20reviews",
+                method="PROPFIND", headers={"Depth": "1"}, expected={403, 404},
+            )
+            self.assertIn(status, {403, 404})
 
         with self.subTest(card="W03.3 the integration's read contract"):
-            status, contract = request(self.discovered_route("business.integration-contract"), expected=200)
-            self.assertEqual(contract["record"]["record_id"], self.evidence["process_data_handover"])
-            self.evidence["read_contract"] = contract["record"]
+            _, schema = native_json("postgrest", "/", expected=200)
+            self.assertIn("/reserve_report", schema["paths"])
+            self.assertNotIn("/allocation_ledger", schema["paths"])
+            _, rows = native_json(
+                "postgrest", "/reserve_report?record_id=eq.RPT-CRR-DP3-R7", expected=200,
+            )
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["asset"], "AST-CRR-017")
+            status, _, _ = native_request("postgrest", "/allocation_ledger", expected=404)
+            self.assertEqual(status, 404)
+            status, _, _ = native_request(
+                "postgrest", "/reserve_report", method="POST", body={"record_id": "unaccepted"}, expected={401, 403},
+            )
+            self.assertIn(status, {401, 403})
+            self.evidence["read_contract"] = rows[0]
 
     # ------------------------------------------------------------------ W04
     def test_w04_archive_helper(self) -> None:
