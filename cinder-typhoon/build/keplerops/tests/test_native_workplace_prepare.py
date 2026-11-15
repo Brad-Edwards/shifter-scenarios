@@ -24,10 +24,12 @@ class WorkplacePrepareTests(unittest.TestCase):
             MODULE.prepare(operator)
             target = operator / 'native-workplace'
             first = (target / 'bootstrap.json').read_bytes()
+            ca_password_inode = (target / 'ca/secrets/password').stat().st_ino
             MODULE.prepare(operator)
             self.assertEqual(first, (target / 'bootstrap.json').read_bytes())
             self.assertEqual((target / 'bootstrap.json').stat().st_mode & 0o777, 0o600)
             self.assertEqual(target.stat().st_mode & 0o777, 0o700)
+            self.assertEqual((target / 'ca/secrets/password').stat().st_ino, ca_password_inode)
             realm = json.loads((target / 'realm.json').read_text())
             self.assertEqual(realm['users'][0]['realmRoles'], ['developer'])
             self.assertFalse(realm['clients'][0]['serviceAccountsEnabled'])

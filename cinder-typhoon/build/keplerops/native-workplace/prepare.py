@@ -110,7 +110,8 @@ def prepare(operator: Path) -> None:
     write(target / 'realm.json', json.dumps(realm), 0o644)
     ca = target / 'ca'
     (ca / 'secrets').mkdir(mode=0o700, parents=True, exist_ok=True)
-    write(ca / 'secrets/password', values['ca'])
+    if not (ca / 'secrets/password').exists():
+        write(ca / 'secrets/password', values['ca'])
 
 
 def configure_ca(operator: Path) -> None:
