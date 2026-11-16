@@ -100,7 +100,7 @@ roleRef:
   name: workload-build-reader
   apiGroup: rbac.authorization.k8s.io
 ---
-# K13.4 ClusterRole: svc-cloud-api can issue tokens for any SA
+# K13.4 ClusterRole: svc-cloud-api can issue tokens and perform token reviews
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -108,6 +108,9 @@ metadata:
 rules:
   - apiGroups: ['']
     resources: [serviceaccounts/token]
+    verbs: [create]
+  - apiGroups: [authentication.k8s.io]
+    resources: [tokenreviews]
     verbs: [create]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -166,4 +169,58 @@ subjects:
 roleRef:
   kind: Role
   name: workload-trust-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+# K14.2: svc-fieldlink-export — the export-scoped identity
+# Only accessible with tokens having audience fieldkest-export-access.
+# The K14.2 vulnerability: the role-exchange endpoint validates issuer/subject but
+# omits audience check, allowing the K13.4 workload token (wrong audience) to claim
+# this export role.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-fieldlink-export
+  namespace: fieldlink
+---
+# K14.2: protected role record — only svc-fieldlink-export can read it
+# svc-fieldlink-workload (K13.4 token) cannot read this — K3s RBAC denies it
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: role-export-access
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: role-record
+data:
+  role_id: role/support-export-editor
+  audience: fieldkest-export-access
+  principal: svc-fieldlink-export
+  accepted_input_audience: fieldkest-build-records
+  scope: fieldkest-exports
+  schema: fieldkest.role-record/v1
+---
+# K14.2 Role: only svc-fieldlink-export can read role-export-access
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: export-role-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get]
+    resourceNames: [role-export-access]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: export-role-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: export-role-reader
   apiGroup: rbac.authorization.k8s.io

@@ -92,6 +92,12 @@ class CloudApiHandler(KeplerHandler):
             trust_id = path.removeprefix("/api/trust-records/")
             self._trust_record_via_workload(trust_id)
             return
+        # /api/policies/{id}: K14.2 — authenticated by export SA token.
+        # Reads the protected role record via K3s ConfigMap using the export SA token.
+        if path.startswith("/api/policies/"):
+            policy_id = path.removeprefix("/api/policies/")
+            self._policy_via_export_token(policy_id)
+            return
         if not self._developer():
             self.send_json(401, {"error": "authentication_required"})
             return
@@ -102,6 +108,12 @@ class CloudApiHandler(KeplerHandler):
 
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
+        # K14.2: role-exchange authenticated by workload SA token (not developer credentials).
+        # The endpoint validates issuer and subject but OMITS audience check (the vulnerability).
+        if path.startswith("/api/token-exchange/"):
+            role = path.removeprefix("/api/token-exchange/")
+            self._role_exchange(role)
+            return
         if not self._developer():
             self.send_json(401, {"error": "authentication_required"})
             return
@@ -152,6 +164,109 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(403, {"error": "k3s_rbac_denied"})
         elif status == 404:
             self.send_json(404, {"error": "trust_record_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+    def _role_exchange(self, role: str) -> None:
+        """K14.2: exchange a workload SA token for a scoped export role token.
+
+        VULNERABILITY: validates the K3s token's issuer and subject but does NOT
+        check its audience. The K13.4 token has default K3s audiences (not
+        fieldkest-export-access), but matching subject and issuer allow claiming
+        the export role. This is the K14.2 trust-policy flaw.
+
+        Issues a REAL K3s TokenRequest for svc-fieldlink-export with audience
+        fieldkest-export-access. K3s RBAC then enforces scope on that token.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "workload_token_required"})
+            return
+        input_token = auth[7:].strip()
+        # Validate the token using K3s TokenReview (checks issuer and subject)
+        # OMITS audience check — this is the vulnerability
+        status, review = _k3s_request(
+            "POST",
+            "/apis/authentication.k8s.io/v1/tokenreviews",
+            body={
+                "apiVersion": "authentication.k8s.io/v1",
+                "kind": "TokenReview",
+                "spec": {"token": input_token},
+            },
+        )
+        if status != 201 or not review.get("status", {}).get("authenticated"):
+            self.send_json(401, {"error": "workload_token_invalid"})
+            return
+        user_info = review["status"].get("user", {})
+        username = user_info.get("username", "")
+        # Policy check: issuer (implicit in K3s auth) and subject must match
+        # expected workload. Audience is NOT checked — vulnerability.
+        expected_subject = f"system:serviceaccount:{NAMESPACE}:{WORKLOAD_SA}"
+        if username != expected_subject:
+            self.send_json(403, {"error": "subject_mismatch"})
+            return
+        # Issue export role token for svc-fieldlink-export with the specific audience
+        status2, data2 = _k3s_request(
+            "POST",
+            f"/api/v1/namespaces/{NAMESPACE}/serviceaccounts/svc-fieldlink-export/token",
+            body={
+                "apiVersion": "authentication.k8s.io/v1",
+                "kind": "TokenRequest",
+                "spec": {
+                    "audiences": [role],  # e.g. fieldkest-export-access
+                    "expirationSeconds": 3600,
+                },
+            },
+        )
+        if status2 != 201:
+            self.send_json(503, {"error": f"export_token_request_failed: {status2}"})
+            return
+        export_token = data2["status"]["token"]
+        result = {
+            "schema": "fieldkest.role-session/v1",
+            "role": f"role/support-export-editor",
+            "audience": role,
+            "access_token": export_token,
+            "principal": "svc-fieldlink-export",
+            "accepted_input_audience": "fieldkest-build-records",
+            "expires_in": 3600,
+        }
+        append_audit(AUDIT, "role-exchange", {
+            "request_id": self.request_id, "role": role,
+            "input_subject": username, "output_principal": "svc-fieldlink-export",
+            "status": 201,
+        })
+        self.send_json(201, result)
+
+    def _policy_via_export_token(self, policy_id: str) -> None:
+        """K14.2: read the protected role record using the export SA token.
+
+        RBAC: svc-fieldlink-export can read role-export-access; svc-fieldlink-workload
+        cannot. K3s enforces this — not Python.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        configmap_name = policy_id.lower().replace("/", "-").replace("_", "-")
+        status, data = _k3s_request(
+            "GET",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token,
+        )
+        if status == 200:
+            cm_data = data.get("data", {})
+            result = {"schema": "fieldkest.role-record/v1", "policy_id": policy_id, **cm_data}
+            append_audit(AUDIT, "policies", {
+                "request_id": self.request_id, "policy_id": policy_id,
+                "principal": cm_data.get("principal"), "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "policy_not_found"})
         else:
             self.send_json(502, {"error": f"k3s_returned_{status}"})
 
