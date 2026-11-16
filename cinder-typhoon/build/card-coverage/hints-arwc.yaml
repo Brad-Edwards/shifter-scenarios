@@ -451,12 +451,14 @@ hints:
     - kind: client_route
       id: contractors.expected-visitors
   W13.3:
-    h1: Begin with the inspection appointment, access roster, and contractor check-in. Its published client document
-      exposes the appointment operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as appointment ownership confusion followed by a separately scoped check-in identity. Establish
-      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the appointment operation in the published client reference. Read the current revision, submit one
-      minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: The contractors.appointment route expects appointment_id and expected_revision (from W13.1),
+      attendee and caller_organization from the W13.2 roster, and the immutable inspection, asset, and
+      window unchanged. Both W13.1 and W13.2 must be completed first.
+    h2: The route checks that the attendee belongs to your contractor organization — validated against the
+      roster. But it does not check if your organization is the appointment owner. Supply the roster
+      identity (veybridge.tech.204) and Veybridge Technical Services as the caller organization.
+    h3: After the update: attendee=veybridge.tech.204 and owner_organization=Northbank Civil Inspections
+      is unchanged. Inspection, asset, and window are immutable. Record the updated revision for W13.4.
     references:
     - kind: client_route
       id: contractors.appointment
