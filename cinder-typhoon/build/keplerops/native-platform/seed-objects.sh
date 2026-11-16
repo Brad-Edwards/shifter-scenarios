@@ -30,6 +30,15 @@ aws_client() {
     --entrypoint aws cinder-keplerops/k-dev:hand-build \
     --endpoint-url http://fieldlink-objects:8333 "$@"
 }
+aws_export_client() {
+  docker run --rm --network cinder-keplerops-foundation-data --read-only \
+    --user 0:0 --cap-drop ALL --security-opt no-new-privileges:true --tmpfs /tmp \
+    --env AWS_SHARED_CREDENTIALS_FILE=/run/aws/credentials --env AWS_DEFAULT_REGION=us-east-1 \
+    --mount "type=bind,source=$operator/native-platform/aws-export,target=/run/aws/credentials,readonly" \
+    --mount "type=bind,source=$workspaces,target=/workspaces,readonly" \
+    --entrypoint aws cinder-keplerops/k-dev:hand-build \
+    --endpoint-url http://fieldlink-objects:8333 "$@"
+}
 if ! aws_client s3api head-bucket --bucket fieldlink-exports >/dev/null 2>&1; then
   aws_client s3api create-bucket --bucket fieldlink-exports >/dev/null
 fi
@@ -57,5 +66,14 @@ aws_client s3 cp /workspaces/deploy-2026-09-v2.json \
 # Seed the handover object
 aws_client s3 cp /workspaces/handover.json \
   s3://fieldkest-workspaces/exports/EXP-2841/handover.json >/dev/null
+# K14.3: seed the support export object in fieldkest-exports.
+# rowan.ito (developer identity) has no access to fieldkest-exports — denied by SeaweedFS.
+# svc-fieldlink-export has restricted read access via the %2f-encoded action in s3.json.
+# The participant must use the K14.2 role-exchange to get export credentials before reading.
+if ! aws_client s3api head-bucket --bucket fieldkest-exports >/dev/null 2>&1; then
+  aws_client s3api create-bucket --bucket fieldkest-exports >/dev/null
+fi
+aws_export_client s3 cp /workspaces/support-EXP-2841.json \
+  s3://fieldkest-exports/exports/support/EXP-2841 >/dev/null
 touch "$marker"
 echo 'Native company backup and retained collection stored in S3.'

@@ -98,6 +98,13 @@ class CloudApiHandler(KeplerHandler):
             policy_id = path.removeprefix("/api/policies/")
             self._policy_via_export_token(policy_id)
             return
+        # /api/data/exports/{id}: K14.3 — authenticated by export SA token.
+        # Returns export S3 credentials for svc-fieldlink-export.
+        # Proves SeaweedFS bucket policy boundary: developer denied, export role allowed.
+        if path.startswith("/api/data/exports/"):
+            export_id = path.removeprefix("/api/data/exports/")
+            self._export_credentials(export_id)
+            return
         if not self._developer():
             self.send_json(401, {"error": "authentication_required"})
             return
@@ -237,6 +244,69 @@ class CloudApiHandler(KeplerHandler):
             "status": 201,
         })
         self.send_json(201, result)
+
+    def _export_credentials(self, export_id: str) -> None:
+        """K14.3: provide SeaweedFS export credentials after validating the K14.2 SA token.
+
+        The svc-fieldlink-export SeaweedFS identity has restricted S3 access to
+        fieldkest-exports/exports/support%2fEXP-2841 (using %2f-encoded path in s3.json).
+        SeaweedFS decodes %2f after prefix comparison to allow exactly this one object.
+
+        The developer identity (rowan.ito) has NO access to fieldkest-exports — this is
+        the boundary: denied before obtaining export credentials, allowed after.
+
+        This endpoint validates the K14.2 export SA token (K3s TokenReview) and returns
+        the svc-fieldlink-export SeaweedFS credentials for use with the objects.keplerops.test
+        S3 endpoint.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        # Validate the export SA token (K3s TokenReview)
+        status_tr, review = _k3s_request(
+            "POST",
+            "/apis/authentication.k8s.io/v1/tokenreviews",
+            body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenReview",
+                  "spec": {"token": sa_token}},
+        )
+        if status_tr != 201 or not review.get("status", {}).get("authenticated"):
+            self.send_json(401, {"error": "export_token_invalid"})
+            return
+        username = review["status"]["user"]["username"]
+        expected = f"system:serviceaccount:{NAMESPACE}:svc-fieldlink-export"
+        if username != expected:
+            self.send_json(403, {"error": "export_identity_required"})
+            return
+        # Read SeaweedFS export credentials from operator directory
+        cred_file = Path(os.environ.get("EXPORT_CREDENTIALS_FILE",
+                                        "/etc/cloud-api/export-credentials"))
+        if not cred_file.is_file():
+            self.send_json(503, {"error": "export_credentials_unavailable"})
+            return
+        # Parse aws credentials file
+        lines = cred_file.read_text().splitlines()
+        access_key = next((l.split("=", 1)[1].strip() for l in lines
+                           if l.startswith("aws_access_key_id")), "")
+        secret_key = next((l.split("=", 1)[1].strip() for l in lines
+                           if l.startswith("aws_secret_access_key")), "")
+        result = {
+            "schema": "fieldkest.export-credentials/v1",
+            "export_id": export_id,
+            "endpoint": "https://objects.keplerops.test",
+            "bucket": "fieldkest-exports",
+            "key": f"exports/support/{export_id}",
+            "access_key_id": access_key,
+            "secret_access_key": secret_key,
+            "region": "us-east-1",
+            "note": "Resource rule uses %2f-encoded path; SeaweedFS decodes after prefix comparison",
+        }
+        append_audit(AUDIT, "export-credentials", {
+            "request_id": self.request_id, "export_id": export_id,
+            "principal": username, "status": 200,
+        })
+        self.send_json(200, result)
 
     def _policy_via_export_token(self, policy_id: str) -> None:
         """K14.2: read the protected role record using the export SA token.
