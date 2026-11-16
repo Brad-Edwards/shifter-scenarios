@@ -29,6 +29,8 @@ from __future__ import annotations
 import base64
 import http.client as _hc
 import json
+import pathlib
+import re as _re
 import ssl
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import uuid
@@ -37,6 +39,7 @@ _SERVER_ID = "fieldkest-assessor/1.0 Python"
 _CA_PATH = "/tmp/fieldkest-ca.crt"
 _VERDACCIO_HOST = "packages.keplerops.test"
 _PRIVATE_PACKAGE = "@keplerops/support-rehearsal"
+_RESULTS_DIR = pathlib.Path("/var/lib/fieldkest-registry/results")
 
 # Load CI reader auth at module import time so the credentials are always available.
 try:
@@ -48,6 +51,17 @@ except Exception as _e:
     _CI_AUTH_B64 = ""
     import sys as _sys
     print(f"assessor: credentials unavailable: {_e}", file=_sys.stderr)
+
+
+def _validate_inspection_id(inspection_id: str) -> dict | None:
+    """Return the K07.1 trace data if inspection_id is valid, else None."""
+    if not _re.fullmatch(r"INSP-[0-9A-F]{8}", inspection_id):
+        return None
+    trace_path = _RESULTS_DIR / f"{inspection_id}.json"
+    try:
+        return json.loads(trace_path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
 
 
 def _fetch_private_package() -> dict | None:
@@ -114,6 +128,54 @@ class AssessorHandler(BaseHTTPRequestHandler):
             except Exception as _e:
                 import sys as _sys
                 print(f"assessor: privileged result write failed: {_e}", file=_sys.stderr)
+            self._respond(200, result)
+            return
+
+        if path == "/assess/inspect-privileged":
+            # K07.3 protected route: requires a valid K07.1 inspection_id.
+            # The body is: payload_len (2 bytes, big-endian) + inspection_id JSON.
+            # Only reachable via K07.2 surplus bytes smuggled through the body-framing
+            # exploit; not reachable from outside the assessor's internal port.
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                if len(body) < 3:
+                    raise ValueError("body_too_short")
+                payload_len = int.from_bytes(body[:2], "big")
+                if 2 + payload_len > len(body):
+                    raise ValueError("payload_len_exceeds_body")
+                data = json.loads(body[2:2 + payload_len])
+                inspection_id = str(data.get("inspection_id", ""))
+            except (json.JSONDecodeError, ValueError):
+                self._respond(422, {"error": "invalid_inspect_payload"})
+                return
+            trace = _validate_inspection_id(inspection_id)
+            if trace is None:
+                self._respond(403, {"error": "inspection_binding_denied"})
+                return
+            pkg = _fetch_private_package()
+            if pkg is None:
+                self._respond(503, {"error": "private_package_unavailable"})
+                return
+            assessment_id = str(uuid.uuid4())
+            result = {
+                "schema": "fieldkest.protected-assessment/v1",
+                "assessment_id": assessment_id,
+                "assessment": "protected-inspection-complete",
+                "inspection_id": inspection_id,
+                "assessor_correlation_id": trace.get("assessor_correlation_id"),
+                "package": pkg.get("name"),
+                "version": pkg.get("dist-tags", {}).get("latest"),
+                "finding": "support-package-approved-for-release",
+            }
+            try:
+                _RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+                (_RESULTS_DIR / f"protected-assessment-{assessment_id}.json").write_text(
+                    json.dumps(result, separators=(",", ":")) + "\n"
+                )
+            except Exception as _e:
+                import sys as _sys
+                print(f"assessor: protected assessment write failed: {_e}", file=_sys.stderr)
             self._respond(200, result)
             return
 

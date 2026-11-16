@@ -296,16 +296,21 @@ hints:
     - kind: client_route
       id: packages.inspections
   K07.3:
-    h1: Begin with the package inspection contract and its trace records. Its published client document exposes
-      the inspection envelope operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as message-envelope interpretation across a parser and a protected downstream action. Carry forward
-      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
-      boundary.
-    h3: Locate the inspection envelope operation in the published client reference. Replay the preceding evidence
-      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: The K07.3 protected route requires a valid K07.1 inspection_id as authorization. The smuggled POST body
+      is binary-framed: 2 bytes big-endian payload_len followed by {"inspection_id":"INSP-XXXXXXXX"} JSON.
+      An invalid or absent inspection_id returns 403 from the assessor with no state change.
+    h2: Apply K07.2's body-framing primitive: front_following_length=10 (CL to assessor = 10-byte header).
+      Surplus bytes = POST /assess/inspect-privileged headers with Content-Length=(2+len(JSON)) followed by
+      the binary-framed body. No trailing bytes should remain so the assessor connection stays alive.
+    h3: After submitting the envelope, query GET /api/protected-assessment/latest to retrieve the result.
+      It binds the K07.1 inspection_id, the K07.1 assessor_correlation_id, and the real Verdaccio
+      @keplerops/support-rehearsal package data. Both the K07.1 trace and the protected assessment
+      are the correlated audit evidence for K07.3 completion.
     references:
     - kind: client_route
       id: packages.inspection-envelope
+    - kind: client_route
+      id: packages.inspections
   K08.1:
     h1: Begin with the package entitlement records and versioned checking service. Its published client document
       exposes the entitlement operation, so use that ordinary contract instead of guessing a path.

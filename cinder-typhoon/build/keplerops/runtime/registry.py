@@ -106,6 +106,34 @@ class RegistryHandler(KeplerHandler):
         self.send_json(401, {"error": "authentication_required"})
         return False
 
+    def _protected_assessment(self, assessment_id: str) -> None:
+        import re as _re
+        # Support "latest" to retrieve the most recent protected assessment
+        # (the participant may not know the UUID without the connection-poisoning path)
+        if assessment_id == "latest":
+            candidates = sorted(RESULTS.glob("protected-assessment-*.json"), reverse=True)
+            if not candidates:
+                self.send_json(404, {"error": "assessment_not_found"})
+                return
+            result_path = candidates[0]
+            assessment_id = result_path.stem.removeprefix("protected-assessment-")
+        else:
+            if not _re.fullmatch(r"[0-9a-f-]{36}", assessment_id):
+                self.send_json(404, {"error": "assessment_not_found"})
+                return
+            result_path = RESULTS / f"protected-assessment-{assessment_id}.json"
+            if not result_path.is_file():
+                self.send_json(404, {"error": "assessment_not_found"})
+                return
+        result = json.loads(result_path.read_text())
+        append_audit(AUDIT, "protected-assessment-reads", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "assessment_id": assessment_id,
+            "inspection_id": result.get("inspection_id", ""),
+            "status": 200,
+        })
+        self.send_json(200, result)
+
     def _privileged_result(self) -> None:
         # This record only exists after /assess/privileged was reached via K07.2
         # surplus bytes.  The participant cannot read @keplerops/support-rehearsal
@@ -178,6 +206,11 @@ class RegistryHandler(KeplerHandler):
             if not self._require_developer():
                 return
             self._privileged_result()
+        elif path.startswith("/api/protected-assessment/"):
+            if not self._require_developer():
+                return
+            assessment_id = path.removeprefix("/api/protected-assessment/")
+            self._protected_assessment(assessment_id)
         else:
             self.send_json(404, {"error": "not_found"})
 
