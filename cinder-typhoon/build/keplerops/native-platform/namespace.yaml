@@ -382,6 +382,7 @@ spec:
     spec:
       template:
         spec:
+          serviceAccountName: svc-schedule-runner
           containers:
           - name: exporter
             image: busybox:latest
@@ -458,4 +459,44 @@ subjects:
 roleRef:
   kind: Role
   name: schedule-patcher
+  apiGroup: rbac.authorization.k8s.io
+---
+# K16.3: svc-schedule-runner — the separate execution context for the scheduled task.
+# This SA is used by the CronJob's Job template, NOT the participant's export SA.
+# It runs independently under its own identity, outliving the participant's session.
+# After the participant's session ends (token expires), the CronJob still runs
+# under svc-schedule-runner via its auto-mounted service account token.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-schedule-runner
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: schedule-runner
+---
+# K16.3: svc-schedule-runner can write its run result to a ConfigMap.
+# This demonstrates the separate execution context acting independently.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: schedule-runner
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get, create, patch]
+    resourceNames: [sched-2841-result]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: schedule-runner
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-schedule-runner
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: schedule-runner
   apiGroup: rbac.authorization.k8s.io

@@ -196,6 +196,11 @@ class CloudApiHandler(KeplerHandler):
             export_id = path.removeprefix("/api/exports/").removesuffix("/definition")
             self._export_definition(export_id)
             return
+        # /api/schedules/{id}/context: K16.3 — returns the execution identity.
+        if path.endswith("/context") and "/api/schedules/" in path:
+            schedule_id = path.removeprefix("/api/schedules/").removesuffix("/context")
+            self._schedule_context(schedule_id)
+            return
         # /api/schedules/{id}: K16.1 — authenticated by export SA token.
         # Reads the real K3s CronJob spec for the support schedule.
         if path.startswith("/api/schedules/"):
@@ -575,6 +580,54 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(404, {"error": "export_definition_not_found"})
         else:
             self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+    def _schedule_context(self, schedule_id: str) -> None:
+        """K16.3: return the execution identity of the scheduled task.
+
+        The CronJob runs under svc-schedule-runner — a separate K3s ServiceAccount
+        that outlives the participant's export session. The participant's export SA
+        token expires; svc-schedule-runner's auto-mounted token persists.
+
+        This endpoint shows the execution SA and its token for the participant to
+        prove the separate identity acts after the session ends.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        cronjob_name = schedule_id.lower()
+        # Read CronJob to find its serviceAccountName
+        s, cj = _k3s_request(
+            "GET", f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
+            bearer=sa_token,
+        )
+        if s != 200:
+            self.send_json(404 if s == 404 else 403, {"error": "schedule_not_found"})
+            return
+        runner_sa = (cj["spec"]["jobTemplate"]["spec"]["template"]["spec"]
+                     .get("serviceAccountName", "default"))
+        # Issue a token for the schedule runner SA to demonstrate its identity
+        s_tok, tok_data = _k3s_request(
+            "POST",
+            f"/api/v1/namespaces/{NAMESPACE}/serviceaccounts/{runner_sa}/token",
+            body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenRequest",
+                  "spec": {"expirationSeconds": 3600}},
+        )
+        runner_token = tok_data.get("status", {}).get("token") if s_tok == 201 else None
+        result = {
+            "schema": "fieldkest.schedule-context/v1",
+            "schedule_id": schedule_id.upper(),
+            "runner_sa": runner_sa,
+            "runner_token": runner_token,
+            "note": "svc-schedule-runner outlives the participant session; "
+                    "the CronJob runs under this identity after export SA expires",
+        }
+        append_audit(AUDIT, "schedule-context", {
+            "request_id": self.request_id, "schedule_id": schedule_id.upper(),
+            "runner_sa": runner_sa, "status": 200,
+        })
+        self.send_json(200, result)
 
     def _schedule_summary(self, schedule_id: str) -> None:
         """K16.1: read the real K3s CronJob spec for the support schedule.
