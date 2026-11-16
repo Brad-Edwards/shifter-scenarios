@@ -1235,11 +1235,14 @@ class Handler(BaseHTTPRequestHandler):
             state["sealed_project_opened"] = True
             save_state(state)
             atomic_json(EVIDENCE / "engineering" / "sealed-decision.json", opened)
-            self.accepted("sealed-decision-read", opened, 201, {
+            # Strip W22.4 answers (captured_session, comparison) from the W22.3 response.
+            # The concealed reviewer identity must be recovered from Nextcloud version/share
+            # history (W22.4), not handed back in this response.
+            public_decision = {k: v for k, v in opened.items()
+                               if k not in ("captured_session", "comparison")}
+            self.accepted("sealed-decision-read", public_decision, 201, {
                 "review_helper_b64": base64.b64encode(helper).decode(),
                 "review_helper_sha256": hashlib.sha256(helper).hexdigest(),
-                "archive_context": {"session": opened["captured_session"],
-                                    "comparison": opened["comparison"]},
             })
             return
         if not state["sealed_project_opened"]:

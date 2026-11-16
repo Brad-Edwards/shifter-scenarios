@@ -856,12 +856,16 @@ hints:
     - kind: client_route
       id: process.sealed-viewer-execute
   W22.3:
-    h1: Begin with the sealed viewer, project decision, and retained review context. Its published client document
-      exposes the sealed project open operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as embedded-machine reconstruction followed by concealed reviewer-identity analysis. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the sealed project open operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The W22.1 service response includes program_b64 (the viewer program) and package_b64 (the sealed project
+      package). Run the viewer program through your W22.2 reconstructed 16-bit VM to completion. Record the final
+      register values (r0–r3) and memory[0x40:0x80].
+    h2: Derive the AES-256-GCM key from VM final state. SHA-256 of: ASCII "CRR-SEALED-PKG-R7", a NUL byte (0x00),
+      memory[0x40:0x80] (64 bytes), LE16(r0), LE16(r1), LE16(r2), LE16(r3). Decrypt the sealed package — first 12
+      bytes are the nonce, remaining bytes are ciphertext+tag, AAD is "CRR-SEALED-PKG-R7". Verify locally first.
+    h3: Submit POST https://process-view.arwc.test/api/sealed-projects/current with CORPORATE Bearer and body
+      {"project_id":"CRR-SEALED-PKG-R7","key_hex":"<64-hex-chars>"}. A wrong key returns 409 with no partial
+      plaintext. On success, service returns 201 with commissioning decision record DEC-CRR-OG2-R7 and the retained
+      review helper binary.
     references:
     - kind: client_route
       id: process.sealed-project-open
