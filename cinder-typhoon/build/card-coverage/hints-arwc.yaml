@@ -817,12 +817,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W21/deployment-note.md
   W21.2:
-    h1: Use the existing Runtime v4 system connection and open a native debug session without accepting an upload offer.
-      Runtime Status and the debugger supply the running evidence.
-    h2: Treat the program MD5 as an integrity match proving the debugger's locally compiled project matches the runtime program. Check it
-      beside connected running state, an empty forced set, and live ProjectRevision; no one check replaces the others.
-    h3: Record the runtime-reported program MD5, saved-project match result, PLC state, and live ProjectRevision.
-      A connection, commissioning note, or old migration record alone is insufficient.
+    h1: Compile the saved project in OpenPLC Editor, connect to the runtime at 172.29.63.20:8443 without
+      accepting any upload offer. The editor's compiled-program MD5 must match the runtime's readProgramMd5.
+      Authenticate to the Runtime API (POST /api/login) to query GET /api/status for running state.
+    h2: The program MD5 (from the debug channel or /api/readProgramMd5) is not in any shipped file — it
+      proves which compiled binary is scanning. Also verify: runtime state=STATUS:RUNNING, no active forces,
+      and live ProjectRevision=364 from the editor debugger or OT historian.
+    h3: All four conditions required: program MD5 match, STATUS:RUNNING, no forces, live ProjectRevision=364.
+      A connection alone is insufficient. The program MD5 and runtime state are the independent live evidence.
+      This supplies W21.REVISION.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W21/deployment-note.md
