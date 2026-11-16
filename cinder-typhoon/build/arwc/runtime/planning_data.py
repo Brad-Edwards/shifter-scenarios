@@ -1032,48 +1032,9 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         self.accepted("meter-allocation-read", result)
 
-    def reserve_reconciliation(self) -> None:
-        state = load_state()
-        if not state["allocation_observed"] or not state["meter_observed"]:
-            self.send_json(403, {"error": "allocation ledger and meter export are required"})
-            return
-        with database() as connection, connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT a.record_id,a.planning_window,a.committed_ml,a.unit,m.record_id,m.usable_reserve_ml,"
-                "r.record_id,r.reported_ml,r.duplicate_transfer "
-                "FROM allocation_ledger a JOIN meter_export m USING (planning_window) "
-                "JOIN business_reserve_report r USING (planning_window) "
-                "WHERE a.record_id=%s AND m.record_id=%s AND r.record_id=%s",
-                (ALLOCATION_ID, METER_ID, REPORT_ID),
-            )
-            row = cursor.fetchone()
-        committed, reserve, reported = Decimal(row[2]), Decimal(row[5]), Decimal(row[7])
-        result = {
-            "record_id": "REC-CRR-DP3-17",
-            "revision": 17,
-            "planning_window": row[1],
-            "unit": row[3],
-            "allocation_ledger": row[0],
-            "meter_export": row[4],
-            "business_report": row[6],
-            "reported_ml": float(reported),
-            "usable_reserve_ml": float(reserve),
-            "committed_ml": float(committed),
-            "overstatement_ml": float(reported - reserve),
-            "uncommitted_margin_ml": float(reserve - committed),
-            "duplicate_transfer": row[8],
-            "asset": "AST-CRR-017",
-            "outlet_group": "OG-CRR-02",
-        }
-        if result["overstatement_ml"] != 1.0 or result["uncommitted_margin_ml"] != 0.4:
-            self.send_json(409, {"error": "reserve records do not reconcile"})
-            return
-        atomic_json(INTEGRATION_EVIDENCE, result)
-        os.chown(INTEGRATION_EVIDENCE, -1, grp.getgrnam("arwc-integration").gr_gid)
-        os.chmod(INTEGRATION_EVIDENCE, 0o640)
-        state["reserve_reconciled"] = True
-        save_state(state)
-        self.accepted("allocation-discrepancy-created", result)
+    # reserve_reconciliation() removed: W09.3 facade with 1.0/0.4 tolerance
+    # accept is gone. The real reconciliation is RECON-DP3-CURRENT on
+    # reserve_reconciliation view in corporate-db, accessed via native Metabase.
 
     def integration(self, request: dict[str, object]) -> None:
         state = load_state()
