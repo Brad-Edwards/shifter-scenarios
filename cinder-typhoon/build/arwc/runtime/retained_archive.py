@@ -47,6 +47,11 @@ STEP_CA_URL = "https://ca.arwc.test:9000"
 OTT_POOL = pathlib.Path("/run/arwc-tokens")
 GITEA_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/gitea-reader.json")
 NADIA_METABASE_PATH = pathlib.Path("/run/arwc-planning/nadia-metabase.json")
+INSTRUMENT_IMAGE_PATH = pathlib.Path("/run/arwc-instruments/IMG-FIT-204-R6.bin")
+OT_READER_PATH = pathlib.Path("/run/arwc-ot-reader.json")
+OT_HISTORY_URL = "https://read-data.arwc.test/api/operating-history"
+_SEQUENCER_ASSET = "AST-CRR-017"
+_SEQUENCER_INSTRUMENTS = ["FIT-CRR-204A", "FIT-CRR-204B"]
 # W04.3 helper staging: the handover artifact is staged one level above the
 # per-request extraction directory. The Unicode NFKC traversal in the archive
 # member name escapes the extraction boundary and resolves to this path.
@@ -285,11 +290,58 @@ def crc32c(value: bytes) -> int:
 
 CALIBRATION_PAYLOAD = b"R8|OG2|GAIN=1.003|ZERO=0.012"
 CALIBRATION = CALIBRATION_PAYLOAD + crc32c(CALIBRATION_PAYLOAD).to_bytes(4, "big")
-SAMPLE_SLOTS = bytearray((index * 73 + 19) & 0xFF for index in range(256))
-SAMPLE_SLOTS[4:7] = b"\x00\x01\xff"
-SAMPLE_SLOTS[159] = 0xA5
+# SAMPLE_SLOTS: populated at startup from IMG-FIT-204-R6.bin and OT historian
+# via _populate_sample_slots(); reference test points and calibration applied there.
+SAMPLE_SLOTS = bytearray(256)
 SAMPLE_SLOTS[160:192] = CALIBRATION
 JITTER = (0, 1, -1, 2, -2, -1, 1, 0)
+
+
+def _populate_sample_slots() -> None:
+    """Load SAMPLE_SLOTS from the instrument image and overlay live OT readings."""
+    img = INSTRUMENT_IMAGE_PATH.read_bytes()
+    if not img.startswith(b"F204["):
+        raise RuntimeError(f"unexpected instrument image magic: {img[:8].hex()}")
+    # First 256 bytes of the image form the base slot map.
+    SAMPLE_SLOTS[:] = bytearray(img[:256])
+    # Instrument specification defines fixed reference test points for W16.3.
+    SAMPLE_SLOTS[4] = 0x00   # zero reference
+    SAMPLE_SLOTS[5] = 0x01   # single-bit reference
+    SAMPLE_SLOTS[6] = 0xFF   # saturation reference
+    SAMPLE_SLOTS[159] = 0xA5  # signal-discrimination target slot
+    SAMPLE_SLOTS[160:192] = CALIBRATION
+    # Overlay authorized measurement slots with live OT historian readings.
+    try:
+        import base64 as _b64
+        config = json.loads(OT_READER_PATH.read_text(encoding="utf-8"))
+        username = config.get("username", "")
+        password = config.get("password", "")
+        if username and password:
+            ca_path = "/run/arwc-native/root-ca.crt"
+            ctx = ssl.create_default_context(
+                cafile=ca_path if pathlib.Path(ca_path).exists() else None
+            )
+            auth = "Basic " + _b64.b64encode(f"{username}:{password}".encode()).decode()
+            import urllib.request as _req
+            resp = _req.urlopen(
+                _req.Request(OT_HISTORY_URL, headers={"Authorization": auth}),
+                context=ctx, timeout=10,
+            )
+            samples = json.loads(resp.read()).get("samples", [])
+            obs: dict[str, float] = {}
+            for s in samples:
+                tag = s.get("tag")
+                if s.get("asset") == _SEQUENCER_ASSET and tag in _SEQUENCER_INSTRUMENTS:
+                    if tag not in obs:
+                        try:
+                            obs[tag] = float(s.get("value", 0.0))
+                        except (TypeError, ValueError):
+                            obs[tag] = 0.0
+            for idx, instrument in enumerate(_SEQUENCER_INSTRUMENTS):
+                flow = obs.get(instrument, 0.0)
+                SAMPLE_SLOTS[idx] = min(255, max(0, round(flow * 10)))
+    except Exception:
+        pass  # OT unavailable; IMG-sourced values remain
 
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
@@ -366,6 +418,8 @@ def initialize() -> None:
         atomic_json(descriptor, SEQUENCER)
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
+    # Populate SAMPLE_SLOTS from the instrument image and live OT historian.
+    _populate_sample_slots()
     # Stage the W04.3 handover artifact from Gitea so the helper can read it
     # via the filesystem after the Unicode traversal resolves the path.
     _stage_handover_from_gitea()

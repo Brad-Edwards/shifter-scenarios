@@ -201,6 +201,12 @@ services:
       bind:
         create_host_path: true
     - arwc-planning-evidence:/run/arwc-planning-evidence
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/retained-tools/files/instruments/IMG-FIT-204-R6.bin
+      target: /run/arwc-instruments/IMG-FIT-204-R6.bin
+      read_only: true
+      bind:
+        create_host_path: false
     networks:
       corporate:
         ipv4_address: 10.77.60.50

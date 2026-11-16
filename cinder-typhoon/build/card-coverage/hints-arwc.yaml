@@ -561,18 +561,19 @@ hints:
     - kind: client_route
       id: maintenance.approval-token
   W16.1:
-    h1: Begin with the archive sequencer, constrained observations, and calibration history. Its published client
-      document exposes the sequencer spec and signal experiment operation, so use that ordinary contract instead
-      of guessing a path.
-    h2: Treat this as instruction-sequence reconstruction with bounded out-of-window observation analysis. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the sequencer spec and signal experiment operation in the published client reference. Capture one
-      ordinary response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Call GET retained-archive.arwc.test/api/sequencer-specs/current with your CORPORATE session to retrieve
+      the SEQ-CRR-4 descriptor. It contains the opcode table, authorized index range, and the ordinary trace
+      SEQ-BASE-17 with its program_hex.
+    h2: Submit the ordinary trace with POST retained-archive.arwc.test/api/sequencer-programs and body
+      {"program_hex": "0104000007000000"}. The program decodes as LOAD slot 4 (the zero reference) followed
+      by HALT. The service checks that the descriptor was observed first.
+    h3: The expected result is authorized-load with cycles=228. Confirm the service-owned audit shows
+      sequencer-program-submitted with the correct cycle count before proceeding to W16.2.
     references:
     - kind: client_route
       id: archive.sequencer-spec
     - kind: client_route
-      id: archive.signal-experiment
+      id: archive.sequencer-program
   W16.2:
     h1: Begin with the archive sequencer, constrained observations, and calibration history. Its published client
       document exposes the observations operation, so use that ordinary contract instead of guessing a path.
