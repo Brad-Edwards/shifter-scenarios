@@ -34,26 +34,32 @@ _internal_access_lock = threading.Lock()
 
 
 class InternalPreviewHandler(http.server.BaseHTTPRequestHandler):
-    """K10.3: Internal-only HTTP server that Chromium can reach but participants cannot.
+    """Internal-only HTTP server reachable by Chromium but not by participants directly.
 
-    When the participant submits a crafted HTML document that makes Chromium
-    fetch http://127.0.0.1:{INTERNAL_PORT}/protected-preview/{document_id},
-    this server records the access and serves the protected document content.
-    The participant cannot reach this endpoint directly (only Chromium can).
+    Serves:
+    - GET /protected-preview/{document_id} — K10.3: protected document content (SSRF)
+    - GET /review-session/{review_id} — K12.2: review session page that postMessages
+      the action_nonce without validating the recipient's origin (the vulnerability)
+
+    Participants cannot reach this server directly (loopback only, not published by Docker).
+    Only Chromium running inside the container can reach 127.0.0.1:{INTERNAL_PORT}.
     """
     def do_GET(self) -> None:
         path = urlsplit(self.path).path
-        if not path.startswith("/protected-preview/"):
+        if path.startswith("/protected-preview/"):
+            self._serve_protected_preview(path.removeprefix("/protected-preview/"))
+        elif path.startswith("/review-session/"):
+            self._serve_review_session(path.removeprefix("/review-session/"))
+        else:
             self.send_response(404)
             self.end_headers()
-            return
-        document_id = path.removeprefix("/protected-preview/")
+
+    def _serve_protected_preview(self, document_id: str) -> None:
         protected_html, protected_meta = _load_protected_document(document_id)
         if protected_html is None:
             self.send_response(404)
             self.end_headers()
             return
-        # Record the access (the SSRF boundary crossing)
         access_id = str(uuid.uuid4())
         with _internal_access_lock:
             if document_id not in _internal_access_log:
@@ -71,6 +77,38 @@ class InternalPreviewHandler(http.server.BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
         self.wfile.write(protected_html)
+
+    def _serve_review_session(self, review_id: str) -> None:
+        """K12.2 vulnerability: postMessage sends action_nonce without origin validation.
+
+        In the in-world narrative, the privileged reviewer's browser session hosts
+        this page. It sends the per-review action nonce to any parent frame via
+        postMessage with targetOrigin="*" — no sender-origin check. A same-origin
+        frame (the participant's crafted content from K12.1) can intercept it.
+        """
+        review = _load_review(review_id)
+        if review is None or not review.get("action_nonce"):
+            self.send_response(404)
+            self.end_headers()
+            return
+        nonce = review["action_nonce"]
+        # The vulnerability: postMessage with targetOrigin="*" — any parent receives it
+        session_html = f"""<!DOCTYPE html>
+<html><head><title>Privileged Review Session</title></head>
+<body>
+<p>Privileged reviewer session: {review_id}</p>
+<script>
+// Sends the per-review action nonce to the parent frame without validating the recipient origin.
+// Any same-origin parent frame that hosts this page as an iframe will receive this message.
+window.parent.postMessage({{ action_nonce: "{nonce}", review_id: "{review_id}" }}, "*");
+</script>
+</body></html>""".encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(session_html)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(session_html)
 
     def log_message(self, *args: object) -> None:
         pass
@@ -262,13 +300,15 @@ class PreviewHandler(KeplerHandler):
                 "original_owner": review.get("owner"),
                 "status": 200,
             })
+            # Do NOT return action_nonce in the PATCH response.
+            # The nonce is a protected browser-context value delivered only via
+            # the review session page's postMessage (K12.2 interception target).
             result = {
                 "schema": "fieldkest.preview-review-assignment/v1",
                 "review_id": review_id,
                 "source_id": source_id,
                 "queue": queue,
                 "state": "loaded",
-                "action_nonce": action_nonce,
                 "document_id": review.get("document_id"),
             }
             RESULTS.mkdir(parents=True, exist_ok=True)

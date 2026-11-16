@@ -546,14 +546,17 @@ hints:
     - kind: client_route
       id: preview.assignment
   K12.2:
-    h1: The K12.1 assignment response includes action_nonce. The preview.prepare route is listed in the client reference.
-      Use the nonce as Authorization: Bearer <action_nonce> — the developer credential is NOT accepted for this route.
-      POST to preview.prepare for review_id PRV-771 with an empty body {}.
-    h2: The service validates the nonce against the review record. A wrong nonce or a replay returns 403.
-      A correct first use transitions the review to prepared state and returns
-      {"prepared":true,"queue":"privileged-review","source_id":"<twin>"}.
-    h3: A review-preparations audit entry is written with nonce_sha256 and original_owner=maya.ranscombe.
-      Read GET /api/preview/reviews/PRV-771 to confirm state=prepared. The result is input to K12.3.
+    h1: The K12.1 response does NOT expose the action_nonce. The nonce is delivered by the internal reviewer session
+      page at http://127.0.0.1:{INTERNAL_PORT}/review-session/PRV-771. The page sends
+      window.parent.postMessage({action_nonce:"..."}, "*") — the "*" targetOrigin means no origin validation.
+      Any parent frame hosting the session page receives the nonce.
+    h2: Craft an HTML page with an iframe to the session page and a window.addEventListener("message",...) listener.
+      Submit via POST /api/preview/render (K10.3 render endpoint). Gotenberg/Chromium renders the crafted HTML
+      inside the container; the iframe loads the session, which posts the nonce to the parent frame.
+      Write the nonce to the DOM; extract it from the resulting PDF.
+    h3: Use the intercepted nonce as Authorization: Bearer <nonce> to POST /api/preview/reviews/PRV-771/prepare
+      with body {}. Developer credential is rejected. Correct nonce transitions review to prepared and returns
+      {"prepared":true}. Replay returns 403. review-preparations audit confirms the evidence.
     references:
     - kind: client_route
       id: preview.prepare
