@@ -69,6 +69,8 @@ def main() -> None:
         "kanboard_db_port": 5432,
         "kanboard_db": "fieldlink_staff",
         "kanboard_db_user": "fieldlink_staff",
+        "kerberos_realm": "KEPLEROPS.TEST",
+        "kerberos_allowed_service_classes": ["HTTP"],
         "retained_support_provider": {
             "status": "enabled",
             "provider": "OIDC-FIELDKEST-RETAINED-SUPPORT",

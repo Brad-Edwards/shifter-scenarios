@@ -163,7 +163,7 @@ def _get_archive_handover(subject: str) -> dict | None:
                 cur.execute(
                     "SELECT subject, provisioner, provisioner_type, idp, idp_config, "
                     "issued_by, template, template_eku, grant_name AS grant, "
-                    "archive_ref AS archive, vouched_by "
+                    "archive_ref AS archive, vouched_by, delegation_spn, service_relation "
                     "FROM staff_archive_handovers WHERE subject = %s",
                     (subject,),
                 )
@@ -353,6 +353,87 @@ class StaffHandler(KeplerHandler):
                 "peer": self.client_address[0],
             })
             self.send_json(status, data)
+            return
+
+        # K19.3: mTLS-protected archive delegation probe.
+        # Accepts an mTLS-authenticated user (evan's cert) and issues a Kerberos
+        # credential cache for the requested SPN.
+        # Flaw: allowlist checks service CLASS only, not host — arbitrary host ticket.
+        if path == "/api/archive/delegation/probe":
+            client_verified = self.headers.get("X-Client-Cert-Verified", "")
+            client_dn = self.headers.get("X-Client-Cert-DN", "")
+            if client_verified != "SUCCESS":
+                self.send_json(401, {"error": "client_cert_required"})
+                return
+            try:
+                body = self.read_json(maximum_bytes=4096)
+            except Exception:
+                self.send_json(400, {"error": "bad_request"})
+                return
+            spn = body.get("spn", "")
+            if not spn:
+                self.send_json(400, {"error": "spn_required"})
+                return
+            # Allowlist: only checks service class (the flaw — omits host).
+            allowed_classes = CONFIG.get("kerberos_allowed_service_classes", ["HTTP"])
+            service_class = spn.split("/")[0] if "/" in spn else ""
+            if service_class not in allowed_classes:
+                self.send_json(403, {"error": "spn_class_denied"})
+                return
+            # Extract subject from cert CN to identify the Kerberos principal.
+            import re as _re
+            cn_match = _re.search(r"(?:^|,|/)CN=([^,/]+)", client_dn)
+            user_email = cn_match.group(1).strip() if cn_match else ""
+            kerberos_principal = user_email.replace("@keplerops.test", "") + "@" + CONFIG.get("kerberos_realm", "KEPLEROPS.TEST")
+            # Get user password from kerberos.json (operator file, not participant-readable).
+            try:
+                import json as _json
+                _kb_file = Path(os.environ.get("KERBEROS_USERS_FILE", "/run/fieldkest-staff/kerberos-users.json"))
+                _kb_users = _json.loads(_kb_file.read_text())
+                user_name = kerberos_principal.split("@")[0]
+                user_password = _kb_users.get("users", {}).get(user_name, "")
+            except Exception:
+                self.send_json(503, {"error": "credential_unavailable"})
+                return
+            if not user_password:
+                self.send_json(403, {"error": "user_not_found"})
+                return
+            # kinit + kvno using subprocess inside the container.
+            import subprocess, tempfile, base64 as _b64
+            with tempfile.NamedTemporaryFile(suffix=".ccache", delete=False) as ccache_f:
+                ccache_path = ccache_f.name
+            try:
+                kinit = subprocess.run(
+                    ["kinit", "-c", ccache_path, kerberos_principal],
+                    input=user_password.encode(), capture_output=True, timeout=10,
+                )
+                if kinit.returncode != 0:
+                    self.send_json(502, {"error": "kerberos_auth_failed"})
+                    return
+                kvno = subprocess.run(
+                    ["kvno", "-c", ccache_path, spn],
+                    capture_output=True, timeout=10,
+                )
+                if kvno.returncode != 0:
+                    self.send_json(502, {"error": "ticket_request_failed"})
+                    return
+                ccache_data = Path(ccache_path).read_bytes()
+            except Exception:
+                self.send_json(502, {"error": "delegation_failed"})
+                return
+            finally:
+                try:
+                    Path(ccache_path).unlink(missing_ok=True)
+                except Exception:
+                    pass
+            append_audit(AUDIT, "archive-delegation", {
+                "action": "delegate", "user": kerberos_principal, "spn": spn,
+                "cert_dn": client_dn, "peer": self.client_address[0],
+            })
+            self.send_json(201, {
+                "authentication": "SPNEGO",
+                "credential_cache": _b64.b64encode(ccache_data).decode(),
+            })
             return
 
         self.send_json(404, {"error": "not_found"})

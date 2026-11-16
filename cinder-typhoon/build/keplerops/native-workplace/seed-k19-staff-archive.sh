@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS staff_archive_handovers (
     grant_name TEXT NOT NULL,
     archive_ref TEXT NOT NULL,
     vouched_by TEXT NOT NULL,
+    delegation_spn TEXT,
+    service_relation TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 INSERT INTO staff_archive_handovers (
@@ -50,9 +52,20 @@ INSERT INTO staff_archive_handovers (
         ARRAY['clientAuth'],
         'support-runner-enrollment',
         'REL-FLK-7.4.2-11',
-        'keplerops-staff (fieldlink-enrollment) via Keycloak keplerops realm'
+        'keplerops-staff (fieldlink-enrollment) via Keycloak keplerops realm',
+        'HTTP/staff.keplerops.test@KEPLEROPS.TEST',
+        'svc-fieldlink-staff-evan'
     )
 ON CONFLICT (subject) DO NOTHING;
+-- Add columns if they don't exist (for existing deployments)
+ALTER TABLE staff_archive_handovers ADD COLUMN IF NOT EXISTS delegation_spn TEXT;
+ALTER TABLE staff_archive_handovers ADD COLUMN IF NOT EXISTS service_relation TEXT;
+-- Update evan's row with delegation fields (idempotent)
+UPDATE staff_archive_handovers
+SET delegation_spn = 'HTTP/staff.keplerops.test@KEPLEROPS.TEST',
+    service_relation = 'svc-fieldlink-staff-evan'
+WHERE subject = 'evan.calderoux@keplerops.test'
+  AND delegation_spn IS NULL;
 SELECT subject, archive_ref FROM staff_archive_handovers ORDER BY subject;
 SQL
 echo "K19.1 staff_archive_handovers seeded."
