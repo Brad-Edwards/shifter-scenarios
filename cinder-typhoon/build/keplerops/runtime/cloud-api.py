@@ -126,6 +126,96 @@ class CloudApiHandler(KeplerHandler):
             return
         self.send_json(404, {"error": "not_found"})
 
+    def do_PATCH(self) -> None:
+        """K15.3: PATCH the export destination using the export SA token.
+
+        Delegated patch rights allow svc-fieldlink-export to change the destination
+        field. The cloud-api validates the token and only patches the destination
+        (not owner/tenant/partition_bindings — those are immutable). The K3s PATCH
+        is real: it updates the ConfigMap data field for 'destination'.
+        """
+        path = urlsplit(self.path).path
+        # /api/exports/{id}/destination: K15.3 — authenticated by export SA token
+        if path.endswith("/destination") and "/api/exports/" in path:
+            export_id = path.removeprefix("/api/exports/").removesuffix("/destination")
+            self._patch_destination(export_id)
+            return
+        self.send_json(404, {"error": "not_found"})
+
+    def _patch_destination(self, export_id: str) -> None:
+        """K15.3: redirect the export handover destination.
+
+        Uses real K3s strategic merge patch on the exp-2841-definition ConfigMap.
+        Only the destination field is updated — owner, tenant, partition_bindings
+        are immutable and not touched. The Job spec (batch/v1 Job) is not changed.
+        RBAC: svc-fieldlink-export has patch rights on exp-2841-definition.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        try:
+            body = self.read_json(32_768)
+            new_destination = str(body.get("destination", ""))
+            if not new_destination:
+                raise ValueError("destination_required")
+        except (ValueError, TypeError):
+            self.send_json(422, {"error": "destination_required"})
+            return
+        configmap_name = f"{export_id.lower()}-definition"
+        # Compute new revision: read current revision, increment
+        get_status, cm_data = _k3s_request(
+            "GET",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token,
+        )
+        if get_status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+            return
+        if get_status != 200:
+            self.send_json(502, {"error": f"k3s_returned_{get_status}"})
+            return
+        current_data = cm_data.get("data", {})
+        old_destination = current_data.get("destination", "")
+        try:
+            current_rev = int(current_data.get("revision", 6))
+        except (ValueError, TypeError):
+            current_rev = 6
+        new_revision = current_rev + 1
+        # Real K3s strategic merge patch — only updates destination and revision
+        patch_body = {
+            "data": {
+                "destination": new_destination,
+                "revision": str(new_revision),
+            }
+        }
+        patch_status, patch_result = _k3s_request(
+            "PATCH",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            body=patch_body,
+            bearer=sa_token,
+        )
+        if patch_status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+            return
+        if patch_status not in (200, 201):
+            self.send_json(502, {"error": f"k3s_patch_failed: {patch_status}"})
+            return
+        result = {
+            "schema": "fieldkest.export-destination-change/v1",
+            "export_id": export_id,
+            "old_destination": old_destination,
+            "destination": new_destination,
+            "revision": new_revision,
+        }
+        append_audit(AUDIT, "export-destination-changes", {
+            "request_id": self.request_id, "export_id": export_id,
+            "old_destination": old_destination, "new_destination": new_destination,
+            "revision": new_revision, "status": 200,
+        })
+        self.send_json(200, result)
+
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
         # K14.2: role-exchange authenticated by workload SA token (not developer credentials).

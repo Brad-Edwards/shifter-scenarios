@@ -33,6 +33,11 @@
           "template": "https://cloud-api.keplerops.test/api/exports/{export_id}/definition"
         },
         {
+          "key": "data.export-destination",
+          "method": "PATCH",
+          "template": "https://cloud-api.keplerops.test/api/exports/{export_id}/destination"
+        },
+        {
           "key": "cloud.trust-record",
           "method": "GET",
           "template": "https://cloud-api.keplerops.test/api/trust-records/{trust_id}"

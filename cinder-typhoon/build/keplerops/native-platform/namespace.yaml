@@ -334,3 +334,32 @@ roleRef:
   kind: Role
   name: export-definition-reader
   apiGroup: rbac.authorization.k8s.io
+---
+# K15.3: svc-fieldlink-export can patch exp-2841-definition (delegated destination change).
+# The patch rights are real K3s RBAC — the participant can change the destination field.
+# Immutable fields (owner, tenant, partition_bindings) are protected by the cloud-api
+# endpoint which only patches the destination field.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: export-definition-patcher
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [patch]
+    resourceNames: [exp-2841-definition]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: export-definition-patcher
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: export-definition-patcher
+  apiGroup: rbac.authorization.k8s.io
