@@ -729,6 +729,33 @@ services:
     networks:
       foundation_data: {ipv4_address: 10.77.56.40}
 
+  k-staff-spnego:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/staff-spnego.Dockerfile
+    image: cinder-keplerops/k-staff-spnego:hand-build
+    container_name: cinder-keplerops-k-staff-spnego
+    environment:
+      FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
+      FIELDKEST_TLS_KEY: /tmp/fieldkest.key
+      FIELDKEST_UPSTREAM: https://k-staff:443
+    volumes:
+      - *runtime-credentials
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/staff.keytab:/run/fieldkest-staff/staff.keytab:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    healthcheck:
+      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "--resolve", "staff.keplerops.test:443:127.0.0.1", "https://staff.keplerops.test/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.28}
+
   k-identity-spnego:
     <<: *service-security
     build:
@@ -788,6 +815,7 @@ services:
       - "support.keplerops.test:10.77.56.11"
       - "ca.keplerops.test:10.77.56.11"
       - "kerberos.keplerops.test:10.77.56.30"
+      - "delivery.keplerops.test:10.77.51.60"
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
     healthcheck:

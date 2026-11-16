@@ -137,6 +137,11 @@ _SUPPORT_DB_PASSWORD_FILE = Path(
 )
 
 NOTES = CONFIG.get("notes", {})
+RELEASE_ADMIN_TOKEN = credential("registry_release_admin_token")
+REGISTRY_HOST = CONFIG.get("registry_host", "delivery.keplerops.test:8443")
+IDENTITY_LOGIN_ENDPOINT = CONFIG.get("retained_support_provider", {}).get(
+    "assertion_submission_endpoint", "https://identity.keplerops.test/api/federation/login"
+)
 
 _KANBOARD_DB_HOST = CONFIG.get("kanboard_db_host", "fieldlink-postgres")
 _KANBOARD_DB_PORT = int(CONFIG.get("kanboard_db_port", 5432))
@@ -353,6 +358,38 @@ class StaffHandler(KeplerHandler):
                 "peer": self.client_address[0],
             })
             self.send_json(status, data)
+            return
+
+        # K20.2: SPNEGO-protected managed-identity session route.
+        # k-staff-spnego verifies the SPNEGO token and passes the authenticated
+        # Kerberos principal via X-Negotiated-Principal header.
+        if path.startswith("/api/managed-identities/") and path.endswith("/session"):
+            service_id = path.removeprefix("/api/managed-identities/").removesuffix("/session")
+            if not service_id or "/" in service_id:
+                self.send_json(400, {"error": "invalid_service_id"})
+                return
+            negotiated_principal = self.headers.get("X-Negotiated-Principal", "")
+            if not negotiated_principal:
+                self.send_json(401, {"error": "spnego_required"})
+                return
+            # ACL: check caller's service_relation but NOT the requested managed identity (the flaw)
+            caller_email = negotiated_principal.replace("@KEPLEROPS.TEST", "@keplerops.test")
+            caller_relation = _get_archive_handover(caller_email)
+            if caller_relation is None or caller_relation.get("service_relation") != service_id:
+                self.send_json(403, {"error": "managed_identity_denied"})
+                return
+            admin_url = f"https://{REGISTRY_HOST}/api/release-administration/session"
+            session = {
+                "principal": service_id,
+                "audience": "registry-release-administration",
+                "token": RELEASE_ADMIN_TOKEN,
+                "administration": admin_url,
+            }
+            append_audit(AUDIT, "managed-session", {
+                "action": "issue", "service_id": service_id,
+                "principal": negotiated_principal, "peer": self.client_address[0],
+            })
+            self.send_json(201, session)
             return
 
         # K19.3: mTLS-protected archive delegation probe.
