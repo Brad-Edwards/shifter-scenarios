@@ -17,7 +17,7 @@
         {
           "key": "preview.render",
           "method": "POST",
-          "template": "https://preview.keplerops.test/forms/chromium/convert/url"
+          "template": "https://preview.keplerops.test/api/preview/render"
         }
       ]
     }

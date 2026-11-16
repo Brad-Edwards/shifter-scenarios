@@ -6,6 +6,7 @@ association, document identity, and queue management routes.
 from __future__ import annotations
 
 import hashlib
+import http.client as _hc
 import json
 import os
 from pathlib import Path
@@ -22,6 +23,36 @@ CONFIG = json.loads((STATE / "config/preview.json").read_text())
 
 USERNAME = CONFIG["developer"]["username"]
 TOKEN = credential("developer_token")
+GOTENBERG_PORT = int(os.environ.get("GOTENBERG_PORT", "3000"))
+
+
+def _render_html_via_gotenberg(html_content: bytes) -> bytes:
+    """Send HTML to Gotenberg and return the rendered PDF bytes."""
+    boundary = uuid.uuid4().hex
+    body = (
+        f"--{boundary}\r\n"
+        f'Content-Disposition: form-data; name="files"; filename="index.html"\r\n'
+        f"Content-Type: text/html\r\n\r\n"
+    ).encode() + html_content + f"\r\n--{boundary}--\r\n".encode()
+    conn = _hc.HTTPConnection("127.0.0.1", GOTENBERG_PORT, timeout=15)
+    conn.request("POST", "/forms/chromium/convert/html", body=body,
+                 headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+    resp = conn.getresponse()
+    result = resp.read()
+    conn.close()
+    if resp.status != 200:
+        raise RuntimeError(f"gotenberg render failed: {resp.status}")
+    return result
+
+
+def _load_protected_document(document_id: str):
+    """Load the protected document content and metadata for the given document_id."""
+    doc_dir = STATE / "protected" / document_id
+    html_path = doc_dir / "document.html"
+    meta_path = doc_dir / "meta.json"
+    if not html_path.is_file() or not meta_path.is_file():
+        return None, None
+    return html_path.read_bytes(), json.loads(meta_path.read_text())
 
 
 def _derive_document_id(source_url: str) -> str:
@@ -98,7 +129,66 @@ class PreviewHandler(KeplerHandler):
         if not self._developer():
             self.send_json(401, {"error": "authentication_required"})
             return
-        if path == "/api/preview/documents":
+        if path == "/api/preview/render":
+            # K10.3: participant uploads their document → renderer uses the document_id
+            # collision to serve the PROTECTED document's content via real Gotenberg render.
+            try:
+                body = self.read_json(32_768)
+                source_url = str(body.get("source", ""))
+                source_id = str(body.get("source_id", ""))
+                if not source_url:
+                    raise ValueError("source_required")
+            except (ValueError, TypeError, KeyError):
+                self.send_json(422, {"error": "source_required"})
+                return
+            document_id = _derive_document_id(source_url)
+            result_id = "REND-" + uuid.uuid4().hex[:10].upper()
+            protected_html, protected_meta = _load_protected_document(document_id)
+            if protected_html is None:
+                # No protected document at this slot → render normally (no collision)
+                self.send_json(404, {"error": "protected_document_not_found"})
+                return
+            # Collision detected: render the protected document via Gotenberg
+            try:
+                pdf_bytes = _render_html_via_gotenberg(protected_html)
+            except (OSError, RuntimeError) as exc:
+                self.send_json(503, {"error": f"render_failed: {exc}"})
+                return
+            render_digest = hashlib.sha256(pdf_bytes).hexdigest()
+            protected_version = protected_meta.get("version", "unknown")
+            # Emit collision event and protected-content-read audit
+            append_audit(AUDIT, "preview-collision", {
+                "request_id": self.request_id, "principal": USERNAME,
+                "source_id": source_id, "source_url": source_url,
+                "document_id": document_id, "canonical_url": source_url.lower().rstrip("/"),
+                "protected_source_id": protected_meta.get("source_id", ""),
+                "protected_case_id": protected_meta.get("case_id", ""),
+                "result_id": result_id, "status": 200,
+            })
+            append_audit(AUDIT, "protected-content-reads", {
+                "request_id": self.request_id, "principal": USERNAME,
+                "document_id": document_id,
+                "protected_version": protected_version,
+                "render_digest": render_digest,
+                "result_id": result_id, "status": 200,
+            })
+            result = {
+                "schema": "fieldkest.preview-render-result/v1",
+                "result_id": result_id,
+                "source_id": source_id,
+                "document_id": document_id,
+                "collision_detected": True,
+                "protected_source_id": protected_meta.get("source_id", ""),
+                "protected_case_id": protected_meta.get("case_id", ""),
+                "protected_version": protected_version,
+                "render_digest": render_digest,
+                "render_size_bytes": len(pdf_bytes),
+                "owner": protected_meta.get("owner", ""),
+            }
+            RESULTS.mkdir(parents=True, exist_ok=True)
+            (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+            self.send_json(200, result)
+        elif path == "/api/preview/documents":
             # K10.2: derive a document identity from the supplied source URL.
             # Canonicalization (lowercase + strip trailing slash) collapses certain
             # pairs of distinct inputs into the same derived identity.
