@@ -329,13 +329,19 @@ hints:
     - kind: client_route
       id: packages.release
   K08.2:
-    h1: Begin with the package entitlement records and versioned checking service. Its published client document
-      exposes the entitlement check operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cryptographic context binding and legacy-versus-current validation behavior. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the entitlement check operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The v2 entitlement record is in the same Gitea CRR-OG2 directory as the v1 record, named
+      ENT-ARWC-DIAG-0698-V2.json. It has schema=fieldkest.entitlement-record/v2 and an expiry_policy
+      top-level field — this is the missing encryption context for the v2 checker.
+    h2: The checker=v2 reads expiry_policy from the participant-supplied record body and derives the AES-256-GCM
+      key using HKDF(info=base_info+"|"+expiry_policy). POST the v2 record with checker=v2 to
+      packages.entitlement-check. Without the expiry_policy field, v2 key derivation uses empty string and
+      decryption fails (422).
+    h3: The v2 result is state=legacy-test-accepted with revision=3, distinct from the K08.1 v1 baseline at
+      revision=4. The expiry_policy field in the v2 record is the missing context — it was added to the record
+      schema in v2 to allow context-binding derivation.
     references:
+    - kind: participant_service
+      id: source.keplerops.test
     - kind: client_route
       id: packages.entitlement-check
   K08.3:

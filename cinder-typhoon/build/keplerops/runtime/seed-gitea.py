@@ -187,6 +187,36 @@ def entitlement_history(password: str) -> None:
             'sha': file_meta['sha'],
             'content': base64.b64encode(_RECORD_REV4.encode()).decode(),
         })
+    # K08.2: also seed the v2-encrypted record (sealed with v2 HKDF key, revision 3).
+    # The expiry_policy field in the record is the missing context participants must use.
+    _V2_PATH = 'internal/fieldlink/legacy-diagnostics/CRR-OG2/ENT-ARWC-DIAG-0698-V2.json'
+    _RECORD_V2 = json.dumps({
+        "cipher": "AES-256-GCM",
+        "ciphertext_base64": (
+            "SbxbxJEUXOSCN/EdEcRwL/FSI2T21IkuCVkhefb4iBBbIJE9K3NTusSwXD6Z1sE98X38xk+yv7oO"
+            "8YnBrR1I24J243ZFFsELiRTsseLVzYTTAcP3rVnTgAgxsvcLNfV9Mrr3GuY27DWenvVDVaDao8XxhC"
+            "CdY0rouwbt0gn9JMuJC2Od6OFMH1q3rmK1qWW3tHuASk9J/0Qr21UBsX80BUhiDtl2pMpY74Iost"
+            "Q4I4E0zsWUScAipGY+Vgfwcs/p7ntNTj4q+YJF908/MSW+iNU3XUcCUs27mu12X0I9RgR/4LqKg3Y"
+            "k0MmD"
+        ),
+        "customer_id": "TEN-ARWC-019",
+        "expiry_policy": "maintenance-window:2026-09-30T23:59:59Z",
+        "feature_id": "diagnostic-loader",
+        "grammar": "fieldkest-entitlement/v1 canonical JSON; UTF-8 NFC strings; lexicographically sorted keys",
+        "key_id": "fk-entitlement-legacy-2026-08",
+        "nonce_hex": "525728f55b006f5edf1f5434",
+        "package_revision": "FLK-6.9.8",
+        "record_id": "ENT-ARWC-DIAG-0698",
+        "revision": 3,
+        "schema": "fieldkest.entitlement-record/v2",
+        "tag_base64": "rFbi5ilwHusX7XmQiY1PZA==",
+    }, indent=2, sort_keys=True)
+    if not exists(repository + _V2_PATH, password):
+        api('POST', repository + _V2_PATH, password, {
+            'branch': 'main',
+            'message': 'Retain ENT-ARWC-DIAG-0698 version 2 entitlement (revision 3, v2 key)',
+            'content': base64.b64encode(_RECORD_V2.encode()).decode(),
+        })
     marker.touch(mode=0o600)
 
 
