@@ -146,17 +146,14 @@ def seed(operator: Path) -> None:
         conn.close()
 
         # Hard-delete the thread (the retention flaw: workspace_chats row remains orphaned)
-        api(f'/workspace/{slug}/thread/{conv_slug}/delete', {}, token)
-        # Fallback: try DELETE method if the endpoint is different
-        from urllib.request import Request, urlopen
-        import json as _json
+        from urllib.request import Request, urlopen as _urlopen
         req = Request(BASE + f'/workspace/{slug}/thread/{conv_slug}', method='DELETE')
         req.add_header('Authorization', 'Bearer ' + token)
         try:
-            with urlopen(req, timeout=10) as r:
-                r.read()
+            with _urlopen(req, timeout=10) as r:
+                r.read()  # AnythingLLM returns text/plain OK, not JSON
         except Exception:
-            pass
+            pass  # 404 or plain-text response is expected
 
     config_path = operator / 'native-platform/assistant-k21-config.json'
     config_path.write_text(_json.dumps({
