@@ -739,12 +739,15 @@ hints:
     - kind: client_route
       id: process.signature-record
   W19.3:
-    h1: Begin with the retained engineering diagnostic and signed decision records. Its published client document
-      exposes the signature program operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as binary behavior reconstruction and hidden validation-logic analysis. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the signature program operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: W19.1 ordinary_traces gives rolling32 AND verifier64 for the first 4 records. The 5th is named
+      protected_record. Implement the same verifier formula for all 5. The verifier takes the 32-bit rolling
+      result and applies a 64-bit function embedded in the binary's long-mode verifier code.
+    h2: Verifier formula: start v=0x243F6A8885A308D3 (pi constant). For each rolling32 r:
+      v=ROTL64(v XOR (zero_extend(r)*0x100000001B3), 9). Final verifier64=v XOR zero_extend(r).
+      The 64-bit constant and FNV-prime variant (0x100000001B3) are in the binary.
+    h3: POST https://process-view.arwc.test/api/signature-programs/current with CORPORATE Bearer:
+      {"decisions":[{record,rolling32,verifier64}x5]} for all 5 in order. Service validates all and
+      returns MIG-OG2-R19-R21 with verifier64 and decision=valid, sets hidden_check_recovered=True.
     references:
     - kind: client_route
       id: process.signature-program
