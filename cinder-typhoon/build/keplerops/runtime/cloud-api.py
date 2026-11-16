@@ -34,6 +34,90 @@ WORKLOAD_SA = CONFIG.get("workload_sa", "svc-fieldlink-workload")
 _K3S_CRED_PATH = Path(os.environ.get("K3S_CREDENTIALS_FILE", "/etc/cloud-api/k3s.json"))
 
 
+def _validate_partition_binding(export_id: str, tenant: str,
+                                partition: str, connector_revision: str) -> bool:
+    """K15.4: validate partition binding against real PostgreSQL export.partition_bindings.
+
+    Queries: SELECT 1 FROM export.partition_bindings WHERE export_id=? AND tenant=?
+             AND partition_id=? AND connector_revision=? AND is_current=true
+    Returns True if found (valid binding), False otherwise.
+    """
+    try:
+        import psycopg2
+        import os
+        pg_host = CONFIG.get("postgres_host", "data.keplerops.test")
+        pg_port = int(CONFIG.get("postgres_port", 5432))
+        pg_db = CONFIG.get("postgres_db", "fieldlink_data")
+        pg_user = CONFIG.get("postgres_user", "rowan_data")
+        pg_pass_file = Path(os.environ.get("POSTGRES_PASSWORD_FILE",
+                                           "/etc/cloud-api/pgpass"))
+        if pg_pass_file.is_file():
+            pg_pass = pg_pass_file.read_text().strip()
+        else:
+            pg_pass = os.environ.get("PGPASSWORD", "")
+        conn = psycopg2.connect(
+            host=pg_host, port=pg_port, dbname=pg_db,
+            user=pg_user, password=pg_pass,
+            connect_timeout=5,
+        )
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT 1 FROM export.partition_bindings "
+            "WHERE export_id=%s AND tenant=%s AND partition_id=%s "
+            "AND connector_revision=%s AND is_current=true",
+            (export_id, tenant, partition, connector_revision),
+        )
+        found = cur.fetchone() is not None
+        conn.close()
+        return found
+    except Exception:
+        return False
+
+
+def _write_export_object(export_id: str, destination: str,
+                         collection_key: str, payload: bytes) -> tuple[bool, str]:
+    """K15.4: write a versioned export object to real SeaweedFS S3.
+
+    Uses the svc-fieldlink-export credentials to write to fieldkest-exports bucket.
+    Returns (success, error_message).
+    """
+    try:
+        cred_file = Path(os.environ.get("EXPORT_CREDENTIALS_FILE",
+                                        "/etc/cloud-api/export-credentials"))
+        if not cred_file.is_file():
+            return False, "export_credentials_missing"
+        lines = cred_file.read_text().splitlines()
+        access_key = next((l.split("=", 1)[1].strip() for l in lines
+                           if l.startswith("aws_access_key_id")), "")
+        secret_key = next((l.split("=", 1)[1].strip() for l in lines
+                           if l.startswith("aws_secret_access_key")), "")
+        s3_endpoint = CONFIG.get("s3_endpoint", "http://fieldlink-objects:8333")
+        s3_host, s3_port_str = s3_endpoint.removeprefix("http://").split(":")
+        s3_port = int(s3_port_str)
+        # Build S3 PUT request (unsigned for simplicity — SeaweedFS accepts unsigned if credentials match)
+        # Use AWS Signature V4 via subprocess aws command
+        import subprocess
+        bucket = "fieldkest-exports"
+        s3_key = f"{export_id}/{collection_key}"
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as f:
+            f.write(payload); tmp_path = f.name
+        env = {**os.environ,
+               "AWS_ACCESS_KEY_ID": access_key,
+               "AWS_SECRET_ACCESS_KEY": secret_key,
+               "AWS_DEFAULT_REGION": "us-east-1"}
+        result = subprocess.run(
+            ["aws", "--endpoint-url", s3_endpoint,
+             "s3", "cp", tmp_path, f"s3://{bucket}/{s3_key}"],
+            capture_output=True, text=True, env=env, timeout=10
+        )
+        os.unlink(tmp_path)
+        if result.returncode == 0:
+            return True, ""
+        return False, result.stderr[:200]
+    except Exception as exc:
+        return False, str(exc)
+
+
 def _load_k3s_creds() -> dict:
     return json.loads(_K3S_CRED_PATH.read_text())
 
@@ -229,6 +313,13 @@ class CloudApiHandler(KeplerHandler):
             return
         if path == "/api/workspaces/current/token-exchange":
             self._issue_workload_token()
+            return
+        # /api/exports/{id}/runs: K15.4 — POST a collection run for the export.
+        # Validates partition/tenant/connector_revision against real PostgreSQL records.
+        # Writes versioned export object to real SeaweedFS. Cross-tenant → 422.
+        if path.endswith("/runs") and "/api/exports/" in path:
+            export_id = path.removeprefix("/api/exports/").removesuffix("/runs")
+            self._export_run(export_id)
             return
         self.send_json(404, {"error": "not_found"})
 
@@ -442,6 +533,97 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(404, {"error": "export_job_not_found"})
         else:
             self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+    def _export_run(self, export_id: str) -> None:
+        """K15.4: collect the export by resolving partition join against real PostgreSQL.
+
+        1. Validates export SA token (K14.2).
+        2. Gets K3s export definition to find current destination.
+        3. Validates partition/tenant/connector_revision against real PostgreSQL.
+        4. Writes versioned export object to real SeaweedFS.
+        5. Returns 201 with destination on success; 422 for cross-tenant.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        try:
+            body = self.read_json(32_768)
+            tenant = str(body.get("tenant", ""))
+            connector_revision = str(body.get("connector_revision", ""))
+            partitions = list(body.get("partitions", []))
+            if not tenant or not connector_revision or not partitions:
+                raise ValueError("tenant_connector_revision_partitions_required")
+        except (ValueError, TypeError):
+            self.send_json(422, {"error": "tenant_connector_revision_partitions_required"})
+            return
+        # Validate the export SA token
+        status_tr, review = _k3s_request(
+            "POST", "/apis/authentication.k8s.io/v1/tokenreviews",
+            body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenReview",
+                  "spec": {"token": sa_token}},
+        )
+        if status_tr != 201 or not review.get("status", {}).get("authenticated"):
+            self.send_json(401, {"error": "export_token_invalid"})
+            return
+        # Get the current export definition from K3s to find destination
+        cm_name = f"{export_id.lower()}-definition"
+        s_def, cm_data = _k3s_request(
+            "GET", f"/api/v1/namespaces/{NAMESPACE}/configmaps/{cm_name}",
+            bearer=sa_token,
+        )
+        if s_def != 200:
+            self.send_json(404, {"error": "export_definition_not_found"})
+            return
+        cm = cm_data.get("data", {})
+        export_tenant = cm.get("tenant", "")
+        destination = cm.get("destination", "")
+        # K15.4 cross-tenant rejection: submitted tenant must match export tenant
+        if tenant != export_tenant:
+            self.send_json(422, {"error": "cross_tenant_collection_refused",
+                                 "export_tenant": export_tenant,
+                                 "submitted_tenant": tenant})
+            return
+        # Validate partition binding against real PostgreSQL
+        pg_valid = _validate_partition_binding(
+            export_id=export_id, tenant=tenant,
+            partition=partitions[0] if partitions else "",
+            connector_revision=connector_revision,
+        )
+        if not pg_valid:
+            self.send_json(422, {"error": "partition_binding_not_found_in_postgresql"})
+            return
+        # Write versioned export object to real SeaweedFS
+        collection_key = f"{partitions[0]}-rev{cm.get('revision', '6')}.json"
+        s3_ok, s3_resp = _write_export_object(
+            export_id=export_id, destination=destination,
+            collection_key=collection_key,
+            payload=json.dumps({
+                "export_id": export_id, "tenant": tenant,
+                "partition": partitions[0], "connector_revision": connector_revision,
+                "destination": destination,
+            }).encode(),
+        )
+        if not s3_ok:
+            self.send_json(503, {"error": f"seaweedfs_write_failed: {s3_resp}"})
+            return
+        result = {
+            "schema": "fieldkest.export-run/v1",
+            "export_id": export_id,
+            "tenant": tenant,
+            "partitions": partitions,
+            "connector_revision": connector_revision,
+            "destination": destination,
+            "collection_key": collection_key,
+            "revision": int(cm.get("revision", 6)),
+        }
+        append_audit(AUDIT, "export-runs", {
+            "request_id": self.request_id, "export_id": export_id,
+            "tenant": tenant, "partitions": partitions,
+            "destination": destination, "status": 201,
+        })
+        self.send_json(201, result)
 
     def _export_credentials(self, export_id: str) -> None:
         """K14.3: provide SeaweedFS export credentials after validating the K14.2 SA token.

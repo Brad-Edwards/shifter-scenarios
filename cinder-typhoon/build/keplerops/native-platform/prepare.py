@@ -53,10 +53,10 @@ def prepare(operator: Path) -> None:
         # obtaining export credentials via the K14.2 role exchange.
         'name': 'svc-fieldlink-export',
         'credentials': [{'accessKey': values['objects_export_key'], 'secretKey': values['objects_export_secret']}],
-        # K14.3: svc-fieldlink-export can read the fieldkest-exports bucket.
-        # The developer identity (rowan.ito) has no access to fieldkest-exports —
-        # the boundary is enforced by SeaweedFS s3.json at the bucket level.
-        'actions': ['Read:fieldkest-exports'],
+        # K14.3+K15.4: svc-fieldlink-export can read and write to fieldkest-exports.
+        # Read for K14.3 boundary proof; Write for K15.4 versioned export object.
+        # The developer identity (rowan.ito) has no access to fieldkest-exports.
+        'actions': ['Read:fieldkest-exports', 'Write:fieldkest-exports', 'List:fieldkest-exports'],
     }, {
         # K13.1 vulnerability: over-broad anonymous ACL on fieldkest-workspaces.
         # An anonymous identity with Read and List on this bucket allows unauthenticated

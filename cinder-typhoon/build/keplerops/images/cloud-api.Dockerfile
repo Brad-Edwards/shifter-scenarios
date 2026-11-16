@@ -1,7 +1,7 @@
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates iproute2 util-linux curl \
+    && apt-get install --no-install-recommends -y ca-certificates iproute2 util-linux curl python3-psycopg2 \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system fieldkest-cloud-api \
     && useradd --system --gid fieldkest-cloud-api --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-cloud-api

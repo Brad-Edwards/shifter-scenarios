@@ -305,7 +305,7 @@ data:
   case_id: CAS-MAYA-2841
   partitions: '["PART-ARWC-01"]'
   destinations: '[{"name":"fieldkest-exports/EXP-2841-rowan","owner":"rowan.ito"},{"name":"fieldkest-exports/EXP-2841-maya","owner":"maya.ranscombe"}]'
-  partition_bindings: '[{"partition":"PART-ARWC-01","current":true,"tenant_id":"TEN-ARWC-019","revision":6}]'
+  partition_bindings: '[{"partition":"PART-ARWC-01","current":true,"tenant":"TEN-ARWC-019","tenant_id":"TEN-ARWC-019","connector_revision":"FLK-7.4.2","revision":6},{"partition":"PART-ARWC-02","current":false,"tenant":"TEN-OTHER-001","tenant_id":"TEN-OTHER-001","connector_revision":"FLK-7.3.1","revision":5}]'
   schema: fieldkest.export-definition/v1
 ---
 # K15.2 Role: svc-fieldlink-export can read exp-2841-definition.
