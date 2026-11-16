@@ -2,7 +2,9 @@
 
 K21.1: /api/config — public, exposes context and collection identifiers.
 K21.2 (K23.1): /api/contexts — returns workspace contexts including deleted conversations.
-       /api/conversations/{conv_id} — returns retained conversation with deleted_from_ui.
+       /api/conversations/{conv_id} — returns retained orphaned conversation from AnythingLLM DB.
+       The retention flaw: AnythingLLM deletes workspace_threads rows but orphans workspace_chats.
+       k-assistant reads the orphaned rows from the live AnythingLLM SQLite database.
 K21.3: /api/answers — proxies answer requests to real AnythingLLM/Ollama retrieval.
 """
 
@@ -10,6 +12,7 @@ from __future__ import annotations
 
 import json
 import os
+import sqlite3
 from http.cookies import CookieError, SimpleCookie
 from pathlib import Path
 import socketserver
@@ -22,8 +25,17 @@ from credentials import credential
 
 STATE = Path(os.environ.get("FIELDKEST_STATE_ROOT", "/var/lib/fieldkest-assistant-api"))
 AUDIT = STATE / "audit"
-CONVERSATIONS = json.loads((STATE / "conversations.json").read_text())
 CONTEXTS = json.loads((STATE / "contexts.json").read_text())
+
+ANYLLM_DB = Path(os.environ.get("ANYLLM_DB", "/app/anythingllm.db"))
+ANYLLM_K21_CONFIG = Path(os.environ.get("ANYLLM_K21_CONFIG", "/run/fieldkest-assistant/k21-config.json"))
+
+
+def _load_k21_config() -> dict:
+    try:
+        return json.loads(ANYLLM_K21_CONFIG.read_text())
+    except Exception:
+        return {}
 
 ANYLLM_BASE = os.environ.get("ANYLLM_BASE", "http://fieldlink-assistant:3001")
 ANYLLM_TOKEN = credential("assistant_tool_session")
@@ -61,7 +73,9 @@ class AssistantApiHandler(KeplerHandler):
             self.send_json(200, {"contexts": CONTEXTS})
             return
 
-        # K21.2: conversation endpoint — requires support session, returns retained conversations.
+        # K21.2: conversation endpoint — requires support session, returns retained orphaned conversations.
+        # The flaw: AnythingLLM deletes the workspace_threads row but orphans workspace_chats rows.
+        # k-assistant reads the orphaned rows directly from the AnythingLLM SQLite database.
         if path.startswith("/api/conversations/"):
             conv_id = path.removeprefix("/api/conversations/")
             cookie = self.headers.get("Cookie", "")
@@ -69,9 +83,55 @@ class AssistantApiHandler(KeplerHandler):
             if user is None:
                 self.send_json(403, {"error": "session_required"})
                 return
-            conv = CONVERSATIONS.get(conv_id)
-            if conv is None:
+            # Look up the orphaned thread_id from the K21 config
+            k21_config = _load_k21_config()
+            if conv_id == "CONV-SUP-2841-19":
+                db_thread_id = k21_config.get("conv_sup_2841_thread_id")
+            else:
                 self.send_json(404, {"error": "conversation_not_found"})
+                return
+            if not db_thread_id:
+                self.send_json(404, {"error": "conversation_not_found"})
+                return
+            # Read orphaned chat rows from real AnythingLLM database (retention flaw)
+            try:
+                conn = sqlite3.connect(str(ANYLLM_DB))
+                with conn:
+                    cur = conn.cursor()
+                    # Check if thread still exists (should be deleted = orphaned)
+                    cur.execute("SELECT id FROM workspace_threads WHERE id = ?", (db_thread_id,))
+                    thread_exists = cur.fetchone() is not None
+                    # Read orphaned chat rows
+                    cur.execute(
+                        "SELECT id, prompt, response, createdAt FROM workspace_chats WHERE thread_id = ? ORDER BY id",
+                        (db_thread_id,),
+                    )
+                    rows = cur.fetchall()
+                conn.close()
+                if not rows:
+                    self.send_json(404, {"error": "conversation_not_found"})
+                    return
+                messages = [
+                    {"role": "user" if i % 2 == 0 else "assistant",
+                     "content": r[1] if i % 2 == 0 else r[2],
+                     "created_at": str(r[3])}
+                    for i, r in enumerate(rows)
+                    for r in [rows[i // 2]] if i % 2 == 0 or True
+                ]
+                # Flatten: alternate user/assistant from prompt+response pairs
+                messages = []
+                for row in rows:
+                    if row[1]:
+                        messages.append({"role": "user", "content": row[1]})
+                    if row[2]:
+                        messages.append({"role": "assistant", "content": row[2]})
+                conv = {
+                    "conversation_id": conv_id,
+                    "deleted_from_ui": not thread_exists,  # True if thread is gone
+                    "messages": messages,
+                }
+            except Exception as e:
+                self.send_json(503, {"error": "database_unavailable"})
                 return
             append_audit(AUDIT, "conversation-read", {
                 "action": "read", "conversation_id": conv_id, "user": user,

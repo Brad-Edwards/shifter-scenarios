@@ -92,15 +92,74 @@ def seed(operator: Path) -> None:
     slug = workspace['slug']
     # Upload the private escalation note
     upload_note(slug, token, PRIVATE_NOTE)
-    # Create a support thread for the private_escalation conversation
+    # Create a support thread for the /api/config answer_requests reference (K21.1)
     thread = api(f'/workspace/{slug}/thread/new', {}, token).get('thread', {})
     thread_slug = thread.get('slug', 'default-thread')
-    # Store the thread slug for /api/config reference
+    thread_id = thread.get('id')
+
+    # K21.2: Create the conversation that will be "deleted from UI" but retain chat data.
+    # The flaw: AnythingLLM deletes the workspace_threads row but orphans workspace_chats rows.
+    conv_thread = api(f'/workspace/{slug}/thread/new', {}, token).get('thread', {})
+    conv_slug = conv_thread.get('slug', '')
+    conv_id = conv_thread.get('id')
+
+    # Assign workspace users so the seed token can interact
+    workspace_id = workspace.get('id')
+    if workspace_id:
+        users = api('/admin/users', token=token).get('users', [])
+        user_ids = [u['id'] for u in users if u['username'] in ('rowan.ito', 'maya.ranscombe', 'talia.mornac')]
+        if user_ids:
+            api(f'/admin/workspaces/{workspace_id}/update-users', {'userIds': user_ids}, token)
+
+    # Inject the K21.2 conversation content via AnythingLLM's data model (WorkspaceChats)
+    # This uses the production ORM, not raw SQL, to ensure integrity
+    if conv_id:
+        import subprocess
+        result = subprocess.run(
+            [
+                'node', '-e',
+                f"""
+const {{ WorkspaceChats }} = require('/app/server/models/workspaceChats');
+WorkspaceChats.new({{
+  workspaceId: {workspace_id},
+  prompt: 'Review the ARWC CRR-OG2 integration support case SUP-2841 and state the escalation reference.',
+  response: 'The ARWC CRR-OG2 integration support case SUP-2841 has escalation record ESC-SUP-2841-R3 (restricted). '
+           + 'Diagnostic: DIAG-CRR-MIXED-19. Connector: FLK-7.4.2. Asset: CRR-OG2.',
+  threadId: {conv_id},
+  user_id: null,
+  include: true,
+}}).then(() => process.exit(0)).catch(e => {{ console.error(e.message); process.exit(1); }});
+"""
+            ],
+            capture_output=True, text=True, timeout=30, cwd='/app/server',
+        )
+        if result.returncode != 0:
+            raise RuntimeError(f'K21.2 chat insert failed: {result.stderr[:200]}')
+
+        # Hard-delete the thread (the retention flaw: workspace_chats row remains orphaned)
+        api(f'/workspace/{slug}/thread/{conv_slug}/delete', {}, token)
+        # Fallback: try DELETE method if the endpoint is different
+        from urllib.request import Request, urlopen
+        import json as _json
+        req = Request(BASE + f'/workspace/{slug}/thread/{conv_slug}', method='DELETE')
+        req.add_header('Authorization', 'Bearer ' + token)
+        try:
+            with urlopen(req, timeout=10) as r:
+                r.read()
+        except Exception:
+            pass
+
     config_path = operator / 'native-platform/assistant-k21-config.json'
-    config_path.write_text(json.dumps({'workspace_slug': slug, 'thread_slug': thread_slug}, indent=2) + '\n')
+    config_path.write_text(_json.dumps({
+        'workspace_slug': slug,
+        'thread_slug': thread_slug,
+        'conv_sup_2841_slug': conv_slug,
+        'conv_sup_2841_thread_id': conv_id,
+        'workspace_id': workspace_id,
+    }, indent=2) + '\n')
     config_path.chmod(0o600)
     marker.touch(mode=0o600)
-    print(f'K21 assistant workspace seeded: workspace={slug} thread={thread_slug}')
+    print(f'K21 assistant workspace seeded: workspace={slug} thread={thread_slug} conv_id={conv_id}')
 
 
 if __name__ == '__main__':

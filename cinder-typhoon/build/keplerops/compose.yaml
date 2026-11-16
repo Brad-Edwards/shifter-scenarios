@@ -744,12 +744,16 @@ services:
       FIELDKEST_TLS_KEY: /tmp/fieldkest.key
       FIELDKEST_STATE_ROOT: /var/lib/fieldkest-assistant-api
       ANYLLM_BASE: http://fieldlink-assistant:3001
+      ANYLLM_DB: /app/anythingllm/anythingllm.db
+      ANYLLM_K21_CONFIG: /run/fieldkest-assistant/k21-config.json
     volumes:
       - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
       - assistant-api-audit:/var/lib/fieldkest-assistant-api/audit
+      - native-assistant-data:/app/anythingllm:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/assistant-k21-config.json:/run/fieldkest-assistant/k21-config.json:ro
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
     healthcheck:
