@@ -44,6 +44,14 @@ def prepare(operator: Path) -> None:
         'credentials': [{'accessKey': values['objects_rowan_key'], 'secretKey': values['objects_rowan_secret']}],
         'actions': [action + ':fieldlink-exports' for action in ('Read', 'Write', 'List', 'Tagging')]
         + ['Read:fieldlink-collections'],
+    }, {
+        # K13.1 vulnerability: over-broad anonymous ACL on fieldkest-workspaces.
+        # An anonymous identity with Read and List on this bucket allows unauthenticated
+        # S3 listing and object retrieval. The participant exploits this to recover the
+        # deployment notebook without credentials.
+        'name': 'anonymous',
+        'credentials': [],
+        'actions': ['Read:fieldkest-workspaces', 'List:fieldkest-workspaces'],
     }]
     s3_config = target / 's3.json'
     if s3_config.exists():

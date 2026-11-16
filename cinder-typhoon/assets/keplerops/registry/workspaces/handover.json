@@ -1,0 +1,8 @@
+{
+  "schema": "fieldkest.workspace-handover/v1",
+  "export_id": "EXP-2841",
+  "job": "SCHED-2841",
+  "owner": "maya.ranscombe",
+  "destination": "fieldkest-exports",
+  "created": "2026-09-18T16:00:00Z"
+}

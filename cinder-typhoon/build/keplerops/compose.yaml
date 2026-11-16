@@ -104,7 +104,7 @@ services:
       timeout: 3s
       retries: 20
     networks:
-      corporate: {ipv4_address: 10.77.50.11, aliases: [edge.keplerops.test, foundation.keplerops.test, identity.keplerops.test, id.keplerops.test, ca.keplerops.test, cert.keplerops.test, staff.keplerops.test, workboard.keplerops.test, support.keplerops.test, tickets.keplerops.test, cloud.keplerops.test, cloud-api.keplerops.test, workload.keplerops.test, workloads.keplerops.test, data.keplerops.test, objects.keplerops.test, assistant.keplerops.test, llm.keplerops.test]}
+      corporate: {ipv4_address: 10.77.50.11, aliases: [edge.keplerops.test, foundation.keplerops.test, identity.keplerops.test, id.keplerops.test, ca.keplerops.test, cert.keplerops.test, staff.keplerops.test, workboard.keplerops.test, support.keplerops.test, tickets.keplerops.test, cloud.keplerops.test, cloud-api.keplerops.test, workload.keplerops.test, workloads.keplerops.test, data.keplerops.test, assistant.keplerops.test, llm.keplerops.test]}
       delivery: {ipv4_address: 10.77.51.11}
       cloud: {ipv4_address: 10.77.52.11}
       foundation_data: {ipv4_address: 10.77.56.11}
@@ -693,6 +693,35 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/s3.json:/run/fieldlink/s3.json:ro
     networks:
       foundation_data: {ipv4_address: 10.77.56.40}
+
+  k-data:
+    image: nginx:alpine@sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a470c1752
+    container_name: cinder-keplerops-k-data
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [CHOWN, NET_BIND_SERVICE, SETGID, SETUID]
+    security_opt: [no-new-privileges:true]
+    depends_on:
+      fieldlink-objects:
+        condition: service_started
+    volumes:
+      - ./native-platform/objects-nginx.conf:/etc/nginx/conf.d/objects.conf:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/etc/nginx/tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/etc/nginx/tls/server.key:ro
+    tmpfs:
+      - /var/cache/nginx:rw,nosuid,nodev,size=8m,mode=0755
+      - /var/run:rw,nosuid,nodev,size=4m,mode=0755
+      - /tmp:rw,noexec,nosuid,nodev,size=4m,mode=1777
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "--no-check-certificate", "https://127.0.0.1/fieldkest-workspaces?list-type=2"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    networks:
+      corporate: {ipv4_address: 10.77.50.60, aliases: [objects.keplerops.test]}
+      foundation_data: {ipv4_address: 10.77.56.60}
 
   fieldlink-ollama:
     image: ollama/ollama:0.40.16@sha256:910d0d8107b538fb0894e63163eb195de0cc7aefcbc666dc62d3b18f71124592
