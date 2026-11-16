@@ -489,6 +489,34 @@ VALUES ('EVT-COMM-OG2-114', 'high', '2026-11-13 09:28:14+00', '2026-11-13 09:29:
   'OG-CRR-02', '1', 'FA', 'OT qualifying campaign commissioning record',
   '2026-11-13 09:29:27+00') ON CONFLICT DO NOTHING;" 2>/dev/null || true
     echo "EVT-COMM-OG2-114 commissioning event seeded to OT historian (W19.4)"
+    # Start the instruments workbench (a-instruments) for W20 instrument image service.
+    # Uses the CORPORATE session auth (same as a-engineering).
+    docker volume create cinder-arwc-instruments-data 2>/dev/null || true
+    docker network create --driver bridge --subnet 10.77.64.0/24 cinder-arwc-control 2>/dev/null || true
+    docker stop cinder-arwc-instruments 2>/dev/null; docker rm cinder-arwc-instruments 2>/dev/null || true
+    docker run -d \
+      --name cinder-arwc-instruments \
+      --network cinder-arwc-control --ip 10.77.64.40 \
+      --hostname independent-instruments --domainname arwc.test --dns 10.77.60.10 \
+      -e ARWC_SERVICE_USER=arwc-instruments \
+      -e ARWC_STATE_ROOT=/var/lib/arwc-instruments \
+      -e ARWC_PROCESS_ROLE=instruments \
+      --restart unless-stopped --read-only \
+      --security-opt no-new-privileges:true \
+      --cap-drop ALL --cap-add SETUID --cap-add SETGID --cap-add CHOWN \
+      --cap-add FOWNER --cap-add DAC_OVERRIDE \
+      --tmpfs /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777 \
+      --tmpfs /run:rw,nosuid,nodev,size=8m,mode=0755 \
+      -v cinder-arwc-instruments-data:/var/lib/arwc-instruments \
+      -v cinder-arwc-connector-fieldlink:/run/arwc-corporate:ro \
+      -v "${golden_op}/handover.key:/run/arwc-handover/authentication.key:ro" \
+      -v "${golden_op}/tls/server.crt:/run/arwc-tls/server.crt:ro" \
+      -v "${golden_op}/tls/server.key:/run/arwc-tls/server.key:ro" \
+      -v "${golden_op}/tls/ca.crt:/run/arwc-tls/ca.crt:ro" \
+      "${PROCESS_IMAGE:-cinder-arwc/a-instruments:hand-build}"
+    docker network connect --ip 10.77.60.56 --alias independent-instruments.arwc.test \
+      cinder-arwc-corporate cinder-arwc-instruments 2>/dev/null || true
+    echo "a-instruments (independent-instruments.arwc.test) started at 10.77.60.56"
     ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {

@@ -17,5 +17,6 @@ _kerberos._tcp IN SRV 0 0 88 kdc.arwc.test.
 _kerberos._udp IN SRV 0 0 88 kdc.arwc.test.
 fieldlink IN A 10.77.60.20
 process-view IN A 10.77.60.55
+independent-instruments IN A 10.77.60.56
 customer-handover IN A 172.29.63.28
 workplace IN A 172.29.63.29

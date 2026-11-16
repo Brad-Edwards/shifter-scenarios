@@ -379,7 +379,7 @@ class Handler(BaseHTTPRequestHandler):
     def authorized(self) -> bool:
         if ROLE == "historian":
             return self.externally_authorized()
-        if ROLE == "engineering":
+        if ROLE in ("engineering", "instruments"):
             return self.corporate_authorized()
         if self.headers.get("X-ARWC-Internal") != INTERNAL:
             self.send_json(403, {"error": "historian service context required"})

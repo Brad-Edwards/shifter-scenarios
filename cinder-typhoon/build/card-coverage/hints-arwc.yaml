@@ -766,12 +766,15 @@ hints:
     - kind: client_route
       id: process.diagnostic-program-legacy
   W20.1:
-    h1: Begin with the retained device image and maintenance-record interface. Its published client document exposes
-      the firmware image operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as firmware record parsing, integrity validation, and minimal state-preserving update. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the firmware image operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Call GET https://independent-instruments.arwc.test/api/firmware-images/current with CORPORATE Bearer.
+      Returns the image manifest (sha256, record layout: magic=F204, 64-byte records, 4096-byte erase pages)
+      and the image base64. The image is also in Gitea clara.morivelle/retained-engineering-tools/instruments/.
+    h2: Parse 8192 bytes into 64-byte records. Valid record: magic=F204, CRC32C of bytes 0-55 at bytes 56-59,
+      commit=0x00 at byte 63. Payload at bytes 12+: record_id\0asset\0inspection_date null-separated.
+      Status byte 10 (1=REVIEW, 2=ACCEPTED), status_bits byte 11. Highest sequence wins per record_id.
+    h3: POST https://independent-instruments.arwc.test/api/maintenance-records/current with CORPORATE Bearer:
+      {image_sha256, record_id, asset, inspection_date, sequence, status, status_bits, crc32c, offset}.
+      All 8 fields validated. Returns inspection record with fresh audit. Sets inspection_recovered=True.
     references:
     - kind: client_route
       id: process.firmware-image
