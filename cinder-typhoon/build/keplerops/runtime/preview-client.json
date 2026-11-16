@@ -18,6 +18,11 @@
           "key": "preview.render",
           "method": "POST",
           "template": "https://preview.keplerops.test/api/preview/render"
+        },
+        {
+          "key": "preview.assignment",
+          "method": "PATCH",
+          "template": "https://preview.keplerops.test/api/preview/reviews/{review_id}/assignment"
         }
       ]
     }

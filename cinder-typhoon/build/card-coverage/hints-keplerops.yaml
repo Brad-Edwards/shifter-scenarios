@@ -530,12 +530,17 @@ hints:
     - kind: participant_service
       id: source.keplerops.test
   K12.1:
-    h1: Begin with the preview assignment, privileged review, and worker-render services. Its published client document
-      exposes the assignment operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cross-action value handling and worker-scope confusion in a privileged preview. Establish
-      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the assignment operation in the published client reference. Read the current revision, submit one
-      minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: The K10.1 association lookup for SUP-K-2841 returns a viewer_request field — the review ID linked to the
+      protected case (PRV-771). The preview service client reference at
+      preview.keplerops.test/.well-known/fieldkest-client lists the preview.assignment route:
+      PATCH /api/preview/reviews/{review_id}/assignment.
+    h2: PATCH preview.assignment with {"queue":"privileged-review","source_id":"<twin>"} where twin is the
+      lowercase collision from K10.2. The route accepts any authenticated request regardless of review ownership —
+      the submitter identity check is omitted on reassignment. This places the participant's content in the
+      privileged reviewer's queue.
+    h3: The service returns {"state":"loaded","action_nonce":"..."} and writes a reviewer-load audit entry
+      confirming the privileged reviewer worker loaded the content. The action_nonce is a one-use value
+      needed for K12.2.
     references:
     - kind: client_route
       id: preview.assignment

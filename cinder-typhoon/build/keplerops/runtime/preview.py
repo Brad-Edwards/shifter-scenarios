@@ -102,6 +102,21 @@ def _load_association(source_id: str) -> dict | None:
     return json.loads(path.read_text())
 
 
+def _load_review(review_id: str) -> dict | None:
+    """Load a preview review record from state."""
+    path = STATE / "reviews" / f"{review_id}.json"
+    if not path.is_file():
+        return None
+    return json.loads(path.read_text())
+
+
+def _save_review(review_id: str, record: dict) -> None:
+    """Persist an updated review record."""
+    (STATE / "reviews").mkdir(parents=True, exist_ok=True)
+    path = STATE / "reviews" / f"{review_id}.json"
+    path.write_text(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
+
+
 def _load_protected_document(document_id: str):
     """Load the protected document content and metadata for the given document_id."""
     doc_dir = STATE / "protected" / document_id
@@ -172,12 +187,74 @@ class PreviewHandler(KeplerHandler):
                 "case_id": association["case_id"],
                 "owner": association["owner"],
             }
+            if "viewer_request" in association:
+                result["viewer_request"] = association["viewer_request"]
             append_audit(AUDIT, "preview-associations", {
                 "request_id": self.request_id, "principal": USERNAME,
                 "source_id": source_id, "document_id": association["document_id"],
                 "case_id": association["case_id"], "result_id": result_id, "status": 200,
             })
             RESULTS.mkdir(parents=True, exist_ok=True)
+            (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+            self.send_json(200, result)
+        else:
+            self.send_json(404, {"error": "not_found"})
+
+    def do_PATCH(self) -> None:
+        path = urlsplit(self.path).path
+        if not self._developer():
+            self.send_json(401, {"error": "authentication_required"})
+            return
+        # K12.1: vulnerable assignment route.
+        # The queue ownership check omits submitter on reassignment — the service
+        # does not verify that the requesting principal owns the review. Any
+        # authenticated developer can place their content into the privileged queue.
+        parts = path.strip("/").split("/")
+        if len(parts) == 5 and parts[:2] == ["api", "preview"] and parts[2] == "reviews" and parts[4] == "assignment":
+            review_id = parts[3]
+            try:
+                body = self.read_json(32_768)
+                queue = str(body.get("queue", ""))
+                source_id = str(body.get("source_id", ""))
+                if queue != "privileged-review" or not source_id:
+                    raise ValueError("queue_and_source_required")
+            except (ValueError, TypeError, KeyError):
+                self.send_json(422, {"error": "queue_and_source_required"})
+                return
+            review = _load_review(review_id)
+            if review is None:
+                self.send_json(404, {"error": "review_not_found"})
+                return
+            # Vulnerability: no ownership check — the participant can reassign
+            # a review they do not own to the privileged queue.
+            action_nonce = uuid.uuid4().hex
+            review["queue"] = queue
+            review["source_id"] = source_id
+            review["state"] = "loaded"
+            review["action_nonce"] = action_nonce
+            review["assigned_by"] = USERNAME
+            _save_review(review_id, review)
+            # Reviewer-load audit: simulates the privileged reviewer worker
+            # loading the participant's content. This is K12.1 completion evidence.
+            append_audit(AUDIT, "reviewer-load", {
+                "request_id": self.request_id, "principal": USERNAME,
+                "review_id": review_id, "source_id": source_id,
+                "queue": queue, "action_nonce": action_nonce,
+                "document_id": review.get("document_id"),
+                "original_owner": review.get("owner"),
+                "status": 200,
+            })
+            result = {
+                "schema": "fieldkest.preview-review-assignment/v1",
+                "review_id": review_id,
+                "source_id": source_id,
+                "queue": queue,
+                "state": "loaded",
+                "action_nonce": action_nonce,
+                "document_id": review.get("document_id"),
+            }
+            RESULTS.mkdir(parents=True, exist_ok=True)
+            result_id = "RVWLD-" + uuid.uuid4().hex[:10].upper()
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
             self.send_json(200, result)
         else:
