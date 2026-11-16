@@ -155,6 +155,33 @@ def seed() -> None:
     else:
         print(f"Metabase question already current: {alloc_title}")
 
+    # Seed the METER-DP3-CURRENT meter export question (W09.2).
+    meter_title = "METER-DP3-CURRENT"
+    meter_description = (
+        "Planning meter export METER-DP3-CURRENT. Database: PostgreSQL 16.4. "
+        "Table: meter_export. Record: MTR-CRR-DP3-R12. "
+        "Usable reserve: 12.40 ML. Period: ALLOC-2026-DP3. "
+        "Instruments: FIT-CRR-204A, FIT-CRR-204B."
+    )
+    meter_sql = (
+        "SELECT record_id, revision, planning_window, usable_reserve_ml, "
+        "unit, instrument_a, instrument_b "
+        "FROM meter_export WHERE planning_window = 'ALLOC-2026-DP3'"
+    )
+    meter_card = next((card for card in api("card") if card["name"] == meter_title), None)
+    if meter_card is None:
+        meter_card = api("card", {
+            "name": meter_title, "display": "table", "visualization_settings": {},
+            "description": meter_description,
+            "dataset_query": {"database": database["id"], "type": "native", "native": {
+                "query": meter_sql, "template-tags": {}}}})
+        print(f"Created Metabase question: {meter_title} (id={meter_card.get('id')})")
+    elif meter_card.get("description") != meter_description:
+        api(f'card/{meter_card["id"]}', {"description": meter_description}, method="PUT")
+        print(f"Updated Metabase question: {meter_title}")
+    else:
+        print(f"Metabase question already current: {meter_title}")
+
     print("ARWC native planning reader and saved report configured")
 
 

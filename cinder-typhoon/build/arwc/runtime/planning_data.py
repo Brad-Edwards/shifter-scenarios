@@ -623,6 +623,9 @@ class Handler(BaseHTTPRequestHandler):
         alloc_ledger_template = _metabase_card_url(
             reports, "alloc_dp3_question_id", "https://reports.arwc.test/api/card/alloc-dp3-current"
         )
+        meter_alloc_template = _metabase_card_url(
+            reports, "meter_dp3_question_id", "https://reports.arwc.test/api/card/meter-dp3-current"
+        )
         self.send_json(200, {
             "schema": "arwc.client-documents/v1",
             "service": "planning-data.arwc.test",
@@ -646,7 +649,7 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "planning.meter-allocation",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/meter-allocations/current"
+                    "template": meter_alloc_template
                 },
                 {
                     "key": "planning.allocation-discrepancy",
