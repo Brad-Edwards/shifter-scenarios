@@ -1,0 +1,113 @@
+# ARWC development ranges
+
+This document records the qualified OT machine image, the development VM configuration, and the exact reset reproducibility for all accepted work from W01 through the current state. It is the authoritative reference before any VM reset, disk move, or reprovision.
+
+---
+
+## Qualified OT machine image
+
+| Field | Value |
+| ----- | ----- |
+| GCP machine image name | `cinder-arwc-ot-backup-20261113-qualified` |
+| GCP project | `prod-mgau4w` |
+| Creation timestamp | 2026-11-13T16:55:21 UTC |
+| Status | READY |
+| Description | Private qualified ARWC OT recovery backup; contains original credentials and identities. |
+
+This image was created on 2026-11-13, immediately after the OT platform qualification passed. It captures the OT compat stack at that point: FUXA, OpenPLC Runtime v4, OpenPLC Editor, PostgreSQL historian, Telegraf, Grafana, Mosquitto, and all Cairn Reach PLC logic, OPC UA tags, and instrument configuration. It does NOT contain any challenge implementation work from W01 onwards.
+
+The development VM `cinder-arwc-dev` (zone `us-central1-a`, project `prod-mgau4w`) has its boot disk created on 2026-11-14 from the FieldLink golden image `cinder-fieldlink-golden-preserved-20261114`. The OT compat stack is managed separately via Docker Compose under `/opt/arwc-ot-compat`.
+
+---
+
+## Two separate deployment stacks
+
+The ARWC range runs two compose projects that are NOT orchestrated together.
+
+### `cinder-arwc-native` (native IT stack)
+
+Managed by `build/arwc/native/manage.sh`. Containers: ERPNext (front end, back end, queue, scheduler, websocket), Nextcloud, Metabase, PostgreSQL (`corporate`/`planning` databases), PostgREST, Keycloak, Gitea, step-ca, DNS, kerberos, workplace edge, handover edge.
+
+**Reset command**: `manage.sh reset cinder-arwc-native`
+
+This runs: `down --volumes`, `up`, `seed`, `seed-documents`, `seed-corporate-documents`, `seed-reports`, `seed-engineering`, `seed-dmz`, `seed-portal`, `seed-early-cards`, `seed-identity`, `seed-archive`, `seed-corporate-documents`.
+
+### `cinder-arwc` (application stack)
+
+Managed by the main `build/arwc/compose.yaml`. Containers: `a-archive` (retained-archive), `a-contractors` (contractor-portal), `a-approval` (maintenance-review), `a-data` (data service, planning DB, read-data endpoint), `a-data-bridge`.
+
+**No manage.sh command starts this stack.** It was started manually with `docker run` and `docker compose up`. A VM reset or rebuild does NOT automatically restart these containers. Manual intervention is required.
+
+### OT compat stack
+
+Managed by `docker compose` under `/opt/arwc-ot-compat`. Containers: FUXA, OpenPLC, Telegraf, PostgreSQL historian, Grafana, Mosquitto, io, site-dispatcher, history-maintenance, alarm-export, `cinder-arwc-ot-engineering`. This stack is part of the qualified OT machine image and persists through native IT resets.
+
+---
+
+## Reset reproducibility — W01 through W16
+
+### What a native IT reset (`manage.sh reset cinder-arwc-native`) reproduces
+
+All cards that depend only on the native IT stack are reproduced by the seed scripts in Git:
+
+| Cards | Mechanism | In Git |
+| ----- | --------- | ------ |
+| W01–W03 | Nextcloud files, ERPNext records, PostgreSQL corporate-db (`planning.sql`), PostgREST | Yes |
+| W04.1 | Nextcloud share (`seed-archive.sh`), archive workflow | Yes |
+| W04.2 | step-ca provisioner, OTT pool (`seed-archive` step in `manage.sh`) | Yes |
+| W04.3 | Gitea handover repo (`seed-archive` step in `manage.sh`) | Yes |
+| W05 | Keycloak identity (`seed-identity`), Nextcloud starter docs | Yes |
+| W06 | Nextcloud OAuth record (`seed-archive`), Metabase session | Yes |
+| W07 | Metabase questions (`seed-reports`), `district_allocation_adjustment` in corporate-db (`planning.sql`), `arwc_reconcile_copy` function | Yes |
+| W08–W10 | (not yet implemented) | — |
+| W11 | planning_data cleanup (no seed needed, code only) | Yes |
+| W12 | ERPNext `current_collection` table (`planning.sql`), Gitea `retained-collectors` repo (`seed-archive`) | Yes |
+| W13–W15 | ERPNext Events and Tasks (`seed-portal.py`), Nextcloud files (`seed-portal.py`), contractor/approval service configs (`manage.sh` and compose volumes) | Yes |
+| W16 | `retained_archive.py` with `_populate_sample_slots()` (loads `IMG-FIT-204-R6.bin`) | Partial — see gap below |
+
+### Known gaps
+
+**Gap 1 — `IMG-FIT-204-R6.bin` not in machine image or seed scripts.**
+
+This file is required for the W16 sequencer (`_populate_sample_slots()` in `retained_archive.py`). It lives at:
+
+```
+build/arwc/native/.operator/retained-tools/files/instruments/IMG-FIT-204-R6.bin
+```
+
+| Property | Value |
+| -------- | ----- |
+| File modification date | 2026-11-13 04:40 UTC |
+| File birth date on current VM | 2026-11-15 05:34 UTC |
+| Qualified OT machine image creation | 2026-11-13 16:55 UTC |
+
+The file's birth date on the VM (2026-11-15) is after the machine image was captured (2026-11-13). It was placed by the development agent during W16 work. It is not generated by any seed script.
+
+**Impact**: After a VM rebuild from the machine image, `retained_archive.py` calls `_populate_sample_slots()` which opens `INSTRUMENT_IMAGE_PATH` and fails. The archive service does not start. W16 is broken.
+
+**Fix required**: Add `IMG-FIT-204-R6.bin` to the machine image, or add a step in `seed-archive` that places this file in the operator instruments directory. The supervisor must decide which.
+
+**Gap 2 — `cinder-arwc` application stack not started by reset.**
+
+The `a-archive`, `a-contractors`, and `a-approval` containers are not managed by `manage.sh reset`. After a native IT reset or VM rebuild, those containers must be started manually with their full `docker run` arguments (including volumes, networks, and the IMG mount). Without them, W12–W16 have no service.
+
+**Fix required**: Integrate the `cinder-arwc` compose project into manage.sh, or document and script the manual startup steps.
+
+---
+
+## OT platform after reset
+
+The OT compat stack (`arwc-ot-compat` compose project) is not affected by `manage.sh reset cinder-arwc-native`. It runs continuously and its state (FUXA views, OpenPLC logic, historian data) persists.
+
+After a full VM rebuild from the machine image:
+- The OT compat stack returns to its 2026-11-13 state.
+- Telegraf, FUXA, OpenPLC, and the historian are present and healthy.
+- No OT reseeding is required for W17 and later OT observation cards.
+
+---
+
+## Action items before any reset or VM move
+
+1. Confirm whether `IMG-FIT-204-R6.bin` is in the machine image (check file date vs image date). If not, place it into the image or add a seed step.
+2. Document and automate the `cinder-arwc` application stack startup, or add it to manage.sh.
+3. Run a full reset on the development VM and verify all W01–W16 cards are accessible before relying on the reset procedure for production.
