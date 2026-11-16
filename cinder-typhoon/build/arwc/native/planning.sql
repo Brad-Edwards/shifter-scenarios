@@ -73,6 +73,43 @@ CREATE OR REPLACE VIEW public.reserve_report_current AS
  WHERE planning_window = (
    SELECT planning_window FROM public.business_reserve_report
    WHERE record_id = 'RPT-CRR-DP3-R7');
+-- W07.3 SECURITY DEFINER execution target: reconciliation_copy is inaccessible to
+-- planning_reader directly; arwc_reconcile_copy(text) runs as its owner (corporate)
+-- and inserts into reconciliation_copy when invoked by the planner query session.
+-- The participant reaches it via a UNION injection that calls the function.
+CREATE TABLE IF NOT EXISTS public.reconciliation_copy (
+  record_id text PRIMARY KEY,
+  revision integer NOT NULL,
+  source_record text NOT NULL,
+  database_identity text NOT NULL
+);
+-- Use distinct RETURNS TABLE column names (copy_*) to avoid PL/pgSQL ambiguity
+-- with the reconciliation_copy table's own column names inside the function body.
+CREATE OR REPLACE FUNCTION public.arwc_reconcile_copy(requested text)
+RETURNS TABLE(copy_id text, copy_revision integer, copy_source text, copy_identity text)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS
+$func$
+DECLARE
+  v_identity text := session_user;
+BEGIN
+  IF requested IS DISTINCT FROM 'REC-CRR-DP3-17' THEN
+    RAISE EXCEPTION 'reconciliation record % is not available', requested;
+  END IF;
+  INSERT INTO public.reconciliation_copy (record_id, revision, source_record, database_identity)
+  VALUES (requested || '-COPY', 1, requested, v_identity)
+  ON CONFLICT (record_id) DO UPDATE
+    SET revision = public.reconciliation_copy.revision + 1,
+        database_identity = v_identity;
+  RETURN QUERY
+    SELECT rc.record_id, rc.revision, rc.source_record, rc.database_identity
+    FROM public.reconciliation_copy AS rc
+    WHERE rc.record_id = requested || '-COPY';
+END;
+$func$;
+-- planning_reader can EXECUTE the function but NOT query reconciliation_copy directly.
+REVOKE ALL ON public.reconciliation_copy FROM PUBLIC;
+REVOKE ALL ON public.reconciliation_copy FROM planning_reader;
+GRANT EXECUTE ON FUNCTION public.arwc_reconcile_copy(text) TO planning_reader;
 -- W07.2 injection target: district_allocation_adjustment contains ADJ-CRR-DP3-17.
 -- planning_reader has SELECT (required for UNION to work) but no Metabase route
 -- exposes it directly; it is only reachable via quoted-identifier injection in
