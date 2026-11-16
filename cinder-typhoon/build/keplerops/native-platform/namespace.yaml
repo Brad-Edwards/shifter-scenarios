@@ -122,3 +122,48 @@ roleRef:
   kind: ClusterRole
   name: cloud-api-token-issuer
   apiGroup: rbac.authorization.k8s.io
+---
+# K14.1: trust record for svc-fieldlink-workload.
+# The issuer, subject, and audiences are derived from the real K3s SA token claims.
+# The export_role names the K14.2 scope boundary.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trust-flx-04
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: trust-record
+data:
+  trust_id: TRUST-FLX-04
+  issuer: https://kubernetes.default.svc.cluster.local
+  subject: system:serviceaccount:fieldlink:svc-fieldlink-workload
+  accepted_audiences: '["https://kubernetes.default.svc.cluster.local","k3s"]'
+  export_role: fieldkest-export-access
+  service_ref: fieldkest-exports
+  schema: fieldkest.trust-record/v1
+---
+# K14.1 Role: svc-fieldlink-workload can also read trust-flx-04
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workload-trust-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get]
+    resourceNames: [trust-flx-04]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workload-trust-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-workload
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: workload-trust-reader
+  apiGroup: rbac.authorization.k8s.io

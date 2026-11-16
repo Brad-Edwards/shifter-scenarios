@@ -86,6 +86,12 @@ class CloudApiHandler(KeplerHandler):
             build_id = path.removeprefix("/api/build-records/")
             self._build_record_via_workload(build_id)
             return
+        # /api/trust-records/{id}: K14.1 — authenticated by workload SA token.
+        # The trust record is a real K3s ConfigMap containing the token's trust context.
+        if path.startswith("/api/trust-records/"):
+            trust_id = path.removeprefix("/api/trust-records/")
+            self._trust_record_via_workload(trust_id)
+            return
         if not self._developer():
             self.send_json(401, {"error": "authentication_required"})
             return
@@ -103,6 +109,51 @@ class CloudApiHandler(KeplerHandler):
             self._issue_workload_token()
             return
         self.send_json(404, {"error": "not_found"})
+
+    def _trust_record_via_workload(self, trust_id: str) -> None:
+        """K14.1: read the trust document via K3s ConfigMap using the participant's SA token.
+
+        The trust record is a real K3s ConfigMap containing the workload's trust context:
+        issuer, subject, accepted_audiences (from the real K3s JWT claims), and
+        export_role (the K14.2 scope boundary). The data flows from real K3s token claims,
+        not from a canned document.
+
+        RBAC: svc-fieldlink-workload has GET on trust-flx-04 only.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "workload_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        configmap_name = trust_id.lower()
+        status, data = _k3s_request(
+            "GET",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token,
+        )
+        if status == 200:
+            cm_data = data.get("data", {})
+            result = {
+                "schema": "fieldkest.trust-record/v1",
+                "trust_id": trust_id,
+                **cm_data,
+            }
+            append_audit(AUDIT, "trust-records", {
+                "request_id": self.request_id,
+                "trust_id": trust_id, "subject": cm_data.get("subject"),
+                "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            append_audit(AUDIT, "trust-records", {
+                "request_id": self.request_id, "trust_id": trust_id,
+                "denied_by": "k3s_rbac", "status": 403,
+            })
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "trust_record_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
 
     def _workspace_exchange(self) -> None:
         """Return workspace exchange info (trust context, cluster info)."""
