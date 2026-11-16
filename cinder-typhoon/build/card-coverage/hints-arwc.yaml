@@ -792,18 +792,17 @@ hints:
     - kind: client_route
       id: process.maintenance-record
   W20.3:
-    h1: After W20.2 (image_rewrite_accepted=True), call GET https://independent-instruments.arwc.test/
-      api/maintenance-records/current with CORPORATE Bearer. This route is listed as process.maintenance-
-      record in the instrument service client document (/.well-known/arwc-client).
-    h2: The service returns the confirmed maintenance record from its own re-parse of the altered image:
-      record_id=INSP-FIT-204-118, sequence=119, status=ACCEPTED, live_telemetry_changed=False,
-      wear_counts=[17,9]. These values are from the service-owned evidence file written during W20.2.
-    h3: The returned audit_id is the fresh service evidence for W20.3. live_telemetry_changed=False confirms
-      the write was historical, not a live control action. The participant cannot fabricate the evidence —
-      it comes from the service's atomic write during W20.2.
+    h1: Correcting inspection_date from 2026-09-18 to 2026-09-19 flips bit 0 of the ASCII '8' byte (0x38)
+      to '9' (0x39) — a 0→1 transition requiring a page erase first. Submit erase page 0 as the first op,
+      then rewrite all 3 records (CAL at 0, REVIEW at 64, corrected ACCEPTED seq=120 at 128).
+    h2: 10 total operations: {"kind":"erase","page":0} + 3 program ops for CAL (offsets 0,56,63) + 3 for
+      REVIEW (offsets 64,120,127) + 3 for corrected record (offsets 128,184,191). The corrected record has
+      seq=120, status=ACCEPTED, inspection_date=2026-09-19, and new CRC32C of its first 56 bytes.
+    h3: Service validates NOR semantics, confirms seq=120 ACCEPTED date=2026-09-19, wear_counts=[18,9].
+      Returns corrected record with audit_id. erase_rewrite_accepted=True in state after success.
     references:
     - kind: client_route
-      id: process.maintenance-record
+      id: process.maintenance-record-update
   W21.1:
     h1: Start with the W21 handover and commissioning note, then open the supplied controller project in OpenPLC
       Editor. The note identifies the claims to check; it does not prove what is running.

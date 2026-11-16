@@ -69,7 +69,7 @@ INITIAL["engineering"].update({
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
-    "image_rewrite_accepted": False,
+    "image_rewrite_accepted": False, "erase_rewrite_accepted": False,
 })
 
 ARTIFACTS = pathlib.Path("/opt/process-service/artifacts")
@@ -760,10 +760,9 @@ class Handler(BaseHTTPRequestHandler):
                           extra={"image_b64": base64.b64encode(image).decode()})
             return
         if ROLE == "instruments" and path == "/api/maintenance-records/current":
-            # W20.3: Return the confirmed maintenance record from the altered image.
-            # Gates on image_rewrite_accepted (W20.2 must be complete).
-            if not state.get("image_rewrite_accepted"):
-                self.send_json(403, {"error": "altered maintenance image required"})
+            # Return the confirmed maintenance record after W20.3 (erase-rewrite complete).
+            if not state.get("erase_rewrite_accepted"):
+                self.send_json(403, {"error": "erase-rewrite correction required"})
                 return
             evidence_path = EVIDENCE / "instruments" / "firmware-image.json"
             if not evidence_path.exists():
@@ -1357,28 +1356,105 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, base64.binascii.Error):
             self.send_json(409, {"error": "instrument image encoding is invalid"})
             return
-        simulated = bytearray(original)
-        expected_shape = [(128, 56), (184, 4), (191, 1)]
-        if len(operations) != len(expected_shape):
-            self.send_json(409, {"error": "programming order does not match"})
-            return
-        for operation, (expected_offset, expected_length) in zip(operations, expected_shape):
-            if not isinstance(operation, dict) or operation.get("kind") != "program" or operation.get("offset") != expected_offset:
+        # Detect W20.3 (erase case) vs W20.2 (append-only case) by first operation kind.
+        first_op = operations[0] if operations else {}
+        is_erase_case = isinstance(first_op, dict) and first_op.get("kind") == "erase"
+        if not is_erase_case:
+            # W20.2: simple 1-to-0 append into an already-erased slot.
+            if not state.get("inspection_recovered"):
+                self.send_json(403, {"error": "valid last-inspection record required"})
+                return
+            simulated = bytearray(original)
+            expected_shape = [(128, 56), (184, 4), (191, 1)]
+            if len(operations) != len(expected_shape):
                 self.send_json(409, {"error": "programming order does not match"})
+                return
+            for operation, (expected_offset, expected_length) in zip(operations, expected_shape):
+                if not isinstance(operation, dict) or operation.get("kind") != "program" or operation.get("offset") != expected_offset:
+                    self.send_json(409, {"error": "programming order does not match"})
+                    return
+                try:
+                    data = base64.b64decode(str(operation.get("data_b64", "")), validate=True)
+                except (ValueError, base64.binascii.Error):
+                    self.send_json(409, {"error": "programming data is invalid"})
+                    return
+                if len(data) != expected_length:
+                    self.send_json(409, {"error": "programming extent does not match"})
+                    return
+                old = simulated[expected_offset:expected_offset + len(data)]
+                if any((before & after) != after for before, after in zip(old, data)):
+                    self.send_json(409, {"error": "programming attempted a zero-to-one transition"})
+                    return
+                simulated[expected_offset:expected_offset + len(data)] = data
+            if candidate != bytes(simulated):
+                self.send_json(409, {"error": "submitted image does not match programming transcript"})
+                return
+            try:
+                records = parse_flash(candidate)
+            except ValueError:
+                self.send_json(409, {"error": "instrument image dimensions changed"})
+                return
+            logical = logical_flash(records)
+            if set(logical) != set(logical_flash(original_records)):
+                self.send_json(409, {"error": "logical maintenance record set changed"})
+                return
+            updated = logical["INSP-FIT-204-118"]
+            if (updated["sequence"] != 119 or updated["status"] != "ACCEPTED" or
+                    updated["asset"] != target["asset"] or
+                    updated["inspection_date"] != target["inspection_date"] or
+                    logical["CAL-FIT-204-R7"] != logical_flash(original_records)["CAL-FIT-204-R7"]):
+                self.send_json(409, {"error": "accepted image changed records outside the permitted field"})
+                return
+            state["image_rewrite_accepted"] = True
+            save_state(state)
+            result = {**updated, "image_id": "IMG-FIT-204-R6", "wear_counts": [17, 9],
+                      "live_telemetry_changed": False}
+            atomic_json(EVIDENCE / "instruments" / "firmware-image.json", result)
+            self.accepted("firmware-record-created", result, 201)
+            return
+        # W20.3: Erase-and-rewrite case. The correction requires a 0→1 bit flip in the existing
+        # committed record (inspection_date '8'→'9'), so the page must be erased first.
+        if not state.get("image_rewrite_accepted"):
+            self.send_json(403, {"error": "append-write record required before erase rewrite"})
+            return
+        manifest = json.loads((ARTIFACTS / "IMG-FIT-204-R6.json").read_text())
+        page_bytes = manifest.get("erase_page_bytes", 4096)
+        wear_counts = list(manifest.get("wear_map", {}).get("page_counts", [17, 9]))
+        wear_limit = manifest.get("wear_map", {}).get("limit", 24)
+        # Apply first operation: erase.
+        erase_page = first_op.get("page")
+        if not isinstance(erase_page, int) or erase_page < 0 or erase_page * page_bytes >= len(original):
+            self.send_json(409, {"error": "erase page is out of bounds"})
+            return
+        if erase_page >= len(wear_counts) or wear_counts[erase_page] >= wear_limit:
+            self.send_json(409, {"error": "page wear limit exceeded"})
+            return
+        simulated = bytearray(original)
+        page_start = erase_page * page_bytes
+        simulated[page_start:page_start + page_bytes] = b"\xff" * page_bytes
+        wear_counts[erase_page] += 1
+        # Apply remaining program operations (1-to-0 from 0xFF is always valid after erase).
+        for operation in operations[1:]:
+            if not isinstance(operation, dict) or operation.get("kind") != "program":
+                self.send_json(409, {"error": "post-erase operations must be program kind"})
+                return
+            op_offset = operation.get("offset")
+            if not isinstance(op_offset, int):
+                self.send_json(409, {"error": "programming offset is invalid"})
                 return
             try:
                 data = base64.b64decode(str(operation.get("data_b64", "")), validate=True)
             except (ValueError, base64.binascii.Error):
                 self.send_json(409, {"error": "programming data is invalid"})
                 return
-            if len(data) != expected_length:
-                self.send_json(409, {"error": "programming extent does not match"})
+            if op_offset < 0 or op_offset + len(data) > len(simulated):
+                self.send_json(409, {"error": "programming extent is out of bounds"})
                 return
-            old = simulated[expected_offset:expected_offset + len(data)]
+            old = simulated[op_offset:op_offset + len(data)]
             if any((before & after) != after for before, after in zip(old, data)):
                 self.send_json(409, {"error": "programming attempted a zero-to-one transition"})
                 return
-            simulated[expected_offset:expected_offset + len(data)] = data
+            simulated[op_offset:op_offset + len(data)] = data
         if candidate != bytes(simulated):
             self.send_json(409, {"error": "submitted image does not match programming transcript"})
             return
@@ -1388,19 +1464,21 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "instrument image dimensions changed"})
             return
         logical = logical_flash(records)
-        if set(logical) != set(logical_flash(original_records)):
+        orig_logical = logical_flash(original_records)
+        if set(logical) != set(orig_logical):
             self.send_json(409, {"error": "logical maintenance record set changed"})
             return
         updated = logical["INSP-FIT-204-118"]
-        if (updated["sequence"] != 119 or updated["status"] != "ACCEPTED" or
+        corrected_date = "2026-09-19"
+        if (updated["sequence"] != 120 or updated["status"] != "ACCEPTED" or
                 updated["asset"] != target["asset"] or
-                updated["inspection_date"] != target["inspection_date"] or
-                logical["CAL-FIT-204-R7"] != logical_flash(original_records)["CAL-FIT-204-R7"]):
-            self.send_json(409, {"error": "accepted image changed records outside the permitted field"})
+                updated["inspection_date"] != corrected_date or
+                logical["CAL-FIT-204-R7"] != orig_logical["CAL-FIT-204-R7"]):
+            self.send_json(409, {"error": "erase-rewrite changed records outside the permitted correction"})
             return
-        state["image_rewrite_accepted"] = True
+        state["erase_rewrite_accepted"] = True
         save_state(state)
-        result = {**updated, "image_id": "IMG-FIT-204-R6", "wear_counts": [17, 9],
+        result = {**updated, "image_id": "IMG-FIT-204-R6", "wear_counts": wear_counts,
                   "live_telemetry_changed": False}
         atomic_json(EVIDENCE / "instruments" / "firmware-image.json", result)
         self.accepted("firmware-record-created", result, 201)
