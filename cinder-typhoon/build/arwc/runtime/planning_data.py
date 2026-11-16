@@ -694,7 +694,7 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "planning.relation-exchange",
                     "method": "GET",
-                    "template": "https://suppliers.arwc.test/api/resource/Task"
+                    "template": _metabase_card_url(reports, "rel_query_question_id", "https://reports.arwc.test/api/card/rel-query-crr-r3")
                 },
                 {
                     "key": "planning.asset-lineage",

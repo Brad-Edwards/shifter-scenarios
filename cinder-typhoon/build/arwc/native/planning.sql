@@ -134,6 +134,33 @@ GRANT SELECT ON public.district_allocation_adjustment TO planning_reader;
 GRANT SELECT ON public.allocation_ledger TO planning_reader;
 -- W09.2: planning_reader reads meter_export via native Metabase question.
 GRANT SELECT ON public.meter_export TO planning_reader;
+-- W11.2: relation backend tables for the Metabase SQL injection exchange.
+-- work_order_summary: the ordinary accessible view for the {{relation_type}} query template.
+-- relation_responses: the protected table that an ordinary query cannot reach (needs UNION injection).
+CREATE TABLE IF NOT EXISTS public.relation_responses (
+  name text PRIMARY KEY,
+  revision integer NOT NULL,
+  relation text NOT NULL,
+  asset text NOT NULL,
+  work_order text NOT NULL
+);
+INSERT INTO public.relation_responses VALUES
+  ('REL-ASC-CRR-4417-R3', 3, 'ASSET_WORK', 'AST-CRR-017', 'WO-CRR-4417')
+ON CONFLICT (name) DO NOTHING;
+CREATE OR REPLACE VIEW public.work_order_summary AS
+ SELECT
+   record_id  AS name,
+   revision,
+   'WORK_RECORD'::text AS relation,
+   asset,
+   planning_window AS work_order
+ FROM public.business_reserve_report
+ WHERE planning_window = 'ALLOC-2026-DP3';
+-- planning_reader can SELECT work_order_summary (ordinary query returns work records)
+-- planning_reader can SELECT relation_responses (required for UNION injection to work)
+-- but no Metabase route exposes relation_responses directly — only via injection.
+GRANT SELECT ON public.work_order_summary TO planning_reader;
+GRANT SELECT ON public.relation_responses TO planning_reader;
 -- W11.1: relation_contracts table for RELPROTO-CRR-R3.
 -- Describes how the ASSET_WORK association ASC-CRR-4417 is represented in ERPNext REST API.
 CREATE TABLE IF NOT EXISTS public.relation_contracts (

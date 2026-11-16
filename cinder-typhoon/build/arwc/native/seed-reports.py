@@ -289,6 +289,46 @@ def seed() -> None:
     else:
         print(f"Metabase question already current: {rel_title}")
 
+    # Seed the REL-QUERY-CRR-R3 relation query question (W11.2).
+    # Uses {{relation_type}} template variable in a double-quoted identifier.
+    # Ordinary: relation_type=work_order_summary returns WORK_RECORD rows.
+    # Injection: UNION SELECT from relation_responses reveals REL-ASC-CRR-4417-R3.
+    rel_q_title = "REL-QUERY-CRR-R3"
+    rel_q_sql = 'SELECT name, revision, relation, asset, work_order FROM "{{relation_type}}" WHERE asset = \'AST-CRR-017\''
+    rel_q_description = (
+        "Relation query REL-QUERY-CRR-R3 revision 3. Database: PostgreSQL 16.4. "
+        "View: work_order_summary. Identifier quote: \". "
+        "Ordinary request: {relation_type: work_order_summary}. "
+        "Template: SELECT name, revision, relation, asset, work_order FROM \"{{relation_type}}\" "
+        "WHERE asset='AST-CRR-017'."
+    )
+    rel_q_card = next((card for card in api("card") if card["name"] == rel_q_title), None)
+    if rel_q_card is None:
+        rel_q_card = api("card", {
+            "name": rel_q_title, "display": "table", "visualization_settings": {},
+            "description": rel_q_description,
+            "dataset_query": {"database": database["id"], "type": "native", "native": {
+                "query": rel_q_sql,
+                "template-tags": {
+                    "relation_type": {
+                        "id": "relation_type_tag",
+                        "name": "relation_type",
+                        "display-name": "Relation Type",
+                        "type": "text",
+                        "default": "work_order_summary",
+                        "required": True
+                    }
+                }
+            }}})
+        print(f"Created Metabase question: {rel_q_title} (id={rel_q_card.get('id')})")
+    else:
+        current_desc = rel_q_card.get("description", "")
+        if current_desc != rel_q_description:
+            api(f'card/{rel_q_card["id"]}', {"description": rel_q_description}, method="PUT")
+            print(f"Updated Metabase question: {rel_q_title}")
+        else:
+            print(f"Metabase question already current: {rel_q_title}")
+
     print("ARWC native planning reader and saved report configured")
 
 
