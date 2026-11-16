@@ -439,12 +439,14 @@ hints:
     - kind: client_route
       id: contractors.appointment-window
   W13.2:
-    h1: Begin with the inspection appointment, access roster, and contractor check-in. Its published client document
-      exposes the expected visitors operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as appointment ownership confusion followed by a separately scoped check-in identity. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the expected visitors operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The contractor portal client document also exposes contractors.expected-visitors. This is a separate
+      route from contractors.appointment-window — the appointment record does not contain the full roster.
+      Call it with your corporate session.
+    h2: The roster record is ROSTER-CRR-SEP18-R2, held separately from the appointment. It identifies the
+      actual contractor who should appear at the gate, not just the appointment owner.
+      Record the identity and assignment fields.
+    h3: The roster gives you identity=veybridge.tech.204 and assignment=CTR-VEY-204. These differ from the
+      appointment's attendee field. They are needed to construct the correct check-in in W13.3.
     references:
     - kind: client_route
       id: contractors.expected-visitors

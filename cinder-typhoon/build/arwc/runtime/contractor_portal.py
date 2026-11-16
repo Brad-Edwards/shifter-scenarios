@@ -97,21 +97,17 @@ def atomic_json(path: pathlib.Path, value: object) -> None:
             os.unlink(temporary)
 
 
-def _fetch_erp_appointment() -> dict | None:
-    """Fetch APT-CRR-2026-09-18 from ERPNext at startup.
-
-    Uses admin credentials from ERP_READER_PATH. Returns the parsed appointment
-    dict (from the Event description field) if the fetch succeeds, else None.
-    """
+def _erp_opener() -> tuple[object, str] | tuple[None, None]:
+    """Return an authenticated ERPNext opener and base URL, or (None, None) on failure."""
     try:
         config = json.loads(ERP_READER_PATH.read_text(encoding="utf-8"))
         erp_url = config.get("url", "")
         username = config.get("username", "Administrator")
         password = config.get("password", "")
         if not (erp_url and password):
-            return None
+            return None, None
     except (OSError, json.JSONDecodeError):
-        return None
+        return None, None
     import http.cookiejar as _cookiejar
     import urllib.request as _urllib_request
     ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
@@ -122,42 +118,75 @@ def _fetch_erp_appointment() -> dict | None:
         _urllib_request.HTTPSHandler(context=ctx),
     )
     try:
+        import urllib.request as _urllib_request2
         login_data = json.dumps({"usr": username, "pwd": password}).encode()
-        opener.open(_urllib_request.Request(
+        opener.open(_urllib_request2.Request(
             f"{erp_url}/api/method/login", data=login_data,
             headers={"Content-Type": "application/json"}, method="POST",
         ), timeout=15)
+        return opener, erp_url
+    except Exception:
+        return None, None
+
+
+def _fetch_erp_by_subject(doctype: str, subject: str, record_id_key: str) -> dict | None:
+    """Fetch an ERPNext record by subject, return parsed description JSON or None."""
+    opener, erp_url = _erp_opener()
+    if opener is None:
+        return None
+    try:
         import urllib.parse as _urlparse
-        subject = "APT-CRR-2026-09-18: Outlet inspection AST-CRR-017"
+        import urllib.request as _urllib_request
         query = _urlparse.urlencode({
             "filters": json.dumps([["subject", "=", subject]]),
             "fields": '["name"]',
             "limit_page_length": 1,
         })
         list_resp = opener.open(_urllib_request.Request(
-            f"{erp_url}/api/resource/Event?{query}",
+            f"{erp_url}/api/resource/{_urlparse.quote(doctype, safe='')}?{query}",
         ), timeout=15)
-        events = json.loads(list_resp.read()).get("data", [])
-        if not events:
+        items = json.loads(list_resp.read()).get("data", [])
+        if not items:
             return None
-        event_name = events[0]["name"]
+        item_name = items[0]["name"]
         resp = opener.open(_urllib_request.Request(
-            f"{erp_url}/api/resource/Event/{_urlparse.quote(event_name, safe='')}",
+            f"{erp_url}/api/resource/{_urlparse.quote(doctype, safe='')}/{_urlparse.quote(item_name, safe='')}",
         ), timeout=15)
-        event = json.loads(resp.read())["data"]
-        appointment = json.loads(event.get("description", "{}"))
-        if appointment.get("record_id") == "APT-CRR-2026-09-18":
-            return appointment
+        record = json.loads(resp.read())["data"]
+        parsed = json.loads(record.get("description", "{}"))
+        if parsed.get(record_id_key):
+            return parsed
     except Exception:
         pass
     return None
 
 
+def _fetch_erp_appointment() -> dict | None:
+    """Fetch APT-CRR-2026-09-18 from the real ERPNext Event."""
+    result = _fetch_erp_by_subject(
+        "Event", "APT-CRR-2026-09-18: Outlet inspection AST-CRR-017", "record_id"
+    )
+    if result and result.get("record_id") == "APT-CRR-2026-09-18":
+        return result
+    return None
+
+
+def _fetch_erp_roster() -> dict | None:
+    """Fetch ROSTER-CRR-SEP18-R2 from the real ERPNext Task (contractor assignment)."""
+    result = _fetch_erp_by_subject(
+        "Task", "ROSTER-CRR-SEP18-R2: Contractor assignment INSP-CRR-2026-09-18", "record_id"
+    )
+    if result and result.get("record_id") == "ROSTER-CRR-SEP18-R2":
+        return result
+    return None
+
+
 def initial_state() -> dict[str, object]:
-    # Primary source: live ERPNext Event. Falls back to constant if ERPNext unavailable.
     appointment = _fetch_erp_appointment() or APPOINTMENT
+    roster = _fetch_erp_roster() or ROSTER
     return {
         "appointment": appointment,
+        "roster": roster,
         "appointment_observed": False,
         "roster_observed": False,
         "field_bag_observed": False,
@@ -169,14 +198,21 @@ def initialize() -> None:
     if not STATE.exists():
         atomic_json(STATE, initial_state())
     else:
-        # Refresh appointment from ERPNext on every startup so the served record
-        # reflects the live ERPNext Event, not a frozen constant.
+        state = json.loads(STATE.read_text(encoding="utf-8"))
+        changed = False
         erp_appointment = _fetch_erp_appointment()
-        if erp_appointment:
-            state = json.loads(STATE.read_text(encoding="utf-8"))
-            if state.get("appointment") != erp_appointment:
-                state["appointment"] = erp_appointment
-                atomic_json(STATE, state)
+        if erp_appointment and state.get("appointment") != erp_appointment:
+            state["appointment"] = erp_appointment
+            changed = True
+        erp_roster = _fetch_erp_roster()
+        if erp_roster and state.get("roster") != erp_roster:
+            state["roster"] = erp_roster
+            changed = True
+        if "roster" not in state:
+            state["roster"] = ROSTER
+            changed = True
+        if changed:
+            atomic_json(STATE, state)
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
     if HANDOVER.exists():
@@ -411,7 +447,8 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/appointment-windows/current/visitors":
             state["roster_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("check-in-roster-read", "corporate-reader-principal", ROSTER)
+            self.accepted("check-in-roster-read", "corporate-reader-principal",
+                          state.get("roster", ROSTER))
             return
         self.send_json(404, {"error": "record not found"})
 
@@ -443,16 +480,17 @@ class Handler(BaseHTTPRequestHandler):
                     request.get("window", APPOINTMENT["window"]) != APPOINTMENT["window"]):
                 self.send_json(409, {"error": "appointment binding or revision does not match"})
                 return
-            if (request.get("attendee") != ROSTER["identity"] or
-                    request.get("caller_organization") != ROSTER["contractor_organization"]):
+            roster = state.get("roster", ROSTER)
+            if (request.get("attendee") != roster["identity"] or
+                    request.get("caller_organization") != roster["contractor_organization"]):
                 self.send_json(403, {"error": "attendee does not belong to caller organization"})
                 return
             appointment = dict(appointment)
             appointment["revision"] = int(appointment["revision"]) + 1
-            appointment["attendee"] = ROSTER["identity"]
+            appointment["attendee"] = roster["identity"]
             state["appointment"] = appointment
             atomic_json(STATE, state)
-            self.accepted("appointment-created", ROSTER["identity"], appointment, 201)
+            self.accepted("appointment-created", roster["identity"], appointment, 201)
             return
         if path == "/api/check-ins":
             appointment = state["appointment"]

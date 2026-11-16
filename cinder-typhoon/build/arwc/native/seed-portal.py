@@ -66,6 +66,23 @@ def seed() -> None:
     })
     print("APT-CRR-2026-09-18: outlet-inspection appointment seeded as ERPNext Event")
 
+    # W13.2: seed the contractor assignment roster as a real ERPNext Task.
+    # ROSTER-CRR-SEP18-R2 lists veybridge.tech.204 for assignment CTR-VEY-204.
+    # The portal fetches this Task at startup for the visitors/roster endpoint.
+    insert("Task", {"subject": "ROSTER-CRR-SEP18-R2: Contractor assignment INSP-CRR-2026-09-18"}, {
+        "subject": "ROSTER-CRR-SEP18-R2: Contractor assignment INSP-CRR-2026-09-18",
+        "status": "Open",
+        "description": json.dumps({
+            "record_id": "ROSTER-CRR-SEP18-R2",
+            "revision": 2,
+            "inspection": "INSP-CRR-2026-09-18",
+            "identity": "veybridge.tech.204",
+            "assignment": "CTR-VEY-204",
+            "contractor_organization": "Veybridge Technical Services",
+        }, sort_keys=True),
+    })
+    print("ROSTER-CRR-SEP18-R2: contractor assignment roster seeded as ERPNext Task")
+
 
 if __name__ == "__main__":
     seed()
