@@ -383,9 +383,29 @@ spec:
       template:
         spec:
           serviceAccountName: svc-schedule-runner
+          serviceAccountName: svc-schedule-runner
+          tolerations:
+          - key: "node.kubernetes.io/disk-pressure"
+            operator: "Exists"
+            effect: "NoSchedule"
+          - key: "node.kubernetes.io/memory-pressure"
+            operator: "Exists"
+            effect: "NoSchedule"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            seccompProfile:
+              type: RuntimeDefault
           containers:
           - name: exporter
-            image: busybox:latest
+            image: rancher/klipper-helm:v0.13.3-build20261021
+            command: ["sh", "-c", "echo Job complete: $SCHEDULE_ID assignment=$ASSIGNMENT marker=$MARKER; exit 0"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+              seccompProfile:
+                type: RuntimeDefault
             env:
             - name: SCHEDULE_ID
               value: "SCHED-2841"
