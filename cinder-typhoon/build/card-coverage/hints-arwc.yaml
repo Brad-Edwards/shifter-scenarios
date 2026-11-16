@@ -830,12 +830,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W21/deployment-note.md
   W22.1:
-    h1: Begin with the sealed viewer, project decision, and retained review context. Its published client document
-      exposes the sealed viewer operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as embedded-machine reconstruction followed by concealed reviewer-identity analysis. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the sealed viewer operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Call GET https://process-view.arwc.test/api/sealed-projects/current/viewer with CORPORATE Bearer.
+      Returns the delivery record with five binding fields plus SHA256 values and binary artifacts. Sets
+      viewer_observed=True in state for W22.2+.
+    h2: The viewer binary is also at clara.morivelle/retained-engineering-tools/engineering/sealed-viewer
+      in Gitea. Compute its SHA256 to verify against the service response viewer_sha256. The delivery IDs
+      and SHA256 are not in any shipped file — they come from the service call.
+    h3: Record all five binding fields (delivery_id, viewer_id, viewer_language, platform, project_id) and
+      viewer_sha256. The ordinary_cases field supplies reference cases for W22.2+. This establishes the
+      delivery-to-binary binding.
     references:
     - kind: client_route
       id: process.sealed-viewer
