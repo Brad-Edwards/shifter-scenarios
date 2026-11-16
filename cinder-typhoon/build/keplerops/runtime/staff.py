@@ -137,7 +137,41 @@ _SUPPORT_DB_PASSWORD_FILE = Path(
 )
 
 NOTES = CONFIG.get("notes", {})
-ARCHIVE_HANDOVERS = CONFIG.get("archive_handovers", {})
+
+_KANBOARD_DB_HOST = CONFIG.get("kanboard_db_host", "fieldlink-postgres")
+_KANBOARD_DB_PORT = int(CONFIG.get("kanboard_db_port", 5432))
+_KANBOARD_DB = CONFIG.get("kanboard_db", "fieldlink_staff")
+_KANBOARD_DB_USER = CONFIG.get("kanboard_db_user", "fieldlink_staff")
+_KANBOARD_DB_PASS_FILE = Path(
+    os.environ.get("KANBOARD_DB_PASSWORD_FILE", "/run/fieldkest-staff/kanboard_db_password")
+)
+
+
+def _get_archive_handover(subject: str) -> dict | None:
+    """Read the staff archive handover from real Kanboard PostgreSQL."""
+    try:
+        import psycopg2
+        import psycopg2.extras
+        kb_pass = _KANBOARD_DB_PASS_FILE.read_text().strip()
+        conn = psycopg2.connect(
+            host=_KANBOARD_DB_HOST, port=_KANBOARD_DB_PORT, dbname=_KANBOARD_DB,
+            user=_KANBOARD_DB_USER, password=kb_pass, connect_timeout=5,
+            cursor_factory=psycopg2.extras.RealDictCursor,
+        )
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT subject, provisioner, provisioner_type, idp, idp_config, "
+                    "issued_by, template, template_eku, grant_name AS grant, "
+                    "archive_ref AS archive, vouched_by "
+                    "FROM staff_archive_handovers WHERE subject = %s",
+                    (subject,),
+                )
+                row = cur.fetchone()
+        conn.close()
+        return dict(row) if row else None
+    except Exception:
+        return None
 
 
 def _support_db_password() -> str:
@@ -248,7 +282,7 @@ class StaffHandler(KeplerHandler):
             if not cert_cn or cert_cn != subject:
                 self.send_json(403, {"error": "subject_mismatch"})
                 return
-            handover = ARCHIVE_HANDOVERS.get(subject)
+            handover = _get_archive_handover(subject)
             if handover is None:
                 self.send_json(404, {"error": "handover_not_found"})
                 return

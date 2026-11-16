@@ -729,10 +729,12 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/support_db_password:/run/fieldkest-staff/support_db_password:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/kanboard_db_password:/run/fieldkest-staff/kanboard_db_password:ro
       - staff-audit:/var/lib/fieldkest-staff/audit
     extra_hosts:
       - "identity.keplerops.test:10.77.56.11"
       - "support.keplerops.test:10.77.56.11"
+      - "ca.keplerops.test:10.77.56.11"
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
     healthcheck:
