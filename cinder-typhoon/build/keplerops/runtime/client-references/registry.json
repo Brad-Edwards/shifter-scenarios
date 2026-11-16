@@ -53,11 +53,6 @@
           "template": "https://delivery.keplerops.test:8443/api/inspections/envelope"
         },
         {
-          "key": "packages.entitlement",
-          "method": "GET",
-          "template": "https://delivery.keplerops.test:8443/api/compatibility/entitlements/{entitlement_id}"
-        },
-        {
           "key": "packages.entitlement-check",
           "method": "POST",
           "template": "https://delivery.keplerops.test:8443/api/compatibility/entitlements/check"

@@ -194,14 +194,9 @@ class RegistryHandler(KeplerHandler):
                 return
             inspection_id = path.removeprefix("/api/inspections/").removesuffix("/trace")
             self._inspection_trace(inspection_id)
-        elif path.startswith("/api/compatibility/entitlements/"):
-            if not self._require_developer():
-                return
-            record_id = path.removeprefix("/api/compatibility/entitlements/")
-            if record_id == "check":
-                self.send_json(405, {"error": "method_not_allowed"})
-            else:
-                self._entitlement_record(record_id)
+        elif path == "/api/compatibility/entitlements/check":
+            # Retired: individual record-lookup GET is gone; entitlement-check POST remains.
+            self.send_json(405, {"error": "method_not_allowed"})
         elif path == "/api/privileged-result":
             if not self._require_developer():
                 return
@@ -497,13 +492,10 @@ class RegistryHandler(KeplerHandler):
         })
         self.send_json(200, result)
 
-    def _entitlement_record(self, record_id: str) -> None:
-        if record_id != "ENT-ARWC-DIAG-0698":
-            self.send_json(404, {"error": "entitlement_not_found"})
-            return
-        record = load_record("entitlements", record_id)
-        append_audit(AUDIT, "entitlement-reads", {"request_id": self.request_id, "principal": USERNAME, "record_id": record_id, "revision": record["revision"], "record_sha256": sha256_bytes(canonical_bytes(record)), "status": 200})
-        self.send_json(200, record)
+    # packages.entitlement (GET /api/compatibility/entitlements/{id}) is retired.
+    # K08.1 participants recover ENT-ARWC-DIAG-0698 from the fieldkest/connector-archive
+    # Gitea repository (seeded by seed-gitea.py entitlement_history).  The registry-local
+    # copy is never the authoritative source for the participant.
 
     def _entitlement_check(self) -> None:
         try:
