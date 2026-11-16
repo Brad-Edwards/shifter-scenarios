@@ -65,6 +65,18 @@ def main() -> None:
             },
         },
         "identity_host": "identity.keplerops.test",
+        "retained_support_provider": {
+            "status": "enabled",
+            "provider": "OIDC-FIELDKEST-RETAINED-SUPPORT",
+            "metadata_uri": (
+                "https://support.keplerops.test/federation/retained-support"
+                "/.well-known/openid-configuration"
+            ),
+            "issuer": "https://support.keplerops.test/federation/retained-support",
+            "assertion_submission_endpoint": (
+                "https://identity.keplerops.test/api/federation/login"
+            ),
+        },
         "schema": "fieldkest.staff-config/v1",
     }
 

@@ -2,19 +2,20 @@
 
 K18.1: staff.directory and staff.note routes. Auth is dev bearer.
        Notes are real osTicket internal notes queried from the support DB.
-K18.2-K18.3: staff.note-preview SSRF path. Validates raw /notes/ prefix before
-       URL-decoding, then makes an outbound request to the resolved target using
-       the staff_preview_service bearer. The traversal reaches the identity
-       registration endpoint.
+K18.2: staff.note-preview SSRF GET — traverses to real Keycloak DCR endpoint,
+       returns raw client metadata including the registration_access_token.
+K18.3: staff.note-preview SSRF PATCH — DCR PUT to Keycloak adds RETAINED_SUPPORT
+       provider, returns new RAT iat as revision and provider_configuration.
 """
 from __future__ import annotations
 
+import base64
 import json
 import os
 import posixpath
 import ssl
 from pathlib import Path
-from urllib.parse import unquote, urlsplit
+from urllib.parse import unquote, urlencode, urlsplit
 from urllib.request import Request
 
 import pymysql
@@ -38,6 +39,72 @@ _CA_CERT = Path(os.environ.get("FIELDKEST_CA_CERT", "/run/fieldkest-tls/ca.crt")
 def _outbound_ctx() -> ssl.SSLContext:
     ctx = ssl.create_default_context(cafile=str(_CA_CERT))
     return ctx
+
+
+def _rat_iat(jwt: str) -> int:
+    """Extract iat claim from a Keycloak registration access token JWT."""
+    try:
+        payload_b64 = jwt.split(".")[1]
+        payload = json.loads(base64.urlsafe_b64decode(payload_b64 + "=="))
+        return int(payload["iat"])
+    except Exception:
+        return 0
+
+
+def _patch_registration(target_url: str, rat: str, metadata_uri: str) -> tuple[int, dict]:
+    """K18.3: DCR PUT to Keycloak adds RETAINED_SUPPORT provider pointer via request_uris.
+
+    1. GET current state — refreshes the RAT for the subsequent write.
+    2. PUT with request_uris=[metadata_uri] — standard RFC 7591 field that Keycloak stores.
+    3. New RAT iat is the revision (monotonically increasing).
+    4. Fetch the discovery doc from request_uris[0] to build provider_configuration.
+    """
+    ctx = _outbound_ctx()
+    # Step 1: GET current state to get the current RAT
+    get_req = Request(target_url, headers={"Authorization": f"Bearer {rat}"})
+    try:
+        _, current = open_json(get_req, ctx, timeout=10)
+    except UpstreamUnavailable:
+        return 502, {"error": "identity_unavailable"}
+    current_rat = current.get("registration_access_token", rat)
+
+    # Step 2: DCR PUT with request_uris pointing at the provider discovery endpoint
+    put_body = json.dumps({
+        "client_id": current.get("client_id", ""),
+        "redirect_uris": current.get("redirect_uris", []),
+        "request_uris": [metadata_uri],
+    }).encode()
+    put_req = Request(target_url, data=put_body, method="PUT")
+    put_req.add_header("Authorization", f"Bearer {current_rat}")
+    put_req.add_header("Content-Type", "application/json")
+    try:
+        _, updated = open_json(put_req, ctx, timeout=10)
+    except UpstreamUnavailable:
+        return 502, {"error": "identity_unavailable"}
+
+    new_rat = updated.get("registration_access_token", current_rat)
+    new_iat = _rat_iat(new_rat)
+
+    # Step 3: Fetch the real discovery doc from the stored request_uris[0]
+    stored_uris = updated.get("request_uris", [])
+    discovery_uri = stored_uris[0] if stored_uris else metadata_uri
+    disc_req = Request(discovery_uri)
+    try:
+        _, discovery = open_json(disc_req, ctx, timeout=10)
+    except (UpstreamUnavailable, Exception):
+        return 502, {"error": "provider_discovery_unavailable"}
+
+    provider_config = {
+        "status": "enabled",
+        "provider": "OIDC-FIELDKEST-RETAINED-SUPPORT",
+        "metadata_uri": discovery_uri,
+        "issuer": discovery.get("issuer", ""),
+        "assertion_submission_endpoint": CONFIG.get(
+            "retained_support_provider", {}
+        ).get("assertion_submission_endpoint", ""),
+    }
+    result = {**updated, "revision": new_iat, "provider_configuration": provider_config}
+    return 200, result
 
 SUPPORT_DB_HOST = CONFIG.get("support_db_host", "fieldlink-support-db")
 SUPPORT_DB_PORT = int(CONFIG.get("support_db_port", 3306))
@@ -172,15 +239,22 @@ class StaffHandler(KeplerHandler):
             service_host = parts[0] + ".keplerops.test"
             service_path = "/" + parts[1]
             target_url = f"https://{service_host}{service_path}"
-            req = Request(target_url, method=method)
-            req.add_header("Authorization", f"Bearer {PREVIEW_SERVICE_TOKEN}")
             if method == "PATCH":
-                req.add_header("Content-Length", "0")
-            try:
-                status, data = open_json(req, _outbound_ctx(), timeout=10)
-            except UpstreamUnavailable:
-                self.send_json(502, {"error": "identity_unavailable"})
-                return
+                # K18.3: participant supplies provider.metadata_uri in the body.
+                # k-staff DCR PUTs request_uris=[metadata_uri] to Keycloak using the RAT.
+                metadata_uri = body.get("provider", {}).get("metadata_uri", "")
+                if not metadata_uri:
+                    self.send_json(400, {"error": "provider_metadata_uri_required"})
+                    return
+                status, data = _patch_registration(target_url, PREVIEW_SERVICE_TOKEN, metadata_uri)
+            else:
+                req = Request(target_url, method=method)
+                req.add_header("Authorization", f"Bearer {PREVIEW_SERVICE_TOKEN}")
+                try:
+                    status, data = open_json(req, _outbound_ctx(), timeout=10)
+                except UpstreamUnavailable:
+                    self.send_json(502, {"error": "identity_unavailable"})
+                    return
             append_audit(AUDIT, "note-preview", {
                 "action": "proxy", "source_path": source_path,
                 "resolved": resolved, "target": target_url, "method": method,

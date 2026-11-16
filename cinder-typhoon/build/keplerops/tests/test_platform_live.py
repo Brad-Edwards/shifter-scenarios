@@ -113,8 +113,13 @@ class PlatformLiveTest(unittest.TestCase):
         self.assertEqual(note["consumer"], "staff-note-preview")
         source = "/notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT"
         registration = call("staff.keplerops.test", "/api/note-preview", method="POST", body={"source_path": source, "method": "GET"}, auth=DEV_TOKEN)
-        changed = call("staff.keplerops.test", "/api/note-preview", method="POST", body={"source_path": source, "method": "PATCH"}, auth=DEV_TOKEN)
-        self.assertGreater(changed["revision"], registration["revision"])
+        import base64 as _b64, json as _json
+        _rat_payload = _json.loads(_b64.urlsafe_b64decode(registration["registration_access_token"].split(".")[1] + "=="))
+        registration_revision = _rat_payload["iat"]
+        federation_metadata = "https://support.keplerops.test/federation/retained-support/.well-known/openid-configuration"
+        changed = call("staff.keplerops.test", "/api/note-preview", method="POST",
+            body={"source_path": source, "method": "PATCH", "provider": {"metadata_uri": federation_metadata}}, auth=DEV_TOKEN)
+        self.assertGreater(changed["revision"], registration_revision)
         staff_login = call("identity.keplerops.test", "/api/federation/staff-login", method="POST", body={"username": DEV_USER, "password": DEV_TOKEN}, expected=201)
         self.assertEqual((staff_login["provider"], staff_login["login"]), ("OIDC-FIELDKEST-STAFF", "accepted"))
         provider = changed["provider_configuration"]
