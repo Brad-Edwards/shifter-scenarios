@@ -539,6 +539,43 @@ VALUES ('EVT-COMM-OG2-114', 'high', '2026-11-13 09:28:14+00', '2026-11-13 09:29:
       -v "${golden_op}/tls/ca.crt:/run/arwc-tls/ca.crt:ro" \
       "${DIAGNOSTIC_IMAGE:-cinder-arwc/a-diagnostics:hand-build}"
     echo "a-diagnostics (diagnostic-services at 10.77.63.50) started on cinder-arwc-engineering"
+    # Start the maintenance renderer (a-renderer) for W26 renderer profile discovery.
+    # Provides GET /api/renderers/current → RENDER-MAINT-CRR-R9 profile.
+    # Reads approval from cinder-arwc-approval-evidence volume (populated by W15 flow).
+    # Reads contractor session from cinder-arwc-field-session volume (populated by W13 flow).
+    docker volume create cinder-arwc-renderer-state 2>/dev/null || true
+    docker volume create cinder-arwc-renderer-evidence 2>/dev/null || true
+    docker volume create cinder-arwc-approval-evidence 2>/dev/null || true
+    docker volume create cinder-arwc-field-session 2>/dev/null || true
+    # Seed approval-evidence from approval container (requires approval container to be running)
+    docker run --rm \
+      -v cinder-arwc-approval-data:/approval:ro \
+      -v cinder-arwc-approval-evidence:/evidence:rw \
+      --entrypoint sh "${RENDERER_IMAGE:-cinder-arwc/a-renderer:hand-build}" -c \
+      'cp /approval/evidence/approval.json /evidence/approval.json && \
+       chmod 0640 /evidence/approval.json && chown root:arwc-approval-evidence /evidence/approval.json' \
+      2>/dev/null || true
+    docker stop cinder-arwc-renderer 2>/dev/null; docker rm cinder-arwc-renderer 2>/dev/null || true
+    docker run -d \
+      --name cinder-arwc-renderer \
+      --network cinder-arwc-corporate --ip 10.77.60.54 \
+      --hostname maintenance-renderer --domainname arwc.test --dns 10.77.60.10 \
+      -e ARWC_SERVICE_USER=arwc-renderer \
+      -e ARWC_STATE_ROOT=/var/lib/arwc-renderer \
+      --restart unless-stopped --read-only \
+      --security-opt no-new-privileges:true \
+      --cap-drop ALL --cap-add SETUID --cap-add SETGID --cap-add CHOWN \
+      --cap-add FOWNER --cap-add DAC_OVERRIDE \
+      --tmpfs /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777 \
+      --tmpfs /run:rw,nosuid,nodev,size=8m,mode=0755 \
+      -v cinder-arwc-renderer-state:/var/lib/arwc-renderer \
+      -v cinder-arwc-approval-evidence:/run/arwc-approval-evidence:ro \
+      -v cinder-arwc-field-session:/run/arwc-field-session:ro \
+      -v "${golden_op}/tls/server.crt:/run/arwc-tls/server.crt:ro" \
+      -v "${golden_op}/tls/server.key:/run/arwc-tls/server.key:ro" \
+      -v "${golden_op}/tls/ca.crt:/run/arwc-tls/ca.crt:ro" \
+      "${RENDERER_IMAGE:-cinder-arwc/a-renderer:hand-build}"
+    echo "a-renderer (maintenance-renderer at 10.77.60.54) started"
     ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
