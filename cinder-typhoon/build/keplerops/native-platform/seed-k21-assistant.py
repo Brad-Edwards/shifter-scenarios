@@ -111,30 +111,39 @@ def seed(operator: Path) -> None:
         if user_ids:
             api(f'/admin/workspaces/{workspace_id}/update-users', {'userIds': user_ids}, token)
 
-    # Inject the K21.2 conversation content via AnythingLLM's data model (WorkspaceChats)
-    # This uses the production ORM, not raw SQL, to ensure integrity
-    if conv_id:
-        import subprocess
-        result = subprocess.run(
-            [
-                'node', '-e',
-                f"""
-const {{ WorkspaceChats }} = require('/app/server/models/workspaceChats');
-WorkspaceChats.new({{
-  workspaceId: {workspace_id},
-  prompt: 'Review the ARWC CRR-OG2 integration support case SUP-2841 and state the escalation reference.',
-  response: 'The ARWC CRR-OG2 integration support case SUP-2841 has escalation record ESC-SUP-2841-R3 (restricted). '
-           + 'Diagnostic: DIAG-CRR-MIXED-19. Connector: FLK-7.4.2. Asset: CRR-OG2.',
-  threadId: {conv_id},
-  user_id: null,
-  include: true,
-}}).then(() => process.exit(0)).catch(e => {{ console.error(e.message); process.exit(1); }});
-"""
-            ],
-            capture_output=True, text=True, timeout=30, cwd='/app/server',
-        )
-        if result.returncode != 0:
-            raise RuntimeError(f'K21.2 chat insert failed: {result.stderr[:200]}')
+    # Inject the K21.2 conversation content into workspace_chats using direct SQLite access.
+    # This is a real database row in AnythingLLM's production schema (workspace_chats table).
+    # AnythingLLM's deletion of workspace_threads does NOT cascade to workspace_chats — the flaw.
+    if conv_id and workspace_id:
+        import sqlite3 as _sql, time as _time
+        # Find the AnythingLLM database in the named volume
+        db_paths = [
+            Path('/var/lib/docker/volumes/cinder-keplerops-native-assistant-data/_data/anythingllm.db'),
+        ]
+        db_path = next((p for p in db_paths if p.exists()), None)
+        if db_path is None:
+            raise RuntimeError('AnythingLLM database not found for K21.2 seed')
+        ts = int(_time.time() * 1000)
+        conn = _sql.connect(str(db_path))
+        with conn:
+            conn.execute(
+                "INSERT INTO workspace_chats "
+                "(workspaceId, prompt, response, include, user_id, createdAt, lastUpdatedAt, thread_id) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    workspace_id,
+                    "Review the ARWC CRR-OG2 integration support case SUP-2841 and state the escalation reference.",
+                    "The ARWC CRR-OG2 integration support case SUP-2841 has escalation record "
+                    "ESC-SUP-2841-R3 (restricted). Diagnostic: DIAG-CRR-MIXED-19. "
+                    "Connector: FLK-7.4.2. Asset: CRR-OG2.",
+                    1,
+                    None,
+                    ts,
+                    ts,
+                    conv_id,
+                )
+            )
+        conn.close()
 
         # Hard-delete the thread (the retention flaw: workspace_chats row remains orphaned)
         api(f'/workspace/{slug}/thread/{conv_slug}/delete', {}, token)
