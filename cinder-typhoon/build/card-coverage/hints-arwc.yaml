@@ -523,12 +523,15 @@ hints:
     - kind: client_route
       id: maintenance.drawing-cache
   W15.2:
-    h1: Begin with the drawing cache, review workflow, and maintenance approval. Its published client document exposes
-      the drawing cache update operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cache-key normalization followed by reviewer and downstream authority checks. Establish the
-      denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the drawing cache update operation in the published client reference. Read the current revision,
-      submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: The drawing-cache-update route accepts a controlled HTML body from the allowlisted preview origin
+      preview-cinder.arwc.test. Set X-Preview-Origin: https://preview-cinder.arwc.test and submit your
+      controlled response with cache path /viewer/drawings/DRW-OG2-R8, preserving drawing_id and revision.
+    h2: The controlled body must be CRLF-free HTML. After a successful cache update (201), trigger the
+      reviewer browser via POST /api/drawing-approvals with cache_key=GET:/viewer/drawings/DRW-OG2-R8 and
+      reviewer_queue=REV-CRR-4417 using your W13.4 contractor session.
+    h3: The reviewer browser accepts the postMessage from a nested iframe despite a source-mismatch in the
+      event handler. A successful run returns CAP-REVIEW-CRR-4417 with review-submit scope, which is the
+      prerequisite for W15.3.
     references:
     - kind: client_route
       id: maintenance.drawing-cache-update
