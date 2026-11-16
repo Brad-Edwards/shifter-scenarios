@@ -520,15 +520,19 @@ services:
       foundation_data: {ipv4_address: 10.77.56.20}
 
   fieldlink-k19-setup:
-    image: python:3.12.11-slim-bookworm@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
+    image: postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
     profiles: [operator]
     restart: "no"
-    read_only: true
     cap_drop: [ALL]
     security_opt: [no-new-privileges:true]
-    command: [python3, /operator/seed-k19-staff-archive.py]
+    command: [sh, /operator/seed-k19-staff-archive.sh]
     volumes:
-      - ./native-workplace/seed-k19-staff-archive.py:/operator/seed-k19-staff-archive.py:ro
+      - ./native-workplace/seed-k19-staff-archive.sh:/operator/seed-k19-staff-archive.sh:ro
+    environment:
+      PGHOST: fieldlink-postgres
+      PGPORT: "5432"
+      PGDATABASE: fieldlink_staff
+      PGUSER: fieldlink_staff
     env_file:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/kanboard.env
     depends_on:
