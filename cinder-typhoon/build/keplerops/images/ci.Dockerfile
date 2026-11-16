@@ -26,11 +26,13 @@ COPY build/keplerops/runtime/package_delivery.py /opt/fieldkest/package_delivery
 COPY build/keplerops/runtime/ci-entrypoint.sh /usr/local/bin/fieldkest-ci-entrypoint
 COPY assets/keplerops/opening/k-ci-state.tar /tmp/k-ci-state.tar
 COPY assets/keplerops/release-lineage/k-ci-release-lineage-state.tar /tmp/k-ci-release-lineage-state.tar
+COPY assets/keplerops/build-operations/k-ci-runner-state.tar /tmp/k-ci-runner-state.tar
 
 RUN mkdir -p /var/lib/fieldkest-ci \
     && tar -xf /tmp/k-ci-state.tar -C /var/lib/fieldkest-ci \
     && tar -xf /tmp/k-ci-release-lineage-state.tar -C /var/lib/fieldkest-ci \
-    && rm /tmp/k-ci-state.tar /tmp/k-ci-release-lineage-state.tar \
+    && tar -xf /tmp/k-ci-runner-state.tar -C /var/lib/fieldkest-ci \
+    && rm /tmp/k-ci-state.tar /tmp/k-ci-release-lineage-state.tar /tmp/k-ci-runner-state.tar \
     && mkdir -p /var/lib/fieldkest-ci/audit /var/lib/fieldkest-ci/results /var/lib/fieldkest-ci/workspaces/rowan /var/lib/fieldkest-handover \
     && mkdir -p /var/lib/fieldkest-ci/consumer-state \
     && ln -s /opt/fieldkest /opt/fieldkest-ci \

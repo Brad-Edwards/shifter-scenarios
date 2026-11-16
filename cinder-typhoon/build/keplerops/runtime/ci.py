@@ -68,6 +68,44 @@ class CIHandler(KeplerHandler):
                 self.send_json(404, {"error": "job_not_found"})
                 return
             self.send_json(200, json.loads((RESULTS / f"{job_id}.json").read_text()))
+        elif path.startswith("/api/runs/"):
+            # K09.2: CI runner run metadata and retained artifacts.
+            # The run metadata lists retained_artifacts that are not on the Jenkins
+            # results page; the participant must access this service to find them.
+            remainder = path.removeprefix("/api/runs/")
+            import re as _re
+            if "/" not in remainder:
+                run_id = remainder
+                run_path = STATE / "runs" / f"{run_id}.json"
+                if not _re.fullmatch(r"BLD-\d+", run_id) or not run_path.is_file():
+                    self.send_json(404, {"error": "run_not_found"})
+                    return
+                self.send_json(200, json.loads(run_path.read_text()))
+            elif remainder.endswith("/log"):
+                run_id = remainder.removesuffix("/log")
+                log_path = STATE / "runs" / f"{run_id}.log"
+                if not _re.fullmatch(r"BLD-\d+", run_id) or not log_path.is_file():
+                    self.send_json(404, {"error": "run_not_found"})
+                    return
+                log_data = log_path.read_bytes()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/plain; charset=utf-8")
+                self.send_header("Content-Length", str(len(log_data)))
+                self.end_headers()
+                self.wfile.write(log_data)
+            elif "/artifacts/" in remainder:
+                run_id, artifact_name = remainder.split("/artifacts/", 1)
+                art_path = STATE / "artifacts" / run_id / artifact_name
+                if not _re.fullmatch(r"BLD-\d+", run_id) or "/" in artifact_name or not art_path.is_file():
+                    self.send_json(404, {"error": "artifact_not_found"})
+                    return
+                append_audit(AUDIT, "artifact-reads", {
+                    "request_id": self.request_id, "principal": USERNAME,
+                    "run_id": run_id, "artifact": artifact_name, "status": 200,
+                })
+                self.send_json(200, json.loads(art_path.read_text()))
+            else:
+                self.send_json(404, {"error": "not_found"})
         else:
             self.send_json(404, {"error": "not_found"})
 

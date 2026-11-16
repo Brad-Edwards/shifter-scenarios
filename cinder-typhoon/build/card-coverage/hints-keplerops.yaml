@@ -373,15 +373,22 @@ hints:
     - kind: participant_service
       id: ci.keplerops.test
   K09.2:
-    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
-      document exposes the run operation, so use that ordinary contract instead of guessing a path.
+    h1: The K09.1 REVNOTE has a run_id field (BLD-1842). The Jenkins results page lists only junit.xml.
+      The CI runner service at review.keplerops.test is the separate publication surface; its
+      .well-known/fieldkest-client lists the ci.run route for GET /api/runs/{run_id}.
+      h1 cont: Access GET /api/runs/BLD-1842 on review.keplerops.test.
     h2: Treat this as job-input trust and execution under a constrained service identity. Observe the ordinary and
       denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the run operation in the published client reference. Record the normal result and a denied variant,
-      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h3: Download the omitted artifact via ci.run-artifact: GET /api/runs/BLD-1842/artifacts/integration-review-input-v3.json.
+      The result has artifact_id=ART-BLD-1842-INTEGRATION-REVIEW, build_revision, object_version=3, and
+      linked_support_ref. Wrong run IDs (BLD-9999) return 404.
     references:
+    - kind: participant_service
+      id: review.keplerops.test
     - kind: client_route
       id: ci.run
+    - kind: client_route
+      id: ci.run-artifact
   K09.3:
     h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
       document exposes the review jobs operation, so use that ordinary contract instead of guessing a path.
