@@ -517,6 +517,35 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         path = urlsplit(self.path).path
+        # W23.3: internal allocation status for engineering container.
+        # Engineering reads real committed_ml from PostgreSQL to validate sufficiency.
+        if path == "/internal/allocation-status":
+            if (self.headers.get("X-ARWC-Internal") != "engineering-r27" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] not in {"10.77.60.55", "10.77.60.51"}):
+                self.send_json(403, {"error": "engineering service context required"})
+                return
+            try:
+                with database() as conn:
+                    with conn.cursor() as cur:
+                        cur.execute(
+                            "SELECT district, committed_ml, revision, planning_window "
+                            "FROM allocation_ledger WHERE district=%s",
+                            ("Cairn Reach",)
+                        )
+                        row = cur.fetchone()
+                if row is None:
+                    self.send_json(404, {"error": "allocation ledger entry not found"})
+                    return
+                self.send_json(200, {
+                    "district": row[0],
+                    "committed_ml": float(row[1]),
+                    "revision": row[2],
+                    "planning_window": row[3],
+                })
+            except Exception as exc:
+                self.send_json(503, {"error": f"database read failed: {exc}"})
+            return
         if self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test":
             if path in PROCESS_PATHS:
                 self.process_proxy()

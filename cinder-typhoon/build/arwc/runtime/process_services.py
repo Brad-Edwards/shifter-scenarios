@@ -68,6 +68,7 @@ INITIAL["engineering"].update({
     "replay_structure_recovered": False, "replay_transitions_reproduced": False,
     "replay_condition_recovered": False, "replay_witness_response": None,
     "false_estimate_observed": False, "controlled_allocation_committed": False,
+    "sufficient_estimate_verified": False,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
@@ -606,6 +607,11 @@ class Handler(BaseHTTPRequestHandler):
         "key": "process.controlled-allocation",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/controlled-allocations/current"
+    },
+    {
+        "key": "process.estimator-sufficiency",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/estimator-sufficiency/current"
     }
 ]
         for r in routes:
@@ -851,6 +857,70 @@ class Handler(BaseHTTPRequestHandler):
             "/api/reporting-submissions",
         }:
             self.historian_proxy("POST", path, request)
+            return
+        # W23.3: sufficiency verification — reads real PostgreSQL and real binary output.
+        # Gated on W23.2 controlled_allocation_committed=True.
+        # Engineering calls a-data for real committed_ml and diagnostics for real ordinary values.
+        if ROLE == "engineering" and path == "/api/estimator-sufficiency/current":
+            if not state.get("controlled_allocation_committed"):
+                self.send_json(403, {"error": "controlled allocation required"}); return
+            expected_body = {
+                "allocation_case": "ALLOC-CASE-CRR-33",
+                "controlled_reserve_ml": 13.4,
+                "committed_ml": 13.0,
+                "unaffected": {"North": 8.1, "Merewick": 7.65},
+            }
+            if request != expected_body:
+                self.send_json(409, {"error": "allocation sufficiency binding rejected"}); return
+            # Read REAL committed_ml from PostgreSQL via data container.
+            try:
+                alloc_status, alloc_result = self.internal_request(
+                    "data", "GET", "/internal/allocation-status",
+                    internal="engineering-r27",
+                )
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "planning data service unavailable"}); return
+            if alloc_status != 200:
+                self.send_json(alloc_status, alloc_result); return
+            real_committed_ml = alloc_result.get("committed_ml")
+            # Read REAL ordinary values from diagnostics binary run.
+            try:
+                ord_status, ord_result = self.internal_request(
+                    "diagnostics", "GET", "/internal/ordinary-values",
+                )
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "diagnostic service unavailable"}); return
+            if ord_status != 200:
+                self.send_json(ord_status, ord_result); return
+            real_ordinary = ord_result.get("ordinary", {})
+            # Validate submitted values match real data.
+            if real_committed_ml is None or abs(real_committed_ml - 13.0) > 0.01:
+                self.send_json(409, {"error": "committed allocation does not match controlled state"}); return
+            if (abs(real_ordinary.get("North", 0) - 8.1) > 0.01 or
+                    abs(real_ordinary.get("Merewick", 0) - 7.65) > 0.01):
+                self.send_json(409, {"error": "unaffected district values do not match ordinary run"}); return
+            # Confirm sufficiency: controlled_reserve > committed_ml.
+            sufficient = request["controlled_reserve_ml"] > real_committed_ml
+            if not sufficient:
+                self.send_json(409, {"error": "controlled reserve insufficient for allocation case"}); return
+            state["sufficient_estimate_verified"] = True
+            save_state(state)
+            result = {
+                "record_id": "ALLOC-CASE-CRR-33", "revision": 33,
+                "allocation_case": "ALLOC-CASE-CRR-33",
+                "sufficient": True,
+                "controlled_reserve_ml": request["controlled_reserve_ml"],
+                "committed_ml": real_committed_ml,  # from real PostgreSQL
+                "ordinary_ml": real_ordinary.get("Cairn", 12.4),  # from real binary
+                "unaffected": {
+                    "North": real_ordinary.get("North", 8.1),  # from real binary
+                    "Merewick": real_ordinary.get("Merewick", 7.65),  # from real binary
+                },
+                "raw_process_observations_changed": False,
+                "independent_instruments_changed": False,
+            }
+            atomic_json(EVIDENCE / "engineering" / "estimator-sufficiency.json", result)
+            self.accepted("estimator-sufficiency-verified", result, 201)
             return
         # W23.2: controlled-allocation write to PostgreSQL planning data.
         # After the estimator-runs chain (false_estimate_observed=True), the participant

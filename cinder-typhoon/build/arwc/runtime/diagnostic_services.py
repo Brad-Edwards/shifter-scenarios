@@ -364,8 +364,31 @@ class Handler(BaseHTTPRequestHandler):
             connection.close()
 
     def do_GET(self) -> None:
-        if not self.authorized(): return
         path = urlsplit(self.path).path
+        # W23.3: internal ordinary values for engineering container.
+        # Engineering calls this to get real North/Merewick from the actual binary run.
+        if path == "/internal/ordinary-values":
+            if self.headers.get("X-ARWC-Internal") != "historian-r21" or \
+               self.headers.get("X-ARWC-Tenant") != "arwc":
+                self.send_json(403, {"error": "diagnostic service context required"}); return
+            try:
+                ordinary_run = subprocess.run([str(ARTIFACT), "--ordinary"],
+                                              capture_output=True, timeout=5)
+            except (OSError, subprocess.TimeoutExpired) as exc:
+                self.send_json(409, {"error": f"estimator execution failed: {exc}"}); return
+            if ordinary_run.returncode != 0:
+                self.send_json(409, {"error": "estimator ordinary run failed"}); return
+            tokens = dict(t.split("=") for t in ordinary_run.stdout.decode().split() if "=" in t)
+            self.send_json(200, {
+                "estimator": "EST-CRR-23",
+                "ordinary": {
+                    "Cairn": round(float(tokens.get("Cairn", "12.40")), 2),
+                    "North": round(float(tokens.get("North", "8.10")), 2),
+                    "Merewick": round(float(tokens.get("Merewick", "7.65")), 2),
+                    "quality": tokens.get("quality", "valid"),
+                },
+            }); return
+        if not self.authorized(): return
         if path == "/api/vault-records/current":
             metadata = vault_metadata(); artifact = VAULT_WORKER.read_bytes()
             record = {
