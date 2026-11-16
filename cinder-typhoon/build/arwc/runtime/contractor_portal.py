@@ -100,9 +100,8 @@ def atomic_json(path: pathlib.Path, value: object) -> None:
 def _fetch_erp_appointment() -> dict | None:
     """Fetch APT-CRR-2026-09-18 from ERPNext at startup.
 
-    Uses admin credentials from the operator config file. Returns the parsed
-    appointment dict (from the Event description field), or None on failure.
-    Falls back to the APPOINTMENT constant if the fetch fails.
+    Uses admin credentials from ERP_READER_PATH. Returns the parsed appointment
+    dict (from the Event description field) if the fetch succeeds, else None.
     """
     try:
         config = json.loads(ERP_READER_PATH.read_text(encoding="utf-8"))
@@ -115,7 +114,8 @@ def _fetch_erp_appointment() -> dict | None:
         return None
     import http.cookiejar as _cookiejar
     import urllib.request as _urllib_request
-    ctx = ssl.create_default_context(cafile="/tmp/ca.crt")
+    ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
+    ctx = ssl.create_default_context(cafile=ca_bundle)
     cookies = _cookiejar.CookieJar()
     opener = _urllib_request.build_opener(
         _urllib_request.HTTPCookieProcessor(cookies),
@@ -126,11 +126,24 @@ def _fetch_erp_appointment() -> dict | None:
         opener.open(_urllib_request.Request(
             f"{erp_url}/api/method/login", data=login_data,
             headers={"Content-Type": "application/json"}, method="POST",
-        ), timeout=10)
+        ), timeout=15)
+        import urllib.parse as _urlparse
+        subject = "APT-CRR-2026-09-18: Outlet inspection AST-CRR-017"
+        query = _urlparse.urlencode({
+            "filters": json.dumps([["subject", "=", subject]]),
+            "fields": '["name"]',
+            "limit_page_length": 1,
+        })
+        list_resp = opener.open(_urllib_request.Request(
+            f"{erp_url}/api/resource/Event?{query}",
+        ), timeout=15)
+        events = json.loads(list_resp.read()).get("data", [])
+        if not events:
+            return None
+        event_name = events[0]["name"]
         resp = opener.open(_urllib_request.Request(
-            f"{erp_url}/api/resource/Event/APT-CRR-2026-09-18",
-            headers={"Content-Type": "application/json"},
-        ), timeout=10)
+            f"{erp_url}/api/resource/Event/{_urlparse.quote(event_name, safe='')}",
+        ), timeout=15)
         event = json.loads(resp.read())["data"]
         appointment = json.loads(event.get("description", "{}"))
         if appointment.get("record_id") == "APT-CRR-2026-09-18":
@@ -141,6 +154,7 @@ def _fetch_erp_appointment() -> dict | None:
 
 
 def initial_state() -> dict[str, object]:
+    # Primary source: live ERPNext Event. Falls back to constant if ERPNext unavailable.
     appointment = _fetch_erp_appointment() or APPOINTMENT
     return {
         "appointment": appointment,
@@ -154,6 +168,15 @@ def initial_state() -> dict[str, object]:
 def initialize() -> None:
     if not STATE.exists():
         atomic_json(STATE, initial_state())
+    else:
+        # Refresh appointment from ERPNext on every startup so the served record
+        # reflects the live ERPNext Event, not a frozen constant.
+        erp_appointment = _fetch_erp_appointment()
+        if erp_appointment:
+            state = json.loads(STATE.read_text(encoding="utf-8"))
+            if state.get("appointment") != erp_appointment:
+                state["appointment"] = erp_appointment
+                atomic_json(STATE, state)
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
     if HANDOVER.exists():

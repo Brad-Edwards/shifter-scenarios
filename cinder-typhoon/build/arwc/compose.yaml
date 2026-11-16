@@ -341,57 +341,25 @@ services:
       read_only: true
       bind:
         create_host_path: true
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
+      target: /run/arwc-native/root-ca.crt
+      read_only: true
+      bind:
+        create_host_path: false
     networks:
       corporate:
         ipv4_address: 10.77.60.52
         aliases:
         - a-contractors
         - contractor-portal.arwc.test
-networks:
-  native_api_exchange:
-    external: true
-    name: cinder-arwc-native_api_exchange
-  archive_db:
-    external: true
-    name: cinder-arwc-native_data
-  handover_supervisory:
-    external: true
-    name: arwc-ot-compat_supervisory
-  carrier_transit:
-    name: cinder-arwc-carrier-transit
-    driver: bridge
-    ipam:
-      config:
-      - subnet: 10.77.65.0/29
-        gateway: 10.77.65.1
-  corporate:
-    name: cinder-arwc-corporate
-    internal: true
-    ipam:
-      config:
-      - subnet: 10.77.60.0/24
-        gateway: 10.77.60.1
-  dmz:
-    name: cinder-arwc-dmz
-    internal: true
-    ipam:
-      config:
-      - subnet: 10.77.62.0/24
-        gateway: 10.77.62.1
-  maintenance:
-    name: cinder-arwc-maintenance
-    internal: true
-    ipam:
-      config:
-      - subnet: 10.77.61.0/24
-        gateway: 10.77.61.1
 volumes:
+  arwc-contractors-data:
+    name: cinder-arwc-contractors-data
   connector-fieldlink:
     name: cinder-arwc-connector-fieldlink
   connector-customer:
     name: cinder-arwc-connector-customer
-  arwc-contractors-data:
-    name: cinder-arwc-contractors-data
   arwc-archive-data:
     name: cinder-arwc-archive-data
   arwc-planning-evidence:
