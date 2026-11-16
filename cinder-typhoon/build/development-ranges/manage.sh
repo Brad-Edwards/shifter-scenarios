@@ -201,6 +201,7 @@ case $action in
         .dockerignore build/development-ranges build/keplerops \
         assets/keplerops/opening \
         assets/keplerops/registry \
+        assets/keplerops/staff \
         assets/keplerops/native-packages \
         assets/keplerops/native-workplace \
         assets/narrative/documents/keplerops/company-history.md \
