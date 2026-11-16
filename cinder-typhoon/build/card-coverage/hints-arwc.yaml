@@ -599,12 +599,15 @@ hints:
     - kind: client_route
       id: archive.signal-experiment
   W16.4:
-    h1: Begin with the archive sequencer, constrained observations, and calibration history. Its published client
-      document exposes the instrument history operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as instruction-sequence reconstruction with bounded out-of-window observation analysis. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the instrument history operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Slots 160-191 hold the 32-byte calibration record. Use POST /api/signal-experiments measure programs
+      targeting those slots. Max 63 TEST instructions per program (64-instruction limit includes HALT), so
+      cover 32 slots with 9 probes each across 5 programs.
+    h2: Apply the W16.3 bit-discrimination to each of the 32 slots. Reconstruct all bytes, then verify the
+      CRC32C: last 4 bytes must equal crc32c(first 28 bytes) in big-endian. If the check passes, the
+      calibration is complete.
+    h3: Submit to POST /api/instrument-history/current with record_id="CAL-CRR-OG2-R8", field_revision="R8",
+      calibration=base64(recovered_32_bytes), plus the standard sequencer/revision/request_id. Success
+      returns revision=8 and slots=[160, 191].
     references:
     - kind: client_route
       id: archive.instrument-history
