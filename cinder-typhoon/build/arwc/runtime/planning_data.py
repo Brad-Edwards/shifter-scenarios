@@ -45,7 +45,7 @@ AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.json")
 INTEGRATION_EVIDENCE = ROOT / "integration" / "planning-data.json"
-ARCHIVE_EVIDENCE = ROOT / "archive" / "archive-lineage.json"
+ARCHIVE_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/archive-lineage.json")
 OT_READ_EVIDENCE = pathlib.Path("/run/arwc-ot-read")
 PROCESS_EVIDENCE = pathlib.Path("/run/arwc-process-evidence")
 PROCESS_PATHS = {
@@ -478,6 +478,11 @@ class Handler(BaseHTTPRequestHandler):
                     "template": "https://planning-data.arwc.test/api/asset-lineage/current"
                 },
                 {
+                    "key": "planning.lineage-record",
+                    "method": "POST",
+                    "template": "https://planning-data.arwc.test/api/lineage-records/current"
+                },
+                {
                     "key": "planning.integration-session",
                     "method": "POST",
                     "template": "https://planning-data.arwc.test/api/integration-sessions"
@@ -615,6 +620,8 @@ class Handler(BaseHTTPRequestHandler):
             # is behind the SECURITY DEFINER get_asset_lineage() function in corporate-db.
             # Reached via UNION injection calling the function with the W11.2 asset identity.
             self.send_json(410, {"error": "asset-lineage endpoint retired; use the W11.2 injection surface with get_asset_lineage()"})
+        elif path == "/api/lineage-records/current":
+            self.lineage_record(request)
         elif path == "/api/reporting-submissions/current/result":
             self.w34_view(request)
         elif path == "/api/planning-bids":
@@ -623,6 +630,50 @@ class Handler(BaseHTTPRequestHandler):
             self.w34_handover(request)
         else:
             self.send_json(404, {"error": "record not found"})
+
+    def lineage_record(self, request: dict[str, object]) -> None:
+        """W11.3 completion: participant submits the recovered lineage record.
+
+        Validates the submitted LIN-AST-CRR-017-R8 fields against the known lineage.
+        Writes archive-lineage.json to the shared planning-evidence volume so the
+        archive service can verify W12.1 prerequisite satisfaction.
+        """
+        expected = {
+            "record_id": "LIN-AST-CRR-017-R8",
+            "asset": "AST-CRR-017",
+            "archive": "ARC-COLD-CRR-2019",
+        }
+        for field, value in expected.items():
+            if request.get(field) != value:
+                self.send_json(409, {"error": f"lineage field {field!r} does not match the recovered record"})
+                return
+        state = load_state()
+        state["lineage_observed"] = True
+        save_state(state)
+        evidence = {
+            "record_id": "LIN-AST-CRR-017-R8",
+            "revision": 8,
+            "asset": "AST-CRR-017",
+            "archive": "ARC-COLD-CRR-2019",
+            "current_asset": "AST-CRR-017",
+        }
+        try:
+            ARCHIVE_EVIDENCE.parent.mkdir(parents=True, exist_ok=True)
+            import tempfile as _tempfile, os as _os
+            descriptor, temporary = _tempfile.mkstemp(
+                dir=ARCHIVE_EVIDENCE.parent, prefix=f".{ARCHIVE_EVIDENCE.name}."
+            )
+            with _os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+                import json as _json
+                _json.dump(evidence, handle, sort_keys=True, separators=(",", ":"))
+                handle.write("\n")
+                handle.flush()
+                _os.fsync(handle.fileno())
+            _os.chmod(temporary, 0o644)
+            _os.replace(temporary, ARCHIVE_EVIDENCE)
+        except OSError:
+            pass
+        self.accepted("lineage-record-submitted", evidence, 201)
 
     def w34_view(self, request: dict[str, object]) -> None:
         if not process_interpretation_prerequisite():

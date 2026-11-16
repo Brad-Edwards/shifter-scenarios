@@ -39,7 +39,7 @@ SHARE_URL_PATH = ROOT / "workflow" / "contract-share-url"
 DB_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/db-reader.json")
 BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/archive-source.json")
 IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/archive-source.json")
-DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/archive-lineage.json")
+DATA_SOURCE = pathlib.Path("/run/arwc-planning-evidence/archive-lineage.json")
 STEP_CA_ROOT = "/run/arwc-step-ca/root.crt"
 STEP_CA_INTERMEDIATE = "/run/arwc-step-ca/intermediate.crt"
 STEP_CA_URL = "https://ca.arwc.test:9000"
@@ -225,6 +225,7 @@ QUARANTINE = {
     "collector_build_id": "COLLECT-CRR-12",
     "archive": "ARC-COLD-CRR-2019",
     "digest": "SHA-256",
+    "collector_repository": "arwc-archive/retained-collectors",
 }
 
 PROTECTION = {
@@ -329,6 +330,7 @@ def initialize() -> None:
             "collector_reconstructed": False,
             "collector_config_recovered": False,
             "quarantine_observed": False,
+            "collector_recovered": False,
             "protection_reconstructed": False,
             "cold_archive_recovered": False,
             "current_session": None,
@@ -347,7 +349,7 @@ def initialize() -> None:
             "drawing_context_attached", "drawing_context_preview_origin", "drawing_context_render_hash",
             "work_bundle_observed", "exchange_reconstructed",
             "collector_reconstructed", "collector_config_recovered",
-            "quarantine_observed", "protection_reconstructed",
+            "quarantine_observed", "collector_recovered", "protection_reconstructed",
             "cold_archive_recovered", "current_session", "current_data_observed",
             "sequencer_descriptor_observed", "sequencer_boundary_observed",
             "sequencer_signal_discriminated", "sequencer_calibration_recovered",
@@ -746,6 +748,11 @@ class Handler(BaseHTTPRequestHandler):
                     "template": "https://retained-archive.arwc.test/api/collectors/quarantine"
                 },
                 {
+                    "key": "archive.collector-recovery",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/collector-recoveries"
+                },
+                {
                     "key": "archive.collection-path",
                     "method": "POST",
                     "template": "https://retained-archive.arwc.test/api/collection-paths/current"
@@ -901,8 +908,18 @@ class Handler(BaseHTTPRequestHandler):
             state = load_state()
             state["quarantine_observed"] = True
             save_state(state)
+            # Include the Gitea reader token so the participant can fetch collector-crr.
+            gitea_token = ""
+            try:
+                gitea_state = json.loads(GITEA_STATE_PATH.read_text(encoding="utf-8"))
+                gitea_token = gitea_state.get("token", "")
+            except (OSError, json.JSONDecodeError):
+                pass
+            quarantine = dict(QUARANTINE)
+            if gitea_token:
+                quarantine["collector_access_token"] = gitea_token
             self.accepted(
-                "collection-quarantine-read", QUARANTINE, "corporate-reader-principal", 200,
+                "collection-quarantine-read", quarantine, "corporate-reader-principal", 200,
                 {"download": "/api/artifacts/QTN-COL-2019-12.aqtn",
                  "samples": "/api/artifacts/AQTN1-samples.json"},
             )
@@ -934,6 +951,8 @@ class Handler(BaseHTTPRequestHandler):
             self.helper(request)
         elif path == "/api/replay-exchange/current":
             self.reassemble_exchange(request)
+        elif path == "/api/collector-recoveries":
+            self.recover_collector(request)
         elif path == "/api/collectors/handover":
             self.reconstruct_collector(request)
         elif path == "/api/collection-artifacts/current":
@@ -1257,6 +1276,27 @@ class Handler(BaseHTTPRequestHandler):
             "replay-exchange-read", result, "corporate-reader-principal",
             extra={"collector": instruction},
         )
+
+    def recover_collector(self, request: dict[str, object]) -> None:
+        """W12.1: participant submits the recovered collector SHA256 to prove Gitea download.
+
+        Requires quarantine_observed (participant has read the quarantine object).
+        Validates that the submitted collector_sha256 matches the manifest.
+        """
+        state = load_state()
+        if not state.get("quarantine_observed"):
+            self.send_json(403, {"error": "quarantine object has not been located"})
+            return
+        manifest = json.loads((ARTIFACTS / "collector-manifest.json").read_text(encoding="utf-8"))
+        supplied_sha256 = request.get("collector_sha256", "")
+        if not hmac.compare_digest(str(supplied_sha256), manifest["collector_sha256"]):
+            self.send_json(409, {"error": "collector SHA256 does not match the quarantine manifest"})
+            return
+        state["collector_recovered"] = True
+        save_state(state)
+        result = dict(COLLECTOR)
+        result["sha256"] = manifest["collector_sha256"]
+        self.accepted("collector-recovered", result, "corporate-reader-principal")
 
     def reconstruct_collector(self, request: dict[str, object]) -> None:
         state = load_state()

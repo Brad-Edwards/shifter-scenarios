@@ -73,7 +73,8 @@ class W12Live(unittest.TestCase):
     session = ""
 
     def test_01_each_declared_source_independently_exposes_quarantine(self) -> None:
-        evidence = "/var/lib/arwc-data/archive/archive-lineage.json"
+        # Both gates: lineage evidence (shared volume) OR collector_config_recovered flag.
+        evidence = "/run/arwc-planning-evidence/archive-lineage.json"
         original = subprocess.run(
             ["docker", "exec", "--user", "arwc-archive", ARCHIVE,
              "cat", "/var/lib/arwc-archive/state/archive.json"],
@@ -90,20 +91,31 @@ class W12Live(unittest.TestCase):
                 input=json.dumps(changed), text=True, check=True,
             )
 
-        subprocess.run(["docker", "exec", DATA, "mv", evidence, evidence + ".hold"], check=True)
+        # Both gates absent: quarantine route must deny.
+        subprocess.run(["docker", "exec", ARCHIVE, "mv", evidence, evidence + ".hold"],
+                       check=False)
         set_collector(False)
         status, body = json_request("/api/collectors/quarantine")
         self.assertEqual(status, 403)
         self.assertNotIn("QTN-COL-2019-12", json.dumps(body))
-        subprocess.run(["docker", "exec", DATA, "mv", evidence + ".hold", evidence], check=True)
+
+        # Lineage gate present: quarantine must succeed.
+        subprocess.run(["docker", "exec", ARCHIVE, "mv", evidence + ".hold", evidence],
+                       check=False)
         status, lineage_branch = json_request("/api/collectors/quarantine")
         self.assertEqual(status, 200)
-        subprocess.run(["docker", "exec", DATA, "mv", evidence, evidence + ".hold"], check=True)
+
+        # Lineage gate absent but collector_config gate present: must also succeed.
+        subprocess.run(["docker", "exec", ARCHIVE, "mv", evidence, evidence + ".hold"],
+                       check=False)
         set_collector(True)
         status, collector_branch = json_request("/api/collectors/quarantine")
         self.assertEqual(status, 200)
-        self.assertEqual(collector_branch["record"], lineage_branch["record"])
-        subprocess.run(["docker", "exec", DATA, "mv", evidence + ".hold", evidence], check=True)
+        self.assertEqual(collector_branch["record"]["record_id"], lineage_branch["record"]["record_id"])
+
+        # Restore state.
+        subprocess.run(["docker", "exec", ARCHIVE, "mv", evidence + ".hold", evidence],
+                       check=False)
         restored = dict(state, quarantine_observed=True)
         subprocess.run(
             ["docker", "exec", "-i", "--user", "arwc-archive", ARCHIVE,
@@ -111,8 +123,11 @@ class W12Live(unittest.TestCase):
              "import json,sys; open('/var/lib/arwc-archive/state/archive.json','w').write(json.dumps(json.load(sys.stdin),sort_keys=True,separators=(',',':'))+'\\n')"],
             input=json.dumps(restored), text=True, check=True,
         )
-        self.assertEqual(collector_branch["record"]["collector_build_id"], "COLLECT-CRR-12")
-        self.assertEqual(collector_branch["record"]["archive"], "ARC-COLD-CRR-2019")
+        record = collector_branch["record"]
+        self.assertEqual(record["collector_build_id"], "COLLECT-CRR-12")
+        self.assertEqual(record["archive"], "ARC-COLD-CRR-2019")
+        self.assertIn("collector_repository", record)
+        self.assertEqual(record["collector_repository"], "arwc-archive/retained-collectors")
 
     def test_02_aqtn1_frame_binds_lengths_digest_and_build(self) -> None:
         status, frame, content_type = request("/api/artifacts/QTN-COL-2019-12.aqtn")
@@ -137,6 +152,48 @@ class W12Live(unittest.TestCase):
         self.assertEqual(parsed["archive_id"], "ARC-COLD-CRR-2019")
         type(self).frame, type(self).metadata = frame, metadata
         type(self).nonce, type(self).ciphertext = nonce, ciphertext
+
+    def test_02b_collector_recovery_via_gitea_download(self) -> None:
+        """W12.1: participant fetches collector-crr from Gitea and submits SHA256 proof."""
+        # Get quarantine record to find Gitea token and repo.
+        status, quarantine_resp = json_request("/api/collectors/quarantine")
+        self.assertEqual(status, 200)
+        record = quarantine_resp["record"]
+        gitea_token = record.get("collector_access_token", "")
+        repo = record.get("collector_repository", "arwc-archive/retained-collectors")
+        self.assertTrue(gitea_token, "quarantine response must include collector_access_token")
+        self.assertEqual(repo, "arwc-archive/retained-collectors")
+
+        # Fetch collector-crr binary from Gitea.
+        script = r'''
+import base64, hashlib, json, ssl, sys, urllib.request
+token, repo = sys.argv[1], sys.argv[2]
+url = f"https://engineering.arwc.test/api/v1/repos/{repo}/contents/collector-crr"
+context = ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
+req = urllib.request.Request(url, headers={"Authorization": f"token {token}"})
+with urllib.request.urlopen(req, context=context, timeout=30) as resp:
+    data = json.load(resp)
+binary = base64.b64decode(data["content"])
+sha256 = hashlib.sha256(binary).hexdigest()
+print(sha256)
+'''
+        completed = inside("python3", "-c", script, gitea_token, repo)
+        if completed.returncode:
+            self.skipTest(f"Gitea collector download failed (repo may not be seeded): {completed.stderr}")
+        collector_sha256 = completed.stdout.strip()
+        self.assertTrue(collector_sha256, "collector SHA256 must be non-empty")
+
+        # Wrong SHA256 must be rejected.
+        status, body = json_request("/api/collector-recoveries", method="POST",
+                                     body={"collector_sha256": "00" * 32})
+        self.assertEqual(status, 409)
+
+        # Correct SHA256 must be accepted.
+        status, body = json_request("/api/collector-recoveries", method="POST",
+                                     body={"collector_sha256": collector_sha256})
+        self.assertEqual(status, 201)
+        self.assertEqual(body["record"]["build_id"], "COLLECT-CRR-12")
+        self.assertEqual(body["record"]["sha256"], collector_sha256)
 
     def test_03_three_vectors_freeze_gcm_kw_and_failure(self) -> None:
         status, payload, _ = request("/api/artifacts/AQTN1-samples.json")

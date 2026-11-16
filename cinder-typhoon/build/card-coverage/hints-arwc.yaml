@@ -372,15 +372,21 @@ hints:
     - kind: client_route
       id: planning.asset-lineage
   W12.1:
-    h1: Begin with the quarantined collector, collection policy, and cold archive. Start from retained-archive.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as collector cryptography reconstruction and archive-to-current collection correlation. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Query the quarantine record named by the archive lead, recover the associated collector artifact, and confirm
-      its recorded build identity before beginning cryptographic analysis.
+    h1: Submit the lineage record from W11.3 to the planning.lineage-record route first. This unlocks
+      the archive.quarantine-collector route in retained-archive.arwc.test's client document.
+    h2: Download the QTN-COL-2019-12.aqtn artifact and parse its AQTN1 binary frame. The frame begins
+      with the AQTN1 magic and fixed-width length and digest fields. The build ID and a JSON metadata
+      header follow and identify the collector without requiring payload decryption.
+    h3: Use the Gitea repository and access token from the quarantine response to download collector-crr
+      via the Gitea API contents endpoint. Verify its SHA256 and submit it to archive.collector-recovery
+      to earn the completion audit.
     references:
     - kind: participant_service
       id: retained-archive.arwc.test
+    - kind: participant_service
+      id: planning-data.arwc.test
+    - kind: participant_service
+      id: engineering.arwc.test
   W12.2:
     h1: Begin with the quarantined collector, collection policy, and cold archive. Its published client document
       exposes the bundle collection policy operation, so use that ordinary contract instead of guessing a path.
