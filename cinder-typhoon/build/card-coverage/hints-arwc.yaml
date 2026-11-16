@@ -726,12 +726,15 @@ hints:
     - kind: gitea_repo
       id: clara.morivelle/retained-engineering-tools
   W19.2:
-    h1: Begin with the retained engineering diagnostic and signed decision records. Its published client document
-      exposes the signature record operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as binary behavior reconstruction and hidden validation-logic analysis. Build a local model from
-      the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Locate the signature record operation in the published client reference. Extract the supplied cases into
-      a small local reproducer and do not use its result until every reference case matches.
+    h1: The binary has two entry points. The alternate path uses mixed_mode_entry which pushes CS=0x23 (32-bit
+      compatibility segment) and executes RETFQ. Use objdump -M intel -d to find the far return and the .code32
+      section. The alternate test record WRAP-FFFFFFFF-OG2 is embedded in the binary (visible via strings).
+    h2: Implement the 32-bit decoder: value = (rotl32(value^byte, 5) + 0x9E3779B9) & 0xFFFFFFFF starting at
+      0x6D2B79F5. The 32-bit rotate is ((v<<5) | (v>>27)) & 0xFFFFFFFF. All wraps at 32 bits. The 64-bit
+      version without wraps produces a different value that the service rejects.
+    h3: POST https://process-view.arwc.test/api/signature-records/current/interpretation with CORPORATE Bearer:
+      {"record":"WRAP-FFFFFFFF-OG2","rolling32":"<8-hex-digits>"}. Correct result returns DIAG-TRACE-COMPAT-19
+      with execution=i386-compatibility and sets compatibility_reproduced=True for W19.3.
     references:
     - kind: client_route
       id: process.signature-record
