@@ -735,7 +735,7 @@ class Handler(BaseHTTPRequestHandler):
                 "viewer_sha256": hashlib.sha256(viewer).hexdigest(),
                 "program_sha256": hashlib.sha256(program).hexdigest(),
                 "package_sha256": hashlib.sha256(package).hexdigest(),
-                "ordinary_cases": metadata["cases"],
+                "ordinary_cases": [{"program_b64": c["program_b64"]} for c in metadata["cases"]],
             }
             self.accepted("sealed-viewer-read", record, extra={
                 "viewer_b64": base64.b64encode(viewer).decode(),
