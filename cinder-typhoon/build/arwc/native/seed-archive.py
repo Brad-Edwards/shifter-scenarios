@@ -327,8 +327,9 @@ def main() -> None:
             print(f"Wrote Gitea credentials to {gitea_out}")
         except OSError:
             print("ARCHIVE_GITEA_STATE_JSON=" + json.dumps(json.dumps(gitea_state)))
-        # Seed Gitea: W12.1 retained collector binary in a participant-accessible repo.
-        seed_gitea_collector()
+        # Note: W12.1 collector seeding (arwc-archive/retained-collectors) runs in manage.sh
+        # from the host after seed-archive completes, since the .operator directory is root-owned
+        # and inaccessible from the seed container.
     else:
         print("No Gitea credentials available; skipping Gitea handover setup")
 
@@ -436,71 +437,6 @@ def seed_gitea_handover(planner_password: str, oauth_state: str) -> dict:
         "file": GITEA_HANDOVER_FILE,
         "token": token_value,
     }
-
-
-def seed_gitea_collector() -> None:
-    """Create the W12.1 retained-collectors Gitea repo and upload collector-crr.
-
-    The repo is private (Gitea requires sign-in to view all repos), and the
-    archive service's existing reader token (arwc-archive-reader, scoped to
-    read:repository) grants participant-level access via the Gitea API.
-    The quarantine response tells the participant both the repo path and that
-    the archive-reader token is the access mechanism.
-    """
-    collector_path = Path("/operator/retained-tools/files/collection/collector-crr")
-    if not collector_path.exists():
-        print("W12.1: collector-crr not found in retained-tools; skipping collector Gitea seed")
-        return
-
-    collector_bytes = collector_path.read_bytes()
-    gitea_auth = "Basic " + base64.b64encode(f"{GITEA_ADMIN}:{GITEA_ADMIN_PASSWORD}".encode()).decode()
-    collector_repo = "retained-collectors"
-
-    def gitea(method: str, path: str, body: dict | None = None,
-              *, accepted: tuple = (200, 201), auth: str = gitea_auth) -> dict:
-        req = Request(f"{GITEA_URL}/api/v1/{path}", method=method,
-                      data=json.dumps(body).encode() if body is not None else None,
-                      headers={"Authorization": auth, "Content-Type": "application/json"})
-        try:
-            with urlopen(req, timeout=30) as resp:
-                return json.loads(resp.read()) if resp.length else {}
-        except HTTPError as error:
-            if error.code in accepted:
-                return json.loads(error.read()) if error.length else {}
-            raise RuntimeError(f"Gitea {method} /api/v1/{path} → HTTP {error.code}: {error.read()[:100]}") from None
-
-    # Create collector repo (private; participant uses the reader token).
-    try:
-        gitea("POST", f"org/{GITEA_ORG}/repos",
-              {"name": collector_repo, "private": True, "auto_init": True, "default_branch": "main"},
-              accepted=(201,))
-        print(f"Created Gitea repo: {GITEA_ORG}/{collector_repo}")
-    except RuntimeError:
-        print(f"Gitea repo already exists: {GITEA_ORG}/{collector_repo}")
-
-    # Upload collector-crr binary.
-    encoded = base64.b64encode(collector_bytes).decode()
-    file_path = f"repos/{GITEA_ORG}/{collector_repo}/contents/collector-crr"
-    try:
-        existing = gitea("GET", file_path)
-        sha = existing.get("sha", "")
-        gitea("PUT", file_path, {
-            "message": "Add retained collector artifact",
-            "content": encoded,
-            "sha": sha,
-            "branch": "main",
-        }, accepted=(200,))
-        print(f"Updated collector-crr in {GITEA_ORG}/{collector_repo}")
-    except RuntimeError:
-        gitea("POST", file_path, {
-            "message": "Add retained collector artifact",
-            "content": encoded,
-            "branch": "main",
-        }, accepted=(201,))
-        print(f"Uploaded collector-crr to {GITEA_ORG}/{collector_repo}")
-
-    collector_sha256 = hashlib.sha256(collector_bytes).hexdigest()
-    print(f"W12.1: collector-crr seeded in Gitea (sha256={collector_sha256[:16]}...)")
 
 
 if __name__ == "__main__":

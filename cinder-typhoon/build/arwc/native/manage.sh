@@ -345,6 +345,61 @@ SQL
         chmod 0644 "${golden_op}/archive-workflow/gitea-reader.json"
         echo "Wrote Gitea reader credentials to golden operator dir"
     fi
+    # Seed the W12.1 retained-collectors Gitea repo from the host (operator dir is root-owned,
+    # inaccessible from the seed container). Read the token from the already-written gitea-reader.json.
+    gitea_reader_json="${golden_op}/archive-workflow/gitea-reader.json"
+    if [ -f "${gitea_reader_json}" ]; then
+        gitea_token=$(python3 -c "import json; print(json.load(open('${gitea_reader_json}')).get('token',''))" 2>/dev/null || true)
+    else
+        gitea_token=""
+    fi
+    collector_path=".operator/retained-tools/files/collection/collector-crr"
+    if [ -n "${gitea_token}" ] && sudo test -f "${collector_path}" 2>/dev/null; then
+        gitea_ip=$(sudo docker inspect cinder-arwc-native-gitea-1 --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 2>/dev/null | head -1 || true)
+        gitea_api="http://${gitea_ip:-localhost}:3000/api/v1"
+        # Use admin basic auth for write operations (reader token is read-only).
+        # shellcheck disable=SC1091
+        source .operator/engineering-seed.env 2>/dev/null || true
+        gitea_admin_auth="engineering-admin:${GITEA_ADMIN_PASSWORD:-}"
+        tmpjson=$(mktemp /tmp/gitea-collector-XXXXXX.json)
+        # Create retained-collectors repo if needed (admin auth required).
+        curl -sf -X POST "${gitea_api}/org/arwc-archive/repos" \
+            -u "${gitea_admin_auth}" \
+            -H "Content-Type: application/json" \
+            -d '{"name":"retained-collectors","private":true,"auto_init":true,"default_branch":"main"}' \
+            -o /dev/null 2>/dev/null || true
+        # Check existing file SHA (reader token is sufficient).
+        existing_sha=$(curl -sf "${gitea_api}/repos/arwc-archive/retained-collectors/contents/collector-crr" \
+            -H "Authorization: token ${gitea_token}" | python3 -c "import sys,json; print(json.load(sys.stdin).get('sha',''))" 2>/dev/null || true)
+        sudo python3 - "${collector_path}" "${existing_sha}" "${tmpjson}" <<'PYEOF'
+import base64, json, sys
+path, sha, out = sys.argv[1:]
+content = base64.b64encode(open(path, "rb").read()).decode()
+body = {"message": "Add retained collector artifact", "content": content, "branch": "main"}
+if sha:
+    body["sha"] = sha
+    body["message"] = "Update retained collector artifact"
+json.dump(body, open(out, "w"))
+PYEOF
+        if [ -n "${existing_sha}" ]; then
+            curl -sf -X PUT "${gitea_api}/repos/arwc-archive/retained-collectors/contents/collector-crr" \
+                -u "${gitea_admin_auth}" \
+                -H "Content-Type: application/json" \
+                -d "@${tmpjson}" \
+                -o /dev/null
+            echo "W12.1: Updated collector-crr in Gitea arwc-archive/retained-collectors"
+        else
+            curl -sf -X POST "${gitea_api}/repos/arwc-archive/retained-collectors/contents/collector-crr" \
+                -u "${gitea_admin_auth}" \
+                -H "Content-Type: application/json" \
+                -d "@${tmpjson}" \
+                -o /dev/null
+            echo "W12.1: Uploaded collector-crr to Gitea arwc-archive/retained-collectors"
+        fi
+        rm -f "${tmpjson}"
+    else
+        echo "W12.1: Skipping Gitea collector seed (token=${#gitea_token} chars, collector exists=$(sudo test -f "${collector_path}" 2>/dev/null && echo yes || echo no))"
+    fi
     ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
