@@ -312,15 +312,22 @@ hints:
     - kind: client_route
       id: packages.inspections
   K08.1:
-    h1: Begin with the package entitlement records and versioned checking service. Its published client document
-      exposes the entitlement operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cryptographic context binding and legacy-versus-current validation behavior. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the entitlement operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: Navigate to fieldkest/connector-archive in Gitea using the developer credentials. The entitlement record
+      is at internal/fieldlink/legacy-diagnostics/CRR-OG2/ENT-ARWC-DIAG-0698.json. Read its commit history
+      to see the revision 3 → revision 4 progression and understand the entitlement's legacy context.
+    h2: The HKDF derivation context is in the K05.2 release record REL-FLK-6.9.8-ARCHIVE. Fetch it via the
+      packages.release route; its compatibility field has ikm_hex, salt_hex, info_utf8, aad_utf8, and key_id.
+      These are the context inputs needed by the checker.
+    h3: POST to packages.entitlement-check with checker=v1, the full entitlement JSON from Gitea, and the
+      context from the release record. The checker decrypts using HKDF-SHA256 + AES-256-GCM and returns
+      customer_id, feature_id, package_revision, expiry_policy, revision, and state=baseline-valid.
     references:
+    - kind: participant_service
+      id: source.keplerops.test
     - kind: client_route
-      id: packages.entitlement
+      id: packages.entitlement-check
+    - kind: client_route
+      id: packages.release
   K08.2:
     h1: Begin with the package entitlement records and versioned checking service. Its published client document
       exposes the entitlement check operation, so use that ordinary contract instead of guessing a path.
