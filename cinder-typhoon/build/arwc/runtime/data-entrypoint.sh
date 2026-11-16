@@ -73,12 +73,9 @@ INSERT INTO district_allocation_adjustment VALUES
   ('ADJ-CRR-DP3-17','Cairn Reach','ALLOC-2026-DP3',-1.00,'duplicate transfer TRN-DP3-118')
 ON CONFLICT (record_id) DO NOTHING;
 
-CREATE TABLE IF NOT EXISTS reconciliation_copy (
-  record_id text PRIMARY KEY,
-  revision integer NOT NULL,
-  source_record text NOT NULL,
-  database_identity text NOT NULL
-);
+-- reconciliation_copy and arwc_reconcile_copy removed from embedded Postgres:
+-- W07.3 uses the real SECURITY DEFINER function and table in corporate-db instead.
+-- The only valid invocation is via the native Metabase /api/dataset injection.
 
 CREATE TABLE IF NOT EXISTS allocation_ledger (
   record_id text PRIMARY KEY,
@@ -156,28 +153,10 @@ ALTER TABLE business_reserve_report ALTER COLUMN asset SET NOT NULL;
 ALTER TABLE business_reserve_report ALTER COLUMN unit SET NOT NULL;
 ALTER TABLE business_reserve_report ALTER COLUMN as_of SET NOT NULL;
 
-CREATE OR REPLACE FUNCTION arwc_reconcile_copy(requested text)
-RETURNS TABLE(record_id text, revision integer, source_record text, database_identity text)
-LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $$
-BEGIN
-  IF requested <> 'REC-CRR-DP3-17' THEN
-    RAISE EXCEPTION 'reconciliation record is not available';
-  END IF;
-  INSERT INTO reconciliation_copy VALUES
-    ('REC-CRR-DP3-17-COPY',1,'REC-CRR-DP3-17','svc-planner-query')
-  ON CONFLICT ON CONSTRAINT reconciliation_copy_pkey DO NOTHING;
-  RETURN QUERY
-    SELECT r.record_id, r.revision, r.source_record, r.database_identity
-    FROM reconciliation_copy AS r WHERE r.record_id='REC-CRR-DP3-17-COPY';
-END;
-$$;
-
-REVOKE ALL ON reserve_report_current, district_allocation_adjustment, reconciliation_copy,
+REVOKE ALL ON reserve_report_current, district_allocation_adjustment,
   allocation_ledger, settlement_tariff, meter_export, business_reserve_report FROM PUBLIC;
 GRANT SELECT ON reserve_report_current, district_allocation_adjustment,
   allocation_ledger, settlement_tariff, meter_export, business_reserve_report TO "svc-planner-query";
-REVOKE ALL ON FUNCTION arwc_reconcile_copy(text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION arwc_reconcile_copy(text) TO "svc-planner-query";
 SQL
 
 exec setpriv --reuid=arwc-data --regid=arwc-data --init-groups \

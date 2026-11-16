@@ -789,10 +789,10 @@ class Handler(BaseHTTPRequestHandler):
         if request is None:
             return
         if path == "/api/query-runs":
-            if "function" in request:
-                self.reconcile(request)
-            else:
-                self.query_report(request)
+            # W07.3: the canned reconcile gate is removed. arwc_reconcile_copy is only
+            # invokable via the real quoted-identifier injection through native Metabase
+            # /api/dataset against corporate-db under planning_reader.
+            self.query_report(request)
         elif path == "/api/integration-sessions":
             self.integration(request)
         elif path == "/api/relation-exchanges":
@@ -1129,32 +1129,9 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("archived-query-created", records[0], 201,
                           {"statement": statement, "row_count": 1})
 
-    def reconcile(self, request: dict[str, object]) -> None:
-        state = load_state()
-        if not state["adjustment_observed"]:
-            self.send_json(403, {"error": "allocation adjustment has not been observed"})
-            return
-        if request.get("function") != "arwc_reconcile_copy" or request.get("record_id") != "REC-CRR-DP3-17":
-            self.send_json(409, {"error": "reconciliation invocation is not accepted"})
-            return
-        try:
-            with database() as connection, connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM arwc_reconcile_copy(%s)", (request["record_id"],))
-                row = cursor.fetchone()
-        except psycopg2.Error:
-            self.send_json(409, {"error": "reconciliation function rejected the request"})
-            return
-        result = {
-            "record_id": row[0],
-            "revision": row[1],
-            "source_record": row[2],
-            "database_identity": row[3],
-            "execution_context": "SECURITY DEFINER",
-        }
-        atomic_json(ROOT / "results" / "REC-CRR-DP3-17-COPY.json", result)
-        state["reconciliation_copy_created"] = True
-        save_state(state)
-        self.accepted("archived-write-created", result, 201)
+    # reconcile() removed: the canned two-field gate against the embedded Postgres was
+    # a facade for W07.3. The only valid invocation of arwc_reconcile_copy is the real
+    # quoted-identifier injection through native Metabase /api/dataset against corporate-db.
 
 
 def main() -> None:
