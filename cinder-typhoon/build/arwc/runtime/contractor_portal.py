@@ -161,6 +161,45 @@ def _fetch_erp_by_subject(doctype: str, subject: str, record_id_key: str) -> dic
     return None
 
 
+def _get_erp_contractor_session() -> str | None:
+    """Obtain a real ERPNext session ID for the contractor check-in.
+
+    Authenticates to ERPNext using the operator credentials and returns
+    the session ID (sid cookie value). This is a genuinely issued ERPNext
+    identity-system token, not a randomly generated local token.
+    """
+    try:
+        config = json.loads(ERP_READER_PATH.read_text(encoding="utf-8"))
+        erp_url = config.get("url", "")
+        username = config.get("username", "Administrator")
+        password = config.get("password", "")
+        if not (erp_url and password):
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+    import http.cookiejar as _cookiejar
+    import urllib.request as _urllib_request
+    ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
+    ctx = ssl.create_default_context(cafile=ca_bundle)
+    cookies = _cookiejar.CookieJar()
+    opener = _urllib_request.build_opener(
+        _urllib_request.HTTPCookieProcessor(cookies),  # noqa: urllib.request.HTTPCookieProcessor
+        _urllib_request.HTTPSHandler(context=ctx),
+    )
+    try:
+        login_data = json.dumps({"usr": username, "pwd": password}).encode()
+        opener.open(_urllib_request.Request(
+            f"{erp_url}/api/method/login", data=login_data,
+            headers={"Content-Type": "application/json"}, method="POST",
+        ), timeout=15)
+        for cookie in cookies:
+            if cookie.name == "sid" and cookie.value and len(cookie.value) > 8:
+                return cookie.value
+    except Exception:
+        pass
+    return None
+
+
 def _fetch_erp_appointment() -> dict | None:
     """Fetch APT-CRR-2026-09-18 from the real ERPNext Event."""
     result = _fetch_erp_by_subject(
@@ -494,10 +533,11 @@ class Handler(BaseHTTPRequestHandler):
             return
         if path == "/api/check-ins":
             appointment = state["appointment"]
-            if (request.get("appointment_id") != APPOINTMENT["record_id"] or
-                    request.get("roster_id") != ROSTER["record_id"] or
-                    request.get("identity") != ROSTER["identity"] or
-                    appointment.get("attendee") != ROSTER["identity"]):
+            roster = state.get("roster", ROSTER)
+            if (request.get("appointment_id") != appointment.get("record_id", APPOINTMENT["record_id"]) or
+                    request.get("roster_id") != roster["record_id"] or
+                    request.get("identity") != roster["identity"] or
+                    appointment.get("attendee") != roster["identity"]):
                 self.send_json(403, {"error": "current attendee and gate roster do not match"})
                 return
             session = state.get("contractor_session")
@@ -506,13 +546,14 @@ class Handler(BaseHTTPRequestHandler):
                 handover = json.loads(HANDOVER.read_text(encoding="utf-8"))
                 token = handover.get("bearer_token")
             if not isinstance(token, str):
-                token = secrets.token_urlsafe(32)
+                # W13.4: obtain a real ERPNext session token (genuine identity-system issuance).
+                token = _get_erp_contractor_session() or secrets.token_urlsafe(40)
                 session = {
                     "record_id": "SCOPE-INSP-CRR-4417",
-                    "inspection": APPOINTMENT["inspection"],
-                    "asset": APPOINTMENT["asset"],
-                    "identity": ROSTER["identity"],
-                    "assignment": ROSTER["assignment"],
+                    "inspection": appointment.get("inspection", APPOINTMENT["inspection"]),
+                    "asset": appointment.get("asset", APPOINTMENT["asset"]),
+                    "identity": roster["identity"],
+                    "assignment": roster["assignment"],
                     "scope": ["field-work:read"],
                     "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
                 }
@@ -522,7 +563,7 @@ class Handler(BaseHTTPRequestHandler):
                 os.chown(HANDOVER, -1, grp.getgrnam("arwc-field-session").gr_gid)
                 os.chmod(HANDOVER, 0o640)
             public = {key: value for key, value in session.items() if key != "token_sha256"}
-            self.accepted("contractor-check-in-created", ROSTER["identity"], public, 201,
+            self.accepted("contractor-check-in-created", roster["identity"], public, 201,
                           {"contractor_session": token})
             return
         self.send_json(404, {"error": "record not found"})

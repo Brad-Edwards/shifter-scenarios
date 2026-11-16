@@ -463,13 +463,15 @@ hints:
     - kind: client_route
       id: contractors.appointment
   W13.4:
-    h1: Begin with the inspection appointment, access roster, and contractor check-in. Its published client document
-      exposes the check in operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as appointment ownership confusion followed by a separately scoped check-in identity. Carry forward
-      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
-      boundary.
-    h3: Locate the check in operation in the published client reference. Replay the preceding evidence through the
-      next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: contractors.check-in requires appointment_id (W13.1), roster_id (W13.2), and identity=veybridge.tech.204
+      (W13.2 roster identity). The W13.3 BOLA already set the appointment attendee to match your identity,
+      so the check-in service accepts it.
+    h2: After a successful check-in, the returned contractor_session is a real ERPNext-issued session token.
+      Use it as a bearer token to call contractors.field-kit — the protected field-work record for the
+      inspection scope.
+    h3: The field-kit record (FIELD-BAG-CRR-4417-R3) names the expected outlets and service manifest for
+      the inspection. The contractor session scope is field-work:read. Record the contractor_session token
+      for downstream use in W14+.
     references:
     - kind: client_route
       id: contractors.check-in

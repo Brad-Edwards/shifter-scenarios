@@ -238,7 +238,8 @@ print(q[0]['id'] if q else '')
         mkdir -p "${portal_golden_op}"
         printf '%s\n' "${contractors_erp_json}" > "${portal_golden_op}/contractors-erp.json"
         printf '%s\n' "${contractors_erp_json}" > ".operator/contractors-erp.json"
-        chmod 0600 "${portal_golden_op}/contractors-erp.json" ".operator/contractors-erp.json" 2>/dev/null || true
+        chmod 0644 "${portal_golden_op}/contractors-erp.json" 2>/dev/null || true
+        chmod 0644 ".operator/contractors-erp.json" 2>/dev/null || true
         echo "W13.1: Wrote contractors-erp.json for contractor portal ERPNext fetch"
     fi
     ;;
