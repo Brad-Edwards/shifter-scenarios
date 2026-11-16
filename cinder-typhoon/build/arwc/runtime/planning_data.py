@@ -835,7 +835,10 @@ class Handler(BaseHTTPRequestHandler):
             # the W11.1 query template to find ASC-CRR-4417.
             self.send_json(410, {"error": "relation-exchanges endpoint retired; use planning.relation-exchange route"})
         elif path == "/api/asset-lineage/current":
-            self.relation_exchange(request, lineage=True)
+            # W11.3 Bolt lineage facade removed. The asset lineage LIN-AST-CRR-017-R8
+            # is behind the SECURITY DEFINER get_asset_lineage() function in corporate-db.
+            # Reached via UNION injection calling the function with the W11.2 asset identity.
+            self.send_json(410, {"error": "asset-lineage endpoint retired; use the W11.2 injection surface with get_asset_lineage()"})
         elif path == "/api/reporting-submissions/current/result":
             self.w34_view(request)
         elif path == "/api/planning-bids":

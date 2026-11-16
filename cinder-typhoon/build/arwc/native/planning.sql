@@ -134,6 +134,43 @@ GRANT SELECT ON public.district_allocation_adjustment TO planning_reader;
 GRANT SELECT ON public.allocation_ledger TO planning_reader;
 -- W09.2: planning_reader reads meter_export via native Metabase question.
 GRANT SELECT ON public.meter_export TO planning_reader;
+-- W11.3: lineage_records table and SECURITY DEFINER function.
+-- The lineage is the SECOND real boundary (distinct from W11.2 UNION injection).
+-- planning_reader has EXECUTE on get_asset_lineage() but NOT SELECT on lineage_records.
+-- The participant reaches the lineage by calling the function via a UNION injection
+-- that extends the W11.2 injection surface to invoke the SECURITY DEFINER.
+CREATE TABLE IF NOT EXISTS public.lineage_records (
+  record_id text PRIMARY KEY,
+  revision integer NOT NULL,
+  asset text NOT NULL,
+  legacy text NOT NULL,
+  outlet_group text NOT NULL,
+  archive text NOT NULL
+);
+INSERT INTO public.lineage_records VALUES
+  ('LIN-AST-CRR-017-R8', 8, 'AST-CRR-017', 'CRR-OG-LEGACY-2', 'OG-CRR-02', 'ARC-COLD-CRR-2019')
+ON CONFLICT (record_id) DO NOTHING;
+-- Function returns same 5-column shape as relation_responses/work_order_summary for UNION.
+-- SECURITY DEFINER: runs as corporate owner, can read lineage_records even though
+-- planning_reader has no direct SELECT on that table.
+CREATE OR REPLACE FUNCTION public.get_asset_lineage(asset_id text)
+RETURNS TABLE(name text, revision integer, relation text, asset text, work_order text)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS
+$func$
+DECLARE
+  v_asset text := asset_id;
+BEGIN
+  RETURN QUERY
+    SELECT lr.record_id, lr.revision,
+           (lr.legacy || '→' || lr.outlet_group || '→' || lr.asset || '→' || lr.archive)::text AS relation,
+           lr.asset, lr.archive AS work_order
+    FROM public.lineage_records AS lr
+    WHERE lr.asset = v_asset;
+END;
+$func$;
+REVOKE ALL ON public.lineage_records FROM PUBLIC;
+REVOKE ALL ON public.lineage_records FROM planning_reader;
+GRANT EXECUTE ON FUNCTION public.get_asset_lineage(text) TO planning_reader;
 -- W11.2: relation backend tables for the Metabase SQL injection exchange.
 -- work_order_summary: the ordinary accessible view for the {{relation_type}} query template.
 -- relation_responses: the protected table that an ordinary query cannot reach (needs UNION injection).
