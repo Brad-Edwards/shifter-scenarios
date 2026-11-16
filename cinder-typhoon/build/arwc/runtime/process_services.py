@@ -771,6 +771,13 @@ class Handler(BaseHTTPRequestHandler):
             result = json.loads(evidence_path.read_text(encoding="utf-8"))
             self.accepted("maintenance-record-read", result)
             return
+        # W23/W24/W25/W26: diagnostic GET routes — proxy to a-diagnostics.
+        if ROLE == "engineering" and path in {
+            "/api/signature-requests",
+            "/api/vault-records/current",
+        }:
+            self.historian_proxy("GET", path, None)
+            return
         self.send_json(404, {"error": "record not found"})
 
     def owner_post(self, path: str, request: dict[str, object]) -> None:
@@ -810,6 +817,19 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "instruments" and path == "/api/maintenance-records/current":
             self.w20_post(path, request, state)
+            return
+        # W23/W24/W25/W26: diagnostic service routes — proxy to a-diagnostics.
+        # Participant uses CORPORATE session; engineering workbench forwards with
+        # X-ARWC-Internal: historian-r21 so the diagnostics service can validate.
+        if ROLE == "engineering" and path in {
+            "/api/control-commands", "/api/control-commands/consequence",
+            "/api/estimator-tasks/current", "/api/estimator-runs",
+            "/api/estimator-results/current", "/api/estimator-tasks/current/inputs",
+            "/api/signature-oracles/current", "/api/diagnostic-runs",
+            "/api/signature-records/current", "/api/vault-records/current",
+            "/api/reporting-submissions",
+        }:
+            self.historian_proxy("POST", path, request)
             return
         self.send_json(404, {"error": "record not found"})
 

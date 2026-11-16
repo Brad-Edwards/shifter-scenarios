@@ -517,6 +517,28 @@ VALUES ('EVT-COMM-OG2-114', 'high', '2026-11-13 09:28:14+00', '2026-11-13 09:29:
     docker network connect --ip 10.77.60.56 --alias independent-instruments.arwc.test \
       cinder-arwc-corporate cinder-arwc-instruments 2>/dev/null || true
     echo "a-instruments (independent-instruments.arwc.test) started at 10.77.60.56"
+    # Start the diagnostics service (a-diagnostics) for W23+ estimator vulnerability chain.
+    # Proxied by a-engineering (process-view.arwc.test) via X-ARWC-Internal: historian-r21.
+    docker volume create cinder-arwc-diagnostics-data 2>/dev/null || true
+    docker stop cinder-arwc-diagnostics 2>/dev/null; docker rm cinder-arwc-diagnostics 2>/dev/null || true
+    docker run -d \
+      --name cinder-arwc-diagnostics \
+      --network cinder-arwc-engineering --ip 10.77.63.50 \
+      --hostname diagnostic-services --domainname arwc.test --dns 10.77.60.10 \
+      -e ARWC_SERVICE_USER=arwc-diagnostics \
+      -e ARWC_STATE_ROOT=/var/lib/arwc-diagnostics \
+      --restart unless-stopped --read-only \
+      --security-opt no-new-privileges:true \
+      --cap-drop ALL --cap-add SETUID --cap-add SETGID --cap-add CHOWN \
+      --cap-add FOWNER --cap-add DAC_OVERRIDE \
+      --tmpfs /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777 \
+      --tmpfs /run:rw,nosuid,nodev,size=8m,mode=0755 \
+      -v cinder-arwc-diagnostics-data:/var/lib/arwc-diagnostics \
+      -v "${golden_op}/tls/server.crt:/run/arwc-tls/server.crt:ro" \
+      -v "${golden_op}/tls/server.key:/run/arwc-tls/server.key:ro" \
+      -v "${golden_op}/tls/ca.crt:/run/arwc-tls/ca.crt:ro" \
+      "${DIAGNOSTIC_IMAGE:-cinder-arwc/a-diagnostics:hand-build}"
+    echo "a-diagnostics (diagnostic-services at 10.77.63.50) started on cinder-arwc-engineering"
     ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
