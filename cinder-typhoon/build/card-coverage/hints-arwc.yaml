@@ -752,15 +752,18 @@ hints:
     - kind: client_route
       id: process.signature-program
   W19.4:
-    h1: Begin with the retained engineering diagnostic and signed decision records. Its published client document
-      exposes the diagnostic program operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as binary behavior reconstruction and hidden validation-logic analysis. Carry forward only earned
-      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Locate the diagnostic program operation in the published client reference. Replay the preceding evidence
-      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: Use the process.diagnostic-program-legacy route from the engineering workbench client document
+      (/.well-known/arwc-client). POST https://process-view.arwc.test/api/diagnostic-programs/legacy with
+      CORPORATE Bearer. Gates on hidden_check_recovered (W19.3). Supplies W19.MAP.
+    h2: Compute comparison_digest: SHA256 of the mapping JSON (sorted keys) with legacy_project=CRR-CTRL-R19,
+      current_project=CRR-CTRL-R21, instruments={OUTLET_A:FIT-CRR-204A,OUTLET_B:FIT-CRR-204B},
+      legacy_identifiers={OUTLET_A:OG-CRR-02/GT-CRR-02A,OUTLET_B:OG-CRR-02/GT-CRR-02B}. Not in any file.
+    h3: Submit {"migration_record":"MIG-OG2-R19-R21","comparison_digest":"<sha256>","observation":
+      "EVT-COMM-OG2-114"} where EVT-COMM-OG2-114 is from the qualifying commissioning history. Returns
+      MAP-OG2-LEGACY-R21 historical=true current_project=CRR-CTRL-R21. Do not replace the running revision.
     references:
     - kind: client_route
-      id: process.diagnostic-program
+      id: process.diagnostic-program-legacy
   W20.1:
     h1: Begin with the retained device image and maintenance-record interface. Its published client document exposes
       the firmware image operation, so use that ordinary contract instead of guessing a path.
