@@ -69,6 +69,7 @@ INITIAL["engineering"].update({
     "replay_condition_recovered": False, "replay_witness_response": None,
     "false_estimate_observed": False, "controlled_allocation_committed": False,
     "sufficient_estimate_verified": False,
+    "envelope_observed": False,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
@@ -612,6 +613,11 @@ class Handler(BaseHTTPRequestHandler):
         "key": "process.estimator-sufficiency",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-sufficiency/current"
+    },
+    {
+        "key": "process.operating-envelope",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/process-estimator/current"
     }
 ]
         for r in routes:
@@ -857,6 +863,42 @@ class Handler(BaseHTTPRequestHandler):
             "/api/reporting-submissions",
         }:
             self.historian_proxy("POST", path, request)
+            return
+        # W25.1: Operating envelope reconciliation.
+        # Participant submits values read from FUXA, OpenPLC, and OT historian.
+        # Service validates against fixed CRR-OP-W25-R1 envelope (read-only observation).
+        if ROLE == "engineering" and path == "/api/process-estimator/current":
+            expected = {
+                "record_id": "CRR-OP-W25-R1",
+                "manual_position_min": 0, "manual_position_max": 100, "manual_position_unit": "percent",
+                "automatic_flow_min": 0.0, "automatic_flow_max": 1.0, "automatic_flow_unit": "m3/s",
+                "physical_capacity_per_outlet_max": 0.5, "physical_capacity_unit": "m3/s",
+                "baseline_a": 20, "baseline_b": 20,
+                "observation_a": 30, "observation_b": 10,
+                "restoration_a": 20, "restoration_b": 20,
+                "mode": "manual",
+            }
+            if request != expected:
+                self.send_json(409, {"error": "operating envelope reconciliation rejected"}); return
+            state["envelope_observed"] = True; save_state(state)
+            result = {
+                "record_id": "W25-ENVELOPE-CRR-R1", "revision": 1,
+                "source": "CRR-OP-W25-R1",
+                "installed_limits": {
+                    "manual_position_pct": {"min": 0, "max": 100},
+                    "automatic_flow_m3s": {"min": 0.0, "max": 1.0},
+                    "physical_capacity_m3s_per_outlet": 0.5,
+                },
+                "authorized_movement": {
+                    "baseline": {"outlet_a_pct": 20, "outlet_b_pct": 20},
+                    "observation": {"outlet_a_pct": 30, "outlet_b_pct": 10},
+                    "restoration": {"outlet_a_pct": 20, "outlet_b_pct": 20},
+                    "mode": "manual",
+                },
+                "total_flow_m3s": 0.20,
+            }
+            atomic_json(EVIDENCE / "engineering" / "process-envelope.json", result)
+            self.accepted("envelope-observed", result, 201)
             return
         # W23.3: sufficiency verification — reads real PostgreSQL and real binary output.
         # Gated on W23.2 controlled_allocation_committed=True.

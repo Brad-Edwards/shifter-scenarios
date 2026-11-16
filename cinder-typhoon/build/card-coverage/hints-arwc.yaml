@@ -978,12 +978,18 @@ hints:
     - kind: participant_service
       id: process-view.arwc.test
   W25.1:
-    h1: Start with the CRR-OP-W25-R1 document. Reconcile the narrower authorized movement with the manual-position and automatic-flow
-      limits shown by FUXA and the supplied OpenPLC project before touching a control.
-    h2: Keep the installed limits, outlet capacity, normal A20/B20 baseline, A30/B10 observation target, and A20/B20 restoration separate in the comparison.
-      The job instruction does not replace the live product views.
-    h3: Record the exact asset, mode, baseline, observation target, restoration target, and per-outlet capacity.
-      This card establishes the envelope only and needs no request or movement.
+    h1: Read operating-envelope.csv (at /home/fieldlink/CairnReach/Briefs/W25/). It has CRR-OP-W25-R1 with
+      installed controller limits (manual 0-100%, auto 0-1.0 m3/s), physical capacity (0.5 m3/s per outlet),
+      and the authorized movement (baseline A20/B20, observation A30/B10, restoration A20/B20, mode=manual).
+      Confirm limits in FUXA Site controls view and the OpenPLC SiteRequests-and-OutletControl project.
+    h2: Verify via real OT historian: SELECT variable, value FROM ot_history.process_samples to confirm
+      PositionPct=20% (outlet A) and PositionBPct=20% (outlet B) at baseline. Physical capacity 0.5 m3/s
+      per outlet is from the OPC UA tag catalog (FlowM3s range [0,0.5]). Total flow 0.20 m3/s at baseline.
+    h3: Submit POST https://process-view.arwc.test/api/process-estimator/current with CORPORATE Bearer and
+      body {record_id:CRR-OP-W25-R1, manual_position_min:0, manual_position_max:100,
+      manual_position_unit:percent, automatic_flow_min:0.0, automatic_flow_max:1.0, automatic_flow_unit:m3/s,
+      physical_capacity_per_outlet_max:0.5, physical_capacity_unit:m3/s, baseline_a:20, baseline_b:20,
+      observation_a:30, observation_b:10, restoration_a:20, restoration_b:20, mode:manual}.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W25/operating-envelope.csv
