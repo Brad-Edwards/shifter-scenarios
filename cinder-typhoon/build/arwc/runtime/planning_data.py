@@ -693,8 +693,8 @@ class Handler(BaseHTTPRequestHandler):
                 },
                 {
                     "key": "planning.relation-exchange",
-                    "method": "POST",
-                    "template": "https://planning-data.arwc.test/api/relation-exchanges"
+                    "method": "GET",
+                    "template": "https://suppliers.arwc.test/api/resource/Task"
                 },
                 {
                     "key": "planning.asset-lineage",
@@ -830,7 +830,10 @@ class Handler(BaseHTTPRequestHandler):
         elif path == "/api/integration-sessions":
             self.integration(request)
         elif path == "/api/relation-exchanges":
-            self.relation_exchange(request, lineage=False)
+            # W11.2 Bolt facade removed. Use planning.relation-exchange route
+            # (suppliers.arwc.test/api/resource/Task) with Jules credentials and
+            # the W11.1 query template to find ASC-CRR-4417.
+            self.send_json(410, {"error": "relation-exchanges endpoint retired; use planning.relation-exchange route"})
         elif path == "/api/asset-lineage/current":
             self.relation_exchange(request, lineage=True)
         elif path == "/api/reporting-submissions/current/result":
