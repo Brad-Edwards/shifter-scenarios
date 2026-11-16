@@ -779,12 +779,15 @@ hints:
     - kind: client_route
       id: process.firmware-image
   W20.2:
-    h1: Begin with the retained device image and maintenance-record interface. Its published client document exposes
-      the maintenance record operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as firmware record parsing, integrity validation, and minimal state-preserving update. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the maintenance record operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The W20.1 record has status=REVIEW. To promote it to ACCEPTED, write a new record at offset 128
+      (the next erased slot, all 0xFF). NOR flash programming changes only 1→0, so writing to an erased
+      slot is always valid. New record: sequence=119, status=0x02 (ACCEPTED), same asset/date as original.
+    h2: Build the 64-byte record: magic=F204, seq=119 (uint32 LE), payload_len=40 (uint16 LE), status=0x02,
+      status_bits=0x01, payload at bytes 12-51, CRC32C of bytes 0-55 at bytes 56-59, 0xFFFFFF at 60-62,
+      commit=0x00 at byte 63. Split: 3 operations at offsets 128 (56 bytes), 184 (4 bytes), 191 (1 byte).
+    h3: POST https://independent-instruments.arwc.test/api/maintenance-records/current with CORPORATE Bearer:
+      {"operations":[{kind,offset,data_b64}x3],"image_b64":"<modified_8192_bytes>"}. Service validates NOR
+      semantics, confirms seq=119 status=ACCEPTED. Returns updated record. Sets image_rewrite_accepted=True.
     references:
     - kind: client_route
       id: process.maintenance-record
