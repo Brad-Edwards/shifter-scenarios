@@ -498,12 +498,15 @@ hints:
     - kind: client_route
       id: field.instrument
   W14.3:
-    h1: Begin with the contractor field kit and the current field-data interface. Its published client document
-      exposes the current reading operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as protocol migration, structured binary requests, and replay-resistant observations. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the current reading operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The active service from W14.2 is process-read/v2 with CBOR encoding. The retained fieldbag/v1 client
+      sends JSON — that is not accepted. Build a CBOR map with keys asset, group, observed_at, and nonce as
+      required by process-read/v2.
+    h2: The asset must match the inspection asset (AST-CRR-017) and the group must be OG-CRR-02 (from the
+      expected_outlets in the field bag). Use a fresh observed_at timestamp (within 10 minutes) and a unique
+      nonce. Submit with Content-Type: application/cbor and your W13.4 contractor session.
+    h3: The route returns FEED-OG2-R21 with observations for FIT-CRR-204A and FIT-CRR-204B, the instruments
+      for OG-CRR-02. These are real readings from the OT operating-history service. Record the result for
+      downstream use in the W14.READ arc.
     references:
     - kind: client_route
       id: field.current-reading

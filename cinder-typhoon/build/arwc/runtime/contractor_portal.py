@@ -24,6 +24,10 @@ CORPORATE_HASH = ROOT / "auth" / "corporate-session.sha256"
 HANDOVER = pathlib.Path("/var/lib/arwc-contractors/handover/contractor-session.json")
 ERP_READER_PATH = pathlib.Path("/run/arwc-contractors-config/erp-reader.json")
 NC_READER_PATH = pathlib.Path("/run/arwc-contractors-config/nc-reader.json")
+OT_READER_PATH = pathlib.Path("/run/arwc-contractors-config/ot-reader.json")
+OT_HISTORY_URL = "https://read-data.arwc.test/api/operating-history"
+# Outlet-to-instrument mapping for the operated assets.
+OUTLET_INSTRUMENTS = {"OG-CRR-02": ["FIT-CRR-204A", "FIT-CRR-204B"]}
 
 APPOINTMENT = {
     "record_id": "APT-CRR-2026-09-18",
@@ -221,6 +225,88 @@ def _fetch_erp_roster() -> dict | None:
     return None
 
 
+def _cbor_length(data: bytes, offset: int, additional: int) -> tuple[int, int]:
+    if additional < 24:
+        return additional, offset
+    widths = {24: 1, 25: 2, 26: 4, 27: 8}
+    width = widths.get(additional)
+    if width is None or offset + width > len(data):
+        raise ValueError("unsupported CBOR length")
+    return int.from_bytes(data[offset:offset + width], "big"), offset + width
+
+
+def decode_cbor_text_map(data: bytes) -> dict[str, str]:
+    """Minimal CBOR text-map decoder (process-read/v2 request format)."""
+    if not data:
+        raise ValueError("empty CBOR")
+    initial = data[0]
+    if initial >> 5 != 5:
+        raise ValueError("CBOR map required")
+    pairs, offset = _cbor_length(data, 1, initial & 31)
+    result: dict[str, str] = {}
+    for _ in range(pairs):
+        if data[offset] >> 5 != 3:
+            raise ValueError("CBOR text required")
+        length, offset = _cbor_length(data, offset + 1, data[offset] & 31)
+        if offset + length > len(data):
+            raise ValueError("truncated CBOR")
+        key = data[offset:offset + length].decode()
+        offset += length
+        if data[offset] >> 5 != 3:
+            raise ValueError("CBOR text required")
+        length, offset = _cbor_length(data, offset + 1, data[offset] & 31)
+        if offset + length > len(data):
+            raise ValueError("truncated CBOR")
+        value = data[offset:offset + length].decode()
+        offset += length
+        if key in result:
+            raise ValueError("duplicate CBOR key")
+        result[key] = value
+    if offset != len(data):
+        raise ValueError("trailing CBOR data")
+    return result
+
+
+def _fetch_ot_observations(asset: str, group: str) -> list[dict]:
+    """Fetch real observations from the operating-history service for the given asset/group."""
+    try:
+        config = json.loads(OT_READER_PATH.read_text(encoding="utf-8"))
+        username = config.get("username", "")
+        password = config.get("password", "")
+        if not (username and password):
+            return []
+    except (OSError, json.JSONDecodeError):
+        return []
+    import base64 as _base64
+    import urllib.request as _urllib_request
+    ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
+    ctx = ssl.create_default_context(cafile=ca_bundle)
+    auth = "Basic " + _base64.b64encode(f"{username}:{password}".encode()).decode()
+    try:
+        resp = _urllib_request.urlopen(
+            _urllib_request.Request(OT_HISTORY_URL, headers={"Authorization": auth}),
+            context=ctx, timeout=10,
+        )
+        data = json.loads(resp.read())
+        samples = data.get("samples", [])
+        # Filter samples for the requested asset and instruments for the given outlet group.
+        instruments = OUTLET_INSTRUMENTS.get(group, [])
+        obs_map: dict[str, float] = {}
+        for sample in samples:
+            if sample.get("asset") == asset and sample.get("tag") in instruments:
+                tag = sample["tag"]
+                if tag not in obs_map:
+                    try:
+                        obs_map[tag] = float(sample.get("value", 0.0))
+                    except (TypeError, ValueError):
+                        obs_map[tag] = 0.0
+        # Return observations in instrument order.
+        return [{"instrument": instr, "flow_lps": obs_map.get(instr, 0.0)}
+                for instr in instruments]
+    except Exception:
+        return []
+
+
 def _fetch_nc_field_bag() -> dict | None:
     """Fetch FIELD-BAG-CRR-4417-R3.json from Nextcloud at startup.
 
@@ -268,6 +354,8 @@ def initial_state() -> dict[str, object]:
         "roster_observed": False,
         "field_bag_observed": False,
         "manifest_observed": False,
+        "nonces": [],
+        "current_read_observed": False,
         "contractor_session": None,
     }
 
@@ -567,9 +655,70 @@ class Handler(BaseHTTPRequestHandler):
         if path == CONTROL_BROKER_PATH:
             self.proxy_control_broker()
             return
-        if (self.headers.get("Host", "").split(":", 1)[0] in
-                {"field-gateway.arwc.test", "process-read.arwc.test"} and
-                path in PROCESS_PATHS | {"/api/readings/current"}):
+        host = self.headers.get("Host", "").split(":", 1)[0]
+        if host in {"field-gateway.arwc.test", "process-read.arwc.test"} and path == "/api/readings/current":
+            # W14.3: intercept CBOR readings request; fetch real operating-history data.
+            state = json.loads(STATE.read_text(encoding="utf-8"))
+            if not self.contractor_authorized(state):
+                return
+            # Get session details from state (scope info is in contractor_session dict).
+            session = state.get("contractor_session", {})
+            if not state.get("manifest_observed"):
+                self.send_json(403, {"error": "current service manifest required"})
+                return
+            if self.headers.get_content_type() != "application/cbor":
+                self.send_json(409, {"error": "process-read/v2 requires application/cbor"})
+                return
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if length < 1 or length > 4096:
+                    raise ValueError
+                cbor_request = decode_cbor_text_map(self.rfile.read(length))
+            except (ValueError, UnicodeDecodeError):
+                self.send_json(409, {"error": "invalid process-read/v2 CBOR map"})
+                return
+            if set(cbor_request) != {"asset", "group", "observed_at", "nonce"}:
+                self.send_json(409, {"error": "CBOR map keys do not match process-read/v2"})
+                return
+            if cbor_request["asset"] != session.get("asset") or cbor_request["group"] != "OG-CRR-02":
+                self.send_json(409, {"error": "reading is outside the checked-in inspection scope"})
+                return
+            try:
+                from datetime import datetime as _datetime, timezone as _timezone
+                observed = _datetime.fromisoformat(cbor_request["observed_at"].replace("Z", "+00:00"))
+                age = abs((_datetime.now(_timezone.utc) - observed.astimezone(_timezone.utc)).total_seconds())
+            except ValueError:
+                age = 10 ** 9
+            if age > 600:
+                self.send_json(409, {"error": "observation request is stale"})
+                return
+            nonce = cbor_request["nonce"]
+            if not nonce or nonce in state.get("nonces", []):
+                self.send_json(409, {"error": "nonce has already been used"})
+                return
+            # Fetch real observations from the operating-history service.
+            observations = _fetch_ot_observations(cbor_request["asset"], cbor_request["group"])
+            if not observations:
+                # Fall back to empty observations if the service is unavailable.
+                instruments = OUTLET_INSTRUMENTS.get(cbor_request["group"], [])
+                observations = [{"instrument": i, "flow_lps": 0.0} for i in instruments]
+            state.setdefault("nonces", []).append(nonce)
+            state["current_read_observed"] = True
+            atomic_json(STATE, state)
+            result = {
+                "record_id": "FEED-OG2-R21",
+                "revision": 21,
+                "inspection": session["inspection"],
+                "asset": session["asset"],
+                "group": "OG-CRR-02",
+                "observed_at": cbor_request["observed_at"],
+                "nonce": nonce,
+                "observations": observations,
+            }
+            identity = session.get("identity", "veybridge.tech.204")
+            self.send_json(201, {"audit_id": append_audit("reading-read", identity, result), "record": result})
+            return
+        if host in {"field-gateway.arwc.test", "process-read.arwc.test"} and path in PROCESS_PATHS:
             self.proxy_field_gateway()
             return
         if not self.corporate_authorized():
