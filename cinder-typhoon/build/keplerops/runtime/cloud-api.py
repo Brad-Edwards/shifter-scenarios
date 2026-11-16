@@ -105,6 +105,12 @@ class CloudApiHandler(KeplerHandler):
             export_id = path.removeprefix("/api/data/exports/")
             self._export_credentials(export_id)
             return
+        # /api/exports/{id}: K15.1 — authenticated by export SA token.
+        # Reads the real K3s Job spec for the export job and returns job summary.
+        if path.startswith("/api/exports/"):
+            export_id = path.removeprefix("/api/exports/")
+            self._export_job_summary(export_id)
+            return
         if not self._developer():
             self.send_json(401, {"error": "authentication_required"})
             return
@@ -244,6 +250,54 @@ class CloudApiHandler(KeplerHandler):
             "status": 201,
         })
         self.send_json(201, result)
+
+    def _export_job_summary(self, export_id: str) -> None:
+        """K15.1: read the real K3s Job spec for the export job.
+
+        The export job exp-2841 is a real K3s batch/v1 Job in the fieldlink namespace.
+        It contains the dataset name, revision, and state in its container env vars.
+        RBAC: svc-fieldlink-export can read this specific Job; svc-fieldlink-workload cannot.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        job_name = export_id.lower()
+        status, data = _k3s_request(
+            "GET",
+            f"/apis/batch/v1/namespaces/{NAMESPACE}/jobs/{job_name}",
+            bearer=sa_token,
+        )
+        if status == 200:
+            # Extract job summary from K3s Job spec env vars
+            containers = data.get("spec", {}).get("template", {}).get("spec", {}).get("containers", [])
+            env_map = {}
+            for container in containers:
+                for env in container.get("env", []):
+                    env_map[env["name"]] = env["value"]
+            labels = data.get("metadata", {}).get("labels", {})
+            result = {
+                "schema": "fieldkest.export-job/v1",
+                "export_id": env_map.get("EXPORT_ID", export_id.upper()),
+                "case_id": env_map.get("CASE_ID") or labels.get("fieldkest.io/case-id"),
+                "dataset": env_map.get("DATASET"),
+                "revision": int(env_map.get("REVISION", 0)),
+                "state": env_map.get("STATE", "unpublished"),
+                "destination": env_map.get("DESTINATION"),
+                "job_name": data["metadata"]["name"],
+            }
+            append_audit(AUDIT, "export-jobs", {
+                "request_id": self.request_id, "export_id": result["export_id"],
+                "dataset": result["dataset"], "revision": result["revision"], "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "export_job_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
 
     def _export_credentials(self, export_id: str) -> None:
         """K14.3: provide SeaweedFS export credentials after validating the K14.2 SA token.

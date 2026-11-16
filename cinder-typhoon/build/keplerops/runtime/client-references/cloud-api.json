@@ -23,6 +23,11 @@
           "template": "https://cloud-api.keplerops.test/api/build-records/{build_id}"
         },
         {
+          "key": "data.export",
+          "method": "GET",
+          "template": "https://cloud-api.keplerops.test/api/exports/{export_id}"
+        },
+        {
           "key": "cloud.trust-record",
           "method": "GET",
           "template": "https://cloud-api.keplerops.test/api/trust-records/{trust_id}"

@@ -224,3 +224,63 @@ roleRef:
   kind: Role
   name: export-role-reader
   apiGroup: rbac.authorization.k8s.io
+---
+# K15.1: real K3s export Job for EXP-2841.
+# Support started this export job for the unresolved CAS-MAYA-2841 customer case.
+# The participant reads this real K3s Job spec to discover the dataset and revision.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: exp-2841
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: export-job
+    fieldkest.io/export-id: EXP-2841
+    fieldkest.io/case-id: CAS-MAYA-2841
+spec:
+  template:
+    spec:
+      containers:
+      - name: exporter
+        image: busybox:latest
+        env:
+        - name: EXPORT_ID
+          value: "EXP-2841"
+        - name: CASE_ID
+          value: "CAS-MAYA-2841"
+        - name: DATASET
+          value: "support-case-history"
+        - name: REVISION
+          value: "6"
+        - name: STATE
+          value: "unpublished"
+        - name: DESTINATION
+          value: "fieldkest-exports"
+      restartPolicy: Never
+  backoffLimit: 0
+---
+# K15.1 Role: svc-fieldlink-export can read Jobs in fieldlink namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: export-job-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: [batch]
+    resources: [jobs]
+    verbs: [get]
+    resourceNames: [exp-2841]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: export-job-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: export-job-reader
+  apiGroup: rbac.authorization.k8s.io
