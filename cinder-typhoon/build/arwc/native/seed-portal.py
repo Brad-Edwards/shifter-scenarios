@@ -109,8 +109,12 @@ def seed() -> None:
             },
             "service_manifest": {
                 "record_id": "FIELD-SERVICES-R21",
-                "legacy_endpoint": "field-read-legacy.arwc.test",
-                "current_endpoint": "process-read.arwc.test",
+                "revision": 21,
+                "services": [
+                    {"host": "field-read-legacy.arwc.test", "protocol": "fieldbag/v1", "status": "retired"},
+                    {"host": "process-read.arwc.test", "protocol": "process-read/v2", "status": "active",
+                     "encoding": "application/cbor", "authentication": "inspection-scoped"},
+                ],
             },
         }, sort_keys=True, indent=2).encode("utf-8")
         # Ensure the contractor workspace folder exists (admin's space).

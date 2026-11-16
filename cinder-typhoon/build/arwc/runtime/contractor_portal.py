@@ -267,6 +267,7 @@ def initial_state() -> dict[str, object]:
         "appointment_observed": False,
         "roster_observed": False,
         "field_bag_observed": False,
+        "manifest_observed": False,
         "contractor_session": None,
     }
 
@@ -288,6 +289,9 @@ def initialize() -> None:
         nc_field_bag = _fetch_nc_field_bag()
         if nc_field_bag and state.get("field_bag") != nc_field_bag:
             state["field_bag"] = nc_field_bag
+            changed = True
+        if "manifest_observed" not in state:
+            state["manifest_observed"] = False
             changed = True
         if changed:
             atomic_json(STATE, state)
@@ -498,11 +502,30 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         path = urlsplit(self.path).path
-        if (self.headers.get("Host", "").split(":", 1)[0] in
-                {"field-gateway.arwc.test", "process-read.arwc.test"} and
-                path in PROCESS_PATHS | {
-                    "/.well-known/arwc-client", "/api/instruments/current",
-                }):
+        host = self.headers.get("Host", "").split(":", 1)[0]
+        # W14.2: field-read-legacy.arwc.test is genuinely retired; return 410 for all requests.
+        if host == "field-read-legacy.arwc.test":
+            self.send_json(410, {"error": "field-read-legacy.arwc.test is retired; use process-read.arwc.test"})
+            return
+        # W14.2: /api/instruments/current is sourced from the live Nextcloud field bag, not the canned constant.
+        if host in {"field-gateway.arwc.test", "process-read.arwc.test"} and path == "/api/instruments/current":
+            session = self.contractor_authorized(json.loads(STATE.read_text(encoding="utf-8")))
+            if not session:
+                return
+            state = json.loads(STATE.read_text(encoding="utf-8"))
+            field_bag = state.get("field_bag", {})
+            manifest = field_bag.get("service_manifest")
+            if not manifest or "services" not in manifest:
+                self.send_json(503, {"error": "service manifest not available; Nextcloud fetch may have failed"})
+                return
+            state["manifest_observed"] = True
+            atomic_json(STATE, state)
+            import uuid as _uuid
+            audit_id = str(_uuid.uuid4())
+            self.send_json(200, {"audit_id": audit_id, "record": manifest})
+            return
+        if (host in {"field-gateway.arwc.test", "process-read.arwc.test"} and
+                path in PROCESS_PATHS | {"/.well-known/arwc-client"}):
             self.proxy_field_gateway()
             return
         if self._serve_client_document():

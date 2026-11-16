@@ -487,12 +487,13 @@ hints:
     - kind: client_route
       id: contractors.field-kit
   W14.2:
-    h1: Begin with the contractor field kit and the current field-data interface. Its published client document
-      exposes the instrument operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as protocol migration, structured binary requests, and replay-resistant observations. Correlate
-      independently owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the instrument operation in the published client reference. Join the independent records on their
-      stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: The field-read-legacy.arwc.test endpoint referenced in the W14.1 field bag is retired — it returns
+      HTTP 410 for all requests. Use the field.instrument route in the field-gateway client document instead.
+    h2: Call the field.instrument route with your W13.4 contractor session. It returns the live service manifest
+      from the field bag. The manifest identifies field-read-legacy.arwc.test as retired and
+      process-read.arwc.test as the active service.
+    h3: The active service uses process-read/v2 with CBOR encoding and inspection-scoped authentication at
+      revision 21. Record all three — they are required to build the correct read request in W14.3.
     references:
     - kind: client_route
       id: field.instrument
