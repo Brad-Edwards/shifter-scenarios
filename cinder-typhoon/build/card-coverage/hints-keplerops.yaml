@@ -279,16 +279,21 @@ hints:
     - kind: participant_artifact
       id: work/registry/inspection-normal.json
   K07.2:
-    h1: Begin with the package inspection contract and its trace records. Its published client document exposes
-      the inspection envelope operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as message-envelope interpretation across a parser and a protected downstream action. Derive
-      every constraint from supplied records or normal responses, test a deliberately failing candidate, and only
-      then produce a candidate.
-    h3: Locate the inspection envelope operation in the published client reference. List the observed constraints,
-      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: Inspect work/registry/inspection-compat.fki bytes. It starts FKI1 + name_length(3) + 3 non-ASCII bytes.
+      Decode those bytes as UTF-8 (KELVIN SIGN U+212A = 1 char), then apply NFKC normalization and casefold to
+      see what the back-end parser reads for the same 3-byte window. This is the deliberate length/normalization
+      boundary.
+    h2: Run K07.1 first to get a trace. Its compatibility_envelope_sha256 = sha256 of the fixture file; the
+      envelope endpoint validates that the submitted blob matches. POST the unmodified fixture to
+      packages.inspection-envelope with Content-Type: application/octet-stream.
+    h3: The result shows front_end.request_id (Kelvin sign K, 1 char, raw) and assessor.request_id (kqa,
+      3 chars, normalized). They disagree because name_length bytes → 1 char (front) vs name_length chars
+      from normalized buffer → 3 chars (assessor). The state sentinel and both audit records complete the evidence.
     references:
     - kind: client_route
       id: packages.inspection-envelope
+    - kind: participant_artifact
+      id: work/registry/inspection-compat.fki
   K07.3:
     h1: Begin with the package inspection contract and its trace records. Its published client document exposes
       the inspection envelope operation, so use that ordinary contract instead of guessing a path.
