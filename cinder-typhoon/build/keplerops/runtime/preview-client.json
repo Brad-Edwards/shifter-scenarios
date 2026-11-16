@@ -28,6 +28,11 @@
           "key": "preview.assignment",
           "method": "PATCH",
           "template": "https://preview.keplerops.test/api/preview/reviews/{review_id}/assignment"
+        },
+        {
+          "key": "preview.prepare",
+          "method": "POST",
+          "template": "https://preview.keplerops.test/api/preview/reviews/{review_id}/prepare"
         }
       ]
     }

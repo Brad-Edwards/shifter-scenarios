@@ -151,6 +151,14 @@ def _render_html_via_gotenberg(html_content: bytes) -> bytes:
     return result
 
 
+def _action_nonce_bearer(handler: "PreviewHandler") -> str | None:
+    """Extract the Bearer token from Authorization header (action nonce, not developer token)."""
+    auth = handler.headers.get("Authorization", "")
+    if auth.startswith("Bearer "):
+        return auth[7:].strip()
+    return None
+
+
 class PreviewHandler(KeplerHandler):
     def _developer(self) -> bool:
         return self.basic_or_bearer(USERNAME, TOKEN)
@@ -270,8 +278,69 @@ class PreviewHandler(KeplerHandler):
         else:
             self.send_json(404, {"error": "not_found"})
 
+    def _handle_prepare(self, path: str) -> bool:
+        """K12.2: protected prepare action authenticated by action_nonce Bearer token.
+
+        The action_nonce is a one-use value from the K12.1 assignment response.
+        In the in-world narrative, the nonce is delivered to same-origin preview
+        frames via a postMessage handler that does not validate sender origin.
+        The participant captures it via their crafted content and uses it here.
+        The prepare action is NOT accessible with the developer credential — only
+        the action_nonce (a per-review one-use token) is accepted.
+        """
+        parts = path.strip("/").split("/")
+        if not (len(parts) == 5 and parts[:2] == ["api", "preview"]
+                and parts[2] == "reviews" and parts[4] == "prepare"):
+            return False
+        review_id = parts[3]
+        nonce = _action_nonce_bearer(self)
+        if not nonce:
+            self.send_json(401, {"error": "action_nonce_required"})
+            return True
+        review = _load_review(review_id)
+        if review is None:
+            self.send_json(404, {"error": "review_not_found"})
+            return True
+        stored_nonce = review.get("action_nonce")
+        if not stored_nonce or review.get("state") == "prepared":
+            # Nonce already consumed or review not in an assignable state
+            self.send_json(403, {"error": "nonce_consumed_or_invalid"})
+            return True
+        if nonce != stored_nonce:
+            self.send_json(403, {"error": "invalid_action_nonce"})
+            return True
+        # Consume nonce and transition review to prepared state
+        review["action_nonce"] = None
+        review["state"] = "prepared"
+        _save_review(review_id, review)
+        result_id = "PRVPRP-" + uuid.uuid4().hex[:10].upper()
+        result = {
+            "schema": "fieldkest.preview-preparation/v1",
+            "result_id": result_id,
+            "review_id": review_id,
+            "source_id": review.get("source_id"),
+            "queue": review.get("queue"),
+            "prepared": True,
+        }
+        RESULTS.mkdir(parents=True, exist_ok=True)
+        (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "review-preparations", {
+            "request_id": self.request_id,
+            "review_id": review_id, "result_id": result_id,
+            "source_id": review.get("source_id"),
+            "queue": review.get("queue"),
+            "nonce_sha256": hashlib.sha256(nonce.encode()).hexdigest(),
+            "original_owner": review.get("owner"),
+            "status": 200,
+        })
+        self.send_json(200, result)
+        return True
+
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
+        # K12.2: prepare action authenticated by action_nonce, not developer token
+        if self._handle_prepare(path):
+            return
         if not self._developer():
             self.send_json(401, {"error": "authentication_required"})
             return
