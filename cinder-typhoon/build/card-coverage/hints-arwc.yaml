@@ -673,12 +673,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
   W18.2:
-    h1: Follow FIT-CRR-204B across the CRR-IO-R364 document. Modbus function 4 and its zero-based PDU offset are not
-      the same notation as an OpenPLC IEC address or an OPC UA NodeId.
-    h2: Preserve the raw UINT encoding and counts-per-unit conversion separately from the engineering REAL value.
-      Verify the stable namespace-URI NodeId and historian series against the native catalog.
-    h3: Join the instrument, gate, function, offset, IEC address, raw type and scale, PLC value, NodeId, and series.
-      A matching display name without the native identities is incomplete.
+    h1: From CRR-IO-R364, find FIT-CRR-204B: FC4, PDU offset 5, IEC address %IW5, raw FlowBRaw (UINT,
+      10000 counts/m3/s), engineering FlowBM3s. The PDU offset (5) and IEC word offset (5 in %IW5) look
+      the same here because address_base=0, but they are different addressing layers.
+    h2: The scale factor (10000 counts/m3/s) is in the register definition, NOT in the OPC UA tag name or
+      historian series. A raw value of 1000 counts = 0.100 m3/s. Confirm the engineering value via FUXA
+      and via ot_history.tag_catalog (variable=FlowBM3s, unit=m3/s).
+    h3: Catalog query: SELECT variable, series, node_id, unit FROM ot_history.tag_catalog WHERE
+      variable = 'FlowBM3s'. Returns flow_b_m3s, nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s, m3/s. Record
+      all seven layers to complete the binding.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
