@@ -427,6 +427,28 @@ services:
         aliases:
         - a-contractors
         - contractor-portal.arwc.test
+networks:
+  corporate:
+    name: cinder-arwc-corporate
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.77.60.0/24
+  archive_db:
+    external: true
+    name: cinder-arwc-native_data
+  dmz:
+    external: true
+    name: cinder-arwc-dmz
+  handover_supervisory:
+    external: true
+    name: arwc-ot-compat_supervisory
+  maintenance:
+    external: true
+    name: cinder-arwc-maintenance
+  native_api_exchange:
+    external: true
+    name: cinder-arwc-native_api_exchange
 volumes:
   arwc-approval-data:
     name: cinder-arwc-approval-data

@@ -625,12 +625,14 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W17/live-observation.md
   W17.2:
-    h1: FUXA's system header shows actual mode, command owner, and field-data state. Each outlet faceplate shows its own
-      live permissive, so use both equipment views rather than assuming one outlet represents the other.
-    h2: Use the same UTC observation time for comparison with the process values when possible. Proposed mode is an input; actual
-      mode and owner are PLC outputs and are the values this card requires.
-    h3: Record actual mode, owner, field state, and both permissives exactly as the live PLC-backed views show them.
-      No mode change or interlock test is needed.
+    h1: The five fields come from FUXA crr-overview header and both outlet faceplates. Mode is CRR.AutoMode
+      (false=manual), owner is CRR.Owner (0=local/HMI, 1=remote), field-data state is CRR.IoHealthy, and
+      per-outlet permissives are CRR.PermissiveA and CRR.PermissiveB.
+    h2: All five tags are in ot_history.process_samples. Query SELECT DISTINCT ON (tags->>"variable") time,
+      tags->>"variable", fields->>"value" FROM ot_history.process_samples WHERE tags->>"variable" IN
+      ("AutoMode","Owner","IoHealthy","PermissiveA","PermissiveB") ORDER BY tags->>"variable", time DESC.
+    h3: Do not infer mode or owner from W17.1 — read the live tags at the current UTC time and bind all five
+      fields to that same timestamp. The historian must confirm good-quality samples at the recorded time.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W17/live-observation.md

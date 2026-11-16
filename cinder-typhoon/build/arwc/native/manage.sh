@@ -82,6 +82,8 @@ PYEOF
     chmod 0755 .operator/ca/tls
     chown -R root:root .operator/ca/tls
     bash corporate-access.sh prepare
+    # Extract retained engineering tools (including IMG-FIT-204-R6.bin for W16) from Docker images.
+    bash capture-retained-tools.sh
     "${compose[@]}" up --no-build --pull never --wait --wait-timeout 420
     "${compose[@]}" exec -T --user www-data nextcloud php occ background:cron
     bash desktop-access.sh
@@ -439,11 +441,21 @@ PYEOF
         echo "W12.1: Skipping Gitea collector seed (token=${#gitea_token} chars, collector exists=$(sudo test -f "${collector_path}" 2>/dev/null && echo yes || echo no))"
     fi
     ;;
+  seed-applications)
+    # Start the cinder-arwc application stack (archive, contractors, approval, data, data-bridge).
+    # Run after all seed steps: requires ERPNext, Nextcloud, Metabase, Gitea, and corporate-db to be seeded.
+    # The main compose.yaml defines the cinder-arwc-corporate network; seed-applications creates it.
+    app_compose=(docker compose --project-name cinder-arwc --env-file images.env -f ../compose.yaml)
+    "${app_compose[@]}" up --no-build --pull never -d
+    echo "cinder-arwc application stack started (archive, contractors, approval, data, data-bridge)"
+    ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
       echo 'Reset requires the exact project name: reset cinder-arwc-native' >&2
       exit 2
     }
+    # Stop and remove the application stack (cinder-arwc project) before resetting the native stack.
+    docker compose --project-name cinder-arwc --env-file images.env -f ../compose.yaml down --volumes 2>/dev/null || true
     "${compose[@]}" down --volumes
     bash "$0" up
     bash "$0" seed
@@ -455,7 +467,8 @@ PYEOF
     bash "$0" seed-identity
     bash "$0" seed-engineering
     bash "$0" seed-archive
-    exec bash "$0" seed-corporate-documents
+    bash "$0" seed-corporate-documents
+    exec bash "$0" seed-applications
     ;;
-  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-corporate-documents|seed-reports|seed-engineering|seed-dmz|seed-portal|seed-early-cards|seed-identity|seed-archive|reset cinder-arwc-native' >&2; exit 2 ;;
+  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-corporate-documents|seed-reports|seed-engineering|seed-dmz|seed-portal|seed-early-cards|seed-identity|seed-archive|seed-applications|reset cinder-arwc-native' >&2; exit 2 ;;
 esac
