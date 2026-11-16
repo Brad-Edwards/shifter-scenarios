@@ -43,3 +43,82 @@ roleRef:
   kind: Role
   name: engineering
   apiGroup: rbac.authorization.k8s.io
+---
+# K13.4: svc-fieldlink-workload — the limited workload identity
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-fieldlink-workload
+  namespace: fieldlink
+---
+# K13.4: svc-cloud-api — cloud-api's admin identity for token issuance
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-cloud-api
+  namespace: fieldlink
+---
+# K13.4: BLD-1842 — the protected build record (real K8s ConfigMap)
+# svc-fieldlink-workload can read this via RBAC; other reads are denied.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bld-1842
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: build-record
+data:
+  build_id: BLD-1842
+  principal: svc-fieldlink-workload
+  workspace: fieldlink-workload
+  version: "2026-09-18"
+  scope: fieldkest-build-records
+---
+# K13.4 Role: svc-fieldlink-workload can ONLY get bld-1842
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workload-build-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get]
+    resourceNames: [bld-1842]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workload-build-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-workload
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: workload-build-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+# K13.4 ClusterRole: svc-cloud-api can issue tokens for any SA
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cloud-api-token-issuer
+rules:
+  - apiGroups: ['']
+    resources: [serviceaccounts/token]
+    verbs: [create]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cloud-api-token-issuer
+subjects:
+  - kind: ServiceAccount
+    name: svc-cloud-api
+    namespace: fieldlink
+roleRef:
+  kind: ClusterRole
+  name: cloud-api-token-issuer
+  apiGroup: rbac.authorization.k8s.io
