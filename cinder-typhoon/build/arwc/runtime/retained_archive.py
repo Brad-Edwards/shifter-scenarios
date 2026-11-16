@@ -12,6 +12,7 @@ import re
 import secrets
 import ssl
 import subprocess
+import time
 import tempfile
 import unicodedata
 import uuid
@@ -44,6 +45,7 @@ STEP_CA_INTERMEDIATE = "/run/arwc-step-ca/intermediate.crt"
 STEP_CA_URL = "https://ca.arwc.test:9000"
 OTT_POOL = pathlib.Path("/run/arwc-tokens")
 GITEA_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/gitea-reader.json")
+NADIA_METABASE_PATH = pathlib.Path("/run/arwc-planning/nadia-metabase.json")
 # W04.3 helper staging: the handover artifact is staged one level above the
 # per-request extraction directory. The Unicode NFKC traversal in the archive
 # member name escapes the extraction boundary and resolves to this path.
@@ -793,6 +795,11 @@ class Handler(BaseHTTPRequestHandler):
                     "key": "identity.drawing-context",
                     "method": "POST",
                     "template": "https://retained-archive.arwc.test/api/drawing-contexts"
+                },
+                {
+                    "key": "identity.sessions",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/sessions"
                 }
             ],
             "related": ["https://business-workplace.arwc.test/.well-known/arwc-client"],
@@ -914,7 +921,9 @@ class Handler(BaseHTTPRequestHandler):
         request = self.body()
         if request is None:
             return
-        if path == "/api/drawing-contexts":
+        if path == "/api/sessions":
+            self.planner_session(request)
+        elif path == "/api/drawing-contexts":
             self.drawing_context(request)
         elif path == "/api/archived-queries/current":
             self.query(request)
@@ -1278,6 +1287,78 @@ class Handler(BaseHTTPRequestHandler):
         state["collector_config_recovered"] = True
         save_state(state)
         self.accepted("collection-artifact-read", COLLECTOR_CONFIG, "corporate-reader-principal")
+
+    def planner_session(self, request: dict[str, object]) -> None:
+        """W06.3: Convert the drawing context attachment into a usable planner Metabase session.
+
+        Requires: W04.3 planner handover token, drawing_context_attached=True (W06.2),
+        and the oauth_transaction + preview_origin binding from the browser attachment.
+        Returns nadia.corvane's real Metabase session ID as the planner_session authority.
+        """
+        supplied = self.headers.get("X-ARWC-Planning-Access", "")
+        if not supplied:
+            self.send_json(403, {"error": "planning access required"})
+            return
+        if not self.planning_authorized(supplied):
+            return
+
+        oauth_transaction = request.get("oauth_transaction")
+        preview_origin = request.get("preview_origin")
+        if not (oauth_transaction and preview_origin):
+            self.send_json(409, {"error": "oauth_transaction and preview_origin are required"})
+            return
+
+        state = load_state()
+        if not state.get("drawing_context_attached"):
+            self.send_json(403, {"error": "drawing context has not been attached"})
+            return
+        if oauth_transaction != "OAUTH-PLN-882":
+            self.send_json(409, {"error": "OAuth transaction binding does not match"})
+            return
+        if preview_origin != state.get("drawing_context_preview_origin"):
+            self.send_json(409, {"error": "preview origin does not match the attached context"})
+            return
+
+        # Create a real Metabase session for nadia.corvane using stored credentials.
+        import urllib.request as _urllib_request
+        try:
+            creds = json.loads(NADIA_METABASE_PATH.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            self.send_json(503, {"error": "planner session credentials unavailable"})
+            return
+
+        ctx = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
+        session_body = json.dumps({
+            "username": creds["email"],
+            "password": creds["password"],
+        }).encode("utf-8")
+        session_req = _urllib_request.Request(
+            f"{creds.get('metabase_url', 'https://reports.arwc.test')}/api/session",
+            data=session_body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with _urllib_request.urlopen(session_req, context=ctx, timeout=15) as resp:
+                session_data = json.loads(resp.read())
+            metabase_session_id = session_data.get("id", "")
+            if not metabase_session_id:
+                raise ValueError("empty session id")
+        except Exception:
+            self.send_json(503, {"error": "planner Metabase session creation failed"})
+            return
+
+        expires = int(time.time()) + 15 * 60
+        result = {
+            "record_id": "PLN-SESS-OAUTH-882",
+            "revision": 1,
+            "planner": "nadia.corvane",
+            "scope": "planning-records",
+            "protected_record": "RENDER-CRR-882",
+            "expires_at_epoch": expires,
+        }
+        self.accepted("planner-session-issued", result, "nadia.corvane", 201,
+                      {"planner_session": metabase_session_id})
 
     def drawing_context(self, request: dict[str, object]) -> None:
         """W06.2: Attach a controlled preview origin to the drawing review context.

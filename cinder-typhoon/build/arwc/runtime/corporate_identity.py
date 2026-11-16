@@ -184,13 +184,7 @@ class Handler(BaseHTTPRequestHandler):
             "schema": "arwc.client-documents/v1",
             "service": "corporate-identity.arwc.test",
             "title": "Corporate identity, provisioning, and session service",
-            "routes": [
-                {
-                    "key": "identity.sessions",
-                    "method": "POST",
-                    "template": "https://corporate-identity.arwc.test/api/sessions"
-                }
-            ],
+            "routes": [],
             "related": ["https://planning-data.arwc.test/.well-known/arwc-client"],
         })
         return True
@@ -209,46 +203,9 @@ class Handler(BaseHTTPRequestHandler):
         request = self.body()
         if request is None:
             return
-        if path == "/api/sessions":
-            if self.planning_authorized():
-                self.bootstrap(request)
-        else:
-            self.send_json(404, {"error": "record not found"})
-
-    def bootstrap(self, request: dict[str, object]) -> None:
-        state = load_state()
-        if not state["preview_attached"]:
-            self.send_json(403, {"error": "controlled preview has not been attached"})
-            return
-        if (request.get("oauth_transaction") != "OAUTH-PLN-882" or
-                request.get("preview_origin") != state["preview_origin"]):
-            self.send_json(409, {"error": "browser transaction binding does not match"})
-            return
-        token = secrets.token_urlsafe(40)
-        expires = int(time.time()) + PLANNER_SESSION_LIFETIME_SECONDS
-        state["planner_session"] = token
-        state["planner_session_sha256"] = hashlib.sha256(token.encode()).hexdigest()
-        state["planner_session_expires"] = expires
-        save_state(state)
-        atomic_json(PLANNER_EVIDENCE, {
-            "record_id": "PLN-SESS-OAUTH-882",
-            "planner": "nadia.corvane",
-            "scope": "planning-records",
-            "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
-            "expires_at_epoch": expires,
-        })
-        os.chown(PLANNER_EVIDENCE, -1, grp.getgrnam("arwc-planning").gr_gid)
-        os.chmod(PLANNER_EVIDENCE, 0o640)
-        result = {
-            "record_id": "PLN-SESS-OAUTH-882",
-            "revision": 1,
-            "planner": "nadia.corvane",
-            "scope": "planning-records",
-            "protected_record": "RENDER-CRR-882",
-            "expires_at_epoch": expires,
-        }
-        self.accepted("planner-session-issued", result, "nadia.corvane", 201,
-                      {"planner_session": token})
+        self.send_json(404, {"error": "record not found"})
+        # W06.3 (planner session) refactored: POST /api/sessions removed from corporate_identity.
+        # The archive service now owns the sessions endpoint and returns a real Metabase session.
 
 
 def main() -> None:

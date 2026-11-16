@@ -103,6 +103,24 @@ PYEOF
     ;;
   seed-reports)
     "${compose[@]}" --profile seed run --rm seed-reports
+    # Derive nadia.corvane's Metabase password from STAFF_SEED and write to the
+    # golden operator dir so the archive service can create her Metabase session.
+    if [ -f ".operator/documents-seed.env" ]; then
+        staff_seed=$(grep '^STAFF_SEED=' .operator/documents-seed.env | cut -d= -f2)
+        nadia_email="nadia.corvane@alterrawaterco.com"
+        if [ -n "${staff_seed}" ]; then
+            nadia_password=$(python3 -c "import hashlib,hmac,sys
+seed=sys.argv[1]; email=sys.argv[2]
+print(hmac.new(seed.encode(), email.encode(), hashlib.sha256).hexdigest())" \
+                "${staff_seed}" "${nadia_email}")
+            golden_op="$(cd .. && pwd)/.operator"
+            mkdir -p "${golden_op}/archive-workflow"
+            printf '{"email":"%s","password":"%s","metabase_url":"https://reports.arwc.test"}\n' \
+                "${nadia_email}" "${nadia_password}" > "${golden_op}/archive-workflow/nadia-metabase.json"
+            chmod 0644 "${golden_op}/archive-workflow/nadia-metabase.json"
+            echo "Wrote nadia Metabase credentials to golden operator dir"
+        fi
+    fi
     ;;
   seed-engineering)
     bash seed-engineering.sh

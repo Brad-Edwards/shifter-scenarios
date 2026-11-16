@@ -194,6 +194,12 @@ services:
       read_only: true
       bind:
         create_host_path: true
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/nadia-metabase.json
+      target: /run/arwc-planning/nadia-metabase.json
+      read_only: true
+      bind:
+        create_host_path: true
     networks:
       corporate:
         ipv4_address: 10.77.60.50
