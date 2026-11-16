@@ -637,12 +637,13 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W17/live-observation.md
   W17.3:
-    h1: Read the installed outlet B engineering-reference document. It names the physical instrument and the controller
-      variable; verify the same variable in the native OPC UA browser rather than copying only the note.
-    h2: Preserve the expanded namespace URI binding of the NodeId and the engineering unit. The historian catalog
-      supplies the series name for the same controller variable.
-    h3: Join the physical instrument, IEC variable, OPC UA NodeId, historian series, and unit. Confirm the live
-      browser and catalog expose that point before recording the binding.
+    h1: Read ~/CairnReach/Briefs/W17/engineering-reference.md (reference CRR-ENG-INST-204B-R1). It maps the
+      outlet B flow transmitter FIT-CRR-204B to IEC variable FlowBM3s, OPC UA NodeId, historian series, and
+      unit. The reference describes the identity but does not supply a current value or confirm quality.
+    h2: Confirm in the historian catalog: SELECT variable, series, node_id, unit FROM ot_history.tag_catalog
+      WHERE series = 'flow_b_m3s'. The result must match the reference document exactly on all five fields.
+    h3: Verify the point is live: SELECT time, fields->>"value" FROM ot_history.process_samples WHERE
+      tags->>"variable" = 'FlowBM3s' ORDER BY time DESC LIMIT 1 confirms recent StatusGood samples.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W17/engineering-reference.md

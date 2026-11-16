@@ -95,6 +95,27 @@ The `a-archive`, `a-contractors`, and `a-approval` containers are not managed by
 
 ---
 
+## OT platform from scripts
+
+The OT platform (FUXA, OpenPLC, Telegraf, Grafana, Mosquitto, PostgreSQL historian) is **buildable from Git scripts** at `build/arwc-ot/`. The build requires internet access to pull two upstream base images; no machine image is required.
+
+| Component | Dockerfile | Base image (registry) |
+| --------- | ---------- | --------------------- |
+| FUXA HMI | `fuxa.Dockerfile` | `frangoteam/fuxa:1.3.5` (Docker Hub) |
+| OpenPLC Runtime | `plc.Dockerfile` | `ghcr.io/autonomy-logic/openplc-runtime:v4.3.2` (GHCR) |
+| Historian, Telegraf, Grafana | `compose.yaml` | Upstream public images |
+
+The qualify scripts (`qualify_editor.py`, `qualify_opcua.py`, `qualify_paths.py`, `qualify_state.py`) run against the built containers to produce `:hand-build` images. `configure_fuxa.py` loads the FUXA project (Cairn Reach views, tags, alarms). `main.st` is the OpenPLC program (IEC 61131-3 Structured Text). `site/tags.json` defines all OPC UA tags.
+
+**From-scripts reproduction steps:**
+1. Pull `build/arwc-ot/` from Git.
+2. Build custom images: `docker compose build` (pulls upstream base images from Docker Hub / GHCR).
+3. Run qualify scripts to produce `:hand-build` images.
+4. Start the OT compat stack: `docker compose up`.
+5. The historian, Telegraf, FUXA, and OpenPLC start and begin recording live OT data.
+
+**No machine image dependency.** The machine image only caches the already-built images for a faster startup; it is not required for reproducibility.
+
 ## OT platform after reset
 
 The OT compat stack (`arwc-ot-compat` compose project) is not affected by `manage.sh reset cinder-arwc-native`. It runs continuously and its state (FUXA views, OpenPLC logic, historian data) persists.
@@ -103,6 +124,12 @@ After a full VM rebuild from the machine image:
 - The OT compat stack returns to its 2026-11-13 state.
 - Telegraf, FUXA, OpenPLC, and the historian are present and healthy.
 - No OT reseeding is required for W17 and later OT observation cards.
+
+After a full from-scripts rebuild (without the machine image):
+- Pull and build `build/arwc-ot/` as described above.
+- Run the qualify scripts to produce `:hand-build` images.
+- Start the OT compat stack. FUXA, OpenPLC, and the historian initialize from the scripts.
+- OT seed data (initial historian records, FUXA views) is populated by the configure scripts.
 
 ---
 
