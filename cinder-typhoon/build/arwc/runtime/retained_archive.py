@@ -1545,7 +1545,9 @@ def _render_drawing_context_preview(drawing: str, review: str, preview_origin: s
     if completed.returncode != 0:
         return None
     dom_output = completed.stdout
-    if "preview-cinder.arwc.test" not in dom_output:
+    # Require the preview-status element to show the received callback text,
+    # not just any occurrence of the domain in the static markup.
+    if "preview_callback_received:origin:preview-cinder.arwc.test" not in dom_output:
         return None
     return hashlib.sha256(dom_output.encode()).hexdigest()
 
