@@ -68,9 +68,34 @@ class AssistantApiHandler(KeplerHandler):
             self.send_json(200, {"status": "up"})
             return
 
-        # K23.1: contexts endpoint — public, returns workspace context list.
+        # K21.1: config endpoint — public, exposes real AnythingLLM workspace identifiers.
+        # Thread slug is read from the K21 config (changes per seed).
+        if path == "/api/config":
+            k21 = _load_k21_config()
+            config = {
+                "context": "ctx-support-private-v4",
+                "collection": k21.get("workspace_slug", "support-private"),
+                "policy_version": "retrieval-v4",
+                "answer_requests": {
+                    "private_escalation": {
+                        "context_id": "ctx-support-private-v4",
+                        "conversation_id": k21.get("conv_sup_2841_slug", "CONV-SUP-2841-19"),
+                        "tenant_id": "TEN-RILL-022",
+                    }
+                },
+            }
+            self.send_json(200, config)
+            return
+
+        # K23.1: contexts endpoint — public, returns workspace context list with real thread slugs.
         if path == "/api/contexts":
-            self.send_json(200, {"contexts": CONTEXTS})
+            k21 = _load_k21_config()
+            enriched_contexts = []
+            for ctx in CONTEXTS:
+                enriched = dict(ctx)
+                enriched["answer_thread"] = k21.get("thread_slug")
+                enriched_contexts.append(enriched)
+            self.send_json(200, {"contexts": enriched_contexts})
             return
 
         # K21.2: conversation endpoint — requires support session, returns retained orphaned conversations.
