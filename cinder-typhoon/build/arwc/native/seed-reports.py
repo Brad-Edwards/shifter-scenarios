@@ -210,6 +210,32 @@ def seed() -> None:
     else:
         print(f"Metabase question already current: {recon_title}")
 
+    # Seed the SEL-CRR-DP3-7 report source selection question (W10.1).
+    sel_title = "SEL-CRR-DP3-7"
+    sel_description = (
+        "Report source selection SEL-CRR-DP3-7. Database: PostgreSQL 16.4. "
+        "View: report_source_selection. District: Cairn Reach. Period: ALLOC-2026-DP3. "
+        "Report: RPT-CRR-DP3-R7. Sources: ALLOC-2026-DP3-R9, MTR-CRR-DP3-R12, RPT-CRR-DP3-R7."
+    )
+    sel_sql = (
+        "SELECT record_id, revision, district, planning_window, "
+        "allocation_source, meter_source, reserve_report_source, duplicate_transfer "
+        "FROM report_source_selection"
+    )
+    sel_card = next((card for card in api("card") if card["name"] == sel_title), None)
+    if sel_card is None:
+        sel_card = api("card", {
+            "name": sel_title, "display": "table", "visualization_settings": {},
+            "description": sel_description,
+            "dataset_query": {"database": database["id"], "type": "native", "native": {
+                "query": sel_sql, "template-tags": {}}}})
+        print(f"Created Metabase question: {sel_title} (id={sel_card.get('id')})")
+    elif sel_card.get("description") != sel_description:
+        api(f'card/{sel_card["id"]}', {"description": sel_description}, method="PUT")
+        print(f"Updated Metabase question: {sel_title}")
+    else:
+        print(f"Metabase question already current: {sel_title}")
+
     print("ARWC native planning reader and saved report configured")
 
 

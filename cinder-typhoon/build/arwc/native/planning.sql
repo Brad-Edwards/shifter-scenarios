@@ -134,6 +134,23 @@ GRANT SELECT ON public.district_allocation_adjustment TO planning_reader;
 GRANT SELECT ON public.allocation_ledger TO planning_reader;
 -- W09.2: planning_reader reads meter_export via native Metabase question.
 GRANT SELECT ON public.meter_export TO planning_reader;
+-- W10.1: report_source_selection view for SEL-CRR-DP3-7.
+CREATE OR REPLACE VIEW public.report_source_selection AS
+ SELECT
+   'SEL-CRR-DP3-7'    AS record_id,
+   7                   AS revision,
+   al.district,
+   al.planning_window,
+   al.record_id        AS allocation_source,
+   me.record_id        AS meter_source,
+   rr.record_id        AS reserve_report_source,
+   rr.duplicate_transfer
+ FROM public.allocation_ledger al
+ JOIN public.meter_export me ON al.planning_window = me.planning_window
+ JOIN public.business_reserve_report rr
+   ON al.planning_window = rr.planning_window AND al.asset = rr.asset
+ WHERE al.planning_window = 'ALLOC-2026-DP3';
+GRANT SELECT ON public.report_source_selection TO planning_reader;
 -- W09.3: planning_reader reads business_reserve_report and the reconciliation view.
 GRANT SELECT ON public.business_reserve_report TO planning_reader;
 CREATE OR REPLACE VIEW public.reserve_reconciliation AS

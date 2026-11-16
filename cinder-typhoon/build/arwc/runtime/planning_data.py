@@ -629,6 +629,9 @@ class Handler(BaseHTTPRequestHandler):
         alloc_discrepancy_template = _metabase_card_url(
             reports, "recon_dp3_question_id", "https://reports.arwc.test/api/card/recon-dp3-current"
         )
+        report_sources_template = _metabase_card_url(
+            reports, "sel_dp3_question_id", "https://reports.arwc.test/api/card/sel-crr-dp3-7"
+        )
         self.send_json(200, {
             "schema": "arwc.client-documents/v1",
             "service": "planning-data.arwc.test",
@@ -658,6 +661,11 @@ class Handler(BaseHTTPRequestHandler):
                     "key": "planning.allocation-discrepancy",
                     "method": "GET",
                     "template": alloc_discrepancy_template
+                },
+                {
+                    "key": "business.report-sources",
+                    "method": "GET",
+                    "template": report_sources_template
                 },
                 {
                     "key": "planning.live-feed",
