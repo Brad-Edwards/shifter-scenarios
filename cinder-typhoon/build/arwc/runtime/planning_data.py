@@ -676,6 +676,11 @@ class Handler(BaseHTTPRequestHandler):
                     "template": report_row_ext_template
                 },
                 {
+                    "key": "business.report-document",
+                    "method": "GET",
+                    "template": "https://documents.arwc.test/remote.php/dav/files/jules.orswick@veybridge.test/Veybridge%20handover/PLN-MER-DP3-R6.json"
+                },
+                {
                     "key": "planning.live-feed",
                     "method": "GET",
                     "template": "https://read-data.arwc.test/api/operating-history"

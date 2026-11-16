@@ -214,9 +214,8 @@ class Handler(BaseHTTPRequestHandler):
             "routes": [
                 # business.report-sources removed: W10.1 facade.
                 # business.report-row-external removed: W10.2 facade.
-                # Both routes are now in the planning_data client doc → native Metabase.
-                {"key": "business.report-document", "method": "GET",
-                 "template": "https://business-workplace.arwc.test/api/reports/current/document"},
+                # business.report-document removed: W10.3 facade.
+                # All three routes are now in the planning_data client doc.
                 {"key": "business.procurement-quote", "method": "GET",
                  "template": "https://business-workplace.arwc.test/api/procurement-quotes/current"},
                 {"key": "business.procurement-quote-external", "method": "GET",
@@ -272,15 +271,9 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(410, {"error": "report-row-external endpoint retired; use business.report-row-external route"})
             return
         if path == "/api/reports/current/document":
-            if not observed("foreign_excerpt_observed"):
-                self.send_json(403, {"error": "linked excerpt has not been read"})
-            elif request.get("excerpt_id") != "EXC-MER-DP3-4":
-                self.send_json(409, {"error": "linked excerpt does not match"})
-            elif request.get("expected_revision") != 4:
-                self.send_json(409, {"error": "linked excerpt revision is stale"})
-            else:
-                mark("linked_document_observed")
-                self.accepted("district-plan-read", MEREWICK_PLAN, 201)
+            # W10.3 facade removed. Use business.report-document route in
+            # planning_data client doc → real Nextcloud WebDAV document.
+            self.send_json(410, {"error": "report-document endpoint retired; use business.report-document route"})
             return
         if path == "/api/procurement-quotes/external":
             if not observed("procurement_catalog_observed"):
