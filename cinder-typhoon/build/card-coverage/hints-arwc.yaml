@@ -388,12 +388,15 @@ hints:
     - kind: participant_service
       id: engineering.arwc.test
   W12.2:
-    h1: Begin with the quarantined collector, collection policy, and cold archive. Its published client document
-      exposes the bundle collection policy operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as collector cryptography reconstruction and archive-to-current collection correlation. Build
-      a local model from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Locate the bundle collection policy operation in the published client reference. Extract the supplied cases
-      into a small local reproducer and do not use its result until every reference case matches.
+    h1: The collector binary's build ID (COLLECT-CRR-12) and the AQTN1 frame's archive ID (ARC-COLD-CRR-2019)
+      are the HKDF inputs. IKM is the build ID as bytes, salt is the archive ID as ASCII, info is "aqtn1/keys".
+      Derive 64 bytes and split into two 32-byte keys.
+    h2: Apply each operation from AQTN1-samples.json. The first 32 key bytes are the AES-256-GCM content key.
+      The second 32 bytes are the AES-256-KW wrapping key. For the authentication-failure sample, detect the
+      GCM tag mismatch and record the sentinel "authentication_failed" instead of plaintext.
+    h3: Submit a sample_results dict to archive.bundle-collection-policy mapping each sample ID to the SHA-256
+      hex digest of its computed output (or "authentication_failed" for the rejection case). Every sample must
+      match exactly. The returned PROTECTION record names the derivation scheme needed for W12.3.
     references:
     - kind: client_route
       id: archive.bundle-collection-policy

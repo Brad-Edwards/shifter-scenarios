@@ -1099,8 +1099,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def reconstruct_protection(self, request: dict[str, object]) -> None:
         state = load_state()
-        if not state["quarantine_observed"]:
-            self.send_json(403, {"error": "quarantine object has not been located"})
+        if not state.get("collector_recovered"):
+            self.send_json(403, {"error": "collector must be recovered before reconstructing protection"})
             return
         expected = json.loads((ARTIFACTS / "sample-results.json").read_text(encoding="utf-8"))
         supplied = request.get("sample_results")
