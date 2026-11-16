@@ -758,7 +758,7 @@ services:
       - "identity.keplerops.test:10.77.56.11"
       - "support.keplerops.test:10.77.56.11"
       - "ca.keplerops.test:10.77.56.11"
-      - "kerberos.keplerops.test:10.77.50.40"
+      - "kerberos.keplerops.test:10.77.56.30"
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
     healthcheck:
