@@ -70,6 +70,7 @@ INITIAL["engineering"].update({
     "false_estimate_observed": False, "controlled_allocation_committed": False,
     "sufficient_estimate_verified": False,
     "envelope_observed": False,
+    "permissive_observed": False,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
@@ -618,6 +619,11 @@ class Handler(BaseHTTPRequestHandler):
         "key": "process.operating-envelope",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/process-estimator/current"
+    },
+    {
+        "key": "process.permissive-observation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/process-permissive/current"
     }
 ]
         for r in routes:
@@ -899,6 +905,48 @@ class Handler(BaseHTTPRequestHandler):
             }
             atomic_json(EVIDENCE / "engineering" / "process-envelope.json", result)
             self.accepted("envelope-observed", result, 201)
+            return
+        # W25.2: Permissive chain observation (read-only, requires envelope_observed).
+        # Participant reads FUXA, OpenPLC, and OT historian for current permissive conditions.
+        if ROLE == "engineering" and path == "/api/process-permissive/current":
+            if not state.get("envelope_observed"):
+                self.send_json(403, {"error": "operating envelope required"}); return
+            # Expected conditions from live OT historian (ot_history.process_samples):
+            # IoHealthy=true, PermissiveA/B=true, TravelFaultA/B=false,
+            # LowLevelAlarm=false, HmiStop=false, Armed=false, Owner=0, may_move=false
+            expected = {
+                "record_id": "CRR-OP-W25-R1",
+                "io_healthy": True,
+                "permissive_a": True, "permissive_b": True,
+                "travel_fault_a": False, "travel_fault_b": False,
+                "low_level_clear": True,
+                "operator_stop_clear": True,
+                "controller_armed": False,
+                "owner_hmi": False,
+                "may_move": False,
+            }
+            if request != expected:
+                self.send_json(409, {"error": "permissive condition observation rejected"}); return
+            state["permissive_observed"] = True; save_state(state)
+            result = {
+                "record_id": "W25-PERMISSIVE-CRR-R1", "revision": 1,
+                "source": "CRR-OP-W25-R1",
+                "permissive_chain": {
+                    "io_healthy": True,
+                    "drive_available_a": True, "remote_selector_a": True,
+                    "drive_available_b": True, "remote_selector_b": True,
+                    "permissive_a": True, "permissive_b": True,
+                    "travel_fault_a": False, "travel_fault_b": False,
+                    "low_level_clear": True,
+                    "operator_stop_clear": True,
+                    "controller_armed": False,
+                    "owner_hmi": False,
+                },
+                "may_move": False,
+                "blocking_conditions": ["controller_not_armed", "owner_not_hmi"],
+            }
+            atomic_json(EVIDENCE / "engineering" / "process-permissive.json", result)
+            self.accepted("permissive-observed", result, 201)
             return
         # W23.3: sufficiency verification — reads real PostgreSQL and real binary output.
         # Gated on W23.2 controlled_allocation_committed=True.

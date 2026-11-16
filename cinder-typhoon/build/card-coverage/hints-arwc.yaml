@@ -994,12 +994,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W25/operating-envelope.csv
   W25.2:
-    h1: Use the FUXA overview and both outlet faceplates for current system state, then trace the same conditions in the live
-      OpenPLC project. Position alone does not establish that an outlet may move.
-    h2: Check field freshness, drive availability, remote selectors, low-level protection, operator stop, travel faults,
-      controller authorization, and both outlet permissives as one movement decision.
-    h3: Verify every current condition and record the resulting may-move decision without changing mode or issuing a request.
-      The supplied bounded-movement guide names the chain but the live product state proves it.
+    h1: From FUXA overview + outlet faceplates + OT historian (ot_history.process_samples), read the permissive chain:
+      IoHealthy=true, PermissiveA=true, PermissiveB=true, TravelFaultA/B=false (clear),
+      LowLevelAlarm=false (clear), HmiStop=false (clear). These safety conditions are all good.
+    h2: Check controller state: Armed=false (not armed for movement), Owner=0 (not HMI-owned). The controller is NOT
+      armed for an HMI-owned manual request. These two conditions block movement in the current state.
+    h3: Submit POST /api/process-permissive/current with CORPORATE Bearer and body {record_id:CRR-OP-W25-R1,
+      io_healthy:true, permissive_a:true, permissive_b:true, travel_fault_a:false, travel_fault_b:false,
+      low_level_clear:true, operator_stop_clear:true, controller_armed:false, owner_hmi:false, may_move:false}.
+      Returns W25-PERMISSIVE-CRR-R1 with blocking conditions: controller_not_armed, owner_not_hmi.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md
