@@ -592,6 +592,7 @@ services:
       - ./native-workplace/seed-k17-handover.php:/opt/fieldlink/seed-k17-handover.php:ro
       - ./native-workplace/seed-k17-talia-recovery.php:/opt/fieldlink/seed-k17-talia-recovery.php:ro
       - ./native-workplace/seed-k17-arwc-assignment.php:/opt/fieldlink/seed-k17-arwc-assignment.php:ro
+      - ./native-workplace/seed-k17-delegation.php:/opt/fieldlink/seed-k17-delegation.php:ro
       - ../../assets/keplerops/opening/k-support/SUP-2841.json:/operator/company-conversation.json:ro
       - ../../assets/keplerops/native-workplace/support-cases.json:/operator/support-cases.json:ro
     healthcheck:
