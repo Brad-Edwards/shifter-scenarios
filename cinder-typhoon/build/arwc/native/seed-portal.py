@@ -85,6 +85,25 @@ def seed() -> None:
     })
     print("ROSTER-CRR-SEP18-R2: contractor assignment roster seeded as ERPNext Task")
 
+    # W15.4: seed APR-CRR-4417-R6 as a real ERPNext Task (maintenance approval).
+    # The approval service fetches this Task at startup using ERP admin credentials.
+    insert("Task", {"subject": "APR-CRR-4417-R6: Maintenance approval WO-CRR-4417"}, {
+        "subject": "APR-CRR-4417-R6: Maintenance approval WO-CRR-4417",
+        "status": "Open",
+        "description": json.dumps({
+            "record_id": "APR-CRR-4417-R6",
+            "revision": 6,
+            "maintenance": "WO-CRR-4417",
+            "inspection": "INSP-CRR-2026-09-18",
+            "asset": "AST-CRR-017",
+            "drawing": "DRW-OG2-R8",
+            "drawing_revision": "R8",
+            "status": "signed",
+            "renderer": "https://maintenance-renderer.arwc.test",
+        }, sort_keys=True),
+    })
+    print("APR-CRR-4417-R6: maintenance approval seeded as ERPNext Task")
+
     # W14.1: seed FIELD-BAG-CRR-4417-R3.json to Nextcloud (contractor workspace).
     # The contractor portal fetches this file at startup using the NC admin credentials.
     nc_admin = "records-admin"

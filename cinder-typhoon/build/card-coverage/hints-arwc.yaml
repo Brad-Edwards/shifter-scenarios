@@ -549,12 +549,14 @@ hints:
     - kind: client_route
       id: maintenance.drawing-approvals
   W15.4:
-    h1: Begin with the drawing cache, review workflow, and maintenance approval. Its published client document exposes
-      the approval token operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cache-key normalization followed by reviewer and downstream authority checks. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the approval token operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: After obtaining the W15.3 review capability token, call POST maintenance.approval-token with
+      review_capability, approval_id=APR-CRR-4417-R6, and inspection=INSP-CRR-2026-09-18. The endpoint
+      validates the audience but not the capability's subject-to-inspection binding.
+    h2: The review capability from W15.3 is scoped to DRW-OG2-R8 (the drawing). The approval endpoint
+      accepts it for inspection INSP-CRR-2026-09-18 because it omits the subject-to-inspection comparison.
+      This is the expert flaw that allows crossing from the drawing scope to the inspection approval.
+    h3: The returned APR-CRR-4417-R6 has the real ERPNext maintenance binding (WO-CRR-4417, INSP-CRR-2026-09-18,
+      AST-CRR-017) signed with Ed25519. Record the signing_public_key — it is the verification key for W26.
     references:
     - kind: client_route
       id: maintenance.approval-token

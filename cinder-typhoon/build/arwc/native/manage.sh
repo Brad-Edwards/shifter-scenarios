@@ -260,6 +260,12 @@ print(q[0]['id'] if q else '')
         printf '%s\n' "${approval_nc_json}" > ".operator/approval-nc.json"
         chmod 0644 "${portal_golden_op}/approval-nc.json" ".operator/approval-nc.json" 2>/dev/null || true
         echo "W15.1: Wrote approval-nc.json for maintenance-review Nextcloud fetch"
+        # Write ERPNext reader config for maintenance-review service (W15.4).
+        approval_erp_json='{"url":"https://suppliers.arwc.test","username":"Administrator","password":"'"${erp_admin_password}"'"}'
+        printf '%s\n' "${approval_erp_json}" > "${portal_golden_op}/approval-erp.json"
+        printf '%s\n' "${approval_erp_json}" > ".operator/approval-erp.json"
+        chmod 0644 "${portal_golden_op}/approval-erp.json" ".operator/approval-erp.json" 2>/dev/null || true
+        echo "W15.4: Wrote approval-erp.json for maintenance-review ERPNext fetch"
     fi
     ;;
   seed-early-cards)
