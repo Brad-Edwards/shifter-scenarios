@@ -64,6 +64,7 @@ def main() -> None:
                 "restricted": True,
             },
         },
+        "identity_host": "identity.keplerops.test",
         "schema": "fieldkest.staff-config/v1",
     }
 
