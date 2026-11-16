@@ -181,7 +181,7 @@ content:
         traversal reaches read-only identity-admin registration OIDC-FIELDKEST-SUPPORT under
         reviewer service identity.
       mechanic_profile:
-        source_path: /notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT
+        source_path: /notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT
         method: GET
         defect: proxy checks the encoded string starts with /notes/ before one percent-decode
           and dot-segment normalization
@@ -255,7 +255,7 @@ content:
         plus PATCH can add the retained-support provider while preserving the existing provider.
         The registration identifies its discovery metadata and assertion submission endpoint.
       mechanic_profile:
-        source_path: /notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT
+        source_path: /notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT
         forwarded_method: PATCH
         patch:
           add_provider: OIDC-FIELDKEST-RETAINED-SUPPORT

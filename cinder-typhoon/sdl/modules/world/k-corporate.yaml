@@ -603,7 +603,7 @@ nodes:
         description: Identity registration, federation and delegated service-relation interface.
         routes:
         - route_id: support-registration
-          path: /api/registrations/OIDC-FIELDKEST-SUPPORT
+          path: /realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT
           methods:
           - GET
           - PATCH

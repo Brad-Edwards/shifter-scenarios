@@ -824,13 +824,13 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
         "proof": "destination audit must name task principal, schedule SCH-SUP-2841, run ID and written digest",
     },
     "K18.2": {
-        "source_path": "/notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT",
+        "source_path": "/notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT",
         "method": "GET",
         "defect": "proxy checks the encoded string starts with /notes/ before one percent-decode and dot-segment normalization",
         "destination_identity": "svc-staff-preview",
     },
     "K18.3": {
-        "source_path": "/notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT",
+        "source_path": "/notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT",
         "forwarded_method": "PATCH",
         "patch": {"add_provider": "OIDC-FIELDKEST-RETAINED-SUPPORT", "preserve_existing": True},
         "retained_support_provider": {

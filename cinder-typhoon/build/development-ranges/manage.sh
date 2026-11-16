@@ -202,7 +202,6 @@ case $action in
         assets/keplerops/opening \
         assets/keplerops/registry \
         assets/keplerops/staff \
-        assets/keplerops/identity-api \
         assets/keplerops/native-packages \
         assets/keplerops/native-workplace \
         assets/narrative/documents/keplerops/company-history.md \

@@ -181,7 +181,7 @@ def verify_replay(current: dict[str, str], foreign: dict[str, str]) -> None:
             {200}, {403},
         ),
         "staff_preview_service": (
-            lambda value: status("identity.keplerops.test", "/api/registrations/OIDC-FIELDKEST-SUPPORT", token=value),
+            lambda value: status("identity.keplerops.test", "/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT", token=value),
             {200}, {401},
         ),
         "cert_enrollment_worker": (
@@ -292,7 +292,7 @@ def verify_assertion_replay(current: dict[str, str], foreign_path: Path) -> None
     if not isinstance(assertion, str) or not assertion:
         raise ValueError("foreign assertion is missing")
     enabled = status(
-        "identity.keplerops.test", "/api/registrations/OIDC-FIELDKEST-SUPPORT",
+        "identity.keplerops.test", "/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT",
         token=current["staff_preview_service"], method="POST",
         body={"add_provider": "OIDC-FIELDKEST-RETAINED-SUPPORT", "preserve_existing": True},
     )

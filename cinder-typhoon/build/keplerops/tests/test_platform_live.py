@@ -111,7 +111,7 @@ class PlatformLiveTest(unittest.TestCase):
         directory = call("staff.keplerops.test", "/api/service-directory", auth=DEV_TOKEN)
         note = call("staff.keplerops.test", "/api/notes/" + directory["restricted_note"], auth=DEV_TOKEN)
         self.assertEqual(note["consumer"], "staff-note-preview")
-        source = "/notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT"
+        source = "/notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT"
         registration = call("staff.keplerops.test", "/api/note-preview", method="POST", body={"source_path": source, "method": "GET"}, auth=DEV_TOKEN)
         changed = call("staff.keplerops.test", "/api/note-preview", method="POST", body={"source_path": source, "method": "PATCH"}, auth=DEV_TOKEN)
         self.assertGreater(changed["revision"], registration["revision"])
