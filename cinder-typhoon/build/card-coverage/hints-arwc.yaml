@@ -758,8 +758,9 @@ hints:
     h2: Compute comparison_digest: SHA256 of the mapping JSON (sorted keys) with legacy_project=CRR-CTRL-R19,
       current_project=CRR-CTRL-R21, instruments={OUTLET_A:FIT-CRR-204A,OUTLET_B:FIT-CRR-204B},
       legacy_identifiers={OUTLET_A:OG-CRR-02/GT-CRR-02A,OUTLET_B:OG-CRR-02/GT-CRR-02B}. Not in any file.
-    h3: Submit {"migration_record":"MIG-OG2-R19-R21","comparison_digest":"<sha256>","observation":
-      "EVT-COMM-OG2-114"} where EVT-COMM-OG2-114 is from the qualifying commissioning history. Returns
+    h3: Discover the observation: SELECT name, text, alarm_group FROM alarm_history WHERE
+      alarm_group='OG-CRR-02' to find the qualifying commissioning event name. Submit {"migration_record":
+      "MIG-OG2-R19-R21","comparison_digest":"<sha256>","observation":"<event_name>"}. Returns
       MAP-OG2-LEGACY-R21 historical=true current_project=CRR-CTRL-R21. Do not replace the running revision.
     references:
     - kind: client_route

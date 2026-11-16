@@ -477,6 +477,18 @@ PYEOF
     docker network connect --ip 10.77.60.55 --alias process-view.arwc.test \
       cinder-arwc-corporate cinder-arwc-engineering 2>/dev/null || true
     echo "a-engineering (process-view.arwc.test) started at 10.77.60.55"
+    # Seed EVT-COMM-OG2-114 commissioning event into the OT historian so the participant
+    # can discover it by querying alarm_history WHERE alarm_group = 'OG-CRR-02'.
+    # This is the qualifying commissioning observation required for W19.4.
+    docker exec arwc-ot-compat-postgres-1 psql -U historian -d historian -c "
+INSERT INTO ot_history.alarm_events (name, type, ontime, offtime, acktime, acknowledging_user,
+  text, alarm_group, value, native_status, origin, observed_at)
+VALUES ('EVT-COMM-OG2-114', 'high', '2026-11-13 09:28:14+00', '2026-11-13 09:29:23+00',
+  '2026-11-13 09:28:56+00', 'engineer',
+  'Outlet group OG-CRR-02 commissioning observation 114: dual-outlet flow balance verified',
+  'OG-CRR-02', '1', 'FA', 'OT qualifying campaign commissioning record',
+  '2026-11-13 09:29:27+00') ON CONFLICT DO NOTHING;" 2>/dev/null || true
+    echo "EVT-COMM-OG2-114 commissioning event seeded to OT historian (W19.4)"
     ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
