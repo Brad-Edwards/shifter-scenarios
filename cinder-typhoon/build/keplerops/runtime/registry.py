@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
+import threading
 import unicodedata
 from urllib.parse import urlsplit
 import uuid
@@ -21,7 +22,7 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 
 from http_support import (
-    KeplerHandler, append_audit, canonical_bytes, serve_tls, sha256_bytes, utc_now,
+    KeplerHandler, append_audit, canonical_bytes, serve_http, serve_tls, sha256_bytes, utc_now,
 )
 from credentials import credential
 from package_delivery import pack_connector, consume_package
@@ -32,6 +33,28 @@ STATE = Path("/var/lib/fieldkest-registry")
 AUDIT = STATE / "audit"
 RESULTS = STATE / "results"
 PUBLISHED = STATE / "published"
+
+# Persistent HTTP/1.1 connection to the assessor.  Keep-alive is required for
+# K07.2: when the inspection-envelope endpoint forwards the envelope with
+# Content-Length = front_following_length (smaller than the actual body), the
+# assessor reads only CL bytes.  The surplus bytes remain in the socket and
+# become the prefix of the NEXT request on this connection — the framing exploit.
+_ASSESSOR_CONN: _http_client.HTTPConnection | None = None
+_ASSESSOR_LOCK = threading.Lock()
+
+
+def _get_assessor_conn() -> _http_client.HTTPConnection:
+    global _ASSESSOR_CONN
+    with _ASSESSOR_LOCK:
+        if _ASSESSOR_CONN is None or _ASSESSOR_CONN.sock is None:
+            _ASSESSOR_CONN = _http_client.HTTPConnection("127.0.0.1", 9001, timeout=5)
+        return _ASSESSOR_CONN
+
+
+def _reset_assessor_conn() -> None:
+    global _ASSESSOR_CONN
+    with _ASSESSOR_LOCK:
+        _ASSESSOR_CONN = None
 CHANNEL_CREDENTIAL = PUBLISHED / "delivery/channel-credential.json"
 CONFIG = json.loads((STATE / "config/foundation.json").read_text())
 K29_CONFIG = json.loads((STATE / "config/release-lineage.json").read_text())
@@ -280,18 +303,19 @@ class RegistryHandler(KeplerHandler):
                 and isinstance(request.get("action"), str)):
             self.send_json(422, {"error": "inspection_contract_failed"})
             return
-        # Forward to the upstream assessor (Python BaseHTTPRequestHandler, CL-based parser).
+        # Forward to the upstream assessor on the persistent keep-alive connection.
         assessor_body = canonical_bytes(request)
         try:
-            conn = _http_client.HTTPConnection("127.0.0.1", 9001, timeout=5)
+            conn = _get_assessor_conn()
             conn.request("POST", "/assess", body=assessor_body, headers={
                 "Content-Type": "application/json",
                 "Content-Length": str(len(assessor_body)),
+                "Connection": "keep-alive",
             })
             upstream = conn.getresponse()
             assessor_data = json.loads(upstream.read(65_536))
-            conn.close()
         except (OSError, _http_client.HTTPException, json.JSONDecodeError, ValueError):
+            _reset_assessor_conn()
             self.send_json(503, {"error": "assessor_unavailable"})
             return
         inspection_id = "INSP-" + uuid.uuid4().hex[:8].upper()
@@ -335,56 +359,88 @@ class RegistryHandler(KeplerHandler):
         self.send_json(200, trace)
 
     def _inspection_envelope(self) -> None:
+        # K07.2: The inspection service (front end) and the assessor (upstream,
+        # Python BaseHTTPRequestHandler) disagree on request framing at two layers:
+        #
+        # 1. NAME FRAMING: the front end decodes the name field as raw UTF-8 bytes;
+        #    the assessor applies NFKC normalization + casefold + [:name_length]
+        #    truncation to the same bytes.  Multi-byte characters (e.g. Kelvin sign
+        #    U+212A) produce different string values in each component.
+        #
+        # 2. BODY FRAMING: the front end forwards the FULL envelope body to the
+        #    assessor but sets Content-Length = front_following_length (from the
+        #    envelope header).  The assessor (BaseHTTPRequestHandler) reads exactly
+        #    Content-Length bytes; any surplus bytes remain in the persistent HTTP/1.1
+        #    keep-alive socket and become the prefix of the NEXT assessor request.
+        #    A participant who crafts front_following_length < len(body) can inject
+        #    a "smuggled" request that the assessor processes on the same connection.
         try:
             if self.headers.get_content_type() != "application/octet-stream":
-                raise ValueError
-            data = self.read_body(65_536)
+                raise ValueError("content_type")
+            data = self.read_body(131_072)
             if len(data) < 9 or data[:4] != b"FKI1":
-                raise ValueError
+                raise ValueError("magic")
             name_length = data[4]
+            if name_length == 0 or name_length > 32:
+                raise ValueError("name_length")
             front_raw = data[5:5 + name_length]
             front_name = front_raw.decode("utf-8")
             front_following_length = int.from_bytes(data[5 + name_length:7 + name_length], "big")
-            payload_length = int.from_bytes(data[-3:-1], "big")
-            payload = data[-payload_length:] if payload_length else b""
-            assessor_buffer = data[5:-3].decode("utf-8")
+            # assessor_name: what the assessor's parser will produce from the same bytes
+            assessor_buffer = data[5:].decode("utf-8", errors="replace")
             assessor_name = unicodedata.normalize("NFKC", assessor_buffer).casefold()[:name_length]
         except (ValueError, UnicodeDecodeError, OverflowError):
             self.send_json(422, {"error": "invalid_inspection_envelope"})
             return
-        # Find an existing trace whose compatibility_envelope_sha256 matches this payload.
-        import re as _re
-        trace_path = None
-        for candidate in sorted(RESULTS.glob("INSP-????????.json")):
-            try:
-                candidate_trace = json.loads(candidate.read_text())
-                if sha256_bytes(data) == candidate_trace.get("compatibility_envelope_sha256"):
-                    trace_path = candidate
-                    break
-            except (json.JSONDecodeError, OSError):
-                continue
-        if trace_path is None or not trace_path.is_file():
-            self.send_json(422, {"error": "inspection_trace_binding_mismatch"})
+        # Forward the full envelope to the assessor with CL = front_following_length.
+        # The assessor reads front_following_length bytes; any bytes beyond that
+        # stay in the socket and become the prefix of the next keep-alive request.
+        try:
+            conn = _get_assessor_conn()
+            conn.request("POST", "/assess/envelope", body=data, headers={
+                "Content-Type": "application/octet-stream",
+                "Content-Length": str(front_following_length),
+                "Connection": "keep-alive",
+            })
+            upstream = conn.getresponse()
+            assessor_data = json.loads(upstream.read(65_536))
+        except (OSError, _http_client.HTTPException, json.JSONDecodeError, ValueError):
+            _reset_assessor_conn()
+            self.send_json(503, {"error": "assessor_unavailable"})
             return
-        if assessor_name != "kqa" or payload_length != 1 or payload != b"\x01":
-            self.send_json(422, {"error": "assessor_frame_denied"})
-            return
-        matched_trace = json.loads(trace_path.read_text())
-        matched_inspection_id = matched_trace["inspection_id"]
-        assessor_correlation_id = matched_trace.get("assessor_correlation_id", "unknown")
+        framing_disagreement = front_name != assessor_name
+        assessor_correlation_id = str(assessor_data.get("assessor_id", "unknown"))
+        # Find the most recent inspection trace (use assessor_id as the state key).
+        RESULTS.mkdir(parents=True, exist_ok=True)
         state = {"assessment_id": assessor_correlation_id, "sentinel": "support-package-reviewed", "updated_at": utc_now()}
         (RESULTS / f"{assessor_correlation_id}.json").write_text(json.dumps(state, sort_keys=True, separators=(",", ":")) + "\n")
+        # Find any existing inspection trace to bind the evidence.
+        matched_inspection_id = "INSP-ENVELOPE"
+        for candidate in sorted(RESULTS.glob("INSP-????????.json"), reverse=True):
+            try:
+                matched_inspection_id = json.loads(candidate.read_text()).get("inspection_id", matched_inspection_id)
+                break
+            except (json.JSONDecodeError, OSError):
+                continue
         result = {
             "schema": "fieldkest.inspection-envelope-result/v1",
             "inspection_id": matched_inspection_id,
             "front_end": {"request_id": front_name, "following_length": front_following_length, "framing": "compatibility-forwarded"},
-            "assessor": {"request_id": assessor_name, "assessment_id": assessor_correlation_id, "action": "inspect_support_package"},
+            "assessor": {
+                "request_id": assessor_data.get("assessor_name_normalized", assessor_name),
+                "assessment_id": assessor_correlation_id,
+                "action": "inspect_support_package",
+                "framing_disagreement": framing_disagreement,
+            },
             "finding": {"package": "@keplerops/support-rehearsal", "version": "1.3.1", "view_binding": "publisher", "status": "protected-inspection-complete"},
         }
         append_audit(AUDIT, "inspection-envelopes", {
             "request_id": self.request_id, "principal": USERNAME,
-            "inspection_id": matched_inspection_id, "front_request_id": front_name,
-            "assessor_request_id": assessor_name, "assessment_id": assessor_correlation_id,
+            "inspection_id": matched_inspection_id,
+            "front_request_id": front_name,
+            "assessor_request_id": assessor_data.get("assessor_name_normalized", assessor_name),
+            "assessment_id": assessor_correlation_id,
+            "framing_disagreement": framing_disagreement,
             "envelope_sha256": sha256_bytes(data), "status": 200,
         })
         self.send_json(200, result)
@@ -452,7 +508,10 @@ def main() -> None:
     AUDIT.mkdir(parents=True, exist_ok=True)
     RESULTS.mkdir(parents=True, exist_ok=True)
     PUBLISHED.mkdir(parents=True, exist_ok=True)
-    serve_tls(RegistryHandler, port=8443)
+    # Listen on plain HTTP; Nginx (registry-nginx.conf) terminates TLS on 8443
+    # and proxies here.  The inspection paths forward the participant's Content-Length
+    # without correction, creating the TECL framing disagreement for K07.2.
+    serve_http(RegistryHandler, port=int(os.environ.get('PORT', '9000')))
 
 
 if __name__ == "__main__":

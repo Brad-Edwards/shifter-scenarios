@@ -25,8 +25,12 @@ setpriv --reuid=verdaccio --regid=verdaccio --init-groups \
 setpriv --reuid=fieldkest-registry --regid=fieldkest-registry --init-groups \
   python3 /opt/fieldkest-registry/assessor.py &
 assessor_pid=$!
+# Registry Python service on plain HTTP (127.0.0.1:9000); Nginx terminates TLS on 8443
 setpriv --reuid=fieldkest-registry --regid=fieldkest-registry --init-groups \
   python3 /opt/fieldkest-registry/registry.py &
 api_pid=$!
-trap 'kill "$api_pid" "$assessor_pid" "$verdaccio_pid" 2>/dev/null || true' INT TERM EXIT
+mkdir -p /tmp/nginx-client-body /tmp/nginx-proxy /tmp/nginx-fastcgi /tmp/nginx-uwsgi /tmp/nginx-scgi
+nginx -c /etc/registry-nginx.conf &
+nginx_pid=$!
+trap 'kill "$nginx_pid" "$api_pid" "$assessor_pid" "$verdaccio_pid" 2>/dev/null || true' INT TERM EXIT
 wait "$verdaccio_pid"

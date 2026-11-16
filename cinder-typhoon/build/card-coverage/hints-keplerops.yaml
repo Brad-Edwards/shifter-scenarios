@@ -279,21 +279,22 @@ hints:
     - kind: participant_artifact
       id: work/registry/inspection-normal.json
   K07.2:
-    h1: Inspect work/registry/inspection-compat.fki bytes. It starts FKI1 + name_length(3) + 3 non-ASCII bytes.
-      Decode those bytes as UTF-8 (KELVIN SIGN U+212A = 1 char), then apply NFKC normalization and casefold to
-      see what the back-end parser reads for the same 3-byte window. This is the deliberate length/normalization
-      boundary.
-    h2: Run K07.1 first to get a trace. Its compatibility_envelope_sha256 = sha256 of the fixture file; the
-      envelope endpoint validates that the submitted blob matches. POST the unmodified fixture to
-      packages.inspection-envelope with Content-Type: application/octet-stream.
-    h3: The result shows front_end.request_id (Kelvin sign K, 1 char, raw) and assessor.request_id (kqa,
-      3 chars, normalized). They disagree because name_length bytes → 1 char (front) vs name_length chars
-      from normalized buffer → 3 chars (assessor). The state sentinel and both audit records complete the evidence.
+    h1: The binary envelope format is FKI1 + name_length(1 byte) + name(N bytes) + front_following_length(2 bytes,
+      big-endian). The inspection service sets Content-Length = front_following_length when forwarding to the
+      assessor. Set front_following_length = 10 (the 10-byte header size): the assessor reads 10 bytes; surplus
+      bytes stay in the persistent HTTP/1.1 socket as the next assessor request prefix.
+    h2: Use KELVIN SIGN U+212A (bytes e284aa, 3 bytes = 1 char) as the name to show the name framing disagreement:
+      front decodes raw UTF-8 → 1 char; assessor applies NFKC + casefold + [:3] → 3 chars. After the 10-byte
+      header, include a valid HTTP POST to /assess/privileged as the surplus bytes; the final 3 envelope bytes
+      become the smuggled POST body.
+    h3: Submit the envelope via persistent HTTP/1.1 keep-alive to packages.inspection-envelope, then immediately
+      send a normal inspection on the SAME connection. The inspection service reads the assessor's buffered
+      privileged response instead of the expected assessment: assessment=privileged-access-confirmed in the result.
     references:
     - kind: client_route
       id: packages.inspection-envelope
-    - kind: participant_artifact
-      id: work/registry/inspection-compat.fki
+    - kind: client_route
+      id: packages.inspections
   K07.3:
     h1: Begin with the package inspection contract and its trace records. Its published client document exposes
       the inspection envelope operation, so use that ordinary contract instead of guessing a path.

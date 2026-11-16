@@ -1,7 +1,7 @@
 FROM node:22.19.0-bookworm-slim
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y apache2-utils ca-certificates curl iproute2 python3 python3-cryptography util-linux \
+    && apt-get install --no-install-recommends -y apache2-utils ca-certificates curl iproute2 nginx python3 python3-cryptography util-linux \
     && rm -rf /var/lib/apt/lists/* \
     && npm install --prefix /opt/verdaccio --omit=dev --no-audit --no-fund verdaccio@6.1.6 \
     && groupadd --system verdaccio \
@@ -20,6 +20,7 @@ COPY build/keplerops/native-registry/seed.py /opt/fieldkest-registry/seed-native
 COPY assets/keplerops/native-packages /opt/fieldlink-native-packages
 COPY build/keplerops/runtime/registry-entrypoint.sh /usr/local/bin/fieldkest-registry-entrypoint
 COPY build/keplerops/config/verdaccio.yaml /etc/verdaccio/config.yaml
+COPY build/keplerops/config/registry-nginx.conf /etc/registry-nginx.conf
 COPY assets/keplerops/registry/k-registry-state.tar /tmp/k-registry-state.tar
 COPY assets/keplerops/release-lineage/k-registry-release-lineage-state.tar /tmp/k-registry-release-lineage-state.tar
 
