@@ -12,7 +12,9 @@ import uuid
 from urllib import request as urlrequest
 from urllib.parse import urlsplit
 
-from http_support import KeplerHandler, UpstreamInvalidResponse, UpstreamUnavailable, append_audit, open_json, serve_tls
+from http_support import (KeplerHandler, UpstreamInvalidResponse, UpstreamUnavailable,
+                          append_audit, open_json, serve_tls,
+                          RETAINED_SUPPORT_ISSUER, RETAINED_SUPPORT_ASSERTION_ENDPOINT)
 from credentials import credential
 
 
@@ -59,9 +61,19 @@ class SupportHandler(KeplerHandler):
     def do_GET(self) -> None:
         if self.send_client_document():
             return
+        path = urlsplit(self.path).path
+        # Public OIDC discovery endpoint for the RETAINED_SUPPORT federation provider.
+        if path == "/federation/retained-support/.well-known/openid-configuration":
+            return self.send_json(200, {
+                "issuer": RETAINED_SUPPORT_ISSUER,
+                "assertion_endpoint": RETAINED_SUPPORT_ASSERTION_ENDPOINT,
+                "assertion_audiences_supported": ["OIDC-FIELDKEST-SUPPORT"],
+                "claims_supported": ["sub", "tenant", "roles", "iat", "exp", "jti"],
+                "subject_syntax": "urn:fieldkest:pairwise:<uuid>",
+                "grant_types_supported": ["assertion_bearer"],
+            })
         if not self._authorized():
             return self.send_json(403, {"error": "integration_token_denied"})
-        path = urlsplit(self.path).path
         if path == "/api/handovers/current":
             if not HANDOVER.is_file():
                 return self.send_json(404, {"error": "handover_not_available"})
