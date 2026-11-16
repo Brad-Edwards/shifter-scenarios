@@ -407,15 +407,20 @@ hints:
     - kind: client_route
       id: ci.review-job
   K09.4:
-    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Start from ci.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as job-input trust and execution under a constrained service identity. Carry forward only earned
-      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Review the published client document and ordinary records for ci.keplerops.test. Replay the preceding evidence
-      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: Use the K09.3 integration reference as support_input with diagnostic profile=runner-command. Job 1:
+      argv=["/bin/cat", "/srv/fieldlink-ci/runner/runner-operations.md"]. The note identifies the worker
+      (svc-fieldlink-ci), the STATUS_COMMAND for Job 2, and the service URL table.
+    h2: Job 2: use the STATUS_COMMAND from the note as argv=["/bin/sh", "-c", "..."]. It sources
+      $FIELDLINK_RUN_DIR/connections.env (base URLs) and uses $FIELDLINK_RUN_DIR/build-records.curl
+      (per-run worker token) to call $FIELDLINK_BUILD_RECORDS_URL/api/build-records/worker-status.
+    h3: The Job 2 response contains principal=svc-fieldlink-ci and availability=available. The two distinct
+      run_ids and the build-records audit record (binding the worker lease, principal, and network origin)
+      are the K09.4 completion evidence.
     references:
     - kind: participant_service
-      id: ci.keplerops.test
+      id: review.keplerops.test
+    - kind: client_route
+      id: ci.review-jobs
   K10.1:
     h1: Begin with the preview queue associations and document-rendering services. Its published client document
       exposes the association operation, so use that ordinary contract instead of guessing a path.

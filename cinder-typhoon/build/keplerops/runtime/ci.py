@@ -17,7 +17,7 @@ import zipfile
 
 from http_support import (
     KeplerHandler, append_audit, canonical_bytes, serve_tls,
-    sha256_bytes, utc_now,
+    sha256_bytes, utc_now, issue_worker_token, validate_worker_token,
 )
 from credentials import credential
 from package_delivery import pack_connector, consume_package
@@ -36,6 +36,13 @@ RELEASE_READER_TOKEN = credential("release_reader_token")
 K29_CONFIG = json.loads((STATE / "config/release-lineage.json").read_text())
 _RUNNER_CONFIG = json.loads((STATE / "config/runner-foundation.json").read_text())
 _DIAGNOSTIC_REFERENCE = Path("/srv/fieldlink-ci/diagnostic-request-reference.md")
+_RUNNER_NOTE = Path("/srv/fieldlink-ci/runner/runner-operations.md")
+_WORKER_HMAC_KEY = Path("/tmp/worker-hmac.key")
+_WORKSPACE_ROOT = STATE / "workspaces" / "rowan"
+# Base URLs for the worker's service connections
+_BUILD_RECORDS_URL = "https://review.keplerops.test"
+_SOURCE_URL = "https://source.keplerops.test"
+_PACKAGES_URL = "https://packages.keplerops.test"
 REVIEW_JOBS = RESULTS / "review-jobs"
 
 
@@ -62,6 +69,10 @@ class CIHandler(KeplerHandler):
         if self.send_client_document():
             return
         path = urlsplit(self.path).path
+        # K09.4: build-records routes use worker bearer tokens, not developer auth.
+        if path in ("/api/build-records/worker-status", "/api/build-records"):
+            self._build_records_handler(path)
+            return
         if not self._authorized():
             self.send_json(401, {"error": "authentication_required"})
             return
@@ -146,6 +157,43 @@ class CIHandler(KeplerHandler):
         else:
             self.send_json(404, {"error": "not_found"})
 
+    def _build_records_handler(self, path: str) -> None:
+        """K09.4: build-records status endpoint authenticated by per-run worker token."""
+        if path == "/api/build-records":
+            self.send_json(200, {"routes": [{"method": "GET", "path": "/api/build-records/worker-status"}]})
+            return
+        authorization = self.headers.get("Authorization", "")
+        if not authorization.startswith("Bearer "):
+            self.send_json(401, {"error": "worker_authentication_required"})
+            return
+        try:
+            secret = _WORKER_HMAC_KEY.read_bytes()
+            peer = self.client_address[0]
+            claims = validate_worker_token(
+                authorization, secret, "fieldkest-build-records", peer,
+                origin_network="0.0.0.0/0",
+            )
+        except (OSError, Exception):
+            claims = None
+        if not claims:
+            self.send_json(403, {"error": "worker_identity_denied"})
+            return
+        status = {
+            "principal": claims.get("principal", "svc-fieldlink-ci"),
+            "availability": "available",
+            "run_id": claims.get("run_id", ""),
+            "request_id": self.request_id,
+        }
+        append_audit(AUDIT, "build-records", {
+            "request_id": self.request_id,
+            "principal": status["principal"],
+            "run_id": status["run_id"],
+            "lease_id": claims.get("lease_id", ""),
+            "peer_address": self.client_address[0],
+            "status": 200,
+        })
+        self.send_json(200, status)
+
     def _review_job_submit(self) -> None:
         """K09.3: submit a support-input review job.
 
@@ -163,28 +211,33 @@ class CIHandler(KeplerHandler):
         support_input = request.get("support_input")
         diagnostic = request.get("diagnostic", {})
         profile = str(diagnostic.get("profile", ""))
-        if not isinstance(support_input, dict):
+        if support_input is None:
             self.send_json(422, {"error": "support_input_required"})
             return
         REVIEW_JOBS.mkdir(parents=True, exist_ok=True)
         run_id = "RJ-" + uuid.uuid4().hex[:8].upper()
-        artifact_id = support_input.get("artifact_id", "")
-        eligible = support_input.get("diagnostic_eligible", False)
-        if not eligible or artifact_id != _RUNNER_CONFIG.get("integration_artifact"):
-            # Ordinary (non-diagnostic) or wrong artifact: produce a retained
-            # reference but deny runner-command dispatch (K09.4 boundary).
-            retained_ref = support_input.get("linked_support_ref", "")
-            result = {
-                "run_id": run_id,
-                "state": "success",
-                "profile": profile,
-                "workspace_generation": _RUNNER_CONFIG["workspace"]["generation"],
-                "support_input": retained_ref,
-                "review": {"maintained_reference": ""},
-            }
-        else:
-            # Integration artifact with render-review: resolve linked_support_ref
-            # and return the diagnostic-request-reference content.
+        # For runner-command, the support_input must be the integration reference
+        # returned by K09.3 (not an ordinary artifact or unresolved link).
+        is_integration_ref = (
+            isinstance(support_input, str)
+            and support_input == _RUNNER_CONFIG.get("integration_reference")
+        )
+        eligible_artifact = (
+            isinstance(support_input, dict)
+            and support_input.get("diagnostic_eligible", False)
+            and support_input.get("artifact_id") == _RUNNER_CONFIG.get("integration_artifact")
+        )
+        if profile == "runner-command":
+            if not is_integration_ref:
+                self.send_json(403, {"error": "build_operations_entitlement_required"})
+                return
+            argv = diagnostic.get("argv", [])
+            if not argv or not isinstance(argv, list) or not all(isinstance(a, str) for a in argv):
+                self.send_json(422, {"error": "invalid_argv"})
+                return
+            result = self._run_command(run_id, argv)
+        elif eligible_artifact:
+            # Integration artifact with render-review: resolve linked_support_ref.
             maintained = _DIAGNOSTIC_REFERENCE.read_text() if _DIAGNOSTIC_REFERENCE.is_file() else ""
             result = {
                 "run_id": run_id,
@@ -194,6 +247,23 @@ class CIHandler(KeplerHandler):
                 "support_input": _RUNNER_CONFIG.get("integration_reference", ""),
                 "review": {"maintained_reference": maintained},
             }
+        elif isinstance(support_input, str):
+            # Unresolved string reference — not permitted as a submission directly.
+            self.send_json(403, {"error": "retained_input_denied"})
+            return
+        else:
+            # Ordinary (non-diagnostic) artifact: produce a retained reference.
+            retained_ref = support_input.get("linked_support_ref", "")
+            result = {
+                "run_id": run_id,
+                "state": "success",
+                "profile": profile,
+                "workspace_generation": _RUNNER_CONFIG["workspace"]["generation"],
+                "support_input": retained_ref,
+                "review": {"maintained_reference": ""},
+            }
+        artifact_id = support_input.get("artifact_id", "") if isinstance(support_input, dict) else ""
+        eligible = eligible_artifact or is_integration_ref
         (REVIEW_JOBS / f"{run_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "review-jobs", {
             "request_id": self.request_id, "principal": USERNAME,
@@ -201,6 +271,84 @@ class CIHandler(KeplerHandler):
             "profile": profile, "eligible": eligible, "status": 202,
         })
         self.send_json(202, {"run_id": run_id, "result": f"/api/review-jobs/{run_id}"})
+
+    def _run_command(self, run_id: str, argv: list[str]) -> dict:
+        """Execute a runner-command subprocess with per-run worker credentials."""
+        import os
+        import tempfile
+        lease_id = uuid.uuid4().hex
+        # Issue per-run worker token
+        worker_token = ""
+        try:
+            hmac_secret = _WORKER_HMAC_KEY.read_bytes()
+            worker_token = issue_worker_token(
+                hmac_secret, "fieldkest-build-records",
+                run_id, lease_id, lifetime_seconds=_RUNNER_CONFIG.get("lease_seconds", 180),
+            )
+        except (OSError, Exception):
+            pass
+        # Create per-run credential directory
+        run_dir = Path(tempfile.mkdtemp(prefix=f"fk-run-{run_id}-"))
+        try:
+            ci_dir = run_dir / "fieldlink-ci"
+            ci_dir.mkdir(mode=0o700)
+            ca = Path("/tmp/fieldkest-ca.crt")
+            # connections.env
+            (ci_dir / "connections.env").write_text(
+                f'FIELDLINK_BUILD_RECORDS_URL={_BUILD_RECORDS_URL}\n'
+                f'FIELDLINK_SOURCE_URL={_SOURCE_URL}\n'
+                f'FIELDLINK_PACKAGES_URL={_PACKAGES_URL}\n'
+            )
+            # build-records.curl (curl config with worker token; connects to localhost)
+            curl_config = (
+                f'resolve = "review.keplerops.test:443:127.0.0.1"\n'
+                f'cacert = {str(ca)}\n'
+                f'insecure\n'
+                f'header = "Authorization: Bearer {worker_token}"\n'
+            ) if worker_token else (
+                f'resolve = "review.keplerops.test:443:127.0.0.1"\n'
+                f'cacert = {str(ca)}\n'
+                f'insecure\n'
+            )
+            (ci_dir / "build-records.curl").write_text(curl_config)
+            (ci_dir / "build-records.curl").chmod(0o600)
+            # Workspace
+            workspace = _WORKSPACE_ROOT
+            workspace.mkdir(parents=True, exist_ok=True)
+            env = os.environ.copy()
+            env["HOME"] = str(workspace)
+            # Execute command
+            proc = subprocess.run(
+                argv,
+                cwd=str(workspace),
+                capture_output=True,
+                timeout=_RUNNER_CONFIG.get("execution_timeout_seconds", 20),
+                env=env | {"FIELDLINK_RUN_DIR": str(ci_dir)},
+                check=False,
+            )
+            stdout = proc.stdout.decode(errors="replace")
+            stderr = proc.stderr.decode(errors="replace")
+            state = "success" if proc.returncode == 0 else "failure"
+            return {
+                "run_id": run_id,
+                "state": state,
+                "profile": "runner-command",
+                "argv": argv,
+                "exit_code": proc.returncode,
+                "stdout": stdout,
+                "stderr": stderr,
+                "lease_id": lease_id,
+                "workspace_generation": _RUNNER_CONFIG["workspace"]["generation"],
+                "opened_paths": argv,
+                "saved_files": [],
+            }
+        except subprocess.TimeoutExpired:
+            return {"run_id": run_id, "state": "timeout", "profile": "runner-command", "argv": argv, "exit_code": -1, "stdout": "", "stderr": "execution_timeout", "lease_id": lease_id, "workspace_generation": _RUNNER_CONFIG["workspace"]["generation"]}
+        except Exception as exc:
+            return {"run_id": run_id, "state": "failure", "profile": "runner-command", "argv": argv, "exit_code": -1, "stdout": "", "stderr": str(exc), "lease_id": lease_id, "workspace_generation": _RUNNER_CONFIG["workspace"]["generation"]}
+        finally:
+            import shutil
+            shutil.rmtree(run_dir, ignore_errors=True)
 
     def _job_submit(self) -> None:
         try:

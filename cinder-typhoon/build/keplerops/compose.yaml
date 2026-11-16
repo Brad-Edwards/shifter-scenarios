@@ -323,6 +323,12 @@ services:
       - ci-results:/var/lib/fieldkest-ci/results
       - handover:/var/lib/fieldkest-handover
       - runner-socket:/run/fieldkest-runner
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
+      - ci-rowan-workspace:/var/lib/fieldkest-ci/workspaces/rowan
+    extra_hosts:
+      - "cloud-api.keplerops.test:10.77.50.11"
+      - "source.keplerops.test:10.77.51.20"
+      - "packages.keplerops.test:10.77.51.30"
     networks:
       delivery:
         ipv4_address: 10.77.51.41
