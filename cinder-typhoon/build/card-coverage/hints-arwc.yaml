@@ -686,12 +686,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
   W18.3:
-    h1: Read the installed history-provenance document before querying FlowBM3s. Find the largest source-time gap whose
-      bounding rows both have Good transport and process quality.
-    h2: Treat source time, collection time, and ingestion time as separate metadata because they belong to the controller value, Telegraf, and PostgreSQL respectively.
-      Record all three for both sides and check their order rather than treating them as one clock.
-    h3: Compare the engineering unit on both bounding rows. The retained gap is a collection gap; do not invent a
-      scale or unit change that the native history does not show.
+    h1: Read ~/CairnReach/Briefs/W18/history-provenance.md first. Run the LAG gap query against
+      public.process_history with tag = 'flow_b_m3s' (series name, not OPC UA variable name FlowBM3s)
+      and filter for transport_quality ILIKE '%Good%'. Order by source_gap DESC to find the largest gap.
+    h2: The largest qualifying gap is about 1 day 3 hours 53 minutes: last good sample 2026-11-13 16:54:46
+      UTC, next good sample 2026-11-14 20:48:19 UTC. This is a real collection interruption. Record all
+      three timestamps and both quality fields for both bounding rows.
+    h3: Confirm unit=m3/s did not change across the gap (both sides show m3/s, value=0.100 m3/s). The gap
+      is in source_time (the controller clock gap), not just display rows missing. A display gap alone
+      does not prove a source-time gap.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/history-provenance.md
