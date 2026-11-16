@@ -804,15 +804,18 @@ hints:
     - kind: client_route
       id: process.maintenance-record-update
   W21.1:
-    h1: Start with the W21 handover and commissioning note, then open the supplied controller project in OpenPLC
-      Editor. The note identifies the claims to check; it does not prove what is running.
-    h2: Review the main FBD structure, scheduled resource task, and Device Configuration. Keep the project, program, language,
-      interval, ProjectRevision, Runtime v4 target, and address together.
-    h3: Record that ProjectRevision is declared in the project logic and that the runtime target and address are in Device Configuration.
-      This card needs no compile, upload, start, stop, or force action.
+    h1: Read ~/CairnReach/Briefs/W21/deployment-note.md (CRR-PLC-COM-364) for five claims to verify. Open
+      ~/CairnReach/controller in OpenPLC Editor or inspect directly. The commissioning note is starting
+      material; the project files are authoritative.
+    h2: project.json: name=arwc-site, task0 Cyclic T#100ms, program=main. devices/configuration.json:
+      deviceBoard=OpenPLC Runtime v4, runtimeIpAddress=172.29.63.20. pous/programs/main.fbd: declared
+      ProjectRevision : UINT := 364.
+    h3: Independently observe ProjectRevision from the live OT: query CRR.ProjectRevision from FUXA or
+      ot_history.tag_catalog. Confirm the running value (364) matches the saved project's declared value.
+      Do not compile, upload, start, stop, or force anything.
     references:
     - kind: participant_artifact
-      id: /home/fieldlink/CairnReach/Briefs/W21/project-handover.md
+      id: /home/fieldlink/CairnReach/Briefs/W21/deployment-note.md
   W21.2:
     h1: Use the existing Runtime v4 system connection and open a native debug session without accepting an upload offer.
       Runtime Status and the debugger supply the running evidence.
