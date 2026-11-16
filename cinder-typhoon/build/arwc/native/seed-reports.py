@@ -262,6 +262,33 @@ def seed() -> None:
     else:
         print(f"Metabase question already current: {ext_title}")
 
+    # Seed the RELPROTO-CRR-R3 relation contract question (W11.1).
+    # Describes the ERPNext REST API representation of the ASSET_WORK relation.
+    rel_title = "RELPROTO-CRR-R3"
+    rel_description = (
+        "Relation contract RELPROTO-CRR-R3 revision 4. API: ERPNext REST API v16. "
+        "DocType: Task. Relation: ASSET_WORK. Association: ASC-CRR-4417. "
+        "Work order: WO-CRR-4417. Asset: AST-CRR-017. "
+        "Ordinary query: GET /api/resource/Task with subject filter %4417%."
+    )
+    rel_sql = (
+        "SELECT record_id, revision, api, doctype, relation, association, "
+        "work_order, asset, query_template FROM relation_contracts WHERE record_id = 'RELPROTO-CRR-R3'"
+    )
+    rel_card = next((card for card in api("card") if card["name"] == rel_title), None)
+    if rel_card is None:
+        rel_card = api("card", {
+            "name": rel_title, "display": "table", "visualization_settings": {},
+            "description": rel_description,
+            "dataset_query": {"database": database["id"], "type": "native", "native": {
+                "query": rel_sql, "template-tags": {}}}})
+        print(f"Created Metabase question: {rel_title} (id={rel_card.get('id')})")
+    elif rel_card.get("description") != rel_description:
+        api(f'card/{rel_card["id"]}', {"description": rel_description}, method="PUT")
+        print(f"Updated Metabase question: {rel_title}")
+    else:
+        print(f"Metabase question already current: {rel_title}")
+
     print("ARWC native planning reader and saved report configured")
 
 

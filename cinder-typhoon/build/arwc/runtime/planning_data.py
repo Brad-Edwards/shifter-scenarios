@@ -635,6 +635,7 @@ class Handler(BaseHTTPRequestHandler):
         report_row_ext_template = _metabase_card_url(
             reports, "ext_dp3_question_id", "https://reports.arwc.test/api/card/ext-excerpts-dp3"
         )
+        # W11.1: planning.relation-schema routes to native Metabase question on relation_contracts.
         self.send_json(200, {
             "schema": "arwc.client-documents/v1",
             "service": "planning-data.arwc.test",
@@ -688,7 +689,7 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "planning.relation-schema",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/relation-schemas/current"
+                    "template": _metabase_card_url(reports, "relproto_question_id", "https://reports.arwc.test/api/card/relproto-crr-r3")
                 },
                 {
                     "key": "planning.relation-exchange",
@@ -757,13 +758,10 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(410, {"error": "allocation-discrepancies endpoint retired; use planning.allocation-discrepancy route"})
             return
         if path == "/api/relation-schemas/current":
-            if not relation_prerequisite():
-                self.send_json(403, {"error": "asset association or reconciled allocation is required"})
-                return
-            state = load_state()
-            state["relation_contract_observed"] = True
-            save_state(state)
-            self.accepted("relation-contract-read", RELATION_CONTRACT)
+            # W11.1 Bolt facade removed. The relation contract RELPROTO-CRR-R3 is now
+            # a native Metabase question on relation_contracts in corporate-db.
+            # Use planning.relation-schema route in the client doc.
+            self.send_json(410, {"error": "relation-schemas endpoint retired; use planning.relation-schema route"})
             return
         if path == "/api/reporting-contracts/current":
             self.send_json(200, REPORTING_CONTRACT)

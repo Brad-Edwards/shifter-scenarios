@@ -134,6 +134,25 @@ GRANT SELECT ON public.district_allocation_adjustment TO planning_reader;
 GRANT SELECT ON public.allocation_ledger TO planning_reader;
 -- W09.2: planning_reader reads meter_export via native Metabase question.
 GRANT SELECT ON public.meter_export TO planning_reader;
+-- W11.1: relation_contracts table for RELPROTO-CRR-R3.
+-- Describes how the ASSET_WORK association ASC-CRR-4417 is represented in ERPNext REST API.
+CREATE TABLE IF NOT EXISTS public.relation_contracts (
+  record_id text PRIMARY KEY,
+  revision integer NOT NULL,
+  api text NOT NULL,
+  doctype text NOT NULL,
+  relation text NOT NULL,
+  association text NOT NULL,
+  work_order text NOT NULL,
+  asset text NOT NULL,
+  query_template jsonb NOT NULL
+);
+INSERT INTO public.relation_contracts VALUES (
+  'RELPROTO-CRR-R3', 4, 'ERPNext REST API v16', 'Task', 'ASSET_WORK',
+  'ASC-CRR-4417', 'WO-CRR-4417', 'AST-CRR-017',
+  '{"doctype":"Task","filters":"[[\"subject\",\"like\",\"%4417%\"]]","fields":"[\"name\",\"subject\",\"project\",\"status\"]"}'::jsonb
+) ON CONFLICT (record_id) DO NOTHING;
+GRANT SELECT ON public.relation_contracts TO planning_reader;
 -- W10.2: district_excerpts table for the cross-district retrieval vulnerability.
 -- Both Cairn Reach and Merewick excerpts are associated with source_set SEL-CRR-DP3-7.
 -- The Metabase question omits a district predicate, so a Cairn Reach caller sees Merewick data.
