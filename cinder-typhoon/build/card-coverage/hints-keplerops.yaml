@@ -361,17 +361,17 @@ hints:
     - kind: client_route
       id: packages.entitlement-check
   K09.1:
-    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
-      document exposes the run and run log operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as job-input trust and execution under a constrained service identity. Observe the ordinary and
-      denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the run and run log operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: Navigate to Jenkins (ci.keplerops.test) and open the fieldlink-report job. The most recent build is marked
+      FAILURE. The build's public summary only shows FAILURE; the actual failure reason is in the console log.
+    h2: Access the console log via the Jenkins API (GET /job/fieldlink-report/{build}/logText/progressiveText).
+      The build failed because fixtures/report-crr-og2.json was missing from the workspace (FileNotFoundError).
+      The build also archived three artifacts under reports/.
+    h3: Download REVNOTE-{build_number}.json from the archived artifacts. It contains review_id, run_id, and
+      a baseline field with a dossier reference (repository, ref, path). These are the log digest binding and
+      dossier ID for K09.1 completion.
     references:
-    - kind: client_route
-      id: ci.run
-    - kind: client_route
-      id: ci.run-log
+    - kind: participant_service
+      id: ci.keplerops.test
   K09.2:
     h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
       document exposes the run operation, so use that ordinary contract instead of guessing a path.
