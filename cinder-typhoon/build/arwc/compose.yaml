@@ -282,6 +282,12 @@ services:
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
     - arwc-planning-evidence:/run/arwc-planning-evidence
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/reports-state.json
+      target: /run/arwc-reports-state.json
+      read_only: true
+      bind:
+        create_host_path: true
     environment:
     - PGDATA=/run/arwc-pgdata
     networks:

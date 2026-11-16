@@ -28,6 +28,15 @@ import reporting_schedule
 
 ROOT = pathlib.Path("/var/lib/arwc-data")
 STATE = ROOT / "state" / "planning.json"
+REPORTS_STATE_PATH = pathlib.Path("/run/arwc-reports-state.json")
+
+
+def _load_reports_state() -> dict:
+    """Load Metabase question IDs from the reports state file seeded at deploy time."""
+    try:
+        return json.loads(REPORTS_STATE_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.json")
@@ -596,6 +605,20 @@ class Handler(BaseHTTPRequestHandler):
     def _serve_client_document(self) -> bool:
         if urlsplit(self.path).path != "/.well-known/arwc-client":
             return False
+        reports = _load_reports_state()
+        qry_id = reports.get("qry_reserve_r7_id", "")
+        metabase_url = reports.get("metabase_url", "https://reports.arwc.test")
+        # planning.saved-query and planning.query-run route to native Metabase.
+        # The participant uses the W06.3 Metabase session (X-Metabase-Session header)
+        # to call these endpoints directly against the real Metabase/PostgreSQL stack.
+        saved_query_template = (
+            f"{metabase_url}/api/card/{qry_id}" if qry_id
+            else "https://reports.arwc.test/api/card/qry-reserve-r7"
+        )
+        query_run_template = (
+            f"{metabase_url}/api/card/{qry_id}/query" if qry_id
+            else "https://reports.arwc.test/api/card/qry-reserve-r7/query"
+        )
         self.send_json(200, {
             "schema": "arwc.client-documents/v1",
             "service": "planning-data.arwc.test",
@@ -604,12 +627,12 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "planning.saved-query",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/saved-queries/current"
+                    "template": saved_query_template
                 },
                 {
                     "key": "planning.query-run",
                     "method": "POST",
-                    "template": "https://planning-data.arwc.test/api/query-runs"
+                    "template": query_run_template
                 },
                 {
                     "key": "planning.allocation-ledger",

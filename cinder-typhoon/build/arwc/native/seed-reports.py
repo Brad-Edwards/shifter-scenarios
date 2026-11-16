@@ -86,6 +86,23 @@ def seed() -> None:
         print(f"Updated Metabase question description: {qry_title}")
     else:
         print(f"Metabase question already current: {qry_title}")
+
+    # Write reports state (question ID) so the planning_data service can include the
+    # native Metabase URL in its client document routes.
+    import pathlib as _pathlib, json as _json
+    reports_state = {
+        "qry_reserve_r7_id": qry_card["id"],
+        "metabase_url": "https://reports.arwc.test",
+    }
+    for op_dir in [".operator", "$(cd .. && pwd)/.operator"]:
+        try:
+            p = _pathlib.Path(op_dir) / "archive-workflow" / "reports-state.json"
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text(_json.dumps(reports_state, indent=2))
+            p.chmod(0o644)
+        except Exception:
+            pass
+    print(f"Reports state: QRY-RESERVE-R7 Metabase question id={qry_card['id']}")
     print("ARWC native planning reader and saved report configured")
 
 
