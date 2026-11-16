@@ -163,7 +163,15 @@ class StaffHandler(KeplerHandler):
                 return
             # Decode and normalize — allows %2e%2e traversal out of /notes/.
             resolved = posixpath.normpath(unquote(source_path))
-            target_url = f"https://{IDENTITY_HOST}{resolved}"
+            # First segment names the target service; remainder is the path.
+            # /identity/api/... → identity.keplerops.test/api/...
+            parts = resolved.lstrip("/").split("/", 1)
+            if len(parts) < 2 or not parts[0] or not parts[1]:
+                self.send_json(400, {"error": "invalid_resolved_path"})
+                return
+            service_host = parts[0] + ".keplerops.test"
+            service_path = "/" + parts[1]
+            target_url = f"https://{service_host}{service_path}"
             req = Request(target_url, method=method)
             req.add_header("Authorization", f"Bearer {PREVIEW_SERVICE_TOKEN}")
             if method == "PATCH":
@@ -175,7 +183,8 @@ class StaffHandler(KeplerHandler):
                 return
             append_audit(AUDIT, "note-preview", {
                 "action": "proxy", "source_path": source_path,
-                "resolved": resolved, "method": method, "peer": self.client_address[0],
+                "resolved": resolved, "target": target_url, "method": method,
+                "peer": self.client_address[0],
             })
             self.send_json(status, data)
             return
