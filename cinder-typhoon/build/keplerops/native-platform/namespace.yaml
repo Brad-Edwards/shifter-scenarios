@@ -427,3 +427,35 @@ roleRef:
   kind: Role
   name: schedule-reader
   apiGroup: rbac.authorization.k8s.io
+---
+# K16.2: svc-fieldlink-export can patch sched-2841 CronJob startup behavior.
+# Delegated patch rights allow changing env vars (adding MARKER) without touching
+# immutable fields (ASSIGNMENT, PROFILE, STARTUP_CONFIG). The patch persists and
+# takes effect on the next Job run from the CronJob.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: schedule-patcher
+  namespace: fieldlink
+rules:
+  - apiGroups: [batch]
+    resources: [cronjobs]
+    verbs: [patch]
+    resourceNames: [sched-2841]
+  - apiGroups: [batch]
+    resources: [jobs]
+    verbs: [create, get]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: schedule-patcher
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: schedule-patcher
+  apiGroup: rbac.authorization.k8s.io

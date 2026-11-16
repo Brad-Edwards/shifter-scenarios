@@ -216,6 +216,80 @@ class CloudApiHandler(KeplerHandler):
             return
         self.send_json(404, {"error": "not_found"})
 
+    def _patch_schedule(self, schedule_id: str) -> None:
+        """K16.2: patch the CronJob startup behavior to add Cinder's marker.
+
+        Uses real K3s strategic merge patch on CronJob sched-2841.
+        Only the MARKER env var is added — ASSIGNMENT, PROFILE, STARTUP_CONFIG
+        (the support output) remain unchanged (immutable). The patch persists and
+        takes effect on the next Job run from the CronJob.
+        RBAC: svc-fieldlink-export has patch rights on CronJob sched-2841.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        try:
+            body = self.read_json(32_768)
+            marker = str(body.get("marker", ""))
+            if not marker:
+                raise ValueError("marker_required")
+        except (ValueError, TypeError):
+            self.send_json(422, {"error": "marker_required"})
+            return
+        cronjob_name = schedule_id.lower()
+        # Verify CronJob exists and get current spec before patching
+        s_get, cj = _k3s_request(
+            "GET", f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
+            bearer=sa_token,
+        )
+        if s_get == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+            return
+        if s_get != 200:
+            self.send_json(404, {"error": "schedule_not_found"})
+            return
+        # Strategic merge patch — adds MARKER to container env, immutable fields unchanged
+        patch = {
+            "spec": {
+                "jobTemplate": {
+                    "spec": {
+                        "template": {
+                            "spec": {
+                                "containers": [{
+                                    "name": "exporter",
+                                    "env": [{"name": "MARKER", "value": marker}],
+                                }]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        s_patch, patch_result = _k3s_request(
+            "PATCH",
+            f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
+            body=patch, bearer=sa_token,
+        )
+        if s_patch == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+            return
+        if s_patch not in (200, 201):
+            self.send_json(502, {"error": f"k3s_patch_failed: {s_patch}"})
+            return
+        result = {
+            "schema": "fieldkest.schedule-patch/v1",
+            "schedule_id": schedule_id.upper(),
+            "marker": marker,
+            "patched": True,
+        }
+        append_audit(AUDIT, "schedule-patches", {
+            "request_id": self.request_id, "schedule_id": schedule_id.upper(),
+            "marker": marker, "status": 200,
+        })
+        self.send_json(200, result)
+
     def do_PATCH(self) -> None:
         """K15.3: PATCH the export destination using the export SA token.
 
@@ -226,6 +300,11 @@ class CloudApiHandler(KeplerHandler):
         """
         path = urlsplit(self.path).path
         # /api/exports/{id}/destination: K15.3 — authenticated by export SA token
+        # /api/schedules/{id}: K16.2 — PATCH the CronJob startup behavior
+        if path.startswith("/api/schedules/") and not path.endswith("/runs"):
+            schedule_id = path.removeprefix("/api/schedules/")
+            self._patch_schedule(schedule_id)
+            return
         if path.endswith("/destination") and "/api/exports/" in path:
             export_id = path.removeprefix("/api/exports/").removesuffix("/destination")
             self._patch_destination(export_id)
@@ -319,6 +398,11 @@ class CloudApiHandler(KeplerHandler):
             return
         if path == "/api/workspaces/current/token-exchange":
             self._issue_workload_token()
+            return
+        # /api/schedules/{id}/runs: K16.2 — create a fresh Job from the patched CronJob
+        if path.endswith("/runs") and "/api/schedules/" in path:
+            schedule_id = path.removeprefix("/api/schedules/").removesuffix("/runs")
+            self._schedule_run(schedule_id)
             return
         # /api/exports/{id}/runs: K15.4 — POST a collection run for the export.
         # Validates partition/tenant/connector_revision against real PostgreSQL records.
@@ -586,6 +670,70 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(404, {"error": "export_job_not_found"})
         else:
             self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+    def _schedule_run(self, schedule_id: str) -> None:
+        """K16.2: create a fresh K3s Job from the patched CronJob template.
+
+        Proves that the MARKER patch persists and takes effect in the new Job.
+        The support output (ASSIGNMENT, PROFILE, STARTUP_CONFIG) must remain unchanged.
+        RBAC: svc-fieldlink-export has create Jobs permission.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        import uuid as _uuid
+        job_name = f"{schedule_id.lower()}-run-{_uuid.uuid4().hex[:6]}"
+        cronjob_name = schedule_id.lower()
+        # Read the current CronJob to get its template
+        s_cj, cj = _k3s_request(
+            "GET", f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
+            bearer=sa_token,
+        )
+        if s_cj != 200:
+            self.send_json(404, {"error": "schedule_not_found"})
+            return
+        # Create Job from CronJob template
+        template = cj["spec"]["jobTemplate"]["spec"]
+        job = {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "name": job_name,
+                "namespace": NAMESPACE,
+                "labels": {"fieldkest.io/from-schedule": cronjob_name},
+            },
+            "spec": template,
+        }
+        s_job, job_result = _k3s_request(
+            "POST", f"/apis/batch/v1/namespaces/{NAMESPACE}/jobs",
+            body=job, bearer=sa_token,
+        )
+        if s_job == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+            return
+        if s_job not in (201, 200):
+            self.send_json(502, {"error": f"job_create_failed: {s_job}"})
+            return
+        # Extract env vars from the created Job
+        containers = (job_result.get("spec", {}).get("template", {})
+                      .get("spec", {}).get("containers", []))
+        env_map = {e["name"]: e["value"] for c in containers for e in c.get("env", [])}
+        result = {
+            "schema": "fieldkest.schedule-run/v1",
+            "schedule_id": schedule_id.upper(),
+            "job_name": job_name,
+            "marker": env_map.get("MARKER"),
+            "assignment": env_map.get("ASSIGNMENT"),
+            "profile": env_map.get("PROFILE"),
+            "startup_config": env_map.get("STARTUP_CONFIG"),
+        }
+        append_audit(AUDIT, "schedule-runs", {
+            "request_id": self.request_id, "schedule_id": schedule_id.upper(),
+            "job_name": job_name, "marker": env_map.get("MARKER"), "status": 201,
+        })
+        self.send_json(201, result)
 
     def _export_run(self, export_id: str) -> None:
         """K15.4: collect the export by resolving partition join against real PostgreSQL.
