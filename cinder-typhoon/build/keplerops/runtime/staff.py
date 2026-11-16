@@ -231,9 +231,11 @@ class StaffHandler(KeplerHandler):
         # K19.1: mTLS-protected archive handover route.
         # nginx has verified the client cert against the enrollment root CA
         # and passes the verified DN as a header. k-staff binds to the cert subject.
-        match = re.fullmatch(r"/api/archive/handovers/([^/]+)", path)
-        if match:
-            subject = match.group(1)
+        if path.startswith("/api/archive/handovers/"):
+            subject = path.removeprefix("/api/archive/handovers/")
+            if not subject or "/" in subject:
+                self.send_json(400, {"error": "invalid_subject"})
+                return
             client_verified = self.headers.get("X-Client-Cert-Verified", "")
             client_dn = self.headers.get("X-Client-Cert-DN", "")
             if client_verified != "SUCCESS":
@@ -256,6 +258,7 @@ class StaffHandler(KeplerHandler):
             })
             self.send_json(200, handover)
             return
+
 
         self.send_json(404, {"error": "not_found"})
 
