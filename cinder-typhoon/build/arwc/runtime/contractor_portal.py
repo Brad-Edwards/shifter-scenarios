@@ -221,8 +221,10 @@ def _fetch_erp_roster() -> dict | None:
 
 
 def initial_state() -> dict[str, object]:
-    appointment = _fetch_erp_appointment() or APPOINTMENT
-    roster = _fetch_erp_roster() or ROSTER
+    # ERPNext is authoritative. If the fetch fails at startup, the state has no appointment/roster
+    # and routes will return 503 until restarted with ERPNext available.
+    appointment = _fetch_erp_appointment()
+    roster = _fetch_erp_roster()
     return {
         "appointment": appointment,
         "roster": roster,
@@ -246,9 +248,6 @@ def initialize() -> None:
         erp_roster = _fetch_erp_roster()
         if erp_roster and state.get("roster") != erp_roster:
             state["roster"] = erp_roster
-            changed = True
-        if "roster" not in state:
-            state["roster"] = ROSTER
             changed = True
         if changed:
             atomic_json(STATE, state)
@@ -479,15 +478,20 @@ class Handler(BaseHTTPRequestHandler):
         if not self.corporate_authorized():
             return
         if path == "/api/appointment-windows/current":
+            if not state.get("appointment"):
+                self.send_json(503, {"error": "appointment not available; ERPNext fetch may have failed at startup"})
+                return
             state["appointment_observed"] = True
             atomic_json(STATE, state)
             self.accepted("appointment-window-read", "corporate-reader-principal", state["appointment"])
             return
         if path == "/api/appointment-windows/current/visitors":
+            if not state.get("roster"):
+                self.send_json(503, {"error": "roster not available; ERPNext fetch may have failed at startup"})
+                return
             state["roster_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("check-in-roster-read", "corporate-reader-principal",
-                          state.get("roster", ROSTER))
+            self.accepted("check-in-roster-read", "corporate-reader-principal", state["roster"])
             return
         self.send_json(404, {"error": "record not found"})
 
@@ -547,7 +551,11 @@ class Handler(BaseHTTPRequestHandler):
                 token = handover.get("bearer_token")
             if not isinstance(token, str):
                 # W13.4: obtain a real ERPNext session token (genuine identity-system issuance).
-                token = _get_erp_contractor_session() or secrets.token_urlsafe(40)
+                # If ERPNext is unavailable, the check-in must fail — not issue a random local token.
+                token = _get_erp_contractor_session()
+                if token is None:
+                    self.send_json(503, {"error": "contractor session service unavailable; real auth required"})
+                    return
                 session = {
                     "record_id": "SCOPE-INSP-CRR-4417",
                     "inspection": appointment.get("inspection", APPOINTMENT["inspection"]),
