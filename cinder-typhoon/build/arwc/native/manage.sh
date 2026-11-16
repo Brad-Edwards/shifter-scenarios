@@ -94,15 +94,15 @@ PYEOF
     "${compose[@]}" exec -T corporate-db psql -U corporate -d planning \
       --set ON_ERROR_STOP=1 < planning.sql
     "${compose[@]}" --profile seed run --rm seed-erp
-    # W11.2: Seed ASC-CRR-4417 Task in ERPNext under PROJ-0001 (WO-CRR-4417)
-    # linked to asset AST-CRR-017, with Jules DocShare for read access.
-    # This seeds the restricted ERPNext record the participant reaches via the W11.1 query template.
+    # W11.1: Seed ASC-CRR-4417 Task in ERPNext under PROJ-0001 (WO-CRR-4417)
+    # linked to asset AST-CRR-017. This Task supports the W11.1 contract truthfulness.
+    # NOTE: Jules must NOT have DocShare on this task. The W11.2 path is the Metabase
+    # SQL injection, not ERPNext access. No DocShare is seeded here.
     if [ -f ".operator/erp-seed.env" ]; then
         erp_admin_pass=$(grep '^ERP_ADMIN_PASSWORD=' .operator/erp-seed.env | cut -d= -f2)
-        erp_staff_seed=$(grep '^ERP_STAFF_SEED=' .operator/erp-seed.env | cut -d= -f2)
         if [ -n "${erp_admin_pass}" ]; then
             python3 -c "
-import json, hashlib, hmac, ssl, urllib.request
+import json, ssl, urllib.request
 from urllib.parse import urlencode
 ctx = ssl.create_default_context()
 ctx.check_hostname = False; ctx.verify_mode = __import__('ssl').CERT_NONE
@@ -111,13 +111,11 @@ login_req = urllib.request.Request('https://suppliers.arwc.test/api/method/login
     data=urlencode({'usr':'Administrator','pwd':'${erp_admin_pass}'}).encode(), method='POST',
     headers={'Content-Type':'application/x-www-form-urlencoded'})
 with opener.open(login_req) as r: pass
-# Check if task exists
 check = urllib.request.Request('https://suppliers.arwc.test/api/resource/Task?filters=[[\"subject\",\"like\",\"%ASC-CRR-4417%\"]]&fields=[\"name\",\"subject\"]')
 with opener.open(check) as r:
     tasks = json.loads(r.read()).get('data', [])
 if tasks:
-    task_name = tasks[0]['name']
-    print(f'ASC-CRR-4417 Task already exists: {task_name}')
+    print(f'ASC-CRR-4417 Task already exists: {tasks[0][\"name\"]}')
 else:
     task_data = {'doctype':'Task','subject':'ASC-CRR-4417 — Asset-work association AST-CRR-017','project':'PROJ-0001',
         'description':'Asset-work association record. Asset: AST-CRR-017. Relation: ASSET_WORK. Association identifier: ASC-CRR-4417. Work order: WO-CRR-4417.',
@@ -126,14 +124,8 @@ else:
         data=json.dumps(task_data).encode(), method='POST', headers={'Content-Type':'application/json'})
     with opener.open(req) as r:
         task_name = json.loads(r.read())['data']['name']
-    print(f'Created ASC-CRR-4417 Task: {task_name}')
-# Ensure Jules DocShare
-share = urllib.request.Request('https://suppliers.arwc.test/api/method/frappe.share.add',
-    data=json.dumps({'doctype':'Task','name':task_name,'user':'jules.orswick@veybridge.test','read':1,'write':0,'share':0,'notify':0}).encode(),
-    method='POST', headers={'Content-Type':'application/json'})
-with opener.open(share) as r: pass
-print(f'Jules DocShare ensured on {task_name}')
-" 2>/dev/null || echo "W11.2 ERPNext seeding skipped (ERPNext unavailable)"
+    print(f'Created ASC-CRR-4417 Task: {task_name} (no Jules DocShare — W11.2 uses SQL injection)')
+" 2>/dev/null || echo "W11.1 ERPNext seeding skipped (ERPNext unavailable)"
         fi
     fi
     ;;
