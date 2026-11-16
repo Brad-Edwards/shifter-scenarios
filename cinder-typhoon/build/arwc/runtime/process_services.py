@@ -71,6 +71,7 @@ INITIAL["engineering"].update({
     "sufficient_estimate_verified": False,
     "envelope_observed": False,
     "permissive_observed": False,
+    "movement_observed": False,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
@@ -624,6 +625,11 @@ class Handler(BaseHTTPRequestHandler):
         "key": "process.permissive-observation",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/process-permissive/current"
+    },
+    {
+        "key": "process.movement-observation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/process-movement/current"
     }
 ]
         for r in routes:
@@ -947,6 +953,49 @@ class Handler(BaseHTTPRequestHandler):
             }
             atomic_json(EVIDENCE / "engineering" / "process-permissive.json", result)
             self.accepted("permissive-observed", result, 201)
+            return
+        # W25.3: Bounded movement observation (HMI sequence accepted, positions at A30/B10).
+        # Participant issues FUXA Apply for A30/B10 and reads resulting historian evidence.
+        if ROLE == "engineering" and path == "/api/process-movement/current":
+            if not state.get("permissive_observed"):
+                self.send_json(403, {"error": "permissive chain observation required"}); return
+            # Expected conditions from real OT historian after FUXA Apply A30/B10:
+            # HmiAccepted = new sequence (not baseline 0), Owner=1, positions A≈30 B≈10,
+            # FlowM3s≈0.15, FlowBM3s≈0.05, TotalFlow≈0.20
+            hmi_seq = request.get("hmi_sequence")
+            measured_a = request.get("measured_position_a")
+            measured_b = request.get("measured_position_b")
+            flow_a = request.get("flow_a")
+            flow_b = request.get("flow_b")
+            if (request.get("record_id") != "CRR-OP-W25-R1"
+                    or not isinstance(hmi_seq, int) or hmi_seq < 1
+                    or request.get("hmi_accepted") is not True
+                    or request.get("owner_hmi") is not True
+                    or request.get("permissive_a") is not True
+                    or request.get("permissive_b") is not True
+                    or request.get("target_a") != 30
+                    or request.get("target_b") != 10
+                    or not isinstance(measured_a, (int, float)) or abs(measured_a - 30.0) > 2.0
+                    or not isinstance(measured_b, (int, float)) or abs(measured_b - 10.0) > 2.0
+                    or not isinstance(flow_a, (int, float)) or abs(flow_a - 0.15) > 0.03
+                    or not isinstance(flow_b, (int, float)) or abs(flow_b - 0.05) > 0.02):
+                self.send_json(409, {"error": "movement observation rejected"}); return
+            state["movement_observed"] = True; save_state(state)
+            result = {
+                "record_id": "W25-MOVEMENT-CRR-R1", "revision": 1,
+                "source": "CRR-OP-W25-R1",
+                "movement": {
+                    "hmi_sequence": hmi_seq, "hmi_accepted": True, "owner_hmi": True,
+                    "target_a_pct": 30, "target_b_pct": 10,
+                    "measured_a_pct": measured_a, "measured_b_pct": measured_b,
+                    "flow_a_m3s": flow_a, "flow_b_m3s": flow_b,
+                    "total_flow_m3s": round((flow_a or 0) + (flow_b or 0), 3),
+                    "permissive_a": True, "permissive_b": True,
+                },
+                "actuation_confirmed": True,
+            }
+            atomic_json(EVIDENCE / "engineering" / "process-movement.json", result)
+            self.accepted("movement-observed", result, 201)
             return
         # W23.3: sufficiency verification — reads real PostgreSQL and real binary output.
         # Gated on W23.2 controlled_allocation_committed=True.
