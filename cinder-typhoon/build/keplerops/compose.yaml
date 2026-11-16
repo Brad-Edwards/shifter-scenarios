@@ -593,6 +593,7 @@ services:
       - ./native-workplace/seed-k17-talia-recovery.php:/opt/fieldlink/seed-k17-talia-recovery.php:ro
       - ./native-workplace/seed-k17-arwc-assignment.php:/opt/fieldlink/seed-k17-arwc-assignment.php:ro
       - ./native-workplace/seed-k17-delegation.php:/opt/fieldlink/seed-k17-delegation.php:ro
+      - ./native-workplace/seed-k18-note.php:/opt/fieldlink/seed-k18-note.php:ro
       - ../../assets/keplerops/opening/k-support/SUP-2841.json:/operator/company-conversation.json:ro
       - ../../assets/keplerops/native-workplace/support-cases.json:/operator/support-cases.json:ro
     healthcheck:
@@ -697,6 +698,35 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/s3.json:/run/fieldlink/s3.json:ro
     networks:
       foundation_data: {ipv4_address: 10.77.56.40}
+
+  k-staff:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/staff.Dockerfile
+    image: cinder-keplerops/k-staff:hand-build
+    container_name: cinder-keplerops-k-staff
+    depends_on:
+      fieldlink-support-db: {condition: service_healthy}
+      fieldlink-keycloak: {condition: service_healthy}
+    environment:
+      FIELDKEST_STATE_ROOT: /var/lib/fieldkest-staff
+      SUPPORT_DB_PASSWORD_FILE: /run/fieldkest-staff/support_db_password
+    volumes:
+      - *runtime-credentials
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/support_db_password:/run/fieldkest-staff/support_db_password:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    healthcheck:
+      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "https://localhost:443/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.25}
 
   k-cloud-api:
     <<: *service-security
