@@ -514,13 +514,18 @@ hints:
     - kind: participant_service
       id: source.keplerops.test
   K11.4:
-    h1: Begin with the retained policy compiler repository and build-operations handover. Start from source.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Derive every constraint
-      from supplied records or normal responses, test a deliberately failing candidate, and only then produce a
-      candidate.
-    h3: Review the published client document and ordinary records for source.keplerops.test. List the observed constraints,
-      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: Obtain a fresh one-use nonce first: POST {} to source-tools.keplerops.test:8443/api/policy-compilers/fieldkest-policyc/nonces.
+      The nonce expires in five minutes and is consumed by the first syntactically valid acceptance request even if
+      the binary rejects the input. Get the nonce immediately before submitting. See api/accept-template.json for
+      the request shape.
+    h2: Build policy_input with all six fields: the four conditions recovered in K11.3 (use the values from binary
+      and corpus analysis — the values the binary was compiled with), plus channel="preview" and
+      tenant_class="field-service" as context. Add the fresh nonce and corpus_result_sha256 from K11.3. All four
+      conditions must be satisfied for the binary to return accepted=true.
+    h3: Submit operation=accept with the program model from K11.1 and the prepared policy_input. The service runs
+      the real binary (fieldkest-policyc). If accepted, the PCACC receipt includes program_id=FKPC-POLICY-2026-09-R4,
+      binary_sha256, condition_set_sha256, and evaluated_fields. A replay of the same nonce returns
+      stale_or_replayed_nonce. The PCACC receipt is the K11 completion evidence.
     references:
     - kind: participant_service
       id: source.keplerops.test
