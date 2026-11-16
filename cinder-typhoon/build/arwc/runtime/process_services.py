@@ -759,6 +759,19 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("firmware-image-read", record,
                           extra={"image_b64": base64.b64encode(image).decode()})
             return
+        if ROLE == "instruments" and path == "/api/maintenance-records/current":
+            # W20.3: Return the confirmed maintenance record from the altered image.
+            # Gates on image_rewrite_accepted (W20.2 must be complete).
+            if not state.get("image_rewrite_accepted"):
+                self.send_json(403, {"error": "altered maintenance image required"})
+                return
+            evidence_path = EVIDENCE / "instruments" / "firmware-image.json"
+            if not evidence_path.exists():
+                self.send_json(503, {"error": "maintenance image evidence unavailable"})
+                return
+            result = json.loads(evidence_path.read_text(encoding="utf-8"))
+            self.accepted("maintenance-record-read", result)
+            return
         self.send_json(404, {"error": "record not found"})
 
     def owner_post(self, path: str, request: dict[str, object]) -> None:
