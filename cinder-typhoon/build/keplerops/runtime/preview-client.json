@@ -1,0 +1,20 @@
+{
+  "documents": {
+    "preview.keplerops.test": {
+      "title": "FieldKest preview and document rendering services",
+      "purpose": "Render support attachments and retrieve preview associations.",
+      "routes": [
+        {
+          "key": "preview.association",
+          "method": "GET",
+          "template": "https://preview.keplerops.test/api/preview/association?source={source_id}"
+        },
+        {
+          "key": "preview.render",
+          "method": "POST",
+          "template": "https://preview.keplerops.test/forms/chromium/convert/url"
+        }
+      ]
+    }
+  }
+}

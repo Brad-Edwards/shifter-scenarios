@@ -422,13 +422,16 @@ hints:
     - kind: client_route
       id: ci.review-jobs
   K10.1:
-    h1: Begin with the preview queue associations and document-rendering services. Its published client document
-      exposes the association operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as canonical-name collision across preview storage and rendering boundaries. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the association operation in the published client reference. Capture one ordinary response and one
-      denial, then correlate the returned identifiers with evidence already earned.
+    h1: Navigate to preview.keplerops.test/.well-known/fieldkest-client to find the preview.association route.
+      The preview service wraps Gotenberg (Chromium+LibreOffice renderer) and provides a preview queue API.
+    h2: Query GET /api/preview/association?source=sup-k-2841 for the participant's own attachment. This returns
+      document_id, source_version, and case_id (CAS-ROWAN-2841) for rowan.ito's case.
+    h3: Query GET /api/preview/association?source=SUP-K-2841 (uppercase, the protected attachment). The service
+      returns maya.ranscombe's case association (CAS-MAYA-2841, same document_id) without checking ownership.
+      This is the K10.1 vulnerability.
     references:
+    - kind: participant_service
+      id: preview.keplerops.test
     - kind: client_route
       id: preview.association
   K10.2:
