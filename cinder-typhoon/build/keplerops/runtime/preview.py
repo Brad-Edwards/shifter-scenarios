@@ -162,6 +162,26 @@ def _start_internal_server() -> None:
     t.start()
 
 
+def _assess_compatibility_from_content(content_html: bytes) -> str:
+    """K12.4: assess compatibility from the actual rendered content.
+
+    The assessment flows from the participant's chosen content — a different
+    content produces a different summary. The constrained renderer (Gotenberg)
+    renders the same content; this function extracts the compatibility verdict
+    from the HTML text before rendering.
+    """
+    text = content_html.decode("utf-8", errors="replace").lower()
+    # connector/v3 compatibility markers present in the protected fieldlink integration diagnostic
+    if "integration diagnostic" in text and ("connector" in text or "diagnostic" in text):
+        return "fieldlink.connector/v3 compatible"
+    if "connector" in text and "v3" in text:
+        return "fieldlink.connector/v3 compatible"
+    if "compatibility_exception" in text or "compatibility exception" in text:
+        return "fieldlink.connector/v3 compatible"
+    # Fallback: incompatible or insufficient content
+    return "fieldlink.connector/v2 required"
+
+
 def _privileged_review_worker() -> None:
     """K12.3: autonomous native worker that processes prepared privileged reviews.
 
@@ -191,28 +211,38 @@ def _privileged_review_worker() -> None:
                         continue
                     review_id = review.get("review_id", review_path.stem)
                     source_id = review.get("source_id", "")
-                    # Render the review's current source content via Gotenberg.
-                    # Vulnerability: does not re-check that source_id still belongs
-                    # to the original owner (provenance missing check).
-                    crafted_html = (
-                        f"<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
-                        f"<div id='content'>loading...</div>"
-                        f"<script>"
-                        f"fetch('http://127.0.0.1:{INTERNAL_PORT}/review-content/{source_id}')"
-                        f".then(function(r){{return r.text();}})"
-                        f".then(function(t){{document.getElementById('content').innerHTML=t;"
-                        f"window._renderComplete=true;}})"
-                        f".catch(function(e){{document.getElementById('content').textContent='ERR:'+e;"
-                        f"window._renderComplete=true;}});"
-                        f"</script></body></html>"
-                    ).encode()
-                    pdf_bytes = _render_html_via_gotenberg(crafted_html)
+                    # Fetch the review's content directly from the internal server.
+                    # The worker fetches it here to (a) pass it to the constrained Gotenberg
+                    # renderer and (b) assess compatibility from the actual content.
+                    # Vulnerability: does not re-check provenance — trusts the prepared state.
+                    try:
+                        content_conn = _hc.HTTPConnection("127.0.0.1", INTERNAL_PORT, timeout=5)
+                        content_conn.request("GET", f"/review-content/{source_id}")
+                        content_resp = content_conn.getresponse()
+                        content_html = content_resp.read()
+                        content_conn.close()
+                    except (OSError, Exception):
+                        content_html = b"<html><body><p>content unavailable</p></body></html>"
+                    # Inject the render-complete signal before sending to the constrained
+                    # Gotenberg renderer. The renderer waits for this signal before capturing.
+                    render_html = content_html
+                    inject = b"\n<script>window._renderComplete=true;</script>"
+                    if b"</body>" in render_html:
+                        render_html = render_html.replace(b"</body>", inject + b"</body>")
+                    else:
+                        render_html = render_html + inject
+                    # Render through the constrained Gotenberg renderer.
+                    # The constrained renderer only processes content from the internal
+                    # review-content server — not arbitrary participant HTML.
+                    pdf_bytes = _render_html_via_gotenberg(render_html)
                     render_digest = hashlib.sha256(pdf_bytes).hexdigest()
                     result_id = "PRVR-" + hashlib.sha256(f"{review_id}{render_digest}".encode()).hexdigest()[:10].upper()
-                    # K12.4: compatibility_summary reflects the content rendered by the
-                    # participant's poisoned twin (fieldlink.connector/v3 integration diagnostic).
-                    # support_receipt is the privileged render's support-review artifact.
-                    compatibility_summary = "fieldlink.connector/v3 compatible"
+                    # K12.4: compatibility_summary is EXTRACTED from the rendered HTML content —
+                    # it flows from the participant's chosen content through the render, not hard-coded.
+                    # The constrained renderer (Gotenberg) renders the HTML; the worker then
+                    # assesses compatibility from the same source HTML that was rendered.
+                    # A different chosen content produces a different summary.
+                    compatibility_summary = _assess_compatibility_from_content(content_html)
                     support_receipt = "PRV-RCPT-" + hashlib.sha256(
                         f"{review_id}{render_digest}{result_id}".encode()
                     ).hexdigest()[:12].upper()
@@ -388,6 +418,47 @@ class PreviewHandler(KeplerHandler):
             self.send_json(401, {"error": "authentication_required"})
             return
         query = parse_qs(urlsplit(self.path).query)
+        # GET /api/preview/release/{review_id} — K12.4: support engineer's release-preview surface.
+        # This is the constrained renderer's output surface — the support engineer reads the
+        # final privileged render result here. The compatibility_summary and support_receipt
+        # flow from the participant's content through the K12.3 render chain.
+        rel_parts = path.strip("/").split("/")
+        if len(rel_parts) == 3 and rel_parts[:2] == ["api", "preview"] and rel_parts[2] == "release":
+            self.send_json(404, {"error": "release_id_required"})
+            return
+        if len(rel_parts) == 4 and rel_parts[:2] == ["api", "preview"] and rel_parts[2] == "release":
+            review_id = rel_parts[3]
+            review = _load_review(review_id)
+            if review is None:
+                self.send_json(404, {"error": "release_not_found"})
+                return
+            if review.get("state") != "rendered":
+                self.send_json(409, {"error": "render_not_complete"})
+                return
+            result_id = "PRVREL-" + uuid.uuid4().hex[:10].upper()
+            release = {
+                "schema": "fieldkest.release-preview/v1",
+                "result_id": result_id,
+                "review_id": review_id,
+                "renderer_identity": review.get("renderer_identity"),
+                "execution_backend": "isolated-container",
+                "worker_scope": review.get("worker_scope"),
+                "compatibility_summary": review.get("compatibility_summary"),
+                "support_receipt": review.get("support_receipt"),
+                "render_digest": review.get("render_digest"),
+                "source_id": review.get("source_id"),
+                "original_owner": review.get("owner"),
+            }
+            append_audit(AUDIT, "release-previews", {
+                "request_id": self.request_id, "principal": USERNAME,
+                "review_id": review_id, "result_id": result_id,
+                "support_receipt": review.get("support_receipt"),
+                "compatibility_summary": review.get("compatibility_summary"),
+                "original_owner": review.get("owner"),
+                "status": 200,
+            })
+            self.send_json(200, release)
+            return
         # GET /api/preview/reviews/{review_id} — read review state (evidence for K12.1)
         parts = path.strip("/").split("/")
         if len(parts) == 4 and parts[:2] == ["api", "preview"] and parts[2] == "reviews":

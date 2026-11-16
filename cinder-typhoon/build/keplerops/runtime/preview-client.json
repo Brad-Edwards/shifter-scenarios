@@ -38,6 +38,11 @@
           "key": "preview.attachment",
           "method": "GET",
           "template": "https://preview.keplerops.test/attachment/{source_id}"
+        },
+        {
+          "key": "preview.release",
+          "method": "GET",
+          "template": "https://preview.keplerops.test/api/preview/release/{review_id}"
         }
       ]
     }
