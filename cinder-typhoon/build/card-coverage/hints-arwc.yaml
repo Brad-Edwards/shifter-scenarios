@@ -843,12 +843,15 @@ hints:
     - kind: client_route
       id: process.sealed-viewer
   W22.2:
-    h1: Begin with the sealed viewer, project decision, and retained review context. Its published client document
-      exposes the sealed viewer execute operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as embedded-machine reconstruction followed by concealed reviewer-identity analysis. Build a
-      local model from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Locate the sealed viewer execute operation in the published client reference. Extract the supplied cases
-      into a small local reproducer and do not use its result until every reference case matches.
+    h1: W22.1 ordinary_cases has 4 programs (program_b64, base64-encoded 6-byte-aligned bytecode) and their
+      expected results. Implement the 16-bit VM: 4 registers, 256 bytes memory, 6-byte instructions
+      (u16 opcode, u8 dst, u8 src, u16 imm little-endian), 4096 instruction cap.
+    h2: 8 opcodes: MOVI/LOAD8/XOR/ADD/ROTL/STORE8/JNZ/HALT with 16-bit wrap arithmetic. LOAD8 zero-extends
+      memory[(reg[src]+imm)&0xFF]. STORE8 writes reg[src]&0xFF. ROTL uses imm&15. JNZ adds signed imm to PC
+      only if zero flag is false. Each result needs registers, SHA256(memory[0x40:0x80]), and steps.
+    h3: POST https://process-view.arwc.test/api/sealed-viewers/current/execute with CORPORATE Bearer:
+      {"cases":[result_0,result_1,result_2,result_3]}. Verify all 4 match the reference cases. Returns
+      VIEW-VM-R5 with full VM spec. Sets vm_reconstructed=True for W22.3+.
     references:
     - kind: client_route
       id: process.sealed-viewer-execute
