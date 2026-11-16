@@ -435,13 +435,20 @@ hints:
     - kind: client_route
       id: preview.association
   K10.2:
-    h1: Begin with the preview queue associations and document-rendering services. Its published client document
-      exposes the documents operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as canonical-name collision across preview storage and rendering boundaries. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h1: The preview.documents route is at POST /api/preview/documents (see preview.keplerops.test client doc).
+      It accepts {"source": "<url>", "source_id": "<id>"} and returns document_id, canonical_url, result_id.
+      The document identity is derived from the canonical form of the source URL.
+    h2: Canonicalization: lowercase the full URL and strip the trailing slash. Submit the same path with
+      different case in the hostname or with/without trailing slash. Both inputs produce the same canonical_url
+      and therefore the same document_id (DOC-9BC054D6F95DFA6A).
     h3: Locate the documents operation in the published client reference. Capture one ordinary response and one
       denial, then correlate the returned identifiers with evidence already earned.
+    h3: Collision pair: Input A = "http://sup.keplerops.test/attachment/sup-k-2841" and
+      Input B = "http://SUP.keplerops.test/attachment/sup-k-2841/". Both return document_id=
+      DOC-9BC054D6F95DFA6A (same as K10.1 associations). A different path returns a different id.
     references:
+    - kind: participant_service
+      id: preview.keplerops.test
     - kind: client_route
       id: preview.documents
   K10.3:

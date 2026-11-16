@@ -5,14 +5,14 @@ association, document identity, and queue management routes.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
-import subprocess
 import uuid
 from urllib.parse import urlsplit, parse_qs
 
-from http_support import KeplerHandler, append_audit, canonical_bytes, serve_tls, sha256_bytes, utc_now
+from http_support import KeplerHandler, append_audit, serve_tls
 from credentials import credential
 
 STATE = Path(os.environ.get("FIELDKEST_STATE_ROOT", "/var/lib/fieldkest-preview"))
@@ -22,7 +22,17 @@ CONFIG = json.loads((STATE / "config/preview.json").read_text())
 
 USERNAME = CONFIG["developer"]["username"]
 TOKEN = credential("developer_token")
-GOTENBERG_URL = f"http://127.0.0.1:{os.environ.get('GOTENBERG_PORT', '3000')}"
+
+
+def _derive_document_id(source_url: str) -> str:
+    """Derive a document identity from the canonicalized source URL.
+
+    Canonicalization: lowercase + strip trailing slash.  This is the K10.2
+    vulnerability: two inputs differing only in case or trailing slash
+    collapse to the same canonical form and produce the same document identity.
+    """
+    canonical = source_url.lower().rstrip("/")
+    return "DOC-" + hashlib.sha256(canonical.encode()).hexdigest()[:16].upper()
 
 
 def _load_association(source_id: str) -> dict | None:
@@ -53,7 +63,7 @@ class PreviewHandler(KeplerHandler):
         if path == "/api/preview/association":
             # K10.1: return the association for the supplied source attachment.
             # The lookup does not verify that the caller owns the case — this is
-            # the K10.1 vulnerability: querying any source_id reveals its case binding.
+            # the K10.1 vulnerability.
             source_id = query.get("source", [""])[0]
             if not source_id:
                 self.send_json(422, {"error": "source_required"})
@@ -73,13 +83,48 @@ class PreviewHandler(KeplerHandler):
                 "owner": association["owner"],
             }
             append_audit(AUDIT, "preview-associations", {
-                "request_id": self.request_id,
-                "principal": USERNAME,
-                "source_id": source_id,
-                "document_id": association["document_id"],
-                "case_id": association["case_id"],
+                "request_id": self.request_id, "principal": USERNAME,
+                "source_id": source_id, "document_id": association["document_id"],
+                "case_id": association["case_id"], "result_id": result_id, "status": 200,
+            })
+            RESULTS.mkdir(parents=True, exist_ok=True)
+            (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+            self.send_json(200, result)
+        else:
+            self.send_json(404, {"error": "not_found"})
+
+    def do_POST(self) -> None:
+        path = urlsplit(self.path).path
+        if not self._developer():
+            self.send_json(401, {"error": "authentication_required"})
+            return
+        if path == "/api/preview/documents":
+            # K10.2: derive a document identity from the supplied source URL.
+            # Canonicalization (lowercase + strip trailing slash) collapses certain
+            # pairs of distinct inputs into the same derived identity.
+            try:
+                body = self.read_json(32_768)
+                source_url = str(body.get("source", ""))
+                source_id = str(body.get("source_id", ""))
+                if not source_url:
+                    raise ValueError("source_required")
+            except (ValueError, TypeError, KeyError):
+                self.send_json(422, {"error": "source_required"})
+                return
+            document_id = _derive_document_id(source_url)
+            result_id = "DOCP-" + uuid.uuid4().hex[:10].upper()
+            result = {
+                "schema": "fieldkest.preview-document/v1",
                 "result_id": result_id,
-                "status": 200,
+                "source_url": source_url,
+                "source_id": source_id,
+                "document_id": document_id,
+                "canonical_url": source_url.lower().rstrip("/"),
+            }
+            append_audit(AUDIT, "preview-documents", {
+                "request_id": self.request_id, "principal": USERNAME,
+                "source_url": source_url, "source_id": source_id,
+                "document_id": document_id, "result_id": result_id, "status": 200,
             })
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")

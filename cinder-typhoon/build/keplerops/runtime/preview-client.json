@@ -10,6 +10,11 @@
           "template": "https://preview.keplerops.test/api/preview/association?source={source_id}"
         },
         {
+          "key": "preview.documents",
+          "method": "POST",
+          "template": "https://preview.keplerops.test/api/preview/documents"
+        },
+        {
           "key": "preview.render",
           "method": "POST",
           "template": "https://preview.keplerops.test/forms/chromium/convert/url"
