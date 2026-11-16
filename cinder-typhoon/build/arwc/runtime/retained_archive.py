@@ -1499,39 +1499,55 @@ def _fetch_planning_oauth_context() -> dict | None:
         return None
 
 
-def _render_drawing_context_preview(drawing: str, review: str, preview_origin: str) -> str | None:
-    """Call Gotenberg to render a preview HTML confirming the drawing context attachment.
+CHROME = "/opt/chrome-headless-shell/chrome-headless-shell"
 
-    Returns the hex SHA-256 of the rendered PDF, or None on failure.
+
+def _render_drawing_context_preview(drawing: str, review: str, preview_origin: str) -> str | None:
+    """Run chrome-headless-shell to prove the controlled preview is loaded in the planner's review.
+
+    Chrome loads a local drawing review page that embeds an iframe from preview-cinder.arwc.test.
+    The preview-cinder page sends a postMessage with its origin back to the parent frame.
+    Chrome's DOM output confirms the browser received the postMessage from the controlled endpoint.
+    Returns the hex SHA-256 of chrome's DOM output, or None on failure.
     """
-    import urllib.request as _urllib_request
-    html = (
-        f"<!DOCTYPE html><html><body>"
-        f"<h1>Drawing context attachment</h1>"
-        f"<p>Drawing: {drawing}</p>"
-        f"<p>Review: {review}</p>"
-        f"<p>Preview origin: {preview_origin}</p>"
-        f"</body></html>"
-    ).encode("utf-8")
-    boundary = "----GotenbergBoundary"
-    body = (
-        f"--{boundary}\r\n"
-        f'Content-Disposition: form-data; name="files"; filename="index.html"\r\n'
-        f"Content-Type: text/html\r\n\r\n"
-    ).encode() + html + f"\r\n--{boundary}--\r\n".encode()
-    ctx = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
-    req = _urllib_request.Request(
-        "https://render.arwc.test/forms/chromium/convert/html",
-        data=body,
-        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
-        method="POST",
+    preview_url = f"http://preview-cinder.arwc.test/preview/{drawing}"
+    document = (
+        f"<!doctype html><meta charset='utf-8'>"
+        f"<h1>Planning Drawing Review</h1>"
+        f"<p id='drawing'>Drawing: {drawing}</p>"
+        f"<p id='review'>Review: {review}</p>"
+        f"<p id='planner'>Planner: nadia.corvane</p>"
+        f"<p id='preview-origin'>Preview origin: {preview_origin}</p>"
+        f"<output id='preview-status'>awaiting preview callback</output>"
+        f"<iframe id='preview-frame' src='{preview_url}' width='640' height='480'></iframe>"
+        f"<script>"
+        f"window.addEventListener('message', function(evt) {{"
+        f"  if (evt.data && evt.data.type === 'preview_loaded') {{"
+        f"    document.getElementById('preview-status').textContent ="
+        f"      'preview_callback_received:origin:' + evt.data.origin + ':path:' + (evt.data.path || '');"
+        f"  }}"
+        f"}});"
+        f"</script>"
     )
-    try:
-        with _urllib_request.urlopen(req, context=ctx, timeout=30) as resp:
-            pdf_bytes = resp.read()
-        return hashlib.sha256(pdf_bytes).hexdigest()
-    except Exception:
+    with tempfile.TemporaryDirectory(prefix="arwc-drawing-review-") as temporary:
+        review_path = pathlib.Path(temporary) / "review.html"
+        review_path.write_text(document, encoding="utf-8")
+        completed = subprocess.run(
+            [CHROME, "--headless", "--no-sandbox", "--disable-gpu",
+             "--disable-background-networking", "--disable-component-update",
+             "--disable-sync", "--metrics-recording-only", "--no-first-run",
+             f"--user-data-dir={temporary}/profile",
+             "--virtual-time-budget=5000", "--dump-dom",
+             review_path.as_uri()],
+            text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            timeout=30, check=False,
+        )
+    if completed.returncode != 0:
         return None
+    dom_output = completed.stdout
+    if "preview-cinder.arwc.test" not in dom_output:
+        return None
+    return hashlib.sha256(dom_output.encode()).hexdigest()
 
 
 def _fetch_gitea_handover() -> dict | None:
