@@ -105,6 +105,13 @@ class CloudApiHandler(KeplerHandler):
             export_id = path.removeprefix("/api/data/exports/")
             self._export_credentials(export_id)
             return
+        # /api/exports/{id}/definition: K15.2 — authenticated by export SA token.
+        # Reads the K3s ConfigMap for the export definition. The detail route checks
+        # tenant visibility but omits job ownership (the K15.2 ownership gap).
+        if path.endswith("/definition") and "/api/exports/" in path:
+            export_id = path.removeprefix("/api/exports/").removesuffix("/definition")
+            self._export_definition(export_id)
+            return
         # /api/exports/{id}: K15.1 — authenticated by export SA token.
         # Reads the real K3s Job spec for the export job and returns job summary.
         if path.startswith("/api/exports/"):
@@ -250,6 +257,53 @@ class CloudApiHandler(KeplerHandler):
             "status": 201,
         })
         self.send_json(201, result)
+
+    def _export_definition(self, export_id: str) -> None:
+        """K15.2: read the export definition via K3s ConfigMap using the export SA token.
+
+        OWNERSHIP GAP: the detail route checks tenant visibility (the token belongs to
+        svc-fieldlink-export which has the export role) but does NOT check that the
+        requesting identity owns the export job. maya.ranscombe owns EXP-2841 but
+        svc-fieldlink-export can read its definition via K3s RBAC.
+
+        K3s RBAC enforces access — no Python ownership check.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        configmap_name = f"{export_id.lower()}-definition"
+        status, data = _k3s_request(
+            "GET",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token,
+        )
+        if status == 200:
+            cm = data.get("data", {})
+            import ast
+            result = {
+                "schema": "fieldkest.export-definition/v1",
+                "export_id": cm.get("export_id"),
+                "owner": cm.get("owner"),
+                "tenant": cm.get("tenant"),
+                "case_id": cm.get("case_id"),
+                "partitions": json.loads(cm.get("partitions", "[]")),
+                "destinations": json.loads(cm.get("destinations", "[]")),
+                "partition_bindings": json.loads(cm.get("partition_bindings", "[]")),
+            }
+            append_audit(AUDIT, "export-definitions", {
+                "request_id": self.request_id, "export_id": result["export_id"],
+                "owner": result["owner"], "tenant": result["tenant"],
+                "accessor": "svc-fieldlink-export", "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "export_definition_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
 
     def _export_job_summary(self, export_id: str) -> None:
         """K15.1: read the real K3s Job spec for the export job.

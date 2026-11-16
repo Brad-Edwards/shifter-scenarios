@@ -284,3 +284,53 @@ roleRef:
   kind: Role
   name: export-job-reader
   apiGroup: rbac.authorization.k8s.io
+---
+# K15.2: export definition ConfigMap — owned by maya.ranscombe but readable by svc-fieldlink-export.
+# The K15.2 ownership gap: the detail route (GET /api/exports/EXP-2841/definition) checks
+# tenant visibility but omits job ownership. svc-fieldlink-export reads this definition
+# even though it doesn't own the export job.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: exp-2841-definition
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: export-definition
+    fieldkest.io/export-id: EXP-2841
+    fieldkest.io/owner: maya.ranscombe
+data:
+  export_id: EXP-2841
+  owner: maya.ranscombe
+  tenant: TEN-ARWC-019
+  case_id: CAS-MAYA-2841
+  partitions: '["PART-ARWC-01"]'
+  destinations: '[{"name":"fieldkest-exports/EXP-2841-rowan","owner":"rowan.ito"},{"name":"fieldkest-exports/EXP-2841-maya","owner":"maya.ranscombe"}]'
+  partition_bindings: '[{"partition":"PART-ARWC-01","current":true,"tenant_id":"TEN-ARWC-019","revision":6}]'
+  schema: fieldkest.export-definition/v1
+---
+# K15.2 Role: svc-fieldlink-export can read exp-2841-definition.
+# Ownership gap: RBAC checks identity but not job ownership (maya.ranscombe owns the job).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: export-definition-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get]
+    resourceNames: [exp-2841-definition]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: export-definition-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: export-definition-reader
+  apiGroup: rbac.authorization.k8s.io
