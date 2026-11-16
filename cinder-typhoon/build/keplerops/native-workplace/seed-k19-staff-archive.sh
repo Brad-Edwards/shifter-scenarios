@@ -25,20 +25,34 @@ CREATE TABLE IF NOT EXISTS staff_archive_handovers (
 INSERT INTO staff_archive_handovers (
     subject, provisioner, provisioner_type, idp, idp_config,
     issued_by, template, template_eku, grant_name, archive_ref, vouched_by
-) VALUES (
-    'rowan.ito@keplerops.test',
-    'keplerops-staff',
-    'OIDC',
-    'fieldlink-enrollment',
-    'https://identity.keplerops.test/realms/keplerops/.well-known/openid-configuration',
-    'FieldKest Enrollment CA',
-    'StaffArchiveUser',
-    ARRAY['clientAuth'],
-    'support-runner-enrollment',
-    'REL-FLK-7.4.2-09',
-    'keplerops-staff (fieldlink-enrollment) via Keycloak keplerops realm'
-)
+) VALUES
+    (
+        'rowan.ito@keplerops.test',
+        'keplerops-staff',
+        'OIDC',
+        'fieldlink-enrollment',
+        'https://identity.keplerops.test/realms/keplerops/.well-known/openid-configuration',
+        'FieldKest Enrollment CA',
+        'StaffArchiveUser',
+        ARRAY['clientAuth'],
+        'support-runner-enrollment',
+        'REL-FLK-7.4.2-09',
+        'keplerops-staff (fieldlink-enrollment) via Keycloak keplerops realm'
+    ),
+    (
+        'evan.calderoux@keplerops.test',
+        'keplerops-staff',
+        'OIDC',
+        'fieldlink-enrollment',
+        'https://identity.keplerops.test/realms/keplerops/.well-known/openid-configuration',
+        'FieldKest Enrollment CA',
+        'StaffArchiveUser',
+        ARRAY['clientAuth'],
+        'support-runner-enrollment',
+        'REL-FLK-7.4.2-11',
+        'keplerops-staff (fieldlink-enrollment) via Keycloak keplerops realm'
+    )
 ON CONFLICT (subject) DO NOTHING;
-SELECT subject, template FROM staff_archive_handovers;
+SELECT subject, archive_ref FROM staff_archive_handovers ORDER BY subject;
 SQL
 echo "K19.1 staff_archive_handovers seeded."
