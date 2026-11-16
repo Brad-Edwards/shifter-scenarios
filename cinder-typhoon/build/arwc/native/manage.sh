@@ -448,6 +448,35 @@ PYEOF
     app_compose=(docker compose --project-name cinder-arwc --env-file images.env -f ../compose.yaml)
     "${app_compose[@]}" up --no-build --pull never -d
     echo "cinder-arwc application stack started (archive, contractors, approval, data, data-bridge)"
+    # Start the engineering workbench (a-engineering) for W19 diagnostic service.
+    # Uses the CORPORATE session auth (no historian proxy needed).
+    golden_op="$(cd .. && pwd)/.operator"
+    docker volume create cinder-arwc-engineering-data 2>/dev/null || true
+    docker network create --driver bridge --subnet 10.77.63.0/24 cinder-arwc-engineering 2>/dev/null || true
+    docker stop cinder-arwc-engineering 2>/dev/null; docker rm cinder-arwc-engineering 2>/dev/null || true
+    docker run -d \
+      --name cinder-arwc-engineering \
+      --network cinder-arwc-engineering --ip 10.77.63.40 \
+      --hostname process-view --domainname arwc.test --dns 10.77.60.10 \
+      -e ARWC_SERVICE_USER=arwc-engineering \
+      -e ARWC_STATE_ROOT=/var/lib/arwc-engineering \
+      -e ARWC_PROCESS_ROLE=engineering \
+      --restart unless-stopped --read-only \
+      --security-opt no-new-privileges:true \
+      --cap-drop ALL --cap-add SETUID --cap-add SETGID --cap-add CHOWN \
+      --cap-add FOWNER --cap-add DAC_OVERRIDE \
+      --tmpfs /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777 \
+      --tmpfs /run:rw,nosuid,nodev,size=8m,mode=0755 \
+      -v cinder-arwc-engineering-data:/var/lib/arwc-engineering \
+      -v cinder-arwc-connector-fieldlink:/run/arwc-corporate:ro \
+      -v "${golden_op}/handover.key:/run/arwc-handover/authentication.key:ro" \
+      -v "${golden_op}/tls/server.crt:/run/arwc-tls/server.crt:ro" \
+      -v "${golden_op}/tls/server.key:/run/arwc-tls/server.key:ro" \
+      -v "${golden_op}/tls/ca.crt:/run/arwc-tls/ca.crt:ro" \
+      "${PROCESS_IMAGE:-cinder-arwc/a-engineering:hand-build}"
+    docker network connect --ip 10.77.60.55 --alias process-view.arwc.test \
+      cinder-arwc-corporate cinder-arwc-engineering 2>/dev/null || true
+    echo "a-engineering (process-view.arwc.test) started at 10.77.60.55"
     ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {

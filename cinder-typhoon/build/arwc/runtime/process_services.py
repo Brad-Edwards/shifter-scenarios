@@ -32,6 +32,7 @@ STATE = ROOT / "state" / "service.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 EVIDENCE = pathlib.Path("/run/arwc-process-evidence")
 OT_SESSIONS = pathlib.Path("/run/arwc-ot-read")
+CORPORATE_HANDOVER = pathlib.Path("/run/arwc-corporate/handover")
 CA = "/tmp/ca.crt"
 INTERNAL = "historian-r21"
 
@@ -359,9 +360,27 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(403, {"error": "scoped process-read session required"})
         return False
 
+    def corporate_authorized(self) -> bool:
+        """Authorize against the FieldLink-issued CORPORATE handover session token."""
+        supplied = self.headers.get("Authorization", "")
+        if not supplied.startswith("Bearer "):
+            self.send_json(403, {"error": "corporate session required"})
+            return False
+        digest = hashlib.sha256(supplied[7:].encode()).hexdigest()
+        try:
+            stored_token = (CORPORATE_HANDOVER / "corporate-session").read_bytes().strip()
+            if hmac.compare_digest(digest, hashlib.sha256(stored_token).hexdigest()):
+                return True
+        except OSError:
+            pass
+        self.send_json(403, {"error": "corporate session required"})
+        return False
+
     def authorized(self) -> bool:
         if ROLE == "historian":
             return self.externally_authorized()
+        if ROLE == "engineering":
+            return self.corporate_authorized()
         if self.headers.get("X-ARWC-Internal") != INTERNAL:
             self.send_json(403, {"error": "historian service context required"})
             return False
