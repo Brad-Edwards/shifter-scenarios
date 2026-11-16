@@ -589,26 +589,30 @@ hints:
     - kind: participant_service
       id: preview.keplerops.test
   K13.1:
-    h1: Begin at the cloud workspace service named in the workstation notes. Its object listing is the evidence
-      source; follow the notebook reference carried by the listed object.
-    h2: Treat the listing and notebook as separate cloud objects joined by stable object identity. Do not assume
-      the visible notebook is the only retained version.
-    h3: List the workspace objects through the published client, open the referenced notebook, and record its object
-      identity and revision before following any export lead.
+    h1: The developer client reference at data.keplerops.test/.well-known/fieldkest-client lists workspace routes.
+      data.workspace-list is GET https://objects.keplerops.test/fieldkest-workspaces?list-type=2.
+      The bucket allows anonymous access — no credentials needed. List the objects to find the notebook key.
+    h2: Use the real S3 API: aws s3 ls s3://fieldkest-workspaces/ --endpoint-url https://objects.keplerops.test
+      --no-sign-request. This lists notebooks/deploy-2026-09.json and exports/EXP-2841/handover.json.
+      Retrieve the notebook similarly.
+    h3: The notebook content reveals job reference SCHED-2841 and export EXP-2841. These are the K13.2 and K13.3
+      starting points. The object ETag is the version digest.
     references:
     - kind: participant_service
-      id: cloud-api.keplerops.test
+      id: objects.keplerops.test
   K13.2:
-    h1: Begin with the workspace object history, support exports, and cloud identity exchange. Start from cloud-api.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as object-version recovery followed by workload-identity scope analysis. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for cloud-api.keplerops.test. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: The fieldkest-workspaces bucket has versioning enabled. Use aws s3api list-object-versions
+      --bucket fieldkest-workspaces --prefix notebooks/deploy-2026-09.json
+      --endpoint-url https://objects.keplerops.test --no-sign-request to list all versions.
+    h2: The result shows two versions. The older version (earlier LastModified) contains the customer note that
+      was removed in the correction. Retrieve it: aws s3api get-object --bucket fieldkest-workspaces
+      --key notebooks/deploy-2026-09.json --version-id <older_version_id>
+      --endpoint-url https://objects.keplerops.test --no-sign-request output.json
+    h3: The prior version customer_note contains TEN-ARWC-019 cedar run customer reference. Extract TEN-ARWC-019
+      as the legacy tenant ID for K29/K30 context. The version ID and ETag bind the evidence.
     references:
     - kind: participant_service
-      id: cloud-api.keplerops.test
+      id: objects.keplerops.test
   K13.3:
     h1: Return to the workspace notes after recovering the earlier notebook version. The support export is a separate
       object relationship, not another notebook revision.
