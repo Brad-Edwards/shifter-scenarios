@@ -288,6 +288,12 @@ services:
       read_only: true
       bind:
         create_host_path: true
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/ot-operating-reader.json
+      target: /run/arwc-ot-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
     environment:
     - PGDATA=/run/arwc-pgdata
     networks:

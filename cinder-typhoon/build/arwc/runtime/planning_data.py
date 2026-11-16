@@ -662,7 +662,7 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "planning.live-feed",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/live-feeds/current"
+                    "template": "https://read-data.arwc.test/api/operating-history"
                 },
                 {
                     "key": "planning.relation-schema",
@@ -1037,39 +1037,34 @@ class Handler(BaseHTTPRequestHandler):
     # reserve_reconciliation view in corporate-db, accessed via native Metabase.
 
     def integration(self, request: dict[str, object]) -> None:
-        state = load_state()
-        if not state["reserve_reconciled"]:
-            self.send_json(403, {"error": "reserve reconciliation is required"})
-            return
-        supplied = self.headers.get("X-ARWC-Integration-Session", "")
-        if not supplied:
-            self.send_json(403, {"error": "integration read session required"})
-            return
-        data = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
-        outbound = urllib.request.Request(
-            "https://10.77.62.20/api/integration/process-session",
-            data=data,
-            headers={
-                "Authorization": "Bearer " + supplied,
-                "X-ARWC-Tenant": self.headers.get("X-ARWC-Tenant", "arwc"),
-                "Content-Type": "application/json",
-            },
-            method="POST",
-        )
-        context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
+        # W09.4: return operating-reader credentials for the live process feed.
+        # The participant uses these with the planning.live-feed route
+        # (read-data.arwc.test/api/operating-history) to get fresh OT observations.
+        # Credentials are sourced from the bind-mounted ot-operating-reader.json.
         try:
-            response = urllib.request.urlopen(outbound, context=context, timeout=5)
-        except urllib.error.HTTPError as error:
-            response = error
-        except OSError:
-            self.send_json(409, {"error": "integration gateway is unavailable"})
+            reader_creds = json.loads(pathlib.Path("/run/arwc-ot-reader.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            self.send_json(503, {"error": "integration gateway is unavailable"})
             return
-        try:
-            payload = json.loads(response.read())
-        except json.JSONDecodeError:
-            self.send_json(409, {"error": "integration gateway returned an invalid response"})
-            return
-        self.send_json(response.status, payload)
+        import base64 as _b64
+        auth_header = "Basic " + _b64.b64encode(
+            f"{reader_creds['username']}:{reader_creds['password']}".encode()
+        ).decode()
+        result = {
+            "record_id": "INT-CRR-08",
+            "revision": 8,
+            "integration_id": "INT-CRR-08",
+            "feed": "FEED-OG2-R21",
+            "source_binding": request.get("source", "REC-CRR-DP3-17"),
+            "credential_type": "Basic",
+            "live_feed_url": "https://read-data.arwc.test/api/operating-history",
+        }
+        atomic_json(INTEGRATION_EVIDENCE, result)
+        os.chown(INTEGRATION_EVIDENCE, -1, grp.getgrnam("arwc-integration").gr_gid)
+        os.chmod(INTEGRATION_EVIDENCE, 0o640)
+        self.accepted("integration-session-issued", result, 201,
+                      {"authorization": auth_header})
+
 
     def query_report(self, request: dict[str, object]) -> None:
         state = load_state()
