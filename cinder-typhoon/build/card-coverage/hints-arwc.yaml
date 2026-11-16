@@ -573,7 +573,7 @@ hints:
     - kind: client_route
       id: archive.sequencer-spec
     - kind: client_route
-      id: archive.sequencer-program
+      id: archive.observations
   W16.2:
     h1: Begin with the archive sequencer, constrained observations, and calibration history. Its published client
       document exposes the observations operation, so use that ordinary contract instead of guessing a path.
