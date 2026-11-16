@@ -132,6 +132,25 @@ def seed() -> None:
             print("FIELD-BAG-CRR-4417-R3.json: seeded to Nextcloud contractor-workspace folder")
         except Exception as e:
             print(f"W14.1: failed to seed FIELD-BAG-CRR-4417-R3.json to Nextcloud: {e}")
+        # W15.1: seed CACHE-DRW-OG2-R8.json to Nextcloud (approval/maintenance-review service).
+        cache_assoc_content = json.dumps({
+            "record_id": "CACHE-DRW-OG2-R8",
+            "revision": 8,
+            "drawing": "DRW-OG2-R8",
+            "drawing_revision": "R8",
+            "reviewer_queue": "REV-CRR-4417",
+            "upstream_host": "drawings.arwc.test",
+            "cache_key_path": "/viewer/drawings/DRW-OG2-R8",
+            "cache_method": "GET",
+        }, sort_keys=True, indent=2).encode("utf-8")
+        assoc_path = f"/remote.php/dav/files/{nc_admin}/contractor-workspace/CACHE-DRW-OG2-R8.json"
+        try:
+            assoc_req = Request(f"{nc_url}{assoc_path}", data=cache_assoc_content, method="PUT",
+                                headers={**nc_headers, "Content-Type": "application/json"})
+            urlopen(assoc_req, timeout=10)
+            print("CACHE-DRW-OG2-R8.json: seeded to Nextcloud contractor-workspace folder (W15.1)")
+        except Exception as e:
+            print(f"W15.1: failed to seed CACHE-DRW-OG2-R8.json: {e}")
     else:
         print("W14.1: DOCUMENTS_ADMIN_PASSWORD not set; skipping Nextcloud field bag seed")
 

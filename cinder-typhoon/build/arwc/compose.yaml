@@ -302,6 +302,56 @@ services:
         aliases:
         - a-data
         - planning-data.arwc.test
+  a-approval:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/approval.Dockerfile
+    image: cinder-arwc/a-approval:hand-build
+    container_name: cinder-arwc-approval
+    hostname: a-approval
+    domainname: corporate.arwc.test
+    dns:
+    - 10.77.60.10
+    restart: unless-stopped
+    read_only: true
+    cap_drop:
+    - ALL
+    cap_add:
+    - SETUID
+    - SETGID
+    - CHOWN
+    - FOWNER
+    - DAC_OVERRIDE
+    - NET_BIND_SERVICE
+    security_opt:
+    - no-new-privileges:true
+    tmpfs:
+    - /tmp:rw,noexec,nosuid,nodev,size=512m,mode=1777
+    - /run:rw,nosuid,nodev,size=16m,mode=0755
+    volumes:
+    - arwc-approval-data:/var/lib/arwc-approval
+    - connector-fieldlink:/run/arwc-corporate:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/approval-nc.json
+      target: /run/arwc-approval-config/nc-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
+      target: /run/arwc-native/root-ca.crt
+      read_only: true
+      bind:
+        create_host_path: false
+    networks:
+      corporate:
+        ipv4_address: 10.77.60.53
+        aliases:
+        - a-approval
+        - maintenance-review.arwc.test
   a-contractors:
     build:
       context: ../..
@@ -366,6 +416,8 @@ services:
         - a-contractors
         - contractor-portal.arwc.test
 volumes:
+  arwc-approval-data:
+    name: cinder-arwc-approval-data
   arwc-contractors-data:
     name: cinder-arwc-contractors-data
   connector-fieldlink:

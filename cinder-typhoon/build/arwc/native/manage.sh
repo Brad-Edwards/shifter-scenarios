@@ -234,7 +234,7 @@ print(q[0]['id'] if q else '')
     erp_admin_password=$(grep -oP '(?<=ERP_ADMIN_PASSWORD=).+' .operator/erp-seed.env 2>/dev/null || true)
     if [ -n "${erp_admin_password}" ]; then
         portal_golden_op="$(cd .. && pwd)/.operator"
-        # Write ERPNext reader config
+        # Write ERPNext reader config for contractor portal
         contractors_erp_json='{"url":"https://suppliers.arwc.test","username":"Administrator","password":"'"${erp_admin_password}"'"}'
         mkdir -p "${portal_golden_op}"
         printf '%s\n' "${contractors_erp_json}" > "${portal_golden_op}/contractors-erp.json"
@@ -252,6 +252,14 @@ print(q[0]['id'] if q else '')
             chmod 0644 "${portal_golden_op}/contractors-nc.json" ".operator/contractors-nc.json" 2>/dev/null || true
             echo "W14.1: Wrote contractors-nc.json for contractor portal Nextcloud fetch"
         fi
+        # Write Nextcloud reader config for approval/maintenance-review service (W15.1).
+        approval_nc_path="/remote.php/dav/files/records-admin/contractor-workspace/CACHE-DRW-OG2-R8.json"
+        approval_nc_json='{"url":"https://documents.arwc.test","username":"records-admin","password":"'"${nc_admin_password}"'","association_path":"'"${approval_nc_path}"'"}'
+        mkdir -p "${portal_golden_op}"
+        printf '%s\n' "${approval_nc_json}" > "${portal_golden_op}/approval-nc.json"
+        printf '%s\n' "${approval_nc_json}" > ".operator/approval-nc.json"
+        chmod 0644 "${portal_golden_op}/approval-nc.json" ".operator/approval-nc.json" 2>/dev/null || true
+        echo "W15.1: Wrote approval-nc.json for maintenance-review Nextcloud fetch"
     fi
     ;;
   seed-early-cards)

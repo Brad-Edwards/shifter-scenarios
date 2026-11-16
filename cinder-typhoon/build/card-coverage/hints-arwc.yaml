@@ -511,12 +511,14 @@ hints:
     - kind: client_route
       id: field.current-reading
   W15.1:
-    h1: Begin with the drawing cache, review workflow, and maintenance approval. Its published client document exposes
-      the drawing cache operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cache-key normalization followed by reviewer and downstream authority checks. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the drawing cache operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The maintenance-review service publishes its client document at maintenance-review.arwc.test/.well-known/arwc-client.
+      Traverse the client reference graph starting from any service already reached and follow the related links
+      to find the maintenance-review service.
+    h2: The maintenance.drawing-cache route requires your W13.4 contractor session as the bearer token. Use the
+      same session earned from the check-in. A corporate session alone returns 403.
+    h3: The cache association identifies CACHE-DRW-OG2-R8 binding drawing DRW-OG2-R8 at revision R8 to reviewer
+      queue REV-CRR-4417 at drawings.arwc.test. Record all fields — the drawing identity, revision, and queue
+      are needed for W15.2 and later cards.
     references:
     - kind: client_route
       id: maintenance.drawing-cache
