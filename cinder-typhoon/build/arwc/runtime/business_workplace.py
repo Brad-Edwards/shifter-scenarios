@@ -212,11 +212,9 @@ class Handler(BaseHTTPRequestHandler):
             "service": "business-workplace.arwc.test",
             "title": "Business asset, report, and procurement service",
             "routes": [
-                # business.report-sources removed: W10.1 report-assistant facade.
-                # The route is now advertised from the planning_data client doc,
-                # pointing to the native Metabase question on report_source_selection.
-                {"key": "business.report-row-external", "method": "GET",
-                 "template": "https://business-workplace.arwc.test/api/reports/current/rows/external"},
+                # business.report-sources removed: W10.1 facade.
+                # business.report-row-external removed: W10.2 facade.
+                # Both routes are now in the planning_data client doc → native Metabase.
                 {"key": "business.report-document", "method": "GET",
                  "template": "https://business-workplace.arwc.test/api/reports/current/document"},
                 {"key": "business.procurement-quote", "method": "GET",
@@ -269,17 +267,9 @@ class Handler(BaseHTTPRequestHandler):
         if request is None:
             return
         if path == "/api/reports/current/rows/external":
-            if not observed("source_selection_observed"):
-                self.send_json(403, {"error": "source selection has not been read"})
-            elif request.get("source_set") != "SEL-CRR-DP3-7":
-                self.send_json(409, {"error": "source selection does not match"})
-            elif request.get("expected_revision") != 7:
-                self.send_json(409, {"error": "source selection revision is stale"})
-            elif request.get("role") != "planning-reader":
-                self.send_json(403, {"error": "role is not permitted to read planning excerpts"})
-            else:
-                mark("foreign_excerpt_observed")
-                self.accepted("district-query-result-read", MEREWICK_EXCERPT, 201)
+            # W10.2 facade removed. Use business.report-row-external route in
+            # planning_data client doc → native Metabase EXT-EXCERPTS-DP3 question.
+            self.send_json(410, {"error": "report-row-external endpoint retired; use business.report-row-external route"})
             return
         if path == "/api/reports/current/document":
             if not observed("foreign_excerpt_observed"):

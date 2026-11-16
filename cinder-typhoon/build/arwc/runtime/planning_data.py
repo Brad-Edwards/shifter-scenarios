@@ -632,6 +632,9 @@ class Handler(BaseHTTPRequestHandler):
         report_sources_template = _metabase_card_url(
             reports, "sel_dp3_question_id", "https://reports.arwc.test/api/card/sel-crr-dp3-7"
         )
+        report_row_ext_template = _metabase_card_url(
+            reports, "ext_dp3_question_id", "https://reports.arwc.test/api/card/ext-excerpts-dp3"
+        )
         self.send_json(200, {
             "schema": "arwc.client-documents/v1",
             "service": "planning-data.arwc.test",
@@ -666,6 +669,11 @@ class Handler(BaseHTTPRequestHandler):
                     "key": "business.report-sources",
                     "method": "GET",
                     "template": report_sources_template
+                },
+                {
+                    "key": "business.report-row-external",
+                    "method": "GET",
+                    "template": report_row_ext_template
                 },
                 {
                     "key": "planning.live-feed",

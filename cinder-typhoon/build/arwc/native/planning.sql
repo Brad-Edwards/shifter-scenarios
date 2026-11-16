@@ -134,6 +134,27 @@ GRANT SELECT ON public.district_allocation_adjustment TO planning_reader;
 GRANT SELECT ON public.allocation_ledger TO planning_reader;
 -- W09.2: planning_reader reads meter_export via native Metabase question.
 GRANT SELECT ON public.meter_export TO planning_reader;
+-- W10.2: district_excerpts table for the cross-district retrieval vulnerability.
+-- Both Cairn Reach and Merewick excerpts are associated with source_set SEL-CRR-DP3-7.
+-- The Metabase question omits a district predicate, so a Cairn Reach caller sees Merewick data.
+CREATE TABLE IF NOT EXISTS public.district_excerpts (
+  record_id text PRIMARY KEY,
+  revision integer NOT NULL,
+  district text NOT NULL,
+  source_set text NOT NULL,
+  classification text NOT NULL,
+  linked_document text NOT NULL,
+  excerpt_text text NOT NULL
+);
+INSERT INTO public.district_excerpts VALUES
+  ('EXC-CRR-DP3-7', 7, 'Cairn Reach', 'SEL-CRR-DP3-7', 'planning excerpt',
+   'RPT-CRR-DP3-R7',
+   'Cairn Reach reserve outlook is within tolerance for the approaching dry period.'),
+  ('EXC-MER-DP3-4', 4, 'Merewick', 'SEL-CRR-DP3-7', 'restricted planning excerpt',
+   'PLN-MER-DP3-R6',
+   'Merewick intake continuity remains subject to the accepted reservation and the current dry-period plan. Review the linked planning record before confirming cross-district supply.')
+ON CONFLICT (record_id) DO NOTHING;
+GRANT SELECT ON public.district_excerpts TO planning_reader;
 -- W10.1: report_source_selection view for SEL-CRR-DP3-7.
 CREATE OR REPLACE VIEW public.report_source_selection AS
  SELECT
