@@ -712,15 +712,18 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
   W19.1:
-    h1: Begin with the retained engineering diagnostic and signed decision records. Its published client document
-      exposes the diagnostic program operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as binary behavior reconstruction and hidden validation-logic analysis. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the diagnostic program operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The diagnostic is in Gitea at clara.morivelle/retained-engineering-tools (engineering.arwc.test).
+      Download engineering/diag-crr-mixed-19 and verify its SHA-256. The companion engineering/replay-crr-r19
+      in the same repo belongs to the same project generation.
+    h2: Run static analysis on the binary: strings, objdump, or readelf. The binary contains a recoverable
+      embedded string that identifies its project generation. Look for strings following the ARWC naming
+      convention for migration or migration-revision records.
+    h3: After recovering the project identifier from the binary, check the live OT: query CRR.ProjectRevision
+      from the OPC UA browser or historian (ot_history.tag_catalog) and compare with the recovered generation.
+      The gap between the two confirms why the diagnostic was never retired.
     references:
-    - kind: client_route
-      id: process.diagnostic-program
+    - kind: gitea_repo
+      id: clara.morivelle/retained-engineering-tools
   W19.2:
     h1: Begin with the retained engineering diagnostic and signed decision records. Its published client document
       exposes the signature record operation, so use that ordinary contract instead of guessing a path.
