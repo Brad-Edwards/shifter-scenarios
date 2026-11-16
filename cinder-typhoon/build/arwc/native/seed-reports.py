@@ -126,6 +126,35 @@ def seed() -> None:
         except Exception:
             pass
     print(f"Reports state: QRY-RESERVE-R7 Metabase question id={qry_card['id']}")
+
+    # Seed the ALLOC-DP3-CURRENT allocation ledger question (W09.1).
+    # planning_reader has SELECT on allocation_ledger; participant uses W06.3 session.
+    alloc_title = "ALLOC-DP3-CURRENT"
+    alloc_description = (
+        "Planning allocation ledger ALLOC-DP3-CURRENT. Database: PostgreSQL 16.4. "
+        "Table: allocation_ledger. Record: ALLOC-2026-DP3-R9. "
+        "Asset: AST-CRR-017. District: Cairn Reach. Period: ALLOC-2026-DP3. "
+        "Committed: 12.00 ML."
+    )
+    alloc_sql = (
+        "SELECT record_id, revision, district, asset, planning_window, "
+        "committed_ml, unit, effective_from, effective_to "
+        "FROM allocation_ledger WHERE planning_window = 'ALLOC-2026-DP3'"
+    )
+    alloc_card = next((card for card in api("card") if card["name"] == alloc_title), None)
+    if alloc_card is None:
+        alloc_card = api("card", {
+            "name": alloc_title, "display": "table", "visualization_settings": {},
+            "description": alloc_description,
+            "dataset_query": {"database": database["id"], "type": "native", "native": {
+                "query": alloc_sql, "template-tags": {}}}})
+        print(f"Created Metabase question: {alloc_title} (id={alloc_card.get('id')})")
+    elif alloc_card.get("description") != alloc_description:
+        api(f'card/{alloc_card["id"]}', {"description": alloc_description}, method="PUT")
+        print(f"Updated Metabase question: {alloc_title}")
+    else:
+        print(f"Metabase question already current: {alloc_title}")
+
     print("ARWC native planning reader and saved report configured")
 
 

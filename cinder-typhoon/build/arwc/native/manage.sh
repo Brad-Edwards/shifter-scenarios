@@ -143,11 +143,28 @@ q = [c for c in cards if c['name'] == 'QRY-RESERVE-R7']
 print(q[0]['id'] if q else '')
 " "${metabase_admin_password}" 2>/dev/null || true)
             if [ -n "${qry_id}" ]; then
+                alloc_id=$(python3 -c "
+import json, ssl, urllib.request
+ctx = ssl.create_default_context()
+ctx.check_hostname = False; ctx.verify_mode = __import__('ssl').CERT_NONE
+req = urllib.request.Request(
+    'https://reports.arwc.test/api/session',
+    data=json.dumps({'username':'planning.admin@alterrawaterco.com','password':'${metabase_admin_password}'}).encode(),
+    headers={'Content-Type': 'application/json'})
+with urllib.request.urlopen(req, context=ctx, timeout=10) as r:
+    s = json.loads(r.read())['id']
+req2 = urllib.request.Request('https://reports.arwc.test/api/card', headers={'X-Metabase-Session': s})
+with urllib.request.urlopen(req2, context=ctx, timeout=10) as r:
+    cards = json.loads(r.read())
+q = [c for c in cards if c['name'] == 'ALLOC-DP3-CURRENT']
+print(q[0]['id'] if q else '')
+" 2>/dev/null || true)
                 mkdir -p "${golden_op}/archive-workflow"
-                printf '{"qry_reserve_r7_id":%s,"metabase_url":"https://reports.arwc.test"}\n' "${qry_id}" \
+                printf '{"qry_reserve_r7_id":%s,"alloc_dp3_question_id":"%s","metabase_url":"https://reports.arwc.test"}\n' \
+                    "${qry_id}" "${alloc_id}" \
                     > "${golden_op}/archive-workflow/reports-state.json"
                 chmod 0644 "${golden_op}/archive-workflow/reports-state.json"
-                echo "Wrote reports state (qry_id=${qry_id}) to golden operator dir"
+                echo "Wrote reports state (qry_id=${qry_id}, alloc_id=${alloc_id}) to golden operator dir"
             fi
         fi
     fi

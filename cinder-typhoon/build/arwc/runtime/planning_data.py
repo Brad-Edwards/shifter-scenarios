@@ -32,11 +32,18 @@ REPORTS_STATE_PATH = pathlib.Path("/run/arwc-reports-state.json")
 
 
 def _load_reports_state() -> dict:
-    """Load Metabase question IDs from the reports state file seeded at deploy time."""
+    """Load Metabase question IDs and URLs from the reports state file seeded at deploy time."""
     try:
         return json.loads(REPORTS_STATE_PATH.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return {}
+
+
+def _metabase_card_url(state: dict, key: str, fallback: str) -> str:
+    """Return the Metabase URL for a card ID from state, or fall back to a stable string."""
+    metabase_url = state.get("metabase_url", "https://reports.arwc.test")
+    card_id = state.get(key, "")
+    return f"{metabase_url}/api/card/{card_id}" if card_id else fallback
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.json")
@@ -606,16 +613,16 @@ class Handler(BaseHTTPRequestHandler):
         if urlsplit(self.path).path != "/.well-known/arwc-client":
             return False
         reports = _load_reports_state()
-        qry_id = reports.get("qry_reserve_r7_id", "")
-        metabase_url = reports.get("metabase_url", "https://reports.arwc.test")
-        # planning.saved-query and planning.query-run route to native Metabase.
-        # The participant uses the W06.3 Metabase session (X-Metabase-Session header)
-        # to call these endpoints directly against the real Metabase/PostgreSQL stack.
-        saved_query_template = (
-            f"{metabase_url}/api/card/{qry_id}" if qry_id
-            else "https://reports.arwc.test/api/card/qry-reserve-r7"
+        # planning.saved-query, planning.query-run, and planning.allocation-ledger
+        # route to native Metabase. The participant uses the W06.3 Metabase session
+        # (X-Metabase-Session header) against the real Metabase/PostgreSQL stack.
+        saved_query_template = _metabase_card_url(
+            reports, "qry_reserve_r7_id", "https://reports.arwc.test/api/card/qry-reserve-r7"
         )
-        query_run_template = f"{metabase_url}/api/dataset"
+        query_run_template = reports.get("metabase_url", "https://reports.arwc.test") + "/api/dataset"
+        alloc_ledger_template = _metabase_card_url(
+            reports, "alloc_dp3_question_id", "https://reports.arwc.test/api/card/alloc-dp3-current"
+        )
         self.send_json(200, {
             "schema": "arwc.client-documents/v1",
             "service": "planning-data.arwc.test",
@@ -634,7 +641,7 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "planning.allocation-ledger",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/allocation-ledgers/current"
+                    "template": alloc_ledger_template
                 },
                 {
                     "key": "planning.meter-allocation",

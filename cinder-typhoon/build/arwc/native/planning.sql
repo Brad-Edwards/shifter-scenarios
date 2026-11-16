@@ -130,4 +130,6 @@ GRANT USAGE ON SCHEMA reporting TO planning_reader;
 GRANT SELECT ON reporting.reserve_report TO planning_reader;
 GRANT SELECT ON public.reserve_report_current TO planning_reader;
 GRANT SELECT ON public.district_allocation_adjustment TO planning_reader;
+-- W09.1: planning_reader reads allocation_ledger via native Metabase question.
+GRANT SELECT ON public.allocation_ledger TO planning_reader;
 COMMIT;
