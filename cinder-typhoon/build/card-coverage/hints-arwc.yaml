@@ -575,12 +575,14 @@ hints:
     - kind: client_route
       id: archive.observations
   W16.2:
-    h1: Begin with the archive sequencer, constrained observations, and calibration history. Its published client
-      document exposes the observations operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as instruction-sequence reconstruction with bounded out-of-window observation analysis. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the observations operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The LOAD instruction reads the sample and adds its data-dependent cycle cost before the authorization check.
+      Submit a program to POST /api/observations with LOAD on a slot index outside 0-31 and observe the status
+      and cycle count in the response.
+    h2: Any LOAD with index >= 32 returns late-authorization-rejection with a non-null boundary_index. The cycle
+      cost 20 + 4 * bit_count(sample) is accumulated before the check, so the cycle count still encodes
+      information about the out-of-window slot's bit population.
+    h3: Target slot 159 for the designated crossing. Program bytes 01 9F 00 00 07 00 00 00 (LOAD 159, HALT),
+      base64 AZ8AAAcAAAA=. Expected response: status=late-authorization-rejection, boundary_index=159, cycles=236.
     references:
     - kind: client_route
       id: archive.observations
