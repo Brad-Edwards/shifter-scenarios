@@ -6,25 +6,68 @@ which applies Content-Length to bound the request body.
 
 Routes:
   POST /assess          -- standard inspection assessment (expects JSON)
-  POST /assess/envelope -- binary envelope assessment; reads Content-Length bytes,
-                           which may be LESS than the actual TCP-stream body when
-                           the caller sets a smaller Content-Length than the actual
-                           body.  Bytes beyond Content-Length remain in the socket
-                           and become the prefix of the next request on the same
-                           keep-alive connection (the K07.2 framing exploit path).
-  POST /assess/privileged -- protected route; not reachable via normal
-                              inspection-envelope flow; reachable only when
-                              smuggled bytes from the K07.2 framing exploit
-                              reach this path as a "new" assessor request.
+  POST /assess/envelope -- binary envelope assessment; reads exactly
+                           Content-Length bytes, which is set by the
+                           inspection service to front_following_length from
+                           the envelope header.  When front_following_length
+                           is smaller than the total forwarded body, the
+                           surplus bytes remain in the persistent HTTP/1.1
+                           keep-alive socket and become the prefix of the
+                           NEXT request on the same connection.  This is the
+                           body-framing exploit boundary for K07.2.
+  POST /assess/privileged -- authorization-bound action in the real Verdaccio
+                              package workflow.  Uses the internal CI reader
+                              identity to fetch the private @keplerops/
+                              support-rehearsal package metadata from Verdaccio.
+                              Not reachable via normal inspection flow; only
+                              reachable when surplus bytes from the K07.2
+                              body-framing exploit reach this path as a new
+                              assessor request on the keep-alive connection.
 """
 from __future__ import annotations
 
+import base64
+import http.client as _hc
 import json
-import unicodedata
+import ssl
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import uuid
 
 _SERVER_ID = "fieldkest-assessor/1.0 Python"
+_CA_PATH = "/tmp/fieldkest-ca.crt"
+_VERDACCIO_HOST = "packages.keplerops.test"
+_PRIVATE_PACKAGE = "@keplerops/support-rehearsal"
+
+# Load CI reader auth at module import time so the credentials are always available.
+try:
+    from credentials import credential as _credential
+    _CI_AUTH_B64 = base64.b64encode(
+        f"svc-fieldlink-ci:{_credential('ci_registry_reader')}".encode()
+    ).decode()
+except Exception as _e:
+    _CI_AUTH_B64 = ""
+    import sys as _sys
+    print(f"assessor: credentials unavailable: {_e}", file=_sys.stderr)
+
+
+def _fetch_private_package() -> dict | None:
+    """Fetch the private support package from Verdaccio using the CI reader identity."""
+    if not _CI_AUTH_B64:
+        return None
+    try:
+        ctx = ssl.create_default_context(cafile=_CA_PATH)
+        conn = _hc.HTTPSConnection(_VERDACCIO_HOST, 443, context=ctx, timeout=5)
+        encoded = _PRIVATE_PACKAGE.replace("/", "%2f").replace("@", "%40")
+        conn.request("GET", f"/{encoded}", headers={"Authorization": f"Basic {_CI_AUTH_B64}"})
+        resp = conn.getresponse()
+        if resp.status == 200:
+            data = json.loads(resp.read(131_072))
+            conn.close()
+            return data
+    except Exception as e:
+        import sys as _sys
+        print(f"assessor: privileged fetch error: {e}", file=_sys.stderr)
+    return None
 
 
 class AssessorHandler(BaseHTTPRequestHandler):
@@ -38,41 +81,53 @@ class AssessorHandler(BaseHTTPRequestHandler):
         path = self.path.rstrip("/")
 
         if path == "/assess/privileged":
-            # Protected route — only reachable via K07.2 smuggled bytes.
+            # Authorization-bound protected action: fetch the real private package
+            # from Verdaccio using the internal CI reader identity.  This route is
+            # not reachable via the normal inspection-envelope flow; only the K07.2
+            # surplus bytes (body-framing exploit) can reach it as a smuggled request.
+            # The result is written to the shared results directory so the participant
+            # can confirm the privileged access via the registry's audit route.
             length = int(self.headers.get("Content-Length", 0))
             self.rfile.read(length)
-            self._respond(200, {
-                "schema": "fieldkest.assessment-response/v1",
-                "assessor_id": str(uuid.uuid4()),
-                "assessment": "privileged-access-confirmed",
-                "finding": "support-package-approved",
-                "view_binding": "internal",
-                "protected": True,
-            })
+            pkg = _fetch_private_package()
+            if pkg is None:
+                self._respond(503, {"error": "private_package_unavailable"})
+                return
+            assessment_id = str(uuid.uuid4())
+            result = {
+                "schema": "fieldkest.privileged-assessment/v1",
+                "assessment_id": assessment_id,
+                "assessment": "privileged-package-read",
+                "package": pkg.get("name"),
+                "version": pkg.get("dist-tags", {}).get("latest"),
+                "description": pkg.get("description"),
+                "readme": pkg.get("readme", "")[:200],
+            }
+            # Write to shared results directory (readable by the registry service)
+            try:
+                import pathlib as _pathlib
+                results_dir = _pathlib.Path("/var/lib/fieldkest-registry/results")
+                results_dir.mkdir(parents=True, exist_ok=True)
+                (results_dir / "privileged-result.json").write_text(
+                    json.dumps(result, separators=(",", ":")) + "\n"
+                )
+            except Exception as _e:
+                import sys as _sys
+                print(f"assessor: privileged result write failed: {_e}", file=_sys.stderr)
+            self._respond(200, result)
             return
 
         if path == "/assess/envelope":
-            # Binary envelope route.  Reads exactly Content-Length bytes; any
-            # additional bytes sent by the caller stay in the socket buffer and
-            # become the prefix of the NEXT request on this keep-alive connection.
+            # Binary envelope route.  Reads exactly Content-Length bytes; the
+            # inspection service sets CL = front_following_length from the envelope
+            # header.  Any surplus bytes beyond CL stay in the socket and become
+            # the prefix of the next keep-alive request (the K07.2 exploit path).
             length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(length)
-            name_len = body[4] if len(body) > 4 else 0
-            raw_name_bytes = body[5:5 + name_len] if len(body) >= 5 + name_len else b""
-            try:
-                raw_name = raw_name_bytes.decode("utf-8", errors="replace")
-                buf = body[5:].decode("utf-8", errors="replace")
-                normalized = unicodedata.normalize("NFKC", buf).casefold()[:name_len]
-            except (IndexError, UnicodeDecodeError):
-                raw_name = ""
-                normalized = ""
             self._respond(200, {
                 "schema": "fieldkest.assessment-response/v1",
                 "assessor_id": str(uuid.uuid4()),
                 "assessment": "public-manifest-consistent",
-                "front_name_raw": raw_name,
-                "assessor_name_normalized": normalized,
-                "framing_disagreement": raw_name != normalized,
             })
             return
 
@@ -93,8 +148,6 @@ class AssessorHandler(BaseHTTPRequestHandler):
             "assessment": "public-manifest-consistent",
             "forwarded_package": data.get("package"),
             "forwarded_version": data.get("version"),
-            "forwarded_action": data.get("action"),
-            "received_path": self.path,
         })
 
     def _respond(self, status: int, payload: dict) -> None:

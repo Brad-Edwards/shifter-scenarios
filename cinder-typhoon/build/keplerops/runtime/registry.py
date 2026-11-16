@@ -106,6 +106,22 @@ class RegistryHandler(KeplerHandler):
         self.send_json(401, {"error": "authentication_required"})
         return False
 
+    def _privileged_result(self) -> None:
+        # This record only exists after /assess/privileged was reached via K07.2
+        # surplus bytes.  The participant cannot read @keplerops/support-rehearsal
+        # directly (developer identity is denied by Verdaccio ACL); this route
+        # delivers the private package data fetched by the assessor's CI reader.
+        result_path = RESULTS / "privileged-result.json"
+        if not result_path.is_file():
+            self.send_json(404, {"error": "privileged_result_not_found"})
+            return
+        result = json.loads(result_path.read_text())
+        append_audit(AUDIT, "privileged-reads", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "assessment_id": result.get("assessment_id", ""), "status": 200,
+        })
+        self.send_json(200, result)
+
     def do_GET(self) -> None:
         if urlsplit(self.path).path == "/.well-known/fieldkest-client":
             inventory = json.loads(Path("/opt/fieldkest/client_documents.json").read_text())
@@ -158,6 +174,10 @@ class RegistryHandler(KeplerHandler):
                 self.send_json(405, {"error": "method_not_allowed"})
             else:
                 self._entitlement_record(record_id)
+        elif path == "/api/privileged-result":
+            if not self._require_developer():
+                return
+            self._privileged_result()
         else:
             self.send_json(404, {"error": "not_found"})
 
@@ -338,11 +358,12 @@ class RegistryHandler(KeplerHandler):
             "inspection_id": inspection_id,
             "action": request["action"], "status": 201,
         })
-        self.send_json(201, {
-            "inspection_id": inspection_id,
-            "trace": f"/api/inspections/{inspection_id}/trace",
-            "assessment": str(assessor_data.get("assessment", "public-manifest-consistent")),
-        })
+        # Pass through the full assessor response so the participant sees whatever
+        # the assessor actually returned — including privileged package data when the
+        # smuggled /assess/privileged route was triggered by the K07.2 exploit.
+        result = {"inspection_id": inspection_id, "trace": f"/api/inspections/{inspection_id}/trace"}
+        result.update({k: v for k, v in assessor_data.items() if k not in ("assessor_id", "schema")})
+        self.send_json(201, result)
 
     def _inspection_trace(self, inspection_id: str) -> None:
         import re as _re
@@ -408,13 +429,11 @@ class RegistryHandler(KeplerHandler):
             _reset_assessor_conn()
             self.send_json(503, {"error": "assessor_unavailable"})
             return
-        framing_disagreement = front_name != assessor_name
         assessor_correlation_id = str(assessor_data.get("assessor_id", "unknown"))
-        # Find the most recent inspection trace (use assessor_id as the state key).
+        # Find the most recent inspection trace to bind the evidence.
         RESULTS.mkdir(parents=True, exist_ok=True)
         state = {"assessment_id": assessor_correlation_id, "sentinel": "support-package-reviewed", "updated_at": utc_now()}
         (RESULTS / f"{assessor_correlation_id}.json").write_text(json.dumps(state, sort_keys=True, separators=(",", ":")) + "\n")
-        # Find any existing inspection trace to bind the evidence.
         matched_inspection_id = "INSP-ENVELOPE"
         for candidate in sorted(RESULTS.glob("INSP-????????.json"), reverse=True):
             try:
@@ -425,12 +444,13 @@ class RegistryHandler(KeplerHandler):
         result = {
             "schema": "fieldkest.inspection-envelope-result/v1",
             "inspection_id": matched_inspection_id,
+            # front_end sees the raw UTF-8 name; assessor records what it parsed
+            # from the truncated (Content-Length bounded) envelope bytes.
             "front_end": {"request_id": front_name, "following_length": front_following_length, "framing": "compatibility-forwarded"},
             "assessor": {
-                "request_id": assessor_data.get("assessor_name_normalized", assessor_name),
                 "assessment_id": assessor_correlation_id,
                 "action": "inspect_support_package",
-                "framing_disagreement": framing_disagreement,
+                "assessment": assessor_data.get("assessment", "public-manifest-consistent"),
             },
             "finding": {"package": "@keplerops/support-rehearsal", "version": "1.3.1", "view_binding": "publisher", "status": "protected-inspection-complete"},
         }
@@ -438,9 +458,8 @@ class RegistryHandler(KeplerHandler):
             "request_id": self.request_id, "principal": USERNAME,
             "inspection_id": matched_inspection_id,
             "front_request_id": front_name,
-            "assessor_request_id": assessor_data.get("assessor_name_normalized", assessor_name),
+            "front_following_length": front_following_length,
             "assessment_id": assessor_correlation_id,
-            "framing_disagreement": framing_disagreement,
             "envelope_sha256": sha256_bytes(data), "status": 200,
         })
         self.send_json(200, result)
