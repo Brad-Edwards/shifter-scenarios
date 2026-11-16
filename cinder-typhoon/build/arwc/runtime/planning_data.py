@@ -626,6 +626,9 @@ class Handler(BaseHTTPRequestHandler):
         meter_alloc_template = _metabase_card_url(
             reports, "meter_dp3_question_id", "https://reports.arwc.test/api/card/meter-dp3-current"
         )
+        alloc_discrepancy_template = _metabase_card_url(
+            reports, "recon_dp3_question_id", "https://reports.arwc.test/api/card/recon-dp3-current"
+        )
         self.send_json(200, {
             "schema": "arwc.client-documents/v1",
             "service": "planning-data.arwc.test",
@@ -654,7 +657,7 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "planning.allocation-discrepancy",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/allocation-discrepancies/current"
+                    "template": alloc_discrepancy_template
                 },
                 {
                     "key": "planning.live-feed",
@@ -728,7 +731,9 @@ class Handler(BaseHTTPRequestHandler):
             self.meter()
             return
         if path == "/api/allocation-discrepancies/current":
-            self.reserve_reconciliation()
+            # W09.3: canned tolerance facade removed. The reconciliation is a real
+            # native Metabase question on reserve_reconciliation view in corporate-db.
+            self.send_json(410, {"error": "allocation-discrepancies endpoint retired; use planning.allocation-discrepancy route"})
             return
         if path == "/api/relation-schemas/current":
             if not relation_prerequisite():

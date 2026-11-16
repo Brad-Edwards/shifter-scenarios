@@ -134,4 +134,26 @@ GRANT SELECT ON public.district_allocation_adjustment TO planning_reader;
 GRANT SELECT ON public.allocation_ledger TO planning_reader;
 -- W09.2: planning_reader reads meter_export via native Metabase question.
 GRANT SELECT ON public.meter_export TO planning_reader;
+-- W09.3: planning_reader reads business_reserve_report and the reconciliation view.
+GRANT SELECT ON public.business_reserve_report TO planning_reader;
+CREATE OR REPLACE VIEW public.reserve_reconciliation AS
+ SELECT
+   al.record_id  AS allocation_record,
+   al.planning_window,
+   al.district,
+   al.asset,
+   al.committed_ml,
+   me.record_id  AS meter_record,
+   me.usable_reserve_ml,
+   rr.record_id  AS reserve_report,
+   rr.reported_ml,
+   rr.duplicate_transfer,
+   rr.reported_ml - me.usable_reserve_ml AS overstatement_ml,
+   me.usable_reserve_ml - al.committed_ml AS uncommitted_margin_ml
+ FROM public.allocation_ledger al
+ JOIN public.meter_export me ON al.planning_window = me.planning_window
+ JOIN public.business_reserve_report rr
+   ON al.planning_window = rr.planning_window AND al.asset = rr.asset
+ WHERE al.planning_window = 'ALLOC-2026-DP3';
+GRANT SELECT ON public.reserve_reconciliation TO planning_reader;
 COMMIT;

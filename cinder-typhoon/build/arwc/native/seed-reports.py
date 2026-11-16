@@ -182,6 +182,34 @@ def seed() -> None:
     else:
         print(f"Metabase question already current: {meter_title}")
 
+    # Seed the RECON-DP3-CURRENT reconciliation question (W09.3).
+    # Joins allocation, meter, and reserve report to surface the discrepancy.
+    recon_title = "RECON-DP3-CURRENT"
+    recon_description = (
+        "Planning reserve reconciliation RECON-DP3-CURRENT. Database: PostgreSQL 16.4. "
+        "View: reserve_reconciliation. Period: ALLOC-2026-DP3. "
+        "Shows overstatement (reported - usable) and uncommitted margin (usable - committed)."
+    )
+    recon_sql = (
+        "SELECT allocation_record, planning_window, district, asset, "
+        "committed_ml, meter_record, usable_reserve_ml, reserve_report, "
+        "reported_ml, duplicate_transfer, overstatement_ml, uncommitted_margin_ml "
+        "FROM reserve_reconciliation"
+    )
+    recon_card = next((card for card in api("card") if card["name"] == recon_title), None)
+    if recon_card is None:
+        recon_card = api("card", {
+            "name": recon_title, "display": "table", "visualization_settings": {},
+            "description": recon_description,
+            "dataset_query": {"database": database["id"], "type": "native", "native": {
+                "query": recon_sql, "template-tags": {}}}})
+        print(f"Created Metabase question: {recon_title} (id={recon_card.get('id')})")
+    elif recon_card.get("description") != recon_description:
+        api(f'card/{recon_card["id"]}', {"description": recon_description}, method="PUT")
+        print(f"Updated Metabase question: {recon_title}")
+    else:
+        print(f"Metabase question already current: {recon_title}")
+
     print("ARWC native planning reader and saved report configured")
 
 
