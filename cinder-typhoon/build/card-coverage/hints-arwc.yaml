@@ -648,12 +648,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W17/engineering-reference.md
   W17.4:
-    h1: Follow outlet B measured flow from FUXA to its OPC UA identity and then to PostgreSQL history. Use one
-      15-to-300-second interval and do not issue a control request to manufacture a trace.
-    h2: Select only good process-history samples for flow and measured position. Align them by source time; a local
-      screenshot or copied number does not replace the historian rows.
-    h3: Record the flow series first, last, minimum, maximum, and good sample count. Check that the time-aligned
-      measured position is consistent with outlet capacity before submitting the joined observation.
+    h1: Pick a 15-to-300-second interval and query ot_history.process_samples for FlowBM3s and PositionBPct.
+      The five identities from W17.3 (variable=FlowBM3s, NodeId, series=flow_b_m3s, unit=m3/s, historian path)
+      must all appear. Count samples with good transport quality. Do not use public.process_history (no B tags).
+    h2: The position-to-flow relationship is required evidence. At PositionBPct=20%, FlowBM3s should be ~20%
+      of the outlet B max capacity (0-0.5 m3/s, from ot_history.tag_catalog). Verify the ratio before
+      recording the trace.
+    h3: Record interval start/end UTC, good sample count, flow min/max/mean, and concurrent PositionBPct. All
+      six of FUXA variable, OPC UA NodeId, historian series, unit, good sample count, and position-flow ratio
+      must agree to supply W17.OBS.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W17/live-observation.md
