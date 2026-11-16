@@ -699,36 +699,6 @@ services:
     networks:
       foundation_data: {ipv4_address: 10.77.56.40}
 
-  k-identity-api:
-    <<: *service-security
-    build:
-      context: ../..
-      dockerfile: build/keplerops/images/identity-api.Dockerfile
-    image: cinder-keplerops/k-identity-api:hand-build
-    container_name: cinder-keplerops-k-identity-api
-    depends_on:
-      fieldlink-keycloak: {condition: service_healthy}
-    environment:
-      FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
-      FIELDKEST_TLS_KEY: /tmp/fieldkest.key
-      FIELDKEST_STATE_ROOT: /var/lib/fieldkest-identity-api
-    volumes:
-      - *runtime-credentials
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
-      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
-      - identity-api-audit:/var/lib/fieldkest-identity-api/audit
-      - identity-api-registrations:/var/lib/fieldkest-identity-api/registrations
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-    healthcheck:
-      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "--resolve", "identity.keplerops.test:443:127.0.0.1", "https://identity.keplerops.test/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      foundation_data: {ipv4_address: 10.77.56.26}
-
   k-staff:
     <<: *service-security
     build:
@@ -971,8 +941,6 @@ volumes:
   support-audit: {name: cinder-keplerops-support-audit}
   cloud-api-audit: {name: cinder-keplerops-cloud-api-audit}
   staff-audit: {name: cinder-keplerops-staff-audit}
-  identity-api-audit: {name: cinder-keplerops-identity-api-audit}
-  identity-api-registrations: {name: cinder-keplerops-identity-api-registrations}
   preview-audit: {name: cinder-keplerops-preview-audit}
   preview-results: {name: cinder-keplerops-preview-results}
   indexer-state: {name: cinder-keplerops-indexer-state}
