@@ -63,7 +63,7 @@ RUN apt-get update \
     && useradd --system --gid arwc-engineering --groups arwc-process-evidence --home-dir /var/lib/arwc-engineering --shell /usr/sbin/nologin arwc-engineering \
     && install -d -o arwc-engineering -g arwc-engineering -m 0750 \
       /opt/process-service/assets /opt/process-service/artifacts
-RUN pip install --no-cache-dir cryptography==50.0.2
+RUN pip install --no-cache-dir cryptography==50.0.2 psycopg2-binary==2.9.10
 COPY --chown=arwc-engineering:arwc-engineering --chmod=0640 build/arwc/runtime/process_services.py /opt/process-service/process_services.py
 COPY --chown=arwc-engineering:arwc-engineering --chmod=0640 build/arwc/runtime/dpg1.py /opt/process-service/dpg1.py
 COPY --from=native --chown=arwc-engineering:arwc-engineering --chmod=0750 /tmp/diag-crr-mixed-19 /opt/process-service/artifacts/diag-crr-mixed-19
