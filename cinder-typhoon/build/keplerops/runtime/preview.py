@@ -162,6 +162,93 @@ def _start_internal_server() -> None:
     t.start()
 
 
+def _privileged_review_worker() -> None:
+    """K12.3: autonomous native worker that processes prepared privileged reviews.
+
+    The worker polls for reviews in state=prepared and queue=privileged-review,
+    renders their current content via real Gotenberg, and stores the render digest.
+    The worker runs with the internal identity 'svc-preview-reviewer' and does NOT
+    re-validate the review's provenance before rendering — it trusts the prepared state.
+
+    This missing re-validation is the K12.3 vulnerability: a participant who poisoned
+    the review via K12.1 (BOLA) and K12.2 (nonce intercept) makes the real worker
+    render participant-controlled content as its authoritative contribution.
+
+    The participant does not hold or use this worker's identity — they observe the
+    worker's rendered output independently via GET /api/preview/reviews/{review_id}.
+    """
+    import time
+    while True:
+        time.sleep(5)
+        try:
+            reviews_dir = STATE / "reviews"
+            if not reviews_dir.is_dir():
+                continue
+            for review_path in sorted(reviews_dir.glob("*.json")):
+                try:
+                    review = json.loads(review_path.read_text())
+                    if review.get("state") != "prepared" or review.get("queue") != "privileged-review":
+                        continue
+                    review_id = review.get("review_id", review_path.stem)
+                    source_id = review.get("source_id", "")
+                    # Render the review's current source content via Gotenberg.
+                    # Vulnerability: does not re-check that source_id still belongs
+                    # to the original owner (provenance missing check).
+                    crafted_html = (
+                        f"<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
+                        f"<div id='content'>loading...</div>"
+                        f"<script>"
+                        f"fetch('http://127.0.0.1:{INTERNAL_PORT}/review-content/{source_id}')"
+                        f".then(function(r){{return r.text();}})"
+                        f".then(function(t){{document.getElementById('content').innerHTML=t;"
+                        f"window._renderComplete=true;}})"
+                        f".catch(function(e){{document.getElementById('content').textContent='ERR:'+e;"
+                        f"window._renderComplete=true;}});"
+                        f"</script></body></html>"
+                    ).encode()
+                    pdf_bytes = _render_html_via_gotenberg(crafted_html)
+                    render_digest = hashlib.sha256(pdf_bytes).hexdigest()
+                    result_id = "PRVR-" + hashlib.sha256(f"{review_id}{render_digest}".encode()).hexdigest()[:10].upper()
+                    review["state"] = "rendered"
+                    review["renderer_identity"] = REVIEWER_WORKER_IDENTITY
+                    review["render_digest"] = render_digest
+                    review["render_size_bytes"] = len(pdf_bytes)
+                    review["worker_scope"] = REVIEW_SCOPE
+                    review_path.write_text(json.dumps(review, sort_keys=True, separators=(",", ":")) + "\n")
+                    result = {
+                        "schema": "fieldkest.preview-render/v1",
+                        "result_id": result_id,
+                        "review_id": review_id,
+                        "renderer_identity": REVIEWER_WORKER_IDENTITY,
+                        "execution_backend": "isolated-container",
+                        "worker_scope": REVIEW_SCOPE,
+                        "source_id": source_id,
+                        "document_id": review.get("document_id"),
+                        "render_digest": render_digest,
+                        "render_size_bytes": len(pdf_bytes),
+                    }
+                    RESULTS.mkdir(parents=True, exist_ok=True)
+                    (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+                    append_audit(AUDIT, "review-renders", {
+                        "result_id": result_id, "review_id": review_id,
+                        "renderer_identity": REVIEWER_WORKER_IDENTITY,
+                        "worker_scope": REVIEW_SCOPE, "source_id": source_id,
+                        "render_digest": render_digest,
+                        "original_owner": review.get("owner"),
+                        "status": 200,
+                    })
+                except (OSError, RuntimeError, json.JSONDecodeError):
+                    pass
+        except OSError:
+            pass
+
+
+def _start_privileged_review_worker() -> None:
+    """Start the autonomous privileged-review worker in a background thread."""
+    t = threading.Thread(target=_privileged_review_worker, daemon=True)
+    t.start()
+
+
 def _derive_document_id(source_url: str) -> str:
     """Derive a document identity from the canonicalized source URL.
 
@@ -393,96 +480,13 @@ class PreviewHandler(KeplerHandler):
             self.send_json(404, {"error": "not_found"})
 
     def _handle_review_render(self, path: str) -> bool:
-        """K12.3: review-render endpoint controlled by the participant's Service Worker.
+        """K12.3: the privileged review render is produced by the autonomous worker.
 
-        The attachment at /attachment/{source_id} is served with
-        Service-Worker-Allowed: /review/ — a scope broader than the attachment path.
-        When the participant registers the attachment script as a SW with scope /review/,
-        it can intercept any request to /review/... including this endpoint.
-        The SW supplies {"worker_scope": "/review/"} to claim control of the render.
+        The participant does NOT call this endpoint. The autonomous background
+        worker (_privileged_review_worker) renders prepared reviews on its own
+        schedule. This handler is a no-op placeholder kept for routing clarity.
         """
-        parts = path.strip("/").split("/")
-        if not (len(parts) == 3 and parts[0] == "review" and parts[2] == "render"):
-            return False
-        review_id = parts[1]
-        # Only the reviewer-worker Bearer is accepted (not the developer token)
-        auth = self.headers.get("Authorization", "")
-        if auth != f"Bearer {REVIEWER_WORKER_TOKEN}":
-            self.send_json(401, {"error": "reviewer_worker_token_required"})
-            return True
-        try:
-            body = self.read_json(32_768)
-            worker_scope = str(body.get("worker_scope", ""))
-            if worker_scope != REVIEW_SCOPE:
-                raise ValueError("worker_scope_mismatch")
-        except (ValueError, TypeError, KeyError):
-            self.send_json(422, {"error": "worker_scope_required"})
-            return True
-        review = _load_review(review_id)
-        if review is None:
-            self.send_json(404, {"error": "review_not_found"})
-            return True
-        if review.get("state") != "prepared":
-            self.send_json(409, {"error": "review_not_prepared"})
-            return True
-        # K12.3 vulnerability: the worker renders the review's current content via real
-        # Gotenberg WITHOUT re-validating that the source_id still belongs to the original
-        # owner. The K12.1 BOLA replaced the source_id with the participant's twin, so the
-        # worker renders the participant-controlled content as its authoritative contribution.
-        source_id = review.get("source_id", "")
-        # Craft HTML that fetches the review content via the internal server
-        # (same loopback path as K10.3 SSRF — Chromium can reach 127.0.0.1)
-        crafted_html = (
-            f"<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
-            f"<div id='content'>loading...</div>"
-            f"<script>"
-            f"fetch('http://127.0.0.1:{INTERNAL_PORT}/review-content/{source_id}')"
-            f".then(function(r){{return r.text();}})"
-            f".then(function(t){{document.getElementById('content').innerHTML=t;"
-            f"window._renderComplete=true;}})"
-            f".catch(function(e){{document.getElementById('content').textContent='ERR:'+e;"
-            f"window._renderComplete=true;}});"
-            f"</script></body></html>"
-        ).encode()
-        try:
-            pdf_bytes = _render_html_via_gotenberg(crafted_html)
-        except (OSError, RuntimeError) as exc:
-            self.send_json(503, {"error": f"render_failed: {exc}"})
-            return True
-        render_digest = hashlib.sha256(pdf_bytes).hexdigest()
-        # Transition review to rendered state
-        review["state"] = "rendered"
-        review["worker_scope"] = worker_scope
-        review["renderer_identity"] = REVIEWER_WORKER_IDENTITY
-        review["render_digest"] = render_digest
-        _save_review(review_id, review)
-        result_id = "PRVR-" + uuid.uuid4().hex[:10].upper()
-        result = {
-            "schema": "fieldkest.preview-render/v1",
-            "result_id": result_id,
-            "review_id": review_id,
-            "renderer_identity": REVIEWER_WORKER_IDENTITY,
-            "execution_backend": "isolated-container",
-            "worker_scope": worker_scope,
-            "source_id": source_id,
-            "document_id": review.get("document_id"),
-            "render_digest": render_digest,
-            "render_size_bytes": len(pdf_bytes),
-        }
-        RESULTS.mkdir(parents=True, exist_ok=True)
-        (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
-        append_audit(AUDIT, "review-renders", {
-            "request_id": self.request_id,
-            "review_id": review_id, "result_id": result_id,
-            "renderer_identity": REVIEWER_WORKER_IDENTITY,
-            "worker_scope": worker_scope,
-            "source_id": source_id,
-            "render_digest": render_digest,
-            "original_owner": review.get("owner"),
-            "status": 200,
-        })
-        self.send_json(200, result)
-        return True
+        return False
 
     def _handle_prepare(self, path: str) -> bool:
         """K12.2: protected prepare action authenticated by action_nonce Bearer token.
@@ -660,6 +664,7 @@ def main() -> None:
     AUDIT.mkdir(parents=True, exist_ok=True)
     RESULTS.mkdir(parents=True, exist_ok=True)
     _start_internal_server()
+    _start_privileged_review_worker()
     serve_tls(PreviewHandler, port=int(os.environ.get("PORT", "443")))
 
 

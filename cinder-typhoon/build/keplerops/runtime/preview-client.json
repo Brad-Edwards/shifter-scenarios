@@ -38,11 +38,6 @@
           "key": "preview.attachment",
           "method": "GET",
           "template": "https://preview.keplerops.test/attachment/{source_id}"
-        },
-        {
-          "key": "preview.review-render",
-          "method": "POST",
-          "template": "https://preview.keplerops.test/review/{review_id}/render"
         }
       ]
     }
