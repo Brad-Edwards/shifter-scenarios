@@ -538,9 +538,10 @@ hints:
       lowercase collision from K10.2. The route accepts any authenticated request regardless of review ownership —
       the submitter identity check is omitted on reassignment. This places the participant's content in the
       privileged reviewer's queue.
-    h3: The service returns {"state":"loaded","action_nonce":"..."} and writes a reviewer-load audit entry
-      confirming the privileged reviewer worker loaded the content. The action_nonce is a one-use value
-      needed for K12.2.
+    h3: The service returns {"state":"loaded","action_nonce":"..."} and a review-assignments audit entry.
+      Read GET /api/preview/reviews/PRV-771 to confirm the persisted state: queue=privileged-review,
+      source_id=twin, original_owner=maya.ranscombe. That persisted record is the K12.1 evidence.
+      The action_nonce is input to K12.2.
     references:
     - kind: client_route
       id: preview.assignment

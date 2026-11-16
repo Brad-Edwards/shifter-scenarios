@@ -168,6 +168,16 @@ class PreviewHandler(KeplerHandler):
             self.send_json(401, {"error": "authentication_required"})
             return
         query = parse_qs(urlsplit(self.path).query)
+        # GET /api/preview/reviews/{review_id} — read review state (evidence for K12.1)
+        parts = path.strip("/").split("/")
+        if len(parts) == 4 and parts[:2] == ["api", "preview"] and parts[2] == "reviews":
+            review_id = parts[3]
+            review = _load_review(review_id)
+            if review is None:
+                self.send_json(404, {"error": "review_not_found"})
+                return
+            self.send_json(200, review)
+            return
         if path == "/api/preview/association":
             source_id = query.get("source", [""])[0]
             if not source_id:
@@ -234,12 +244,12 @@ class PreviewHandler(KeplerHandler):
             review["action_nonce"] = action_nonce
             review["assigned_by"] = USERNAME
             _save_review(review_id, review)
-            # Reviewer-load audit: simulates the privileged reviewer worker
-            # loading the participant's content. This is K12.1 completion evidence.
-            append_audit(AUDIT, "reviewer-load", {
+            # Real audit: the participant made a BOLA assignment — no reviewer
+            # worker exists yet; the evidence is the persisted review state.
+            append_audit(AUDIT, "review-assignments", {
                 "request_id": self.request_id, "principal": USERNAME,
                 "review_id": review_id, "source_id": source_id,
-                "queue": queue, "action_nonce": action_nonce,
+                "queue": queue, "action_nonce_sha256": hashlib.sha256(action_nonce.encode()).hexdigest(),
                 "document_id": review.get("document_id"),
                 "original_owner": review.get("owner"),
                 "status": 200,
