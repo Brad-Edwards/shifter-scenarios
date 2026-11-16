@@ -345,14 +345,19 @@ hints:
     - kind: client_route
       id: packages.entitlement-check
   K08.3:
-    h1: Begin with the package entitlement records and versioned checking service. Its published client document
-      exposes the entitlement check operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cryptographic context binding and legacy-versus-current validation behavior. Derive every
-      constraint from supplied records or normal responses, test a deliberately failing candidate, and only then
-      produce a candidate.
-    h3: Locate the entitlement check operation in the published client reference. List the observed constraints,
-      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: Read ENT-ARWC-DIAG-0698-plaintext-template.json from the Gitea CRR-OG2 directory. Fill in expiry_policy
+      from the K08.2 checker result and choose a revision integer != 4 and != 3. Serialize as canonical JSON
+      (sort_keys=True, no spaces) before encrypting.
+    h2: Encrypt the canonical JSON with AES-256-GCM: v2 HKDF key (HKDF(info=base_info+"|"+expiry_policy) from
+      K08.2), a fresh 12-byte random nonce, and aad="ENT-ARWC-DIAG-0698|TEN-ARWC-019|FLK-6.9.8". Build the
+      entitlement record JSON with cipher, ciphertext_base64, nonce_hex, tag_base64, and the metadata fields
+      (including expiry_policy as a top-level field).
+    h3: POST to packages.entitlement-check with checker=v2, the crafted record (with expiry_policy), and the
+      K08.2 HKDF context. Wrong customer_id or feature_id returns 422; checker=v1 also returns 422. The correct
+      alternate entitlement returns state=legacy-test-accepted with the participant's chosen revision.
     references:
+    - kind: participant_service
+      id: source.keplerops.test
     - kind: client_route
       id: packages.entitlement-check
   K09.1:

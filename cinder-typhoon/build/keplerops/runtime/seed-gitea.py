@@ -217,6 +217,27 @@ def entitlement_history(password: str) -> None:
             'message': 'Retain ENT-ARWC-DIAG-0698 version 2 entitlement (revision 3, v2 key)',
             'content': base64.b64encode(_RECORD_V2.encode()).decode(),
         })
+    # K08.3: plaintext template showing the allowed field structure for an alternate entitlement.
+    _K83_TEMPLATE_PATH = 'internal/fieldlink/legacy-diagnostics/CRR-OG2/ENT-ARWC-DIAG-0698-plaintext-template.json'
+    _K83_TEMPLATE = json.dumps({
+        "_note": (
+            "Encrypt this canonical JSON with the K08.2 v2 HKDF key (base_info+expiry_policy). "
+            "The checker binds customer_id and feature_id; wrong values return 422."
+        ),
+        "customer_id": "TEN-ARWC-019",
+        "expiry_policy": "<value from K08.2 checker result>",
+        "feature_id": "diagnostic-loader",
+        "package_revision": "FLK-6.9.8",
+        "record_id": "ENT-ARWC-DIAG-0698",
+        "revision": "<integer != 4; must differ from K08.1 and K08.2 baselines>",
+        "schema": "fieldkest-entitlement/v1",
+    }, indent=2, sort_keys=True)
+    if not exists(repository + _K83_TEMPLATE_PATH, password):
+        api('POST', repository + _K83_TEMPLATE_PATH, password, {
+            'branch': 'main',
+            'message': 'Add K08.3 alternate entitlement plaintext template',
+            'content': base64.b64encode(_K83_TEMPLATE.encode()).decode(),
+        })
     marker.touch(mode=0o600)
 
 
