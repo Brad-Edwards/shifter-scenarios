@@ -196,6 +196,12 @@ class CloudApiHandler(KeplerHandler):
             export_id = path.removeprefix("/api/exports/").removesuffix("/definition")
             self._export_definition(export_id)
             return
+        # /api/schedules/{id}: K16.1 — authenticated by export SA token.
+        # Reads the real K3s CronJob spec for the support schedule.
+        if path.startswith("/api/schedules/"):
+            schedule_id = path.removeprefix("/api/schedules/")
+            self._schedule_summary(schedule_id)
+            return
         # /api/exports/{id}: K15.1 — authenticated by export SA token.
         # Reads the real K3s Job spec for the export job and returns job summary.
         if path.startswith("/api/exports/"):
@@ -483,6 +489,53 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(403, {"error": "k3s_rbac_denied"})
         elif status == 404:
             self.send_json(404, {"error": "export_definition_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+    def _schedule_summary(self, schedule_id: str) -> None:
+        """K16.1: read the real K3s CronJob spec for the support schedule.
+
+        The K3s CronJob sched-2841 is the recurring support-export workflow that
+        runs after the current operator's shift ends (daily 08:00). The participant
+        reads this using the K14.2 export SA token.
+        RBAC: svc-fieldlink-export has GET on CronJob sched-2841.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        cronjob_name = schedule_id.lower()
+        status, data = _k3s_request(
+            "GET",
+            f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
+            bearer=sa_token,
+        )
+        if status == 200:
+            containers = (data.get("spec", {}).get("jobTemplate", {})
+                          .get("spec", {}).get("template", {})
+                          .get("spec", {}).get("containers", []))
+            env_map = {e["name"]: e["value"] for c in containers for e in c.get("env", [])}
+            labels = data.get("metadata", {}).get("labels", {})
+            result = {
+                "schema": "fieldkest.schedule/v1",
+                "schedule_id": env_map.get("SCHEDULE_ID", schedule_id.upper()),
+                "assignment": env_map.get("ASSIGNMENT") or labels.get("fieldkest.io/case-id"),
+                "cron": data["spec"].get("schedule"),
+                "profile": env_map.get("PROFILE"),
+                "startup_config": env_map.get("STARTUP_CONFIG"),
+                "destination": env_map.get("DESTINATION"),
+                "case_id": env_map.get("CASE_ID") or labels.get("fieldkest.io/case-id"),
+            }
+            append_audit(AUDIT, "schedules", {
+                "request_id": self.request_id, "schedule_id": result["schedule_id"],
+                "assignment": result["assignment"], "cron": result["cron"], "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "schedule_not_found"})
         else:
             self.send_json(502, {"error": f"k3s_returned_{status}"})
 

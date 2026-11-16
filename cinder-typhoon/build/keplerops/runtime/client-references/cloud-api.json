@@ -43,6 +43,11 @@
           "template": "https://cloud-api.keplerops.test/api/exports/{export_id}/runs"
         },
         {
+          "key": "workloads.schedule",
+          "method": "GET",
+          "template": "https://cloud-api.keplerops.test/api/schedules/{schedule_id}"
+        },
+        {
           "key": "cloud.trust-record",
           "method": "GET",
           "template": "https://cloud-api.keplerops.test/api/trust-records/{trust_id}"

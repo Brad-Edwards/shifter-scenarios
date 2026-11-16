@@ -363,3 +363,67 @@ roleRef:
   kind: Role
   name: export-definition-patcher
   apiGroup: rbac.authorization.k8s.io
+---
+# K16.1: real K3s CronJob for the scheduled support workflow SCH-SUP-2841.
+# The participant reads this after the shift-state change to discover the recurring job.
+# Runs daily at 08:00 — the next run after the current operator's shift ends.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sched-2841
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: support-schedule
+    fieldkest.io/schedule-id: SCHED-2841
+    fieldkest.io/case-id: CAS-MAYA-2841
+spec:
+  schedule: "0 8 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: exporter
+            image: busybox:latest
+            env:
+            - name: SCHEDULE_ID
+              value: "SCHED-2841"
+            - name: CASE_ID
+              value: "CAS-MAYA-2841"
+            - name: ASSIGNMENT
+              value: "CAS-MAYA-2841"
+            - name: PROFILE
+              value: "support-export"
+            - name: STARTUP_CONFIG
+              value: "EXP-2841"
+            - name: DESTINATION
+              value: "fieldkest-exports"
+          restartPolicy: Never
+      backoffLimit: 0
+  concurrencyPolicy: Forbid
+---
+# K16.1 Role: svc-fieldlink-export can read sched-2841 CronJob
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: schedule-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: [batch]
+    resources: [cronjobs]
+    verbs: [get]
+    resourceNames: [sched-2841]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: schedule-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: schedule-reader
+  apiGroup: rbac.authorization.k8s.io
