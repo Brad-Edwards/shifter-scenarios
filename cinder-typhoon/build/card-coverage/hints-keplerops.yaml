@@ -452,14 +452,16 @@ hints:
     - kind: client_route
       id: preview.documents
   K10.3:
-    h1: POST to preview.render with {"source": "http://sup.keplerops.test/attachment/sup-k-2841", "source_id": "sup-k-2841"}.
-      The service derives document_id from canonical(source) → DOC-9BC054D6F95DFA6A (the K10.2 collision slot).
-      This triggers the boundary crossing.
-    h2: The service detects collision_detected=true, renders the protected document via Gotenberg (real Chromium PDF),
-      and returns: protected_source_id=SUP-K-2841, protected_case_id=CAS-MAYA-2841, owner=maya.ranscombe,
-      protected_version, render_digest (SHA256 of the PDF), and render_size_bytes.
-    h3: The service writes preview-collision and protected-content-reads audit records (not writable by the participant).
-      The render_digest confirms real Gotenberg rendering. This is the K10.3 completion evidence for K10.3.
+    h1: POST to preview.render with {"html": "<crafted-html>", "source_id": "sup-k-2841", "document_id": "DOC-9BC054D6F95DFA6A"}.
+      The service sends the HTML to Gotenberg unchanged — Chromium renders what the participant submits. The
+      document_id from K10.1 and K10.2 is DOC-9BC054D6F95DFA6A.
+    h2: The preview service runs an internal document server at 127.0.0.1:9000 (loopback only — not reachable
+      from outside the container). GET /protected-preview/{document_id} returns the protected HTML for that slot.
+      Chromium can reach loopback; craft an HTML document with an iframe or JS fetch targeting
+      http://127.0.0.1:9000/protected-preview/DOC-9BC054D6F95DFA6A.
+    h3: When Chromium fetches the internal resource the service records the access and returns ssrf_confirmed=true,
+      protected_case_id=CAS-MAYA-2841, owner=maya.ranscombe, and render_digest. The preview-ssrf-access and
+      protected-content-reads audit records confirm the boundary crossing.
     references:
     - kind: participant_service
       id: preview.keplerops.test

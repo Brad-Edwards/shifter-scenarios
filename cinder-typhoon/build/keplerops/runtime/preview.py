@@ -7,9 +7,11 @@ from __future__ import annotations
 
 import hashlib
 import http.client as _hc
+import http.server
 import json
 import os
 from pathlib import Path
+import threading
 import uuid
 from urllib.parse import urlsplit, parse_qs
 
@@ -24,25 +26,80 @@ CONFIG = json.loads((STATE / "config/preview.json").read_text())
 USERNAME = CONFIG["developer"]["username"]
 TOKEN = credential("developer_token")
 GOTENBERG_PORT = int(os.environ.get("GOTENBERG_PORT", "3000"))
+INTERNAL_PORT = int(os.environ.get("INTERNAL_PORT", "9000"))
+
+# Track which document_ids were accessed by Chromium via the internal server
+_internal_access_log: dict[str, list[dict]] = {}
+_internal_access_lock = threading.Lock()
 
 
-def _render_html_via_gotenberg(html_content: bytes) -> bytes:
-    """Send HTML to Gotenberg and return the rendered PDF bytes."""
-    boundary = uuid.uuid4().hex
-    body = (
-        f"--{boundary}\r\n"
-        f'Content-Disposition: form-data; name="files"; filename="index.html"\r\n'
-        f"Content-Type: text/html\r\n\r\n"
-    ).encode() + html_content + f"\r\n--{boundary}--\r\n".encode()
-    conn = _hc.HTTPConnection("127.0.0.1", GOTENBERG_PORT, timeout=15)
-    conn.request("POST", "/forms/chromium/convert/html", body=body,
-                 headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
-    resp = conn.getresponse()
-    result = resp.read()
-    conn.close()
-    if resp.status != 200:
-        raise RuntimeError(f"gotenberg render failed: {resp.status}")
-    return result
+class InternalPreviewHandler(http.server.BaseHTTPRequestHandler):
+    """K10.3: Internal-only HTTP server that Chromium can reach but participants cannot.
+
+    When the participant submits a crafted HTML document that makes Chromium
+    fetch http://127.0.0.1:{INTERNAL_PORT}/protected-preview/{document_id},
+    this server records the access and serves the protected document content.
+    The participant cannot reach this endpoint directly (only Chromium can).
+    """
+    def do_GET(self) -> None:
+        path = urlsplit(self.path).path
+        if not path.startswith("/protected-preview/"):
+            self.send_response(404)
+            self.end_headers()
+            return
+        document_id = path.removeprefix("/protected-preview/")
+        protected_html, protected_meta = _load_protected_document(document_id)
+        if protected_html is None:
+            self.send_response(404)
+            self.end_headers()
+            return
+        # Record the access (the SSRF boundary crossing)
+        access_id = str(uuid.uuid4())
+        with _internal_access_lock:
+            if document_id not in _internal_access_log:
+                _internal_access_log[document_id] = []
+            _internal_access_log[document_id].append({
+                "access_id": access_id,
+                "protected_source_id": protected_meta.get("source_id"),
+                "protected_case_id": protected_meta.get("case_id"),
+                "owner": protected_meta.get("owner"),
+                "version": protected_meta.get("version"),
+            })
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(protected_html)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(protected_html)
+
+    def log_message(self, *args: object) -> None:
+        pass
+
+
+def _start_internal_server() -> None:
+    """Start the internal-only HTTP server in a background thread."""
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", INTERNAL_PORT), InternalPreviewHandler)
+    t = threading.Thread(target=server.serve_forever, daemon=True)
+    t.start()
+
+
+def _derive_document_id(source_url: str) -> str:
+    """Derive a document identity from the canonicalized source URL.
+
+    Canonicalization: lowercase + strip trailing slash.  This is the K10.2
+    vulnerability: two inputs differing only in case or trailing slash collapse
+    to the same form and produce the same document identity.
+    """
+    canonical = source_url.lower().rstrip("/")
+    return "DOC-" + hashlib.sha256(canonical.encode()).hexdigest()[:16].upper()
+
+
+def _load_association(source_id: str) -> dict | None:
+    """Load a source attachment association from state."""
+    path = STATE / "associations" / f"{source_id}.json"
+    if not path.is_file():
+        return None
+    return json.loads(path.read_text())
 
 
 def _load_protected_document(document_id: str):
@@ -55,23 +112,28 @@ def _load_protected_document(document_id: str):
     return html_path.read_bytes(), json.loads(meta_path.read_text())
 
 
-def _derive_document_id(source_url: str) -> str:
-    """Derive a document identity from the canonicalized source URL.
-
-    Canonicalization: lowercase + strip trailing slash.  This is the K10.2
-    vulnerability: two inputs differing only in case or trailing slash
-    collapse to the same canonical form and produce the same document identity.
-    """
-    canonical = source_url.lower().rstrip("/")
-    return "DOC-" + hashlib.sha256(canonical.encode()).hexdigest()[:16].upper()
-
-
-def _load_association(source_id: str) -> dict | None:
-    """Load a source attachment association from state."""
-    path = STATE / "associations" / f"{source_id}.json"
-    if not path.is_file():
-        return None
-    return json.loads(path.read_text())
+def _render_html_via_gotenberg(html_content: bytes) -> bytes:
+    """Send HTML to Gotenberg and return the rendered PDF bytes."""
+    boundary = uuid.uuid4().hex
+    body = (
+        b"--" + boundary.encode() + b"\r\n"
+        b'Content-Disposition: form-data; name="files"; filename="index.html"\r\n'
+        b"Content-Type: text/html\r\n\r\n"
+        + html_content +
+        b"\r\n--" + boundary.encode() + b"\r\n"
+        b'Content-Disposition: form-data; name="waitForExpression"\r\n\r\n'
+        b"window._renderComplete === true"
+        b"\r\n--" + boundary.encode() + b"--\r\n"
+    )
+    conn = _hc.HTTPConnection("127.0.0.1", GOTENBERG_PORT, timeout=20)
+    conn.request("POST", "/forms/chromium/convert/html", body=body,
+                 headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+    resp = conn.getresponse()
+    result = resp.read()
+    conn.close()
+    if resp.status != 200:
+        raise RuntimeError(f"gotenberg render failed: {resp.status}: {result[:200]!r}")
+    return result
 
 
 class PreviewHandler(KeplerHandler):
@@ -92,9 +154,6 @@ class PreviewHandler(KeplerHandler):
             return
         query = parse_qs(urlsplit(self.path).query)
         if path == "/api/preview/association":
-            # K10.1: return the association for the supplied source attachment.
-            # The lookup does not verify that the caller owns the case — this is
-            # the K10.1 vulnerability.
             source_id = query.get("source", [""])[0]
             if not source_id:
                 self.send_json(422, {"error": "source_required"})
@@ -130,68 +189,77 @@ class PreviewHandler(KeplerHandler):
             self.send_json(401, {"error": "authentication_required"})
             return
         if path == "/api/preview/render":
-            # K10.3: participant uploads their document → renderer uses the document_id
-            # collision to serve the PROTECTED document's content via real Gotenberg render.
+            # K10.3: participant submits crafted HTML. Gotenberg/Chromium renders it.
+            # If the HTML makes Chromium fetch the internal protected preview endpoint
+            # (http://127.0.0.1:{INTERNAL_PORT}/protected-preview/{document_id}),
+            # the internal server records the boundary crossing.
+            # The participant cannot reach this endpoint directly — only Chromium can.
             try:
-                body = self.read_json(32_768)
-                source_url = str(body.get("source", ""))
+                body = self.read_json(131_072)
+                html_content = str(body.get("html", "")).encode("utf-8")
                 source_id = str(body.get("source_id", ""))
-                if not source_url:
-                    raise ValueError("source_required")
+                document_id = str(body.get("document_id", ""))
+                if not html_content:
+                    raise ValueError("html_required")
             except (ValueError, TypeError, KeyError):
-                self.send_json(422, {"error": "source_required"})
+                self.send_json(422, {"error": "html_and_source_id_required"})
                 return
-            document_id = _derive_document_id(source_url)
-            result_id = "REND-" + uuid.uuid4().hex[:10].upper()
-            protected_html, protected_meta = _load_protected_document(document_id)
-            if protected_html is None:
-                # No protected document at this slot → render normally (no collision)
-                self.send_json(404, {"error": "protected_document_not_found"})
-                return
-            # Collision detected: render the protected document via Gotenberg
+            # Inject the render-complete signal into the participant's HTML
+            # (Gotenberg waits for window._renderComplete === true)
+            inject = b"\n<script>setTimeout(function(){window._renderComplete=true;}, 2000);</script>"
+            if b"</body>" in html_content:
+                html_content = html_content.replace(b"</body>", inject + b"</body>")
+            else:
+                html_content = html_content + inject
+            # Clear any previous access log for this document_id
+            with _internal_access_lock:
+                _internal_access_log.pop(document_id, None)
+            # Submit to Gotenberg
             try:
-                pdf_bytes = _render_html_via_gotenberg(protected_html)
+                pdf_bytes = _render_html_via_gotenberg(html_content)
             except (OSError, RuntimeError) as exc:
                 self.send_json(503, {"error": f"render_failed: {exc}"})
                 return
             render_digest = hashlib.sha256(pdf_bytes).hexdigest()
-            protected_version = protected_meta.get("version", "unknown")
-            # Emit collision event and protected-content-read audit
-            append_audit(AUDIT, "preview-collision", {
-                "request_id": self.request_id, "principal": USERNAME,
-                "source_id": source_id, "source_url": source_url,
-                "document_id": document_id, "canonical_url": source_url.lower().rstrip("/"),
-                "protected_source_id": protected_meta.get("source_id", ""),
-                "protected_case_id": protected_meta.get("case_id", ""),
-                "result_id": result_id, "status": 200,
-            })
-            append_audit(AUDIT, "protected-content-reads", {
-                "request_id": self.request_id, "principal": USERNAME,
-                "document_id": document_id,
-                "protected_version": protected_version,
-                "render_digest": render_digest,
-                "result_id": result_id, "status": 200,
-            })
+            result_id = "REND-" + uuid.uuid4().hex[:10].upper()
+            # Check if the internal server was accessed (SSRF boundary crossing)
+            with _internal_access_lock:
+                accesses = _internal_access_log.pop(document_id, [])
+            ssrf_confirmed = len(accesses) > 0
+            protected_access = accesses[0] if accesses else None
+            if ssrf_confirmed and protected_access:
+                append_audit(AUDIT, "preview-ssrf-access", {
+                    "request_id": self.request_id, "principal": USERNAME,
+                    "source_id": source_id, "document_id": document_id,
+                    "protected_source_id": protected_access["protected_source_id"],
+                    "protected_case_id": protected_access["protected_case_id"],
+                    "access_id": protected_access["access_id"],
+                    "result_id": result_id, "status": 200,
+                })
+                append_audit(AUDIT, "protected-content-reads", {
+                    "request_id": self.request_id, "principal": USERNAME,
+                    "document_id": document_id,
+                    "protected_version": protected_access["version"],
+                    "render_digest": render_digest,
+                    "result_id": result_id, "status": 200,
+                })
             result = {
                 "schema": "fieldkest.preview-render-result/v1",
                 "result_id": result_id,
                 "source_id": source_id,
                 "document_id": document_id,
-                "collision_detected": True,
-                "protected_source_id": protected_meta.get("source_id", ""),
-                "protected_case_id": protected_meta.get("case_id", ""),
-                "protected_version": protected_version,
+                "ssrf_confirmed": ssrf_confirmed,
+                "protected_source_id": protected_access["protected_source_id"] if ssrf_confirmed else None,
+                "protected_case_id": protected_access["protected_case_id"] if ssrf_confirmed else None,
+                "protected_version": protected_access["version"] if ssrf_confirmed else None,
+                "owner": protected_access["owner"] if ssrf_confirmed else None,
                 "render_digest": render_digest,
                 "render_size_bytes": len(pdf_bytes),
-                "owner": protected_meta.get("owner", ""),
             }
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
             self.send_json(200, result)
         elif path == "/api/preview/documents":
-            # K10.2: derive a document identity from the supplied source URL.
-            # Canonicalization (lowercase + strip trailing slash) collapses certain
-            # pairs of distinct inputs into the same derived identity.
             try:
                 body = self.read_json(32_768)
                 source_url = str(body.get("source", ""))
@@ -226,6 +294,7 @@ class PreviewHandler(KeplerHandler):
 def main() -> None:
     AUDIT.mkdir(parents=True, exist_ok=True)
     RESULTS.mkdir(parents=True, exist_ok=True)
+    _start_internal_server()
     serve_tls(PreviewHandler, port=int(os.environ.get("PORT", "443")))
 
 
