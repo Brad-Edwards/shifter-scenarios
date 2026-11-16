@@ -68,7 +68,6 @@
         {"key": "packages.inspections", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/inspections"},
         {"key": "packages.inspection-trace", "method": "GET", "template": "https://delivery.keplerops.test:8443/api/inspections/{inspection_id}/trace"},
         {"key": "packages.inspection-envelope", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/inspections/envelope"},
-        {"key": "packages.entitlement", "method": "GET", "template": "https://delivery.keplerops.test:8443/api/compatibility/entitlements/{entitlement_id}"},
         {"key": "packages.entitlement-check", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/compatibility/entitlements/check"},
         {"key": "packages.approval", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/releases/{release_id}/approval"},
         {"key": "connector.poll", "method": "POST", "template": "https://connector.arwc.test/api/fieldlink/packages/poll"},
