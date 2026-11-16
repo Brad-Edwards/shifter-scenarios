@@ -10,7 +10,9 @@
         {"key": "connector.review", "method": "POST", "template": "https://review.keplerops.test/api/rehearsals/connector"},
         {"key": "ci.run", "method": "GET", "template": "https://review.keplerops.test/api/runs/{run_id}"},
         {"key": "ci.run-log", "method": "GET", "template": "https://review.keplerops.test/api/runs/{run_id}/log"},
-        {"key": "ci.run-artifact", "method": "GET", "template": "https://review.keplerops.test/api/runs/{run_id}/artifacts/{artifact_name}"}
+        {"key": "ci.run-artifact", "method": "GET", "template": "https://review.keplerops.test/api/runs/{run_id}/artifacts/{artifact_name}"},
+        {"key": "ci.review-jobs", "method": "POST", "template": "https://review.keplerops.test/api/review-jobs"},
+        {"key": "ci.review-job", "method": "GET", "template": "https://review.keplerops.test/api/review-jobs/{run_id}"}
       ],
       "related": ["https://ci.keplerops.test/"]
     }

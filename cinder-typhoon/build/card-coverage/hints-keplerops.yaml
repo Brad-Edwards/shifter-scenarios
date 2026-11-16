@@ -390,15 +390,22 @@ hints:
     - kind: client_route
       id: ci.run-artifact
   K09.3:
-    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
-      document exposes the review jobs operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as job-input trust and execution under a constrained service identity. Establish the denied and
-      ordinary baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the review jobs operation in the published client reference. Read the current revision, submit one
-      minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: Take the K09.2 integration-review-input-v3.json artifact (diagnostic_eligible=true) and POST it to
+      ci.review-jobs on review.keplerops.test: {"support_input": <artifact>, "diagnostic": {"profile": "render-review"}}.
+      The endpoint returns a run_id and result path.
+    h2: GET /api/review-jobs/{run_id} returns state=success, workspace_generation=WS-ROWAN-2026-09-G1, and
+      review.maintained_reference (the diagnostic-request-reference content). The maintained_reference contains
+      "POST /api/review-jobs" and the runner-operations.md path but NOT "FieldKest runner service connections".
+    h3: The returned support_input field is "buildops://reviews/diagnostic-request-reference@3" (the integration
+      reference). This is the K09.4 input. Ordinary inputs (diagnostic_eligible=false) return a different
+      support_input and cannot access the integration diagnostic context.
     references:
+    - kind: participant_service
+      id: review.keplerops.test
     - kind: client_route
       id: ci.review-jobs
+    - kind: client_route
+      id: ci.review-job
   K09.4:
     h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Start from ci.keplerops.test's
       published client document and records already earned in this operation, not from an invented endpoint.

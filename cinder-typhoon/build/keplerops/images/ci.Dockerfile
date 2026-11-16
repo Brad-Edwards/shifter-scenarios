@@ -27,12 +27,15 @@ COPY build/keplerops/runtime/ci-entrypoint.sh /usr/local/bin/fieldkest-ci-entryp
 COPY assets/keplerops/opening/k-ci-state.tar /tmp/k-ci-state.tar
 COPY assets/keplerops/release-lineage/k-ci-release-lineage-state.tar /tmp/k-ci-release-lineage-state.tar
 COPY assets/keplerops/build-operations/k-ci-runner-state.tar /tmp/k-ci-runner-state.tar
+COPY assets/keplerops/build-operations/diagnostic-request-reference.md /tmp/diagnostic-request-reference.md
 
 RUN mkdir -p /var/lib/fieldkest-ci \
     && tar -xf /tmp/k-ci-state.tar -C /var/lib/fieldkest-ci \
     && tar -xf /tmp/k-ci-release-lineage-state.tar -C /var/lib/fieldkest-ci \
     && tar -xf /tmp/k-ci-runner-state.tar -C /var/lib/fieldkest-ci \
-    && rm /tmp/k-ci-state.tar /tmp/k-ci-release-lineage-state.tar /tmp/k-ci-runner-state.tar \
+    && mkdir -p /srv/fieldlink-ci \
+    && cp /tmp/diagnostic-request-reference.md /srv/fieldlink-ci/diagnostic-request-reference.md \
+    && rm /tmp/k-ci-state.tar /tmp/k-ci-release-lineage-state.tar /tmp/k-ci-runner-state.tar /tmp/diagnostic-request-reference.md \
     && mkdir -p /var/lib/fieldkest-ci/audit /var/lib/fieldkest-ci/results /var/lib/fieldkest-ci/workspaces/rowan /var/lib/fieldkest-handover \
     && mkdir -p /var/lib/fieldkest-ci/consumer-state \
     && ln -s /opt/fieldkest /opt/fieldkest-ci \

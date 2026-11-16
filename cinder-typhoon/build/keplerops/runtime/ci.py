@@ -34,6 +34,9 @@ USERNAME = "rowan.ito"
 LOCK = threading.RLock()
 RELEASE_READER_TOKEN = credential("release_reader_token")
 K29_CONFIG = json.loads((STATE / "config/release-lineage.json").read_text())
+_RUNNER_CONFIG = json.loads((STATE / "config/runner-foundation.json").read_text())
+_DIAGNOSTIC_REFERENCE = Path("/srv/fieldlink-ci/diagnostic-request-reference.md")
+REVIEW_JOBS = RESULTS / "review-jobs"
 
 
 def run_worker(source: str, fixture: dict[str, object]) -> dict[str, object]:
@@ -68,6 +71,15 @@ class CIHandler(KeplerHandler):
                 self.send_json(404, {"error": "job_not_found"})
                 return
             self.send_json(200, json.loads((RESULTS / f"{job_id}.json").read_text()))
+        elif path.startswith("/api/review-jobs/"):
+            # K09.3: retrieve a submitted review job result.
+            import re as _re
+            run_id = path.removeprefix("/api/review-jobs/")
+            job_path = REVIEW_JOBS / f"{run_id}.json"
+            if not _re.fullmatch(r"RJ-[0-9A-F]{8}", run_id) or not job_path.is_file():
+                self.send_json(404, {"error": "review_job_not_found"})
+                return
+            self.send_json(200, json.loads(job_path.read_text()))
         elif path.startswith("/api/runs/"):
             # K09.2: CI runner run metadata and retained artifacts.
             # The run metadata lists retained_artifacts that are not on the Jenkins
@@ -125,12 +137,70 @@ class CIHandler(KeplerHandler):
         if not self._authorized():
             self.send_json(401, {"error": "authentication_required"})
             return
-        if path == "/api/jobs":
+        if path == "/api/review-jobs":
+            self._review_job_submit()
+        elif path == "/api/jobs":
             self._job_submit()
         elif path == "/api/rehearsals/connector":
             self._connector_rehearsal()
         else:
             self.send_json(404, {"error": "not_found"})
+
+    def _review_job_submit(self) -> None:
+        """K09.3: submit a support-input review job.
+
+        When the submitted support_input has diagnostic_eligible=true and the
+        profile is render-review, the job resolves the linked_support_ref to the
+        diagnostic-request-reference document and returns its content in
+        review.maintained_reference.  The returned support_input is the
+        integration reference, which is used in K09.4 runner-command dispatch.
+        """
+        try:
+            request = self.read_json(131_072)
+        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
+            self.send_json(422, {"error": "invalid_review_job"})
+            return
+        support_input = request.get("support_input")
+        diagnostic = request.get("diagnostic", {})
+        profile = str(diagnostic.get("profile", ""))
+        if not isinstance(support_input, dict):
+            self.send_json(422, {"error": "support_input_required"})
+            return
+        REVIEW_JOBS.mkdir(parents=True, exist_ok=True)
+        run_id = "RJ-" + uuid.uuid4().hex[:8].upper()
+        artifact_id = support_input.get("artifact_id", "")
+        eligible = support_input.get("diagnostic_eligible", False)
+        if not eligible or artifact_id != _RUNNER_CONFIG.get("integration_artifact"):
+            # Ordinary (non-diagnostic) or wrong artifact: produce a retained
+            # reference but deny runner-command dispatch (K09.4 boundary).
+            retained_ref = support_input.get("linked_support_ref", "")
+            result = {
+                "run_id": run_id,
+                "state": "success",
+                "profile": profile,
+                "workspace_generation": _RUNNER_CONFIG["workspace"]["generation"],
+                "support_input": retained_ref,
+                "review": {"maintained_reference": ""},
+            }
+        else:
+            # Integration artifact with render-review: resolve linked_support_ref
+            # and return the diagnostic-request-reference content.
+            maintained = _DIAGNOSTIC_REFERENCE.read_text() if _DIAGNOSTIC_REFERENCE.is_file() else ""
+            result = {
+                "run_id": run_id,
+                "state": "success",
+                "profile": profile,
+                "workspace_generation": _RUNNER_CONFIG["workspace"]["generation"],
+                "support_input": _RUNNER_CONFIG.get("integration_reference", ""),
+                "review": {"maintained_reference": maintained},
+            }
+        (REVIEW_JOBS / f"{run_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "review-jobs", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "run_id": run_id, "artifact_id": artifact_id,
+            "profile": profile, "eligible": eligible, "status": 202,
+        })
+        self.send_json(202, {"run_id": run_id, "result": f"/api/review-jobs/{run_id}"})
 
     def _job_submit(self) -> None:
         try:
