@@ -612,12 +612,15 @@ hints:
     - kind: client_route
       id: archive.instrument-history
   W17.1:
-    h1: Open the Cairn Reach overview in FUXA and use the installed live-observation document. Start with the values
-      explicitly labelled measured; do not treat an accepted setting as physical feedback.
-    h2: Record one UTC observation time, then read the live data for level, usable volume, both measured positions and flows, total
-      flow, and the three accepted settings without changing any proposed field.
-    h3: Check measured and accepted values in their separate sections of the sheet. Process history must contain
-      good product-owned samples close to the UTC time you record.
+    h1: Navigate to FUXA (hmi.arwc.test) and open the Cairn Reach overview. The view shows live level, usable
+      volume, two outlet positions (%), two outlet flows (m3/s), total flow, mode, and owner — all updated in
+      real time from OPC UA tags polled from the PLC (opc.tcp://plc:4840/arwc, namespace urn:arwc:crr:tags).
+    h2: The measured actuator position (CRR.PositionPct, CRR.PositionBPct from sensors) is shown separately
+      from the accepted controller setpoint (CRR.RequestedTargetPct, CRR.RequestedTargetBPct). Record both
+      columns with the same UTC observation time visible in FUXA or from the historian.
+    h3: Verify against the PostgreSQL historian (ot_history.process_samples). Query SELECT DISTINCT ON
+      (tags->>"variable") time, tags->>"variable", tags->>"unit", fields->>"value" FROM
+      ot_history.process_samples ORDER BY tags->>"variable", time DESC to retrieve all 50 current tag values.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W17/live-observation.md
