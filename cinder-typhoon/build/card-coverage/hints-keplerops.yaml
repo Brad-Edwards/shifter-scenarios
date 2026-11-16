@@ -498,12 +498,18 @@ hints:
     - kind: participant_service
       id: source.keplerops.test
   K11.3:
-    h1: Begin with the retained policy compiler repository and build-operations handover. Start from source.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Review the published client document and ordinary records for source.keplerops.test. Capture one ordinary
-      response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The README names the four evaluated fields but does not state the exact acceptance values. Run the binary
+      (bin/fieldkest-policyc) with variations of each field (examples/accepted.env as the base). Check which change
+      causes rejection. The corpus cases in corpus/policy-corpus-2026-09-r4.json show which individual changes fail.
+      Derive the exact set contents, constants, and operators from the binary behavior.
+    h2: Construct a fieldkest.policy-condition-set/v1 JSON document with four entries under "all". Map the opcodes
+      from K11.2 to operators: IN_SET → "in" with "values" list; SEMVER_GTE → "semver_gte" with "value" string;
+      EQ → "eq" with "value" (boolean). Use the binary's constants (index 0=3.0.0, 1=True) and sets
+      (index 0={active}, 1={fieldkest-release-2026}) for the values.
+    h3: Submit operation=condition-check with the program model from K11.1 and
+      policy_input={"corpus_id":"POLICY-CORPUS-2026-09-R4","condition_set":{...}}. Any wrong operator or value
+      is rejected with condition_set_mismatch. The PCMIG receipt includes condition_set_sha256 and
+      corpus_result_sha256. Keep both for K11.4.
     references:
     - kind: participant_service
       id: source.keplerops.test

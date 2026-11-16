@@ -150,14 +150,32 @@ class K11LiveTest(unittest.TestCase):
         }, expected=422)
         self.assertEqual(denied["error"], "opcode_model_mismatch")
 
-    def test_03_fixed_corpus_and_context_fields(self) -> None:
+    def test_03_condition_set_and_corpus_validation(self) -> None:
+        # K11.3: participant submits the derived condition_set document.
+        # Operators and values must be exact (derived from binary analysis, not documentation).
+        condition_set = {
+            "schema": "fieldkest.policy-condition-set/v1",
+            "all": [
+                {"field": "tenant_state", "operator": "in", "values": ["active"]},
+                {"field": "connector_api", "operator": "semver_gte", "value": "3.0.0"},
+                {"field": "signer_lineage", "operator": "in", "values": ["fieldkest-release-2026"]},
+                {"field": "compatibility_exception", "operator": "eq", "value": True},
+            ],
+        }
         result = post({
-            "operation": "corpus-check", "program_model": self.program_model,
-            "policy_input": {"corpus_id": "POLICY-CORPUS-2026-09-R4"},
+            "operation": "condition-check", "program_model": self.program_model,
+            "policy_input": {"corpus_id": "POLICY-CORPUS-2026-09-R4", "condition_set": condition_set},
         })
         self.assertEqual(result["case_count"], 16)
         self.assertEqual(result["corpus_result_sha256"], EXPECTED_CORPUS)
         self.assertEqual(result["condition_set_sha256"], EXPECTED_CONDITIONS)
+        # Wrong condition set is rejected
+        wrong = {**condition_set, "all": [{**c, "values": ["inactive"]} if "values" in c else c for c in condition_set["all"]]}
+        denied = post({
+            "operation": "condition-check", "program_model": self.program_model,
+            "policy_input": {"corpus_id": "POLICY-CORPUS-2026-09-R4", "condition_set": wrong},
+        }, expected=422)
+        self.assertEqual(denied["error"], "condition_set_mismatch")
 
     def test_04_fresh_acceptance_and_nonce_replay(self) -> None:
         nonce = request_json(

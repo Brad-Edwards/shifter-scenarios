@@ -297,7 +297,7 @@ class SourceHandler(KeplerHandler):
             if not isinstance(request, dict) or set(request) != {"operation", "program_model", "policy_input"}:
                 raise ValueError("invalid_request")
             operation = request["operation"]
-            if operation not in {"fragment-check", "corpus-check", "accept"}:
+            if operation not in {"fragment-check", "corpus-check", "condition-check", "accept"}:
                 raise ValueError("invalid_operation")
             if not isinstance(request["policy_input"], dict):
                 raise ValueError("invalid_policy_input")
@@ -330,6 +330,41 @@ class SourceHandler(KeplerHandler):
                     "operation": operation, "fragment_id": policy_input["fragment_id"],
                     "program_sha256": sha256(raw), "case_count": len(case_results),
                     "case_results": case_results,
+                }
+            elif operation == "condition-check":
+                # K11.3: participant submits the derived condition_set document.
+                # The service validates its sha256 matches the stored condition set,
+                # then runs all corpus cases against the program model.
+                # The participant must derive the exact field operators and values
+                # from binary analysis — the README describes field names but not values.
+                if set(policy_input) != {"corpus_id", "condition_set"}:
+                    raise ValueError("invalid_condition_check_request")
+                if policy_input["corpus_id"] != K11_CONFIG["corpus_id"]:
+                    raise ValueError("corpus_binding_mismatch")
+                condition_set = policy_input["condition_set"]
+                if not isinstance(condition_set, dict):
+                    raise ValueError("invalid_condition_set")
+                candidate_sha256 = sha256(canonical_bytes(condition_set))
+                if candidate_sha256 != K11_CONFIG["condition_set_sha256"]:
+                    raise ValueError("condition_set_mismatch")
+                if sha256(raw) != K11_CONFIG["program_sha256"]:
+                    raise ValueError("program_binding_mismatch")
+                results = []
+                for case in K11_CONFIG["corpus"]:
+                    result, evaluated = execute_program(instructions, policy_fields(case["input"]))
+                    if result is not case["accepted"] or evaluated != case["evaluated_fields"]:
+                        raise ValueError("corpus_mismatch")
+                    results.append({"case_id": case["case_id"], "accepted": result, "evaluated_fields": evaluated})
+                result_digest = sha256(canonical_bytes(results))
+                if result_digest != K11_CONFIG["corpus_result_sha256"]:
+                    raise RuntimeError("corpus_result_mismatch")
+                receipt = "PCMIG-" + secrets.token_hex(6).upper()
+                response = {
+                    "schema": "fieldkest.policy-migration-result/v1", "receipt_id": receipt,
+                    "operation": operation, "corpus_id": K11_CONFIG["corpus_id"],
+                    "program_sha256": sha256(raw), "case_count": len(results),
+                    "corpus_result_sha256": result_digest,
+                    "condition_set_sha256": candidate_sha256,
                 }
             elif operation == "corpus-check":
                 if set(policy_input) != {"corpus_id"} or policy_input["corpus_id"] != K11_CONFIG["corpus_id"]:
