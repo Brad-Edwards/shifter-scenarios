@@ -373,6 +373,13 @@ services:
     depends_on: [router]
     extra_hosts:
       - connector.arwc.test:10.77.60.20
+    environment:
+      FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
+      FIELDKEST_TLS_KEY: /tmp/fieldkest.key
+      FIELDKEST_PG_HOST: fieldlink-postgres
+      FIELDKEST_PG_DB: fieldlink_data
+      FIELDKEST_PG_USER: fieldlink_admin
+      FIELDKEST_PG_PASSWORD_FILE: /run/fieldkest-support/pg_password
     volumes:
       - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
@@ -380,10 +387,12 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
       - support-audit:/var/lib/fieldkest-support/audit
       - handover:/var/lib/fieldkest-handover:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/pg_admin_password:/run/fieldkest-support/pg_password:ro
     networks:
       delivery:
         ipv4_address: 10.77.51.60
         aliases: [fieldlink-support-integration]
+      foundation_data: {ipv4_address: 10.77.56.26}
 
   report-worker:
     build:

@@ -1,20 +1,27 @@
-"""FieldLink report handovers and genuine customer diagnostic delivery."""
+"""FieldLink report handovers, customer diagnostics, and K18.4 federation."""
 
 from __future__ import annotations
 
 import hashlib
 from http.cookies import CookieError, SimpleCookie
 import json
+import os
 from pathlib import Path
 import re
 import ssl
+import threading
+import time
 import uuid
 from urllib import request as urlrequest
 from urllib.parse import urlsplit
 
 from http_support import (KeplerHandler, UpstreamInvalidResponse, UpstreamUnavailable,
-                          append_audit, open_json, serve_tls,
-                          RETAINED_SUPPORT_ISSUER, RETAINED_SUPPORT_ASSERTION_ENDPOINT)
+                          append_audit, issue_rs256, open_json, serve_tls,
+                          verify_retained_support_assertion,
+                          RETAINED_SUPPORT_ISSUER, RETAINED_SUPPORT_ASSERTION_ENDPOINT,
+                          RETAINED_SUPPORT_AUDIENCE, RETAINED_SUPPORT_KEY_ID,
+                          RETAINED_SUPPORT_PROVIDER, RETAINED_SUPPORT_SUBJECT,
+                          RETAINED_SUPPORT_TENANT, RETAINED_SUPPORT_ROLE)
 from credentials import credential
 
 
@@ -28,6 +35,107 @@ OPERATORS = {
     credential("assistant_tool_session"): "svc-fieldlink-assistant",
 }
 SUPPORT_DELIVERY_TOKEN = credential("support_delivery_token")
+
+# K18.4: RSA key pair for RETAINED_SUPPORT federation
+_PRIVATE_KEY = STATE / "keys/retained-support-private.pem"
+_PUBLIC_KEY = STATE / "keys/retained-support-public.pem"
+
+# K18.4: Dossiers and customer records
+_DOSSIERS: dict[str, dict] = {}
+for _p in (STATE / "dossiers").glob("*.json"):
+    _d = json.loads(_p.read_text())
+    _DOSSIERS[_d["dossier_id"]] = _d
+
+# K18.4: Federated sessions {session_id: {subject, tenant, role, expires}}
+_FEDERATED_SESSIONS: dict[str, dict] = {}
+_FEDERATED_LOCK = threading.Lock()
+
+# K18.4: Used JTIs for replay protection {jti: expires}
+_USED_JTIS: dict[str, int] = {}
+_JTI_LOCK = threading.Lock()
+
+# K18.4: PostgreSQL credentials for customer record lookup.
+_PG_HOST = os.environ.get("FIELDKEST_PG_HOST", "fieldlink-postgres")
+_PG_PORT = int(os.environ.get("FIELDKEST_PG_PORT", "5432"))
+_PG_DB = os.environ.get("FIELDKEST_PG_DB", "fieldlink_data")
+_PG_USER = os.environ.get("FIELDKEST_PG_USER", "fieldlink_admin")
+_PG_PASS_FILE = Path(os.environ.get("FIELDKEST_PG_PASSWORD_FILE", "/run/fieldkest-support/pg_password"))
+
+_DEVELOPER_TOKEN = credential("developer_token")
+
+
+def _issue_federated_session(subject: str, tenant: str, role: str) -> str:
+    """Create a federated session and return the session cookie value."""
+    sid = str(uuid.uuid4())
+    with _FEDERATED_LOCK:
+        _FEDERATED_SESSIONS[sid] = {
+            "subject": subject, "tenant": tenant, "role": role,
+            "expires": int(time.time()) + 3600,
+        }
+    return sid
+
+
+def _get_federated_session(cookie_header: str) -> dict | None:
+    cookies = SimpleCookie()
+    try:
+        cookies.load(cookie_header)
+    except CookieError:
+        return None
+    sid = cookies.get("fieldkest_federated")
+    if not sid:
+        return None
+    now = int(time.time())
+    with _FEDERATED_LOCK:
+        sess = _FEDERATED_SESSIONS.get(sid.value)
+    if sess is None or sess["expires"] < now:
+        return None
+    return sess
+
+
+def _consume_jti(jti: str, exp: int) -> bool:
+    """Return True if the JTI is new (not replayed). Marks it as used."""
+    with _JTI_LOCK:
+        if jti in _USED_JTIS:
+            return False
+        _USED_JTIS[jti] = exp
+    return True
+
+
+def _query_customer_record(record_id: str, federated_subject: str) -> dict | None:
+    """Query fieldlink_data PostgreSQL for the customer record.
+
+    K18.4 defect: checks support-reviewer role (enforced by caller) but
+    this query omits the session-tenant predicate — a real BOLA flaw.
+    The SELECT does NOT filter by tenant, so the support-reviewer role
+    grants cross-tenant access.
+    """
+    try:
+        import psycopg2
+        import psycopg2.extras
+        pg_pass = _PG_PASS_FILE.read_text().strip()
+        conn = psycopg2.connect(
+            host=_PG_HOST, port=_PG_PORT, dbname=_PG_DB,
+            user=_PG_USER, password=pg_pass, connect_timeout=5,
+            cursor_factory=psycopg2.extras.RealDictCursor,
+        )
+        with conn:
+            with conn.cursor() as cur:
+                # Role check is enforced by the caller (federated session role).
+                # BOLA defect: no WHERE tenant = session.tenant predicate here.
+                cur.execute(
+                    "SELECT record_id, tenant, connector_revision, asset, case_ref "
+                    "FROM support.customer_records WHERE record_id = %s",
+                    (record_id,),
+                )
+                row = cur.fetchone()
+        conn.close()
+        if row is None:
+            return None
+        result = dict(row)
+        result["federated_subject"] = federated_subject
+        return result
+    except Exception:
+        return None
 
 
 def extended() -> dict[str, object]:
@@ -67,11 +175,61 @@ class SupportHandler(KeplerHandler):
             return self.send_json(200, {
                 "issuer": RETAINED_SUPPORT_ISSUER,
                 "assertion_endpoint": RETAINED_SUPPORT_ASSERTION_ENDPOINT,
-                "assertion_audiences_supported": ["OIDC-FIELDKEST-SUPPORT"],
+                "assertion_audiences_supported": [RETAINED_SUPPORT_AUDIENCE],
                 "claims_supported": ["sub", "tenant", "roles", "iat", "exp", "jti"],
                 "subject_syntax": "urn:fieldkest:pairwise:<uuid>",
                 "grant_types_supported": ["assertion_bearer"],
             })
+
+        # K18.4: session route — returns current support session customer context.
+        if path == "/api/session":
+            cookie = self.headers.get("Cookie", "")
+            cookies = SimpleCookie()
+            try:
+                cookies.load(cookie)
+                ostsessid = cookies.get("OSTSESSID") or cookies.get("fieldkest_support")
+            except CookieError:
+                ostsessid = None
+            if not ostsessid:
+                return self.send_json(401, {"error": "session_required"})
+            # Session maps support cookie to customer context
+            session_token = ostsessid.value
+            if OPERATORS.get(session_token) not in ("rowan.ito", "talia.mornac"):
+                return self.send_json(403, {"error": "session_denied"})
+            return self.send_json(200, {
+                "customer": {
+                    "tenant": RETAINED_SUPPORT_TENANT,
+                    "history_dossier": "DOS-ARWC-HIST-01",
+                },
+            })
+
+        # K18.4: dossier route — returns dossier data or protected customer record.
+        match = re.fullmatch(r"/api/customers/([^/]+)/dossiers/([^/]+)", path)
+        if match:
+            tenant, dossier_id = match.group(1), match.group(2)
+            # Check for federated session (grants access to customer records).
+            cookie_hdr = self.headers.get("Cookie", "")
+            federated = _get_federated_session(cookie_hdr)
+            if federated and federated.get("role") == RETAINED_SUPPORT_ROLE:
+                # K18.4 defect: checks support-reviewer role but omits session-tenant predicate.
+                # A reviewer session for ANY tenant can read customer records.
+                record = _query_customer_record(dossier_id, federated["subject"])
+                if record is not None:
+                    append_audit(AUDIT, "customer-record", {
+                        "action": "read", "record_id": dossier_id, "tenant": tenant,
+                        "federated_subject": federated["subject"], "peer": self.client_address[0],
+                    })
+                    return self.send_json(200, record)
+            # Check for ordinary session (access to dossiers only).
+            if not self._authorized():
+                return self.send_json(403, {"error": "dossier_denied"})
+            dossier = _DOSSIERS.get(dossier_id)
+            if dossier is None:
+                return self.send_json(404, {"error": "dossier_not_found"})
+            if dossier.get("tenant") != tenant:
+                return self.send_json(403, {"error": "dossier_denied"})
+            return self.send_json(200, dossier)
+
         if not self._authorized():
             return self.send_json(403, {"error": "integration_token_denied"})
         if path == "/api/handovers/current":
@@ -92,9 +250,76 @@ class SupportHandler(KeplerHandler):
         self.send_json(404, {"error": "not_found"})
 
     def do_POST(self) -> None:
+        path = urlsplit(self.path).path
+
+        # K18.4: assertion endpoint — issues a bounded RS256 assertion for the reviewer subject.
+        # Public endpoint (no support session required).
+        if path == "/federation/retained-support/assertions":
+            try:
+                body = self.read_json(maximum_bytes=4096)
+            except Exception:
+                return self.send_json(400, {"error": "bad_request"})
+            audience = body.get("audience", "")
+            subject = body.get("subject", "")
+            tenant = body.get("tenant", "")
+            if audience != RETAINED_SUPPORT_AUDIENCE:
+                return self.send_json(403, {"error": "audience_denied"})
+            if subject != RETAINED_SUPPORT_SUBJECT or tenant != RETAINED_SUPPORT_TENANT:
+                return self.send_json(403, {"error": "subject_denied"})
+            now = int(time.time())
+            claims = {
+                "aud": audience, "exp": now + 300, "iat": now,
+                "iss": RETAINED_SUPPORT_ISSUER,
+                "jti": str(uuid.uuid4()),
+                "roles": [RETAINED_SUPPORT_ROLE],
+                "sub": subject, "tenant": tenant,
+            }
+            token = issue_rs256(_PRIVATE_KEY, claims, key_id=RETAINED_SUPPORT_KEY_ID)
+            append_audit(AUDIT, "assertion", {
+                "action": "issue", "subject": subject, "tenant": tenant,
+                "jti": claims["jti"], "peer": self.client_address[0],
+            })
+            return self.send_json(201, {"assertion": token})
+
+        # K18.4: federation login — validates retained-support assertion, creates session.
+        # Served at identity.keplerops.test/api/federation/login via nginx.
+        if path == "/api/federation/login":
+            try:
+                body = self.read_json(maximum_bytes=8192)
+            except Exception:
+                return self.send_json(400, {"error": "bad_request"})
+            token = body.get("assertion", "")
+            claims = verify_retained_support_assertion(_PUBLIC_KEY, token)
+            if claims is None:
+                return self.send_json(401, {"error": "assertion_invalid"})
+            jti = claims["jti"]
+            if not _consume_jti(jti, claims["exp"]):
+                return self.send_json(409, {"error": "assertion_replayed"})
+            sid = _issue_federated_session(
+                subject=claims["sub"], tenant=claims["tenant"],
+                role=RETAINED_SUPPORT_ROLE,
+            )
+            append_audit(AUDIT, "federation-login", {
+                "action": "login", "subject": claims["sub"], "tenant": claims["tenant"],
+                "jti": jti, "peer": self.client_address[0],
+            })
+            return self.send_json(201, {"session_cookie": f"fieldkest_federated={sid}"})
+
+        # K18.4: staff-login — authenticate developer credentials via Keycloak ROPC.
+        if path == "/api/federation/staff-login":
+            try:
+                body = self.read_json(maximum_bytes=4096)
+            except Exception:
+                return self.send_json(400, {"error": "bad_request"})
+            if body.get("password") != _DEVELOPER_TOKEN:
+                return self.send_json(401, {"error": "credentials_invalid"})
+            return self.send_json(201, {
+                "provider": "OIDC-FIELDKEST-STAFF",
+                "login": "accepted",
+            })
+
         if not self._authorized() or self.principal == "svc-fieldlink-assistant":
             return self.send_json(403, {"error": "integration_token_denied"})
-        path = urlsplit(self.path).path
         if path == "/api/customers/TEN-ARWC-047/diagnostics":
             data = self.read_json()
             if data.get("connector_revision") != "FLK-7.4.2": return self.send_json(422, {"error": "connector_binding_denied"})
