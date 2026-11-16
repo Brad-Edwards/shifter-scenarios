@@ -142,6 +142,76 @@ def seed() -> None:
                     request("PUT", dav(current), archive.read(f"{stem}-{revision}.svg"))
                     time.sleep(2)
             verify_versions(current, [archive.read(f"{stem}-{revision}.svg") for revision in ("P1", "P2")])
+    # W22.4: Seed elias.vorn-review concealed-reviewer account and Nextcloud share.
+    # The participant discovers "elias.vorn-review" by analyzing the ReviewHelper.dll
+    # ReadyToRun native-body mismatch (W22.4), then finds the archive session in the
+    # Nextcloud share note below.
+    elias_email = "elias.vorn-review@arwc.test"
+    elias_id = quote(elias_email, safe="")
+    elias_password = hmac.new(os.environ["STAFF_SEED"].encode(), elias_email.encode(), hashlib.sha256).hexdigest()
+    elias_auth = "Basic " + base64.b64encode(f"{elias_email}:{elias_password}".encode()).decode()
+    elias_dav = f"/remote.php/dav/files/{elias_id}"
+    if not ocs("GET", f"users/{elias_id}", accepted=(200, 404)).get("data"):
+        ocs("POST", "users", {
+            "userid": elias_email, "password": elias_password,
+            "displayName": "Elias Vorn", "email": elias_email,
+        }, accepted=(200, 100))
+    else:
+        ocs("PUT", f"users/{elias_id}", {"key": "password", "value": elias_password},
+            accepted=(200, 100))
+    ocs("POST", f"users/{elias_id}/groups", {"groupid": "Staff"}, accepted=(200, 100))
+    request("MKCOL", f"{elias_dav}/Commissioning%20Access",
+            headers={"Authorization": elias_auth}, accepted=(200, 201, 204, 405))
+    file_dav = f"{elias_dav}/Commissioning%20Access/CRR-R21-access-record.json"
+    if not request("HEAD", file_dav, headers={"Authorization": elias_auth}, accepted=(200, 404)):
+        # Version 1: access record with the archive session ID.
+        # This becomes the old version after the second upload.
+        v1 = json.dumps({
+            "record_type": "archive_access", "project": "CRR-CTRL-R21", "revision": 7,
+            "session": "ARCHIVE-REVIEW-R7-ELIAS", "comparison": "CMP-CRR-R21-R7",
+            "access_date": "2026-03-14", "reviewer": "elias.vorn-review", "status": "completed",
+        }, indent=2).encode()
+        request("PUT", file_dav, v1,
+                headers={"Authorization": elias_auth, "Content-Type": "application/json"},
+                accepted=(200, 201, 204))
+        time.sleep(3)
+        # Version 2: current content, session field redacted.
+        v2 = json.dumps({
+            "record_type": "archive_access", "project": "CRR-CTRL-R21", "revision": 7,
+            "session": "[archived]", "comparison": "CMP-CRR-R21-R7",
+            "access_date": "2026-03-14", "reviewer": "elias.vorn-review", "status": "archived",
+        }, indent=2).encode()
+        request("PUT", file_dav, v2,
+                headers={"Authorization": elias_auth, "Content-Type": "application/json"},
+                accepted=(200, 201, 204))
+    # Share the folder with Staff group and add a note with the archive session ID.
+    # The note is the "share history" the participant discovers from Nextcloud.
+    shares_raw = request("GET",
+                         "/ocs/v2.php/apps/files_sharing/api/v1/shares"
+                         "?format=json&path=/Commissioning%20Access",
+                         headers={"Authorization": elias_auth}, accepted=(200,))
+    existing_shares = json.loads(shares_raw)["ocs"]["data"]
+    staff_share = next(
+        (s for s in existing_shares
+         if str(s.get("share_type")) == "1" and s.get("share_with") == "Staff"), None)
+    if not staff_share:
+        raw = request("POST",
+                      "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json",
+                      urlencode({
+                          "path": "/Commissioning Access", "shareType": 1,
+                          "shareWith": "Staff", "permissions": 1,
+                          "note": "Commissioning archive session: ARCHIVE-REVIEW-R7-ELIAS",
+                      }).encode(),
+                      headers={"Authorization": elias_auth}, accepted=(200, 201, 100))
+        staff_share = json.loads(raw)["ocs"]["data"]
+    else:
+        share_id = staff_share["id"]
+        request("PUT",
+                f"/ocs/v2.php/apps/files_sharing/api/v1/shares/{share_id}?format=json",
+                urlencode({"note": "Commissioning archive session: ARCHIVE-REVIEW-R7-ELIAS"}).encode(),
+                headers={"Authorization": elias_auth}, accepted=(200, 100))
+    print("W22.4: elias.vorn-review seeded with Nextcloud Commissioning Access share")
+
     print("ARWC documents imported with native department sharing")
 
 

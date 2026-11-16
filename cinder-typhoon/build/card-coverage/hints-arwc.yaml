@@ -870,13 +870,17 @@ hints:
     - kind: client_route
       id: process.sealed-project-open
   W22.4:
-    h1: Begin with the sealed viewer, project decision, and retained review context. Start from process-view.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as embedded-machine reconstruction followed by concealed reviewer-identity analysis. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for process-view.arwc.test. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: Run the ReviewHelper.dll from W22.3 two ways — normally (dotnet ReviewHelper.dll) and with ReadyToRun
+      disabled (COMPlus_ReadyToRun=0 dotnet ReviewHelper.dll). The reviewer name changes between runs. The name
+      that appears only under native execution is the concealed identity; the managed metadata lists a different
+      reviewer.
+    h2: The concealed reviewer is a Nextcloud user. List files shared with your CORPORATE Nextcloud account:
+      GET /ocs/v2.php/apps/files_sharing/api/v1/shares?format=json&shared_with_me=true with your CORPORATE
+      credentials. Find the share from the concealed reviewer — the share note contains the archive session ID.
+    h3: Submit POST https://process-view.arwc.test/api/unlisted-reviewers/current with CORPORATE Bearer and body
+      {"helper_sha256":"<dll_sha256>","reviewer":"<concealed_identity>","session":"<session_from_note>",
+      "comparison":"CMP-CRR-R21-R7","project":"CRR-CTRL-R21"}. Wrong reviewer returns 409. On success, returns
+      201 with CMP-CRR-R21-R7 marked historical, no current identity, maintenance approval, or control authority.
     references:
     - kind: participant_service
       id: process-view.arwc.test
