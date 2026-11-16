@@ -140,10 +140,11 @@ def seed() -> None:
         "The annex is retained with the supplier order. Sign in to the supplier account to read the private copy.\n"
     )
     upload("Veybridge handover/order-documents.md", order_documents.encode())
-    # W10.3: PLN-MER-DP3-R6 is a Merewick planning document that ended up in the
-    # Veybridge handover folder (misplaced due to the cross-district retrieval boundary
-    # failure). Jules can read it via WebDAV, supplying the full protected planning record
-    # referenced by EXC-MER-DP3-4 from W10.2.
+    # W10.3: PLN-MER-DP3-R6 is a restricted Merewick planning document in the
+    # Corporate Records/Merewick admin folder. An over-broad individual file share
+    # gives jules.orswick@veybridge.test read access, though they should not have
+    # access to Merewick planning records. The supplier cannot list the parent folder.
+    # Reaching this file requires the PLN-MER-DP3-R6 record ID from W10.2 (EXC-MER-DP3-4).
     pln_mer_content = json.dumps({
         "record_id": "PLN-MER-DP3-R6",
         "revision": 6,
@@ -155,7 +156,12 @@ def seed() -> None:
         "supply_condition": "accepted reservation required before transfer scheduling",
         "linked_excerpt": "EXC-MER-DP3-4",
     }, sort_keys=True, indent=2).encode("utf-8")
-    upload("Veybridge handover/PLN-MER-DP3-R6.json", pln_mer_content)
+    request("MKCOL", dav("Corporate Records"), accepted=(201, 405))
+    request("MKCOL", dav("Corporate Records/Merewick"), accepted=(201, 405))
+    upload("Corporate Records/Merewick/PLN-MER-DP3-R6.json", pln_mer_content)
+    # Create individual file share with Jules (over-broad — Merewick data leaked to supplier)
+    merewick_path = "/Corporate Records/Merewick/PLN-MER-DP3-R6.json"
+    share("Corporate Records/Merewick/PLN-MER-DP3-R6.json", "jules.orswick@veybridge.test", 0)
     print(json.dumps({"project": project["name"], "supplier_handback": handback["name"],
                       "engineering_review": restricted["name"], "denied_review": other["name"]}))
     print("Native supplier documents, attachments and per-record maintenance shares imported")
