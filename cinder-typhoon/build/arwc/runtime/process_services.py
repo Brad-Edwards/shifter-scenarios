@@ -72,6 +72,7 @@ INITIAL["engineering"].update({
     "envelope_observed": False,
     "permissive_observed": False,
     "movement_observed": False,
+    "restored_observed": False,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
@@ -630,6 +631,11 @@ class Handler(BaseHTTPRequestHandler):
         "key": "process.movement-observation",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/process-movement/current"
+    },
+    {
+        "key": "process.restoration-observation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/process-restoration/current"
     }
 ]
         for r in routes:
@@ -1040,6 +1046,86 @@ class Handler(BaseHTTPRequestHandler):
             }
             atomic_json(EVIDENCE / "engineering" / "process-movement.json", result)
             self.accepted("movement-observed", result, 201)
+            return
+        # W25.4: Restoration observation — validates A20/B20 return from OT historian.
+        # Participant issues FUXA A20/B20 restore and reads resulting historian evidence.
+        if ROLE == "engineering" and path == "/api/process-restoration/current":
+            if not state.get("movement_observed"):
+                self.send_json(403, {"error": "movement observation required"}); return
+            restore_seq = request.get("hmi_sequence")
+            if (request.get("record_id") != "CRR-OP-W25-R1"
+                    or not isinstance(restore_seq, int) or restore_seq < 1
+                    or request.get("target_a") != 20
+                    or request.get("target_b") != 20):
+                self.send_json(409, {"error": "restoration observation rejected"}); return
+            OT_HISTORIAN = "172.29.63.22"
+            OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+            try:
+                import psycopg2 as _pg
+                ot_conn = _pg.connect(
+                    host=OT_HISTORIAN, port=5432, dbname="historian",
+                    user="reader", password=OT_READER_PASS, connect_timeout=5
+                )
+                ot_conn.autocommit = True
+                with ot_conn.cursor() as cur:
+                    cur.execute("""
+                        WITH accepted_time AS (
+                          SELECT ph.source_time AS t
+                          FROM public.process_history ph
+                          WHERE ph.tag='hmi_accepted' AND ph.value::int=%s
+                            AND ph.source_time > NOW() - INTERVAL '60 minutes'
+                          ORDER BY ph.source_time ASC
+                          LIMIT 1
+                        ),
+                        snapshot AS (
+                          SELECT DISTINCT ON (ph.tag) ph.tag, ph.value
+                          FROM public.process_history ph, accepted_time
+                          WHERE ph.tag IN ('position_pct','position_b_pct','flow_m3s','flow_b_m3s')
+                            AND ph.source_time >= accepted_time.t
+                            AND ph.source_time <= accepted_time.t + INTERVAL '30 seconds'
+                          ORDER BY ph.tag, ph.source_time DESC
+                        )
+                        SELECT
+                          %s as hmi_seq,
+                          MAX(CASE WHEN tag='position_pct' THEN value END) as pos_a,
+                          MAX(CASE WHEN tag='position_b_pct' THEN value END) as pos_b,
+                          MAX(CASE WHEN tag='flow_m3s' THEN value END) as flow_a,
+                          MAX(CASE WHEN tag='flow_b_m3s' THEN value END) as flow_b,
+                          (SELECT t FROM accepted_time) as event_time
+                        FROM snapshot
+                    """, (restore_seq, restore_seq))
+                    row = cur.fetchone()
+                ot_conn.close()
+            except Exception as exc:
+                self.send_json(503, {"error": f"OT historian unavailable: {exc}"}); return
+            if not row or row[1] is None:
+                self.send_json(409, {"error": "no fresh OT historian evidence of restoration"}); return
+            _, hist_pos_a, hist_pos_b, hist_flow_a, hist_flow_b, hist_time = row
+            # Validate settled A20/B20 baseline from historian (last values in 30s window):
+            if (hist_pos_a is None or abs(float(hist_pos_a) - 20.0) > 2.0
+                    or hist_pos_b is None or abs(float(hist_pos_b) - 20.0) > 2.0
+                    or hist_flow_a is None or abs(float(hist_flow_a) - 0.10) > 0.04
+                    or hist_flow_b is None or abs(float(hist_flow_b) - 0.10) > 0.04):
+                self.send_json(409, {"error": "OT historian does not confirm A20/B20 restoration"}); return
+            state["restored_observed"] = True; save_state(state)
+            result = {
+                "record_id": "W25-RESTORE-CRR-R1", "revision": 1,
+                "source": "CRR-OP-W25-R1",
+                "restoration": {
+                    "hmi_sequence": restore_seq, "hmi_accepted": True,
+                    "target_a_pct": 20, "target_b_pct": 20,
+                    "measured_a_pct": round(float(hist_pos_a), 1),
+                    "measured_b_pct": round(float(hist_pos_b), 1),
+                    "flow_a_m3s": round(float(hist_flow_a), 3),
+                    "flow_b_m3s": round(float(hist_flow_b), 3),
+                    "total_flow_m3s": round(float(hist_flow_a) + float(hist_flow_b), 3),
+                    "historian_time": hist_time.isoformat() if hist_time else None,
+                },
+                "baseline_restored": True,
+                "mode": "W25.MODE",
+            }
+            atomic_json(EVIDENCE / "engineering" / "process-restoration.json", result)
+            self.accepted("restoration-observed", result, 201)
             return
         # W23.3: sufficiency verification — reads real PostgreSQL and real binary output.
         # Gated on W23.2 controlled_allocation_committed=True.
