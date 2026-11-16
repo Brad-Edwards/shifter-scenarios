@@ -521,12 +521,12 @@
   "program_id": "FKPC-POLICY-2026-09-R4",
   "program_sha256": "0b9a7fd08148ec1b6d3151dcd9c0499fb89f70585fb3705a44662e062242ef9c",
   "repository": {
-    "bundle_sha256": "4df8cc9dab1aa2a57061136238538c2e4a7b84f46f05096951b30a32938f7f2b",
-    "commit": "04a3015b1f814f8ea4afc05fbe8b86d387a6a0df",
+    "bundle_sha256": "299ecece8a832b98b99c133bc45d28cead41e32bd811df2cd1ff503fdda5818f",
+    "commit": "7b857207f68944d19d61d9b33c1df830b36c5aee",
     "refs": {
-      "main": "04a3015b1f814f8ea4afc05fbe8b86d387a6a0df",
-      "policyc-2.6.4": "04a3015b1f814f8ea4afc05fbe8b86d387a6a0df",
-      "retained/policyc-2.6": "04a3015b1f814f8ea4afc05fbe8b86d387a6a0df"
+      "main": "7b857207f68944d19d61d9b33c1df830b36c5aee",
+      "policyc-2.6.4": "7b857207f68944d19d61d9b33c1df830b36c5aee",
+      "retained/policyc-2.6": "7b857207f68944d19d61d9b33c1df830b36c5aee"
     },
     "repository": "fieldkest/policy-compiler"
   },
