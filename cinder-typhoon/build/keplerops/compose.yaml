@@ -710,6 +710,8 @@ services:
       fieldlink-support-db: {condition: service_healthy}
       fieldlink-keycloak: {condition: service_healthy}
     environment:
+      FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
+      FIELDKEST_TLS_KEY: /tmp/fieldkest.key
       FIELDKEST_STATE_ROOT: /var/lib/fieldkest-staff
       SUPPORT_DB_PASSWORD_FILE: /run/fieldkest-staff/support_db_password
     volumes:
@@ -718,10 +720,11 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/support_db_password:/run/fieldkest-staff/support_db_password:ro
+      - staff-audit:/var/lib/fieldkest-staff/audit
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
     healthcheck:
-      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "https://localhost:443/health"]
+      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "--resolve", "staff.keplerops.test:443:127.0.0.1", "https://staff.keplerops.test/health"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -935,6 +938,7 @@ volumes:
   registry-verdaccio: {name: cinder-keplerops-registry-verdaccio}
   support-audit: {name: cinder-keplerops-support-audit}
   cloud-api-audit: {name: cinder-keplerops-cloud-api-audit}
+  staff-audit: {name: cinder-keplerops-staff-audit}
   preview-audit: {name: cinder-keplerops-preview-audit}
   preview-results: {name: cinder-keplerops-preview-results}
   indexer-state: {name: cinder-keplerops-indexer-state}
