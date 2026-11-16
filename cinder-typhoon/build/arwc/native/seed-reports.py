@@ -64,6 +64,28 @@ def seed() -> None:
         api(f'card/{card["id"]}', {"dataset_query": query, "description": "Regional reported reserve figures."}, method="PUT")
         query["native"]["query"] = "SELECT record_id, revision, planning_window, reported_ml, asset, unit, as_of FROM reporting.reserve_report ORDER BY asset"
         api(f'card/{card["id"]}', {"dataset_query": query, "description": description}, method="PUT")
+    # Seed the QRY-RESERVE-R7 planner query: the saved SQL question on reserve_report_current.
+    # This is the planning query the participant recovers in W07.1 using the W06.3 session.
+    qry_title = "QRY-RESERVE-R7"
+    qry_card = next((card for card in api("card") if card["name"] == qry_title), None)
+    qry_description = (
+        "Planning reserve query QRY-RESERVE-R7. Database: PostgreSQL 16.4. "
+        "View: reserve_report_current. Identifier quote: \". Policy: SELECT only. "
+        "Ordinary request: {report_name: reserve_report_current}. "
+        "Ordinary result: RPT-CRR-RESERVE-R7."
+    )
+    if qry_card is None:
+        qry_card = api("card", {"name": qry_title, "display": "table",
+            "visualization_settings": {},
+            "description": qry_description,
+            "dataset_query": {"database": database["id"], "type": "native", "native": {
+                "query": 'SELECT record_id, revision, planning_window, reported_ml, asset, unit, as_of FROM "reserve_report_current"'}}})
+        print(f"Created Metabase question: {qry_title} (id={qry_card.get('id')})")
+    elif qry_card.get("description") != qry_description:
+        api(f'card/{qry_card["id"]}', {"description": qry_description}, method="PUT")
+        print(f"Updated Metabase question description: {qry_title}")
+    else:
+        print(f"Metabase question already current: {qry_title}")
     print("ARWC native planning reader and saved report configured")
 
 

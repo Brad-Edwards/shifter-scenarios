@@ -802,7 +802,10 @@ class Handler(BaseHTTPRequestHandler):
                     "template": "https://retained-archive.arwc.test/api/sessions"
                 }
             ],
-            "related": ["https://business-workplace.arwc.test/.well-known/arwc-client"],
+            "related": [
+                "https://business-workplace.arwc.test/.well-known/arwc-client",
+                "https://planning-data.arwc.test/.well-known/arwc-client",
+            ],
         })
         return True
 
@@ -1349,6 +1352,23 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         expires = int(time.time()) + 15 * 60
+        # Write PLANNER_EVIDENCE so the planning_data service can validate the Metabase session.
+        # The token_sha256 is the hash of the Metabase session ID, used by planning_data
+        # to validate the X-ARWC-Planner-Session header without storing the session ID.
+        planner_evidence_path = pathlib.Path("/run/arwc-planning-evidence/planner-session.json")
+        planner_evidence = {
+            "record_id": "PLN-SESS-OAUTH-882",
+            "planner": "nadia.corvane",
+            "scope": "planning-records",
+            "token_sha256": hashlib.sha256(metabase_session_id.encode()).hexdigest(),
+            "expires_at_epoch": expires,
+        }
+        try:
+            planner_evidence_path.parent.mkdir(parents=True, exist_ok=True)
+            atomic_json(planner_evidence_path, planner_evidence)
+            os.chmod(planner_evidence_path, 0o644)
+        except OSError:
+            pass
         result = {
             "record_id": "PLN-SESS-OAUTH-882",
             "revision": 1,

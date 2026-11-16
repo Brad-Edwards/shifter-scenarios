@@ -67,8 +67,15 @@ ON CONFLICT DO NOTHING;
 CREATE OR REPLACE VIEW reporting.reserve_report AS
  SELECT record_id, revision, planning_window, reported_ml, asset, unit, as_of
  FROM public.business_reserve_report;
+CREATE OR REPLACE VIEW public.reserve_report_current AS
+ SELECT record_id, revision, planning_window, reported_ml, asset, unit, as_of
+ FROM public.business_reserve_report
+ WHERE planning_window = (
+   SELECT planning_window FROM public.business_reserve_report
+   WHERE record_id = 'RPT-CRR-DP3-R7');
 REVOKE ALL ON public.allocation_ledger, public.settlement_tariff,
   public.meter_export, public.business_reserve_report FROM PUBLIC, planning_reader;
 GRANT USAGE ON SCHEMA reporting TO planning_reader;
 GRANT SELECT ON reporting.reserve_report TO planning_reader;
+GRANT SELECT ON public.reserve_report_current TO planning_reader;
 COMMIT;

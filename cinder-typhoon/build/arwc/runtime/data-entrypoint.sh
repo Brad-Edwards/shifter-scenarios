@@ -25,6 +25,7 @@ for file in server.crt server.key; do
 done
 
 install -d -o postgres -g postgres -m 0700 "$PGDATA"
+install -d -o postgres -g postgres -m 2775 /var/run/postgresql
 chown postgres:postgres /var/run/postgresql
 chmod 2775 /var/run/postgresql
 if [ ! -s "$PGDATA/PG_VERSION" ]; then
