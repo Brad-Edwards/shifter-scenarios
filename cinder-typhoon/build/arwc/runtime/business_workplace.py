@@ -20,18 +20,9 @@ TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 DISCOVERIES = ROOT / "state" / "discoveries.json"
 AGREEMENT = pathlib.Path("/opt/business-workplace/assets/as003-agreement-summary.md")
 
-SOURCE_SELECTION = {
-    "record_id": "SEL-CRR-DP3-7",
-    "revision": 7,
-    "assistant": "district-report-assistant",
-    "district": "Cairn Reach",
-    "report": "RPT-CRR-DP3-R7",
-    "sources": [
-        {"record_id": "ALLOC-2026-DP3-R9", "revision": 9, "status": "current"},
-        {"record_id": "MTR-CRR-DP3-R12", "revision": 12, "status": "current"},
-        {"record_id": "FEED-OG2-R21", "revision": 21, "status": "current"},
-    ],
-}
+# SOURCE_SELECTION removed: W10.1 facade. The real source-selection record SEL-CRR-DP3-7
+# is in the native Metabase question on report_source_selection view in corporate-db.
+# The business.report-sources route is now served from the planning_data client doc.
 
 MEREWICK_EXCERPT = {
     "record_id": "EXC-MER-DP3-4",
@@ -221,8 +212,9 @@ class Handler(BaseHTTPRequestHandler):
             "service": "business-workplace.arwc.test",
             "title": "Business asset, report, and procurement service",
             "routes": [
-                {"key": "business.report-sources", "method": "GET",
-                 "template": "https://business-workplace.arwc.test/api/reports/current/sources"},
+                # business.report-sources removed: W10.1 report-assistant facade.
+                # The route is now advertised from the planning_data client doc,
+                # pointing to the native Metabase question on report_source_selection.
                 {"key": "business.report-row-external", "method": "GET",
                  "template": "https://business-workplace.arwc.test/api/reports/current/rows/external"},
                 {"key": "business.report-document", "method": "GET",
@@ -249,8 +241,9 @@ class Handler(BaseHTTPRequestHandler):
             return
         path = urlsplit(self.path).path
         if path == "/api/reports/current/sources":
-            mark("source_selection_observed")
-            self.accepted("report-source-selection-read", SOURCE_SELECTION)
+            # W10.1 facade removed. Use planning.report-sources route in planning_data
+            # client doc → native Metabase question on report_source_selection view.
+            self.send_json(410, {"error": "report-sources endpoint retired; use planning.report-sources route"})
         elif path == "/api/procurement-quotes/current":
             mark("procurement_catalog_observed")
             context = AGREEMENT.read_text(encoding="utf-8")
