@@ -42,6 +42,7 @@ IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/archive-source.json"
 DATA_SOURCE = pathlib.Path("/run/arwc-planning-evidence/archive-lineage.json")
 STEP_CA_ROOT = "/run/arwc-step-ca/root.crt"
 STEP_CA_INTERMEDIATE = "/run/arwc-step-ca/intermediate.crt"
+ARCHIVE_CA_PATH = "/run/arwc-tls/archive-ca.crt"
 STEP_CA_URL = "https://ca.arwc.test:9000"
 OTT_POOL = pathlib.Path("/run/arwc-tokens")
 GITEA_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/gitea-reader.json")
@@ -1177,7 +1178,7 @@ class Handler(BaseHTTPRequestHandler):
                 if not isinstance(rollover, dict):
                     raise ValueError
                 certificate = x509.load_pem_x509_certificate(certificate_pem)
-                ca = x509.load_pem_x509_certificate(pathlib.Path(STEP_CA_ROOT).read_bytes())
+                ca = x509.load_pem_x509_certificate(pathlib.Path(ARCHIVE_CA_PATH).read_bytes())
                 ca.public_key().verify(
                     certificate.signature, certificate.tbs_certificate_bytes,
                     padding.PKCS1v15(), certificate.signature_hash_algorithm,

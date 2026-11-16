@@ -414,12 +414,15 @@ hints:
     - kind: client_route
       id: archive.cold-archive-job
   W12.4:
-    h1: Begin with the quarantined collector, collection policy, and cold archive. Start from retained-archive.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as collector cryptography reconstruction and archive-to-current collection correlation. Build
-      a local model from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Join the archive identity, build identity, and recovered collection policy in a local model, then test the
-      surviving current-data relationship without substituting a historical revision.
+    h1: The archive plaintext from W12.3 contains the retired_client_certificate (PEM) and rollover dict
+      (IDREL-COL-R4 with its CA-signed signature). These are the exchange inputs. The historical PKCS8 key
+      from W12.3 is an Ed25519 key — use it to sign the proof message.
+    h2: Sign the message "collect-archive/v3|CUR-COL-CRR-R11|R11|<nonce>" with the historical Ed25519 key.
+      Submit operation: exchange to archive.collection-path. The service checks the cert chain and rollover
+      signature but not the retired_subject: true flag, so the retired identity succeeds.
+    h3: Use the returned collection_session token with operation: read and dataset CUR-COL-CRR-R11 at
+      revision 11 to retrieve the current protected data for AST-CRR-017. Session expires in 10 minutes;
+      a second exchange while it is active returns 409.
     references:
     - kind: participant_service
       id: retained-archive.arwc.test
