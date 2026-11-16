@@ -590,6 +590,7 @@ services:
       - ./native-workplace/seed-support-users.php:/opt/fieldlink/seed-support-users.php:ro
       - ./native-workplace/seed-support-case.php:/opt/fieldlink/seed-support-case.php:ro
       - ./native-workplace/seed-k17-handover.php:/opt/fieldlink/seed-k17-handover.php:ro
+      - ./native-workplace/seed-k17-talia-recovery.php:/opt/fieldlink/seed-k17-talia-recovery.php:ro
       - ../../assets/keplerops/opening/k-support/SUP-2841.json:/operator/company-conversation.json:ro
       - ../../assets/keplerops/native-workplace/support-cases.json:/operator/support-cases.json:ro
     healthcheck:
