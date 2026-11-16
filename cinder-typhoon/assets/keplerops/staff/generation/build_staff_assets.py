@@ -65,6 +65,21 @@ def main() -> None:
             },
         },
         "identity_host": "identity.keplerops.test",
+        "archive_handovers": {
+            "rowan.ito@keplerops.test": {
+                "subject": "rowan.ito@keplerops.test",
+                "provisioner": "keplerops-staff",
+                "provisioner_type": "OIDC",
+                "idp": "fieldlink-enrollment",
+                "idp_config": "https://identity.keplerops.test/realms/keplerops/.well-known/openid-configuration",
+                "issued_by": "FieldKest Enrollment CA",
+                "template": "StaffArchiveUser",
+                "template_eku": ["clientAuth"],
+                "grant": "support-runner-enrollment",
+                "archive": "REL-FLK-7.4.2-09",
+                "vouched_by": "keplerops-staff (fieldlink-enrollment) via Keycloak keplerops realm",
+            },
+        },
         "retained_support_provider": {
             "status": "enabled",
             "provider": "OIDC-FIELDKEST-RETAINED-SUPPORT",

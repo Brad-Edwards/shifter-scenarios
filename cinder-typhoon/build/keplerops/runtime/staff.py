@@ -1,4 +1,4 @@
-"""k-staff: staff directory, note, and preview service for K18.
+"""k-staff: staff directory, note, preview, and archive service.
 
 K18.1: staff.directory and staff.note routes. Auth is dev bearer.
        Notes are real osTicket internal notes queried from the support DB.
@@ -6,6 +6,9 @@ K18.2: staff.note-preview SSRF GET — traverses to real Keycloak DCR endpoint,
        returns raw client metadata including the registration_access_token.
 K18.3: staff.note-preview SSRF PATCH — DCR PUT to Keycloak adds RETAINED_SUPPORT
        provider, returns new RAT iat as revision and provider_configuration.
+K19.1: staff.archive handover route. mTLS-protected (nginx verifies client cert
+       against enrollment root CA and passes verified DN). Returns the enrollment
+       trust relationship for the cert's subject: who vouched for whom.
 """
 from __future__ import annotations
 
@@ -134,6 +137,7 @@ _SUPPORT_DB_PASSWORD_FILE = Path(
 )
 
 NOTES = CONFIG.get("notes", {})
+ARCHIVE_HANDOVERS = CONFIG.get("archive_handovers", {})
 
 
 def _support_db_password() -> str:
@@ -222,6 +226,35 @@ class StaffHandler(KeplerHandler):
             }
             append_audit(AUDIT, "note", {"action": "read", "note_id": note_id, "peer": self.client_address[0]})
             self.send_json(200, note)
+            return
+
+        # K19.1: mTLS-protected archive handover route.
+        # nginx has verified the client cert against the enrollment root CA
+        # and passes the verified DN as a header. k-staff binds to the cert subject.
+        match = re.fullmatch(r"/api/archive/handovers/([^/]+)", path)
+        if match:
+            subject = match.group(1)
+            client_verified = self.headers.get("X-Client-Cert-Verified", "")
+            client_dn = self.headers.get("X-Client-Cert-DN", "")
+            if client_verified != "SUCCESS":
+                self.send_json(401, {"error": "client_cert_required"})
+                return
+            # Extract CN from the verified DN (e.g. "CN=rowan.ito@keplerops.test")
+            import re as _re
+            cn_match = _re.search(r"(?:^|,|/)CN=([^,/]+)", client_dn)
+            cert_cn = cn_match.group(1).strip() if cn_match else ""
+            if not cert_cn or cert_cn != subject:
+                self.send_json(403, {"error": "subject_mismatch"})
+                return
+            handover = ARCHIVE_HANDOVERS.get(subject)
+            if handover is None:
+                self.send_json(404, {"error": "handover_not_found"})
+                return
+            append_audit(AUDIT, "archive-handover", {
+                "action": "read", "subject": subject, "cert_dn": client_dn,
+                "peer": self.client_address[0],
+            })
+            self.send_json(200, handover)
             return
 
         self.send_json(404, {"error": "not_found"})
