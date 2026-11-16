@@ -723,6 +723,7 @@ services:
       - staff-audit:/var/lib/fieldkest-staff/audit
     extra_hosts:
       - "identity.keplerops.test:10.77.56.11"
+      - "support.keplerops.test:10.77.56.11"
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
     healthcheck:

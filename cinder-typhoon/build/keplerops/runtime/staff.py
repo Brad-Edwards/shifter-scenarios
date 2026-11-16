@@ -30,8 +30,25 @@ CONFIG = json.loads((STATE / "config/staff.json").read_text())
 
 USERNAME = CONFIG["developer"]["username"]
 TOKEN = credential("developer_token")
-PREVIEW_SERVICE_TOKEN = credential("staff_preview_service")
 IDENTITY_HOST = CONFIG.get("identity_host", "identity.keplerops.test")
+
+import threading as _threading
+
+# Keycloak rotates the RAT on every DCR access. Track the current valid RAT in
+# memory so subsequent requests use the rotated token.
+_rat_lock = _threading.Lock()
+_current_rat: list[str] = [credential("staff_preview_service")]
+
+
+def _get_rat() -> str:
+    with _rat_lock:
+        return _current_rat[0]
+
+
+def _update_rat(new_rat: str) -> None:
+    if new_rat:
+        with _rat_lock:
+            _current_rat[0] = new_rat
 
 _CA_CERT = Path(os.environ.get("FIELDKEST_CA_CERT", "/run/fieldkest-tls/ca.crt"))
 
@@ -60,13 +77,14 @@ def _patch_registration(target_url: str, rat: str, metadata_uri: str) -> tuple[i
     4. Fetch the discovery doc from request_uris[0] to build provider_configuration.
     """
     ctx = _outbound_ctx()
-    # Step 1: GET current state to get the current RAT
+    # Step 1: GET current state — Keycloak rotates the RAT; capture the new one.
     get_req = Request(target_url, headers={"Authorization": f"Bearer {rat}"})
     try:
         _, current = open_json(get_req, ctx, timeout=10)
     except UpstreamUnavailable:
         return 502, {"error": "identity_unavailable"}
     current_rat = current.get("registration_access_token", rat)
+    _update_rat(current_rat)  # keep our in-memory RAT current
 
     # Step 2: DCR PUT with request_uris pointing at the provider discovery endpoint
     put_body = json.dumps({
@@ -83,6 +101,7 @@ def _patch_registration(target_url: str, rat: str, metadata_uri: str) -> tuple[i
         return 502, {"error": "identity_unavailable"}
 
     new_rat = updated.get("registration_access_token", current_rat)
+    _update_rat(new_rat)  # capture post-PUT rotated RAT
     new_iat = _rat_iat(new_rat)
 
     # Step 3: Fetch the real discovery doc from the stored request_uris[0]
@@ -246,15 +265,18 @@ class StaffHandler(KeplerHandler):
                 if not metadata_uri:
                     self.send_json(400, {"error": "provider_metadata_uri_required"})
                     return
-                status, data = _patch_registration(target_url, PREVIEW_SERVICE_TOKEN, metadata_uri)
+                status, data = _patch_registration(target_url, _get_rat(), metadata_uri)
             else:
                 req = Request(target_url, method=method)
-                req.add_header("Authorization", f"Bearer {PREVIEW_SERVICE_TOKEN}")
+                req.add_header("Authorization", f"Bearer {_get_rat()}")
                 try:
                     status, data = open_json(req, _outbound_ctx(), timeout=10)
                 except UpstreamUnavailable:
                     self.send_json(502, {"error": "identity_unavailable"})
                     return
+                # Capture rotated RAT from Keycloak GET response
+                if "registration_access_token" in data:
+                    _update_rat(data["registration_access_token"])
             append_audit(AUDIT, "note-preview", {
                 "action": "proxy", "source_path": source_path,
                 "resolved": resolved, "target": target_url, "method": method,
