@@ -234,6 +234,7 @@ print(q[0]['id'] if q else '')
     erp_admin_password=$(grep -oP '(?<=ERP_ADMIN_PASSWORD=).+' .operator/erp-seed.env 2>/dev/null || true)
     if [ -n "${erp_admin_password}" ]; then
         portal_golden_op="$(cd .. && pwd)/.operator"
+        # Write ERPNext reader config
         contractors_erp_json='{"url":"https://suppliers.arwc.test","username":"Administrator","password":"'"${erp_admin_password}"'"}'
         mkdir -p "${portal_golden_op}"
         printf '%s\n' "${contractors_erp_json}" > "${portal_golden_op}/contractors-erp.json"
@@ -241,6 +242,16 @@ print(q[0]['id'] if q else '')
         chmod 0644 "${portal_golden_op}/contractors-erp.json" 2>/dev/null || true
         chmod 0644 ".operator/contractors-erp.json" 2>/dev/null || true
         echo "W13.1: Wrote contractors-erp.json for contractor portal ERPNext fetch"
+        # Write Nextcloud reader config (W14.1: contractor portal fetches field bag)
+        nc_admin_password=$(grep -oP '(?<=DOCUMENTS_ADMIN_PASSWORD=).+' .operator/documents-seed.env 2>/dev/null || true)
+        if [ -n "${nc_admin_password}" ]; then
+            contractors_nc_json='{"url":"https://documents.arwc.test","username":"records-admin","password":"'"${nc_admin_password}"'","field_bag_path":"/remote.php/dav/files/records-admin/contractor-workspace/FIELD-BAG-CRR-4417-R3.json"}'
+            mkdir -p "${portal_golden_op}"
+            printf '%s\n' "${contractors_nc_json}" > "${portal_golden_op}/contractors-nc.json"
+            printf '%s\n' "${contractors_nc_json}" > ".operator/contractors-nc.json"
+            chmod 0644 "${portal_golden_op}/contractors-nc.json" ".operator/contractors-nc.json" 2>/dev/null || true
+            echo "W14.1: Wrote contractors-nc.json for contractor portal Nextcloud fetch"
+        fi
     fi
     ;;
   seed-early-cards)

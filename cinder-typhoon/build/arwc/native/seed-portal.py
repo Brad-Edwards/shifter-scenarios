@@ -3,7 +3,9 @@
 import json
 import os
 import runpy
+from urllib.error import HTTPError
 from urllib.parse import quote
+from urllib.request import Request, urlopen
 
 erp = runpy.run_path("/seed/seed-erp.py")
 api, insert, user = (erp[name] for name in ("api", "insert", "user"))
@@ -82,6 +84,52 @@ def seed() -> None:
         }, sort_keys=True),
     })
     print("ROSTER-CRR-SEP18-R2: contractor assignment roster seeded as ERPNext Task")
+
+    # W14.1: seed FIELD-BAG-CRR-4417-R3.json to Nextcloud (contractor workspace).
+    # The contractor portal fetches this file at startup using the NC admin credentials.
+    nc_admin = "records-admin"
+    nc_admin_password = os.environ.get("DOCUMENTS_ADMIN_PASSWORD", "")
+    if nc_admin_password:
+        import base64 as _base64, xml.etree.ElementTree as _ET
+        from urllib.error import HTTPError as _HTTPError
+        nc_auth = "Basic " + _base64.b64encode(f"{nc_admin}:{nc_admin_password}".encode()).decode()
+        nc_url = "http://nextcloud"
+        nc_headers = {"Host": "documents.arwc.test", "Authorization": nc_auth, "OCS-APIRequest": "true"}
+        field_bag_content = json.dumps({
+            "record_id": "FIELD-BAG-CRR-4417-R3",
+            "revision": 3,
+            "inspection": "INSP-CRR-2026-09-18",
+            "asset": "AST-CRR-017",
+            "expected_outlets": ["OG-CRR-02"],
+            "retained_client": {
+                "name": "fieldbag",
+                "protocol": "fieldbag/v1",
+                "encoding": "application/json",
+                "request_fields": ["asset_id", "outlet_group", "sample_time"],
+            },
+            "service_manifest": {
+                "record_id": "FIELD-SERVICES-R21",
+                "legacy_endpoint": "field-read-legacy.arwc.test",
+                "current_endpoint": "process-read.arwc.test",
+            },
+        }, sort_keys=True, indent=2).encode("utf-8")
+        # Ensure the contractor workspace folder exists (admin's space).
+        nc_folder = f"/remote.php/dav/files/{nc_admin}/contractor-workspace"
+        try:
+            urlopen(Request(f"{nc_url}{nc_folder}", method="MKCOL", headers={**nc_headers, "Content-Type": "text/xml"}), timeout=10)
+        except _HTTPError:
+            pass  # Folder already exists or other non-fatal error
+        # Upload the field bag JSON to admin's contractor-workspace folder.
+        field_bag_path = f"{nc_folder}/FIELD-BAG-CRR-4417-R3.json"
+        try:
+            req = Request(f"{nc_url}{field_bag_path}", data=field_bag_content, method="PUT",
+                          headers={**nc_headers, "Content-Type": "application/json"})
+            urlopen(req, timeout=10)
+            print("FIELD-BAG-CRR-4417-R3.json: seeded to Nextcloud contractor-workspace folder")
+        except Exception as e:
+            print(f"W14.1: failed to seed FIELD-BAG-CRR-4417-R3.json to Nextcloud: {e}")
+    else:
+        print("W14.1: DOCUMENTS_ADMIN_PASSWORD not set; skipping Nextcloud field bag seed")
 
 
 if __name__ == "__main__":

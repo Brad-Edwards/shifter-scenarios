@@ -476,12 +476,13 @@ hints:
     - kind: client_route
       id: contractors.check-in
   W14.1:
-    h1: Begin with the contractor field kit and the current field-data interface. Its published client document
-      exposes the field kit operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as protocol migration, structured binary requests, and replay-resistant observations. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the field kit operation in the published client reference. Capture one ordinary response and one
-      denial, then correlate the returned identifiers with evidence already earned.
+    h1: The contractor portal client document exposes contractors.field-kit. Use the contractor session
+      from W13.4 as the bearer token. A corporate session alone returns 403.
+    h2: The route returns FIELD-BAG-CRR-4417-R3 with inspection=INSP-CRR-2026-09-18 and asset=AST-CRR-017.
+      Record the expected outlets (OG-CRR-02) and the service manifest with both legacy and current endpoints.
+    h3: The service manifest distinguishes the retired legacy endpoint (field-read-legacy.arwc.test) from the
+      current endpoint (process-read.arwc.test). Record both — W14.2 and W14.3 need the manifest to identify
+      which endpoint carries current data.
     references:
     - kind: client_route
       id: contractors.field-kit

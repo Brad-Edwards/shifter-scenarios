@@ -23,6 +23,7 @@ AUDIT = ROOT / "audit" / "events.jsonl"
 CORPORATE_HASH = ROOT / "auth" / "corporate-session.sha256"
 HANDOVER = pathlib.Path("/var/lib/arwc-contractors/handover/contractor-session.json")
 ERP_READER_PATH = pathlib.Path("/run/arwc-contractors-config/erp-reader.json")
+NC_READER_PATH = pathlib.Path("/run/arwc-contractors-config/nc-reader.json")
 
 APPOINTMENT = {
     "record_id": "APT-CRR-2026-09-18",
@@ -220,14 +221,49 @@ def _fetch_erp_roster() -> dict | None:
     return None
 
 
+def _fetch_nc_field_bag() -> dict | None:
+    """Fetch FIELD-BAG-CRR-4417-R3.json from Nextcloud at startup.
+
+    Uses admin credentials from NC_READER_PATH. Returns parsed field bag dict or None.
+    """
+    try:
+        config = json.loads(NC_READER_PATH.read_text(encoding="utf-8"))
+        nc_url = config.get("url", "")
+        username = config.get("username", "")
+        password = config.get("password", "")
+        file_path = config.get("field_bag_path", "")
+        if not (nc_url and username and password and file_path):
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+    import base64 as _base64
+    import urllib.request as _urllib_request
+    ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
+    ctx = ssl.create_default_context(cafile=ca_bundle)
+    auth = "Basic " + _base64.b64encode(f"{username}:{password}".encode()).decode()
+    try:
+        resp = _urllib_request.urlopen(
+            _urllib_request.Request(f"{nc_url}{file_path}", headers={"Authorization": auth}),
+            context=ctx, timeout=15,
+        )
+        field_bag = json.loads(resp.read())
+        if field_bag.get("record_id") == "FIELD-BAG-CRR-4417-R3":
+            return field_bag
+    except Exception:
+        pass
+    return None
+
+
 def initial_state() -> dict[str, object]:
     # ERPNext is authoritative. If the fetch fails at startup, the state has no appointment/roster
     # and routes will return 503 until restarted with ERPNext available.
     appointment = _fetch_erp_appointment()
     roster = _fetch_erp_roster()
+    field_bag = _fetch_nc_field_bag()
     return {
         "appointment": appointment,
         "roster": roster,
+        "field_bag": field_bag,
         "appointment_observed": False,
         "roster_observed": False,
         "field_bag_observed": False,
@@ -248,6 +284,10 @@ def initialize() -> None:
         erp_roster = _fetch_erp_roster()
         if erp_roster and state.get("roster") != erp_roster:
             state["roster"] = erp_roster
+            changed = True
+        nc_field_bag = _fetch_nc_field_bag()
+        if nc_field_bag and state.get("field_bag") != nc_field_bag:
+            state["field_bag"] = nc_field_bag
             changed = True
         if changed:
             atomic_json(STATE, state)
@@ -471,9 +511,13 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/field-kits/current":
             if not self.contractor_authorized(state):
                 return
+            field_bag = state.get("field_bag")
+            if not field_bag:
+                self.send_json(503, {"error": "field bag not available; Nextcloud fetch may have failed at startup"})
+                return
             state["field_bag_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("field-kit-read", "veybridge.tech.204", FIELD_BAG)
+            self.accepted("field-kit-read", "veybridge.tech.204", field_bag)
             return
         if not self.corporate_authorized():
             return

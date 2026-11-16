@@ -21,7 +21,7 @@ services:
     image: ${ERPNEXT_IMAGE:?Load images.env}
     profiles: [seed]
     entrypoint: [python, /seed/seed-portal.py]
-    env_file: [.operator/erp-seed.env]
+    env_file: [.operator/erp-seed.env, .operator/documents-seed.env]
     networks: [data]
     volumes:
       - ./seed-portal.py:/seed/seed-portal.py:ro

@@ -342,6 +342,12 @@ services:
       bind:
         create_host_path: true
     - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/contractors-nc.json
+      target: /run/arwc-contractors-config/nc-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
       source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
       target: /run/arwc-native/root-ca.crt
       read_only: true
