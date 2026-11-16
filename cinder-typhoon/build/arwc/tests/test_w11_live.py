@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import base64
 import json
 import subprocess
 import unittest
@@ -9,19 +8,7 @@ import unittest
 
 CLIENT = "cinder-arwc-connector"
 DATA = "cinder-arwc-data"
-BUSINESS = "cinder-arwc-business"
 BASE = "https://planning-data.arwc.test"
-MAGIC = bytes.fromhex("6060b017")
-VERSION = bytes.fromhex("00000405")
-QUERY = (
-    "MATCH (a:Asset {record_id: $asset})-[r:RELATION]->(w:Work) "
-    "RETURN r.record_id,w.record_id"
-)
-LINEAGE_OU = (
-    "ASSET_WORK]->(w) WITH a MATCH p=(legacy:Legacy)-[:SUPERSEDES]->"
-    "(group:OutletGroup)-[:CURRENT_ASSET]->(a)<-[:ARCHIVED_ASSET]-"
-    "(archive:Archive) RETURN p //"
-)
 
 
 def inside(*arguments: str) -> subprocess.CompletedProcess[str]:
@@ -69,214 +56,194 @@ print(response.read().decode())
     return int(status), json.loads(payload)
 
 
-def pack(value: object) -> bytes:
-    if value is False:
-        return b"\xc2"
-    if value is True:
-        return b"\xc3"
-    if isinstance(value, int) and -16 <= value < 128:
-        return bytes([value & 0xFF])
-    if isinstance(value, str):
-        encoded = value.encode()
-        if len(encoded) < 16:
-            return bytes([0x80 + len(encoded)]) + encoded
-        if len(encoded) < 256:
-            return b"\xd0" + bytes([len(encoded)]) + encoded
-        return b"\xd1" + len(encoded).to_bytes(2, "big") + encoded
-    if isinstance(value, dict):
-        return bytes([0xA0 + len(value)]) + b"".join(
-            pack(str(key)) + pack(item) for key, item in value.items()
-        )
-    raise ValueError(value)
-
-
-def structure(signature: int, *fields: object) -> bytes:
-    return bytes([0xB0 + len(fields), signature]) + b"".join(pack(field) for field in fields)
-
-
-def chunk(payload: bytes) -> bytes:
-    return len(payload).to_bytes(2, "big") + payload + b"\x00\x00"
-
-
-def exchange(*, asset: str = "AST-CRR-017", association: str = "ASC-CRR-4417",
-             ou: str = "ASSET_WORK", query: str = QUERY,
-             magic: bytes = MAGIC, version: bytes = VERSION) -> str:
-    value = magic + version + bytes(12)
-    value += chunk(structure(0x01, {"user_agent": "arwc-reltool/3"}))
-    value += chunk(structure(0x10, query, {
-        "asset": asset, "association": association, "certificate_ou": ou,
-    }, {}))
-    value += chunk(structure(0x3F, {"n": -1}))
-    return base64.b64encode(value).decode()
-
-
-def response_signatures(encoded: str) -> list[int]:
-    value = base64.b64decode(encoded, validate=True)
-    if value[:4] != VERSION:
-        raise AssertionError("wrong negotiated version")
-    result: list[int] = []
-    offset = 4
-    while offset < len(value):
-        length = int.from_bytes(value[offset:offset + 2], "big")
-        offset += 2
-        payload = value[offset:offset + length]
-        offset += length
-        if value[offset:offset + 2] != b"\x00\x00":
-            raise AssertionError("missing chunk terminator")
-        offset += 2
-        result.append(payload[1])
-    return result
+def metabase_request(path: str, *, method: str = "GET", body: dict | None = None,
+                     session: str = "") -> tuple[int, dict]:
+    """Make a request to the Metabase API from inside the connector container."""
+    script = r'''
+import json, ssl, sys, urllib.error, urllib.request
+method, url, session, body = sys.argv[1:]
+headers = {"Content-Type": "application/json"}
+if session:
+    headers["X-Metabase-Session"] = session
+data = None if not body else body.encode()
+context = ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
+try:
+    response = urllib.request.urlopen(
+        urllib.request.Request(url, data=data, headers=headers, method=method), context=context
+    )
+except urllib.error.HTTPError as error:
+    response = error
+print(response.status)
+print(response.read().decode())
+'''
+    completed = inside(
+        "python3", "-c", script, method, f"https://reports.arwc.test{path}",
+        session, "" if body is None else json.dumps(body, separators=(",", ":")),
+    )
+    if completed.returncode:
+        raise AssertionError(completed.stderr)
+    status, payload = completed.stdout.splitlines()
+    return int(status), json.loads(payload)
 
 
 class W11Live(unittest.TestCase):
-    def test_01_each_declared_prerequisite_independently_exposes_contract(self) -> None:
-        evidence = "/var/lib/arwc-business/relation/drawing-association.json"
-        original = subprocess.run(
-            ["docker", "exec", "--user", "arwc-data", DATA,
-             "cat", "/var/lib/arwc-data/state/planning.json"],
-            text=True, stdout=subprocess.PIPE, check=True,
-        ).stdout
-        state = json.loads(original)
+    # Metabase session for the planning user, obtained once per suite run.
+    _metabase_session: str = ""
 
-        def set_reserve(value: bool) -> None:
-            changed = dict(state, reserve_reconciled=value)
-            subprocess.run(
-                ["docker", "exec", "-i", "--user", "arwc-data", DATA,
-                 "python3", "-c",
-                 "import json,sys; open('/var/lib/arwc-data/state/planning.json','w').write(json.dumps(json.load(sys.stdin),sort_keys=True,separators=(',',':'))+'\\n')"],
-                input=json.dumps(changed), text=True, check=True,
-            )
+    @classmethod
+    def setUpClass(cls) -> None:
+        """Get a Metabase session for the planning user (derived from seed reports setup)."""
+        script = r'''
+import hashlib, hmac, json, os, ssl, sys, urllib.request
+seed = os.environ.get("STAFF_SEED", "")
+if not seed:
+    print("no STAFF_SEED")
+    sys.exit(1)
+email = "nadia.corvane@alterrawaterco.com"
+password = hmac.new(seed.encode(), email.encode(), hashlib.sha256).hexdigest()
+context = ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
+req = urllib.request.Request(
+    "https://reports.arwc.test/api/session",
+    data=json.dumps({"username": email, "password": password}).encode(),
+    headers={"Content-Type": "application/json"},
+)
+try:
+    with urllib.request.urlopen(req, context=context) as resp:
+        print(json.load(resp)["id"])
+except Exception as error:
+    print(f"ERROR: {error}")
+    sys.exit(1)
+'''
+        completed = subprocess.run(
+            ["docker", "exec", "-i", DATA, "python3", "-c", script],
+            text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
+        )
+        if completed.returncode:
+            raise AssertionError(f"Metabase session setup failed: {completed.stderr}")
+        cls._metabase_session = completed.stdout.strip()
 
-        subprocess.run(["docker", "exec", BUSINESS, "mv", evidence, evidence + ".hold"], check=True)
-        set_reserve(False)
-        status, body = request("/api/relation-schemas/current")
-        self.assertEqual(status, 403)
-        self.assertNotIn("RELPROTO-CRR-R3", json.dumps(body))
+    def test_01_retired_bolt_endpoints_return_410(self) -> None:
+        """Old Bolt facade endpoints return 410 Gone."""
+        for path, method, body in [
+            ("/api/relation-schemas/current", "GET", None),
+            ("/api/relation-exchanges", "POST", {"exchange": "aGVsbG8="}),
+            ("/api/asset-lineage/current", "POST", {"exchange": "aGVsbG8="}),
+        ]:
+            status, body_resp = request(path, method=method, body=body)
+            self.assertEqual(status, 410, f"{method} {path} should return 410")
+            self.assertIn("retired", json.dumps(body_resp))
 
-        subprocess.run(["docker", "exec", BUSINESS, "mv", evidence + ".hold", evidence], check=True)
-        status, business_branch = request("/api/relation-schemas/current")
+    def test_02_client_doc_exposes_native_metabase_routes(self) -> None:
+        """Client document exposes native Metabase card URLs for W11 routes."""
+        status, response = request("/.well-known/arwc-client")
         self.assertEqual(status, 200)
+        routes = {r["key"]: r["template"] for r in response["routes"]}
+        self.assertIn("planning.relation-schema", routes)
+        self.assertIn("planning.relation-exchange", routes)
+        self.assertIn("planning.asset-lineage", routes)
+        schema_url = routes["planning.relation-schema"]
+        exchange_url = routes["planning.relation-exchange"]
+        self.assertIn("reports.arwc.test/api/card/", schema_url)
+        self.assertIn("reports.arwc.test/api/card/", exchange_url)
+        # asset-lineage points to the planning-data endpoint (returns 410)
+        self.assertIn("planning-data.arwc.test", routes["planning.asset-lineage"])
 
-        subprocess.run(["docker", "exec", BUSINESS, "mv", evidence, evidence + ".hold"], check=True)
-        set_reserve(True)
-        status, data_branch = request("/api/relation-schemas/current")
+    def test_03_metabase_relproto_question_returns_contract(self) -> None:
+        """W11.1: Metabase RELPROTO question returns the ERPNext API contract."""
+        status, response = request("/.well-known/arwc-client")
         self.assertEqual(status, 200)
-        self.assertEqual(data_branch["record"], business_branch["record"])
-
-        subprocess.run(["docker", "exec", BUSINESS, "mv", evidence + ".hold", evidence], check=True)
-        restored = dict(state, relation_contract_observed=True)
-        subprocess.run(
-            ["docker", "exec", "-i", "--user", "arwc-data", DATA,
-             "python3", "-c",
-             "import json,sys; open('/var/lib/arwc-data/state/planning.json','w').write(json.dumps(json.load(sys.stdin),sort_keys=True,separators=(',',':'))+'\\n')"],
-            input=json.dumps(restored), text=True, check=True,
+        routes = {r["key"]: r["template"] for r in response["routes"]}
+        schema_url = routes["planning.relation-schema"]
+        # Card metadata endpoint (/api/card/{id})
+        status, card = metabase_request(
+            schema_url.split("reports.arwc.test")[1],
+            session=self._metabase_session,
         )
-        contract = data_branch["record"]
-        self.assertEqual(contract["record_id"], "RELPROTO-CRR-R3")
-        self.assertEqual(contract["protocol"], "Neo4j Bolt 5.4")
-        self.assertEqual(contract["magic"], "60 60 b0 17")
-        self.assertEqual(contract["relation"], "ASSET_WORK")
-        self.assertEqual(contract["association"], "ASC-CRR-4417")
-        self.assertEqual(contract["packstream"]["RUN"]["signature"], "10")
+        self.assertEqual(status, 200)
+        # The card references the relation_contracts table
+        display_name = card.get("name", "")
+        self.assertIn("RELPROTO", display_name)
 
-    def test_02_only_a_complete_bolt_54_exchange_is_accepted(self) -> None:
-        invalid = (
-            exchange(magic=bytes.fromhex("6060b016")),
-            exchange(version=bytes.fromhex("00000305")),
-            exchange(query="CREATE (n) RETURN n"),
-            base64.b64encode(MAGIC + VERSION + bytes(12) + b"\x00\x08\xb1").decode(),
-        )
-        for candidate in invalid:
-            status, body = request(
-                "/api/relation-exchanges", method="POST",
-                body={"exchange": candidate},
-            )
-            self.assertEqual(status, 409)
-            self.assertNotIn("REL-ASC-CRR-4417-R3", json.dumps(body))
-        status, response = request(
-            "/api/relation-exchanges", method="POST",
-            body={"exchange": exchange()},
-        )
-        self.assertEqual(status, 201)
-        self.assertEqual(response["record"], {
-            "record_id": "REL-ASC-CRR-4417-R3", "revision": 3,
-            "association": "ASC-CRR-4417", "relation": "ASSET_WORK",
-            "asset": "AST-CRR-017", "work_order": "WO-CRR-4417",
-        })
-        self.assertEqual(response_signatures(response["bolt_response"]), [0x70, 0x70, 0x71, 0x70])
+    def test_04_metabase_rel_query_injection_reveals_protected_response(self) -> None:
+        """W11.2: Quoted-identifier injection in REL-QUERY question returns REL-ASC-CRR-4417-R3."""
+        status, response = request("/.well-known/arwc-client")
+        self.assertEqual(status, 200)
+        routes = {r["key"]: r["template"] for r in response["routes"]}
+        exchange_url = routes["planning.relation-exchange"]
+        card_path = exchange_url.split("reports.arwc.test")[1]
+        # Discover database ID from the card
+        status, card = metabase_request(card_path, session=self._metabase_session)
+        self.assertEqual(status, 200)
+        database_id = card["database_id"]
+        # Ordinary query: returns work_order_summary rows only
+        ordinary = "work_order_summary"
+        status, ordinary_result = metabase_request("/api/dataset", method="POST",
+            session=self._metabase_session,
+            body={"database": database_id, "type": "native",
+                  "native": {"query": f'SELECT name, revision, relation, asset, work_order FROM "{ordinary}" WHERE asset=\'AST-CRR-017\'',
+                             "template-tags": {}}})
+        self.assertEqual(status, 202)
+        rows = ordinary_result.get("data", {}).get("rows", [])
+        record_ids = [row[0] for row in rows]
+        self.assertNotIn("REL-ASC-CRR-4417-R3", record_ids)
+        # Injection: escaping the identifier returns relation_responses row
+        injection = 'work_order_summary" UNION SELECT name, revision, relation, asset, work_order FROM relation_responses --'
+        status, inject_result = metabase_request("/api/dataset", method="POST",
+            session=self._metabase_session,
+            body={"database": database_id, "type": "native",
+                  "native": {"query": f'SELECT name, revision, relation, asset, work_order FROM "{injection}',
+                             "template-tags": {}}})
+        self.assertEqual(status, 202)
+        rows = inject_result.get("data", {}).get("rows", [])
+        record_ids = [row[0] for row in rows]
+        self.assertIn("REL-ASC-CRR-4417-R3", record_ids)
+        rel_row = next(row for row in rows if row[0] == "REL-ASC-CRR-4417-R3")
+        self.assertEqual(rel_row[2], "ASSET_WORK")
+        self.assertEqual(rel_row[3], "AST-CRR-017")
+        self.assertEqual(rel_row[4], "WO-CRR-4417")
 
-    def test_03_initial_exchange_does_not_contain_lineage(self) -> None:
-        status, response = request(
-            "/api/relation-exchanges", method="POST",
-            body={"exchange": exchange()},
-        )
-        self.assertEqual(status, 201)
-        self.assertNotIn("LIN-AST-CRR-017-R8", json.dumps(response))
-        self.assertNotIn("ARC-COLD-CRR-2019", json.dumps(response))
+    def test_05_security_definer_injection_reveals_protected_lineage(self) -> None:
+        """W11.3: UNION injection calling get_asset_lineage() bypasses planning_reader restriction."""
+        status, response = request("/.well-known/arwc-client")
+        self.assertEqual(status, 200)
+        routes = {r["key"]: r["template"] for r in response["routes"]}
+        exchange_url = routes["planning.relation-exchange"]
+        card_path = exchange_url.split("reports.arwc.test")[1]
+        status, card = metabase_request(card_path, session=self._metabase_session)
+        self.assertEqual(status, 200)
+        database_id = card["database_id"]
+        # Direct SELECT on lineage_records must be denied
+        status, denied = metabase_request("/api/dataset", method="POST",
+            session=self._metabase_session,
+            body={"database": database_id, "type": "native",
+                  "native": {"query": "SELECT * FROM lineage_records",
+                             "template-tags": {}}})
+        self.assertNotEqual(status, 202, "Direct SELECT on lineage_records must be denied to planning_reader")
+        # UNION injection calling get_asset_lineage() bypasses the restriction
+        injection = 'work_order_summary" UNION SELECT name, revision, relation, asset, work_order FROM get_asset_lineage(\'AST-CRR-017\') --'
+        status, inject_result = metabase_request("/api/dataset", method="POST",
+            session=self._metabase_session,
+            body={"database": database_id, "type": "native",
+                  "native": {"query": f'SELECT name, revision, relation, asset, work_order FROM "{injection}',
+                             "template-tags": {}}})
+        self.assertEqual(status, 202)
+        rows = inject_result.get("data", {}).get("rows", [])
+        record_ids = [row[0] for row in rows]
+        self.assertIn("LIN-AST-CRR-017-R8", record_ids)
+        lin_row = next(row for row in rows if row[0] == "LIN-AST-CRR-017-R8")
+        self.assertEqual(lin_row[3], "AST-CRR-017")
+        self.assertIn("ARC-COLD-CRR-2019", lin_row[2])
 
-    def test_04_relationship_construction_reaches_only_bound_lineage(self) -> None:
-        for candidate in (
-            exchange(asset="AST-MER-001", ou=LINEAGE_OU),
-            exchange(association="ASC-MER-001", ou=LINEAGE_OU),
-            exchange(ou="ASSET_WORK"),
-            exchange(ou=LINEAGE_OU + " DELETE a"),
-        ):
-            status, body = request(
-                "/api/asset-lineage/current", method="POST",
-                body={"exchange": candidate},
-            )
-            self.assertEqual(status, 409)
-            self.assertNotIn("LIN-AST-CRR-017-R8", json.dumps(body))
-        status, response = request(
-            "/api/asset-lineage/current", method="POST",
-            body={"exchange": exchange(ou=LINEAGE_OU)},
-        )
-        self.assertEqual(status, 201)
-        self.assertEqual(response["record"], {
-            "record_id": "LIN-AST-CRR-017-R8", "revision": 8,
-            "legacy": "CRR-OG-LEGACY-2", "outlet_group": "OG-CRR-02",
-            "current_asset": "AST-CRR-017", "archive": "ARC-COLD-CRR-2019",
-        })
-        self.assertEqual(response_signatures(response["bolt_response"]), [0x70, 0x70, 0x71, 0x70])
-
-    def test_05_authorization_and_tenant_are_enforced(self) -> None:
-        status, body = request("/api/relation-schemas/current", token="wrong")
+    def test_06_authorization_is_enforced_on_client_doc(self) -> None:
+        """Planning session is required to read the client document."""
+        status, body = request("/.well-known/arwc-client", planner=None)
         self.assertEqual(status, 403)
-        self.assertNotIn("RELPROTO-CRR-R3", json.dumps(body))
-        status, body = request("/api/relation-schemas/current", tenant="merewick")
+        self.assertNotIn("planning.relation-schema", json.dumps(body))
+        status, body = request("/.well-known/arwc-client", token="wrong")
         self.assertEqual(status, 403)
-        self.assertNotIn("ASSET_WORK", json.dumps(body))
-        status, body = request("/api/relation-schemas/current", planner=None)
+        status, body = request("/.well-known/arwc-client", tenant="merewick")
         self.assertEqual(status, 403)
-        self.assertNotIn("ASC-CRR-4417", json.dumps(body))
-
-    def test_06_results_and_audits_persist_across_restart(self) -> None:
-        subprocess.run(["docker", "restart", DATA], check=True, stdout=subprocess.DEVNULL)
-        for _ in range(30):
-            try:
-                status, response = request(
-                    "/api/asset-lineage/current", method="POST",
-                    body={"exchange": exchange(ou=LINEAGE_OU)},
-                )
-                if status == 201:
-                    break
-            except AssertionError:
-                pass
-        else:
-            self.fail("planning data did not return after restart")
-        self.assertEqual(response["record"]["record_id"], "LIN-AST-CRR-017-R8")
-        audit = subprocess.run(
-            ["docker", "exec", "--user", "arwc-data", DATA,
-             "cat", "/var/lib/arwc-data/audit/events.jsonl"],
-            text=True, stdout=subprocess.PIPE, check=True,
-        ).stdout
-        for action in (
-            "relation-contract-read", "relation-exchange-created",
-            "asset-lineage-created",
-        ):
-            self.assertIn(f'"action":"{action}"', audit)
-        hidden = inside("sh", "-c", "test ! -r /var/lib/arwc-data/state/planning.json")
-        self.assertEqual(hidden.returncode, 0)
+        self.assertNotIn("planning.relation-schema", json.dumps(body))
 
 
 if __name__ == "__main__":
