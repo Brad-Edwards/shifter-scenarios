@@ -587,13 +587,14 @@ hints:
     - kind: client_route
       id: archive.observations
   W16.3:
-    h1: Begin with the archive sequencer, constrained observations, and calibration history. Its published client
-      document exposes the signal experiment operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as instruction-sequence reconstruction with bounded out-of-window observation analysis. Derive
-      every constraint from supplied records or normal responses, test a deliberately failing candidate, and only
-      then produce a candidate.
-    h3: Locate the signal experiment operation in the published client reference. List the observed constraints,
-      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: Use POST /api/signal-experiments with operation=measure and TEST (opcode 5) instructions. Each TEST(slot,
+      probe) entry returns cycles = 1200 + 64*popcount(sample[slot] XOR probe) + jitter. Test slot 159 with
+      probe=0 for the baseline and also test reference slots 4, 5, 6 to validate the formula.
+    h2: For each bit i (0-7), submit TEST(159, 2**i). If cycles(probe=2^i) < cycles(probe=0), bit i is set.
+      The ±64 cycle signal dominates the ±2 jitter. Work through all eight positions to recover the full byte.
+    h3: After recovering the byte (165 = 0xA5), submit operation=verify with reference_values={"4":0,"5":1,
+      "6":255}, target_slot=159, recovered_byte=165, repetitions=8, bit_order="lsb0". Success returns
+      SEQ-DISCRIM-CRR-4 and sets the flag required for W16.4.
     references:
     - kind: client_route
       id: archive.signal-experiment
