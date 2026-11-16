@@ -936,12 +936,16 @@ hints:
     - kind: participant_service
       id: process-view.arwc.test
   W24.2:
-    h1: Use the classified recovery responses and the designated work-item cases. The sequence of classes is the
-      evidence source; individual response bodies are not the final objective.
-    h2: This is stateful response prediction. Model the selector from known cases and keep query order separate
-      from record content when testing the model.
-    h3: Replay the supplied cases into a local predictor, check every predicted class against an observation, then
-      submit only the next query required by the designated work item.
+    h1: POST https://process-view.arwc.test/api/estimator-tasks/current with CORPORATE Bearer and body
+      {"operation":"oracle","ciphertext":"<512-hex>","request_id":"<16-hex>","epoch_bucket":1770000042}
+      (epoch_bucket must be exact). The oracle runs real RSA-2048 decryption and returns observed_class A/B/C/D.
+      Deduplicates ciphertexts; use unique ciphertexts or request_ids per query. Limit: 4096 total.
+    h2: Before each query, predict observed_class = shift(raw_class, rotation) where rotation =
+      selector(request_id, 1770000042) & 3 (xorshift128+ from W24.1). Use class-D labeled example ciphertext
+      with varying request_ids to verify your selector. Confirmed: rid=2400000000000001 rot=2 → D+2=B.
+    h3: target_ciphertext in the oracle contract is RSA_TARGET — the encryption of the UNLOCK value needed
+      to open the diagnostic bundle. Query it with any valid request_id to observe its class. Use oracle
+      queries + RSA PKCS#1 v1.5 structure to recover UNLOCK for W24.3.
     references:
     - kind: participant_service
       id: process-view.arwc.test
