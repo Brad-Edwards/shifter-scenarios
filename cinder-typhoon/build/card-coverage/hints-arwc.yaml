@@ -401,12 +401,15 @@ hints:
     - kind: client_route
       id: archive.bundle-collection-policy
   W12.3:
-    h1: Begin with the quarantined collector, collection policy, and cold archive. Its published client document
-      exposes the cold archive job operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as collector cryptography reconstruction and archive-to-current collection correlation. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the cold archive job operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The AQTN1 frame from W12.1 contains the nonce (12 bytes after the build ID) and the metadata header
+      JSON (immediately after the nonce). These are the GCM inputs. The encrypted payload with its 16-byte
+      tag follows the metadata header.
+    h2: Use the content key (first 32 HKDF bytes from W12.2) for AES-256-GCM decryption. The metadata header
+      bytes are the AAD. The decrypted JSON contains wrapped_pkcs8 — unwrap it with the wrapping key (bytes 32-63)
+      using AES-256-KW.
+    h3: Submit the decrypted plaintext and the unwrapped PKCS8 key (both as base64) to archive.cold-archive-job.
+      The service validates both and returns the ARC-COLD-CRR-2019 record naming the 37 maintenance records,
+      COLLECT-2019-12, and rollover IDREL-COL-R4.
     references:
     - kind: client_route
       id: archive.cold-archive-job
