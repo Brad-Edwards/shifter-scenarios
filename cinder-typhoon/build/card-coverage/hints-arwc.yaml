@@ -427,12 +427,14 @@ hints:
     - kind: participant_service
       id: retained-archive.arwc.test
   W13.1:
-    h1: Begin with the inspection appointment, access roster, and contractor check-in. Its published client document
-      exposes the appointment window operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as appointment ownership confusion followed by a separately scoped check-in identity. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the appointment window operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The contractor portal publishes its client document at contractor-portal.arwc.test/.well-known/arwc-client.
+      Traverse the published client reference graph — start from any service already reached and follow the
+      related links until you find the contractor portal service.
+    h2: The contractor portal client document lists the contractors.appointment-window route. Use your
+      corporate session to call it. No additional credential or session is required for this step.
+    h3: The route returns APT-CRR-2026-09-18 with inspection=INSP-CRR-2026-09-18, asset=AST-CRR-017,
+      and Thursday 09:00-11:00. Record all fields — appointment_id, inspection, asset, and window are
+      needed for W13.2 and later cards.
     references:
     - kind: client_route
       id: contractors.appointment-window

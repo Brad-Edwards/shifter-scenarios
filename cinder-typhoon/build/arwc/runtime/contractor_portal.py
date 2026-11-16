@@ -22,6 +22,7 @@ STATE = ROOT / "state" / "contractor.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 CORPORATE_HASH = ROOT / "auth" / "corporate-session.sha256"
 HANDOVER = pathlib.Path("/var/lib/arwc-contractors/handover/contractor-session.json")
+ERP_READER_PATH = pathlib.Path("/run/arwc-contractors-config/erp-reader.json")
 
 APPOINTMENT = {
     "record_id": "APT-CRR-2026-09-18",
@@ -96,9 +97,53 @@ def atomic_json(path: pathlib.Path, value: object) -> None:
             os.unlink(temporary)
 
 
+def _fetch_erp_appointment() -> dict | None:
+    """Fetch APT-CRR-2026-09-18 from ERPNext at startup.
+
+    Uses admin credentials from the operator config file. Returns the parsed
+    appointment dict (from the Event description field), or None on failure.
+    Falls back to the APPOINTMENT constant if the fetch fails.
+    """
+    try:
+        config = json.loads(ERP_READER_PATH.read_text(encoding="utf-8"))
+        erp_url = config.get("url", "")
+        username = config.get("username", "Administrator")
+        password = config.get("password", "")
+        if not (erp_url and password):
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+    import http.cookiejar as _cookiejar
+    import urllib.request as _urllib_request
+    ctx = ssl.create_default_context(cafile="/tmp/ca.crt")
+    cookies = _cookiejar.CookieJar()
+    opener = _urllib_request.build_opener(
+        _urllib_request.HTTPCookieProcessor(cookies),
+        _urllib_request.HTTPSHandler(context=ctx),
+    )
+    try:
+        login_data = json.dumps({"usr": username, "pwd": password}).encode()
+        opener.open(_urllib_request.Request(
+            f"{erp_url}/api/method/login", data=login_data,
+            headers={"Content-Type": "application/json"}, method="POST",
+        ), timeout=10)
+        resp = opener.open(_urllib_request.Request(
+            f"{erp_url}/api/resource/Event/APT-CRR-2026-09-18",
+            headers={"Content-Type": "application/json"},
+        ), timeout=10)
+        event = json.loads(resp.read())["data"]
+        appointment = json.loads(event.get("description", "{}"))
+        if appointment.get("record_id") == "APT-CRR-2026-09-18":
+            return appointment
+    except Exception:
+        pass
+    return None
+
+
 def initial_state() -> dict[str, object]:
+    appointment = _fetch_erp_appointment() or APPOINTMENT
     return {
-        "appointment": APPOINTMENT,
+        "appointment": appointment,
         "appointment_observed": False,
         "roster_observed": False,
         "field_bag_observed": False,

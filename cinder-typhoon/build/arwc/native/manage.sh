@@ -229,6 +229,18 @@ print(q[0]['id'] if q else '')
     ;;
   seed-portal)
     "${compose[@]}" --profile seed run --rm seed-portal
+    # Write the contractor portal ERPNext reader config to the golden operator directory.
+    # Contractor portal uses this to fetch APT-CRR-2026-09-18 from ERPNext at startup.
+    erp_admin_password=$(grep -oP '(?<=ERP_ADMIN_PASSWORD=).+' .operator/erp-seed.env 2>/dev/null || true)
+    if [ -n "${erp_admin_password}" ]; then
+        portal_golden_op="$(cd .. && pwd)/.operator"
+        contractors_erp_json='{"url":"https://suppliers.arwc.test","username":"Administrator","password":"'"${erp_admin_password}"'"}'
+        mkdir -p "${portal_golden_op}"
+        printf '%s\n' "${contractors_erp_json}" > "${portal_golden_op}/contractors-erp.json"
+        printf '%s\n' "${contractors_erp_json}" > ".operator/contractors-erp.json"
+        chmod 0600 "${portal_golden_op}/contractors-erp.json" ".operator/contractors-erp.json" 2>/dev/null || true
+        echo "W13.1: Wrote contractors-erp.json for contractor portal ERPNext fetch"
+    fi
     ;;
   seed-early-cards)
     "${compose[@]}" --profile seed run --rm seed-early-cards

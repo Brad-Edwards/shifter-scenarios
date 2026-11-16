@@ -46,6 +46,27 @@ def seed() -> None:
         print(f'{reference}: {order["name"]}')
     print("Supplier portal user, contact, party permissions and purchase orders loaded through native APIs")
 
+    # W13.1: seed the outlet-inspection appointment as a real ERPNext Event.
+    # APT-CRR-2026-09-18 covers INSP-CRR-2026-09-18 on asset AST-CRR-017,
+    # Thursday 09:00–11:00. The contractor portal fetches this Event at startup.
+    insert("Event", {"subject": "APT-CRR-2026-09-18"}, {
+        "subject": "APT-CRR-2026-09-18: Outlet inspection AST-CRR-017",
+        "starts_on": "2026-09-18 09:00:00",
+        "ends_on": "2026-09-18 11:00:00",
+        "event_category": "Other",
+        "event_type": "Private",
+        "description": json.dumps({
+            "record_id": "APT-CRR-2026-09-18",
+            "revision": 1,
+            "inspection": "INSP-CRR-2026-09-18",
+            "asset": "AST-CRR-017",
+            "window": {"day": "Thursday", "starts": "09:00", "ends": "11:00"},
+            "owner_organization": "Northbank Civil Inspections",
+            "attendee": "northbank.inspector.117",
+        }, sort_keys=True),
+    })
+    print("APT-CRR-2026-09-18: outlet-inspection appointment seeded as ERPNext Event")
+
 
 if __name__ == "__main__":
     seed()

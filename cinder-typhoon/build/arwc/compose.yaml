@@ -302,6 +302,51 @@ services:
         aliases:
         - a-data
         - planning-data.arwc.test
+  a-contractors:
+    build:
+      context: ../..
+      dockerfile: build/arwc/images/contractors.Dockerfile
+    image: cinder-arwc/a-contractors:hand-build
+    container_name: cinder-arwc-contractors
+    hostname: a-contractors
+    domainname: corporate.arwc.test
+    dns:
+    - 10.77.60.10
+    restart: unless-stopped
+    read_only: true
+    cap_drop:
+    - ALL
+    cap_add:
+    - SETUID
+    - SETGID
+    - CHOWN
+    - FOWNER
+    - DAC_OVERRIDE
+    - NET_BIND_SERVICE
+    security_opt:
+    - no-new-privileges:true
+    tmpfs:
+    - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+    - /run:rw,nosuid,nodev,size=8m,mode=0755
+    volumes:
+    - arwc-contractors-data:/var/lib/arwc-contractors
+    - connector-fieldlink:/run/arwc-corporate:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/contractors-erp.json
+      target: /run/arwc-contractors-config/erp-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    networks:
+      corporate:
+        ipv4_address: 10.77.60.52
+        aliases:
+        - a-contractors
+        - contractor-portal.arwc.test
 networks:
   native_api_exchange:
     external: true
@@ -345,6 +390,8 @@ volumes:
     name: cinder-arwc-connector-fieldlink
   connector-customer:
     name: cinder-arwc-connector-customer
+  arwc-contractors-data:
+    name: cinder-arwc-contractors-data
   arwc-archive-data:
     name: cinder-arwc-archive-data
   arwc-planning-evidence:
