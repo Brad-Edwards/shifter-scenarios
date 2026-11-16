@@ -17,6 +17,8 @@ operator=${KEPLEROPS_OPERATOR_DIR:-"$ROOT/.operator"}
 # explicit reset destroys application volumes; ordinary startup never does.
 docker compose down --volumes --remove-orphans
 rm -f -- "$operator/native-platform/assistant-company-seeded" \
+  "$operator/native-platform/assistant-k21-seeded" \
+  "$operator/native-platform/assistant-k21-config.json" \
   "$operator/native-platform/objects-company-seeded" \
   "$operator/native-platform/objects-company-seeded-v2" \
   "$operator/native-platform/exports/company-history.dump" \
@@ -45,6 +47,7 @@ docker compose up -d --wait --wait-timeout 180 fieldlink-assistant
 bash native-platform/import-model.sh
 bash native-platform/cache-embedder.sh
 python3 native-platform/seed-assistant.py --operator-dir "$operator"
+python3 native-platform/seed-k21-assistant.py --operator-dir "$operator"
 bash native-platform/seed-objects.sh
 docker compose up --no-deps --force-recreate k-dev-seed
 docker compose up -d --no-deps k-dev
