@@ -678,7 +678,7 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "business.report-document",
                     "method": "GET",
-                    "template": "https://documents.arwc.test/remote.php/dav/files/jules.orswick@veybridge.test/Veybridge%20handover/PLN-MER-DP3-R6.json"
+                    "template": reports.get("pln_mer_share_url", "https://documents.arwc.test/public.php/webdav")
                 },
                 {
                     "key": "planning.live-feed",
