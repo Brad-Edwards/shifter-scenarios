@@ -37,7 +37,7 @@ PHASES = {
         "home": "/home/rowan",
     },
     "arwc": {
-        "instance": "cinder-arwc-golden",
+        "instance": "cinder-arwc-participant",
         "container": "cinder-arwc-connector",
         "user": "fieldlink",
         "uid": 999,
