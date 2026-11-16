@@ -536,16 +536,18 @@ hints:
     - kind: client_route
       id: maintenance.drawing-cache-update
   W15.3:
-    h1: Begin with the drawing cache, review workflow, and maintenance approval. Its published client document exposes
-      the drawing approval operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cache-key normalization followed by reviewer and downstream authority checks. Carry forward
-      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
-      boundary.
-    h3: Locate the drawing approval operation in the published client reference. Replay the preceding evidence through
-      the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: After completing the W15.2 cache update, call POST maintenance.drawing-approvals (from the client
+      document) with cache_key=GET:/viewer/drawings/DRW-OG2-R8 and reviewer_queue=REV-CRR-4417. Use your
+      W13.4 contractor session.
+    h2: The service runs the real Chromium 128 reviewer browser on the controlled drawing you poisoned in
+      W15.2. The reviewer's JavaScript accepts the postMessage without checking event.source, which is the
+      source_check: "omitted" flaw.
+    h3: The returned CAP-REVIEW-CRR-4417 with source_check="omitted" and browser="Chromium 128" is the
+      submission capability for the reviewer session. Record the review_capability token — it is the access
+      token for W15.4.
     references:
     - kind: client_route
-      id: maintenance.drawing-approval
+      id: maintenance.drawing-approvals
   W15.4:
     h1: Begin with the drawing cache, review workflow, and maintenance approval. Its published client document exposes
       the approval token operation, so use that ordinary contract instead of guessing a path.
