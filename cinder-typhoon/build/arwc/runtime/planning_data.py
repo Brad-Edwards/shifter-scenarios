@@ -615,10 +615,7 @@ class Handler(BaseHTTPRequestHandler):
             f"{metabase_url}/api/card/{qry_id}" if qry_id
             else "https://reports.arwc.test/api/card/qry-reserve-r7"
         )
-        query_run_template = (
-            f"{metabase_url}/api/card/{qry_id}/query" if qry_id
-            else "https://reports.arwc.test/api/card/qry-reserve-r7/query"
-        )
+        query_run_template = f"{metabase_url}/api/dataset"
         self.send_json(200, {
             "schema": "arwc.client-documents/v1",
             "service": "planning-data.arwc.test",
