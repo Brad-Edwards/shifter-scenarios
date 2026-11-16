@@ -44,6 +44,7 @@ OWNERS = {
     "instruments": "a-instruments",
     "reservoir": "a-reservoir",
     "data_bridge": "10.77.63.10",
+    "data": "a-data",
 }
 
 INITIAL = {
@@ -66,6 +67,7 @@ INITIAL["engineering"].update({
     "utility_session": None,
     "replay_structure_recovered": False, "replay_transitions_reproduced": False,
     "replay_condition_recovered": False, "replay_witness_response": None,
+    "false_estimate_observed": False, "controlled_allocation_committed": False,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
@@ -599,6 +601,11 @@ class Handler(BaseHTTPRequestHandler):
         "key": "process.estimator-result",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-results/current"
+    },
+    {
+        "key": "process.controlled-allocation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/controlled-allocations/current"
     }
 ]
         for r in routes:
@@ -821,15 +828,60 @@ class Handler(BaseHTTPRequestHandler):
         # W23/W24/W25/W26: diagnostic service routes — proxy to a-diagnostics.
         # Participant uses CORPORATE session; engineering workbench forwards with
         # X-ARWC-Internal: historian-r21 so the diagnostics service can validate.
+        if ROLE == "engineering" and path == "/api/estimator-runs":
+            # Proxy to diagnostics and track success in engineering state so that
+            # /api/estimator-results/current can gate on false_estimate_observed.
+            try:
+                diag_status, diag_result = self.internal_request(
+                    "diagnostics", "POST", path, request
+                )
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "diagnostic service unavailable"}); return
+            if diag_status == 201:
+                state["false_estimate_observed"] = True
+                save_state(state)
+            self.send_json(diag_status, diag_result)
+            return
         if ROLE == "engineering" and path in {
             "/api/control-commands", "/api/control-commands/consequence",
-            "/api/estimator-tasks/current", "/api/estimator-runs",
-            "/api/estimator-results/current", "/api/estimator-tasks/current/inputs",
+            "/api/estimator-tasks/current",
+            "/api/estimator-tasks/current/inputs",
             "/api/signature-oracles/current", "/api/diagnostic-runs",
             "/api/signature-records/current", "/api/vault-records/current",
             "/api/reporting-submissions",
         }:
             self.historian_proxy("POST", path, request)
+            return
+        # W23.2: controlled-allocation write to PostgreSQL planning data.
+        # After the estimator-runs chain (false_estimate_observed=True), the participant
+        # calls this route to commit the false estimate to the allocation_ledger.
+        # Engineering calls the data container at 10.77.60.51 with internal auth.
+        if ROLE == "engineering" and path == "/api/controlled-allocations/current":
+            if not state.get("false_estimate_observed"):
+                self.send_json(403, {"error": "accepted estimator result required"}); return
+            expected_body = {
+                "allocation_case": "ALLOC-CASE-CRR-33",
+                "district": "Cairn Reach",
+                "controlled_reserve_ml": 13.4,
+                "ordinary_reserve_ml": 12.4,
+                "quality": "valid",
+                "unaffected": {"North": 8.1, "Merewick": 7.65},
+            }
+            if request != expected_body:
+                self.send_json(409, {"error": "controlled allocation binding rejected"}); return
+            try:
+                status, result = self.internal_request(
+                    "data", "POST", "/internal/estimator-controlled-allocation", expected_body,
+                    internal="engineering-r27",
+                )
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "planning data service unavailable"}); return
+            if status == 201:
+                state["controlled_allocation_committed"] = True
+                save_state(state)
+                atomic_json(EVIDENCE / "engineering" / "controlled-allocation.json",
+                            result.get("record", result))
+            self.send_json(status, result)
             return
         self.send_json(404, {"error": "record not found"})
 

@@ -49,6 +49,13 @@ CREATE ROLE "svc-planner-query" LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHE
 CREATE DATABASE arwc;
 SQL
 fi
+# W23.2: write role for the controlled-allocation endpoint (UPDATE on allocation_ledger only).
+if ! gosu postgres psql -Atqc "SELECT 1 FROM pg_roles WHERE rolname='svc-planner-write'" | grep -qx 1; then
+  gosu postgres psql -d arwc -v ON_ERROR_STOP=1 <<'SQL' >/dev/null
+CREATE ROLE "svc-planner-write" LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
+GRANT UPDATE (committed_ml, revision) ON public.allocation_ledger TO "svc-planner-write";
+SQL
+fi
 
 gosu postgres psql -d arwc -v ON_ERROR_STOP=1 <<'SQL' >/dev/null
 CREATE TABLE IF NOT EXISTS reserve_report_current (
