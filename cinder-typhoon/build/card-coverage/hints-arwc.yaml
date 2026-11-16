@@ -699,12 +699,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/history-provenance.md
   W18.4:
-    h1: Build one row for each outlet from the CRR-IO-R364 document, including gate, position raw/value channel, flow raw/value channel,
-      expanded OPC UA flow NodeId, and historian series. Carry forward W17.OBS as the physical reference.
-    h2: Use correlation across good position and flow rows with the same source time for both outlets. Names alone do not prove that a
-      position channel and flow channel describe the same gate.
-    h3: Verify each measured flow is physically consistent with its time-aligned measured position, then submit
-      the complete A/B mapping for OG-CRR-02. Do not move either gate to manufacture evidence.
+    h1: Build the A/B mapping from CRR-IO-R364: outlet A uses PDU offsets 1 (%IW1, PositionPct) and 2
+      (%IW2, FlowM3s); outlet B uses PDU offsets 4 (%IW4, PositionBPct) and 5 (%IW5, FlowBM3s).
+      Confirm all four OPC UA NodeIds and historian series from ot_history.tag_catalog.
+    h2: Choose a 1-second window in ot_history.process_samples and query all four variables at the same
+      source_time. Verify physical consistency: at 20% position, flow should be ~20% of 0.5m3/s = 0.100
+      m3/s. Both outlets currently show 20% position and 0.100m3/s flow — symmetric.
+    h3: The observation must show both outlets' position AND flow at the same UTC timestamp with Good
+      quality. Physical consistency (position matches flow for each outlet) is required. This supplies
+      W18.MAP. Do not move either gate to manufacture evidence.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
