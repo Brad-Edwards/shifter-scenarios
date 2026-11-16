@@ -950,12 +950,16 @@ hints:
     - kind: participant_service
       id: process-view.arwc.test
   W24.3:
-    h1: The recovery contract also defines a bounded query allowance for the current project. Treat the archive-unlock
-      material and diagnostic bundle binding as two records that must agree.
-    h2: This stage uses bounded oracle recovery followed by project binding. A recovered value is not usable evidence
-      unless it matches the bundle's current project identity.
-    h3: Use the response model only within the stated allowance, recover the candidate unlock material, and verify
-      its project binding against the bundle metadata before opening anything.
+    h1: RSA_TARGET from the oracle contract is RSA-encrypted UNLOCK. Use multiplicative blinding: submit
+      c*s^e mod N to the oracle, observe class of s*m mod N. Choose request_ids with rotation=0
+      (selector(rid,EPOCH_BUCKET)&3==0) to get unrotated classes. Class D = valid PKCS#1 AND ENG1 tag.
+    h2: 4-class oracle is faster than binary valid/invalid. Class C = valid structure BUT wrong payload tag.
+      Class D = valid AND ENG1. Standard Bleichenbacher interval narrowing with the ENG1 constraint
+      recovers UNLOCK within 4096 queries. Strips selector rotation before interpreting class.
+    h3: Submit POST /api/estimator-tasks/current with operation=open, bundle_id=DIAG-EVID-CRR-R7,
+      project_id=CRR-CTRL-R21, project_revision=21, archive_unlock_b64=base64(UNLOCK). Service decrypts
+      bundle with AES-GCM(SHA256(UNLOCK)). Returns signer DSIGN-CRR-R3 + 16 signed records + recovery
+      metadata for W24.4. Wrong UNLOCK returns 409 with no partial info.
     references:
     - kind: participant_service
       id: process-view.arwc.test
