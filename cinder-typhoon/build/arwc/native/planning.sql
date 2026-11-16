@@ -277,4 +277,21 @@ CREATE OR REPLACE VIEW public.reserve_reconciliation AS
    ON al.planning_window = rr.planning_window AND al.asset = rr.asset
  WHERE al.planning_window = 'ALLOC-2026-DP3';
 GRANT SELECT ON public.reserve_reconciliation TO planning_reader;
+-- W12.4: current_collection live dataset for the collect-archive/v3 surviving path.
+-- archive_query reads it for the read operation (session-gated by retained_archive).
+-- planning_reader also granted so the same record is accessible via PostgREST.
+CREATE TABLE IF NOT EXISTS public.current_collection (
+  record_id text PRIMARY KEY,
+  revision integer NOT NULL,
+  asset text NOT NULL,
+  outlet_group text NOT NULL,
+  scope text NOT NULL,
+  source text NOT NULL
+);
+INSERT INTO public.current_collection VALUES
+  ('CUR-COL-CRR-R11', 11, 'AST-CRR-017', 'OG-CRR-02', 'read-only', 'collect-archive/v3')
+ON CONFLICT DO NOTHING;
+GRANT USAGE ON SCHEMA public TO archive_query;
+GRANT SELECT ON public.current_collection TO archive_query;
+GRANT SELECT ON public.current_collection TO planning_reader;
 COMMIT;

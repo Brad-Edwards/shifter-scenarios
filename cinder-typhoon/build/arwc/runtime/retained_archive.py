@@ -1233,10 +1233,36 @@ class Handler(BaseHTTPRequestHandler):
         if request.get("dataset") != "CUR-COL-CRR-R11" or request.get("revision") != 11:
             self.send_json(409, {"error": "current dataset binding does not match"})
             return
+        db = _load_db_state()
+        if db is None:
+            self.send_json(503, {"error": "current collection service unavailable"})
+            return
+        try:
+            import psycopg2 as _psycopg2
+            conn = _psycopg2.connect(
+                host=db["host"], dbname=db["database"],
+                user=db["user"], password=db["password"],
+                connect_timeout=5,
+            )
+            conn.set_session(readonly=True, autocommit=True)
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "SELECT record_id, revision, asset, outlet_group, scope, source "
+                    "FROM public.current_collection WHERE record_id = %s AND revision = %s",
+                    ("CUR-COL-CRR-R11", 11),
+                )
+                row = cursor.fetchone()
+            conn.close()
+        except Exception:
+            self.send_json(503, {"error": "current collection service unavailable"})
+            return
+        if not row:
+            self.send_json(404, {"error": "current collection record not found"})
+            return
         result = {
-            "record_id": "CUR-COL-CRR-R11", "revision": 11, "current": True,
-            "scope": "read-only", "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "source": "collect-archive/v3",
+            "record_id": row[0], "revision": row[1], "current": True,
+            "asset": row[2], "outlet_group": row[3],
+            "scope": row[4], "source": row[5],
         }
         state["current_data_observed"] = True
         save_state(state)
