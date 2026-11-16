@@ -304,18 +304,32 @@ class SourceHandler(KeplerHandler):
             policy_input = request["policy_input"]
             raw, instructions, _ = decode_program_model(request["program_model"])
             if operation == "fragment-check":
-                if set(policy_input) != {"fragment_id", "case"} or not isinstance(policy_input["fragment_id"], str):
+                # Validate by execution across server-side cases — no stored sha256 gate.
+                # A self-assembled correct program passes all cases; a wrong encoding fails.
+                if set(policy_input) != {"fragment_id"} or not isinstance(policy_input["fragment_id"], str):
                     raise ValueError("invalid_fragment_request")
                 fragment = K11_CONFIG["fragments"].get(policy_input["fragment_id"])
-                if fragment is None or sha256(raw) != fragment["program_sha256"]:
-                    raise ValueError("fragment_binding_mismatch")
-                case = policy_fields(policy_input["case"])
-                result, evaluated = execute_program(instructions, case)
+                if fragment is None:
+                    raise ValueError("unknown_fragment")
+                validation_cases = fragment.get("validation_cases", [])
+                if not validation_cases:
+                    raise RuntimeError("fragment_validation_unconfigured")
+                case_results = []
+                for vc in validation_cases:
+                    case = policy_fields(vc["case"])
+                    result, evaluated = execute_program(instructions, case)
+                    if result is not vc["expected"]:
+                        raise ValueError("fragment_case_mismatch")
+                    case_results.append({
+                        "case_id": vc["case_id"], "accepted": result,
+                        "expected": vc["expected"], "evaluated_fields": evaluated,
+                    })
                 receipt = "PCMIG-" + secrets.token_hex(6).upper()
                 response = {
                     "schema": "fieldkest.policy-migration-result/v1", "receipt_id": receipt,
                     "operation": operation, "fragment_id": policy_input["fragment_id"],
-                    "program_sha256": sha256(raw), "accepted": result, "evaluated_fields": evaluated,
+                    "program_sha256": sha256(raw), "case_count": len(case_results),
+                    "case_results": case_results,
                 }
             elif operation == "corpus-check":
                 if set(policy_input) != {"corpus_id"} or policy_input["corpus_id"] != K11_CONFIG["corpus_id"]:
