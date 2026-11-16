@@ -483,12 +483,17 @@ hints:
     - kind: participant_artifact
       id: work/build-operations/policy-compiler-handoff.md
   K11.2:
-    h1: Begin with the retained policy compiler repository and build-operations handover. Start from source.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Build a local model from
-      the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Review the published client document and ordinary records for source.keplerops.test. Extract the supplied
-      cases into a small local reproducer and do not use its result until every reference case matches.
+    h1: The fieldkest/policy-compiler repository contains four fragment files in fragments/ and four request templates
+      in api/fragment-{name}.json. Each template already has the correct fragment bytes, program_sha256, instruction_count,
+      and test case. The only placeholder to fill in is opcode_model.opcodes — replace "replace-with-recovered-operation"
+      with the eight names recovered in K11.1 (from nm fieldkest_opcode_XX_NAME symbols).
+    h2: Each fragment isolates one condition: tenant-state tests IN_SET on field 0, connector-version tests SEMVER_GTE
+      on field 1, signer-lineage tests IN_SET on field 2, compatibility-exception tests EQ on field 3. The test cases
+      reject on the fragment's specific condition. Submit all four requests to
+      source-tools.keplerops.test:8443/api/policy-compilers/fieldkest-policyc/evaluations with operation=fragment-check.
+    h3: Each receipt returns fragment_id, accepted=false, evaluated_fields=[one field], and program_sha256. A wrong
+      opcode model is rejected with opcode_model_mismatch. All four PCMIG receipts together are the K11.2 completion
+      evidence. Keep them — corpus_result_sha256 from these runs feeds K11.3.
     references:
     - kind: participant_service
       id: source.keplerops.test
