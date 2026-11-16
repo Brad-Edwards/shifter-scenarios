@@ -73,9 +73,24 @@ CREATE OR REPLACE VIEW public.reserve_report_current AS
  WHERE planning_window = (
    SELECT planning_window FROM public.business_reserve_report
    WHERE record_id = 'RPT-CRR-DP3-R7');
+-- W07.2 injection target: district_allocation_adjustment contains ADJ-CRR-DP3-17.
+-- planning_reader has SELECT (required for UNION to work) but no Metabase route
+-- exposes it directly; it is only reachable via quoted-identifier injection in
+-- QRY-RESERVE-R7. The ordinary WHERE reported_ml > 0 filters it out from the
+-- normal reserve_report_current result.
+CREATE OR REPLACE VIEW public.district_allocation_adjustment AS
+ SELECT
+   'ADJ-CRR-DP3-17'::text AS record_id,
+   1::integer AS revision,
+   'ALLOC-2026-DP3'::text AS planning_window,
+   -1.000::numeric(8,3) AS reported_ml,
+   'AST-CRR-017'::text AS asset,
+   'ML'::text AS unit,
+   '2026-11-09T00:00:00Z'::timestamptz AS as_of;
 REVOKE ALL ON public.allocation_ledger, public.settlement_tariff,
   public.meter_export, public.business_reserve_report FROM PUBLIC, planning_reader;
 GRANT USAGE ON SCHEMA reporting TO planning_reader;
 GRANT SELECT ON reporting.reserve_report TO planning_reader;
 GRANT SELECT ON public.reserve_report_current TO planning_reader;
+GRANT SELECT ON public.district_allocation_adjustment TO planning_reader;
 COMMIT;

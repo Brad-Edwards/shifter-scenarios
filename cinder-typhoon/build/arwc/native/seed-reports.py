@@ -64,28 +64,51 @@ def seed() -> None:
         api(f'card/{card["id"]}', {"dataset_query": query, "description": "Regional reported reserve figures."}, method="PUT")
         query["native"]["query"] = "SELECT record_id, revision, planning_window, reported_ml, asset, unit, as_of FROM reporting.reserve_report ORDER BY asset"
         api(f'card/{card["id"]}', {"dataset_query": query, "description": description}, method="PUT")
-    # Seed the QRY-RESERVE-R7 planner query: the saved SQL question on reserve_report_current.
-    # This is the planning query the participant recovers in W07.1 using the W06.3 session.
+    # Seed the QRY-RESERVE-R7 planner query.
+    # W07.1: participant recovers the definition (view, policy, SQL template).
+    # W07.2: the {{report_name}} template variable in a double-quoted identifier
+    # enables quoted-identifier SQL injection; ordinary WHERE reported_ml > 0 filters
+    # the reserve_report_current result, but UNION escapes it to reach
+    # district_allocation_adjustment (ADJ-CRR-DP3-17) which is not reachable
+    # via any direct route.
     qry_title = "QRY-RESERVE-R7"
-    qry_card = next((card for card in api("card") if card["name"] == qry_title), None)
+    qry_sql = 'SELECT * FROM "{{report_name}}" WHERE reported_ml > 0'
     qry_description = (
         "Planning reserve query QRY-RESERVE-R7. Database: PostgreSQL 16.4. "
         "View: reserve_report_current. Identifier quote: \". Policy: SELECT only. "
         "Ordinary request: {report_name: reserve_report_current}. "
-        "Ordinary result: RPT-CRR-RESERVE-R7."
+        "Ordinary result: RPT-CRR-RESERVE-R7. "
+        "Template: SELECT * FROM \"{{report_name}}\" WHERE reported_ml > 0."
     )
+    qry_template_tags = {
+        "report_name": {
+            "id": "report_name_tag",
+            "name": "report_name",
+            "display-name": "Report Name",
+            "type": "text",
+            "default": "reserve_report_current",
+            "required": True
+        }
+    }
+    qry_card = next((card for card in api("card") if card["name"] == qry_title), None)
     if qry_card is None:
-        qry_card = api("card", {"name": qry_title, "display": "table",
-            "visualization_settings": {},
+        qry_card = api("card", {
+            "name": qry_title, "display": "table", "visualization_settings": {},
             "description": qry_description,
             "dataset_query": {"database": database["id"], "type": "native", "native": {
-                "query": 'SELECT record_id, revision, planning_window, reported_ml, asset, unit, as_of FROM "reserve_report_current"'}}})
+                "query": qry_sql, "template-tags": qry_template_tags}}})
         print(f"Created Metabase question: {qry_title} (id={qry_card.get('id')})")
-    elif qry_card.get("description") != qry_description:
-        api(f'card/{qry_card["id"]}', {"description": qry_description}, method="PUT")
-        print(f"Updated Metabase question description: {qry_title}")
     else:
-        print(f"Metabase question already current: {qry_title}")
+        current_sql = qry_card.get("dataset_query", {}).get("native", {}).get("query", "")
+        if current_sql != qry_sql or qry_card.get("description") != qry_description:
+            api(f'card/{qry_card["id"]}', {
+                "description": qry_description,
+                "dataset_query": {"database": database["id"], "type": "native", "native": {
+                    "query": qry_sql, "template-tags": qry_template_tags}}},
+                method="PUT")
+            print(f"Updated Metabase question: {qry_title} (id={qry_card['id']})")
+        else:
+            print(f"Metabase question already current: {qry_title}")
 
     # Write reports state (question ID) so the planning_data service can include the
     # native Metabase URL in its client document routes.
