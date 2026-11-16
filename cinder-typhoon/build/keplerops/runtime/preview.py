@@ -54,6 +54,8 @@ class InternalPreviewHandler(http.server.BaseHTTPRequestHandler):
             self._serve_protected_preview(path.removeprefix("/protected-preview/"))
         elif path.startswith("/review-session/"):
             self._serve_review_session(path.removeprefix("/review-session/"))
+        elif path.startswith("/review-content/"):
+            self._serve_review_content(path.removeprefix("/review-content/"))
         else:
             self.send_response(404)
             self.end_headers()
@@ -81,6 +83,41 @@ class InternalPreviewHandler(http.server.BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
         self.wfile.write(protected_html)
+
+    def _serve_review_content(self, source_id: str) -> None:
+        """K12.3: serves the review content associated with a source_id.
+
+        The privileged worker fetches this endpoint to get the content it will
+        render via Gotenberg. The content is whatever is stored for the source_id
+        — the worker does not re-validate that the source_id still belongs to
+        the original review owner (the missing provenance check = the vulnerability).
+        """
+        # The twin document (lowercase collision from K10.2) renders as the
+        # protected document content — this is the participant's controlled content
+        # that lands in the privileged render slot through the K12.1 BOLA.
+        protected_html, protected_meta = _load_protected_document("DOC-9BC054D6F95DFA6A")
+        if protected_html is not None:
+            # Twin content: the participant-controlled preview that collides with
+            # the protected document slot. The worker renders this as its official
+            # contribution without checking its provenance.
+            content_html = (
+                b"<!DOCTYPE html><html><head><title>Privileged Review Content</title></head><body>"
+                + protected_html
+                + b"<p><small>Rendered for source: " + source_id.encode() + b"</small></p>"
+                b"</body></html>"
+            )
+        else:
+            content_html = (
+                b"<!DOCTYPE html><html><body>"
+                b"<p>Review content for: " + source_id.encode() + b"</p>"
+                b"</body></html>"
+            )
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(content_html)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(content_html)
 
     def _serve_review_session(self, review_id: str) -> None:
         """K12.2 vulnerability: postMessage sends action_nonce without origin validation.
@@ -388,11 +425,36 @@ class PreviewHandler(KeplerHandler):
         if review.get("state") != "prepared":
             self.send_json(409, {"error": "review_not_prepared"})
             return True
-        # The Service Worker controlled the render contribution.
-        # Transition review to rendered state.
+        # K12.3 vulnerability: the worker renders the review's current content via real
+        # Gotenberg WITHOUT re-validating that the source_id still belongs to the original
+        # owner. The K12.1 BOLA replaced the source_id with the participant's twin, so the
+        # worker renders the participant-controlled content as its authoritative contribution.
+        source_id = review.get("source_id", "")
+        # Craft HTML that fetches the review content via the internal server
+        # (same loopback path as K10.3 SSRF — Chromium can reach 127.0.0.1)
+        crafted_html = (
+            f"<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
+            f"<div id='content'>loading...</div>"
+            f"<script>"
+            f"fetch('http://127.0.0.1:{INTERNAL_PORT}/review-content/{source_id}')"
+            f".then(function(r){{return r.text();}})"
+            f".then(function(t){{document.getElementById('content').innerHTML=t;"
+            f"window._renderComplete=true;}})"
+            f".catch(function(e){{document.getElementById('content').textContent='ERR:'+e;"
+            f"window._renderComplete=true;}});"
+            f"</script></body></html>"
+        ).encode()
+        try:
+            pdf_bytes = _render_html_via_gotenberg(crafted_html)
+        except (OSError, RuntimeError) as exc:
+            self.send_json(503, {"error": f"render_failed: {exc}"})
+            return True
+        render_digest = hashlib.sha256(pdf_bytes).hexdigest()
+        # Transition review to rendered state
         review["state"] = "rendered"
         review["worker_scope"] = worker_scope
         review["renderer_identity"] = REVIEWER_WORKER_IDENTITY
+        review["render_digest"] = render_digest
         _save_review(review_id, review)
         result_id = "PRVR-" + uuid.uuid4().hex[:10].upper()
         result = {
@@ -402,8 +464,10 @@ class PreviewHandler(KeplerHandler):
             "renderer_identity": REVIEWER_WORKER_IDENTITY,
             "execution_backend": "isolated-container",
             "worker_scope": worker_scope,
-            "source_id": review.get("source_id"),
+            "source_id": source_id,
             "document_id": review.get("document_id"),
+            "render_digest": render_digest,
+            "render_size_bytes": len(pdf_bytes),
         }
         RESULTS.mkdir(parents=True, exist_ok=True)
         (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
@@ -412,7 +476,8 @@ class PreviewHandler(KeplerHandler):
             "review_id": review_id, "result_id": result_id,
             "renderer_identity": REVIEWER_WORKER_IDENTITY,
             "worker_scope": worker_scope,
-            "source_id": review.get("source_id"),
+            "source_id": source_id,
+            "render_digest": render_digest,
             "original_owner": review.get("owner"),
             "status": 200,
         })
