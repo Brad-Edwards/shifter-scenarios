@@ -49,12 +49,12 @@
     "version": "2.6.4"
   },
   "repository": {
-    "bundle_sha256": "6db83621ff946ea8e6d81bbee28c088e6471340c5db094a40f114394dd6251f0",
-    "commit": "bc52a709f6e3c9c01922748441ee3def2e28f122",
+    "bundle_sha256": "4df8cc9dab1aa2a57061136238538c2e4a7b84f46f05096951b30a32938f7f2b",
+    "commit": "04a3015b1f814f8ea4afc05fbe8b86d387a6a0df",
     "refs": {
-      "main": "bc52a709f6e3c9c01922748441ee3def2e28f122",
-      "policyc-2.6.4": "bc52a709f6e3c9c01922748441ee3def2e28f122",
-      "retained/policyc-2.6": "bc52a709f6e3c9c01922748441ee3def2e28f122"
+      "main": "04a3015b1f814f8ea4afc05fbe8b86d387a6a0df",
+      "policyc-2.6.4": "04a3015b1f814f8ea4afc05fbe8b86d387a6a0df",
+      "retained/policyc-2.6": "04a3015b1f814f8ea4afc05fbe8b86d387a6a0df"
     },
     "repository": "fieldkest/policy-compiler"
   },
