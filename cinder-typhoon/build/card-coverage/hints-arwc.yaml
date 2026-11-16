@@ -661,12 +661,14 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W17/live-observation.md
   W18.1:
-    h1: Start with CRR-IO-R364 and the installed native register file at /usr/share/arwc-ot/tags.json. Record the register
-      identifier and project revision, then calculate the native JSON digest rather than hashing the CSV export.
-    h2: Compare the register revision with the live ProjectRevision OPC UA point. The historian tag catalog carries
-      the register digest for the native variables and provides an independent product-owned check.
-    h3: Submit the register ID, revision, digest, and required variable names only after both native views agree.
-      No controller download, tag write, or history change is required.
+    h1: Read ~/CairnReach/Briefs/W18/tag-register.csv (register CRR-IO-R364, project_revision=364, 6 Modbus
+      input registers PDU offset 0-5). Then read /usr/share/arwc-ot/tags.json on the OT engineering host
+      to confirm its project_revision=364 matches.
+    h2: Confirm the running revision via OPC UA: query nsu=urn:arwc:crr:tags;s=CRR.ProjectRevision from FUXA
+      or the historian; it must equal 364. Then confirm all five process variable entries in
+      ot_history.tag_catalog share register_sha256=df09d72a355340266896c59a204248e02aa277769f881e7a2f6ce6d15b6f7a3b.
+    h3: The five required process variables (non-heartbeat) are LevelM (%IW0), PositionPct (%IW1), FlowM3s
+      (%IW2), PositionBPct (%IW4), FlowBM3s (%IW5). The Heartbeat (%IW3) is an I/O health counter only.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
