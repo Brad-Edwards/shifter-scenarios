@@ -156,7 +156,7 @@ def seed(operator: Path) -> None:
             pass  # 404 or plain-text response is expected
 
     config_path = operator / 'native-platform/assistant-k21-config.json'
-    config_path.write_text(_json.dumps({
+    config_path.write_text(json.dumps({
         'workspace_slug': slug,
         'thread_slug': thread_slug,
         'conv_sup_2841_slug': conv_slug,
