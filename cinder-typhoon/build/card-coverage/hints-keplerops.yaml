@@ -614,15 +614,17 @@ hints:
     - kind: participant_service
       id: objects.keplerops.test
   K13.3:
-    h1: Return to the workspace notes after recovering the earlier notebook version. The support export is a separate
-      object relationship, not another notebook revision.
-    h2: This stage is cross-object correlation. Preserve the export identity and handover revision instead of carrying
-      across a display name from the notebook.
-    h3: Follow the export reference exposed by the recovered notes, retrieve its retained handover through the ordinary
-      cloud client, and verify both records name the same export identity.
+    h1: The K13.1 notebook content includes export_ref=EXP-2841. The K13.1 anonymous listing also shows
+      exports/EXP-2841/handover.json as a separate key in fieldkest-workspaces. Follow the export reference
+      from the notebook to the handover object in the same bucket.
+    h2: Retrieve the handover: aws s3api get-object --bucket fieldkest-workspaces
+      --key exports/EXP-2841/handover.json --endpoint-url https://objects.keplerops.test
+      --no-sign-request handover.json. Anonymous ACL applies — no credentials needed.
+    h3: The handover content reveals export_id=EXP-2841, job=SCHED-2841, owner=maya.ranscombe.
+      These are the K15 starting leads. The export_id and job bind the support export to the case.
     references:
     - kind: participant_service
-      id: cloud-api.keplerops.test
+      id: objects.keplerops.test
   K13.4:
     h1: Begin with the workspace object history, support exports, and cloud identity exchange. Its published client
       document exposes the build record and workspace exchange operation, so use that ordinary contract instead
