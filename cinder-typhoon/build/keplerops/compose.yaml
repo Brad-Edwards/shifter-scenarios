@@ -747,7 +747,7 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
-      - identity-state:/run/fieldkest-identity:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/identity.keytab:/run/fieldkest-identity/identity.keytab:ro
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
     healthcheck:

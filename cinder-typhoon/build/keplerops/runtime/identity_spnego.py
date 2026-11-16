@@ -26,14 +26,26 @@ def _verify_spnego_token(token_b64: str) -> str | None:
     """Verify a SPNEGO token and return the authenticated client principal."""
     try:
         import gssapi
+        import os
+        # Ensure the keytab is set for GSSAPI acceptor
+        ktname = os.environ.get("KRB5_KTNAME", "/run/fieldkest-identity/identity.keytab")
+        os.environ["KRB5_KTNAME"] = ktname
         token_bytes = base64.b64decode(token_b64)
-        # Accept security context using the service keytab
-        ctx = gssapi.SecurityContext(usage="accept")
+        # Load acceptor credentials using hostbased_service name type for SPNEGO compat
+        name = gssapi.Name(
+            "HTTP@identity.keplerops.test",
+            name_type=gssapi.NameType.hostbased_service,
+        )
+        creds = gssapi.Credentials(name=name, usage="accept", lifetime=None)
+        # Accept security context using the service keytab credentials
+        ctx = gssapi.SecurityContext(usage="accept", creds=creds)
         ctx.step(token_bytes)
         if ctx.complete or ctx.initiator_name:
             return str(ctx.initiator_name)
         return None
-    except Exception:
+    except Exception as e:
+        import sys
+        print(f"SPNEGO error: {type(e).__name__}: {e}", file=sys.stderr)
         return None
 
 
