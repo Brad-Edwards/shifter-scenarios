@@ -964,12 +964,16 @@ hints:
     - kind: participant_service
       id: process-view.arwc.test
   W24.4:
-    h1: Start from the signed historical authorizations bundled with the diagnostic evidence. Compare their messages
-      and nonce relationship before attempting a fresh export request.
-    h2: This is partial nonce-reuse analysis with strict message binding. Recover signing authority from related
-      signatures, but create a new authorization for the current request.
-    h3: Validate the historical signatures, model their nonce relationship, and test the recovered signer on a harmless
-      local message before authorizing the fresh project-bound export.
+    h1: From W24.3 bundle: extract nonce_bits_60_251 (k>>60) for records 1+2, signed_low60_delta from
+      recovery_metadata, fresh_export_request_b64, and signer.public_key. Compute challenge h =
+      int.from_bytes(SHA-512(R||public_key||canonical_message),"little") mod L for each record.
+    h2: Apply HNP formula: x=((s2-s1)-((k2_hi-k1_hi)<<60)-delta)*inverse(h2-h1,L) mod L. Verify by
+      computing x*B and comparing to public key (Edwards25519: p=2^255-19, L=2^252+2774...). Use a
+      fresh nonce k_new for the new signature (do not reuse any record's nonce).
+    h3: Sign FRESH_EXPORT (from bundle) with recovered x: k_new=any_fresh, R_new=k_new*B,
+      h_new=SHA-512(R_new||A||FRESH_EXPORT) mod L, s_new=(k_new+h_new*x) mod L. POST
+      /api/reporting-submissions with {"export_request_b64":base64(FRESH_EXPORT),"R":hex,"s":hex}.
+      Service genuinely verifies Ed25519. Returns CAL-EXCEPT-CRR-R21 with 2 calibration exceptions.
     references:
     - kind: participant_service
       id: process-view.arwc.test
