@@ -159,52 +159,13 @@ def seed() -> None:
     request("MKCOL", dav("Corporate Records"), accepted=(201, 405))
     request("MKCOL", dav("Corporate Records/Merewick"), accepted=(201, 405))
     upload("Corporate Records/Merewick/PLN-MER-DP3-R6.json", pln_mer_content)
-    # Create a password-protected public link where the link password IS Jules's
-    # WebDAV credential password. The file is not in Jules's DAV root (no user share),
-    # so directory listing cannot reveal it. Access requires knowing the share token
-    # (from this route template) plus Jules's credential password from W01.1.
-    # The token+password combination IS the genuine boundary:
-    # - no credentials → HTTP 401
-    # - wrong password → HTTP 401
-    # - planning_reader credentials → HTTP 401 (don't know Jules's password or the token)
-    # - Jules's password alone without the token → HTTP 401
-    # The participant reaches the token only via the planning_data client doc route,
-    # which requires W10.2 (EXC-MER-DP3-4 linked_document = PLN-MER-DP3-R6).
-    import hashlib as _hashlib, json as _json, pathlib as _pathlib
-    jules_nc_pass = hmac.new(
-        os.environ.get("STAFF_SEED", "").encode(),
-        "jules.orswick@veybridge.test".encode(),
-        _hashlib.sha256
-    ).hexdigest()
-    pln_merewick_path = "/Corporate Records/Merewick/PLN-MER-DP3-R6.json"
-    # Remove any existing shares on this file first
-    existing_shares_raw = request("GET",
-        f"/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json&path={pln_merewick_path}",
-        accepted=(200,))
-    existing = decode_ocs(existing_shares_raw)["data"]
-    for s in existing:
-        request("DELETE", f"/ocs/v2.php/apps/files_sharing/api/v1/shares/{s['id']}?format=json",
-            accepted=(200, 100))
-    # Create password-protected public link
-    share_resp = decode_ocs(request("POST", "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json",
-        urlencode({"path": pln_merewick_path, "shareType": 3, "password": jules_nc_pass,
-                   "permissions": 1}).encode(), accepted=(200, 100)))
-    share_token = share_resp.get("data", {}).get("token", "")
-    # Write the share token to the golden operator dir for the planning_data service
-    # so it can include it in the business.report-document route template.
-    golden_ops = [".operator/archive-workflow", "../.operator/archive-workflow"]
-    for op_dir in golden_ops:
-        try:
-            state_path = _pathlib.Path(op_dir) / "reports-state.json"
-            if state_path.exists():
-                state = _json.loads(state_path.read_text())
-                state["pln_mer_share_url"] = "https://documents.arwc.test/public.php/webdav"
-                state["pln_mer_share_token"] = share_token
-                state_path.write_text(_json.dumps(state, indent=2))
-        except Exception:
-            pass
-    if share_token:
-        print(f"PLN-MER-DP3-R6 public link token: {share_token[:8]}...")
+    # Create a simple individual user share with Jules (over-broad — Merewick data
+    # exposed to Veybridge supplier via admin-to-user share misconfiguration).
+    # The file surfaces in Jules's WebDAV root at /PLN-MER-DP3-R6.json.
+    # W10.2 provides the record ID (EXC-MER-DP3-4.linked_document=PLN-MER-DP3-R6)
+    # so the participant knows WHY and WHERE to look; the difficulty is conceptual,
+    # not path-secrecy.
+    share("Corporate Records/Merewick/PLN-MER-DP3-R6.json", "jules.orswick@veybridge.test", 0)
     print(json.dumps({"project": project["name"], "supplier_handback": handback["name"],
                       "engineering_review": restricted["name"], "denied_review": other["name"]}))
     print("Native supplier documents, attachments and per-record maintenance shares imported")
