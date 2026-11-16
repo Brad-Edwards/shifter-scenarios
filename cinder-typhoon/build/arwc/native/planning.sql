@@ -293,5 +293,6 @@ INSERT INTO public.current_collection VALUES
 ON CONFLICT DO NOTHING;
 GRANT USAGE ON SCHEMA public TO archive_query;
 GRANT SELECT ON public.current_collection TO archive_query;
-GRANT SELECT ON public.current_collection TO planning_reader;
+-- planning_reader intentionally has NO SELECT on current_collection.
+-- The only path to this record is the retired-identity exchange in W12.4.
 COMMIT;
