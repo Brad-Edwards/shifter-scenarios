@@ -209,11 +209,20 @@ def _privileged_review_worker() -> None:
                     pdf_bytes = _render_html_via_gotenberg(crafted_html)
                     render_digest = hashlib.sha256(pdf_bytes).hexdigest()
                     result_id = "PRVR-" + hashlib.sha256(f"{review_id}{render_digest}".encode()).hexdigest()[:10].upper()
+                    # K12.4: compatibility_summary reflects the content rendered by the
+                    # participant's poisoned twin (fieldlink.connector/v3 integration diagnostic).
+                    # support_receipt is the privileged render's support-review artifact.
+                    compatibility_summary = "fieldlink.connector/v3 compatible"
+                    support_receipt = "PRV-RCPT-" + hashlib.sha256(
+                        f"{review_id}{render_digest}{result_id}".encode()
+                    ).hexdigest()[:12].upper()
                     review["state"] = "rendered"
                     review["renderer_identity"] = REVIEWER_WORKER_IDENTITY
                     review["render_digest"] = render_digest
                     review["render_size_bytes"] = len(pdf_bytes)
                     review["worker_scope"] = REVIEW_SCOPE
+                    review["compatibility_summary"] = compatibility_summary
+                    review["support_receipt"] = support_receipt
                     review_path.write_text(json.dumps(review, sort_keys=True, separators=(",", ":")) + "\n")
                     result = {
                         "schema": "fieldkest.preview-render/v1",
@@ -226,6 +235,8 @@ def _privileged_review_worker() -> None:
                         "document_id": review.get("document_id"),
                         "render_digest": render_digest,
                         "render_size_bytes": len(pdf_bytes),
+                        "compatibility_summary": compatibility_summary,
+                        "support_receipt": support_receipt,
                     }
                     RESULTS.mkdir(parents=True, exist_ok=True)
                     (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
@@ -234,6 +245,8 @@ def _privileged_review_worker() -> None:
                         "renderer_identity": REVIEWER_WORKER_IDENTITY,
                         "worker_scope": REVIEW_SCOPE, "source_id": source_id,
                         "render_digest": render_digest,
+                        "compatibility_summary": compatibility_summary,
+                        "support_receipt": support_receipt,
                         "original_owner": review.get("owner"),
                         "status": 200,
                     })
