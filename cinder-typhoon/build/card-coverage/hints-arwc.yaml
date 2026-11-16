@@ -712,15 +712,16 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
   W19.1:
-    h1: The diagnostic is in Gitea at clara.morivelle/retained-engineering-tools (engineering.arwc.test).
-      Download engineering/diag-crr-mixed-19 and verify its SHA-256. The companion engineering/replay-crr-r19
-      in the same repo belongs to the same project generation.
-    h2: Run static analysis on the binary: strings, objdump, or readelf. The binary contains a recoverable
-      embedded string that identifies its project generation. Look for strings following the ARWC naming
-      convention for migration or migration-revision records.
-    h3: After recovering the project identifier from the binary, check the live OT: query CRR.ProjectRevision
-      from the OPC UA browser or historian (ot_history.tag_catalog) and compare with the recovered generation.
-      The gap between the two confirms why the diagnostic was never retired.
+    h1: Use the CORPORATE session from the FieldLink handover. The process.diagnostic-program route in the
+      published client reference points to the diagnostic endpoint at process-view.arwc.test. The binary in
+      Gitea (clara.morivelle/retained-engineering-tools/engineering/diag-crr-mixed-19) is starting material
+      for W19.2-W19.4, not the W19.1 answer path.
+    h2: Authenticate with your CORPORATE Bearer token and call GET https://process-view.arwc.test/api/
+      diagnostic-programs/current. The service returns an authoritative record with record_id, project_family,
+      sha256, format, and ordinary_traces. Record the audit_id as fresh evidence.
+    h3: Compare the returned project_family with the live CRR.ProjectRevision from FUXA or the historian
+      (ot_history.tag_catalog variable=ProjectRevision). The gap between the diagnostic's project generation
+      and the running system's revision is the finding.
     references:
     - kind: gitea_repo
       id: clara.morivelle/retained-engineering-tools
