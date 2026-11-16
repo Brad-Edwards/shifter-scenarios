@@ -468,13 +468,17 @@ hints:
     - kind: client_route
       id: preview.render
   K11.1:
-    h1: Begin with the retained policy compiler repository and build-operations handover. The supplied policy compiler
-      handoff.md artifact carries the relevant lead; check its provenance and references before contacting another
-      service.
-    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Inspect the supplied policy compiler handoff.md artifact and the normal client documentation it names. Capture
-      one ordinary response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Read work/build-operations/policy-compiler-handoff.md on the developer workstation. It directs you to the
+      fieldkest/policy-compiler repository in Gitea (source.keplerops.test). Clone it; the repository website field
+      points to the client reference on source-tools.keplerops.test:8443 where the evaluation route is listed.
+    h2: The retained binary bin/fieldkest-policyc is an unstripped ELF. Run nm to find the eight fieldkest_opcode_XX_NAME
+      symbols. Search the binary for the FKPC magic bytes (the embedded 68-byte program table, 14 four-byte
+      instructions). Trace the PUSH_FIELD (0x00) opcodes by index to identify the four evaluated fields:
+      tenant_state (0), connector_api (1), signer_lineage (2), compatibility_exception (3).
+    h3: Build a fieldkest.policy-program-model/v1 with the 68-byte program base64-encoded and its sha256. POST to
+      source-tools.keplerops.test:8443/api/policy-compilers/fieldkest-policyc/evaluations with
+      operation=corpus-check and policy_input={"corpus_id":"POLICY-CORPUS-2026-09-R4"}. The service returns a
+      PCMIG receipt with program_sha256, corpus_result_sha256, and condition_set_sha256.
     references:
     - kind: participant_artifact
       id: work/build-operations/policy-compiler-handoff.md
