@@ -25,6 +25,10 @@ CONFIG = json.loads((STATE / "config/preview.json").read_text())
 
 USERNAME = CONFIG["developer"]["username"]
 TOKEN = credential("developer_token")
+REVIEWER_WORKER_TOKEN = CONFIG.get("reviewer_worker_token", "reviewer-worker")
+REVIEWER_WORKER_IDENTITY = CONFIG.get("reviewer_worker_identity", "svc-preview-reviewer")
+ATTACHMENT_PATH = CONFIG.get("attachment_path", "/attachment/")
+REVIEW_SCOPE = CONFIG.get("review_scope", "/review/")
 GOTENBERG_PORT = int(os.environ.get("GOTENBERG_PORT", "3000"))
 INTERNAL_PORT = int(os.environ.get("INTERNAL_PORT", "9000"))
 
@@ -210,6 +214,39 @@ class PreviewHandler(KeplerHandler):
         if path == "/health":
             self.send_json(200, {"status": "up", "queue": "ready"})
             return
+        # /attachment/ is public — no auth required
+        # (the reviewer's browser must load it without credentials)
+        if path.startswith("/attachment/"):
+            source_id = path.removeprefix("/attachment/")
+            attachment_js = f"""// FieldKest preview attachment Service Worker registration.
+// This script is served with Service-Worker-Allowed: /review/
+// which permits registering a Service Worker with scope /review/
+// even though this attachment lives at /attachment/.
+(function() {{
+  if (typeof ServiceWorkerGlobalScope !== 'undefined' && self instanceof ServiceWorkerGlobalScope) {{
+    // Running as a Service Worker — intercept /review/ fetch requests.
+    self.addEventListener('fetch', function(event) {{
+      var url = new URL(event.request.url);
+      if (url.pathname.startsWith('/review/')) {{
+        event.respondWith(fetch(event.request));
+      }}
+    }});
+  }} else {{
+    // Running as a normal script — register as Service Worker with broader scope.
+    if (navigator.serviceWorker) {{
+      navigator.serviceWorker.register('/attachment/{source_id}', {{ scope: '/review/' }});
+    }}
+  }}
+}})();
+""".encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/javascript")
+            self.send_header("Service-Worker-Allowed", "/review/")
+            self.send_header("Content-Length", str(len(attachment_js)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(attachment_js)
+            return
         if not self._developer():
             self.send_json(401, {"error": "authentication_required"})
             return
@@ -318,6 +355,70 @@ class PreviewHandler(KeplerHandler):
         else:
             self.send_json(404, {"error": "not_found"})
 
+    def _handle_review_render(self, path: str) -> bool:
+        """K12.3: review-render endpoint controlled by the participant's Service Worker.
+
+        The attachment at /attachment/{source_id} is served with
+        Service-Worker-Allowed: /review/ — a scope broader than the attachment path.
+        When the participant registers the attachment script as a SW with scope /review/,
+        it can intercept any request to /review/... including this endpoint.
+        The SW supplies {"worker_scope": "/review/"} to claim control of the render.
+        """
+        parts = path.strip("/").split("/")
+        if not (len(parts) == 3 and parts[0] == "review" and parts[2] == "render"):
+            return False
+        review_id = parts[1]
+        # Only the reviewer-worker Bearer is accepted (not the developer token)
+        auth = self.headers.get("Authorization", "")
+        if auth != f"Bearer {REVIEWER_WORKER_TOKEN}":
+            self.send_json(401, {"error": "reviewer_worker_token_required"})
+            return True
+        try:
+            body = self.read_json(32_768)
+            worker_scope = str(body.get("worker_scope", ""))
+            if worker_scope != REVIEW_SCOPE:
+                raise ValueError("worker_scope_mismatch")
+        except (ValueError, TypeError, KeyError):
+            self.send_json(422, {"error": "worker_scope_required"})
+            return True
+        review = _load_review(review_id)
+        if review is None:
+            self.send_json(404, {"error": "review_not_found"})
+            return True
+        if review.get("state") != "prepared":
+            self.send_json(409, {"error": "review_not_prepared"})
+            return True
+        # The Service Worker controlled the render contribution.
+        # Transition review to rendered state.
+        review["state"] = "rendered"
+        review["worker_scope"] = worker_scope
+        review["renderer_identity"] = REVIEWER_WORKER_IDENTITY
+        _save_review(review_id, review)
+        result_id = "PRVR-" + uuid.uuid4().hex[:10].upper()
+        result = {
+            "schema": "fieldkest.preview-render/v1",
+            "result_id": result_id,
+            "review_id": review_id,
+            "renderer_identity": REVIEWER_WORKER_IDENTITY,
+            "execution_backend": "isolated-container",
+            "worker_scope": worker_scope,
+            "source_id": review.get("source_id"),
+            "document_id": review.get("document_id"),
+        }
+        RESULTS.mkdir(parents=True, exist_ok=True)
+        (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "review-renders", {
+            "request_id": self.request_id,
+            "review_id": review_id, "result_id": result_id,
+            "renderer_identity": REVIEWER_WORKER_IDENTITY,
+            "worker_scope": worker_scope,
+            "source_id": review.get("source_id"),
+            "original_owner": review.get("owner"),
+            "status": 200,
+        })
+        self.send_json(200, result)
+        return True
+
     def _handle_prepare(self, path: str) -> bool:
         """K12.2: protected prepare action authenticated by action_nonce Bearer token.
 
@@ -378,6 +479,9 @@ class PreviewHandler(KeplerHandler):
 
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
+        # K12.3: review-render authenticated by reviewer-worker token
+        if self._handle_review_render(path):
+            return
         # K12.2: prepare action authenticated by action_nonce, not developer token
         if self._handle_prepare(path):
             return

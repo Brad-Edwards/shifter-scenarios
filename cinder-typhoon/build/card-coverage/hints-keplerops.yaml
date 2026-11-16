@@ -561,13 +561,17 @@ hints:
     - kind: client_route
       id: preview.prepare
   K12.3:
-    h1: Begin with the preview assignment, privileged review, and worker-render services. Start from preview.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as cross-action value handling and worker-scope confusion in a privileged preview. Observe the
-      ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for preview.keplerops.test. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: The preview.attachment route is GET /attachment/{source_id}. Load this endpoint and inspect its response
+      headers: Content-Type is application/javascript and Service-Worker-Allowed is /review/. The broader
+      Service-Worker-Allowed scope allows registering the attachment script as a Service Worker with scope /review/
+      from any page that includes it, overriding the browser's same-path restriction.
+    h2: After K12.1 places the content in the privileged-review queue, the attachment JS can be registered as a
+      SW with scope /review/. POST to preview.review-render (POST /review/{review_id}/render) with
+      {"worker_scope":"/review/"} using Authorization: Bearer reviewer-worker. Developer token is rejected.
+      Review must be in prepared state (K12.2 required first).
+    h3: A successful render returns {"renderer_identity":"svc-preview-reviewer","execution_backend":"isolated-container",
+      "worker_scope":"/review/"} and writes a review-renders audit entry with original_owner=maya.ranscombe.
+      Review state transitions to rendered. Result is input to K12.4.
     references:
     - kind: participant_service
       id: preview.keplerops.test
