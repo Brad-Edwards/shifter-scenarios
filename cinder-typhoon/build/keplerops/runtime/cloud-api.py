@@ -30,6 +30,15 @@ TOKEN = credential("developer_token")
 RELEASE_READER_TOKEN = credential("release_reader_token")  # K29.1 exchange handle
 HISTORY_RECOVERY_SESSION = credential("cloud_history_recovery_session")  # K30.1 recovery session
 WORKLOAD_SESSION = credential("cloud_workload_session")  # K13.4 workload path
+MAINTENANCE_WORKER = credential("ci_maintenance_worker")  # K31 maintenance worker
+MAINTENANCE_RUNTIME = credential("cloud_maintenance_runtime")  # K31 runtime credential
+SUPPORT_EXPORT_ROLE = credential("cloud_support_export_role")  # K16/K31 export role
+
+# K31: maintenance job constants
+MAINTENANCE_COMMAND = ["maintenance-summary", "--archive", "FIELD-CRR-2026-09"]
+MAINTENANCE_LABEL = {"workload.class": "maintenance"}
+MAINTENANCE_WORKLOAD_ID = "MAINT-FLK-01"
+MAINTENANCE_POLICY_ID = "fieldlink-maintenance"
 NAMESPACE = CONFIG.get("namespace", "fieldlink")
 WORKLOAD_SA = CONFIG.get("workload_sa", "svc-fieldlink-workload")
 
@@ -193,6 +202,51 @@ class CloudApiHandler(KeplerHandler):
         #   The flaw: checks project membership (developer token) but omits release-dossier
         #   entitlement check before returning the exchange handle.
         # K13.4: all other build records require a K3s workload SA token (enforced by K3s RBAC).
+        # K31.1: maintenance index — returns policy, workload, field archive, and credentials.
+        # Requires SUPPORT_EXPORT_ROLE, WORKLOAD_SESSION, or MAINTENANCE_WORKER token.
+        if path == "/api/maintenance":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token not in {SUPPORT_EXPORT_ROLE, WORKLOAD_SESSION, MAINTENANCE_WORKER}:
+                self.send_json(401, {"error": "authentication_required"})
+                return
+            result = {
+                "policy_id": MAINTENANCE_POLICY_ID,
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "field_archive": "FIELD-CRR-2026-09",
+                "archive_asset": "CRR-OG2",
+                "workload_class": "maintenance",
+                "worker_credential": MAINTENANCE_WORKER,
+                "runtime_credential": MAINTENANCE_RUNTIME,
+            }
+            append_audit(AUDIT, "maintenance-index", {
+                "request_id": self.request_id, "status": 200,
+            })
+            self.send_json(200, result)
+            return
+
+        # K31.1: maintenance policy — requires maintenance worker credential.
+        # Shows the policy distinguishing management caller, scheduler, and runtime SA.
+        if path == "/api/policies/fieldlink-maintenance":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token not in {SUPPORT_EXPORT_ROLE, MAINTENANCE_WORKER} and not self._developer():
+                self.send_json(401, {"error": "authentication_required"})
+                return
+            result = {
+                "policy_id": MAINTENANCE_POLICY_ID,
+                "management_caller": "svc-fieldkest-runner",
+                "scheduler": "fieldkest-scheduler",
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "command": MAINTENANCE_COMMAND,
+                "required_label": MAINTENANCE_LABEL,
+            }
+            append_audit(AUDIT, "maintenance-policy", {
+                "request_id": self.request_id, "status": 200,
+            })
+            self.send_json(200, result)
+            return
+
         # K30.2: backup catalog — requires recovery session, source_database denied
         if path == "/api/backups/BAK-2026-021":
             self._backup_catalog()
