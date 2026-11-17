@@ -185,6 +185,9 @@ def seed(operator: Path) -> None:
         anyllm_api_key = ''  # chat endpoint returns 503 if key is absent
 
     config_path = operator / 'native-platform/assistant-k21-config.json'
+    # Docker creates an empty directory when the assistant mounts this path before it exists.
+    if config_path.is_dir() and not config_path.is_symlink():
+        config_path.rmdir()
     config_path.write_text(json.dumps({
         'workspace_slug': slug,
         'thread_slug': thread_slug,

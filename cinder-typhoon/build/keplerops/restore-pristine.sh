@@ -16,9 +16,9 @@ operator=${KEPLEROPS_OPERATOR_DIR:-"$ROOT/.operator"}
 # A verified private backup and a released QA window are prerequisites. This
 # explicit reset destroys application volumes; ordinary startup never does.
 docker compose down --volumes --remove-orphans
+rm -rf -- "$operator/native-platform/assistant-k21-config.json"
 rm -f -- "$operator/native-platform/assistant-company-seeded" \
   "$operator/native-platform/assistant-k21-seeded" \
-  "$operator/native-platform/assistant-k21-config.json" \
   "$operator/native-platform/assistant-k22-seeded" \
   "$operator/native-platform/assistant-k23-seeded" \
   "$operator/native-ci/k06-ci-seeded" \
