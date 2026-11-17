@@ -1353,12 +1353,14 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md
   W33.4:
-    h1: Reconstruct one settled TotalFlowM3s mean per commissioning request from product history. Preserve the request
-      order, source times, quality, and later local handback instead of treating the client receipt as measurement.
-    h2: Project one-hour reservoir volume from the twelve measured means and the published 300-second intervals. Join
-      the result to the current W29 usable-volume, allocation, and tariff rows by asset and planning window.
-    h3: Label the twelve-step run as measured commissioning evidence and the hour-scale volume, remaining reserve,
-      shortfall, and liability as projections. Recompute every value; do not copy a fixed expected total.
+    h1: POST /api/operating-projections/current with commissioning (W33.3 body), observed_mean_total_flow_m3s
+      (12 means from settled 4-second windows), projected_reservoir_volume_ml, starting_usable_volume_ml,
+      remaining_usable_volume_ml, committed_volume_ml=12.0, projected_shortfall_ml, tariff_rate_per_ml=2400,
+      projected_liability_usd, interpretation=measured_commissioning_evidence_with_projected_one_hour_effect.
+    h2: For each step: TotalFlowM3s where source_time in [completed-4s, completed], Good quality, mean.
+      projected_volume=sum(300*mean_i)/1000. starting=UsableVolumeML before first request. remaining=starting-projected.
+    h3: shortfall=max(0,12-remaining). liability=shortfall*2400. Service validates all values ±0.005.
+      Sets w33_complete state; completes W33 arc.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md

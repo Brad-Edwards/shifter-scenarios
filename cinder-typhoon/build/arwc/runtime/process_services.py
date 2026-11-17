@@ -907,6 +907,9 @@ class Handler(BaseHTTPRequestHandler):
         if ROLE == "engineering" and path == "/api/commissioning-runs/current":
             self.w33_3_post(path, request, state)
             return
+        if ROLE == "engineering" and path == "/api/operating-projections/current":
+            self.w33_4_post(path, request, state)
+            return
         if ROLE == "engineering" and path in {
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
             "/api/replay-sessions/current/execute",
@@ -1912,6 +1915,107 @@ class Handler(BaseHTTPRequestHandler):
         }
         atomic_json(ROOT / "artifacts" / "commissioning-run" / "result.json", record)
         self.accepted("commissioning-run", record, 201)
+
+    def w33_4_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("w33_commissioned"):
+            self.send_json(403, {"error": "commissioning run (W33.3) required"})
+            return
+        REQUIRED = {"commissioning", "observed_mean_total_flow_m3s", "projected_reservoir_volume_ml",
+                    "starting_usable_volume_ml", "remaining_usable_volume_ml", "committed_volume_ml",
+                    "projected_shortfall_ml", "tariff_rate_per_ml", "projected_liability_usd", "interpretation"}
+        INTERP = "measured_commissioning_evidence_with_projected_one_hour_effect"
+        if set(request) != REQUIRED or request.get("interpretation") != INTERP:
+            self.send_json(409, {"error": "W33.4 submission fields or interpretation do not match"})
+            return
+        observed = request.get("observed_mean_total_flow_m3s", [])
+        if not isinstance(observed, list) or len(observed) != 12:
+            self.send_json(409, {"error": "W33.4 requires twelve observed step means"})
+            return
+        request_ids = state.get("w33_request_ids", [])
+        if len(request_ids) != 12:
+            self.send_json(403, {"error": "W33.3 request IDs not found in state"})
+            return
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        SETTLED_WINDOW = 4
+        TOLERANCE_CALC = 0.005
+        COMMITTED = 12.0; RATE = 2400.0
+        INTERVAL = 300
+        try:
+            import psycopg2 as _pg
+            import datetime as _dt
+            UTC = _dt.timezone.utc
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute(
+                    "SELECT id::text, time FROM public.dispatch_history "
+                    "WHERE id::text = ANY(%s) AND status = 'completed' ORDER BY time",
+                    (request_ids,)
+                )
+                completed_times = {r[0]: r[1].replace(tzinfo=UTC) for r in cur.fetchall()}
+                means = []
+                for rid in request_ids:
+                    comp = completed_times.get(rid)
+                    if not comp:
+                        self.send_json(409, {"error": f"request {rid[:8]} not completed in historian"}); ot.close(); return
+                    start = comp - _dt.timedelta(seconds=SETTLED_WINDOW)
+                    cur.execute(
+                        "SELECT ph.value FROM public.process_history ph "
+                        "JOIN public.historian_tag_catalog c ON c.series = ph.tag "
+                        "WHERE ph.asset='AST-CRR-017' AND c.variable='TotalFlowM3s' "
+                        "AND ph.source_time >= %s AND ph.source_time <= %s "
+                        "AND ph.process_quality='Good' ORDER BY ph.source_time",
+                        (start, comp)
+                    )
+                    vals = [float(r[0]) for r in cur.fetchall()]
+                    means.append(sum(vals) / len(vals) if vals else 0.0)
+                first_time = min(completed_times.values()) - _dt.timedelta(seconds=10)
+                cur.execute(
+                    "SELECT ph.value FROM public.process_history ph "
+                    "JOIN public.historian_tag_catalog c ON c.series = ph.tag "
+                    "WHERE ph.asset='AST-CRR-017' AND c.variable='UsableVolumeML' "
+                    "AND ph.source_time <= %s ORDER BY ph.source_time DESC LIMIT 1",
+                    (first_time,)
+                )
+                uv_row = cur.fetchone()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        starting_volume = float(uv_row[0]) if uv_row else 10.85
+        def _near(a: float, b: float) -> bool:
+            return abs(float(a) - float(b)) <= TOLERANCE_CALC
+        for i, (claimed, actual) in enumerate(zip(observed, means)):
+            if not _near(claimed, actual):
+                self.send_json(409, {"error": f"step {i+1} mean flow {claimed:.6f} vs {actual:.6f}"}); return
+        projected_volume = sum(INTERVAL * m for m in means) / 1000.0
+        remaining = starting_volume - projected_volume
+        shortfall = max(0.0, COMMITTED - remaining)
+        liability = shortfall * RATE
+        for field, expected in (
+            ("projected_reservoir_volume_ml", projected_volume),
+            ("starting_usable_volume_ml", starting_volume),
+            ("remaining_usable_volume_ml", remaining),
+            ("committed_volume_ml", COMMITTED),
+            ("projected_shortfall_ml", shortfall),
+            ("tariff_rate_per_ml", RATE),
+            ("projected_liability_usd", liability),
+        ):
+            if not _near(request[field], expected):
+                self.send_json(409, {"error": f"{field}: submitted {request[field]:.4f} vs {expected:.4f}"}); return
+        state["w33_complete"] = True
+        save_state(state)
+        record = {
+            "record_id": "PROJ-CRR-W33-R1", "revision": 1,
+            "instruction": "CRR-OP-W33-R1", "asset": "AST-CRR-017",
+            "measured_steps": 12, "projected_reservoir_volume_ml": projected_volume,
+            "projected_shortfall_ml": shortfall, "projected_liability_usd": liability,
+            "baseline_restored": True,
+        }
+        atomic_json(ROOT / "artifacts" / "operating-projection" / "result.json", record)
+        self.accepted("operating-projection", record, 201)
 
     def w30_2_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state.get("request_planned"):
