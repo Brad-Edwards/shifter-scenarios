@@ -15,6 +15,10 @@ case "$phase" in
     ;;
   arwc)
     root=/opt/cinder-typhoon/build/arwc
+    # The ARWC golden-clone image keeps its IT tree under the OT slice.
+    if [[ -d /opt/arwc-ot-compat/it/cinder-typhoon/build/arwc ]]; then
+      root=/opt/arwc-ot-compat/it/cinder-typhoon/build/arwc
+    fi
     own_ca="$root/.operator/tls/ca.crt"
     expected_peer='CN=KeplerOps Range CA'
     ;;
@@ -78,7 +82,15 @@ PY
       printf 'ARWC_CARRIER_ADDRESS=%s\n' "$peer_address" >"$root/.env"
       chmod 0600 "$root/.env"
     fi
-    docker compose -f "$root/compose.yaml" up -d --force-recreate a-connector
+    if [[ $phase == arwc && -d /opt/arwc-ot-compat/slice ]]; then
+      own_address=$(curl --fail --silent --header 'Metadata-Flavor: Google' \
+        http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip)
+      (cd /opt/arwc-ot-compat/slice && ARWC_CARRIER_ADDRESS=$own_address ARWC_OT_OPERATOR_DIR=$PWD/.operator \
+        docker compose -f "$root/compose.yaml" -f integration/it-compose.yaml \
+        up -d --no-deps --no-build --pull never --force-recreate a-connector)
+    else
+      docker compose -f "$root/compose.yaml" up -d --force-recreate a-connector
+    fi
     ;;
   stop)
     if [[ -s $pid_file ]]; then
