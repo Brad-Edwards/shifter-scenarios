@@ -281,6 +281,7 @@ class SourceHandler(KeplerHandler):
                 self.send_json(503, {"error": "connector_result_invalid"})
                 return
         result["request_id"] = self.request_id
+        result["input_sha256"] = sha256(fields["input"])  # for K28.2 corpus verification
         receipt = "CARUN-" + secrets.token_hex(6).upper()
         result["receipt_id"] = receipt
         CONNECTOR_RESULTS.mkdir(parents=True, exist_ok=True)
@@ -385,15 +386,16 @@ class SourceHandler(KeplerHandler):
             return
         # Fetch the actual file from Gitea and verify content (using developer credentials)
         try:
-            import base64 as _b64
+            import base64 as _b64, ssl as _ssl
             from urllib.request import Request as _Request, urlopen as _urlopen
+            _ctx = _ssl.create_default_context(cafile="/run/fieldkest-tls/ca.crt")
             authorization = _b64.b64encode(f"{USERNAME}:{TOKEN}".encode()).decode()
             gitea_url = f"https://source.keplerops.test/api/v1/repos/fieldkest/connector-archive/raw/{gitea_path}?ref=main"
             req = _Request(gitea_url, headers={"Authorization": f"Basic {authorization}"})
-            with _urlopen(req, context=CONTEXT, timeout=10) as r:
+            with _urlopen(req, context=_ctx, timeout=10) as r:
                 content = r.read()
-        except Exception:
-            self.send_json(503, {"error": "gitea_fetch_failed"})
+        except Exception as _fetch_err:
+            self.send_json(503, {"error": "gitea_fetch_failed", "detail": str(_fetch_err)[:100]})
             return
         actual_sha256 = sha256(content)
         if actual_sha256 != content_sha256:
