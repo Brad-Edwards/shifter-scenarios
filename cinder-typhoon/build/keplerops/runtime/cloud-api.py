@@ -28,6 +28,8 @@ CONFIG = json.loads((STATE / "config/cloud-api.json").read_text())
 USERNAME = CONFIG["developer"]["username"]
 TOKEN = credential("developer_token")
 RELEASE_READER_TOKEN = credential("release_reader_token")  # K29.1 exchange handle
+HISTORY_RECOVERY_SESSION = credential("cloud_history_recovery_session")  # K30.1 recovery session
+WORKLOAD_SESSION = credential("cloud_workload_session")  # K13.4 workload path
 NAMESPACE = CONFIG.get("namespace", "fieldlink")
 WORKLOAD_SA = CONFIG.get("workload_sa", "svc-fieldlink-workload")
 
@@ -174,6 +176,8 @@ class CloudApiHandler(KeplerHandler):
             build_id = path.removeprefix("/api/build-records/")
             if build_id == "BLD-REL-742":
                 self._build_record_release_dossier(build_id)
+            elif build_id == "BLD-REC-021":
+                self._build_record_history_recovery(build_id)
             else:
                 self._build_record_via_workload(build_id)
             return
@@ -1041,6 +1045,37 @@ class CloudApiHandler(KeplerHandler):
             json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n"
         )
         self.send_json(201, result)
+
+    def _build_record_history_recovery(self, build_id: str) -> None:
+        """K30.1: History recovery build record — accepts K09.4 (release_reader) or K13.4 (workload).
+
+        Returns the svc-history-recovery principal with backup BAK-2026-021 and a
+        scoped restore session. Source database direct-access is denied (K30.2 setup).
+        """
+        auth = self.headers.get("Authorization", "")
+        token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+        # Accept K09.4 path (release_reader exchange handle) or K13.4 path (workload session)
+        if token not in {RELEASE_READER_TOKEN, WORKLOAD_SESSION}:
+            if not self._developer():
+                self.send_json(401, {"error": "authentication_required"})
+                return
+        result = {
+            "schema": "fieldkest.build-record/v1",
+            "build_id": build_id,
+            "classification": "history-recovery",
+            "principal": "svc-history-recovery",
+            "backup": "BAK-2026-021",
+            "session": HISTORY_RECOVERY_SESSION,
+            "allowed": "restore",
+            "source_database": "denied",
+        }
+        append_audit(AUDIT, "build-records", {
+            "request_id": self.request_id,
+            "build_id": build_id,
+            "principal": "svc-history-recovery",
+            "status": 200,
+        })
+        self.send_json(200, result)
 
     def _build_record_release_dossier(self, build_id: str) -> None:
         """K29.1: return the release-dossier build record with the exchange handle.
