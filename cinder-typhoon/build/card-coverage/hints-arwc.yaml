@@ -1223,12 +1223,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W30/operator-brief.md
   W31.1:
-    h1: Begin with the diagnostic vault record, parser worker, and approval-history export. Its published client
-      document exposes the vault record operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-boundary analysis followed by protected saved-state control. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the vault record operation in the published client reference. Capture one ordinary response and one
-      denial, then correlate the returned identifiers with evidence already earned.
+    h1: GET /api/vault-records/current (via process-view.arwc.test proxy). Returns VAULT-CRR-R5 record with
+      case_id=DV-CRR-4417, protected_history_reference=HIST-APR-CRR-09, format=DVL1,
+      request_limit=512 bytes, declared_length_encoding=u16-le, header_length_encoding=u16-le,
+      integrity=CRC32C. Sets vault_contract_observed state.
+    h2: The vault worker binary (dvl-worker-r5) is returned as worker_b64. The DVL1 record format:
+      u16 declared_length + u16 header_length + u32 CRC32C + payload. Requests are bounded at 512 bytes.
+      The status record exposes canary, stack frame offsets, and worker mapping for W31.2+.
+    h3: This card only requires the GET. Retain case_id=DV-CRR-4417 and protected_history_reference=HIST-APR-CRR-09
+      for use in W31.2 (vault boundary control) and W31.3 (vault saved-state control).
     references:
     - kind: client_route
       id: process.vault-record
