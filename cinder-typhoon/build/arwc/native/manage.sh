@@ -576,6 +576,41 @@ VALUES ('EVT-COMM-OG2-114', 'high', '2026-11-13 09:28:14+00', '2026-11-13 09:29:
       -v "${golden_op}/tls/ca.crt:/run/arwc-tls/ca.crt:ro" \
       "${RENDERER_IMAGE:-cinder-arwc/a-renderer:hand-build}"
     echo "a-renderer (maintenance-renderer at 10.77.60.54) started"
+    # Start the control broker (a-control-broker) for W26.4 control client issuance.
+    # POST /api/approval-clients/current → CTRL-CLIENT-CRR-26 (W26.CONTROL).
+    # Reads: contractor session (W13), approval evidence (W15), renderer attestation (W26.3).
+    docker volume create cinder-arwc-control-broker-state 2>/dev/null || true
+    # Copy renderer attestation from renderer state to renderer-evidence volume.
+    docker run --rm \
+      -v cinder-arwc-renderer-state:/src:ro \
+      -v cinder-arwc-renderer-evidence:/dest:rw \
+      busybox sh -c 'if [ -f /src/handover/renderer-attestation.json ]; then \
+        cp /src/handover/renderer-attestation.json /dest/renderer-attestation.json && \
+        chmod 0640 /dest/renderer-attestation.json && chown root:2312 /dest/renderer-attestation.json; fi' \
+      2>/dev/null || true
+    docker stop cinder-arwc-control-broker 2>/dev/null; docker rm cinder-arwc-control-broker 2>/dev/null || true
+    docker run -d \
+      --name cinder-arwc-control-broker \
+      --network cinder-arwc-corporate --ip 10.77.60.57 \
+      --hostname control-broker --domainname arwc.test --dns 10.77.60.10 \
+      -e ARWC_SERVICE_USER=arwc-control-broker \
+      -e ARWC_STATE_ROOT=/var/lib/arwc-control-broker \
+      --restart unless-stopped --read-only \
+      --security-opt no-new-privileges:true \
+      --cap-drop ALL --cap-add SETUID --cap-add SETGID --cap-add CHOWN \
+      --cap-add FOWNER --cap-add DAC_OVERRIDE \
+      --tmpfs /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777 \
+      --tmpfs /run:rw,nosuid,nodev,size=8m,mode=0755 \
+      --tmpfs /run/arwc:rw,nosuid,nodev,size=4m,mode=0755 \
+      -v cinder-arwc-control-broker-state:/var/lib/arwc-control-broker \
+      -v cinder-arwc-approval-evidence:/run/arwc-approval-evidence:ro \
+      -v cinder-arwc-field-session:/run/arwc-field-session:ro \
+      -v cinder-arwc-renderer-evidence:/run/arwc-renderer-evidence:ro \
+      -v "${golden_op}/tls/server.crt:/run/arwc-tls/server.crt:ro" \
+      -v "${golden_op}/tls/server.key:/run/arwc-tls/server.key:ro" \
+      -v "${golden_op}/tls/ca.crt:/run/arwc-tls/ca.crt:ro" \
+      "${CONTROL_BROKER_IMAGE:-cinder-arwc/a-control-broker:hand-build}"
+    echo "a-control-broker (control-broker.arwc.test at 10.77.60.57) started"
     ;;
   reset)
     [[ ${2-} == cinder-arwc-native ]] || {
