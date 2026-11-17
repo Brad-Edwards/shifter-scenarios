@@ -19616,7 +19616,7 @@
     "revision": "3fb0ceb048a65b13bbeb3a11889cdd0f8270459f5256d822cea3c1dab168512b",
     "schema": "cinder-typhoon.challenge-delivery/v2",
     "score_total": 39200,
-    "sha256": "240b3e580d82bf6603fc51ecf1d439203581d27f61f794d0bdaa49ab2f84b1a6"
+    "sha256": "352cfd17434bc0afd6873c9f7157fc3f2a7e97ac78e3b051a3ccf5f73c917589"
   },
   "read_only_review_source": {
     "path": "build/card-coverage/read-only-reviews.json",

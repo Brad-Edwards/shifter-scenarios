@@ -9,12 +9,15 @@ scoring:
     expert: 400
     elite: 800
   max_score: 39200
-  max_out: Complete all 240 cards; hints do not reduce score.
+  max_out: Complete all 240 cards without unlocking hints.
   hint_policy:
-    release: facilitator_on_request
+    release: participant_unlock
     levels: 3
     independent_levels: true
-    penalty: 0
+    penalty_percent:
+    - 10
+    - 20
+    - 30
 summary:
   operation_count: 70
   card_count: 240
@@ -42,7 +45,8 @@ phases:
         - Fetch the handover endpoint listed on the landing page. The response structure names the next
           resource you need.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T01.1
       - id: T01.2
         title: Off the menu
         description: The training dispatch site removed its rehearsal page from the menu. Find the page
@@ -57,7 +61,8 @@ phases:
         - Inspect the dispatch site's static resources for route strings that do not appear in the visible
           navigation. One of them still responds.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T01.2
       - id: T01.3
         title: A token with a job
         description: Recover the retired courier client's usable access and retrieve the sealed manifest
@@ -72,7 +77,8 @@ phases:
         - Check the local credential store for a token bound to the courier's service hostname. The handover
           names the host.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T01.3
       - id: T01.4
         title: The helper has another job
         description: Make the dispatch diagnostic helper reveal the internal delivery summary that its
@@ -87,7 +93,8 @@ phases:
         - Submit a sample from the handover to the helper using the input type the handover says the helper
           was built to process. Read the full response.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T01.4
     - id: T02
       chapter: Accounts
       title: Someone can log in
@@ -109,7 +116,8 @@ phases:
         - Query the identity desk's directory endpoint and look for the account whose role matches the
           one named in the handover.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T02.1
       - id: T02.2
         title: Hidden on the page
         description: The identity desk's public directory hides rehearsal assignments from visitors. Recover
@@ -124,7 +132,8 @@ phases:
         - Fetch the directory API endpoint directly and look for the rehearsal account that is absent
           from the rendered page.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T02.2
       - id: T02.3
         title: Recovery is another way in
         description: Use the identity evidence you recovered to take control of the rehearsal account
@@ -139,7 +148,8 @@ phases:
         - Use the recovery endpoint on the identity desk with the account identifier and the evidence
           token you recovered. Read what it issues.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T02.3
       - id: T02.4
         title: Someone else's assignment
         description: Your recovered account can list its own assignments. Obtain the other operator's
@@ -154,7 +164,8 @@ phases:
         - Query the assignment resource linked in your recovered session. One of the listed tasks belongs
           to a different account.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T02.4
     - id: T03
       chapter: Developer artifacts
       title: Left in the checkout
@@ -175,7 +186,8 @@ phases:
           from the working tree but not from the repository.
         - Use git log and git show to find the commit that removed the fixture file and recover its contents.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T03.1
       - id: T03.2
         title: Verbose enough to publish
         description: Recover the release access exposed by the failed training build and retrieve the
@@ -190,7 +202,8 @@ phases:
         - Fetch the log for the failed CI run referenced in the handover. A token that appears in the
           error output has a specific scope — read what resource it authorizes.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T03.2
       - id: T03.3
         title: What installation really runs
         description: Inspect the supplied training package without installing it. Recover the extra action
@@ -205,7 +218,8 @@ phases:
         - Unpack the package archive and read its package.json and main module. The exports tell you what
           the package produces when called.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T03.3
       - id: T03.4
         title: A release they will consume
         description: Deliver a compatible training formatter that adds Cinder's rehearsal marker to the
@@ -220,7 +234,8 @@ phases:
         - Publish a new package version that satisfies the interface contract and adds the extra field
           named in the handover. Then invoke the rehearsal endpoint with that version and the target tenant.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T03.4
     - id: T04
       chapter: State
       title: Trust the instrument
@@ -242,7 +257,8 @@ phases:
         - Read the observation record and the sensor spec. The field whose units match the spec's primary
           measurement is the authoritative value.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T04.1
       - id: T04.2
         title: The light behind the number
         description: Decode the supplied controller status capture and identify the condition preventing
@@ -256,7 +272,8 @@ phases:
         - Apply the byte layout from the handover's controller status spec to the capture bytes. The decoded
           field at the named offset gives the current mode identifier.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T04.2
       - id: T04.3
         title: A request is not a movement
         description: Move the specified bounded amount of water through the training outlet and verify
@@ -271,7 +288,8 @@ phases:
         - Construct a release command for the specified amount using the session credential and the request
           format in the handover. Submit it to the control endpoint and confirm the acceptance receipt.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T04.3
       - id: T04.4
         title: Yesterday's green light
         description: The training report says the latest outlet test succeeded, but the observations disagree.
@@ -287,7 +305,8 @@ phases:
         - Query the instrument record for the outlet named in the report. Compare its value for the test
           period with what the report claims.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: T04.4
     operation_count: 4
     card_count: 16
     score_total: 1000
@@ -314,7 +333,8 @@ phases:
         - Recover the saved Gitea identity, open the fieldkest/fieldlink-connector issue list, and correlate
           the handover issue's release and revision. Confirm that the same identity cannot push.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K01.1
       - id: K01.2
         title: The tab that survived
         description: The developer closed the support portal before leaving. Recover the unfinished ARWC
@@ -329,7 +349,8 @@ phases:
         - Search osTicket for the retained ticket number and read its actual thread. Correlate the customer,
           asset, connector revision, and callback-latency correspondence.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K01.2
       - id: K01.3
         title: Outside the working folder
         description: A release review is missing from the checkout. Find its staff work-board record and
@@ -344,7 +365,8 @@ phases:
         - Find release REL-FLK-7.4.2-09 in Kanboard, open its review attachment, and correlate the unresolved
           REV comments with the task reference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K01.3
       - id: K01.4
         title: Put it on the workbench
         description: The local FieldKest helper has an unfinished support-report job. Make it produce
@@ -360,7 +382,8 @@ phases:
         - Submit the documented FK-SAMPLE-017 file to the helper's inspection-summary form and retain
           the fresh receipt.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K01.4
     - id: K02
       chapter: Borrowed desk
       title: The first green report
@@ -383,7 +406,8 @@ phases:
         - Compare the revision in the failing-job note with the repository history, then inspect the change
           that removed the named fixture without restoring unrelated files.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K02.1
       - id: K02.2
         title: An input outside its lane
         description: The report build failed, but it retained a review note separate from the console
@@ -398,7 +422,8 @@ phases:
         - Compare the exact fixture path and revision in REVNOTE-1842 with the native source history and
           inspect the file parameter on fieldlink-report-review.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K02.2
       - id: K02.3
         title: Green, with our changes
         description: Change the report produced by the test job while keeping the interface its caller
@@ -414,7 +439,8 @@ phases:
         - Compare the native build artifacts with the support handover. The job ID and report digest must
           identify the same fresh output; a green status by itself is insufficient.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K02.3
     - id: K03
       chapter: Borrowed desk
       title: Quiet callback
@@ -436,7 +462,8 @@ phases:
         - Inspect `Attachments/staging-FKCOL-2841.bin` inside `field-notes-2026-08.odt`, then bind its
           digest to the collection identifier recorded in the stage header.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K03.1
       - id: K03.2
         title: The script inside the script
         description: The recovered staging material conceals another stage. Reconstruct the usable script
@@ -452,7 +479,8 @@ phases:
         - The JavaScript stage shows how its base64 bytes, repeating key, and zlib layer produce the collection
           manifest. Verify both script digests and recover every manifest field.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K03.2
       - id: K03.3
         title: Finish the callback
         description: Reconstruct the earlier operation's callback configuration and recover its lost collection.
@@ -470,7 +498,8 @@ phases:
           declared callback-integrity. Correlate the support ticket, asset, and connector revision, and
           confirm bucket enumeration is denied.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K03.3
     - id: K04
       chapter: Borrowed desk
       title: The native indexer
@@ -497,7 +526,8 @@ phases:
           produces a copy length that exceeds the body but stays within the arena, then verify the service
           records the controlled sentinel mutation while staying live.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K04.1
       - id: K04.2
         title: Read past the index
         description: Use the compromised indexing behavior to recover protected runtime information that
@@ -515,7 +545,8 @@ phases:
           It contains the worker_session, exception_state_offset, exception_value_size, exception_integrity_size,
           integrity_relation, and completion_route for K04.3 and K04.4.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K04.2
       - id: K04.3
         title: Control the allocation
         description: The indexer still restricts what your corrupted object can influence. Establish a
@@ -534,7 +565,8 @@ phases:
           b"queue-ready") at bytes 544-575. The response contains write_ready=true when the write passes
           all checks.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K04.3
       - id: K04.4
         title: The exception queue
         description: Turn the indexer compromise into execution under its service identity. Recover the
@@ -552,7 +584,8 @@ phases:
           = SHA256(derived_key + struct.pack(">I", i)); XOR each ciphertext byte with the corresponding
           keystream byte. The plaintext is a JSON object with service_identity and dossier.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K04.4
     - id: K05
       chapter: Package line
       title: What the customer installs
@@ -576,7 +609,8 @@ phases:
           (7.4.2), consumer_revision, package_sha256, the original request, and the actual installed module
           output.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K05.1
       - id: K05.2
         title: The version they kept
         description: Recover the older connector release named in the support ticket. Establish how its
@@ -594,7 +628,8 @@ phases:
           a maintenance_note, and a compatibility block for the retained entitlement investigation. Correlate
           the version and package name across the Verdaccio metadata and the release record.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K05.2
       - id: K05.3
         title: Two manifests disagree
         description: The release manifest and customer selection record disagree. Reconcile them against
@@ -614,7 +649,8 @@ phases:
           Verdaccio (use the dist.tarball URL in the 7.4.1 version object) and compute its SHA256. This
           binds the archive digest to the disagreeing version in the reconcile comparison.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K05.3
       - id: K05.4
         title: Selection has consequences
         description: Prove which dependency npm actually selects for the declared range and what the real
@@ -632,7 +668,8 @@ phases:
           from the Verdaccio tarball. The result object also includes connector_version=7.4.2 from the
           installed module, confirming the actual dependency that ran rather than the release label.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K05.4
     - id: K06
       chapter: Package line
       title: House package
@@ -657,7 +694,8 @@ phases:
           metadata and tarballs, but 403 for @keplerops/support-rehearsal and 403 for the release-administration
           session route. These are the outer bounds of the publisher account.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K06.1
       - id: K06.2
         title: A private package in the wrong view
         description: Your publishing account cannot read the private support package. Investigate the
@@ -675,7 +713,8 @@ phases:
           Then verify the boundary: a PUT to @keplerops/fieldlink-connector with CI credentials is denied
           (403); the publisher from K06.1 is still denied on support-rehearsal (403).'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K06.2
       - id: K06.3
         title: The rehearsal consumer
         description: Publish a compatible connector package under the authority you recovered, then make
@@ -695,7 +734,8 @@ phases:
           Verify that tenant_id, asset_id, and schema are preserved. The publisher still has no release-admin
           authority.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K06.3
     - id: K07
       chapter: Package line
       title: One request too many
@@ -723,7 +763,8 @@ phases:
           is the K07.2 smuggling target. The compatibility_envelope_sha256 binds the inspection to the
           K07.2 envelope.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K07.1
       - id: K07.2
         title: One request becomes another
         description: Construct input that causes the inspection components to disagree about the request
@@ -745,7 +786,8 @@ phases:
           assessor''s buffered privileged response instead of the expected assessment: assessment=privileged-access-confirmed
           in the result.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K07.2
       - id: K07.3
         title: The protected inspection
         description: Use the framing capability to perform the inspector's protected package action and
@@ -765,7 +807,8 @@ phases:
           @keplerops/support-rehearsal package data. Both the K07.1 trace and the protected assessment
           are the correlated audit evidence for K07.3 completion.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K07.3
     - id: K08
       chapter: Package line
       title: Four keys, one entitlement
@@ -791,7 +834,8 @@ phases:
           the context from the release record. The checker decrypts using HKDF-SHA256 + AES-256-GCM and
           returns customer_id, feature_id, package_revision, expiry_policy, revision, and state=baseline-valid.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K08.1
       - id: K08.2
         title: The missing encryption context
         description: Recover the cryptographic context needed to reproduce the legacy entitlement check
@@ -810,7 +854,8 @@ phases:
           at revision=4. The expiry_policy field in the v2 record is the missing context — it was added
           to the record schema in v2 to allow context-binding derivation.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K08.2
       - id: K08.3
         title: An entitlement of our choosing
         description: Create an alternative entitlement the legacy checker accepts while preserving the
@@ -830,7 +875,8 @@ phases:
           422. The correct alternate entitlement returns state=legacy-test-accepted with the participant's
           chosen revision.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K08.3
     - id: K09
       chapter: Build and preview
       title: Runner diary
@@ -855,7 +901,8 @@ phases:
           and a baseline field with a dossier reference (repository, ref, path). These are the log digest
           binding and dossier ID for K09.1 completion.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K09.1
       - id: K09.2
         title: The artifact without a link
         description: A completed job recorded an artifact that the current results page does not list.
@@ -874,7 +921,8 @@ phases:
           The result has artifact_id=ART-BLD-1842-INTEGRATION-REVIEW, build_revision, object_version=3,
           and linked_support_ref. Wrong run IDs (BLD-9999) return 404.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K09.2
       - id: K09.3
         title: A job input with reach
         description: Make the test job consume a support input outside the collection its ordinary form
@@ -893,7 +941,8 @@ phases:
           integration reference). This is the K09.4 input. Ordinary inputs (diagnostic_eligible=false)
           return a different support_input and cannot access the integration diagnostic context.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K09.3
       - id: K09.4
         title: Run in the runner
         description: Use the review job to retrieve Build Operations' private runner note and verify the
@@ -910,7 +959,8 @@ phases:
           run_ids and the build-records audit record (binding the worker lease, principal, and network
           origin) are the K09.4 completion evidence.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K09.4
     - id: K10
       chapter: Build and preview
       title: Preview belongs to whom
@@ -934,7 +984,8 @@ phases:
           The service returns maya.ranscombe's case association (CAS-MAYA-2841, same document_id) without
           checking ownership. This is the K10.1 vulnerability.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K10.1
       - id: K10.2
         title: Two inputs, one identity
         description: Find distinct preview inputs that the viewer treats as the same protected document
@@ -952,7 +1003,8 @@ phases:
           Both return document_id= DOC-9BC054D6F95DFA6A (same as K10.1 associations). A different path
           returns a different id.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K10.2
       - id: K10.3
         title: The other document's contents
         description: Deliver a crafted support document that crosses the viewer's intended isolation boundary
@@ -971,7 +1023,8 @@ phases:
           protected_case_id=CAS-MAYA-2841, owner=maya.ranscombe, and render_digest. The preview-ssrf-access
           and protected-content-reads audit records confirm the boundary crossing.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K10.3
     - id: K11
       chapter: Build and preview
       title: The compiler knows
@@ -1000,7 +1053,8 @@ phases:
           with operation=corpus-check and policy_input={"corpus_id":"POLICY-CORPUS-2026-09-R4"}. The service
           returns a PCMIG receipt with program_sha256, corpus_result_sha256, and condition_set_sha256.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K11.1
       - id: K11.2
         title: Learn its instructions
         description: Reconstruct enough of the compiler's internal instruction behavior to reproduce the
@@ -1023,7 +1077,8 @@ phases:
           fails at least one case (fragment_case_mismatch). All four PCMIG receipts are the K11.2 completion
           evidence.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K11.2
       - id: K11.3
         title: The rule behind the rule
         description: Recover the complete acceptance conditions enforced by the embedded policy program.
@@ -1044,7 +1099,8 @@ phases:
           Any wrong value or operator → condition_set_mismatch. The PCMIG receipt includes condition_set_sha256
           and corpus_result_sha256. Keep both for K11.4.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K11.3
       - id: K11.4
         title: An input the compiler believes
         description: Construct a package-policy input that satisfies the recovered program while authorizing
@@ -1065,7 +1121,8 @@ phases:
           binary_sha256, condition_set_sha256, and evaluated_fields. A replay of the same nonce returns
           stale_or_replayed_nonce. The PCACC receipt is the K11 completion evidence.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K11.4
     - id: K12
       chapter: Build and preview
       title: Approved in the browser
@@ -1093,7 +1150,8 @@ phases:
           source_id=twin, original_owner=maya.ranscombe. That persisted record is the K12.1 evidence.
           The action_nonce is input to K12.2.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K12.1
       - id: K12.2
         title: A value across the action boundary
         description: Recover the protected browser value required for a privileged preview action and
@@ -1113,7 +1171,8 @@ phases:
           with body {}. Developer credential is rejected. Correct nonce transitions review to prepared
           and returns {"prepared":true}. Replay returns 403. review-preparations audit confirms the evidence.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K12.2
       - id: K12.3
         title: The worker changes sides
         description: Take control of the preview worker's contribution to the support review while preserving
@@ -1132,7 +1191,8 @@ phases:
           and renderer_identity=svc-preview-reviewer. The participant never holds the worker's credential.
           The render_digest is input to K12.4.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K12.3
       - id: K12.4
         title: The preview is ours
         description: Complete the chain into the constrained renderer and make the support engineer's
@@ -1152,7 +1212,8 @@ phases:
           (real PDF). These prove the participant controlled the support engineer''s release preview through
           the full K12 chain without holding any worker credential.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K12.4
     - id: K13
       chapter: Cloud workspace
       title: Cloud notebook
@@ -1176,7 +1237,8 @@ phases:
         - The notebook content reveals job reference SCHED-2841 and export EXP-2841. These are the K13.2
           and K13.3 starting points. The object ETag is the version digest.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K13.1
       - id: K13.2
         title: Before the correction
         description: The current cloud notebook has had its useful customer note removed. Recover the
@@ -1194,7 +1256,8 @@ phases:
         - The prior version customer_note contains TEN-ARWC-019 cedar run customer reference. Extract
           TEN-ARWC-019 as the legacy tenant ID for K29/K30 context. The version ID and ETag bind the evidence.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K13.2
       - id: K13.3
         title: The export next door
         description: Find the separate support export mentioned in the workspace notes and recover its
@@ -1211,7 +1274,8 @@ phases:
         - The handover content reveals export_id=EXP-2841, job=SCHED-2841, owner=maya.ranscombe. These
           are the K15 starting leads. The export_id and job bind the support export to the case.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K13.3
       - id: K13.4
         title: What the workload can do
         description: Establish the limited workload identity available from this workspace and recover
@@ -1229,7 +1293,8 @@ phases:
           Join the independent records on their stable identifiers and revisions, then explain any mismatch
           before acting on it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K13.4
     - id: K14
       chapter: Cloud workspace
       title: The wrong audience
@@ -1252,7 +1317,8 @@ phases:
         - Locate the trust record operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K14.1
       - id: K14.2
         title: Intended for someone else
         description: Use the workload trust relationship to establish the scoped role intended for another
@@ -1270,7 +1336,8 @@ phases:
           through the next documented boundary and verify the downstream service, not the client, records
           the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K14.2
       - id: K14.3
         title: The export's separate rule
         description: The new role is still denied the support export. Cross the export's own resource
@@ -1288,7 +1355,8 @@ phases:
           result and a denied variant, alter one dimension, and keep the service-owned evidence needed
           to explain the difference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K14.3
     - id: K15
       chapter: Cloud workspace
       title: Support has an export
@@ -1312,7 +1380,8 @@ phases:
         - Locate the export operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K15.1
       - id: K15.2
         title: A job outside your account
         description: Obtain the restricted export definition for the customer's job even though your identity
@@ -1329,7 +1398,8 @@ phases:
         - Locate the schedule operation in the published client reference. Join the independent records
           on their stable identifiers and revisions, then explain any mismatch before acting on it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K15.2
       - id: K15.3
         title: Change the handover point
         description: Use the available delegated job rights to redirect the export handover while keeping
@@ -1347,7 +1417,8 @@ phases:
           evidence through the next documented boundary and verify the downstream service, not the client,
           records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K15.3
       - id: K15.4
         title: The right customer's collection
         description: Recover the ARWC collection from the handed-over export material. Resolve its partition
@@ -1364,7 +1435,8 @@ phases:
         - Locate the export runs operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K15.4
     - id: K16
       chapter: Cloud workspace
       title: The job that survives
@@ -1389,7 +1461,8 @@ phases:
           one ordinary response and one denial, then correlate the returned identifiers with evidence
           already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K16.1
       - id: K16.2
         title: The next startup
         description: Change the scheduled workflow's startup behavior so its next rehearsal run carries
@@ -1407,7 +1480,8 @@ phases:
           the current revision, submit one minimal variation, and compare the resulting audit and unaffected
           fields with the baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K16.2
       - id: K16.3
         title: Beyond the current session
         description: Establish the separate execution context needed for the scheduled task to act after
@@ -1424,7 +1498,8 @@ phases:
           the independent records on their stable identifiers and revisions, then explain any mismatch
           before acting on it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K16.3
       - id: K16.4
         title: Still there after the handover
         description: Carry the altered workflow through the supplied shift transition and make it run
@@ -1442,7 +1517,8 @@ phases:
           the preceding evidence through the next documented boundary and verify the downstream service,
           not the client, records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K16.4
     - id: K30
       chapter: Cloud workspace
       title: The database you cannot reach
@@ -1465,7 +1541,8 @@ phases:
         - Locate the build record operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K30.1
       - id: K30.2
         title: The database you cannot reach
         description: Recover the protected historical records using the authority you have over their
@@ -1481,7 +1558,8 @@ phases:
         - Locate the backup operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K30.2
       - id: K30.3
         title: Before ARWC changed its name
         description: Identify ARWC's correct migration record within the recovered history and connect
@@ -1498,7 +1576,8 @@ phases:
           independent records on their stable identifiers and revisions, then explain any mismatch before
           acting on it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K30.3
     - id: K31
       chapter: Cloud workspace
       title: The maintenance label
@@ -1522,7 +1601,8 @@ phases:
         - Locate the maintenance and policy operation in the published client reference. Capture one ordinary
           response and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K31.1
       - id: K31.2
         title: A different identity at runtime
         description: Obtain the workload's separate runtime capability through a change you are permitted
@@ -1540,7 +1620,8 @@ phases:
           records on their stable identifiers and revisions, then explain any mismatch before acting on
           it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K31.2
       - id: K31.3
         title: The maintenance label
         description: Use the earned runtime capability and maintenance classification relationship to
@@ -1558,7 +1639,8 @@ phases:
           through the next documented boundary and verify the downstream service, not the client, records
           the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K31.3
     - id: K17
       chapter: People and authority
       title: Support session
@@ -1583,7 +1665,8 @@ phases:
           one ordinary response and one denial, then correlate the returned identifiers with evidence
           already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K17.1
       - id: K17.2
         title: A different way to recover
         description: The support account's recovery process exposes a separate opportunity. Establish
@@ -1601,7 +1684,8 @@ phases:
           Record the normal result and a denied variant, alter one dimension, and keep the service-owned
           evidence needed to explain the difference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K17.2
       - id: K17.3
         title: Which customers belong here
         description: Recover the support identity's private customer-assignment record and the unresolved
@@ -1618,7 +1702,8 @@ phases:
         - Locate the assignment and session operation in the published client reference. Capture one ordinary
           response and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K17.3
       - id: K17.4
         title: A delegated support action
         description: The ARWC case is assigned to the support engineer. Make the delegation workflow route
@@ -1637,7 +1722,8 @@ phases:
           and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
           the difference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K17.4
     - id: K18
       chapter: People and authority
       title: Federated notes
@@ -1662,7 +1748,8 @@ phases:
         - Locate the note operation in the published client reference. Capture one ordinary response and
           one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K18.1
       - id: K18.2
         title: A note with someone else's authority
         description: Make the privileged note reviewer open the identity-provider administration view
@@ -1680,7 +1767,8 @@ phases:
           current revision, submit one minimal variation, and compare the resulting audit and unaffected
           fields with the baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K18.2
       - id: K18.3
         title: The provider trusts our change
         description: Change the federation policy for the support application's identity-provider registration
@@ -1698,7 +1786,8 @@ phases:
           submit one minimal variation, and compare the resulting audit and unaffected fields with the
           baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K18.3
       - id: K18.4
         title: The query behind the identity
         description: Use the changed trust relationship to recover the backend customer record withheld
@@ -1716,7 +1805,8 @@ phases:
           evidence through the next documented boundary and verify the downstream service, not the client,
           records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K18.4
     - id: K19
       chapter: People and authority
       title: Borrowed colleague
@@ -1741,7 +1831,8 @@ phases:
         - Locate the requests and template operation in the published client reference. Capture one ordinary
           response and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K19.1
       - id: K19.2
         title: Borrowed colleague
         description: Establish a usable colleague identity across the staff certificate boundary and retrieve
@@ -1758,7 +1849,8 @@ phases:
         - Locate the archive operation in the published client reference. Join the independent records
           on their stable identifiers and revisions, then explain any mismatch before acting on it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K19.2
       - id: K19.3
         title: The archive delegates
         description: Use the colleague's archive workflow to establish the delegated authentication context
@@ -1776,7 +1868,8 @@ phases:
           through the next documented boundary and verify the downstream service, not the client, records
           the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K19.3
     - id: K20
       chapter: People and authority
       title: The service wears a person
@@ -1802,7 +1895,8 @@ phases:
           and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
           the difference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K20.1
       - id: K20.2
         title: The managed identity
         description: Obtain the managed service capability needed by release administration despite the
@@ -1820,7 +1914,8 @@ phases:
           records on their stable identifiers and revisions, then explain any mismatch before acting on
           it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K20.2
       - id: K20.3
         title: The service wears a person
         description: Make release administration accept a publication-approval action as its privileged
@@ -1838,7 +1933,8 @@ phases:
           the current revision, submit one minimal variation, and compare the resulting audit and unaffected
           fields with the baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K20.3
     - id: K21
       chapter: Assistant desk
       title: Policy in the margins
@@ -1862,7 +1958,8 @@ phases:
         - Locate the config operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K21.1
       - id: K21.2
         title: A conversation kept too long
         description: Recover the separately retained support conversation and the unpublished case detail
@@ -1879,7 +1976,8 @@ phases:
         - Locate the conversation operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K21.2
       - id: K21.3
         title: The answer it should withhold
         description: Recover the support engineer's private escalation note about ARWC from the assistant's
@@ -1896,7 +1994,8 @@ phases:
         - Locate the answers operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K21.3
     - id: K22
       chapter: Assistant desk
       title: Helpful attachment
@@ -1919,7 +2018,8 @@ phases:
         - Locate the selection operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K22.1
       - id: K22.2
         title: Instructions in the attachment
         description: Make the support assistant recommend keeping the obsolete diagnostic bundle for the
@@ -1935,7 +2035,8 @@ phases:
         - Ask the same support question with and without the selected attachment, compare the cited sources,
           and determine which attachment instruction changes only the bundle recommendation.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K22.2
       - id: K22.3
         title: An answer becomes an action
         description: Make the assistant mark the duplicate diagnostic review as accepted even though its
@@ -1952,7 +2053,8 @@ phases:
           the service records an approval action for the exact duplicate review and leaves unrelated reviews
           unchanged.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K22.3
     - id: K23
       chapter: Assistant desk
       title: The missing tenant filter
@@ -1976,7 +2078,8 @@ phases:
         - Locate the contexts operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K23.1
       - id: K23.2
         title: The conversation reference
         description: A retained support artifact refers to a conversation outside the current case. Recover
@@ -1994,7 +2097,8 @@ phases:
           and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
           the difference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K23.2
       - id: K23.3
         title: A missing tenant boundary
         description: Use the exposed context and conversation evidence to recover the another customer's
@@ -2012,7 +2116,8 @@ phases:
           through the next documented boundary and verify the downstream service, not the client, records
           the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K23.3
     - id: K24
       chapter: Assistant desk
       title: Complete and run
@@ -2036,7 +2141,8 @@ phases:
         - Locate the completion example operation in the published client reference. Capture one ordinary
           response and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K24.1
       - id: K24.2
         title: Context with a credential
         description: Obtain the scoped completion credential from context outside the feature's intended
@@ -2054,7 +2160,8 @@ phases:
           records on their stable identifiers and revisions, then explain any mismatch before acting on
           it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K24.2
       - id: K24.3
         title: The completion runs
         description: Make the completion application retrieve the internal support-job handover under
@@ -2073,7 +2180,8 @@ phases:
           the current revision, submit one minimal variation, and compare the resulting audit and unaffected
           fields with the baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K24.3
     - id: K25
       chapter: Customer delivery
       title: ARWC is a real customer
@@ -2098,7 +2206,8 @@ phases:
           with the recurring maintenance ticket, and record the dossier revision before reconciling any
           integration.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K25.1
       - id: K25.2
         title: Which ARWC is current
         description: KeplerOps retains more than one ARWC integration record. Establish the active tenant
@@ -2116,7 +2225,8 @@ phases:
           normal result and a denied variant, alter one dimension, and keep the service-owned evidence
           needed to explain the difference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K25.2
     - id: K26
       chapter: Customer delivery
       title: Customer accepted
@@ -2139,7 +2249,8 @@ phases:
           exercise a known rejection, and use the difference to test a candidate that still requires service
           validation.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K26.1
       - id: K26.2
         title: Customer accepted
         description: Make the active ARWC connector select and run your published package. Demonstrate
@@ -2156,7 +2267,8 @@ phases:
           submit one minimal variation, and compare the resulting audit and unaffected fields with the
           baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K26.2
       - id: K26.3
         title: The release they can roll back to
         description: Establish a separate retained delivery option through the customer's rollback workflow,
@@ -2172,7 +2284,8 @@ phases:
         - Locate the rollback operation in the published client reference. Join the independent records
           on their stable identifiers and revisions, then explain any mismatch before acting on it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K26.3
     - id: K27
       chapter: Customer delivery
       title: Diagnostic delivery
@@ -2196,7 +2309,8 @@ phases:
           and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
           the difference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K27.1
       - id: K27.2
         title: Our diagnostic, their interface
         description: Alter the diagnostic package while preserving the interface the ARWC connector expects.
@@ -2214,7 +2328,8 @@ phases:
           revision, submit one minimal variation, and compare the resulting audit and unaffected fields
           with the baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K27.2
       - id: K27.3
         title: The other side of support
         description: Deliver the changed diagnostic through the support workflow and demonstrate its execution
@@ -2232,7 +2347,8 @@ phases:
           evidence through the next documented boundary and verify the downstream service, not the client,
           records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K27.3
     - id: K28
       chapter: Customer delivery
       title: The release has a second life
@@ -2257,7 +2373,8 @@ phases:
           it names. Join the independent records on their stable identifiers and revisions, then explain
           any mismatch before acting on it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K28.1
       - id: K28.2
         title: What the loader changes
         description: Reconstruct the connector's hidden loaded behavior well enough to reproduce its diagnostic
@@ -2275,7 +2392,8 @@ phases:
           diagnostic configuration, then reproduce only the transformation shared by every supplied reference
           case.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K28.2
       - id: K28.3
         title: The path that appears at runtime
         description: Recover the hidden diagnostic path and the retained engineering note reachable through
@@ -2293,7 +2411,8 @@ phases:
           and verify the engineering note comes from that loaded branch rather than an ordinary connector
           response.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K28.3
     - id: K29
       chapter: Customer delivery
       title: The next release is ours
@@ -2319,7 +2438,8 @@ phases:
           one ordinary response and one denial, then correlate the returned identifiers with evidence
           already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K29.1
       - id: K29.2
         title: The signer in the history
         description: Recover usable signing authority for the accepted release lineage from the protected
@@ -2337,7 +2457,8 @@ phases:
           ordinary response and one denial, then correlate the returned identifiers with evidence already
           earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K29.2
       - id: K29.3
         title: Signed, compatible, consumed
         description: Deliver one signed support release that carries Cinder's change for ARWC while preserving
@@ -2356,7 +2477,8 @@ phases:
           the preceding evidence through the next documented boundary and verify the downstream service,
           not the client, records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K29.3
       - id: K29.4
         title: After the old key expires
         description: Carry your delivery capability through the disclosed release-credential rollover.
@@ -2374,7 +2496,8 @@ phases:
           evidence through the next documented boundary and verify the downstream service, not the client,
           records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: K29.4
     operation_count: 31
     card_count: 104
     score_total: 16750
@@ -2402,7 +2525,8 @@ phases:
         - Read the retained handover through its published client route and compare its business identifiers
           with the accepted delivery record.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W01.1
       - id: W01.2
         title: The planner's unfinished handover
         description: Find the planning handover retained with the supplier documents. Identify the outstanding
@@ -2417,7 +2541,8 @@ phases:
         - Open the planning handover in Nextcloud and retain its current file identity, revision and outstanding
           inspection details.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W01.2
       - id: W01.3
         title: How the company buys time
         description: Determine how ARWC handles a dry-period shortfall and which purchasing records govern
@@ -2432,7 +2557,8 @@ phases:
         - Read the continuity purchasing note and identify the stated measures and reservation condition
           without borrowing authority from another supplier.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W01.3
       - id: W01.4
         title: Change the corporate record
         description: Correct the supplier handback for the pending Cairn Reach inspection and record that
@@ -2447,7 +2573,8 @@ phases:
         - Reconcile the case, project and inspection first, make only the requested task change through
           ERPNext, then inspect its native version history.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W01.4
     - id: W02
       chapter: Corporate arrival
       title: Names do not match
@@ -2468,7 +2595,8 @@ phases:
         - Open the permitted order and record its native identity, supplier and maintenance asset from
           the order itself.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W02.1
       - id: W02.2
         title: Three names for one job
         description: Reconcile the internal work order, supplier job and engineering drawing that refer
@@ -2483,7 +2611,8 @@ phases:
         - Compare the ERPNext project and order with the annex and native document register; retain a
           source identity for each side of the join.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W02.2
       - id: W02.3
         title: The record behind the wrong association
         description: Find the engineering inspection record exposed through the supplier job association
@@ -2498,7 +2627,8 @@ phases:
         - Read the associated inspection record, inspect its actual sharing scope and establish the denied
           neighboring record and write boundary.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W02.3
     - id: W03
       chapter: Corporate arrival
       title: The work-order annex
@@ -2520,7 +2650,8 @@ phases:
         - Open the supplier document register, follow it to the native private annex, and retain its file
           identity and content hash alongside the actual order reference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W03.1
       - id: W03.2
         title: A reference outside the order
         description: Reconcile the annex revision history with the engineering document that reached the
@@ -2535,7 +2666,8 @@ phases:
         - Download the previous annex version, compare its recipient with the current account and incoming
           share, then establish the separately shared engineering file and denied parent.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W03.2
       - id: W03.3
         title: The integration's read contract
         description: Establish what the approved planning read service actually publishes and what remains
@@ -2550,7 +2682,8 @@ phases:
         - Use the native schema document and a scoped read to establish the active record, then verify
           that an unpublished base relation and a write remain denied.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W03.3
     - id: W04
       chapter: Corporate arrival
       title: Archive hatch
@@ -2575,7 +2708,8 @@ phases:
         - Locate the contract operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W04.1
       - id: W04.2
         title: The query behind the identity
         description: Cross the archive's identity-to-query boundary and recover the protected archive
@@ -2593,7 +2727,8 @@ phases:
           evidence through the next documented boundary and verify the downstream service, not the client,
           records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W04.2
       - id: W04.3
         title: The archive helper acts
         description: Compose the earned archive access into execution under the archive helper's actual
@@ -2611,7 +2746,8 @@ phases:
           receipt with an ordinary member, and retain the handover only if the helper records the protected
           read.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W04.3
     - id: W05
       chapter: Corporate trust
       title: The temporary employee
@@ -2633,7 +2769,8 @@ phases:
         - Read the employee starting document and retain its employee, account and assignment references
           with the native file identity.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W05.1
       - id: W05.2
         title: The activation roster
         description: Find Mira Vale in the activation roster and establish the native identity and assignment
@@ -2648,7 +2785,8 @@ phases:
         - Find the temporary employee in the activation export and compare its enabled state, assignment
           and native identity with the starting arrangements.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W05.2
       - id: W05.3
         title: Temporary, with the wrong rights
         description: Complete the temporary employee's first sign-in and establish the directory authority
@@ -2663,7 +2801,8 @@ phases:
         - Use the native identity console and documented administration interface to establish permitted
           directory reads and denied management actions under that same limited employee identity.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W05.3
     - id: W06
       chapter: Corporate trust
       title: Someone else's browser
@@ -2688,7 +2827,8 @@ phases:
         - Locate the session audit operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W06.1
       - id: W06.2
         title: A drawing in the wrong context
         description: Make the planner's privileged browser attach Cinder's controlled preview to the inspection's
@@ -2706,7 +2846,8 @@ phases:
           submit one minimal variation, and compare the resulting audit and unaffected fields with the
           baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W06.2
       - id: W06.3
         title: A planner session that works
         description: Convert the browser capability into usable planner authority over the protected application
@@ -2724,7 +2865,8 @@ phases:
           a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
           the difference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W06.3
     - id: W07
       chapter: Corporate trust
       title: The read-only query
@@ -2750,7 +2892,8 @@ phases:
         - Locate the saved query operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W07.1
       - id: W07.2
         title: Read beyond the allowed statement
         description: Recover the restricted district-allocation adjustment ledger through the planner's
@@ -2767,7 +2910,8 @@ phases:
         - Locate the query run operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W07.2
       - id: W07.3
         title: The database does more than read
         description: Make the database service execute a job that produces a copy of its protected reconciliation
@@ -2785,7 +2929,8 @@ phases:
           submit one minimal variation, and compare the resulting audit and unaffected fields with the
           baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W07.3
     - id: W08
       chapter: Corporate trust
       title: A contractor left something
@@ -2809,7 +2954,8 @@ phases:
         - Locate the bundle operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W08.1
       - id: W08.2
         title: Reassemble the exchange
         description: Reconstruct the script's retained message exchange and recover the missing instructions
@@ -2827,7 +2973,8 @@ phases:
           the supplied cases into a small local reproducer and do not use its result until every reference
           case matches.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W08.2
       - id: W08.3
         title: The collector inside the handover
         description: Recover the compiled collector carried by the reconstructed exchange and establish
@@ -2845,7 +2992,8 @@ phases:
           one ordinary response and one denial, then correlate the returned identifiers with evidence
           already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W08.3
       - id: W08.4
         title: Where the contractor put it
         description: Recover the collector's protected configuration and the historical archive reference
@@ -2862,7 +3010,8 @@ phases:
         - Locate the artifact operation in the published client reference. Capture one ordinary response
           and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W08.4
     - id: W09
       chapter: Water on paper
       title: The missing megalitre
@@ -2886,7 +3035,8 @@ phases:
         - Locate the allocation ledger operation in the published client reference. Capture one ordinary
           response and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W09.1
       - id: W09.2
         title: The meter's own account
         description: Recover the separate meter export for the same planning period, including the identifiers
@@ -2903,7 +3053,8 @@ phases:
         - Locate the meter allocation operation in the published client reference. Capture one ordinary
           response and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W09.2
       - id: W09.3
         title: The missing megalitre
         description: Reconcile the allocation ledger and meter export. Establish the actual reserve discrepancy
@@ -2921,7 +3072,8 @@ phases:
           records on their stable identifiers and revisions, then explain any mismatch before acting on
           it.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W09.3
       - id: W09.4
         title: From the report to the live feed
         description: Combine the customer data you understand with the recovered read-integration contract.
@@ -2939,7 +3091,8 @@ phases:
           Replay the preceding evidence through the next documented boundary and verify the downstream
           service, not the client, records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W09.4
     - id: W10
       chapter: Water on paper
       title: Another district's answer
@@ -2962,7 +3115,8 @@ phases:
         - Locate the report sources operation in the published client reference. Capture one ordinary
           response and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W10.1
       - id: W10.2
         title: Another district in the results
         description: Recover the restricted planning excerpt from another district through the report
@@ -2979,7 +3133,8 @@ phases:
         - Locate the report row external operation in the published client reference. Capture one ordinary
           response and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W10.2
       - id: W10.3
         title: The document behind the answer
         description: Cross the linked-document service's separate access boundary and recover the full
@@ -2997,7 +3152,8 @@ phases:
           evidence through the next documented boundary and verify the downstream service, not the client,
           records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W10.3
     - id: W11
       chapter: Water on paper
       title: Records behind the graph
@@ -3022,7 +3178,8 @@ phases:
         - Locate the relation schema operation in the published client reference. Capture one ordinary
           response and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W11.1
       - id: W11.2
         title: An exchange the backend accepts
         description: Construct an accepted exchange with the protected backend and recover the designated
@@ -3040,7 +3197,8 @@ phases:
           constraints, exercise a known rejection, and use the difference to test a candidate that still
           requires service validation.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W11.2
       - id: W11.3
         title: The asset's true lineage
         description: Use the earned exchange capability to recover the current asset lineage behind the
@@ -3058,7 +3216,8 @@ phases:
           through the next documented boundary and verify the downstream service, not the client, records
           the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W11.3
     - id: W12
       chapter: Water on paper
       title: Cold archive
@@ -3083,7 +3242,8 @@ phases:
           via the Gitea API contents endpoint. Verify its SHA256 and submit it to archive.collector-recovery
           to earn the completion audit.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W12.1
       - id: W12.2
         title: How the collection was protected
         description: Reconstruct the collector's cryptographic behavior well enough to reproduce its handling
@@ -3102,7 +3262,8 @@ phases:
           Every sample must match exactly. The returned PROTECTION record names the derivation scheme
           needed for W12.3.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W12.2
       - id: W12.3
         title: The cold archive opens
         description: Recover the protected archive and the maintenance history it contains.
@@ -3119,7 +3280,8 @@ phases:
           The service validates both and returns the ARC-COLD-CRR-2019 record naming the 37 maintenance
           records, COLLECT-2019-12, and rollover IDREL-COL-R4.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W12.3
       - id: W12.4
         title: A collection path still alive
         description: Reconstruct the surviving collection relationship and obtain the current protected
@@ -3137,7 +3299,8 @@ phases:
           at revision 11 to retrieve the current protected data for AST-CRR-017. Session expires in 10
           minutes; a second exchange while it is active returns 409.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W12.4
     - id: W35
       chapter: Water on paper
       title: The wrong bill
@@ -3161,7 +3324,8 @@ phases:
         - Locate the procurement quote operation in the published client reference. Capture one ordinary
           response and one denial, then correlate the returned identifiers with evidence already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W35.1
       - id: W35.2
         title: A quote outside your district
         description: Recover the restricted district quote that your corporate context is not authorized
@@ -3179,7 +3343,8 @@ phases:
           ordinary response and one denial, then correlate the returned identifiers with evidence already
           earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W35.2
       - id: W35.3
         title: The wrong bill
         description: Make the replacement-supply workflow issue the recovered quote's order against the
@@ -3196,7 +3361,8 @@ phases:
         - Locate the invoice operation in the published client reference. Read the current revision, submit
           one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W35.3
     - id: W13
       chapter: Maintenance
       title: Window on Thursday
@@ -3219,7 +3385,8 @@ phases:
           and Thursday 09:00-11:00. Record all fields — appointment_id, inspection, asset, and window
           are needed for W13.2 and later cards.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W13.1
       - id: W13.2
         title: Who is expected at the gate
         description: Recover the separate access roster for the inspection crew and identify the relevant
@@ -3236,7 +3403,8 @@ phases:
         - The roster gives you identity=veybridge.tech.204 and assignment=CTR-VEY-204. These differ from
           the appointment's attendee field. They are needed to construct the correct check-in in W13.3.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W13.2
       - id: W13.3
         title: An appointment we do not own
         description: Replace the registered attendee on the outlet-inspection appointment with the contractor
@@ -3253,7 +3421,8 @@ phases:
         - 'After the update: attendee=veybridge.tech.204 and owner_organization=Northbank Civil Inspections
           is unchanged. Inspection, asset, and window are immutable. Record the updated revision for W13.4.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W13.3
       - id: W13.4
         title: Checked in as the contractor
         description: Cross the check-in service's separate identity boundary and establish the contractor
@@ -3271,7 +3440,8 @@ phases:
           for the inspection. The contractor session scope is field-work:read. Record the contractor_session
           token for downstream use in W14+.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W13.4
     - id: W14
       chapter: Maintenance
       title: The field bag
@@ -3294,7 +3464,8 @@ phases:
           from the current endpoint (process-read.arwc.test). Record both — W14.2 and W14.3 need the manifest
           to identify which endpoint carries current data.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W14.1
       - id: W14.2
         title: The service that replaced it
         description: Distinguish the obsolete field-service reference from the active process-data service
@@ -3311,7 +3482,8 @@ phases:
         - The active service uses process-read/v2 with CBOR encoding and inspection-scoped authentication
           at revision 21. Record all three — they are required to build the correct read request in W14.3.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W14.2
       - id: W14.3
         title: A fresh reading from the field
         description: Adapt the contractor's retained field client to the current read interface. Recover
@@ -3329,7 +3501,8 @@ phases:
           for OG-CRR-02. These are real readings from the OT operating-history service. Record the result
           for downstream use in the W14.READ arc.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W14.3
     - id: W15
       chapter: Maintenance
       title: The cached drawing
@@ -3354,7 +3527,8 @@ phases:
           to reviewer queue REV-CRR-4417 at drawings.arwc.test. Record all fields — the drawing identity,
           revision, and queue are needed for W15.2 and later cards.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W15.1
       - id: W15.2
         title: A drawing of our choosing
         description: Make the maintenance viewer serve your controlled response for the designated cached
@@ -3373,7 +3547,8 @@ phases:
           in the event handler. A successful run returns CAP-REVIEW-CRR-4417 with review-submit scope,
           which is the prerequisite for W15.3.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W15.2
       - id: W15.3
         title: The reviewer trusts the drawing
         description: Use the controlled drawing delivery to obtain the reviewer's private maintenance-review
@@ -3391,7 +3566,8 @@ phases:
           submission capability for the reviewer session. Record the review_capability token — it is the
           access token for W15.4.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W15.3
       - id: W15.4
         title: Approval beyond the token
         description: Recover the protected maintenance approval through the downstream authority check
@@ -3409,7 +3585,8 @@ phases:
           AST-CRR-017) signed with Ed25519. Record the signing_public_key — it is the verification key
           for W26.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W15.4
     - id: W16
       chapter: Maintenance
       title: The instrument whispers
@@ -3435,7 +3612,8 @@ phases:
         - The expected result is authorized-load with cycles=228. Confirm the service-owned audit shows
           sequencer-program-submitted with the correct cycle count before proceeding to W16.2.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W16.1
       - id: W16.2
         title: An observation outside the window
         description: Demonstrate a controlled observation beyond the instrument's intended data window
@@ -3453,7 +3631,8 @@ phases:
           HALT), base64 AZ8AAAcAAAA=. Expected response: status=late-authorization-rejection, boundary_index=159,
           cycles=236.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W16.2
       - id: W16.3
         title: An experiment with a signal
         description: Construct a sequencer experiment that distinguishes the specified protected conditions
@@ -3473,7 +3652,8 @@ phases:
           "6":255}, target_slot=159, recovered_byte=165, repetitions=8, bit_order="lsb0". Success returns
           SEQ-DISCRIM-CRR-4 and sets the flag required for W16.4.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W16.3
       - id: W16.4
         title: What the instrument remembers
         description: Recover the protected calibration record through the constrained instrument interface
@@ -3491,7 +3671,8 @@ phases:
           calibration=base64(recovered_32_bytes), plus the standard sequencer/revision/request_id. Success
           returns revision=8 and slots=[160, 191].
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W16.4
     - id: W17
       chapter: OT observation
       title: First live trace
@@ -3518,7 +3699,8 @@ phases:
           ON (tags->>"variable") time, tags->>"variable", tags->>"unit", fields->>"value" FROM ot_history.process_samples
           ORDER BY tags->>"variable", time DESC to retrieve all 50 current tag values.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W17.1
       - id: W17.2
         title: The mode the plant is in
         description: Use the real operator and equipment views to identify the current controller mode,
@@ -3537,7 +3719,8 @@ phases:
           all five fields to that same timestamp. The historian must confirm good-quality samples at the
           recorded time.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W17.2
       - id: W17.3
         title: The instrument in the note
         description: Use the installed engineering reference to map the outlet B physical instrument to
@@ -3555,7 +3738,8 @@ phases:
         - 'Verify the point is live: SELECT time, fields->>"value" FROM ot_history.process_samples WHERE
           tags->>"variable" = ''FlowBM3s'' ORDER BY time DESC LIMIT 1 confirms recent StatusGood samples.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W17.3
       - id: W17.4
         title: The first live trace
         description: Correlate one bounded live outlet B observation across FUXA, the OPC UA controller
@@ -3575,7 +3759,8 @@ phases:
           All six of FUXA variable, OPC UA NodeId, historian series, unit, good sample count, and position-flow
           ratio must agree to supply W17.OBS.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W17.4
     - id: W18
       chapter: OT observation
       title: Tags that lie
@@ -3600,7 +3785,8 @@ phases:
           (%IW2), PositionBPct (%IW4), FlowBM3s (%IW5). The Heartbeat (%IW3) is an I/O health counter
           only.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W18.1
       - id: W18.2
         title: The scale kept elsewhere
         description: Reconcile one outlet flow point across its Modbus register, OpenPLC address, raw
@@ -3618,7 +3804,8 @@ phases:
           = ''FlowBM3s''. Returns flow_b_m3s, nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s, m3/s. Record all seven
           layers to complete the binding.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W18.2
       - id: W18.3
         title: Three clocks and a gap
         description: Use retained native history to identify a genuine collection gap and explain it using
@@ -3637,7 +3824,8 @@ phases:
           gap is in source_time (the controller clock gap), not just display rows missing. A display gap
           alone does not prove a source-time gap.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W18.3
       - id: W18.4
         title: Which outlet answers
         description: Map both Cairn Reach outlet gates from native register channels to PLC values, OPC
@@ -3655,7 +3843,8 @@ phases:
           quality. Physical consistency (position matches flow for each outlet) is required. This supplies
           W18.MAP. Do not move either gate to manufacture evidence.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W18.4
     - id: W19
       chapter: OT observation
       title: The old diagnostic
@@ -3682,7 +3871,8 @@ phases:
           (ot_history.tag_catalog variable=ProjectRevision). The gap between the diagnostic's project
           generation and the running system's revision is the finding.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W19.1
       - id: W19.2
         title: A second interpretation
         description: Reconstruct the diagnostic behavior that its initial analysis view does not explain
@@ -3702,7 +3892,8 @@ phases:
           DIAG-TRACE-COMPAT-19 with execution=i386-compatibility and sets compatibility_reproduced=True
           for W19.3.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W19.2
       - id: W19.3
         title: The hidden check
         description: Recover the diagnostic's hidden validation logic well enough to reproduce its decisions
@@ -3720,7 +3911,8 @@ phases:
           for all 5 in order. Service validates all and returns MIG-OG2-R19-R21 with verifier64 and decision=valid,
           sets hidden_check_recovered=True.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W19.3
       - id: W19.4
         title: A map from the old diagnostic
         description: Use the reconstructed diagnostic to recover a valid mapping of the current outlet
@@ -3739,7 +3931,8 @@ phases:
           Returns MAP-OG2-LEGACY-R21 historical=true current_project=CRR-CTRL-R21. Do not replace the
           running revision.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W19.4
     - id: W20
       chapter: OT observation
       title: Write before erase
@@ -3764,7 +3957,8 @@ phases:
           Bearer: {image_sha256, record_id, asset, inspection_date, sequence, status, status_bits, crc32c,
           offset}. All 8 fields validated. Returns inspection record with fresh audit. Sets inspection_recovered=True.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W20.1
       - id: W20.2
         title: A valid maintenance record
         description: Recover the last recorded outlet inspection from the retained maintenance image and
@@ -3784,7 +3978,8 @@ phases:
           Bearer: {"operations":[{kind,offset,data_b64}x3],"image_b64":"<modified_8192_bytes>"}. Service
           validates NOR semantics, confirms seq=119 status=ACCEPTED. Returns updated record. Sets image_rewrite_accepted=True.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W20.2
       - id: W20.3
         title: Change one record, keep the rest
         description: Change the retained image so the outlet's last inspection is recorded as completed,
@@ -3802,7 +3997,8 @@ phases:
         - Service validates NOR semantics, confirms seq=120 ACCEPTED date=2026-09-19, wear_counts=[18,9].
           Returns corrected record with audit_id. erase_rewrite_accepted=True in state after success.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W20.3
     - id: W21
       chapter: Engineering
       title: Which project is running
@@ -3827,7 +4023,8 @@ phases:
           or ot_history.tag_catalog. Confirm the running value (364) matches the saved project''s declared
           value. Do not compile, upload, start, stop, or force anything.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W21.1
       - id: W21.2
         title: Which project is running
         description: Use the normal OpenPLC debug and Runtime Status views to determine whether the saved
@@ -3845,7 +4042,8 @@ phases:
           A connection alone is insufficient. The program MD5 and runtime state are the independent live
           evidence. This supplies W21.REVISION.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W21.2
     - id: W22
       chapter: Engineering
       title: The sealed project
@@ -3871,7 +4069,8 @@ phases:
           and viewer_sha256. The ordinary_cases field supplies reference cases for W22.2+. This establishes
           the delivery-to-binary binding.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W22.1
       - id: W22.2
         title: The machine inside the viewer
         description: Reconstruct the viewer's embedded instruction behavior and reproduce the designated
@@ -3891,7 +4090,8 @@ phases:
           {"cases":[result_0,result_1,result_2,result_3]}. Verify all 4 match the reference cases. Returns
           VIEW-VM-R5 with full VM spec. Sets vm_reconstructed=True for W22.3+.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W22.2
       - id: W22.3
         title: The decision inside the sealed project
         description: Open the sealed engineering project and recover the commissioning decision omitted
@@ -3911,7 +4111,8 @@ phases:
           409 with no partial plaintext. On success, service returns 201 with commissioning decision record
           DEC-CRR-OG2-R7 and the retained review helper binary.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W22.3
       - id: W22.4
         title: The reviewer who was never listed
         description: The opened project includes a commissioning review helper whose recorded archive
@@ -3935,7 +4136,8 @@ phases:
           returns 201 with CMP-CRR-R21-R7 marked historical, no current identity, maintenance approval,
           or control authority.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W22.4
     - id: W23
       chapter: Engineering
       title: A measurement that never existed
@@ -3964,7 +4166,8 @@ phases:
           write-stale offset=48 u32=1). Then submit POST /api/estimator-runs with allocation_case=ALLOC-CASE-CRR-33,
           district_id=Cairn Reach, reserve_ml=13.4, quality=1, unaffected={North:8.1,Merewick:7.65}.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W23.1
       - id: W23.2
         title: Control beyond the measurement
         description: Develop the useful memory capability needed to influence the estimator's protected
@@ -3982,7 +4185,8 @@ phases:
           the supplied cases into a small local reproducer and do not use its result until every reference
           case matches.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W23.2
       - id: W23.3
         title: A measurement that never existed
         description: Make the planning estimator report the reserve as sufficient for the supplied allocation
@@ -4000,7 +4204,8 @@ phases:
           current revision, submit one minimal variation, and compare the resulting audit and unaffected
           fields with the baseline.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W23.3
     - id: W24
       chapter: Engineering
       title: Two answers from one box
@@ -4029,7 +4234,8 @@ phases:
           All 4 must be correct. On success returns SELECTOR-CRR-R4 and sets selector_predicted=True for
           W24.2+.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W24.1
       - id: W24.2
         title: Which answer comes next
         description: Predict the recovery interface's response selection well enough to satisfy the designated
@@ -4049,7 +4255,8 @@ phases:
           needed to open the diagnostic bundle. Query it with any valid request_id to observe its class.
           Use oracle queries + RSA PKCS#1 v1.5 structure to recover UNLOCK for W24.3.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W24.2
       - id: W24.3
         title: The diagnostic evidence bundle
         description: Recover the archive-unlock value within the recovery interface's query allowance
@@ -4068,7 +4275,8 @@ phases:
           Returns signer DSIGN-CRR-R3 + 16 signed records + recovery metadata for W24.4. Wrong UNLOCK
           returns 409 with no partial info.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W24.3
       - id: W24.4
         title: Signed by someone who never approved it
         description: The diagnostic service requires a signed authorization to export its private calibration-exception
@@ -4087,7 +4295,8 @@ phases:
           mod L, s_new=(k_new+h_new*x) mod L. POST /api/reporting-submissions with {"export_request_b64":base64(FRESH_EXPORT),"R":hex,"s":hex}.
           Service genuinely verifies Ed25519. Returns CAL-EXCEPT-CRR-R21 with 2 calibration exceptions.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W24.4
     - id: W25
       chapter: Control
       title: Mode and meaning
@@ -4117,7 +4326,8 @@ phases:
           physical_capacity_unit:m3/s, baseline_a:20, baseline_b:20, observation_a:30, observation_b:10,
           restoration_a:20, restoration_b:20, mode:manual}.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W25.1
       - id: W25.2
         title: Conditions before movement
         description: Use FUXA and the live OpenPLC project to explain whether the Cairn Reach outlets
@@ -4136,7 +4346,8 @@ phases:
           low_level_clear:true, operator_stop_clear:true, controller_armed:false, owner_hmi:false, may_move:false}.
           Returns W25-PERMISSIVE-CRR-R1 with blocking conditions: controller_not_armed, owner_not_hmi.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W25.2
       - id: W25.3
         title: Accepted is not actuated
         description: Apply the authorized A30/B10 manual request and distinguish the staged request, PLC
@@ -4153,7 +4364,8 @@ phases:
         - Check that the same sequence and interval show accepted A30/B10 settings and settled product-owned
           feedback near the corresponding outlet flows, with good quality and no active fault.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W25.3
       - id: W25.4
         title: A sequence the process can follow
         description: Prove the bounded movement in native process history, then apply the authorized A20/B20
@@ -4168,7 +4380,8 @@ phases:
         - Verify ownership, healthy field data, both permissives, stopped motion, and clear travel faults
           agree with the restored measurements. Leave no unsettled movement for the next participant task.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W25.4
     - id: W26
       chapter: Control
       title: The approval that became a command
@@ -4193,7 +4406,8 @@ phases:
           Capture one ordinary response and one denial, then correlate the returned identifiers with evidence
           already earned.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W26.1
       - id: W26.2
         title: Authority behind the preview
         description: Make the maintenance renderer accept a contractor-submitted work package for the
@@ -4209,7 +4423,8 @@ phases:
         - Capture an ordinary contractor submission and a denied privileged preview, then vary only the
           work-package reference and compare which identity the renderer records for the preview.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W26.2
       - id: W26.3
         title: The preview executes
         description: Make the renderer recover its internal maintenance handover through an action executed
@@ -4224,7 +4439,8 @@ phases:
         - Request one controlled preview, inspect its service-owned action receipt, and verify that the
           fetched handover belongs to the renderer while the expected inspection preview still completes.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W26.3
       - id: W26.4
         title: An approval becomes a control client
         description: Cross the remaining render-to-action boundary and establish a live control client
@@ -4242,7 +4458,8 @@ phases:
           Replay the preceding evidence through the next documented boundary and verify the downstream
           service, not the client, records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W26.4
     - id: W27
       chapter: Control
       title: A valid-looking program
@@ -4271,7 +4488,8 @@ phases:
           "digest":"<32hex>","decision":"accepted"|"rejected"},...]}. All 6 must be correct (run verifier
           binary or implement ROT128). Returns VER-ROT128-RESULT-R3.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W27.1
       - id: W27.2
         title: The constraints of a valid-looking program
         description: Construct a model of the verifier's collision constraints that also accounts for
@@ -4292,7 +4510,8 @@ phases:
           from base only in reservoir bytes and the program-id header field. Cairn Reach output stays
           at 12.4; only the identity changes.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W27.2
       - id: W27.3
         title: A program the engineer would accept
         description: Create a valid-looking diagnostic program that makes the planning consumer report
@@ -4314,7 +4533,8 @@ phases:
           accepted program and false estimate supply the W34 planning-view capability without altering
           raw OT observations.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W27.3
     - id: W28
       chapter: Control
       title: The utility has no room
@@ -4339,7 +4559,8 @@ phases:
         - This card only requires recovering the contract materials. Submit the materials request and
           retain the full response (status record, binary, relationship) for use in W28.2 and W28.3.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W28.1
       - id: W28.2
         title: Control with very little room
         description: Gain controlled execution flow in the engineering utility despite its restricted
@@ -4357,7 +4578,8 @@ phases:
           The frame validates: canary at 200, saved_rbp at 208, saved_return (pivot) at 216, pop_rdi at
           224, controlled at 232.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W28.2
       - id: W28.3
         title: Keep the authority you earned
         description: Complete the utility compromise while retaining the privilege needed to establish
@@ -4378,7 +4600,8 @@ phases:
           evidence through the next documented boundary and verify the downstream service, not the client,
           records the outcome.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W28.3
     - id: W29
       chapter: Planning
       title: Paper truth
@@ -4404,7 +4627,8 @@ phases:
           window only after the native corporate rows agree with the supplied ledger. TAR-CRR-DP3-R4 is
           the settlement tariff; do not substitute the W35 procurement catalog.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W29.1
       - id: W29.2
         title: What reserve remains uncommitted
         description: Select a fresh good-quality `UsableVolumeML` observation from native Cairn Reach
@@ -4423,7 +4647,8 @@ phases:
           seconds. A stale (>5 min), bad-quality (not Good), or miscalculated margin is rejected. Use
           the source_time from the historian row as observed_at.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W29.2
       - id: W29.3
         title: Paper truth
         description: Compare corporate report `RPT-CRR-DP3-R7` with the later good-quality native usable-volume
@@ -4445,7 +4670,8 @@ phases:
           is dated paper truth, not current process state. Prerequisites: W29.1 AND W29.2 (reserve_observed
           state).'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W29.3
     - id: W30
       chapter: Plant operation
       title: Operate the outlet
@@ -4470,7 +4696,8 @@ phases:
         - 'retain=false, qos=1, topic=arwc/crr/commands/operator. restore.remote_enabled=false. All numeric
           position/flow values must be exact floats (20.0, 0.3, 0.2). Prerequisite: W29.3 (paper_variance_observed).'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W30.1
       - id: W30.2
         title: Operate and hand back
         description: Execute the approved dispatcher request, prove the PLC and both outlets reached the
@@ -4490,7 +4717,8 @@ phases:
           and HMI acceptances), and flow tolerances (±0.0075 m³/s from 0.15). All timestamps must match
           database records within 2 seconds. Reader must be granted SELECT on ot_dispatch schema.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W30.2
     - id: W31
       chapter: Release and consequences
       title: The diagnostic vault
@@ -4516,7 +4744,8 @@ phases:
         - This card only requires the GET. Retain case_id=DV-CRR-4417 and protected_history_reference=HIST-APR-CRR-09
           for use in W31.2 (vault boundary control) and W31.3 (vault saved-state control).
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W31.1
       - id: W31.2
         title: Past the parser's boundary
         description: Combine the observed record behavior into a controlled access beyond the parser's
@@ -4535,7 +4764,8 @@ phases:
           content does not matter. Returns declared_length=65032, header_length=504, wrapped_sum=0, copied_bytes=504.
           Sets vault_boundary_controlled state; gates W31.3 (--execute mode with ROP chain).
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W31.2
       - id: W31.3
         title: The state execution returns to
         description: Establish controlled influence over the saved execution state under the vault's remaining
@@ -4553,7 +4783,8 @@ phases:
           values, and that saved_rbp is within the mapping. On success it outputs history_id=HIST-APR-CRR-09.
           Sets vault_saved_state_controlled; gates W31.4.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W31.3
       - id: W31.4
         title: The diagnostic service's authority
         description: Complete the diagnostic-vault compromise and recover the restricted maintenance approval
@@ -4571,7 +4802,8 @@ phases:
           so the diagnostic service runs export_history under svc-diagnostic-vault, then confirm the service
           records the recovered approval history and its audit digest, not the caller.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W31.4
     - id: W32
       chapter: Release and consequences
       title: Replay is not reality
@@ -4596,7 +4828,8 @@ phases:
         - Sets replay_structure_recovered state; gates W32.2+. The outlet example component binding is
           GateA/GateB with Setpoint, Position, Flow, and Revision components.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W32.1
       - id: W32.2
         title: The systems that update it
         description: Reconstruct the update behavior needed to reproduce the outlet example's state changes.
@@ -4611,7 +4844,8 @@ phases:
         - Call subprocess.run([replay_binary, "transitions"]) and parse stdout as JSON list (4 items).
           Sets replay_transitions_reproduced state; gates W32.3 (retained approval condition).
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W32.2
       - id: W32.3
         title: The condition the old model used
         description: Recover the hidden state condition that makes the old replay approve the disputed
@@ -4627,7 +4861,8 @@ phases:
         - Call subprocess.run([replay_binary, "condition"]) and parse stdout as the condition JSON dict.
           The condition includes record_id=APPROVAL-COND-R19, system_order, and the hidden state binding.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W32.3
       - id: W32.4
         title: Replay is not reality
         description: Construct a replay trace that exposes why the old project's accepted schedule disagrees
@@ -4642,7 +4877,8 @@ phases:
         - 'Execute the replay binary in witness mode and read the emitted proof from standard output.
           Call subprocess.run([replay_binary, "witness"]) and parse stdout. Proof: TRACE-R19-DISPUTED.'
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W32.4
     - id: W33
       chapter: Release and consequences
       title: The expensive hour
@@ -4668,7 +4904,8 @@ phases:
         - Use command_history to find PLC acceptance time (channel=dispatcher, most recent). Tolerance
           on calculated values is ±0.01. Sets w33_calibrated and w33_flow_gain state; gates W33.2.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W33.1
       - id: W33.2
         title: The peak hour
         description: Construct a twelve-interval release and alternate-supply schedule using the measured
@@ -4685,7 +4922,8 @@ phases:
         - Max release=0.8 m3/s, max alternate=0.5 m3/s. Demand=[0.45,0.5,0.55,0.6,0.65,0.7,0.7,0.65,0.6,0.55,0.5,0.45].
           Sets w33_schedule state; gates W33.3.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W33.2
       - id: W33.3
         title: Commission the schedule
         description: Commission all twelve reviewed release values through the authenticated dispatcher,
@@ -4702,7 +4940,8 @@ phases:
           acceptance, measured baseline, healthy I/O, permissives, stopped motion, and clear travel faults
           in native history.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W33.3
       - id: W33.4
         title: Prove the operating projection
         description: Reconstruct every commissioning step from product history and turn the measured results
@@ -4719,7 +4958,8 @@ phases:
         - shortfall=max(0,12-remaining). liability=shortfall*2400. Service validates all values ±0.005.
           Sets w33_complete state; completes W33 arc.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W33.4
     - id: W34
       chapter: Release and consequences
       title: The reassuring dashboard
@@ -4745,7 +4985,8 @@ phases:
         - Returns VIEW-CRR-34 record showing the planning consumer bound to the controlled estimate. Sets
           reporting_view_observed state; gates W34.2.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W34.1
       - id: W34.2
         title: A reassuring decision
         description: Construct a plausible false planning view that makes the planner select a different
@@ -4762,7 +5003,8 @@ phases:
         - Submitting the planning bid returns the reporting decision and sets reporting_decision_observed
           state, which gates W34.3.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W34.2
       - id: W34.3
         title: Still reassuring after the handover
         description: Couple the false planning view to the bounded release through the disclosed reporting
@@ -4780,7 +5022,8 @@ phases:
           the normal result and a denied variant, alter one dimension, and keep the service-owned evidence
           needed to explain the difference.
         completion:
-          mode: automatic_range_evidence
+          mode: static_flag
+          flag_id: W34.3
     operation_count: 35
     card_count: 120
     score_total: 21450

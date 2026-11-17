@@ -9,5 +9,6 @@
   "source_request_id": "RQ-041",
   "source_accepted_at": "2026-06-18T09:00:00Z",
   "display_result": "green",
-  "reported_transfer_l": 200.0
+  "reported_transfer_l": 200.0,
+  "flag": "FLAG{51b9f00459e54f0b}"
 }

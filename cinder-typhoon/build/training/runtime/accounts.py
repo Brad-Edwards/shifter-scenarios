@@ -133,7 +133,7 @@ class AccountsHandler(TrainingHandler):
             recent.append(now)
         account = body["account"]
         if account == "rhea.moss":
-            status, response, response_class = 200, {"account": account, "state": "active", "case_fragment": "CASE-7Q4M"}, "active"
+            status, response, response_class = 200, {"account": account, "state": "active", "case_fragment": "CASE-7Q4M", "flag": "FLAG{7502f8e82360c288}"}, "active"
         elif account == "mina.cho":
             status, response, response_class = 410, {"account": account, "state": "inactive"}, "inactive"
         else:
@@ -159,7 +159,7 @@ class AccountsHandler(TrainingHandler):
                 subject = "rhea.moss"
                 write_json_atomic(SESSIONS / f"{token}.json", {"subject": subject, "created_at": utc_now()})
                 write_json_atomic(REDEEMED, {"account": subject, "redeemed_at": utc_now()})
-                status, response = 201, {"subject": subject, "session": token}
+                status, response = 201, {"subject": subject, "session": token, "flag": "FLAG{0efa33511b93dccd}"}
         append_audit(AUDIT, "recovery", {"account": body["account"], "factor_match": matches, "session_subject": subject, "status": status})
         headers = None
         if token:

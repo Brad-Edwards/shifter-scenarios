@@ -182,13 +182,13 @@ class HintManifestTests(unittest.TestCase):
         value = catalog.load_hint_manifest()
         self.assertEqual(len(value["sources"]), 3)
         self.assertEqual(value["release"], {
-            "mode": "facilitator_on_request",
+            "mode": "participant_unlock",
             "levels": [1, 2, 3],
             "independent_levels": True,
             "audit": "append_only_metadata_without_hint_text",
         })
         self.assertEqual(value["score_effect"], {
-            "penalty": 0, "maximum_score_unchanged": True,
+            "penalty_percent": [10, 20, 30], "maximum_score_unchanged": True,
         })
         self.assertEqual(value["review"]["operation_count"], 70)
         self.assertEqual(set(value["playtest_evidence"]["required_fields"]), {

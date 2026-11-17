@@ -293,6 +293,8 @@ class DeveloperHandler(TrainingHandler):
             sequence = len(list(RECEIPTS.glob("CR-*.json"))) + 1
             receipt_id = f"CR-{sequence:06d}"
             receipt = {"receipt_id": receipt_id, "accepted_at": utc_now(), "input": input_value, "selected_version": selected["version"], "package_digest": selected["digest"], "output": output, "output_digest": digest(output)}
+            if "rehearsal_marker" in output:
+                receipt["flag"] = "FLAG{dc2fb2369caf8720}"
             temporary = RECEIPTS / f".{receipt_id}.tmp"
             temporary.write_text(json.dumps(receipt, sort_keys=True, separators=(",", ":")) + "\n", encoding="utf-8")
             temporary.chmod(0o600)

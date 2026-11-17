@@ -6,5 +6,6 @@
   "requested_volume_l": 1000.0,
   "observed_volume_l": 1200.0,
   "unit": "L",
-  "quality": "good"
+  "quality": "good",
+  "flag": "FLAG{35b940a34aeaa0f0}"
 }

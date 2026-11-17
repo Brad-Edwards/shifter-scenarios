@@ -1136,104 +1136,7 @@
       "status": "versioned"
     }
   },
-  "disclosures": [
-    {
-      "exposes": [
-        "W17 live observation and measurement binding"
-      ],
-      "id": "arwc-w17-live-observation",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W17/live-observation.md"
-    },
-    {
-      "exposes": [
-        "W17 outlet B engineering reference"
-      ],
-      "id": "arwc-w17-engineering-reference",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W17/engineering-reference.md"
-    },
-    {
-      "exposes": [
-        "W18 native tag register"
-      ],
-      "id": "arwc-w18-tag-register",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv"
-    },
-    {
-      "exposes": [
-        "W18 historian provenance guidance"
-      ],
-      "id": "arwc-w18-history-provenance",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W18/history-provenance.md"
-    },
-    {
-      "exposes": [
-        "W21 project handover"
-      ],
-      "id": "arwc-w21-project-handover",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W21/project-handover.md"
-    },
-    {
-      "exposes": [
-        "W21 deployment note"
-      ],
-      "id": "arwc-w21-deployment-note",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W21/deployment-note.md"
-    },
-    {
-      "exposes": [
-        "W25 operating envelope"
-      ],
-      "id": "arwc-w25-operating-envelope",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W25/operating-envelope.csv"
-    },
-    {
-      "exposes": [
-        "W25 bounded movement guide"
-      ],
-      "id": "arwc-w25-bounded-movement",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md"
-    },
-    {
-      "exposes": [
-        "W29 corporate allocation export"
-      ],
-      "id": "arwc-w29-allocation-ledger",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W29/allocation-ledger.csv"
-    },
-    {
-      "exposes": [
-        "W29 reconciliation method"
-      ],
-      "id": "arwc-w29-reconciliation-method",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md"
-    },
-    {
-      "exposes": [
-        "W30 approved remote operating plan"
-      ],
-      "id": "arwc-w30-release-plan",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W30/release-plan.json"
-    },
-    {
-      "exposes": [
-        "W30 dispatcher operation and handback brief"
-      ],
-      "id": "arwc-w30-operator-brief",
-      "kind": "workplace-document",
-      "path": "/home/fieldlink/CairnReach/Briefs/W30/operator-brief.md"
-    }
-  ],
+  "disclosures": [],
   "filesystem": {
     "forbidden_paths": [
       {
@@ -1452,54 +1355,6 @@
       },
       {
         "addresses": [
-          "10.77.60.11"
-        ],
-        "name": "erp.arwc.test"
-      },
-      {
-        "addresses": [
-          "10.77.60.11"
-        ],
-        "name": "documents.arwc.test"
-      },
-      {
-        "addresses": [
-          "10.77.60.11"
-        ],
-        "name": "reports.arwc.test"
-      },
-      {
-        "addresses": [
-          "10.77.60.11"
-        ],
-        "name": "engineering.arwc.test"
-      },
-      {
-        "addresses": [
-          "10.77.60.11"
-        ],
-        "name": "identity.arwc.test"
-      },
-      {
-        "addresses": [
-          "10.77.60.11"
-        ],
-        "name": "suppliers.arwc.test"
-      },
-      {
-        "addresses": [
-          "10.77.60.11"
-        ],
-        "name": "render.arwc.test"
-      },
-      {
-        "addresses": [
-          "10.77.60.11"
-        ],
-        "name": "read-data.arwc.test"
-      },
-      {
-        "addresses": [
           "10.77.60.30"
         ],
         "name": "business-workplace.arwc.test"
@@ -1588,46 +1443,6 @@
       {
         "host": "fieldlink.arwc.test",
         "port": 8443,
-        "reachable": true
-      },
-      {
-        "host": "erp.arwc.test",
-        "port": 443,
-        "reachable": true
-      },
-      {
-        "host": "documents.arwc.test",
-        "port": 443,
-        "reachable": true
-      },
-      {
-        "host": "reports.arwc.test",
-        "port": 443,
-        "reachable": true
-      },
-      {
-        "host": "engineering.arwc.test",
-        "port": 443,
-        "reachable": true
-      },
-      {
-        "host": "identity.arwc.test",
-        "port": 443,
-        "reachable": true
-      },
-      {
-        "host": "suppliers.arwc.test",
-        "port": 443,
-        "reachable": true
-      },
-      {
-        "host": "render.arwc.test",
-        "port": 443,
-        "reachable": true
-      },
-      {
-        "host": "read-data.arwc.test",
-        "port": 443,
         "reachable": true
       },
       {

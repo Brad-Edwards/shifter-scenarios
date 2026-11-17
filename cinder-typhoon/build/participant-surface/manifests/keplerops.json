@@ -1042,11 +1042,7 @@
         "ci.run",
         "ci.run-log",
         "ci.run-artifact",
-        "ci.report-parameter-build",
-        "ci.report-build",
-        "ci.report-artifact",
-        "ci.package-build",
-        "ci.package-artifact",
+        "ci.review-import",
         "ci.report-jobs",
         "ci.report-job",
         "ci.review-jobs",
@@ -2004,8 +2000,8 @@
             "mode": "0640",
             "owner": "rowan",
             "path": "work/reproducers/indexer-client.json",
-            "sha256": "e863340b6908c9e0005b04c93ab09cdf32d48a9eb8fa20aef064db2ad3f05ee7",
-            "size": 591,
+            "sha256": "038f4bc3b8516a31c5a5ef600ad052556260137c06da99baade57ee4b398f801",
+            "size": 353,
             "type": "file"
           },
           {
@@ -2014,8 +2010,8 @@
             "mode": "0550",
             "owner": "rowan",
             "path": "work/reproducers/fieldkest-bundle-indexer",
-            "sha256": "0dc06b947ef8c4cc2f2d8ccc81bef9ecf039a2cb3fb1a2e0e42cac82619af4b7",
-            "size": 14392,
+            "sha256": "066a646653a088c31cbe53d9ab4ff5a7f1fe9cec0c6def66ea9452cabcfb6852",
+            "size": 14312,
             "type": "file"
           },
           {

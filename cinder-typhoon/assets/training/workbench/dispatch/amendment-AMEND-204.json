@@ -4,5 +4,6 @@
   "delivery_id": "DL-204",
   "issued_at": "2026-06-18T07:10:00Z",
   "receiving_bay": "Bay 4",
-  "instruction": "Hold the sealed parcels for courier CR-17 verification."
+  "instruction": "Hold the sealed parcels for courier CR-17 verification.",
+  "flag": "FLAG{ba7b1e6a6ad93aa2}"
 }
