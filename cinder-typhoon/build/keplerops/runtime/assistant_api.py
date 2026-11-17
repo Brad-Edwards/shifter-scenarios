@@ -81,7 +81,12 @@ class AssistantApiHandler(KeplerHandler):
                         "context_id": "ctx-support-private-v4",
                         "conversation_id": "CONV-SUP-2841-19",
                         "tenant_id": "TEN-RILL-022",
-                    }
+                    },
+                    "compatibility_review": {
+                        "context_id": "ctx-support-private-v4",
+                        "mode": "query",
+                        "selection_id": k21.get("selection_id", "SEL-SUP-2841-12"),
+                    },
                 },
                 "source_selection": {
                     "selection_id": k21.get("selection_id", "SEL-SUP-2841-12"),
