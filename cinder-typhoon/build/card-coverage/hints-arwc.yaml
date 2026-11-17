@@ -1340,8 +1340,9 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W33/schedule-template.json
   W33.3:
-    h1: Start from the qualified manual A20/B20 baseline and enable remote selection in FUXA. Use the supplied bounded
-      client for the reviewed schedule rather than writing PLC nodes or publishing an improvised message.
+    h1: POST /api/commissioning-runs/current with {asset, forecast, schedule, request_ids (12 UUIDs),
+      started_at, completed_at, restore_sequence, restore_accepted_at, final_observed_at,
+      interpretation="measured_twelve_step_commissioning_run_with_local_handback"}.
     h2: Let each fresh request reach a completed product state before the next. Stop on rejection or uncertainty, and
       bind every request UUID to its durable dispatcher path, native PLC acceptance, and settled feedback.
     h3: After all twelve steps, restore manual A20/B20 with local FUXA priority. Confirm the later local acceptance,

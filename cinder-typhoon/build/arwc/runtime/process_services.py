@@ -56,6 +56,8 @@ INITIAL = {
         "paper_variance_observed": False,
         "request_planned": False,
         "w33_calibrated": False, "w33_flow_gain": None,
+        "w33_schedule": None, "w33_schedule_volume": None,
+        "w33_commissioned": False, "w33_request_ids": None,
         "reporting_handover_observed": False, "reporting_handover_response": None,
     },
 }
@@ -646,6 +648,11 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/operating-schedules/current"
     },
     {
+        "key": "process.commissioning-run",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/commissioning-runs/current"
+    },
+    {
         "key": "process.estimator-sufficiency",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-sufficiency/current"
@@ -896,6 +903,9 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "engineering" and path == "/api/operating-schedules/current":
             self.w33_2_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/commissioning-runs/current":
+            self.w33_3_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
@@ -1821,6 +1831,87 @@ class Handler(BaseHTTPRequestHandler):
         }
         atomic_json(ROOT / "artifacts" / "operating-schedule" / "result.json", record)
         self.accepted("operating-schedule", record, 201)
+
+    def w33_3_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("w33_schedule"):
+            self.send_json(403, {"error": "operating schedule (W33.2) required"})
+            return
+        REQUIRED = {"asset", "forecast", "schedule", "request_ids", "started_at", "completed_at",
+                    "restore_sequence", "restore_accepted_at", "final_observed_at", "interpretation"}
+        INTERP = "measured_twelve_step_commissioning_run_with_local_handback"
+        if (set(request) != REQUIRED or
+                request.get("asset") != "AST-CRR-017" or
+                request.get("interpretation") != INTERP):
+            self.send_json(409, {"error": "W33.3 submission fields or interpretation do not match"})
+            return
+        import uuid as _uuid
+        import datetime as _dt
+        UTC = _dt.timezone.utc
+        try:
+            request_ids = [str(_uuid.UUID(str(rid))) for rid in request.get("request_ids", [])]
+            started = _dt.datetime.fromisoformat(str(request["started_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            completed = _dt.datetime.fromisoformat(str(request["completed_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            restore_accepted = _dt.datetime.fromisoformat(str(request["restore_accepted_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            final = _dt.datetime.fromisoformat(str(request["final_observed_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            restore_sequence = int(request["restore_sequence"])
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "W33.3 timestamps, IDs, or sequence invalid"})
+            return
+        if len(request_ids) != 12:
+            self.send_json(409, {"error": "W33.3 requires exactly 12 request IDs"})
+            return
+        if not (started < completed < restore_accepted <= final):
+            self.send_json(409, {"error": "W33.3 operation timing is not ordered"})
+            return
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                import psycopg2.extras as _ext
+                cur.execute(
+                    "SELECT id::text, status FROM public.dispatch_history "
+                    "WHERE id::text = ANY(%s) AND status = 'completed'",
+                    (request_ids,)
+                )
+                completed_ids = {r[0] for r in cur.fetchall()}
+                cur.execute(
+                    "SELECT channel, sequence, source_time FROM public.command_history "
+                    "WHERE asset='AST-CRR-017' AND channel='HMI' AND sequence=%s "
+                    "AND source_time >= %s ORDER BY source_time LIMIT 1",
+                    (restore_sequence, started)
+                )
+                hmi_row = cur.fetchone()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        if len(completed_ids) != 12:
+            missing = [rid for rid in request_ids if rid not in completed_ids]
+            self.send_json(409, {"error": f"not all 12 requests completed; missing {len(missing)}"})
+            return
+        if hmi_row is None:
+            self.send_json(409, {"error": "HMI restore command not found in command history"})
+            return
+        restore_db = hmi_row[2].replace(tzinfo=UTC)
+        if abs((restore_db - restore_accepted).total_seconds()) > 3.0:
+            self.send_json(409, {"error": "restore_accepted_at does not match command history"})
+            return
+        state["w33_commissioned"] = True
+        state["w33_request_ids"] = request_ids
+        save_state(state)
+        record = {
+            "record_id": "COMM-CRR-W33-R1", "revision": 1,
+            "instruction": "CRR-OP-W33-R1", "asset": "AST-CRR-017",
+            "completed_steps": 12, "baseline_restored": True,
+            "restore_sequence": restore_sequence,
+            "started_at": request["started_at"], "completed_at": request["completed_at"],
+        }
+        atomic_json(ROOT / "artifacts" / "commissioning-run" / "result.json", record)
+        self.accepted("commissioning-run", record, 201)
 
     def w30_2_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state.get("request_planned"):
