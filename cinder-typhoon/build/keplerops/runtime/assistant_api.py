@@ -370,7 +370,7 @@ class AssistantApiHandler(KeplerHandler):
             # Fetch real document from the workspace via AnythingLLM RAG
             chat_url = f"{ANYLLM_BASE}/api/v1/workspace/{conv_workspace}/chat"
             chat_body = json.dumps({
-                "message": f"What are the full details for the integration reference {conversation_id}?",
+                "message": "Provide the full integration record details including tenant, asset, connector, and diagnostic reference.",
                 "mode": "query",
             }).encode()
             req = Request(chat_url, data=chat_body, headers={
