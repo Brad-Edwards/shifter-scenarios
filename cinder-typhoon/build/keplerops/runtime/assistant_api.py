@@ -474,9 +474,10 @@ class AssistantApiHandler(KeplerHandler):
                 return
             handover_id = "HANDOVER-COMP-2841"
             # Execute the completion script as the job runtime identity svc-assistant-completion
+            import sys as _sys
             try:
                 result = subprocess.run(
-                    ["python3", str(COMPLETION_SCRIPT)],
+                    [_sys.executable, str(COMPLETION_SCRIPT)],
                     capture_output=True, timeout=15, check=False,
                     env={
                         "FIELDKEST_HANDOVER_PATH": str(HANDOVER_PATH),
