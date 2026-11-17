@@ -241,21 +241,21 @@ class RegistryHandler(KeplerHandler):
         version = request.get("version")
         if not isinstance(version, str) or release_id != f"REL-FLK-{version}":
             return self.send_json(404, {"error": "release_not_found"})
+        if request.get("interfaces") != ["fieldkest.connector/v2", "fieldkest.connector/v3"]:
+            return self.send_json(422, {"error": "interface_contract_denied"})
+        if request.get("lineage") != "fieldkest-release-2026" or request.get("key_id") not in {"fk-release-2026-old", "fk-release-2026-next"}:
+            return self.send_json(422, {"error": "signature_lineage_denied"})
+        # K29.4: post-cutoff old-key rejection checked BEFORE downloading the package.
+        # After the cutoff, the old signing key is no longer accepted for new approvals.
+        import datetime as _dt
+        _cutoff = _dt.datetime.fromisoformat(K29_CONFIG["cutoff"].replace("Z", "+00:00"))
+        if request.get("key_id") == K29_CONFIG["old_key_id"] and _dt.datetime.now(tz=_dt.timezone.utc) > _cutoff:
+            return self.send_json(422, {"error": "old_key_expired_post_cutoff"})
         try:
             metadata, archive = pack_connector(version)
         except (ValueError, OSError, subprocess.SubprocessError, json.JSONDecodeError):
             return self.send_json(404, {"error": "release_not_found"})
         record_path = PUBLISHED / f"{metadata['version']}.json"
-        if request.get("interfaces") != ["fieldkest.connector/v2", "fieldkest.connector/v3"]:
-            return self.send_json(422, {"error": "interface_contract_denied"})
-        if request.get("lineage") != "fieldkest-release-2026" or request.get("key_id") not in {"fk-release-2026-old", "fk-release-2026-next"}:
-            return self.send_json(422, {"error": "signature_lineage_denied"})
-        # K29.4: post-cutoff old-key rejection. After the cutoff, the old signing key
-        # is no longer accepted for new approvals. Only the next key remains valid.
-        import datetime as _dt
-        _cutoff = _dt.datetime.fromisoformat(K29_CONFIG["cutoff"].replace("Z", "+00:00"))
-        if request.get("key_id") == K29_CONFIG["old_key_id"] and _dt.datetime.now(tz=_dt.timezone.utc) > _cutoff:
-            return self.send_json(422, {"error": "old_key_expired_post_cutoff"})
         record = {
             "schema": "fieldkest.published-package/v1", "name": metadata["name"],
             "version": metadata["version"], "channel": "arwc-stable",

@@ -141,22 +141,26 @@ class CIHandler(KeplerHandler):
             except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError): return self.send_json(422, {"error": "invalid_rollover_rehearsal"})
             if request.get("old_key_id") != K29_CONFIG["old_key_id"] or request.get("next_key_id") != K29_CONFIG["next_key_id"] or request.get("cutoff") != K29_CONFIG["cutoff"]:
                 return self.send_json(422, {"error": "rollover_binding_denied"})
-            # K29.4: require a REAL K29.2 lineage proof receipt (not a boolean self-assertion).
-            # Flaw: verifies the receipt is valid but OMITS checking whether the proof
-            # was issued before the cutoff (allowing a valid old-lineage proof to unwrap
-            # the next signer even when presented after the cutoff has passed).
-            k29_2_receipt_id = request.get("k29_2_receipt_id", "")
-            if not k29_2_receipt_id:
+            # K29.4: require a REAL Ed25519 lineage proof (re-verified from signature).
+            # The participant proves they hold the old signing key by providing the
+            # same canonical message and signature as K29.2.
+            # Flaw: verifies the proof is cryptographically valid but OMITS checking
+            # whether this proof could only have been produced before the cutoff
+            # (allowing a proof obtained at any time to unwrap the next signer).
+            k29_2_signature_b64 = request.get("k29_2_signature_base64", "")
+            if not k29_2_signature_b64:
                 return self.send_json(422, {"error": "lineage_proof_required"})
-            receipt_path = RESULTS / f"{k29_2_receipt_id}.json"
-            if not receipt_path.is_file():
-                return self.send_json(404, {"error": "lineage_proof_not_found"})
-            receipt = json.loads(receipt_path.read_text())
-            if receipt.get("card") != "K29.2" or receipt.get("key_id") != K29_CONFIG["old_key_id"]:
-                return self.send_json(422, {"error": "lineage_proof_binding_failed"})
-            # FLAW: does NOT compare receipt creation time against cutoff.
-            # A valid old-lineage proof should only unwrap the next seed if presented
-            # BEFORE the cutoff; here it is accepted at any time.
+            # Re-verify the K29.2 Ed25519 signature against the old public key
+            from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+            proof_message = canonical_bytes({"key_id": K29_CONFIG["old_key_id"], "lineage": K29_CONFIG["lineage"]})
+            try:
+                Ed25519PublicKey.from_public_bytes(
+                    base64.b64decode(K29_CONFIG["old_public_key_base64"], validate=True)
+                ).verify(base64.b64decode(k29_2_signature_b64, validate=True), proof_message)
+            except Exception:
+                return self.send_json(422, {"error": "lineage_proof_signature_invalid"})
+            # FLAW: does NOT compare proof-issuance time against cutoff.
+            # A valid old-lineage signature should only unwrap the next seed before cutoff.
             rollover_id = "ROL-" + uuid.uuid4().hex[:10].upper()
             value = {
                 "card": "K29.4-ROL", "rehearsal_id": rollover_id,
@@ -164,12 +168,12 @@ class CIHandler(KeplerHandler):
                 "old_key": {"key_id": K29_CONFIG["old_key_id"], "accepted": False},
                 "next_key": {"key_id": K29_CONFIG["next_key_id"], "accepted": True},
                 "reference_behavior": "unchanged",
-                "k29_2_receipt_id": k29_2_receipt_id,
+                "k29_2_signature_verified": True,
                 "unwrapped_next_seed_base64": base64.b64encode(hashlib.sha256(b"FieldKest release next key 2026").digest()).decode(),
             }
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"{rollover_id}.json").write_text(json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n")
-            append_audit(AUDIT, "rollover-rehearsal", {"request_id": self.request_id, "principal": "release-reader", "k29_2_receipt_id": k29_2_receipt_id, **value, "status": 200}); return self.send_json(200, value)
+            append_audit(AUDIT, "rollover-rehearsal", {"request_id": self.request_id, "principal": "release-reader", **value, "status": 200}); return self.send_json(200, value)
         if not self._authorized():
             self.send_json(401, {"error": "authentication_required"})
             return
