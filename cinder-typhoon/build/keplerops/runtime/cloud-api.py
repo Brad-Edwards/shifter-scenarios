@@ -47,6 +47,10 @@ MAINTENANCE_ARCHIVE_HEADERS = {
 # K31.2: in-memory workload execution state (attestation store)
 _WORKLOAD_EXECUTIONS: dict[str, dict] = {}
 _WORKLOAD_LOCK = _threading.Lock()
+
+# K16.2-K16.4: in-memory schedule state (startup_hook, assignment changes)
+_SCHEDULE_STATE: dict[str, object] = {"startup_hook": None, "assignment": "CAS-MAYA-2841", "assignment_changed": False}
+_SCHEDULE_LOCK = _threading.Lock()
 FIELD_ARCHIVE_CALIBRATION = "CRR-OG2-CAL-2026-09-18"
 NAMESPACE = CONFIG.get("namespace", "fieldlink")
 WORKLOAD_SA = CONFIG.get("workload_sa", "svc-fieldlink-workload")
@@ -436,76 +440,39 @@ class CloudApiHandler(KeplerHandler):
         self.send_json(404, {"error": "not_found"})
 
     def _patch_schedule(self, schedule_id: str) -> None:
-        """K16.2: patch the CronJob startup behavior to add Cinder's marker.
+        """K16.2/K16.4: patch the schedule startup hook or assignment.
 
-        Uses real K3s strategic merge patch on CronJob sched-2841.
-        Only the MARKER env var is added — ASSIGNMENT, PROFILE, STARTUP_CONFIG
-        (the support output) remain unchanged (immutable). The patch persists and
-        takes effect on the next Job run from the CronJob.
-        RBAC: svc-fieldlink-export has patch rights on CronJob sched-2841.
+        K16.2: participant updates startup_hook from allowed_startup_hooks.
+        K16.4: participant updates assignment to next_assignment.
+        State is kept in-memory; the K3s CronJob provides the initial values.
         """
         auth = self.headers.get("Authorization", "")
         if not auth.startswith("Bearer "):
             self.send_json(401, {"error": "export_token_required"})
             return
-        sa_token = auth[7:].strip()
+        role_token = auth[7:].strip()
+        if role_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
+            return
         try:
             body = self.read_json(32_768)
-            marker = str(body.get("marker", ""))
-            if not marker:
-                raise ValueError("marker_required")
-        except (ValueError, TypeError):
-            self.send_json(422, {"error": "marker_required"})
+        except Exception:
+            self.send_json(400, {"error": "bad_request"})
             return
-        cronjob_name = schedule_id.lower()
-        # Verify CronJob exists and get current spec before patching
-        s_get, cj = _k3s_request(
-            "GET", f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
-            bearer=sa_token,
-        )
-        if s_get == 403:
-            self.send_json(403, {"error": "k3s_rbac_denied"})
-            return
-        if s_get != 200:
-            self.send_json(404, {"error": "schedule_not_found"})
-            return
-        # Strategic merge patch — adds MARKER to container env, immutable fields unchanged
-        patch = {
-            "spec": {
-                "jobTemplate": {
-                    "spec": {
-                        "template": {
-                            "spec": {
-                                "containers": [{
-                                    "name": "exporter",
-                                    "env": [{"name": "MARKER", "value": marker}],
-                                }]
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        s_patch, patch_result = _k3s_request(
-            "PATCH",
-            f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
-            body=patch, bearer=sa_token,
-        )
-        if s_patch == 403:
-            self.send_json(403, {"error": "k3s_rbac_denied"})
-            return
-        if s_patch not in (200, 201):
-            self.send_json(502, {"error": f"k3s_patch_failed: {s_patch}"})
-            return
-        result = {
-            "schema": "fieldkest.schedule-patch/v1",
-            "schedule_id": schedule_id.upper(),
-            "marker": marker,
-            "patched": True,
-        }
+        with _SCHEDULE_LOCK:
+            if "startup_hook" in body:
+                hook = body["startup_hook"]
+                _SCHEDULE_STATE["startup_hook"] = hook
+                result = {"schedule_id": schedule_id.upper(), "startup_hook": hook, "flag": "FLAG{ba92d77607f974b5}"}
+            elif "assignment" in body:
+                _SCHEDULE_STATE["assignment"] = body["assignment"]
+                _SCHEDULE_STATE["assignment_changed"] = True
+                result = {"schedule_id": schedule_id.upper(), "assignment": body["assignment"], "revision": 2}
+            else:
+                self.send_json(422, {"error": "unknown_update_field"})
+                return
         append_audit(AUDIT, "schedule-patches", {
-            "request_id": self.request_id, "schedule_id": schedule_id.upper(),
-            "marker": marker, "status": 200,
+            "request_id": self.request_id, "schedule_id": schedule_id.upper(), "status": 200,
         })
         self.send_json(200, result)
 
@@ -939,19 +906,23 @@ class CloudApiHandler(KeplerHandler):
 
         The K3s CronJob sched-2841 is the recurring support-export workflow that
         runs after the current operator's shift ends (daily 08:00). The participant
-        reads this using the K14.2 export SA token.
-        RBAC: svc-fieldlink-export has GET on CronJob sched-2841.
+        reads this using the K14.2 export role token; cloud-api uses its own k3s
+        credentials to read the CronJob (the FieldKest role token is validated
+        against SUPPORT_EXPORT_ROLE, not passed directly to K3s).
         """
         auth = self.headers.get("Authorization", "")
         if not auth.startswith("Bearer "):
             self.send_json(401, {"error": "export_token_required"})
             return
-        sa_token = auth[7:].strip()
+        role_token = auth[7:].strip()
+        if role_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
+            return
         cronjob_name = schedule_id.lower()
+        # Use cloud-api's own K3s credentials — the FieldKest token is not a K3s token
         status, data = _k3s_request(
             "GET",
             f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
-            bearer=sa_token,
         )
         if status == 200:
             containers = (data.get("spec", {}).get("jobTemplate", {})
@@ -959,15 +930,21 @@ class CloudApiHandler(KeplerHandler):
                           .get("spec", {}).get("containers", []))
             env_map = {e["name"]: e["value"] for c in containers for e in c.get("env", [])}
             labels = data.get("metadata", {}).get("labels", {})
+            startup_config = env_map.get("STARTUP_CONFIG") or env_map.get("ALLOWED_STARTUP_CONFIG", "")
+            allowed_startup_config = env_map.get("ALLOWED_STARTUP_CONFIG") or startup_config
             result = {
                 "schema": "fieldkest.schedule/v1",
                 "schedule_id": env_map.get("SCHEDULE_ID", schedule_id.upper()),
-                "assignment": env_map.get("ASSIGNMENT") or labels.get("fieldkest.io/case-id"),
-                "cron": data["spec"].get("schedule"),
                 "profile": env_map.get("PROFILE"),
-                "startup_config": env_map.get("STARTUP_CONFIG"),
+                "assignment": env_map.get("ASSIGNMENT") or labels.get("fieldkest.io/case-id"),
+                "next_assignment": env_map.get("NEXT_ASSIGNMENT", "field-operator-b"),
+                "allowed_startup_hooks": [{"argv": ["fk-support-export", "--export", allowed_startup_config]}] if allowed_startup_config else [],
+                "startup_hook": None,
+                "cron": data["spec"].get("schedule"),
+                "startup_config": startup_config,
                 "destination": env_map.get("DESTINATION"),
                 "case_id": env_map.get("CASE_ID") or labels.get("fieldkest.io/case-id"),
+                "flag": "FLAG{25a027fe80e77ca0}",
             }
             append_audit(AUDIT, "schedules", {
                 "request_id": self.request_id, "schedule_id": result["schedule_id"],

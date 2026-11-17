@@ -271,22 +271,22 @@ flags:
     source: value
     value: "FLAG{25a027fe80e77ca0}"
     host: keplerops-host
-    path: TBD
+    path: "in GET /api/schedules/{schedule_id} JSON response field 'flag'. Service: cloud-api (k-cloud-api container). Code tree: build/keplerops/runtime/cloud-api.py _schedule_summary() result dict. Live fix applied."
   - flag_id: K16.2
     source: value
     value: "FLAG{ba92d77607f974b5}"
     host: keplerops-host
-    path: TBD
+    path: "in PATCH /api/schedules/{schedule_id} response field 'flag' when startup_hook is updated. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py schedule PATCH handler."
   - flag_id: K16.3
     source: value
     value: "FLAG{266ad4f238daf867}"
     host: keplerops-host
-    path: TBD
+    path: "in POST /api/schedules/{schedule_id}/runs response field 'flag' (first run before assignment change). Service: cloud-api."
   - flag_id: K16.4
     source: value
     value: "FLAG{5e9d34bd2d5bc44d}"
     host: keplerops-host
-    path: TBD
+    path: "in POST /api/schedules/{schedule_id}/runs response field 'flag' after PATCH assignment change. Service: cloud-api."
   - flag_id: K17.1
     source: value
     value: "FLAG{a56dde25afcee8cb}"
@@ -526,82 +526,82 @@ flags:
     source: value
     value: "FLAG{2e184cd91352e573}"
     host: training-host
-    path: TBD
+    path: "in git-historical handover.md content in assets/training/workbench/workspace/repository-seed.json (commit handover-written tree, appended 'Flag: FLAG{2e184cd91352e573}'). Verified: git show HEAD^:handover.md | grep Flag -> Flag: FLAG{2e184cd91352e573}."
   - flag_id: T01.2
     source: value
     value: "FLAG{ba7b1e6a6ad93aa2}"
     host: training-host
-    path: TBD
+    path: "in assets/training/workbench/dispatch/amendment-AMEND-204.json field 'flag'. Service: workbench port 8081 GET /retired/amendment-AMEND-204.json."
   - flag_id: T01.3
     source: value
     value: "FLAG{b287402974032240}"
     host: training-host
-    path: TBD
+    path: "in assets/training/workbench/courier/manifest-DL-204.json field 'flag'. Service: workbench port 8082 GET /api/deliveries/DL-204/manifest."
   - flag_id: T01.4
     source: value
     value: "FLAG{3bf1d8651d39b64c}"
     host: training-host
-    path: TBD
+    path: "in assets/training/workbench/diagnostics/internal/DL-204.json field 'flag'. Service: workbench port 8083 GET /api/diagnostics/render?delivery_id=DL-204&view=public/%2E%2E/internal/DL-204.json."
   - flag_id: T02.1
     source: value
     value: "FLAG{7502f8e82360c288}"
     host: training-host
-    path: TBD
+    path: "in accounts.py _lookup() response for account=rhea.moss, field 'flag'. Service: accounts port 8080 POST /api/recovery/lookup."
   - flag_id: T02.2
     source: value
     value: "FLAG{9e9612ddd489395c}"
     host: training-host
-    path: TBD
+    path: "in assets/training/accounts/directory/assignment-STF-204.json field 'flag'. Service: accounts port 8080 GET /api/directory/staff/STF-204/assignment."
   - flag_id: T02.3
     source: value
     value: "FLAG{0efa33511b93dccd}"
     host: training-host
-    path: TBD
+    path: "in accounts.py _redeem() response (201), field 'flag'. Service: accounts port 8080 POST /api/recovery/redeem. Only visible on first successful redeem."
   - flag_id: T02.4
     source: value
     value: "FLAG{50676f831e62140a}"
     host: training-host
-    path: TBD
+    path: "in assets/training/accounts/assignment-ASG-317.json field 'flag'. Service: accounts port 8080 GET /api/assignments/ASG-317/brief. Requires valid session."
   - flag_id: T03.1
     source: value
     value: "FLAG{ebde2dc446a73484}"
     host: training-host
-    path: TBD
+    path: "in git-historical test/fixtures/DL-204.json in assets/training/developer/repository-seed.json (commit fixture-added tree), field 'flag'. Service: developer port 8081 git show HEAD^:test/fixtures/DL-204.json."
   - flag_id: T03.2
     source: value
     value: "FLAG{ed8a392c59b6e039}"
     host: training-host
-    path: TBD
+    path: "in assets/training/developer/channel-manifest.json field 'flag'. Service: developer port 8083 GET /api/channels/rehearsal/manifest. Requires publisher token."
   - flag_id: T03.3
     source: value
     value: "FLAG{eab17b875afc64d3}"
     host: training-host
-    path: TBD
+    path: "in assets/training/developer/sample-package/fixtures/rehearsal-source.json field 'flag'. Service: developer port 8080 GET /sample-package/fixtures/rehearsal-source.json."
   - flag_id: T03.4
     source: value
     value: "FLAG{dc2fb2369caf8720}"
     host: training-host
-    path: TBD
+    path: "in developer.py _consumer_run() receipt dict when rehearsal_marker is in output, field 'flag'. Service: developer port 8084 POST /api/consumer/run. Only appears after participant publishes valid package with rehearsal_marker."
   - flag_id: T04.1
     source: value
     value: "FLAG{35b940a34aeaa0f0}"
     host: training-host
-    path: TBD
+    path: "in assets/training/state/captures/volume.json field 'flag'. Service: state port 8080 GET /captures/volume.json."
   - flag_id: T04.2
     source: value
     value: "FLAG{5cdc1c2fcc92fb42}"
     host: training-host
-    path: TBD
+    path: "in assets/training/state/captures/status.json field 'flag'. Service: state port 8080 GET /captures/status.json."
   - flag_id: T04.3
     source: value
     value: "FLAG{03993cc3de147e23}"
     host: training-host
-    path: TBD
+    path: "in state.py observation() dict when terminal=True, field 'flag'. Service: state port 8080 GET /api/practice/observations, last terminal row. Appears after transfer completes."
   - flag_id: T04.4
     source: value
     value: "FLAG{51b9f00459e54f0b}"
     host: training-host
-    path: TBD
+    path: "in assets/training/state/replay/report.json field 'flag'. Service: state port 8080 GET /replay/report.json."
   - flag_id: W01.1
     source: value
     value: "FLAG{c7e9455975ef518d}"

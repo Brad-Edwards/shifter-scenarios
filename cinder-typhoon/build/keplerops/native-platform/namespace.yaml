@@ -419,6 +419,10 @@ spec:
               value: "EXP-2841"
             - name: DESTINATION
               value: "fieldkest-exports"
+            - name: NEXT_ASSIGNMENT
+              value: "field-operator-b"
+            - name: ALLOWED_STARTUP_CONFIG
+              value: "EXP-2841"
           restartPolicy: Never
       backoffLimit: 0
   concurrencyPolicy: Forbid
