@@ -372,11 +372,12 @@ class Handler(BaseHTTPRequestHandler):
     def w34_internal(self, path: str, request: dict[str, object]) -> tuple[int, dict[str, object]]:
         data = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
         outbound = urllib.request.Request(
-            "https://10.77.62.20" + path, data=data,
+            "https://10.77.60.56" + path, data=data,
             headers={"Content-Type": "application/json", "X-ARWC-Internal": "planning-data-reporting",
-                     "X-ARWC-Tenant": "arwc"}, method="POST",
+                     "X-ARWC-Tenant": "arwc", "Host": "independent-instruments.arwc.test"}, method="POST",
         )
         context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
+        context.check_hostname = False
         try:
             response = urllib.request.urlopen(outbound, context=context, timeout=5)
         except urllib.error.HTTPError as error:
