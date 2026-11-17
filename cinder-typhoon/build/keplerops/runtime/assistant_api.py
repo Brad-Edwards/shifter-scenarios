@@ -196,9 +196,13 @@ class AssistantApiHandler(KeplerHandler):
                 self.send_json(403, {"error": "session_required"})
                 return
             # Look up the orphaned thread_id from the K21 config
+            # K21.2: CONV-SUP-2841-19 — ARWC support escalation (orphaned in support-private)
+            # K23.2: CONV-RILL-442-8 — Rillhaven integration reference (orphaned in rill-support)
             k21_config = _load_k21_config()
             if conv_id == "CONV-SUP-2841-19":
                 db_thread_id = k21_config.get("conv_sup_2841_thread_id")
+            elif conv_id == "CONV-RILL-442-8":
+                db_thread_id = k21_config.get("conv_rill_442_thread_id")
             else:
                 self.send_json(404, {"error": "conversation_not_found"})
                 return
