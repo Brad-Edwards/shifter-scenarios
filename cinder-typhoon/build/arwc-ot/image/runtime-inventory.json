@@ -1,0 +1,32 @@
+{
+  "schema": "arwc.cached-images/v1",
+  "images": {
+    "arwc-ot-compat-io": "sha256:6c128e62feb63109a6f8da37dcc940228985fe6314e3e523c2ac20e6afd9068e",
+    "arwc-ot-engineering:368": "sha256:83084f752656dc45a404abfb18fbd473e69c4ecbd24eb71e9aace07cda00312b",
+    "arwc-ot-fuxa:1.3.5-opcua1": "sha256:371d41553dd550294872e787f9e6428612210fdbd61b6c3cd1c054c9d25e6be8",
+    "arwc-ot-openplc:4.3.2-identity1": "sha256:e65857341cdc8eb861a2e86cf90651f7b53db7c47eab047420a2add99b098741",
+    "cinder-arwc/a-approval:hand-build": "sha256:9f54499dfedc8e97316781b2762d2d2208ef3c51367da8fdcedbf1607072f61d",
+    "cinder-arwc/a-archive:hand-build": "sha256:fd3509547512c803de3a3c75cc0612d4ac45952182810fc2d7634cd9d857ba63",
+    "cinder-arwc/a-business:hand-build": "sha256:f4700dc75f9661f3221372b3172bf565efb4ba5353dadc2d0b23ed7f48f8bde7",
+    "cinder-arwc/a-connector:hand-build": "sha256:e83e064783446295b0d4b594e9facb4873a7491ab3794089c0999ed6cfd2c162",
+    "cinder-arwc/a-contractor-bridge:hand-build": "sha256:190be1e9f801086c7ac61cd38e73933f30aa36b23e426f39b993c2db0caf00a0",
+    "cinder-arwc/a-contractors:hand-build": "sha256:3c12e460f8b160d93949383d8a03baad4af990afd230c60a62769c75bce05744",
+    "cinder-arwc/a-control-broker:hand-build": "sha256:545e3782c1b4b50be440b053a436703ae01b6811640c902a541d834e13b7545d",
+    "cinder-arwc/a-data-bridge:hand-build": "sha256:3527506edef05dddec05c4cfa489decf52750a7b017201a5258e95ef4d76e709",
+    "cinder-arwc/a-data:hand-build": "sha256:514ef1922627a35819c7971f7abfbe07637f8064d835006dd5a005cc131a4395",
+    "cinder-arwc/a-diagnostics:hand-build": "sha256:c5ef2b5948cb0aae7e2874bde754ff7ea91b0bce8036c2bba22846cf69298143",
+    "cinder-arwc/a-distribution:hand-build": "sha256:5b9ba75c362d57d07ed1ddcd2a463d2e770a7daa01e73483232e33fe8e273858",
+    "cinder-arwc/a-engineering:hand-build": "sha256:e472363f1ffa871ac8aaf725ce39ca2e753641bc554681396bab371dbf50e5b3",
+    "cinder-arwc/a-historian:hand-build": "sha256:38ee51c94df3da6734ed7bbec017aa89615142104e080e8ea612c04923bb2fd8",
+    "cinder-arwc/a-hmi:hand-build": "sha256:da0fe9e8ea0571db6b4068d7b37d6970ff75ea0a048e169f68fa6c334397bef7",
+    "cinder-arwc/a-identity:hand-build": "sha256:17848a868005a073787300aa8fe148e73e013947e221b2ff4e121d40563eefba",
+    "cinder-arwc/a-instruments:hand-build": "sha256:637e520074b4f6678c216fad9a9360b9ceb658eddbfdcedbcc22806180f87f76",
+    "cinder-arwc/a-renderer:hand-build": "sha256:2f7f084ca5e32a830a4aa79c910d9bb161f513a596dc54388b44edd9c9db01e4",
+    "cinder-arwc/a-reservoir:hand-build": "sha256:cb84e203280771008ec215f996bf666ac8daa580dbe341c5705991ffba568ea2",
+    "cinder-arwc/fieldlink-edge:hand-build": "sha256:d94d67b0448d9ea9387d908203eb70c31f40632038335c90bc118d461570a75b",
+    "eclipse-mosquitto:2.0.22@sha256:81a6193ae693942a3231cd3ac52875b02b7e3a19da671b2fb4b55cc874c5b279": "sha256:81a6193ae693942a3231cd3ac52875b02b7e3a19da671b2fb4b55cc874c5b279",
+    "grafana/grafana:12.2.1@sha256:35c41e0fd0295f5d0ee5db7e780cf33506abfaf47686196f825364889dee878b": "sha256:35c41e0fd0295f5d0ee5db7e780cf33506abfaf47686196f825364889dee878b",
+    "postgres:18.6-trixie@sha256:e3d24f6906d0760bf4da0dae872415391ededefad23fd471c47dc53b0ddf3c42": "sha256:e3d24f6906d0760bf4da0dae872415391ededefad23fd471c47dc53b0ddf3c42",
+    "telegraf:1.39.1@sha256:8c1bc372ffa128be2febfe25f1fe092333d3d6c2293cf5e57176582179ba358a": "sha256:8c1bc372ffa128be2febfe25f1fe092333d3d6c2293cf5e57176582179ba358a"
+  }
+}
