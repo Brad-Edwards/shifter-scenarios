@@ -1326,12 +1326,14 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md
   W33.2:
-    h1: Use the operating-window CSV, schedule template, and measured W33.1 gain. Model all twelve five-minute
-      intervals; the alternate supply and reservoir release are separate planning inputs.
-    h2: Recalculate buffer state after every interval, not only at the end. Then check both action ranges, both step
-      limits, the final buffer range, and projected reservoir-volume range.
-    h3: Keep the template identity fields unchanged and supply twelve values for both series. A feasible schedule is
-      enough; there is no single hidden trajectory to reproduce.
+    h1: POST /api/operating-schedules/current with {forecast:<W33.1 calibration>,schedule:{...}}.
+      Schedule must have schema=arwc.operating-schedule/v1, instruction=CRR-OP-W33-R1, asset=AST-CRR-017,
+      interval_seconds=300, reservoir_release_m3s=[12 values], alternate_supply_m3s=[12 values].
+    h2: Buffer equation: buf[i+1] = buf[i] + 300*(gain*release[i]+alternate[i]-demand[i]).
+      Initial=180m3, min=120, max=240, final 160-200. Volume=sum(300*gain*release)/1000 in [0.78,0.84]ML.
+      Simple: constant release=0.224, alternate=demand-gain*0.224 gives buffer=180 and volume=0.81ML.
+    h3: Max release=0.8 m3/s, max alternate=0.5 m3/s. Demand=[0.45,0.5,0.55,0.6,0.65,0.7,0.7,0.65,0.6,0.55,0.5,0.45].
+      Sets w33_schedule state; gates W33.3.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W33/operating-window.csv

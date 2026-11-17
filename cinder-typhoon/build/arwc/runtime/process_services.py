@@ -641,6 +641,11 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/commissioning-calibrations/current"
     },
     {
+        "key": "process.operating-schedule",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/operating-schedules/current"
+    },
+    {
         "key": "process.estimator-sufficiency",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-sufficiency/current"
@@ -888,6 +893,9 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "engineering" and path == "/api/commissioning-calibrations/current":
             self.w33_1_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/operating-schedules/current":
+            self.w33_2_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
@@ -1743,6 +1751,76 @@ class Handler(BaseHTTPRequestHandler):
         }
         atomic_json(ROOT / "artifacts" / "commissioning-calibration" / "result.json", record)
         self.accepted("commissioning-calibration", record, 201)
+
+    def w33_2_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("w33_calibrated"):
+            self.send_json(403, {"error": "commissioning calibration (W33.1) required"})
+            return
+        REQUIRED = {"forecast", "schedule"}
+        if set(request) != REQUIRED:
+            self.send_json(409, {"error": "W33.2 submission must have forecast and schedule"})
+            return
+        SCHED_REQ = {"schema", "instruction", "asset", "interval_seconds",
+                     "reservoir_release_m3s", "alternate_supply_m3s"}
+        sched = request.get("schedule", {})
+        if (not isinstance(sched, dict) or set(sched) != SCHED_REQ or
+                sched.get("schema") != "arwc.operating-schedule/v1" or
+                sched.get("instruction") != "CRR-OP-W33-R1" or
+                sched.get("asset") != "AST-CRR-017" or
+                sched.get("interval_seconds") != 300):
+            self.send_json(409, {"error": "operating schedule identity does not match CRR-OP-W33-R1"})
+            return
+        releases = sched.get("reservoir_release_m3s", [])
+        alternate = sched.get("alternate_supply_m3s", [])
+        if (not isinstance(releases, list) or len(releases) != 12 or
+                not isinstance(alternate, list) or len(alternate) != 12):
+            self.send_json(409, {"error": "schedule must have 12 intervals"})
+            return
+        DEMAND = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.7, 0.65, 0.6, 0.55, 0.5, 0.45]
+        MAX_RELEASE = 0.8; MAX_ALTERNATE = 0.5
+        MIN_BUFFER = 120.0; MAX_BUFFER = 240.0
+        MIN_FINAL = 160.0; MAX_FINAL = 200.0
+        MIN_VOLUME = 0.78; MAX_VOLUME = 0.84
+        flow_gain = float(state.get("w33_flow_gain", 1.003591))
+        try:
+            releases_f = [float(r) for r in releases]
+            alternate_f = [float(a) for a in alternate]
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "schedule values must be numeric"})
+            return
+        if any(r < 0 or r > MAX_RELEASE for r in releases_f):
+            self.send_json(409, {"error": "release exceeds maximum"})
+            return
+        if any(a < 0 or a > MAX_ALTERNATE for a in alternate_f):
+            self.send_json(409, {"error": "alternate supply exceeds maximum"})
+            return
+        buffer = 180.0
+        buffers = [buffer]
+        for rel, alt, dem in zip(releases_f, alternate_f, DEMAND):
+            buffer += 300 * (flow_gain * rel + alt - dem)
+            buffers.append(buffer)
+            if buffer < MIN_BUFFER or buffer > MAX_BUFFER:
+                self.send_json(409, {"error": f"schedule buffer outside envelope: {buffer:.1f}"})
+                return
+        if not (MIN_FINAL <= buffers[-1] <= MAX_FINAL):
+            self.send_json(409, {"error": f"final buffer outside range: {buffers[-1]:.1f}"})
+            return
+        volume = sum(300 * flow_gain * r for r in releases_f) / 1000.0
+        if not (MIN_VOLUME <= volume <= MAX_VOLUME):
+            self.send_json(409, {"error": f"projected volume outside range: {volume:.4f} ML"})
+            return
+        state["w33_schedule"] = sched
+        state["w33_schedule_volume"] = volume
+        save_state(state)
+        record = {
+            "record_id": "SCHED-CRR-W33-R1", "revision": 1,
+            "instruction": "CRR-OP-W33-R1", "asset": "AST-CRR-017",
+            "interval_count": 12, "interval_seconds": 300,
+            "projected_reservoir_volume_ml": volume,
+            "final_buffer_m3": buffers[-1], "feasible": True,
+        }
+        atomic_json(ROOT / "artifacts" / "operating-schedule" / "result.json", record)
+        self.accepted("operating-schedule", record, 201)
 
     def w30_2_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state.get("request_planned"):
