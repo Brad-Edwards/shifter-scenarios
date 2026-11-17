@@ -183,6 +183,8 @@ class CIHandler(KeplerHandler):
             self._job_submit()
         elif path == "/api/rehearsals/connector":
             self._connector_rehearsal()
+        elif path == "/api/rehearsals/k02-1-verify":
+            self._k02_1_verify()
         elif path == "/api/rehearsals/k29-3-verify":
             self._k29_3_verify()
         elif path == "/api/rehearsals/k29-4-verify":
@@ -511,6 +513,62 @@ class CIHandler(KeplerHandler):
             (RESULTS / f"{rehearsal_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "rehearsals", {"request_id": self.request_id, "principal": USERNAME, "rehearsal_id": rehearsal_id, "consumer": consumer, "package": result["package"], "version": version, "package_sha256": result["package_sha256"], "output_sha256": sha256_bytes(canonical_bytes(output)), "state": "success", "status": 202})
         self.send_json(202, result)
+
+    def _k02_1_verify(self) -> None:
+        """K02.1 grader: bind recovered fixture digest to failing build and historical revision.
+
+        Takes {run_id, fixture_sha256, test_revision}.
+        Verifies:
+        - run_id == BLD-1842 (proves correlation with the actual failed Jenkins build)
+        - fixture_sha256 matches the fixture deleted from HEAD but present in git history
+        - test_revision matches 80560bcf8381c36ef82be771e58fc164a349ea07 or tag fk-test-6d1e9f7
+        """
+        _FIXTURE_SHA256 = "da511020fa2f2e23ec74ea3e8e2f8e19452ae90bcdd32fea2e0602b8573d6564"
+        _FIXTURE_REVISION = "80560bcf8381c36ef82be771e58fc164a349ea07"
+        _FIXTURE_TAG = "fk-test-6d1e9f7"
+        _RUN_ID = "BLD-1842"
+        try:
+            body = self.read_json(131_072)
+            run_id = body.get("run_id", "")
+            fixture_sha256 = body.get("fixture_sha256", "")
+            test_revision = body.get("test_revision", "")
+            if not (run_id and fixture_sha256 and test_revision):
+                raise ValueError("run_id_fixture_sha256_test_revision_required")
+        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
+            self.send_json(422, {"error": "invalid_k02_1_submission"})
+            return
+        if run_id != _RUN_ID:
+            self.send_json(422, {"error": "run_id_binding_denied"})
+            return
+        if fixture_sha256.lower() != _FIXTURE_SHA256:
+            self.send_json(422, {"error": "fixture_digest_mismatch"})
+            return
+        if test_revision != _FIXTURE_TAG and not test_revision.startswith(_FIXTURE_REVISION[:16]):
+            self.send_json(422, {"error": "test_revision_binding_denied"})
+            return
+        receipt_path = RESULTS / "k02-1-complete.json"
+        if receipt_path.is_file():
+            self.send_json(200, json.loads(receipt_path.read_text()))
+            return
+        receipt_id = "K02-1-" + uuid.uuid4().hex[:10].upper()
+        result = {
+            "schema": "fieldkest.k02-1-receipt/v1",
+            "receipt_id": receipt_id,
+            "card": "K02.1",
+            "run_id": _RUN_ID,
+            "fixture_path": "fixtures/report-crr-og2.json",
+            "fixture_sha256": _FIXTURE_SHA256,
+            "fixture_revision": _FIXTURE_REVISION,
+            "fixture_tag": _FIXTURE_TAG,
+            "test": "tests/test_crr_og2_report.py",
+        }
+        receipt_path.write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "k02-1-verify", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "receipt_id": receipt_id, "run_id": _RUN_ID,
+            "fixture_sha256": _FIXTURE_SHA256, "status": 201,
+        })
+        self.send_json(201, result)
 
     def _k29_3_verify(self) -> None:
         """K29.3 grader: verify signed compatible consumed release.
