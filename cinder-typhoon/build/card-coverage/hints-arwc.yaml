@@ -1069,12 +1069,17 @@ hints:
     - kind: participant_service
       id: maintenance-renderer.arwc.test
   W27.1:
-    h1: Begin with the legacy program verifier and planning diagnostic consumer. Its published client document exposes
-      the signature program reproduction operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as signature-equivalence modeling under structural and unaffected-output constraints. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the signature program reproduction operation in the published client reference. Capture one ordinary
-      response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: POST https://process-view.arwc.test/api/signature-programs/current/reproductions with CORPORATE Bearer
+      and body {"operation":"materials","record_id":"VER-ROT128-R3"}. Returns the rot128-verifier ELF binary
+      (verifier_b64) and 6 DPG1 programs (program_b64). Reverse-engineer the ROT128 algorithm from the binary.
+    h2: ROT128 algorithm: pad data with 0x80 then zeros to 16-byte boundary. IV=0x6a09e667f3bcc908bb67ae8584caa73b
+      (u128 LE). For each 16-byte block: s = ROTL128(s,17) XOR block XOR ROTL128(block,41). Final: s XOR
+      ROTL128(s,29) XOR unpadded_byte_length. Each block is little-endian u128. Six programs test header
+      inclusion, padding, rotation direction, endian order, and length handling.
+    h3: Submit POST /api/signature-programs/current/reproductions with body {"operation":"results",
+      "record_id":"VER-ROT128-R3","program_set":"DPG1-CASES-R3","results":[{"case_id":"DPG1-CASE-N",
+      "digest":"<32hex>","decision":"accepted"|"rejected"},...]}. All 6 must be correct (run verifier binary
+      or implement ROT128). Returns VER-ROT128-RESULT-R3.
     references:
     - kind: client_route
       id: process.signature-program-reproduction
