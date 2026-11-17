@@ -1,5 +1,7 @@
 FROM node:22.19.0-bookworm-slim AS node-tools
 
+FROM smallstep/step-ca:0.28.4@sha256:0f88382ac5af5c6b7bbba0c6e8fcefef52aee6f22ea364df8e02a09ffd0d22f3 AS step-tools
+
 FROM debian:bookworm-slim AS indexer-reproducer
 
 RUN apt-get update \
@@ -14,7 +16,7 @@ RUN gcc -std=c11 -O0 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none -D_FORTIFY_S
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates curl dbus-x11 firefox-esr git iproute2 jq krb5-user openssh-server procps sqlite3 unzip util-linux xorgxrdp xrdp xfce4 xfce4-terminal zip \
+    && apt-get install --no-install-recommends -y ca-certificates curl dbus-x11 firefox-esr git iproute2 jq krb5-user openssh-server procps sqlite3 unzip util-linux xdg-utils xorgxrdp xrdp xfce4 xfce4-terminal zip \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir cryptography==50.0.2 \
     && groupadd --gid 2000 rowan \
@@ -31,6 +33,7 @@ RUN apt-get update \
 
 COPY --from=node-tools /usr/local/bin/node /usr/local/bin/node
 COPY --from=node-tools /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=step-tools /usr/local/bin/step /usr/local/bin/step
 RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
     && ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 ENV NODE_EXTRA_CA_CERTS=/home/rowan/.local/share/keplerops/ca.crt
@@ -41,6 +44,7 @@ COPY build/keplerops/runtime/k-dev-entrypoint.sh /usr/local/bin/fieldkest-k-dev-
 COPY build/keplerops/config/sshd_config /etc/ssh/sshd_config
 COPY build/keplerops/config/firefox-policies.json /usr/lib/firefox-esr/distribution/policies.json
 COPY build/keplerops/config/krb5.conf /etc/krb5.conf
+COPY assets/keplerops/native-workplace/identity-access.md /usr/local/share/fieldlink/identity-access.md
 COPY build/participant-host/startwm.sh /etc/xrdp/startwm.sh
 COPY build/participant-host/startwm.sh /home/rowan/.xsession
 COPY build/participant-host/shifter-participant-readiness /usr/local/libexec/shifter-participant-readiness
@@ -59,6 +63,7 @@ RUN tar -xf /tmp/k-dev-home.tar -C /home/rowan \
     && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-policy-compiler-home.tar -C /home/rowan \
     && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-connector-archive-home.tar -C /home/rowan \
     && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-release-lineage-home.tar -C /home/rowan \
+    && rm -f /home/rowan/.config/git/credentials /home/rowan/.npmrc /home/rowan/.config/chromium/Default/Cookies \
     && mkdir -p /home/rowan/.local/share/keplerops \
     && touch /home/rowan/.local/share/keplerops/registry-foundation-2026-09-18 \
     && touch /home/rowan/.local/share/keplerops/policy-compiler-2026-09-18 \

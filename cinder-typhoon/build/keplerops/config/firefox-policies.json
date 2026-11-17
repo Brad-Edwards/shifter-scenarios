@@ -1,7 +1,7 @@
 {
   "policies": {
     "Certificates": {
-      "Install": ["/home/rowan/.local/share/keplerops/ca.crt"]
+      "Install": ["/home/rowan/.local/share/keplerops/ca.crt", "/home/rowan/.local/share/keplerops/enrollment-ca.crt"]
     },
     "Homepage": {
       "URL": "https://source.keplerops.test/",

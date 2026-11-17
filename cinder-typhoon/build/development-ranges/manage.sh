@@ -176,10 +176,11 @@ case $action in
     if [[ $target == fieldlink ]]; then
       tar -C "$pack_root" -czf "$archive" \
         --exclude='*/.operator' --exclude='*/__pycache__' \
-        build/development-ranges build/keplerops \
+        .dockerignore build/development-ranges build/keplerops \
         assets/keplerops/opening \
         assets/keplerops/registry \
         assets/keplerops/native-packages \
+        assets/keplerops/native-workplace \
         assets/keplerops/build-operations \
         assets/keplerops/policy-compiler \
         assets/keplerops/connector-archive \

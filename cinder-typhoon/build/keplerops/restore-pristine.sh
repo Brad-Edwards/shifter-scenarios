@@ -9,8 +9,8 @@ bash ./generate-operator-material.sh
 docker compose -f compose.yaml up -d --force-recreate \
   router fieldlink-dns fieldlink-edge fieldlink-postgres runner \
   k-source k-registry k-ci fieldlink-review k-preview k-support k-indexer \
-  k-cloud-api k-workload k-data k-assistant k-staff k-identity k-cert \
-  a-connector k-dev
+  k-cloud-api k-workload k-data k-assistant k-identity fieldlink-keycloak k-cert \
+  fieldlink-kanboard fieldlink-support-db fieldlink-support a-connector k-dev
 
 for attempt in $(seq 1 60); do
   if docker exec --user rowan cinder-keplerops-k-dev curl -sS --fail \
@@ -24,6 +24,10 @@ for attempt in $(seq 1 60); do
   fi
   sleep 1
 done
+
+bash ./native-workplace/bootstrap-databases.sh
+bash ./native-workplace/bootstrap-staff.sh
+bash ./native-workplace/bootstrap-support.sh
 
 docker exec --user fieldkest-registry cinder-keplerops-registry \
   sh -c 'test -z "$(find /var/lib/fieldkest-registry/published -type f -print -quit)"'
