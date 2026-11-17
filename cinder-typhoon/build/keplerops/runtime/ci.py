@@ -187,6 +187,8 @@ class CIHandler(KeplerHandler):
             self._k02_1_verify()
         elif path == "/api/rehearsals/k02-2-verify":
             self._k02_2_verify()
+        elif path == "/api/rehearsals/k02-3-verify":
+            self._k02_3_verify()
         elif path == "/api/rehearsals/k29-3-verify":
             self._k29_3_verify()
         elif path == "/api/rehearsals/k29-4-verify":
@@ -569,6 +571,68 @@ class CIHandler(KeplerHandler):
             "request_id": self.request_id, "principal": USERNAME,
             "receipt_id": receipt_id, "run_id": _RUN_ID,
             "fixture_sha256": _FIXTURE_SHA256, "status": 201,
+        })
+        self.send_json(201, result)
+
+    def _k02_3_verify(self) -> None:
+        """K02.3 grader: bind Jenkins SUCCESS to job result and support handover.
+
+        Takes {job_id, report_sha256}.
+        Verifies:
+        - job_id exists in RESULTS with state=success
+        - HANDOVER has matching job_id and report_sha256
+        """
+        try:
+            body = self.read_json(131_072)
+            job_id = body.get("job_id", "")
+            report_sha256 = body.get("report_sha256", "")
+            if not (job_id and report_sha256):
+                raise ValueError("job_id_report_sha256_required")
+        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
+            self.send_json(422, {"error": "invalid_k02_3_submission"})
+            return
+        import re as _re
+        if not _re.fullmatch(r"JOB-[0-9A-F]{12}", job_id):
+            self.send_json(422, {"error": "job_id_format_invalid"})
+            return
+        job_path = RESULTS / f"{job_id}.json"
+        if not job_path.is_file():
+            self.send_json(404, {"error": "job_not_found"})
+            return
+        job = json.loads(job_path.read_text())
+        if job.get("state") != "success":
+            self.send_json(422, {"error": "job_not_succeeded"})
+            return
+        if job.get("report_sha256") != report_sha256:
+            self.send_json(422, {"error": "report_digest_mismatch"})
+            return
+        if not HANDOVER.is_file():
+            self.send_json(422, {"error": "handover_not_available"})
+            return
+        handover = json.loads(HANDOVER.read_text())
+        if handover.get("job_id") != job_id or handover.get("report_sha256") != report_sha256:
+            self.send_json(422, {"error": "handover_binding_failed"})
+            return
+        receipt_path = RESULTS / f"k02-3-{job_id}.json"
+        if receipt_path.is_file():
+            self.send_json(200, json.loads(receipt_path.read_text()))
+            return
+        receipt_id = "K02-3-" + uuid.uuid4().hex[:10].upper()
+        result = {
+            "schema": "fieldkest.k02-3-receipt/v1",
+            "receipt_id": receipt_id,
+            "card": "K02.3",
+            "job_id": job_id,
+            "report_sha256": report_sha256,
+            "input_archive_sha256": job.get("input_archive_sha256"),
+            "assessment": job.get("report", {}).get("assessment"),
+            "handover_confirmed": True,
+        }
+        receipt_path.write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "k02-3-verify", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "receipt_id": receipt_id, "job_id": job_id,
+            "report_sha256": report_sha256, "status": 201,
         })
         self.send_json(201, result)
 
