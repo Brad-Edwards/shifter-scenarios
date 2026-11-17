@@ -1236,12 +1236,15 @@ hints:
     - kind: client_route
       id: process.vault-record
   W31.2:
-    h1: Begin with the diagnostic vault record, parser worker, and approval-history export. Its published client
-      document exposes the signature record operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-boundary analysis followed by protected saved-state control. Carry forward only earned
-      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Locate the signature record operation in the published client reference. Replay the preceding evidence through
-      the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: POST /api/signature-records/current with {"case_id":"DV-CRR-4417","build_id":"DVL-WORKER-R5",
+      "record_b64":"<512-byte DVL1 record>"}. DVL1: "DVL1" + declared(u16-le=0xfe08) + header(u16-le=0x01f8)
+      + CRC32C(u32-le over 500-byte payload) + 500-byte payload. Total = 512 bytes exactly.
+    h2: The exploit: (declared + header) mod 2^16 = (0xfe08 + 0x01f8) mod 65536 = 0 (wraps), which passes
+      the <=504 check. header=504 bytes are then copied into the 288-byte workspace, overflowing into the
+      canary and control fields. CRC32C polynomial 0x82f63b78 (Castagnoli), computed over the 500-byte payload.
+    h3: For --boundary mode the binary only checks declared=0xfe08, header=0x01f8, length=512. Payload content
+      does not matter. Returns declared_length=65032, header_length=504, wrapped_sum=0, copied_bytes=504.
+      Sets vault_boundary_controlled state; gates W31.3 (--execute mode with ROP chain).
     references:
     - kind: client_route
       id: process.signature-record
