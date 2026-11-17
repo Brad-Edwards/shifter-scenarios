@@ -1365,12 +1365,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md
   W34.1:
-    h1: Begin with the planning estimate consumer and reporting handover. Start from planning-data.arwc.test's published
-      client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as trusted-view manipulation while preserving raw-measurement integrity. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Review the published client document and ordinary records for planning-data.arwc.test. Join the independent
-      records on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: POST /api/reporting-submissions/current/result on planning-data.arwc.test (requires corporate Bearer
+      + X-ARWC-Planner-Session). Body: {checkpoint:REH-REPORT-34, consumer:PLAN-CONSUMER-R8,
+      consumer_revision:8, source:DPG-CRR-CINDER, estimate:{Cairn Reach:13.4,North:8.1,Merewick:7.65},
+      refresh_interval_seconds:300, raw_observations:[MTR-CRR-DP3-R12,FIT-CRR-204A,FIT-CRR-204B]}.
+    h2: Source must be DPG-CRR-CINDER (W27.3 path) or ALLOC-CASE-CRR-33 (W23.3 path).
+      Requires process_interpretation_prerequisite (reserve_reconciled + REC-CRR-DP3-17 integration evidence).
+      Also requires the PLAN-CONSUMER-R8 result file from W27.3 (diagnostic_estimate_observed).
+    h3: Returns VIEW-CRR-34 record showing the planning consumer bound to the controlled estimate.
+      Sets reporting_view_observed state; gates W34.2.
     references:
     - kind: participant_service
       id: planning-data.arwc.test
