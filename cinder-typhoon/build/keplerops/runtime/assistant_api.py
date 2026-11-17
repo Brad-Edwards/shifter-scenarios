@@ -79,7 +79,7 @@ class AssistantApiHandler(KeplerHandler):
                 "answer_requests": {
                     "private_escalation": {
                         "context_id": "ctx-support-private-v4",
-                        "conversation_id": k21.get("conv_sup_2841_slug", "CONV-SUP-2841-19"),
+                        "conversation_id": "CONV-SUP-2841-19",
                         "tenant_id": "TEN-RILL-022",
                     }
                 },

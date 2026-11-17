@@ -163,7 +163,7 @@ def seed(operator: Path) -> None:
         'conv_sup_2841_thread_id': conv_id,
         'workspace_id': workspace_id,
     }, indent=2) + '\n')
-    config_path.chmod(0o600)
+    config_path.chmod(0o644)
     marker.touch(mode=0o600)
     print(f'K21 assistant workspace seeded: workspace={slug} thread={thread_slug} conv_id={conv_id}')
 
