@@ -11,10 +11,10 @@
       "phase_card_count": 120,
       "phase_operation_count": 35,
       "phase_score_total": 21450,
-      "revision": "0862277292f01267f5cfbff2c0c82b211d39a64f6465e623ec89909f345042e0",
+      "revision": "3fb0ceb048a65b13bbeb3a11889cdd0f8270459f5256d822cea3c1dab168512b",
       "schema": "cinder-typhoon.challenge-delivery/v2",
       "score_total": 39200,
-      "sha256": "ec2fc9a0ebfdac8bbc97477ce2dc2b63d702e4471dd85c65094f3ba27b1368fc"
+      "sha256": "240b3e580d82bf6603fc51ecf1d439203581d27f61f794d0bdaa49ab2f84b1a6"
     },
     "hints": {
       "items": [
@@ -344,7 +344,7 @@
         },
         {
           "card_id": "W12.1",
-          "content_revision": "ad392366b555fdbbb07bcd10186adcb79f0ea94c8a9cbac7770df23826f8e2e8",
+          "content_revision": "d3f00642afd7040cbc4f7cc1534608998413b058c25ad5ac58a08d0be2c44382",
           "levels": [
             1,
             2,
@@ -353,7 +353,7 @@
         },
         {
           "card_id": "W12.2",
-          "content_revision": "a2f500d0d5acc42884753a2fde18bf0183e7e0296e5269296dc243f8bdcc882f",
+          "content_revision": "38516432fb6b146e47beb48e9079305de9936c7dfac09ba6474b8d362c69f8fe",
           "levels": [
             1,
             2,
@@ -362,7 +362,7 @@
         },
         {
           "card_id": "W12.3",
-          "content_revision": "38fbaa8987f442d97028b79bd9e20df84c931eb8748611bfd93d522756d2edf0",
+          "content_revision": "58878f17f9fbc3de44b415f1852b40ce60d8ef3bfb439113479d1ee6f30746ea",
           "levels": [
             1,
             2,
@@ -371,7 +371,7 @@
         },
         {
           "card_id": "W12.4",
-          "content_revision": "599ec75b15348f8782362d9be4a7607fc7d9e5d882af0efbfdb688e217069da5",
+          "content_revision": "701a1e5a0cd8593c3ce3a701165f3942e85cc955e57c9ddd1f333847d11cbcb4",
           "levels": [
             1,
             2,
@@ -407,7 +407,7 @@
         },
         {
           "card_id": "W13.1",
-          "content_revision": "d7affc522035a8b0d9d119c4f816c01301f1bd47ad772298c01020820ca615f1",
+          "content_revision": "2d9b5b13edc85225ab616ce7da814edd70da3caaf6b6fec90971c7912c8f3753",
           "levels": [
             1,
             2,
@@ -416,7 +416,7 @@
         },
         {
           "card_id": "W13.2",
-          "content_revision": "7a147a7b1d13bb12b8b108e47ee3eef92de5050e706770302e0ff45da904d590",
+          "content_revision": "8964ead0d7f912b36c2851ff08ba1171714d700655e1196096bf9adde373d09e",
           "levels": [
             1,
             2,
@@ -425,7 +425,7 @@
         },
         {
           "card_id": "W13.3",
-          "content_revision": "a7d4f2d22c782c5c830906437df3746110bf19ecd329cc007bbfbde12f1386e7",
+          "content_revision": "7814c2351738dbc8efd63d5866048546c1b4a4eee3e98e2575f2b84f2cd1ebe6",
           "levels": [
             1,
             2,
@@ -434,7 +434,7 @@
         },
         {
           "card_id": "W13.4",
-          "content_revision": "62cd680e5079b9391110b8cbb4a8a0d2912486bc577ce0b939b704fb7c8f55c6",
+          "content_revision": "89ed80a0aa10bd0004fa2fb3620668b21763e36a436f5fe8f5232587c55f2109",
           "levels": [
             1,
             2,
@@ -443,7 +443,7 @@
         },
         {
           "card_id": "W14.1",
-          "content_revision": "369d0733d3bc7bf06562a3417e4814436e35b5e1af61485136398fb3edb539b7",
+          "content_revision": "e4ce96aaf2a22f0758a0913caeb04c15d2aaf6313cc640f49970ca358416f04c",
           "levels": [
             1,
             2,
@@ -452,7 +452,7 @@
         },
         {
           "card_id": "W14.2",
-          "content_revision": "a765b052b2f7793f4dacca33dd11de86b7e50fef5393e36c55801dc782d727f8",
+          "content_revision": "47da6e42bfa661b2db0497e6cf28a2ce1af7d22cf94633a9eaace19ee09a4e64",
           "levels": [
             1,
             2,
@@ -461,7 +461,7 @@
         },
         {
           "card_id": "W14.3",
-          "content_revision": "9b9bffb544cabd39f07842ae88f3efb61c944d1871c218bda38c9bf8885f42af",
+          "content_revision": "cfa0114d008f5fec7cbd3708bc670630e3ab9dde6885085b58041a5dd2b26fc8",
           "levels": [
             1,
             2,
@@ -470,7 +470,7 @@
         },
         {
           "card_id": "W15.1",
-          "content_revision": "11616134bcf2e01af791f5f353d5f59f7de937aef93fbcec42421c5c93eeacd8",
+          "content_revision": "ac08d441c074becdd76570b26c20236824e595ab1729ed92a81d718cdb944cb0",
           "levels": [
             1,
             2,
@@ -479,7 +479,7 @@
         },
         {
           "card_id": "W15.2",
-          "content_revision": "ab77f078e61cd9d99f3c224966d52062e1a962a3bdea12f8187d5ed8c63c6435",
+          "content_revision": "14ade8893cfd31833ce745389fe76c9513283adb4debaa4b202dbc5568681133",
           "levels": [
             1,
             2,
@@ -488,7 +488,7 @@
         },
         {
           "card_id": "W15.3",
-          "content_revision": "6d15cfa96f23ed69c1bf2c4169e1302481bba47fd433756b5fdbd210baf9ad55",
+          "content_revision": "ac797885bdf6097a10442e8942a1687950c387aa7cc4a0e70a31eb8d70655ca5",
           "levels": [
             1,
             2,
@@ -497,7 +497,7 @@
         },
         {
           "card_id": "W15.4",
-          "content_revision": "cd727ca9ea5d686a5a3130eaae7eadc6edb8016f96d5493b562d586d6ba0589e",
+          "content_revision": "6f4b05c6811bb078225a4dc04cf601fbd1bce7ba07bbd32a1fc4f4755b37766d",
           "levels": [
             1,
             2,
@@ -506,7 +506,7 @@
         },
         {
           "card_id": "W16.1",
-          "content_revision": "c652ca9404fa450ece769264254e513525c3f03329d51272cdcee6e3dfddac54",
+          "content_revision": "c05fe25edb55d209015de715ca4173856152495438060814a4d2551cacf7281f",
           "levels": [
             1,
             2,
@@ -515,7 +515,7 @@
         },
         {
           "card_id": "W16.2",
-          "content_revision": "0bf2bc3c5c78d3230459622f480795744dd40b6bd26e5a4ac46294d67fe2370f",
+          "content_revision": "4ec4ac3f540170b277e5028253448418d87358f09f4021786456013724cf1d43",
           "levels": [
             1,
             2,
@@ -524,7 +524,7 @@
         },
         {
           "card_id": "W16.3",
-          "content_revision": "26a8e3808fa35a64b6f8ab1c04af8897ea37bad3eb76f42a34dc4afd7ac801f7",
+          "content_revision": "39f930162c3d4c1997116e6bb6396781228bb57f29a6002636f0ebd5433de095",
           "levels": [
             1,
             2,
@@ -533,7 +533,7 @@
         },
         {
           "card_id": "W16.4",
-          "content_revision": "ef9725cdc7fe1e58f51babf76314da4fa5be480bb37d5a79295f43ff9f245868",
+          "content_revision": "b0b052b676387fef64336e023220e172fac1f4ed8bfc5cab4e5b502861f14a27",
           "levels": [
             1,
             2,
@@ -542,7 +542,7 @@
         },
         {
           "card_id": "W17.1",
-          "content_revision": "c773c2eabe2349fc137a49c7ee7bc2825fadafbfd7f764e901e23dd41e087154",
+          "content_revision": "bb5e095694eddf041fc90cd63ec3cf31d9b1791d6ec2ac620f43965690bc7475",
           "levels": [
             1,
             2,
@@ -551,7 +551,7 @@
         },
         {
           "card_id": "W17.2",
-          "content_revision": "5b3d1bd58f73ce7bde2462428ab1d33b8769ac66abc1757705db43d5b6fd52f5",
+          "content_revision": "b628949560d9c88a3579ce4d4acd1e1f15e11f75a4dcfdd54ed971bbb14e7c6e",
           "levels": [
             1,
             2,
@@ -560,7 +560,7 @@
         },
         {
           "card_id": "W17.3",
-          "content_revision": "9be013ab8efae02c2fde49ad7fc98caff21897272e2a87cc5a920e1f47addd84",
+          "content_revision": "c06c4cb34689136834bd8ca21fcb156aa8be601d06deb6bb6248dcf0d8b23ff8",
           "levels": [
             1,
             2,
@@ -569,7 +569,7 @@
         },
         {
           "card_id": "W17.4",
-          "content_revision": "5b51be889a53cc4fe374934b7e70af1250a8704150dddcd2caf367325272304a",
+          "content_revision": "80e8dda6221504b0366b5d68a00bfde5ca019c048f27591985c2776ee11447e2",
           "levels": [
             1,
             2,
@@ -578,7 +578,7 @@
         },
         {
           "card_id": "W18.1",
-          "content_revision": "cd700da54bfb5874fa79cb132a4c5f62623071f92f120ff1cecfb63d9f089339",
+          "content_revision": "a9e45b38f12b8586cab433e535f756348ff7736d827bcd3af6b0541584907a47",
           "levels": [
             1,
             2,
@@ -587,7 +587,7 @@
         },
         {
           "card_id": "W18.2",
-          "content_revision": "0aba1a0a27053c15ea358003d34884e5244501942e38882a7ee271a8d9dc636b",
+          "content_revision": "c3ea0e91616f1fb86147fec1d8cf6efc670511e8038b3a54d119e82bc0c49020",
           "levels": [
             1,
             2,
@@ -596,7 +596,7 @@
         },
         {
           "card_id": "W18.3",
-          "content_revision": "ae956e0815d3e8a68efa07a8164c0d1f90b14064dc33edba77f6a3c9b26dfc8a",
+          "content_revision": "a35ce9c6fd162299274207c7f547e3be5d5bb205b7830b9ffde7a505caaef0aa",
           "levels": [
             1,
             2,
@@ -605,7 +605,7 @@
         },
         {
           "card_id": "W18.4",
-          "content_revision": "dcc08f1aee5ef10b1583618f51d127935b5cbb284eecbc1814d73595ac078110",
+          "content_revision": "332a9b4e7319a2fa35e0784649fed2ad4ee1b79857d59d9cd58ea1c03dde201c",
           "levels": [
             1,
             2,
@@ -614,7 +614,7 @@
         },
         {
           "card_id": "W19.1",
-          "content_revision": "474460b33646de8d123d03ad1aac982412b671ff3acf542358ab0fce51cd5990",
+          "content_revision": "b69eb8a1de95b36c9b64873c9fff99a566fa117a9d3cee8ef559a318b88b247a",
           "levels": [
             1,
             2,
@@ -623,7 +623,7 @@
         },
         {
           "card_id": "W19.2",
-          "content_revision": "09b96dad22b69e315bbc85dbd4a08ba5247936d641c4c804d2116590047f2e8e",
+          "content_revision": "32ac041303c75620193b92d6fc77789f4db22f6b41d64992ca200dfa95080c7c",
           "levels": [
             1,
             2,
@@ -632,7 +632,7 @@
         },
         {
           "card_id": "W19.3",
-          "content_revision": "fcb1dd4deaa9f750bd7ac19b5ea90843ee5a7d515dc5fb9d0df919db3100a3bf",
+          "content_revision": "c4346f8969d1ea04596c15f5ec58bc4a0ff65bdcaa26e17c18daeb36e618bce6",
           "levels": [
             1,
             2,
@@ -641,7 +641,7 @@
         },
         {
           "card_id": "W19.4",
-          "content_revision": "40150c92f4ea78c3a3c60e9713714b8cbe06092404eaf2a07d0207758e2082d5",
+          "content_revision": "f4040dca149fe7dd26f0578b50b8b100fb7738cb35b32008064cdf3bf43ac2e6",
           "levels": [
             1,
             2,
@@ -650,7 +650,7 @@
         },
         {
           "card_id": "W20.1",
-          "content_revision": "cdeb76c7985f2668442b4cd1f7e3b13fd92abe3948fb37282a68a1d530700bf9",
+          "content_revision": "19680cdebf914949753cb1df6273558c9f5217574b56adce8715e507f44ee489",
           "levels": [
             1,
             2,
@@ -659,7 +659,7 @@
         },
         {
           "card_id": "W20.2",
-          "content_revision": "85faeea8688c2785a826cdd8e33a561d17fbd7ef8edf01dfd69215df28a5d885",
+          "content_revision": "70555ef7ab0b0a60533d8462047a2b9239c2419f9c23e470ab11bca0ee77c7bb",
           "levels": [
             1,
             2,
@@ -668,7 +668,7 @@
         },
         {
           "card_id": "W20.3",
-          "content_revision": "c6ecb7eb784207fed40930ef8800abf434ce3f863b8152cfaa6096984e1316ff",
+          "content_revision": "99e4fde89827c52e00ed1bdd91c132573a8a38fedeae2a4511551004e2a33696",
           "levels": [
             1,
             2,
@@ -677,7 +677,7 @@
         },
         {
           "card_id": "W21.1",
-          "content_revision": "4848981bef9c023cb0725e9007e08c08dfd079aa145ab59371084ea5e6a0be88",
+          "content_revision": "f7614bebb0d653c0ad96882f5762bd4e2035dcdc6cb5b22705c234416678b052",
           "levels": [
             1,
             2,
@@ -686,7 +686,7 @@
         },
         {
           "card_id": "W21.2",
-          "content_revision": "cbca58934c88de0b4cf38d8fce1620187e641707b04852021e02bc3b6cb97e79",
+          "content_revision": "7def35fb86963fe99ef68ad0feb843a7461ea40f8d0ca71614ebbf45773860cf",
           "levels": [
             1,
             2,
@@ -695,7 +695,7 @@
         },
         {
           "card_id": "W22.1",
-          "content_revision": "5ba3a91d9c820d0339d90adf194c6935774d6c8c520a8b35c1165fc75ee803e5",
+          "content_revision": "ea3d99b79f366e41676cac6bacd66a5ceb070b33fb35e8f4a1230d6032706a52",
           "levels": [
             1,
             2,
@@ -704,7 +704,7 @@
         },
         {
           "card_id": "W22.2",
-          "content_revision": "85c3df9e9205d16b997fc8faa66a8b25649bffec9a6b4cfa4ea37e90c1545754",
+          "content_revision": "7c1b20f395031c4ad835ab33f6ae72a978131f58b245c1b4d9b8bc67d69d2213",
           "levels": [
             1,
             2,
@@ -713,7 +713,7 @@
         },
         {
           "card_id": "W22.3",
-          "content_revision": "fa05ddb1c1cd7f76893c44097b50fe26bf4d877b5df7c5a2d3aef91c0a2068d6",
+          "content_revision": "749b2291946062e04d7ae59caba4084c43622f7710e8781dbc4ee9677fd4b373",
           "levels": [
             1,
             2,
@@ -722,7 +722,7 @@
         },
         {
           "card_id": "W22.4",
-          "content_revision": "f4c8fb66c70af7b04e06c93a1b0a45dec0cecb9703b429e563d0312dab3f0f8a",
+          "content_revision": "a22aec9dcbc5b52fd56864da9acba7ef864458212e0bba769d90bfa938e8445a",
           "levels": [
             1,
             2,
@@ -731,7 +731,7 @@
         },
         {
           "card_id": "W23.1",
-          "content_revision": "ef7804e5a574a9492e7b728ddf2d5ecdfab1119a5ac2d1cf862e1d53b4b371e0",
+          "content_revision": "3f20c54af81557f89c1160b29ca7c4e86e48a2074bd6a70bb461dc7daa9787a7",
           "levels": [
             1,
             2,
@@ -758,7 +758,7 @@
         },
         {
           "card_id": "W24.1",
-          "content_revision": "f2a659b7b7ee28c20b5d79e1d69a23e0ef819f389adfc7aede7cc0500c605196",
+          "content_revision": "8a2930a2ed72bd4da214159d5ec71fceae4908976209851b5f9cdd0e0124391c",
           "levels": [
             1,
             2,
@@ -767,7 +767,7 @@
         },
         {
           "card_id": "W24.2",
-          "content_revision": "3d6faae41cc853d1fcd6a1681c8ee6471c974001b5a8b4b5ab3c636d9a16502d",
+          "content_revision": "fbc5c37897483a8432bc68e8b22f2883c0a7617d176831161313624e17f9ed4d",
           "levels": [
             1,
             2,
@@ -776,7 +776,7 @@
         },
         {
           "card_id": "W24.3",
-          "content_revision": "5342da2ef38986c4414b8ae33b19f619323d34aa3e39b9239169a052e0d1592b",
+          "content_revision": "0091e5e17371323d9014840583e782d757dcf0918a9b90135bba22e969109b54",
           "levels": [
             1,
             2,
@@ -785,7 +785,7 @@
         },
         {
           "card_id": "W24.4",
-          "content_revision": "742e5d02ab204dbc672f2238195d6fbe70b312136b6052bcf1b836021d24b349",
+          "content_revision": "50129dfdb0883030e4ff362ca26f11b17d4e2d36ae2d20d5acbeeeb27245a293",
           "levels": [
             1,
             2,
@@ -794,7 +794,7 @@
         },
         {
           "card_id": "W25.1",
-          "content_revision": "200015543112527850ba1cff2dcf371d821565f223e94632154bce972f8c4ba2",
+          "content_revision": "4bf2bea4db13c99f0910658267a713f3035e1f3eac2b3f1688bcb2df37cad947",
           "levels": [
             1,
             2,
@@ -803,7 +803,7 @@
         },
         {
           "card_id": "W25.2",
-          "content_revision": "5788e309c93f9ce28c43aaaf91e8ac7689486a5028fc15706466fc1bc8491849",
+          "content_revision": "11f304eac4f81a0817a105c0c508391cda6cba8f4f2afc12f464fc66cb02754d",
           "levels": [
             1,
             2,
@@ -839,7 +839,7 @@
         },
         {
           "card_id": "W26.2",
-          "content_revision": "d39ba04ada1cf20008f0d4401092f6001533fdf5623e8c59a7dcdbba28b8fad9",
+          "content_revision": "a75f232c4cf853ad0469099b7b9197ecd18340e991a3ae3946f9722db69b736d",
           "levels": [
             1,
             2,
@@ -866,7 +866,7 @@
         },
         {
           "card_id": "W27.1",
-          "content_revision": "a15e55e8686f2aeabac68c6c9051a705d2a3447de0fd470a905644d65f3f991a",
+          "content_revision": "c48c25ee6713bb87ff643de6696963d67609684cfd219a5318185423edaec561",
           "levels": [
             1,
             2,
@@ -875,7 +875,7 @@
         },
         {
           "card_id": "W27.2",
-          "content_revision": "372701145e71076483d83531a8d09ad3c6a2d9cafe724a5a0fd4ab7bcffcb0ac",
+          "content_revision": "864d4545b3787adf1bc7c1e2c32381e792a51b8a6e05ec54a504e64bb2141fc1",
           "levels": [
             1,
             2,
@@ -884,7 +884,7 @@
         },
         {
           "card_id": "W27.3",
-          "content_revision": "e42f8710e51da6e893f17b6e94b157408f430c181e0b84bcf96141b7c730efc2",
+          "content_revision": "3926e5c1199fa6feac0d85a00706b69d881aebbcfeda20d4b84e4d3bb96e6aa5",
           "levels": [
             1,
             2,
@@ -893,7 +893,7 @@
         },
         {
           "card_id": "W28.1",
-          "content_revision": "66928d8b8659d468dada53fc48c30f31fec392ce0423a261f190c633cbc0339e",
+          "content_revision": "a5faa5c1667f5b12383c02146a79d8309c8f80051e03945a7f55d9b10d355d5f",
           "levels": [
             1,
             2,
@@ -902,7 +902,7 @@
         },
         {
           "card_id": "W28.2",
-          "content_revision": "5e2b63ff9a9cf2d21d5e105c7d3d15060da9d8313f3502b2a6c6ea1a7d04be0e",
+          "content_revision": "9e3c4f4d64104f2ccf2117ba6ae26a24f097a39df6b7121a97b8784e6340f906",
           "levels": [
             1,
             2,
@@ -911,7 +911,7 @@
         },
         {
           "card_id": "W28.3",
-          "content_revision": "63d9f235c4ad113d73261413911cb423956a29c8421550923a7c69fc51f6bbb0",
+          "content_revision": "54111a6db6b64c6ae1e936b4b4d1bf05f59beb2c8a6f575d77ee1443f24f05fe",
           "levels": [
             1,
             2,
@@ -920,7 +920,7 @@
         },
         {
           "card_id": "W29.1",
-          "content_revision": "6bbdcf5c647b0de1c51bd49a418359c1b1218aa914bafa649e09cddd7bed91ac",
+          "content_revision": "fdac5d4410eb8342af87d1af12a5a249a906f453549ec770229d52d843ec198b",
           "levels": [
             1,
             2,
@@ -929,7 +929,7 @@
         },
         {
           "card_id": "W29.2",
-          "content_revision": "c135e5d2ffdf11031576b7e1dedb8f7a105004d7f8f52caf0b6fad7dacdc104e",
+          "content_revision": "d3b56f83f1c55b0fe3fa1ce10caf0dcf9776033b940a002e238736745c4f249c",
           "levels": [
             1,
             2,
@@ -938,7 +938,7 @@
         },
         {
           "card_id": "W29.3",
-          "content_revision": "5f9e148dcf32fb2dbed8e94c9cf11b987881b01a6bb08f258e2c2d3771ea9920",
+          "content_revision": "a0197ba93e49fef03e1e17eb0575232ecb1b5af13ec07b4e68b97c308307a821",
           "levels": [
             1,
             2,
@@ -947,7 +947,7 @@
         },
         {
           "card_id": "W30.1",
-          "content_revision": "6d1cd0228a8c263d4a04d761c493926dd4363984e730aebb9308d800f80f6d2f",
+          "content_revision": "964246272a0f3d76caf426f80ef399a05a302dc7a3cf4299bd17d5658e704dc1",
           "levels": [
             1,
             2,
@@ -956,7 +956,7 @@
         },
         {
           "card_id": "W30.2",
-          "content_revision": "3b018e2ba9d1795afa7e7ffb022e419c2d0008e67013818b6494bc4abffc0072",
+          "content_revision": "db73ccfc11d150fe5211ac4f0883858489bb6f1f236b1449f6e918751605bfee",
           "levels": [
             1,
             2,
@@ -965,7 +965,7 @@
         },
         {
           "card_id": "W31.1",
-          "content_revision": "2c4829f946fdfc82682b8a4c8891c055f96379bcb15665dd53d04e0933e27c22",
+          "content_revision": "d6fc0c7a278f149f83a3f3ab26c69745fac5e2ad4f61bca11e1d7bbb6717e096",
           "levels": [
             1,
             2,
@@ -974,7 +974,7 @@
         },
         {
           "card_id": "W31.2",
-          "content_revision": "b67cc237d959d921070e939069008fe4d4f4158040d5376c7bab9d0ff95bd6e4",
+          "content_revision": "eff99b6f87c68bea5241dd8e24922ffdfeae926cd7077a6eb0432ea455b6f7e6",
           "levels": [
             1,
             2,
@@ -983,7 +983,7 @@
         },
         {
           "card_id": "W31.3",
-          "content_revision": "b5000756fc02a1a8ed154105b9979045f0775c375e04775e2da21bffc8179200",
+          "content_revision": "6851126156b6d87de59410cb1378eca8616d8a4e67502a0ffc7e8f12b71fbfea",
           "levels": [
             1,
             2,
@@ -992,7 +992,7 @@
         },
         {
           "card_id": "W31.4",
-          "content_revision": "85f09eefb9907987253819ef7fab87e1105a887f7f0d8d9df9659fe01b4f21b6",
+          "content_revision": "d141453609816f33f9d4874f51c3244849ee06df7c93efd662b7c98c114322ab",
           "levels": [
             1,
             2,
@@ -1001,7 +1001,7 @@
         },
         {
           "card_id": "W32.1",
-          "content_revision": "7e1419854b236b69664b47a34abe42ace1cc2b2ee647e0006c5109eb49bdd9e0",
+          "content_revision": "a1dcda5d4ddbe8377ef617f26016839755f91178b1fd39e733a0d1786b1781f6",
           "levels": [
             1,
             2,
@@ -1010,7 +1010,7 @@
         },
         {
           "card_id": "W32.2",
-          "content_revision": "29176b3c565d5035cd87a486b8c70726f3bd313f8b3c0cffa75a147942a66131",
+          "content_revision": "1b3f6ed931e239036a89ddb647ba24d2cd257a9b642d06dc063c5a2eae23aada",
           "levels": [
             1,
             2,
@@ -1019,7 +1019,7 @@
         },
         {
           "card_id": "W32.3",
-          "content_revision": "512479a050b111ed4e53895085bdacc0d1112fd5fa250528259a1a1a90371974",
+          "content_revision": "0baf9701aa9c07de15417d6998a0f03a5409d9a41d5db2f270a20c2a32490374",
           "levels": [
             1,
             2,
@@ -1028,7 +1028,7 @@
         },
         {
           "card_id": "W32.4",
-          "content_revision": "82f2c5648025b43715934fce834f93e27748b92056e64b430582233819de22d7",
+          "content_revision": "3b43f9ad74290c5aecd08dbc98dc7a4a78adeb0ec8533de67c6c91dc2092f3c0",
           "levels": [
             1,
             2,
@@ -1037,7 +1037,7 @@
         },
         {
           "card_id": "W33.1",
-          "content_revision": "43d707f7536dd0c23daea91cb07771e307f62cbd7b95738d36182bd11328183a",
+          "content_revision": "3d6c5b1eb4afae6da5582959bc5a656172cc2428bb521928736f11010f7fd6a3",
           "levels": [
             1,
             2,
@@ -1046,7 +1046,7 @@
         },
         {
           "card_id": "W33.2",
-          "content_revision": "df26262371f4cc8c025324ab23e709edc6b616b71b961f60a163aa654d0b84a9",
+          "content_revision": "0a0b8a8b7ded75f23cb55114c53e954b7ebcb6599e1572a0a5fad88c8e246b63",
           "levels": [
             1,
             2,
@@ -1055,7 +1055,7 @@
         },
         {
           "card_id": "W33.3",
-          "content_revision": "8f14682a2ca342cf82158aba648226be666efe081edc1319916d02e443d8ff3d",
+          "content_revision": "7976f00016f6cb622a9e9a9dfff263ebce4150c9a26e26c014f32c39cdefda17",
           "levels": [
             1,
             2,
@@ -1064,7 +1064,7 @@
         },
         {
           "card_id": "W33.4",
-          "content_revision": "a4093f45e77819866b185a0fedd4f0c0eac5d468629fff009e6600b7a0cf7136",
+          "content_revision": "07c5811edbaea0e76425f781379e205e304eb068a9649fa144054aab074023db",
           "levels": [
             1,
             2,
@@ -1073,7 +1073,7 @@
         },
         {
           "card_id": "W34.1",
-          "content_revision": "49b1c8c5f3fa491463370897eb079b7cebaf3498133e75953feb39c64409911c",
+          "content_revision": "11b2e773ccc0fcdd8153b21a7c5790964f08f9e9b1ff020ba78348f214c09d6e",
           "levels": [
             1,
             2,
@@ -1082,7 +1082,7 @@
         },
         {
           "card_id": "W34.2",
-          "content_revision": "85a47235aa5dc496323c300bbebb49c16fb0eb1de7c4eb27b8ef91bbdb10be37",
+          "content_revision": "6f086943034f8d5a76ea8127c8abda62eb24a15ff77eaaad00499fcd5d684bf8",
           "levels": [
             1,
             2,
@@ -1104,9 +1104,9 @@
         "hint_count": 720,
         "operation_count": 70,
         "path": "build/hint-delivery/manifest.json",
-        "revision": "2ba69dd131f7fe35c3d2c8d99ea1a444bd1933b3268e969a79b97b5978480777",
+        "revision": "71e8ce9c45e093cce55e90f5f33bbf3f462fec14635b03e8912aa7c45d4cbd85",
         "schema": "cinder-typhoon.hint-delivery/v1",
-        "sha256": "ba64d99714f74fb7824baa1e0e7aac5d537841fc494fd1dc5a87714caba1978e"
+        "sha256": "aada1dbe8b660eb5d5b1732e06c9a40f6e2a0594f68d4edc19a1c7bdccedfad1"
       },
       "release": {
         "audit": "append_only_metadata_without_hint_text",
@@ -1127,7 +1127,7 @@
         "hint_count": 360,
         "path": "build/card-coverage/hints-arwc.yaml",
         "phase": "arwc",
-        "sha256": "b8517d5e8d68ef7c4236f735f20824d7c8949f7239ec13ef95e1b558243f52a1"
+        "sha256": "0275dcf5639848a1e60fab2125ae27b39996860524c4343dd9f5b149a8e02344"
       },
       "status": "versioned"
     }

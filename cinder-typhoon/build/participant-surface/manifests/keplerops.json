@@ -11,10 +11,10 @@
       "phase_card_count": 104,
       "phase_operation_count": 31,
       "phase_score_total": 16750,
-      "revision": "795ca3d807bd9e8be251089bb6455d3992dd5178a044198af086e0d8eb5674ad",
+      "revision": "3fb0ceb048a65b13bbeb3a11889cdd0f8270459f5256d822cea3c1dab168512b",
       "schema": "cinder-typhoon.challenge-delivery/v2",
       "score_total": 39200,
-      "sha256": "846f177c556c6aeff613406ff6362f7e7286b13afd30ca4813606a79c5bce18f"
+      "sha256": "240b3e580d82bf6603fc51ecf1d439203581d27f61f794d0bdaa49ab2f84b1a6"
     },
     "hints": {
       "items": [
@@ -101,7 +101,7 @@
         },
         {
           "card_id": "K03.3",
-          "content_revision": "576bf3b3e04649228337c4f6b9098d1703b8f35c9ac3ce1227d10b4ea39d5ccf",
+          "content_revision": "d6d167f9ca0b62ea6500256d2bb25397b69986e238c5badaa2f65fd5ddf0be95",
           "levels": [
             1,
             2,
@@ -110,7 +110,7 @@
         },
         {
           "card_id": "K04.1",
-          "content_revision": "bd60e96d3ccbea22bcbd76797e00e975c3a2f2197092f77ece380be8ce46956d",
+          "content_revision": "e97d2e091ec5ea174d4f148b089b0a3bf3e096f168cea95acc2a5a40eb2189aa",
           "levels": [
             1,
             2,
@@ -119,7 +119,7 @@
         },
         {
           "card_id": "K04.2",
-          "content_revision": "ec116873109f762972a70be8ffaae4de1b06acccbd203891d747e4eb2b8e36ca",
+          "content_revision": "9205288a4bf207e4306ab71d635a047fb3de992e67fba7a362d09a151bf127ee",
           "levels": [
             1,
             2,
@@ -128,7 +128,7 @@
         },
         {
           "card_id": "K04.3",
-          "content_revision": "0137f8e3137ae3998c078a5f4b8171fcc276502ac88a48d19bde40b93ffd2df8",
+          "content_revision": "735f394ec6d9827a90f900bdd5f7c292d4fa2a4c0ac601107738822a97682d2a",
           "levels": [
             1,
             2,
@@ -137,7 +137,7 @@
         },
         {
           "card_id": "K04.4",
-          "content_revision": "b9fa80367dd5e5a15fa87bb1a87969524ff3194a2f858666eea9f43d2b200077",
+          "content_revision": "e79517a98472fb60f87624f77e887460fbdd0ea5e2da867c587d02f375f59683",
           "levels": [
             1,
             2,
@@ -146,7 +146,7 @@
         },
         {
           "card_id": "K05.1",
-          "content_revision": "636c872e1febcbaab7f0fb1cc5ea847ec815ff9590a98dd94fe83a7f2d1125df",
+          "content_revision": "34f7d2d5a36716c97b79ef9e20e8a7d21d349195f23aeff27c6cecf239924fe0",
           "levels": [
             1,
             2,
@@ -155,7 +155,7 @@
         },
         {
           "card_id": "K05.2",
-          "content_revision": "7426d55e8941c026476c89287436f029300cc8d4dc00c22f8bd34d26176e984a",
+          "content_revision": "267c68e63e1ee80daf5259c6a5a47969bc1af73f1d8c4726fe3439de4e986091",
           "levels": [
             1,
             2,
@@ -164,7 +164,7 @@
         },
         {
           "card_id": "K05.3",
-          "content_revision": "0149df5ce74a0a3f0bd347ba55af2fa3f8246a38c89f42772d7fcddeb93a5d3a",
+          "content_revision": "277961daa37b2d234417a50f64b5a8a51966b01a297ebf59f68e37f7782fb157",
           "levels": [
             1,
             2,
@@ -173,7 +173,7 @@
         },
         {
           "card_id": "K05.4",
-          "content_revision": "146825601d12f774f71f438e270ed03191f967949cbce3cd12b4f30c4b7d6cfc",
+          "content_revision": "0028e762930abd2f2292ff45fef430ff7e2fe8a77101ba22ab22413cf1446340",
           "levels": [
             1,
             2,
@@ -182,7 +182,7 @@
         },
         {
           "card_id": "K06.1",
-          "content_revision": "bb7e8ebb8e9cb79d41a9691bb875ff0c224d94578459e598fd30b0a07db00fa4",
+          "content_revision": "565f7d409f2f1badc47208c6a4bc00686caeeb1ae0f934b96a1e013c944424e5",
           "levels": [
             1,
             2,
@@ -191,7 +191,7 @@
         },
         {
           "card_id": "K06.2",
-          "content_revision": "666d5397ff348d1f9470a1edb4e975352a2cf67c86cb39724ae8e9cdf9847d55",
+          "content_revision": "84bd937aa1c4bb8fdaffd91311c9cc224cd80eb301c5155a1cf9ca14f0d853cd",
           "levels": [
             1,
             2,
@@ -200,7 +200,7 @@
         },
         {
           "card_id": "K06.3",
-          "content_revision": "706bcf9d678ee0e405d2eef5af9913bb2bcff81b9c5df69cdf7b5de24127996f",
+          "content_revision": "7df89c210ec359f2e7c00959c0d95df4abc281d1466b3e3ccc8001574dfd5e79",
           "levels": [
             1,
             2,
@@ -209,7 +209,7 @@
         },
         {
           "card_id": "K07.1",
-          "content_revision": "464811bdeb7223bfaafbad5fe316946c632f71c3f3e893d9a1e351135ffdc7ff",
+          "content_revision": "7ae05a2d3586863a9f88842d7abb78cf67892174f20e393f2cbf42fd039c838f",
           "levels": [
             1,
             2,
@@ -218,7 +218,7 @@
         },
         {
           "card_id": "K07.2",
-          "content_revision": "2ff9e81eafb82894f36bdc28d54d9e18702326d91c5e82c5fecf6b9e4450f521",
+          "content_revision": "f8d08a1192c2cec8cc74ac4fb35db98f828b2b48c7ff2ddaea35b1d4bea80ca8",
           "levels": [
             1,
             2,
@@ -227,7 +227,7 @@
         },
         {
           "card_id": "K07.3",
-          "content_revision": "8fe246805df95a013286a4cb588836b626b2bc319326a6dc7ecd5e29d87a8c32",
+          "content_revision": "8f05616c21c4f13b1011782220ac2dfed88a62187258ed338d521fd9ba3c2844",
           "levels": [
             1,
             2,
@@ -236,7 +236,7 @@
         },
         {
           "card_id": "K08.1",
-          "content_revision": "4f76162c8f6ad74141ba98065151876c992e55920fedc007df33305325a3bd7d",
+          "content_revision": "6ba893544a830b3ebbc9c54e2bc2d0221dd2069d58e88b4c3762af71190bb73b",
           "levels": [
             1,
             2,
@@ -245,7 +245,7 @@
         },
         {
           "card_id": "K08.2",
-          "content_revision": "c1e73de59fb5d7b1e8efbb50c94d7b3d25e7fc4f1cb6f8fba15e324bdb46d1ab",
+          "content_revision": "d029901ed851583dc1c2b826061ba5c7d415e02ce3a5df8158902ad2c4c060f0",
           "levels": [
             1,
             2,
@@ -254,7 +254,7 @@
         },
         {
           "card_id": "K08.3",
-          "content_revision": "403f58f30cdce7ed1a7e2b390dd39571a761c1828c1957bbdfdbaa637852b8f3",
+          "content_revision": "2c8d7a85017b61776a9250f35521e23229d3e2596a9799de25191655729d06d5",
           "levels": [
             1,
             2,
@@ -263,7 +263,7 @@
         },
         {
           "card_id": "K09.1",
-          "content_revision": "a292ecec0f8596b7934ec985ee631dd0cb73058525d619ccb2df989e54a3c52d",
+          "content_revision": "ab6f7e9198f3f4b3bb2625b043b7ee0310b6a26cdfa13535de63e97186191993",
           "levels": [
             1,
             2,
@@ -272,7 +272,7 @@
         },
         {
           "card_id": "K09.2",
-          "content_revision": "8831657e736bb9b54a742c11029d96ad630da04fed1deeee286016cdd63c8f4c",
+          "content_revision": "9ae3dc8fa80b2d856e6b8c9b27f8c80655cf0294b40a69634637bc9e1eddf25e",
           "levels": [
             1,
             2,
@@ -281,7 +281,7 @@
         },
         {
           "card_id": "K09.3",
-          "content_revision": "a951902408a8136f5d776a6c9aeb5c86c46e97287d04ea397b8ff839d7fe0d8b",
+          "content_revision": "8214a2865b5b362b76a2081cfdd60eabc76680d49e545f6877b4744c83de8e3a",
           "levels": [
             1,
             2,
@@ -290,7 +290,7 @@
         },
         {
           "card_id": "K09.4",
-          "content_revision": "ffd42e1f91fb2aebb9f2ab1dcb09505cae20b7ecc0c3fc90d1d0c8a18d5ecbfa",
+          "content_revision": "0494c76f23a060f12a1aa51192a6cfc2a2d2754d66b1a3893302a9d70573cdae",
           "levels": [
             1,
             2,
@@ -299,7 +299,7 @@
         },
         {
           "card_id": "K10.1",
-          "content_revision": "b137f5584b3a7a0c1e7f63687b476029139811868729994c464005ea63359f0f",
+          "content_revision": "0f9ce82bb9bb3965744d7375de7f77adb3274aaba045aef9bbb37fc8e41591d3",
           "levels": [
             1,
             2,
@@ -308,7 +308,7 @@
         },
         {
           "card_id": "K10.2",
-          "content_revision": "28c88639acd15b33e11804d3b7a05a2860f6ca6761c1b2fa7b77c43e277840c7",
+          "content_revision": "e59d9eb809dce0aadc5a99181921884dcad4810c333022d13451a7ed5dd12753",
           "levels": [
             1,
             2,
@@ -317,7 +317,7 @@
         },
         {
           "card_id": "K10.3",
-          "content_revision": "27b05621b15c3f9771a1f150e0560383d26d7fbd0e1bd700a54f54767646b79e",
+          "content_revision": "9c40d562c7ca4c707ce9d8d83dbf4294d75f13bc691c618f68ac4d8ff442a0ce",
           "levels": [
             1,
             2,
@@ -326,7 +326,7 @@
         },
         {
           "card_id": "K11.1",
-          "content_revision": "372d85a017370f03a067df423997079a0546d1449129ed16d4d35c9ae34976f9",
+          "content_revision": "22adb7fe2ef875c778aee091d919c7eeb280ccddbc8931f716511917c129052e",
           "levels": [
             1,
             2,
@@ -335,7 +335,7 @@
         },
         {
           "card_id": "K11.2",
-          "content_revision": "044c1a6eab925c598d4d987956517b05eb074097ab1a03926df994ef7968c13c",
+          "content_revision": "bf151ca515fc66b1381aa6769514ce34cd390c80c44ab766939dc327010eb333",
           "levels": [
             1,
             2,
@@ -344,7 +344,7 @@
         },
         {
           "card_id": "K11.3",
-          "content_revision": "3037f1942cdc5328bf8eeaa7e020cf3da38135a13c1f7dd8122e791ac9750949",
+          "content_revision": "1376a947c6401fcf6be9ddf9a5a17b3d542d89886172634d0d937739080d4d7a",
           "levels": [
             1,
             2,
@@ -353,7 +353,7 @@
         },
         {
           "card_id": "K11.4",
-          "content_revision": "0a0cb77ff122ed6d94ee91f272ff707d658ad358ab0a3691ddd9ec1448163298",
+          "content_revision": "eb837ec89cfdfded7609eee5e86bdd9a11bbab2d5d046f08775734307257ffa1",
           "levels": [
             1,
             2,
@@ -362,7 +362,7 @@
         },
         {
           "card_id": "K12.1",
-          "content_revision": "aba75ca53a36b6469435885ddd660cc3cb9007450d528d86b0a6f02f81be28ca",
+          "content_revision": "5a985508f333a113f2242eec55a2df6a37aaebf832771e40fb757a22a3729e60",
           "levels": [
             1,
             2,
@@ -371,7 +371,7 @@
         },
         {
           "card_id": "K12.2",
-          "content_revision": "a9863e2070b170921ce1b1ba6bc9b3d040eb4137c1f24a6584b5b62d52bdbee3",
+          "content_revision": "069749d4ad8d3690938e9820f96723e6343b3607c51895e8a13d0fe1447eb091",
           "levels": [
             1,
             2,
@@ -380,7 +380,7 @@
         },
         {
           "card_id": "K12.3",
-          "content_revision": "630c3dbc6c2e161182fc7c86375b231f7b284774faab54ebdd77f9e91d0c2cf5",
+          "content_revision": "377fd777a68c724b2e9a2a25fb9b507a23cd05af17fbad4ffb7ba9495534cf17",
           "levels": [
             1,
             2,
@@ -389,7 +389,7 @@
         },
         {
           "card_id": "K12.4",
-          "content_revision": "c1508d59394e41a7e70b13b88364f82d1b8ce92ca6c1aa1d4c47491d9b6ff5d3",
+          "content_revision": "7e297afcd12d10445f9f336cfc45ecf627fe2a4782372dc5b4e7c63002e6a7d8",
           "levels": [
             1,
             2,
@@ -398,7 +398,7 @@
         },
         {
           "card_id": "K13.1",
-          "content_revision": "fee868a6a6ae3d63cb22b6f2de47fb441cd9753fb65129155ca39bacc4babcb5",
+          "content_revision": "9de43f4c91df0c49d23a715789f70b27a977d9225442f08cf10ff269dfe8f3f8",
           "levels": [
             1,
             2,
@@ -407,7 +407,7 @@
         },
         {
           "card_id": "K13.2",
-          "content_revision": "178fdbab203e95af47c766305f5ed600e14a322af32e8dd1cbbe66ed829f590a",
+          "content_revision": "060602e4452788bf6882197dbc9affbb498b81acab8cef85f290758ac83f3441",
           "levels": [
             1,
             2,
@@ -416,7 +416,7 @@
         },
         {
           "card_id": "K13.3",
-          "content_revision": "9da0974f440f84cfc8d2d56c71ccd44bf851addea2a7177d019978bb11482eb4",
+          "content_revision": "d472fe0aa7e04966df5dcfcc6270b95b1ee750f4a9cbe59a9d4897f2cb7c9868",
           "levels": [
             1,
             2,
@@ -960,9 +960,9 @@
         "hint_count": 720,
         "operation_count": 70,
         "path": "build/hint-delivery/manifest.json",
-        "revision": "74d064d6e6854c56419ab231595b446f564dc505b58802d9d48125b932aa7600",
+        "revision": "71e8ce9c45e093cce55e90f5f33bbf3f462fec14635b03e8912aa7c45d4cbd85",
         "schema": "cinder-typhoon.hint-delivery/v1",
-        "sha256": "1ac7acc310a1b0acba1a3ec0c1181b125398c6cd01866a52855ac82e60a58466"
+        "sha256": "aada1dbe8b660eb5d5b1732e06c9a40f6e2a0594f68d4edc19a1c7bdccedfad1"
       },
       "release": {
         "audit": "append_only_metadata_without_hint_text",
@@ -983,7 +983,7 @@
         "hint_count": 312,
         "path": "build/card-coverage/hints-keplerops.yaml",
         "phase": "keplerops",
-        "sha256": "c9b3cad48624d9d89075037d8cba83de1469a703aae9fa177d5babef9e356969"
+        "sha256": "07fb73ae587ed3695e82076853df6f1df2eff3a88d63bd97a7eff4e54b02d7a3"
       },
       "status": "versioned"
     }
