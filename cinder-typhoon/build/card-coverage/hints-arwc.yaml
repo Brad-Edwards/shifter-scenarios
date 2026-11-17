@@ -1271,12 +1271,13 @@ hints:
     - kind: client_route
       id: process.diagnostic-program
   W32.1:
-    h1: Begin with the retained replay engine and current estimator observations. Its published client document
-      exposes the replay session operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as state-machine reconstruction and old-model-versus-current-reality comparison. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the replay session operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: GET /api/replay-sessions/current (via process-view.arwc.test). Returns REPLAY-CRR-R19 record with
+      the C++20 ECS structure: entities (Reservoir, OutletGroup, GateA, GateB, Buffer) each with their
+      component lists. Also returns the replay binary (replay_b64) and distinguishing_cases.
+    h2: ECS entity-component bindings: Reservoir=[Reserve,Revision], OutletGroup=[Setpoint,Flow,Mode,Revision],
+      GateA=[Setpoint,Position,Flow,Revision], GateB=[Setpoint,Position,Flow,Revision], Buffer=[Reserve,Revision].
+    h3: Sets replay_structure_recovered state; gates W32.2+. The outlet example component binding is GateA/GateB
+      with Setpoint, Position, Flow, and Revision components.
     references:
     - kind: client_route
       id: process.replay-session
