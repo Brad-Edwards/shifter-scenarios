@@ -190,14 +190,16 @@ class AssistantApiHandler(KeplerHandler):
             if not workspace_slug:
                 self.send_json(404, {"error": "context_not_found"})
                 return
-            # Find the real AnythingLLM thread for this conversation
-            thread_map = {c["context_id"]: c.get("answer_thread") for c in CONTEXTS}
-            thread_slug = thread_map.get(context_id, "default")
-            # Proxy to real AnythingLLM chat
-            chat_url = f"{ANYLLM_BASE}/api/workspace/{workspace_slug}/thread/{thread_slug}/chat"
+            # Proxy to real AnythingLLM workspace chat (real Ollama retrieval)
+            k21_config = _load_k21_config()
+            api_key = k21_config.get("anyllm_api_key", "")
+            if not api_key:
+                self.send_json(503, {"error": "retrieval_unavailable"})
+                return
+            chat_url = f"{ANYLLM_BASE}/api/workspace/{workspace_slug}/chat"
             chat_body = json.dumps({"message": question, "mode": "query"}).encode()
             req = Request(chat_url, data=chat_body, headers={
-                "Authorization": f"Bearer {ANYLLM_TOKEN}",
+                "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
             })
             try:

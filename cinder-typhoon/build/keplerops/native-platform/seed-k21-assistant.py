@@ -155,6 +155,15 @@ def seed(operator: Path) -> None:
         except Exception:
             pass  # 404 or plain-text response is expected
 
+    # K21.3: Create an AnythingLLM API key for the k-assistant service to use for
+    # real Ollama retrieval via /api/workspace/{slug}/chat.
+    anyllm_api_key = ''
+    try:
+        key_result = api('/admin/api-keys', {'name': 'k-assistant-service'}, token)
+        anyllm_api_key = key_result.get('apiKey', '')
+    except Exception:
+        pass  # API key creation is best-effort; chat falls back to 502
+
     config_path = operator / 'native-platform/assistant-k21-config.json'
     config_path.write_text(json.dumps({
         'workspace_slug': slug,
@@ -162,6 +171,7 @@ def seed(operator: Path) -> None:
         'conv_sup_2841_slug': conv_slug,
         'conv_sup_2841_thread_id': conv_id,
         'workspace_id': workspace_id,
+        'anyllm_api_key': anyllm_api_key,
     }, indent=2) + '\n')
     config_path.chmod(0o644)
     marker.touch(mode=0o600)
