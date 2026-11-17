@@ -462,13 +462,14 @@ PYEOF
       -e ARWC_STATE_ROOT=/var/lib/arwc-engineering \
       -e ARWC_PROCESS_ROLE=engineering \
       --restart unless-stopped --read-only \
-      --security-opt no-new-privileges:true \
+      --security-opt no-new-privileges:false \
       --cap-drop ALL --cap-add SETUID --cap-add SETGID --cap-add CHOWN \
       --cap-add FOWNER --cap-add DAC_OVERRIDE \
       --tmpfs /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777 \
       --tmpfs /run:rw,nosuid,nodev,size=8m,mode=0755 \
       -v cinder-arwc-engineering-data:/var/lib/arwc-engineering \
       -v cinder-arwc-connector-fieldlink:/run/arwc-corporate:ro \
+      -v cinder-arwc-issuer-socket:/run/arwc:rw \
       -v "${golden_op}/handover.key:/run/arwc-handover/authentication.key:ro" \
       -v "${golden_op}/tls/server.crt:/run/arwc-tls/server.crt:ro" \
       -v "${golden_op}/tls/server.key:/run/arwc-tls/server.key:ro" \
@@ -586,6 +587,7 @@ VALUES ('EVT-COMM-OG2-114', 'high', '2026-11-13 09:28:14+00', '2026-11-13 09:29:
     # NOTE: The renderer mounts cinder-arwc-renderer-evidence rw so W26.3 writes the attestation
     # directly there. The control-broker reads from the same volume (ro). No copy step needed.
     docker volume create cinder-arwc-control-broker-state 2>/dev/null || true
+    docker volume create cinder-arwc-issuer-socket 2>/dev/null || true
     docker stop cinder-arwc-control-broker 2>/dev/null; docker rm cinder-arwc-control-broker 2>/dev/null || true
     docker run -d \
       --name cinder-arwc-control-broker \
@@ -599,7 +601,7 @@ VALUES ('EVT-COMM-OG2-114', 'high', '2026-11-13 09:28:14+00', '2026-11-13 09:29:
       --cap-add FOWNER --cap-add DAC_OVERRIDE \
       --tmpfs /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777 \
       --tmpfs /run:rw,nosuid,nodev,size=8m,mode=0755 \
-      --tmpfs /run/arwc:rw,nosuid,nodev,size=4m,mode=0755 \
+      -v cinder-arwc-issuer-socket:/run/arwc:rw \
       -v cinder-arwc-control-broker-state:/var/lib/arwc-control-broker \
       -v cinder-arwc-approval-evidence:/run/arwc-approval-evidence:ro \
       -v cinder-arwc-field-session:/run/arwc-field-session:ro \
