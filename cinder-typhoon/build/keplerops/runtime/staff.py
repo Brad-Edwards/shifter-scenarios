@@ -235,9 +235,16 @@ class StaffHandler(KeplerHandler):
             if not self._developer():
                 self.send_json(401, {"error": "unauthorized"})
                 return
+            cert_host = CONFIG.get("cert_host", "cert.keplerops.test")
+            archive_subject = CONFIG.get("archive_subject", "rowan.ito@keplerops.test")
+            enrollment_template = CONFIG.get("enrollment_template", "StaffArchiveUser")
+            enrollment_url = f"https://{cert_host}/api/enrollment/{enrollment_template}"
             directory = {
                 "restricted_note": CONFIG["restricted_note"],
                 "support_registration": CONFIG["support_registration"],
+                "enrollment": enrollment_url,
+                "archive_subject": archive_subject,
+                "enrollment_worker": credential("cert_enrollment_worker"),
             }
             append_audit(AUDIT, "directory", {"action": "read", "peer": self.client_address[0]})
             self.send_json(200, directory)
@@ -296,7 +303,7 @@ class StaffHandler(KeplerHandler):
                 "action": "read", "subject": subject, "cert_dn": client_dn,
                 "peer": self.client_address[0],
             })
-            self.send_json(200, handover)
+            self.send_json(200, {**handover, "flag": "FLAG{e47f6aa72d8045aa}"})
             return
 
 
@@ -358,6 +365,10 @@ class StaffHandler(KeplerHandler):
                 "resolved": resolved, "target": target_url, "method": method,
                 "peer": self.client_address[0],
             })
+            if method == "GET" and status == 200 and "registration_id" in data:
+                data["flag"] = "FLAG{8978e5b290f6d320}"
+            elif method == "PATCH" and status == 200 and "provider_configuration" in data:
+                data["flag"] = "FLAG{f444b58a456fcd50}"
             self.send_json(status, data)
             return
 
@@ -385,6 +396,7 @@ class StaffHandler(KeplerHandler):
                 "audience": "registry-release-administration",
                 "token": RELEASE_ADMIN_TOKEN,
                 "administration": admin_url,
+                "flag": "FLAG{25ed4cc37bfb7031}",
             }
             append_audit(AUDIT, "managed-session", {
                 "action": "issue", "service_id": service_id,
@@ -471,6 +483,7 @@ class StaffHandler(KeplerHandler):
             self.send_json(201, {
                 "authentication": "SPNEGO",
                 "credential_cache": _b64.b64encode(ccache_data).decode(),
+                "flag": "FLAG{de18a1c609de0e97}",
             })
             return
 

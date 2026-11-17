@@ -84,6 +84,9 @@ def _k22_2_completed(audit: Path) -> bool:
 # K24: completion lease store (in-memory, TTL 300s per SDL)
 _COMPLETION_LEASES: dict[str, dict] = {}
 _COMPLETION_LEASES_LOCK = threading.Lock()
+# K24.3: completion job results store (in-memory)
+_COMPLETION_JOBS: dict[str, dict] = {}
+_COMPLETION_JOBS_LOCK = threading.Lock()
 
 
 def _issue_completion_lease(credential_id: str, user: str) -> dict:
@@ -150,8 +153,8 @@ class AssistantApiHandler(KeplerHandler):
         # K24 completion-example endpoint — session-required, returns COMP-JOB-17 example + note.
         # The example exposes context_root, credential reference, handover, and allowed script
         # needed for the K24.2 path traversal exploit.
-        if path.startswith("/api/completion/examples/"):
-            comp_id = path.removeprefix("/api/completion/examples/")
+        if path.startswith("/api/completions/examples/"):
+            comp_id = path.removeprefix("/api/completions/examples/")
             cookie = self.headers.get("Cookie", "")
             user = _get_session(cookie)
             if user is None:
@@ -179,6 +182,7 @@ class AssistantApiHandler(KeplerHandler):
                 "example_id": comp_id,
                 "user": user,
             })
+            example["flag"] = "FLAG{664724eb7d7073e9}"
             self.send_json(200, example)
             return
 
@@ -213,15 +217,19 @@ class AssistantApiHandler(KeplerHandler):
                 },
                 "completion": {
                     "example": "COMP-JOB-17",
-                    "examples_path": "/api/completion/examples/",
+                    "examples_path": "/api/completions/examples/",
                 },
             }
+            config["flag"] = "FLAG{bda988856f374cc1}"
             self.send_json(200, config)
             return
 
         # K22.1: source-selection endpoint — session-required, returns the selection record
         # binding support case SUP-2841 to diagnostic attachment ATT-DIAG-698.
-        if path == "/api/source-selection":
+        # Handles both /api/source-selection and /api/selections/{selection_id}
+        import re as _re
+        _sel_match = _re.fullmatch(r"/api/selections/([^/]+)", path)
+        if path == "/api/source-selection" or _sel_match:
             cookie = self.headers.get("Cookie", "")
             user = _get_session(cookie)
             if user is None:
@@ -230,7 +238,9 @@ class AssistantApiHandler(KeplerHandler):
             k21 = _load_k21_config()
             record = {
                 "selection_id": k21.get("selection_id", "SEL-SUP-2841-12"),
+                "case": k21.get("selection_case_id", "SUP-2841"),
                 "case_id": k21.get("selection_case_id", "SUP-2841"),
+                "attachment": k21.get("attachment_id", "ATT-DIAG-698"),
                 "attachment_id": k21.get("attachment_id", "ATT-DIAG-698"),
                 "tenant_id": "TEN-ARWC-047",
                 "purpose": "diagnostic_review",
@@ -242,6 +252,7 @@ class AssistantApiHandler(KeplerHandler):
                 "attachment_id": record["attachment_id"],
                 "user": user,
             })
+            record["flag"] = "FLAG{fd78eb11ae6a4158}"
             self.send_json(200, record)
             return
 
@@ -256,12 +267,16 @@ class AssistantApiHandler(KeplerHandler):
                 if ctx.get("context_id") == "ctx-support-private-v4":
                     enriched["answer_thread"] = k21.get("thread_slug")
                     enriched["review_reference"] = "DREV-2841-2"
+                    enriched["selections"] = [k21.get("selection_id", "SEL-SUP-2841-12")]
+                    enriched["documents"] = ["DOC-RILL-442"]
+                    enriched["duplicate_review"] = "DREV-2841-2"
+                    enriched["completion_example"] = "COMP-JOB-17"
                 enriched_contexts.append(enriched)
             append_audit(AUDIT, "context-inventory-read", {
                 "action": "read",
                 "context_ids": [c.get("context_id") for c in enriched_contexts],
             })
-            self.send_json(200, {"contexts": enriched_contexts})
+            self.send_json(200, {"contexts": enriched_contexts, "flag": "FLAG{7ff69ab443a968ef}"})
             return
 
         # K21.2: conversation endpoint — requires support session, returns retained orphaned conversations.
@@ -325,6 +340,11 @@ class AssistantApiHandler(KeplerHandler):
                     "deleted_from_ui": not thread_exists,  # True if thread is gone
                     "messages": messages,
                 }
+                if conv_id == "CONV-SUP-2841-19" and conv["deleted_from_ui"]:
+                    conv["flag"] = "FLAG{302e391567fb7188}"
+                elif conv_id == "CONV-RILL-442-8":
+                    conv["tenant"] = "TEN-RILL-022"
+                    conv["flag"] = "FLAG{25723607dbdb5768}"
             except Exception as e:
                 self.send_json(503, {"error": "database_unavailable"})
                 return
@@ -332,6 +352,71 @@ class AssistantApiHandler(KeplerHandler):
                 "action": "read", "conversation_id": conv_id, "user": user,
             })
             self.send_json(200, conv)
+            return
+
+        # K24.3 job status: GET /api/completions/jobs/{job_id}
+        import re as _re2
+        _job_match = _re2.fullmatch(r"/api/completions/jobs/([^/]+)", path)
+        if _job_match:
+            job_id = _job_match.group(1)
+            auth = self.headers.get("Authorization", "")
+            lease_token = auth[7:] if auth.startswith("Bearer ") else None
+            if not lease_token or not _validate_completion_lease(lease_token):
+                self.send_json(403, {"error": "lease_required"})
+                return
+            with _COMPLETION_JOBS_LOCK:
+                job = _COMPLETION_JOBS.get(job_id)
+            if job is None:
+                self.send_json(404, {"error": "job_not_found"})
+                return
+            self.send_json(200, job)
+            return
+
+        # K23.3: document endpoint — session-required, missing tenant boundary.
+        # GET /api/contexts/{context_id}/conversations/{conversation_id}/documents/{document_id}
+        _doc_match = _re2.fullmatch(r"/api/contexts/([^/]+)/conversations/([^/]+)/documents/([^/]+)", path)
+        if _doc_match:
+            cookie = self.headers.get("Cookie", "")
+            user = _get_session(cookie)
+            if user is None:
+                self.send_json(403, {"error": "session_required"})
+                return
+            context_id, conversation_id, document_id = _doc_match.group(1), _doc_match.group(2), _doc_match.group(3)
+            k21_config = _load_k21_config()
+            api_key = k21_config.get("anyllm_api_key", "")
+            known_contexts = {c.get("context_id") for c in CONTEXTS}
+            all_conversations = {conv for c in CONTEXTS for conv in c.get("conversations", [])}
+            if context_id not in known_contexts or conversation_id not in all_conversations:
+                self.send_json(404, {"error": "document_not_found"})
+                return
+            conv_workspace = {
+                "CONV-RILL-442-8": k21_config.get("rill_workspace_slug", "rillhaven-support"),
+                "CONV-SUP-2841-19": k21_config.get("workspace_slug", "support-private"),
+            }.get(conversation_id)
+            if not conv_workspace or not api_key:
+                self.send_json(404, {"error": "document_not_found"})
+                return
+            chat_url = f"{ANYLLM_BASE}/api/v1/workspace/{conv_workspace}/chat"
+            chat_body = json.dumps({"message": "Provide the full integration record details including tenant, asset, connector, and diagnostic reference.", "mode": "query"}).encode()
+            req = Request(chat_url, data=chat_body, headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"})
+            try:
+                with urlopen(req, timeout=120) as r:
+                    result = json.load(r)
+                    doc_text = result.get("textResponse", "")
+                    sources = result.get("sources", [])
+            except Exception:
+                self.send_json(503, {"error": "document_fetch_failed"})
+                return
+            doc_tenant = "TEN-RILL-022" if conversation_id == "CONV-RILL-442-8" else "TEN-ARWC-047"
+            append_audit(AUDIT, "document-fetch", {"action": "fetch", "context_id": context_id, "conversation_id": conversation_id, "document_id": document_id, "user": user})
+            self.send_json(200, {
+                "document_id": document_id,
+                "conversation_id": conversation_id,
+                "tenant": doc_tenant,
+                "document": doc_text,
+                "sources": [s.get("title", "") for s in sources],
+                "flag": "FLAG{4a4620cd59307eb7}",
+            })
             return
 
         self.send_json(404, {"error": "not_found"})
@@ -391,19 +476,24 @@ class AssistantApiHandler(KeplerHandler):
                 "conversation_id": conversation_id,
                 "k22_2_complete": k22_2_complete,
             })
-            self.send_json(200, {
+            response = {
                 "answer": answer,
                 "sources": sources,
                 "context_id": context_id,
                 "conversation_id": conversation_id,
-            })
+            }
+            if sources:
+                response["flag"] = "FLAG{0613dee9e717f1e3}"
+            if k22_2_complete:
+                response["flag_k22_2"] = "FLAG{599046b0487a95cb}"
+            self.send_json(200, response)
             return
 
         # K24.2: completion-context — the path traversal flaw.
         # Checks ownership on the ORIGINAL context_selector, then resolves the NORMALIZED path.
         # Crafted alias support-examples/../credentials/cred-completion-handover passes the
         # ownership check (starts with support-examples/) but resolves to the credential object.
-        if path == "/api/completion/context":
+        if path in ("/api/completion/context", "/api/completions/context"):
             cookie = self.headers.get("Cookie", "")
             user = _get_session(cookie)
             if user is None:
@@ -447,13 +537,15 @@ class AssistantApiHandler(KeplerHandler):
                 "token": lease["token"],
                 "expires_at": lease["expires_at"],
                 "grants": cred_config.get("grants", []),
+                "scope_probe": "accepted",
+                "flag": "FLAG{150195dba6413e00}",
             })
             return
 
         # K24.3: completion-job — submits and runs the completion job using the K24.2 lease.
         # The job runs support-review-completion.py as svc-assistant-completion and reads
         # HANDOVER-COMP-2841. Both execution and destination read audits are written.
-        if path == "/api/completion/jobs":
+        if path in ("/api/completion/jobs", "/api/completions/jobs"):
             cookie = self.headers.get("Cookie", "")
             user = _get_session(cookie)
             if user is None:
@@ -517,11 +609,17 @@ class AssistantApiHandler(KeplerHandler):
                 "runtime_identity": "svc-assistant-completion",
                 "read_grant": handover_data.get("read_grant"),
             })
-            self.send_json(200, {
+            destination_read = handover_data.get("read_grant") is not None
+            job_result = {
                 "job_id": job_id,
                 "runtime_identity": "svc-assistant-completion",
                 "handover": handover_data,
-            })
+                "destination_read": destination_read,
+                "flag": "FLAG{e26cdb0df4d7a56c}",
+            }
+            with _COMPLETION_JOBS_LOCK:
+                _COMPLETION_JOBS[job_id] = job_result
+            self.send_json(200, job_result)
             return
 
         # K23.3: document fetch — session-required, checks context/conversation agreement but
@@ -596,11 +694,15 @@ class AssistantApiHandler(KeplerHandler):
                 "tenant_id": tenant_id,
                 "user": user,
             })
+            doc_tenant = "TEN-RILL-022" if conversation_id == "CONV-RILL-442-8" else "TEN-ARWC-047"
             self.send_json(200, {
                 "conversation_id": conversation_id,
+                "tenant": doc_tenant,
                 "tenant_id": tenant_id,
+                "document_id": "DOC-RILL-442",
                 "document": doc_text,
                 "sources": [s.get("title", "") for s in sources],
+                "flag": "FLAG{4a4620cd59307eb7}",
             })
             return
 
@@ -681,6 +783,7 @@ class AssistantApiHandler(KeplerHandler):
                 "recommendation_id": recommendation_id,
                 "tool_principal": svc_user,
                 "origin": "assistant-tool-broker",
+                "flag": "FLAG{0d48f10f683d9894}",
             }
             append_audit(AUDIT, "accept-duplicate-review", {
                 "action": "accept",

@@ -593,7 +593,7 @@ class Handler(BaseHTTPRequestHandler):
         state = load_state()
         state["query_definition_observed"] = True
         save_state(state)
-        self.accepted("saved-query-read", DEFINITION)
+        self.accepted("saved-query-read", DEFINITION, extra={"flag": "FLAG{71eae74b979b8556}"})
 
     def do_POST(self) -> None:
         # W29.2: reserve reconciliation state setter called by engineering workbench
@@ -837,7 +837,8 @@ class Handler(BaseHTTPRequestHandler):
             _os.replace(temporary, ARCHIVE_EVIDENCE)
         except OSError:
             pass
-        self.accepted("lineage-record-submitted", evidence, 201)
+        self.accepted("lineage-record-submitted", evidence, 201,
+                      extra={"flag": "FLAG{8790fcf0e1a1dd6a}"})
 
     def w34_view(self, request: dict[str, object]) -> None:
         if not process_interpretation_prerequisite():
@@ -990,7 +991,7 @@ class Handler(BaseHTTPRequestHandler):
         state = load_state()
         state["allocation_observed"] = True
         save_state(state)
-        self.accepted("allocation-ledger-read", result)
+        self.accepted("allocation-ledger-read", result, extra={"flag": "FLAG{47d6fc3a22c3a83d}"})
 
     def tariff(self) -> None:
         with database() as connection, connection.cursor() as cursor:
@@ -1025,7 +1026,7 @@ class Handler(BaseHTTPRequestHandler):
         state = load_state()
         state["meter_observed"] = True
         save_state(state)
-        self.accepted("meter-allocation-read", result)
+        self.accepted("meter-allocation-read", result, extra={"flag": "FLAG{6b7ed39132fd235a}"})
 
     # reserve_reconciliation() removed: W09.3 facade with 1.0/0.4 tolerance
     # accept is gone. The real reconciliation is RECON-DP3-CURRENT on
@@ -1096,6 +1097,7 @@ class Handler(BaseHTTPRequestHandler):
             "process_session": process_session,
             "process_view": "https://process-view.arwc.test",
             "client_reference": "https://process-view.arwc.test/.well-known/arwc-client",
+            "flag": "FLAG{2085674d8d2c8b96}",
         })
 
 
@@ -1128,7 +1130,8 @@ class Handler(BaseHTTPRequestHandler):
             state["adjustment_observed"] = True
             save_state(state)
             self.accepted("archived-query-created", protected, 201,
-                          {"statement": statement, "row_count": len(records)})
+                          {"statement": statement, "row_count": len(records),
+                           "flag": "FLAG{e4c1d273080dec0d}"})
         else:
             self.accepted("archived-query-created", records[0], 201,
                           {"statement": statement, "row_count": 1})

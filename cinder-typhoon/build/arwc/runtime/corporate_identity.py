@@ -248,7 +248,8 @@ class Handler(BaseHTTPRequestHandler):
         result = dict(RENDERING)
         result["oauth_state"] = state["oauth_state"]
         result["pending_preview_origin"] = state.get("preview_origin", "https://preview.arwc.test")
-        self.accepted("login-trail-read", result, "planning-consumer")
+        self.accepted("login-trail-read", result, "planning-consumer",
+                      extra={"flag": "FLAG{415d4e9b4cc2c1ba}"})
 
     def activate(self, request: dict[str, object]) -> None:
         state = load_state()

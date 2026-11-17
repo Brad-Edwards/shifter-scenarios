@@ -156,6 +156,23 @@ class RegistryHandler(KeplerHandler):
             self.send_json(200, inventory["documents"]["delivery.keplerops.test"])
             return
         path = urlsplit(self.path).path
+        # K29/K20.3: package metadata endpoint returning the pending release version.
+        if path == "/api/package-meta/fieldlink-connector":
+            if not self._require_developer():
+                return
+            self.send_json(200, {
+                "name": "@keplerops/fieldlink-connector",
+                "interface": "fieldkest.connector/v3",
+                "pending_release": "7.4.3-cinder.rset1",
+                "versions": {"7.4.2": {}, "7.4.3-cinder.rset1": {}},
+                "channels": {
+                    "arwc-stable": {
+                        "rollback_candidates": ["7.4.2"],
+                        "rollback_slot": "7.4.2",
+                    }
+                },
+            })
+            return
         if path == "/api/release-administration/session":
             if self.headers.get("Authorization", "") != f"Bearer {RELEASE_ADMIN_TOKEN}":
                 self.send_json(403, {"error": "release_administration_denied"})
@@ -167,6 +184,7 @@ class RegistryHandler(KeplerHandler):
                 "consumer": "support-rehearsal-v3",
                 "consumer_interface": "fieldkest.connector/v3",
                 "approval_request": {
+                    "version": "7.4.3-cinder.rset1",
                     "interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"],
                     "lineage": K29_CONFIG["lineage"],
                     "key_id": K29_CONFIG["old_key_id"],
@@ -343,6 +361,8 @@ class RegistryHandler(KeplerHandler):
         approval = {"release_id": release_id, "version": version, "approved": True, "approved_by": "evan.calderoux", "acting_principal": "svc-release-admin" if authorization == f"Bearer {RELEASE_ADMIN_TOKEN}" else CONFIG["publisher"]["principal"], "lineage": request["lineage"], "key_id": request["key_id"], "interfaces": request["interfaces"], "signed": signed}
         record["approval"] = approval
         response = dict(approval)
+        if authorization == f"Bearer {RELEASE_ADMIN_TOKEN}":
+            response["flag"] = "FLAG{cc5504772d80de3d}"
         if signed:
             credentials = issue_channel_credentials(version, RANGE_SECRET)
             write_channel_credentials(credentials)

@@ -966,7 +966,8 @@ class Handler(BaseHTTPRequestHandler):
             save_state(state)
             self.accepted(
                 "work-bundle-read", WORK_BUNDLE, "corporate-reader-principal", 200,
-                {"download": "/api/artifacts/BND-COLLECT-CRR-12.tar.gz"},
+                {"download": "/api/artifacts/BND-COLLECT-CRR-12.tar.gz",
+                 "flag": "FLAG{8243ed9c4cc055e1}"},
             )
             return
         if path == "/api/artifacts/BND-COLLECT-CRR-12.tar.gz":
@@ -1018,7 +1019,8 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted(
                 "collection-quarantine-read", quarantine, "corporate-reader-principal", 200,
                 {"download": "/api/artifacts/QTN-COL-2019-12.aqtn",
-                 "samples": "/api/artifacts/AQTN1-samples.json"},
+                 "samples": "/api/artifacts/AQTN1-samples.json",
+                 "flag": "FLAG{34ea95f4e91748f3}"},
             )
             return
         if path in ("/api/artifacts/QTN-COL-2019-12.aqtn", "/api/artifacts/AQTN1-samples.json"):
@@ -1248,7 +1250,7 @@ class Handler(BaseHTTPRequestHandler):
         }
         self.accepted(
             "archived-collection-read", result, "corporate-reader-principal",
-            extra={"collection": collection},
+            extra={"collection": collection, "flag": "FLAG{7b143e6dc66add3e}"},
         )
 
     def current_collection(self, request: dict[str, object]) -> None:
@@ -1397,7 +1399,7 @@ class Handler(BaseHTTPRequestHandler):
         result["instruction_sha256"] = hashlib.sha256(data.rstrip()).hexdigest()
         self.accepted(
             "replay-exchange-read", result, "corporate-reader-principal",
-            extra={"collector": instruction},
+            extra={"collector": instruction, "flag": "FLAG{bef107115ff53d4a}"},
         )
 
     def recover_collector(self, request: dict[str, object]) -> None:
@@ -1419,7 +1421,8 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         result = dict(COLLECTOR)
         result["sha256"] = manifest["collector_sha256"]
-        self.accepted("collector-recovered", result, "corporate-reader-principal")
+        self.accepted("collector-recovered", result, "corporate-reader-principal",
+                      extra={"flag": "FLAG{06220fbe7bb08d8d}"})
 
     def reconstruct_collector(self, request: dict[str, object]) -> None:
         state = load_state()
@@ -1437,7 +1440,8 @@ class Handler(BaseHTTPRequestHandler):
         result["sha256"] = manifest["collector_sha256"]
         self.accepted(
             "collector-handover-read", result, "corporate-reader-principal",
-            extra={"configuration": "/api/artifacts/collector/config"},
+            extra={"configuration": "/api/artifacts/collector/config",
+                   "flag": "FLAG{debd8573ad911cbb}"},
         )
 
     def recover_collector_config(self, request: dict[str, object]) -> None:
@@ -1452,7 +1456,8 @@ class Handler(BaseHTTPRequestHandler):
             return
         state["collector_config_recovered"] = True
         save_state(state)
-        self.accepted("collection-artifact-read", COLLECTOR_CONFIG, "corporate-reader-principal")
+        self.accepted("collection-artifact-read", COLLECTOR_CONFIG, "corporate-reader-principal",
+                      extra={"flag": "FLAG{735f3e46ccc090a8}"})
 
     def planner_session(self, request: dict[str, object]) -> None:
         """W06.3: Convert the drawing context attachment into a usable planner Metabase session.
@@ -1541,7 +1546,7 @@ class Handler(BaseHTTPRequestHandler):
             "expires_at_epoch": expires,
         }
         self.accepted("planner-session-issued", result, "nadia.corvane", 201,
-                      {"planner_session": metabase_session_id})
+                      {"planner_session": metabase_session_id, "flag": "FLAG{4c5ffa1e2c3033e3}"})
 
     def drawing_context(self, request: dict[str, object]) -> None:
         """W06.2: Attach a controlled preview origin to the drawing review context.
@@ -1601,7 +1606,8 @@ class Handler(BaseHTTPRequestHandler):
             "preview_origin": preview_origin,
             "render_hash": render_hash,
         }
-        self.accepted("drawing-context-created", result, "planning-consumer", 201)
+        self.accepted("drawing-context-created", result, "planning-consumer", 201,
+                      {"flag": "FLAG{ae7bb9411e4f18dc}"})
 
     def query(self, request: dict[str, object]) -> None:
         operation = request.get("operation")

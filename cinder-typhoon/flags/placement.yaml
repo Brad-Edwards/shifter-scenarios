@@ -671,42 +671,42 @@ flags:
     source: value
     value: "FLAG{2f6788589f10c887}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/corporate_identity.py STARTER dict — flag field added."
   - flag_id: W05.2
     source: value
     value: "FLAG{e85ec4991d28c04d}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/corporate_identity.py ROSTER dict — flag field added."
   - flag_id: W05.3
     source: value
     value: "FLAG{4c78bd2e2f7c25bd}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/corporate_identity.py:activate() — flag in extra dict passed to accepted()."
   - flag_id: W06.1
     source: value
     value: "FLAG{415d4e9b4cc2c1ba}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/corporate_identity.py:session_audit() — flag in extra dict. NOTE: corporate_identity state oauth_state must equal seed-archive.py OAUTH-PLN-882.json value (derived from STAFF_SEED). Current initialize() uses random value — seed step must set oauth_state correctly."
   - flag_id: W06.2
     source: value
     value: "FLAG{ae7bb9411e4f18dc}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:drawing_context() — flag in extra dict. Participant uses planner-handover (W04.3) token for X-ARWC-Planning-Access."
   - flag_id: W06.3
     source: value
     value: "FLAG{4c5ffa1e2c3033e3}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:planner_session() — flag in extra dict alongside planner_session."
   - flag_id: W07.1
     source: value
     value: "FLAG{71eae74b979b8556}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/planning_data.py:do_GET /api/saved-queries/current — flag in extra dict passed to accepted()."
   - flag_id: W07.2
     source: value
     value: "FLAG{e4c1d273080dec0d}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/planning_data.py:query_report() — flag in extra dict when allowed_injection path returns ADJ-CRR-DP3-17."
   - flag_id: W07.3
     source: value
     value: "FLAG{9f7a03ecbffb3005}"
@@ -716,22 +716,22 @@ flags:
     source: value
     value: "FLAG{8243ed9c4cc055e1}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py /api/bundles/current handler — flag in extra dict. Also: build/arwc/compose.yaml: added arwc-identity-archive-evidence:/run/arwc-identity-evidence:ro to a-archive volumes."
   - flag_id: W08.2
     source: value
     value: "FLAG{bef107115ff53d4a}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:reassemble_exchange() — flag in extra dict of accepted() call."
   - flag_id: W08.3
     source: value
     value: "FLAG{debd8573ad911cbb}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:reconstruct_collector() — flag in extra dict of accepted() call."
   - flag_id: W08.4
     source: value
     value: "FLAG{735f3e46ccc090a8}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:recover_collector_config() — flag in extra dict. Participant submits decrypted plaintext via POST /api/collection-artifacts/current."
   - flag_id: W09.1
     source: value
     value: "FLAG{47d6fc3a22c3a83d}"

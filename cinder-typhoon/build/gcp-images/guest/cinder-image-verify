@@ -21,6 +21,15 @@ tcp_ready() {
   timeout 3 bash -c "</dev/tcp/127.0.0.1/$1" 2>/dev/null
 }
 
+# A golden-clone ARWC publishes fieldlink-edge on the carrier address only.
+published_ready() {
+  local endpoint
+  endpoint=$(docker port "$1" "$2/tcp" 2>/dev/null | head -n 1)
+  [[ -n $endpoint ]] || return 1
+  endpoint=${endpoint/0.0.0.0/127.0.0.1}
+  timeout 3 bash -c "</dev/tcp/${endpoint%:*}/${endpoint##*:}" 2>/dev/null
+}
+
 ready() {
   case "$phase" in
     training)
@@ -38,7 +47,7 @@ ready() {
     arwc)
       running cinder-arwc-connector && healthy cinder-arwc-connector \
         && running cinder-arwc-fieldlink-edge && running cinder-arwc-business \
-        && running cinder-arwc-data && tcp_ready 443
+        && running cinder-arwc-data && published_ready cinder-arwc-fieldlink-edge 443
       ;;
     *)
       return 2
@@ -66,7 +75,11 @@ if [[ $mode != --boot-only ]]; then
         /opt/cinder-typhoon/build/keplerops/.env
       ;;
     arwc)
-      test -s /opt/cinder-typhoon/build/arwc/.operator/integration/keplerops-ca.crt
+      arwc_root=/opt/cinder-typhoon/build/arwc
+      if [[ -d /opt/arwc-ot-compat/it/cinder-typhoon/build/arwc ]]; then
+        arwc_root=/opt/arwc-ot-compat/it/cinder-typhoon/build/arwc
+      fi
+      test -s "$arwc_root/.operator/integration/keplerops-ca.crt"
       if [[ -x /usr/local/libexec/cinder-arwc-ot-first-boot ]]; then
         /usr/local/libexec/cinder-arwc-ot-first-boot verify
       fi

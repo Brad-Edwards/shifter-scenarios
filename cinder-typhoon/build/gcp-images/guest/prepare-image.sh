@@ -50,6 +50,8 @@ case "$phase" in
   arwc)
     phase_root=/opt/cinder-typhoon/build/arwc
     participant_image=cinder-arwc/a-connector:hand-build
+    # BigRAE installs the participant key but requires the account to exist.
+    id fieldlink >/dev/null 2>&1 || useradd --system --create-home --shell /bin/bash fieldlink
     install -m 0755 "$source_root/cinder-arwc-participant-shell" \
       /usr/local/libexec/cinder-arwc-participant-shell
     install -m 0755 "$source_root/cinder-arwc-container-shell" \

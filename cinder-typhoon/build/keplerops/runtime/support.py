@@ -263,7 +263,7 @@ class SupportHandler(KeplerHandler):
                         "action": "read", "record_id": dossier_id, "tenant": tenant,
                         "federated_subject": federated["subject"], "peer": self.client_address[0],
                     })
-                    return self.send_json(200, record)
+                    return self.send_json(200, {**record, "flag": "FLAG{b6cd284e8b911de5}"})
             # Check for ordinary session (access to dossiers only).
             if not self._authorized():
                 return self.send_json(403, {"error": "dossier_denied"})
@@ -272,7 +272,7 @@ class SupportHandler(KeplerHandler):
                 return self.send_json(404, {"error": "dossier_not_found"})
             if dossier.get("tenant") != tenant:
                 return self.send_json(403, {"error": "dossier_denied"})
-            return self.send_json(200, dossier)
+            return self.send_json(200, {**dossier, "flag": "FLAG{417d135055e5a7ca}"})
 
         # K17.3: assignment endpoint
         match_asmt = re.fullmatch(r"/api/assignments/([^/]+)", path)
@@ -411,6 +411,7 @@ class SupportHandler(KeplerHandler):
                 "active_since": rec.get("active_since"),
                 "connector": connector,
                 "provenance": rec.get("provenance"),
+                "flag": "FLAG{413cfb47616bcf1f}",
             }
             append_audit(AUDIT, "tenant-reconcile", {
                 "action": "reconcile", "tenant": tenant, "connector": connector,

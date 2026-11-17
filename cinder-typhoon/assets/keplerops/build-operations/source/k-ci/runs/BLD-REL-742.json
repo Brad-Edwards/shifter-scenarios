@@ -1,0 +1,25 @@
+{
+  "finished_at": "2026-09-18T16:00:00Z",
+  "log_url": "/api/runs/BLD-REL-742/log",
+  "repository": "fieldkest/release-signer-history",
+  "result_page": {
+    "artifacts": []
+  },
+  "retained_artifacts": [
+    {
+      "artifact_id": "ART-BLD-REL-742-RELEASE-DOSSIER",
+      "build_revision": "be1f58577829a77f999813b24a8fdeabb8a0298f",
+      "listed_on_results_page": false,
+      "name": "release-dossier.json",
+      "object_version": 1,
+      "sha256": "5e59dd080d1e8d009a5f1cba8c8a04a5246b59d54163aea870999506765356e0",
+      "url": "/api/runs/BLD-REL-742/artifacts/release-dossier.json"
+    }
+  ],
+  "revision": "be1f58577829a77f999813b24a8fdeabb8a0298f",
+  "run_id": "BLD-REL-742",
+  "schema": "fieldkest.ci-run/v1",
+  "started_at": "2026-09-18T15:59:00Z",
+  "state": "success",
+  "summary": "Release lineage review completed. Dossier archived."
+}

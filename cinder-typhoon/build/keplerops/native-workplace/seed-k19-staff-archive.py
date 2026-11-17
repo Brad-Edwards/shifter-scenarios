@@ -36,6 +36,8 @@ def main() -> None:
                     grant_name TEXT NOT NULL,
                     archive_ref TEXT NOT NULL,
                     vouched_by TEXT NOT NULL,
+                    delegation_spn TEXT,
+                    service_relation TEXT,
                     created_at TIMESTAMPTZ DEFAULT NOW()
                 )
             """)
@@ -55,6 +57,28 @@ def main() -> None:
                     'support-runner-enrollment',
                     'REL-FLK-7.4.2-09',
                     'keplerops-staff (fieldlink-enrollment) via Keycloak keplerops realm'
+                )
+                ON CONFLICT (subject) DO NOTHING
+            """)
+            cur.execute("""
+                INSERT INTO staff_archive_handovers (
+                    subject, provisioner, provisioner_type, idp, idp_config,
+                    issued_by, template, template_eku, grant_name, archive_ref, vouched_by,
+                    delegation_spn, service_relation
+                ) VALUES (
+                    'evan.calderoux@keplerops.test',
+                    'keplerops-staff',
+                    'OIDC',
+                    'fieldlink-enrollment',
+                    'https://identity.keplerops.test/realms/keplerops/.well-known/openid-configuration',
+                    'FieldKest Enrollment CA',
+                    'StaffArchiveUser',
+                    ARRAY['clientAuth'],
+                    'support-runner-enrollment',
+                    'REL-FLK-7.4.2-11',
+                    'keplerops-staff (fieldlink-enrollment) via Keycloak keplerops realm',
+                    'HTTP/staff.keplerops.test@KEPLEROPS.TEST',
+                    'svc-fieldlink-staff-evan'
                 )
                 ON CONFLICT (subject) DO NOTHING
             """)

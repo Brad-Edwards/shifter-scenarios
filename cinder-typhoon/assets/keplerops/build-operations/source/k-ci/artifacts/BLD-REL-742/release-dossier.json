@@ -1,0 +1,1 @@
+{"build_id":"BLD-REL-742","deleted_commit":"be1f58577829a77f999813b24a8fdeabb8a0298f","interfaces":["fieldkest.connector/v2","fieldkest.connector/v3"],"repository":"fieldkest/release-signer-history","rollover_record":{"passphrase_half":"Rollover-REL742-","record_id":"ROLLOVER-2026-09"},"schema":"fieldkest.release-dossier/v1"}

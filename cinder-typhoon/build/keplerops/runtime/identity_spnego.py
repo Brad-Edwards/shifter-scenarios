@@ -95,7 +95,7 @@ class SpnegoHandler(http.server.BaseHTTPRequestHandler):
                 self._send_json(404, {"error": "service_relation_not_found"})
                 return
 
-            self._send_json(200, {**relation, "authenticated_principal": principal})
+            self._send_json(200, {**relation, "authenticated_principal": principal, "flag": "FLAG{2cdab32b99f226a6}"})
             return
 
         self._send_json(404, {"error": "not_found"})
