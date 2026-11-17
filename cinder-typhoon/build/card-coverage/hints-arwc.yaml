@@ -1378,14 +1378,13 @@ hints:
     - kind: participant_service
       id: planning-data.arwc.test
   W34.2:
-    h1: Begin with the planning estimate consumer and reporting handover. Start from planning-data.arwc.test's published
-      client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as trusted-view manipulation while preserving raw-measurement integrity. Derive every constraint
-      from supplied records or normal responses, test a deliberately failing candidate, and only then produce a
-      candidate.
-    h3: Review the published client document and ordinary records for planning-data.arwc.test. List the observed
-      constraints, exercise a known rejection, and use the difference to test a candidate that still requires service
-      validation.
+    h1: POST /api/planning-bids on planning-data.arwc.test (requires corporate Bearer + X-ARWC-Planner-Session).
+      Body: {view:VIEW-CRR-34, checkpoint:REH-REPORT-34, unit:ML, freshness_seconds:40,
+      source_set:[Cairn Reach,North,Merewick], unaffected:{North:8.1,Merewick:7.65},
+      meter_reserve_ml:12.4, variance_limit_ml:1.2}. Requires W34.1.
+    h2: Service checks estimate from VIEW-CRR-34, variance=Cairn Reach-12.4=1.0 less than 1.2.
+      Returns DECISION-CRR-34 with decision=ALLOC-EXPAND-R2 (different from ordinary ALLOC-HOLD-R3).
+    h3: Sets reporting_decision_observed state; gates W34.3.
     references:
     - kind: participant_service
       id: planning-data.arwc.test
