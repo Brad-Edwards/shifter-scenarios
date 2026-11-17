@@ -1304,13 +1304,12 @@ hints:
     - kind: participant_service
       id: process-view.arwc.test
   W32.4:
-    h1: Begin with the retained replay engine and current estimator observations. Its published client document
-      exposes the replay execute operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as state-machine reconstruction and old-model-versus-current-reality comparison. Derive every
-      constraint from supplied records or normal responses, test a deliberately failing candidate, and only then
-      produce a candidate.
-    h3: Locate the replay execute operation in the published client reference. List the observed constraints, exercise
-      a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: POST /api/replay-sessions/current/execute with {"replay":"REPLAY-CRR-R19",
+      "trace":"TRACE-R19-DISPUTED","witness":<witness from binary>}. Run replay binary
+      with mode "witness" to get the witness dict; submit verbatim.
+    h2: Path is /execute not /results. Requires W32.3 (replay_condition_recovered) state.
+      Sets replay_witness_response; completes W32 arc.
+    h3: Call subprocess.run([replay_binary, "witness"]) and parse stdout. Proof: TRACE-R19-DISPUTED.
     references:
     - kind: client_route
       id: process.replay-execute
