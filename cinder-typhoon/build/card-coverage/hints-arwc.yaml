@@ -1282,12 +1282,13 @@ hints:
     - kind: client_route
       id: process.replay-session
   W32.2:
-    h1: Begin with the retained replay engine and current estimator observations. Its published client document
-      exposes the estimator task operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as state-machine reconstruction and old-model-versus-current-reality comparison. Build a local
-      model from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Locate the estimator task operation in the published client reference. Extract the supplied cases into a
-      small local reproducer and do not use its result until every reference case matches.
+    h1: POST /api/estimator-tasks/current/inputs with {"record_id":"REPLAY-CRR-R19","revision":19,
+      "transitions":<transitions from binary>}. Run the replay-crr-r19 binary with mode "transitions"
+      to get the 4 distinguishing ECS state transition cases; submit them verbatim.
+    h2: The service compares the submitted transitions against run_replay32("transitions") output exactly.
+      System order: CommandApply, RampLimit, FlowIntegrate, ReserveUpdate, ApprovalCheck.
+    h3: Call subprocess.run([replay_binary, "transitions"]) and parse stdout as JSON list (4 items).
+      Sets replay_transitions_reproduced state; gates W32.3 (retained approval condition).
     references:
     - kind: client_route
       id: process.estimator-task
