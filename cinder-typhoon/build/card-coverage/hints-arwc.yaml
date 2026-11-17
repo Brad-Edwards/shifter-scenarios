@@ -1249,12 +1249,15 @@ hints:
     - kind: client_route
       id: process.signature-record
   W31.3:
-    h1: Begin with the diagnostic vault record, parser worker, and approval-history export. Its published client
-      document exposes the replay divergence operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-boundary analysis followed by protected saved-state control. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the replay divergence operation in the published client reference. Join the independent records on
-      their stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: POST /api/replay-sessions/current/divergence with the same body format as W31.2. Use the same DVL1
+      record structure (declared=0xfe08, header=0x01f8, 512 bytes) but fill the payload with the controlled
+      frame values at their correct offsets within the 500-byte payload field.
+    h2: Frame offsets within the payload (from W31.1 status record): workspace 0..287, canary at byte 288,
+      saved_rbp at 296, return_state at 304, argument at 312. VAULT_BASE=0x555550000000.
+      CANARY=0x91d4c6aa72be3f05. Offsets from metadata: export_history=4698, history_id=8576.
+    h3: The binary (--execute mode) validates that canary, return_state, and argument match the expected values,
+      and that saved_rbp is within the mapping. On success it outputs history_id=HIST-APR-CRR-09.
+      Sets vault_saved_state_controlled; gates W31.4.
     references:
     - kind: client_route
       id: process.replay-divergence

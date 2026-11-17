@@ -912,6 +912,7 @@ class Handler(BaseHTTPRequestHandler):
             "/api/estimator-tasks/current/inputs",
             "/api/signature-oracles/current", "/api/diagnostic-runs",
             "/api/signature-records/current", "/api/vault-records/current",
+            "/api/replay-sessions/current/divergence",
             "/api/reporting-submissions",
         }:
             self.historian_proxy("POST", path, request)
