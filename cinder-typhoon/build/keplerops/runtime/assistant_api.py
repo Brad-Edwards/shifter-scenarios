@@ -320,6 +320,86 @@ class AssistantApiHandler(KeplerHandler):
             })
             return
 
+        # K23.3: document fetch — session-required, checks context/conversation agreement but
+        # OMITS tenant_id == session.tenant_id (the missing tenant boundary).
+        # The participant exploits this by supplying their ARWC context (ctx-support-private-v4)
+        # and the Rillhaven conversation (CONV-RILL-442-8) with tenant_id TEN-RILL-022.
+        # The flaw: the endpoint returns the real Rillhaven document from rill-support workspace.
+        if path == "/api/fetch":
+            cookie = self.headers.get("Cookie", "")
+            user = _get_session(cookie)
+            if user is None:
+                self.send_json(403, {"error": "session_required"})
+                return
+            try:
+                body = self.read_json(maximum_bytes=4096)
+            except Exception:
+                self.send_json(400, {"error": "bad_request"})
+                return
+            context_id = body.get("context_id", "")
+            conversation_id = body.get("conversation_id", "")
+            tenant_id = body.get("tenant_id", "")
+            # Check 1: context_id is a known context in the inventory
+            known_contexts = {c.get("context_id") for c in CONTEXTS}
+            if context_id not in known_contexts:
+                self.send_json(404, {"error": "context_not_found"})
+                return
+            # Check 2: conversation_id appears anywhere in the contexts inventory
+            all_conversations = {conv for c in CONTEXTS for conv in c.get("conversations", [])}
+            if conversation_id not in all_conversations:
+                self.send_json(404, {"error": "conversation_not_found"})
+                return
+            # MISSING CHECK: tenant_id == session.tenant_id
+            # (the flaw — a mismatched context/conversation pair is denied above, but
+            #  an authenticated support session with a known conversation_id from a foreign
+            #  context can supply any tenant_id without validation)
+            # Find which workspace the conversation belongs to and fetch the real document
+            k21_config = _load_k21_config()
+            api_key = k21_config.get("anyllm_api_key", "")
+            if not api_key:
+                self.send_json(503, {"error": "fetch_unavailable"})
+                return
+            # Look up workspace for the requested conversation
+            conv_workspace = {
+                "CONV-RILL-442-8": k21_config.get("rill_workspace_slug", "rillhaven-support"),
+                "CONV-SUP-2841-19": k21_config.get("workspace_slug", "support-private"),
+            }.get(conversation_id)
+            if not conv_workspace:
+                self.send_json(404, {"error": "document_not_found"})
+                return
+            # Fetch real document from the workspace via AnythingLLM RAG
+            chat_url = f"{ANYLLM_BASE}/api/v1/workspace/{conv_workspace}/chat"
+            chat_body = json.dumps({
+                "message": f"What are the full details for the integration reference {conversation_id}?",
+                "mode": "query",
+            }).encode()
+            req = Request(chat_url, data=chat_body, headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            })
+            try:
+                with urlopen(req, timeout=120) as r:
+                    result = json.load(r)
+                    doc_text = result.get("textResponse", "")
+                    sources = result.get("sources", [])
+            except Exception:
+                self.send_json(503, {"error": "document_fetch_failed"})
+                return
+            append_audit(AUDIT, "document-fetch", {
+                "action": "fetch",
+                "context_id": context_id,
+                "conversation_id": conversation_id,
+                "tenant_id": tenant_id,
+                "user": user,
+            })
+            self.send_json(200, {
+                "conversation_id": conversation_id,
+                "tenant_id": tenant_id,
+                "document": doc_text,
+                "sources": [s.get("title", "") for s in sources],
+            })
+            return
+
         # K22.3: accept_duplicate_review tool — exposed to assistant principal; no role check.
         # The flaw: any support or assistant session can invoke it without human approval.
         # Gates on K22.2 completion (the injection path must have succeeded first).
