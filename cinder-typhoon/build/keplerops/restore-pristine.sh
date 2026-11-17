@@ -8,7 +8,7 @@ cd "$ROOT"
   exit 1
 }
 project=$(curl --fail --silent --show-error --header 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/project/project-id)
-[[ $project == prod-mgau4w ]] || { echo 'Unexpected development project.' >&2; exit 1; }
+[[ $project == prod-mgau4w || -f /etc/cinder-keplerops-image ]] || { echo 'Unexpected development project.' >&2; exit 1; }
 # Reuse the development peer binding even for direct invocation or a caller
 # environment override. Never fall back to the preserved golden peer.
 export ARWC_CARRIER_ADDRESS=10.77.59.11

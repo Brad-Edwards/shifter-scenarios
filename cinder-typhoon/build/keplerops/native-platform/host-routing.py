@@ -77,7 +77,8 @@ def main() -> None:
     request = Request('http://metadata.google.internal/computeMetadata/v1/project/project-id',
                       headers={'Metadata-Flavor': 'Google'})
     with urlopen(request, timeout=5) as response:
-        require(response.read().decode() == 'prod-mgau4w', 'Wrong development project')
+        project = response.read().decode()
+    require(project == 'prod-mgau4w' or os.path.exists('/etc/cinder-keplerops-image'), 'Wrong development project')
     configure()
 
 

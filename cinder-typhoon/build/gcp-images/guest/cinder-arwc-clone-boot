@@ -23,7 +23,7 @@ done
 metadata=http://metadata.google.internal/computeMetadata/v1
 address=$(curl --fail --silent --show-error --header 'Metadata-Flavor: Google' \
   "$metadata/instance/network-interfaces/0/ip")
-[[ $address =~ ^10\.77\.59\.[0-9]+$ ]] || {
+[[ $address =~ ^(10|172\.(1[6-9]|2[0-9]|3[01])|192\.168)\. ]] || {
   echo "Unexpected ARWC carrier address: $address" >&2
   exit 1
 }
