@@ -9,6 +9,16 @@ mkdir -p "$OPERATOR_DIR/integration"
 mkdir -p "$OPERATOR_DIR/range-seed"
 chmod 0700 "$OPERATOR_DIR" "$OPERATOR_DIR/tls" "$OPERATOR_DIR/integration" "$OPERATOR_DIR/range-seed"
 
+if [[ ! -s "$OPERATOR_DIR/native-foundation.env" ]]; then
+  native_postgres_password=$(openssl rand -hex 24)
+  {
+    printf 'POSTGRES_USER=fieldlink_admin\n'
+    printf 'POSTGRES_PASSWORD=%s\n' "$native_postgres_password"
+    printf 'POSTGRES_DB=fieldlink\n'
+  } >"$OPERATOR_DIR/native-foundation.env"
+fi
+chmod 0600 "$OPERATOR_DIR/native-foundation.env"
+
 RANGE_SEED_DIR="$OPERATOR_DIR/range-seed"
 if [[ ! -s "$RANGE_SEED_DIR/metadata.json" ]]; then
   if find "$RANGE_SEED_DIR" -mindepth 1 -print -quit | grep -q .; then
@@ -94,7 +104,7 @@ openssl req -newkey rsa:3072 -nodes \
   -subj '/CN=keplerops.test' \
   -keyout "$OPERATOR_DIR/tls/server.key" -out "$OPERATOR_DIR/tls/server.csr" 2>/dev/null
 cat >"$OPERATOR_DIR/tls/server.ext" <<'EOF'
-subjectAltName=DNS:k-dev.keplerops.test,DNS:source.keplerops.test,DNS:packages.keplerops.test,DNS:ci.keplerops.test,DNS:preview.keplerops.test,DNS:support.keplerops.test,DNS:indexer.keplerops.test,DNS:staff.keplerops.test,DNS:identity.keplerops.test,DNS:cert.keplerops.test,DNS:cloud.keplerops.test,DNS:cloud-api.keplerops.test,DNS:data.keplerops.test,DNS:workload.keplerops.test,DNS:workloads.keplerops.test,DNS:assistant.keplerops.test,DNS:connector.arwc.test
+subjectAltName=DNS:k-dev.keplerops.test,DNS:edge.keplerops.test,DNS:foundation.keplerops.test,DNS:source.keplerops.test,DNS:git.keplerops.test,DNS:packages.keplerops.test,DNS:registry.keplerops.test,DNS:ci.keplerops.test,DNS:jenkins.keplerops.test,DNS:preview.keplerops.test,DNS:support.keplerops.test,DNS:tickets.keplerops.test,DNS:indexer.keplerops.test,DNS:staff.keplerops.test,DNS:workboard.keplerops.test,DNS:identity.keplerops.test,DNS:id.keplerops.test,DNS:cert.keplerops.test,DNS:ca.keplerops.test,DNS:cloud.keplerops.test,DNS:cloud-api.keplerops.test,DNS:data.keplerops.test,DNS:objects.keplerops.test,DNS:workload.keplerops.test,DNS:workloads.keplerops.test,DNS:assistant.keplerops.test,DNS:llm.keplerops.test,DNS:connector.arwc.test
 keyUsage=digitalSignature,keyEncipherment
 extendedKeyUsage=serverAuth
 EOF

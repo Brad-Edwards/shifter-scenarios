@@ -1,0 +1,34 @@
+$ORIGIN keplerops.test.
+$TTL 60
+@ IN SOA dns.keplerops.test. hostmaster.keplerops.test. (
+    2026111401 60 60 3600 60
+)
+  IN NS dns.keplerops.test.
+
+dns         IN A 10.77.50.10
+edge        IN A 10.77.50.11
+foundation  IN A 10.77.50.11
+k-dev       IN A 10.77.50.20
+staff       IN A 10.77.50.30
+workboard   IN A 10.77.50.30
+identity    IN A 10.77.50.40
+id          IN A 10.77.50.40
+cert        IN A 10.77.50.50
+ca          IN A 10.77.50.50
+source      IN A 10.77.51.20
+git         IN A 10.77.51.20
+packages    IN A 10.77.51.30
+registry    IN A 10.77.51.30
+ci          IN A 10.77.51.40
+jenkins     IN A 10.77.51.40
+preview     IN A 10.77.51.50
+support     IN A 10.77.51.60
+tickets     IN A 10.77.51.60
+indexer     IN A 10.77.51.70
+cloud-api   IN A 10.77.52.20
+workload    IN A 10.77.52.30
+workloads   IN A 10.77.52.30
+data        IN A 10.77.52.40
+objects     IN A 10.77.52.40
+assistant   IN A 10.77.52.50
+llm         IN A 10.77.52.50
