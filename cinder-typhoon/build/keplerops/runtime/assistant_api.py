@@ -166,16 +166,22 @@ class AssistantApiHandler(KeplerHandler):
             self.send_json(200, record)
             return
 
-        # K23.1: contexts endpoint — public, returns workspace context list with real thread slugs.
+        # K23.1: contexts endpoint — public (no session required, the flaw), returns all context
+        # entries including the accidentally-exposed unpublished Rillhaven entry (ctx-rill-support-v3).
         # K22.3: also includes review_reference so the participant can discover DREV-2841-2.
         if path == "/api/contexts":
             k21 = _load_k21_config()
             enriched_contexts = []
             for ctx in CONTEXTS:
                 enriched = dict(ctx)
-                enriched["answer_thread"] = k21.get("thread_slug")
-                enriched["review_reference"] = "DREV-2841-2"
+                if ctx.get("context_id") == "ctx-support-private-v4":
+                    enriched["answer_thread"] = k21.get("thread_slug")
+                    enriched["review_reference"] = "DREV-2841-2"
                 enriched_contexts.append(enriched)
+            append_audit(AUDIT, "context-inventory-read", {
+                "action": "read",
+                "context_ids": [c.get("context_id") for c in enriched_contexts],
+            })
             self.send_json(200, {"contexts": enriched_contexts})
             return
 
