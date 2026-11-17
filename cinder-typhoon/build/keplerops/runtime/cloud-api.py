@@ -27,6 +27,7 @@ CONFIG = json.loads((STATE / "config/cloud-api.json").read_text())
 
 USERNAME = CONFIG["developer"]["username"]
 TOKEN = credential("developer_token")
+RELEASE_READER_TOKEN = credential("release_reader_token")  # K29.1 exchange handle
 NAMESPACE = CONFIG.get("namespace", "fieldlink")
 WORKLOAD_SA = CONFIG.get("workload_sa", "svc-fieldlink-workload")
 
@@ -164,11 +165,17 @@ class CloudApiHandler(KeplerHandler):
         if path == "/health":
             self.send_json(200, {"status": "up"})
             return
-        # /api/build-records/{id}: authenticated by workload SA token (not developer token).
-        # K3s RBAC enforces scope — this must be checked BEFORE developer auth.
+        # /api/build-records/{id}: two paths depending on the build record type.
+        # K29.1: BLD-REL-742 is developer-authenticated and returns the release exchange handle.
+        #   The flaw: checks project membership (developer token) but omits release-dossier
+        #   entitlement check before returning the exchange handle.
+        # K13.4: all other build records require a K3s workload SA token (enforced by K3s RBAC).
         if path.startswith("/api/build-records/"):
             build_id = path.removeprefix("/api/build-records/")
-            self._build_record_via_workload(build_id)
+            if build_id == "BLD-REL-742":
+                self._build_record_release_dossier(build_id)
+            else:
+                self._build_record_via_workload(build_id)
             return
         # /api/trust-records/{id}: K14.1 — authenticated by workload SA token.
         # The trust record is a real K3s ConfigMap containing the token's trust context.
@@ -1034,6 +1041,33 @@ class CloudApiHandler(KeplerHandler):
             json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n"
         )
         self.send_json(201, result)
+
+    def _build_record_release_dossier(self, build_id: str) -> None:
+        """K29.1: return the release-dossier build record with the exchange handle.
+
+        Flaw: checks project membership (developer auth) but omits release-dossier
+        entitlement check. Any project member can recover the exchange handle, which
+        grants access to the CI release-dossier artifact naming the signer repository.
+        """
+        if not self._developer():
+            self.send_json(401, {"error": "authentication_required"})
+            return
+        result = {
+            "schema": "fieldkest.build-record/v1",
+            "build_id": build_id,
+            "classification": "release-dossier",
+            "status": "retained",
+            "release_principal": "release-reader",
+            "exchange_handle": RELEASE_READER_TOKEN,
+        }
+        append_audit(AUDIT, "build-records", {
+            "request_id": self.request_id,
+            "build_id": build_id,
+            "principal": USERNAME,
+            "classification": "release-dossier",
+            "status": 200,
+        })
+        self.send_json(200, result)
 
     def _build_record_via_workload(self, build_id: str) -> None:
         """K13.4: read a K3s ConfigMap using the participant's SA token.
