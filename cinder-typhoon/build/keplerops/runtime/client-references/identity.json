@@ -7,7 +7,7 @@
         {
           "key": "identity.registration",
           "method": "GET",
-          "template": "https://identity.keplerops.test/api/registrations/{registration_id}"
+          "template": "https://identity.keplerops.test/realms/keplerops/clients-registrations/openid-connect/{registration_id}"
         },
         {
           "key": "identity.staff-login",

@@ -1,0 +1,12 @@
+{
+  "archives": [
+    {
+      "path": "k-support-k18-state.tar",
+      "sha256": "65f5ea22835e0ca2dc379c80cf747df44a8dd0236e2f163a0cf543a74eaa3ed9",
+      "size": 10240
+    }
+  ],
+  "generated_at": "2026-11-16T00:00:00Z",
+  "note": "RSA key pair for RETAINED_SUPPORT federation. Private key signs assertions at /federation/retained-support/assertions. Public key verifies at /api/federation/login. No challenge answer is in this tar.",
+  "schema": "fieldkest.support-k18-artifacts/v1"
+}

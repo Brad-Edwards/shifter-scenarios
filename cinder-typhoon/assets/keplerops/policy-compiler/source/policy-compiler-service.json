@@ -338,20 +338,168 @@
   ],
   "fragments": {
     "compatibility-exception": {
-      "program_base64": "RktQQwwAAAAEAAQAAAADAAEAAQACAAAABwAAAA==",
-      "program_sha256": "576c0ac79e95322c10d9abb096b47c1668f2fd41a6deff6daee8b937ece2da9f"
+      "program_id": "FKPC-FRAGMENT-COMPATIBILITY-EXCEPTION",
+      "validation_cases": [
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "3.0.0",
+            "signer_lineage": "fieldkest-release-2026",
+            "tenant_class": "standard",
+            "tenant_state": "active"
+          },
+          "case_id": "CE-01",
+          "expected": true
+        },
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": false,
+            "connector_api": "3.0.0",
+            "signer_lineage": "fieldkest-release-2026",
+            "tenant_class": "standard",
+            "tenant_state": "active"
+          },
+          "case_id": "CE-02",
+          "expected": false
+        }
+      ]
     },
     "connector-version": {
-      "program_base64": "RktQQwwAAAAEAAQAAAABAAEAAAADAAAABwAAAA==",
-      "program_sha256": "cd31edd4f8ba231722cfe6ab83a0981843fd960a44eda497f0e12b1833e0b1b0"
+      "program_id": "FKPC-FRAGMENT-CONNECTOR-VERSION",
+      "validation_cases": [
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "3.0.0",
+            "signer_lineage": "fieldkest-release-2026",
+            "tenant_class": "standard",
+            "tenant_state": "active"
+          },
+          "case_id": "CV-01",
+          "expected": true
+        },
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "4.0.0",
+            "signer_lineage": "fieldkest-release-2026",
+            "tenant_class": "standard",
+            "tenant_state": "active"
+          },
+          "case_id": "CV-02",
+          "expected": true
+        },
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "2.9.9",
+            "signer_lineage": "fieldkest-release-2026",
+            "tenant_class": "standard",
+            "tenant_state": "active"
+          },
+          "case_id": "CV-03",
+          "expected": false
+        },
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "2.0.0",
+            "signer_lineage": "fieldkest-release-2026",
+            "tenant_class": "standard",
+            "tenant_state": "active"
+          },
+          "case_id": "CV-04",
+          "expected": false
+        }
+      ]
     },
     "signer-lineage": {
-      "program_base64": "RktQQwwAAAADAAQAAAACAAQAAQAHAAAA",
-      "program_sha256": "9726ff99bc49b5d16a9fb496c8ba68d465d31af10f754152816f3d8b18c7cb85"
+      "program_id": "FKPC-FRAGMENT-SIGNER-LINEAGE",
+      "validation_cases": [
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "3.0.0",
+            "signer_lineage": "fieldkest-release-2026",
+            "tenant_class": "standard",
+            "tenant_state": "active"
+          },
+          "case_id": "SL-01",
+          "expected": true
+        },
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "3.0.0",
+            "signer_lineage": "fieldkest-release-2025",
+            "tenant_class": "standard",
+            "tenant_state": "active"
+          },
+          "case_id": "SL-02",
+          "expected": false
+        },
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "3.0.0",
+            "signer_lineage": "fieldkest-lab-2026",
+            "tenant_class": "standard",
+            "tenant_state": "active"
+          },
+          "case_id": "SL-03",
+          "expected": false
+        }
+      ]
     },
     "tenant-state": {
-      "program_base64": "RktQQwwAAAADAAQAAAAAAAQAAAAHAAAA",
-      "program_sha256": "4c727f88147cc6b5cde2e8355ca74af9a988fca300629619c4822b778edce18c"
+      "program_id": "FKPC-FRAGMENT-TENANT-STATE",
+      "validation_cases": [
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "3.0.0",
+            "signer_lineage": "fieldkest-release-2026",
+            "tenant_class": "standard",
+            "tenant_state": "active"
+          },
+          "case_id": "TS-01",
+          "expected": true
+        },
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "3.0.0",
+            "signer_lineage": "fieldkest-release-2026",
+            "tenant_class": "standard",
+            "tenant_state": "inactive"
+          },
+          "case_id": "TS-02",
+          "expected": false
+        },
+        {
+          "case": {
+            "channel": "stable",
+            "compatibility_exception": true,
+            "connector_api": "3.0.0",
+            "signer_lineage": "fieldkest-release-2026",
+            "tenant_class": "standard",
+            "tenant_state": "suspended"
+          },
+          "case_id": "TS-03",
+          "expected": false
+        }
+      ]
     }
   },
   "link_map_sha256": "2154d84f97555e8cc51963da030106a1045b0860a891b4ef1445b54813e16541",
@@ -373,12 +521,12 @@
   "program_id": "FKPC-POLICY-2026-09-R4",
   "program_sha256": "0b9a7fd08148ec1b6d3151dcd9c0499fb89f70585fb3705a44662e062242ef9c",
   "repository": {
-    "bundle_sha256": "23c72a63f7866659b65d316928ccb243a6885a135a2e60f390368eff9a32b7d2",
-    "commit": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58",
+    "bundle_sha256": "299ecece8a832b98b99c133bc45d28cead41e32bd811df2cd1ff503fdda5818f",
+    "commit": "7b857207f68944d19d61d9b33c1df830b36c5aee",
     "refs": {
-      "main": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58",
-      "policyc-2.6.4": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58",
-      "retained/policyc-2.6": "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58"
+      "main": "7b857207f68944d19d61d9b33c1df830b36c5aee",
+      "policyc-2.6.4": "7b857207f68944d19d61d9b33c1df830b36c5aee",
+      "retained/policyc-2.6": "7b857207f68944d19d61d9b33c1df830b36c5aee"
     },
     "repository": "fieldkest/policy-compiler"
   },

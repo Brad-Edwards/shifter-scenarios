@@ -1,11 +1,11 @@
-"""Loopback-only FieldKest inspection, reconstruction and callback helper."""
+"""Loopback-only FieldKest sample inspection helper."""
 
 from __future__ import annotations
 
-import base64
 import hashlib
 import json
 from pathlib import Path
+import uuid
 from urllib.parse import urlsplit
 
 from http_support import KeplerHandler, append_audit, canonical_bytes, utc_now
@@ -14,6 +14,7 @@ from http.server import ThreadingHTTPServer
 
 CONFIG = json.loads(Path("/opt/fieldkest-workbench/config/opening.json").read_text())
 AUDIT = Path(CONFIG["audit_directory"])
+RESULTS = Path(CONFIG.get("results_directory", "/var/lib/fieldkest-workbench/results"))
 
 
 class WorkbenchHandler(KeplerHandler):
@@ -21,10 +22,8 @@ class WorkbenchHandler(KeplerHandler):
         path = urlsplit(self.path).path
         if path == CONFIG["inspection_summary"]["route"]:
             self._inspection()
-        elif path == CONFIG["reconstruction"]["route"]:
-            self._reconstruction()
-        elif path == CONFIG["callback_collection"]["route"]:
-            self._callback()
+        elif "predecessor_desk" in CONFIG and path == CONFIG["predecessor_desk"]["route"]:
+            self._predecessor_desk()
         else:
             self.send_json(404, {"error": "not_found"})
 
@@ -64,60 +63,58 @@ class WorkbenchHandler(KeplerHandler):
         append_audit(AUDIT, "inspection", {"request_id": self.request_id, "sample_id": sample["sample_id"], "asset_id": sample["asset_id"], "connector_revision": sample["connector_revision"], "input_sha256": receipt["input_sha256"], "output_sha256": output_sha, "status": 201})
         self.send_json(201, receipt)
 
-    def _reconstruction(self) -> None:
-        try:
-            raw = self.read_upload("bundle", 524_288)
-            request = json.loads(raw.decode("utf-8"))
-            script = base64.b64decode(request["script_base64"], validate=True)
-            instructions = base64.b64decode(request["instructions_base64"], validate=True)
-        except (ValueError, KeyError, TypeError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
-            self.send_json(422, {"error": "invalid_reconstruction"})
-            return
-        contract = CONFIG["reconstruction"]
-        script_digest = hashlib.sha256(script).hexdigest()
-        instructions_digest = hashlib.sha256(instructions).hexdigest()
-        valid = (
-            request.get("schema") == contract["accepted_schema"]
-            and request.get("collection_id") == contract["collection_id"]
-            and script_digest == contract["script_sha256"]
-            and instructions_digest == contract["instructions_sha256"]
-        )
-        if not valid:
-            append_audit(AUDIT, "reconstruction", {"request_id": self.request_id, "collection_id": request.get("collection_id"), "script_sha256": script_digest, "instructions_sha256": instructions_digest, "status": 422})
-            self.send_json(422, {"error": "reconstruction_mismatch"})
-            return
-        receipt = {
-            "schema": "fieldkest.reconstruction-receipt/v1",
-            "receipt_id": "REC-" + self.request_id,
-            "collection_id": contract["collection_id"],
-            "script_sha256": script_digest,
-            "instructions_sha256": instructions_digest,
-            "endpoint_id": contract["endpoint_id"],
-            "callback_integrity": contract["callback_integrity"],
-            "executed": False,
-        }
-        append_audit(AUDIT, "reconstruction", {"request_id": self.request_id, **{key: receipt[key] for key in ("collection_id", "script_sha256", "instructions_sha256", "endpoint_id", "callback_integrity")}, "status": 201})
-        self.send_json(201, receipt)
+    def _predecessor_desk(self) -> None:
+        """K03.1 grader: bind staging attachment digest to collection identifier.
 
-    def _callback(self) -> None:
+        Takes {attachment_sha256, collection}.
+        Verifies attachment_sha256 matches staging-FKCOL-2841.bin and collection == FKCOL-2841.
+        """
+        contract = CONFIG["predecessor_desk"]
         try:
-            request = self.read_json(65_536)
+            body = self.read_json(131_072)
+            attachment_sha256 = body.get("attachment_sha256", "")
+            collection = body.get("collection", "")
+            if not (attachment_sha256 and collection):
+                raise ValueError("attachment_sha256_collection_required")
         except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
-            self.send_json(400, {"error": "invalid_request"})
+            self.send_json(422, {"error": "invalid_k03_1_submission"})
             return
-        contract = CONFIG["callback_collection"]
-        fields = ("endpoint_id", "collection_id", "integrity")
-        if not isinstance(request, dict) or any(request.get(field) != contract[field] for field in fields):
-            append_audit(AUDIT, "callback", {"request_id": self.request_id, "endpoint_id": request.get("endpoint_id") if isinstance(request, dict) else None, "collection_id": request.get("collection_id") if isinstance(request, dict) else None, "status": 403})
-            self.send_json(403, {"error": "callback_binding_denied"})
+        if attachment_sha256.lower() != contract["attachment_sha256"]:
+            self.send_json(422, {"error": "attachment_digest_mismatch"})
             return
-        record = contract["record"]
-        append_audit(AUDIT, "callback", {"request_id": self.request_id, "endpoint_id": request["endpoint_id"], "collection_id": request["collection_id"], "ticket_reference": record["ticket_reference"], "status": 200})
-        self.send_json(200, record)
+        if collection != contract["collection"]:
+            self.send_json(422, {"error": "collection_binding_denied"})
+            return
+        RESULTS.mkdir(parents=True, exist_ok=True)
+        receipt_path = RESULTS / "k03-1-complete.json"
+        if receipt_path.is_file():
+            self.send_json(200, json.loads(receipt_path.read_text()))
+            return
+        receipt_id = "K03-1-" + uuid.uuid4().hex[:10].upper()
+        result = {
+            "schema": "fieldkest.k03-1-receipt/v1",
+            "receipt_id": receipt_id,
+            "card": "K03.1",
+            "collection": contract["collection"],
+            "attachment_path": contract["attachment_path"],
+            "attachment_sha256": contract["attachment_sha256"],
+            "odt_path": contract["odt_path"],
+            "observed_at": utc_now(),
+        }
+        receipt_path.write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "k03-1-predecessor-desk", {
+            "request_id": self.request_id,
+            "receipt_id": receipt_id,
+            "collection": contract["collection"],
+            "attachment_sha256": contract["attachment_sha256"],
+            "status": 201,
+        })
+        self.send_json(201, result)
 
 
 def main() -> None:
     AUDIT.mkdir(parents=True, exist_ok=True)
+    RESULTS.mkdir(parents=True, exist_ok=True)
     ThreadingHTTPServer(("127.0.0.1", 8701), WorkbenchHandler).serve_forever()
 
 

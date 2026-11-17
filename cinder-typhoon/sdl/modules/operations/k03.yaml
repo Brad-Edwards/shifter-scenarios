@@ -77,7 +77,7 @@ evidence_requirements:
     description: |-
       Recover the complete next-stage script and its actual collection instructions. Merely locating embedded text does not establish the reconstructed behavior.
 
-      Required technical proof: The reconstruction service accepts the recovered script digest and instruction set only when they reproduce the fixture's deterministic behavior, then makes available K03.3's callback configuration.
+      Required technical proof: The recovered PowerShell and JavaScript bytes match their retained digests, and the final offline reconstruction binds one S3 endpoint, bucket, object key, collection ID, endpoint ID, and object digest for K03.3.
     source_refs:
     - features.k-corporate.k-dev
     scope: Per-participant in-world evidence; no other participant state.
@@ -108,15 +108,15 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test partial decode failure, correct reconstruction, integrity mismatch rejection, instruction/collection
-      consistency, no host execution.'
+    - 'Author checks: Test incomplete outer decoding, wrong stage digest, wrong XOR order, complete offline reconstruction,
+      manifest/object consistency, and that no script execution is required.'
   c3:
     description: |-
       Recover the correctly bound collection and its ticket evidence. The result explains the handler's interest; it supplies no required access credential.
 
-      Required technical proof: The emulator emits a collection-retrieved event only when all bound fields match and returns the `SUP-2841` ticket evidence with provenance.
+      Required technical proof: A signed SeaweedFS S3 GetObject for the reconstructed key returns a digest-matched collection carrying the `SUP-2841`, `CRR-OG2`, and `FLK-7.4.2` evidence with provenance; enumeration and writes remain denied.
     source_refs:
-    - features.k-corporate.k-dev
+    - features.k-cloud.k-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -137,7 +137,7 @@ evidence_requirements:
         names:
         - cinder.k03-3.satisfied
         component_refs:
-        - features.k-corporate.k-dev
+        - features.k-cloud.k-data
       collection: require
       retention: require
       redaction: redact-secrets
@@ -145,8 +145,8 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Verify each incorrect configuration fails distinctly, correct reconstruction returns one collection,
-      ticket provenance matches the staging record, direct archive reads fail.'
+    - 'Author checks: Verify bucket listing, writes, a wrong key, and unrelated buckets are denied; the exact signed
+      object read succeeds; its digest and ticket provenance match the reconstructed manifest; the result persists after restart.'
 propositions:
   c1:
     description: Recover the actual staging artifact and its collection binding. It supplies the material for K03.2,
@@ -182,7 +182,7 @@ propositions:
     description: Recover the correctly bound collection and its ticket evidence. The result explains the handler's
       interest; it supplies no required access credential.
     subjects:
-    - features.k-corporate.k-dev
+    - features.k-cloud.k-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -265,7 +265,7 @@ objectives:
     actions:
     - k03.c3
     targets:
-    - features.k-corporate.k-dev
+    - features.k-cloud.k-data
     success:
       mode: all_of
       assertions:
@@ -362,7 +362,7 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.k03.c1
-      - features.k-corporate.k-dev
+      - features.k-cloud.k-data
     - precondition_id: normal-surface
       precondition_class: target
       description: A predecessor's retained document is a versioned local artifact that names a staging object and
@@ -424,8 +424,8 @@ action_contracts:
       - features.k-corporate.k-dev
     - precondition_id: normal-surface
       precondition_class: target
-      description: The staging artifact is a layered encoded script bundle with a documented runtime wrapper, integrity
-        marker, and a separate collection-instruction payload.
+      description: The staging artifact is a three-stage retained analysis bundle. The ODT attachment wraps a PowerShell
+        stage, which carries a JavaScript collector stage, which reconstructs an integrity-bound object-storage manifest.
       support_refs:
       - features.k-corporate.k-dev
       - content.keplerops-k-dev.k03-2-the-script-inside-the-script
@@ -449,8 +449,8 @@ action_contracts:
       - evidence_requirements.k03.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The reconstruction service accepts the recovered script digest and instruction set only when
-        they reproduce the fixture's deterministic behavior, then makes available K03.3's callback configuration.
+      description: The recovered PowerShell and JavaScript bytes match their retained digests, and the final offline
+        reconstruction binds one S3 endpoint, bucket, object key, collection ID, endpoint ID, and object digest for K03.3.
       target_refs:
       - features.k-corporate.k-dev
       evidence_refs:
@@ -466,8 +466,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The emulator intentionally requires a correctly reconstructed configuration rather than exposing
-      a listable archive. The intended solution applies K03.2's recovered instructions to the supplied staging binding.
+    procedure_basis: The retained S3 identity has object-read authority without bucket-list authority. The intended
+      solution applies K03.2's recovered endpoint, bucket, exact key, and digest to a normal signed GetObject.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -482,11 +482,11 @@ action_contracts:
       - features.k-corporate.k-dev
     - precondition_id: normal-surface
       precondition_class: target
-      description: A local callback emulator holds the predecessor operation's lost collection behind configuration
-        fields for endpoint, collection ID, and integrity value.
+      description: Native SeaweedFS S3 holds the predecessor operation's lost collection in fieldlink-collections.
+        Rowan's ordinary AWS profile can read a known object in that bucket but cannot enumerate or write it.
       support_refs:
-      - features.k-corporate.k-dev
-      - content.keplerops-k-dev.k03-3-finish-the-callback
+      - features.k-cloud.k-data
+      - content.keplerops-k-data.k03-3-finish-the-callback
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: Context only; no credential or customer entry Participant-created service state persists for
@@ -494,23 +494,23 @@ action_contracts:
         records, identities, routes, and destination effects declared here; unrelated tenants and services remain
         denied. Infrastructure recovery and submission adjudication are outside this in-world contract.
       support_refs:
-      - features.k-corporate.k-dev
-      - content.keplerops-k-dev.k03-3-finish-the-callback
+      - features.k-cloud.k-data
+      - content.keplerops-k-data.k03-3-finish-the-callback
     effects:
     - effect_id: outcome
       effect_class: intended_effect
       description: Recover the correctly bound collection and its ticket evidence. The result explains the handler's
         interest; it supplies no required access credential.
       target_refs:
-      - features.k-corporate.k-dev
+      - features.k-cloud.k-data
       evidence_refs:
       - evidence_requirements.k03.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The emulator emits a collection-retrieved event only when all bound fields match and returns
-        the `SUP-2841` ticket evidence with provenance.
+      description: A signed S3 GetObject for the reconstructed key returns a digest-matched collection carrying
+        the `SUP-2841`, `CRR-OG2`, and `FLK-7.4.2` evidence with provenance; enumeration and writes remain denied.
       target_refs:
-      - features.k-corporate.k-dev
+      - features.k-cloud.k-data
       evidence_refs:
       - evidence_requirements.k03.c3
     failure_classes:

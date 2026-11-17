@@ -77,9 +77,9 @@ evidence_requirements:
       fails, the test revision matches.'
   c2:
     description: |-
-      Recover the restricted review note and the test job's input contract through the importer. These supply evidence for K02.3; the read does not itself grant job-editing or execution authority.
+      Recover REVNOTE-1842 from the native Jenkins build artifacts and bind its provider contract to the failing build and source revision. This read does not grant source write or job configuration authority.
 
-      Required technical proof: The importer logs the resolved object ID and job contract; the expected restricted note is attached as operator evidence without giving job-edit rights.
+      Required technical proof: The native build record, archived REVNOTE-1842 bytes and source revision establish the input contract. Record the artifact digest and the native file-parameter job that consumes the provider package; source write and job configuration remain denied.
     source_refs:
     - features.k-delivery.k-ci
     scope: Per-participant in-world evidence; no other participant state.
@@ -110,15 +110,15 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test normal import, intended cross-namespace read, rejection outside allowlist, no job configuration
-      mutation, exact object audit.'
+    - 'Author checks: Verify native artifact download and exact note digest, matching build/source revision, absent
+      artifact 404, anonymous denial and unchanged source-write/job-configuration permissions.'
   c3:
     description: |-
       Produce a fresh altered report accepted by the test interface. Its content and job binding must agree; an edited local file or green status alone is insufficient.
 
       The conclusion shows the report as received in the support handover, with the operator's changed result alongside the successful job status and preserved ordinary fields. It uses the report already produced by the service task; there is no extra delivery step or accepted result. This is the first small example of a reassuring status accompanying a compromised result, a theme that returns at ARWC.
 
-      Required technical proof: Completion is a green job whose fresh report has the expected baseline fields and operator change; the support handover displays that actual output and the job receipt binds it.
+      Required technical proof: Completion requires native Jenkins SUCCESS, its archived fresh report and exact input/output digests, and the support handover containing the same job ID and report digest. A failed provider produces native FAILURE; a local edit or unchanged report does not complete the workflow.
     source_refs:
     - features.k-delivery.k-ci
     - features.k-delivery.k-support
@@ -251,9 +251,9 @@ objectives:
   c2:
     name: 'K02.2: An input outside its lane'
     description: |-
-      The test importer is supposed to accept only job inputs. Make it expose the separate review note that the ordinary test view withholds.
+      The report build failed, but it retained a review note separate from the console log. Recover that note and establish the input contract for submitting a corrected report provider.
 
-      Introduces a small application boundary through an everyday developer workflow.
+      Connects a real build record to the separately archived input contract used by its report workflow.
     assigned_participant: participant.operator
     actions:
     - k02.c2
@@ -378,8 +378,9 @@ action_contracts:
       - features.k-delivery.k-source
     - precondition_id: normal-surface
       precondition_class: target
-      description: Gitea project history, local build artifacts, and a test-job record describe a deleted report
-        fixture and its matching test revision.
+      description: Native Gitea project history and Jenkins job fieldlink-report build 1842 describe the deleted
+        report fixture and matching checked-out test revision. The original build executes the actual pytest failure;
+        its history and artifacts are ordinary native records.
       support_refs:
       - features.k-delivery.k-ci
       - features.k-delivery.k-source
@@ -423,9 +424,9 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: An importer field is resolved outside the declared job-input namespace before access control.
-      The intended solution is to construct a valid input that demonstrates the boundary and recovers the note plus
-      its input contract.
+    procedure_basis: The console log does not reproduce the separately archived provider contract. Follow the native
+      artifact link or artifact API, read the review note, and correlate its exact fixture path and revision with
+      the actual failed build. Use native artifact requests under the developer's existing read permission.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -440,8 +441,9 @@ action_contracts:
       - features.k-delivery.k-ci
     - precondition_id: normal-surface
       precondition_class: target
-      description: The FieldKest test importer accepts a documented job-input archive and returns a test report;
-        its repository contains a separate restricted review-note object.
+      description: Native Jenkins job fieldlink-report build 1842 retains the actual failed test console, source
+        revision, workspace and archived reports/REVNOTE-1842.json. The separate fieldlink-report-review job exposes
+        a native provider.zip file parameter.
       support_refs:
       - features.k-delivery.k-ci
       - content.keplerops-k-ci.k02-2-an-input-outside-its-lane
@@ -457,16 +459,17 @@ action_contracts:
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the restricted review note and the test job's input contract through the importer. These
-        supply evidence for K02.3; the read does not itself grant job-editing or execution authority.
+      description: Recover REVNOTE-1842 from the native Jenkins build artifacts and bind its provider contract to
+        the failing build and source revision. This read does not grant source write or job configuration authority.
       target_refs:
       - features.k-delivery.k-ci
       evidence_refs:
       - evidence_requirements.k02.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The importer logs the resolved object ID and job contract; the expected restricted note is attached
-        as operator evidence without giving job-edit rights.
+      description: The native build record, archived REVNOTE-1842 bytes and source revision establish the input
+        contract. Record the artifact digest and the native file-parameter job that consumes the provider package;
+        source write and job configuration remain denied.
       target_refs:
       - features.k-delivery.k-ci
       evidence_refs:
@@ -483,8 +486,8 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: The test input permits a compatible report implementation selected through its documented extension
-      point. The intended solution combines the fixture baseline and importer contract to produce changed content
-      while preserving required interface fields.
+      point. The intended solution combines the historical fixture and archived provider contract to produce changed
+      content while preserving required interface fields.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -500,8 +503,9 @@ action_contracts:
       - features.k-delivery.k-support
     - precondition_id: normal-surface
       precondition_class: target
-      description: An isolated Jenkins or Woodpecker test consumer invokes the FieldKest report interface with the
-        recovered fixture and publishes the resulting support handover report.
+      description: Native Jenkins job fieldlink-report-review accepts provider.zip through its standard file parameter.
+        Its fixed build step invokes the existing isolated FieldLink report consumer with the recovered fixture
+        and publishes the actual resulting support handover report.
       support_refs:
       - features.k-delivery.k-ci
       - features.k-delivery.k-support
@@ -529,8 +533,9 @@ action_contracts:
       - evidence_requirements.k02.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Completion is a green job whose fresh report has the expected baseline fields and operator change;
-        the support handover displays that actual output and the job receipt binds it.
+      description: Completion requires native Jenkins SUCCESS, its archived fresh report and exact input/output
+        digests, and the support handover containing the same job ID and report digest. A failed provider produces
+        native FAILURE; a local edit or unchanged report does not complete the workflow.
       target_refs:
       - features.k-delivery.k-ci
       - features.k-delivery.k-support

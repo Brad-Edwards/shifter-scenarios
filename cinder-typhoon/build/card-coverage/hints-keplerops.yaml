@@ -2,46 +2,38 @@ schema_version: 2
 phase: keplerops
 hints:
   K01.1:
-    h1: Begin with the developer workspace, service notes, and normal source clients. The supplied credentials artifact
-      carries the relevant lead; check its provenance and references before contacting another service.
-    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
-      cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Inspect the supplied credentials artifact and the normal client documentation it names. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: Start with the developer's ordinary Git client configuration and the source links in the service notes.
+    h2: The retained identity is deliberately limited. Use Gitea's normal issue list for the private connector repository,
+      and distinguish successful read access from repository write authority.
+    h3: Recover the saved Gitea identity, open the fieldkest/fieldlink-connector issue list, and correlate the handover
+      issue's release and revision. Confirm that the same identity cannot push.
     references:
     - kind: participant_artifact
       id: .config/git/credentials
   K01.2:
-    h1: Begin with the developer workspace, service notes, and normal source clients. Start from source.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
-      cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for source.keplerops.test. Record the normal result
-      and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The closed page is not an open tab. Inspect Chromium's ordinary history and then use the support desk named
+      in the workstation notes.
+    h2: The history title retains a ticket number and subject. Rowan's normal staff identity can enter the native
+      osTicket agent queue; unrelated queue records are context, not the answer.
+    h3: Search osTicket for the retained ticket number and read its actual thread. Correlate the customer, asset,
+      connector revision, and callback-latency correspondence.
     references:
     - kind: participant_service
-      id: source.keplerops.test
+      id: support.keplerops.test
   K01.3:
-    h1: Begin with the developer workspace, service notes, and normal source clients. The supplied fieldlink 7.4.2
-      review.md artifact carries the relevant lead; check its provenance and references before contacting another
-      service.
-    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
-      cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Inspect the supplied fieldlink 7.4.2 review.md artifact and the normal client documentation it names. Record
-      the normal result and a denied variant, alter one dimension, and keep the service-owned evidence needed to
-      explain the difference.
+    h1: Release reviews are on the staff work board named in the workstation notes, not in the connector checkout.
+    h2: Use Kanboard's normal task search and reference correlation. The release reference distinguishes the target
+      from the neighboring review tasks, and the task owns both comments and an attachment.
+    h3: Find release REL-FLK-7.4.2-09 in Kanboard, open its review attachment, and correlate the unresolved REV comments
+      with the task reference.
     references:
-    - kind: participant_artifact
-      id: work/review-exports/fieldlink-7.4.2-review.md
+    - kind: participant_service
+      id: staff.keplerops.test
   K01.4:
-    h1: Begin with the developer workspace, service notes, and normal source clients. The supplied local helper.md
-      artifact carries the relevant lead; check its provenance and references before contacting another service.
-    h2: Treat this as retained client identity and authorization-scope analysis. Observe the ordinary and denied
-      cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Inspect the supplied local helper.md artifact and the normal client documentation it names. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: The local helper documentation and supplied FieldKest samples are under the developer's work directory.
+    h2: This is a normal local report action. Preserve the sample's own asset and connector revision rather than
+      substituting values from another record.
+    h3: Submit the documented FK-SAMPLE-017 file to the helper's inspection-summary form and retain the fresh receipt.
     references:
     - kind: participant_artifact
       id: work/local-helper.md
@@ -49,444 +41,590 @@ hints:
     h1: Begin with the retained source history and the continuous-integration review workflow. The failing-job note
       identifies a repository revision, so the removed fixture should be sought in version history rather than the
       current tree.
-    h2: This stage is version-history recovery. Keep the named revision and fixture path bound together; importer
-      behavior is a later boundary.
+    h2: This stage is version-history recovery. Keep the named revision and fixture path bound together; the provider
+      contract is a separate build artifact.
     h3: Compare the revision in the failing-job note with the repository history, then inspect the change that removed
       the named fixture without restoring unrelated files.
     references:
     - kind: participant_service
       id: ci.keplerops.test
   K02.2:
-    h1: Stay with the continuous-integration client and compare the importer's accepted job namespace with the object
-      it actually resolves. The ordinary form is the baseline, not the complete boundary.
-    h2: This is path resolution before authorization. Test whether a job-relative reference remains inside the intended
-      input collection after normalization.
-    h3: Submit one ordinary job input and one minimally changed relative reference, then compare the resolved object
-      and denial evidence before trying a second variation.
+    h1: Inspect the native Jenkins build page and its separately archived artifacts. The console is only one part
+      of the retained build record.
+    h2: Match the review note to the failed build and source revision before using its provider contract. Reading
+      an artifact does not grant repository write or job configuration access.
+    h3: Compare the exact fixture path and revision in REVNOTE-1842 with the native source history and inspect the
+      file parameter on fieldlink-report-review.
     references:
     - kind: participant_service
       id: ci.keplerops.test
   K02.3:
-    h1: Begin with the retained source history and the continuous-integration review workflow. Start from ci.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as version-history recovery followed by importer-boundary and extension-point analysis. Keep the
-      recovered fixture's exact file bytes when you build the archive, then vary only the provider extension point.
-    h3: Review the published client document and ordinary records for ci.keplerops.test. Read the current revision,
-      submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: Use the native Jenkins fieldlink-report-review job and its provider.zip file parameter. The original
+      fieldlink-report job is the retained failing baseline.
+    h2: This is interface validation. Preserve the fixture's exact file bytes and immutable fields while implementing
+      the documented provider extension point. A valid package is different from an accepted changed report.
+    h3: Compare the native build artifacts with the support handover. The job ID and report digest must identify
+      the same fresh output; a green status by itself is insufficient.
     references:
     - kind: participant_service
       id: ci.keplerops.test
   K03.1:
-    h1: Begin with the predecessor notes, staged attachments, and the workstation analysis helper. Start from ci.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as layered payload reconstruction with integrity and callback correlation. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for ci.keplerops.test. Record the normal result
-      and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The predecessor left one ordinary document package in the analysis directory; its rendered pages are not
+      the whole file.
+    h2: Treat the OpenDocument format as a ZIP package structure. Compare the visible note with its packaged attachments
+      and retain the attachment bytes before interpreting them.
+    h3: Inspect `Attachments/staging-FKCOL-2841.bin` inside `field-notes-2026-08.odt`, then bind its digest to the
+      collection identifier recorded in the stage header.
     references:
-    - kind: participant_service
-      id: ci.keplerops.test
+    - kind: participant_artifact
+      id: work/analysis/field-notes-2026-08.odt
   K03.2:
-    h1: Begin with the predecessor notes, staged attachments, and the workstation analysis helper. The supplied
-      staging decoder.ps1 artifact carries the relevant lead; check its provenance and references before contacting
-      another service.
-    h2: Treat this as layered payload reconstruction with integrity and callback correlation. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Inspect the supplied staging decoder.ps1 artifact and the normal client documentation it names. Record the
-      normal result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
-      the difference.
+    h1: The supplied decoder artifact describes only the outer encoding. Preserve the recovered bytes and verify
+      the digest in the stage header before following what they contain.
+    h2: The recovered PowerShell carries another compressed script and its own digest. Preserve the encoding and
+      integrity boundary while reconstructing it as data; neither retained stage needs to be executed.
+    h3: The JavaScript stage shows how its base64 bytes, repeating key, and zlib layer produce the collection manifest.
+      Verify both script digests and recover every manifest field.
     references:
     - kind: participant_artifact
       id: work/analysis/staging-decoder.ps1
   K03.3:
-    h1: Begin with the predecessor notes, staged attachments, and the workstation analysis helper. The supplied
-      local helper.md artifact carries the relevant lead; check its provenance and references before contacting
-      another service.
-    h2: Treat this as layered payload reconstruction with integrity and callback correlation. Build a local model
-      from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Inspect the supplied local helper.md artifact and the normal client documentation it names. Extract the
-      supplied cases into a small local reproducer and do not use its result until every reference case matches.
+    h1: The workstation already has an ordinary scoped object-storage profile. The recovered manifest supplies the
+      address that profile cannot discover by browsing.
+    h2: Reading a known S3 object and listing its bucket cross separate authorization boundaries. Use the exact endpoint,
+      bucket, and key from the reconstructed manifest; the callback-integrity in the staging bundle documents how
+      provenance is verified.
+    h3: After retrieving and verifying the object SHA-256, derive the callback integrity from the reconstructed PowerShell
+      bytes and the retrieved collection bytes and confirm it matches the staged bundle's declared callback-integrity.
+      Correlate the support ticket, asset, and connector revision, and confirm bucket enumeration is denied.
     references:
     - kind: participant_artifact
-      id: work/local-helper.md
+      id: work/analysis/field-notes-2026-08.odt
   K04.1:
     h1: Begin with the offline indexer reproducer and its protected runtime service. The supplied indexer client.json
-      artifact carries the relevant lead; check its provenance and references before contacting another service.
-    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Inspect the supplied indexer client.json artifact and the normal client documentation it names. Record the
-      normal result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
-      the difference.
+      artifact documents the .fki archive format and the offline reproducer binary; both carry the relevant lead.
+    h2: Treat this as binary layout analysis of the .fki deserializer. The bundle header declares two entry counts;
+      compare how each is used in the bounds check and in the memcpy to find the allocation confusion.
+    h3: Identify how the bounds check compares total entry data against the full arena size (body plus sentinel)
+      while the memcpy writes only into the body region. Construct a bundle where index_entries produces a copy
+      length that exceeds the body but stays within the arena, then verify the service records the controlled
+      sentinel mutation while staying live.
     references:
     - kind: participant_artifact
       id: work/reproducers/indexer-client.json
   K04.2:
-    h1: Begin with the offline indexer reproducer and its protected runtime service. Start from indexer.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Carry forward only
-      earned identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Review the published client document and ordinary records for indexer.keplerops.test. Replay the preceding
-      evidence through the next documented boundary and verify the downstream service, not the client, records the
-      outcome.
+    h1: The binary returns a data_hex field covering the bytes read from the shared arena before each write. After
+      K04.1 the arena carries a runtime descriptor at bytes 80-511 that the service wrote at mutation time.
+    h2: The bounds check uses sizeof(struct index_arena) as its base, not the full arena size. Analyze the binary
+      to find both constants; then choose alloc_entries so that the check passes for datalen equal to the full
+      arena size, covering the descriptor region.
+    h3: Parse data_hex hex chars 160-1023 (arena bytes 80-511) as JSON to recover the runtime descriptor.
+      It contains the worker_session, exception_state_offset, exception_value_size, exception_integrity_size,
+      integrity_relation, and completion_route for K04.3 and K04.4.
     references:
     - kind: participant_service
       id: indexer.keplerops.test
+    - kind: participant_artifact
+      id: work/reproducers/indexer-client.json
   K04.3:
-    h1: Begin with the offline indexer reproducer and its protected runtime service. Start from indexer.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for indexer.keplerops.test. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: The binary read covers the full arena. Extend the bundle beyond the descriptor
+      region by supplying ie=72 and ae=496 so that datalen=576 reaches bytes 512-575
+      in both the binary read and write.
+    h2: Bytes 0-511 of the K04.3 payload must match the K04.2 data_hex bytes verbatim.
+      That snapshot preserves the sentinel at bytes 64-79 and the descriptor at bytes
+      80-511; both must remain intact after the K04.3 write or the service rejects it.
+    h3: Use the descriptor fields exception_state_offset, exception_value_size,
+      exception_integrity_size, and integrity_relation. Place the queue-ready value
+      at bytes 512-543 and HMAC-SHA256(worker_session, b"queue-ready") at bytes 544-575.
+      The response contains write_ready=true when the write passes all checks.
     references:
     - kind: participant_service
       id: indexer.keplerops.test
+    - kind: participant_artifact
+      id: work/reproducers/indexer-client.json
   K04.4:
-    h1: Begin with the offline indexer reproducer and its protected runtime service. Start from indexer.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as binary layout analysis followed by a tightly bounded memory-state change. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Review the published client document and ordinary records for indexer.keplerops.test. Join the independent
-      records on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: Call the completion_route from the K04.2 descriptor. Use bearer=worker_session, body
+      routine=recover_exception_queue and generation=process_generation. The response contains
+      encrypted_record (hex ciphertext) and key_relation (the decryption formula); write_ready
+      must be True before the call succeeds.
+    h2: The key_relation field names the derivation. Compute the K04.3 HMAC first:
+      HMAC-SHA256(worker_session, b"queue-ready"). Then derive the decryption key:
+      SHA256(k43_hmac_bytes + b":dossier-key"). That 32-byte key drives the counter-mode stream.
+    h3: Decrypt the encrypted_record hex in 32-byte blocks. For each block i (zero-indexed):
+      keystream = SHA256(derived_key + struct.pack(">I", i)); XOR each ciphertext byte with the
+      corresponding keystream byte. The plaintext is a JSON object with service_identity and dossier.
     references:
     - kind: participant_service
       id: indexer.keplerops.test
   K05.1:
-    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
-      client document exposes the consumer check and metadata operation, so use that ordinary contract instead of
-      guessing a path.
-    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the consumer check and metadata operation in the published client reference. Capture one ordinary
-      response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Fetch the Verdaccio metadata for @keplerops/fieldlink-connector from the packages.metadata route.
+      The registry README documents the fieldkest.connector/v3 interface and its required fields.
+    h2: Construct a consumer request with schema=fieldkest.connector/v3 and the required tenant_id and
+      asset_id fields. Optionally include a measurements object with callback_latency_ms and sample_count.
+      Missing required fields return 422 from the consumer-check route.
+    h3: POST the request to packages.consumer-check. The result includes check_id, resolved_version (7.4.2),
+      consumer_revision, package_sha256, the original request, and the actual installed module output.
     references:
     - kind: client_route
       id: packages.consumer-check
     - kind: client_route
       id: packages.metadata
   K05.2:
-    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
-      client document exposes the release and conversation operation, so use that ordinary contract instead of guessing
-      a path.
-    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the release and conversation operation in the published client reference. Record the normal result
-      and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The Verdaccio metadata for @keplerops/fieldlink-connector lists 6.9.8 under dist-tags.legacy. The
+      deprecated field on the 6.9.8 version object carries the genuine native deprecation notice; the
+      dist.tarball URL in that version object points to the actual downloadable archive.
+    h2: Download the 6.9.8 tarball directly from the dist.tarball URL using the same developer credentials.
+      A withdrawn customer rollout does not remove the package from the native registry; the archive remains
+      retrievable. Unknown versions return 404 from the packages.release route.
+    h3: Fetch the release record REL-FLK-6.9.8-ARCHIVE from the packages.release route. It carries
+      status=yanked, a maintenance_note, and a compatibility block for the retained entitlement investigation.
+      Correlate the version and package name across the Verdaccio metadata and the release record.
     references:
     - kind: client_route
-      id: packages.release
+      id: packages.metadata
     - kind: client_route
-      id: support.conversation
+      id: packages.release
   K05.3:
-    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
-      client document exposes the reconcile operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the reconcile operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: POST to packages.reconcile with the correct tenant/release pair: tenant_record_id=TEN-ARWC-047 and
+      release_id=REL-FLK-7.4.2-09. Wrong record pairs return 422. The release record is readable from
+      the packages.release route and the tenant ID comes from the support ticket customer context (K01.2).
+    h2: The reconcile result compares four fields: package, declared_range, resolved_version, and consumer_revision.
+      Only resolved_version disagrees: the tenant record has 7.4.1 and the release has 7.4.2. The comparison_digest
+      binds the full result including the tenant_record_id and release_id.
+    h3: Verify the tenant version against the actual native package: download the 7.4.1 tarball from
+      Verdaccio (use the dist.tarball URL in the 7.4.1 version object) and compute its SHA256. This binds
+      the archive digest to the disagreeing version in the reconcile comparison.
     references:
     - kind: client_route
       id: packages.reconcile
+    - kind: client_route
+      id: packages.metadata
   K05.4:
-    h1: Begin with the package registry metadata, retained release records, and consumer fixtures. Its published
-      client document exposes the resolver operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the resolver operation in the published client reference. Record the normal result and a denied variant,
-      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The declared range from K05.3 is ^7.4.0. The Verdaccio metadata lists 7.4.0, 7.4.1, and 7.4.2 under
+      versions. npm selects the highest stable matching version: 7.4.2. Requesting a non-existent version
+      (such as 7.4.3) from Verdaccio returns 404.
+    h2: Download the 7.4.2 tarball from its dist.tarball URL in the Verdaccio version object and compute its
+      SHA256. Then POST a valid fieldkest.connector/v3 request to packages.consumer-check. The service runs
+      npm pack with ^7.4.0 and returns resolved_version=7.4.2 with the matching package_sha256.
+    h3: Verify that the package_sha256 from the consumer-check response matches the sha256 you computed from
+      the Verdaccio tarball. The result object also includes connector_version=7.4.2 from the installed module,
+      confirming the actual dependency that ran rather than the release label.
     references:
     - kind: client_route
       id: packages.resolver
   K06.1:
-    h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
-      exposes the import operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as publisher credential scope and package publication without release-administration authority.
-      Observe the ordinary and denied cases first, then change one input at a time and keep every unrelated binding
-      fixed.
-    h3: Locate the import operation in the published client reference. Record the normal result and a denied variant,
-      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: Navigate to the fieldkest/fieldlink-connector repository in Gitea and check the delivery-operations
+      branch commit history. Find the commit that removed delivery/.npmrc from the working tree and inspect
+      the file at the parent commit using the Gitea raw or contents API with the parent commit SHA as the ref.
+    h2: The .npmrc file has an _auth field that is base64-encoded credentials for the fieldlink-importer-publisher
+      account. Decode it to recover the username and token. These credentials authenticate to Verdaccio
+      using the same HTTP Basic Auth as other package operations.
+    h3: Confirm the publisher scope: the recovered credentials return 200 for @keplerops/fieldlink-connector
+      metadata and tarballs, but 403 for @keplerops/support-rehearsal and 403 for the release-administration
+      session route. These are the outer bounds of the publisher account.
     references:
-    - kind: client_route
-      id: packages.import
+    - kind: participant_service
+      id: source.keplerops.test
+    - kind: participant_service
+      id: packages.keplerops.test
   K06.2:
-    h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
-      exposes the view operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as publisher credential scope and package publication without release-administration authority.
-      Observe the ordinary and denied cases first, then change one input at a time and keep every unrelated binding
-      fixed.
-    h3: Locate the view operation in the published client reference. Record the normal result and a denied variant,
-      alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: Navigate to the Jenkins fieldlink-package-check job on ci.keplerops.test. The build archives
+      package-workspace/.npmrc alongside the support-rehearsal.json artifact. Download the .npmrc
+      from the archived build artifacts; it carries a separate svc-fieldlink-ci credential.
+    h2: Decode the .npmrc _auth field (base64) to recover the svc-fieldlink-ci username and token.
+      Those credentials can read @keplerops/support-rehearsal (200) from Verdaccio. The
+      fieldlink-importer-publisher credentials from K06.1 remain denied (403) for that package.
+    h3: Confirm the CI reader scope: @keplerops/support-rehearsal metadata and tarball pass (200).
+      Then verify the boundary: a PUT to @keplerops/fieldlink-connector with CI credentials is
+      denied (403); the publisher from K06.1 is still denied on support-rehearsal (403).
     references:
-    - kind: client_route
-      id: packages.view
+    - kind: participant_service
+      id: ci.keplerops.test
+    - kind: participant_service
+      id: packages.keplerops.test
   K06.3:
-    h1: Begin with the package import, publisher, and rehearsal-consumer services. Its published client document
-      exposes the connector rehearsal and publish operation, so use that ordinary contract instead of guessing a
-      path.
-    h2: Treat this as publisher credential scope and package publication without release-administration authority.
-      Establish the denied and ordinary baselines first, then vary only the boundary input the service is meant
-      to bind.
-    h3: Locate the connector rehearsal and publish operation in the published client reference. Read the current
-      revision, submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: Build a compatible 7.4.3 package with the same fieldkest.connector/v3 interface (same index.js logic,
+      same limits.json structure, same package.json fieldkest.interface field) but different limits.json values.
+      Use npm publish with the K06.1 publisher .npmrc to publish it; Verdaccio rejects a duplicate version.
+    h2: After publishing 7.4.3, the consumer-check endpoint runs npm pack with ^7.4.0 and now selects 7.4.3
+      as the highest stable version. Provide the same fieldkest.connector/v3 request as K05.1. The changed
+      limits.json values produce a different assessment in the module output.
+    h3: Confirm the changed result: the consumer-check response shows resolved_version=7.4.3 and the result
+      assessment differs from 7.4.2 (for example, callback-review-required instead of within-operating-limits).
+      Verify that tenant_id, asset_id, and schema are preserved. The publisher still has no release-admin authority.
     references:
+    - kind: participant_service
+      id: packages.keplerops.test
     - kind: client_route
-      id: ci.connector-rehearsal
+      id: packages.consumer-check
     - kind: client_route
       id: packages.publish
   K07.1:
-    h1: Begin with the package inspection contract and its trace records. Its published client document exposes
-      the inspection trace and inspections operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as message-envelope interpretation across a parser and a protected downstream action. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the inspection trace and inspections operation in the published client reference. Capture one ordinary
-      response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Read work/registry/inspection-normal.json from the developer workstation and POST it to
+      packages.inspections. The service validates schema, package, version, and action fields; it
+      does not require exact byte equality. The response has a dynamic inspection_id (changes each
+      request) and a trace link. Submit twice to confirm both IDs differ.
+    h2: Fetch the trace at GET /api/inspections/{inspection_id}/trace. It contains a real
+      assessor_correlation_id (UUID from the upstream assessor — not a fixed constant) and the
+      compatibility_envelope_sha256 for K07.2. Requests for unknown trace IDs return 403.
+    h3: The trace proves a real upstream exists: the inspection service forwards to a Python
+      BaseHTTPRequestHandler assessor (CL-based parser), while the Nginx edge is TE-aware. This
+      Nginx/assessor parser disagreement is the K07.2 smuggling target. The compatibility_envelope_sha256
+      binds the inspection to the K07.2 envelope.
     references:
     - kind: client_route
       id: packages.inspection-trace
     - kind: client_route
       id: packages.inspections
+    - kind: participant_artifact
+      id: work/registry/inspection-normal.json
   K07.2:
-    h1: Begin with the package inspection contract and its trace records. Its published client document exposes
-      the inspection envelope operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as message-envelope interpretation across a parser and a protected downstream action. Derive
-      every constraint from supplied records or normal responses, test a deliberately failing candidate, and only
-      then produce a candidate.
-    h3: Locate the inspection envelope operation in the published client reference. List the observed constraints,
-      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: The binary envelope format is FKI1 + name_length(1 byte) + name(N bytes) + front_following_length(2 bytes,
+      big-endian). The inspection service sets Content-Length = front_following_length when forwarding to the
+      assessor. Set front_following_length = 10 (the 10-byte header size): the assessor reads 10 bytes; surplus
+      bytes stay in the persistent HTTP/1.1 socket as the next assessor request prefix.
+    h2: Use KELVIN SIGN U+212A (bytes e284aa, 3 bytes = 1 char) as the name to show the name framing disagreement:
+      front decodes raw UTF-8 → 1 char; assessor applies NFKC + casefold + [:3] → 3 chars. After the 10-byte
+      header, include a valid HTTP POST to /assess/privileged as the surplus bytes; the final 3 envelope bytes
+      become the smuggled POST body.
+    h3: Submit the envelope via persistent HTTP/1.1 keep-alive to packages.inspection-envelope, then immediately
+      send a normal inspection on the SAME connection. The inspection service reads the assessor's buffered
+      privileged response instead of the expected assessment: assessment=privileged-access-confirmed in the result.
     references:
     - kind: client_route
       id: packages.inspection-envelope
+    - kind: client_route
+      id: packages.inspections
   K07.3:
-    h1: Begin with the package inspection contract and its trace records. Its published client document exposes
-      the inspection envelope operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as message-envelope interpretation across a parser and a protected downstream action. Carry forward
-      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
-      boundary.
-    h3: Locate the inspection envelope operation in the published client reference. Replay the preceding evidence
-      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: The K07.3 protected route requires a valid K07.1 inspection_id as authorization. The smuggled POST body
+      is binary-framed: 2 bytes big-endian payload_len followed by {"inspection_id":"INSP-XXXXXXXX"} JSON.
+      An invalid or absent inspection_id returns 403 from the assessor with no state change.
+    h2: Apply K07.2's body-framing primitive: front_following_length=10 (CL to assessor = 10-byte header).
+      Surplus bytes = POST /assess/inspect-privileged headers with Content-Length=(2+len(JSON)) followed by
+      the binary-framed body. No trailing bytes should remain so the assessor connection stays alive.
+    h3: After submitting the envelope, query GET /api/protected-assessment/latest to retrieve the result.
+      It binds the K07.1 inspection_id, the K07.1 assessor_correlation_id, and the real Verdaccio
+      @keplerops/support-rehearsal package data. Both the K07.1 trace and the protected assessment
+      are the correlated audit evidence for K07.3 completion.
     references:
     - kind: client_route
       id: packages.inspection-envelope
-  K08.1:
-    h1: Begin with the package entitlement records and versioned checking service. Its published client document
-      exposes the entitlement operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cryptographic context binding and legacy-versus-current validation behavior. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the entitlement operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
-    references:
     - kind: client_route
-      id: packages.entitlement
-  K08.2:
-    h1: Begin with the package entitlement records and versioned checking service. Its published client document
-      exposes the entitlement check operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cryptographic context binding and legacy-versus-current validation behavior. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the entitlement check operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+      id: packages.inspections
+  K08.1:
+    h1: Navigate to fieldkest/connector-archive in Gitea using the developer credentials. The entitlement record
+      is at internal/fieldlink/legacy-diagnostics/CRR-OG2/ENT-ARWC-DIAG-0698.json. Read its commit history
+      to see the revision 3 → revision 4 progression and understand the entitlement's legacy context.
+    h2: The HKDF derivation context is in the K05.2 release record REL-FLK-6.9.8-ARCHIVE. Fetch it via the
+      packages.release route; its compatibility field has ikm_hex, salt_hex, info_utf8, aad_utf8, and key_id.
+      These are the context inputs needed by the checker.
+    h3: POST to packages.entitlement-check with checker=v1, the full entitlement JSON from Gitea, and the
+      context from the release record. The checker decrypts using HKDF-SHA256 + AES-256-GCM and returns
+      customer_id, feature_id, package_revision, expiry_policy, revision, and state=baseline-valid.
     references:
+    - kind: participant_service
+      id: source.keplerops.test
+    - kind: client_route
+      id: packages.entitlement-check
+    - kind: client_route
+      id: packages.release
+  K08.2:
+    h1: The v2 entitlement record is in the same Gitea CRR-OG2 directory as the v1 record, named
+      ENT-ARWC-DIAG-0698-V2.json. It has schema=fieldkest.entitlement-record/v2 and an expiry_policy
+      top-level field — this is the missing encryption context for the v2 checker.
+    h2: The checker=v2 reads expiry_policy from the participant-supplied record body and derives the AES-256-GCM
+      key using HKDF(info=base_info+"|"+expiry_policy). POST the v2 record with checker=v2 to
+      packages.entitlement-check. Without the expiry_policy field, v2 key derivation uses empty string and
+      decryption fails (422).
+    h3: The v2 result is state=legacy-test-accepted with revision=3, distinct from the K08.1 v1 baseline at
+      revision=4. The expiry_policy field in the v2 record is the missing context — it was added to the record
+      schema in v2 to allow context-binding derivation.
+    references:
+    - kind: participant_service
+      id: source.keplerops.test
     - kind: client_route
       id: packages.entitlement-check
   K08.3:
-    h1: Begin with the package entitlement records and versioned checking service. Its published client document
-      exposes the entitlement check operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cryptographic context binding and legacy-versus-current validation behavior. Derive every
-      constraint from supplied records or normal responses, test a deliberately failing candidate, and only then
-      produce a candidate.
-    h3: Locate the entitlement check operation in the published client reference. List the observed constraints,
-      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: Read ENT-ARWC-DIAG-0698-plaintext-template.json from the Gitea CRR-OG2 directory. Fill in expiry_policy
+      from the K08.2 checker result and choose a revision integer != 4 and != 3. Serialize as canonical JSON
+      (sort_keys=True, no spaces) before encrypting.
+    h2: Encrypt the canonical JSON with AES-256-GCM: v2 HKDF key (HKDF(info=base_info+"|"+expiry_policy) from
+      K08.2), a fresh 12-byte random nonce, and aad="ENT-ARWC-DIAG-0698|TEN-ARWC-019|FLK-6.9.8". Build the
+      entitlement record JSON with cipher, ciphertext_base64, nonce_hex, tag_base64, and the metadata fields
+      (including expiry_policy as a top-level field).
+    h3: POST to packages.entitlement-check with checker=v2, the crafted record (with expiry_policy), and the
+      K08.2 HKDF context. Wrong customer_id or feature_id returns 422; checker=v1 also returns 422. The correct
+      alternate entitlement returns state=legacy-test-accepted with the participant's chosen revision.
     references:
+    - kind: participant_service
+      id: source.keplerops.test
     - kind: client_route
       id: packages.entitlement-check
   K09.1:
-    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
-      document exposes the run and run log operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as job-input trust and execution under a constrained service identity. Observe the ordinary and
-      denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the run and run log operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
-    references:
-    - kind: client_route
-      id: ci.run
-    - kind: client_route
-      id: ci.run-log
-  K09.2:
-    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
-      document exposes the run operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as job-input trust and execution under a constrained service identity. Observe the ordinary and
-      denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the run operation in the published client reference. Record the normal result and a denied variant,
-      alter one dimension, and keep the service-owned evidence needed to explain the difference.
-    references:
-    - kind: client_route
-      id: ci.run
-  K09.3:
-    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Its published client
-      document exposes the review jobs operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as job-input trust and execution under a constrained service identity. Establish the denied and
-      ordinary baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the review jobs operation in the published client reference. Read the current revision, submit one
-      minimal variation, and compare the resulting audit and unaffected fields with the baseline.
-    references:
-    - kind: client_route
-      id: ci.review-jobs
-  K09.4:
-    h1: Begin with the continuous-integration run records, artifacts, and worker handovers. Start from ci.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as job-input trust and execution under a constrained service identity. Carry forward only earned
-      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Review the published client document and ordinary records for ci.keplerops.test. Replay the preceding evidence
-      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: Navigate to Jenkins (ci.keplerops.test) and open the fieldlink-report job. The most recent build is marked
+      FAILURE. The build's public summary only shows FAILURE; the actual failure reason is in the console log.
+    h2: Access the console log via the Jenkins API (GET /job/fieldlink-report/{build}/logText/progressiveText).
+      The build failed because fixtures/report-crr-og2.json was missing from the workspace (FileNotFoundError).
+      The build also archived three artifacts under reports/.
+    h3: Download REVNOTE-{build_number}.json from the archived artifacts. It contains review_id, run_id, and
+      a baseline field with a dossier reference (repository, ref, path). These are the log digest binding and
+      dossier ID for K09.1 completion.
     references:
     - kind: participant_service
       id: ci.keplerops.test
-  K10.1:
-    h1: Begin with the preview queue associations and document-rendering services. Its published client document
-      exposes the association operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as canonical-name collision across preview storage and rendering boundaries. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the association operation in the published client reference. Capture one ordinary response and one
-      denial, then correlate the returned identifiers with evidence already earned.
+  K09.2:
+    h1: The K09.1 REVNOTE has a run_id field (BLD-1842). The Jenkins results page lists only junit.xml.
+      The CI runner service at review.keplerops.test is the separate publication surface; its
+      .well-known/fieldkest-client lists the ci.run route for GET /api/runs/{run_id}.
+      h1 cont: Access GET /api/runs/BLD-1842 on review.keplerops.test.
+    h2: Treat this as job-input trust and execution under a constrained service identity. Observe the ordinary and
+      denied cases first, then change one input at a time and keep every unrelated binding fixed.
+    h3: Download the omitted artifact via ci.run-artifact: GET /api/runs/BLD-1842/artifacts/integration-review-input-v3.json.
+      The result has artifact_id=ART-BLD-1842-INTEGRATION-REVIEW, build_revision, object_version=3, and
+      linked_support_ref. Wrong run IDs (BLD-9999) return 404.
     references:
+    - kind: participant_service
+      id: review.keplerops.test
+    - kind: client_route
+      id: ci.run
+    - kind: client_route
+      id: ci.run-artifact
+  K09.3:
+    h1: Take the K09.2 integration-review-input-v3.json artifact (diagnostic_eligible=true) and POST it to
+      ci.review-jobs on review.keplerops.test: {"support_input": <artifact>, "diagnostic": {"profile": "render-review"}}.
+      The endpoint returns a run_id and result path.
+    h2: GET /api/review-jobs/{run_id} returns state=success, workspace_generation=WS-ROWAN-2026-09-G1, and
+      review.maintained_reference (the diagnostic-request-reference content). The maintained_reference contains
+      "POST /api/review-jobs" and the runner-operations.md path but NOT "FieldKest runner service connections".
+    h3: The returned support_input field is "buildops://reviews/diagnostic-request-reference@3" (the integration
+      reference). This is the K09.4 input. Ordinary inputs (diagnostic_eligible=false) return a different
+      support_input and cannot access the integration diagnostic context.
+    references:
+    - kind: participant_service
+      id: review.keplerops.test
+    - kind: client_route
+      id: ci.review-jobs
+    - kind: client_route
+      id: ci.review-job
+  K09.4:
+    h1: Use the K09.3 integration reference as support_input with diagnostic profile=runner-command. Job 1:
+      argv=["/bin/cat", "/srv/fieldlink-ci/runner/runner-operations.md"]. The note identifies the worker
+      (svc-fieldlink-ci), the STATUS_COMMAND for Job 2, and the service URL table.
+    h2: Job 2: use the STATUS_COMMAND from the note as argv=["/bin/sh", "-c", "..."]. It sources
+      $FIELDLINK_RUN_DIR/connections.env (base URLs) and uses $FIELDLINK_RUN_DIR/build-records.curl
+      (per-run worker token) to call $FIELDLINK_BUILD_RECORDS_URL/api/build-records/worker-status.
+    h3: The Job 2 response contains principal=svc-fieldlink-ci and availability=available. The two distinct
+      run_ids and the build-records audit record (binding the worker lease, principal, and network origin)
+      are the K09.4 completion evidence.
+    references:
+    - kind: participant_service
+      id: review.keplerops.test
+    - kind: client_route
+      id: ci.review-jobs
+  K10.1:
+    h1: Navigate to preview.keplerops.test/.well-known/fieldkest-client to find the preview.association route.
+      The preview service wraps Gotenberg (Chromium+LibreOffice renderer) and provides a preview queue API.
+    h2: Query GET /api/preview/association?source=sup-k-2841 for the participant's own attachment. This returns
+      document_id, source_version, and case_id (CAS-ROWAN-2841) for rowan.ito's case.
+    h3: Query GET /api/preview/association?source=SUP-K-2841 (uppercase, the protected attachment). The service
+      returns maya.ranscombe's case association (CAS-MAYA-2841, same document_id) without checking ownership.
+      This is the K10.1 vulnerability.
+    references:
+    - kind: participant_service
+      id: preview.keplerops.test
     - kind: client_route
       id: preview.association
   K10.2:
-    h1: Begin with the preview queue associations and document-rendering services. Its published client document
-      exposes the documents operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as canonical-name collision across preview storage and rendering boundaries. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
+    h1: The preview.documents route is at POST /api/preview/documents (see preview.keplerops.test client doc).
+      It accepts {"source": "<url>", "source_id": "<id>"} and returns document_id, canonical_url, result_id.
+      The document identity is derived from the canonical form of the source URL.
+    h2: Canonicalization: lowercase the full URL and strip the trailing slash. Submit the same path with
+      different case in the hostname or with/without trailing slash. Both inputs produce the same canonical_url
+      and therefore the same document_id (DOC-9BC054D6F95DFA6A).
     h3: Locate the documents operation in the published client reference. Capture one ordinary response and one
       denial, then correlate the returned identifiers with evidence already earned.
+    h3: Collision pair: Input A = "http://sup.keplerops.test/attachment/sup-k-2841" and
+      Input B = "http://SUP.keplerops.test/attachment/sup-k-2841/". Both return document_id=
+      DOC-9BC054D6F95DFA6A (same as K10.1 associations). A different path returns a different id.
     references:
+    - kind: participant_service
+      id: preview.keplerops.test
     - kind: client_route
       id: preview.documents
   K10.3:
-    h1: Begin with the preview queue associations and document-rendering services. Its published client document
-      exposes the render operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as canonical-name collision across preview storage and rendering boundaries. Carry forward only
-      earned identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Locate the render operation in the published client reference. Replay the preceding evidence through the
-      next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: POST to preview.render with {"html": "<crafted-html>", "source_id": "sup-k-2841", "document_id": "DOC-9BC054D6F95DFA6A"}.
+      The service sends the HTML to Gotenberg unchanged — Chromium renders what the participant submits. The
+      document_id from K10.1 and K10.2 is DOC-9BC054D6F95DFA6A.
+    h2: The preview service runs an internal document server at 127.0.0.1:9000 (loopback only — not reachable
+      from outside the container). GET /protected-preview/{document_id} returns the protected HTML for that slot.
+      Chromium can reach loopback; craft an HTML document with an iframe or JS fetch targeting
+      http://127.0.0.1:9000/protected-preview/DOC-9BC054D6F95DFA6A.
+    h3: When Chromium fetches the internal resource the service records the access and returns ssrf_confirmed=true,
+      protected_case_id=CAS-MAYA-2841, owner=maya.ranscombe, and render_digest. The preview-ssrf-access and
+      protected-content-reads audit records confirm the boundary crossing.
     references:
+    - kind: participant_service
+      id: preview.keplerops.test
     - kind: client_route
       id: preview.render
   K11.1:
-    h1: Begin with the retained policy compiler repository and build-operations handover. The supplied policy compiler
-      handoff.md artifact carries the relevant lead; check its provenance and references before contacting another
-      service.
-    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Inspect the supplied policy compiler handoff.md artifact and the normal client documentation it names. Capture
-      one ordinary response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Read work/build-operations/policy-compiler-handoff.md on the developer workstation. It directs you to the
+      fieldkest/policy-compiler repository in Gitea (source.keplerops.test). Clone it; the repository website field
+      points to the client reference on source-tools.keplerops.test:8443 where the evaluation route is listed.
+    h2: The retained binary bin/fieldkest-policyc is an unstripped ELF. Run nm to find the eight fieldkest_opcode_XX_NAME
+      symbols. Search the binary for the FKPC magic bytes (the embedded 68-byte program table, 14 four-byte
+      instructions). Trace the PUSH_FIELD (0x00) opcodes by index to identify the four evaluated fields:
+      tenant_state (0), connector_api (1), signer_lineage (2), compatibility_exception (3).
+    h3: Build a fieldkest.policy-program-model/v1 with the 68-byte program base64-encoded and its sha256. POST to
+      source-tools.keplerops.test:8443/api/policy-compilers/fieldkest-policyc/evaluations with
+      operation=corpus-check and policy_input={"corpus_id":"POLICY-CORPUS-2026-09-R4"}. The service returns a
+      PCMIG receipt with program_sha256, corpus_result_sha256, and condition_set_sha256.
     references:
     - kind: participant_artifact
       id: work/build-operations/policy-compiler-handoff.md
   K11.2:
-    h1: Begin with the retained policy compiler repository and build-operations handover. Start from source.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Build a local model from
-      the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Review the published client document and ordinary records for source.keplerops.test. Extract the supplied
-      cases into a small local reproducer and do not use its result until every reference case matches.
+    h1: The fieldkest/policy-compiler repository README describes each fragment's policy intent in the Fragments section.
+      No .fkpc bytecode is provided — the participant must assemble each fragment. Use the FKPC encoding from K11.1:
+      magic+header + 4-byte instructions [opcode:1, flags:1 (always 0), operand:2-LE]. PUSH_FIELD operand is field
+      index 0-3; PUSH_CONST is constant index (0=3.0.0, 1=True); IN_SET is set index (0={active}, 1={fieldkest-release-2026}).
+    h2: Assemble each fragment as a minimal sequence ending with RETURN (0x07). tenant-state: PUSH_FIELD(0) IN_SET(0)
+      RETURN. connector-version: PUSH_FIELD(1) PUSH_CONST(0) SEMVER_GTE RETURN. signer-lineage: PUSH_FIELD(2) IN_SET(1)
+      RETURN. compatibility-exception: PUSH_FIELD(3) PUSH_CONST(1) EQ RETURN. Submit each with operation=fragment-check
+      and policy_input={"fragment_id":"<name>"} to source-tools.keplerops.test:8443. See api/fragment-assembly-guide.json.
+    h3: The service validates each submitted program against server-side cases covering both accepting and rejecting inputs.
+      A correct assembly passes all cases. A wrong field index, opcode, or operand fails at least one case
+      (fragment_case_mismatch). All four PCMIG receipts are the K11.2 completion evidence.
     references:
     - kind: participant_service
       id: source.keplerops.test
   K11.3:
-    h1: Begin with the retained policy compiler repository and build-operations handover. Start from source.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Review the published client document and ordinary records for source.keplerops.test. Capture one ordinary
-      response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Run strings bin/fieldkest-policyc and look for constant and set values embedded as string literals.
+      Then run the binary against examples/accepted.env and change one field at a time to find each condition
+      boundary. The corpus in corpus/policy-corpus-2026-09-r4.json has cases failing on each field individually.
+      The README states only operand indices (set index 0, const index 1, etc.) — not actual values. The binary
+      and corpus cases are the only source.
+    h2: Construct a fieldkest.policy-condition-set/v1 document using the schema shape in api/condition-set-template.json.
+      Map the K11.2 opcodes to operators: IN_SET → "in" (values list); SEMVER_GTE → "semver_gte" (value string);
+      EQ → "eq" (value boolean). Fill each value from the binary strings and corpus evidence.
+      Follow the field order recovered in K11.1 (tenant_state, connector_api, signer_lineage, compatibility_exception).
+    h3: Submit operation=condition-check with the program model and
+      policy_input={"corpus_id":"POLICY-CORPUS-2026-09-R4","condition_set":{...}}. Any wrong value or operator →
+      condition_set_mismatch. The PCMIG receipt includes condition_set_sha256 and corpus_result_sha256. Keep both for K11.4.
     references:
     - kind: participant_service
       id: source.keplerops.test
   K11.4:
-    h1: Begin with the retained policy compiler repository and build-operations handover. Start from source.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as instruction-model recovery for an embedded policy virtual machine. Derive every constraint
-      from supplied records or normal responses, test a deliberately failing candidate, and only then produce a
-      candidate.
-    h3: Review the published client document and ordinary records for source.keplerops.test. List the observed constraints,
-      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: Obtain a fresh one-use nonce first: POST {} to source-tools.keplerops.test:8443/api/policy-compilers/fieldkest-policyc/nonces.
+      The nonce expires in five minutes and is consumed by the first syntactically valid acceptance request even if
+      the binary rejects the input. Get the nonce immediately before submitting. See api/accept-template.json for
+      the request shape.
+    h2: Build policy_input with all six fields: the four conditions recovered in K11.3 (use the values from binary
+      and corpus analysis — the values the binary was compiled with), plus channel="preview" and
+      tenant_class="field-service" as context. Add the fresh nonce and corpus_result_sha256 from K11.3. All four
+      conditions must be satisfied for the binary to return accepted=true.
+    h3: Submit operation=accept with the program model from K11.1 and the prepared policy_input. The service runs
+      the real binary (fieldkest-policyc). If accepted, the PCACC receipt includes program_id=FKPC-POLICY-2026-09-R4,
+      binary_sha256, condition_set_sha256, and evaluated_fields. A replay of the same nonce returns
+      stale_or_replayed_nonce. The PCACC receipt is the K11 completion evidence.
     references:
     - kind: participant_service
       id: source.keplerops.test
   K12.1:
-    h1: Begin with the preview assignment, privileged review, and worker-render services. Its published client document
-      exposes the assignment operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cross-action value handling and worker-scope confusion in a privileged preview. Establish
-      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the assignment operation in the published client reference. Read the current revision, submit one
-      minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: The K10.1 association lookup for SUP-K-2841 returns a viewer_request field — the review ID linked to the
+      protected case (PRV-771). The preview service client reference at
+      preview.keplerops.test/.well-known/fieldkest-client lists the preview.assignment route:
+      PATCH /api/preview/reviews/{review_id}/assignment.
+    h2: PATCH preview.assignment with {"queue":"privileged-review","source_id":"<twin>"} where twin is the
+      lowercase collision from K10.2. The route accepts any authenticated request regardless of review ownership —
+      the submitter identity check is omitted on reassignment. This places the participant's content in the
+      privileged reviewer's queue.
+    h3: The service returns {"state":"loaded","action_nonce":"..."} and a review-assignments audit entry.
+      Read GET /api/preview/reviews/PRV-771 to confirm the persisted state: queue=privileged-review,
+      source_id=twin, original_owner=maya.ranscombe. That persisted record is the K12.1 evidence.
+      The action_nonce is input to K12.2.
     references:
     - kind: client_route
       id: preview.assignment
   K12.2:
-    h1: Begin with the preview assignment, privileged review, and worker-render services. Its published client document
-      exposes the prepare operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cross-action value handling and worker-scope confusion in a privileged preview. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the prepare operation in the published client reference. Capture one ordinary response and one denial,
-      then correlate the returned identifiers with evidence already earned.
+    h1: The K12.1 response does NOT expose the action_nonce. The nonce is delivered by the internal reviewer session
+      page at http://127.0.0.1:{INTERNAL_PORT}/review-session/PRV-771. The page sends
+      window.parent.postMessage({action_nonce:"..."}, "*") — the "*" targetOrigin means no origin validation.
+      Any parent frame hosting the session page receives the nonce.
+    h2: Craft an HTML page with an iframe to the session page and a window.addEventListener("message",...) listener.
+      Submit via POST /api/preview/render (K10.3 render endpoint). Gotenberg/Chromium renders the crafted HTML
+      inside the container; the iframe loads the session, which posts the nonce to the parent frame.
+      Write the nonce to the DOM; extract it from the resulting PDF.
+    h3: Use the intercepted nonce as Authorization: Bearer <nonce> to POST /api/preview/reviews/PRV-771/prepare
+      with body {}. Developer credential is rejected. Correct nonce transitions review to prepared and returns
+      {"prepared":true}. Replay returns 403. review-preparations audit confirms the evidence.
     references:
     - kind: client_route
       id: preview.prepare
   K12.3:
-    h1: Begin with the preview assignment, privileged review, and worker-render services. Start from preview.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as cross-action value handling and worker-scope confusion in a privileged preview. Observe the
-      ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for preview.keplerops.test. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: After K12.1 (BOLA) and K12.2 (prepare), wait for the autonomous privileged-review worker. The worker runs
+      on the preview service and polls every few seconds for prepared reviews in the privileged-review queue. When it
+      picks up PRV-771, it renders the review's current source_id via Gotenberg without re-checking ownership.
+    h2: Poll GET /api/preview/reviews/PRV-771 until state=rendered. The review record then contains render_digest
+      (real PDF, 20KB+), renderer_identity=svc-preview-reviewer, and source_id=doc-9bc054d6f95dfa6a — the
+      participant's twin rendered as the worker's authoritative contribution.
+    h3: The review-renders audit records original_owner=maya.ranscombe alongside source_id=doc-9bc054d6f95dfa6a and
+      renderer_identity=svc-preview-reviewer. The participant never holds the worker's credential. The render_digest
+      is input to K12.4.
     references:
     - kind: participant_service
       id: preview.keplerops.test
   K12.4:
-    h1: Begin with the preview assignment, privileged review, and worker-render services. Start from preview.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as cross-action value handling and worker-scope confusion in a privileged preview. Carry forward
-      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
-      boundary.
-    h3: Review the published client document and ordinary records for preview.keplerops.test. Replay the preceding
-      evidence through the next documented boundary and verify the downstream service, not the client, records the
-      outcome.
+    h1: After K12.3 (the autonomous worker renders PRV-771), read the review record via
+      GET /api/preview/reviews/PRV-771. The rendered review contains the K12.4 completion fields:
+      worker_scope, compatibility_summary, and support_receipt. No additional endpoint call is needed.
+    h2: The compatibility_summary reflects the content the participant injected via K12.1 (the twin that
+      collides with the protected fieldlink.connector/v3 diagnostic). The worker attributed this as the
+      official compatibility assessment. The support_receipt (PRV-RCPT-...) is the privileged render's
+      support artifact — generated by the real autonomous worker, not by the participant.
+    h3: K12 completion evidence: worker_scope=/review/, compatibility_summary=fieldlink.connector/v3 compatible,
+      support_receipt=PRV-RCPT-..., renderer_identity=svc-preview-reviewer, render_digest (real PDF).
+      These prove the participant controlled the support engineer's release preview through the full K12
+      chain without holding any worker credential.
     references:
     - kind: participant_service
       id: preview.keplerops.test
   K13.1:
-    h1: Begin at the cloud workspace service named in the workstation notes. Its object listing is the evidence
-      source; follow the notebook reference carried by the listed object.
-    h2: Treat the listing and notebook as separate cloud objects joined by stable object identity. Do not assume
-      the visible notebook is the only retained version.
-    h3: List the workspace objects through the published client, open the referenced notebook, and record its object
-      identity and revision before following any export lead.
+    h1: The developer client reference at data.keplerops.test/.well-known/fieldkest-client lists workspace routes.
+      data.workspace-list is GET https://objects.keplerops.test/fieldkest-workspaces?list-type=2.
+      The bucket allows anonymous access — no credentials needed. List the objects to find the notebook key.
+    h2: Use the real S3 API: aws s3 ls s3://fieldkest-workspaces/ --endpoint-url https://objects.keplerops.test
+      --no-sign-request. This lists notebooks/deploy-2026-09.json and exports/EXP-2841/handover.json.
+      Retrieve the notebook similarly.
+    h3: The notebook content reveals job reference SCHED-2841 and export EXP-2841. These are the K13.2 and K13.3
+      starting points. The object ETag is the version digest.
     references:
     - kind: participant_service
-      id: cloud-api.keplerops.test
+      id: objects.keplerops.test
   K13.2:
-    h1: Begin with the workspace object history, support exports, and cloud identity exchange. Start from cloud-api.keplerops.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as object-version recovery followed by workload-identity scope analysis. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for cloud-api.keplerops.test. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: The fieldkest-workspaces bucket has versioning enabled. Use aws s3api list-object-versions
+      --bucket fieldkest-workspaces --prefix notebooks/deploy-2026-09.json
+      --endpoint-url https://objects.keplerops.test --no-sign-request to list all versions.
+    h2: The result shows two versions. The older version (earlier LastModified) contains the customer note that
+      was removed in the correction. Retrieve it: aws s3api get-object --bucket fieldkest-workspaces
+      --key notebooks/deploy-2026-09.json --version-id <older_version_id>
+      --endpoint-url https://objects.keplerops.test --no-sign-request output.json
+    h3: The prior version customer_note contains TEN-ARWC-019 cedar run customer reference. Extract TEN-ARWC-019
+      as the legacy tenant ID for K29/K30 context. The version ID and ETag bind the evidence.
     references:
     - kind: participant_service
-      id: cloud-api.keplerops.test
+      id: objects.keplerops.test
   K13.3:
-    h1: Return to the workspace notes after recovering the earlier notebook version. The support export is a separate
-      object relationship, not another notebook revision.
-    h2: This stage is cross-object correlation. Preserve the export identity and handover revision instead of carrying
-      across a display name from the notebook.
-    h3: Follow the export reference exposed by the recovered notes, retrieve its retained handover through the ordinary
-      cloud client, and verify both records name the same export identity.
+    h1: The K13.1 notebook content includes export_ref=EXP-2841. The K13.1 anonymous listing also shows
+      exports/EXP-2841/handover.json as a separate key in fieldkest-workspaces. Follow the export reference
+      from the notebook to the handover object in the same bucket.
+    h2: Retrieve the handover: aws s3api get-object --bucket fieldkest-workspaces
+      --key exports/EXP-2841/handover.json --endpoint-url https://objects.keplerops.test
+      --no-sign-request handover.json. Anonymous ACL applies — no credentials needed.
+    h3: The handover content reveals export_id=EXP-2841, job=SCHED-2841, owner=maya.ranscombe.
+      These are the K15 starting leads. The export_id and job bind the support export to the case.
     references:
     - kind: participant_service
-      id: cloud-api.keplerops.test
+      id: objects.keplerops.test
   K13.4:
     h1: Begin with the workspace object history, support exports, and cloud identity exchange. Its published client
       document exposes the build record and workspace exchange operation, so use that ordinary contract instead

@@ -307,48 +307,42 @@ phases:
         difficulty: easy
         points: 50
         hints:
-        - Begin with the developer workspace, service notes, and normal source clients. The supplied credentials
-          artifact carries the relevant lead; check its provenance and references before contacting another
-          service.
-        - Treat this as retained client identity and authorization-scope analysis. Observe the ordinary
-          and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-        - Inspect the supplied credentials artifact and the normal client documentation it names. Record
-          the normal result and a denied variant, alter one dimension, and keep the service-owned evidence
-          needed to explain the difference.
+        - Start with the developer's ordinary Git client configuration and the source links in the service
+          notes.
+        - The retained identity is deliberately limited. Use Gitea's normal issue list for the private
+          connector repository, and distinguish successful read access from repository write authority.
+        - Recover the saved Gitea identity, open the fieldkest/fieldlink-connector issue list, and correlate
+          the handover issue's release and revision. Confirm that the same identity cannot push.
         completion:
           mode: automatic_range_evidence
       - id: K01.2
         title: The tab that survived
         description: The developer closed the support portal before leaving. Recover the unfinished ARWC
-          conversation retained by the browser.
+          support ticket retained by the browser.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the developer workspace, service notes, and normal source clients. Start from source.keplerops.test's
-          published client document and records already earned in this operation, not from an invented
-          endpoint.
-        - Treat this as retained client identity and authorization-scope analysis. Observe the ordinary
-          and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-        - Review the published client document and ordinary records for source.keplerops.test. Record
-          the normal result and a denied variant, alter one dimension, and keep the service-owned evidence
-          needed to explain the difference.
+        - The closed page is not an open tab. Inspect Chromium's ordinary history and then use the support
+          desk named in the workstation notes.
+        - The history title retains a ticket number and subject. Rowan's normal staff identity can enter
+          the native osTicket agent queue; unrelated queue records are context, not the answer.
+        - Search osTicket for the retained ticket number and read its actual thread. Correlate the customer,
+          asset, connector revision, and callback-latency correspondence.
         completion:
           mode: automatic_range_evidence
       - id: K01.3
         title: Outside the working folder
-        description: A release review refers to a work file missing from the checkout. Find the developer's
-          exposed copy and recover the unresolved review comments.
+        description: A release review is missing from the checkout. Find its staff work-board record and
+          recover the attached review and unresolved comments.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the developer workspace, service notes, and normal source clients. The supplied fieldlink
-          7.4.2 review.md artifact carries the relevant lead; check its provenance and references before
-          contacting another service.
-        - Treat this as retained client identity and authorization-scope analysis. Observe the ordinary
-          and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-        - Inspect the supplied fieldlink 7.4.2 review.md artifact and the normal client documentation
-          it names. Record the normal result and a denied variant, alter one dimension, and keep the service-owned
-          evidence needed to explain the difference.
+        - Release reviews are on the staff work board named in the workstation notes, not in the connector
+          checkout.
+        - Use Kanboard's normal task search and reference correlation. The release reference distinguishes
+          the target from the neighboring review tasks, and the task owns both comments and an attachment.
+        - Find release REL-FLK-7.4.2-09 in Kanboard, open its review attachment, and correlate the unresolved
+          REV comments with the task reference.
         completion:
           mode: automatic_range_evidence
       - id: K01.4
@@ -359,14 +353,12 @@ phases:
         difficulty: easy
         points: 50
         hints:
-        - Begin with the developer workspace, service notes, and normal source clients. The supplied local
-          helper.md artifact carries the relevant lead; check its provenance and references before contacting
-          another service.
-        - Treat this as retained client identity and authorization-scope analysis. Observe the ordinary
-          and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-        - Inspect the supplied local helper.md artifact and the normal client documentation it names.
-          Record the normal result and a denied variant, alter one dimension, and keep the service-owned
-          evidence needed to explain the difference.
+        - The local helper documentation and supplied FieldKest samples are under the developer's work
+          directory.
+        - This is a normal local report action. Preserve the sample's own asset and connector revision
+          rather than substituting values from another record.
+        - Submit the documented FK-SAMPLE-017 file to the helper's inspection-summary form and retain
+          the fresh receipt.
         completion:
           mode: automatic_range_evidence
     - id: K02
@@ -387,24 +379,24 @@ phases:
           note identifies a repository revision, so the removed fixture should be sought in version history
           rather than the current tree.
         - This stage is version-history recovery. Keep the named revision and fixture path bound together;
-          importer behavior is a later boundary.
+          the provider contract is a separate build artifact.
         - Compare the revision in the failing-job note with the repository history, then inspect the change
           that removed the named fixture without restoring unrelated files.
         completion:
           mode: automatic_range_evidence
       - id: K02.2
         title: An input outside its lane
-        description: The test importer is supposed to accept only job inputs. Make it expose the separate
-          review note that the ordinary test view withholds.
+        description: The report build failed, but it retained a review note separate from the console
+          log. Recover that note and establish the input contract for submitting a corrected report provider.
         difficulty: easy
         points: 50
         hints:
-        - Stay with the continuous-integration client and compare the importer's accepted job namespace
-          with the object it actually resolves. The ordinary form is the baseline, not the complete boundary.
-        - This is path resolution before authorization. Test whether a job-relative reference remains
-          inside the intended input collection after normalization.
-        - Submit one ordinary job input and one minimally changed relative reference, then compare the
-          resolved object and denial evidence before trying a second variation.
+        - Inspect the native Jenkins build page and its separately archived artifacts. The console is
+          only one part of the retained build record.
+        - Match the review note to the failed build and source revision before using its provider contract.
+          Reading an artifact does not grant repository write or job configuration access.
+        - Compare the exact fixture path and revision in REVNOTE-1842 with the native source history and
+          inspect the file parameter on fieldlink-report-review.
         completion:
           mode: automatic_range_evidence
       - id: K02.3
@@ -414,15 +406,13 @@ phases:
         difficulty: medium
         points: 100
         hints:
-        - Begin with the retained source history and the continuous-integration review workflow. Start
-          from ci.keplerops.test's published client document and records already earned in this operation,
-          not from an invented endpoint.
-        - Treat this as version-history recovery followed by importer-boundary and extension-point analysis.
-          Keep the recovered fixture's exact file bytes when you build the archive, then vary only the
-          provider extension point.
-        - Review the published client document and ordinary records for ci.keplerops.test. Read the current
-          revision, submit one minimal variation, and compare the resulting audit and unaffected fields
-          with the baseline.
+        - Use the native Jenkins fieldlink-report-review job and its provider.zip file parameter. The
+          original fieldlink-report job is the retained failing baseline.
+        - This is interface validation. Preserve the fixture's exact file bytes and immutable fields while
+          implementing the documented provider extension point. A valid package is different from an accepted
+          changed report.
+        - Compare the native build artifacts with the support handover. The job ID and report digest must
+          identify the same fresh output; a green status by itself is insufficient.
         completion:
           mode: automatic_range_evidence
     - id: K03
@@ -439,15 +429,12 @@ phases:
         difficulty: medium
         points: 100
         hints:
-        - Begin with the predecessor notes, staged attachments, and the workstation analysis helper. Start
-          from ci.keplerops.test's published client document and records already earned in this operation,
-          not from an invented endpoint.
-        - Treat this as layered payload reconstruction with integrity and callback correlation. Observe
-          the ordinary and denied cases first, then change one input at a time and keep every unrelated
-          binding fixed.
-        - Review the published client document and ordinary records for ci.keplerops.test. Record the
-          normal result and a denied variant, alter one dimension, and keep the service-owned evidence
-          needed to explain the difference.
+        - The predecessor left one ordinary document package in the analysis directory; its rendered pages
+          are not the whole file.
+        - Treat the OpenDocument format as a ZIP package structure. Compare the visible note with its
+          packaged attachments and retain the attachment bytes before interpreting them.
+        - Inspect `Attachments/staging-FKCOL-2841.bin` inside `field-notes-2026-08.odt`, then bind its
+          digest to the collection identifier recorded in the stage header.
         completion:
           mode: automatic_range_evidence
       - id: K03.2
@@ -457,15 +444,13 @@ phases:
         difficulty: hard
         points: 200
         hints:
-        - Begin with the predecessor notes, staged attachments, and the workstation analysis helper. The
-          supplied staging decoder.ps1 artifact carries the relevant lead; check its provenance and references
-          before contacting another service.
-        - Treat this as layered payload reconstruction with integrity and callback correlation. Observe
-          the ordinary and denied cases first, then change one input at a time and keep every unrelated
-          binding fixed.
-        - Inspect the supplied staging decoder.ps1 artifact and the normal client documentation it names.
-          Record the normal result and a denied variant, alter one dimension, and keep the service-owned
-          evidence needed to explain the difference.
+        - The supplied decoder artifact describes only the outer encoding. Preserve the recovered bytes
+          and verify the digest in the stage header before following what they contain.
+        - The recovered PowerShell carries another compressed script and its own digest. Preserve the
+          encoding and integrity boundary while reconstructing it as data; neither retained stage needs
+          to be executed.
+        - The JavaScript stage shows how its base64 bytes, repeating key, and zlib layer produce the collection
+          manifest. Verify both script digests and recover every manifest field.
         completion:
           mode: automatic_range_evidence
       - id: K03.3
@@ -475,15 +460,13 @@ phases:
         difficulty: hard
         points: 200
         hints:
-        - Begin with the predecessor notes, staged attachments, and the workstation analysis helper. The
-          supplied local helper.md artifact carries the relevant lead; check its provenance and references
-          before contacting another service.
-        - Treat this as layered payload reconstruction with integrity and callback correlation. Build
-          a local model from the supplied reference cases, then confirm it explains both accepted and
-          rejected behavior.
-        - Inspect the supplied local helper.md artifact and the normal client documentation it names.
-          Extract the supplied cases into a small local reproducer and do not use its result until every
-          reference case matches.
+        - The workstation already has an ordinary scoped object-storage profile. The recovered manifest
+          supplies the address that profile cannot discover by browsing.
+        - Reading a known S3 object and listing its bucket cross separate authorization boundaries. Use
+          the exact endpoint, bucket, and key from the reconstructed manifest.
+        - Fetch the manifest's object with the normal AWS client, verify its SHA-256 before trusting it,
+          and correlate its support ticket, asset, and connector revision. Bucket enumeration should remain
+          denied.
         completion:
           mode: automatic_range_evidence
     - id: K04
@@ -576,8 +559,8 @@ phases:
       cards:
       - id: K05.1
         title: Speak the package's language
-        description: Find the package interface used by the ARWC connector and make its documented example
-          produce a valid result.
+        description: Find the actual connector package interface and make its documented example produce
+          a valid result through the FieldLink check consumer.
         difficulty: easy
         points: 50
         hints:
@@ -594,8 +577,8 @@ phases:
           mode: automatic_range_evidence
       - id: K05.2
         title: The version they kept
-        description: The visible package listing skips an older release mentioned in the support ticket.
-          Recover the retained version record and its maintenance note.
+        description: Recover the older connector release named in the support ticket. Establish how its
+          native package deprecation relates to the retained customer maintenance record.
         difficulty: easy
         points: 50
         hints:
@@ -612,8 +595,9 @@ phases:
           mode: automatic_range_evidence
       - id: K05.3
         title: Two manifests disagree
-        description: The release manifest and the customer's recorded selection do not describe the same
-          dependency. Reconcile the two and recover the exact discrepancy.
+        description: The release manifest and customer selection record disagree. Reconcile them against
+          the actual native package and identify the exact selected-version discrepancy and matching consumer
+          identity.
         difficulty: medium
         points: 100
         hints:
@@ -630,8 +614,8 @@ phases:
           mode: automatic_range_evidence
       - id: K05.4
         title: Selection has consequences
-        description: Demonstrate which dependency the check consumer really chooses from the available
-          candidates. The answer must come from consumed behavior, not the release label.
+        description: Prove which dependency npm actually selects for the declared range and what the real
+          installed consumer executes. Use package and module evidence rather than the release label.
         difficulty: medium
         points: 100
         hints:
@@ -654,8 +638,8 @@ phases:
       cards:
       - id: K06.1
         title: House credentials
-        description: The importer can retrieve material the developer cannot read directly. Recover usable
-          authority over the release channel consumed by FieldKest customers.
+        description: The delivery team removed its local npm configuration from the current source tree.
+          Recover usable publishing authority from the retained native history and establish its limits.
         difficulty: medium
         points: 100
         hints:
@@ -671,8 +655,8 @@ phases:
           mode: automatic_range_evidence
       - id: K06.2
         title: A private package in the wrong view
-        description: Your publication identity still cannot read the private support package. Cross the
-          package-view boundary and recover its protected contents.
+        description: Your publishing account cannot read the private support package. Investigate the
+          independent package-check build and recover the distinct CI identity that can.
         difficulty: medium
         points: 100
         hints:
@@ -688,8 +672,8 @@ phases:
           mode: automatic_range_evidence
       - id: K06.3
         title: The rehearsal consumer
-        description: Make the isolated test consumer run your compatible package behavior and return its
-          protected rehearsal result.
+        description: Publish a compatible connector package under the authority you recovered, then make
+          the isolated rehearsal consumer run its actual code and return your changed result.
         difficulty: medium
         points: 100
         hints:

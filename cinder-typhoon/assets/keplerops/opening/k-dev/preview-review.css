@@ -1,0 +1,8 @@
+@page { size: A4; margin: 20mm; }
+body { color: #243643; font: 11pt sans-serif; line-height: 1.5; }
+header { border-bottom: 3px solid #227b82; padding-bottom: 8mm; }
+header span, footer { color: #526773; font-size: 9pt; }
+h1 { font-size: 24pt; margin: 4mm 0; } h2 { font-size: 15pt; }
+dl { display: grid; grid-template-columns: 38mm 1fr; } dt { font-weight: bold; } dd { margin: 0; }
+table { width: 100%; border-collapse: collapse; } th, td { text-align: left; padding: 3mm; border-bottom: 1px solid #b8c8cc; }
+footer { margin-top: 15mm; }

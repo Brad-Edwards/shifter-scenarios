@@ -1,66 +1,35 @@
-"""FieldKest source service for the KeplerOps opening slice."""
+"""FieldLink policy compiler and archived connector operations."""
 
 from __future__ import annotations
 
 import base64
 import hashlib
 import json
-import os
-from pathlib import Path, PurePosixPath
+from pathlib import Path
 import re
 import secrets
 import subprocess
 import tempfile
 import threading
 import time
-from urllib.parse import parse_qs, unquote, urlsplit
+from urllib.parse import urlsplit
 
-from http_support import KeplerHandler, append_audit, canonical_bytes, serve_tls, validate_worker_token
+from http_support import KeplerHandler, append_audit, canonical_bytes, serve_tls
 from credentials import credential
 
 
 STATE = Path("/var/lib/gitea")
 AUDIT = STATE / "audit"
-REPOSITORY_ROOT = STATE / "repositories"
-REPOSITORIES = {
-    "fieldlink-connector": REPOSITORY_ROOT / "fieldkest" / "fieldlink-connector.git",
-    "policy-compiler": REPOSITORY_ROOT / "fieldkest" / "policy-compiler.git",
-    "connector-archive": REPOSITORY_ROOT / "fieldkest" / "connector-archive.git",
-    "release-signer-history": REPOSITORY_ROOT / "fieldkest" / "release-signer-history.git",
-}
 CONFIG = json.loads((STATE / "config/opening.json").read_text())
 K11_CONFIG = json.loads((STATE / "config/policy-compiler.json").read_text())
 K28_CONFIG = json.loads((STATE / "config/connector-archive.json").read_text())
 TOKEN = credential("developer_token")
 USERNAME = CONFIG["credentials"][0]["principal"]
-HANDOVER = json.loads((STATE / "handovers/HND-FLK-2026-09.json").read_text())
-API_CONTENT = re.compile(r"^/api/v1/repos/fieldkest/(fieldlink-connector|policy-compiler|connector-archive|release-signer-history)/contents/(.+)$")
-GIT_ROUTE = re.compile(r"^/fieldkest/(fieldlink-connector|policy-compiler|connector-archive|release-signer-history)\.git/(info/refs|git-upload-pack)$")
-WORKER_SECRET = Path("/tmp/worker-hmac.key").read_bytes()
 POLICY_BINARY = STATE / "toolchains/policy-compilers/fieldkest-policyc"
 POLICY_STATE = AUDIT / "policy-state"
 POLICY_LOCK = threading.RLock()
 CONNECTOR_BINARY = STATE / "exercises/connector-archive/fieldlink-connector"
 CONNECTOR_RESULTS = AUDIT / "connector-archive-results"
-
-
-def initialize_repository() -> None:
-    seeds = {
-        "fieldlink-connector": STATE / "seeds/fieldlink-connector.bundle",
-        "policy-compiler": STATE / "seeds/policy-compiler.bundle",
-        "connector-archive": STATE / "seeds/connector-archive.bundle",
-        "release-signer-history": STATE / "seeds/release-signer-history.bundle",
-    }
-    for name, repository in REPOSITORIES.items():
-        if (repository / "HEAD").is_file():
-            continue
-        repository.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run(
-            ["git", "clone", "--bare", str(seeds[name]), str(repository)],
-            check=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
 
 
 def sha256(value: bytes) -> str:
@@ -243,56 +212,16 @@ class SourceHandler(KeplerHandler):
     def _developer(self) -> bool:
         return self.basic_or_bearer(USERNAME, TOKEN)
 
-    def _worker(self) -> dict[str, object] | None:
-        return validate_worker_token(
-            self.headers.get("Authorization", ""), WORKER_SECRET, "source", self.client_address[0]
-        )
-
-    def _principal(self) -> str | None:
-        if self._developer():
-            return USERNAME
-        worker = self._worker()
-        return str(worker["principal"]) if worker else None
-
     def do_GET(self) -> None:
-        if self.send_client_document():
-            return
-        parsed = urlsplit(self.path)
-        if GIT_ROUTE.fullmatch(parsed.path):
-            self._git_backend(parsed)
-            return
-        principal = self._principal()
-        if principal is None:
-            self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
-            return
-        if parsed.path == "/api/v1/user/repos":
-            append_audit(AUDIT, "repository", {"request_id": self.request_id, "principal": principal, "operation": "list", "status": 200})
-            self.send_json(200, [
-                {"full_name": f"fieldkest/{name}", "permissions": {"pull": True, "push": False, "admin": False}}
-                for name in sorted(REPOSITORIES)
-            ])
-            return
-        if parsed.path == "/api/fieldkest/handovers/current":
-            if principal != USERNAME:
-                self.send_json(403, {"error": "developer_scope_required"})
-                return
-            append_audit(AUDIT, "handover", {"request_id": self.request_id, "principal": principal, "handover_id": HANDOVER["handover_id"], "revision": HANDOVER["revision"], "status": 200})
-            self.send_json(200, HANDOVER)
-            return
-        match = API_CONTENT.fullmatch(parsed.path)
-        if match:
-            self._repository_content(
-                match.group(1), unquote(match.group(2)),
-                parse_qs(parsed.query).get("ref", ["main"])[0], principal,
-            )
+        if urlsplit(self.path).path == '/.well-known/fieldkest-client':
+            reference = json.loads(Path('/opt/fieldkest/client_documents.json').read_text())
+            self.send_json(200, reference['documents']['source.keplerops.test'])
             return
         self.send_json(404, {"error": "not_found"})
 
     def do_POST(self) -> None:
         parsed = urlsplit(self.path)
-        if GIT_ROUTE.fullmatch(parsed.path) and parsed.path.endswith("/git-upload-pack"):
-            self._git_backend(parsed)
-        elif parsed.path == "/api/policy-compilers/fieldkest-policyc/evaluations":
+        if parsed.path == "/api/policy-compilers/fieldkest-policyc/evaluations":
             if not self._developer():
                 self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
                 return
@@ -307,6 +236,16 @@ class SourceHandler(KeplerHandler):
                 self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
                 return
             self._connector_archive_run()
+        elif parsed.path == "/api/exercises/connector-archive/verify-corpus":
+            if not self._developer():
+                self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
+                return
+            self._connector_archive_verify_corpus()
+        elif parsed.path == "/api/exercises/connector-archive/verify-note":
+            if not self._developer():
+                self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
+                return
+            self._connector_archive_verify_note()
         else:
             self.send_json(404, {"error": "not_found"})
 
@@ -342,6 +281,7 @@ class SourceHandler(KeplerHandler):
                 self.send_json(503, {"error": "connector_result_invalid"})
                 return
         result["request_id"] = self.request_id
+        result["input_sha256"] = sha256(fields["input"])  # for K28.2 corpus verification
         receipt = "CARUN-" + secrets.token_hex(6).upper()
         result["receipt_id"] = receipt
         CONNECTOR_RESULTS.mkdir(parents=True, exist_ok=True)
@@ -349,26 +289,143 @@ class SourceHandler(KeplerHandler):
         append_audit(AUDIT, "connector-archive", {"request_id": self.request_id, "principal": USERNAME, "receipt_id": receipt, "mode": result["mode"], "input_sha256": sha256(fields["input"]), "output_sha256": result.get("output_sha256"), "status": 200})
         self.send_json(200, result)
 
-    def _repository_content(self, repository_name: str, path: str, revision: str, principal: str) -> None:
-        candidate = PurePosixPath(path)
-        if path.startswith("/") or ".." in candidate.parts or not path:
-            self.send_json(404, {"error": "not_found"})
+    def _connector_archive_verify_corpus(self) -> None:
+        """K28.2 grader: verify distinct diagnostic transformations for all corpus inputs.
+
+        Accepts a JSON body with a list of receipt_ids from prior /run calls. Loads each
+        receipt, verifies it is a diagnostic run with the correct route/note_id, and checks
+        that all corpus input_sha256 values are covered with distinct output_sha256 values.
+        """
+        try:
+            body = self.read_json(4096)
+            receipt_ids = body.get("receipt_ids", [])
+            if not isinstance(receipt_ids, list) or not receipt_ids:
+                raise ValueError("receipt_ids_required")
+        except (ValueError, TypeError, json.JSONDecodeError, OverflowError) as error:
+            self.send_json(422, {"error": str(error)})
             return
-        repository = REPOSITORIES[repository_name]
-        result = subprocess.run(
-            ["git", "--git-dir", str(repository), "show", f"{revision}:{path}"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            check=False,
-        )
-        if result.returncode:
-            self.send_json(404, {"error": "not_found"})
+        # Load receipts from the audit store
+        corpus_input_sha256s = {sha256(bytes.fromhex(item["input_hex"])): item["name"]
+                                 for item in K28_CONFIG.get("corpus", [])}
+        covered: dict[str, str] = {}  # input_sha256 -> output_sha256
+        for receipt_id in receipt_ids:
+            receipt_path = CONNECTOR_RESULTS / f"{receipt_id}.json"
+            if not receipt_path.is_file():
+                self.send_json(404, {"error": f"receipt_not_found: {receipt_id}"})
+                return
+            receipt = json.loads(receipt_path.read_text())
+            if receipt.get("mode") != "diagnostic":
+                self.send_json(422, {"error": "receipt_not_diagnostic"})
+                return
+            if (receipt.get("route") != K28_CONFIG.get("route") or
+                    receipt.get("note_id") != K28_CONFIG.get("note_id")):
+                self.send_json(422, {"error": "receipt_binding_mismatch"})
+                return
+            input_sha256_val = receipt.get("input_sha256", "")
+            output_sha256_val = receipt.get("output_sha256", "")
+            if input_sha256_val in corpus_input_sha256s:
+                covered[input_sha256_val] = output_sha256_val
+        if set(covered) != set(corpus_input_sha256s):
+            self.send_json(422, {"error": "corpus_incomplete",
+                                  "missing": [corpus_input_sha256s[k] for k in corpus_input_sha256s if k not in covered]})
             return
-        object_id = subprocess.check_output(
-            ["git", "--git-dir", str(repository), "rev-parse", f"{revision}:{path}"], text=True
-        ).strip()
-        append_audit(AUDIT, "repository", {"request_id": self.request_id, "principal": principal, "repository": f"fieldkest/{repository_name}", "revision": revision, "path": path, "object_id": object_id, "status": 200})
-        self.send_json(200, {"name": candidate.name, "path": path, "sha": object_id, "type": "file", "encoding": "base64", "content": base64.b64encode(result.stdout).decode()})
+        output_sha256_set = set(covered.values())
+        if len(output_sha256_set) != len(covered):
+            self.send_json(422, {"error": "outputs_not_distinct"})
+            return
+        # K28.2 complete: distinct transformations for all corpus inputs
+        k28_2_path = CONNECTOR_RESULTS / "k28-2-complete.json"
+        if not k28_2_path.is_file():
+            k28_2_path.write_text(json.dumps({
+                "card": "K28.2", "receipt_ids": receipt_ids,
+                "corpus_covered": list(corpus_input_sha256s.values()),
+                "output_sha256_set": sorted(output_sha256_set),
+            }, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "connector-archive", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "action": "k28-2-verify-corpus", "receipt_ids": receipt_ids,
+            "corpus_covered": list(corpus_input_sha256s.values()),
+            "status": 200,
+        })
+        self.send_json(200, {
+            "card": "K28.2",
+            "corpus_covered": list(corpus_input_sha256s.values()),
+            "distinct_output_count": len(output_sha256_set),
+        })
+
+    def _connector_archive_verify_note(self) -> None:
+        """K28.3 grader: verify recovery of the hidden diagnostic path and engineering note.
+
+        Accepts a JSON body with: receipt_id (a diagnostic run), gitea_path (the file path
+        in the repo), content_sha256 (hash of the retrieved file content). Fetches the file
+        from Gitea, verifies content_sha256 matches, and verifies the note names DIAG-CRR-MIXED-19
+        and project family R19.
+        """
+        try:
+            body = self.read_json(4096)
+            receipt_id = body.get("receipt_id", "")
+            gitea_path = body.get("gitea_path", "")
+            content_sha256 = body.get("content_sha256", "")
+            if not (receipt_id and gitea_path and content_sha256):
+                raise ValueError("receipt_id_gitea_path_content_sha256_required")
+        except (ValueError, TypeError, json.JSONDecodeError, OverflowError) as error:
+            self.send_json(422, {"error": str(error)})
+            return
+        # Verify the receipt is a valid diagnostic run with correct route/note_id
+        receipt_path = CONNECTOR_RESULTS / f"{receipt_id}.json"
+        if not receipt_path.is_file():
+            self.send_json(404, {"error": "receipt_not_found"})
+            return
+        receipt = json.loads(receipt_path.read_text())
+        if receipt.get("mode") != "diagnostic":
+            self.send_json(422, {"error": "receipt_not_diagnostic"})
+            return
+        expected_path = K28_CONFIG.get("route", "") + "/" + K28_CONFIG.get("note_id", "") + ".md"
+        if gitea_path.rstrip("/") != expected_path.lstrip("/"):
+            self.send_json(422, {"error": "gitea_path_mismatch"})
+            return
+        # Fetch the actual file from Gitea and verify content (using developer credentials)
+        try:
+            import base64 as _b64, ssl as _ssl
+            from urllib.request import Request as _Request, urlopen as _urlopen
+            _ctx = _ssl.create_default_context(cafile="/run/fieldkest-tls/ca.crt")
+            authorization = _b64.b64encode(f"{USERNAME}:{TOKEN}".encode()).decode()
+            gitea_url = f"https://source.keplerops.test/api/v1/repos/fieldkest/connector-archive/raw/{gitea_path}?ref=main"
+            req = _Request(gitea_url, headers={"Authorization": f"Basic {authorization}"})
+            with _urlopen(req, context=_ctx, timeout=10) as r:
+                content = r.read()
+        except Exception as _fetch_err:
+            self.send_json(503, {"error": "gitea_fetch_failed", "detail": str(_fetch_err)[:100]})
+            return
+        actual_sha256 = sha256(content)
+        if actual_sha256 != content_sha256:
+            self.send_json(422, {"error": "content_sha256_mismatch"})
+            return
+        # Verify the note names DIAG-CRR-MIXED-19 and project family R19
+        content_text = content.decode(errors="replace")
+        if "DIAG-CRR-MIXED-19" not in content_text or "R19" not in content_text:
+            self.send_json(422, {"error": "note_content_binding_failed"})
+            return
+        # K28.3 complete
+        k28_3_path = CONNECTOR_RESULTS / "k28-3-complete.json"
+        if not k28_3_path.is_file():
+            k28_3_path.write_text(json.dumps({
+                "card": "K28.3", "receipt_id": receipt_id,
+                "gitea_path": gitea_path, "content_sha256": actual_sha256,
+            }, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "connector-archive", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "action": "k28-3-verify-note", "receipt_id": receipt_id,
+            "gitea_path": gitea_path, "content_sha256": actual_sha256,
+            "status": 200,
+        })
+        self.send_json(200, {
+            "card": "K28.3",
+            "note_id": K28_CONFIG.get("note_id"),
+            "route": K28_CONFIG.get("route"),
+            "gitea_path": gitea_path,
+            "content_sha256": actual_sha256,
+        })
 
     def _policy_compiler_nonce(self) -> None:
         try:
@@ -389,25 +446,74 @@ class SourceHandler(KeplerHandler):
             if not isinstance(request, dict) or set(request) != {"operation", "program_model", "policy_input"}:
                 raise ValueError("invalid_request")
             operation = request["operation"]
-            if operation not in {"fragment-check", "corpus-check", "accept"}:
+            if operation not in {"fragment-check", "corpus-check", "condition-check", "accept"}:
                 raise ValueError("invalid_operation")
             if not isinstance(request["policy_input"], dict):
                 raise ValueError("invalid_policy_input")
             policy_input = request["policy_input"]
             raw, instructions, _ = decode_program_model(request["program_model"])
             if operation == "fragment-check":
-                if set(policy_input) != {"fragment_id", "case"} or not isinstance(policy_input["fragment_id"], str):
+                # Validate by execution across server-side cases — no stored sha256 gate.
+                # A self-assembled correct program passes all cases; a wrong encoding fails.
+                if set(policy_input) != {"fragment_id"} or not isinstance(policy_input["fragment_id"], str):
                     raise ValueError("invalid_fragment_request")
                 fragment = K11_CONFIG["fragments"].get(policy_input["fragment_id"])
-                if fragment is None or sha256(raw) != fragment["program_sha256"]:
-                    raise ValueError("fragment_binding_mismatch")
-                case = policy_fields(policy_input["case"])
-                result, evaluated = execute_program(instructions, case)
+                if fragment is None:
+                    raise ValueError("unknown_fragment")
+                validation_cases = fragment.get("validation_cases", [])
+                if not validation_cases:
+                    raise RuntimeError("fragment_validation_unconfigured")
+                case_results = []
+                for vc in validation_cases:
+                    case = policy_fields(vc["case"])
+                    result, evaluated = execute_program(instructions, case)
+                    if result is not vc["expected"]:
+                        raise ValueError("fragment_case_mismatch")
+                    case_results.append({
+                        "case_id": vc["case_id"], "accepted": result,
+                        "expected": vc["expected"], "evaluated_fields": evaluated,
+                    })
                 receipt = "PCMIG-" + secrets.token_hex(6).upper()
                 response = {
                     "schema": "fieldkest.policy-migration-result/v1", "receipt_id": receipt,
                     "operation": operation, "fragment_id": policy_input["fragment_id"],
-                    "program_sha256": sha256(raw), "accepted": result, "evaluated_fields": evaluated,
+                    "program_sha256": sha256(raw), "case_count": len(case_results),
+                    "case_results": case_results,
+                }
+            elif operation == "condition-check":
+                # K11.3: participant submits the derived condition_set document.
+                # The service validates its sha256 matches the stored condition set,
+                # then runs all corpus cases against the program model.
+                # The participant must derive the exact field operators and values
+                # from binary analysis — the README describes field names but not values.
+                if set(policy_input) != {"corpus_id", "condition_set"}:
+                    raise ValueError("invalid_condition_check_request")
+                if policy_input["corpus_id"] != K11_CONFIG["corpus_id"]:
+                    raise ValueError("corpus_binding_mismatch")
+                condition_set = policy_input["condition_set"]
+                if not isinstance(condition_set, dict):
+                    raise ValueError("invalid_condition_set")
+                candidate_sha256 = sha256(canonical_bytes(condition_set))
+                if candidate_sha256 != K11_CONFIG["condition_set_sha256"]:
+                    raise ValueError("condition_set_mismatch")
+                if sha256(raw) != K11_CONFIG["program_sha256"]:
+                    raise ValueError("program_binding_mismatch")
+                results = []
+                for case in K11_CONFIG["corpus"]:
+                    result, evaluated = execute_program(instructions, policy_fields(case["input"]))
+                    if result is not case["accepted"] or evaluated != case["evaluated_fields"]:
+                        raise ValueError("corpus_mismatch")
+                    results.append({"case_id": case["case_id"], "accepted": result, "evaluated_fields": evaluated})
+                result_digest = sha256(canonical_bytes(results))
+                if result_digest != K11_CONFIG["corpus_result_sha256"]:
+                    raise RuntimeError("corpus_result_mismatch")
+                receipt = "PCMIG-" + secrets.token_hex(6).upper()
+                response = {
+                    "schema": "fieldkest.policy-migration-result/v1", "receipt_id": receipt,
+                    "operation": operation, "corpus_id": K11_CONFIG["corpus_id"],
+                    "program_sha256": sha256(raw), "case_count": len(results),
+                    "corpus_result_sha256": result_digest,
+                    "condition_set_sha256": candidate_sha256,
                 }
             elif operation == "corpus-check":
                 if set(policy_input) != {"corpus_id"} or policy_input["corpus_id"] != K11_CONFIG["corpus_id"]:
@@ -478,65 +584,11 @@ class SourceHandler(KeplerHandler):
         })
         self.send_json(200, response)
 
-    def _git_backend(self, parsed: object) -> None:
-        principal = self._principal()
-        if principal is None:
-            self.send_json(401, {"error": "authentication_required"}, headers={"WWW-Authenticate": 'Basic realm="FieldKest Source"'})
-            return
-        match = GIT_ROUTE.fullmatch(parsed.path)
-        if match is None:
-            self.send_json(404, {"error": "not_found"})
-            return
-        repository_name, operation = match.groups()
-        path_info = f"/{repository_name}.git/{operation}"
-        if operation == "info/refs" and parsed.query != "service=git-upload-pack":
-            self.send_json(400, {"error": "invalid_git_service"})
-            return
-        body = b""
-        if self.command == "POST":
-            try:
-                body = self.read_body(8 * 1024 * 1024)
-            except (ValueError, OverflowError):
-                self.send_json(400, {"error": "invalid_request"})
-                return
-        environment = os.environ.copy()
-        environment.update({
-            "GIT_PROJECT_ROOT": str(REPOSITORY_ROOT / "fieldkest"),
-            "GIT_HTTP_EXPORT_ALL": "1",
-            "PATH_INFO": path_info,
-            "QUERY_STRING": parsed.query,
-            "REQUEST_METHOD": self.command,
-            "CONTENT_TYPE": self.headers.get("Content-Type", ""),
-            "CONTENT_LENGTH": str(len(body)),
-            "REMOTE_ADDR": self.client_address[0],
-        })
-        result = subprocess.run(["git", "http-backend"], input=body, env=environment, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False)
-        headers_raw, separator, payload = result.stdout.partition(b"\r\n\r\n")
-        if not separator:
-            self.send_json(500, {"error": "source_backend_error"})
-            return
-        status = 200
-        response_headers = []
-        for line in headers_raw.decode("latin-1").split("\r\n"):
-            name, value = line.split(":", 1)
-            if name.lower() == "status":
-                status = int(value.strip().split(" ", 1)[0])
-            else:
-                response_headers.append((name.strip(), value.strip()))
-        self.send_response(status)
-        for name, value in response_headers:
-            self.send_header(name, value)
-        self.send_header("Content-Length", str(len(payload)))
-        self.send_header("X-Request-ID", self.request_id)
-        self.end_headers()
-        self.wfile.write(payload)
-
 
 def main() -> None:
     AUDIT.mkdir(parents=True, exist_ok=True)
     POLICY_STATE.mkdir(parents=True, exist_ok=True)
-    initialize_repository()
-    serve_tls(SourceHandler)
+    serve_tls(SourceHandler, port=8443)
 
 
 if __name__ == "__main__":

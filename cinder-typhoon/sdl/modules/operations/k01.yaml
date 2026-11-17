@@ -47,7 +47,7 @@ evidence_requirements:
     description: |-
       Recover and use the limited repository identity to obtain the protected handover. This supplies G01; credential discovery and use earn one accepted result.
 
-      Required technical proof: Gitea records a handover read by the operator-scoped developer identity and returns its current revision, awarding `G01`.
+      Required technical proof: Use the recovered limited identity to retrieve the actual native repository issue. Bind its native issue identity and content to the current handover identifier and revision, supplying `G01`. No custom handover endpoint or synthetic product-read audit is required.
     source_refs:
     - features.k-corporate.k-dev
     - features.k-delivery.k-source
@@ -80,13 +80,13 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test anonymous denial, intended credential use, no write access, correct handover revision,
-      audit attribution, and session revocation.'
+    - 'Author checks: Test anonymous denial, intended credential use, no write access, and the correct native issue
+      identity, handover revision, and repository.'
   c2:
     description: |-
-      Recover the retained conversation and its actual ticket reference. It supplies optional story context, not the credentials or current customer binding required for entry.
+      Recover the retained native ticket and its actual correspondence. It supplies optional story context, not the credentials or current customer binding required for entry.
 
-      Required technical proof: The support gateway logs the conversation restoration and exposes the immutable `SUP-2841` record as operator evidence.
+      Required technical proof: The native osTicket session, ticket identity, customer, assignment, and thread correspondence establish the result. No custom conversation endpoint or synthetic read audit is used.
     source_refs:
     - features.k-corporate.k-dev
     - features.k-delivery.k-support
@@ -119,15 +119,16 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Verify no tab is initially open, the profile holds one fair restoration lead, the recovered
-      ticket resolves once, direct unrelated ticket reads fail.'
+    - 'Author checks: Verify no tab is initially open, the profile holds a fair history lead, Rowan''s native session
+      can read `SUP-2841`, an unauthenticated session cannot, and ordinary neighboring tickets do not disclose the
+      ARWC correspondence.'
   c3:
     description: |-
-      Recover the separate review document and its release reference. Reading the browser conversation does not reveal this content.
+      Recover the native review attachment, unresolved comments, and release reference. Reading the support ticket does not reveal this content.
 
-      Required technical proof: Completion records the document digest, unresolved comments, and related release ID; the document is distinct from the browser conversation.
+      Required technical proof: The native Kanboard task identity, attachment bytes, unresolved comments, and release reference establish the result. No local duplicate or custom record lookup is accepted.
     source_refs:
-    - features.k-corporate.k-dev
+    - features.k-corporate.k-staff
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -148,7 +149,7 @@ evidence_requirements:
         names:
         - cinder.k01-3.satisfied
         component_refs:
-        - features.k-corporate.k-dev
+        - features.k-corporate.k-staff
       collection: require
       retention: require
       redaction: redact-secrets
@@ -156,8 +157,9 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Check the checkout lacks the file, the review references it, the external copy has one matching
-      release, K01.2 is insufficient, and unrelated artifacts do not accepted result.'
+    - 'Author checks: Check the checkout and home archive lack the review export, the native task owns the attachment
+      and three unresolved comments, Rowan can read but not administer the project, K01.2 is insufficient, and neighboring
+      tasks do not satisfy the result.'
   c4:
     description: |-
       Produce the sample's inspection summary through the local helper, preserving its asset and revision binding. This is an introductory interface task with a visible result, not a claimed privilege escalation.
@@ -232,7 +234,7 @@ propositions:
     description: Recover the separate review document and its release reference. Reading the browser conversation
       does not reveal this content.
     subjects:
-    - features.k-corporate.k-dev
+    - features.k-corporate.k-staff
     basis: observed_state
     predicate:
       kind: boolean
@@ -340,7 +342,7 @@ objectives:
     actions:
     - k01.c3
     targets:
-    - features.k-corporate.k-dev
+    - features.k-corporate.k-staff
     success:
       mode: all_of
       assertions:
@@ -465,7 +467,7 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: The workstation retains a usable developer session after handover. The intended solution is
-      local credential recovery followed by an ordinary authenticated Forge read.
+      local credential recovery followed by an ordinary authenticated Gitea issue read.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -481,8 +483,9 @@ action_contracts:
       - features.k-delivery.k-source
     - precondition_id: normal-surface
       precondition_class: target
-      description: Rowan's supplied workspace has a Gitea credential helper and FieldKest Forge project; the current
-        handover is protected by the developer's normal repository role.
+      description: Rowan's supplied workspace has a native Git credential helper and FieldKest Gitea repositories.
+        The current handover is an ordinary issue in the private fieldlink-connector repository, protected by Rowan's
+        native read-only role.
       support_refs:
       - features.k-corporate.k-dev
       - features.k-delivery.k-source
@@ -508,8 +511,9 @@ action_contracts:
       - evidence_requirements.k01.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Gitea records a handover read by the operator-scoped developer identity and returns its current
-        revision, awarding `G01`.
+      description: Use the recovered limited identity to retrieve the actual native repository issue. Bind its native
+        issue identity and content to the current handover identifier and revision, supplying `G01`. No custom handover
+        endpoint or synthetic product-read audit is required.
       target_refs:
       - features.k-corporate.k-dev
       - features.k-delivery.k-source
@@ -526,8 +530,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Closing the tab did not clear recoverable browser state. The intended solution is forensic
-      recovery of the existing conversation and correlation of its actual ticket ID.
+    procedure_basis: Closing the tab did not clear its recoverable history. The intended solution is to recover
+      the ticket reference, use Rowan's ordinary staff identity, and locate the corresponding native osTicket thread.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -543,8 +547,9 @@ action_contracts:
       - features.k-delivery.k-support
     - precondition_id: normal-surface
       precondition_class: target
-      description: The supplied browser profile has normal session-restoration data for the FieldKest support gateway
-        and its seeded ARWC conversation.
+      description: The supplied Chromium profile retains the closed support page's ticket number and subject. The
+        authoritative customer record and correspondence are ordinary records in the native osTicket agent queue,
+        alongside unrelated support work.
       support_refs:
       - features.k-corporate.k-dev
       - features.k-delivery.k-support
@@ -562,7 +567,7 @@ action_contracts:
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the retained conversation and its actual ticket reference. It supplies optional story
+      description: Recover the retained native ticket and its actual correspondence. It supplies optional story
         context, not the credentials or current customer binding required for entry.
       target_refs:
       - features.k-corporate.k-dev
@@ -571,8 +576,8 @@ action_contracts:
       - evidence_requirements.k01.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The support gateway logs the conversation restoration and exposes the immutable `SUP-2841` record
-        as operator evidence.
+      description: The native osTicket session, ticket identity, customer, assignment, and thread correspondence
+        establish the result. No custom conversation endpoint or synthetic read audit is used.
       target_refs:
       - features.k-corporate.k-dev
       - features.k-delivery.k-support
@@ -589,8 +594,9 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The developer left a stale copy in a user-accessible project artifact area. The intended solution
-      is contextual local-artifact discovery, then validation against the release reference.
+    procedure_basis: The developer's ordinary project membership still exposes the unfinished release task. The
+      intended solution is native task search followed by attachment and comment review under Rowan's normal Kanboard
+      session.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -601,15 +607,15 @@ action_contracts:
       description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
         to every listed surface.
       support_refs:
-      - workflows.k01.c3
-      - features.k-corporate.k-dev
+      - workflows.c3
+      - features.k-corporate.k-staff
     - precondition_id: normal-surface
       precondition_class: target
-      description: Rowan's review workspace includes a release-review reference and a separate ordinary local export
-        outside the checked-out repository.
+      description: The native Kanboard FieldLink project contains several release tasks. The target task uses release
+        reference `REL-FLK-7.4.2-09` and owns the review attachment and its unresolved comments.
       support_refs:
-      - features.k-corporate.k-dev
-      - content.keplerops-k-dev.k01-3-outside-the-working-folder
+      - features.k-corporate.k-staff
+      - content.keplerops-k-staff.k01-3-outside-the-working-folder
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: Rowan and release-platform background reused Participant-created service state persists for the
@@ -617,23 +623,22 @@ action_contracts:
         identities, routes, and destination effects declared here; unrelated tenants and services remain denied.
         Infrastructure recovery and submission adjudication are outside this in-world contract.
       support_refs:
-      - features.k-corporate.k-dev
-      - content.keplerops-k-dev.k01-3-outside-the-working-folder
+      - features.k-corporate.k-staff
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the separate review document and its release reference. Reading the browser conversation
-        does not reveal this content.
+      description: Recover the native review attachment, unresolved comments, and release reference. Reading the
+        support ticket does not reveal this content.
       target_refs:
-      - features.k-corporate.k-dev
+      - features.k-corporate.k-staff
       evidence_refs:
       - evidence_requirements.k01.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Completion records the document digest, unresolved comments, and related release ID; the document
-        is distinct from the browser conversation.
+      description: The native Kanboard task identity, attachment bytes, unresolved comments, and release reference
+        establish the result. No local duplicate or custom record lookup is accepted.
       target_refs:
-      - features.k-corporate.k-dev
+      - features.k-corporate.k-staff
       evidence_refs:
       - evidence_requirements.k01.c3
     failure_classes:

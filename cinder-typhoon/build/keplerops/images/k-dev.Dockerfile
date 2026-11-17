@@ -1,3 +1,7 @@
+FROM node:22.19.0-bookworm-slim AS node-tools
+
+FROM smallstep/step-ca:0.28.4@sha256:0f88382ac5af5c6b7bbba0c6e8fcefef52aee6f22ea364df8e02a09ffd0d22f3 AS step-tools
+
 FROM debian:bookworm-slim AS indexer-reproducer
 
 RUN apt-get update \
@@ -12,7 +16,7 @@ RUN gcc -std=c11 -O0 -fPIE -pie -Wl,-z,relro,-z,now,--build-id=none -D_FORTIFY_S
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates curl dbus-x11 git iproute2 jq krb5-user openssh-server procps sqlite3 unzip util-linux xorgxrdp xrdp xfce4 xfce4-terminal zip \
+    && apt-get install --no-install-recommends -y ca-certificates curl dbus-x11 firefox-esr git iproute2 jq krb5-user openssh-server procps sqlite3 unzip util-linux xdg-utils xorgxrdp xrdp xfce4 xfce4-terminal zip \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir cryptography==50.0.2 \
     && groupadd --gid 2000 rowan \
@@ -27,11 +31,34 @@ RUN apt-get update \
     && groupadd --system fieldkest-workbench \
     && useradd --system --gid fieldkest-workbench --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-workbench
 
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y awscli gpg \
+    && install -d /usr/share/postgresql-common/pgdg \
+    && curl --fail --silent --show-error https://www.postgresql.org/media/keys/ACCC4CF8.asc -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc \
+    && gpg --show-keys --with-colons /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc | grep -q B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8 \
+    && echo 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt bookworm-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
+    && apt-get update \
+    && apt-get install --no-install-recommends -y postgresql-client-16 \
+    && curl --fail --silent --show-error --location https://dl.k8s.io/release/v1.37.2/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl \
+    && echo 'c04487523e7aa7d1493f7808174c899db93d7a9cf57531420cd76b9bd415f8f4  /usr/local/bin/kubectl' | sha256sum --check \
+    && chmod 0755 /usr/local/bin/kubectl \
+    && apt-get clean
+
+COPY --from=node-tools /usr/local/bin/node /usr/local/bin/node
+COPY --from=node-tools /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=step-tools /usr/local/bin/step /usr/local/bin/step
+RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+ENV NODE_EXTRA_CA_CERTS=/home/rowan/.local/share/keplerops/ca.crt
+
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest-workbench/http_support.py
 COPY build/keplerops/runtime/workbench.py /opt/fieldkest-workbench/workbench.py
 COPY build/keplerops/runtime/k-dev-entrypoint.sh /usr/local/bin/fieldkest-k-dev-entrypoint
 COPY build/keplerops/config/sshd_config /etc/ssh/sshd_config
+COPY build/keplerops/config/firefox-policies.json /usr/lib/firefox-esr/distribution/policies.json
 COPY build/keplerops/config/krb5.conf /etc/krb5.conf
+COPY build/keplerops/native-platform/platform-access.md /usr/local/share/fieldlink/platform-access.md
+COPY assets/keplerops/native-workplace/identity-access.md /usr/local/share/fieldlink/identity-access.md
 COPY build/participant-host/startwm.sh /etc/xrdp/startwm.sh
 COPY build/participant-host/startwm.sh /home/rowan/.xsession
 COPY build/participant-host/shifter-participant-readiness /usr/local/libexec/shifter-participant-readiness
@@ -50,6 +77,7 @@ RUN tar -xf /tmp/k-dev-home.tar -C /home/rowan \
     && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-policy-compiler-home.tar -C /home/rowan \
     && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-connector-archive-home.tar -C /home/rowan \
     && tar -xf /var/lib/fieldkest-workbench/seeds/k-dev-release-lineage-home.tar -C /home/rowan \
+    && rm -f /home/rowan/.config/git/credentials /home/rowan/.npmrc /home/rowan/.config/chromium/Default/Cookies \
     && mkdir -p /home/rowan/.local/share/keplerops \
     && touch /home/rowan/.local/share/keplerops/registry-foundation-2026-09-18 \
     && touch /home/rowan/.local/share/keplerops/policy-compiler-2026-09-18 \
@@ -61,7 +89,7 @@ RUN tar -xf /tmp/k-dev-home.tar -C /home/rowan \
     && git config --system init.templateDir /opt/fieldkest-empty-git-template \
     && git clone /opt/fieldkest-workbench/seed/fieldlink-connector.bundle /home/rowan/work/fieldlink-connector \
     && git -C /home/rowan/work/fieldlink-connector remote set-url origin https://source.keplerops.test/fieldkest/fieldlink-connector.git \
-    && mkdir -p /home/rowan/.ssh /home/rowan/.local/share/keplerops /home/rowan/results /run/sshd /var/lib/fieldkest-workbench/audit \
+    && mkdir -p /home/rowan/.ssh /home/rowan/.local/share/keplerops /home/rowan/results /run/sshd /var/lib/fieldkest-workbench/audit /var/lib/fieldkest-workbench/results \
     && ln -s /opt/fieldkest-workbench /opt/keplerops-workbench \
     && ssh-keygen -A \
     && chown -R rowan:rowan /home/rowan \

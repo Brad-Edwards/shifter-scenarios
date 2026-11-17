@@ -1,32 +1,27 @@
 FROM python:3.12.11-slim-bookworm
 
-ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates curl gcc iproute2 krb5-admin-server krb5-kdc krb5-user libkrb5-dev util-linux \
-    && pip install --no-cache-dir gssapi==1.10.1 \
+    && apt-get install --no-install-recommends -y ca-certificates iproute2 util-linux curl krb5-user \
+    && pip install --no-cache-dir pymysql==1.1.1 psycopg2-binary==2.9.10 \
     && rm -rf /var/lib/apt/lists/* \
-    && groupadd --system keplerops-staff \
-    && useradd --system --gid keplerops-staff --home-dir /nonexistent --shell /usr/sbin/nologin keplerops-staff
+    && groupadd --system fieldkest-staff \
+    && useradd --system --gid fieldkest-staff --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-staff
 
-COPY build/keplerops/config/krb5.conf /etc/krb5.conf
-COPY build/keplerops/config/kdc.conf /etc/krb5kdc/kdc.conf
-COPY build/keplerops/config/kadm5.acl /etc/krb5kdc/kadm5.acl
-COPY build/keplerops/runtime/provision-kerberos.sh /usr/local/sbin/fieldkest-provision-kerberos
-COPY build/keplerops/runtime/http_support.py /opt/keplerops-staff/http_support.py
-COPY build/keplerops/runtime/credentials.py /opt/keplerops-staff/credentials.py
+COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
+COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
+COPY build/keplerops/runtime/staff.py /opt/fieldkest/service.py
 COPY build/keplerops/runtime/client-references/staff.json /opt/fieldkest/client_documents.json
-COPY build/keplerops/runtime/platform_service.py /opt/keplerops-staff/platform_service.py
-COPY build/keplerops/runtime/platform-entrypoint.sh /usr/local/bin/fieldkest-platform-entrypoint
+COPY build/keplerops/runtime/staff-entrypoint.sh /usr/local/bin/fieldkest-service-entrypoint
+COPY assets/keplerops/staff/k-staff-state.tar /tmp/k-staff-state.tar
 
-RUN chmod 0755 /usr/local/sbin/fieldkest-provision-kerberos /usr/local/bin/fieldkest-platform-entrypoint \
-    && /usr/local/sbin/fieldkest-provision-kerberos \
-    && mkdir -p /opt/keplerops-staff/keytabs /var/lib/keplerops-staff/audit \
-    && cp /opt/keplerops-identity/keytabs/staff.keytab /opt/keplerops-staff/keytabs/staff.keytab \
-    && cp /opt/keplerops-identity/keytabs/evan.keytab /opt/keplerops-staff/keytabs/evan.keytab \
-    && rm -rf /var/lib/keplerops-identity /opt/keplerops-identity \
-    && chown -R keplerops-staff:keplerops-staff /var/lib/keplerops-staff /opt/keplerops-staff \
-    && chmod 0700 /var/lib/keplerops-staff /opt/keplerops-staff/keytabs \
-    && chmod 0400 /opt/keplerops-staff/keytabs/*.keytab
+RUN chmod 0755 /usr/local/bin/fieldkest-service-entrypoint \
+    && mkdir -p /var/lib/fieldkest-staff \
+    && tar -xf /tmp/k-staff-state.tar -C /var/lib/fieldkest-staff \
+    && mkdir -p /var/lib/fieldkest-staff/audit \
+    && chown -R fieldkest-staff:fieldkest-staff /var/lib/fieldkest-staff \
+    && rm /tmp/k-staff-state.tar \
+    && mkdir -p /run/fieldkest-tls /run/fieldkest-staff
 
+ENV FIELDKEST_STATE_ROOT=/var/lib/fieldkest-staff
 EXPOSE 443
-ENTRYPOINT ["/usr/local/bin/fieldkest-platform-entrypoint"]
+ENTRYPOINT ["/usr/local/bin/fieldkest-service-entrypoint"]

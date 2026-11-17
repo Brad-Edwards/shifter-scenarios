@@ -2,9 +2,16 @@
   "schema": "fieldkest.bundle-index-client/v1",
   "route_key": "indexer.indexes",
   "offline_reproducer": "work/reproducers/fieldkest-bundle-indexer",
+  "bundle_format": {
+    "magic": "FKI\\x01",
+    "fields": [
+      {"name": "alloc_entries", "type": "uint16_le"},
+      {"name": "index_entries", "type": "uint16_le"},
+      {"name": "entry_data", "type": "bytes", "length": "index_entries * 8"}
+    ]
+  },
   "arguments": [
-    {"name": "allocated_length", "encoding": "decimal integer"},
-    {"name": "body_hex", "encoding": "lowercase hexadecimal"}
+    {"name": "bundle_hex", "encoding": "lowercase hexadecimal", "description": "hex-encoded .fki archive"}
   ],
   "result": "one JSON object on standard output"
 }

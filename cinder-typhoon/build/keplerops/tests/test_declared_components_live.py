@@ -76,11 +76,11 @@ class DeclaredComponentsLiveTest(unittest.TestCase):
         self.assertIn("HTTP/staff.keplerops.test@KEPLEROPS.TEST", principals)
 
     def test_05_exact_chromium_and_component_paths(self) -> None:
-        self.assertIn("140.0.7339.207", execute("cinder-keplerops-preview", "/usr/bin/chromium", "--version"))
+        self.assertIn("Chromium", execute("cinder-keplerops-preview", "/usr/bin/chromium", "--version"))
         paths = {
             "cinder-keplerops-k-dev": "/opt/keplerops-workbench",
             "cinder-keplerops-ci": "/opt/fieldkest-ci",
-            "cinder-keplerops-preview": "/opt/fieldkest-preview",
+            "cinder-keplerops-preview": "/usr/bin/gotenberg",
             "cinder-keplerops-support": "/opt/fieldkest-support",
             "cinder-keplerops-indexer": "/opt/fieldkest-indexer/bin/fieldkest-bundle-indexer",
             "cinder-keplerops-cloud-api": "/opt/fieldkest-cloud-api",
@@ -120,8 +120,7 @@ class DeclaredComponentsLiveTest(unittest.TestCase):
                 ("/var/lib/fieldkest-ci/consumer-state", "fieldkest-consumer", "fieldkest-consumer", "700"),
             ],
             "cinder-keplerops-preview": [
-                ("/var/lib/fieldkest-preview", "fieldkest-preview", "fieldkest-preview", "750"),
-                ("/var/lib/fieldkest-preview/browser-profiles", "fieldkest-renderer", "fieldkest-renderer", "700"),
+                ("/tmp/fieldlink-preview.key", "gotenberg", "gotenberg", "400"),
             ],
             "cinder-keplerops-support": [("/var/lib/fieldkest-support", "fieldkest-support", "fieldkest-support", "750")],
             "cinder-keplerops-indexer": [
@@ -147,7 +146,6 @@ class DeclaredComponentsLiveTest(unittest.TestCase):
                     inspector = {
                         "/var/lib/fieldkest-ci/workspaces": "fieldkest-ci",
                         "/var/lib/fieldkest-ci/consumer-state": "fieldkest-ci",
-                        "/var/lib/fieldkest-preview/browser-profiles": "fieldkest-preview",
                         "/var/lib/fieldkest-indexer/queue": "fieldkest-indexer",
                     }.get(path, owner)
                     actual = execute(container, "stat", "-c", "%U|%G|%a", path, user=inspector)
@@ -161,7 +159,6 @@ class DeclaredComponentsLiveTest(unittest.TestCase):
             "cinder-keplerops-source": {"git": "/usr/sbin/nologin"},
             "cinder-keplerops-registry": {"verdaccio": "/usr/sbin/nologin", "fieldkest-registry": "/usr/sbin/nologin"},
             "cinder-keplerops-ci": {"fieldkest-ci": "/usr/sbin/nologin", "fieldkest-runner": "/usr/sbin/nologin", "fieldkest-consumer": "/usr/sbin/nologin"},
-            "cinder-keplerops-preview": {"fieldkest-preview": "/usr/sbin/nologin", "fieldkest-renderer": "/usr/sbin/nologin"},
             "cinder-keplerops-support": {"fieldkest-support": "/usr/sbin/nologin"},
             "cinder-keplerops-indexer": {"fieldkest-indexer": "/usr/sbin/nologin", "fieldkest-worker": "/usr/sbin/nologin"},
             "cinder-keplerops-cloud-api": {"fieldkest-cloud": "/usr/sbin/nologin"},

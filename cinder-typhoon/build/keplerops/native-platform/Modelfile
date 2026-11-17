@@ -1,0 +1,3 @@
+FROM /model-converted/fieldlink-qwen-q4_k_m.gguf
+PARAMETER num_ctx 4096
+PARAMETER temperature 0.2

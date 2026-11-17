@@ -341,3 +341,10 @@ def serve_tls(handler: type[BaseHTTPRequestHandler], port: int = 443) -> None:
         context.verify_mode = ssl.CERT_OPTIONAL
     server.socket = context.wrap_socket(server.socket, server_side=True)
     server.serve_forever()
+
+
+def serve_http(handler: type[BaseHTTPRequestHandler], port: int) -> None:
+    """Serve plain HTTP on localhost.  Used when a TLS-terminating front end
+    (Nginx) handles SSL and proxies to this service internally."""
+    server = ThreadingHTTPServer(("127.0.0.1", port), handler)
+    server.serve_forever()

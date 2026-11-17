@@ -7,11 +7,30 @@ ip route replace 10.77.60.0/24 via 10.77.51.254
 install -m 0444 /run/fieldkest-tls/server.crt /tmp/fieldkest.crt
 install -m 0444 /run/fieldkest-tls/server.key /tmp/fieldkest.key
 install -m 0444 /run/fieldkest-auth/worker-hmac.key /tmp/worker-hmac.key
+install -m 0444 /run/fieldkest-tls/ca.crt /tmp/fieldkest-ca.crt
+setpriv --reuid=verdaccio --regid=verdaccio --init-groups \
+  python3 /opt/fieldkest-registry/seed-native-registry.py accounts
 setpriv --reuid=verdaccio --regid=verdaccio --init-groups \
   node /opt/verdaccio/node_modules/verdaccio/bin/verdaccio --config /etc/verdaccio/config.yaml >/tmp/verdaccio.log 2>&1 &
 verdaccio_pid=$!
+for attempt in $(seq 1 60); do
+  if curl -fsS --cacert /run/fieldkest-tls/ca.crt https://packages.keplerops.test/-/ping >/dev/null; then
+    break
+  fi
+  [ "$attempt" != 60 ] || { echo 'Native registry did not start' >&2; exit 1; }
+  sleep 1
+done
+setpriv --reuid=verdaccio --regid=verdaccio --init-groups \
+  python3 /opt/fieldkest-registry/seed-native-registry.py packages
+setpriv --reuid=fieldkest-registry --regid=fieldkest-registry --init-groups \
+  python3 /opt/fieldkest-registry/assessor.py &
+assessor_pid=$!
+# Registry Python service on plain HTTP (127.0.0.1:9000); Nginx terminates TLS on 8443
 setpriv --reuid=fieldkest-registry --regid=fieldkest-registry --init-groups \
   python3 /opt/fieldkest-registry/registry.py &
 api_pid=$!
-trap 'kill "$api_pid" "$verdaccio_pid" 2>/dev/null || true' INT TERM EXIT
-wait "$api_pid"
+mkdir -p /tmp/nginx-client-body /tmp/nginx-proxy /tmp/nginx-fastcgi /tmp/nginx-uwsgi /tmp/nginx-scgi
+nginx -c /etc/registry-nginx.conf &
+nginx_pid=$!
+trap 'kill "$nginx_pid" "$api_pid" "$assessor_pid" "$verdaccio_pid" 2>/dev/null || true' INT TERM EXIT
+wait "$verdaccio_pid"

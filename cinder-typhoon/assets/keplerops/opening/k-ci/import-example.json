@@ -1,6 +1,0 @@
-{
-  "schema": "fieldkest.review-import/v1",
-  "run_id": "BLD-1842",
-  "object": "inputs/report-request.json"
-}
-

@@ -31,32 +31,32 @@ content:
       record_key: the-tab-that-survived
       owner:
         node: k-support
-        authority: Browser profile on k-dev; support gateway on k-support
+        authority: Browser profile on k-dev; native osTicket on k-support
       surface_bindings:
       - k-corporate.k-dev/filesystem:/home/rowan/.config/chromium/Default
-      - k-delivery.k-support/support-service/conversation
-      starting_state: Chromium History, Cookies, and Preferences under /home/rowan/.config/chromium/Default;
-        retained cookie fieldkest_support; authoritative conversation SUP-2841 revision
-        7.
+      - k-delivery.k-support/osticket/ticket-thread
+      starting_state: Chromium History and Preferences under /home/rowan/.config/chromium/Default;
+        closed-tab title naming SUP-2841; native osTicket ticket, customer, assignment and
+        thread correspondence.
       mechanic_profile:
         classification: service-native
-        surface: Chromium SQLite (History, Cookies); support.keplerops.test conversation
-          and cookie APIs
-        normal_case: developer closes browser tab, leaving session cookie in profile
-        defect: closed-tab URL in History plus retained session cookie give read access
-          to the support conversation
-        bounds: only the retained SUP-2841 conversation is accessible; no write or assignment
-          authority is granted
+        surface: retained Chromium history and the native osTicket agent ticket queue and
+          thread
+        normal_case: staff sign in to osTicket and search their accessible support queue
+        defect: the closed-tab title retains the exact customer ticket reference and the
+          normal staff identity remains usable
+        bounds: Rowan's osTicket role reads the assigned support queue but has no administration
+          authority
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Chromium History, Cookies, and Preferences under /home/rowan/.config/chromium/Default;
-          retained cookie fieldkest_support; authoritative conversation SUP-2841 revision
-          7.
-        success: Restored developer session plus protected conversation-read audit.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Chromium History and Preferences under /home/rowan/.config/chromium/Default;
+          closed-tab title naming SUP-2841; native osTicket ticket, customer, assignment
+          and thread correspondence.
+        success: Native staff session and actual protected ticket/thread read.
+        correlation: Bind the retained Chromium history entry to the native osTicket number,
+          subject, customer, asset and thread correspondence.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -66,10 +66,10 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Restored developer session plus protected conversation-read audit.
+      transition_contract: Native staff session and actual protected ticket/thread read.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: The native osTicket session, ticket record and thread entries; no conversation
+          facade or synthetic read audit.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -78,8 +78,8 @@ content:
         - result identifier and digest
         downstream_join: Maya/ARWC narrative corroborates the record; optional story lead
           only.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: The support thread is an immutable starting record; demonstrate actual
+          access through Rowan's native staff session.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
@@ -89,7 +89,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: e236a70d494a1d7cc24fd740f2cee4d0caec34bc1cde6f0302752d1bc8faf92a
+        digest: ec5f59e46f23a65ce07aaff9b4cfebfeeef595c6a30885827e0aa002bbc1179d
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -703,7 +703,7 @@ content:
         authority: Support service + registry
       surface_bindings:
       - k-delivery.k-support/support-service/diagnostic-package
-      - k-delivery.k-registry/package-registry/package-publication
+      - k-delivery.k-registry/verdaccio/package-publication
       starting_state: Diagnostic package template with G03 interface; edit endpoint validates
         schema/digest but fails immutable-source enforcement.
       mechanic_profile:
@@ -754,7 +754,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 1ef308125faef4adf96a8b2ec1a46c26839fdc143cd10bc9a8146096394f7db6
+        digest: 95988ef93618bae7aca7e8930823f2b3293f741710d51756be5a4f8182981ee7
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

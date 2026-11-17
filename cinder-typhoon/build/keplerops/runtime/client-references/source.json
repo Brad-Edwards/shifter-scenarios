@@ -3,8 +3,8 @@
     "source.keplerops.test": {
       "purpose": "Repository, handover, and source-side engineering operations.",
       "related": [
-        "https://ci.keplerops.test/.well-known/fieldkest-client",
-        "https://packages.keplerops.test/.well-known/fieldkest-client",
+        "https://review.keplerops.test/.well-known/fieldkest-client",
+        "https://delivery.keplerops.test:8443/.well-known/fieldkest-client",
         "https://support.keplerops.test/.well-known/fieldkest-client"
       ],
       "routes": [
@@ -16,22 +16,22 @@
         {
           "key": "source.handover",
           "method": "GET",
-          "template": "https://source.keplerops.test/api/fieldkest/handovers/current"
+          "template": "https://source.keplerops.test/api/v1/repos/fieldkest/fieldlink-connector/issues"
         },
         {
           "key": "source.policy-evaluate",
           "method": "POST",
-          "template": "https://source.keplerops.test/api/policy-compilers/fieldkest-policyc/evaluations"
+          "template": "https://source-tools.keplerops.test:8443/api/policy-compilers/fieldkest-policyc/evaluations"
         },
         {
           "key": "source.policy-nonce",
           "method": "POST",
-          "template": "https://source.keplerops.test/api/policy-compilers/fieldkest-policyc/nonces"
+          "template": "https://source-tools.keplerops.test:8443/api/policy-compilers/fieldkest-policyc/nonces"
         },
         {
           "key": "source.connector-run",
           "method": "POST",
-          "template": "https://source.keplerops.test/api/exercises/connector-archive/run"
+          "template": "https://source-tools.keplerops.test:8443/api/exercises/connector-archive/run"
         }
       ],
       "title": "Source client reference"

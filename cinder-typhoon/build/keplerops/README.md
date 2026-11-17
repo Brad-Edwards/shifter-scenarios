@@ -6,7 +6,16 @@ content remain the source of truth. When hand-building exposes missing bytes,
 behavior, placement, or contradictory contracts, reconcile the design and pass
 the RAE gates before encoding the change here.
 
-**Status:** K01-K31 are materialized and accepted on the isolated private GCP
+Current FieldLink development uses native applications on `cinder-fieldlink-dev`.
+See the [workplace design](../../docs/design/fieldlink-native-workplace.md) and
+[native platform runbook](../../docs/design/fieldlink-native-platform.md) for
+current ownership and setup. Native product functionality, data, connections and
+lifecycle are the current scope. Challenge changes are paused. The original
+implementation ledger below is historical and is not the current service map.
+The old golden deployment entrypoint is disabled; use the guarded development
+wrapper for all current VM access and synchronization.
+
+**Original golden status:** K01-K31 are materialized and accepted on the isolated private GCP
 carrier. The former local stand-in for K26/K27 has been removed. Both delivery
 routes now cross the narrow private transit and execute on the separate Alterra
 carrier, where destination-owned receipts earn the corporate handoff.
@@ -83,12 +92,39 @@ open where the contract explicitly permits equivalent behavior.
 - Terminate real TLS on the declared port 443 services using an operator-created
   range CA trusted by `k-dev`. Do not weaken protocol declarations to HTTP for
   implementation convenience.
-- Execute untrusted jobs, native indexer inputs, preview workers, package code,
+- Execute untrusted jobs, native indexer inputs, package code,
   and completion jobs in short-lived, resource-limited workers with the exact
   network, filesystem, identity and timeout boundaries specified by their
   contracts.
 - Keep tests on the carrier/operator side. Test execution uses one-shot clients
   with read-only mounts; no test source is copied into `k-dev` or a target.
+
+## Apply development source changes
+
+Use the development-range wrapper from the repository root. Synchronize committed
+source, build the affected images on the development VM, then recreate only the
+services in the coordinated QA window. A container restart uses its existing
+image and does not apply changed files copied by a Dockerfile.
+
+In particular, a change to `foundation/db.keplerops.test` requires building
+`fieldlink-dns` and recreating that service. Restarting the previous DNS image
+keeps the previous zone. Include it in the same deployment as a newly named
+service. From `/opt/cinder-typhoon/build/keplerops` on the development VM:
+
+```sh
+sudo docker compose -f compose.yaml build fieldlink-dns
+sudo docker compose -f compose.yaml up -d --no-deps --force-recreate fieldlink-dns
+```
+
+Before handing the slice to QA, verify that each declared participant hostname
+resolves from `k-dev`, appears in the generated leaf certificate, and works with
+the ordinary workstation CA. Current native delivery names include
+`source.keplerops.test`, `source-tools.keplerops.test`, `ci.keplerops.test`,
+`review.keplerops.test`, `packages.keplerops.test`, `delivery.keplerops.test`,
+and `preview.keplerops.test`. Update the tracked zone and certificate SAN input
+before generating operator material and building the affected image. Keep native
+product HTTPS and genuine tool ports distinct; do not use IP overrides or disable
+certificate verification to hide an incomplete deployment.
 
 ## Client-reference generation
 
@@ -113,7 +149,7 @@ participant or service image.
 | KHB-02 | Carrier, four isolated networks, allowlisted routing, range CA, persistent volumes, shared runtime and `k-dev` entry | Exact addressing/DNS/TLS work; targets have no public route; `rowan` cannot reach the carrier control plane or operator tests. |
 | KHB-03 | Opening slice: K01-K03 on `k-dev`, `k-source`, `k-ci` and `k-support` | All ten opening paths work from Rowan's supplied material; G01 is usable and recognizable. |
 | KHB-04 | Source/CI/registry foundation: K05-K09, K11, K28-K29, with K02 regression | Real Git history, packages, crypto, compiler VM and isolated job paths work with persistence and negative authorization checks. |
-| KHB-05 | Native indexer and preview: K04, K10, K12 | Actual bounded native parser and browser-worker mechanics produce the specified effects without general host access. |
+| KHB-05 | Native indexer and preview: K04, K10, K12 | Actual bounded native parser and native document-rendering mechanics produce the specified effects without general host access. |
 | KHB-06 | Support, staff, identity and certificates: K17-K20, K25 | Obtained sessions, federation, enrollment and delegation are exercisable across their real destination services. |
 | KHB-07 | Cloud, data and workload: K13-K16, K30-K31 | Role exchange, export, scheduling, backup recovery and runtime-identity paths work and retain independently observed state. |
 | KHB-08 | Assistant: K21-K24 | The pinned model revision, deterministic decoding, retrieval defects, tool action and completion job behave as specified within bounded resources. |
@@ -149,7 +185,7 @@ demands it. A wave is not complete merely because its services start.
 | KHB-02 | Build core carrier and network/runtime substrate | Complete | Dedicated private `cinder-keplerops-golden` carrier, five internal networks, allowlisted router, TLS, persistent volumes and Rowan SSH entry are deployed. |
 | KHB-03 | Build and validate K01-K03 opening slice | Complete | Seven black-box suites plus SSH, persistence, worker cleanup, no-egress and no-published-port gates pass locally and on `prod-hwmvjy`. |
 | KHB-04 | Build and validate source/CI/registry slice | Complete | K05-K09, K11, K28, and K29 use real package, parser, cryptographic, Git, native compiler, isolated-command, publication, signing, rehearsal, activation, and rollback mechanics. |
-| KHB-05 | Build and validate indexer/preview slice | Complete | A hardened native ELF implements the bounded K04 object transition; isolated Chromium/Playwright performs the K10/K12 service-worker render. |
+| KHB-05 | Build and validate indexer/preview slice | Preview replacement in progress | The native indexer remains. Gotenberg replaces the retired custom preview worker; K10/K12 native card rebinding and acceptance remain outstanding. |
 | KHB-06 | Build and validate identity slice | Complete | K17-K20 and K25 persist support state across service boundaries; K19 issues a CA-signed client certificate/private key and staff verifies it by mTLS. |
 | KHB-07 | Build and validate cloud/data/workload slice | Complete | K13-K16 and K30-K31 implement authority exchange, coherent export state, recovery namespaces, and short-lived networkless workload execution. |
 | KHB-08 | Build and validate assistant slice | Complete | K21-K24 use the exact local `Qwen2.5-3B-Instruct` revision with deterministic decoding, retained retrieval state, a cross-service tool action, and bounded completion state. |

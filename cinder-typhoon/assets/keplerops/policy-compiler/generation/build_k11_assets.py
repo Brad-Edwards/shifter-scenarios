@@ -73,6 +73,28 @@ BASE = {
     "channel": "stable",
     "tenant_class": "standard",
 }
+FRAGMENT_VALIDATION_CASES = {
+    "tenant-state": [
+        {"case_id": "TS-01", "case": {**BASE, "tenant_state": "active"}, "expected": True},
+        {"case_id": "TS-02", "case": {**BASE, "tenant_state": "inactive"}, "expected": False},
+        {"case_id": "TS-03", "case": {**BASE, "tenant_state": "suspended"}, "expected": False},
+    ],
+    "connector-version": [
+        {"case_id": "CV-01", "case": {**BASE, "connector_api": "3.0.0"}, "expected": True},
+        {"case_id": "CV-02", "case": {**BASE, "connector_api": "4.0.0"}, "expected": True},
+        {"case_id": "CV-03", "case": {**BASE, "connector_api": "2.9.9"}, "expected": False},
+        {"case_id": "CV-04", "case": {**BASE, "connector_api": "2.0.0"}, "expected": False},
+    ],
+    "signer-lineage": [
+        {"case_id": "SL-01", "case": {**BASE, "signer_lineage": "fieldkest-release-2026"}, "expected": True},
+        {"case_id": "SL-02", "case": {**BASE, "signer_lineage": "fieldkest-release-2025"}, "expected": False},
+        {"case_id": "SL-03", "case": {**BASE, "signer_lineage": "fieldkest-lab-2026"}, "expected": False},
+    ],
+    "compatibility-exception": [
+        {"case_id": "CE-01", "case": {**BASE, "compatibility_exception": True}, "expected": True},
+        {"case_id": "CE-02", "case": {**BASE, "compatibility_exception": False}, "expected": False},
+    ],
+}
 
 
 def canonical(value: object) -> bytes:
@@ -278,33 +300,38 @@ minutes and are consumed by the first syntactically valid acceptance request.
             "policy_input": {**BASE, "nonce": "replace-with-fresh-nonce", "corpus_result_sha256": corpus_digest},
         }), 0o644),
     }
-    fragment_examples = {
-        "tenant-state": changed(tenant_state="inactive"),
-        "connector-version": changed(connector_api="2.9.9"),
-        "signer-lineage": changed(signer_lineage="fieldkest-release-2025"),
-        "compatibility-exception": changed(compatibility_exception=False),
-    }
-    for fragment_id, instructions in FRAGMENTS.items():
-        payload = program_bytes(instructions)
-        files[f"fragments/{fragment_id}.fkpc"] = (payload, 0o644)
-        fragment_model = {
-            "schema": "fieldkest.policy-program-model/v1",
-            "program_id": f"FKPC-FRAGMENT-{fragment_id.upper()}",
-            "instruction_width": 4,
-            "instruction_count": len(instructions),
-            "program_base64": base64.b64encode(payload).decode(),
-            "program_sha256": sha(payload),
-            "opcode_model": {
-                "schema": "fieldkest.policy-opcode-model/v1",
-                "instruction_width": 4,
-                "opcodes": {f"0x{value:02x}": "replace-with-recovered-operation" for value in range(8)},
-            },
-        }
-        files[f"api/fragment-{fragment_id}.json"] = (pretty({
+    # K11.2: fragment assembly challenge — no .fkpc bytecode in repo.
+    # Participant assembles fragment bytes from policy intent in README.
+    # Service validates by execution across server-side validation_cases.
+    fragment_guide = {
+        "note": "Assemble each fragment program from scratch using the encoding in the binary.",
+        "fragments": {
+            fragment_id: {
+                "program_id": f"FKPC-FRAGMENT-{fragment_id.upper()}",
+                "condition": {
+                    "tenant-state": "tenant_state IN set[0]",
+                    "connector-version": "connector_api SEMVER_GTE const[0]",
+                    "signer-lineage": "signer_lineage IN set[1]",
+                    "compatibility-exception": "compatibility_exception EQ const[1]",
+                }[fragment_id],
+            }
+            for fragment_id in FRAGMENTS
+        },
+        "fragment_check_request_shape": {
             "operation": "fragment-check",
-            "program_model": fragment_model,
-            "policy_input": {"fragment_id": fragment_id, "case": fragment_examples[fragment_id]},
-        }), 0o644)
+            "program_model": {
+                "schema": "fieldkest.policy-program-model/v1",
+                "program_id": "FKPC-FRAGMENT-<NAME>",
+                "instruction_width": 4,
+                "instruction_count": "<assembled-count>",
+                "program_base64": "<assembled-bytes-base64>",
+                "program_sha256": "<sha256-of-assembled-bytes>",
+                "opcode_model": "replace-with-recovered-opcode-model",
+            },
+            "policy_input": {"fragment_id": "<name>"},
+        },
+    }
+    files["api/fragment-assembly-guide.json"] = (pretty(fragment_guide), 0o644)
     return files
 
 
@@ -427,10 +454,10 @@ def main() -> None:
         "corpus_result_sha256": sha(canonical(corpus_result)),
         "fragments": {
             name: {
-                "program_base64": base64.b64encode(program_bytes(instructions)).decode(),
-                "program_sha256": sha(program_bytes(instructions)),
+                "program_id": f"FKPC-FRAGMENT-{name.upper()}",
+                "validation_cases": FRAGMENT_VALIDATION_CASES[name],
             }
-            for name, instructions in FRAGMENTS.items()
+            for name in FRAGMENTS
         },
         "nonce_lifetime_seconds": 300,
     }

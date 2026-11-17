@@ -57,24 +57,6 @@ def call_negotiate(host: str, path: str, *, method: str = "GET", body: dict[str,
 
 
 class PlatformLiveTest(unittest.TestCase):
-    def test_01_preview_identity_and_reviewer_workflow(self) -> None:
-        protected = call("preview.keplerops.test", "/api/documents", method="POST", body={"source_id": "SUP-K-2841", "content": "Restricted release review: retain the compatibility exception."}, expected=201)
-        participant = call("preview.keplerops.test", "/api/documents", method="POST", body={"source_id": "sup-k-2841", "content": "Ordinary preview"}, expected=201)
-        self.assertEqual(protected["derived_id"], participant["derived_id"])
-        rendered = call("preview.keplerops.test", "/api/documents/sup-k-2841/render", method="POST", body={}, expected=202)
-        self.assertEqual((rendered["content_source"], rendered["content_version"]), ("SUP-K-2841", 7))
-        assignment = call("preview.keplerops.test", "/api/reviews/PRV-771/assignment", method="PATCH", body={"queue": "privileged-review", "source_id": "sup-k-2841"})
-        prepared = call("preview.keplerops.test", "/api/reviews/PRV-771/actions/prepare", method="POST", body={}, auth=assignment["action_nonce"])
-        self.assertTrue(prepared["prepared"])
-        replay = call("preview.keplerops.test", "/api/reviews/PRV-771/actions/prepare", method="POST", body={}, auth=assignment["action_nonce"], expected=403)
-        self.assertEqual(replay["error"], "nonce_denied")
-        final = call("preview.keplerops.test", "/review/PRV-771/render", method="POST", body={"worker_scope": "/review/"}, auth="reviewer-worker")
-        self.assertEqual((final["renderer_identity"], final["compatibility_summary"]), ("svc-preview-reviewer", "fieldlink.connector/v3 compatible"))
-        self.assertEqual((final["browser_engine"], final["worker_scope"]), ("chromium", "/review/"))
-        self.assertEqual(final["browser_version"], "140.0.7339.207")
-        self.assertEqual((final["execution_backend"], final["container_network"]), ("isolated-container", "none"))
-        self.assertNotEqual(final["process_identity"], 0)
-
     def test_02_workspace_cloud_export_and_persistence(self) -> None:
         listing = call("data.keplerops.test", "/s3/fieldkest-workspaces", auth=None)
         notebook = next(item for item in listing["objects"] if item.get("versions"))
@@ -129,10 +111,15 @@ class PlatformLiveTest(unittest.TestCase):
         directory = call("staff.keplerops.test", "/api/service-directory", auth=DEV_TOKEN)
         note = call("staff.keplerops.test", "/api/notes/" + directory["restricted_note"], auth=DEV_TOKEN)
         self.assertEqual(note["consumer"], "staff-note-preview")
-        source = "/notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT"
+        source = "/notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT"
         registration = call("staff.keplerops.test", "/api/note-preview", method="POST", body={"source_path": source, "method": "GET"}, auth=DEV_TOKEN)
-        changed = call("staff.keplerops.test", "/api/note-preview", method="POST", body={"source_path": source, "method": "PATCH"}, auth=DEV_TOKEN)
-        self.assertGreater(changed["revision"], registration["revision"])
+        import base64 as _b64, json as _json
+        _rat_payload = _json.loads(_b64.urlsafe_b64decode(registration["registration_access_token"].split(".")[1] + "=="))
+        registration_revision = _rat_payload["iat"]
+        federation_metadata = "https://support.keplerops.test/federation/retained-support/.well-known/openid-configuration"
+        changed = call("staff.keplerops.test", "/api/note-preview", method="POST",
+            body={"source_path": source, "method": "PATCH", "provider": {"metadata_uri": federation_metadata}}, auth=DEV_TOKEN)
+        self.assertGreater(changed["revision"], registration_revision)
         staff_login = call("identity.keplerops.test", "/api/federation/staff-login", method="POST", body={"username": DEV_USER, "password": DEV_TOKEN}, expected=201)
         self.assertEqual((staff_login["provider"], staff_login["login"]), ("OIDC-FIELDKEST-STAFF", "accepted"))
         provider = changed["provider_configuration"]

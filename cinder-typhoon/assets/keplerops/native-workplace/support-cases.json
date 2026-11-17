@@ -1,0 +1,37 @@
+{
+  "tickets": [
+    {
+      "number": "SUP-2819",
+      "subject": "Riverbend connector inventory refresh",
+      "customer": "Riverbend Municipal Services",
+      "email": "field-operations@riverbend.example",
+      "opening": "Please retain the current connector inventory while the site team completes its quarterly review.",
+      "notes": [
+        "Inventory received for RB-WEST-04 on connector 7.3.9.",
+        "The review remains with Customer Support until the scheduled maintenance window."
+      ]
+    },
+    {
+      "number": "SUP-2834",
+      "subject": "North Quay package channel confirmation",
+      "customer": "North Quay Transit Works",
+      "email": "systems@northquay.example",
+      "opening": "Confirm the package channel recorded for the North Quay reporting connector.",
+      "notes": [
+        "The account remains on the stable channel.",
+        "Release Operations confirmed that no channel change is pending."
+      ]
+    },
+    {
+      "number": "SUP-2850",
+      "subject": "Marshgate report delivery timing",
+      "customer": "Marshgate District Energy",
+      "email": "operations@marshgate.example",
+      "opening": "The overnight report arrived after the local review period and should be checked against the maintenance calendar.",
+      "notes": [
+        "The connector completed normally; the delayed report followed the maintenance restart.",
+        "No package or customer assignment change is requested."
+      ]
+    }
+  ]
+}

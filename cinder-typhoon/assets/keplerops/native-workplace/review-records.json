@@ -1,0 +1,31 @@
+{
+  "tasks": [
+    {
+      "reference": "REL-FLK-7.3.9-14",
+      "title": "FieldLink 7.3.9 rollout follow-up",
+      "creator": "talia.mornac",
+      "owner": "rowan.ito",
+      "description": "Close the remaining rollout notes after the Riverbend maintenance window.",
+      "attachment": "fieldlink-7.3.9-rollout.md",
+      "comments": ["Riverbend confirmed the ordinary report flow after maintenance."]
+    },
+    {
+      "reference": "REL-FLK-7.4.1-06",
+      "title": "FieldLink 7.4.1 compatibility review",
+      "creator": "rowan.ito",
+      "owner": "talia.mornac",
+      "description": "Retain the package and consumer observations from the North Quay compatibility review.",
+      "attachment": "fieldlink-7.4.1-compatibility.md",
+      "comments": ["The stable consumer selected 7.4.1 as expected for this review."]
+    },
+    {
+      "reference": "REL-FLK-7.4.2-11",
+      "title": "FieldLink 7.4.2 release checklist",
+      "creator": "maya.ranscombe",
+      "owner": "rowan.ito",
+      "description": "Complete the ordinary support and delivery checks for the next 7.4.2 maintenance window.",
+      "attachment": "fieldlink-7.4.2-checklist.md",
+      "comments": ["Customer Support has no additional package-channel changes for this window."]
+    }
+  ]
+}

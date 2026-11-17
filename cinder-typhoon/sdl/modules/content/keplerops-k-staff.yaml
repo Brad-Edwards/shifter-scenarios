@@ -6,6 +6,7 @@ module:
   version: 0.1.0
   exports:
     content:
+    - k01-3-outside-the-working-folder
     - k18-1-the-note-behind-the-preview
     - k18-2-a-note-with-someone-else-s-authority
     - k18-3-the-provider-trusts-our-change
@@ -14,6 +15,81 @@ module:
 realization:
   default: open
 content:
+  k01-3-outside-the-working-folder:
+    type: file
+    target: k-corporate.k-staff
+    path: /var/lib/keplerops-staff/contracts/outside-the-working-folder.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: outside-the-working-folder
+      owner:
+        node: k-staff
+        authority: Native Kanboard on k-staff
+      surface_bindings:
+      - k-corporate.k-staff/kanboard/release-review
+      starting_state: Release project FIELDLINK; task REL-FLK-7.4.2-09; native attachment
+        fieldlink-7.4.2-review.md; unresolved native comments REV-219, REV-224, and REV-231.
+      mechanic_profile:
+        classification: service-native
+        surface: native Kanboard FieldLink release project, searchable task, comments and
+          task attachment
+        normal_case: staff use the work board to inspect release tasks and their attached
+          review records
+        defect: the unfinished review and its unresolved comments remain readable to Rowan's
+          ordinary project role
+        bounds: the recovered identity is a project member without application or user administration
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Release project FIELDLINK; task REL-FLK-7.4.2-09; native attachment fieldlink-7.4.2-review.md;
+          unresolved native comments REV-219, REV-224, and REV-231.
+        success: Native task, attachment and comment read under Rowan's project role.
+        correlation: Bind the Kanboard task reference to its native attachment and unresolved
+          native comments.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: Native task, attachment and comment read under Rowan's project
+        role.
+      evidence_contract:
+        producer: The native Kanboard task, comments and attachment identity and bytes;
+          no local duplicate or custom lookup service.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Rowan and release-platform background reused.
+        freshness: The release review remains repeatable product-owned state under Rowan's
+          ordinary project role.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 84d1474e6e8deb5864b6bfac695816eccb02f9c41364cfe12b2f76af95f394c8
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-staff
+    - persistent-tenant-state
   k18-1-the-note-behind-the-preview:
     type: file
     target: k-corporate.k-staff
@@ -105,7 +181,7 @@ content:
         traversal reaches read-only identity-admin registration OIDC-FIELDKEST-SUPPORT under
         reviewer service identity.
       mechanic_profile:
-        source_path: /notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT
+        source_path: /notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT
         method: GET
         defect: proxy checks the encoded string starts with /notes/ before one percent-decode
           and dot-segment normalization
@@ -179,7 +255,7 @@ content:
         plus PATCH can add the retained-support provider while preserving the existing provider.
         The registration identifies its discovery metadata and assertion submission endpoint.
       mechanic_profile:
-        source_path: /notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT
+        source_path: /notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT
         forwarded_method: PATCH
         patch:
           add_provider: OIDC-FIELDKEST-RETAINED-SUPPORT

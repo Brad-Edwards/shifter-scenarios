@@ -2,10 +2,12 @@
 import hashlib
 import io
 import json
+import re
 import sys
 import tarfile
 import tempfile
 import unittest
+from unittest.mock import patch
 from copy import deepcopy
 from pathlib import Path
 
@@ -21,6 +23,33 @@ from validate_keplerops import (  # noqa: E402
     check_opening_assets, check_opening_interface_contract, check_world, matrix_rows,
     validate_exact_archive, validate_k28_manifest, validate_opening_interface_contract,
 )
+
+
+class ClientReferenceHostnameTests(unittest.TestCase):
+    def test_reference_graph_accepts_standard_and_explicit_ports(self):
+        source = PACK / 'build/keplerops/authoring/client_documents.json'
+        for explicit_port in (False, True):
+            with self.subTest(explicit_port=explicit_port), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                inventory = json.loads(source.read_text())
+                for document in inventory['documents'].values():
+                    document['related'] = [
+                        re.sub(r'(https://[^/:]+)(?::\d+)?/',
+                               r'\1:8443/' if explicit_port else r'\1/', link)
+                        for link in document['related']
+                    ]
+                authoring = root / 'build/keplerops/authoring'
+                fragments = root / 'build/keplerops/runtime/client-references'
+                authoring.mkdir(parents=True)
+                fragments.mkdir(parents=True)
+                (authoring / 'client_documents.json').write_text(json.dumps(inventory))
+                for image, host in inventory['images'].items():
+                    (fragments / (image + '.json')).write_text(json.dumps({
+                        'schema': inventory['schema'], 'path': inventory['path'],
+                        'documents': {host: inventory['documents'][host]},
+                    }))
+                with patch.dict(check_client_reference_graph.__globals__, {'PACK': root}):
+                    check_client_reference_graph(None)
 
 
 def write_exact_archive(path, payload=b"reviewed artifact", mode=0o640,

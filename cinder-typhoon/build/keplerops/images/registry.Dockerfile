@@ -1,7 +1,7 @@
 FROM node:22.19.0-bookworm-slim
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates iproute2 python3 python3-cryptography util-linux \
+    && apt-get install --no-install-recommends -y apache2-utils ca-certificates curl iproute2 nginx python3 python3-cryptography util-linux \
     && rm -rf /var/lib/apt/lists/* \
     && npm install --prefix /opt/verdaccio --omit=dev --no-audit --no-fund verdaccio@6.1.6 \
     && groupadd --system verdaccio \
@@ -14,8 +14,13 @@ COPY build/keplerops/runtime/credentials.py /opt/fieldkest-registry/credentials.
 COPY build/keplerops/runtime/channel_credentials.py /opt/fieldkest-registry/channel_credentials.py
 COPY build/keplerops/runtime/client-references/registry.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/registry.py /opt/fieldkest-registry/registry.py
+COPY build/keplerops/runtime/assessor.py /opt/fieldkest-registry/assessor.py
+COPY build/keplerops/runtime/package_delivery.py /opt/fieldkest-registry/package_delivery.py
+COPY build/keplerops/native-registry/seed.py /opt/fieldkest-registry/seed-native-registry.py
+COPY assets/keplerops/native-packages /opt/fieldlink-native-packages
 COPY build/keplerops/runtime/registry-entrypoint.sh /usr/local/bin/fieldkest-registry-entrypoint
 COPY build/keplerops/config/verdaccio.yaml /etc/verdaccio/config.yaml
+COPY build/keplerops/config/registry-nginx.conf /etc/registry-nginx.conf
 COPY assets/keplerops/registry/k-registry-state.tar /tmp/k-registry-state.tar
 COPY assets/keplerops/release-lineage/k-registry-release-lineage-state.tar /tmp/k-registry-release-lineage-state.tar
 
@@ -23,6 +28,8 @@ RUN mkdir -p /var/lib/fieldkest-registry /var/lib/verdaccio/storage \
     && tar -xf /tmp/k-registry-state.tar -C /var/lib/fieldkest-registry \
     && tar -xf /tmp/k-registry-release-lineage-state.tar -C /var/lib/fieldkest-registry \
     && rm /tmp/k-registry-state.tar /tmp/k-registry-release-lineage-state.tar \
+    && cp /var/lib/fieldkest-registry/packages/support-rehearsal-1.3.1.tgz /opt/fieldlink-native-packages/ \
+    && chmod 0444 /opt/fieldlink-native-packages/support-rehearsal-1.3.1.tgz \
     && mkdir -p /var/lib/fieldkest-registry/audit /var/lib/fieldkest-registry/results /var/lib/fieldkest-registry/published \
     && touch /var/lib/verdaccio/htpasswd \
     && chown -R fieldkest-registry:fieldkest-registry /var/lib/fieldkest-registry \
@@ -31,5 +38,7 @@ RUN mkdir -p /var/lib/fieldkest-registry /var/lib/verdaccio/storage \
     && chmod 0750 /var/lib/verdaccio \
     && chmod 0755 /usr/local/bin/fieldkest-registry-entrypoint
 
-EXPOSE 443
+EXPOSE 443 8443
+HEALTHCHECK --interval=10s --timeout=5s --start-period=90s --retries=6 \
+  CMD setpriv --reuid=verdaccio --regid=verdaccio --init-groups sh -c 'test -f /var/lib/verdaccio/.native-packages-seeded && curl -fsS --cacert /run/fieldkest-tls/ca.crt https://packages.keplerops.test/-/ping >/dev/null' || exit 1
 ENTRYPOINT ["/usr/local/bin/fieldkest-registry-entrypoint"]

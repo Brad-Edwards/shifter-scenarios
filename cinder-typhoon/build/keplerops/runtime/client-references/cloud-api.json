@@ -23,6 +23,41 @@
           "template": "https://cloud-api.keplerops.test/api/build-records/{build_id}"
         },
         {
+          "key": "data.export",
+          "method": "GET",
+          "template": "https://cloud-api.keplerops.test/api/exports/{export_id}"
+        },
+        {
+          "key": "data.export-definition",
+          "method": "GET",
+          "template": "https://cloud-api.keplerops.test/api/exports/{export_id}/definition"
+        },
+        {
+          "key": "data.export-destination",
+          "method": "PATCH",
+          "template": "https://cloud-api.keplerops.test/api/exports/{export_id}/destination"
+        },
+        {
+          "key": "data.export-runs",
+          "method": "POST",
+          "template": "https://cloud-api.keplerops.test/api/exports/{export_id}/runs"
+        },
+        {
+          "key": "workloads.schedule",
+          "method": "GET",
+          "template": "https://cloud-api.keplerops.test/api/schedules/{schedule_id}"
+        },
+        {
+          "key": "workloads.schedule-update",
+          "method": "PATCH",
+          "template": "https://cloud-api.keplerops.test/api/schedules/{schedule_id}"
+        },
+        {
+          "key": "workloads.schedule-runs",
+          "method": "POST",
+          "template": "https://cloud-api.keplerops.test/api/schedules/{schedule_id}/runs"
+        },
+        {
           "key": "cloud.trust-record",
           "method": "GET",
           "template": "https://cloud-api.keplerops.test/api/trust-records/{trust_id}"

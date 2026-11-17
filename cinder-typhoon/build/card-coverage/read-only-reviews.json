@@ -1,7 +1,6 @@
 {
   "schema_version": 1,
   "reviews": {
-    "K06.2": "Contrasts the publisher credential's successful private support-package view with the same credential's denied release-administration view, establishing the credential's exact authorization boundary.",
     "K08.1": "Binds the protected entitlement returned by the service to the entitlement identifier recovered from the compatibility artifact; the record is then interpreted as the cryptographic input contract for K08.2.",
     "K14.1": "Binds the workload-authenticated trust record to the workload subject and derives the separate role named by that trust relationship; a trust-record fetch without those identity relations is insufficient.",
     "K14.3": "Interprets the export definition under the newly exchanged role by extracting its owner, tenant, and partition boundary for the later cross-account collection, rather than treating access to the role as completion.",

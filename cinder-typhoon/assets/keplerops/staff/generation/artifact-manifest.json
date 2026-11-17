@@ -1,0 +1,12 @@
+{
+  "archives": [
+    {
+      "path": "k-staff-state.tar",
+      "sha256": "970d80af6a1b8544ad190acb35da665d056a7a758b53c03fba0b27430f53c5d2",
+      "size": 10240
+    }
+  ],
+  "generated_at": "2026-11-16T00:00:00Z",
+  "note": "config/staff.json holds routing and consumer metadata only. The note draft content lives in osTicket, seeded by seed-k18-note.php.",
+  "schema": "fieldkest.staff-artifacts/v1"
+}
