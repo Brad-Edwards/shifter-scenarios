@@ -32,6 +32,17 @@ def prepare(operator: Path) -> None:
     values = json.loads(private.read_text())
     for directory in ('kubernetes', 'model-source', 'model-converted', 'k3s-images'):
         (target / directory).mkdir(mode=0o700, exist_ok=True)
+    # k-support connects as the foundation superuser (K18.4). Derive its password
+    # file from the foundation env. Docker creates an empty directory when a bind
+    # source is missing, so remove that before the file is written.
+    foundation = dict(line.split('=', 1) for line in
+                      (operator / 'native-foundation.env').read_text().splitlines() if '=' in line)
+    if foundation.get('POSTGRES_USER') != 'fieldlink_admin' or not foundation.get('POSTGRES_PASSWORD'):
+        raise SystemExit('native-foundation.env does not define the fieldlink_admin password')
+    admin_password = target / 'pg_admin_password'
+    if admin_password.is_dir() and not admin_password.is_symlink():
+        admin_password.rmdir()
+    create(admin_password, foundation['POSTGRES_PASSWORD'])
     runtime = json.loads((operator / 'range-seed/runtime-credentials.json').read_text())['credentials']
     create(target / 'assistant-support.json', json.dumps({'token': runtime['assistant_tool_session']}), 0o400)
     os.chown(target / 'assistant-support.json', 1000, 1000)

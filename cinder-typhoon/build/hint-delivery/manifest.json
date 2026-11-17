@@ -6238,18 +6238,22 @@
       2,
       3
     ],
-    "mode": "facilitator_on_request"
+    "mode": "participant_unlock"
   },
   "review": {
     "operation_count": 70,
     "path": "build/hint-delivery/operation-reviews.json",
     "sha256": "aee26376bf31244298864ff8da87af1aaca6fc18bdc6267df3ab14f92d6944f8"
   },
-  "revision": "71e8ce9c45e093cce55e90f5f33bbf3f462fec14635b03e8912aa7c45d4cbd85",
+  "revision": "e51f5837cfff1b0bdda6dec082cbb6a982d38b79fa87103b832cfb1416e82a8e",
   "schema": "cinder-typhoon.hint-delivery/v1",
   "score_effect": {
     "maximum_score_unchanged": true,
-    "penalty": 0
+    "penalty_percent": [
+      10,
+      20,
+      30
+    ]
   },
   "sources": [
     {

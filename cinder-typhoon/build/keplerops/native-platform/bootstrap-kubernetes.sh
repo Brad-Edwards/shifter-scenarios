@@ -5,10 +5,16 @@ ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$ROOT"
 operator=${KEPLEROPS_OPERATOR_DIR:-./.operator}
 docker compose up -d --no-deps --wait --wait-timeout 300 fieldlink-k3s
+# Cold k3s registers its node object a few seconds after the container is healthy;
+# kubectl wait returns NotFound immediately on a missing resource, so wait for it to exist first.
+for _ in $(seq 1 90); do docker compose exec -T fieldlink-k3s /bin/kubectl get node fieldlink-k3s >/dev/null 2>&1 && break; sleep 2; done
 docker compose exec -T fieldlink-k3s /bin/kubectl wait --for=condition=Ready --timeout=120s node/fieldlink-k3s
 docker compose exec -T fieldlink-k3s /bin/kubectl wait --for=condition=DiskPressure=False --timeout=360s node/fieldlink-k3s
 client_image=docker.io/rancher/k3s:v1.37.2-k3s1
 client_archive="$operator/native-platform/k3s-images/fieldlink-client.tar"
+# compose pulls k3s by pinned digest; ensure the bare tag exists before docker image save.
+k3s_pinned=$(docker compose -f compose.yaml config --images 2>/dev/null | grep '^rancher/k3s:' | head -1)
+[[ -n $k3s_pinned ]] && docker tag "$k3s_pinned" rancher/k3s:v1.37.2-k3s1 2>/dev/null || true
 if [[ ! -s $client_archive ]]; then
   docker image save rancher/k3s:v1.37.2-k3s1 --output "$client_archive.part"
   mv "$client_archive.part" "$client_archive"

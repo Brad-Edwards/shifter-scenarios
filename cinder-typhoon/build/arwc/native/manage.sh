@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 umask 077
-[[ $(hostname) == cinder-arwc-dev ]] || {
+[[ $(hostname) == cinder-arwc-dev || $(hostname) == cinder-arwc-golden ]] || {
   echo 'This mutable deployment is restricted to cinder-arwc-dev.' >&2
   exit 1
 }

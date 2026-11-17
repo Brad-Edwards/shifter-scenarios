@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-[[ $(hostname) == cinder-arwc-dev ]] || exit 1
+[[ $(hostname) == cinder-arwc-dev || $(hostname) == cinder-arwc-golden ]] || exit 1
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 bash capture-retained-tools.sh
 set -a

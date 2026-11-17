@@ -3,7 +3,7 @@ set -euo pipefail
 umask 077
 ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 cd "$ROOT"
-[[ $EUID == 0 && $(hostname) == cinder-fieldlink-dev && $ROOT == /opt/cinder-typhoon/build/keplerops ]] || {
+[[ $EUID == 0 && $ROOT == /opt/cinder-typhoon/build/keplerops && ( $(hostname) == cinder-fieldlink-dev || -f /etc/cinder-keplerops-image ) ]] || {
   echo 'Native reset is restricted to the isolated FieldLink development VM.' >&2
   exit 1
 }
@@ -35,18 +35,18 @@ bash generate-operator-material.sh
 bash native-platform/fetch-kubernetes-images.sh
 # Initialize databases before dependent applications, and native workspace
 # credentials before the missing-only desktop profile seed is started.
-docker compose up -d --no-deps --wait --wait-timeout 120 router fieldlink-dns fieldlink-edge fieldlink-postgres
+docker compose up -d --no-deps --wait --wait-timeout 300 router fieldlink-dns fieldlink-edge fieldlink-postgres
 python3 native-platform/host-routing.py
 bash native-workplace/bootstrap-databases.sh
 bash native-platform/bootstrap-data.sh
 bash native-platform/bootstrap-kubernetes.sh
-docker compose up -d --no-deps --wait --wait-timeout 180 \
+docker compose up -d --no-deps --wait --wait-timeout 420 \
   runner k-source k-registry k-ci fieldlink-review k-preview k-support k-indexer \
   k-identity fieldlink-keycloak k-cert fieldlink-objects fieldlink-ollama a-connector
 docker inspect --format '{{range .HostConfig.ExtraHosts}}{{println .}}{{end}}' cinder-keplerops-connector | grep -Fxq 'fieldlink.arwc.test:10.77.59.11'
 bash native-workplace/bootstrap-staff.sh
 bash native-workplace/bootstrap-support.sh
-docker compose up -d --wait --wait-timeout 180 fieldlink-assistant
+docker compose up -d --wait --wait-timeout 420 fieldlink-assistant
 bash native-platform/import-model.sh
 bash native-platform/cache-embedder.sh
 python3 native-platform/seed-assistant.py --operator-dir "$operator"

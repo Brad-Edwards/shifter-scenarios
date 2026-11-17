@@ -73,7 +73,7 @@ def configure(run=command) -> None:
 
 
 def main() -> None:
-    require(os.geteuid() == 0 and socket.gethostname() == 'cinder-fieldlink-dev', 'Wrong development host or user')
+    require(os.geteuid() == 0 and (socket.gethostname() in ('cinder-fieldlink-dev', 'cinder-keplerops-golden') or os.path.exists('/etc/cinder-keplerops-image')), 'Wrong development host or user')
     request = Request('http://metadata.google.internal/computeMetadata/v1/project/project-id',
                       headers={'Metadata-Flavor': 'Google'})
     with urlopen(request, timeout=5) as response:

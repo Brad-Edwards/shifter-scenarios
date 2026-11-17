@@ -9,8 +9,9 @@ import subprocess
 
 
 def main() -> None:
-    if os.geteuid() != 0 or socket.gethostname() != "cinder-fieldlink-dev":
-        raise SystemExit("This operation requires root on cinder-fieldlink-dev.")
+    allowed_host = socket.gethostname() == "cinder-fieldlink-dev" or Path("/etc/cinder-keplerops-image").is_file()
+    if os.geteuid() != 0 or not allowed_host:
+        raise SystemExit("This operation requires root on cinder-fieldlink-dev or a KeplerOps range image.")
     directory = Path("/opt/cinder-typhoon/build/keplerops/.operator")
     directory.mkdir(mode=0o700, parents=True, exist_ok=True)
     path = directory / "development-desktop-login.json"

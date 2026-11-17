@@ -428,27 +428,43 @@ services:
         - a-contractors
         - contractor-portal.arwc.test
 networks:
-  corporate:
-    name: cinder-arwc-corporate
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.77.60.0/24
-  archive_db:
-    external: true
-    name: cinder-arwc-native_data
-  dmz:
-    external: true
-    name: cinder-arwc-dmz
-  handover_supervisory:
-    external: true
-    name: arwc-ot-compat_supervisory
-  maintenance:
-    external: true
-    name: cinder-arwc-maintenance
   native_api_exchange:
     external: true
     name: cinder-arwc-native_api_exchange
+  archive_db:
+    external: true
+    name: cinder-arwc-native_data
+  handover_supervisory:
+    external: true
+    name: arwc-ot-compat_supervisory
+  carrier_transit:
+    name: cinder-arwc-carrier-transit
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 10.77.65.0/29
+        gateway: 10.77.65.1
+  corporate:
+    name: cinder-arwc-corporate
+    internal: true
+    ipam:
+      config:
+      - subnet: 10.77.60.0/24
+        gateway: 10.77.60.1
+  dmz:
+    name: cinder-arwc-dmz
+    internal: true
+    ipam:
+      config:
+      - subnet: 10.77.62.0/24
+        gateway: 10.77.62.1
+  maintenance:
+    name: cinder-arwc-maintenance
+    internal: true
+    ipam:
+      config:
+      - subnet: 10.77.61.0/24
+        gateway: 10.77.61.1
 volumes:
   arwc-approval-data:
     name: cinder-arwc-approval-data

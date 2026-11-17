@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-[[ $(hostname) == cinder-arwc-dev ]] || exit 1
+[[ $(hostname) == cinder-arwc-dev || $(hostname) == cinder-arwc-golden ]] || exit 1
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 desktop=cinder-arwc-ot-engineering
 case ${1:-prepare} in
