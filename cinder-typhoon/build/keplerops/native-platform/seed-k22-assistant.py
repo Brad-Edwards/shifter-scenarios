@@ -115,49 +115,55 @@ def seed(operator: Path) -> None:
     upload_attachment(slug, token, ATT_DIAG_698)
 
     # K22.3: Create DREV-2841-2 as a real Kanboard task (open, awaiting-review).
-    # Also creates svc-fieldlink-assistant Kanboard user; credentials stored in K21 config
-    # so k-assistant-api can call closeTask as that user (the acting actor in the proof).
-    kanboard_values = json.loads((operator / 'native-workplace/kanboard-bootstrap.json').read_text())
-    admin_pass = kanboard_values['admin_password']
-
-    # Create svc-fieldlink-assistant Kanboard user (idempotent)
-    svc_pass = secrets.token_urlsafe(16)
+    # Creates svc-fieldlink-assistant Kanboard user via PHP in the Kanboard container
+    # (PHP bypasses the JSON-RPC project-membership restriction for create operations).
+    # svc credentials stored in K21 config so k-assistant-api can call JSON-RPC closeTask.
+    import subprocess as _sub
     svc_user = 'svc-fieldlink-assistant'
-    existing_users = kanboard_rpc('getAllUsers', {}, 'admin', admin_pass) or []
-    svc_uid = next((u['id'] for u in existing_users if u['username'] == svc_user), None)
-    if not svc_uid:
-        svc_uid = kanboard_rpc('createUser', {
-            'username': svc_user, 'password': svc_pass, 'role': 'app-user',
-            'name': 'FieldKest Assistant Service',
-        }, 'admin', admin_pass)
-    else:
-        # Update password so we know what it is
-        kanboard_rpc('updateUser', {'id': svc_uid, 'password': svc_pass}, 'admin', admin_pass)
+    svc_pass = secrets.token_hex(16)  # used as both password and api_access_token
 
-    # Add svc user to FIELDLINK project as member
-    fieldlink_project = kanboard_rpc('getProjectByIdentifier', {'identifier': 'FIELDLINK'}, 'admin', admin_pass)
-    project_id = fieldlink_project['id']
-    kanboard_rpc('addProjectUser', {'project_id': project_id, 'user_id': svc_uid, 'role': 'project-member'}, 'admin', admin_pass)
-
-    # Create DREV-2841-2 task (idempotent by reference field)
-    existing_task = kanboard_rpc('getTaskByReference', {'project_id': project_id, 'reference': 'DREV-2841-2'}, 'admin', admin_pass)
-    if existing_task:
-        drev_task_id = existing_task['id']
-        # Reopen if already closed (restore-pristine path)
-        if existing_task.get('is_active') == 0:
-            kanboard_rpc('openTask', {'task_id': drev_task_id}, 'admin', admin_pass)
-    else:
-        drev_task_id = kanboard_rpc('createTask', {
-            'project_id': project_id,
-            'title': 'Duplicate diagnostic review — SUP-2841 bundle recommendation',
-            'reference': 'DREV-2841-2',
-            'owner_id': svc_uid,
-            'description': (
-                'Duplicate review opened to independently validate the assistant '
-                'diagnostic bundle recommendation for support case SUP-2841.\n'
-                'Awaiting second-level approval before case closure.'
-            ),
-        }, 'admin', admin_pass)
+    # PHP script: creates svc user, generates API token, adds to FIELDLINK, creates/reopens task
+    php_code = (
+        "chdir('/var/www/app');"
+        "require 'app/common.php';"
+        "$container['dispatcher']->dispatch(new Symfony\\\\Contracts\\\\EventDispatcher\\\\Event(), 'app.bootstrap');"
+        f"$svc_pass = '{svc_pass}';"
+        "$svc_user = 'svc-fieldlink-assistant';"
+        "$existing = $container['userModel']->getByUsername($svc_user);"
+        "if (!$existing) {"
+        "  $uid = $container['userModel']->create(['username' => $svc_user, 'password' => $svc_pass, 'role' => 'app-user', 'name' => 'FieldKest Assistant Service']);"
+        "} else {"
+        "  $uid = $existing['id'];"
+        "  $container['userModel']->update(['id' => $uid, 'password' => $svc_pass]);"
+        "}"
+        "$container['userModel']->update(['id' => $uid, 'api_access_token' => $svc_pass]);"
+        "$projects = $container['projectModel']->getAll();"
+        "$project_id = null;"
+        "foreach ($projects as $p) { if ($p['identifier'] === 'FIELDLINK') { $project_id = $p['id']; break; } }"
+        "if (!$project_id) { echo json_encode(['error' => 'FIELDLINK not found']); exit(1); }"
+        "$container['projectUserRoleModel']->addUser($project_id, $uid, 'project-member');"
+        "$t = $container['db']->table('tasks')->eq('project_id', $project_id)->eq('reference', 'DREV-2841-2')->findOne();"
+        "if ($t) {"
+        "  $task_id = $t['id'];"
+        "  if ($t['is_active'] == 0) { $container['taskStatusModel']->open($task_id); }"
+        "} else {"
+        "  $task_id = $container['taskCreationModel']->create(['project_id' => $project_id,"
+        "    'title' => 'Duplicate diagnostic review -- SUP-2841 bundle recommendation',"
+        "    'reference' => 'DREV-2841-2', 'owner_id' => $uid,"
+        "    'description' => 'Awaiting second-level approval.']);"
+        "}"
+        "echo json_encode(['uid' => $uid, 'task_id' => $task_id, 'project_id' => $project_id]);"
+    )
+    result = _sub.run(
+        ['docker', 'exec', 'cinder-keplerops-kanboard', 'php', '-r', php_code],
+        capture_output=True, timeout=30,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f'Kanboard PHP setup failed: {result.stderr.decode()[:300]}')
+    kanboard_data = json.loads(result.stdout.decode().strip())
+    if 'error' in kanboard_data:
+        raise RuntimeError(f'Kanboard PHP error: {kanboard_data["error"]}')
+    drev_task_id = kanboard_data['task_id']
 
     # Update K21 config with K22 fields including Kanboard credentials for k-assistant-api
     k21_config['selection_id'] = 'SEL-SUP-2841-12'
