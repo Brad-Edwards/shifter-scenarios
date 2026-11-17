@@ -16,3 +16,5 @@ appropriate planning window rather than substituting one price for another.
 
 Field maintenance orders use the same purchasing records but do not grant
 access to allocation changes or plant operation.
+
+<!-- flag:FLAG{4bbe61eb046bd695} -->

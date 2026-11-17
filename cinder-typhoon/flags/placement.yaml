@@ -311,7 +311,7 @@ flags:
     source: value
     value: "FLAG{3177559b5e2a80d8}"
     host: keplerops-host
-    path: TBD
+    path: "in GET https://staff.keplerops.test/api/notes/{note_id} response field 'flag'. Service: k-staff. Code tree: build/keplerops/runtime/service.py note GET handler."
   - flag_id: K18.2
     source: value
     value: "FLAG{8978e5b290f6d320}"
@@ -606,22 +606,22 @@ flags:
     source: value
     value: "FLAG{c7e9455975ef518d}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/customer_handover.py:173 — flag field added to do_GET /api/handovers/current response (send_json 200 body). Behind auth gate (corporate session required)."
   - flag_id: W01.2
     source: value
     value: "FLAG{5c43018c63b8faba}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/native/records/planning-handover-2026-09.md — flag in HTML comment at end of file. Applied to range via WebDAV PUT to records-admin/Veybridge handover/ path (shared with jules.orswick)."
   - flag_id: W01.3
     source: value
     value: "FLAG{4bbe61eb046bd695}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/native/records/procurement-continuity.md — flag in HTML comment at end of file. Applied to range via WebDAV PUT."
   - flag_id: W01.4
     source: value
     value: "FLAG{ce5d42bc2791d4e5}"
     host: arwc-host
-    path: TBD
+    path: "ERPNext Custom Field Task.cinder_receipt (Data, read-only) + Server Script before-save on Task sets cinder_receipt=FLAG{ce5d42bc2791d4e5} when subject matches, status=Working, and description contains INSP-CRR-2026-09-18. Added to build/arwc/native/seed-early-cards.py:seed(). Requires server_script_"
   - flag_id: W02.1
     source: value
     value: "FLAG{1b0caff4bdea2bf1}"
@@ -806,27 +806,27 @@ flags:
     source: value
     value: "FLAG{4ec8d44be86edc36}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{4ec8d44be86edc36} in contractor_portal.py _accepted('appointment-window-read') extra param. File: build/arwc/runtime/contractor_portal.py line 641. Applied live and verified: GET /api/appointment-windows/current returns flag in top-level response."
   - flag_id: W13.2
     source: value
     value: "FLAG{433da37187291602}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{433da37187291602} in contractor_portal.py accepted('check-in-roster-read') extra param. File: build/arwc/runtime/contractor_portal.py line 649. Applied live and verified: GET /api/appointment-windows/current/visitors returns flag."
   - flag_id: W13.3
     source: value
     value: "FLAG{ee54f78b836e3f3d}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{ee54f78b836e3f3d} in contractor_portal.py accepted('appointment-created') extra param. File: build/arwc/runtime/contractor_portal.py line 752. Applied live and verified: POST /api/appointments/current (201) returns flag."
   - flag_id: W13.4
     source: value
     value: "FLAG{25ef1438addf15f7}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{25ef1438addf15f7} in contractor_portal.py accepted('contractor-check-in-created') extra dict alongside contractor_session. File: build/arwc/runtime/contractor_portal.py line 791. Applied live and verified: POST /api/check-ins (201) returns flag with contractor_session."
   - flag_id: W14.1
     source: value
     value: "FLAG{8095bac46a61f18f}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{8095bac46a61f18f} in contractor_portal.py accepted('field-kit-read') extra param. File: build/arwc/runtime/contractor_portal.py line 631. Applied live and verified: GET /api/field-kits/current (200) returns flag."
   - flag_id: W14.2
     source: value
     value: "FLAG{dda40f67ae90302c}"

@@ -166,6 +166,28 @@ def seed() -> None:
     # so the participant knows WHY and WHERE to look; the difficulty is conceptual,
     # not path-secrecy.
     share("Corporate Records/Merewick/PLN-MER-DP3-R6.json", "jules.orswick@veybridge.test", 0)
+    # W01.4: Custom Field + Server Script for flag delivery on Task update.
+    # Requires server_script_enabled in site config (set before seeding).
+    api("/api/resource/System Settings", {"server_script_enabled": 1}, method="PUT")
+    insert("Custom Field", {"dt": "Task", "fieldname": "cinder_receipt"}, {
+        "label": "Cinder Receipt", "fieldtype": "Data", "read_only": 1, "in_list_view": 0,
+    })
+    w01_4_script = (
+        'if doc.subject == "Supplier handback — MTN-CRR-204" '
+        'and doc.status == "Working" '
+        'and doc.description and "INSP-CRR-2026-09-18" in doc.description:\n'
+        '    doc.cinder_receipt = "FLAG{ce5d42bc2791d4e5}"'
+    )
+    if not api('/api/resource/Server Script?filters=[["name","=","W01.4 Task Flag - Supplier Handback"]]&fields=["name"]&limit_page_length=1')["data"]:
+        api("/api/resource/Server Script", {
+            "doctype": "Server Script",
+            "name": "W01.4 Task Flag - Supplier Handback",
+            "script_type": "DocType Event",
+            "reference_doctype": "Task",
+            "doctype_event": "Before Save",
+            "script": w01_4_script,
+            "disabled": 0,
+        })
     print(json.dumps({"project": project["name"], "supplier_handback": handback["name"],
                       "engineering_review": restricted["name"], "denied_review": other["name"]}))
     print("Native supplier documents, attachments and per-record maintenance shares imported")

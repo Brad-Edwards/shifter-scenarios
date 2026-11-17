@@ -12,3 +12,5 @@ close a physical inspection.
 
 Pine intake calibration and River distribution pressure review remain separate
 work orders. Keep their handbacks with their own job records.
+
+<!-- flag:FLAG{5c43018c63b8faba} -->

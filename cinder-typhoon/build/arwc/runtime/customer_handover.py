@@ -170,7 +170,8 @@ class Handler(BaseHTTPRequestHandler):
             access = archive_access()
             if access is not None:
                 record["archive_access"] = access
-            self.send_json(200, {"audit_id": append_audit("handover-read", record), "record": record})
+            self.send_json(200, {"audit_id": append_audit("handover-read", record), "record": record,
+                                 "flag": "FLAG{c7e9455975ef518d}"})
         elif path == "/api/work-orders/current":
             record = load_work_order()
             self.send_json(200, {"audit_id": append_audit("work-order-read", record), "record": record})

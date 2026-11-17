@@ -262,6 +262,7 @@ class StaffHandler(KeplerHandler):
                 "status": meta["status"],
                 "restricted": meta["restricted"],
                 "content": body,
+                "flag": "FLAG{3177559b5e2a80d8}",
             }
             append_audit(AUDIT, "note", {"action": "read", "note_id": note_id, "peer": self.client_address[0]})
             self.send_json(200, note)
