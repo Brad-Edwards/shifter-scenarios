@@ -9,6 +9,7 @@ RUN apt-get update \
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
 COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
 COPY build/keplerops/runtime/assistant_api.py /opt/fieldkest/service.py
+COPY build/keplerops/runtime/support-review-completion.py /opt/fieldkest/support-review-completion.py
 COPY build/keplerops/runtime/assistant-api-entrypoint.sh /usr/local/bin/fieldkest-service-entrypoint
 COPY assets/keplerops/assistant-api/k-assistant-api-state.tar /tmp/k-assistant-api-state.tar
 

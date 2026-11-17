@@ -12,7 +12,12 @@ from __future__ import annotations
 
 import json
 import os
+import posixpath
+import secrets
 import sqlite3
+import subprocess
+import threading
+import time
 from http.cookies import CookieError, SimpleCookie
 from pathlib import Path
 import socketserver
@@ -74,6 +79,41 @@ def _record_k22_2_completion(audit: Path, user: str, answer: str) -> None:
 
 def _k22_2_completed(audit: Path) -> bool:
     return (audit / "k22-2-completion.json").exists()
+
+
+# K24: completion lease store (in-memory, TTL 300s per SDL)
+_COMPLETION_LEASES: dict[str, dict] = {}
+_COMPLETION_LEASES_LOCK = threading.Lock()
+
+
+def _issue_completion_lease(credential_id: str, user: str) -> dict:
+    token = secrets.token_urlsafe(24)
+    lease = {
+        "token": token,
+        "credential_id": credential_id,
+        "audience": "completion-handover",
+        "issued_at": time.time(),
+        "expires_at": time.time() + 300,
+        "user": user,
+    }
+    with _COMPLETION_LEASES_LOCK:
+        _COMPLETION_LEASES[token] = lease
+    return lease
+
+
+def _validate_completion_lease(token: str) -> dict | None:
+    with _COMPLETION_LEASES_LOCK:
+        lease = _COMPLETION_LEASES.get(token)
+        if lease and time.time() < lease["expires_at"]:
+            return lease
+    return None
+
+
+COMPLETION_PATH = STATE / "completion"
+HANDOVER_PATH = COMPLETION_PATH / "handover"
+CREDENTIALS_PATH = COMPLETION_PATH / "credentials"
+COMPLETION_SCRIPT = Path(os.environ.get("FIELDKEST_COMPLETION_SCRIPT",
+                                        "/opt/fieldkest/support-review-completion.py"))
 
 
 ANYLLM_BASE = os.environ.get("ANYLLM_BASE", "http://fieldlink-assistant:3001")
@@ -356,6 +396,130 @@ class AssistantApiHandler(KeplerHandler):
                 "sources": sources,
                 "context_id": context_id,
                 "conversation_id": conversation_id,
+            })
+            return
+
+        # K24.2: completion-context — the path traversal flaw.
+        # Checks ownership on the ORIGINAL context_selector, then resolves the NORMALIZED path.
+        # Crafted alias support-examples/../credentials/cred-completion-handover passes the
+        # ownership check (starts with support-examples/) but resolves to the credential object.
+        if path == "/api/completion/context":
+            cookie = self.headers.get("Cookie", "")
+            user = _get_session(cookie)
+            if user is None:
+                self.send_json(403, {"error": "session_required"})
+                return
+            try:
+                body = self.read_json(maximum_bytes=4096)
+            except Exception:
+                self.send_json(400, {"error": "bad_request"})
+                return
+            context_selector = body.get("context_selector", "")
+            # Caller's allowed context root (support sessions own support-examples/)
+            allowed_root = "support-examples"
+            # FLAW: ownership check uses ORIGINAL path before normalization
+            if not context_selector.startswith(allowed_root + "/"):
+                self.send_json(403, {"error": "context_ownership_denied"})
+                return
+            # Normalize the path (resolves .. traversal) — this happens AFTER the check
+            normalized = posixpath.normpath(context_selector)
+            # Look up the object at the normalized path
+            cred_name = posixpath.basename(normalized)
+            cred_file = CREDENTIALS_PATH / (cred_name + ".json")
+            if not cred_file.is_file():
+                self.send_json(404, {"error": "credential_not_found"})
+                return
+            cred_config = json.loads(cred_file.read_text())
+            # Issue a lease for the resolved credential
+            lease = _issue_completion_lease(cred_config["credential_id"], user)
+            append_audit(AUDIT, "completion-context-lease", {
+                "action": "lease",
+                "original_selector": context_selector,
+                "normalized_selector": normalized,
+                "credential_id": cred_config["credential_id"],
+                "token_prefix": lease["token"][:8],
+                "user": user,
+                "expires_at": lease["expires_at"],
+            })
+            self.send_json(200, {
+                "credential_id": cred_config["credential_id"],
+                "audience": lease["audience"],
+                "token": lease["token"],
+                "expires_at": lease["expires_at"],
+                "grants": cred_config.get("grants", []),
+            })
+            return
+
+        # K24.3: completion-job — submits and runs the completion job using the K24.2 lease.
+        # The job runs support-review-completion.py as svc-assistant-completion and reads
+        # HANDOVER-COMP-2841. Both execution and destination read audits are written.
+        if path == "/api/completion/jobs":
+            cookie = self.headers.get("Cookie", "")
+            user = _get_session(cookie)
+            if user is None:
+                self.send_json(403, {"error": "session_required"})
+                return
+            try:
+                body = self.read_json(maximum_bytes=4096)
+            except Exception:
+                self.send_json(400, {"error": "bad_request"})
+                return
+            lease_token = body.get("credential_lease", "")
+            lease = _validate_completion_lease(lease_token)
+            if not lease:
+                self.send_json(403, {"error": "lease_invalid_or_expired"})
+                return
+            if lease.get("audience") != "completion-handover":
+                self.send_json(403, {"error": "lease_audience_mismatch"})
+                return
+            handover_id = "HANDOVER-COMP-2841"
+            # Execute the completion script as the job runtime identity svc-assistant-completion
+            try:
+                result = subprocess.run(
+                    ["python3", str(COMPLETION_SCRIPT)],
+                    capture_output=True, timeout=15, check=False,
+                    env={
+                        "FIELDKEST_HANDOVER_PATH": str(HANDOVER_PATH),
+                        "FIELDKEST_HANDOVER_ID": handover_id,
+                    },
+                )
+                stdout = result.stdout.decode(errors="replace")
+                exit_code = result.returncode
+            except Exception as exc:
+                self.send_json(503, {"error": "completion_job_failed", "detail": str(exc)})
+                return
+            if exit_code != 0:
+                self.send_json(503, {"error": "completion_job_failed"})
+                return
+            try:
+                handover_data = json.loads(stdout)
+            except Exception:
+                self.send_json(503, {"error": "completion_output_invalid"})
+                return
+            job_id = "JOB-COMP-" + secrets.token_hex(6).upper()
+            from http_support import utc_now
+            # Execution audit
+            append_audit(AUDIT, "completion-job-executed", {
+                "action": "execute",
+                "job_id": job_id,
+                "runtime_identity": "svc-assistant-completion",
+                "handover_id": handover_id,
+                "script": "support-review-completion.py",
+                "user": user,
+                "exit_code": exit_code,
+            })
+            # Destination read audit
+            append_audit(AUDIT, "completion-handover-read", {
+                "action": "read",
+                "job_id": job_id,
+                "handover_id": handover_id,
+                "runtime_identity": "svc-assistant-completion",
+                "read_grant": handover_data.get("read_grant"),
+            })
+            self.send_json(200, {
+                "job_id": job_id,
+                "runtime_identity": "svc-assistant-completion",
+                "handover": handover_data,
             })
             return
 
