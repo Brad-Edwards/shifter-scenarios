@@ -1,5 +1,5 @@
 $TTL 300
-@ IN SOA ns.arwc.test. hostmaster.arwc.test. (2026111701 300 60 86400 300)
+@ IN SOA ns.arwc.test. hostmaster.arwc.test. (2026111703 300 60 86400 300)
   IN NS ns.arwc.test.
 ns       IN A 10.77.60.10
 edge     IN A 10.77.60.11
@@ -21,3 +21,15 @@ retained-archive IN A 10.77.60.50
 planning-data    IN A 10.77.60.51
 preview-cinder   IN A 10.77.60.11
 workplace IN A 10.77.60.14
+business-workplace     IN A 10.77.60.59
+contractor-portal      IN A 10.77.60.52
+maintenance-review     IN A 10.77.60.53
+maintenance-renderer   IN A 10.77.60.54
+control-broker         IN A 10.77.60.57
+diagnostic-services    IN A 10.77.60.58
+engineering-workbench  IN A 10.77.60.55
+process-view           IN A 10.77.60.55
+independent-instruments IN A 10.77.60.56
+corporate-identity     IN A 10.77.60.60
+field-gateway          IN A 10.77.62.30
+process-read           IN A 10.77.62.30
