@@ -46,6 +46,14 @@ for _p in (STATE / "dossiers").glob("*.json"):
     _d = json.loads(_p.read_text())
     _DOSSIERS[_d["dossier_id"]] = _d
 
+# K25.2: Integration records {(tenant, connector): record}
+_INTEGRATIONS: dict[tuple[str, str], dict] = {}
+_integration_dir = STATE / "integrations"
+if _integration_dir.is_dir():
+    for _ip in _integration_dir.glob("*.json"):
+        _ir = json.loads(_ip.read_text())
+        _INTEGRATIONS[(_ir["tenant"], _ir["connector"])] = _ir
+
 # K18.4: Federated sessions {session_id: {subject, tenant, role, expires}}
 _FEDERATED_SESSIONS: dict[str, dict] = {}
 _FEDERATED_LOCK = threading.Lock()
@@ -203,6 +211,24 @@ class SupportHandler(KeplerHandler):
                 },
             })
 
+        # K25.2: tenant-integration route — returns current integration record for session customer.
+        # The record includes both the active and previous tenant/revision bindings (the defect:
+        # naming both enables cross-tenant reconciliation).
+        match_int = re.fullmatch(r"/api/customers/([^/]+)/integrations/([^/]+)", path)
+        if match_int:
+            if not self._authorized():
+                return self.send_json(403, {"error": "dossier_denied"})
+            tenant, connector = match_int.group(1), match_int.group(2)
+            rec = _INTEGRATIONS.get((tenant, connector))
+            if rec is None:
+                return self.send_json(404, {"error": "integration_not_found"})
+            if rec.get("tenant") != tenant:
+                return self.send_json(403, {"error": "integration_denied"})
+            append_audit(AUDIT, "tenant-integration-read", {
+                "action": "read", "tenant": tenant, "connector": connector,
+            })
+            return self.send_json(200, rec)
+
         # K18.4: dossier route — returns dossier data or protected customer record.
         match = re.fullmatch(r"/api/customers/([^/]+)/dossiers/([^/]+)", path)
         if match:
@@ -317,6 +343,44 @@ class SupportHandler(KeplerHandler):
                 "provider": "OIDC-FIELDKEST-STAFF",
                 "login": "accepted",
             })
+
+        # K25.2: tenant-reconcile — compares candidates against seeded integration record;
+        # returns active_revision. Real check: candidate tenant+revision matched to the
+        # live integration record (not hardcoded). Session-required, audited.
+        match_rec = re.fullmatch(r"/api/customers/([^/]+)/integrations/([^/]+)/reconcile", path)
+        if match_rec:
+            if not self._authorized():
+                return self.send_json(403, {"error": "dossier_denied"})
+            tenant, connector = match_rec.group(1), match_rec.group(2)
+            rec = _INTEGRATIONS.get((tenant, connector))
+            if rec is None:
+                return self.send_json(404, {"error": "integration_not_found"})
+            try:
+                body = self.read_json(maximum_bytes=4096)
+                candidates = body.get("candidates", [])
+            except Exception:
+                return self.send_json(400, {"error": "bad_request"})
+            # Find the candidate that matches the active tenant/revision in real integration data
+            active = next(
+                (c for c in candidates
+                 if c.get("tenant") == rec["tenant"]
+                 and c.get("revision") == rec["active_revision"]),
+                None,
+            )
+            if active is None:
+                return self.send_json(422, {"error": "no_matching_candidate"})
+            receipt = {
+                "active_tenant": active["tenant"],
+                "active_revision": active["revision"],
+                "active_since": rec.get("active_since"),
+                "connector": connector,
+                "provenance": rec.get("provenance"),
+            }
+            append_audit(AUDIT, "tenant-reconcile", {
+                "action": "reconcile", "tenant": tenant, "connector": connector,
+                "active_revision": receipt["active_revision"],
+            })
+            return self.send_json(200, receipt)
 
         if not self._authorized() or self.principal == "svc-fieldlink-assistant":
             return self.send_json(403, {"error": "integration_token_denied"})
