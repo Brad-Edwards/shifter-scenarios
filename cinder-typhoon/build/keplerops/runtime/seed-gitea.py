@@ -138,6 +138,114 @@ def engineering_note(password: str) -> None:
     marker.touch(mode=0o600)
 
 
+def entitlement_history(password: str) -> None:
+    """Seed the ENT-ARWC-DIAG-0698 entitlement record into connector-archive with two commits.
+
+    K08.1 requires recovering the entitlement record and its revision history from Gitea
+    rather than from the registry-local endpoint.  The two commits here establish the
+    revision 3 → revision 4 progression visible to the participant.
+    """
+    marker = ROOT / 'data/.entitlement-history-seeded'
+    if marker.exists():
+        return
+    path = 'internal/fieldlink/legacy-diagnostics/CRR-OG2/ENT-ARWC-DIAG-0698.json'
+    repository = '/repos/fieldkest/connector-archive/contents/'
+    # Revision 3 — initial retained record
+    _RECORD_REV3 = json.dumps({
+        "cipher": "AES-256-GCM",
+        "ciphertext_base64": (
+            "UcSjQere8JW9BEDZrwUan4XW4jRW/k36mPtLIUVSrcp6HBVy1QILC3I/73YYxMIR6Ixs8RpRSI7"
+            "otvX1Cr02gdTJuiOPlde91Y5U8dnkPpiKR3XwbPGf16SbDOCPKwkbV95r0QloWKWgRxxtHzsQaht"
+            "Nbsr8Op3f7BCImM2mz927WlefwSSuGbqOZdSHrIbOQn+zfNAz8uaxSQYLHjrF3IFC/ctkw/nSLwK"
+            "nWeoUJYNg6aCNLmRGBrAECSeN8ZhGB8KtYeI0O6NFL2GjA4qfTUGL/mTfYDnbkKf1vqsXEozT8N"
+            "tAdiqz5L7XzONz2rBLyspyfeb/71i8sVtt/5hP59mK6tlBDDlq0gHGeUA="
+        ),
+        "customer_id": "TEN-ARWC-019",
+        "feature_id": "diagnostic-loader",
+        "grammar": "fieldkest-entitlement/v1 canonical JSON; UTF-8 NFC strings; lexicographically sorted keys",
+        "key_id": "fk-entitlement-legacy-2026-08",
+        "nonce_hex": "454e542d303639382d563121",
+        "package_revision": "FLK-6.9.8",
+        "record_id": "ENT-ARWC-DIAG-0698",
+        "revision": 3,
+        "schema": "fieldkest.entitlement-record/v1",
+        "tag_base64": "IUvC8saIDcdgH/ACOtSrMQ==",
+    }, indent=2, sort_keys=True)
+    # Revision 4 — updated record (same ciphertext; revision counter incremented)
+    _RECORD_REV4 = _RECORD_REV3.replace('"revision": 3', '"revision": 4')
+    if not exists(repository + path, password):
+        api('POST', repository + path, password, {
+            'branch': 'main',
+            'message': 'Retain ENT-ARWC-DIAG-0698 entitlement record revision 3',
+            'content': base64.b64encode(_RECORD_REV3.encode()).decode(),
+        })
+    file_meta = api('GET', repository + path, password)
+    if json.loads(base64.b64decode(file_meta['content'])).get('revision') == 3:
+        api('PUT', repository + path, password, {
+            'branch': 'main',
+            'message': 'Update entitlement record to revision 4',
+            'sha': file_meta['sha'],
+            'content': base64.b64encode(_RECORD_REV4.encode()).decode(),
+        })
+    # K08.2: also seed the v2-encrypted record (sealed with v2 HKDF key, revision 3).
+    # The expiry_policy field in the record is the missing context participants must use.
+    _V2_PATH = 'internal/fieldlink/legacy-diagnostics/CRR-OG2/ENT-ARWC-DIAG-0698-V2.json'
+    _RECORD_V2 = json.dumps({
+        "cipher": "AES-256-GCM",
+        "ciphertext_base64": (
+            "SbxbxJEUXOSCN/EdEcRwL/FSI2T21IkuCVkhefb4iBBbIJE9K3NTusSwXD6Z1sE98X38xk+yv7oO"
+            "8YnBrR1I24J243ZFFsELiRTsseLVzYTTAcP3rVnTgAgxsvcLNfV9Mrr3GuY27DWenvVDVaDao8XxhC"
+            "CdY0rouwbt0gn9JMuJC2Od6OFMH1q3rmK1qWW3tHuASk9J/0Qr21UBsX80BUhiDtl2pMpY74Iost"
+            "Q4I4E0zsWUScAipGY+Vgfwcs/p7ntNTj4q+YJF908/MSW+iNU3XUcCUs27mu12X0I9RgR/4LqKg3Y"
+            "k0MmD"
+        ),
+        "customer_id": "TEN-ARWC-019",
+        "expiry_policy": "maintenance-window:2026-09-30T23:59:59Z",
+        "feature_id": "diagnostic-loader",
+        "grammar": "fieldkest-entitlement/v1 canonical JSON; UTF-8 NFC strings; lexicographically sorted keys",
+        "key_id": "fk-entitlement-legacy-2026-08",
+        "nonce_hex": "525728f55b006f5edf1f5434",
+        "package_revision": "FLK-6.9.8",
+        "record_id": "ENT-ARWC-DIAG-0698",
+        "revision": 3,
+        "schema": "fieldkest.entitlement-record/v2",
+        "tag_base64": "rFbi5ilwHusX7XmQiY1PZA==",
+    }, indent=2, sort_keys=True)
+    if not exists(repository + _V2_PATH, password):
+        api('POST', repository + _V2_PATH, password, {
+            'branch': 'main',
+            'message': 'Retain ENT-ARWC-DIAG-0698 version 2 entitlement (revision 3, v2 key)',
+            'content': base64.b64encode(_RECORD_V2.encode()).decode(),
+        })
+    # K08.3: plaintext template showing the allowed field structure for an alternate entitlement.
+    _K83_TEMPLATE_PATH = 'internal/fieldlink/legacy-diagnostics/CRR-OG2/ENT-ARWC-DIAG-0698-plaintext-template.json'
+    _K83_TEMPLATE = json.dumps({
+        "_note": (
+            "Encrypt this canonical JSON with the K08.2 v2 HKDF key (base_info+expiry_policy). "
+            "The checker binds customer_id and feature_id; wrong values return 422."
+        ),
+        "customer_id": "TEN-ARWC-019",
+        "expiry_policy": "<value from K08.2 checker result>",
+        "feature_id": "diagnostic-loader",
+        "package_revision": "FLK-6.9.8",
+        "record_id": "ENT-ARWC-DIAG-0698",
+        "revision": "<integer != 4; must differ from K08.1 and K08.2 baselines>",
+        "schema": "fieldkest-entitlement/v1",
+    }, indent=2, sort_keys=True)
+    if not exists(repository + _K83_TEMPLATE_PATH, password):
+        api('POST', repository + _K83_TEMPLATE_PATH, password, {
+            'branch': 'main',
+            'message': 'Add K08.3 alternate entitlement plaintext template',
+            'content': base64.b64encode(_K83_TEMPLATE.encode()).decode(),
+        })
+    marker.touch(mode=0o600)
+
+
+def archive_reference_repository(password: str) -> None:
+    """Make the retained connector repository read-only through Gitea."""
+    api('PATCH', '/repos/fieldkest/fieldlink-connector', password, {'archived': True})
+
+
 def main() -> None:
     password_path = ROOT / 'data/.bootstrap-password'
     if not password_path.exists():
@@ -206,10 +314,25 @@ def main() -> None:
                     + '\n'.join('- ' + note for note in handover['notes']),
         })
         marker.touch(mode=0o600)
+    ordinary_marker = ROOT / 'data/.ordinary-issues-seeded'
+    if not ordinary_marker.exists():
+        for title, body in (
+            ('Connector 7.3 maintenance follow-up', 'Retain the Riverbend compatibility notes until the September support window closes.'),
+            ('Document package channel ownership', 'Release Operations owns the stable package channel. Customer Support owns the handover record.'),
+            ('North Quay rehearsal summary', 'The rehearsal completed with the expected connector revision and no customer-side retry.'),
+        ):
+            api('POST', '/repos/fieldkest/fieldlink-connector/issues', password, {'title': title, 'body': body})
+        ordinary_marker.touch(mode=0o600)
     if 'fieldlink-connector' in REPOSITORIES:
         delivery_history(password)
+        # This retained release repository is reference material for the
+        # developer workstation.  Gitea's native archived state preserves
+        # authenticated reads while rejecting issue, branch and repository
+        # writes by ordinary collaborators.
+        archive_reference_repository(password)
     if 'connector-archive' in REPOSITORIES:
         engineering_note(password)
+        entitlement_history(password)
     print('Native Gitea repositories and handover ready')
 
 

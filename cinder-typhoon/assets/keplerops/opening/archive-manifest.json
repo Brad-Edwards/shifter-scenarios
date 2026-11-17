@@ -6,7 +6,7 @@
         {
           "mode": "0600",
           "path": ".config/chromium/Default/History",
-          "sha256": "7a07e88fe3fa518038fb1666df797d9f6ee542c672a316ae4794e00c6e20a235",
+          "sha256": "c68d982084d2795a2d207330a4c366902b153af2a1bee143468a5423051aacb4",
           "size": 20480
         },
         {
@@ -24,14 +24,14 @@
         {
           "mode": "0644",
           "path": "README.md",
-          "sha256": "ef7f1903adabe6826a78b06788d5700e07be337eb8cd48f791c94b438b1b57af",
-          "size": 784
+          "sha256": "c57582d88ca8f53e1174ba0208b68caf6c785a22ee2b3e05c1b84dbf22658592",
+          "size": 890
         },
         {
           "mode": "0640",
           "path": "work/analysis/field-notes-2026-08.odt",
-          "sha256": "659f1b9ab844f2e7b379de9a3c91f0b0ccc02858b83e6bf07860e557a0e0c834",
-          "size": 2018
+          "sha256": "677d859355ae669429bac29d2fd0e3f746d9ef3e93056d3b6258f31976b4f4d5",
+          "size": 2525
         },
         {
           "mode": "0640",
@@ -42,8 +42,8 @@
         {
           "mode": "0644",
           "path": "work/local-helper.md",
-          "sha256": "e9f253d764e30d22ae0af5273c8ee9ecc93794eb4b566cfdb3655508c954d505",
-          "size": 821
+          "sha256": "f9af3b32e93e4999e3f3c278e4bfd42fbb41dc7c9cf7c2e961834daae58d623a",
+          "size": 440
         },
         {
           "mode": "0640",
@@ -60,14 +60,8 @@
         {
           "mode": "0640",
           "path": "work/reproducers/indexer-client.json",
-          "sha256": "038f4bc3b8516a31c5a5ef600ad052556260137c06da99baade57ee4b398f801",
-          "size": 353
-        },
-        {
-          "mode": "0640",
-          "path": "work/review-exports/fieldlink-7.4.2-review.md",
-          "sha256": "f568f44c8fcb8e9b13929931f441c4951ef65187c89a06cf2de326c172e2c597",
-          "size": 541
+          "sha256": "e863340b6908c9e0005b04c93ab09cdf32d48a9eb8fa20aef064db2ad3f05ee7",
+          "size": 591
         },
         {
           "mode": "0640",
@@ -78,13 +72,13 @@
         {
           "mode": "0644",
           "path": "work/service-notes.md",
-          "sha256": "ea23d21754a8bc40ead36506dd01757d43c64194f02a38bb9fab39658bc94a76",
-          "size": 3674
+          "sha256": "37fa43d594a6485ab7a84e6222d02d896b84e6d9f2b2ffa08e4f39d2372a5e07",
+          "size": 3941
         }
       ],
       "group": "rowan",
       "owner": "rowan",
-      "sha256": "96cd43dd51f85f264061710537ed230490bed9114af57bad8366434423db6259",
+      "sha256": "dccd03716b36f1ca26be51b6041721040fe3ba625c5084d3b78de60c78bbf635",
       "size": 51200
     },
     {
@@ -93,8 +87,8 @@
         {
           "mode": "0640",
           "path": "config/opening.json",
-          "sha256": "a7d2f58fcbe85ed49b67fc8bf1dc2a91e902d92113cc6df04eeb5024030801b3",
-          "size": 1727
+          "sha256": "01fbff10160a5f2f0bd683b0322386a54b52799291d3531645346d5c0652fb05",
+          "size": 552
         },
         {
           "mode": "0640",
@@ -105,7 +99,7 @@
       ],
       "group": "fieldkest-workbench",
       "owner": "fieldkest-workbench",
-      "sha256": "ddbb1fea3137229ea909d2cd4503426e4deb7240f9cf78293f2cbc91a4d78dd4",
+      "sha256": "72d174c9691971428d9b8661da1dfed841b98329e4b8d265a4fbc9bd46dd84bb",
       "size": 10240
     },
     {
@@ -147,20 +141,8 @@
         {
           "mode": "0600",
           "path": "config/opening.json",
-          "sha256": "24b2501a0fbb95776145807b96ea2725bf9a8ab9162be2d0253c4ebce40012de",
-          "size": 1724
-        },
-        {
-          "mode": "0640",
-          "path": "import-objects/inputs/report-request.json",
-          "sha256": "c32ca8507c5f6f699a47257a79ebcda88c36c79b398203365ed46723e81ae321",
-          "size": 112
-        },
-        {
-          "mode": "0640",
-          "path": "import-objects/reviews/REVNOTE-1842.json",
-          "sha256": "da253837bb43f0f2e8c4c9401f32e79f2051f15b33866ac67da3856b5efa50bf",
-          "size": 582
+          "sha256": "6fdf607fedae9eb8885bef8e574c32e56f0bd5cc8e8dcdb728c080ee4aa878cc",
+          "size": 1039
         },
         {
           "mode": "0640",
@@ -177,8 +159,8 @@
       ],
       "group": "fieldkest-ci",
       "owner": "fieldkest-ci",
-      "sha256": "53092bbc50fb8007bdd1968649c0638d08833214c948e6dffb5d60af34231578",
-      "size": 20480
+      "sha256": "5b99cf799e231def1aa85456c94a00130836383767094db93be95651064bf1bd",
+      "size": 10240
     },
     {
       "archive": "k-support-state.tar",

@@ -58,4 +58,21 @@ YAML
   mv "$temporary" "$profile"
   printf '%s\n' "$current" >"$identity"
 fi
+# K13.4: create svc-cloud-api service account token and K3s CA for k-cloud-api service.
+# k-cloud-api uses this token to call the K3s TokenRequest API on behalf of participants.
+cloud_api_cred="$operator/native-platform/cloud-api-k3s.json"
+cloud_api_identity="$operator/native-platform/cloud-api-k3s-identity"
+current=$(docker compose exec -T fieldlink-k3s cat /var/lib/rancher/k3s/server/tls/server-ca.crt | sha256sum | cut -d ' ' -f1)
+previous=$(cat "$cloud_api_identity" 2>/dev/null || true)
+if [[ ! -e $cloud_api_cred || $previous != "$current" ]]; then
+  cloud_token=$(docker compose exec -T fieldlink-k3s /bin/kubectl create token svc-cloud-api --namespace fieldlink --duration=720h)
+  ca_data=$(docker compose exec -T fieldlink-k3s cat /var/lib/rancher/k3s/server/tls/server-ca.crt)
+  temporary=$(mktemp "$cloud_api_cred.XXXXXX")
+  trap 'rm -f -- "$temporary"' EXIT
+  printf '{"token":"%s","ca":"%s","server":"https://10.77.52.60:6443","namespace":"fieldlink"}\n' \
+    "$cloud_token" "$(echo "$ca_data" | base64 -w0)" >"$temporary"
+  mv "$temporary" "$cloud_api_cred"
+  chmod 0400 "$cloud_api_cred"
+  printf '%s\n' "$current" >"$cloud_api_identity"
+fi
 echo 'Native namespace and scoped workspace configuration ready.'

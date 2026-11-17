@@ -1,13 +1,14 @@
 {
   "documents": {
     "indexer.keplerops.test": {
-      "purpose": "Submit native bundle index requests.",
+      "purpose": "Submit native .fki release-bundle archives for indexing.",
       "related": [],
       "routes": [
         {
           "key": "indexer.indexes",
           "method": "POST",
-          "template": "https://indexer.keplerops.test/api/indexes"
+          "template": "https://indexer.keplerops.test/api/indexes",
+          "body": {"bundle_hex": "hex-encoded .fki archive"}
         }
       ],
       "title": "Bundle index client reference"

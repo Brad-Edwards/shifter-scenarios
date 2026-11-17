@@ -17,6 +17,18 @@ cinder_load_development_target() {
       CINDER_DEV_REMOTE_ROOT=/opt/cinder-typhoon
       CINDER_DEV_READY_MARKER=/var/lib/cinder-fieldlink-development-ready
       ;;
+    fieldlink-participant)
+      CINDER_DEV_TARGET=fieldlink-participant
+      CINDER_DEV_INSTANCE=cinder-fieldlink-participant
+      CINDER_DEV_PRIVATE_IP=10.77.49.10
+      CINDER_DEV_SOURCE_INSTANCE=cinder-keplerops-golden
+      CINDER_DEV_MACHINE_IMAGE=cinder-fieldlink-golden-preserved-20261114
+      CINDER_DEV_NETWORK=cinder-keplerops-golden
+      CINDER_DEV_SUBNET=cinder-keplerops-carrier
+      CINDER_DEV_TAG=cinder-keplerops-carrier
+      CINDER_DEV_REMOTE_ROOT=/opt/cinder-typhoon
+      CINDER_DEV_READY_MARKER=/var/lib/cinder-fieldlink-participant-ready
+      ;;
     arwc)
       CINDER_DEV_TARGET=arwc
       CINDER_DEV_INSTANCE=cinder-arwc-dev
@@ -30,19 +42,21 @@ cinder_load_development_target() {
       CINDER_DEV_READY_MARKER=/var/lib/cinder-arwc-development-ready
       ;;
     *)
-      echo 'TARGET must be fieldlink or arwc' >&2
+      echo 'TARGET must be fieldlink, fieldlink-participant, or arwc' >&2
       return 2
       ;;
   esac
 }
 
 cinder_validate_development_target() {
-  [[ ${CINDER_DEV_INSTANCE-} == cinder-*-dev ]] || return 1
+  # Must be a managed non-golden instance with /opt remote root
+  [[ ${CINDER_DEV_INSTANCE-} == cinder-*-dev || ${CINDER_DEV_INSTANCE-} == cinder-*-participant ]] || return 1
   [[ $CINDER_DEV_INSTANCE != *golden* ]] || return 1
   [[ $CINDER_DEV_INSTANCE != "$CINDER_DEV_SOURCE_INSTANCE" ]] || return 1
   [[ ${CINDER_DEV_REMOTE_ROOT-} == /opt/* ]] || return 1
   case $CINDER_DEV_TARGET in
     fieldlink) [[ $CINDER_DEV_PRIVATE_IP == 10.77.49.9 ]] || return 1 ;;
+    fieldlink-participant) [[ $CINDER_DEV_PRIVATE_IP == 10.77.49.10 ]] || return 1 ;;
     arwc) [[ $CINDER_DEV_PRIVATE_IP == 10.77.59.11 ]] || return 1 ;;
     *) return 1 ;;
   esac

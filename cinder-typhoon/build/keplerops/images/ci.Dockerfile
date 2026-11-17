@@ -3,7 +3,8 @@ FROM node:22.19.0-bookworm-slim AS node-tools
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates iproute2 util-linux \
+    && apt-get install --no-install-recommends -y ca-certificates curl iproute2 util-linux \
+    && pip install --no-cache-dir cryptography==50.0.2 \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 2100 fieldkest-ci \
     && useradd --uid 2100 --gid fieldkest-ci --home-dir /var/lib/fieldkest-ci --shell /usr/sbin/nologin fieldkest-ci \
@@ -26,11 +27,18 @@ COPY build/keplerops/runtime/package_delivery.py /opt/fieldkest/package_delivery
 COPY build/keplerops/runtime/ci-entrypoint.sh /usr/local/bin/fieldkest-ci-entrypoint
 COPY assets/keplerops/opening/k-ci-state.tar /tmp/k-ci-state.tar
 COPY assets/keplerops/release-lineage/k-ci-release-lineage-state.tar /tmp/k-ci-release-lineage-state.tar
+COPY assets/keplerops/build-operations/k-ci-runner-state.tar /tmp/k-ci-runner-state.tar
+COPY assets/keplerops/build-operations/diagnostic-request-reference.md /tmp/diagnostic-request-reference.md
+COPY assets/keplerops/build-operations/runner-operations.md /tmp/runner-operations.md
 
 RUN mkdir -p /var/lib/fieldkest-ci \
     && tar -xf /tmp/k-ci-state.tar -C /var/lib/fieldkest-ci \
     && tar -xf /tmp/k-ci-release-lineage-state.tar -C /var/lib/fieldkest-ci \
-    && rm /tmp/k-ci-state.tar /tmp/k-ci-release-lineage-state.tar \
+    && tar -xf /tmp/k-ci-runner-state.tar -C /var/lib/fieldkest-ci \
+    && mkdir -p /srv/fieldlink-ci/runner \
+    && cp /tmp/diagnostic-request-reference.md /srv/fieldlink-ci/diagnostic-request-reference.md \
+    && cp /tmp/runner-operations.md /srv/fieldlink-ci/runner/runner-operations.md \
+    && rm /tmp/k-ci-state.tar /tmp/k-ci-release-lineage-state.tar /tmp/k-ci-runner-state.tar /tmp/diagnostic-request-reference.md /tmp/runner-operations.md \
     && mkdir -p /var/lib/fieldkest-ci/audit /var/lib/fieldkest-ci/results /var/lib/fieldkest-ci/workspaces/rowan /var/lib/fieldkest-handover \
     && mkdir -p /var/lib/fieldkest-ci/consumer-state \
     && ln -s /opt/fieldkest /opt/fieldkest-ci \

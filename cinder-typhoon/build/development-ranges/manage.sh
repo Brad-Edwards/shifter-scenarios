@@ -4,6 +4,8 @@ umask 077
 
 root=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 pack_root=$(CDPATH='' cd -- "$root/../.." && pwd)
+scenario_root=${CINDER_DEV_SCENARIO_ROOT:-$pack_root}
+scenario_root=$(CDPATH='' cd -- "$scenario_root" && pwd)
 # shellcheck source=targets.sh disable=SC1091
 source "$root/targets.sh"
 archive=
@@ -199,6 +201,7 @@ case $action in
         .dockerignore build/development-ranges build/keplerops \
         assets/keplerops/opening \
         assets/keplerops/registry \
+        assets/keplerops/staff \
         assets/keplerops/native-packages \
         assets/keplerops/native-workplace \
         assets/narrative/documents/keplerops/company-history.md \
@@ -211,9 +214,14 @@ case $action in
         docs/design/fieldlink-native-foundation.md \
         tests/test_fieldlink_native_foundation.py
     else
+      [[ -d $scenario_root/build/arwc && -d $scenario_root/build/arwc-ot ]] || {
+        echo 'CINDER_DEV_SCENARIO_ROOT does not contain the ARWC build trees.' >&2
+        exit 2
+      }
       tar -C "$pack_root" -czf "$archive" \
         --exclude='*/.operator' --exclude='*/__pycache__' \
-        build/development-ranges build/arwc build/arwc-ot
+        build/development-ranges \
+        -C "$scenario_root" build/arwc build/arwc-ot
     fi
     remote_archive="/tmp/cinder-$target-source.tar.gz"
     $gcloud_bin compute scp "$archive" "$CINDER_DEV_INSTANCE:$remote_archive" \

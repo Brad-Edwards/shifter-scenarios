@@ -94,6 +94,7 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/etc/ssl/cert.pem:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ca/tls:/etc/nginx/enrollment/tls:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ca/certs/root_ca.crt:/etc/nginx/enrollment/root_ca.crt:ro
+      - ./config/assistant-app.js:/etc/nginx/assistant/app.js:ro
     tmpfs:
       - /var/cache/nginx:rw,nosuid,nodev,size=8m,mode=0755
       - /var/run:rw,nosuid,nodev,size=4m,mode=0755
@@ -104,7 +105,7 @@ services:
       timeout: 3s
       retries: 20
     networks:
-      corporate: {ipv4_address: 10.77.50.11, aliases: [edge.keplerops.test, foundation.keplerops.test, identity.keplerops.test, id.keplerops.test, ca.keplerops.test, cert.keplerops.test, staff.keplerops.test, workboard.keplerops.test, support.keplerops.test, tickets.keplerops.test, cloud.keplerops.test, cloud-api.keplerops.test, workload.keplerops.test, workloads.keplerops.test, data.keplerops.test, objects.keplerops.test, assistant.keplerops.test, llm.keplerops.test]}
+      corporate: {ipv4_address: 10.77.50.11, aliases: [edge.keplerops.test, foundation.keplerops.test, identity.keplerops.test, id.keplerops.test, ca.keplerops.test, cert.keplerops.test, staff.keplerops.test, workboard.keplerops.test, support.keplerops.test, tickets.keplerops.test, cloud.keplerops.test, cloud-api.keplerops.test, workload.keplerops.test, workloads.keplerops.test, data.keplerops.test, assistant.keplerops.test, llm.keplerops.test]}
       delivery: {ipv4_address: 10.77.51.11}
       cloud: {ipv4_address: 10.77.52.11}
       foundation_data: {ipv4_address: 10.77.56.11}
@@ -226,6 +227,7 @@ services:
       - source-tools.keplerops.test:10.77.51.20
       - packages.keplerops.test:10.77.51.30
       - ci.keplerops.test:10.77.51.40
+      - review.keplerops.test:10.77.51.41
       - preview.keplerops.test:10.77.51.50
       - support.keplerops.test:10.77.50.11
       - tickets.keplerops.test:10.77.50.11
@@ -323,6 +325,14 @@ services:
       - ci-results:/var/lib/fieldkest-ci/results
       - handover:/var/lib/fieldkest-handover
       - runner-socket:/run/fieldkest-runner
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
+      - ci-rowan-workspace:/var/lib/fieldkest-ci/workspaces/rowan
+      - ci-runs:/var/lib/fieldkest-ci/runs
+      - ci-artifacts:/var/lib/fieldkest-ci/artifacts
+    extra_hosts:
+      - "cloud-api.keplerops.test:10.77.50.11"
+      - "source.keplerops.test:10.77.51.20"
+      - "packages.keplerops.test:10.77.51.30"
     networks:
       delivery:
         ipv4_address: 10.77.51.41
@@ -367,6 +377,13 @@ services:
     depends_on: [router]
     extra_hosts:
       - connector.arwc.test:10.77.60.20
+    environment:
+      FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
+      FIELDKEST_TLS_KEY: /tmp/fieldkest.key
+      FIELDKEST_PG_HOST: fieldlink-postgres
+      FIELDKEST_PG_DB: fieldlink_data
+      FIELDKEST_PG_USER: fieldlink_admin
+      FIELDKEST_PG_PASSWORD_FILE: /run/fieldkest-support/pg_password
     volumes:
       - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
@@ -374,10 +391,12 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
       - support-audit:/var/lib/fieldkest-support/audit
       - handover:/var/lib/fieldkest-handover:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/pg_admin_password:/run/fieldkest-support/pg_password:ro
     networks:
       delivery:
         ipv4_address: 10.77.51.60
         aliases: [fieldlink-support-integration]
+      foundation_data: {ipv4_address: 10.77.56.26}
 
   report-worker:
     build:
@@ -429,9 +448,6 @@ services:
     cap_add: [NET_ADMIN, CHOWN, SETUID, SETGID]
     environment:
       FIELDKEST_GATEWAY: 10.77.51.254
-      API_PORT: "443"
-      API_TLS_CERT_FILE: /tmp/fieldlink-preview.crt
-      API_TLS_KEY_FILE: /tmp/fieldlink-preview.key
       API_BODY_LIMIT: 10MB
       CHROMIUM_DENY_PUBLIC_IPS: "true"
       HOME: /tmp
@@ -445,6 +461,9 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/runtime-credentials.json:/run/fieldkest-auth/runtime-credentials.json:ro
+      - preview-audit:/var/lib/fieldkest-preview/audit
+      - preview-results:/var/lib/fieldkest-preview/results
     healthcheck:
       test: ["CMD", "curl", "--fail", "--silent", "--cacert", "/tmp/fieldlink-ca.crt", "--resolve", "preview.keplerops.test:443:127.0.0.1", "https://preview.keplerops.test/health"]
       interval: 10s
@@ -504,6 +523,27 @@ services:
     networks:
       foundation_data: {ipv4_address: 10.77.56.20}
 
+  fieldlink-k19-setup:
+    image: postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
+    profiles: [operator]
+    restart: "no"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    command: [sh, /operator/seed-k19-staff-archive.sh]
+    volumes:
+      - ./native-workplace/seed-k19-staff-archive.sh:/operator/seed-k19-staff-archive.sh:ro
+    environment:
+      PGHOST: fieldlink-postgres
+      PGPORT: "5432"
+      PGDATABASE: fieldlink_staff
+      PGUSER: fieldlink_staff
+    env_file:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/kanboard.env
+    depends_on:
+      fieldlink-postgres: {condition: service_healthy}
+      fieldlink-kanboard: {condition: service_healthy}
+    networks: [foundation_data]
+
   fieldlink-identity-setup:
     image: python:3.12.11-slim-bookworm@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
     profiles: [operator]
@@ -536,8 +576,10 @@ services:
       - ./native-workplace/seed-staff.php:/opt/fieldlink/seed-staff.php:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/kanboard-bootstrap.json:/run/fieldlink/kanboard-bootstrap.json:ro
       - ../../assets/keplerops/opening/k-dev/fieldlink-7.4.2-review.md:/opt/fieldlink/review-export.md:ro
+      - ../../assets/keplerops/native-workplace/review-records.json:/operator/review-records.json:ro
+      - ../../assets/keplerops/native-workplace/reviews:/operator/reviews:ro
     healthcheck:
-      test: [CMD-SHELL, 'test -f /var/www/app/data/.fieldlink-seeded && curl -fsS http://127.0.0.1/healthcheck.php >/dev/null']
+      test: [CMD-SHELL, 'test -f /var/www/app/data/.fieldlink-seeded-v2 && curl -fsS http://127.0.0.1/healthcheck.php >/dev/null']
       interval: 10s
       timeout: 5s
       retries: 20
@@ -581,7 +623,13 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/support-accounts.json:/run/fieldlink/support-accounts.json:ro
       - ./native-workplace/seed-support-users.php:/opt/fieldlink/seed-support-users.php:ro
       - ./native-workplace/seed-support-case.php:/opt/fieldlink/seed-support-case.php:ro
+      - ./native-workplace/seed-k17-handover.php:/opt/fieldlink/seed-k17-handover.php:ro
+      - ./native-workplace/seed-k17-talia-recovery.php:/opt/fieldlink/seed-k17-talia-recovery.php:ro
+      - ./native-workplace/seed-k17-arwc-assignment.php:/opt/fieldlink/seed-k17-arwc-assignment.php:ro
+      - ./native-workplace/seed-k17-delegation.php:/opt/fieldlink/seed-k17-delegation.php:ro
+      - ./native-workplace/seed-k18-note.php:/opt/fieldlink/seed-k18-note.php:ro
       - ../../assets/keplerops/opening/k-support/SUP-2841.json:/operator/company-conversation.json:ro
+      - ../../assets/keplerops/native-workplace/support-cases.json:/operator/support-cases.json:ro
     healthcheck:
       test: [CMD, php, -r, '$$body=@file_get_contents("http://127.0.0.1/scp/login.php"); exit(is_string($$body) && str_contains($$body, "name=\"userid\"") ? 0 : 1);']
       interval: 10s
@@ -684,6 +732,200 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/s3.json:/run/fieldlink/s3.json:ro
     networks:
       foundation_data: {ipv4_address: 10.77.56.40}
+
+  k-assistant-api:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/assistant-api.Dockerfile
+    image: cinder-keplerops/k-assistant-api:hand-build
+    container_name: cinder-keplerops-k-assistant-api
+    depends_on:
+      fieldlink-keycloak: {condition: service_healthy}
+    environment:
+      FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
+      FIELDKEST_TLS_KEY: /tmp/fieldkest.key
+      FIELDKEST_STATE_ROOT: /var/lib/fieldkest-assistant-api
+      ANYLLM_BASE: http://fieldlink-assistant:3001
+      ANYLLM_DB: /app/anythingllm/anythingllm.db
+      ANYLLM_K21_CONFIG: /run/fieldkest-assistant/k21-config.json
+    volumes:
+      - *runtime-credentials
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - assistant-api-audit:/var/lib/fieldkest-assistant-api/audit
+      - native-assistant-data:/app/anythingllm:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/assistant-k21-config.json:/run/fieldkest-assistant/k21-config.json:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    healthcheck:
+      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "--resolve", "assistant.keplerops.test:443:127.0.0.1", "https://assistant.keplerops.test/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.29}
+
+  k-staff-spnego:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/staff-spnego.Dockerfile
+    image: cinder-keplerops/k-staff-spnego:hand-build
+    container_name: cinder-keplerops-k-staff-spnego
+    environment:
+      FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
+      FIELDKEST_TLS_KEY: /tmp/fieldkest.key
+      FIELDKEST_UPSTREAM: https://k-staff:443
+    volumes:
+      - *runtime-credentials
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/staff.keytab:/run/fieldkest-staff/staff.keytab:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    healthcheck:
+      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "--resolve", "staff.keplerops.test:443:127.0.0.1", "https://staff.keplerops.test/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.28}
+
+  k-identity-spnego:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/identity-spnego.Dockerfile
+    image: cinder-keplerops/k-identity-spnego:hand-build
+    container_name: cinder-keplerops-k-identity-spnego
+    depends_on:
+      fieldlink-keycloak: {condition: service_healthy}
+    environment:
+      FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
+      FIELDKEST_TLS_KEY: /tmp/fieldkest.key
+      FIELDKEST_STATE_ROOT: /var/lib/fieldkest-identity-spnego
+    volumes:
+      - *runtime-credentials
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/identity.keytab:/run/fieldkest-identity/identity.keytab:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    healthcheck:
+      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "--resolve", "identity.keplerops.test:443:127.0.0.1", "https://identity.keplerops.test/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.27}
+
+  k-staff:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/staff.Dockerfile
+    image: cinder-keplerops/k-staff:hand-build
+    container_name: cinder-keplerops-k-staff
+    depends_on:
+      fieldlink-support-db: {condition: service_healthy}
+      fieldlink-keycloak: {condition: service_healthy}
+    environment:
+      FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
+      FIELDKEST_TLS_KEY: /tmp/fieldkest.key
+      FIELDKEST_STATE_ROOT: /var/lib/fieldkest-staff
+      SUPPORT_DB_PASSWORD_FILE: /run/fieldkest-staff/support_db_password
+    volumes:
+      - *runtime-credentials
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/support_db_password:/run/fieldkest-staff/support_db_password:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/kanboard_db_password:/run/fieldkest-staff/kanboard_db_password:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/kerberos.json:/run/fieldkest-staff/kerberos-users.json:ro
+      - ./config/krb5.conf:/etc/krb5.conf:ro
+      - staff-audit:/var/lib/fieldkest-staff/audit
+    extra_hosts:
+      - "identity.keplerops.test:10.77.56.11"
+      - "support.keplerops.test:10.77.56.11"
+      - "ca.keplerops.test:10.77.56.11"
+      - "kerberos.keplerops.test:10.77.56.30"
+      - "delivery.keplerops.test:10.77.51.60"
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    healthcheck:
+      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "--resolve", "staff.keplerops.test:443:127.0.0.1", "https://staff.keplerops.test/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      foundation_data: {ipv4_address: 10.77.56.25}
+
+  k-cloud-api:
+    <<: *service-security
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/cloud-api.Dockerfile
+    image: cinder-keplerops/k-cloud-api:hand-build
+    container_name: cinder-keplerops-k-cloud-api
+    depends_on:
+      fieldlink-k3s:
+        condition: service_healthy
+    environment:
+      FIELDKEST_STATE_ROOT: /var/lib/fieldkest-cloud-api
+      K3S_CREDENTIALS_FILE: /etc/cloud-api/k3s.json
+      FIELDKEST_TLS_CERT: /tmp/fieldkest.crt
+      FIELDKEST_TLS_KEY: /tmp/fieldkest.key
+    volumes:
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/runtime-credentials.json:/run/fieldkest-auth/runtime-credentials.json:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/cloud-api-k3s.json:/etc/cloud-api/k3s.json:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
+      - cloud-api-audit:/var/lib/fieldkest-cloud-api/audit
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
+    extra_hosts:
+      - "cloud-api.keplerops.test:10.77.52.11"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "https://localhost:443/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      cloud: {ipv4_address: 10.77.52.70}
+
+  k-data:
+    image: nginx:alpine@sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a470c1752
+    container_name: cinder-keplerops-k-data
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [CHOWN, NET_BIND_SERVICE, SETGID, SETUID]
+    security_opt: [no-new-privileges:true]
+    depends_on:
+      fieldlink-objects:
+        condition: service_started
+    volumes:
+      - ./native-platform/objects-nginx.conf:/etc/nginx/conf.d/objects.conf:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/etc/nginx/tls/server.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/etc/nginx/tls/server.key:ro
+    tmpfs:
+      - /var/cache/nginx:rw,nosuid,nodev,size=8m,mode=0755
+      - /var/run:rw,nosuid,nodev,size=4m,mode=0755
+      - /tmp:rw,noexec,nosuid,nodev,size=4m,mode=1777
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "--no-check-certificate", "https://127.0.0.1/fieldkest-workspaces?list-type=2"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    networks:
+      corporate: {ipv4_address: 10.77.50.60, aliases: [objects.keplerops.test]}
+      foundation_data: {ipv4_address: 10.77.56.60}
 
   fieldlink-ollama:
     image: ollama/ollama:0.40.16@sha256:910d0d8107b538fb0894e63163eb195de0cc7aefcbc666dc62d3b18f71124592
@@ -827,12 +1069,18 @@ volumes:
   ci-audit: {name: cinder-keplerops-ci-audit}
   ci-results: {name: cinder-keplerops-ci-results}
   ci-rowan-workspace: {name: cinder-keplerops-ci-rowan-workspace}
+  ci-runs: {name: cinder-keplerops-ci-runs}
+  ci-artifacts: {name: cinder-keplerops-ci-artifacts}
   registry-audit: {name: cinder-keplerops-registry-audit}
   registry-results: {name: cinder-keplerops-registry-results}
   registry-published: {name: cinder-keplerops-registry-published}
   registry-verdaccio: {name: cinder-keplerops-registry-verdaccio}
   support-audit: {name: cinder-keplerops-support-audit}
   cloud-api-audit: {name: cinder-keplerops-cloud-api-audit}
+  staff-audit: {name: cinder-keplerops-staff-audit}
+  assistant-api-audit: {name: cinder-keplerops-assistant-api-audit}
+  preview-audit: {name: cinder-keplerops-preview-audit}
+  preview-results: {name: cinder-keplerops-preview-results}
   indexer-state: {name: cinder-keplerops-indexer-state}
   staff-state: {name: cinder-keplerops-staff-state}
   identity-state: {name: cinder-keplerops-identity-state}

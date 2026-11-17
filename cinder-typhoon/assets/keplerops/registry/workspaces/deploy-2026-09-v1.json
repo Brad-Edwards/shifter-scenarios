@@ -1,0 +1,11 @@
+{
+  "schema": "fieldkest.workspace-notebook/v1",
+  "notebook_id": "NB-DEPLOY-2026-09",
+  "title": "September 2026 deployment notebook",
+  "customer_note": "Deployment for TEN-ARWC-019 cedar run customer — retain for support reconciliation",
+  "job": "SCHED-2841",
+  "export_ref": "EXP-2841",
+  "version": "v1",
+  "authored_by": "maya.ranscombe",
+  "status": "superseded"
+}

@@ -1013,22 +1013,6 @@ nodes:
             content_type: application/octet-stream
           - status_code: 404
             content_type: application/json
-        - route_id: review-import
-          path: /api/reviews/import
-          methods: [POST]
-          auth_required: true
-          auth_scheme: Gitea developer session
-          session_required: true
-          parameters:
-          - name: request
-            location: json_body
-            required: true
-            data_type: fieldkest.review-import/v1
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 422
-            content_type: application/json
         - route_id: isolated-job-submit
           path: /api/jobs
           methods: [POST]
@@ -1490,6 +1474,37 @@ nodes:
         address_family: ipv4
         scope: wildcard
       applications:
+      - application_id: osticket
+        service: support
+        protocol: https
+        base_path: /scp
+        description: Native osTicket agent queue, customer tickets, assignments and correspondence threads.
+        routes:
+        - route_id: ticket-thread
+          path: /tickets.php?id={ticket_id}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Native osTicket agent session
+          session_required: true
+          parameters:
+          - name: ticket_id
+            location: query
+            required: true
+            data_type: integer
+          responses:
+          - status_code: 200
+            content_type: text/html
+          - status_code: 302
+            content_type: text/html
+        - route_id: ticket-search
+          path: /tickets.php
+          methods: [GET, POST]
+          auth_required: true
+          auth_scheme: Native osTicket agent session
+          session_required: true
+          responses:
+          - status_code: 200
+            content_type: text/html
       - application_id: support-service
         service: support
         protocol: https
@@ -1676,6 +1691,12 @@ nodes:
           actions: [read]
           resource_patterns: [conversations/SUP-2841]
           effect: allow
+        - grant_id: developer-native-ticket-read
+          role_ref: developer-support
+          resource_kind: app_resource
+          actions: [read]
+          resource_patterns: [tickets/SUP-2841]
+          effect: allow
         - grant_id: agent-support-use
           role_ref: support-agent
           resource_kind: app_resource
@@ -1721,6 +1742,12 @@ nodes:
         component_type: application
         provenance: operator
         installed_paths: [/opt/fieldkest-support]
+      - component_id: osticket
+        name: osTicket
+        version: 1.18.4
+        component_type: application
+        provenance: source_archive
+        installed_paths: [/var/www/html]
   k-indexer:
     type: compute
     description: Reproducible native support-bundle indexer and release-exception worker queue.

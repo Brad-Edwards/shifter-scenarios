@@ -18,7 +18,7 @@ CONTAINER = "cinder-keplerops-k-dev"
 CA = "/home/rowan/.local/share/keplerops/ca.crt"
 BASE = "https://source.keplerops.test"
 USER = basic()
-EXPECTED_COMMIT = "2c83d6cc2a908f8403c1f8f474c4b47c3e06ad58"
+EXPECTED_COMMIT = "7b857207f68944d19d61d9b33c1df830b36c5aee"
 EXPECTED_BINARY = "0430d3a1b648f1ee67d51bfe6012f001f2025b896f1c84358922d99b272e8b1e"
 EXPECTED_PROGRAM = "0b9a7fd08148ec1b6d3151dcd9c0499fb89f70585fb3705a44662e062242ef9c"
 EXPECTED_CONDITIONS = "e3a8ced4d68bfa6f4b94386b5ff040596bff56e243adbb5aebc98df1b21896a9"
@@ -150,14 +150,32 @@ class K11LiveTest(unittest.TestCase):
         }, expected=422)
         self.assertEqual(denied["error"], "opcode_model_mismatch")
 
-    def test_03_fixed_corpus_and_context_fields(self) -> None:
+    def test_03_condition_set_and_corpus_validation(self) -> None:
+        # K11.3: participant submits the derived condition_set document.
+        # Operators and values must be exact (derived from binary analysis, not documentation).
+        condition_set = {
+            "schema": "fieldkest.policy-condition-set/v1",
+            "all": [
+                {"field": "tenant_state", "operator": "in", "values": ["active"]},
+                {"field": "connector_api", "operator": "semver_gte", "value": "3.0.0"},
+                {"field": "signer_lineage", "operator": "in", "values": ["fieldkest-release-2026"]},
+                {"field": "compatibility_exception", "operator": "eq", "value": True},
+            ],
+        }
         result = post({
-            "operation": "corpus-check", "program_model": self.program_model,
-            "policy_input": {"corpus_id": "POLICY-CORPUS-2026-09-R4"},
+            "operation": "condition-check", "program_model": self.program_model,
+            "policy_input": {"corpus_id": "POLICY-CORPUS-2026-09-R4", "condition_set": condition_set},
         })
         self.assertEqual(result["case_count"], 16)
         self.assertEqual(result["corpus_result_sha256"], EXPECTED_CORPUS)
         self.assertEqual(result["condition_set_sha256"], EXPECTED_CONDITIONS)
+        # Wrong condition set is rejected
+        wrong = {**condition_set, "all": [{**c, "values": ["inactive"]} if "values" in c else c for c in condition_set["all"]]}
+        denied = post({
+            "operation": "condition-check", "program_model": self.program_model,
+            "policy_input": {"corpus_id": "POLICY-CORPUS-2026-09-R4", "condition_set": wrong},
+        }, expected=422)
+        self.assertEqual(denied["error"], "condition_set_mismatch")
 
     def test_04_fresh_acceptance_and_nonce_replay(self) -> None:
         nonce = request_json(

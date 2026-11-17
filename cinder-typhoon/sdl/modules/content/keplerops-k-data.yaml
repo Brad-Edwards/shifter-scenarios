@@ -6,6 +6,7 @@ module:
   version: 0.1.0
   exports:
     content:
+    - k03-3-finish-the-callback
     - k13-1-the-listing-nobody-closed
     - k13-2-before-the-correction
     - k13-3-the-export-next-door
@@ -21,6 +22,84 @@ module:
 realization:
   default: open
 content:
+  k03-3-finish-the-callback:
+    type: file
+    target: k-cloud.k-data
+    path: /var/lib/fieldkest-data/contracts/finish-the-callback.yaml
+    description: Service configuration contract. Only starting_state is seeded; transition_contract defines normal
+      service behavior and independently owned audit, and does not pre-populate an accepted result.
+    text: |
+      schema: fieldkest.service-contract/v1
+      record_key: finish-the-callback
+      owner:
+        node: k-data
+        authority: SeaweedFS S3 on k-data
+      surface_bindings:
+      - k-cloud.k-data/seaweedfs-s3/collection-object
+      starting_state: Native bucket fieldlink-collections, exact object callbacks/CB-17/FKCOL-2841.json,
+        SHA-256 b7ba04e5e19e66722585733f3558a59fc0b116d1d50cafa7d0a03a67325ea76f; Rowan
+        has Read but not List on this bucket.
+      mechanic_profile:
+        classification: product-native
+        surface: SeaweedFS S3 GetObject for a non-listable retained collection
+        normal_case: developer uses the ordinary scoped AWS profile to fetch an exact reconstructed
+          object key
+        defect: the identity can read a known retained collection object but cannot enumerate
+          the bucket
+        bounds: read-only access to fieldlink-collections; no list, write, or unrelated
+          bucket authority
+      request_contract:
+        entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
+        identity: The caller must present the identity or session obtainable through the
+          declared world state and prerequisites.
+        input: Native bucket fieldlink-collections, exact object callbacks/CB-17/FKCOL-2841.json,
+          SHA-256 b7ba04e5e19e66722585733f3558a59fc0b116d1d50cafa7d0a03a67325ea76f; Rowan
+          has Read but not List on this bucket.
+        success: A signed S3 GetObject for the reconstructed key returns retained SUP-2841,
+          CRR-OG2, and FLK-7.4.2 evidence; bucket enumeration is denied.
+        correlation: The service generates a per-request UUIDv4 and writes it to its protected
+          audit before returning it.
+      denial_contract:
+        wrong_scope: Return the route's declared authorization failure without disclosing
+          the protected object or changing state.
+        wrong_binding: Reject a wrong tenant, record, revision, digest, identity, nonce,
+          job or package binding.
+        stale_or_replayed: Reject consumed, expired or stale one-time material; immutable
+          historical reads remain repeatable.
+        cross_tenant: Return not-found or forbidden according to the route contract and
+          never join another tenant instance's state.
+      transition_contract: A signed S3 GetObject for the reconstructed key returns retained
+        SUP-2841, CRR-OG2, and FLK-7.4.2 evidence; bucket enumeration is denied.
+      evidence_contract:
+        producer: The owning service writes the audit; the caller-controlled request and
+          output are not sufficient by themselves.
+        required_bindings:
+        - tenant instance
+        - accepted caller or runtime identity
+        - request correlation
+        - exact input identifiers and revisions
+        - result identifier and digest
+        downstream_join: Context only; no credential or customer entry.
+        freshness: The result and audit must be created after the accepted request and must
+          not exist in starting state.
+      state_rules:
+        initial_records: immutable unless the owning route explicitly defines a mutable
+          revision
+        tenant_state: persistent for the tenant instance
+        completion: observed from the owning service audit; never pre-populated by this
+          file
+        isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
+      generation_input:
+        algorithm: sha256
+        digest: 382d85eecbf7885be6b09f58c6712027a14d944295a2710298f0e87966b43285
+        canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
+          generation_input
+    sensitive: true
+    tags:
+    - keplerops
+    - service-contract
+    - k-data
+    - persistent-tenant-state
   k13-1-the-listing-nobody-closed:
     type: file
     target: k-cloud.k-data

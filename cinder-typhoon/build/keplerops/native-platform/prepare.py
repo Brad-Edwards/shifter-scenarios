@@ -27,6 +27,7 @@ def prepare(operator: Path) -> None:
         'k3s_token', 'objects_admin_key', 'objects_admin_secret',
         'objects_rowan_key', 'objects_rowan_secret', 'data_rowan',
         'assistant_admin', 'assistant_bootstrap', 'assistant_jwt',
+        'objects_export_key', 'objects_export_secret',
     )}))
     values = json.loads(private.read_text())
     for directory in ('kubernetes', 'model-source', 'model-converted', 'k3s-images'):
@@ -42,9 +43,37 @@ def prepare(operator: Path) -> None:
     }, {
         'name': 'rowan.ito',
         'credentials': [{'accessKey': values['objects_rowan_key'], 'secretKey': values['objects_rowan_secret']}],
-        'actions': [action + ':fieldlink-exports' for action in ('Read', 'Write', 'List', 'Tagging')],
+        'actions': [action + ':fieldlink-exports' for action in ('Read', 'Write', 'List', 'Tagging')]
+        + ['Read:fieldlink-collections'],
+    }, {
+        # K14.3 vulnerability: resource rule decodes %2f after prefix comparison.
+        # svc-fieldlink-export can read the specific support export object, but
+        # rowan.ito (the developer identity) cannot access fieldkest-exports at all.
+        # This creates the boundary: denied with developer credentials, allowed after
+        # obtaining export credentials via the K14.2 role exchange.
+        'name': 'svc-fieldlink-export',
+        'credentials': [{'accessKey': values['objects_export_key'], 'secretKey': values['objects_export_secret']}],
+        # K14.3+K15.4: svc-fieldlink-export can read and write to fieldkest-exports.
+        # Read for K14.3 boundary proof; Write for K15.4 versioned export object.
+        # The developer identity (rowan.ito) has no access to fieldkest-exports.
+        'actions': ['Read:fieldkest-exports', 'Write:fieldkest-exports', 'List:fieldkest-exports'],
+    }, {
+        # K13.1 vulnerability: over-broad anonymous ACL on fieldkest-workspaces.
+        # An anonymous identity with Read and List on this bucket allows unauthenticated
+        # S3 listing and object retrieval. The participant exploits this to recover the
+        # deployment notebook without credentials.
+        'name': 'anonymous',
+        'credentials': [],
+        'actions': ['Read:fieldkest-workspaces', 'List:fieldkest-workspaces'],
     }]
-    create(target / 's3.json', json.dumps({'identities': identities}), 0o444)
+    # Store export credentials for cloud-api to serve (K14.3)
+    create(target / 'aws-export', '[default]\naws_access_key_id=' + values['objects_export_key'] + '\naws_secret_access_key=' + values['objects_export_secret'] + '\n')
+    s3_config = target / 's3.json'
+    if s3_config.exists():
+        os.chmod(s3_config, 0o600)
+        s3_config.write_text(json.dumps({'identities': identities}))
+    else:
+        create(s3_config, json.dumps({'identities': identities}), 0o444)
     os.chmod(target / 's3.json', 0o444)
     create(target / 'anythingllm.env', '\n'.join((
         'STORAGE_DIR=/app/server/storage', 'NODE_ENV=production',

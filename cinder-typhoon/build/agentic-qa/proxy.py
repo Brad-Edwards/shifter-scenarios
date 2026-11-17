@@ -29,7 +29,7 @@ PHASES = {
         "home": "/home/cinder",
     },
     "keplerops": {
-        "instance": "cinder-keplerops-golden",
+        "instance": "cinder-fieldlink-participant",
         "container": "cinder-keplerops-k-dev",
         "user": "rowan",
         "uid": 2000,

@@ -45,11 +45,6 @@
           "template": "https://ci.keplerops.test/job/fieldlink-package-check/{build_number}/artifact/package-workspace/{artifact}"
         },
         {
-          "key": "ci.review-import",
-          "method": "POST",
-          "template": "https://review.keplerops.test/api/reviews/import"
-        },
-        {
           "key": "ci.report-jobs",
           "method": "POST",
           "template": "https://review.keplerops.test/api/jobs"

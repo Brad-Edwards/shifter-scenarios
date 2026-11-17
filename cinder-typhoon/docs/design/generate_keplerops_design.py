@@ -42,9 +42,9 @@ ROUTES = PACK / "sdl/modules/routes"
 
 
 NODE_FOR_CARD = {
-    **{f"K01.{n}": node for n, node in enumerate(("k-dev", "k-support", "k-dev", "k-dev"), 1)},
+    **{f"K01.{n}": node for n, node in enumerate(("k-dev", "k-support", "k-staff", "k-dev"), 1)},
     **{f"K02.{n}": "k-ci" for n in range(1, 4)},
-    **{f"K03.{n}": "k-dev" for n in range(1, 4)},
+    "K03.1": "k-dev", "K03.2": "k-dev", "K03.3": "k-data",
     **{f"K04.{n}": "k-indexer" for n in range(1, 5)},
     **{f"K05.{n}": "k-registry" for n in range(1, 5)},
     **{f"K06.{n}": "k-registry" if n < 3 else "k-ci" for n in range(1, 4)},
@@ -115,15 +115,15 @@ def local_path(node: str, path: str) -> str:
 # are deliberate: a single objective may need supplier and consumer state.
 SURFACE_BINDINGS: dict[str, list[str]] = {
     "K01.1": [local_path("k-dev", "/home/rowan"), route("k-source", "gitea", "protected-handover")],
-    "K01.2": [local_path("k-dev", "/home/rowan/.config/chromium/Default"), route("k-support", "support-service", "conversation")],
-    "K01.3": [local_path("k-dev", "/home/rowan/work")],
+    "K01.2": [local_path("k-dev", "/home/rowan/.config/chromium/Default"), route("k-support", "osticket", "ticket-thread")],
+    "K01.3": [route("k-staff", "kanboard", "release-review")],
     "K01.4": [route("k-dev", "local-workbench", "inspection-summary")],
     "K02.1": [route("k-ci", "jenkins", "build-console"), route("k-source", "gitea", "repository-content")],
     "K02.2": [route("k-ci", "jenkins", "build-artifacts")],
     "K02.3": [route("k-ci", "jenkins", "file-parameter-build"), route("k-ci", "jenkins", "build-artifacts"), route("k-support", "support-service", "private-handover")],
     "K03.1": [local_path("k-dev", "/home/rowan/work")],
-    "K03.2": [route("k-dev", "local-workbench", "reconstruction")],
-    "K03.3": [route("k-dev", "local-workbench", "callback-collection")],
+    "K03.2": [local_path("k-dev", "/home/rowan/work/analysis")],
+    "K03.3": [route("k-data", "seaweedfs-s3", "collection-object")],
     "K04.1": [route("k-indexer", "bundle-indexer", "bundle-submit"), route("k-indexer", "bundle-indexer", "index-result")],
     "K04.2": [route("k-indexer", "bundle-indexer", "index-result")],
     "K04.3": [route("k-indexer", "bundle-indexer", "exception-state"), route("k-indexer", "bundle-indexer", "bundle-submit")],
@@ -230,6 +230,7 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
 JOINED_FEATURES: dict[str, list[str]] = {
     "K01.1": ["features.k-corporate.k-dev", "features.k-delivery.k-source"],
     "K01.2": ["features.k-corporate.k-dev", "features.k-delivery.k-support"],
+    "K01.3": ["features.k-corporate.k-staff"],
     "K02.1": ["features.k-delivery.k-ci", "features.k-delivery.k-source"],
     "K02.3": ["features.k-delivery.k-ci", "features.k-delivery.k-support"],
     "K06.1": ["features.k-delivery.k-source", "features.k-delivery.k-registry"],
@@ -272,17 +273,17 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
     },
     "K01.2": {
         "classification": "service-native",
-        "surface": "Chromium SQLite (History, Cookies); support.keplerops.test conversation and cookie APIs",
-        "normal_case": "developer closes browser tab, leaving session cookie in profile",
-        "defect": "closed-tab URL in History plus retained session cookie give read access to the support conversation",
-        "bounds": "only the retained SUP-2841 conversation is accessible; no write or assignment authority is granted",
+        "surface": "retained Chromium history and the native osTicket agent ticket queue and thread",
+        "normal_case": "staff sign in to osTicket and search their accessible support queue",
+        "defect": "the closed-tab title retains the exact customer ticket reference and the normal staff identity remains usable",
+        "bounds": "Rowan's osTicket role reads the assigned support queue but has no administration authority",
     },
     "K01.3": {
         "classification": "service-native",
-        "surface": "source.keplerops.test git clone and CI review-import API",
-        "normal_case": "developer clones the connector repository and reviews release exports",
-        "defect": "the developer credential also permits submitting a CI review import, which leaks the workspace file path",
-        "bounds": "the import stores the review document and reveals only the scoped workspace URI",
+        "surface": "native Kanboard FieldLink release project, searchable task, comments and task attachment",
+        "normal_case": "staff use the work board to inspect release tasks and their attached review records",
+        "defect": "the unfinished review and its unresolved comments remain readable to Rowan's ordinary project role",
+        "bounds": "the recovered identity is a project member without application or user administration",
     },
     "K01.4": {
         "classification": "service-native",
@@ -313,27 +314,27 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
         "defect": "the documented provider extension can change assessment while preserving required ordinary fields",
         "bounds": "untrusted code runs only in the existing isolated report worker; controller job steps remain fixed",
     },
-    # K03 — CI build operations
+    # K03 — retained collection analysis
     "K03.1": {
-        "classification": "service-native",
-        "surface": "ci.keplerops.test run and run-log APIs",
-        "normal_case": "developer fetches build run status and log for the current handover build",
-        "defect": "the run log names the policy-compiler binary path and the build-operations repository",
-        "bounds": "only the run and log records for the developer-accessible CI run are returned",
+        "classification": "file-native",
+        "surface": "retained OpenDocument package and its ordinary source attachment",
+        "normal_case": "developer reads the predecessor note and inspects the ODT package contents",
+        "defect": "the rendered note is incomplete while its source package retains the staging attachment",
+        "bounds": "one exact retained document and attachment; no service authority",
     },
     "K03.2": {
-        "classification": "service-native",
-        "surface": "ci.keplerops.test run-artifact API; source.keplerops.test policy-nonce API",
-        "normal_case": "developer retrieves a build artifact and obtains a nonce for policy acceptance",
-        "defect": "the run artifact (release-dossier.json) names the cloud build record and release exchange handle",
-        "bounds": "only the artifact identified by the run record is accessible; no other run artifact is enumerable",
+        "classification": "file-native",
+        "surface": "PowerShell and JavaScript stages inside the retained bundle",
+        "normal_case": "developer reconstructs and verifies each retained stage offline",
+        "defect": "the final collection manifest is encoded inside the second script stage rather than rendered in the note",
+        "bounds": "offline decoding only; no script execution or network effect is required",
     },
     "K03.3": {
-        "classification": "service-native",
-        "surface": "source.keplerops.test connector-archive-run API; build-operations handoff note",
-        "normal_case": "developer exercises the retained connector archive binary through the source service",
-        "defect": "the diagnostic config switches the loader behavior and discloses the internal diagnostic route path",
-        "bounds": "only the two supplied configs are accepted; arbitrary config construction is rejected by signature",
+        "classification": "product-native",
+        "surface": "SeaweedFS S3 GetObject for a non-listable retained collection",
+        "normal_case": "developer uses the ordinary scoped AWS profile to fetch an exact reconstructed object key",
+        "defect": "the identity can read a known retained collection object but cannot enumerate the bucket",
+        "bounds": "read-only access to fieldlink-collections; no list, write, or unrelated bucket authority",
     },
     # K13 — cloud workspace and data plane
     "K13.1": {
@@ -823,13 +824,13 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
         "proof": "destination audit must name task principal, schedule SCH-SUP-2841, run ID and written digest",
     },
     "K18.2": {
-        "source_path": "/notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT",
+        "source_path": "/notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT",
         "method": "GET",
         "defect": "proxy checks the encoded string starts with /notes/ before one percent-decode and dot-segment normalization",
         "destination_identity": "svc-staff-preview",
     },
     "K18.3": {
-        "source_path": "/notes/%2e%2e%2fidentity/api/registrations/OIDC-FIELDKEST-SUPPORT",
+        "source_path": "/notes/%2e%2e/identity/realms/keplerops/clients-registrations/openid-connect/OIDC-FIELDKEST-SUPPORT",
         "forwarded_method": "PATCH",
         "patch": {"add_provider": "OIDC-FIELDKEST-RETAINED-SUPPORT", "preserve_existing": True},
         "retained_support_provider": {
@@ -1178,6 +1179,14 @@ def fixture_text(card: str, title: str, row: dict[str, str]) -> str:
         core['request_contract']['correlation'] = 'Bind the recovered Git identity to the protected native repository issue, handover identifier and revision.'
         core['evidence_contract']['producer'] = 'Actual authenticated Gitea repository/issue responses and their native object identity; no custom handover API or synthetic product audit.'
         core['evidence_contract']['freshness'] = 'Native handover reads remain repeatable; demonstrate actual use of the recovered limited identity.'
+    if card == 'K01.2':
+        core['request_contract']['correlation'] = 'Bind the retained Chromium history entry to the native osTicket number, subject, customer, asset and thread correspondence.'
+        core['evidence_contract']['producer'] = 'The native osTicket session, ticket record and thread entries; no conversation facade or synthetic read audit.'
+        core['evidence_contract']['freshness'] = 'The support thread is an immutable starting record; demonstrate actual access through Rowan\'s native staff session.'
+    if card == 'K01.3':
+        core['request_contract']['correlation'] = 'Bind the Kanboard task reference to its native attachment and unresolved native comments.'
+        core['evidence_contract']['producer'] = 'The native Kanboard task, comments and attachment identity and bytes; no local duplicate or custom lookup service.'
+        core['evidence_contract']['freshness'] = 'The release review remains repeatable product-owned state under Rowan\'s ordinary project role.'
     if card == 'K28.3':
         core['request_contract']['correlation'] = 'Join the genuine tool request and output digest to the native Git note path, commit and content digest.'
         core['evidence_contract']['producer'] = 'The retained loader tool supplies its protected request/output audit; Gitea supplies actual Git note objects and history.'

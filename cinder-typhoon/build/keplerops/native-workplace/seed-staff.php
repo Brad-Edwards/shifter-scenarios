@@ -1,7 +1,7 @@
 <?php
-// One-time administration import; ordinary records remain owned by Kanboard.
+// Versioned administration import; ordinary records remain owned by Kanboard.
 chdir('/var/www/app');
-if (file_exists('data/.fieldlink-seeded')) {
+if (file_exists('data/.fieldlink-seeded-v2')) {
     exit(0);
 }
 require 'app/common.php';
@@ -71,6 +71,35 @@ foreach ($comments as $comment) {
         }
     }
 }
+$records = json_decode(file_get_contents('/operator/review-records.json'), true, 512, JSON_THROW_ON_ERROR);
+foreach ($records['tasks'] as $record) {
+    $ordinary = $container['db']->table('tasks')->eq('project_id', $project['id'])->eq('reference', $record['reference'])->findOne();
+    if (!$ordinary) {
+        $id = $container['taskCreationModel']->create([
+            'project_id' => $project['id'], 'title' => $record['title'],
+            'reference' => $record['reference'], 'creator_id' => $users[$record['creator']],
+            'owner_id' => $users[$record['owner']], 'description' => $record['description'],
+        ]);
+        if (!$id) {
+            throw new RuntimeException('Ordinary release task import failed');
+        }
+        $ordinary = $container['taskFinderModel']->getById($id);
+    }
+    $attachment = basename($record['attachment']);
+    if (!$container['db']->table('task_has_files')->eq('task_id', $ordinary['id'])->eq('name', $attachment)->exists()) {
+        $content = file_get_contents('/operator/reviews/'.$attachment);
+        if (!$container['taskFileModel']->uploadContent($ordinary['id'], $attachment, $content, false, $users[$record['creator']])) {
+            throw new RuntimeException('Ordinary release attachment import failed');
+        }
+    }
+    foreach ($record['comments'] as $comment) {
+        if (!$container['db']->table('comments')->eq('task_id', $ordinary['id'])->eq('comment', $comment)->exists()) {
+            if (!$container['commentModel']->create(['task_id' => $ordinary['id'], 'user_id' => $users[$record['creator']], 'comment' => $comment])) {
+                throw new RuntimeException('Ordinary release comment import failed');
+            }
+        }
+    }
+}
 $container['configModel']->save(['application_url' => 'https://staff.keplerops.test/']);
-file_put_contents('data/.fieldlink-seeded', "FieldLink workplace import complete\n");
+file_put_contents('data/.fieldlink-seeded-v2', "FieldLink workplace import revision 2 complete\n");
 echo "Native staff records imported.\n";

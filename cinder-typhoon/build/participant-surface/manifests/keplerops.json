@@ -11,16 +11,16 @@
       "phase_card_count": 104,
       "phase_operation_count": 31,
       "phase_score_total": 16750,
-      "revision": "6671188bc4005bc5dca0ed2c72ea436f71bd667f74807cb928bf645117740fe9",
+      "revision": "795ca3d807bd9e8be251089bb6455d3992dd5178a044198af086e0d8eb5674ad",
       "schema": "cinder-typhoon.challenge-delivery/v2",
       "score_total": 39200,
-      "sha256": "56887dfbc06fd658a39e109f83eecfbd1a6b9b026ff39711ee76aa68d6ed838b"
+      "sha256": "846f177c556c6aeff613406ff6362f7e7286b13afd30ca4813606a79c5bce18f"
     },
     "hints": {
       "items": [
         {
           "card_id": "K01.1",
-          "content_revision": "794b72b49e70f99a2691217f289f73687898df7d8dbbcc28648575584ca4d677",
+          "content_revision": "431a15f230762ad904c5a0f16e8caece9f7d8eea19ece215a195cbbf7234f31f",
           "levels": [
             1,
             2,
@@ -29,7 +29,7 @@
         },
         {
           "card_id": "K01.2",
-          "content_revision": "b96d928a34e0f3c3ad74e28f0f2e92f44eb66f047a7e7a804173a9c0a5d81d82",
+          "content_revision": "8699f77a35473d738fd7f67a5f55a6851afc56af0d227ecd0d1a431dacaba951",
           "levels": [
             1,
             2,
@@ -38,7 +38,7 @@
         },
         {
           "card_id": "K01.3",
-          "content_revision": "b4b29992d082c4e5afbbe6a338cfe51c2dd45427efe6a3f841f755c40b2cf40b",
+          "content_revision": "28aa45dce5cc7a6d2a2c26dda21183b5b6b1e2cbce3a68cf4751d0c1e115b316",
           "levels": [
             1,
             2,
@@ -47,7 +47,7 @@
         },
         {
           "card_id": "K01.4",
-          "content_revision": "40733e6df4a4f28150bdd34c36620c17160ceecc51ec6119a09a0848341fbca5",
+          "content_revision": "f0b4d7d0907a7b716dd1eb17211a422e871529675ec43f35059352a2c68a6dfb",
           "levels": [
             1,
             2,
@@ -56,7 +56,7 @@
         },
         {
           "card_id": "K02.1",
-          "content_revision": "2664ac088aecf3e80e9044c90f0882d5fba146db52001a3c6ee2359470aad9c7",
+          "content_revision": "75a8bf1d10cd4efa79a1fbbdf42c64bb1c7e7c9ce6f9ed9cf359bf118b245d5c",
           "levels": [
             1,
             2,
@@ -65,7 +65,7 @@
         },
         {
           "card_id": "K02.2",
-          "content_revision": "37d24cb5cc6f52ace4dc7fe1fd8131b6092cecfc862ac38b446506b3a485939e",
+          "content_revision": "87aa6b25fedb08d9be48a49288b4df2770a79407c57ef98bfa2e0a6747ae0345",
           "levels": [
             1,
             2,
@@ -74,7 +74,7 @@
         },
         {
           "card_id": "K02.3",
-          "content_revision": "b6af2aff2e854e21aefc93c26c26e12a254407c72608fcef97219c7d455d817d",
+          "content_revision": "f278e736d035c112d50083f90944eecd3d015a010d09e939afa3e3d352aa43d8",
           "levels": [
             1,
             2,
@@ -83,7 +83,7 @@
         },
         {
           "card_id": "K03.1",
-          "content_revision": "327060c725a01f85155856dfb1212362e7a6212abdbc98d02c7ff37592c7c0fe",
+          "content_revision": "7ee971aa42219f33b841054572694a9f70cf9616e739275d5c7ae4fbcafebe70",
           "levels": [
             1,
             2,
@@ -92,7 +92,7 @@
         },
         {
           "card_id": "K03.2",
-          "content_revision": "4b6533a0c8e4dd15ff6b8dda6abae156d5c315f234d1690c151e36e3dae1016d",
+          "content_revision": "1944cd7f064bc358e2b4c06abf20fb48e4b27bfb2f13cecb3423026af8a140c9",
           "levels": [
             1,
             2,
@@ -101,7 +101,7 @@
         },
         {
           "card_id": "K03.3",
-          "content_revision": "e264e9629e864c0f4e7a3cd4ede937321f0f82e60e008c2820f81299ed4f011d",
+          "content_revision": "576bf3b3e04649228337c4f6b9098d1703b8f35c9ac3ce1227d10b4ea39d5ccf",
           "levels": [
             1,
             2,
@@ -960,9 +960,9 @@
         "hint_count": 720,
         "operation_count": 70,
         "path": "build/hint-delivery/manifest.json",
-        "revision": "339d76d710083a7e00e334a6f3073ec098d844e1edbe02703cdebc27cdcd5bf7",
+        "revision": "74d064d6e6854c56419ab231595b446f564dc505b58802d9d48125b932aa7600",
         "schema": "cinder-typhoon.hint-delivery/v1",
-        "sha256": "46c43c70e5a1711a9a5dc352af9bbcd1af41d5243fe171a6849c154b5cff529f"
+        "sha256": "1ac7acc310a1b0acba1a3ec0c1181b125398c6cd01866a52855ac82e60a58466"
       },
       "release": {
         "audit": "append_only_metadata_without_hint_text",
@@ -983,7 +983,7 @@
         "hint_count": 312,
         "path": "build/card-coverage/hints-keplerops.yaml",
         "phase": "keplerops",
-        "sha256": "d480dcfb6ba46dc6615e9365c81f7aba66c4f7eb86681b210e72bb1678017899"
+        "sha256": "c9b3cad48624d9d89075037d8cba83de1469a703aae9fa177d5babef9e356969"
       },
       "status": "versioned"
     }
@@ -1038,7 +1038,11 @@
         "ci.run",
         "ci.run-log",
         "ci.run-artifact",
-        "ci.review-import",
+        "ci.report-parameter-build",
+        "ci.report-build",
+        "ci.report-artifact",
+        "ci.package-build",
+        "ci.package-artifact",
         "ci.report-jobs",
         "ci.report-job",
         "ci.review-jobs",
@@ -1996,8 +2000,8 @@
             "mode": "0640",
             "owner": "rowan",
             "path": "work/reproducers/indexer-client.json",
-            "sha256": "038f4bc3b8516a31c5a5ef600ad052556260137c06da99baade57ee4b398f801",
-            "size": 353,
+            "sha256": "e863340b6908c9e0005b04c93ab09cdf32d48a9eb8fa20aef064db2ad3f05ee7",
+            "size": 591,
             "type": "file"
           },
           {
@@ -2006,8 +2010,8 @@
             "mode": "0550",
             "owner": "rowan",
             "path": "work/reproducers/fieldkest-bundle-indexer",
-            "sha256": "066a646653a088c31cbe53d9ab4ff5a7f1fe9cec0c6def66ea9452cabcfb6852",
-            "size": 14312,
+            "sha256": "0dc06b947ef8c4cc2f2d8ccc81bef9ecf039a2cb3fb1a2e0e42cac82619af4b7",
+            "size": 14392,
             "type": "file"
           },
           {

@@ -1,0 +1,11 @@
+{
+  "schema": "fieldkest.workspace-notebook/v1",
+  "notebook_id": "NB-DEPLOY-2026-09",
+  "title": "September 2026 deployment notebook",
+  "customer_note": "Deployment notebook for field deployment batch — September 2026",
+  "job": "SCHED-2841",
+  "export_ref": "EXP-2841",
+  "version": "v2",
+  "authored_by": "maya.ranscombe",
+  "status": "active"
+}

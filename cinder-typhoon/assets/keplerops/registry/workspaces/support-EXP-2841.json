@@ -1,0 +1,11 @@
+{
+  "schema": "fieldkest.support-export/v1",
+  "export_id": "EXP-2841",
+  "case_id": "CAS-MAYA-2841",
+  "owner": "maya.ranscombe",
+  "tenant": "TEN-ARWC-019",
+  "schedule": "SCHED-2841",
+  "export_type": "support-history",
+  "created": "2026-09-18T16:00:00Z",
+  "note": "Cedar Run Reservoir support export — connector diagnostic reference retained"
+}

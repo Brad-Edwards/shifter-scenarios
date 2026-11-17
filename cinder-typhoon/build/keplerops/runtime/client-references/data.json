@@ -7,12 +7,12 @@
         {
           "key": "data.workspace-list",
           "method": "GET",
-          "template": "https://data.keplerops.test/s3/fieldkest-workspaces"
+          "template": "https://objects.keplerops.test/fieldkest-workspaces?list-type=2"
         },
         {
           "key": "data.workspace-object",
           "method": "GET",
-          "template": "https://data.keplerops.test/s3/fieldkest-workspaces/{key}"
+          "template": "https://objects.keplerops.test/fieldkest-workspaces/{key}"
         },
         {
           "key": "data.export-object",

@@ -43,3 +43,480 @@ roleRef:
   kind: Role
   name: engineering
   apiGroup: rbac.authorization.k8s.io
+---
+# K13.4: svc-fieldlink-workload — the limited workload identity
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-fieldlink-workload
+  namespace: fieldlink
+---
+# K13.4: svc-cloud-api — cloud-api's admin identity for token issuance
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-cloud-api
+  namespace: fieldlink
+---
+# K13.4: BLD-1842 — the protected build record (real K8s ConfigMap)
+# svc-fieldlink-workload can read this via RBAC; other reads are denied.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bld-1842
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: build-record
+data:
+  build_id: BLD-1842
+  principal: svc-fieldlink-workload
+  workspace: fieldlink-workload
+  version: "2026-09-18"
+  scope: fieldkest-build-records
+---
+# K13.4 Role: svc-fieldlink-workload can ONLY get bld-1842
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workload-build-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get]
+    resourceNames: [bld-1842]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workload-build-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-workload
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: workload-build-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+# K13.4 ClusterRole: svc-cloud-api can issue tokens and perform token reviews
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cloud-api-token-issuer
+rules:
+  - apiGroups: ['']
+    resources: [serviceaccounts/token]
+    verbs: [create]
+  - apiGroups: [authentication.k8s.io]
+    resources: [tokenreviews]
+    verbs: [create]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cloud-api-token-issuer
+subjects:
+  - kind: ServiceAccount
+    name: svc-cloud-api
+    namespace: fieldlink
+roleRef:
+  kind: ClusterRole
+  name: cloud-api-token-issuer
+  apiGroup: rbac.authorization.k8s.io
+---
+# K14.1: trust record for svc-fieldlink-workload.
+# The issuer, subject, and audiences are derived from the real K3s SA token claims.
+# The export_role names the K14.2 scope boundary.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trust-flx-04
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: trust-record
+data:
+  trust_id: TRUST-FLX-04
+  issuer: https://kubernetes.default.svc.cluster.local
+  subject: system:serviceaccount:fieldlink:svc-fieldlink-workload
+  accepted_audiences: '["https://kubernetes.default.svc.cluster.local","k3s"]'
+  export_role: fieldkest-export-access
+  service_ref: fieldkest-exports
+  schema: fieldkest.trust-record/v1
+---
+# K14.1 Role: svc-fieldlink-workload can also read trust-flx-04
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workload-trust-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get]
+    resourceNames: [trust-flx-04]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workload-trust-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-workload
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: workload-trust-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+# K14.2: svc-fieldlink-export — the export-scoped identity
+# Only accessible with tokens having audience fieldkest-export-access.
+# The K14.2 vulnerability: the role-exchange endpoint validates issuer/subject but
+# omits audience check, allowing the K13.4 workload token (wrong audience) to claim
+# this export role.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-fieldlink-export
+  namespace: fieldlink
+---
+# K14.2: protected role record — only svc-fieldlink-export can read it
+# svc-fieldlink-workload (K13.4 token) cannot read this — K3s RBAC denies it
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: role-export-access
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: role-record
+data:
+  role_id: role/support-export-editor
+  audience: fieldkest-export-access
+  principal: svc-fieldlink-export
+  accepted_input_audience: fieldkest-build-records
+  scope: fieldkest-exports
+  schema: fieldkest.role-record/v1
+---
+# K14.2 Role: only svc-fieldlink-export can read role-export-access
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: export-role-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get]
+    resourceNames: [role-export-access]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: export-role-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: export-role-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+# K15.1: real K3s export Job for EXP-2841.
+# Support started this export job for the unresolved CAS-MAYA-2841 customer case.
+# The participant reads this real K3s Job spec to discover the dataset and revision.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: exp-2841
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: export-job
+    fieldkest.io/export-id: EXP-2841
+    fieldkest.io/case-id: CAS-MAYA-2841
+spec:
+  template:
+    spec:
+      containers:
+      - name: exporter
+        image: busybox:latest
+        env:
+        - name: EXPORT_ID
+          value: "EXP-2841"
+        - name: CASE_ID
+          value: "CAS-MAYA-2841"
+        - name: DATASET
+          value: "support-case-history"
+        - name: REVISION
+          value: "6"
+        - name: STATE
+          value: "unpublished"
+        - name: DESTINATION
+          value: "fieldkest-exports"
+      restartPolicy: Never
+  backoffLimit: 0
+---
+# K15.1 Role: svc-fieldlink-export can read Jobs in fieldlink namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: export-job-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: [batch]
+    resources: [jobs]
+    verbs: [get]
+    resourceNames: [exp-2841]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: export-job-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: export-job-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+# K15.2: export definition ConfigMap — owned by maya.ranscombe but readable by svc-fieldlink-export.
+# The K15.2 ownership gap: the detail route (GET /api/exports/EXP-2841/definition) checks
+# tenant visibility but omits job ownership. svc-fieldlink-export reads this definition
+# even though it doesn't own the export job.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: exp-2841-definition
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: export-definition
+    fieldkest.io/export-id: EXP-2841
+    fieldkest.io/owner: maya.ranscombe
+data:
+  export_id: EXP-2841
+  owner: maya.ranscombe
+  tenant: TEN-ARWC-019
+  case_id: CAS-MAYA-2841
+  partitions: '["PART-ARWC-01"]'
+  destinations: '[{"name":"fieldkest-exports/EXP-2841-rowan","owner":"rowan.ito"},{"name":"fieldkest-exports/EXP-2841-maya","owner":"maya.ranscombe"}]'
+  partition_bindings: '[{"partition":"PART-ARWC-01","current":true,"tenant":"TEN-ARWC-019","tenant_id":"TEN-ARWC-019","connector_revision":"FLK-7.4.2","revision":6},{"partition":"PART-ARWC-02","current":false,"tenant":"TEN-OTHER-001","tenant_id":"TEN-OTHER-001","connector_revision":"FLK-7.3.1","revision":5}]'
+  schema: fieldkest.export-definition/v1
+---
+# K15.2 Role: svc-fieldlink-export can read exp-2841-definition.
+# Ownership gap: RBAC checks identity but not job ownership (maya.ranscombe owns the job).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: export-definition-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get]
+    resourceNames: [exp-2841-definition]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: export-definition-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: export-definition-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+# K15.3: svc-fieldlink-export can patch exp-2841-definition (delegated destination change).
+# The patch rights are real K3s RBAC — the participant can change the destination field.
+# Immutable fields (owner, tenant, partition_bindings) are protected by the cloud-api
+# endpoint which only patches the destination field.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: export-definition-patcher
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [patch]
+    resourceNames: [exp-2841-definition]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: export-definition-patcher
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: export-definition-patcher
+  apiGroup: rbac.authorization.k8s.io
+---
+# K16.1: real K3s CronJob for the scheduled support workflow SCH-SUP-2841.
+# The participant reads this after the shift-state change to discover the recurring job.
+# Runs daily at 08:00 — the next run after the current operator's shift ends.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sched-2841
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: support-schedule
+    fieldkest.io/schedule-id: SCHED-2841
+    fieldkest.io/case-id: CAS-MAYA-2841
+spec:
+  schedule: "0 8 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: svc-schedule-runner
+          serviceAccountName: svc-schedule-runner
+          tolerations:
+          - key: "node.kubernetes.io/disk-pressure"
+            operator: "Exists"
+            effect: "NoSchedule"
+          - key: "node.kubernetes.io/memory-pressure"
+            operator: "Exists"
+            effect: "NoSchedule"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: exporter
+            image: rancher/klipper-helm:v0.13.3-build20261021
+            command: ["sh", "-c", "echo Job complete: $SCHEDULE_ID assignment=$ASSIGNMENT marker=$MARKER; exit 0"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+              seccompProfile:
+                type: RuntimeDefault
+            env:
+            - name: SCHEDULE_ID
+              value: "SCHED-2841"
+            - name: CASE_ID
+              value: "CAS-MAYA-2841"
+            - name: ASSIGNMENT
+              value: "CAS-MAYA-2841"
+            - name: PROFILE
+              value: "support-export"
+            - name: STARTUP_CONFIG
+              value: "EXP-2841"
+            - name: DESTINATION
+              value: "fieldkest-exports"
+          restartPolicy: Never
+      backoffLimit: 0
+  concurrencyPolicy: Forbid
+---
+# K16.1 Role: svc-fieldlink-export can read sched-2841 CronJob
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: schedule-reader
+  namespace: fieldlink
+rules:
+  - apiGroups: [batch]
+    resources: [cronjobs]
+    verbs: [get]
+    resourceNames: [sched-2841]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: schedule-reader
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: schedule-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+# K16.2: svc-fieldlink-export can patch sched-2841 CronJob startup behavior.
+# Delegated patch rights allow changing env vars (adding MARKER) without touching
+# immutable fields (ASSIGNMENT, PROFILE, STARTUP_CONFIG). The patch persists and
+# takes effect on the next Job run from the CronJob.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: schedule-patcher
+  namespace: fieldlink
+rules:
+  - apiGroups: [batch]
+    resources: [cronjobs]
+    verbs: [patch]
+    resourceNames: [sched-2841]
+  - apiGroups: [batch]
+    resources: [jobs]
+    verbs: [create, get]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: schedule-patcher
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-fieldlink-export
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: schedule-patcher
+  apiGroup: rbac.authorization.k8s.io
+---
+# K16.3: svc-schedule-runner — the separate execution context for the scheduled task.
+# This SA is used by the CronJob's Job template, NOT the participant's export SA.
+# It runs independently under its own identity, outliving the participant's session.
+# After the participant's session ends (token expires), the CronJob still runs
+# under svc-schedule-runner via its auto-mounted service account token.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-schedule-runner
+  namespace: fieldlink
+  labels:
+    fieldkest.io/kind: schedule-runner
+---
+# K16.3: svc-schedule-runner can write its run result to a ConfigMap.
+# This demonstrates the separate execution context acting independently.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: schedule-runner
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get, create, patch]
+    resourceNames: [sched-2841-result]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: schedule-runner
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: svc-schedule-runner
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: schedule-runner
+  apiGroup: rbac.authorization.k8s.io

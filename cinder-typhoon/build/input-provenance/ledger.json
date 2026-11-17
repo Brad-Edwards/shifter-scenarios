@@ -1055,18 +1055,18 @@
           {
             "class": "supplied_starting_surface",
             "inputs": [
-              "handover and conversation routes",
+              "Gitea, osTicket, Kanboard, and local-helper routes",
               "developer credential",
-              "support cookie and ticket",
+              "browser-history ticket reference",
               "helper route and sample files"
             ],
-            "source": "/home/rowan/work/service-notes.md, .config/git/credentials, Chromium Cookies, work/local-helper.md, and work/review-exports/fieldlink-7.4.2-review.md",
-            "locator": "Current handover and Conversation entries; stored HTTPS credential; support.keplerops.test cookie row; upload URL and sample path in local-helper.md; changed review export beside the sample"
+            "source": "/home/rowan/work/service-notes.md, .config/git/credentials, Chromium History, work/local-helper.md, and native application responses",
+            "locator": "Gitea issue, osTicket queue, Kanboard task and local-helper entries; identifiers and authenticated session state returned by those ordinary product paths"
           }
         ],
-        "inventory_sha256": "d14404972b908c8369e08f8dee53d1952b34f5a65290200e6d69afc5cbd4839d",
+        "inventory_sha256": "d9f5cf17f9d7c4cd99a2ce104610ad01f9b8fad72f3a93f38179367d8971fc7d",
         "profile": "keplerops",
-        "request_count": 6,
+        "request_count": 4,
         "review_status": "complete",
         "unresolved": []
       },
@@ -1075,18 +1075,18 @@
           {
             "class": "earlier_accepted_response",
             "inputs": [
-              "build, import, job, result, and support routes",
-              "build ID",
+              "native Jenkins build, artifact, parameterized-job, and result routes",
+              "fixture revision and path from the retained build",
               "developer credential",
               "support cookie"
             ],
-            "source": "/home/rowan/work/service-notes.md and accepted K01 handover/conversation responses",
-            "locator": "Current build run, Review import, Review jobs, and Support handover entries; build_id, dev credential, and support_cookie evidence returned in K01; job result URL returned by Review jobs"
+            "source": "/home/rowan/work/service-notes.md, native Jenkins build and artifact responses, Gitea history, and the accepted K01 support response",
+            "locator": "fieldlink-report/1842 and fieldlink-report-review entries; build console fixture reference; native artifact and build identifiers; developer identity and support-cookie evidence carried from K01"
           }
         ],
-        "inventory_sha256": "dd1035ba64f2a511baef5e46db02a92aead4d3f8a82f1d25e97196ae2ed5be17",
+        "inventory_sha256": "af1721a3a971b05967425a11b485231c442c09a3bb864c9ed091866ad46f3495",
         "profile": "keplerops",
-        "request_count": 6,
+        "request_count": 14,
         "review_status": "complete",
         "unresolved": []
       },

@@ -45,7 +45,6 @@
         {"key": "ci.report-artifact", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-report-review/{build_number}/artifact/reports/{artifact}"},
         {"key": "ci.package-build", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-package-check/{build_number}/api/json"},
         {"key": "ci.package-artifact", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-package-check/{build_number}/artifact/package-workspace/{artifact}"},
-        {"key": "ci.review-import", "method": "POST", "template": "https://review.keplerops.test/api/reviews/import"},
         {"key": "ci.report-jobs", "method": "POST", "template": "https://review.keplerops.test/api/jobs"},
         {"key": "ci.report-job", "method": "GET", "template": "https://review.keplerops.test/api/jobs/{job_id}"},
         {"key": "ci.review-jobs", "method": "POST", "template": "https://review.keplerops.test/api/review-jobs"},
@@ -69,7 +68,6 @@
         {"key": "packages.inspections", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/inspections"},
         {"key": "packages.inspection-trace", "method": "GET", "template": "https://delivery.keplerops.test:8443/api/inspections/{inspection_id}/trace"},
         {"key": "packages.inspection-envelope", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/inspections/envelope"},
-        {"key": "packages.entitlement", "method": "GET", "template": "https://delivery.keplerops.test:8443/api/compatibility/entitlements/{entitlement_id}"},
         {"key": "packages.entitlement-check", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/compatibility/entitlements/check"},
         {"key": "packages.approval", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/releases/{release_id}/approval"},
         {"key": "connector.poll", "method": "POST", "template": "https://connector.arwc.test/api/fieldlink/packages/poll"},
@@ -190,7 +188,7 @@
       "title": "Identity client reference",
       "purpose": "Registration, federation, and service-relation operations.",
       "routes": [
-        {"key": "identity.registration", "method": "GET", "template": "https://identity.keplerops.test/api/registrations/{registration_id}"},
+        {"key": "identity.registration", "method": "GET", "template": "https://identity.keplerops.test/realms/keplerops/clients-registrations/openid-connect/{registration_id}"},
         {"key": "identity.staff-login", "method": "POST", "template": "https://identity.keplerops.test/api/federation/staff-login"},
         {"key": "identity.login", "method": "POST", "template": "https://identity.keplerops.test/api/federation/login"},
         {"key": "identity.service-relation", "method": "GET", "template": "https://identity.keplerops.test/api/service-relations/{service_id}"}

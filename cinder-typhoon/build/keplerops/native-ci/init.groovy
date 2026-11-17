@@ -77,6 +77,7 @@ if (project == null) {
 set -eu
 mkdir -p reports
 cp /usr/share/fieldlink-ci/reviews/*.json reports/
+printf '%s\n' 'fixture provenance: fk-test-6d1e9f7' 'fixture path: fixtures/report-crr-og2.json'
 python3 -m pytest -v tests
 '''))
     def archive = new ArtifactArchiver('reports/**')

@@ -7,4 +7,6 @@ install -m 0444 /run/fieldkest-tls/server.crt /tmp/fieldkest.crt
 install -m 0400 /run/fieldkest-tls/server.key /tmp/fieldkest.key
 chown fieldkest-support:fieldkest-support /tmp/fieldkest.key
 install -m 0444 /run/fieldkest-tls/ca.crt /tmp/fieldkest-ca.crt
+install -m 0444 /run/fieldkest-support/pg_password /tmp/fieldkest-pg-pass
+export FIELDKEST_PG_PASSWORD_FILE=/tmp/fieldkest-pg-pass
 exec setpriv --reuid=fieldkest-support --regid=fieldkest-support --init-groups python3 /opt/fieldkest/support.py

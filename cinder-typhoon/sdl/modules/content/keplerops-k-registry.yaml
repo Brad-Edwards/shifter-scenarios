@@ -737,9 +737,11 @@ content:
         node: k-registry
         authority: Legacy entitlement service on k-registry
       surface_bindings:
-      - k-delivery.k-registry/package-registry/legacy-entitlement-record
-      starting_state: Version-1 entitlement ENT-ARWC-DIAG-0698, customer/feature fields
-        and compatibility grammar.
+      - k-delivery.k-source/gitea/connector-archive-entitlement
+      - k-delivery.k-registry/package-registry/entitlement-check
+      starting_state: ENT-ARWC-DIAG-0698 at internal/fieldlink/legacy-diagnostics/CRR-OG2/
+        in fieldkest/connector-archive (Gitea); revision 3→4 commit history; HKDF context
+        from REL-FLK-6.9.8-ARCHIVE.compatibility; real HKDF-SHA256+AES-256-GCM checker.
       mechanic_profile:
         record: ENT-ARWC-DIAG-0698
         grammar: fieldkest-entitlement/v1 canonical JSON with UTF-8 NFC strings and lexicographically

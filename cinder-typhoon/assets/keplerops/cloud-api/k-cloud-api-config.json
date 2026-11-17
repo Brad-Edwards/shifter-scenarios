@@ -1,0 +1,11 @@
+{
+  "developer": {"username": "rowan.ito"},
+  "namespace": "fieldlink",
+  "workload_sa": "svc-fieldlink-workload",
+  "schema": "fieldkest.cloud-api-config/v1",
+  "postgres_host": "data.keplerops.test",
+  "postgres_port": 5432,
+  "postgres_db": "fieldlink_data",
+  "postgres_user": "rowan_data",
+  "s3_endpoint": "http://fieldlink-objects:8333"
+}

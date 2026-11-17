@@ -89,7 +89,7 @@ RUN tar -xf /tmp/k-dev-home.tar -C /home/rowan \
     && git config --system init.templateDir /opt/fieldkest-empty-git-template \
     && git clone /opt/fieldkest-workbench/seed/fieldlink-connector.bundle /home/rowan/work/fieldlink-connector \
     && git -C /home/rowan/work/fieldlink-connector remote set-url origin https://source.keplerops.test/fieldkest/fieldlink-connector.git \
-    && mkdir -p /home/rowan/.ssh /home/rowan/.local/share/keplerops /home/rowan/results /run/sshd /var/lib/fieldkest-workbench/audit \
+    && mkdir -p /home/rowan/.ssh /home/rowan/.local/share/keplerops /home/rowan/results /run/sshd /var/lib/fieldkest-workbench/audit /var/lib/fieldkest-workbench/results \
     && ln -s /opt/fieldkest-workbench /opt/keplerops-workbench \
     && ssh-keygen -A \
     && chown -R rowan:rowan /home/rowan \
