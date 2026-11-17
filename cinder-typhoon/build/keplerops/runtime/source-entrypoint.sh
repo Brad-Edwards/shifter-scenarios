@@ -18,7 +18,8 @@ for attempt in $(seq 1 180); do
   if curl -sS --fail --cacert /run/fieldkest-tls/ca.crt https://source.keplerops.test/user/login >/dev/null 2>&1; then
     break
   fi
-  if ! kill -0 "$gitea_pid" 2>/dev/null; then
+  # kill -0 needs CAP_KILL across UIDs, which this container drops; check /proc instead.
+  if [ ! -d "/proc/$gitea_pid" ]; then
     echo "source service exited during startup" >&2
     exit 1
   fi
